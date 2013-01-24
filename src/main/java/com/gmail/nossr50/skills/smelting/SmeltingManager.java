@@ -23,7 +23,7 @@ public class SmeltingManager extends SkillManager {
      * @param event The {@link FurnaceBurnEvent} to modify.
      */
     public void fuelEfficiency(FurnaceBurnEvent event) {
-        if (Misc.isNPC(player) || !Permissions.fuelEfficiency(player)) {
+        if (Misc.isNPCPlayer(player) || !Permissions.fuelEfficiency(player)) {
             return;
         }
 
@@ -33,7 +33,7 @@ public class SmeltingManager extends SkillManager {
     }
 
     public void smeltProcessing(FurnaceSmeltEvent event) {
-        if (Misc.isNPC(player)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 

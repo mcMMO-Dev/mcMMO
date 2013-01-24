@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -24,6 +25,28 @@ public class Skills {
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     public static int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
     public static boolean abilitiesEnabled = Config.getInstance().getAbilitiesEnabled();
+
+    public static void handleFoodSkills(Player player, SkillType skill, FoodLevelChangeEvent event, int baseLevel, int maxLevel, int rankChange) {
+        int skillLevel = Users.getProfile(player).getSkillLevel(skill);
+        int currentFoodLevel = player.getFoodLevel();
+        int newFoodLevel = event.getFoodLevel();
+        int foodChange = newFoodLevel - currentFoodLevel;
+
+        for (int i = baseLevel; i <= maxLevel; i+= rankChange) {
+            if (skillLevel >= i) {
+                foodChange++;
+            }
+        }
+
+        /* Make sure we don't go over the max value */
+        newFoodLevel = currentFoodLevel + foodChange;
+        if (newFoodLevel > 20) {
+            event.setFoodLevel(20);
+        }
+        else {
+            event.setFoodLevel(newFoodLevel);
+        }
+    }
 
     /**
      * Checks to see if the cooldown for an item or ability is expired.

@@ -40,6 +40,7 @@ import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.Archery;
+import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.Misc;
@@ -53,7 +54,12 @@ public class EntityListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    /**
+     * Monitor EntityChangeBlock events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityChangeBlockEvent(EntityChangeBlockEvent event) {
         Entity entity = event.getEntity();
 
@@ -74,7 +80,7 @@ public class EntityListener implements Listener {
     /**
      * Monitor EntityDamageByEntity events.
      *
-     * @param event The event to monitor
+     * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -128,7 +134,7 @@ public class EntityListener implements Listener {
     /**
      * Monitor EntityDamage events.
      *
-     * @param event The event to monitor
+     * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
@@ -194,45 +200,44 @@ public class EntityListener implements Listener {
     /**
      * Monitor EntityDeath events.
      *
-     * @param event The event to monitor
+     * @param event The event to watch
      */
     @EventHandler (priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
 
-        if (entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
+        if (Misc.isNPCEntity(entity)) {
+            return;
+        }
 
         entity.setFireTicks(0);
         BleedTimer.remove(entity);
         Archery.arrowRetrievalCheck(entity);
         mcMMO.placeStore.removeSpawnedMob(entity);
-        mcMMO.placeStore.removeSpawnedPet(entity);
     }
 
     /**
      * Monitor CreatureSpawn events.
      *
-     * @param event The event to monitor
+     * @param event The event to watch
      */
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         SpawnReason reason = event.getSpawnReason();
 
-        if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && !Config.getInstance().getExperienceGainsMobspawnersEnabled()) {
+        if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && Misc.isSpawnerXPEnabled) {
             mcMMO.placeStore.addSpawnedMob(event.getEntity());
         }
     }
 
     /**
-     * Monitor ExplosionPrime events.
+     * Handle ExplosionPrime events that involve modifying the event.
      *
-     * @param event The event to monitor
+     * @param event The event to modify
      */
     @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         Entity entity = event.getEntity();
-
-        if (entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (entity instanceof TNTPrimed) {
             int id = entity.getEntityId();
@@ -249,25 +254,23 @@ public class EntityListener implements Listener {
     }
 
     /**
-     * Monitor EntityExplode events.
+     * Handle EntityExplode events that involve modifying the event.
      *
-     * @param event The event to monitor
+     * @param event The event to modify
      */
     @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEnitityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
-
-        if (entity == null) return;
-
-        if (entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (entity instanceof TNTPrimed) {
             int id = entity.getEntityId();
 
             if (plugin.tntIsTracked(id)) {
                 Player player = plugin.getTNTPlayer(id);
+
                 MiningManager miningManager = new MiningManager(player);
                 miningManager.blastMiningDropProcessing(event);
+
                 plugin.removeFromTNTTracker(id);
             }
         }
@@ -276,17 +279,20 @@ public class EntityListener implements Listener {
     /**
      * Monitor FoodLevelChange events.
      *
-     * @param event The event to monitor
+     * @param event The event to watch
      */
     @EventHandler (priority = EventPriority.LOW)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        Entity entity = event.getEntity();
 
-            if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-
+        if (entity instanceof Player) {
+            Player player = (Player) entity;
             PlayerProfile profile = Users.getProfile(player);
+
+            if (Misc.isNPCPlayer(player, profile)) {
+                return;
+            }
+
             int currentFoodLevel = player.getFoodLevel();
             int newFoodLevel = event.getFoodLevel();
 
@@ -305,72 +311,69 @@ public class EntityListener implements Listener {
                 int rankChange = 0;
                 boolean fish = false;
                 boolean herb = false;
-                int herbFoodRank1 = advancedConfig.getFarmerDietRankChange();
-                int herbFoodRank2 = advancedConfig.getFarmerDietRankChange() * 2;
-                int herbFoodRankMax = advancedConfig.getFarmerDietRankChange() * 5;
-                int fishFoodRank1 = advancedConfig.getFishermanDietRankChange();
-                int fishFoodRank2 = advancedConfig.getFishermanDietRankChange() * 2;
-                int fishFoodRankMax = advancedConfig.getFishermanDietRankChange() * 5;
+                int fishFoodRank1 = AdvancedConfig.getInstance().getFishermanDietRankChange();
+                int fishFoodRank2 = AdvancedConfig.getInstance().getFishermanDietRankChange() * 2;
+                int fishFoodRankMax = AdvancedConfig.getInstance().getFishermanDietRankChange() * 5;
 
                 switch (food) {
                 case BREAD:
                     /* BREAD RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = herbFoodRank1;
+                    rankChange = Herbalism.farmersDietRankLevel1;
                     break;
 
                 case COOKIE:
                     /* COOKIE RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = herbFoodRank2;
+                    rankChange = Herbalism.farmersDietRankLevel2;
                     break;
 
                 case MELON:
                     /* MELON RESTORES  1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = herbFoodRank2;
+                    rankChange = Herbalism.farmersDietRankLevel2;
                     break;
 
                 case MUSHROOM_SOUP:
                     /* MUSHROOM SOUP RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = herbFoodRank1;
+                    rankChange = Herbalism.farmersDietRankLevel1;
                     break;
 
                 case CARROT_ITEM:
                     /* CARROT RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = herbFoodRank1;
+                    rankChange = Herbalism.farmersDietRankLevel1;
                     break;
 
                 case POTATO_ITEM:
                     /* POTATO RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = herbFoodRank2;
+                    rankChange = Herbalism.farmersDietRankLevel2;
                     break;
 
                 case BAKED_POTATO:
                     /* BAKED POTATO RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = herbFoodRank1;
+                    rankChange = Herbalism.farmersDietRankLevel1;
                     break;
 
                 case POISONOUS_POTATO:
                     /* POISONOUS POTATO RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = herbFoodRank2;
+                    rankChange = Herbalism.farmersDietRankLevel2;
                     break;
 
                 case GOLDEN_CARROT:
                     /* GOLDEN CARROT RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = herbFoodRank1;
+                    rankChange = Herbalism.farmersDietRankLevel1;
                     break;
 
                 case PUMPKIN_PIE:
                     /* PUMPKIN PIE RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
                     herb = true;
-                    rankChange = herbFoodRank1;
+                    rankChange = Herbalism.farmersDietRankLevel1;
                     break;
 
                 case RAW_FISH:
@@ -394,7 +397,7 @@ public class EntityListener implements Listener {
                         return;
                     }
 
-                    for (int i = herbFoodRank1; i <= herbFoodRankMax; i += rankChange) {
+                    for (int i = Herbalism.farmersDietRankLevel1; i <= Herbalism.farmersDietMaxLevel; i += rankChange) {
                         if (herbLevel >= i) {
                             foodChange++;
                         }

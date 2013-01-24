@@ -21,7 +21,7 @@ public class AxeManager extends SkillManager {
      * @param event The event to modify
      */
     public void bonusDamage(EntityDamageByEntityEvent event) {
-        if (Misc.isNPC(player) || !Permissions.axeBonus(player)) {
+        if (Misc.isNPCPlayer(player) || !Permissions.axeBonus(player)) {
             return;
         }
 
@@ -37,7 +37,7 @@ public class AxeManager extends SkillManager {
      * @param event The event to modify
      */
     public void criticalHitCheck(EntityDamageByEntityEvent event) {
-        if (Misc.isNPC(player) || !Permissions.criticalHit(player)) {
+        if (Misc.isNPCPlayer(player) || !Permissions.criticalHit(player)) {
             return;
         }
 
@@ -61,7 +61,7 @@ public class AxeManager extends SkillManager {
      * @param event The event to modify
      */
     public void impact(EntityDamageByEntityEvent event) {
-        if (Misc.isNPC(player) || !Permissions.impact(player)) {
+        if (Misc.isNPCPlayer(player) || !Permissions.impact(player)) {
             return;
         }
 
@@ -85,7 +85,7 @@ public class AxeManager extends SkillManager {
      * @param event The event to process
      */
     public void skullSplitter(EntityDamageByEntityEvent event) {
-        if (Misc.isNPC(player) || !Permissions.skullSplitter(player) || !profile.getAbilityMode(AbilityType.SKULL_SPLIITER)) {
+        if (Misc.isNPCPlayer(player) || !Permissions.skullSplitter(player) || !profile.getAbilityMode(AbilityType.SKULL_SPLIITER)) {
             return;
         }
 

@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.AnimalTamer;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -29,6 +30,7 @@ public class Misc {
 
     public static int toolDurabilityLoss = Config.getInstance().getAbilityToolDamage();
     public static int abilityLengthIncreaseLevel = AdvancedConfig.getInstance().getAbilityLength();
+    public static boolean isSpawnerXPEnabled = Config.getInstance().getExperienceGainsMobspawnersEnabled();
 
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final int TIME_CONVERSION_FACTOR = 1000;
@@ -82,7 +84,15 @@ public class Misc {
         return false;
     }
 
-    public static boolean isNPC(Player player) {
+    public static boolean isNPCEntity(Entity entity) {
+        if (entity == null || entity.hasMetadata("NPC")) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isNPCPlayer(Player player) {
         if (player == null || Users.getProfile(player) == null || player.hasMetadata("NPC")) {
             return true;
         }
@@ -90,7 +100,7 @@ public class Misc {
         return false;
     }
 
-    public static boolean isNPC(Player player, PlayerProfile profile) {
+    public static boolean isNPCPlayer(Player player, PlayerProfile profile) {
         if (player == null || profile == null || player.hasMetadata("NPC")) {
             return true;
         }

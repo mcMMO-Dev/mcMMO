@@ -37,7 +37,7 @@ public class HerbalismCommand extends SkillCommand {
         greenTerraLengthEndurance = greenTerraStrings[1];
 
         //FARMERS DIET
-        farmersDietRank = calculateRank(Herbalism.farmersDietMaxLevel, Herbalism.farmersDietRankChangeLevel);
+        farmersDietRank = calculateRank(Herbalism.farmersDietMaxLevel, Herbalism.farmersDietRankLevel1);
 
         //GREEN THUMB
         greenThumbStage = calculateRank(Herbalism.greenThumbStageMaxLevel, Herbalism.greenThumbStageMaxLevel);

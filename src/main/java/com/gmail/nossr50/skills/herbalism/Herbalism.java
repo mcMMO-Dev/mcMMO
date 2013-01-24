@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.material.MaterialData;
@@ -28,8 +29,9 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Herbalism {
-    public static int farmersDietRankChangeLevel = AdvancedConfig.getInstance().getFarmerDietRankChange();
-    public static int farmersDietMaxLevel = farmersDietRankChangeLevel * 5;
+    public static int farmersDietRankLevel1 = AdvancedConfig.getInstance().getFarmerDietRankChange();
+    public static int farmersDietRankLevel2 = farmersDietRankLevel1 * 2;
+    public static int farmersDietMaxLevel = farmersDietRankLevel1 * 5;
 
     public static int greenThumbStageChangeLevel = AdvancedConfig.getInstance().getGreenThumbStageChange();
     public static int greenThumbStageMaxLevel = greenThumbStageChangeLevel * 4;
@@ -43,6 +45,14 @@ public class Herbalism {
 
     public static double hylianLuckMaxChance = AdvancedConfig.getInstance().getHylianLuckChanceMax();
     public static int hylianLuckMaxLevel = AdvancedConfig.getInstance().getHylianLucksMaxLevel();
+
+    public static void farmersDiet(Player player, int rankChange, FoodLevelChangeEvent event) {
+        if (!Permissions.farmersDiet(player)) {
+            return;
+        }
+
+        Skills.handleFoodSkills(player, SkillType.HERBALISM, event, farmersDietRankLevel1, farmersDietMaxLevel, rankChange);
+    }
 
     /**
      * Activate the Green Terra ability.

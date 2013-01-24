@@ -20,7 +20,7 @@ public class ArcheryManager extends SkillManager {
      * @param livingEntity Entity damaged by the arrow
      */
     public void trackArrows(LivingEntity livingEntity) {
-        if (Misc.isNPC(player) || !Permissions.trackArrows(player)) {
+        if (Misc.isNPCPlayer(player) || !Permissions.trackArrows(player)) {
             return;
         }
 
@@ -40,7 +40,7 @@ public class ArcheryManager extends SkillManager {
      * @param event The event to modify
      */
     public void dazeCheck(Player defender, EntityDamageEvent event) {
-        if (Misc.isNPC(player) || !Permissions.daze(player)) {
+        if (Misc.isNPCPlayer(player) || !Permissions.daze(player)) {
             return;
         }
 
@@ -60,7 +60,7 @@ public class ArcheryManager extends SkillManager {
      * @param event The event to modify.
      */
     public void skillShot(EntityDamageEvent event) {
-        if (Misc.isNPC(player) || !Permissions.archeryBonus(player)) {
+        if (Misc.isNPCPlayer(player) || !Permissions.archeryBonus(player)) {
             return;
         }
 

@@ -65,7 +65,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public void serratedStrikes(LivingEntity target, int damage) {
-        if (Misc.isNPC(player) || !Permissions.serratedStrikes(player) || !profile.getAbilityMode(AbilityType.SERRATED_STRIKES)) {
+        if (Misc.isNPCPlayer(player) || !Permissions.serratedStrikes(player) || !profile.getAbilityMode(AbilityType.SERRATED_STRIKES)) {
             return;
         }
 

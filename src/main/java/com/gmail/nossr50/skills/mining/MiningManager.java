@@ -58,7 +58,7 @@ public class MiningManager extends SkillManager{
      * @param event Event whose explosion is being processed
      */
     public void blastMiningDropProcessing(EntityExplodeEvent event) {
-        if (Misc.isNPC(player)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 
@@ -83,7 +83,7 @@ public class MiningManager extends SkillManager{
      * @param event Event whose explosion damage is being reduced
      */
     public void demolitionsExpertise(EntityDamageEvent event) {
-        if (Misc.isNPC(player)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 
@@ -100,7 +100,7 @@ public class MiningManager extends SkillManager{
      * @param event Event whose explosion radius is being changed
      */
     public void biggerBombs(ExplosionPrimeEvent event) {
-        if (Misc.isNPC(player)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 

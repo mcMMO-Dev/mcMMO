@@ -103,7 +103,7 @@ public class BlockListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPC(player)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 
@@ -229,7 +229,7 @@ public class BlockListener implements Listener {
         Block block = event.getBlock();
         ItemStack inHand = player.getItemInHand();
 
-        if (Misc.isNPC(player)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 

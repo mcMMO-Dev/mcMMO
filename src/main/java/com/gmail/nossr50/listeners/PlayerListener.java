@@ -59,7 +59,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         PlayerProfile profile = Users.getProfile(player);
 
-        if (Misc.isNPC(player, profile)) {
+        if (Misc.isNPCPlayer(player, profile)) {
             return;
         }
 
@@ -83,7 +83,7 @@ public class PlayerListener implements Listener {
     public void onPlayerFish(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPC(player)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 
@@ -131,7 +131,7 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPC(player)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 
@@ -148,7 +148,7 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPC(player)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 
@@ -179,7 +179,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         PlayerProfile profile = Users.getProfile(player);
 
-        if (Misc.isNPC(player, profile)) {
+        if (Misc.isNPCPlayer(player, profile)) {
             return;
         }
 
@@ -189,18 +189,18 @@ public class PlayerListener implements Listener {
     /**
      * Handle PlayerInteract events that involve modifying the event.
      *
-     * @param event The event to watch
+     * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteractLowest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPC(player)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 
         Block block = event.getClickedBlock();
-        ItemStack heldItem = event.getItem();
+        ItemStack heldItem = player.getItemInHand();
 
         switch (event.getAction()) {
         case RIGHT_CLICK_BLOCK:
@@ -252,12 +252,12 @@ public class PlayerListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPC(player)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 
         Block block = event.getClickedBlock();
-        ItemStack heldItem = event.getItem();
+        ItemStack heldItem = player.getItemInHand();
 
         switch (event.getAction()) {
         case RIGHT_CLICK_BLOCK:
@@ -339,7 +339,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         PlayerProfile profile = Users.getProfile(player);
 
-        if (Misc.isNPC(player, profile)) {
+        if (Misc.isNPCPlayer(player, profile)) {
             return;
         }
 
