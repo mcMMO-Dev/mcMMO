@@ -476,6 +476,7 @@ public class Database {
         if (checkConnected()) {
             try {
                 for (SkillType skillType: SkillType.values()) {
+                    if (skillType.isChildSkill()) continue;
                     String sql;
                     if(skillType != SkillType.ALL) {
                         sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillType.name().toLowerCase() + " > 0 AND " + skillType.name().toLowerCase() + " > (SELECT " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "')";

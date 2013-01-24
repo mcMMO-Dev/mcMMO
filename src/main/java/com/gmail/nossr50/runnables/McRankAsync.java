@@ -31,6 +31,7 @@ public class McRankAsync implements Runnable {
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", new Object[] {playerName}));
                 for (SkillType skillType : SkillType.values()) {
+                    if (skillType.isChildSkill()) continue;
                     if (skillType.equals(SkillType.ALL))
                         continue; // We want the overall ranking to be at the bottom
 

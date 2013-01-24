@@ -40,6 +40,7 @@ public class McMMOPlayer {
         int powerLevel = 0;
 
         for (SkillType type : SkillType.values()) {
+            if (type.isChildSkill()) continue;
             if (type.getPermissions(player)) {
                 powerLevel += profile.getSkillLevel(type);
             }
