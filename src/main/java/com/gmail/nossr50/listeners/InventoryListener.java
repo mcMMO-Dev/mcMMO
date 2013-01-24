@@ -81,7 +81,7 @@ public class InventoryListener implements Listener{
         Block furnaceBlock = event.getBlock();
         FurnaceInventory inventory = ((Furnace)furnaceBlock.getState()).getInventory();
 
-        if (plugin.furnaceIsTracked(furnaceBlock) && ItemChecks.isSmeltable(inventory.getSmelting())) {
+        if (plugin.furnaceIsTracked(furnaceBlock) && inventory.getSmelting() != null && ItemChecks.isSmeltable(inventory.getSmelting())) {
             SmeltingManager smeltingManager = new SmeltingManager(plugin.getFurnacePlayer(furnaceBlock));
             smeltingManager.vanillaXPBoost(event);
         }
