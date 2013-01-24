@@ -178,6 +178,10 @@ public class Skills {
 
         if (ability.getPermissions(player)) {
             if (profile.getAbilityMode(ability) && (profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR) <= curTime) {
+                if (ability == AbilityType.BERSERK) {
+                    player.setCanPickupItems(true);
+                }
+
                 profile.setAbilityMode(ability, false);
                 profile.setAbilityInformed(ability, false);
                 player.sendMessage(ability.getAbilityOff());
@@ -442,6 +446,9 @@ public class Skills {
 
             profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
             profile.setAbilityMode(ability, true);
+            if (ability == AbilityType.BERSERK) {
+                player.setCanPickupItems(false);
+            }
         }
     }
 

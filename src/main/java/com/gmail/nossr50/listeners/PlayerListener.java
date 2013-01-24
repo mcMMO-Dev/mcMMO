@@ -42,6 +42,7 @@ import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Item;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
@@ -62,26 +63,20 @@ public class PlayerListener implements Listener {
     public void onPlayerWorldChangeEvent(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
 
-        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-
-        PlayerProfile profile = Users.getProfile(player);
-
-        if (profile == null) {
+        if (Misc.isNPC(player)) {
             return;
         }
 
-        if (profile.getGodMode()) {
-            if (!Permissions.mcgod(player)) {
-                profile.toggleGodMode();
-                player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));
-            }
+        PlayerProfile profile = Users.getProfile(player);
+
+        if (profile.getGodMode() && !Permissions.mcgod(player)) {
+            profile.toggleGodMode();
+            player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));
         }
 
-        if (profile.inParty()) {
-            if (!Permissions.party(player)) {
-                profile.removeParty();
-                player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
-            }
+        if (profile.inParty() && !Permissions.party(player)) {
+            profile.removeParty();
+            player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
         }
     }
 
@@ -119,27 +114,6 @@ public class PlayerListener implements Listener {
             default:
                 break;
             }
-        }
-    }
-
-    /**
-     * Monitor PlaterPickupItem events.
-     *
-     * @param event The event to watch
-     */
-    @EventHandler(ignoreCancelled = true)
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-
-        if (event.getPlayer().hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-
-        PlayerProfile profile = Users.getProfile(event.getPlayer());
-
-        if (profile == null) {
-            return;
-        }
-
-        if (profile.getAbilityMode(AbilityType.BERSERK)) {
-            event.setCancelled(true);
         }
     }
 
