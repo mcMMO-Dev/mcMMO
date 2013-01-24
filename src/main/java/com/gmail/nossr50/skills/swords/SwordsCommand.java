@@ -64,11 +64,11 @@ public class SwordsCommand extends SkillCommand {
         luckyEffectsDisplay();
 
         if (canCounter) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.0"), LocaleLoader.getString("Swords.Effect.1", new Object[] {percent.format(100.D / Swords.counterAttackModifier)} ) }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.0"), LocaleLoader.getString("Swords.Effect.1", new Object[] {percent.format(1.0D / Swords.counterAttackModifier)} ) }));
         }
 
         if (canSerratedStrike) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.2"), LocaleLoader.getString("Swords.Effect.3", new Object[] {percent.format(100.0D / Swords.serratedStrikesModifier)}) }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.2"), LocaleLoader.getString("Swords.Effect.3", new Object[] {percent.format(1.0D / Swords.serratedStrikesModifier)}) }));
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.4"), LocaleLoader.getString("Swords.Effect.5", new Object[] {Swords.serratedStrikesBleedTicks}) }));
         }
 
