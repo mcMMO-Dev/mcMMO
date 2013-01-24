@@ -144,11 +144,11 @@ public abstract class Woodcutting {
             }
         }
         else {
-            byte blockData = block.getData();
+            byte itemData = extractLogItemData(block.getData());
             Location location = block.getLocation();
-            ItemStack item = new MaterialData(Material.LOG, Woodcutting.extractLogItemData(block.getData())).toItemStack(1);
+            ItemStack item = new MaterialData(Material.LOG, itemData).toItemStack(1);
 
-            switch (TreeSpecies.getByData(extractLogItemData(blockData))) {
+            switch (TreeSpecies.getByData(itemData)) {
             case GENERIC:
                 if (Config.getInstance().getOakDoubleDropsEnabled()) {
                     Misc.dropItem(location, item);
