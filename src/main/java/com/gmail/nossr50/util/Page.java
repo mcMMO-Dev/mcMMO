@@ -69,13 +69,13 @@ public class Page {
 
                 if (args.length > 1 && Misc.isInt(args[1]) && Misc.getInt(args[1]) <= totalPages) {
                     Page.clearChat(player);
-                    for (String target : Page.grabPageContents(localized+" Guide", address, Misc.getInt(args[1]))) {
+                    for (String target : Page.grabPageContents(localized, address, Misc.getInt(args[1]))) {
                         player.sendMessage(target);
                     }
                 }
                 else if (args.length == 1) {
                     Page.clearChat(player);
-                    for (String target : Page.grabPageContents(localized+" Guide", address, 1)) {
+                    for (String target : Page.grabPageContents(localized, address, 1)) {
                         player.sendMessage(target);
                     }
                 }
