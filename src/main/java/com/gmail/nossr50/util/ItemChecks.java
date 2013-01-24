@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -485,6 +486,28 @@ public class ItemChecks {
         case REDSTONE_ORE:
         case EMERALD_ORE:
             return true;
+
+        default:
+            return false;
+        }
+    }
+
+    public static boolean isSmelted(ItemStack itemStack) {
+        switch (itemStack.getType()) {
+        case COAL:
+        case DIAMOND:
+        case REDSTONE:
+        case GOLD_INGOT:
+        case IRON_INGOT:
+        case EMERALD:
+            return true;
+
+        case INK_SACK:
+            if (itemStack.getData().getData() == DyeColor.BLUE.getDyeData()) {
+                return true;
+            }
+
+            return false;
 
         default:
             return false;

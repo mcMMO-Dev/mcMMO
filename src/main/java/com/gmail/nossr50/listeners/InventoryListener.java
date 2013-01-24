@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.FurnaceInventory;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
@@ -58,8 +59,9 @@ public class InventoryListener implements Listener{
     public void onFurnaceBurnEvent(FurnaceBurnEvent event) {
         Block furnaceBlock = event.getBlock();
         FurnaceInventory inventory = ((Furnace)furnaceBlock.getState()).getInventory();
+        ItemStack smelting = inventory.getSmelting();
 
-        if (plugin.furnaceIsTracked(furnaceBlock) && ItemChecks.isSmeltable(inventory.getSmelting())) {
+        if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemChecks.isSmeltable(smelting)) {
             SmeltingManager smeltingManager = new SmeltingManager(plugin.getFurnacePlayer(furnaceBlock));
             smeltingManager.fuelEfficiency(event);
         }
@@ -69,8 +71,9 @@ public class InventoryListener implements Listener{
     public void onFurnaceSmeltEvent(FurnaceSmeltEvent event) {
         Block furnaceBlock = event.getBlock();
         FurnaceInventory inventory = ((Furnace)furnaceBlock.getState()).getInventory();
+        ItemStack smelting = inventory.getSmelting();
 
-        if (plugin.furnaceIsTracked(furnaceBlock) && ItemChecks.isSmeltable(inventory.getSmelting())) {
+        if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemChecks.isSmeltable(smelting)) {
             SmeltingManager smeltingManager = new SmeltingManager(plugin.getFurnacePlayer(furnaceBlock));
             smeltingManager.smeltProcessing(event);
         }
@@ -80,8 +83,9 @@ public class InventoryListener implements Listener{
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
         Block furnaceBlock = event.getBlock();
         FurnaceInventory inventory = ((Furnace)furnaceBlock.getState()).getInventory();
+        ItemStack result = inventory.getResult();
 
-        if (plugin.furnaceIsTracked(furnaceBlock) && inventory.getSmelting() != null && ItemChecks.isSmeltable(inventory.getSmelting())) {
+        if (plugin.furnaceIsTracked(furnaceBlock) && result != null && ItemChecks.isSmelted(result)) {
             SmeltingManager smeltingManager = new SmeltingManager(plugin.getFurnacePlayer(furnaceBlock));
             smeltingManager.vanillaXPBoost(event);
         }
