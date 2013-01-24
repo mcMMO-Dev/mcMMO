@@ -2,6 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -72,8 +73,12 @@ public class InventoryListener implements Listener{
         ItemStack smelting = inventory.getSmelting();
 
         if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemChecks.isSmeltable(smelting)) {
-            SmeltingManager smeltingManager = new SmeltingManager(plugin.getFurnacePlayer(furnaceBlock));
-            smeltingManager.fuelEfficiency(event);
+            Player player = plugin.getFurnacePlayer(furnaceBlock);
+
+            if (player != null) {
+                SmeltingManager smeltingManager = new SmeltingManager(player);
+                smeltingManager.fuelEfficiency(event);
+            }
         }
     }
 
@@ -84,8 +89,12 @@ public class InventoryListener implements Listener{
         ItemStack smelting = inventory.getSmelting();
 
         if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemChecks.isSmeltable(smelting)) {
-            SmeltingManager smeltingManager = new SmeltingManager(plugin.getFurnacePlayer(furnaceBlock));
-            smeltingManager.smeltProcessing(event);
+            Player player = plugin.getFurnacePlayer(furnaceBlock);
+
+            if (player != null) {
+                SmeltingManager smeltingManager = new SmeltingManager(player);
+                smeltingManager.smeltProcessing(event);
+            }
         }
     }
 
