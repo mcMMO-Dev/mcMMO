@@ -58,6 +58,9 @@ public class McrankCommand implements CommandExecutor {
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", new Object[] {playerName}));
         for (SkillType skillType : SkillType.values()) {
             int[] rankInts = Leaderboard.getPlayerRank(playerName, skillType);
+            if (skillType.isChildSkill()) {
+                continue;
+            }
 
             if (skillType.equals(SkillType.ALL)) {
                 continue; // We want the overall ranking to be at the bottom

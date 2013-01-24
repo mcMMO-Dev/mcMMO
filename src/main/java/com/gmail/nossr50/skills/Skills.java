@@ -256,7 +256,7 @@ public class Skills {
     public static void xpCheckAll(Player player, PlayerProfile profile) {
         for (SkillType skillType : SkillType.values()) {
             //Don't want to do anything with this one
-            if (skillType == SkillType.ALL) {
+            if (skillType == SkillType.ALL || skillType.isChildSkill()) {
                 continue;
             }
 

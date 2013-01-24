@@ -136,7 +136,7 @@ public class SpoutStuff {
 
         //Standard XP Icons
         for (SkillType y : SkillType.values()) {
-            if (y.equals(SkillType.ALL)) {
+            if (y.equals(SkillType.ALL) || y.isChildSkill()) {
                 continue;
             }
 
@@ -197,7 +197,7 @@ public class SpoutStuff {
 
         /* Standard XP Icons */
         for (SkillType y : SkillType.values()) {
-            if (y.equals(SkillType.ALL)) {
+            if (y.equals(SkillType.ALL) || y.isChildSkill()) {
                 continue;
             }
 

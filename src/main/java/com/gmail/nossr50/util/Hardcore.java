@@ -20,7 +20,7 @@ public abstract class Hardcore {
         int totalLost = 0;
 
         for (SkillType skillType : SkillType.values()) {
-            if (skillType.equals(SkillType.ALL)) {
+            if (skillType.equals(SkillType.ALL) || skillType.isChildSkill()) {
                 continue;
             }
 
@@ -52,7 +52,7 @@ public abstract class Hardcore {
         int totalStolen = 0;
 
         for (SkillType skillType : SkillType.values()) {
-            if (skillType.equals(SkillType.ALL)) {
+            if (skillType.equals(SkillType.ALL) || skillType.isChildSkill()) {
                 continue;
             }
 

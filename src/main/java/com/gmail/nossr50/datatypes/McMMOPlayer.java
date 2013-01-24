@@ -85,7 +85,7 @@ public class McMMOPlayer {
     public void addXPOverride(SkillType skillType, int xp) {
         if (skillType.equals(SkillType.ALL)) {
             for (SkillType type : SkillType.values()) {
-                if (type.equals(SkillType.ALL)) {
+                if (type.equals(SkillType.ALL) || type.isChildSkill()) {
                     continue;
                 }
 

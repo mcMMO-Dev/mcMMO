@@ -70,7 +70,7 @@ public class PlayerProfile {
         }
 
         for (SkillType skillType : SkillType.values()) {
-            if (skillType != SkillType.ALL) {
+            if (skillType != SkillType.ALL && !skillType.isChildSkill()) {
                 skills.put(skillType, 0);
                 skillsXp.put(skillType, 0);
             }
@@ -945,6 +945,10 @@ public class PlayerProfile {
 
     public void resetSkill(SkillType skillType)
     {
+        if (skillType.isChildSkill()) {
+            return;
+        }
+
         //do a single skilltype
         if (skillType != SkillType.ALL)
             skills.put(skillType, 0);
@@ -1060,6 +1064,10 @@ public class PlayerProfile {
      * @param xp Amount of xp to remove
      */
     public void removeXP(SkillType skillType, int xp) {
+        if (skillType.isChildSkill()) {
+            return;
+        }
+
         if (skillType.equals(SkillType.ALL)) {
             for (SkillType skill : SkillType.values()) {
                 if (skill.equals(SkillType.ALL)) {
@@ -1082,6 +1090,10 @@ public class PlayerProfile {
      * @param newValue New level value for the skill
      */
     public void modifySkill(SkillType skillType, int newValue) {
+        if (skillType.isChildSkill()) {
+            return;
+        }
+
         if (skillType.equals(SkillType.ALL)) {
             for (SkillType skill : SkillType.values()) {
                 if (skill.equals(SkillType.ALL)) {
@@ -1106,6 +1118,10 @@ public class PlayerProfile {
      * @param levels Number of levels to add
      */
     public void addLevels(SkillType skillType, int levels) {
+        if (skillType.isChildSkill()) {
+            return;
+        }
+
         if (skillType.equals(SkillType.ALL)) {
             for (SkillType skill : SkillType.values()) {
                 if (skill.equals(SkillType.ALL)) {
