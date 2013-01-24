@@ -32,6 +32,11 @@ public class InventoryListener implements Listener{
         if (inventoryType == InventoryType.FURNACE) {
             FurnaceInventory inventory = (FurnaceInventory) event.getInventory();
             Furnace furnace = inventory.getHolder();
+
+            if (furnace == null) {
+                return;
+            }
+
             Block furnaceBlock = furnace.getBlock();
 
             if (furnace.getBurnTime() == 0 && !plugin.furnaceIsTracked(furnaceBlock)) {
@@ -47,6 +52,11 @@ public class InventoryListener implements Listener{
         if (inventoryType == InventoryType.FURNACE) {
             FurnaceInventory inventory = (FurnaceInventory) event.getInventory();
             Furnace furnace = inventory.getHolder();
+
+            if (furnace == null) {
+                return;
+            }
+
             Block furnaceBlock = furnace.getBlock();
 
             if (furnace.getBurnTime() == 0 && plugin.furnaceIsTracked(furnaceBlock)) {
