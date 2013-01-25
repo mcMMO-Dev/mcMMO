@@ -84,10 +84,9 @@ public class UnarmedManager extends SkillManager {
 
         IronGripEventHandler eventHandler = new IronGripEventHandler(this, defender);
 
-        float chance = (float) ((Unarmed.ironGripMaxChance / Unarmed.ironGripMaxBonusLevel) * skillLevel);
-        if (chance > Unarmed.ironGripMaxChance) chance = (float) Unarmed.ironGripMaxChance;
+        double chance = (Unarmed.ironGripMaxChance / Unarmed.ironGripMaxBonusLevel) * eventHandler.skillModifier;
 
-        if (chance > Misc.getRandom().nextInt(activationChance)) {
+        if (chance > Misc.getRandom().nextInt(Misc.calculateActivationChance(Permissions.luckyUnarmed(defender)))) {
             eventHandler.sendAbilityMessages();
             return true;
         }
