@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
@@ -136,10 +137,11 @@ public abstract class TreeFeller {
 
         if (inHandMaterial != Material.AIR) {
             short durabilityLoss = 0;
+            int unbreakingLevel = inHand.getEnchantmentLevel(Enchantment.DURABILITY);
 
             for (Block block : treeFellerBlocks) {
-                if (BlockChecks.isLog(block)) {
-                    durabilityLoss += Misc.toolDurabilityLoss;
+                if (BlockChecks.isLog(block) && Misc.getRandom().nextInt(unbreakingLevel + 1) == 0) {
+                     durabilityLoss += Misc.toolDurabilityLoss;
                 }
             }
 
