@@ -2,14 +2,11 @@ package com.gmail.nossr50.skills.axes;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.gmail.nossr50.skills.AbilityType;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 
 public class AxeManager extends SkillManager {
     public AxeManager(Player player) {
@@ -22,10 +19,6 @@ public class AxeManager extends SkillManager {
      * @param event The event to modify
      */
     public void bonusDamage(EntityDamageByEntityEvent event) {
-        if (!Permissions.axeBonus(player)) {
-            return;
-        }
-
         AxeBonusDamageEventHandler eventHandler = new AxeBonusDamageEventHandler(this, event);
 
         eventHandler.calculateDamageBonus();
@@ -38,10 +31,6 @@ public class AxeManager extends SkillManager {
      * @param event The event to modify
      */
     public void criticalHitCheck(EntityDamageByEntityEvent event, LivingEntity target) {
-        if (target.isDead() || (target instanceof Tameable && Misc.isFriendlyPet(player, (Tameable) target)) || !Permissions.criticalHit(player)) {
-            return;
-        }
-
         CriticalHitEventHandler eventHandler = new CriticalHitEventHandler(this, event, target);
 
         double chance = (Axes.criticalHitMaxChance / Axes.criticalHitMaxBonusLevel) * eventHandler.skillModifier;
@@ -58,10 +47,6 @@ public class AxeManager extends SkillManager {
      * @param event The event to modify
      */
     public void impact(EntityDamageByEntityEvent event, LivingEntity target) {
-        if (target.isDead() || !Permissions.impact(player)) {
-            return;
-        }
-
         ImpactEventHandler eventHandler = new ImpactEventHandler(this, event, target);
 
         if (Misc.hasArmor(target)) {
@@ -78,10 +63,6 @@ public class AxeManager extends SkillManager {
      * @param event The event to process
      */
     public void skullSplitter(LivingEntity target, int damage) {
-        if (target.isDead() || !profile.getAbilityMode(AbilityType.SKULL_SPLIITER) || !Permissions.skullSplitter(player)) {
-            return;
-        }
-
         SkullSplitterEventHandler eventHandler = new SkullSplitterEventHandler(player, damage, target);
         eventHandler.applyAbilityEffects();
     }

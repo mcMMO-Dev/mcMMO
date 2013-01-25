@@ -6,7 +6,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 
 public class AcrobaticsManager extends SkillManager {
     public AcrobaticsManager (Player player) {
@@ -46,10 +45,6 @@ public class AcrobaticsManager extends SkillManager {
      * @param event The event to check
      */
     public void dodgeCheck(EntityDamageEvent event) {
-        if (Misc.isNPCPlayer(player) || !Permissions.dodge(player)) {
-            return;
-        }
-
         DodgeEventHandler eventHandler = new DodgeEventHandler(this, event);
 
         double chance = (Acrobatics.dodgeMaxChance / Acrobatics.dodgeMaxBonusLevel) * eventHandler.skillModifier;

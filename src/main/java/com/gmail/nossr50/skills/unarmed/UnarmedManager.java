@@ -4,7 +4,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.gmail.nossr50.skills.AbilityType;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
@@ -21,10 +20,6 @@ public class UnarmedManager extends SkillManager {
      * @param defender The defending player
      */
     public void disarmCheck(LivingEntity defender) {
-        if (!(defender instanceof Player) || !Permissions.disarm(player)) {
-            return;
-        }
-
         Player defendingPlayer = (Player) defender;
         DisarmEventHandler eventHandler = new DisarmEventHandler(this, defendingPlayer);
 
@@ -49,10 +44,6 @@ public class UnarmedManager extends SkillManager {
      * @param event The event to modify
      */
     public void deflectCheck(EntityDamageEvent event) {
-        if (!Permissions.deflect(player)) {
-            return;
-        }
-
         DeflectEventHandler eventHandler = new DeflectEventHandler(this, event);
 
         float chance = (float) ((Unarmed.deflectMaxChance / Unarmed.deflectMaxBonusLevel) * skillLevel);
@@ -65,9 +56,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public void berserkDamage(EntityDamageEvent event) {
-        if (!profile.getAbilityMode(AbilityType.BERSERK) || !Permissions.berserk(player)) {
-            event.setDamage((int) (event.getDamage() * Unarmed.berserkDamageModifier));
-        }
+        event.setDamage((int) (event.getDamage() * Unarmed.berserkDamageModifier));
     }
 
     /**
@@ -76,10 +65,6 @@ public class UnarmedManager extends SkillManager {
      * @param event The event to modify.
      */
     public void bonusDamage(EntityDamageEvent event) {
-        if (!Permissions.unarmedBonus(player)) {
-            return;
-        }
-
         UnarmedBonusDamageEventHandler eventHandler = new UnarmedBonusDamageEventHandler(this, event);
 
         eventHandler.calculateDamageBonus();

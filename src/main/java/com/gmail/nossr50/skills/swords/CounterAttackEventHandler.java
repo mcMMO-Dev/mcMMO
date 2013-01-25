@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.Combat;
-import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 
 public class CounterAttackEventHandler {
@@ -21,13 +20,6 @@ public class CounterAttackEventHandler {
         this.player = manager.getPlayer();
         this.attacker = attacker;
         this.damage = damage;
-    }
-
-    protected boolean isHoldingSword() {
-        if (player == null)
-            return false;
-
-        return ItemChecks.isSword(player.getItemInHand());
     }
 
     protected void calculateSkillModifier() {

@@ -56,12 +56,10 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, int damage) {
-        if (skillLevel >= Taming.fastFoodServiceUnlockLevel && Permissions.fastFoodService(player)) {
-            if (Misc.getRandom().nextInt(activationChance) < Taming.fastFoodServiceActivationChance) {
-                FastFoodServiceEventHandler eventHandler = new FastFoodServiceEventHandler(wolf);
+        if (Misc.getRandom().nextInt(activationChance) < Taming.fastFoodServiceActivationChance) {
+            FastFoodServiceEventHandler eventHandler = new FastFoodServiceEventHandler(wolf);
 
-                eventHandler.modifyHealth(damage);
-            }
+            eventHandler.modifyHealth(damage);
         }
     }
 
@@ -71,11 +69,8 @@ public class TamingManager extends SkillManager {
      * @param event The event to modify
      */
     public void sharpenedClaws(EntityDamageEvent event) {
-        if (skillLevel >= Taming.sharpenedClawsUnlockLevel && Permissions.sharpenedClaws(player)) {
-            SharpenedClawsEventHandler eventHandler = new SharpenedClawsEventHandler(event);
-
-            eventHandler.modifyEventDamage();
-        }
+        SharpenedClawsEventHandler eventHandler = new SharpenedClawsEventHandler(event);
+        eventHandler.modifyEventDamage();
     }
 
     /**
@@ -84,10 +79,6 @@ public class TamingManager extends SkillManager {
      * @param event The event to modify
      */
     public void gore(EntityDamageEvent event) {
-        if (!Permissions.gore(player)) {
-            return;
-        }
-
         GoreEventHandler eventHandler = new GoreEventHandler(this, event);
 
         float chance = (float) ((Taming.goreMaxChance / Taming.goreMaxBonusLevel) * skillLevel);
@@ -153,10 +144,6 @@ public class TamingManager extends SkillManager {
      * @param livingEntity The entity to examine
      */
     public void beastLore(LivingEntity livingEntity) {
-        if (!Permissions.beastLore(player)) {
-            return;
-        }
-
         BeastLoreEventHandler eventHandler = new BeastLoreEventHandler(player, livingEntity);
         eventHandler.sendInspectMessage();
     }

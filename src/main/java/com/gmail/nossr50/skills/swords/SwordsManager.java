@@ -3,12 +3,9 @@ package com.gmail.nossr50.skills.swords;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.skills.AbilityType;
-import com.gmail.nossr50.skills.Combat;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 
 public class SwordsManager extends SkillManager {
     public SwordsManager (Player player) {
@@ -21,50 +18,32 @@ public class SwordsManager extends SkillManager {
      * @param defender The defending entity
      */
     public void bleedCheck(LivingEntity defender) {
-        if (!Permissions.swordsBleed(player)) {
-            return;
-        }
+        BleedEventHandler eventHandler = new BleedEventHandler(this, defender);
 
-        if (Combat.shouldBeAffected(player, defender)) {
-            BleedEventHandler eventHandler = new BleedEventHandler(this, defender);
+        float chance = (float) ((Swords.bleedMaxChance / Swords.bleedMaxBonusLevel) * skillLevel);
+        if (chance > Swords.bleedMaxChance) chance = (float) Swords.bleedMaxChance;
 
-            float chance = (float) ((Swords.bleedMaxChance / Swords.bleedMaxBonusLevel) * skillLevel);
-            if (chance > Swords.bleedMaxChance) chance = (float) Swords.bleedMaxChance;
-
-            if (chance > Misc.getRandom().nextInt(activationChance)) {
-                eventHandler.addBleedTicks();
-                eventHandler.sendAbilityMessages();
-            }
+        if (chance > Misc.getRandom().nextInt(activationChance)) {
+            eventHandler.addBleedTicks();
+            eventHandler.sendAbilityMessages();
         }
     }
 
     public void counterAttackChecks(LivingEntity attacker, int damage) {
-        if (!Permissions.counterAttack(player)) {
-            return;
-        }
-
         CounterAttackEventHandler eventHandler = new CounterAttackEventHandler(this, attacker, damage);
+        eventHandler.calculateSkillModifier();
 
-        if (eventHandler.isHoldingSword()) {
-            eventHandler.calculateSkillModifier();
+        float chance = (float) ((Swords.counterAttackMaxChance / Swords.counterAttackMaxBonusLevel) * skillLevel);
+        if (chance > Swords.counterAttackMaxChance) chance = (float) Swords.counterAttackMaxChance;
 
-            float chance = (float) ((Swords.counterAttackMaxChance / Swords.counterAttackMaxBonusLevel) * skillLevel);
-            if (chance > Swords.counterAttackMaxChance) chance = (float) Swords.counterAttackMaxChance;
-
-            if (chance > Misc.getRandom().nextInt(activationChance)) {
-                eventHandler.dealDamage();
-                eventHandler.sendAbilityMessages();
-            }
+        if (chance > Misc.getRandom().nextInt(activationChance)) {
+            eventHandler.dealDamage();
+            eventHandler.sendAbilityMessages();
         }
     }
 
     public void serratedStrikes(LivingEntity target, int damage) {
-        if (!profile.getAbilityMode(AbilityType.SERRATED_STRIKES) || !Permissions.serratedStrikes(player)) {
-            return;
-        }
-
         SerratedStrikesEventHandler eventHandler = new SerratedStrikesEventHandler(this, target, damage);
-
         eventHandler.applyAbilityEffects();
     }
 }

@@ -42,6 +42,7 @@ import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Combat {
@@ -76,13 +77,25 @@ public class Combat {
                     return;
                 }
 
-                Skills.abilityCheck(player, SkillType.SWORDS);
+                if (Permissions.swords(player)) {
+                    SwordsManager swordsManager = new SwordsManager(player);
+                    PlayerProfile profile = swordsManager.getProfile();
+                    boolean canSerratedStrike = Permissions.serratedStrikes(player); //So we don't have to check the same permission twice
 
-                SwordsManager swordsManager = new SwordsManager(player);
-                swordsManager.bleedCheck(target);
-                swordsManager.serratedStrikes(target, event.getDamage());
+                    if (profile.getToolPreparationMode(ToolType.SWORD) && canSerratedStrike) {
+                        Skills.abilityCheck(player, SkillType.SWORDS);
+                    }
 
-                startGainXp(player, swordsManager.getProfile(), target, SkillType.SWORDS);
+                    if (Permissions.swordsBleed(player) && shouldBeAffected(player, target)) {
+                        swordsManager.bleedCheck(target);
+                    }
+
+                    if (profile.getAbilityMode(AbilityType.SERRATED_STRIKES) && canSerratedStrike) {
+                        swordsManager.serratedStrikes(target, event.getDamage());
+                    }
+
+                    startGainXp(player, profile, target, SkillType.SWORDS);
+                }
             }
             else if (ItemChecks.isAxe(heldItem)) {
                 if (targetIsPlayer || targetIsTamedPet) {
@@ -94,15 +107,32 @@ public class Combat {
                     return;
                 }
 
-                Skills.abilityCheck(player, SkillType.AXES);
+                if (Permissions.axes(player)) {
+                    AxeManager axeManager = new AxeManager(player);
+                    PlayerProfile profile = axeManager.getProfile();
+                    boolean canSkullSplit = Permissions.skullSplitter(player); //So we don't have to check the same permission twice
+                    if (profile.getToolPreparationMode(ToolType.AXE) && canSkullSplit) {
+                        Skills.abilityCheck(player, SkillType.AXES);
+                    }
 
-                AxeManager axeManager = new AxeManager(player);
-                axeManager.bonusDamage(event);
-                axeManager.criticalHitCheck(event, target);
-                axeManager.impact(event, target);
-                axeManager.skullSplitter(target, event.getDamage());
+                    if (Permissions.axeBonus(player)) {
+                        axeManager.bonusDamage(event);
+                    }
 
-                startGainXp(player, axeManager.getProfile(), target, SkillType.AXES);
+                    if (!target.isDead() && Permissions.criticalHit(player) && shouldBeAffected(player, target)) {
+                        axeManager.criticalHitCheck(event, target);
+                    }
+
+                    if (!target.isDead() && Permissions.impact(player)) {
+                        axeManager.impact(event, target);
+                    }
+
+                    if (!target.isDead() && profile.getAbilityMode(AbilityType.SKULL_SPLIITER) && canSkullSplit) {
+                        axeManager.skullSplitter(target, event.getDamage());
+                    }
+
+                    startGainXp(player, profile, target, SkillType.AXES);
+                }
             }
             else if (heldItemType == Material.AIR) {
                 if (targetIsPlayer || targetIsTamedPet) {
@@ -114,16 +144,31 @@ public class Combat {
                     return;
                 }
 
-                Skills.abilityCheck(player, SkillType.UNARMED);
+                if (Permissions.unarmed(player)) {
+                    UnarmedManager unarmedManager = new UnarmedManager(player);
+                    PlayerProfile profile = unarmedManager.getProfile();
+                    boolean canBerserk = Permissions.berserk(player); //So we don't have to check the same permission twice
 
-                UnarmedManager unarmedManager = new UnarmedManager(player);
-                unarmedManager.bonusDamage(event);
-                unarmedManager.berserkDamage(event);
-                unarmedManager.disarmCheck(target);
+                    if (profile.getToolPreparationMode(ToolType.FISTS) && canBerserk) {
+                        Skills.abilityCheck(player, SkillType.UNARMED);
+                    }
 
-                startGainXp(player, unarmedManager.getProfile(), target, SkillType.UNARMED);
+                    if (Permissions.unarmedBonus(player)) {
+                        unarmedManager.bonusDamage(event);
+                    }
+
+                    if (profile.getAbilityMode(AbilityType.BERSERK) && canBerserk) {
+                        unarmedManager.berserkDamage(event);
+                    }
+
+                    if (target instanceof Player && Permissions.disarm(player)) {
+                        unarmedManager.disarmCheck(target);
+                    }
+
+                    startGainXp(player, unarmedManager.getProfile(), target, SkillType.UNARMED);
+                }
             }
-            else if (heldItemType == Material.BONE && target instanceof Tameable) {
+            else if (heldItemType == Material.BONE && target instanceof Tameable && Permissions.beastLore(player)) {
                 TamingManager tamingManager = new TamingManager(player);
                 tamingManager.beastLore(target);
                 event.setCancelled(true);
@@ -139,6 +184,10 @@ public class Combat {
             if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
                 Player master = (Player) wolf.getOwner();
 
+                if (Misc.isNPCPlayer(master)) {
+                    return;
+                }
+
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!Taming.pvpEnabled) {
                         return;
@@ -148,12 +197,26 @@ public class Combat {
                     return;
                 }
 
-                TamingManager tamingManager = new TamingManager(master);
-                tamingManager.fastFoodService(wolf, event.getDamage());
-                tamingManager.sharpenedClaws(event);
-                tamingManager.gore(event);
+                if (Permissions.taming(master)) {
+                    TamingManager tamingManager = new TamingManager(master);
+                    int skillLevel = tamingManager.getSkillLevel();
 
-                startGainXp(master, tamingManager.getProfile(), target, SkillType.TAMING);
+                    if (skillLevel >= Taming.fastFoodServiceUnlockLevel && Permissions.fastFoodService(master)) {
+                        tamingManager.fastFoodService(wolf, event.getDamage());
+                    }
+
+                    if (skillLevel >= Taming.sharpenedClawsUnlockLevel && Permissions.sharpenedClaws(master)) {
+                        tamingManager.sharpenedClaws(event);
+                    }
+
+                    if (Permissions.gore(master)) {
+                        tamingManager.gore(event);
+                    }
+
+                    if (target != master) {
+                        startGainXp(master, tamingManager.getProfile(), target, SkillType.TAMING);
+                    }
+                }
             }
 
             break;
@@ -161,8 +224,8 @@ public class Combat {
         case ARROW:
             LivingEntity shooter = ((Arrow) damager).getShooter();
 
-            //TODO: Is there a reason we're breaking here instead of returning?
-            if (shooter == null || shooter.getType() != EntityType.PLAYER) {
+            /* Break instead of return due to Dodge/Counter/Deflect abilities */
+            if (shooter == null || !(shooter instanceof Player)) {
                 break;
             }
 
@@ -185,33 +248,37 @@ public class Combat {
         if (targetIsPlayer) {
             Player player = (Player) target;
 
+            if (Misc.isNPCPlayer(player)) {
+                return;
+            }
+
+            ItemStack heldItem = player.getItemInHand();
+
             if (damager instanceof Player) {
-                if (Swords.pvpEnabled) {
+                if (Swords.pvpEnabled && ItemChecks.isSword(heldItem) && Permissions.counterAttack(player)) {
                     SwordsManager swordsManager = new SwordsManager(player);
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 
-                if (Acrobatics.pvpEnabled) {
+                if (Acrobatics.pvpEnabled && Permissions.dodge(player)) {
                     AcrobaticsManager acrobaticsManager = new AcrobaticsManager(player);
                     acrobaticsManager.dodgeCheck(event);
                 }
 
-                if (Unarmed.pvpEnabled && player.getItemInHand().getType() == Material.AIR) {
+                if (Unarmed.pvpEnabled && heldItem.getType() == Material.AIR && Permissions.deflect(player)) {
                     UnarmedManager unarmedManager = new UnarmedManager(player);
                     unarmedManager.deflectCheck(event);
                 }
             }
             else {
-                if (Swords.pveEnabled && damager instanceof LivingEntity) {
+                if (Swords.pveEnabled && damager instanceof LivingEntity && ItemChecks.isSword(heldItem) && Permissions.counterAttack(player)) {
                     SwordsManager swordsManager = new SwordsManager(player);
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 
-                if (Acrobatics.pveEnabled) {
-                    if (!(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled)) {
-                        AcrobaticsManager acrobaticsManager = new AcrobaticsManager(player);
-                        acrobaticsManager.dodgeCheck(event);
-                    }
+                if (Acrobatics.pveEnabled && !(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) && Permissions.dodge(player)) {
+                    AcrobaticsManager acrobaticsManager = new AcrobaticsManager(player);
+                    acrobaticsManager.dodgeCheck(event);
                 }
             }
         }
@@ -224,24 +291,26 @@ public class Combat {
      * @param target The defending entity
      * @param event The event to run the archery checks on.
      */
-    public static void archeryCheck(Player shooter, LivingEntity target, EntityDamageByEntityEvent event) {
+    private static void archeryCheck(Player shooter, LivingEntity target, EntityDamageByEntityEvent event) {
         if (Misc.isNPCPlayer(shooter)) {
             return;
         }
 
-        ArcheryManager archeryManager = new ArcheryManager(shooter);
-        archeryManager.skillShot(event);
+        if (Permissions.archery(shooter)) {
+            ArcheryManager archeryManager = new ArcheryManager(shooter);
+            archeryManager.skillShot(event);
 
-        if (target instanceof Player) {
-            archeryManager.dazeCheck((Player) target, event);
-        }
+            if (target instanceof Player && Permissions.daze(shooter)) {
+                archeryManager.dazeCheck((Player) target, event);
+            }
 
-        if (!(shooter.getItemInHand().containsEnchantment(Enchantment.ARROW_INFINITE))) {
-            archeryManager.trackArrows(target);
-        }
+            if (!(shooter.getItemInHand().containsEnchantment(Enchantment.ARROW_INFINITE)) && Permissions.trackArrows(shooter)) {
+                archeryManager.trackArrows(target);
+            }
 
-        if (target != shooter) {
-            startGainXp(shooter, archeryManager.getProfile(), target, SkillType.ARCHERY);
+            if (target != shooter) {
+                startGainXp(shooter, archeryManager.getProfile(), target, SkillType.ARCHERY);
+            }
         }
     }
 

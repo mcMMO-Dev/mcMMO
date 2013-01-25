@@ -20,10 +20,6 @@ public class ArcheryManager extends SkillManager {
      * @param livingEntity Entity damaged by the arrow
      */
     public void trackArrows(LivingEntity livingEntity) {
-        if (Misc.isNPCPlayer(player) || !Permissions.trackArrows(player)) {
-            return;
-        }
-
         ArrowTrackingEventHandler eventHandler = new ArrowTrackingEventHandler(this, livingEntity);
 
         double chance = (Archery.retrieveMaxChance / Archery.retrieveMaxBonusLevel) * eventHandler.skillModifier;
@@ -40,10 +36,6 @@ public class ArcheryManager extends SkillManager {
      * @param event The event to modify
      */
     public void dazeCheck(Player defender, EntityDamageEvent event) {
-        if (Misc.isNPCPlayer(player) || !Permissions.daze(player)) {
-            return;
-        }
-
         DazeEventHandler eventHandler = new DazeEventHandler(this, event, defender);
 
         double chance = (Archery.dazeMaxBonus / Archery.dazeMaxBonusLevel) * eventHandler.skillModifier;
