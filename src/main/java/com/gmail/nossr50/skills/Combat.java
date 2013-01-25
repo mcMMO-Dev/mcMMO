@@ -52,19 +52,18 @@ public class Combat {
      *
      * @param event The event to run the combat checks on.
      */
-    public static void combatChecks(EntityDamageByEntityEvent event, Entity damager, LivingEntity target) {
+    public static void combatChecks(EntityDamageByEntityEvent event, Entity attacker, LivingEntity target) {
         boolean targetIsPlayer = (target.getType() == EntityType.PLAYER);
         boolean targetIsTamedPet = (target instanceof Tameable) ? ((Tameable) target).isTamed() : false;
 
-        switch (event.getDamager().getType()) {
-        case PLAYER:
-            Player attacker = (Player) event.getDamager();
+        if (attacker instanceof Player) {
+            Player player = (Player) attacker;
 
-            if (Misc.isNPCPlayer(attacker)) {
+            if (Misc.isNPCPlayer(player)) {
                 return;
             }
 
-            ItemStack heldItem = attacker.getItemInHand();
+            ItemStack heldItem = player.getItemInHand();
             Material heldItemType = heldItem.getType();
 
             if (ItemChecks.isSword(heldItem)) {
@@ -77,13 +76,13 @@ public class Combat {
                     return;
                 }
 
-                Skills.abilityCheck(attacker, SkillType.SWORDS);
+                Skills.abilityCheck(player, SkillType.SWORDS);
 
-                SwordsManager swordsManager = new SwordsManager(attacker);
+                SwordsManager swordsManager = new SwordsManager(player);
                 swordsManager.bleedCheck(target);
                 swordsManager.serratedStrikes(target, event.getDamage());
 
-                startGainXp(attacker, swordsManager.getProfile(), target, SkillType.SWORDS);
+                startGainXp(player, swordsManager.getProfile(), target, SkillType.SWORDS);
             }
             else if (ItemChecks.isAxe(heldItem)) {
                 if (targetIsPlayer || targetIsTamedPet) {
@@ -95,15 +94,15 @@ public class Combat {
                     return;
                 }
 
-                Skills.abilityCheck(attacker, SkillType.AXES);
+                Skills.abilityCheck(player, SkillType.AXES);
 
-                AxeManager axeManager = new AxeManager(attacker);
+                AxeManager axeManager = new AxeManager(player);
                 axeManager.bonusDamage(event);
                 axeManager.criticalHitCheck(event, target);
                 axeManager.impact(event, target);
                 axeManager.skullSplitter(target, event.getDamage());
 
-                startGainXp(attacker, axeManager.getProfile(), target, SkillType.AXES);
+                startGainXp(player, axeManager.getProfile(), target, SkillType.AXES);
             }
             else if (heldItemType == Material.AIR) {
                 if (targetIsPlayer || targetIsTamedPet) {
@@ -115,25 +114,27 @@ public class Combat {
                     return;
                 }
 
-                Skills.abilityCheck(attacker, SkillType.UNARMED);
+                Skills.abilityCheck(player, SkillType.UNARMED);
 
-                UnarmedManager unarmedManager = new UnarmedManager(attacker);
+                UnarmedManager unarmedManager = new UnarmedManager(player);
                 unarmedManager.bonusDamage(event);
                 unarmedManager.berserkDamage(event);
                 unarmedManager.disarmCheck(target);
 
-                startGainXp(attacker, unarmedManager.getProfile(), target, SkillType.UNARMED);
+                startGainXp(player, unarmedManager.getProfile(), target, SkillType.UNARMED);
             }
             else if (heldItemType == Material.BONE && target instanceof Tameable) {
-                TamingManager tamingManager = new TamingManager(attacker);
+                TamingManager tamingManager = new TamingManager(player);
                 tamingManager.beastLore(target);
                 event.setCancelled(true);
             }
+        }
 
-            break;
+        Entity damager = event.getDamager();
 
+        switch (damager.getType()) {
         case WOLF:
-            Wolf wolf = (Wolf) event.getDamager();
+            Wolf wolf = (Wolf) damager;
 
             if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
                 Player master = (Player) wolf.getOwner();
@@ -158,7 +159,7 @@ public class Combat {
             break;
 
         case ARROW:
-            LivingEntity shooter = ((Arrow) event.getDamager()).getShooter();
+            LivingEntity shooter = ((Arrow) damager).getShooter();
 
             //TODO: Is there a reason we're breaking here instead of returning?
             if (shooter == null || shooter.getType() != EntityType.PLAYER) {
@@ -184,10 +185,10 @@ public class Combat {
         if (targetIsPlayer) {
             Player player = (Player) target;
 
-            if (event.getDamager() instanceof Player) {
+            if (damager instanceof Player) {
                 if (Swords.pvpEnabled) {
                     SwordsManager swordsManager = new SwordsManager(player);
-                    swordsManager.counterAttackChecks((LivingEntity) event.getDamager(), event.getDamage());
+                    swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 
                 if (Acrobatics.pvpEnabled) {
@@ -201,13 +202,13 @@ public class Combat {
                 }
             }
             else {
-                if (Swords.pveEnabled && event.getDamager() instanceof LivingEntity) {
+                if (Swords.pveEnabled && damager instanceof LivingEntity) {
                     SwordsManager swordsManager = new SwordsManager(player);
-                    swordsManager.counterAttackChecks((LivingEntity) event.getDamager(), event.getDamage());
+                    swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 
                 if (Acrobatics.pveEnabled) {
-                    if (!(event.getDamager() instanceof LightningStrike && Acrobatics.dodgeLightningDisabled)) {
+                    if (!(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled)) {
                         AcrobaticsManager acrobaticsManager = new AcrobaticsManager(player);
                         acrobaticsManager.dodgeCheck(event);
                     }
