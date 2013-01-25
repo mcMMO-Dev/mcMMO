@@ -20,6 +20,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
@@ -249,12 +250,10 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
-
         if (event instanceof FakeBlockDamageEvent) {
             return;
         }
 
-        final int LEAF_BLOWER_LEVEL = 100;
 
         Player player = event.getPlayer();
 
@@ -342,7 +341,7 @@ public class BlockListener implements Listener {
                 miningManager.superBreakerBlockCheck(block);
             }
         }
-        else if (profile.getSkillLevel(SkillType.WOODCUTTING) >= LEAF_BLOWER_LEVEL && (material.equals(Material.LEAVES) || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block)))) {
+        else if (profile.getSkillLevel(SkillType.WOODCUTTING) >= AdvancedConfig.getInstance().getLeafBlowUnlockLevel() && (material.equals(Material.LEAVES) || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block)))) {
             if (Skills.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
                 if (configInstance.getWoodcuttingRequiresTool()) {
                     if (ItemChecks.isAxe(inHand)) {
