@@ -15,9 +15,9 @@ public class HardcoreListener implements Listener {
     /**
      * Monitor PlayerDeath events.
      *
-     * @param event The event to monitor
+     * @param event The event to watch
      */
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
 
