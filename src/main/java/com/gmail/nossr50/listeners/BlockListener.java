@@ -60,8 +60,7 @@ public class BlockListener implements Listener {
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
         List<Block> blocks = event.getBlocks();
         BlockFace direction = event.getDirection();
-        // Block that would be air after piston is finished
-        Block futureEmptyBlock = event.getBlock().getRelative(direction);
+        Block futureEmptyBlock = event.getBlock().getRelative(direction); // Block that would be air after piston is finished
 
         for (Block b : blocks) {
             if (mcMMO.placeStore.isTrue(b)) {
@@ -83,7 +82,7 @@ public class BlockListener implements Listener {
     /**
      * Monitor BlockPistonRetract events.
      *
-     * @param event The event to monitor
+     * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
@@ -249,6 +248,7 @@ public class BlockListener implements Listener {
      *
      * @param event The event to modify
      */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDamageHigher(BlockDamageEvent event) {
         if (event instanceof FakeBlockDamageEvent) {
             return;
@@ -303,7 +303,7 @@ public class BlockListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
         if (event instanceof FakeBlockDamageEvent) {
             return;
