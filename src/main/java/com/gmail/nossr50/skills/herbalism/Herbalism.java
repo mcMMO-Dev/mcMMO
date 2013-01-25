@@ -10,6 +10,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.CocoaPlant;
+import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.mcMMO;
@@ -227,10 +229,11 @@ public class Herbalism {
             break;
 
         case COCOA:
-            if (((data) & 0x8) == 0x8) {
-                mat = Material.COCOA;
-                xp = Config.getInstance().getHerbalismXPCocoa();
+            CocoaPlant plant = (CocoaPlant) block.getState().getData();
 
+            if (plant.getSize() == CocoaPlantSize.LARGE) {
+                mat = type;
+                xp = Config.getInstance().getHerbalismXPCocoa();
 
                 if (Permissions.greenThumbCocoa(player)) {
                     greenThumbWheat(block, player, event, plugin);
