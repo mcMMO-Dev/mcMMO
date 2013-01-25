@@ -296,7 +296,7 @@ public class BlockChecks {
         }
     }
 
-    public static boolean isLog (Block block) {
+    public static boolean isLog(Block block) {
         if (block.getType().equals(Material.LOG) || (customBlocksEnabled && ModChecks.isCustomLogBlock(block))) {
             return true;
         }
@@ -304,6 +304,13 @@ public class BlockChecks {
         return false;
     }
 
+    public static boolean isLeaves(Block block) {
+        if (block.getType().equals(Material.LEAVES) || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block))) {
+            return true;
+        }
+
+        return false;
+    }
     public static boolean canBeFluxMined(Block block) {
         switch (block.getType()) {
         case IRON_ORE:

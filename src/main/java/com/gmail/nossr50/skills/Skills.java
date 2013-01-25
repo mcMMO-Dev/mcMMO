@@ -425,10 +425,6 @@ public class Skills {
         ToolType tool = type.getTool();
         AbilityType ability = type.getAbility();
 
-        if (!profile.getToolPreparationMode(tool) || !ability.getPermissions(player)) {
-            return;
-        }
-
         profile.setToolPreparationMode(tool, false);
 
         /* Axes and Woodcutting are odd because they share the same tool.
@@ -482,11 +478,6 @@ public class Skills {
      */
     public static boolean triggerCheck(Player player, Block block, AbilityType ability) {
         boolean activate = true;
-
-        if (!ability.getPermissions(player)) {
-            activate = false;
-            return activate;
-        }
 
         switch (ability) {
         case BERSERK:
