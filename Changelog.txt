@@ -25,9 +25,13 @@ Version 1.4.00-dev
  = Fixed Leaf Blower not respecting the unlock level set in advanced.yml
  = Fixed abilities activating with the wrong tool in hand
  = Fixed Experience.Gains.Mobspawners.Enabled not being used correctly (the check was inverted)
+<<<<<<< Upstream, based on origin/master
  = Fixed bug where Iron Grip was using the attacker's skill values rather than the defender's.
  = Fixed a bug where /party kick would trigger the PartyChangeEvent for the wrong player
  = Fixed a bug where party join messages weren't displayed
+=======
+ ! A Fishing catch will now always contains a fish even if a treasure is found
+>>>>>>> 1f7a94a Changed Fishing to always give a fish on a successful catch
  ! Changed how Berserk handles not picking up items to avoid listening to PlayerPickupItemEvent
  ! Moved Hylian Luck into a separate listener since it actually cancels the event and shouldn't just be on MONITOR.
  ! Changed how Tree Feller is handled, it should now put less stress on the CPU

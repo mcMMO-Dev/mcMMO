@@ -116,27 +116,27 @@ public class Fishing {
                 }
             }
 
-            if (rewards.size() <= 0) {
+            if (rewards.isEmpty()) {
                 return;
             }
 
-            FishingTreasure foundTreasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
+            FishingTreasure treasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
+            ItemStack treasureDrop = treasure.getDrop();
 
             int activationChance = Misc.calculateActivationChance(Permissions.luckyFishing(player));
 
-            if (Misc.getRandom().nextDouble() * activationChance <= foundTreasure.getDropChance()) {
-                Users.getPlayer(player).addXP(SkillType.FISHING, foundTreasure.getXp());
-                theCatch.setItemStack(foundTreasure.getDrop());
+            if (Misc.getRandom().nextDouble() * activationChance <= treasure.getDropChance()) {
+                player.getWorld().dropItem(player.getEyeLocation(), theCatch.getItemStack());  // Drop the original item
+
+                short maxDurability = treasureDrop.getType().getMaxDurability();
+
+                if (maxDurability > 0) {
+                    treasureDrop.setDurability((short) (Misc.getRandom().nextInt(maxDurability))); // Change durability to random value
+                }
+
+                theCatch.setItemStack(treasureDrop);
+                Users.getPlayer(player).addXP(SkillType.FISHING, treasure.getXp());
             }
-        }
-        else {
-            theCatch.setItemStack(new ItemStack(Material.RAW_FISH));
-        }
-
-        short maxDurability = theCatch.getItemStack().getType().getMaxDurability();
-
-        if (maxDurability > 0) {
-            theCatch.getItemStack().setDurability((short) (Misc.getRandom().nextInt(maxDurability))); // Change durability to random value
         }
 
         Skills.xpProcessing(player, profile, SkillType.FISHING, Config.getInstance().getFishingBaseXP());
