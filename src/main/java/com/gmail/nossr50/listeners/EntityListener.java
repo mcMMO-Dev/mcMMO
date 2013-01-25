@@ -217,9 +217,13 @@ public class EntityListener implements Listener {
      */
     @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
+        if (Misc.isSpawnerXPEnabled) {
+            return;
+        }
+
         SpawnReason reason = event.getSpawnReason();
 
-        if ((reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) && Misc.isSpawnerXPEnabled) {
+        if (reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) {
             mcMMO.placeStore.addSpawnedMob(event.getEntity());
         }
     }

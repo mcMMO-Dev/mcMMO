@@ -22,6 +22,7 @@ Version 1.4.00-dev
  = Fixed Hylian Luck not checking the block-placed flag on flowers.
  = Fixed Leaf Blower not respecting the unlock level set in advanced.yml
  = Fixed abilities activating with the wrong tool in hand
+ = Fixed Experience.Gains.Mobspawners.Enabled not being used correctly (the check was inverted)
  ! Changed how Berserk handles not picking up items to avoid listening to PlayerPickupItemEvent
  ! Moved Hylian Luck into a separate listener since it actually cancels the event and shouldn't just be on MONITOR.
  ! Changed how Tree Feller is handled, it should now put less stress on the CPU
