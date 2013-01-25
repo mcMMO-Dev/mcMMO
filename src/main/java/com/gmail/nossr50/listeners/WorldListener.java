@@ -23,8 +23,13 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.blockstoreconversion.BlockStoreConversionMain;
 
 public class WorldListener implements Listener {
-    ArrayList<BlockStoreConversionMain> converters = new ArrayList<BlockStoreConversionMain>();
+    private ArrayList<BlockStoreConversionMain> converters = new ArrayList<BlockStoreConversionMain>();
 
+    /**
+     * Monitor StructureGrow events.
+     *
+     * @param event The event to watch
+     */
     @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
         TreeType species = event.getSpecies();
@@ -40,53 +45,64 @@ public class WorldListener implements Listener {
         }
     }
 
-    @EventHandler
+    /**
+     * Monitor WorldInit events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldInit(WorldInitEvent event) {
         World world = event.getWorld();
-
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
-        if (!dataDir.exists()) {
+
+        if (!dataDir.exists() || mcMMO.p == null) {
             return;
         }
 
-        if (mcMMO.p == null)
-            return;
-
         mcMMO.p.getLogger().info("Converting block storage for " + world.getName() + " to a new format.");
+
         BlockStoreConversionMain converter = new BlockStoreConversionMain(world);
         converter.run();
         converters.add(converter);
     }
 
-    @EventHandler
+    /**
+     * Monitor WorldUnload events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldUnload(WorldUnloadEvent event) {
         mcMMO.placeStore.unloadWorld(event.getWorld());
     }
 
-    // This gets called every 45 seconds, by default.
-    // The call can and does result in excessive lag, especially on larger servers.
-    //@EventHandler
-    //public void onWorldSave(WorldSaveEvent event) {
-    //    mcMMO.placeStore.saveWorld(event.getWorld());
-    //}
-
-    @EventHandler
+    /**
+     * Monitor ChunkUnload events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
         Chunk chunk = event.getChunk();
+
         mcMMO.placeStore.chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());
     }
 
-    @EventHandler
+    /**
+     * Monitor ChunkLoad events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent event) {
         Chunk chunk = event.getChunk();
         Entity[] entities = chunk.getEntities();
 
-        for(Entity entity : entities) {
-            if(!(entity instanceof LivingEntity) && !(entity instanceof FallingBlock))
-                continue;
-
-            mcMMO.placeStore.loadChunk(chunk.getX(), chunk.getZ(), event.getWorld(), entities);
-            return;
+        for (Entity entity : entities) {
+            if (entity instanceof LivingEntity || entity instanceof FallingBlock) {
+                mcMMO.placeStore.loadChunk(chunk.getX(), chunk.getZ(), event.getWorld(), entities);
+                return;
+            }
         }
     }
 }
