@@ -245,9 +245,63 @@ public class BlockListener implements Listener {
     }
 
     /**
+     * Handle BlockDamage events where the event is modified.
+     *
+     * @param event The event to modify
+     */
+    public void onBlockDamageHigher(BlockDamageEvent event) {
+        if (event instanceof FakeBlockDamageEvent) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        PlayerProfile profile = Users.getProfile(player);
+
+        if (Misc.isNPCPlayer(player, profile)) {
+            return;
+        }
+
+        Block block = event.getBlock();
+
+        /*
+         * ABILITY PREPARATION CHECKS
+         *
+         * We check permissions here before processing activation.
+         */
+        if (BlockChecks.canActivateAbilities(block)) {
+            ItemStack heldItem = player.getItemInHand();
+
+            if (profile.getToolPreparationMode(ToolType.HOE) && ItemChecks.isHoe(heldItem) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.canMakeMossy(block)) && Permissions.greenTerra(player)) {
+                Skills.abilityCheck(player, SkillType.HERBALISM);
+            }
+            else if (profile.getToolPreparationMode(ToolType.AXE) && ItemChecks.isAxe(heldItem) && BlockChecks.isLog(block) && Permissions.treeFeller(player)) {
+                Skills.abilityCheck(player, SkillType.WOODCUTTING);
+            }
+            else if (profile.getToolPreparationMode(ToolType.PICKAXE) && ItemChecks.isPickaxe(heldItem) && BlockChecks.canBeSuperBroken(block) && Permissions.superBreaker(player)) {
+                Skills.abilityCheck(player, SkillType.MINING);
+            }
+            else if (profile.getToolPreparationMode(ToolType.SHOVEL) && ItemChecks.isShovel(heldItem) && BlockChecks.canBeGigaDrillBroken(block) && Permissions.gigaDrillBreaker(player)) {
+                Skills.abilityCheck(player, SkillType.EXCAVATION);
+            }
+            else if (profile.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockChecks.canBeGigaDrillBroken(block) || block.getType().equals(Material.SNOW)) && Permissions.berserk(player)) {
+                Skills.abilityCheck(player, SkillType.UNARMED);
+            }
+        }
+
+        /*
+         * TREE FELLER SOUNDS
+         *
+         * We don't need to check permissions here because they've already been checked for the ability to even activate.
+         */
+        if (mcMMO.spoutEnabled && profile.getAbilityMode(AbilityType.TREE_FELLER) && BlockChecks.isLog(block)) {
+            SpoutSounds.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
+        }
+    }
+
+    /**
      * Monitor BlockDamage events.
      *
-     * @param event The event to monitor
+     * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
@@ -264,39 +318,6 @@ public class BlockListener implements Listener {
 
         ItemStack heldItem = player.getItemInHand();
         Block block = event.getBlock();
-        Material material = block.getType();
-
-        /*
-         * ABILITY PREPARATION CHECKS
-         *
-         * We check permissions here before processing activation.
-         */
-        if (BlockChecks.canActivateAbilities(block)) {
-            if (profile.getToolPreparationMode(ToolType.HOE) && ItemChecks.isHoe(heldItem) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.canMakeMossy(block)) && Permissions.greenTerra(player)) {
-                Skills.abilityCheck(player, SkillType.HERBALISM);
-            }
-            else if (profile.getToolPreparationMode(ToolType.AXE) && ItemChecks.isAxe(heldItem) && BlockChecks.isLog(block) && Permissions.treeFeller(player)) {
-                Skills.abilityCheck(player, SkillType.WOODCUTTING);
-            }
-            else if (profile.getToolPreparationMode(ToolType.PICKAXE) && ItemChecks.isPickaxe(heldItem) && BlockChecks.canBeSuperBroken(block) && Permissions.superBreaker(player)) {
-                Skills.abilityCheck(player, SkillType.MINING);
-            }
-            else if (profile.getToolPreparationMode(ToolType.SHOVEL) && ItemChecks.isShovel(heldItem) && BlockChecks.canBeGigaDrillBroken(block) && Permissions.gigaDrillBreaker(player)) {
-                Skills.abilityCheck(player, SkillType.EXCAVATION);
-            }
-            else if (profile.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockChecks.canBeGigaDrillBroken(block) || material.equals(Material.SNOW)) && Permissions.berserk(player)) {
-                Skills.abilityCheck(player, SkillType.UNARMED);
-            }
-        }
-
-        /*
-         * TREE FELLER SOUNDS
-         *
-         * We don't need to check permissions here because they've already been checked for the ability to even activate.
-         */
-        if (mcMMO.spoutEnabled && profile.getAbilityMode(AbilityType.TREE_FELLER) && BlockChecks.isLog(block)) {
-            SpoutSounds.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
-        }
 
         /*
          * ABILITY TRIGGER CHECKS
