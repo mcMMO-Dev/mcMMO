@@ -28,8 +28,7 @@ public abstract class Woodcutting {
     public static final int LEAF_BLOWER_UNLOCK_LEVEL = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
     public static final boolean DOUBLE_DROP_DISABLED = Config.getInstance().woodcuttingDoubleDropsDisabled();
     public static final int TREE_FELLER_THRESHOLD = Config.getInstance().getTreeFellerThreshold();
-
-    public static boolean requiresTool = Config.getInstance().getWoodcuttingRequiresTool();
+    public static final boolean REQUIRES_TOOL = Config.getInstance().getWoodcuttingRequiresTool();
 
     /**
      * Begins the Tree Feller ability
