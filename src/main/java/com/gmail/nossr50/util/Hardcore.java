@@ -8,11 +8,14 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
 
 public abstract class Hardcore {
+    public static double statLossPercentage = Config.getInstance().getHardcoreDeathStatPenaltyPercentage();
+    public static double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
+
+    public static boolean statLossEnabled = Config.getInstance().getHardcoreEnabled();
+    public static boolean vampirismEnabled = Config.getInstance().getHardcoreVampirismEnabled();
 
     public static void invokeStatPenalty(Player player) {
-        double hardcorePenalty = Config.getInstance().getHardcoreDeathStatPenaltyPercentage();
-
-        if (hardcorePenalty <= 0 || hardcorePenalty > 100) {
+        if (statLossPercentage <= 0 || statLossPercentage > 100) {
             return;
         }
 
@@ -31,7 +34,7 @@ public abstract class Hardcore {
                 continue;
             }
 
-            int levelsLost = (int) (playerSkillLevel * (hardcorePenalty * 0.01D));
+            int levelsLost = (int) (playerSkillLevel * (statLossPercentage * 0.01D));
             totalLost += levelsLost;
 
             playerProfile.modifySkill(skillType, playerSkillLevel - levelsLost);
@@ -41,9 +44,7 @@ public abstract class Hardcore {
     }
 
     public static void invokeVampirism(Player killer, Player victim) {
-        double vampirismLeech = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
-
-        if (vampirismLeech <= 0 || vampirismLeech > 100) {
+        if (vampirismStatLeechPercentage <= 0 || vampirismStatLeechPercentage > 100) {
             return;
         }
 
@@ -64,7 +65,7 @@ public abstract class Hardcore {
                 continue;
             }
 
-            int levelsStolen = (int) (victimSkillLevel * (vampirismLeech * 0.01D));
+            int levelsStolen = (int) (victimSkillLevel * (vampirismStatLeechPercentage * 0.01D));
             totalStolen += levelsStolen;
 
             killerProfile.modifySkill(skillType, killerSkillLevel + levelsStolen);
