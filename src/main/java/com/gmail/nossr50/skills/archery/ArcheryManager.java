@@ -60,11 +60,7 @@ public class ArcheryManager extends SkillManager {
      * @param event The event to modify.
      */
     public void skillShot(EntityDamageEvent event) {
-        if (Misc.isNPCPlayer(player) || !Permissions.archeryBonus(player)) {
-            return;
-        }
-
-        if (skillLevel >= Archery.skillShotIncreaseLevel) {
+        if (skillLevel >= Archery.skillShotIncreaseLevel && Permissions.archeryBonus(player)) {
             SkillShotEventHandler eventHandler = new SkillShotEventHandler(this, event);
 
             eventHandler.calculateDamageBonus();

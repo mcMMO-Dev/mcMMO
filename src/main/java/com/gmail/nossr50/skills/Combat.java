@@ -38,10 +38,10 @@ import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Combat {
@@ -58,7 +58,7 @@ public class Combat {
 
         switch (damager.getType()) {
         case PLAYER:
-            Player attacker = (Player) event.getDamager();
+            Player attacker = (Player) damager;
 
             if (Misc.isNPCPlayer(attacker)) {
                 return;
@@ -184,29 +184,33 @@ public class Combat {
         if (targetIsPlayer) {
             Player player = (Player) target;
 
-            AcrobaticsManager acrobaticsManager = new AcrobaticsManager(player);
-            SwordsManager swordsManager = new SwordsManager(player);
-
             if (damager instanceof Player) {
                 if (Swords.pvpEnabled) {
+                    SwordsManager swordsManager = new SwordsManager(player);
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 
                 if (Acrobatics.pvpEnabled) {
+                    AcrobaticsManager acrobaticsManager = new AcrobaticsManager(player);
                     acrobaticsManager.dodgeCheck(event);
+                }
+
+                if (Unarmed.pvpEnabled && player.getItemInHand().getType() == Material.AIR) {
+                    UnarmedManager unarmedManager = new UnarmedManager(player);
+                    unarmedManager.deflectCheck(event);
                 }
             }
             else {
                 if (Swords.pveEnabled && damager instanceof LivingEntity) {
+                    SwordsManager swordsManager = new SwordsManager(player);
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 
                 if (Acrobatics.pveEnabled) {
-                    if (damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) {
-                        return;
+                    if (!(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled)) {
+                        AcrobaticsManager acrobaticsManager = new AcrobaticsManager(player);
+                        acrobaticsManager.dodgeCheck(event);
                     }
-
-                    acrobaticsManager.dodgeCheck(event);
                 }
             }
         }
@@ -220,19 +224,11 @@ public class Combat {
      * @param event The event to run the archery checks on.
      */
     public static void archeryCheck(Player shooter, LivingEntity target, EntityDamageByEntityEvent event) {
-        if (target instanceof Player) {
-            Player defender = (Player) target;
-
-            if (defender.getItemInHand().getType().equals(Material.AIR)) {
-                if (configInstance.getUnarmedPVP()) {
-                    UnarmedManager unarmedManager = new UnarmedManager(defender);
-                    unarmedManager.deflectCheck(event);
-                }
-            }
+        if (Misc.isNPCPlayer(shooter)) {
+            return;
         }
 
         ArcheryManager archeryManager = new ArcheryManager(shooter);
-
         archeryManager.skillShot(event);
 
         if (target instanceof Player) {
@@ -244,8 +240,7 @@ public class Combat {
         }
 
         if (target != shooter) {
-            PlayerProfile profile = Users.getProfile(shooter);
-            startGainXp(shooter, profile, target, SkillType.ARCHERY);
+            startGainXp(shooter, archeryManager.getProfile(), target, SkillType.ARCHERY);
         }
     }
 
@@ -322,22 +317,12 @@ public class Combat {
         }
 
         for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
-            if (entity instanceof Player) {
-                if (Misc.isNPCPlayer((Player) entity)) {
-                    continue;
-                }
-            }
-
-            if (!(entity instanceof LivingEntity)) {
+            if ((entity instanceof Player && Misc.isNPCPlayer((Player) entity)) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
                 continue;
             }
 
             if (numberOfTargets <= 0) {
                 break;
-            }
-
-            if (!shouldBeAffected(attacker, entity)) {
-                continue;
             }
 
             PlayerAnimationEvent armswing = new PlayerAnimationEvent(attacker);
@@ -503,19 +488,7 @@ public class Combat {
         if (entity instanceof Player) {
             Player defender = (Player) entity;
 
-            if (!defender.getWorld().getPVP()) {
-                return false;
-            }
-
-            if (defender == player) {
-                return false;
-            }
-
-            if (PartyManager.getInstance().inSameParty(player, defender)) {
-                return false;
-            }
-
-            if (Users.getProfile(defender).getGodMode()) {
+            if (!defender.getWorld().getPVP() || defender == player || PartyManager.getInstance().inSameParty(player, defender) || Users.getProfile(defender).getGodMode()) {
                 return false;
             }
 
@@ -528,9 +501,7 @@ public class Combat {
             }
         }
         else if (entity instanceof Tameable) {
-            Tameable pet = (Tameable) entity;
-
-            if (Misc.isFriendlyPet(player, pet)) {
+            if (Misc.isFriendlyPet(player, (Tameable) entity)) {
                 return false;
             }
         }

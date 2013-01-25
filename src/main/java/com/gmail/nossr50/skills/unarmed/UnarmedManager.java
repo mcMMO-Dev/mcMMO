@@ -49,9 +49,6 @@ public class UnarmedManager extends SkillManager {
      * @param event The event to modify
      */
     public void deflectCheck(EntityDamageEvent event) {
-        if (player == null)
-            return;
-
         if (!Permissions.deflect(player)) {
             return;
         }
