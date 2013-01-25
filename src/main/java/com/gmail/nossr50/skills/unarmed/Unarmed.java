@@ -14,4 +14,6 @@ public class Unarmed {
 
     public static double ironGripMaxChance = AdvancedConfig.getInstance().getIronGripChanceMax();
     public static int ironGripMaxBonusLevel = AdvancedConfig.getInstance().getIronGripMaxBonusLevel();
+
+    public static double berserkDamageModifier = 1.5;
 }

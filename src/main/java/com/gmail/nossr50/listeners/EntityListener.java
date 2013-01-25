@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -28,18 +27,16 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.Combat;
-import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.acrobatics.Acrobatics;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.Archery;
+import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
@@ -78,22 +75,22 @@ public class EntityListener implements Listener {
     }
 
     /**
-     * Monitor EntityDamageByEntity events.
+     * Handle EntityDamageByEntity events that involve modifying the event.
      *
      * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event instanceof FakeEntityDamageByEntityEvent)
+        if (event instanceof FakeEntityDamageByEntityEvent || event.getDamage() <= 0)
             return;
 
-        if (event.getDamage() <= 0)
-            return;
-
-        Entity attacker = event.getDamager();
         Entity defender = event.getEntity();
 
-        if (attacker.hasMetadata("NPC") || defender.hasMetadata("NPC")) return; // Check if either players is are Citizens NPCs
+        if (Misc.isNPCEntity(defender) || defender.isDead()) {
+            return;
+        }
+
+        Entity attacker = event.getDamager();
 
         if (attacker instanceof Projectile) {
             attacker = ((Projectile) attacker).getShooter();
@@ -101,7 +98,7 @@ public class EntityListener implements Listener {
         else if (attacker instanceof Tameable) {
             AnimalTamer animalTamer = ((Tameable) attacker).getOwner();
 
-            if (animalTamer instanceof Entity) {
+            if (animalTamer != null) {
                 attacker = (Entity) animalTamer;
             }
         }
@@ -113,11 +110,9 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            if (attacker instanceof Player) {
-                if (PartyManager.getInstance().inSameParty(defendingPlayer, (Player) attacker)) {
-                    event.setCancelled(true);
-                    return;
-                }
+            if (attacker instanceof Player && PartyManager.getInstance().inSameParty(defendingPlayer, (Player) attacker)) {
+                event.setCancelled(true);
+                return;
             }
         }
 
@@ -126,35 +121,32 @@ public class EntityListener implements Listener {
             LivingEntity livingDefender = (LivingEntity) defender;
 
             if (!Misc.isInvincible(livingDefender, event)) {
-                Combat.combatChecks(event);
+                Combat.combatChecks(event, attacker, livingDefender);
             }
         }
     }
 
     /**
-     * Monitor EntityDamage events.
+     * Handle EntityDamage events that involve modifying the event.
      *
-     * @param event The event to watch
+     * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
-        if (event instanceof FakeEntityDamageEvent) {
+        if (event instanceof FakeEntityDamageEvent || event.getDamage() <= 0) {
             return;
         }
 
         Entity entity = event.getEntity();
-        DamageCause cause = event.getCause();
-
-        if (entity.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
 
         if (!(entity instanceof LivingEntity)) {
             return;
         }
 
-        LivingEntity lEntity = (LivingEntity) entity;
+        DamageCause cause = event.getCause();
+        LivingEntity livingEntity = (LivingEntity) entity;
 
-        if (lEntity instanceof Player) {
-            /* Check for invincibility */
+        if (livingEntity instanceof Player) {
             Player player = (Player) entity;
 
             if (!player.isOnline()) {
@@ -163,17 +155,18 @@ public class EntityListener implements Listener {
 
             PlayerProfile profile = Users.getProfile(player);
 
-            if (profile == null) {
+            if (Misc.isNPCPlayer(player, profile)) {
                 return;
             }
 
+            /* Check for invincibility */
             if (profile.getGodMode()) {
                 event.setCancelled(true);
                 return;
             }
 
             if (!Misc.isInvincible(player, event)) {
-                if (cause == DamageCause.FALL && !player.isInsideVehicle() && !(player.getItemInHand().getType() == Material.ENDER_PEARL)) {
+                if (cause == DamageCause.FALL && player.getItemInHand().getType() != Material.ENDER_PEARL && !(Acrobatics.afkLevelingDisabled && player.isInsideVehicle()) && Permissions.roll(player)) {
                     AcrobaticsManager acroManager = new AcrobaticsManager(player);
                     acroManager.rollCheck(event);
                 }
@@ -186,11 +179,12 @@ public class EntityListener implements Listener {
                     profile.actualizeRecentlyHurt();
                 }
             }
-        } else if (lEntity instanceof Tameable) {
-            Tameable pet = (Tameable) lEntity;
+        }
+        else if (livingEntity instanceof Tameable) {
+            Tameable pet = (Tameable) livingEntity;
             AnimalTamer owner = pet.getOwner();
 
-            if ((!Misc.isInvincible(lEntity, event)) && pet.isTamed() && (owner instanceof Player) && pet instanceof Wolf) {
+            if ((!Misc.isInvincible(livingEntity, event)) && pet.isTamed() && owner instanceof Player && pet instanceof Wolf) {
                 TamingManager tamingManager = new TamingManager((Player) owner);
                 tamingManager.preventDamage(event);
             }
@@ -277,11 +271,11 @@ public class EntityListener implements Listener {
     }
 
     /**
-     * Monitor FoodLevelChange events.
+     * Handle FoodLevelChange events that involve modifying the event.
      *
-     * @param event The event to watch
+     * @param event The event to modify
      */
-    @EventHandler (priority = EventPriority.LOW)
+    @EventHandler (priority = EventPriority.LOW, ignoreCancelled = true)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         Entity entity = event.getEntity();
 
@@ -295,6 +289,7 @@ public class EntityListener implements Listener {
 
             int currentFoodLevel = player.getFoodLevel();
             int newFoodLevel = event.getFoodLevel();
+            int foodChange = newFoodLevel - currentFoodLevel;
 
             /*
              * Some foods have 3 ranks
@@ -302,126 +297,34 @@ public class EntityListener implements Listener {
              * The number of ranks is based on how 'common' the item is
              * We can adjust this quite easily if we find something is giving too much of a bonus
              */
-
-            if (newFoodLevel > currentFoodLevel) {
-                Material food = player.getItemInHand().getType();
-                int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
-                int fishLevel = profile.getSkillLevel(SkillType.FISHING);
-                int foodChange = newFoodLevel - currentFoodLevel;
-                int rankChange = 0;
-                boolean fish = false;
-                boolean herb = false;
-                int fishFoodRank1 = AdvancedConfig.getInstance().getFishermanDietRankChange();
-                int fishFoodRank2 = AdvancedConfig.getInstance().getFishermanDietRankChange() * 2;
-                int fishFoodRankMax = AdvancedConfig.getInstance().getFishermanDietRankChange() * 5;
-
-                switch (food) {
-                case BREAD:
-                    /* BREAD RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                    herb = true;
-                    rankChange = Herbalism.farmersDietRankLevel1;
+            if (foodChange > 0) {
+                switch (player.getItemInHand().getType()) {
+                case BAKED_POTATO:  /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
+                case BREAD:         /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+                case CARROT_ITEM:   /* RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
+                case GOLDEN_CARROT: /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
+                case MUSHROOM_SOUP: /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
+                case PUMPKIN_PIE:   /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
+                    Herbalism.farmersDiet(player, Herbalism.farmersDietRankLevel1, event);
                     break;
 
-                case COOKIE:
-                    /* COOKIE RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                    herb = true;
-                    rankChange = Herbalism.farmersDietRankLevel2;
+                case COOKIE:            /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+                case MELON:             /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                case POISONOUS_POTATO:  /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                case POTATO_ITEM:       /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+                    Herbalism.farmersDiet(player, Herbalism.farmersDietRankLevel2, event);
                     break;
 
-                case MELON:
-                    /* MELON RESTORES  1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                    herb = true;
-                    rankChange = Herbalism.farmersDietRankLevel2;
+                case COOKED_FISH:   /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+                    Fishing.fishermansDiet(player, Fishing.fishermansDietRankLevel1, event);
                     break;
 
-                case MUSHROOM_SOUP:
-                    /* MUSHROOM SOUP RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
-                    herb = true;
-                    rankChange = Herbalism.farmersDietRankLevel1;
-                    break;
-
-                case CARROT_ITEM:
-                    /* CARROT RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
-                    herb = true;
-                    rankChange = Herbalism.farmersDietRankLevel1;
-                    break;
-
-                case POTATO_ITEM:
-                    /* POTATO RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                    herb = true;
-                    rankChange = Herbalism.farmersDietRankLevel2;
-                    break;
-
-                case BAKED_POTATO:
-                    /* BAKED POTATO RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
-                    herb = true;
-                    rankChange = Herbalism.farmersDietRankLevel1;
-                    break;
-
-                case POISONOUS_POTATO:
-                    /* POISONOUS POTATO RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                    herb = true;
-                    rankChange = Herbalism.farmersDietRankLevel2;
-                    break;
-
-                case GOLDEN_CARROT:
-                    /* GOLDEN CARROT RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
-                    herb = true;
-                    rankChange = Herbalism.farmersDietRankLevel1;
-                    break;
-
-                case PUMPKIN_PIE:
-                    /* PUMPKIN PIE RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
-                    herb = true;
-                    rankChange = Herbalism.farmersDietRankLevel1;
-                    break;
-
-                case RAW_FISH:
-                    /* RAW FISH RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                    rankChange = fishFoodRank2;
-                    fish = true;
-                    break;
-
-                case COOKED_FISH:
-                    /* COOKED FISH RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                    rankChange = fishFoodRank1;
-                    fish = true;
+                case RAW_FISH:      /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                    Fishing.fishermansDiet(player, Fishing.fishermansDietRankLevel2, event);
                     break;
 
                 default:
                     return;
-                }
-
-                if (herb) {
-                    if (!Permissions.farmersDiet(player)) {
-                        return;
-                    }
-
-                    for (int i = Herbalism.farmersDietRankLevel1; i <= Herbalism.farmersDietMaxLevel; i += rankChange) {
-                        if (herbLevel >= i) {
-                            foodChange++;
-                        }
-                    }
-                }
-                else if (fish) {
-                    if (!Permissions.fishermansDiet(player)) {
-                        return;
-                    }
-
-                    for (int i = fishFoodRank1; i <= fishFoodRankMax; i += rankChange) {
-                        if (fish && fishLevel >= i) {
-                            foodChange++;
-                        }
-                    }
-                }
-
-                /* Make sure we don't go over the max value */
-                newFoodLevel = currentFoodLevel + foodChange;
-                if (newFoodLevel > 20) {
-                    event.setFoodLevel(20);
-                }
-                else {
-                    event.setFoodLevel(newFoodLevel);
                 }
             }
         }
@@ -432,31 +335,15 @@ public class EntityListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityTame(EntityTameEvent event) {
         Player player = (Player) event.getOwner();
 
-        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-
-        if (Permissions.taming(player) && !mcMMO.placeStore.isSpawnedPet(event.getEntity())) {
-            PlayerProfile profile = Users.getProfile(player);
-            EntityType type = event.getEntityType();
-            int xp = 0;
-
-            switch (type) {
-            case WOLF:
-                xp = Config.getInstance().getTamingXPWolf();
-                break;
-
-            case OCELOT:
-                xp = Config.getInstance().getTamingXPOcelot();
-                break;
-
-            default:
-                break;
-            }
-
-            Skills.xpProcessing(player, profile, SkillType.TAMING, xp);
+        if (Misc.isNPCPlayer(player)) {
+            return;
         }
+
+        TamingManager tamingManager = new TamingManager(player);
+        tamingManager.awardTamingXP(event);
     }
 }

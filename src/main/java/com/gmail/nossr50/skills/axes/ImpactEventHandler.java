@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.axes;
 
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -20,20 +19,15 @@ public class ImpactEventHandler {
     private EntityEquipment equipment;
     private ItemStack[] armorContents;
 
-    protected Entity defender;
-    protected LivingEntity livingDefender;
+    protected LivingEntity defender;
 
-    public ImpactEventHandler(AxeManager manager, EntityDamageByEntityEvent event) {
+    public ImpactEventHandler(AxeManager manager, EntityDamageByEntityEvent event, LivingEntity defender) {
         this.manager = manager;
         this.player = manager.getPlayer();
         this.event = event;
-        this.defender = event.getEntity();
-
-        if (defender instanceof LivingEntity) {
-            this.livingDefender = (LivingEntity) defender;
-            this.equipment = livingDefender.getEquipment();
-            this.armorContents = equipment.getArmorContents();
-        }
+        this.defender = defender;
+        this.equipment = defender.getEquipment();
+        this.armorContents = equipment.getArmorContents();
     }
 
     protected void damageArmor() {
@@ -70,14 +64,14 @@ public class ImpactEventHandler {
 
     private void handleGreaterImpactEffect() {
         event.setDamage(event.getDamage() + Axes.greaterImpactBonusDamage);
-        livingDefender.setVelocity(player.getLocation().getDirection().normalize().multiply(Axes.greaterImpactKnockbackMultiplier));
+        defender.setVelocity(player.getLocation().getDirection().normalize().multiply(Axes.greaterImpactKnockbackMultiplier));
     }
 
     private void sendAbilityMessge() {
         player.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));
 
-        if (livingDefender instanceof Player) {
-            ((Player) livingDefender).sendMessage(LocaleLoader.getString("Axes.Combat.GI.Struck"));
+        if (defender instanceof Player) {
+            ((Player) defender).sendMessage(LocaleLoader.getString("Axes.Combat.GI.Struck"));
         }
     }
 

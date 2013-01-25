@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.axes;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 
 public class Axes {
     public static int bonusDamageMaxBonus = AdvancedConfig.getInstance().getBonusDamageAxesBonusMax();
@@ -19,4 +20,7 @@ public class Axes {
     public static int greaterImpactBonusDamage = AdvancedConfig.getInstance().getGreaterImpactBonusDamage();
 
     public static int skullSplitterModifier = AdvancedConfig.getInstance().getSkullSplitterModifier();
+
+    public static boolean pvpEnabled = Config.getInstance().getAxesPVP();
+    public static boolean pveEnabled = Config.getInstance().getAxesPVE();
 }

@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.axes;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.gmail.nossr50.skills.Combat;
 import com.gmail.nossr50.skills.SkillType;
@@ -12,10 +11,10 @@ public class SkullSplitterEventHandler {
     private LivingEntity target;
     private int damage;
 
-    protected SkullSplitterEventHandler(AxeManager manager, EntityDamageByEntityEvent event) {
-        this.player = manager.getPlayer();
-        this.target = (LivingEntity) event.getEntity();
-        this.damage = event.getDamage();
+    protected SkullSplitterEventHandler(Player player, int damage, LivingEntity target) {
+        this.player = player;
+        this.target = target;
+        this.damage = damage;
     }
 
     protected void applyAbilityEffects() {

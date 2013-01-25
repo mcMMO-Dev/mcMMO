@@ -173,7 +173,7 @@ Skills:
         # SuperRepair_MaxBonusLevel: On this level, Super Repair chance will be SuperRepair_ChanceMax
         SuperRepair_ChanceMax: 100.0
         SuperRepair_MaxBonusLevel: 1000
-        
+
         Arcane_Forging:
             May_Lose_Enchants: true
             Rank_Levels:

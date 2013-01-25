@@ -49,7 +49,7 @@ public class FishingCommand extends SkillCommand {
         shakeChanceLucky = shakeStrings[1];
 
         //FISHERMAN'S DIET
-        fishermansDietRank = calculateRank(Fishing.fishermanDietMaxLevel, Fishing.fishermanDietRankChangeLevel);
+        fishermansDietRank = calculateRank(Fishing.fishermansDietMaxLevel, Fishing.fishermansDietRankLevel1);
     }
 
     @Override

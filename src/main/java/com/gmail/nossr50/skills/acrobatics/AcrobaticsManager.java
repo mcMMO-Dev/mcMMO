@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills.acrobatics;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
@@ -20,14 +19,6 @@ public class AcrobaticsManager extends SkillManager {
      * @param event The event to check
      */
     public void rollCheck(EntityDamageEvent event) {
-        if (Misc.isNPCPlayer(player) || !Permissions.roll(player)) {
-            return;
-        }
-
-        if (Config.getInstance().getAcrobaticsAFKDisabled() && player.isInsideVehicle()) {
-            return;
-        }
-
         RollEventHandler eventHandler = new RollEventHandler(this, event);
 
         double chance;

@@ -1,8 +1,10 @@
 package com.gmail.nossr50.skills.unarmed;
 
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import com.gmail.nossr50.skills.AbilityType;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
@@ -18,12 +20,13 @@ public class UnarmedManager extends SkillManager {
      *
      * @param defender The defending player
      */
-    public void disarmCheck(Player defender) {
-        if (Misc.isNPCPlayer(player) || !Permissions.disarm(player)) {
+    public void disarmCheck(LivingEntity defender) {
+        if (!(defender instanceof Player) || !Permissions.disarm(player)) {
             return;
         }
 
-        DisarmEventHandler eventHandler = new DisarmEventHandler(this, defender);
+        Player defendingPlayer = (Player) defender;
+        DisarmEventHandler eventHandler = new DisarmEventHandler(this, defendingPlayer);
 
         if (eventHandler.isHoldingItem()) {
             eventHandler.calculateSkillModifier();
@@ -32,7 +35,7 @@ public class UnarmedManager extends SkillManager {
             if (chance > Unarmed.disarmMaxChance) chance = (float) Unarmed.disarmMaxChance;
 
             if (chance > Misc.getRandom().nextInt(activationChance)) {
-                if (!hasIronGrip(defender)) {
+                if (!hasIronGrip(defendingPlayer)) {
                     eventHandler.handleDisarm();
                 }
             }
@@ -64,15 +67,18 @@ public class UnarmedManager extends SkillManager {
         }
     }
 
+    public void berserkDamage(EntityDamageEvent event) {
+        if (!profile.getAbilityMode(AbilityType.BERSERK) || !Permissions.berserk(player)) {
+            event.setDamage((int) (event.getDamage() * Unarmed.berserkDamageModifier));
+        }
+    }
+
     /**
      * Handle Unarmed bonus damage.
      *
      * @param event The event to modify.
      */
     public void bonusDamage(EntityDamageEvent event) {
-        if (player == null)
-            return;
-
         if (!Permissions.unarmedBonus(player)) {
             return;
         }
@@ -90,10 +96,7 @@ public class UnarmedManager extends SkillManager {
      * @return true if the defender was not disarmed, false otherwise
      */
     private boolean hasIronGrip(Player defender) {
-        if (defender == null)
-            return false;
-
-        if (!Permissions.ironGrip(defender)) {
+        if (Misc.isNPCEntity(defender) || !Permissions.ironGrip(defender)) {
             return false;
         }
 

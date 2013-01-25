@@ -21,9 +21,6 @@ public class SwordsManager extends SkillManager {
      * @param defender The defending entity
      */
     public void bleedCheck(LivingEntity defender) {
-        if (player == null)
-            return;
-
         if (!Permissions.swordsBleed(player)) {
             return;
         }
@@ -42,9 +39,6 @@ public class SwordsManager extends SkillManager {
     }
 
     public void counterAttackChecks(LivingEntity attacker, int damage) {
-        if (player == null)
-            return;
-
         if (!Permissions.counterAttack(player)) {
             return;
         }
@@ -65,7 +59,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public void serratedStrikes(LivingEntity target, int damage) {
-        if (Misc.isNPCPlayer(player) || !Permissions.serratedStrikes(player) || !profile.getAbilityMode(AbilityType.SERRATED_STRIKES)) {
+        if (!profile.getAbilityMode(AbilityType.SERRATED_STRIKES) || !Permissions.serratedStrikes(player)) {
             return;
         }
 

@@ -83,10 +83,6 @@ public class MiningManager extends SkillManager{
      * @param event Event whose explosion damage is being reduced
      */
     public void demolitionsExpertise(EntityDamageEvent event) {
-        if (Misc.isNPCPlayer(player)) {
-            return;
-        }
-
         DemoltionsExpertiseEventHandler eventHandler = new DemoltionsExpertiseEventHandler(this, event);
 
         eventHandler.calculateDamageModifier();

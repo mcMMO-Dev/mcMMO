@@ -28,11 +28,15 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.runnables.GainXp;
+import com.gmail.nossr50.skills.acrobatics.Acrobatics;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
+import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxeManager;
+import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.skills.swords.SwordsManager;
+import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.ItemChecks;
@@ -48,29 +52,28 @@ public class Combat {
      *
      * @param event The event to run the combat checks on.
      */
-    public static void combatChecks(EntityDamageByEntityEvent event) {
-        if (event.getDamage() == 0 || event.getEntity().isDead()) {
-            return;
-        }
-
-        Entity damager = event.getDamager();
-        LivingEntity target = (LivingEntity) event.getEntity();
-
+    public static void combatChecks(EntityDamageByEntityEvent event, Entity damager, LivingEntity target) {
         boolean targetIsPlayer = (target.getType() == EntityType.PLAYER);
         boolean targetIsTamedPet = (target instanceof Tameable) ? ((Tameable) target).isTamed() : false;
 
         switch (damager.getType()) {
         case PLAYER:
             Player attacker = (Player) event.getDamager();
-            ItemStack itemInHand = attacker.getItemInHand();
 
-            if (ItemChecks.isSword(itemInHand)) {
+            if (Misc.isNPCPlayer(attacker)) {
+                return;
+            }
+
+            ItemStack heldItem = attacker.getItemInHand();
+            Material heldItemType = heldItem.getType();
+
+            if (ItemChecks.isSword(heldItem)) {
                 if (targetIsPlayer || targetIsTamedPet) {
-                    if (!configInstance.getSwordsPVP()) {
+                    if (!Swords.pvpEnabled) {
                         return;
                     }
                 }
-                else if (!configInstance.getSwordsPVE()) {
+                else if (!Swords.pveEnabled) {
                     return;
                 }
 
@@ -82,13 +85,13 @@ public class Combat {
 
                 startGainXp(attacker, swordsManager.getProfile(), target, SkillType.SWORDS);
             }
-            else if (ItemChecks.isAxe(itemInHand) && Permissions.axes(attacker)) {
+            else if (ItemChecks.isAxe(heldItem)) {
                 if (targetIsPlayer || targetIsTamedPet) {
-                    if (!configInstance.getAxesPVP()) {
+                    if (!Axes.pvpEnabled) {
                         return;
                     }
                 }
-                else if (!configInstance.getAxesPVE()) {
+                else if (!Axes.pveEnabled) {
                     return;
                 }
 
@@ -96,13 +99,13 @@ public class Combat {
 
                 AxeManager axeManager = new AxeManager(attacker);
                 axeManager.bonusDamage(event);
-                axeManager.criticalHitCheck(event);
-                axeManager.impact(event);
-                axeManager.skullSplitter(event);
+                axeManager.criticalHitCheck(event, target);
+                axeManager.impact(event, target);
+                axeManager.skullSplitter(target, event.getDamage());
 
                 startGainXp(attacker, axeManager.getProfile(), target, SkillType.AXES);
             }
-            else if (itemInHand.getType() == Material.AIR && Permissions.unarmed(attacker)) {
+            else if (heldItemType == Material.AIR) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!configInstance.getUnarmedPVP()) {
                         return;
@@ -115,20 +118,13 @@ public class Combat {
                 Skills.abilityCheck(attacker, SkillType.UNARMED);
 
                 UnarmedManager unarmedManager = new UnarmedManager(attacker);
-
                 unarmedManager.bonusDamage(event);
-
-                if (unarmedManager.getProfile().getAbilityMode(AbilityType.BERSERK) && Permissions.berserk(attacker)) {
-                    event.setDamage((int) (event.getDamage() * 1.5));
-                }
-
-                if (targetIsPlayer) {
-                    unarmedManager.disarmCheck((Player) target);
-                }
+                unarmedManager.berserkDamage(event);
+                unarmedManager.disarmCheck(target);
 
                 startGainXp(attacker, unarmedManager.getProfile(), target, SkillType.UNARMED);
             }
-            else if (itemInHand.getType() == Material.BONE && target instanceof Tameable) {
+            else if (heldItemType == Material.BONE && target instanceof Tameable) {
                 TamingManager tamingManager = new TamingManager(attacker);
                 tamingManager.beastLore(target);
                 event.setCancelled(true);
@@ -143,21 +139,20 @@ public class Combat {
                 Player master = (Player) wolf.getOwner();
 
                 if (targetIsPlayer || targetIsTamedPet) {
-                    if (!configInstance.getTamingPVP()) {
+                    if (!Taming.pvpEnabled) {
                         return;
                     }
                 }
-                else if (!configInstance.getTamingPVE()) {
+                else if (!Taming.pveEnabled) {
                     return;
                 }
 
                 TamingManager tamingManager = new TamingManager(master);
-
                 tamingManager.fastFoodService(wolf, event.getDamage());
                 tamingManager.sharpenedClaws(event);
                 tamingManager.gore(event);
 
-                startGainXp(master, Users.getProfile(master), target, SkillType.TAMING);
+                startGainXp(master, tamingManager.getProfile(), target, SkillType.TAMING);
             }
 
             break;
@@ -165,16 +160,17 @@ public class Combat {
         case ARROW:
             LivingEntity shooter = ((Arrow) damager).getShooter();
 
+            //TODO: Is there a reason we're breaking here instead of returning?
             if (shooter == null || shooter.getType() != EntityType.PLAYER) {
                 break;
             }
 
             if (targetIsPlayer || targetIsTamedPet) {
-                if (!configInstance.getArcheryPVP()) {
+                if (!Archery.pvpEnabled) {
                     return;
                 }
             }
-            else if (!configInstance.getArcheryPVE()) {
+            else if (!Archery.pveEnabled) {
                 return;
             }
 
@@ -188,29 +184,29 @@ public class Combat {
         if (targetIsPlayer) {
             Player player = (Player) target;
 
-            AcrobaticsManager acroManager = new AcrobaticsManager(player);
+            AcrobaticsManager acrobaticsManager = new AcrobaticsManager(player);
             SwordsManager swordsManager = new SwordsManager(player);
 
-            if (damager.getType() == EntityType.PLAYER) {
-                if (configInstance.getSwordsPVP()) {
+            if (damager instanceof Player) {
+                if (Swords.pvpEnabled) {
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 
-                if (configInstance.getAcrobaticsPVP()) {
-                    acroManager.dodgeCheck(event);
+                if (Acrobatics.pvpEnabled) {
+                    acrobaticsManager.dodgeCheck(event);
                 }
             }
             else {
-                if (configInstance.getSwordsPVE() && damager instanceof LivingEntity) {
+                if (Swords.pveEnabled && damager instanceof LivingEntity) {
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 
-                if (configInstance.getAcrobaticsPVE()) {
-                    if (damager instanceof LightningStrike && configInstance.getDodgeLightningDisabled()) {
+                if (Acrobatics.pveEnabled) {
+                    if (damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) {
                         return;
                     }
 
-                    acroManager.dodgeCheck(event);
+                    acrobaticsManager.dodgeCheck(event);
                 }
             }
         }

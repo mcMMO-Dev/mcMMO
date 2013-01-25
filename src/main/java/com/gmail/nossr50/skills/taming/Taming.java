@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.taming;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 
 public class Taming {
     public static int environmentallyAwareUnlockLevel = AdvancedConfig.getInstance().getEnviromentallyAwareUnlock();
@@ -21,4 +22,10 @@ public class Taming {
 
     public static int thickFurUnlockLevel = AdvancedConfig.getInstance().getThickFurUnlock();
     public static int thickFurModifier = AdvancedConfig.getInstance().getThickFurModifier();
+
+    public static int wolfXP = Config.getInstance().getTamingXPWolf();
+    public static int ocelotXP = Config.getInstance().getTamingXPOcelot();
+
+    public static boolean pvpEnabled = Config.getInstance().getTamingPVP();
+    public static boolean pveEnabled = Config.getInstance().getTamingPVE();
 }

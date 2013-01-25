@@ -1,6 +1,6 @@
 package com.gmail.nossr50.skills.axes;
 
-import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
@@ -12,13 +12,13 @@ public class CriticalHitEventHandler {
     private EntityDamageByEntityEvent event;
     private int damage;
 
-    protected Entity defender;
+    protected LivingEntity defender;
     protected int skillModifier;
 
-    public CriticalHitEventHandler(AxeManager manager, EntityDamageByEntityEvent event) {
+    public CriticalHitEventHandler(AxeManager manager, EntityDamageByEntityEvent event, LivingEntity defender) {
         this.manager = manager;
         this.event = event;
-        this.defender = event.getEntity();
+        this.defender = defender;
         this.damage = event.getDamage();
 
         calculateSkillModifier();

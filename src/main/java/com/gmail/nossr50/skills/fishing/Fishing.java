@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
@@ -50,10 +51,19 @@ public class Fishing {
     public static int shakeChanceLevel5 = AdvancedConfig.getInstance().getShakeChanceRank5();
     public static int shakeUnlockLevel = AdvancedConfig.getInstance().getShakeUnlockLevel();
 
-    public static int fishermanDietRankChangeLevel = AdvancedConfig.getInstance().getFishermanDietRankChange();
-    public static int fishermanDietMaxLevel = fishermanDietRankChangeLevel * 5;
+    public static int fishermansDietRankLevel1 = AdvancedConfig.getInstance().getFishermanDietRankChange();
+    public static int fishermansDietRankLevel2 = fishermansDietRankLevel1 * 2;
+    public static int fishermansDietMaxLevel = fishermansDietRankLevel1 * 5;
 
     public static int magicHunterMultiplier = AdvancedConfig.getInstance().getFishingMagicMultiplier();
+
+    public static void fishermansDiet(Player player, int rankChange, FoodLevelChangeEvent event) {
+        if (!Permissions.fishermansDiet(player)) {
+            return;
+        }
+    
+        Skills.handleFoodSkills(player, SkillType.FISHING, event, fishermansDietRankLevel1, fishermansDietMaxLevel, rankChange);
+    }
 
     /**
      * Get the player's current fishing loot tier.

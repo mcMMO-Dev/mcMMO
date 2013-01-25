@@ -6,11 +6,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
@@ -23,20 +26,37 @@ public class TamingManager extends SkillManager {
     }
 
     /**
+     * Award XP for taming.
+     *
+     * @param event The event to award XP for
+     */
+    public void awardTamingXP(EntityTameEvent event) {
+        if (mcMMO.placeStore.isSpawnedMob(event.getEntity())) {
+            return;
+        }
+
+        switch (event.getEntityType()) {
+        case WOLF:
+            Skills.xpProcessing(player, profile, SkillType.TAMING, Taming.wolfXP);
+            break;
+
+        case OCELOT:
+            Skills.xpProcessing(player, profile, SkillType.TAMING, Taming.ocelotXP);
+            break;
+
+        default:
+            break;
+        }
+    }
+
+    /**
      * Apply the Fast Food Service ability.
      *
      * @param wolf The wolf using the ability
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, int damage) {
-        if (player == null)
-            return;
-
-        if (!Permissions.fastFoodService(player)) {
-            return;
-        }
-
-        if (skillLevel >= Taming.fastFoodServiceUnlockLevel) {
+        if (skillLevel >= Taming.fastFoodServiceUnlockLevel && Permissions.fastFoodService(player)) {
             if (Misc.getRandom().nextInt(activationChance) < Taming.fastFoodServiceActivationChance) {
                 FastFoodServiceEventHandler eventHandler = new FastFoodServiceEventHandler(wolf);
 
@@ -51,14 +71,7 @@ public class TamingManager extends SkillManager {
      * @param event The event to modify
      */
     public void sharpenedClaws(EntityDamageEvent event) {
-        if (player == null)
-            return;
-
-        if (!Permissions.sharpenedClaws(player)) {
-            return;
-        }
-
-        if (skillLevel >= Taming.sharpenedClawsUnlockLevel) {
+        if (skillLevel >= Taming.sharpenedClawsUnlockLevel && Permissions.sharpenedClaws(player)) {
             SharpenedClawsEventHandler eventHandler = new SharpenedClawsEventHandler(event);
 
             eventHandler.modifyEventDamage();
@@ -71,9 +84,6 @@ public class TamingManager extends SkillManager {
      * @param event The event to modify
      */
     public void gore(EntityDamageEvent event) {
-        if (player == null)
-            return;
-
         if (!Permissions.gore(player)) {
             return;
         }
@@ -143,15 +153,11 @@ public class TamingManager extends SkillManager {
      * @param livingEntity The entity to examine
      */
     public void beastLore(LivingEntity livingEntity) {
-        if (player == null)
-            return;
-
         if (!Permissions.beastLore(player)) {
             return;
         }
 
         BeastLoreEventHandler eventHandler = new BeastLoreEventHandler(player, livingEntity);
-
         eventHandler.sendInspectMessage();
     }
 
@@ -193,14 +199,7 @@ public class TamingManager extends SkillManager {
      * @param cause The damage cause of the event
      */
     private void environmentallyAware(EntityDamageEvent event, DamageCause cause) {
-        if (player == null)
-            return;
-
-        if (!Permissions.environmentallyAware(player)) {
-            return;
-        }
-
-        if (skillLevel >= Taming.environmentallyAwareUnlockLevel) {
+        if (skillLevel >= Taming.environmentallyAwareUnlockLevel && Permissions.environmentallyAware(player)) {
             EnvironmentallyAwareEventHandler eventHandler = new EnvironmentallyAwareEventHandler(this, event);
 
             switch (cause) {
@@ -228,16 +227,8 @@ public class TamingManager extends SkillManager {
      * @param cause The damage cause of the event
      */
     private void thickFur(EntityDamageEvent event, DamageCause cause) {
-        if (player == null)
-            return;
-
-        if (!Permissions.thickFur(player)) {
-            return;
-        }
-
-        if (skillLevel >= Taming.thickFurUnlockLevel) {
+        if (skillLevel >= Taming.thickFurUnlockLevel && Permissions.thickFur(player)) {
             ThickFurEventHandler eventHandler = new ThickFurEventHandler(event, cause);
-
             eventHandler.modifyEventDamage();
         }
     }
@@ -248,16 +239,8 @@ public class TamingManager extends SkillManager {
      * @param event The event to modify
      */
     private void shockProof(EntityDamageEvent event) {
-        if (player == null)
-            return;
-
-        if (!Permissions.shockProof(player)) {
-            return;
-        }
-
-        if (skillLevel >= Taming.shockProofUnlockLevel) {
+        if (skillLevel >= Taming.shockProofUnlockLevel && Permissions.shockProof(player)) {
             ShockProofEventHandler eventHandler = new ShockProofEventHandler(event);
-
             eventHandler.modifyEventDamage();
         }
     }

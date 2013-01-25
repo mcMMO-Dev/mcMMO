@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.swords;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 
 public class Swords {
     public static double bleedMaxChance = AdvancedConfig.getInstance().getBleedChanceMax();
@@ -14,4 +15,8 @@ public class Swords {
 
     public static int serratedStrikesModifier = AdvancedConfig.getInstance().getSerratedStrikesModifier();
     public static int serratedStrikesBleedTicks = AdvancedConfig.getInstance().getSerratedStrikesTicks();
+
+    public static boolean pvpEnabled = Config.getInstance().getSwordsPVP();
+    public static boolean pveEnabled = Config.getInstance().getSwordsPVE();
 }
+

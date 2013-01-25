@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.axes;
 
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -21,7 +22,7 @@ public class AxeManager extends SkillManager {
      * @param event The event to modify
      */
     public void bonusDamage(EntityDamageByEntityEvent event) {
-        if (Misc.isNPCPlayer(player) || !Permissions.axeBonus(player)) {
+        if (!Permissions.axeBonus(player)) {
             return;
         }
 
@@ -36,20 +37,16 @@ public class AxeManager extends SkillManager {
      *
      * @param event The event to modify
      */
-    public void criticalHitCheck(EntityDamageByEntityEvent event) {
-        if (Misc.isNPCPlayer(player) || !Permissions.criticalHit(player)) {
+    public void criticalHitCheck(EntityDamageByEntityEvent event, LivingEntity target) {
+        if (target.isDead() || (target instanceof Tameable && Misc.isFriendlyPet(player, (Tameable) target)) || !Permissions.criticalHit(player)) {
             return;
         }
 
-        CriticalHitEventHandler eventHandler = new CriticalHitEventHandler(this, event);
-
-        if (eventHandler.defender instanceof Tameable && Misc.isFriendlyPet(player, (Tameable) eventHandler.defender)) {
-            return;
-        }
+        CriticalHitEventHandler eventHandler = new CriticalHitEventHandler(this, event, target);
 
         double chance = (Axes.criticalHitMaxChance / Axes.criticalHitMaxBonusLevel) * eventHandler.skillModifier;
 
-        if (chance > Misc.getRandom().nextInt(activationChance) && !eventHandler.defender.isDead()) {
+        if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessages();
         }
@@ -60,18 +57,14 @@ public class AxeManager extends SkillManager {
      *
      * @param event The event to modify
      */
-    public void impact(EntityDamageByEntityEvent event) {
-        if (Misc.isNPCPlayer(player) || !Permissions.impact(player)) {
+    public void impact(EntityDamageByEntityEvent event, LivingEntity target) {
+        if (target.isDead() || !Permissions.impact(player)) {
             return;
         }
 
-        ImpactEventHandler eventHandler = new ImpactEventHandler(this, event);
+        ImpactEventHandler eventHandler = new ImpactEventHandler(this, event, target);
 
-        if (eventHandler.livingDefender == null) {
-            return;
-        }
-
-        if (Misc.hasArmor(eventHandler.livingDefender)) {
+        if (Misc.hasArmor(target)) {
             eventHandler.damageArmor();
         }
         else {
@@ -84,12 +77,12 @@ public class AxeManager extends SkillManager {
      *
      * @param event The event to process
      */
-    public void skullSplitter(EntityDamageByEntityEvent event) {
-        if (Misc.isNPCPlayer(player) || !Permissions.skullSplitter(player) || !profile.getAbilityMode(AbilityType.SKULL_SPLIITER)) {
+    public void skullSplitter(LivingEntity target, int damage) {
+        if (target.isDead() || !profile.getAbilityMode(AbilityType.SKULL_SPLIITER) || !Permissions.skullSplitter(player)) {
             return;
         }
 
-        SkullSplitterEventHandler eventHandler = new SkullSplitterEventHandler(this, event);
+        SkullSplitterEventHandler eventHandler = new SkullSplitterEventHandler(player, damage, target);
         eventHandler.applyAbilityEffects();
     }
 }
