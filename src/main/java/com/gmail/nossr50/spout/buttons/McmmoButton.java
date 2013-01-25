@@ -1,4 +1,4 @@
-package com.gmail.nossr50.datatypes.buttons;
+package com.gmail.nossr50.spout.buttons;
 
 import org.getspout.spoutapi.gui.GenericButton;
 

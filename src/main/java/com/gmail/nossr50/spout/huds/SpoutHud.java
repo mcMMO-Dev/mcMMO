@@ -6,10 +6,10 @@ import org.getspout.spoutapi.SpoutManager;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.popups.Menu;
-import com.gmail.nossr50.datatypes.popups.XpBar;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.spout.SpoutConfig;
+import com.gmail.nossr50.spout.popups.Menu;
+import com.gmail.nossr50.spout.popups.XpBar;
 
 public class SpoutHud {
     private Player player;

@@ -1,4 +1,4 @@
-package com.gmail.nossr50.listeners;
+package com.gmail.nossr50.spout;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,12 +12,10 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.buttons.McmmoButton;
-import com.gmail.nossr50.datatypes.popups.Menu;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.spout.SpoutConfig;
-import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.buttons.McmmoButton;
 import com.gmail.nossr50.spout.huds.SpoutHud;
+import com.gmail.nossr50.spout.popups.Menu;
 import com.gmail.nossr50.util.Users;
 
 public class SpoutListener implements Listener {

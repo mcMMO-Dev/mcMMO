@@ -1,4 +1,4 @@
-package com.gmail.nossr50.datatypes.popups;
+package com.gmail.nossr50.spout.popups;
 
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericGradient;
