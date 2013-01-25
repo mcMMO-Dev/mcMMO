@@ -185,7 +185,7 @@ public class BlockListener implements Listener {
                 Woodcutting.beginTreeFeller(event);
             }
             else {
-                if (Woodcutting.requiresTool) {
+                if (Woodcutting.REQUIRES_TOOL) {
                     if (ItemChecks.isAxe(heldItem)) {
                         Woodcutting.beginWoodcutting(player, block);
                     }
@@ -367,7 +367,7 @@ public class BlockListener implements Listener {
         }
         else if ((profile.getSkillLevel(SkillType.WOODCUTTING) >= Woodcutting.LEAF_BLOWER_UNLOCK_LEVEL) && BlockChecks.isLeaves(block)) {
             if (Skills.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
-                if (Woodcutting.requiresTool) {
+                if (Woodcutting.REQUIRES_TOOL) {
                     if (ItemChecks.isAxe(heldItem)) {
                         event.setInstaBreak(true);
                         Woodcutting.beginLeafBlower(player, block);
