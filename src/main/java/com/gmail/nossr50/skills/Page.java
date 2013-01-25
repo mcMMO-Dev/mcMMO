@@ -1,12 +1,11 @@
-package com.gmail.nossr50.util;
+package com.gmail.nossr50.skills;
 
 import java.util.ArrayList;
 
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.util.Misc;
 
 public class Page {
 

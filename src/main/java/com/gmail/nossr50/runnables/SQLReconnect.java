@@ -3,7 +3,7 @@ package com.gmail.nossr50.runnables;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Database;
+import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.util.Users;
 
 public class SQLReconnect implements Runnable {

@@ -10,10 +10,10 @@ import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.Skills;
-import com.gmail.nossr50.util.Database;
 import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Misc;
 

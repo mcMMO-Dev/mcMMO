@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.AbilityType;
@@ -17,7 +18,6 @@ import com.gmail.nossr50.skills.ToolType;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.huds.HudType;
 import com.gmail.nossr50.spout.huds.SpoutHud;
-import com.gmail.nossr50.util.Database;
 import com.gmail.nossr50.util.Misc;
 
 public class PlayerProfile {

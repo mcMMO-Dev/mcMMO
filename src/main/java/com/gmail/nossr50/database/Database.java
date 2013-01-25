@@ -1,4 +1,4 @@
-package com.gmail.nossr50.util;
+package com.gmail.nossr50.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,6 +21,7 @@ import com.gmail.nossr50.runnables.SQLReconnect;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.spout.huds.SpoutHud;
+import com.gmail.nossr50.util.Users;
 
 public class Database {
 

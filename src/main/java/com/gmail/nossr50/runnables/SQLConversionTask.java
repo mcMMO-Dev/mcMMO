@@ -5,7 +5,7 @@ import java.io.FileReader;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.util.Database;
+import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.util.Misc;
 
 public class SQLConversionTask implements Runnable {

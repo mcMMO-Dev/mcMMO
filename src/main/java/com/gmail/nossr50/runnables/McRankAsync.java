@@ -6,10 +6,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.Skills;
-import com.gmail.nossr50.util.Database;
 
 public class McRankAsync implements Runnable {
     private Database database = mcMMO.getPlayerDatabase();
