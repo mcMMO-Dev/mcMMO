@@ -12,6 +12,8 @@ Version 1.4.00-dev
  + Added new cancellable McMMOPlayerDisarmEvent for Citizens compatibility - fires whenever a player is disarmed.
  + Added config options for Hylian Luck skill
  + Added display values to Unarmed command for Iron Grip
+ + Added '/party create <name>' command, use this to create a party
+ + Added '/party disband' command, kicks out all members and deletes the party
  = Fixed several typos relating to locale string display
  = Fixed bug where all skill guide headers appeared as "Skillname Guide Guide"
  = Fixed bug where Impact was applied incorrectly due to an inverted method call
@@ -24,11 +26,14 @@ Version 1.4.00-dev
  = Fixed abilities activating with the wrong tool in hand
  = Fixed Experience.Gains.Mobspawners.Enabled not being used correctly (the check was inverted)
  = Fixed bug where Iron Grip was using the attacker's skill values rather than the defender's.
+ = Fixed a bug where /party kick would trigger the PartyChangeEvent for the wrong player
+ = Fixed a bug where party join messages weren't displayed
  ! Changed how Berserk handles not picking up items to avoid listening to PlayerPickupItemEvent
  ! Moved Hylian Luck into a separate listener since it actually cancels the event and shouldn't just be on MONITOR.
  ! Changed how Tree Feller is handled, it should now put less stress on the CPU
  ! Changed Fisherman's Diet and Farmer's Diet to use two seperate config values
  ! Major refactoring - please take note, this WILL break any mcMMO-related plugin not properly hooking into the API.
+ ! Changed the way party commands work, use /party ? to check how to use the new commands
 
 Version 1.3.14
  + Added new Hylian Luck skill to Herbalism.

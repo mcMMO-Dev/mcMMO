@@ -73,12 +73,6 @@ commands:
         description: Create/join a party
     inspect:
         aliases: []
-    invite:
-        aliases: []
-        description: Invite a player into your party
-    accept:
-        aliases: []
-        description: Accept a party invite
     mmoupdate:
         aliases: []
         description: Convert from Flat File to MySQL
@@ -706,15 +700,30 @@ permissions:
             mcmmo.commands.ability: true  
             mcmmo.commands.ptp: true 
             mcmmo.commands.inspect: true 
-            mcmmo.commands.party: true 
+            mcmmo.commands.party.all: true 
     mcmmo.commands.ability:
         description: Allows access to the mcability command
     mcmmo.commands.ptp:
         description: Allows access to the ptp command
     mcmmo.commands.inspect:
         description: Allows access to the inspect command
-    mcmmo.commands.party:
-        description: Allows acces to the party command
+    mcmmo.commands.party.all:
+        description: Implies all mcmmo.commands.party permissions.
+        children:
+            mcmmo.commands.party: true 
+            mcmmo.commands.party.join: true 
+            mcmmo.commands.party.create: true 
+            mcmmo.commands.party.quit: true 
+            mcmmo.commands.party.expshare: true 
+            mcmmo.commands.party.itemshare: true 
+            mcmmo.commands.party.accept: true 
+            mcmmo.commands.party.invite: true 
+            mcmmo.commands.party.kick: true 
+            mcmmo.commands.party.disband: true 
+            mcmmo.commands.party.owner: true 
+            mcmmo.commands.party.lock: true 
+            mcmmo.commands.party.unlock: true 
+            mcmmo.commands.party.password: true 
     mcmmo.chat.*:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:

@@ -66,7 +66,7 @@ public class PartyManager {
      */
     private void informPartyMembersJoin(String playerName, Party party) {
         for (Player member : party.getOnlineMembers()) {
-            if (member.getName().equals(playerName)) {
+            if (!member.getName().equals(playerName)) {
                 member.sendMessage(LocaleLoader.getString("Party.InformedOnJoin", new Object[] {playerName}));
             }
         }
@@ -80,7 +80,7 @@ public class PartyManager {
      */
     private void informPartyMembersQuit(String playerName, Party party) {
         for (Player member : party.getOnlineMembers()) {
-            if (member.getName().equals(playerName)) {
+            if (!member.getName().equals(playerName)) {
                 member.sendMessage(LocaleLoader.getString("Party.InformedOnQuit", new Object[] {playerName}));
             }
         }
@@ -156,7 +156,6 @@ public class PartyManager {
                 return party;
             }
         }
-
         return null;
     }
 
@@ -177,6 +176,7 @@ public class PartyManager {
      */
     public void removeFromParty(String playerName, Party party) {
         List<String> members = party.getMembers();
+        List<Player> onlineMembers = party.getOnlineMembers();
 
         members.remove(playerName);
 
@@ -184,8 +184,12 @@ public class PartyManager {
             parties.remove(party);
         }
         else {
+            //If the leaving player was the party leader, appoint a new leader from the online party members
             if (party.getLeader().equals(playerName)) {
-                party.setLocked(false);
+                if (!onlineMembers.isEmpty()) {
+                    Player newLeader = onlineMembers.get(0);
+                    party.setLeader(newLeader.getName());
+                }
             }
 
             informPartyMembersQuit(playerName, party);
@@ -196,6 +200,63 @@ public class PartyManager {
         if (playerProfile != null) {
             playerProfile.removeParty();
         }
+    }
+
+    /**
+     * Disband a party. Kicks out all members and removes the party.
+     *
+     * @param party The party to remove
+     */
+    public void disbandParty(Party party) {
+        List<String> members = party.getMembers();
+
+        for (String member : party.getMembers()) {
+            PlayerProfile playerProfile = Users.getProfile(member);
+
+            if (playerProfile != null) {
+                playerProfile.removeParty();
+            }
+        }
+
+        members.clear();
+        if (members.isEmpty()) {
+            parties.remove(party);
+        }
+    }
+
+    /**
+     * Create a new party
+     *
+     * @param player The player to add to the party
+     * @param playerProfile The profile of the player to add to the party
+     * @param partyName The party to add the player to
+     * @param password the password for this party, null if there was no password
+     */
+    public void createParty(Player player, PlayerProfile playerProfile, String partyName, String password) {
+        partyName = partyName.replace(".", "");
+        Party party = getParty(partyName);
+        String playerName = player.getName();
+
+        if (party == null) {
+            party = new Party();
+
+            party.setName(partyName);
+            party.setLeader(playerName);
+            party.setLocked(true);//Parties are now invite-only by default, can be set to open with /party unlock
+
+            if (password != null) {
+                party.setPassword(password);
+                party.setLocked(true);
+            }
+            parties.add(party);
+        }
+        else {
+            player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists"));
+            return;
+        }
+
+        player.sendMessage(LocaleLoader.getString("Commands.Party.Create", new Object[]{party.getName()}));
+        addToParty(player.getName(), playerProfile, party);
     }
 
     /**

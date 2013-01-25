@@ -51,8 +51,6 @@ import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.commands.ACommand;
-import com.gmail.nossr50.party.commands.AcceptCommand;
-import com.gmail.nossr50.party.commands.InviteCommand;
 import com.gmail.nossr50.party.commands.PCommand;
 import com.gmail.nossr50.party.commands.PartyCommand;
 import com.gmail.nossr50.party.commands.PtpCommand;
@@ -414,16 +412,8 @@ public class mcMMO extends JavaPlugin {
         }
 
         //Party commands
-        if (configInstance.getCommandAcceptEnabled()) {
-            getCommand("accept").setExecutor(new AcceptCommand(this));
-        }
-
         if (configInstance.getCommandAdminChatAEnabled()) {
             getCommand("a").setExecutor(new ACommand(this));
-        }
-
-        if (configInstance.getCommandInviteEnabled()) {
-            getCommand("invite").setExecutor(new InviteCommand(this));
         }
 
         if (configInstance.getCommandPartyEnabled()) {
