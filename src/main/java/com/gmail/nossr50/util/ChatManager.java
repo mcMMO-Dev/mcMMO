@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
@@ -11,19 +10,17 @@ import com.gmail.nossr50.party.Party;
 
 public class ChatManager {
     private mcMMO plugin;
-    private Player player;
     private String playerName;
-    private AsyncPlayerChatEvent event;
+    private String message;
 
-    public ChatManager (mcMMO plugin, Player player, AsyncPlayerChatEvent event) {
+    public ChatManager (mcMMO plugin, String playerName, String message) {
         this.plugin = plugin;
-        this.player = player;
-        this.playerName = player.getName();
-        this.event = event;
+        this.playerName = playerName;
+        this.message = message;
     }
 
     public void handleAdminChat() {
-        McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(playerName, event.getMessage());
+        McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(playerName, message);
         plugin.getServer().getPluginManager().callEvent(chatEvent);
 
         if (chatEvent.isCancelled()) {
@@ -39,21 +36,12 @@ public class ChatManager {
                 otherPlayer.sendMessage(LocaleLoader.getString("Commands.AdminChat.Prefix", new Object[] {playerName}) + adminMessage);
             }
         }
-
-        event.setCancelled(true);
     }
 
-    public void handlePartyChat() {
-        Party party = Users.getProfile(player).getParty();
-
-        if (party == null) {
-            player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-            return;
-        }
-
+    public void handlePartyChat(Party party) {
         String partyName = party.getName();
 
-        McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(playerName, partyName, event.getMessage());
+        McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(playerName, partyName, message);
         plugin.getServer().getPluginManager().callEvent(chatEvent);
 
         if (chatEvent.isCancelled()) {
@@ -67,7 +55,5 @@ public class ChatManager {
         for (Player member : party.getOnlineMembers()) {
             member.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Prefix", new Object[] {playerName}) + partyMessage);
         }
-
-        event.setCancelled(true);
     }
 }

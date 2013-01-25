@@ -1,13 +1,8 @@
 package com.gmail.nossr50.api;
 
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
-import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.ChatManager;
 
 public final class ChatAPI {
 
@@ -23,22 +18,8 @@ public final class ChatAPI {
      * @param message The message to send
      */
     public static void sendPartyChat(String sender, String party, String message) {
-        McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(sender, party, message);
-        mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
-
-        if (chatEvent.isCancelled()) {
-            return;
-        }
-
-        mcMMO.p.getLogger().info("[P](" + chatEvent.getParty() + ")" + "<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
-
-        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-            if (Users.getProfile(player).inParty()) {
-                if (Users.getProfile(player).getParty().getName().equalsIgnoreCase(chatEvent.getParty())) {
-                    player.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Prefix", new Object[] {chatEvent.getSender()} ) + chatEvent.getMessage());
-                }
-            }
-        }
+        ChatManager chatManager = new ChatManager(mcMMO.p, sender, message);
+        chatManager.handlePartyChat(PartyManager.getInstance().getParty(party));
     }
 
     /**
@@ -50,18 +31,7 @@ public final class ChatAPI {
      * @param message The message to send
      */
     public static void sendAdminChat(String sender, String message) {
-        McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(sender, message);
-        mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
-
-        if (chatEvent.isCancelled()) {
-            return;
-        }
-
-        mcMMO.p.getLogger().info("[A]<" + chatEvent.getSender() + "> " + chatEvent.getMessage());
-
-        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-            if (Permissions.adminChat(player) || player.isOp())
-                player.sendMessage(LocaleLoader.getString("Commands.AdminChat.Prefix", new Object[] {chatEvent.getSender()} ) + chatEvent.getMessage());
-        }
+        ChatManager chatManager = new ChatManager(mcMMO.p, sender, message);
+        chatManager.handleAdminChat();
     }
 }

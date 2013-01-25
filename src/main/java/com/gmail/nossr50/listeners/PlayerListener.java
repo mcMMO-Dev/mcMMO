@@ -23,6 +23,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.Skills;
@@ -344,12 +345,21 @@ public class PlayerListener implements Listener {
         }
 
         if (profile.getPartyChatMode()) {
-            ChatManager chatManager = new ChatManager(plugin, player, event);
-            chatManager.handlePartyChat();
+            Party party = profile.getParty();
+
+            if (party == null) {
+                player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+                return;
+            }
+
+            ChatManager chatManager = new ChatManager(plugin, player.getName(), event.getMessage());
+            chatManager.handlePartyChat(party);
+            event.setCancelled(true);
         }
         else if (profile.getAdminChatMode()) {
-            ChatManager chatManager = new ChatManager(plugin, player, event);
+            ChatManager chatManager = new ChatManager(plugin, player.getName(), event.getMessage());
             chatManager.handleAdminChat();
+            event.setCancelled(true);
         }
     }
 
