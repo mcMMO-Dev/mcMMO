@@ -1,4 +1,4 @@
-package com.gmail.nossr50.datatypes;
+package com.gmail.nossr50.database;
 
 public enum DatabaseUpdate {
     FISHING,
