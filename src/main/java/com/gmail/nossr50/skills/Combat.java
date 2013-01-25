@@ -56,9 +56,9 @@ public class Combat {
         boolean targetIsPlayer = (target.getType() == EntityType.PLAYER);
         boolean targetIsTamedPet = (target instanceof Tameable) ? ((Tameable) target).isTamed() : false;
 
-        switch (damager.getType()) {
+        switch (event.getDamager().getType()) {
         case PLAYER:
-            Player attacker = (Player) damager;
+            Player attacker = (Player) event.getDamager();
 
             if (Misc.isNPCPlayer(attacker)) {
                 return;
@@ -133,7 +133,7 @@ public class Combat {
             break;
 
         case WOLF:
-            Wolf wolf = (Wolf) damager;
+            Wolf wolf = (Wolf) event.getDamager();
 
             if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
                 Player master = (Player) wolf.getOwner();
@@ -158,7 +158,7 @@ public class Combat {
             break;
 
         case ARROW:
-            LivingEntity shooter = ((Arrow) damager).getShooter();
+            LivingEntity shooter = ((Arrow) event.getDamager()).getShooter();
 
             //TODO: Is there a reason we're breaking here instead of returning?
             if (shooter == null || shooter.getType() != EntityType.PLAYER) {
@@ -184,10 +184,10 @@ public class Combat {
         if (targetIsPlayer) {
             Player player = (Player) target;
 
-            if (damager instanceof Player) {
+            if (event.getDamager() instanceof Player) {
                 if (Swords.pvpEnabled) {
                     SwordsManager swordsManager = new SwordsManager(player);
-                    swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
+                    swordsManager.counterAttackChecks((LivingEntity) event.getDamager(), event.getDamage());
                 }
 
                 if (Acrobatics.pvpEnabled) {
@@ -201,13 +201,13 @@ public class Combat {
                 }
             }
             else {
-                if (Swords.pveEnabled && damager instanceof LivingEntity) {
+                if (Swords.pveEnabled && event.getDamager() instanceof LivingEntity) {
                     SwordsManager swordsManager = new SwordsManager(player);
-                    swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
+                    swordsManager.counterAttackChecks((LivingEntity) event.getDamager(), event.getDamage());
                 }
 
                 if (Acrobatics.pveEnabled) {
-                    if (!(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled)) {
+                    if (!(event.getDamager() instanceof LightningStrike && Acrobatics.dodgeLightningDisabled)) {
                         AcrobaticsManager acrobaticsManager = new AcrobaticsManager(player);
                         acrobaticsManager.dodgeCheck(event);
                     }
