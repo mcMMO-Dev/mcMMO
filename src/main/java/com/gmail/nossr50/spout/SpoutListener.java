@@ -1,6 +1,7 @@
 package com.gmail.nossr50.spout;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
@@ -19,19 +20,20 @@ import com.gmail.nossr50.spout.popups.Menu;
 import com.gmail.nossr50.util.Users;
 
 public class SpoutListener implements Listener {
+
     /**
      * Monitor SpoutCraftEnable events.
      *
      * @param event The event to watch
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSpoutCraftEnable(SpoutCraftEnableEvent event) {
         SpoutPlayer spoutPlayer = event.getPlayer();
         McMMOPlayer mcMMOPlayer = Users.getPlayer(spoutPlayer);
         PlayerProfile profile = mcMMOPlayer.getProfile();
 
         //TODO: Add custom titles based on skills
-        if (SpoutConfig.getInstance().getShowPowerLevel()) {
+        if (SpoutStuff.showPowerLevel) {
             spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", new Object[] {spoutPlayer.getName(), mcMMOPlayer.getPowerLevel()}));
         }
 
@@ -43,7 +45,7 @@ public class SpoutListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onButtonClick(ButtonClickEvent event) {
         Button button = event.getButton();
 
@@ -57,7 +59,7 @@ public class SpoutListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onScreenClose(ScreenCloseEvent event) {
         if (event.getScreen() instanceof Menu) {
             SpoutPlayer spoutPlayer = event.getPlayer();
@@ -72,7 +74,7 @@ public class SpoutListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onKeyPressedEvent(KeyPressedEvent event) {
         SpoutPlayer spoutPlayer = event.getPlayer();
 
@@ -80,7 +82,7 @@ public class SpoutListener implements Listener {
             return;
         }
 
-        if (event.getKey() == SpoutStuff.keypress) {
+        if (event.getKey() == SpoutStuff.menuKey) {
             SpoutHud spoutHud = Users.getProfile(spoutPlayer).getSpoutHud();
 
             if (!spoutHud.isMenuOpened()) {

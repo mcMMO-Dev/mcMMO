@@ -37,8 +37,10 @@ public class SpoutStuff {
     public final static String hudRetroDirectory = hudDirectory + "Retro" + File.separator;
     public final static String soundDirectory = spoutDirectory + "Sound" + File.separator;
 
+    public static boolean showPowerLevel = SpoutConfig.getInstance().getShowPowerLevel();
+
     private final static SpoutListener spoutListener = new SpoutListener();
-    public static Keyboard keypress;
+    public static Keyboard menuKey;
 
     /**
      * Write file to disk.
@@ -163,13 +165,13 @@ public class SpoutStuff {
 
         for (Keyboard x : Keyboard.values()) {
             if (x.toString().equalsIgnoreCase(temp)) {
-                keypress = x;
+                menuKey = x;
             }
         }
 
-        if (keypress == null) {
+        if (menuKey == null) {
             System.out.println("Invalid KEY for Menu.Key, using KEY_M");
-            keypress = Keyboard.KEY_M;
+            menuKey = Keyboard.KEY_M;
         }
     }
 
