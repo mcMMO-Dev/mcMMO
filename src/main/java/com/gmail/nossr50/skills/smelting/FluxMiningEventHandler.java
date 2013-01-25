@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.smelting;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -10,14 +11,17 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 
 public class FluxMiningEventHandler {
     private SmeltingManager manager;
+    private Player player;
     private BlockBreakEvent event;
     private Block block;
 
     protected FluxMiningEventHandler(SmeltingManager manager, BlockBreakEvent event) {
         this.manager = manager;
+        this.player = manager.getPlayer();
         this.event = event;
         this.block = event.getBlock();
     }
@@ -43,9 +47,12 @@ public class FluxMiningEventHandler {
         }
 
         Location location = block.getLocation();
-        int chance = (int) ((Mining.doubleDropsMaxChance / Mining.doubleDropsMaxLevel) * (Misc.skillCheck(manager.getProfile().getSkillLevel(SkillType.MINING), Mining.doubleDropsMaxLevel)));
         Misc.dropItem(location, item);
-        Misc.randomDropItem(location, item, chance);
+
+        if (Permissions.secondSmelt(player)) {
+            int chance = (int) ((Mining.doubleDropsMaxChance / Mining.doubleDropsMaxLevel) * (Misc.skillCheck(manager.getProfile().getSkillLevel(SkillType.MINING), Mining.doubleDropsMaxLevel)));
+            Misc.randomDropItem(location, item, chance);
+        }
     }
 
     protected void eventCancellationAndProcessing() {
@@ -54,6 +61,6 @@ public class FluxMiningEventHandler {
     }
 
     protected void sendAbilityMessage() {
-        manager.getPlayer().sendMessage(LocaleLoader.getString("Smelting.FluxMining.Success"));
+        player.sendMessage(LocaleLoader.getString("Smelting.FluxMining.Success"));
     }
 }

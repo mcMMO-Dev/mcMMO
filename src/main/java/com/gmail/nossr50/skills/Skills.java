@@ -422,18 +422,14 @@ public class Skills {
      */
     public static void abilityCheck(Player player, SkillType type) {
         PlayerProfile profile = Users.getProfile(player);
-        if (profile == null) {
-            return;
-        }
         ToolType tool = type.getTool();
+        AbilityType ability = type.getAbility();
 
-        if (!profile.getToolPreparationMode(tool)) {
+        if (!profile.getToolPreparationMode(tool) || !ability.getPermissions(player)) {
             return;
         }
 
         profile.setToolPreparationMode(tool, false);
-
-        AbilityType ability = type.getAbility();
 
         /* Axes and Woodcutting are odd because they share the same tool.
          * We show them the too tired message when they take action.
@@ -532,15 +528,11 @@ public class Skills {
      * @param xp the amount of XP to gain
      */
     public static void xpProcessing(Player player, PlayerProfile profile, SkillType type, int xp) {
-        if (type.getPermissions(player)) {
-            if (Users.getPlayer(player) == null)
-                return;
-
-            if ((type.getMaxLevel() < profile.getSkillLevel(type) + 1) || (Misc.getPowerLevelCap() < Users.getPlayer(player).getPowerLevel() + 1))
-                return;
-
-            Users.getPlayer(player).addXP(type, xp);
-            xpCheckSkill(type, player, profile);
+        if ((type.getMaxLevel() < profile.getSkillLevel(type) + 1) || (Misc.getPowerLevelCap() < Users.getPlayer(player).getPowerLevel() + 1)) {
+            return;
         }
+
+        Users.getPlayer(player).addXP(type, xp);
+        xpCheckSkill(type, player, profile);
     }
 }

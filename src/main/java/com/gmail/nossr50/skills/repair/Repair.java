@@ -34,6 +34,7 @@ public class Repair {
     public static boolean arcaneForgingDowngrades = advancedConfig.getArcaneForgingDowngradeEnabled();
     public static boolean arcaneForgingEnchantLoss = advancedConfig.getArcaneForgingEnchantLossEnabled();
 
+    public static boolean anvilMessagesEnabled = Config.getInstance().getRepairAnvilMessagesEnabled();
     public static int anvilID = Config.getInstance().getRepairAnvilId();
 
     /**

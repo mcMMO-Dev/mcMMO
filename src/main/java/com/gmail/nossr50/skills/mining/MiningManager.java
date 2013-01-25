@@ -112,12 +112,7 @@ public class MiningManager extends SkillManager{
      * @param block The block being broken
      */
     public void miningBlockCheck(Block block) {
-        if (mcMMO.placeStore.isTrue(block)) {
-            return;
-        }
-
         MiningBlockEventHandler eventHandler = new MiningBlockEventHandler(this, block);
-
         eventHandler.processXPGain();
 
         if (!Permissions.miningDoubleDrops(player)) {

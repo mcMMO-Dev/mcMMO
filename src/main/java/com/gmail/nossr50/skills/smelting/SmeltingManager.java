@@ -56,7 +56,7 @@ public class SmeltingManager extends SkillManager {
     }
 
     public void fluxMining(BlockBreakEvent event) {
-        if (skillLevel < Smelting.fluxMiningUnlockLevel || !Permissions.fluxMining(player)) {
+        if (skillLevel < Smelting.fluxMiningUnlockLevel) {
             return;
         }
 

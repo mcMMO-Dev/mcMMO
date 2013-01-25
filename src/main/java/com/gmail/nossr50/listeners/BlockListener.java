@@ -32,6 +32,7 @@ import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.skills.ToolType;
 import com.gmail.nossr50.skills.excavation.Excavation;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
+import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
@@ -97,7 +98,7 @@ public class BlockListener implements Listener {
     /**
      * Monitor BlockPlace events.
      *
-     * @param event The event to monitor
+     * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
@@ -114,18 +115,16 @@ public class BlockListener implements Listener {
             mcMMO.placeStore.setTrue(block);
         }
 
-        if (Config.getInstance().getRepairAnvilMessagesEnabled()) {
-            int id = block.getTypeId();
+        if (Repair.anvilMessagesEnabled) {
+            int blockID = block.getTypeId();
 
-            if (id == Config.getInstance().getRepairAnvilId()) {
-                Repair.placedAnvilCheck(player, id);
+            if (blockID == Repair.anvilID) {
+                Repair.placedAnvilCheck(player, blockID);
             }
-            else if (id == Config.getInstance().getSalvageAnvilId()) {
-                Salvage.placedAnvilCheck(player, id);
+            else if (blockID == Salvage.anvilID) {
+                Salvage.placedAnvilCheck(player, blockID);
             }
         }
-
-
     }
 
     /**
@@ -140,58 +139,54 @@ public class BlockListener implements Listener {
         }
 
         Player player = event.getPlayer();
-
-        if (player.hasMetadata("NPC")) return; // Check if this player is a Citizens NPC
-
         PlayerProfile profile = Users.getProfile(player);
 
-        if (profile == null) {
+        if (Misc.isNPCPlayer(player, profile)) {
             return;
         }
 
         Block block = event.getBlock();
-        ItemStack inHand = player.getItemInHand();
-
-        Config configInstance = Config.getInstance();
+        ItemStack heldItem = player.getItemInHand();
 
         /* HERBALISM */
         if (BlockChecks.canBeGreenTerra(block)) {
-            /* Green Terra */
-            if (profile.getToolPreparationMode(ToolType.HOE) && Permissions.greenTerra(player)) {
-                Skills.abilityCheck(player, SkillType.HERBALISM);
-            }
+            Skills.abilityCheck(player, SkillType.HERBALISM); //Green Terra
 
-            /* Triple drops */
-            if (profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
-                Herbalism.herbalismProcCheck(block, player, event, plugin);
-            }
-
+            /*
+             * We don't check the block store here because herbalism has too many unusual edge cases.
+             * Instead, we check it inside the drops handler.
+             */
             if (Permissions.herbalism(player)) {
-                Herbalism.herbalismProcCheck(block, player, event, plugin);
+                Herbalism.herbalismProcCheck(block, player, event, plugin); //Double drops
+
+                if (profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
+                    Herbalism.herbalismProcCheck(block, player, event, plugin); //Triple drops
+                }
             }
         }
 
         /* MINING */
-        else if (BlockChecks.canBeSuperBroken(block) && Permissions.mining(player)) {
-            MiningManager miningManager = new MiningManager(player);
-            if (configInstance.getMiningRequiresTool()) {
-                if (ItemChecks.isPickaxe(inHand)) {
+        else if (BlockChecks.canBeSuperBroken(block) && Permissions.mining(player) && !mcMMO.placeStore.isTrue(block)) {
+            if (Mining.requiresTool) {
+                if (ItemChecks.isPickaxe(heldItem)) {
+                    MiningManager miningManager = new MiningManager(player);
                     miningManager.miningBlockCheck(block);
                 }
             }
             else {
+                MiningManager miningManager = new MiningManager(player);
                 miningManager.miningBlockCheck(block);
             }
         }
 
         /* WOOD CUTTING */
         else if (BlockChecks.isLog(block) && Permissions.woodcutting(player) && !mcMMO.placeStore.isTrue(block)) {
-            if (profile.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemChecks.isAxe(inHand)) {
+            if (profile.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemChecks.isAxe(heldItem)) {
                 Woodcutting.beginTreeFeller(event);
             }
             else {
-                if (configInstance.getWoodcuttingRequiresTool()) {
-                    if (ItemChecks.isAxe(inHand)) {
+                if (Woodcutting.requiresTool) {
+                    if (ItemChecks.isAxe(heldItem)) {
                         Woodcutting.beginWoodcutting(player, block);
                     }
                 }
@@ -203,8 +198,8 @@ public class BlockListener implements Listener {
 
         /* EXCAVATION */
         else if (BlockChecks.canBeGigaDrillBroken(block) && Permissions.excavation(player) && !mcMMO.placeStore.isTrue(block)) {
-            if (configInstance.getExcavationRequiresTool()) {
-                if (ItemChecks.isShovel(inHand)) {
+            if (Excavation.requiresTool) {
+                if (ItemChecks.isShovel(heldItem)) {
                     Excavation.excavationProcCheck(block, player);
                 }
             }
@@ -213,12 +208,17 @@ public class BlockListener implements Listener {
             }
         }
 
-        //Remove metadata when broken
-        if (BlockChecks.shouldBeWatched(block)) {
+        /* Remove metadata from placed watched blocks */
+        if (BlockChecks.shouldBeWatched(block) && mcMMO.placeStore.isTrue(block)) {
             mcMMO.placeStore.setFalse(block);
         }
     }
 
+    /**
+     * Handle BlockBreak events where the event is modified.
+     *
+     * @param event The event to modify
+     */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockBreakHigher(BlockBreakEvent event) {
         if (event instanceof FakeBlockBreakEvent) {
@@ -227,21 +227,16 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
         Block block = event.getBlock();
-        ItemStack inHand = player.getItemInHand();
+        ItemStack heldItem = player.getItemInHand();
 
         if (Misc.isNPCPlayer(player)) {
             return;
         }
 
-        if (mcMMO.placeStore.isTrue(block)) {
-            mcMMO.placeStore.setFalse(block);
-            return;
-        }
-
-        if (Permissions.hylianLuck(player) && ItemChecks.isSword(inHand)) {
+        if (Permissions.hylianLuck(player) && ItemChecks.isSword(heldItem)) {
             Herbalism.hylianLuck(block, player, event);
         }
-        else if (BlockChecks.canBeFluxMined(block) && ItemChecks.isPickaxe(inHand) && !inHand.containsEnchantment(Enchantment.SILK_TOUCH)) {
+        else if (BlockChecks.canBeFluxMined(block) && ItemChecks.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH) && Permissions.fluxMining(player) && !mcMMO.placeStore.isTrue(block)) {
             SmeltingManager smeltingManager = new SmeltingManager(player);
             smeltingManager.fluxMining(event);
         }

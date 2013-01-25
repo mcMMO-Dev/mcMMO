@@ -27,6 +27,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Excavation {
+    public static boolean requiresTool = Config.getInstance().getExcavationRequiresTool();
 
     /**
      * Check to see if treasures were found.

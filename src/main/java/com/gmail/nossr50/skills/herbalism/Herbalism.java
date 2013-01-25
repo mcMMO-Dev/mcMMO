@@ -106,9 +106,6 @@ public class Herbalism {
      * @param plugin mcMMO plugin instance
      */
     public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
-        if (player == null)
-            return;
-
         final PlayerProfile profile = Users.getProfile(player);
 
         int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
@@ -557,7 +554,7 @@ public class Herbalism {
         if (chance > Misc.getRandom().nextInt(activationChance)) {
             Location location = block.getLocation();
             int dropNumber = Misc.getRandom().nextInt(3);
-            ItemStack item = null;
+            ItemStack item;
 
             switch (block.getType()) {
             case DEAD_BUSH:
@@ -584,6 +581,11 @@ public class Herbalism {
 
             case RED_ROSE:
             case YELLOW_FLOWER:
+                if (mcMMO.placeStore.isTrue(block)) {
+                    mcMMO.placeStore.setFalse(block);
+                    return;
+                }
+
                 if (dropNumber == 0) {
                     item = new ItemStack(Material.POTATO);
                 }
@@ -594,7 +596,6 @@ public class Herbalism {
                     item = new ItemStack(Material.APPLE);
                 }
 
-                mcMMO.placeStore.setFalse(block);
                 break;
 
             case FLOWER_POT:
@@ -610,10 +611,6 @@ public class Herbalism {
                 break;
 
             default:
-                break;
-            }
-
-            if (item == null) {
                 return;
             }
 
