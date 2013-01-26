@@ -25,7 +25,7 @@ public class SmeltingCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         //FUEL EFFICIENCY
-        burnTimeModifier = String.valueOf(1 + ((skillValue / Smelting.burnModifierMaxLevel) * Smelting.burnTimeMultiplier));
+        burnTimeModifier = decimal.format(1 + ((skillValue / Smelting.burnModifierMaxLevel) * Smelting.burnTimeMultiplier));
 
         //SECOND SMELT
         String[] secondSmeltStrings = calculateAbilityDisplayValues(Smelting.secondSmeltMaxLevel, Smelting.secondSmeltMaxChance);

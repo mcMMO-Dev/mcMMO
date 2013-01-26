@@ -26,6 +26,7 @@ public abstract class SkillCommand implements CommandExecutor {
     protected boolean hasEndurance;
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
+    protected DecimalFormat decimal = new DecimalFormat("##0.00");
 
     public SkillCommand(SkillType skill) {
         this.skill = skill;
