@@ -213,7 +213,7 @@ Experience:
         Mobspawners:
             Enabled: false
         Multiplier:
-            PVP: 1
+            PVP: 1.0
             Global: 1.0
     PVP:
         Rewards: true
