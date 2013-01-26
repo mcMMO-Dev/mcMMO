@@ -111,7 +111,9 @@ public class Fishing {
             List<FishingTreasure> rewards = new ArrayList<FishingTreasure>();
 
             for (FishingTreasure treasure : TreasuresConfig.getInstance().fishingRewards) {
-                if (treasure.getDropLevel() <= skillLevel && treasure.getMaxLevel() >= skillLevel) {
+                int maxLevel = treasure.getMaxLevel();
+
+                if (treasure.getDropLevel() <= skillLevel && (maxLevel >= skillLevel || maxLevel <= 0)) {
                     rewards.add(treasure);
                 }
             }

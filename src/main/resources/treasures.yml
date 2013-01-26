@@ -441,7 +441,7 @@ Treasures:
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Iron_Shovel:
@@ -451,7 +451,7 @@ Treasures:
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Iron_Pickaxe:
@@ -461,7 +461,7 @@ Treasures:
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Iron_Axe:
@@ -471,7 +471,7 @@ Treasures:
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Iron_Hoe:
@@ -481,7 +481,7 @@ Treasures:
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Iron_Boots:
@@ -491,7 +491,7 @@ Treasures:
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Iron_Helmet:
@@ -501,7 +501,7 @@ Treasures:
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Iron_Leggings:
@@ -511,7 +511,7 @@ Treasures:
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Iron_Chestplate:
@@ -521,7 +521,7 @@ Treasures:
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Ender_Pearl:
@@ -531,7 +531,7 @@ Treasures:
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Gold_Sword:
@@ -541,7 +541,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Gold_Shovel:
@@ -551,7 +551,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Gold_Pickaxe:
@@ -561,7 +561,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Gold_Axe:
@@ -571,7 +571,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Gold_Hoe:
@@ -581,7 +581,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Gold_Boots:
@@ -591,7 +591,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Gold_Helmet:
@@ -601,7 +601,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Gold_Leggings:
@@ -611,7 +611,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Gold_Chestplate:
@@ -621,7 +621,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Blaze_Rod:
@@ -631,7 +631,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Record_3:
@@ -641,7 +641,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Record_4:
@@ -651,7 +651,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Record_5:
@@ -661,7 +661,7 @@ Treasures:
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Diamond_Sword:
@@ -671,7 +671,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Diamond_Shovel:
@@ -681,7 +681,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Diamond_Pickaxe:
@@ -691,7 +691,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Diamond_Axe:
@@ -701,7 +701,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Diamond_Hoe:
@@ -711,7 +711,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Diamond_Boots:
@@ -721,7 +721,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Diamond_Helmet:
@@ -731,7 +731,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Diamond_Leggings:
@@ -741,7 +741,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Diamond_Chestplate:
@@ -751,7 +751,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Record_6:
@@ -761,7 +761,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Record_7:
@@ -771,7 +771,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Record_8:
@@ -781,7 +781,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Record_9:
@@ -791,7 +791,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Record_10:
@@ -801,7 +801,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Record_11:
@@ -811,7 +811,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Ghast_Tear:
@@ -821,7 +821,7 @@ Treasures:
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Diamonds:
@@ -831,7 +831,7 @@ Treasures:
         XP: 200
         Drop_Chance: 40.0
         Drop_Level: 800
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Iron_Ingots:
@@ -841,7 +841,7 @@ Treasures:
         XP: 200
         Drop_Chance: 40.0
         Drop_Level: 800
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Gold_Ingots:
@@ -851,7 +851,7 @@ Treasures:
         XP: 200
         Drop_Chance: 40.0
         Drop_Level: 800
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true
     Lapis_Lazuli:
@@ -861,6 +861,6 @@ Treasures:
         XP: 200
         Drop_Chance: 40.0
         Drop_Level: 800
-        Max_Level: 1000
+        Max_Level: -1
         Drops_From:
             Fishing: true

@@ -132,9 +132,7 @@ public class TreasuresConfig extends ConfigLoader{
 
                 int maxLevel = config.getInt("Treasures." + treasureName + ".Max_Level");
 
-                if (maxLevel < 0) {
-                    reason.add("Invalid Max_Level: " + maxLevel);
-                }
+
 
                 if (noErrorsInTreasure(reason)) {
                     FishingTreasure fTreasure = new FishingTreasure(item, xp, dropChance, dropLevel, maxLevel);
