@@ -176,7 +176,6 @@ public class PartyManager {
      */
     public void removeFromParty(String playerName, Party party) {
         List<String> members = party.getMembers();
-        List<Player> onlineMembers = party.getOnlineMembers();
 
         members.remove(playerName);
 
@@ -184,12 +183,10 @@ public class PartyManager {
             parties.remove(party);
         }
         else {
-            //If the leaving player was the party leader, appoint a new leader from the online party members
+            //If the leaving player was the party leader, appoint a new leader from the party members
             if (party.getLeader().equals(playerName)) {
-                if (!onlineMembers.isEmpty()) {
-                    Player newLeader = onlineMembers.get(0);
-                    party.setLeader(newLeader.getName());
-                }
+                    String newLeader = members.get(0);
+                    party.setLeader(newLeader);
             }
 
             informPartyMembersQuit(playerName, party);
@@ -309,7 +306,8 @@ public class PartyManager {
 
             if (partyPassword != null) {
                 if (password == null) {
-                    player.sendMessage(LocaleLoader.getString("Party.Help.1"));
+                    player.sendMessage(LocaleLoader.getString("Party.Password.None"));
+                    player.sendMessage(LocaleLoader.getString("Commands.Usage.3", new Object[] {"party", "join", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">", "<" + LocaleLoader.getString("Commands.Usage.Password") + ">"}));
                     return false;
                 }
                 else if (!password.equals(partyPassword)) {
