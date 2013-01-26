@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
@@ -11,8 +12,8 @@ import com.gmail.nossr50.party.Party;
 public final class ChatManager {
     public ChatManager () {}
 
-    public static void handleAdminChat(String playerName, String message) {
-        McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(playerName, message);
+    public static void handleAdminChat(Plugin plugin, String playerName, String message) {
+        McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(plugin, playerName, message);
         mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
         if (chatEvent.isCancelled()) {
@@ -30,10 +31,14 @@ public final class ChatManager {
         }
     }
 
-    public static void handlePartyChat(Party party, String playerName, String message) {
+    public static void handleAdminChat(String playerName, String message) {
+        handleAdminChat(null, playerName, message);
+    }
+
+    public static void handlePartyChat(Plugin plugin, Party party, String playerName, String message) {
         String partyName = party.getName();
 
-        McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(playerName, partyName, message);
+        McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(plugin, playerName, partyName, message);
         mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
         if (chatEvent.isCancelled()) {
@@ -47,5 +52,9 @@ public final class ChatManager {
         for (Player member : party.getOnlineMembers()) {
             member.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Prefix", new Object[] {playerName}) + partyMessage);
         }
+    }
+
+    public static void handlePartyChat(Party party, String playerName, String message) {
+        handlePartyChat(null, party, playerName, message);
     }
 }
