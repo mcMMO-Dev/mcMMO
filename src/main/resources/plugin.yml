@@ -724,6 +724,7 @@ permissions:
             mcmmo.commands.party.lock: true 
             mcmmo.commands.party.unlock: true 
             mcmmo.commands.party.password: true 
+            mcmmo.commands.party.rename: true 
     mcmmo.chat.*:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:

@@ -47,6 +47,8 @@ public class PartyCommand implements CommandExecutor {
             return accept(sender, args);
         else if(args[0].equalsIgnoreCase("create"))
             return create(sender, args);
+        else if(args[0].equalsIgnoreCase("info"))
+            return party(sender);
         else if(args[0].equalsIgnoreCase("?") || args[0].equalsIgnoreCase("help"))
             return help(sender, args);
         if (playerProfile.inParty()) {
@@ -70,6 +72,8 @@ public class PartyCommand implements CommandExecutor {
                 return unlock(sender, args);
             else if(args[0].equalsIgnoreCase("password"))
                 return password(sender, args);
+            else if(args[0].equalsIgnoreCase("rename"))
+                return rename(sender, args);
             else
                 return usage(sender);
         } else {
@@ -239,7 +243,7 @@ public class PartyCommand implements CommandExecutor {
             String password = null;
             if(args.length > 2) password = args[2];
 
-            Party newParty = partyManagerInstance.getParty(args[1]);
+            Party newParty = partyManagerInstance.getParty(partyname);
             // Check to see if the party exists, and if it does cancel creating a new party
             if (newParty != null) {
                 player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", new Object[] {partyname}));
@@ -247,7 +251,8 @@ public class PartyCommand implements CommandExecutor {
             }
 
             if (playerProfile.inParty()) {
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, playerProfile.getPlayerName(), partyname, EventReason.CHANGED_PARTIES);
+                String oldPartyName = party.getName();
+                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, oldPartyName, partyname, EventReason.CHANGED_PARTIES);
                 plugin.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) {
@@ -540,6 +545,53 @@ public class PartyCommand implements CommandExecutor {
             party.setLocked(true);
             party.setPassword(args[1]);
             player.sendMessage(LocaleLoader.getString("Party.PasswordSet", new Object[] {args[1]}));
+        }
+        else
+            player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
+        return true;
+    }
+
+    /**
+     * Rename the current party
+     */
+    private boolean rename(CommandSender sender, String[] args) {
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.rename"))
+            return true;
+
+        Player player = (Player) sender;
+        String playerName = player.getName();
+        PlayerProfile playerProfile = Users.getProfile(player);
+
+        PartyManager partyManagerInstance = PartyManager.getInstance();
+        Party party = playerProfile.getParty();
+
+        if (party.getLeader().equals(playerName)) {
+            if(args.length < 2) {
+                player.sendMessage(LocaleLoader.getString("Commands.Usage.2", new Object[] {"party", "rename", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">"}));
+                return true;
+            } else {
+                String newPartyName = args[1];
+                if (!party.getName().equals(newPartyName)) {//This is to prevent party leaders from spamming other players with the rename message
+                    Party newParty = partyManagerInstance.getParty(newPartyName);
+                    // Check to see if the party exists, and if it does cancel renaming the party
+                    if (newParty != null) {
+                        player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", new Object[] {newPartyName}));
+                        return true;
+                    }
+
+                    for (Player onlineMembers : party.getOnlineMembers()) {
+                        McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(onlineMembers, party.getName(), newPartyName, EventReason.CHANGED_PARTIES);
+                        plugin.getServer().getPluginManager().callEvent(event);
+
+                        if (event.isCancelled()) {
+                            return true;
+                        }
+                    }
+                    partyManagerInstance.informPartyMembersNameChange(newPartyName, party);
+                    party.setName(newPartyName);
+                }
+                player.sendMessage(LocaleLoader.getString("Commands.Party.Rename", new Object[] {newPartyName}));
+            }
         }
         else
             player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
