@@ -564,6 +564,7 @@ public class PartyCommand implements CommandExecutor {
 
         PartyManager partyManagerInstance = PartyManager.getInstance();
         Party party = playerProfile.getParty();
+        String leader = party.getLeader();
 
         if (party.getLeader().equals(playerName)) {
             if(args.length < 2) {
@@ -586,8 +587,11 @@ public class PartyCommand implements CommandExecutor {
                         if (event.isCancelled()) {
                             return true;
                         }
+
+                        if (!onlineMembers.getName().equals(leader)) {
+                            onlineMembers.sendMessage(LocaleLoader.getString("Party.InformedOnNameChange", new Object[] {leader, newPartyName}));
+                        }
                     }
-                    partyManagerInstance.informPartyMembersNameChange(newPartyName, party);
                     party.setName(newPartyName);
                 }
                 player.sendMessage(LocaleLoader.getString("Commands.Party.Rename", new Object[] {newPartyName}));

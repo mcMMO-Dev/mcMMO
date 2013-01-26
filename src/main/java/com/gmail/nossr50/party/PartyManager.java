@@ -87,21 +87,6 @@ public class PartyManager {
     }
 
     /**
-     * Notify party members when the party leader changed the party name.
-     *
-     * @param newPartyName The new name of the party
-     * @param party The concerned party
-     */
-    public void informPartyMembersNameChange(String newPartyName, Party party) {
-        String leader = party.getLeader();
-        for (Player member : party.getOnlineMembers()) {
-            if (!member.getName().equals(leader)) {
-                member.sendMessage(LocaleLoader.getString("Party.InformedOnNameChange", new Object[] {leader, newPartyName}));
-            }
-        }
-    }
-
-    /**
      * Get a list of all players in this player's party.
      *
      * @param player The player to check
