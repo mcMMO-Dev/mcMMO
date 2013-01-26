@@ -48,6 +48,11 @@ public class Herbalism {
     public static double hylianLuckMaxChance = AdvancedConfig.getInstance().getHylianLuckChanceMax();
     public static int hylianLuckMaxLevel = AdvancedConfig.getInstance().getHylianLucksMaxLevel();
 
+    public static boolean greenTerraWalls = Config.getInstance().getHerbalismGreenThumbCobbleWallToMossyWall();
+    public static boolean greenTerraSmoothBrick = Config.getInstance().getHerbalismGreenThumbSmoothbrickToMossy();
+    public static boolean greenTerraDirt = Config.getInstance().getHerbalismGreenThumbDirtToGrass();
+    public static boolean greenTerraCobble = Config.getInstance().getHerbalismGreenThumbCobbleToMossy();
+
     public static void farmersDiet(Player player, int rankChange, FoodLevelChangeEvent event) {
         if (!Permissions.farmersDiet(player)) {
             return;
@@ -68,8 +73,10 @@ public class Herbalism {
 
         if (!hasSeeds) {
             player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.NeedMore"));
+            return;
         }
-        else if (hasSeeds && !block.getType().equals(Material.WHEAT)) {
+
+        if (!block.getType().equals(Material.WHEAT)) {
             inventory.removeItem(new ItemStack(Material.SEEDS));
             player.updateInventory();   // Needed until replacement available
             greenTerraConvert(player, block);
@@ -77,22 +84,36 @@ public class Herbalism {
     }
 
     public static void greenTerraConvert(Player player, Block block) {
-        Material type = block.getType();
-
         if (Misc.blockBreakSimulate(block, player, false)) {
-            if (Config.getInstance().getHerbalismGreenThumbSmoothbrickToMossy() && type == Material.SMOOTH_BRICK && block.getData() == 0) {
-                block.setTypeIdAndData(block.getTypeId(), (byte) 1, false); //Set type of the brick to mossy, force the client update
-            }
-            else if (Config.getInstance().getHerbalismGreenThumbDirtToGrass() && type == Material.DIRT) {
-                block.setType(Material.GRASS);
-            }
-            else if (Config.getInstance().getHerbalismGreenThumbCobbleToMossy() && type == Material.COBBLESTONE) {
-                block.setType(Material.MOSSY_COBBLESTONE);
-                // Don't award double drops to mossified cobblestone
-                mcMMO.placeStore.setTrue(block);
-            }
-            else if (Config.getInstance().getHerbalismGreenThumbCobbleWallToMossyWall() && type == Material.COBBLE_WALL) {
-                block.setData((byte) 1);
+            Material type = block.getType();
+
+            switch (type) {
+            case SMOOTH_BRICK:
+                if (greenTerraSmoothBrick && block.getData() == 0x0) {
+                    block.setData((byte) 0x1);
+                }
+                return;
+
+            case DIRT:
+                if (greenTerraDirt) {
+                    block.setType(Material.GRASS);
+                }
+                return;
+
+            case COBBLESTONE:
+                if (greenTerraCobble) {
+                    block.setType(Material.MOSSY_COBBLESTONE);
+                }
+                return;
+
+            case COBBLE_WALL:
+                if (greenTerraWalls && block.getData() == 0x0) {
+                    block.setData((byte) 0x1);
+                }
+                return;
+
+            default:
+                return;
             }
         }
     }
