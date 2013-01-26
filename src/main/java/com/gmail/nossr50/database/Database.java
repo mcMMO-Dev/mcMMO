@@ -23,13 +23,10 @@ import com.gmail.nossr50.spout.huds.SpoutHud;
 import com.gmail.nossr50.util.Users;
 
 public final class Database {
-    private Database() {}
-
     private static String connectionString;
 
     private static String tablePrefix = Config.getInstance().getMySQLTablePrefix();
     private static Connection connection = null;
-    private static mcMMO plugin = null;
 
     // Scale waiting time by this much per failed attempt
     private static final double SCALING_FACTOR = 40;
@@ -48,6 +45,8 @@ public final class Database {
 
     // How many connection attemtps have failed
     private static int reconnectAttempt = 0;
+
+    private Database() {}
 
     /**
      * Attempt to connect to the mySQL database.
@@ -181,7 +180,7 @@ public final class Database {
 
         case INDEX:
             if(read("SHOW INDEX FROM " + tablePrefix + "skills").size() != 13) {
-                plugin.getLogger().info("Indexing tables, this may take a while on larger databases");
+                mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
                 write("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_taming` (`taming`) USING BTREE, "
                         + "ADD INDEX `idx_mining` (`mining`) USING BTREE, "
                         + "ADD INDEX `idx_woodcutting` (`woodcutting`) USING BTREE, "
@@ -417,7 +416,7 @@ public final class Database {
             if (connection != null && !connection.isClosed()) {
                 // Schedule a database save if we really had an outage
                 if (reconnectAttempt > 1) {
-                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new SQLReconnect(), 5);
+                    mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new SQLReconnect(), 5);
                 }
                 nextReconnectTimestamp = 0;
                 reconnectAttempt = 0;
@@ -514,7 +513,7 @@ public final class Database {
     }
 
     public static void purgePowerlessSQL() {
-        plugin.getLogger().info("Purging powerless users...");
+        mcMMO.p.getLogger().info("Purging powerless users...");
         HashMap<Integer, ArrayList<String>> usernames = read("SELECT u.user FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
         write("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.id IN (SELECT * FROM (SELECT u.id FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0) AS p)");
 
@@ -530,11 +529,11 @@ public final class Database {
             purgedUsers++;
         }
 
-        plugin.getLogger().info("Purged " + purgedUsers + " users from the database.");
+        mcMMO.p.getLogger().info("Purged " + purgedUsers + " users from the database.");
     }
 
     public static void purgeOldSQL() {
-        plugin.getLogger().info("Purging old users...");
+        mcMMO.p.getLogger().info("Purging old users...");
         long currentTime = System.currentTimeMillis();
         long purgeTime = 2630000000L * Config.getInstance().getOldUsersCutoff();
         HashMap<Integer, ArrayList<String>> usernames = read("SELECT user FROM " + tablePrefix + "users WHERE ((" + currentTime + " - lastlogin*1000) > " + purgeTime + ")");
@@ -552,7 +551,7 @@ public final class Database {
             purgedUsers++;
         }
 
-        plugin.getLogger().info("Purged " + purgedUsers + " users from the database.");
+        mcMMO.p.getLogger().info("Purged " + purgedUsers + " users from the database.");
     }
 
     private static void printErrors(SQLException ex) {
