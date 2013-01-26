@@ -11,17 +11,11 @@ import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
 public class AddlevelsCommand implements CommandExecutor{
-    private final mcMMO plugin;
-
-    public AddlevelsCommand (mcMMO plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         OfflinePlayer modifiedPlayer;
@@ -37,7 +31,7 @@ public class AddlevelsCommand implements CommandExecutor{
         switch (args.length) {
         case 2:
             if (sender instanceof Player) {
-                if (!Skills.isSkill(args[0])) {
+                if (!SkillTools.isSkill(args[0])) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                     return true;
                 }
@@ -45,7 +39,7 @@ public class AddlevelsCommand implements CommandExecutor{
                 if (Misc.isInt(args[1])) {
                     modifiedPlayer = (Player) sender;
                     levels = Integer.valueOf(args[1]);
-                    skill = Skills.getSkillType(args[0]);
+                    skill = SkillTools.getSkillType(args[0]);
                     profile = Users.getProfile(modifiedPlayer);
 
                     if (skill.equals(SkillType.ALL)) {
@@ -65,7 +59,7 @@ public class AddlevelsCommand implements CommandExecutor{
             return true;
 
         case 3:
-            modifiedPlayer = plugin.getServer().getOfflinePlayer(args[0]);
+            modifiedPlayer = mcMMO.p.getServer().getOfflinePlayer(args[0]);
             String playerName = modifiedPlayer.getName();
             profile = Users.getProfile(modifiedPlayer);
 
@@ -79,14 +73,14 @@ public class AddlevelsCommand implements CommandExecutor{
                 return true;
             }
 
-            if (!Skills.isSkill(args[1])) {
+            if (!SkillTools.isSkill(args[1])) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
 
             if (Misc.isInt(args[2])) {
                 levels = Integer.valueOf(args[2]);
-                skill = Skills.getSkillType(args[1]);
+                skill = SkillTools.getSkillType(args[1]);
 
                 Users.getProfile(modifiedPlayer).addLevels(skill, levels);
 

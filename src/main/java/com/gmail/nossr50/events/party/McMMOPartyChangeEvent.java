@@ -8,12 +8,11 @@ import org.bukkit.event.player.PlayerEvent;
 /**
  * Called when a player attempts to join, leave, or change parties.
  */
-public class McMMOPartyChangeEvent extends PlayerEvent implements Cancellable{
-
-    protected String oldParty;
-    protected String newParty;
-    protected EventReason reason;
-    protected boolean cancelled;
+public class McMMOPartyChangeEvent extends PlayerEvent implements Cancellable {
+    private String oldParty;
+    private String newParty;
+    private EventReason reason;
+    private boolean cancelled;
 
     public McMMOPartyChangeEvent(Player player, String oldParty, String newParty, EventReason reason) {
         super(player);

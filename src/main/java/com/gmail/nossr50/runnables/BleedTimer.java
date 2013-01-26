@@ -15,11 +15,9 @@ import com.gmail.nossr50.skills.Combat;
 
 public class BleedTimer implements Runnable {
     private final static int MAX_BLEED_TICKS = 10;
-
     private static Map<LivingEntity, Integer> bleedList = new HashMap<LivingEntity, Integer>();
     private static Map<LivingEntity, Integer> bleedAddList = new HashMap<LivingEntity, Integer>();
     private static List<LivingEntity> bleedRemoveList = new ArrayList<LivingEntity>();
-
     private static boolean lock = false;
 
     @Override

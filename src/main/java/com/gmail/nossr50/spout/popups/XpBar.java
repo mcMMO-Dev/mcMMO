@@ -17,7 +17,6 @@ import com.gmail.nossr50.util.Misc;
 
 public class XpBar {
     private SpoutPlayer spoutPlayer;
-
     private Widget xpBar;
     private GenericGradient xpFill;
     private GenericGradient xpBackground;

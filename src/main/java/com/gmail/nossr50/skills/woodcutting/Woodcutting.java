@@ -15,20 +15,22 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
-public abstract class Woodcutting {
+public final class Woodcutting {
     public static final int DOUBLE_DROP_MAX_LEVEL = AdvancedConfig.getInstance().getMiningDoubleDropMaxLevel();
     public static final double DOUBLE_DROP_CHANCE = AdvancedConfig.getInstance().getMiningDoubleDropChance();
     public static final int LEAF_BLOWER_UNLOCK_LEVEL = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
     public static final boolean DOUBLE_DROP_DISABLED = Config.getInstance().woodcuttingDoubleDropsDisabled();
     public static final int TREE_FELLER_THRESHOLD = Config.getInstance().getTreeFellerThreshold();
     public static final boolean REQUIRES_TOOL = Config.getInstance().getWoodcuttingRequiresTool();
+
+    private Woodcutting() {}
 
     /**
      * Begins the Tree Feller ability
@@ -75,7 +77,7 @@ public abstract class Woodcutting {
         }
 
         checkDoubleDrop(player, block);
-        Skills.xpProcessing(player,  Users.getProfile(player), SkillType.WOODCUTTING, xp);
+        SkillTools.xpProcessing(player,  Users.getProfile(player), SkillType.WOODCUTTING, xp);
     }
 
     /**

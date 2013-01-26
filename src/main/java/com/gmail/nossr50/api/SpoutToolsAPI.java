@@ -8,14 +8,13 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.skills.ToolType;
 
 public final class SpoutToolsAPI {
-
-    private SpoutToolsAPI() {}
-
     public static final List<ItemStack> spoutSwords = new ArrayList<ItemStack>();
     public static final List<ItemStack> spoutAxes = new ArrayList<ItemStack>();
     public static final List<ItemStack> spoutPickaxes = new ArrayList<ItemStack>();
     public static final List<ItemStack> spoutHoes = new ArrayList<ItemStack>();
     public static final List<ItemStack> spoutShovels = new ArrayList<ItemStack>();
+
+    private SpoutToolsAPI() {}
 
     /**
      * Add a custom Spout tool to mcMMO for XP gain & ability use.

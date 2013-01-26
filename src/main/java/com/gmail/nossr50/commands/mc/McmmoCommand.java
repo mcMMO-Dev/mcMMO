@@ -31,8 +31,7 @@ public class McmmoCommand implements CommandExecutor {
         }
         sender.sendMessage(LocaleLoader.getString("MOTD.Version", new Object[] {mcMMO.p.getDescription().getVersion()}));
 
-        Anniversary anniversary = new Anniversary();
-        anniversary.anniversaryCheck(sender);
+        Anniversary.anniversaryCheck(sender);
         return true;
     }
 }

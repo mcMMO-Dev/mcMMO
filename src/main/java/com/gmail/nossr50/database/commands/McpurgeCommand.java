@@ -4,15 +4,12 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class McpurgeCommand implements CommandExecutor{
-    private Database database = mcMMO.getPlayerDatabase();
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mcremove")) {
@@ -20,10 +17,10 @@ public class McpurgeCommand implements CommandExecutor{
         }
 
         if (Config.getInstance().getUseMySQL()) {
-            database.purgePowerlessSQL();
+            Database.purgePowerlessSQL();
 
             if (Config.getInstance().getOldUsersCutoff() != -1) {
-                database.purgeOldSQL();
+                Database.purgeOldSQL();
             }
         }
         else {

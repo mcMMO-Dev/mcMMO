@@ -99,7 +99,6 @@ public class mcMMO extends JavaPlugin {
     private HashMap<Integer, String> tntTracker = new HashMap<Integer, String>();
     private HashMap<Block, String> furnaceTracker = new HashMap<Block, String>();
 
-    private static Database database;
     public static mcMMO p;
 
     public static ChunkManager placeStore;
@@ -181,8 +180,8 @@ public class mcMMO extends JavaPlugin {
 
         //Setup the leader boards
         if (configInstance.getUseMySQL()) {
-            database = new Database(this);
-            database.createStructure();
+            Database.connect();
+            Database.createStructure();
         }
         else {
             Leaderboard.updateLeaderboards();
@@ -199,9 +198,9 @@ public class mcMMO extends JavaPlugin {
         //Schedule Spout Activation 1 second after start-up
         scheduler.scheduleSyncDelayedTask(this, new SpoutStart(this), 20);
         //Periodic save timer (Saves every 10 minutes by default)
-        scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(this), 0, configInstance.getSaveInterval() * 1200);
+        scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(), 0, configInstance.getSaveInterval() * 1200);
         //Regen & Cooldown timer (Runs every second)
-        scheduler.scheduleSyncRepeatingTask(this, new SkillMonitor(this), 0, 20);
+        scheduler.scheduleSyncRepeatingTask(this, new SkillMonitor(), 0, 20);
         //Bleed timer (Runs every two seconds)
         scheduler.scheduleSyncRepeatingTask(this, new BleedTimer(), 0, 40);
 
@@ -253,8 +252,7 @@ public class mcMMO extends JavaPlugin {
         new MobStoreCleaner();
 
         // Create Anniversary files
-        Anniversary anniversary = new Anniversary();
-        anniversary.createAnniversaryFile();
+        Anniversary.createAnniversaryFile();
     }
 
     /**
@@ -311,7 +309,7 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onDisable() {
         Users.saveAll(); //Make sure to save player information if the server shuts down
-        PartyManager.getInstance().saveParties();
+        PartyManager.saveParties();
         getServer().getScheduler().cancelTasks(this); //This removes our tasks
         placeStore.saveAll(); //Save our metadata
         placeStore.cleanUp(); //Cleanup empty metadata stores
@@ -323,9 +321,8 @@ public class mcMMO extends JavaPlugin {
         catch (IOException e) {
             getLogger().severe(e.toString());
         }
-        Anniversary anniversary = new Anniversary();
-        anniversary.saveAnniversaryFiles();
 
+        Anniversary.saveAnniversaryFiles();
         getLogger().info("Was disabled."); //How informative!
     }
 
@@ -372,7 +369,7 @@ public class mcMMO extends JavaPlugin {
             getCommand("mcpurge").setExecutor(new McpurgeCommand());
         }
         if (configInstance.getCommandMCRemoveEnabled()) {
-            getCommand("mcremove").setExecutor(new McremoveCommand(this));
+            getCommand("mcremove").setExecutor(new McremoveCommand());
         }
 
         if (configInstance.getCommandMCAbilityEnabled()) {
@@ -392,7 +389,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         if (configInstance.getCommandMCRefreshEnabled()) {
-            getCommand("mcrefresh").setExecutor(new McrefreshCommand(this));
+            getCommand("mcrefresh").setExecutor(new McrefreshCommand());
         }
 
         if (configInstance.getCommandMCTopEnabled()) {
@@ -413,11 +410,11 @@ public class mcMMO extends JavaPlugin {
 
         //Party commands
         if (configInstance.getCommandAdminChatAEnabled()) {
-            getCommand("a").setExecutor(new ACommand(this));
+            getCommand("a").setExecutor(new ACommand());
         }
 
         if (configInstance.getCommandPartyEnabled()) {
-            getCommand("party").setExecutor(new PartyCommand(this));
+            getCommand("party").setExecutor(new PartyCommand());
         }
 
         if (configInstance.getCommandPartyChatPEnabled()) {
@@ -430,11 +427,11 @@ public class mcMMO extends JavaPlugin {
 
         //Other commands
         if (configInstance.getCommandAddXPEnabled()) {
-            getCommand("addxp").setExecutor(new AddxpCommand(this));
+            getCommand("addxp").setExecutor(new AddxpCommand());
         }
 
         if (configInstance.getCommandAddLevelsEnabled()) {
-            getCommand("addlevels").setExecutor(new AddlevelsCommand(this));
+            getCommand("addlevels").setExecutor(new AddlevelsCommand());
         }
 
         if (configInstance.getCommandMmoeditEnabled()) {
@@ -446,10 +443,10 @@ public class mcMMO extends JavaPlugin {
         }
 
         if (configInstance.getCommandXPRateEnabled()) {
-            getCommand("xprate").setExecutor(new XprateCommand(this));
+            getCommand("xprate").setExecutor(new XprateCommand());
         }
 
-        getCommand("mmoupdate").setExecutor(new MmoupdateCommand(this));
+        getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
 
         //Spout commands
         if (configInstance.getCommandXPLockEnabled()) {
@@ -542,16 +539,12 @@ public class mcMMO extends JavaPlugin {
         return flatFileDirectory;
     }
 
-    public static String getUsersFile() {
+    public static String getUsersFilePath() {
         return usersFile;
     }
 
     public static String getModDirectory() {
         return modDirectory;
-    }
-
-    public static Database getPlayerDatabase() {
-        return database;
     }
 
     public boolean isXPEventEnabled() {

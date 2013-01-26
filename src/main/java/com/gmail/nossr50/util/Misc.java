@@ -25,18 +25,18 @@ import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.party.PartyManager;
 
-public class Misc {
+public final class Misc {
     private static Random random = new Random();
-
     public static int toolDurabilityLoss = Config.getInstance().getAbilityToolDamage();
     public static int abilityLengthIncreaseLevel = AdvancedConfig.getInstance().getAbilityLength();
     public static boolean isSpawnerXPEnabled = Config.getInstance().getExperienceGainsMobspawnersEnabled();
-
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
     public static final int NORMAL_SKILL_ACTIVATION_CHANCE = 100;
     public static final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;
+
+    private Misc() {};
 
     /**
      * Calculate activation chance for a skill.
@@ -75,7 +75,7 @@ public class Misc {
             if (tamer instanceof Player) {
                 Player owner = (Player) tamer;
 
-                if (owner == attacker || PartyManager.getInstance().inSameParty(attacker, owner)) {
+                if (owner == attacker || PartyManager.inSameParty(attacker, owner)) {
                     return true;
                 }
             }

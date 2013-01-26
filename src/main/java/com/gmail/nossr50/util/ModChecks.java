@@ -12,15 +12,16 @@ import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.mods.CustomItem;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 
-public class ModChecks {
+public final class ModChecks {
     private static Config configInstance = Config.getInstance();
     private static boolean customToolsEnabled = configInstance.getToolModsEnabled();
     private static boolean customArmorEnabled = configInstance.getArmorModsEnabled();
     private static boolean customBlocksEnabled = configInstance.getBlockModsEnabled();
-
     private static CustomToolsConfig toolInstance = CustomToolsConfig.getInstance();
     private static CustomArmorConfig armorInstance = CustomArmorConfig.getInstance();
     private static CustomBlocksConfig blocksInstance = CustomBlocksConfig.getInstance();
+
+    private ModChecks() {}
 
     /**
      * Get the custom armor associated with an item.

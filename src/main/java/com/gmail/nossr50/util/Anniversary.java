@@ -11,7 +11,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -26,14 +25,13 @@ import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.gmail.nossr50.mcMMO;
 
-public class Anniversary {
-
-    private Random random = new Random();
-
+public final class Anniversary {
     public static ArrayList<String> hasCelebrated;
 
+    private Anniversary() {}
+
     //This gets called onEnable
-    public void createAnniversaryFile() {
+    public static void createAnniversaryFile() {
         File anniversaryFile = new File(mcMMO.p.getDataFolder().getAbsolutePath() + File.separator + "anniversary");
 
         if (!anniversaryFile.exists()) {
@@ -62,7 +60,7 @@ public class Anniversary {
     }
 
     //This gets called onDisable
-    public void saveAnniversaryFiles() {
+    public static void saveAnniversaryFiles() {
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(mcMMO.p.getDataFolder().getAbsolutePath() + File.separator + "anniversary"));
             for (String player : hasCelebrated) {
@@ -77,7 +75,7 @@ public class Anniversary {
     }
 
     //This gets called from /mcmmo command
-    public void anniversaryCheck(final CommandSender sender) {
+    public static void anniversaryCheck(final CommandSender sender) {
         if (sender instanceof Player) {
             GregorianCalendar anniversaryStart = new GregorianCalendar(2013, Calendar.FEBRUARY, 3);
             GregorianCalendar anniversaryEnd = new GregorianCalendar(2013, Calendar.FEBRUARY, 6);
@@ -105,11 +103,11 @@ public class Anniversary {
         }
     }
 
-    private boolean getDateRange(Date date, Date start, Date end) {
+    private static boolean getDateRange(Date date, Date start, Date end) {
         return !(date.before(start) || date.after(end));
     }
 
-    private void spawnFireworks(Player player) {
+    private static void spawnFireworks(Player player) {
         int power = (int) (Math.random() * 3) + 1;
         int type = (int) (Math.random() * 5) + 1;
 
@@ -122,16 +120,16 @@ public class Anniversary {
 
         Firework fireworks = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
         FireworkMeta fireworkmeta = fireworks.getFireworkMeta();
-        FireworkEffect effect = FireworkEffect.builder().flicker(random.nextBoolean()).withColor(colorchoose()).withFade(colorchoose()).with(typen).trail(random.nextBoolean()).build();
+        FireworkEffect effect = FireworkEffect.builder().flicker(Misc.getRandom().nextBoolean()).withColor(colorchoose()).withFade(colorchoose()).with(typen).trail(Misc.getRandom().nextBoolean()).build();
         fireworkmeta.addEffect(effect);
         fireworkmeta.setPower(power);
         fireworks.setFireworkMeta(fireworkmeta);
     }
 
-    private List<Color> colorchoose() {
+    private static List<Color> colorchoose() {
         // Thanks Zomis and Tejpbit for the help with this function!
 
-        int numberofcolors = random.nextInt(17) + 1;
+        int numberofcolors = Misc.getRandom().nextInt(17) + 1;
 
         List<Color> allcolors = new ArrayList<Color>();
         allcolors.add(Color.AQUA);
@@ -155,7 +153,7 @@ public class Anniversary {
         List<Color> choosencolors = new ArrayList<Color>();
 
         for (int i = 0; i < numberofcolors; i++) {
-            choosencolors.add(allcolors.remove(random.nextInt(allcolors.size())));
+            choosencolors.add(allcolors.remove(Misc.getRandom().nextInt(allcolors.size())));
         }
         return choosencolors;
     }

@@ -7,10 +7,12 @@ public class AdvancedConfig extends ConfigLoader {
         super("advanced.yml");
         loadKeys();
     }
+
     public static AdvancedConfig getInstance() {
         if (instance == null) {
             instance = new AdvancedConfig();
         }
+
         return instance;
     }
 

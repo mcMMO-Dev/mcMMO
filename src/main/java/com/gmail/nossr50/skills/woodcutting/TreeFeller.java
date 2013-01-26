@@ -17,7 +17,7 @@ import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.Combat;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
@@ -42,13 +42,13 @@ public abstract class TreeFeller {
         if (treeFellerReachedThreshold) {
             treeFellerReachedThreshold = false;
 
-            player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFellerThreshold"));
+            player.sendMessage(LocaleLoader.getString("Woodcutting.SkillTools.TreeFellerThreshold"));
             return;
         }
 
         // If the tool can't sustain the durability loss
         if (!handleDurabilityLoss(treeFellerBlocks, player)) {
-            player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFeller.Splinter"));
+            player.sendMessage(LocaleLoader.getString("Woodcutting.SkillTools.TreeFeller.Splinter"));
 
             int health = player.getHealth();
 
@@ -223,7 +223,7 @@ public abstract class TreeFeller {
 
         // Do we really have to check the permission here?
         if (Permissions.woodcutting(player)) {
-            Skills.xpProcessing(player, Users.getProfile(player), SkillType.WOODCUTTING, xp);
+            SkillTools.xpProcessing(player, Users.getProfile(player), SkillType.WOODCUTTING, xp);
         }
     }
 }

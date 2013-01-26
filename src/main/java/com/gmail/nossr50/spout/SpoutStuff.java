@@ -23,7 +23,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
@@ -549,7 +549,7 @@ public class SpoutStuff {
             break;
         }
 
-        spoutPlayer.sendNotification(LocaleLoader.getString("Spout.LevelUp.1"), LocaleLoader.getString("Spout.LevelUp.2", new Object[] {Skills.localizeSkillName(skillType), profile.getSkillLevel(skillType)} ), mat);
+        spoutPlayer.sendNotification(LocaleLoader.getString("Spout.LevelUp.1"), LocaleLoader.getString("Spout.LevelUp.2", new Object[] {SkillTools.localizeSkillName(skillType), profile.getSkillLevel(skillType)} ), mat);
         SpoutSounds.playLevelUpNoise(spoutPlayer, plugin);
     }
 

@@ -12,14 +12,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 
 public class XprateCommand implements CommandExecutor {
-    private final mcMMO plugin;
-    private static double oldRate = Config.getInstance().xpGainMultiplier;
-    private boolean xpEvent;
-
-    public XprateCommand (mcMMO plugin) {
-        this.plugin = plugin;
-        this.xpEvent = plugin.isXPEventEnabled();
-    }
+    private static double originalRate = Config.getInstance().getExperienceGainsGlobalMultiplier();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -31,20 +24,21 @@ public class XprateCommand implements CommandExecutor {
             return true;
         }
 
+        boolean xpEventEnabled = mcMMO.p.isXPEventEnabled();
+
         switch (args.length) {
         case 1:
             if (args[0].equalsIgnoreCase("reset")) {
-                if (xpEvent) {
-                    for (Player x : plugin.getServer().getOnlinePlayers()) {
+                if (xpEventEnabled) {
+                    for (Player x : mcMMO.p.getServer().getOnlinePlayers()) {
                         x.sendMessage(LocaleLoader.getString("Commands.xprate.over"));
                     }
 
-                    xpEvent = !xpEvent;
-                    plugin.setXPEventEnabled(xpEvent);
-                    Config.getInstance().xpGainMultiplier = oldRate;
+                    mcMMO.p.setXPEventEnabled(!xpEventEnabled);
+                    Config.getInstance().setExperienceGainsGlobalMultiplier(originalRate);
                 }
                 else {
-                    Config.getInstance().xpGainMultiplier = oldRate;
+                    Config.getInstance().setExperienceGainsGlobalMultiplier(originalRate);
                 }
             }
             else if (Misc.isInt(args[0])) {
@@ -58,26 +52,24 @@ public class XprateCommand implements CommandExecutor {
 
         case 2:
             if (Misc.isInt(args[0])) {
-                oldRate = Config.getInstance().xpGainMultiplier;
-
                 if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("false")) {
-                    xpEvent = Boolean.valueOf(args[1]);
-                    plugin.setXPEventEnabled(xpEvent);
+                    mcMMO.p.setXPEventEnabled(Boolean.valueOf(args[1]));
                 }
                 else {
                     sender.sendMessage(usage3);
                 }
 
-                Config.getInstance().xpGainMultiplier = Misc.getInt(args[0]);
+                int newRate = Misc.getInt(args[0]);
+                Config.getInstance().setExperienceGainsGlobalMultiplier(newRate);
 
-                if (xpEvent) {
-                    for (Player x : plugin.getServer().getOnlinePlayers()) {
+                if (xpEventEnabled) {
+                    for (Player x : mcMMO.p.getServer().getOnlinePlayers()) {
                         x.sendMessage(LocaleLoader.getString("Commands.xprate.started.0"));
-                        x.sendMessage(LocaleLoader.getString("Commands.xprate.started.1", new Object[] {Config.getInstance().xpGainMultiplier}));
+                        x.sendMessage(LocaleLoader.getString("Commands.xprate.started.1", new Object[] {newRate}));
                     }
                 }
                 else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", new Object[] {Config.getInstance().xpGainMultiplier}));
+                    sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", new Object[] {newRate}));
                 }
             }
             else {

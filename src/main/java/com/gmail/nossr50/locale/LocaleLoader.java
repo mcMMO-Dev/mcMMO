@@ -9,9 +9,11 @@ import org.bukkit.ChatColor;
 
 import com.gmail.nossr50.config.Config;
 
-public class LocaleLoader {
+public final class LocaleLoader {
     private static final String BUNDLE_NAME = "com.gmail.nossr50.locale.locale";
     private static ResourceBundle RESOURCE_BUNDLE = null;
+
+    private LocaleLoader() {};
 
     public static String getString(String key) {
         return getString(key, null);

@@ -13,12 +13,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Users;
 
 public class McrefreshCommand implements CommandExecutor {
-    private final mcMMO plugin;
-
-    public McrefreshCommand(mcMMO instance) {
-        this.plugin = instance;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         OfflinePlayer player;
@@ -42,7 +36,7 @@ public class McrefreshCommand implements CommandExecutor {
             break;
 
         case 1:
-            player = plugin.getServer().getOfflinePlayer(args[0]);
+            player = mcMMO.p.getServer().getOfflinePlayer(args[0]);
             profile = Users.getProfile(player);
             String playerName = player.getName();
 

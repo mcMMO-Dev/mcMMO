@@ -13,12 +13,6 @@ import com.gmail.nossr50.runnables.SQLConversionTask;
 import com.gmail.nossr50.util.Users;
 
 public class MmoupdateCommand implements CommandExecutor {
-    private final mcMMO plugin;
-
-    public MmoupdateCommand (mcMMO plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.admin")) {
@@ -29,7 +23,7 @@ public class MmoupdateCommand implements CommandExecutor {
         Users.clearAll();
         convertToMySQL();
 
-        for (Player x : plugin.getServer().getOnlinePlayers()) {
+        for (Player x : mcMMO.p.getServer().getOnlinePlayers()) {
             Users.addUser(x);
         }
 
@@ -46,6 +40,6 @@ public class MmoupdateCommand implements CommandExecutor {
             return;
         }
 
-        plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new SQLConversionTask(plugin), 1);
+        mcMMO.p.getServer().getScheduler().runTaskLaterAsynchronously(mcMMO.p, new SQLConversionTask(), 1);
     }
 }

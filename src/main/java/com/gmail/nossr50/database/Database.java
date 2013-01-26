@@ -22,12 +22,12 @@ import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.spout.huds.SpoutHud;
 import com.gmail.nossr50.util.Users;
 
-public class Database {
+public final class Database {
+    private Database() {}
 
-    private static Config configInstance = Config.getInstance();
     private static String connectionString;
 
-    private static String tablePrefix = configInstance.getMySQLTablePrefix();
+    private static String tablePrefix = Config.getInstance().getMySQLTablePrefix();
     private static Connection connection = null;
     private static mcMMO plugin = null;
 
@@ -49,16 +49,13 @@ public class Database {
     // How many connection attemtps have failed
     private static int reconnectAttempt = 0;
 
-    public Database(mcMMO instance) {
-        plugin = instance;
-        checkConnected(); //Connect to MySQL
-    }
-
     /**
      * Attempt to connect to the mySQL database.
      */
     public static void connect() {
+        Config configInstance = Config.getInstance();
         connectionString = "jdbc:mysql://" + configInstance.getMySQLServerName() + ":" + configInstance.getMySQLServerPort() + "/" + configInstance.getMySQLDatabaseName();
+
         try {
             mcMMO.p.getLogger().info("Attempting connection to MySQL...");
 
@@ -84,7 +81,7 @@ public class Database {
     /**
      * Attempt to create the database structure.
      */
-    public void createStructure() {
+    public static void createStructure() {
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
                 + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                 + "`user` varchar(40) NOT NULL,"
@@ -158,7 +155,7 @@ public class Database {
      *
      * @param update Type of data to check updates for
      */
-    public void checkDatabaseStructure(DatabaseUpdate update) {
+    private static void checkDatabaseStructure(DatabaseUpdate update) {
         String sql = null;
         ResultSet resultSet = null;
         HashMap<Integer, ArrayList<String>> rows = new HashMap<Integer, ArrayList<String>>();
@@ -256,7 +253,7 @@ public class Database {
      * @param sql Query to write.
      * @return true if the query was successfully written, false otherwise.
      */
-    public boolean write(String sql) {
+    public static boolean write(String sql) {
         if (checkConnected()) {
             PreparedStatement statement = null;
             try {
@@ -288,7 +285,7 @@ public class Database {
      * @param sql SQL query to execute
      * @return the number of rows affected
      */
-    public int update(String sql) {
+    public static int update(String sql) {
         int ret = 0;
         if (checkConnected()) {
             PreparedStatement statement = null;
@@ -320,7 +317,7 @@ public class Database {
      * @param sql SQL query to execute
      * @return the value in the first row / first field
      */
-    public int getInt(String sql) {
+    public static int getInt(String sql) {
         ResultSet resultSet;
         int result = 0;
 
@@ -416,7 +413,7 @@ public class Database {
             if (connection != null && !connection.isClosed()) {
                 // Schedule a database save if we really had an outage
                 if (reconnectAttempt > 1) {
-                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new SQLReconnect(plugin), 5);
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new SQLReconnect(), 5);
                 }
                 nextReconnectTimestamp = 0;
                 reconnectAttempt = 0;
@@ -441,7 +438,7 @@ public class Database {
      * @param sql SQL query to read
      * @return the rows in this SQL query
      */
-    public HashMap<Integer, ArrayList<String>> read(String sql) {
+    public static HashMap<Integer, ArrayList<String>> read(String sql) {
         ResultSet resultSet;
         HashMap<Integer, ArrayList<String>> rows = new HashMap<Integer, ArrayList<String>>();
 
@@ -470,7 +467,7 @@ public class Database {
         return rows;
     }
 
-    public Map<String, Integer> readSQLRank(String playerName) {
+    public static Map<String, Integer> readSQLRank(String playerName) {
         ResultSet resultSet;
         Map<String, Integer> skills = new HashMap<String, Integer>();
         if (checkConnected()) {
@@ -512,7 +509,7 @@ public class Database {
         return skills;
     }
 
-    public void purgePowerlessSQL() {
+    public static void purgePowerlessSQL() {
         plugin.getLogger().info("Purging powerless users...");
         HashMap<Integer, ArrayList<String>> usernames = read("SELECT u.user FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
         write("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.id IN (SELECT * FROM (SELECT u.id FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0) AS p)");
@@ -532,7 +529,7 @@ public class Database {
         plugin.getLogger().info("Purged " + purgedUsers + " users from the database.");
     }
 
-    public void purgeOldSQL() {
+    public static void purgeOldSQL() {
         plugin.getLogger().info("Purging old users...");
         long currentTime = System.currentTimeMillis();
         long purgeTime = 2630000000L * Config.getInstance().getOldUsersCutoff();

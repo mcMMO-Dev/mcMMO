@@ -20,7 +20,7 @@ public class ZipLibrary {
     private static File BackupDir = new File(BackupDirectory);
     private static File FlatFileDirectory = new File(mcMMO.getFlatFileDirectory());
     private static File ModFileDirectory = new File(mcMMO.getModDirectory());
-    private static File UsersFile = new File(mcMMO.getUsersFile());
+    private static File UsersFile = new File(mcMMO.getUsersFilePath());
     private static File ConfigFile = new File(mcMMO.getMainDirectory() + "config.yml");
     private static File TreasuresFile = new File(mcMMO.getMainDirectory() + "treasures.yml");
 

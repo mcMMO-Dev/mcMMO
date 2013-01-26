@@ -16,7 +16,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -52,7 +52,7 @@ public class Repair {
 
         dif = (short) (dif * modify);
 
-        Skills.xpProcessing(player, profile, SkillType.REPAIR, dif * 10);
+        SkillTools.xpProcessing(player, profile, SkillType.REPAIR, dif * 10);
 
         //CLANG CLANG
         if (mcMMO.spoutEnabled) {
@@ -248,7 +248,7 @@ public class Repair {
         int activationChance = Misc.calculateActivationChance(Permissions.luckyRepair(player));
 
         if (chance > Misc.getRandom().nextInt(activationChance) && Permissions.repairBonus(player)) {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
+            player.sendMessage(LocaleLoader.getString("Repair.SkillTools.FeltEasy"));
             return true;
         }
         return false;

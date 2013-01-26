@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 /**
  * Called just before a player teleports using the /ptp command.
  */
-public class McMMOPartyTeleportEvent extends PlayerTeleportEvent{
+public class McMMOPartyTeleportEvent extends PlayerTeleportEvent {
     private String party;
     private Player target;
 

@@ -8,32 +8,30 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 
-public class Item {
+public final class ChimaeraWing {
+    private ChimaeraWing() {}
 
     /**
      * Check for item usage.
      *
      * @param player Player whose item usage to check
      */
-    public static void itemChecks(Player player) {
+    public static void activationCheck(Player player) {
         ItemStack inHand = player.getItemInHand();
 
-        if (Config.getInstance().getChimaeraEnabled() && inHand.getTypeId() == Config.getInstance().getChimaeraItemId()) {
-            chimaeraWing(player);
+        if (!Config.getInstance().getChimaeraEnabled() || inHand.getTypeId() != Config.getInstance().getChimaeraItemId()) {
+            return;
         }
-    }
 
-    private static void chimaeraWing(Player player) {
         PlayerProfile profile = Users.getProfile(player);
-        ItemStack inHand = player.getItemInHand();
         Block block = player.getLocation().getBlock();
         int amount = inHand.getAmount();
         long recentlyHurt = profile.getRecentlyHurt();
 
         if (Permissions.chimaeraWing(player) && inHand.getTypeId() == Config.getInstance().getChimaeraItemId()) {
-            if (Skills.cooldownOver(recentlyHurt, 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
+            if (SkillTools.cooldownOver(recentlyHurt, 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
                 player.setItemInHand(new ItemStack(Config.getInstance().getChimaeraItemId(), amount - Config.getInstance().getChimaeraCost()));
 
                 for (int y = 1; block.getY() + y < player.getWorld().getMaxHeight(); y++) {
@@ -53,11 +51,11 @@ public class Item {
 
                 player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
             }
-            else if (!Skills.cooldownOver(recentlyHurt, 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
-                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", new Object[] {Skills.calculateTimeLeft(recentlyHurt, 60, player)}));
+            else if (!SkillTools.cooldownOver(recentlyHurt, 60, player) && amount >= Config.getInstance().getChimaeraCost()) {
+                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", new Object[] {SkillTools.calculateTimeLeft(recentlyHurt, 60, player)}));
             }
             else if (amount <= Config.getInstance().getChimaeraCost()) {
-                player.sendMessage(LocaleLoader.getString("Skills.NeedMore", new Object[] { Misc.prettyItemString(Config.getInstance().getChimaeraItemId()) }));
+                player.sendMessage(LocaleLoader.getString("SkillTools.NeedMore", new Object[] { Misc.prettyItemString(Config.getInstance().getChimaeraItemId()) }));
             }
         }
     }

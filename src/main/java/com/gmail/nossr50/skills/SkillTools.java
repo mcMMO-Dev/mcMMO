@@ -21,7 +21,7 @@ import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
-public class Skills {
+public class SkillTools {
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     public static int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
     public static boolean abilitiesEnabled = Config.getInstance().getAbilitiesEnabled();

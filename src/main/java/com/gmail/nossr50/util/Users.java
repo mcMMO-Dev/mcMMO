@@ -12,8 +12,10 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 
-public class Users {
+public final class Users {
     private static Map<String, McMMOPlayer> players = new HashMap<String, McMMOPlayer>();
+
+    private Users() {};
 
     /**
      * Load users.
@@ -22,7 +24,7 @@ public class Users {
         new File(mcMMO.getFlatFileDirectory()).mkdir();
 
         try {
-            new File(mcMMO.getUsersFile()).createNewFile();
+            new File(mcMMO.getUsersFilePath()).createNewFile();
         }
         catch (IOException e) {
             e.printStackTrace();

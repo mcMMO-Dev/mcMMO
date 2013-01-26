@@ -9,17 +9,11 @@ import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.util.Misc;
 
 public class SQLConversionTask implements Runnable {
-    private final mcMMO plugin;
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-
-    public SQLConversionTask(mcMMO plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public void run() {
-        Database database = mcMMO.getPlayerDatabase();
-        String location = mcMMO.getUsersFile();
+        String location = mcMMO.getUsersFilePath();
 
         try {
             FileReader file = new FileReader(location);
@@ -166,7 +160,7 @@ public class SQLConversionTask implements Runnable {
                 }
 
                 //Check to see if the user is in the DB
-                id = database.getInt("SELECT id FROM "
+                id = Database.getInt("SELECT id FROM "
                         + tablePrefix
                         + "users WHERE user = '" + playerName + "'");
 
@@ -174,11 +168,11 @@ public class SQLConversionTask implements Runnable {
                     theCount++;
 
                     //Update the skill values
-                    database.write("UPDATE "
+                    Database.write("UPDATE "
                             + tablePrefix
                             + "users SET lastlogin = " + 0
                             + " WHERE id = " + id);
-                    database.write("UPDATE "
+                    Database.write("UPDATE "
                             + tablePrefix
                             + "skills SET "
                             + "  taming = taming+" + Misc.getInt(taming)
@@ -194,7 +188,7 @@ public class SQLConversionTask implements Runnable {
                             + ", acrobatics = acrobatics+" + Misc.getInt(acrobatics)
                             + ", fishing = fishing+" + Misc.getInt(fishing)
                             + " WHERE user_id = " + id);
-                    database.write("UPDATE "
+                    Database.write("UPDATE "
                             + tablePrefix
                             + "experience SET "
                             + "  taming = " + Misc.getInt(tamingXP)
@@ -215,32 +209,32 @@ public class SQLConversionTask implements Runnable {
                     theCount++;
 
                     //Create the user in the DB
-                    database.write("INSERT INTO "
+                    Database.write("INSERT INTO "
                             + tablePrefix
                             + "users (user, lastlogin) VALUES ('"
                             + playerName + "',"
                             + System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR + ")");
-                    id = database.getInt("SELECT id FROM "
+                    id = Database.getInt("SELECT id FROM "
                             + tablePrefix
                             + "users WHERE user = '"
                             + playerName + "'");
-                    database.write("INSERT INTO "
+                    Database.write("INSERT INTO "
                             + tablePrefix
                             + "skills (user_id) VALUES (" + id + ")");
-                    database.write("INSERT INTO "
+                    Database.write("INSERT INTO "
                             + tablePrefix
                             + "experience (user_id) VALUES (" + id
                             + ")");
                     //Update the skill values
-                    database.write("UPDATE "
+                    Database.write("UPDATE "
                             + tablePrefix
                             + "users SET lastlogin = " + 0
                             + " WHERE id = " + id);
-                    database.write("UPDATE "
+                    Database.write("UPDATE "
                             + tablePrefix
                             + "users SET party = '" + party
                             + "' WHERE id = " + id);
-                    database.write("UPDATE "
+                    Database.write("UPDATE "
                             + tablePrefix
                             + "skills SET "
                             + "  taming = taming+" + Misc.getInt(taming)
@@ -256,7 +250,7 @@ public class SQLConversionTask implements Runnable {
                             + ", acrobatics = acrobatics+" + Misc.getInt(acrobatics)
                             + ", fishing = fishing+" + Misc.getInt(fishing)
                             + " WHERE user_id = " + id);
-                    database.write("UPDATE "
+                    Database.write("UPDATE "
                             + tablePrefix
                             + "experience SET "
                             + "  taming = " + Misc.getInt(tamingXP)
@@ -279,7 +273,7 @@ public class SQLConversionTask implements Runnable {
             in.close();
         }
         catch (Exception e) {
-            plugin.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+            mcMMO.p.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
         }
     }
 }

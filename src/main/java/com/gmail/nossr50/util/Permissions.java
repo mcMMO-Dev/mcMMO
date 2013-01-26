@@ -5,21 +5,11 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.skills.SkillType;
 
-public class Permissions {
-    public static boolean hasPermission(CommandSender sender, String perm)
-    {
-        if (sender.hasPermission(perm))
-            return true;
+public final class Permissions {
+    private Permissions() {}
 
-        return false;
-    }
-
-    public static boolean hasPermission(Player sender, String perm)
-    {
-        if (sender.hasPermission(perm))
-            return true;
-
-        return false;
+    public static boolean hasPermission(CommandSender sender, String perm) {
+        return (sender.hasPermission(perm));
     }
 
     /*

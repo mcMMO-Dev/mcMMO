@@ -9,9 +9,10 @@ import org.bukkit.material.MaterialData;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 
-public class BlockChecks {
+public final class BlockChecks {
     private static Config configInstance = Config.getInstance();
-    private static boolean customBlocksEnabled = configInstance.getBlockModsEnabled();
+
+    private BlockChecks() {}
 
     /**
      * Checks to see if a block type awards XP.
@@ -62,7 +63,7 @@ public class BlockChecks {
         default:
             ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
-            if (customBlocksEnabled && CustomBlocksConfig.getInstance().customItems.contains(item)) {
+            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customItems.contains(item)) {
                 return true;
             }
 
@@ -79,7 +80,7 @@ public class BlockChecks {
     public static boolean canActivateAbilities(Block block) {
         ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
-        if (customBlocksEnabled && CustomBlocksConfig.getInstance().customAbilityBlocks.contains(item)) {
+        if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customAbilityBlocks.contains(item)) {
             return false;
         }
 
@@ -137,7 +138,7 @@ public class BlockChecks {
             return true;
 
         default:
-            if (customBlocksEnabled && ModChecks.isCustomOreBlock(block)) {
+            if (configInstance.getBlockModsEnabled() && ModChecks.isCustomOreBlock(block)) {
                 return true;
             }
 
@@ -201,7 +202,7 @@ public class BlockChecks {
         default:
             ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
-            if (customBlocksEnabled && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(item)) {
+            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(item)) {
                 return true;
             }
 
@@ -237,7 +238,7 @@ public class BlockChecks {
         default:
             ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
-            if (customBlocksEnabled && CustomBlocksConfig.getInstance().customMiningBlocks.contains(item)) {
+            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customMiningBlocks.contains(item)) {
                 return true;
             }
 
@@ -265,7 +266,7 @@ public class BlockChecks {
         default:
             ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
-            if (customBlocksEnabled && CustomBlocksConfig.getInstance().customExcavationBlocks.contains(item)) {
+            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customExcavationBlocks.contains(item)) {
                 return true;
             }
 
@@ -288,7 +289,7 @@ public class BlockChecks {
         default:
             ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
-            if (customBlocksEnabled && CustomBlocksConfig.getInstance().customWoodcuttingBlocks.contains(item)) {
+            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customWoodcuttingBlocks.contains(item)) {
                 return true;
             }
 
@@ -297,7 +298,7 @@ public class BlockChecks {
     }
 
     public static boolean isLog(Block block) {
-        if (block.getType().equals(Material.LOG) || (customBlocksEnabled && ModChecks.isCustomLogBlock(block))) {
+        if (block.getType().equals(Material.LOG) || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLogBlock(block))) {
             return true;
         }
 

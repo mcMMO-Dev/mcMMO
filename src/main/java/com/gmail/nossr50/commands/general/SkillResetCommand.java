@@ -12,7 +12,6 @@ import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.util.Users;
 
 public class SkillResetCommand implements CommandExecutor {
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (CommandHelper.noConsoleUsage(sender)) {

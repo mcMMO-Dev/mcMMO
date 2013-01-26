@@ -24,7 +24,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.GreenThumbTimer;
 import com.gmail.nossr50.skills.AbilityType;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
@@ -58,7 +58,7 @@ public class Herbalism {
             return;
         }
 
-        Skills.handleFoodSkills(player, SkillType.HERBALISM, event, farmersDietRankLevel1, farmersDietMaxLevel, rankChange);
+        SkillTools.handleFoodSkills(player, SkillType.HERBALISM, event, farmersDietRankLevel1, farmersDietMaxLevel, rankChange);
     }
 
     /**
@@ -437,7 +437,7 @@ public class Herbalism {
         if (Config.getInstance().getHerbalismAFKDisabled() && player.isInsideVehicle())
             return;
 
-        Skills.xpProcessing(player, profile, SkillType.HERBALISM, xp);
+        SkillTools.xpProcessing(player, profile, SkillType.HERBALISM, xp);
     }
 
     /**

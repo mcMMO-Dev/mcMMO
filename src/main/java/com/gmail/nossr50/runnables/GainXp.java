@@ -5,15 +5,15 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 
 public class GainXp implements Runnable {
-    private Player player = null;
-    private PlayerProfile profile = null;
-    private double baseXp = 0;
-    private SkillType skillType = null;
-    private LivingEntity target = null;
-    private int baseHealth = 0;
+    private Player player;
+    private PlayerProfile profile;
+    private double baseXp;
+    private SkillType skillType;
+    private LivingEntity target;
+    private int baseHealth;
 
     public GainXp(Player player, PlayerProfile profile, SkillType skillType, double baseXp, LivingEntity target) {
         this.player = player;
@@ -39,6 +39,6 @@ public class GainXp implements Runnable {
             damage += health;
         }
 
-        Skills.xpProcessing(player, profile, skillType, (int) (damage * baseXp));
+        SkillTools.xpProcessing(player, profile, skillType, (int) (damage * baseXp));
     }
 }

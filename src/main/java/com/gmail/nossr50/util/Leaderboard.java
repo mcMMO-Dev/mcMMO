@@ -12,11 +12,11 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.skills.SkillType;
 
-public class Leaderboard {
-    private static mcMMO plugin = mcMMO.p;
-    private final static String location = mcMMO.getUsersFile();
+public final class Leaderboard {
     private static HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
     private static long lastUpdate = 0;
+
+    private Leaderboard() {}
 
     /**
      * Update the leader boards.
@@ -47,7 +47,7 @@ public class Leaderboard {
 
         //Read from the FlatFile database and fill our arrays with information
         try {
-            FileReader file = new FileReader(location);
+            FileReader file = new FileReader(mcMMO.getUsersFilePath());
             BufferedReader in = new BufferedReader(file);
             String line = "";
             ArrayList<String> players = new ArrayList<String>();
@@ -130,7 +130,7 @@ public class Leaderboard {
             in.close();
         }
         catch (Exception e) {
-            plugin.getLogger().severe(("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString()));
+            mcMMO.p.getLogger().severe(("Exception while reading " + mcMMO.getUsersFilePath() + " (Are you sure you formatted it correctly?)" + e.toString()));
         }
 
         SkillComparator c = new SkillComparator();

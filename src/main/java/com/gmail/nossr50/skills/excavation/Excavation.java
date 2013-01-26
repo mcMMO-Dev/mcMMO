@@ -19,7 +19,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
@@ -112,7 +112,7 @@ public class Excavation {
             }
         }
 
-        Skills.xpProcessing(player, profile, SkillType.EXCAVATION, xp);
+        SkillTools.xpProcessing(player, profile, SkillType.EXCAVATION, xp);
     }
 
     /**
@@ -125,7 +125,7 @@ public class Excavation {
         if (player == null)
             return;
 
-        Skills.abilityDurabilityLoss(player.getItemInHand(), Misc.toolDurabilityLoss);
+        SkillTools.abilityDurabilityLoss(player.getItemInHand(), Misc.toolDurabilityLoss);
 
         if (!mcMMO.placeStore.isTrue(block) && Misc.blockBreakSimulate(block, player, true)) {
             FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);

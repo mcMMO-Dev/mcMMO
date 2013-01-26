@@ -13,7 +13,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
@@ -37,11 +37,11 @@ public class TamingManager extends SkillManager {
 
         switch (event.getEntityType()) {
         case WOLF:
-            Skills.xpProcessing(player, profile, SkillType.TAMING, Taming.wolfXP);
+            SkillTools.xpProcessing(player, profile, SkillType.TAMING, Taming.wolfXP);
             break;
 
         case OCELOT:
-            Skills.xpProcessing(player, profile, SkillType.TAMING, Taming.ocelotXP);
+            SkillTools.xpProcessing(player, profile, SkillType.TAMING, Taming.ocelotXP);
             break;
 
         default:

@@ -4,7 +4,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
@@ -67,7 +67,7 @@ public class RollEventHandler extends AcrobaticsEventHandler {
 
     @Override
     protected void processXPGain(int xpGain) {
-        Skills.xpProcessing(player, manager.getProfile(), SkillType.ACROBATICS, xpGain);
+        SkillTools.xpProcessing(player, manager.getProfile(), SkillType.ACROBATICS, xpGain);
     }
 
     /**

@@ -14,11 +14,9 @@ import com.gmail.nossr50.spout.popups.XpBar;
 public class SpoutHud {
     private Player player;
     private PlayerProfile profile;
-
     private SkillType lastGained;
     private SkillType skillLock;
     private boolean xpBarLocked;
-
     private Menu menu;
     private XpBar xpBar;
 

@@ -45,8 +45,10 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
-public class Combat {
+public final class Combat {
     private static Config configInstance = Config.getInstance();
+
+    private Combat() {};
 
     /**
      * Apply combat modifiers and process and XP gain.
@@ -83,7 +85,7 @@ public class Combat {
                     boolean canSerratedStrike = Permissions.serratedStrikes(player); //So we don't have to check the same permission twice
 
                     if (profile.getToolPreparationMode(ToolType.SWORD) && canSerratedStrike) {
-                        Skills.abilityCheck(player, SkillType.SWORDS);
+                        SkillTools.abilityCheck(player, SkillType.SWORDS);
                     }
 
                     if (Permissions.swordsBleed(player) && shouldBeAffected(player, target)) {
@@ -112,7 +114,7 @@ public class Combat {
                     PlayerProfile profile = axeManager.getProfile();
                     boolean canSkullSplit = Permissions.skullSplitter(player); //So we don't have to check the same permission twice
                     if (profile.getToolPreparationMode(ToolType.AXE) && canSkullSplit) {
-                        Skills.abilityCheck(player, SkillType.AXES);
+                        SkillTools.abilityCheck(player, SkillType.AXES);
                     }
 
                     if (Permissions.axeBonus(player)) {
@@ -150,7 +152,7 @@ public class Combat {
                     boolean canBerserk = Permissions.berserk(player); //So we don't have to check the same permission twice
 
                     if (profile.getToolPreparationMode(ToolType.FISTS) && canBerserk) {
-                        Skills.abilityCheck(player, SkillType.UNARMED);
+                        SkillTools.abilityCheck(player, SkillType.UNARMED);
                     }
 
                     if (Permissions.unarmedBonus(player)) {
@@ -558,7 +560,7 @@ public class Combat {
         if (entity instanceof Player) {
             Player defender = (Player) entity;
 
-            if (!defender.getWorld().getPVP() || defender == player || PartyManager.getInstance().inSameParty(player, defender) || Users.getProfile(defender).getGodMode()) {
+            if (!defender.getWorld().getPVP() || defender == player || PartyManager.inSameParty(player, defender) || Users.getProfile(defender).getGodMode()) {
                 return false;
             }
 

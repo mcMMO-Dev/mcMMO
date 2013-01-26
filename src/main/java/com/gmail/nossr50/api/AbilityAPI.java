@@ -5,7 +5,8 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.skills.AbilityType;
 import com.gmail.nossr50.util.Users;
 
-public class AbilityAPI {
+public final class AbilityAPI {
+    private AbilityAPI() {}
 
     public static boolean berserkEnabled(Player player) {
         return Users.getProfile(player).getAbilityMode(AbilityType.BERSERK);

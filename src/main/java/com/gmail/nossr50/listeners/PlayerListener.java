@@ -17,7 +17,6 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -26,7 +25,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.runnables.BleedTimer;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.BlastMining;
@@ -36,14 +35,13 @@ import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.ChatManager;
-import com.gmail.nossr50.util.Item;
-import com.gmail.nossr50.util.MOTD;
+import com.gmail.nossr50.util.ChimaeraWing;
+import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PlayerListener implements Listener {
-
     private final mcMMO plugin;
 
     public PlayerListener(final mcMMO plugin) {
@@ -154,20 +152,11 @@ public class PlayerListener implements Listener {
         }
 
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
-            PluginDescriptionFile pluginDescription = plugin.getDescription();
-            MOTD motd = new MOTD(player);
-
-            motd.displayVersion(pluginDescription.getVersion());
-            motd.displayHardcoreSettings();
-            motd.displayXpPerks();
-            motd.displayCooldownPerks();
-            motd.displayActivationPerks();
-            motd.displayLuckyPerks();
-            motd.displayWebsite(pluginDescription.getWebsite());
+            Motd.displayAll(player);
         }
 
         if (plugin.isXPEventEnabled()) {
-            player.sendMessage(LocaleLoader.getString("XPRate.Event", new Object[] {Config.getInstance().xpGainMultiplier}));
+            player.sendMessage(LocaleLoader.getString("XPRate.Event", new Object[] {Config.getInstance().getExperienceGainsGlobalMultiplier()}));
         }
     }
 
@@ -265,20 +254,20 @@ public class PlayerListener implements Listener {
 
             /* ACTIVATION & ITEM CHECKS */
             if (BlockChecks.canActivateAbilities(block)) {
-                if (Skills.abilitiesEnabled) {
+                if (SkillTools.abilitiesEnabled) {
                     if (BlockChecks.canActivateHerbalism(block)) {
-                        Skills.activationCheck(player, SkillType.HERBALISM);
+                        SkillTools.activationCheck(player, SkillType.HERBALISM);
                     }
 
-                    Skills.activationCheck(player, SkillType.AXES);
-                    Skills.activationCheck(player, SkillType.EXCAVATION);
-                    Skills.activationCheck(player, SkillType.MINING);
-                    Skills.activationCheck(player, SkillType.SWORDS);
-                    Skills.activationCheck(player, SkillType.UNARMED);
-                    Skills.activationCheck(player, SkillType.WOODCUTTING);
+                    SkillTools.activationCheck(player, SkillType.AXES);
+                    SkillTools.activationCheck(player, SkillType.EXCAVATION);
+                    SkillTools.activationCheck(player, SkillType.MINING);
+                    SkillTools.activationCheck(player, SkillType.SWORDS);
+                    SkillTools.activationCheck(player, SkillType.UNARMED);
+                    SkillTools.activationCheck(player, SkillType.WOODCUTTING);
                 }
 
-                Item.itemChecks(player);
+                ChimaeraWing.activationCheck(player);
             }
 
             /* GREEN THUMB CHECK */
@@ -291,18 +280,18 @@ public class PlayerListener implements Listener {
         case RIGHT_CLICK_AIR:
 
             /* ACTIVATION CHECKS */
-            if (Skills.abilitiesEnabled) {
-                Skills.activationCheck(player, SkillType.AXES);
-                Skills.activationCheck(player, SkillType.EXCAVATION);
-                Skills.activationCheck(player, SkillType.HERBALISM);
-                Skills.activationCheck(player, SkillType.MINING);
-                Skills.activationCheck(player, SkillType.SWORDS);
-                Skills.activationCheck(player, SkillType.UNARMED);
-                Skills.activationCheck(player, SkillType.WOODCUTTING);
+            if (SkillTools.abilitiesEnabled) {
+                SkillTools.activationCheck(player, SkillType.AXES);
+                SkillTools.activationCheck(player, SkillType.EXCAVATION);
+                SkillTools.activationCheck(player, SkillType.HERBALISM);
+                SkillTools.activationCheck(player, SkillType.MINING);
+                SkillTools.activationCheck(player, SkillType.SWORDS);
+                SkillTools.activationCheck(player, SkillType.UNARMED);
+                SkillTools.activationCheck(player, SkillType.WOODCUTTING);
             }
 
             /* ITEM CHECKS */
-            Item.itemChecks(player);
+            ChimaeraWing.activationCheck(player);
 
             break;
 
@@ -352,13 +341,11 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            ChatManager chatManager = new ChatManager(plugin, player.getName(), event.getMessage());
-            chatManager.handlePartyChat(party);
+            ChatManager.handlePartyChat(party, player.getName(), event.getMessage());
             event.setCancelled(true);
         }
         else if (profile.getAdminChatMode()) {
-            ChatManager chatManager = new ChatManager(plugin, player.getName(), event.getMessage());
-            chatManager.handleAdminChat();
+            ChatManager.handleAdminChat(player.getName(), event.getMessage());
             event.setCancelled(true);
         }
     }

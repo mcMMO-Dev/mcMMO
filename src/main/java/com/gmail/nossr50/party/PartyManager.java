@@ -12,26 +12,9 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Users;
 
-public class PartyManager {
-    private static String partiesFilePath;
+public final class PartyManager {
+    private static String partiesFilePath = mcMMO.p.getDataFolder().getPath() + File.separator + "FlatFileStuff" + File.separator + "parties.yml";
     private static List<Party> parties = new ArrayList<Party>();
-    private static mcMMO plugin;
-    private static PartyManager instance;
-
-    private PartyManager() {
-        plugin = mcMMO.p;
-        partiesFilePath = plugin.getDataFolder().getPath() + File.separator + "FlatFileStuff" + File.separator + "parties.yml";
-
-        loadParties();
-    }
-
-    public static PartyManager getInstance() {
-        if (instance == null) {
-            instance = new PartyManager();
-        }
-
-        return instance;
-    }
 
     /**
      * Check if two players are in the same party.
@@ -40,7 +23,7 @@ public class PartyManager {
      * @param secondPlayer The second player
      * @return true if they are in the same party, false otherwise
      */
-    public boolean inSameParty(Player firstPlayer, Player secondPlayer) {
+    public static boolean inSameParty(Player firstPlayer, Player secondPlayer) {
         PlayerProfile firstProfile = Users.getProfile(firstPlayer);
         PlayerProfile secondProfile = Users.getProfile(secondPlayer);
 
@@ -64,7 +47,7 @@ public class PartyManager {
      * @param playerName The name of the player that joins
      * @param party The concerned party
      */
-    private void informPartyMembersJoin(String playerName, Party party) {
+    private static void informPartyMembersJoin(String playerName, Party party) {
         for (Player member : party.getOnlineMembers()) {
             if (!member.getName().equals(playerName)) {
                 member.sendMessage(LocaleLoader.getString("Party.InformedOnJoin", new Object[] {playerName}));
@@ -78,7 +61,7 @@ public class PartyManager {
      * @param playerName The name of the player that quits
      * @param party The concerned party
      */
-    private void informPartyMembersQuit(String playerName, Party party) {
+    private static void informPartyMembersQuit(String playerName, Party party) {
         for (Player member : party.getOnlineMembers()) {
             if (!member.getName().equals(playerName)) {
                 member.sendMessage(LocaleLoader.getString("Party.InformedOnQuit", new Object[] {playerName}));
@@ -92,7 +75,7 @@ public class PartyManager {
      * @param player The player to check
      * @return all the players in the player's party
      */
-    public List<String> getAllMembers(Player player) {
+    public static List<String> getAllMembers(Player player) {
         Party party = Users.getProfile(player).getParty();
 
         if (party == null) {
@@ -108,7 +91,7 @@ public class PartyManager {
      * @param partyName The party to check
      * @return all online players in this party
      */
-    public List<Player> getOnlineMembers(String partyName) {
+    public static List<Player> getOnlineMembers(String partyName) {
         Party party = getParty(partyName);
 
         if (party == null) {
@@ -124,7 +107,7 @@ public class PartyManager {
      * @param player The player to check
      * @return all online players in this party
      */
-    public List<Player> getOnlineMembers(Player player) {
+    public static List<Player> getOnlineMembers(Player player) {
         return getOnlineMembers(player.getName());
     }
 
@@ -134,7 +117,7 @@ public class PartyManager {
      * @param partyName The party name
      * @return the existing party, null otherwise
      */
-    public Party getParty(String partyName) {
+    public static Party getParty(String partyName) {
         for (Party party : parties) {
             if (party.getName().equals(partyName)) {
                 return party;
@@ -150,7 +133,7 @@ public class PartyManager {
      * @param playerName The member name
      * @return the existing party, null otherwise
      */
-    public Party getPlayerParty(String playerName) {
+    public static Party getPlayerParty(String playerName) {
         for (Party party : parties) {
             if (party.getMembers().contains(playerName)) {
                 return party;
@@ -164,7 +147,7 @@ public class PartyManager {
      *
      * @return the list of parties.
      */
-    public List<Party> getParties() {
+    public static List<Party> getParties() {
         return parties;
     }
 
@@ -174,7 +157,7 @@ public class PartyManager {
      * @param playerName The name of the player to remove
      * @param party The party
      */
-    public void removeFromParty(String playerName, Party party) {
+    public static void removeFromParty(String playerName, Party party) {
         List<String> members = party.getMembers();
 
         members.remove(playerName);
@@ -204,7 +187,7 @@ public class PartyManager {
      *
      * @param party The party to remove
      */
-    public void disbandParty(Party party) {
+    public static void disbandParty(Party party) {
         List<String> members = party.getMembers();
 
         for (String member : party.getMembers()) {
@@ -229,7 +212,7 @@ public class PartyManager {
      * @param partyName The party to add the player to
      * @param password the password for this party, null if there was no password
      */
-    public void createParty(Player player, PlayerProfile playerProfile, String partyName, String password) {
+    public static void createParty(Player player, PlayerProfile playerProfile, String partyName, String password) {
         partyName = partyName.replace(".", "");
         Party party = getParty(partyName);
         String playerName = player.getName();
@@ -264,7 +247,7 @@ public class PartyManager {
      * @param partyName The party to add the player to
      * @param password the password for this party, null if there was no password
      */
-    public void joinParty(Player player, PlayerProfile playerProfile, String partyName, String password) {
+    public static void joinParty(Player player, PlayerProfile playerProfile, String partyName, String password) {
         partyName = partyName.replace(".", "");
         Party party = getParty(partyName);
         String playerName = player.getName();
@@ -299,7 +282,7 @@ public class PartyManager {
      * @param password The password provided by the player
      * @return true if the player can join the party
      */
-    public boolean checkJoinability(Player player, Party party, String password) {
+    public static boolean checkJoinability(Player player, Party party, String password) {
         //Don't care about passwords if it isn't locked
         if (party.isLocked()) {
             String partyPassword = party.getPassword();
@@ -330,7 +313,7 @@ public class PartyManager {
      * @param player The player to add to the party
      * @param playerProfile The profile of the player
      */
-    public void joinInvitedParty(Player player, PlayerProfile playerProfile) {
+    public static void joinInvitedParty(Player player, PlayerProfile playerProfile) {
         Party invite = playerProfile.getInvite();
 
         if (!parties.contains(invite)) {
@@ -349,7 +332,7 @@ public class PartyManager {
      * @param playerProfile The profile of the player
      * @param party The party
      */
-    public void addToParty(String playerName, PlayerProfile playerProfile, Party party) {
+    public static void addToParty(String playerName, PlayerProfile playerProfile, Party party) {
         informPartyMembersJoin(playerName, party);
         playerProfile.setParty(party);
         party.getMembers().add(playerName);
@@ -361,7 +344,7 @@ public class PartyManager {
      * @param partyName The party name
      * @return the leader of the party
      */
-    public String getPartyLeader(String partyName) {
+    public static String getPartyLeader(String partyName) {
         Party party = getParty(partyName);
 
         if (party == null) {
@@ -377,7 +360,7 @@ public class PartyManager {
      * @param playerName The name of the player to set as leader
      * @param party The party
      */
-    public void setPartyLeader(String playerName, Party party) {
+    public static void setPartyLeader(String playerName, Party party) {
         String leaderName = party.getLeader();
 
         for (Player member : party.getOnlineMembers()) {
@@ -402,7 +385,7 @@ public class PartyManager {
      * @param playerProfile The profile of the given player
      * @return true if the player can invite
      */
-    public boolean canInvite(Player player, PlayerProfile playerProfile) {
+    public static boolean canInvite(Player player, PlayerProfile playerProfile) {
         Party party = playerProfile.getParty();
 
         if (party == null || (party.isLocked() && !party.getLeader().equals(player.getName()))) {
@@ -418,7 +401,7 @@ public class PartyManager {
      * @param partyName The party name to check
      * @return true if this is a valid party, false otherwise
      */
-    public boolean isParty(String partyName) {
+    public static boolean isParty(String partyName) {
         for (Party party : parties) {
             if (party.getName().equals(partyName)) {
                 return true;
@@ -431,7 +414,7 @@ public class PartyManager {
     /**
      * Load party file.
      */
-    private void loadParties() {
+    private static void loadParties() {
         File file = new File(partiesFilePath);
 
         if (!file.exists()) {
@@ -462,7 +445,7 @@ public class PartyManager {
     /**
      * Save party file.
      */
-    public void saveParties() {
+    public static void saveParties() {
         File file = new File(partiesFilePath);
 
         if (file.exists()) {

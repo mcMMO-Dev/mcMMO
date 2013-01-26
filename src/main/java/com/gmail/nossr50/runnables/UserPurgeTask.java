@@ -1,23 +1,16 @@
 package com.gmail.nossr50.runnables;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
 
 public class UserPurgeTask implements Runnable {
-    private Database database = mcMMO.getPlayerDatabase();
-
-    public UserPurgeTask() {
-
-    }
-
     @Override
     public void run() {
         if (Config.getInstance().getUseMySQL()) {
-            database.purgePowerlessSQL();
+            Database.purgePowerlessSQL();
 
             if (Config.getInstance().getOldUsersCutoff() != -1) {
-                database.purgeOldSQL();
+                Database.purgeOldSQL();
             }
         }
         else {

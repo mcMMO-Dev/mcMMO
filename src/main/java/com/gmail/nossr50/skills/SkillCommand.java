@@ -159,7 +159,7 @@ public abstract class SkillCommand implements CommandExecutor {
     protected void luckyEffectsDisplay() {
         if (isLucky) {
             String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { Skills.localizeSkillName(skill) }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { SkillTools.localizeSkillName(skill) }) }));
         }
     }
 

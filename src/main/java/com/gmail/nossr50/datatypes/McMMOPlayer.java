@@ -28,7 +28,7 @@ public class McMMOPlayer {
         String playerName = player.getName();
         this.player = player;
         this.profile = new PlayerProfile(playerName, true);
-        this.party = PartyManager.getInstance().getPlayerParty(playerName);
+        this.party = PartyManager.getPlayerParty(playerName);
     }
 
     /**
@@ -112,7 +112,7 @@ public class McMMOPlayer {
      * @param newValue The amount of XP to add
      */
     public void addXPOverrideBonus(SkillType skillType, int xp) {
-        int modifiedXp = (int)Math.floor(xp * Config.getInstance().xpGainMultiplier);
+        int modifiedXp = (int)Math.floor(xp * Config.getInstance().getExperienceGainsGlobalMultiplier());
         addXPOverride(skillType, modifiedXp);
     }
 
@@ -138,7 +138,7 @@ public class McMMOPlayer {
             bonusModifier = calculatePartyXPModifier(skillType);
         }
 
-        int xp = (int)Math.floor((newValue / skillType.getXpModifier()) * Config.getInstance().xpGainMultiplier);
+        int xp = (int)Math.floor((newValue / skillType.getXpModifier()) * Config.getInstance().getExperienceGainsGlobalMultiplier());
 
         if (bonusModifier > 0) {
             if (bonusModifier >= 2) {

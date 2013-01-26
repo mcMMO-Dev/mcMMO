@@ -4,12 +4,12 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class McMMOChatEvent extends Event implements Cancellable{
+public class McMMOChatEvent extends Event implements Cancellable {
     private boolean cancelled;
     private String sender;
     private String message;
 
-    public McMMOChatEvent(String sender, String message) {
+    protected McMMOChatEvent(String sender, String message) {
         this.sender = sender;
         this.message = message;
     }

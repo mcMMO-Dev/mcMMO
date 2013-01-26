@@ -12,7 +12,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.AbilityType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
 
 public class RemoteDetonationEventHandler {
@@ -43,8 +43,8 @@ public class RemoteDetonationEventHandler {
     }
 
     protected boolean cooldownOver() {
-        if (!Skills.cooldownOver(profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR, AbilityType.BLAST_MINING.getCooldown(), player)) {
-            player.sendMessage(LocaleLoader.getString("Skills.TooTired", new Object[] { Skills.calculateTimeLeft(profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR, AbilityType.BLAST_MINING.getCooldown(), player) }));
+        if (!SkillTools.cooldownOver(profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR, AbilityType.BLAST_MINING.getCooldown(), player)) {
+            player.sendMessage(LocaleLoader.getString("SkillTools.TooTired", new Object[] { SkillTools.calculateTimeLeft(profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR, AbilityType.BLAST_MINING.getCooldown(), player) }));
 
             return false;
         }

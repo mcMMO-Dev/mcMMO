@@ -110,7 +110,7 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            if (attacker instanceof Player && PartyManager.getInstance().inSameParty(defendingPlayer, (Player) attacker)) {
+            if (attacker instanceof Player && PartyManager.inSameParty(defendingPlayer, (Player) attacker)) {
                 event.setCancelled(true);
                 return;
             }

@@ -53,8 +53,9 @@ public class BlockStoreConversionMain implements Runnable {
         this.xDirs = this.dataDir.listFiles();
 
         for (this.i = 0; (this.i < HiddenConfig.getInstance().getConversionRate()) && (this.i < this.xDirs.length); this.i++) {
-            if (this.converters[this.i] == null)
+            if (this.converters[this.i] == null) {
                 this.converters[this.i] = new BlockStoreConversionXDirectory();
+            }
 
             this.converters[this.i].start(this.world, this.xDirs[this.i]);
         }
@@ -63,8 +64,9 @@ public class BlockStoreConversionMain implements Runnable {
     }
 
     public void stop() {
-        if (this.taskID < 0)
+        if (this.taskID < 0) {
             return;
+        }
 
         this.scheduler.cancelTask(this.taskID);
         this.taskID = -1;

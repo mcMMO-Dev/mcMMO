@@ -9,11 +9,11 @@ import com.gmail.nossr50.skills.SkillType;
 /**
  * Generic event for mcMMO experience events.
  */
-public class McMMOPlayerExperienceEvent extends PlayerEvent {
+public abstract class McMMOPlayerExperienceEvent extends PlayerEvent {
     protected SkillType skill;
     protected int skillLevel;
 
-    public McMMOPlayerExperienceEvent(Player player, SkillType skill) {
+    protected McMMOPlayerExperienceEvent(Player player, SkillType skill) {
         super(player);
         this.skill = skill;
         this.skillLevel = skill.getSkillLevel(player);

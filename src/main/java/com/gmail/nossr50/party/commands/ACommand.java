@@ -14,12 +14,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class ACommand implements CommandExecutor {
-    private final mcMMO plugin;
-
-    public ACommand (mcMMO plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         PlayerProfile profile;
@@ -68,7 +62,7 @@ public class ACommand implements CommandExecutor {
                 Player player = (Player) sender;
 
                 McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(player.getName(), message);
-                plugin.getServer().getPluginManager().callEvent(chatEvent);
+                mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
                 if (chatEvent.isCancelled()) {
                     return true;
@@ -77,9 +71,9 @@ public class ACommand implements CommandExecutor {
                 message = chatEvent.getMessage();
                 String prefix = LocaleLoader.getString("Commands.AdminChat.Prefix", new Object[] {player.getName()} );
 
-                plugin.getLogger().info("[A]<" + player.getName() + "> " + message);
+                mcMMO.p.getLogger().info("[A]<" + player.getName() + "> " + message);
 
-                for (Player otherPlayer : plugin.getServer().getOnlinePlayers()) {
+                for (Player otherPlayer : mcMMO.p.getServer().getOnlinePlayers()) {
                     if (Permissions.adminChat(otherPlayer) || otherPlayer.isOp()) {
                         otherPlayer.sendMessage(prefix + message);
                     }
@@ -87,7 +81,7 @@ public class ACommand implements CommandExecutor {
             }
             else {
                 McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent("Console", message);
-                plugin.getServer().getPluginManager().callEvent(chatEvent);
+                mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
                 if (chatEvent.isCancelled()) {
                     return true;
@@ -96,9 +90,9 @@ public class ACommand implements CommandExecutor {
                 message = chatEvent.getMessage();
                 String prefix = LocaleLoader.getString("Commands.AdminChat.Prefix", new Object[] {LocaleLoader.getString("Commands.Chat.Console")} );
 
-                plugin.getLogger().info("[A]<*Console*> " + message);
+                mcMMO.p.getLogger().info("[A]<*Console*> " + message);
 
-                for (Player player : plugin.getServer().getOnlinePlayers()) {
+                for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
                     if (Permissions.adminChat(player) || player.isOp()) {
                         player.sendMessage(prefix + message);
                     }

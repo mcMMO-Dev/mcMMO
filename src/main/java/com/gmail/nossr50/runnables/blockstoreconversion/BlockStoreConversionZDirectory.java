@@ -38,8 +38,9 @@ public class BlockStoreConversionZDirectory implements Runnable {
         this.dataDir = dataDir;
         this.xDir = xDir;
 
-        if (this.taskID >= 0)
+        if (this.taskID >= 0) {
             return;
+        }
 
         this.taskID = this.scheduler.scheduleSyncDelayedTask(mcMMO.p, this, 1);
         return;
@@ -110,8 +111,9 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
                         for (this.y2 = (64 * this.y); this.y2 < (64 * this.y + 64); this.y2++) {
                             try {
-                                if (!this.manager.isTrue(this.cxPos, this.y2, this.czPos, this.world))
+                                if (!this.manager.isTrue(this.cxPos, this.y2, this.czPos, this.world)) {
                                     continue;
+                                }
 
                                 this.newManager.setTrue(this.cxPos, this.y2, this.czPos, this.world);
                             }
@@ -119,6 +121,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
                         }
                     }
                 }
+
                 continue;
             }
 
@@ -128,17 +131,26 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
             for (this.x = 0; this.x < 16; this.x++) {
                 for (this.z = 0; this.z < 16; this.z++) {
-                    if (this.primitiveChunklet != null)
+                    if (this.primitiveChunklet != null) {
                         this.oldArray = this.primitiveChunklet.store[x][z];
-                    if (this.primitiveExChunklet != null)
+                    }
+
+                    if (this.primitiveExChunklet != null) {
                         this.oldArray = this.primitiveExChunklet.store[x][z];
-                    else
+                    }
+                    else {
                         return;
+                    }
+
                     this.newArray = this.currentChunk.store[x][z];
-                    if (this.oldArray.length < 64)
+
+                    if (this.oldArray.length < 64) {
                         return;
-                    else if (this.newArray.length < ((this.y * 64) + 64))
+                    }
+                    else if (this.newArray.length < ((this.y * 64) + 64)) {
                         return;
+                    }
+
                     System.arraycopy(this.oldArray, 0, this.newArray, (this.y * 64), 64);
                 }
             }
@@ -148,8 +160,9 @@ public class BlockStoreConversionZDirectory implements Runnable {
         this.newManager.unloadChunk(this.cx, this.cz, this.world);
 
         for (File yFile : dataDir.listFiles()) {
-            if (!yFile.exists())
+            if (!yFile.exists()) {
                 continue;
+            }
 
             yFile.delete();
         }

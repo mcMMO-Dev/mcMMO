@@ -7,12 +7,13 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
 
-public abstract class Hardcore {
+public final class Hardcore {
     public static double statLossPercentage = Config.getInstance().getHardcoreDeathStatPenaltyPercentage();
     public static double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
-
     public static boolean statLossEnabled = Config.getInstance().getHardcoreEnabled();
     public static boolean vampirismEnabled = Config.getInstance().getHardcoreVampirismEnabled();
+
+    private Hardcore() {}
 
     public static void invokeStatPenalty(Player player) {
         if (statLossPercentage <= 0 || statLossPercentage > 100) {

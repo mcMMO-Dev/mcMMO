@@ -6,11 +6,12 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
-public class CommandHelper {
+public final class CommandHelper {
+    private CommandHelper() {}
 
     /**
      * Checks for command permissions.
@@ -48,7 +49,7 @@ public class CommandHelper {
      * @param display The sender to display stats to
      */
     public static void printGatheringSkills(Player inspect, CommandSender display) {
-        if (Skills.hasGatheringSkills(inspect)) {
+        if (SkillTools.hasGatheringSkills(inspect)) {
             PlayerProfile profile = Users.getProfile(inspect);
 
             if (profile == null) {
@@ -91,7 +92,7 @@ public class CommandHelper {
      * @param display The sender to display stats to
      */
     public static void printCombatSkills(Player inspect, CommandSender display) {
-        if (Skills.hasCombatSkills(inspect)) {
+        if (SkillTools.hasCombatSkills(inspect)) {
             PlayerProfile profile = Users.getProfile(inspect);
 
             if (profile == null) {
@@ -134,7 +135,7 @@ public class CommandHelper {
      * @param display The sender to display stats to
      */
     public static void printMiscSkills(Player inspect, CommandSender display) {
-        if (Skills.hasMiscSkills(inspect)) {
+        if (SkillTools.hasMiscSkills(inspect)) {
             PlayerProfile profile = Users.getProfile(inspect);
 
             if (profile == null) {

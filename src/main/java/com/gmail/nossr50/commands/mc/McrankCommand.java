@@ -11,11 +11,10 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.McRankAsync;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Leaderboard;
 
 public class McrankCommand implements CommandExecutor {
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         //TODO: Better input handling, add usage string
@@ -67,10 +66,10 @@ public class McrankCommand implements CommandExecutor {
             }
 
             if (rankInts[1] == 0) {
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {Skills.localizeSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked")} )); //Don't bother showing ranking for players without skills
+                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {SkillTools.localizeSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked")} )); //Don't bother showing ranking for players without skills
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {Skills.localizeSkillName(skillType), String.valueOf(rankInts[0])} ));
+                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {SkillTools.localizeSkillName(skillType), String.valueOf(rankInts[0])} ));
             }
         }
 

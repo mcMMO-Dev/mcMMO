@@ -12,7 +12,6 @@ import com.gmail.nossr50.util.Permissions;
 
 //TODO: Rework this whole thing. It's ugly. Also is missing all the admin & spout commands.
 public class MccCommand implements CommandExecutor {
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (CommandHelper.noConsoleUsage(sender)) {

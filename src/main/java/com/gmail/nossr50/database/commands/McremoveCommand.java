@@ -16,14 +16,6 @@ import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class McremoveCommand implements CommandExecutor {
-    private final String location;
-    private final mcMMO plugin;
-
-    public McremoveCommand (mcMMO plugin) {
-        this.plugin = plugin;
-        this.location = mcMMO.getUsersFile();
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String playerName;
@@ -49,9 +41,8 @@ public class McremoveCommand implements CommandExecutor {
 
         /* MySQL */
         if (Config.getInstance().getUseMySQL()) {
-            Database database = mcMMO.getPlayerDatabase();
             int affected = 0;
-            affected = database.update("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.user = '" + playerName + "'");
+            affected = Database.update("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.user = '" + playerName + "'");
 
             if (affected > 0) {
                 sender.sendMessage(success);
@@ -78,9 +69,10 @@ public class McremoveCommand implements CommandExecutor {
 
         BufferedReader in = null;
         FileWriter out = null;
+        String usersFilePath = mcMMO.getUsersFilePath();
 
         try {
-            FileReader file = new FileReader(location);
+            FileReader file = new FileReader(usersFilePath);
             in = new BufferedReader(file);
             StringBuilder writer = new StringBuilder();
             String line = "";
@@ -98,11 +90,11 @@ public class McremoveCommand implements CommandExecutor {
                 }
             }
 
-            out = new FileWriter(location); //Write out the new file
+            out = new FileWriter(usersFilePath); //Write out the new file
             out.write(writer.toString());
         }
         catch (Exception e) {
-            plugin.getLogger().severe("Exception while reading " + location + " (Are you sure you formatted it correctly?)" + e.toString());
+            mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
         }
         finally {
             if (in != null) {

@@ -11,18 +11,12 @@ import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
 //TODO: Any way we can make this work for offline use?
 public class AddxpCommand implements CommandExecutor {
-    private final mcMMO plugin;
-
-    public AddxpCommand (mcMMO plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player modifiedPlayer;
@@ -37,7 +31,7 @@ public class AddxpCommand implements CommandExecutor {
         switch (args.length) {
         case 2:
             if (sender instanceof Player) {
-                if (!Skills.isSkill(args[1])) {
+                if (!SkillTools.isSkill(args[1])) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                     return true;
                 }
@@ -45,7 +39,7 @@ public class AddxpCommand implements CommandExecutor {
                 if (Misc.isInt(args[1])) {
                     modifiedPlayer = (Player) sender;
                     xp = Integer.valueOf(args[1]);
-                    skill = Skills.getSkillType(args[0]);
+                    skill = SkillTools.getSkillType(args[0]);
 
                     PlayerProfile profile = Users.getProfile(modifiedPlayer);
                     McMMOPlayer mcMMOPlayer = Users.getPlayer(modifiedPlayer);
@@ -59,10 +53,10 @@ public class AddxpCommand implements CommandExecutor {
                     }
 
                     if (skill.equals(SkillType.ALL)) {
-                        Skills.xpCheckAll(modifiedPlayer, profile);
+                        SkillTools.xpCheckAll(modifiedPlayer, profile);
                     }
                     else {
-                        Skills.xpCheckSkill(skill, modifiedPlayer, profile);
+                        SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
                     }
                 }
                 else {
@@ -76,7 +70,7 @@ public class AddxpCommand implements CommandExecutor {
             return true;
 
         case 3:
-            modifiedPlayer = plugin.getServer().getPlayer(args[0]);
+            modifiedPlayer = mcMMO.p.getServer().getPlayer(args[0]);
             String playerName = modifiedPlayer.getName();
             McMMOPlayer mcMMOPlayer = Users.getPlayer(modifiedPlayer);
             PlayerProfile profile = Users.getProfile(modifiedPlayer);
@@ -91,14 +85,14 @@ public class AddxpCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!Skills.isSkill(args[1])) {
+            if (!SkillTools.isSkill(args[1])) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
 
             if (Misc.isInt(args[2])) {
                 xp = Integer.valueOf(args[2]);
-                skill = Skills.getSkillType(args[1]);
+                skill = SkillTools.getSkillType(args[1]);
 
                 mcMMOPlayer.addXPOverride(skill, xp);
 
@@ -111,11 +105,11 @@ public class AddxpCommand implements CommandExecutor {
 
                 if (skill.equals(SkillType.ALL)) {
                     modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", new Object[] {xp}));
-                    Skills.xpCheckAll(modifiedPlayer, profile);
+                    SkillTools.xpCheckAll(modifiedPlayer, profile);
                 }
                 else {
                     modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", new Object[] {xp, Misc.getCapitalized(skill.toString())}));
-                    Skills.xpCheckSkill(skill, modifiedPlayer, profile);
+                    SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
                 }
             }
             else {

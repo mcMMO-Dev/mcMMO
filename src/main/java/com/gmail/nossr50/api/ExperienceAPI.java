@@ -3,11 +3,10 @@ package com.gmail.nossr50.api;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Users;
 
 public final class ExperienceAPI {
-
     private ExperienceAPI() {}
 
     /**
@@ -18,10 +17,10 @@ public final class ExperienceAPI {
      */
     private static void checkXP(Player player, SkillType skillType) {
         if (skillType.equals(SkillType.ALL)) {
-            Skills.xpCheckAll(player, Users.getProfile(player));
+            SkillTools.xpCheckAll(player, Users.getProfile(player));
         }
         else {
-            Skills.xpCheckSkill(skillType, player, Users.getProfile(player));
+            SkillTools.xpCheckSkill(skillType, player, Users.getProfile(player));
         }
     }
 

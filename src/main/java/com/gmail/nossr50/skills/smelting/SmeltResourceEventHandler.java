@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
@@ -68,11 +68,11 @@ public class SmeltResourceEventHandler {
         }
 
         if (Permissions.mining(player)) {
-            Skills.xpProcessing(player, profile, SkillType.MINING, xp / 2);
+            SkillTools.xpProcessing(player, profile, SkillType.MINING, xp / 2);
         }
 
         if (Permissions.repair(player)) {
-            Skills.xpProcessing(player, profile, SkillType.REPAIR, xp / 2);
+            SkillTools.xpProcessing(player, profile, SkillType.REPAIR, xp / 2);
         }
     }
 

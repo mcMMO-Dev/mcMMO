@@ -10,7 +10,7 @@ import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
@@ -30,7 +30,7 @@ public class MmoeditCommand implements CommandExecutor {
         switch (args.length) {
         case 2:
             if (sender instanceof Player) {
-                if (!Skills.isSkill(args[0])) {
+                if (!SkillTools.isSkill(args[0])) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                     return true;
                 }
@@ -38,7 +38,7 @@ public class MmoeditCommand implements CommandExecutor {
                 if (Misc.isInt(args[1])) {
                     Player player = (Player) sender;
                     newValue = Integer.valueOf(args[1]);
-                    skill = Skills.getSkillType(args[0]);
+                    skill = SkillTools.getSkillType(args[0]);
                     profile = Users.getProfile(player);
 
                     if (skill.equals(SkillType.ALL)) {
@@ -67,7 +67,7 @@ public class MmoeditCommand implements CommandExecutor {
                 return true;
             }
 
-            skill = Skills.getSkillType(args[1]);
+            skill = SkillTools.getSkillType(args[1]);
 
             if (skill == null) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));

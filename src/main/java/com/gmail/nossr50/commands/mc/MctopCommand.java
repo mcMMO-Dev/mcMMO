@@ -8,17 +8,15 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Misc;
 
 public class MctopCommand implements CommandExecutor {
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         String usage = LocaleLoader.getString("Commands.Usage.2", new Object[] {"mctop", "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"});
@@ -34,11 +32,11 @@ public class MctopCommand implements CommandExecutor {
                 if (Misc.isInt(args[0])) {
                     flatfileDisplay(Integer.valueOf(args[0]), "ALL", sender);
                 }
-                else if (Skills.isSkill(args[0])) {
+                else if (SkillTools.isSkill(args[0])) {
                     flatfileDisplay(1, args[0].toUpperCase(), sender);
                 }
-                else if (Skills.isLocalizedSkill(args[0])) {
-                    flatfileDisplay(1, Skills.translateLocalizedSkill(args[0]).toUpperCase(), sender);
+                else if (SkillTools.isLocalizedSkill(args[0])) {
+                    flatfileDisplay(1, SkillTools.translateLocalizedSkill(args[0]).toUpperCase(), sender);
                 }
                 else {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
@@ -48,11 +46,11 @@ public class MctopCommand implements CommandExecutor {
 
             case 2:
                 if (Misc.isInt(args[1])) {
-                    if (Skills.isSkill(args[0])) {
+                    if (SkillTools.isSkill(args[0])) {
                         flatfileDisplay(Integer.valueOf(args[1]), args[0].toUpperCase(), sender);
                     }
-                    else if (Skills.isLocalizedSkill(args[0])) {
-                        flatfileDisplay(Integer.valueOf(args[1]), Skills.translateLocalizedSkill(args[0]).toUpperCase(), sender);
+                    else if (SkillTools.isLocalizedSkill(args[0])) {
+                        flatfileDisplay(Integer.valueOf(args[1]), SkillTools.translateLocalizedSkill(args[0]).toUpperCase(), sender);
                     }
                     else {
                         sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
@@ -81,11 +79,11 @@ public class MctopCommand implements CommandExecutor {
             if (Misc.isInt(args[0])) {
                 sqlDisplay(Integer.valueOf(args[0]), powerlevel, sender);
             }
-            else if (Skills.isSkill(args[0])) {
+            else if (SkillTools.isSkill(args[0])) {
                 sqlDisplay(1, args[0].toLowerCase(), sender);
             }
-            else if (Skills.isLocalizedSkill(args[0])) {
-                sqlDisplay(1, Skills.translateLocalizedSkill(args[0]).toLowerCase(), sender);
+            else if (SkillTools.isLocalizedSkill(args[0])) {
+                sqlDisplay(1, SkillTools.translateLocalizedSkill(args[0]).toLowerCase(), sender);
             }
             else {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
@@ -95,11 +93,11 @@ public class MctopCommand implements CommandExecutor {
 
         case 2:
             if (Misc.isInt(args[1])) {
-                if (Skills.isSkill(args[0])) {
+                if (SkillTools.isSkill(args[0])) {
                     sqlDisplay(Integer.valueOf(args[1]), args[0].toLowerCase(), sender);
                 }
-                else if (Skills.isLocalizedSkill(args[0])) {
-                    sqlDisplay(Integer.valueOf(args[1]), Skills.translateLocalizedSkill(args[0]).toLowerCase(), sender);
+                else if (SkillTools.isLocalizedSkill(args[0])) {
+                    sqlDisplay(Integer.valueOf(args[1]), SkillTools.translateLocalizedSkill(args[0]).toLowerCase(), sender);
                 }
                 else {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
@@ -151,9 +149,7 @@ public class MctopCommand implements CommandExecutor {
 
     private void sqlDisplay(int page, String query, CommandSender sender) {
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-        Database database = mcMMO.getPlayerDatabase();
-
-        HashMap<Integer, ArrayList<String>> userslist = database.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT "+((page * 10) - 10)+",10");
+        HashMap<Integer, ArrayList<String>> userslist = Database.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT "+((page * 10) - 10)+",10");
 
         if (query.equals("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));

@@ -11,7 +11,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
 public class HardcoreListener implements Listener {
-
     /**
      * Monitor PlayerDeath events.
      *

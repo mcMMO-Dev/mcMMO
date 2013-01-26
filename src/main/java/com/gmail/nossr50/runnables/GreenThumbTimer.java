@@ -10,7 +10,6 @@ import com.gmail.nossr50.skills.AbilityType;
 import com.gmail.nossr50.skills.SkillType;
 
 public class GreenThumbTimer implements Runnable {
-    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
     private Block block;
     private PlayerProfile profile;
     private Material type;
@@ -23,15 +22,16 @@ public class GreenThumbTimer implements Runnable {
 
     @Override
     public void run() {
-        if (this.block.getType() != this.type)
+        if (this.block.getType() != this.type) {
             this.block.setType(this.type);
+        }
 
         int skillLevel = this.profile.getSkillLevel(SkillType.HERBALISM);
+        int greenThumbStage = (int) ((double) skillLevel / (double) AdvancedConfig.getInstance().getGreenThumbStageChange());
 
-        final int STAGE_CHANGE = advancedConfig.getGreenThumbStageChange();
-
-        int greenThumbStage = (int) ((double) skillLevel / (double) STAGE_CHANGE);
-        if (greenThumbStage > 4) greenThumbStage = 4;
+        if (greenThumbStage > 4) {
+            greenThumbStage = 4;
+        }
 
         switch(this.type) {
         case CROPS:

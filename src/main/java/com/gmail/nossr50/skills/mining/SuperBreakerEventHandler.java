@@ -8,7 +8,7 @@ import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
@@ -48,7 +48,7 @@ public class SuperBreakerEventHandler {
     }
 
     protected void processDurabilityLoss() {
-        Skills.abilityDurabilityLoss(heldItem, durabilityLoss);
+        SkillTools.abilityDurabilityLoss(heldItem, durabilityLoss);
     }
 
     protected void processDropsAndXP() {

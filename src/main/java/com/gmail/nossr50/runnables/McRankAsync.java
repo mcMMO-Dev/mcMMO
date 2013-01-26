@@ -5,14 +5,12 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 
 public class McRankAsync implements Runnable {
-    private Database database = mcMMO.getPlayerDatabase();
     private final String playerName;
     private final CommandSender sender;
 
@@ -23,23 +21,26 @@ public class McRankAsync implements Runnable {
 
     @Override
     public void run() {
-        final Map<String, Integer> skills = database.readSQLRank(playerName);
+        final Map<String, Integer> skills = Database.readSQLRank(playerName);
         Bukkit.getScheduler().scheduleSyncDelayedTask(Bukkit.getPluginManager().getPlugin("mcMMO"), new Runnable() {
-
             @Override
             public void run() {
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", new Object[] {playerName}));
+
                 for (SkillType skillType : SkillType.values()) {
-                    if (skillType.isChildSkill()) continue;
+                    if (skillType.isChildSkill()) {
+                        continue;
+                    }
+
                     if (skillType.equals(SkillType.ALL))
                         continue; // We want the overall ranking to be at the bottom
 
                     if (skills.get(skillType.name()) == null) {
-                        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {Skills.localizeSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked")} ));
+                        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {SkillTools.localizeSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked")} ));
                     }
                     else {
-                        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {Skills.localizeSkillName(skillType), skills.get(skillType.name())} ));
+                        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {SkillTools.localizeSkillName(skillType), skills.get(skillType.name())} ));
                     }
                 }
 

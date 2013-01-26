@@ -1,11 +1,9 @@
 package com.gmail.nossr50.api;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.ChatManager;
 
 public final class ChatAPI {
-
     private ChatAPI() {}
 
     /**
@@ -18,8 +16,7 @@ public final class ChatAPI {
      * @param message The message to send
      */
     public static void sendPartyChat(String sender, String party, String message) {
-        ChatManager chatManager = new ChatManager(mcMMO.p, sender, message);
-        chatManager.handlePartyChat(PartyManager.getInstance().getParty(party));
+        ChatManager.handlePartyChat(PartyManager.getParty(party), sender, message);
     }
 
     /**
@@ -31,7 +28,6 @@ public final class ChatAPI {
      * @param message The message to send
      */
     public static void sendAdminChat(String sender, String message) {
-        ChatManager chatManager = new ChatManager(mcMMO.p, sender, message);
-        chatManager.handleAdminChat();
+        ChatManager.handleAdminChat(sender, message);
     }
 }

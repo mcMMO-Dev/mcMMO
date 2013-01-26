@@ -11,7 +11,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.huds.SpoutHud;
 import com.gmail.nossr50.util.Misc;
@@ -63,10 +63,10 @@ public class XplockCommand implements CommandExecutor {
             return true;
 
         case 1:
-            if (Skills.isSkill(args[0])) {
+            if (SkillTools.isSkill(args[0])) {
                 if (Permissions.hasPermission(player, "mcmmo.skills." + args[0].toLowerCase())) {
                     spoutHud.setXpBarLocked(true);
-                    spoutHud.setSkillLock(Skills.getSkillType(args[0]));
+                    spoutHud.setSkillLock(SkillTools.getSkillType(args[0]));
                     spoutHud.updateXpBar();
 
                     player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", new Object[] { Misc.getCapitalized(args[0]) }));

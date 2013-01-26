@@ -59,11 +59,11 @@ public class PlayerProfile {
     HashMap<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>();
     HashMap<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
 
-    private final static String location = mcMMO.getUsersFile();
+    private final static String location = mcMMO.getUsersFilePath();
 
     public PlayerProfile(String playerName, boolean addNew) {
         this.playerName = playerName;
-        party = PartyManager.getInstance().getPlayerParty(playerName);
+        party = PartyManager.getPlayerParty(playerName);
 
         for (AbilityType abilityType : AbilityType.values()) {
             skillsDATS.put(abilityType, 0);
@@ -93,19 +93,18 @@ public class PlayerProfile {
     }
 
     public boolean loadMySQL() {
-        Database database = mcMMO.getPlayerDatabase();
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
-        userId = database.getInt("SELECT id FROM " + tablePrefix + "users WHERE user = '" + playerName + "'");
+        userId = Database.getInt("SELECT id FROM " + tablePrefix + "users WHERE user = '" + playerName + "'");
 
         if (userId == 0) {
             return false;
         }
 
-        HashMap<Integer, ArrayList<String>> huds = database.read("SELECT hudtype FROM " + tablePrefix + "huds WHERE user_id = " + userId);
+        HashMap<Integer, ArrayList<String>> huds = Database.read("SELECT hudtype FROM " + tablePrefix + "huds WHERE user_id = " + userId);
 
         if (huds.get(1) == null) {
-            database.write("INSERT INTO " + tablePrefix + "huds (user_id) VALUES (" + userId + ")");
+            Database.write("INSERT INTO " + tablePrefix + "huds (user_id) VALUES (" + userId + ")");
         }
         else {
             for (HudType type : HudType.values()) {
@@ -119,11 +118,11 @@ public class PlayerProfile {
          * I'm still learning MySQL, this is a fix for adding a new table
          * its not pretty but it works
          */
-        HashMap<Integer, ArrayList<String>> cooldowns = database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM " + tablePrefix + "cooldowns WHERE user_id = " + userId);
+        HashMap<Integer, ArrayList<String>> cooldowns = Database.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM " + tablePrefix + "cooldowns WHERE user_id = " + userId);
         ArrayList<String> cooldownValues = cooldowns.get(1);
 
         if (cooldownValues == null) {
-            database.write("INSERT INTO " + tablePrefix + "cooldowns (user_id) VALUES (" + userId + ")");
+            Database.write("INSERT INTO " + tablePrefix + "cooldowns (user_id) VALUES (" + userId + ")");
             mcMMO.p.getLogger().warning(playerName + "does not exist in the cooldown table. Their cooldowns will be reset.");
         }
         else {
@@ -137,11 +136,11 @@ public class PlayerProfile {
             skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(cooldownValues.get(7)));
         }
 
-        HashMap<Integer, ArrayList<String>> stats = database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM " + tablePrefix + "skills WHERE user_id = " + userId);
+        HashMap<Integer, ArrayList<String>> stats = Database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM " + tablePrefix + "skills WHERE user_id = " + userId);
         ArrayList<String> statValues = stats.get(1);
 
         if (statValues == null) {
-            database.write("INSERT INTO " + tablePrefix + "skills (user_id) VALUES (" + userId + ")");
+            Database.write("INSERT INTO " + tablePrefix + "skills (user_id) VALUES (" + userId + ")");
             mcMMO.p.getLogger().warning(playerName + "does not exist in the skills table. Their stats will be reset.");
         }
         else {
@@ -159,11 +158,11 @@ public class PlayerProfile {
             skills.put(SkillType.FISHING, Integer.valueOf(statValues.get(11)));
         }
 
-        HashMap<Integer, ArrayList<String>> experience = database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM " + tablePrefix + "experience WHERE user_id = " + userId);
+        HashMap<Integer, ArrayList<String>> experience = Database.read("SELECT taming, mining, repair, woodcutting, unarmed, herbalism, excavation, archery, swords, axes, acrobatics, fishing FROM " + tablePrefix + "experience WHERE user_id = " + userId);
         ArrayList<String> experienceValues = experience.get(1);
 
         if (experienceValues == null) {
-            database.write("INSERT INTO " + tablePrefix + "experience (user_id) VALUES (" + userId + ")");
+            Database.write("INSERT INTO " + tablePrefix + "experience (user_id) VALUES (" + userId + ")");
             mcMMO.p.getLogger().warning(playerName + "does not exist in the experience table. Their experience will be reset.");
         }
         else {
@@ -186,14 +185,13 @@ public class PlayerProfile {
     }
 
     public void addMySQLPlayer() {
-        Database database = mcMMO.getPlayerDatabase();
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
-        database.write("INSERT INTO " + tablePrefix + "users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR + ")");
-        userId = database.getInt("SELECT id FROM "+tablePrefix + "users WHERE user = '" + playerName + "'");
-        database.write("INSERT INTO " + tablePrefix + "cooldowns (user_id) VALUES (" + userId + ")");
-        database.write("INSERT INTO " + tablePrefix + "skills (user_id) VALUES (" + userId + ")");
-        database.write("INSERT INTO " + tablePrefix + "experience (user_id) VALUES (" + userId + ")");
+        Database.write("INSERT INTO " + tablePrefix + "users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR + ")");
+        userId = Database.getInt("SELECT id FROM "+tablePrefix + "users WHERE user = '" + playerName + "'");
+        Database.write("INSERT INTO " + tablePrefix + "cooldowns (user_id) VALUES (" + userId + ")");
+        Database.write("INSERT INTO " + tablePrefix + "skills (user_id) VALUES (" + userId + ")");
+        Database.write("INSERT INTO " + tablePrefix + "experience (user_id) VALUES (" + userId + ")");
     }
 
     public boolean load() {
@@ -307,12 +305,11 @@ public class PlayerProfile {
 
         // if we are using mysql save to database
         if (Config.getInstance().getUseMySQL()) {
-            Database database = mcMMO.getPlayerDatabase();
             String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
-            database.write("UPDATE " + tablePrefix + "huds SET hudtype = '" + hudType.toString() + "' WHERE user_id = " + userId);
-            database.write("UPDATE " + tablePrefix + "users SET lastlogin = " + ((int) (timestamp / Misc.TIME_CONVERSION_FACTOR)) + " WHERE id = " + userId);
-            database.write("UPDATE " + tablePrefix + "cooldowns SET "
+            Database.write("UPDATE " + tablePrefix + "huds SET hudtype = '" + hudType.toString() + "' WHERE user_id = " + userId);
+            Database.write("UPDATE " + tablePrefix + "users SET lastlogin = " + ((int) (timestamp / Misc.TIME_CONVERSION_FACTOR)) + " WHERE id = " + userId);
+            Database.write("UPDATE " + tablePrefix + "cooldowns SET "
                     + " mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
                     + ", woodcutting = " + skillsDATS.get(AbilityType.TREE_FELLER)
                     + ", unarmed = " + skillsDATS.get(AbilityType.BERSERK)
@@ -322,7 +319,7 @@ public class PlayerProfile {
                     + ", axes = " + skillsDATS.get(AbilityType.SKULL_SPLIITER)
                     + ", blast_mining = " + skillsDATS.get(AbilityType.BLAST_MINING)
                     + " WHERE user_id = " + userId);
-            database.write("UPDATE " + tablePrefix + "skills SET "
+            Database.write("UPDATE " + tablePrefix + "skills SET "
                     + " taming = " + skills.get(SkillType.TAMING)
                     + ", mining = " + skills.get(SkillType.MINING)
                     + ", repair = " + skills.get(SkillType.REPAIR)
@@ -336,7 +333,7 @@ public class PlayerProfile {
                     + ", acrobatics = " + skills.get(SkillType.ACROBATICS)
                     + ", fishing = " + skills.get(SkillType.FISHING)
                     + " WHERE user_id = " + userId);
-            database.write("UPDATE " + tablePrefix + "experience SET "
+            Database.write("UPDATE " + tablePrefix + "experience SET "
                     + "  taming = " + skillsXp.get(SkillType.TAMING)
                     + ", mining = " + skillsXp.get(SkillType.MINING)
                     + ", repair = " + skillsXp.get(SkillType.REPAIR)

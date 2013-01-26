@@ -9,7 +9,6 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Users;
 
 public final class PartyAPI {
-
     private PartyAPI() {}
 
     /**
@@ -46,7 +45,7 @@ public final class PartyAPI {
      * @return true if the two players are in the same party, false otherwise
      */
     public static boolean inSameParty(Player playera, Player playerb) {
-        return PartyManager.getInstance().inSameParty(playera, playerb);
+        return PartyManager.inSameParty(playera, playerb);
     }
 
     /**
@@ -57,7 +56,7 @@ public final class PartyAPI {
      * @return the list of parties.
      */
     public static List<Party> getParties() {
-        return PartyManager.getInstance().getParties();
+        return PartyManager.getParties();
     }
 
     /**
@@ -69,7 +68,7 @@ public final class PartyAPI {
      * @param partyName The party to add the player to
      */
     public static void addToParty(Player player, String partyName) {
-        Party party = PartyManager.getInstance().getParty(partyName);
+        Party party = PartyManager.getParty(partyName);
         String playerName = player.getName();
 
         if (party == null) {
@@ -78,7 +77,7 @@ public final class PartyAPI {
             party.setLeader(playerName);
         }
 
-        PartyManager.getInstance().addToParty(playerName, Users.getProfile(player), party);
+        PartyManager.addToParty(playerName, Users.getProfile(player), party);
     }
 
     /**
@@ -89,7 +88,7 @@ public final class PartyAPI {
      * @param player The player to remove
      */
     public static void removeFromParty(Player player) {
-        PartyManager.getInstance().removeFromParty(player.getName(), Users.getProfile(player).getParty());
+        PartyManager.removeFromParty(player.getName(), Users.getProfile(player).getParty());
     }
 
     /**
@@ -101,7 +100,7 @@ public final class PartyAPI {
      * @return the leader of the party
      */
     public static String getPartyLeader(String partyName) {
-        return PartyManager.getInstance().getPartyLeader(partyName);
+        return PartyManager.getPartyLeader(partyName);
     }
 
     /**
@@ -113,7 +112,7 @@ public final class PartyAPI {
      * @param player The player to set as leader
      */
     public static void setPartyLeader(String partyName, String player) {
-        PartyManager.getInstance().setPartyLeader(player, PartyManager.getInstance().getParty(partyName));
+        PartyManager.setPartyLeader(player, PartyManager.getParty(partyName));
     }
 
     /**
@@ -125,7 +124,7 @@ public final class PartyAPI {
      * @return all the players in the player's party
      */
     public static List<String> getAllMembers(Player player) {
-        return PartyManager.getInstance().getAllMembers(player);
+        return PartyManager.getAllMembers(player);
     }
 
     /**
@@ -137,7 +136,7 @@ public final class PartyAPI {
      * @return all online players in this party
      */
     public static List<Player> getOnlineMembers(String partyName) {
-        return PartyManager.getInstance().getOnlineMembers(partyName);
+        return PartyManager.getOnlineMembers(partyName);
     }
 
     /**
@@ -149,6 +148,6 @@ public final class PartyAPI {
      * @return all online players in the player's party
      */
     public static List<Player> getOnlineMembers(Player player) {
-        return PartyManager.getInstance().getOnlineMembers(player);
+        return PartyManager.getOnlineMembers(player);
     }
 }

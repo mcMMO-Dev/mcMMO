@@ -31,7 +31,7 @@ import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.Combat;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -62,7 +62,7 @@ public class Fishing {
             return;
         }
     
-        Skills.handleFoodSkills(player, SkillType.FISHING, event, fishermansDietRankLevel1, fishermansDietMaxLevel, rankChange);
+        SkillTools.handleFoodSkills(player, SkillType.FISHING, event, fishermansDietRankLevel1, fishermansDietMaxLevel, rankChange);
     }
 
     /**
@@ -141,7 +141,7 @@ public class Fishing {
             }
         }
 
-        Skills.xpProcessing(player, profile, SkillType.FISHING, Config.getInstance().getFishingBaseXP());
+        SkillTools.xpProcessing(player, profile, SkillType.FISHING, Config.getInstance().getFishingBaseXP());
     }
 
     /**

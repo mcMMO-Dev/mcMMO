@@ -1,30 +1,42 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginDescriptionFile;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
 
-public class MOTD {
-    private Player player;
-    private String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
+public final class Motd {
+    private static final String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
+    private static final PluginDescriptionFile pluginDescription = mcMMO.p.getDescription();
 
-    public MOTD(Player player) {
-        this.player = player;
+    private Motd() {}
+
+    public static void displayAll(Player player) {
+        displayVersion(player, pluginDescription.getVersion());
+        displayHardcoreSettings(player);
+        displayXpPerks(player);
+        displayCooldownPerks(player);
+        displayActivationPerks(player);
+        displayLuckyPerks(player);
+        displayWebsite(player, pluginDescription.getWebsite());
     }
 
     /**
      * Display version info.
-     * @param version The plugin version
+     * @param player Target player
+     * @param version Plugin version
      */
-    public void displayVersion(String version) {
+    public static void displayVersion(Player player, String version) {
         player.sendMessage(LocaleLoader.getString("MOTD.Version", new Object[] {version}));
     }
 
     /**
      * Display Hardcore Mode settings.
+     * @param player Target player
      */
-    public void displayHardcoreSettings() {
+    public static void displayHardcoreSettings(Player player) {
         if (Hardcore.statLossEnabled) {
             if (Hardcore.vampirismEnabled) {
                 player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.VampireOn"));
@@ -40,8 +52,9 @@ public class MOTD {
 
     /**
      * Display XP perks.
+     * @param player Target player
      */
-    public void displayXpPerks() {
+    public static void displayXpPerks(Player player) {
         if (Permissions.xpQuadruple(player)) {
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 4 }) }));
         }
@@ -61,8 +74,9 @@ public class MOTD {
 
     /**
      * Display cooldown perks.
+     * @param player Target player
      */
-    public void displayCooldownPerks() {
+    public static void displayCooldownPerks(Player player) {
         if (Permissions.cooldownsHalved(player)) {
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", new Object[] { "1/2" }) }));
         }
@@ -76,8 +90,9 @@ public class MOTD {
 
     /**
      * Display activiation perks.
+     * @param player Target player
      */
-    public void displayActivationPerks() {
+    public static void displayActivationPerks(Player player) {
         if (Permissions.activationTwelve(player)) {
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", new Object[] { 12 }) }));
         }
@@ -91,8 +106,9 @@ public class MOTD {
 
     /**
      * Display "lucky" perks.
+     * @param player Target player
      */
-    public void displayLuckyPerks() {
+    public static void displayLuckyPerks(Player player) {
         for (SkillType skill : SkillType.values()) {
             if (Permissions.lucky(player, skill)) {
                 player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
@@ -103,9 +119,10 @@ public class MOTD {
 
     /**
      * Display website info.
-     * @param website The plugin website
+     * @param player Target player
+     * @param website Plugin website
      */
-    public void displayWebsite(String website) {
+    public static void displayWebsite(Player player, String website) {
         player.sendMessage(LocaleLoader.getString("MOTD.Website", new Object[] {website}));
     }
 }

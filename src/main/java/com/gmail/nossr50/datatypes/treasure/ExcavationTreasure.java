@@ -3,7 +3,6 @@ package com.gmail.nossr50.datatypes.treasure;
 import org.bukkit.inventory.ItemStack;
 
 public class ExcavationTreasure extends Treasure {
-
     // dirt | grass | sand | gravel | clay | mycel | soulsand
     // 00000001 - dirt      1
     // 00000010 - grass     2

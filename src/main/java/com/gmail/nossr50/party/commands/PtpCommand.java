@@ -61,7 +61,7 @@ public class PtpCommand implements CommandExecutor {
                 return true;
             }
 
-            if (PartyManager.getInstance().inSameParty(player, target)) {
+            if (PartyManager.inSameParty(player, target)) {
                 McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, profile.getParty().getName());
                 plugin.getServer().getPluginManager().callEvent(event);
 

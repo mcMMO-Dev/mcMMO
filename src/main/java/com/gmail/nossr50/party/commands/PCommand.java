@@ -96,7 +96,7 @@ public class PCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (!PartyManager.getInstance().isParty(args[0])) {
+                if (!PartyManager.isParty(args[0])) {
                     sender.sendMessage(LocaleLoader.getString("Party.InvalidName"));
                     return true;
                 }
@@ -123,7 +123,7 @@ public class PCommand implements CommandExecutor {
 
                 plugin.getLogger().info("[P](" + args[0] + ")" + "<*Console*> " + message);
 
-                for (Player member : PartyManager.getInstance().getOnlineMembers(args[0])) {
+                for (Player member : PartyManager.getOnlineMembers(args[0])) {
                     member.sendMessage(prefix + message);
                 }
             }

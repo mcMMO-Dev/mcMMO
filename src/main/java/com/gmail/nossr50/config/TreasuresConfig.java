@@ -16,7 +16,7 @@ import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.Treasure;
 
-public class TreasuresConfig extends ConfigLoader{
+public class TreasuresConfig extends ConfigLoader {
     private static TreasuresConfig instance;
     public List<ExcavationTreasure> excavationFromDirt = new ArrayList<ExcavationTreasure>();
     public List<ExcavationTreasure> excavationFromGrass = new ArrayList<ExcavationTreasure>();

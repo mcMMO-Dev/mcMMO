@@ -14,7 +14,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.Skills;
+import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 
@@ -106,7 +106,7 @@ public class Mining {
             break;
         }
 
-        Skills.xpProcessing(player, profile, SkillType.MINING, xp);
+        SkillTools.xpProcessing(player, profile, SkillType.MINING, xp);
     }
 
     /**
