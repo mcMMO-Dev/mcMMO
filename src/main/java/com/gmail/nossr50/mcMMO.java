@@ -180,7 +180,8 @@ public class mcMMO extends JavaPlugin {
 
         //Setup the leader boards
         if (configInstance.getUseMySQL()) {
-            Database.connect();
+            // TODO: Why do we have to check for a connection that hasn't be made yet? 
+            Database.checkConnected();
             Database.createStructure();
         }
         else {
