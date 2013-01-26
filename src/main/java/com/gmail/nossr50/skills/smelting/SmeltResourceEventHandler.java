@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.Skills;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 
 public class SmeltResourceEventHandler {
     private SmeltingManager manager;
@@ -66,8 +67,13 @@ public class SmeltResourceEventHandler {
             break;
         }
 
-        Skills.xpProcessing(player, profile, SkillType.MINING, xp / 2);
-        Skills.xpProcessing(player, profile, SkillType.REPAIR, xp / 2);
+        if (Permissions.mining(player)) {
+            Skills.xpProcessing(player, profile, SkillType.MINING, xp / 2);
+        }
+
+        if (Permissions.repair(player)) {
+            Skills.xpProcessing(player, profile, SkillType.REPAIR, xp / 2);
+        }
     }
 
     protected void handleBonusSmelts() {
