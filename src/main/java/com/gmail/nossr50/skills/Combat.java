@@ -48,7 +48,7 @@ import com.gmail.nossr50.util.Users;
 public final class Combat {
     private static Config configInstance = Config.getInstance();
 
-    private Combat() {};
+    private Combat() {}
 
     /**
      * Apply combat modifiers and process and XP gain.
