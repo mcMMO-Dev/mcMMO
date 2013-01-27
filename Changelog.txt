@@ -14,6 +14,7 @@ Version 1.4.00-dev
  + Added display values to Unarmed command for Iron Grip
  + Added '/party create <name>' command, use this to create a party
  + Added '/party disband' command, kicks out all members and deletes the party
+ + Added '/ptp toggle' command, to disable party teleportation.
  = Fixed mod config files loading / generating when they shouldn't have
  = Fixed bug where Green Terra could activate on crops that weren't fully grown.
  = Fixed several typos relating to locale string display
@@ -30,6 +31,7 @@ Version 1.4.00-dev
  = Fixed bug where Iron Grip was using the attacker's skill values rather than the defender's.
  = Fixed a bug where /party kick would trigger the PartyChangeEvent for the wrong player
  = Fixed a bug where party join messages weren't displayed
+ = Fixed a bug where Disarm and Deflect had wrong values
  ! It is now possible to use a negative number for Max_Level in treasures.yml to not use a maximum level, changed default file accordingly
  ! A Fishing catch will now always contains a fish even if a treasure is found
  ! Changed how Berserk handles not picking up items to avoid listening to PlayerPickupItemEvent
