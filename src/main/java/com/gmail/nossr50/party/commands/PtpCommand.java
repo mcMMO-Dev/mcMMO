@@ -40,7 +40,10 @@ public class PtpCommand implements CommandExecutor {
             PlayerProfile profile = Users.getProfile(player);
 
             if (args[0].equalsIgnoreCase("toggle")) {
-                return toggle(sender, args);
+                return togglePartyTeleportation(sender, args);
+            }
+            else if (args[0].equalsIgnoreCase("deny")) {
+                return denyTeleportRequest(sender, args);
             }
 
             if (profile.getRecentlyHurt() + (Config.getInstance().getPTPCommandCooldown() * Misc.TIME_CONVERSION_FACTOR) > System.currentTimeMillis()) {
@@ -48,46 +51,12 @@ public class PtpCommand implements CommandExecutor {
                 return true;
             }
 
-            Player target = plugin.getServer().getPlayer(args[0]);
-
-            if (player.equals(target)) {
-                player.sendMessage(LocaleLoader.getString("Party.Teleport.Self"));
-                return true;
-            }
-
-            if (target == null) {
-                player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
-                return true;
-            }
-
-            if (target.isDead()) {
-                player.sendMessage(LocaleLoader.getString("Party.Teleport.Dead"));
-                return true;
-            }
-
-            if (PartyManager.inSameParty(player, target)) {
-                if (Users.getProfile(target).getPtpEnabled()) {
-                    McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, profile.getParty().getName());
-                    plugin.getServer().getPluginManager().callEvent(event);
-
-                    if (event.isCancelled()) {
-                        return true;
-                    }
-
-                    player.teleport(target);
-                    player.sendMessage(LocaleLoader.getString("Party.Teleport.Player", new Object[] { target.getName() }));
-                    target.sendMessage(LocaleLoader.getString("Party.Teleport.Target", new Object[] { player.getName() }));
-                    profile.setRecentlyHurt(System.currentTimeMillis());
-                } else {
-                    player.sendMessage(LocaleLoader.getString("Party.Teleport.Disabled", new Object[] { target.getName() }));
-                }
+            if (args[0].equalsIgnoreCase("accept")) {
+                return acceptTeleportRequest(sender, args);
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] { target.getName() }));
-                return true;
+                return sendTeleportRequest(sender, args);
             }
-
-            return true;
 
         default:
             sender.sendMessage(usage);
@@ -95,7 +64,87 @@ public class PtpCommand implements CommandExecutor {
         }
     }
 
-    private boolean toggle(CommandSender sender, String[] args) {
+    private boolean sendTeleportRequest(CommandSender sender, String[] args) {
+        Player player = (Player) sender;
+        Player target = plugin.getServer().getPlayer(args[0]);
+
+        if (player.equals(target)) {
+            player.sendMessage(LocaleLoader.getString("Party.Teleport.Self"));
+            return true;
+        }
+
+        if (target == null) {
+            player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
+            return true;
+        }
+
+        if (target.isDead()) {
+            player.sendMessage(LocaleLoader.getString("Party.Teleport.Dead"));
+            return true;
+        }
+
+        if (PartyManager.inSameParty(player, target)) {
+            if (Users.getProfile(target).getPtpEnabled()) {
+                Users.getProfile(target).setPtpRequest(player.getName());
+                player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
+                target.sendMessage(LocaleLoader.getString("Commands.ptp.Request", new Object[] {player.getName()}));
+                return true;
+            }else {
+                player.sendMessage(LocaleLoader.getString("Party.Teleport.Disabled", new Object[] { target.getName() }));
+            }
+        } else {
+            player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] { target.getName() }));
+        }
+        return true;
+    }
+
+    private boolean acceptTeleportRequest(CommandSender sender, String[] args) {
+        Player player = (Player) sender;
+        PlayerProfile playerProfile = Users.getProfile(player);
+
+        if (playerProfile.hasPtpRequest()) {
+
+            Player target = plugin.getServer().getPlayer(playerProfile.getPtpRequest());
+
+            if (Users.getProfile(target).getPtpEnabled()) {
+                McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, playerProfile.getParty().getName());
+                plugin.getServer().getPluginManager().callEvent(event);
+
+                if (event.isCancelled()) {
+                    return true;
+                }
+
+                target.teleport(player);
+                target.sendMessage(LocaleLoader.getString("Party.Teleport.Player", new Object[] { player.getName() }));
+                player.sendMessage(LocaleLoader.getString("Party.Teleport.Target", new Object[] { target.getName() }));
+                playerProfile.setRecentlyHurt(System.currentTimeMillis());
+            } else {
+                player.sendMessage(LocaleLoader.getString("Party.Teleport.Disabled", new Object[] { target.getName() }));
+            }
+        }
+        else {
+            player.sendMessage(LocaleLoader.getString("Commands.ptp.NoRequests"));
+        }
+        return true;
+    }
+
+    private boolean denyTeleportRequest(CommandSender sender, String[] args) {
+        Player player = (Player) sender;
+        PlayerProfile playerProfile = Users.getProfile(player);
+
+        if (playerProfile.hasPtpRequest()) {
+            Player target = plugin.getServer().getPlayer(playerProfile.getPtpRequest());
+            player.sendMessage(LocaleLoader.getString("Commands.ptp.Deny"));
+            target.sendMessage(LocaleLoader.getString("Commands.ptp.Denied", new Object[] { player.getName() }));
+            playerProfile.removePtpRequest();
+        }
+        else {
+            player.sendMessage(LocaleLoader.getString("Commands.ptp.NoRequests"));
+        }
+        return true;
+    }
+
+    private boolean togglePartyTeleportation(CommandSender sender, String[] args) {
         Player player = (Player) sender;
         PlayerProfile profile = Users.getProfile(player);
 

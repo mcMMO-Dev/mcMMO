@@ -31,6 +31,7 @@ public class PlayerProfile {
     /* Party Stuff */
     private Party party;
     private Party invite;
+    private String ptpRequest;
     private boolean ptpEnabled = true;
 
     /* Toggles */
@@ -1243,5 +1244,25 @@ public class PlayerProfile {
 
     public void togglePtpUse() {
         ptpEnabled = !ptpEnabled;
+    }
+
+    public void setPtpRequest(String ptpRequest) {
+        this.ptpRequest = ptpRequest;
+    }
+
+    public String getPtpRequest() {
+        return ptpRequest;
+    }
+
+    public boolean hasPtpRequest() {
+        if (ptpRequest != null) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public void removePtpRequest() {
+        ptpRequest = null;
     }
 }
