@@ -31,6 +31,7 @@ public class PlayerProfile {
     /* Party Stuff */
     private Party party;
     private Party invite;
+    private boolean ptpEnabled = true;
 
     /* Toggles */
     private boolean loaded;
@@ -1234,5 +1235,13 @@ public class PlayerProfile {
 
     public void removeInvite() {
         invite = null;
+    }
+
+    public boolean getPtpEnabled() {
+        return ptpEnabled;
+    }
+
+    public void togglePtpUse() {
+        ptpEnabled = !ptpEnabled;
     }
 }
