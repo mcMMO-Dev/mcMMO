@@ -202,7 +202,6 @@ public class Herbalism {
             break;
 
         case PUMPKIN:
-        case JACK_O_LANTERN:
             if (!mcMMO.placeStore.isTrue(block)) {
                 mat = Material.getMaterial(id);
                 xp = Config.getInstance().getHerbalismXPPumpkin();
