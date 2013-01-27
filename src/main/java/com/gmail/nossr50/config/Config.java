@@ -153,7 +153,13 @@ public class Config extends ConfigLoader {
     public boolean getWoodcuttingRequiresTool() { return config.getBoolean("Skills.Woodcutting.Requires_Axe", true); }
 
     /* Excavation */
-    public int getExcavationBaseXP() { return config.getInt("Experience.Excavation.Base", 40); }
+    public int getExcavationClayXP() { return config.getInt("Experience.Excavation.Clay", 40); }
+    public int getExcavationDirtXP() { return config.getInt("Experience.Excavation.Dirt", 40); }
+    public int getExcavationGrassXP() { return config.getInt("Experience.Excavation.Grass", 40); }
+    public int getExcavationGravelXP() { return config.getInt("Experience.Excavation.Gravel", 40); }
+    public int getExcavationMycelXP() { return config.getInt("Experience.Excavation.Mycel", 40); }
+    public int getExcavationSandXP() { return config.getInt("Experience.Excavation.Sand", 40); }
+    public int getExcavationSoulSandXP() { return config.getInt("Experience.Excavation.SoulSand", 40); }
 
     /* Fishing */
     public int getFishingBaseXP() { return config.getInt("Experience.Fishing.Base", 800); }

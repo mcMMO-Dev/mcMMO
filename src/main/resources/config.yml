@@ -235,7 +235,13 @@ Experience:
     Fishing:
         Base: 800
     Excavation:
-        Base: 40
+        Clay: 40
+        Dirt: 40
+        Grass: 40
+        Gravel: 40
+        Mycel: 40
+        Sand: 40
+        SoulSand: 40
     Woodcutting:
         Oak: 70
         Spruce: 80

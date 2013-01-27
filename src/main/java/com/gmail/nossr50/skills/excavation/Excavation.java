@@ -56,7 +56,39 @@ public class Excavation {
             xp = ModChecks.getCustomBlock(block).getXpGain();
         }
         else {
-            xp = Config.getInstance().getExcavationBaseXP();
+            switch (type) {
+            case CLAY:
+                xp = Config.getInstance().getExcavationClayXP();
+                break;
+
+            case DIRT:
+                xp = Config.getInstance().getExcavationDirtXP();
+                break;
+
+            case GRASS:
+                xp = Config.getInstance().getExcavationGrassXP();
+                break;
+
+            case GRAVEL:
+                xp = Config.getInstance().getExcavationGravelXP();
+                break;
+
+            case MYCEL:
+                xp = Config.getInstance().getExcavationMycelXP();
+                break;
+
+            case SAND:
+                xp = Config.getInstance().getExcavationSandXP();
+                break;
+
+            case SOUL_SAND:
+                xp = Config.getInstance().getExcavationSoulSandXP();
+                break;
+
+            default:
+                xp = 0;
+                break;
+            }
         }
 
         if (Permissions.excavationTreasures(player)) {
