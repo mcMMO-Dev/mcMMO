@@ -35,7 +35,7 @@ public final class ChatAPI {
      */
     @Deprecated
     public static void sendPartyChat(String sender, String party, String message) {
-        ChatManager.handlePartyChat(PartyManager.getParty(party), sender, message);
+        sendPartyChat(null, party, sender, message);
     }
 
     /**
@@ -63,6 +63,6 @@ public final class ChatAPI {
      */
     @Deprecated
     public static void sendAdminChat(String sender, String message) {
-        ChatManager.handleAdminChat(sender, message);
+        sendAdminChat(null, sender, message);
     }
 }

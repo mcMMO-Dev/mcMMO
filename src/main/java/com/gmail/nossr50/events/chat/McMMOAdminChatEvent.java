@@ -9,8 +9,4 @@ public class McMMOAdminChatEvent extends McMMOChatEvent {
     public McMMOAdminChatEvent(Plugin plugin, String sender, String message) {
         super(plugin, sender, message);
     }
-
-    public McMMOAdminChatEvent(String sender, String message) {
-        this(null, sender, message);
-    }
 }

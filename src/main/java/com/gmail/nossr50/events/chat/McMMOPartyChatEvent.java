@@ -13,10 +13,6 @@ public class McMMOPartyChatEvent extends McMMOChatEvent {
         this.party = party;
     }
 
-    public McMMOPartyChatEvent(String sender, String party, String message) {
-        this(null, sender, party, message);
-    }
-
     /**
      * @return String name of the party the message will be sent to
      */

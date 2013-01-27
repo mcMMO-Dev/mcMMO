@@ -61,7 +61,7 @@ public class ACommand implements CommandExecutor {
             if (sender instanceof Player) {
                 Player player = (Player) sender;
 
-                McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(player.getName(), message);
+                McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(mcMMO.p, player.getName(), message);
                 mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
                 if (chatEvent.isCancelled()) {
@@ -80,7 +80,7 @@ public class ACommand implements CommandExecutor {
                 }
             }
             else {
-                McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent("Console", message);
+                McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(mcMMO.p, "Console", message);
                 mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
                 if (chatEvent.isCancelled()) {

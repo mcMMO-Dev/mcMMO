@@ -341,11 +341,11 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            ChatManager.handlePartyChat(party, player.getName(), event.getMessage());
+            ChatManager.handlePartyChat(plugin, party, player.getName(), event.getMessage());
             event.setCancelled(true);
         }
         else if (profile.getAdminChatMode()) {
-            ChatManager.handleAdminChat(player.getName(), event.getMessage());
+            ChatManager.handleAdminChat(plugin, player.getName(), event.getMessage());
             event.setCancelled(true);
         }
     }

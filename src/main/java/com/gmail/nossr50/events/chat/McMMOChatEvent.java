@@ -5,8 +5,6 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.mcMMO;
-
 public class McMMOChatEvent extends Event implements Cancellable {
     private boolean cancelled;
     private Plugin plugin;
@@ -14,17 +12,13 @@ public class McMMOChatEvent extends Event implements Cancellable {
     private String message;
 
     protected McMMOChatEvent(Plugin plugin, String sender, String message) {
-        if (plugin == null) {
-            plugin = mcMMO.p;
-        }
-
         this.plugin = plugin;
         this.sender = sender;
         this.message = message;
     }
 
     /**
-     * @return The plugin responsible for this event
+     * @return The plugin responsible for this event, note this can be null
      */
     public Plugin getPlugin() {
         return plugin;

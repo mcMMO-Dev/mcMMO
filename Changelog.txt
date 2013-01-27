@@ -36,6 +36,7 @@ Version 1.4.00-dev
  ! Changed Fisherman's Diet and Farmer's Diet to use two seperate config values
  ! Major refactoring - please take note, this WILL break any mcMMO-related plugin not properly hooking into the API.
  ! Changed the way party commands work, use /party ? to check how to use the new commands
+ ! Changed McMMOChatEvent to contain the plugin that the event originated from.
 
 Version 1.3.14
  + Added new Hylian Luck skill to Herbalism.

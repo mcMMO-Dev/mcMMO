@@ -31,10 +31,6 @@ public final class ChatManager {
         }
     }
 
-    public static void handleAdminChat(String playerName, String message) {
-        handleAdminChat(null, playerName, message);
-    }
-
     public static void handlePartyChat(Plugin plugin, Party party, String playerName, String message) {
         String partyName = party.getName();
 
@@ -52,9 +48,5 @@ public final class ChatManager {
         for (Player member : party.getOnlineMembers()) {
             member.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Prefix", new Object[] {playerName}) + partyMessage);
         }
-    }
-
-    public static void handlePartyChat(Party party, String playerName, String message) {
-        handlePartyChat(null, party, playerName, message);
     }
 }

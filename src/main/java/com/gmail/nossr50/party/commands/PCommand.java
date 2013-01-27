@@ -74,7 +74,7 @@ public class PCommand implements CommandExecutor {
 
                 String message = buffer.toString();
 
-                McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(player.getName(), party.getName(), message);
+                McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(plugin, player.getName(), party.getName(), message);
                 plugin.getServer().getPluginManager().callEvent(chatEvent);
 
                 if (chatEvent.isCancelled()) {
@@ -111,7 +111,7 @@ public class PCommand implements CommandExecutor {
 
                 String message = buffer.toString();
 
-                McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent("Console", args[0], message);
+                McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(plugin, "Console", args[0], message);
                 plugin.getServer().getPluginManager().callEvent(chatEvent);
 
                 if (chatEvent.isCancelled()) {
