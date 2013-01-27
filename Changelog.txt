@@ -14,6 +14,8 @@ Version 1.4.00-dev
  + Added display values to Unarmed command for Iron Grip
  + Added '/party create <name>' command, use this to create a party
  + Added '/party disband' command, kicks out all members and deletes the party
+ = Fixed mod config files loading / generating when they shouldn't have
+ = Fixed bug where Green Terra could activate on crops that weren't fully grown.
  = Fixed several typos relating to locale string display
  = Fixed bug where all skill guide headers appeared as "Skillname Guide Guide"
  = Fixed bug where Impact was applied incorrectly due to an inverted method call
@@ -162,7 +164,6 @@ Version 1.3.10
  + Added Ability API functions
  + Added 50% & 150% XP boost perks
  + Added "lucky" perk for donors
- = Fixed mod config files loading / generating when they shouldn't have
  = Fixed /inspect not working on offline players
  = Fixed custom blocks, tools and armors not loading properly
  = Fixed duplication bug with sticky pistons

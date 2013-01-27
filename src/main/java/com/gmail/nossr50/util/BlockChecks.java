@@ -4,7 +4,9 @@ import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.CocoaPlant;
 import org.bukkit.material.MaterialData;
+import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomBlocksConfig;
@@ -179,7 +181,6 @@ public final class BlockChecks {
         case BROWN_MUSHROOM:
         case CACTUS:
         case MELON_BLOCK:
-        case NETHER_WARTS:
         case PUMPKIN:
         case RED_MUSHROOM:
         case RED_ROSE:
@@ -187,16 +188,28 @@ public final class BlockChecks {
         case VINE:
         case WATER_LILY:
         case YELLOW_FLOWER:
-        case COCOA:
-        case CARROT:
-        case POTATO:
             return true;
 
+        case CARROT:
         case CROPS:
+        case POTATO:
             if (block.getData() == CropState.RIPE.getData()) {
                 return true;
             }
+            return false;
 
+        case NETHER_WARTS:
+            if (block.getData() == (byte) 0x3) {
+                return true;
+            }
+            return false;
+
+        case COCOA:
+            CocoaPlant plant = (CocoaPlant) block.getState().getData();
+
+            if (plant.getSize() == CocoaPlantSize.LARGE) {
+                return true;
+            }
             return false;
 
         default:

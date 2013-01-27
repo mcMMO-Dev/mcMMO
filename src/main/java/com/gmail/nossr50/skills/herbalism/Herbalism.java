@@ -173,13 +173,11 @@ public class Herbalism {
             break;
 
         case CROPS:
-            if (data == CropState.RIPE.getData()) {
-                mat = Material.WHEAT;
-                xp = Config.getInstance().getHerbalismXPWheat();
+            mat = Material.WHEAT;
+            xp = Config.getInstance().getHerbalismXPWheat();
 
-                if (Permissions.greenThumbWheat(player)) {
-                    greenThumbWheat(block, player, event, plugin);
-                }
+            if (Permissions.greenThumbWheat(player)) {
+                greenThumbWheat(block, player, event, plugin);
             }
             break;
 
@@ -191,13 +189,11 @@ public class Herbalism {
             break;
 
         case NETHER_WARTS:
-            if (data == (byte) 0x3) {
-                mat = Material.NETHER_STALK;
-                xp = Config.getInstance().getHerbalismXPNetherWart();
+            mat = Material.NETHER_STALK;
+            xp = Config.getInstance().getHerbalismXPNetherWart();
 
-                if (Permissions.greenThumbNetherwart(player)) {
-                    greenThumbWheat(block, player, event, plugin);
-                }
+            if (Permissions.greenThumbNetherwart(player)) {
+                greenThumbWheat(block, player, event, plugin);
             }
             break;
 
@@ -246,42 +242,36 @@ public class Herbalism {
             break;
 
         case COCOA:
-            CocoaPlant plant = (CocoaPlant) block.getState().getData();
+            mat = type;
+            xp = Config.getInstance().getHerbalismXPCocoa();
 
-            if (plant.getSize() == CocoaPlantSize.LARGE) {
-                mat = type;
-                xp = Config.getInstance().getHerbalismXPCocoa();
-
-                if (Permissions.greenThumbCocoa(player)) {
-                    greenThumbWheat(block, player, event, plugin);
-                }
+            if (Permissions.greenThumbCocoa(player)) {
+                greenThumbWheat(block, player, event, plugin);
             }
             break;
 
         case CARROT:
-            if (data == CropState.RIPE.getData()) {
-                mat = Material.CARROT;
-                xp = Config.getInstance().getHerbalismXPCarrot();
+            mat = Material.CARROT;
+            xp = Config.getInstance().getHerbalismXPCarrot();
 
-
-                if (Permissions.greenThumbCarrots(player)) {
-                    greenThumbWheat(block, player, event, plugin);
-                }
+            if (Permissions.greenThumbCarrots(player)) {
+                greenThumbWheat(block, player, event, plugin);
             }
             break;
 
         case POTATO:
-            if (data == CropState.RIPE.getData()) {
-                mat = Material.POTATO;
-                xp = Config.getInstance().getHerbalismXPPotato();
+            mat = Material.POTATO;
+            xp = Config.getInstance().getHerbalismXPPotato();
 
-                if (Permissions.greenThumbPotatoes(player)) {
-                    greenThumbWheat(block, player, event, plugin);
-                }
+            if (Permissions.greenThumbPotatoes(player)) {
+                greenThumbWheat(block, player, event, plugin);
             }
             break;
 
         default:
+            // We REALLY shouldn't have to check this again, given that we check it in the BlockChecks before this function is even called.
+            // Safe to remove?
+
             ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
             if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(item)) {
