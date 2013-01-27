@@ -17,9 +17,6 @@ public final class ModChecks {
     private static boolean customToolsEnabled = configInstance.getToolModsEnabled();
     private static boolean customArmorEnabled = configInstance.getArmorModsEnabled();
     private static boolean customBlocksEnabled = configInstance.getBlockModsEnabled();
-    private static CustomToolsConfig toolInstance = CustomToolsConfig.getInstance();
-    private static CustomArmorConfig armorInstance = CustomArmorConfig.getInstance();
-    private static CustomBlocksConfig blocksInstance = CustomBlocksConfig.getInstance();
 
     private ModChecks() {}
 
@@ -30,7 +27,7 @@ public final class ModChecks {
      * @return the armor if it exists, null otherwise
      */
     public static CustomItem getArmorFromItemStack(ItemStack item) {
-        return armorInstance.customArmor.get(item.getTypeId());
+        return CustomArmorConfig.getInstance().customArmor.get(item.getTypeId());
     }
 
     /**
@@ -40,7 +37,7 @@ public final class ModChecks {
      * @return the tool if it exists, null otherwise
      */
     public static CustomTool getToolFromItemStack(ItemStack item) {
-        return toolInstance.customTools.get(item.getTypeId());
+        return CustomToolsConfig.getInstance().customTools.get(item.getTypeId());
     }
 
     /**
@@ -52,11 +49,11 @@ public final class ModChecks {
     public static CustomBlock getCustomBlock(Block block) {
         ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
-        if (!blocksInstance.customItems.contains(item)) {
+        if (!CustomBlocksConfig.getInstance().customItems.contains(item)) {
             return null;
         }
 
-        for (CustomBlock b : blocksInstance.customBlocks) {
+        for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
             if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
                 return b;
             }
@@ -74,8 +71,8 @@ public final class ModChecks {
     public static boolean isCustomMiningBlock(Block block) {
         ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
-        if (customBlocksEnabled && blocksInstance.customMiningBlocks.contains(item)) {
-            for (CustomBlock b : blocksInstance.customBlocks) {
+        if (customBlocksEnabled && CustomBlocksConfig.getInstance().customMiningBlocks.contains(item)) {
+            for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
                 if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
                     return true;
                 }
@@ -94,8 +91,8 @@ public final class ModChecks {
     public static boolean isCustomLeafBlock(Block block) {
         ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
-        if (blocksInstance.customLeaves.contains(item)) {
-            for (CustomBlock b : blocksInstance.customBlocks) {
+        if (CustomBlocksConfig.getInstance().customLeaves.contains(item)) {
+            for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
                 if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
                     return true;
                 }
@@ -114,8 +111,8 @@ public final class ModChecks {
     public static boolean isCustomLogBlock(Block block) {
         ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
-        if (blocksInstance.customLogs.contains(item)) {
-            for (CustomBlock b : blocksInstance.customBlocks) {
+        if (CustomBlocksConfig.getInstance().customLogs.contains(item)) {
+            for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
                 if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
                     return true;
                 }
@@ -134,8 +131,8 @@ public final class ModChecks {
     public static boolean isCustomOreBlock(Block block) {
         ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
-        if (blocksInstance.customOres.contains(item)) {
-            for (CustomBlock b : blocksInstance.customBlocks) {
+        if (CustomBlocksConfig.getInstance().customOres.contains(item)) {
+            for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
                 if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
                     return true;
                 }
@@ -152,7 +149,7 @@ public final class ModChecks {
      * @return true if the item is a custom tool, false otherwise
      */
     public static boolean isCustomTool(ItemStack item) {
-        if (customToolsEnabled && toolInstance.customTools.containsKey(item.getTypeId())) {
+        if (customToolsEnabled && CustomToolsConfig.getInstance().customTools.containsKey(item.getTypeId())) {
             return true;
         }
 
@@ -166,7 +163,7 @@ public final class ModChecks {
      * @return true if the item is custom armor, false otherwise
      */
     public static boolean isCustomArmor(ItemStack item) {
-        if (customArmorEnabled && armorInstance.customArmor.containsKey(item.getTypeId())) {
+        if (customArmorEnabled && CustomArmorConfig.getInstance().customArmor.containsKey(item.getTypeId())) {
             return true;
         }
 

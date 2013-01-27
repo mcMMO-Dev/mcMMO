@@ -162,6 +162,7 @@ Version 1.3.10
  + Added Ability API functions
  + Added 50% & 150% XP boost perks
  + Added "lucky" perk for donors
+ = Fixed mod config files loading / generating when they shouldn't have
  = Fixed /inspect not working on offline players
  = Fixed custom blocks, tools and armors not loading properly
  = Fixed duplication bug with sticky pistons
