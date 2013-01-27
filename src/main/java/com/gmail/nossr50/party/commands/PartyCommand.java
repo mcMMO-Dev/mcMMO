@@ -171,6 +171,11 @@ public class PartyCommand implements CommandExecutor {
                 return false;
             }
 
+            if (player.equals(target)) {
+                player.sendMessage(LocaleLoader.getString("Party.Join.Self"));
+                return true;
+            }
+
             String password = null;
             
             if(args.length > 2) {
