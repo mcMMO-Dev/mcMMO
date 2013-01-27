@@ -104,19 +104,19 @@ public class mcMMO extends JavaPlugin {
     public static ChunkManager placeStore;
     public static RepairManager repairManager;
 
-    /* Jar Stuff */
+    // Jar Stuff
     public static File mcmmo;
 
-    //File Paths
+    // File Paths
     private static String mainDirectory;
     private static String flatFileDirectory;
     private static String usersFile;
     private static String modDirectory;
 
-    //Spout Check
+    // Spout Check
     public static boolean spoutEnabled;
 
-    //XP Event Check
+    // XP Event Check
     private boolean xpEventEnabled = false;
 
     /**
@@ -127,11 +127,12 @@ public class mcMMO extends JavaPlugin {
         p = this;
         setupFilePaths();
 
-        //Force the loading of config files
+        // Force the loading of config files
         Config configInstance = Config.getInstance();
         TreasuresConfig.getInstance();
         HiddenConfig.getInstance();
         AdvancedConfig.getInstance();
+        PartyManager.loadParties();
 
         List<Repairable> repairables = new ArrayList<Repairable>();
 
@@ -147,13 +148,13 @@ public class mcMMO extends JavaPlugin {
             CustomBlocksConfig.getInstance();
         }
 
-        //Load repair configs, make manager, and register them at this time
+        // Load repair configs, make manager, and register them at this time
         RepairConfigManager rManager = new RepairConfigManager(this);
         repairables.addAll(rManager.getLoadedRepairables());
         repairManager = RepairManagerFactory.getRepairManager(repairables.size());
         repairManager.registerRepairables(repairables);
 
-        //Check if Repair Anvil and Salvage Anvil have different itemID's
+        // Check if Repair Anvil and Salvage Anvil have different itemID's
         if (configInstance.getSalvageAnvilId() == configInstance.getRepairAnvilId()) {
             getLogger().warning("Can't use the same itemID for Repair/Salvage Anvils!");
         }
@@ -164,7 +165,7 @@ public class mcMMO extends JavaPlugin {
 
         PluginManager pluginManager = getServer().getPluginManager();
 
-        //Register events
+        // Register events
         pluginManager.registerEvents(playerListener, this);
         pluginManager.registerEvents(blockListener, this);
         pluginManager.registerEvents(entityListener, this);
@@ -178,7 +179,7 @@ public class mcMMO extends JavaPlugin {
 
         PluginDescriptionFile pdfFile = getDescription();
 
-        //Setup the leader boards
+        // Setup the leader boards
         if (configInstance.getUseMySQL()) {
             // TODO: Why do we have to check for a connection that hasn't be made yet? 
             Database.checkConnected();
@@ -189,26 +190,27 @@ public class mcMMO extends JavaPlugin {
         }
 
         for (Player player : getServer().getOnlinePlayers()) {
-            Users.addUser(player); //In case of reload add all users back into PlayerProfile
+            Users.addUser(player); // In case of reload add all users back into PlayerProfile
         }
 
         getLogger().info("Version " + pdfFile.getVersion() + " is enabled!");
 
         BukkitScheduler scheduler = getServer().getScheduler();
 
-        //Schedule Spout Activation 1 second after start-up
+        // Schedule Spout Activation 1 second after start-up
         scheduler.scheduleSyncDelayedTask(this, new SpoutStart(this), 20);
-        //Periodic save timer (Saves every 10 minutes by default)
+        // Periodic save timer (Saves every 10 minutes by default)
         scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(), 0, configInstance.getSaveInterval() * 1200);
-        //Regen & Cooldown timer (Runs every second)
+        // Regen & Cooldown timer (Runs every second)
         scheduler.scheduleSyncRepeatingTask(this, new SkillMonitor(), 0, 20);
-        //Bleed timer (Runs every two seconds)
+        // Bleed timer (Runs every two seconds)
         scheduler.scheduleSyncRepeatingTask(this, new BleedTimer(), 0, 40);
 
-        //Old & Powerless User remover
+        // Old & Powerless User remover
         int purgeInterval = Config.getInstance().getPurgeInterval();
+
         if (purgeInterval == 0) {
-            scheduler.scheduleSyncDelayedTask(this, new UserPurgeTask(), 40); //Start 2 seconds after startup.
+            scheduler.scheduleSyncDelayedTask(this, new UserPurgeTask(), 40); // Start 2 seconds after startup.
         }
         else if (purgeInterval > 0) {
             scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), 0, purgeInterval * 60L * 60L * 20L);
@@ -219,7 +221,6 @@ public class mcMMO extends JavaPlugin {
         if (configInstance.getStatsTrackingEnabled()) {
             try {
                 Metrics metrics = new Metrics(this);
-
                 Graph graph = metrics.createGraph("Percentage of servers using timings");
 
                 if (pluginManager.useTimings()) {
@@ -246,14 +247,10 @@ public class mcMMO extends JavaPlugin {
             }
         }
 
-        // Get our ChunkletManager
-        placeStore = ChunkManagerFactory.getChunkManager();
+        placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
-        // Automatically starts and stores itself
-        new MobStoreCleaner();
-
-        // Create Anniversary files
-        Anniversary.createAnniversaryFile();
+        new MobStoreCleaner(); // Automatically starts and stores itself
+        Anniversary.createAnniversaryFile(); // Create Anniversary files
     }
 
     /**
@@ -309,13 +306,13 @@ public class mcMMO extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        Users.saveAll(); //Make sure to save player information if the server shuts down
+        Users.saveAll(); // Make sure to save player information if the server shuts down
         PartyManager.saveParties();
-        getServer().getScheduler().cancelTasks(this); //This removes our tasks
-        placeStore.saveAll(); //Save our metadata
-        placeStore.cleanUp(); //Cleanup empty metadata stores
+        getServer().getScheduler().cancelTasks(this); // This removes our tasks
+        placeStore.saveAll(); // Save our metadata
+        placeStore.cleanUp(); // Cleanup empty metadata stores
 
-        //Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
+        // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
         try {
             ZipLibrary.mcMMObackup();
         }
@@ -331,8 +328,8 @@ public class mcMMO extends JavaPlugin {
      * Register the commands.
      */
     private void registerCommands() {
-        //Register aliases with the aliasmap (used in the playercommandpreprocessevent to ugly alias them to actual commands)
-        //Skills commands
+        // Register aliases with the aliasmap (used in the playercommandpreprocessevent to ugly alias them to actual commands)
+        // Skills commands
         aliasMap.put(LocaleLoader.getString("Acrobatics.SkillName").toLowerCase(), "acrobatics");
         aliasMap.put(LocaleLoader.getString("Archery.SkillName").toLowerCase(), "archery");
         aliasMap.put(LocaleLoader.getString("Axes.SkillName").toLowerCase(), "axes");
@@ -347,8 +344,8 @@ public class mcMMO extends JavaPlugin {
         aliasMap.put(LocaleLoader.getString("Unarmed.SkillName").toLowerCase(), "unarmed");
         aliasMap.put(LocaleLoader.getString("Woodcutting.SkillName").toLowerCase(), "woodcutting");
 
-        //Register commands
-        //Skills commands
+        // Register commands
+        // Skills commands
         getCommand("acrobatics").setExecutor(new AcrobaticsCommand());
         getCommand("archery").setExecutor(new ArcheryCommand());
         getCommand("axes").setExecutor(new AxesCommand());
@@ -365,7 +362,7 @@ public class mcMMO extends JavaPlugin {
 
         Config configInstance = Config.getInstance();
 
-        //mc* commands
+        // mc* commands
         if (configInstance.getCommandMCPurgeEnabled()) {
             getCommand("mcpurge").setExecutor(new McpurgeCommand());
         }
@@ -409,7 +406,7 @@ public class mcMMO extends JavaPlugin {
             getCommand("skillreset").setExecutor(new SkillResetCommand());
         }
 
-        //Party commands
+        // Party commands
         if (configInstance.getCommandAdminChatAEnabled()) {
             getCommand("a").setExecutor(new ACommand());
         }
@@ -426,7 +423,7 @@ public class mcMMO extends JavaPlugin {
             getCommand("ptp").setExecutor(new PtpCommand(this));
         }
 
-        //Other commands
+        // Other commands
         if (configInstance.getCommandAddXPEnabled()) {
             getCommand("addxp").setExecutor(new AddxpCommand());
         }
@@ -449,7 +446,7 @@ public class mcMMO extends JavaPlugin {
 
         getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
 
-        //Spout commands
+        // Spout commands
         if (configInstance.getCommandXPLockEnabled()) {
             getCommand("xplock").setExecutor(new XplockCommand());
         }

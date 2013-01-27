@@ -16,6 +16,8 @@ public final class PartyManager {
     private static String partiesFilePath = mcMMO.p.getDataFolder().getPath() + File.separator + "FlatFileStuff" + File.separator + "parties.yml";
     private static List<Party> parties = new ArrayList<Party>();
 
+    private PartyManager() {}
+
     /**
      * Check if two players are in the same party.
      *
@@ -414,7 +416,7 @@ public final class PartyManager {
     /**
      * Load party file.
      */
-    private static void loadParties() {
+    public static void loadParties() {
         File file = new File(partiesFilePath);
 
         if (!file.exists()) {
