@@ -23,6 +23,11 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public final class Woodcutting {
+    protected enum ExperienceGainMethod {
+        DEFAULT,
+        TREE_FELLER,
+    };
+
     public static final int DOUBLE_DROP_MAX_LEVEL = AdvancedConfig.getInstance().getMiningDoubleDropMaxLevel();
     public static final double DOUBLE_DROP_CHANCE = AdvancedConfig.getInstance().getMiningDoubleDropChance();
     public static final int LEAF_BLOWER_UNLOCK_LEVEL = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
@@ -69,7 +74,7 @@ public final class Woodcutting {
         }
         else {
             try {
-                xp = getExperienceFromLog(block);
+                xp = getExperienceFromLog(block, ExperienceGainMethod.DEFAULT);
             }
             catch (IllegalArgumentException exception) {
                 return;
@@ -84,10 +89,11 @@ public final class Woodcutting {
      * Retrieves the experience reward from a log
      *
      * @param log Log being broken
+     * @param experienceGainMethod How the log is being broken
      * @return Amount of experience
      * @throws IllegalArgumentException if 'log' is invalid
      */
-    protected static int getExperienceFromLog(Block log) {
+    protected static int getExperienceFromLog(Block log, ExperienceGainMethod experienceGainMethod) {
         TreeSpecies logType = TreeSpecies.getByData(extractLogItemData(log.getData()));
 
         // Apparently species can be null in certain cases (custom server mods?)
@@ -104,7 +110,14 @@ public final class Woodcutting {
         case BIRCH:
             return Config.getInstance().getWoodcuttingXPBirch();
         case JUNGLE:
-            return Config.getInstance().getWoodcuttingXPJungle();
+            int xp = Config.getInstance().getWoodcuttingXPJungle();
+
+            switch (experienceGainMethod) {
+            case TREE_FELLER:
+                return (int) (xp * 0.5);
+            default:
+                return xp;
+            }
         default:
             throw new IllegalArgumentException();
         }

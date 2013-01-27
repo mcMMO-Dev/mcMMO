@@ -18,6 +18,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.Combat;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.SkillTools;
+import com.gmail.nossr50.skills.woodcutting.Woodcutting.ExperienceGainMethod;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
@@ -178,13 +179,11 @@ public abstract class TreeFeller {
                 Woodcutting.checkDoubleDrop(player, block);
 
                 try {
-                    xp += Woodcutting.getExperienceFromLog(block);
+                    xp += Woodcutting.getExperienceFromLog(block, ExperienceGainMethod.TREE_FELLER);
                 }
                 catch (IllegalArgumentException exception) {
                     break;
                 }
-
-                // TODO: Nerf XP from jungle trees, as it was done previously
 
                 Misc.dropItem(block.getLocation(), new ItemStack(Material.LOG, 1, Woodcutting.extractLogItemData(block.getData())));
                 break;
