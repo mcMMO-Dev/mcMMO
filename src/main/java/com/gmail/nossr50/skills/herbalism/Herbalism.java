@@ -130,7 +130,6 @@ public class Herbalism {
         int id = block.getTypeId();
         Material type = block.getType();
 
-        Byte data = block.getData();
         Location location = block.getLocation();
         Material mat = null;
 
