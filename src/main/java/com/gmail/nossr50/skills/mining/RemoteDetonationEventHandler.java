@@ -71,44 +71,10 @@ public class RemoteDetonationEventHandler {
     }
 
     private void generateTransparentBlockList() {
-        transparentBlocks.add((byte) Material.AIR.getId());
-        transparentBlocks.add((byte) Material.SAPLING.getId());
-        transparentBlocks.add((byte) Material.POWERED_RAIL.getId());
-        transparentBlocks.add((byte) Material.DETECTOR_RAIL.getId());
-        transparentBlocks.add((byte) Material.LONG_GRASS.getId());
-        transparentBlocks.add((byte) Material.DEAD_BUSH.getId());
-        transparentBlocks.add((byte) Material.YELLOW_FLOWER.getId());
-        transparentBlocks.add((byte) Material.RED_ROSE.getId());
-        transparentBlocks.add((byte) Material.BROWN_MUSHROOM.getId());
-        transparentBlocks.add((byte) Material.RED_MUSHROOM.getId());
-        transparentBlocks.add((byte) Material.TORCH.getId());
-        transparentBlocks.add((byte) Material.FIRE.getId());
-        transparentBlocks.add((byte) Material.REDSTONE_WIRE.getId());
-        transparentBlocks.add((byte) Material.CROPS.getId());
-        transparentBlocks.add((byte) Material.LADDER.getId());
-        transparentBlocks.add((byte) Material.RAILS.getId());
-        transparentBlocks.add((byte) Material.LEVER.getId());
-        transparentBlocks.add((byte) Material.REDSTONE_TORCH_OFF.getId());
-        transparentBlocks.add((byte) Material.REDSTONE_TORCH_ON.getId());
-        transparentBlocks.add((byte) Material.STONE_BUTTON.getId());
-        transparentBlocks.add((byte) Material.SNOW.getId());
-        transparentBlocks.add((byte) Material.SUGAR_CANE_BLOCK.getId());
-        transparentBlocks.add((byte) Material.PORTAL.getId());
-        transparentBlocks.add((byte) Material.DIODE_BLOCK_OFF.getId());
-        transparentBlocks.add((byte) Material.DIODE_BLOCK_ON.getId());
-        transparentBlocks.add((byte) Material.PUMPKIN_STEM.getId());
-        transparentBlocks.add((byte) Material.MELON_STEM.getId());
-        transparentBlocks.add((byte) Material.VINE.getId());
-        transparentBlocks.add((byte) Material.WATER_LILY.getId());
-        transparentBlocks.add((byte) Material.NETHER_WARTS.getId());
-        transparentBlocks.add((byte) Material.ENDER_PORTAL.getId());
-        transparentBlocks.add((byte) Material.COCOA.getId());
-        transparentBlocks.add((byte) Material.TRIPWIRE_HOOK.getId());
-        transparentBlocks.add((byte) Material.TRIPWIRE.getId());
-        transparentBlocks.add((byte) Material.FLOWER_POT.getId());
-        transparentBlocks.add((byte) Material.CARROT.getId());
-        transparentBlocks.add((byte) Material.POTATO.getId());
-        transparentBlocks.add((byte) Material.WOOD_BUTTON.getId());
-        transparentBlocks.add((byte) Material.SKULL.getId());
+        for (Material material : Material.values()) {
+            if (material.isTransparent()) {
+                transparentBlocks.add((byte) material.getId());
+            }
+        }
     }
 }
