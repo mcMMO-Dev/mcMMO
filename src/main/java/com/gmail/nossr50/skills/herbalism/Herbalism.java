@@ -4,6 +4,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -14,7 +15,6 @@ import org.bukkit.material.MaterialData;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -50,6 +50,13 @@ public class Herbalism {
     public static boolean greenTerraDirt = Config.getInstance().getHerbalismGreenThumbDirtToGrass();
     public static boolean greenTerraCobble = Config.getInstance().getHerbalismGreenThumbCobbleToMossy();
 
+    /**
+     * Handle the farmers diet skill.
+     *
+     * @param player The player to activate the skill for
+     * @param rankChange The # of levels to change rank for the food
+     * @param event The actual FoodLevelChange event
+     */
     public static void farmersDiet(Player player, int rankChange, FoodLevelChangeEvent event) {
         if (!Permissions.farmersDiet(player)) {
             return;
@@ -115,6 +122,20 @@ public class Herbalism {
         }
     }
 
+    private static int calculateCatciAndSugarDrops(Block block) {
+        Material blockType = block.getType();
+        int dropAmount = 0;
+
+        for (int y = 0;  y <= 2; y++) {
+            Block relativeBlock = block.getRelative(BlockFace.UP, y);
+            if (relativeBlock.getType().equals(blockType) && !mcMMO.placeStore.isTrue(relativeBlock)) {
+                dropAmount++;
+            }
+        }
+
+        return dropAmount;
+    }
+
     /**
      * Check for extra Herbalism drops.
      *
@@ -124,303 +145,68 @@ public class Herbalism {
      * @param plugin mcMMO plugin instance
      */
     public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
-        final PlayerProfile profile = Users.getProfile(player);
-
-        int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
-        int id = block.getTypeId();
-        Material type = block.getType();
-
-        Location location = block.getLocation();
-        Material mat = null;
-
-        int xp = 0;
-        int catciDrops = 0;
-        int caneDrops = 0;
-
-        boolean customPlant = false;
-
-        int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
-
-        float chance = (float) ((doubleDropsMaxChance / doubleDropsMaxLevel) * herbLevel);
-        if (chance > doubleDropsMaxChance) chance = (float) doubleDropsMaxChance;
-
-        switch (type) {
-        case BROWN_MUSHROOM:
-        case RED_MUSHROOM:
-            if (!mcMMO.placeStore.isTrue(block)) {
-                mat = Material.getMaterial(id);
-                xp = Config.getInstance().getHerbalismXPMushrooms();
-            }
-            break;
-
-        case CACTUS:
-            for (int y = 0;  y <= 2; y++) {
-                Block b = block.getRelative(0, y, 0);
-                if (b.getType().equals(Material.CACTUS)) {
-                    mat = Material.CACTUS;
-                    if (!mcMMO.placeStore.isTrue(b)) {
-                        if (chance > Misc.getRandom().nextInt(activationChance)) {
-                            catciDrops++;
-                        }
-                        xp += Config.getInstance().getHerbalismXPCactus();
-                    }
-                }
-            }
-            break;
-
-        case CROPS:
-            mat = Material.WHEAT;
-            xp = Config.getInstance().getHerbalismXPWheat();
-
-            if (Permissions.greenThumbWheat(player)) {
-                greenThumbWheat(block, player, event, plugin);
-            }
-            break;
-
-        case MELON_BLOCK:
-            if (!mcMMO.placeStore.isTrue(block)) {
-                mat = Material.MELON;
-                xp = Config.getInstance().getHerbalismXPMelon();
-            }
-            break;
-
-        case NETHER_WARTS:
-            mat = Material.NETHER_STALK;
-            xp = Config.getInstance().getHerbalismXPNetherWart();
-
-            if (Permissions.greenThumbNetherwart(player)) {
-                greenThumbWheat(block, player, event, plugin);
-            }
-            break;
-
-        case PUMPKIN:
-            if (!mcMMO.placeStore.isTrue(block)) {
-                mat = Material.getMaterial(id);
-                xp = Config.getInstance().getHerbalismXPPumpkin();
-            }
-            break;
-
-        case RED_ROSE:
-        case YELLOW_FLOWER:
-            if (!mcMMO.placeStore.isTrue(block)) {
-                mat = Material.getMaterial(id);
-                xp = Config.getInstance().getHerbalismXPFlowers();
-            }
-            break;
-
-        case SUGAR_CANE_BLOCK:
-            for (int y = 0;  y <= 2; y++) {
-                Block b = block.getRelative(0, y, 0);
-                if (b.getType().equals(Material.SUGAR_CANE_BLOCK)) {
-                    mat = Material.SUGAR_CANE;
-                    if (!mcMMO.placeStore.isTrue(b)) {
-                        if (chance > Misc.getRandom().nextInt(activationChance)) {
-                            caneDrops++;
-                        }
-                        xp += Config.getInstance().getHerbalismXPSugarCane();
-                    }
-                }
-            }
-            break;
-
-        case VINE:
-            if (!mcMMO.placeStore.isTrue(block)) {
-                mat = type;
-                xp = Config.getInstance().getHerbalismXPVines();
-            }
-            break;
-
-        case WATER_LILY:
-            if (!mcMMO.placeStore.isTrue(block)) {
-                mat = type;
-                xp = Config.getInstance().getHerbalismXPLilyPads();
-            }
-            break;
-
-        case COCOA:
-            mat = type;
-            xp = Config.getInstance().getHerbalismXPCocoa();
-
-            if (Permissions.greenThumbCocoa(player)) {
-                greenThumbWheat(block, player, event, plugin);
-            }
-            break;
-
-        case CARROT:
-            mat = Material.CARROT;
-            xp = Config.getInstance().getHerbalismXPCarrot();
-
-            if (Permissions.greenThumbCarrots(player)) {
-                greenThumbWheat(block, player, event, plugin);
-            }
-            break;
-
-        case POTATO:
-            mat = Material.POTATO;
-            xp = Config.getInstance().getHerbalismXPPotato();
-
-            if (Permissions.greenThumbPotatoes(player)) {
-                greenThumbWheat(block, player, event, plugin);
-            }
-            break;
-
-        default:
-            // We REALLY shouldn't have to check this again, given that we check it in the BlockChecks before this function is even called.
-            // Safe to remove?
-
-            ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
-
-            if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(item)) {
-                customPlant = true;
-                xp = ModChecks.getCustomBlock(block).getXpGain();
-            }
-            break;
+        if (Config.getInstance().getHerbalismAFKDisabled() && player.isInsideVehicle()) {
+            return;
         }
 
-        if (mat == null && !customPlant) {
-            return;
+        PlayerProfile profile = Users.getProfile(player);
+        int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
+        Material blockType = block.getType();
+
+        HerbalismBlock herbalismBlock = HerbalismBlock.getHerbalismBlock(blockType);
+        CustomBlock customBlock = null;
+
+        int xp = 0;
+        int dropAmount = 1;
+        ItemStack dropItem = null;
+
+        if (herbalismBlock != null) {
+            if (blockType == Material.CACTUS || blockType == Material.SUGAR_CANE_BLOCK) {
+                dropItem = herbalismBlock.getDropItem();
+                dropAmount = calculateCatciAndSugarDrops(block);
+                xp = herbalismBlock.getXpGain() * dropAmount;
+            }
+            else if (herbalismBlock.hasGreenThumbPermission(player)){
+                dropItem = herbalismBlock.getDropItem();
+                xp = herbalismBlock.getXpGain();
+
+                greenThumbWheat(block, player, event, plugin);
+            }
+            else {
+                if (!mcMMO.placeStore.isTrue(block)) {
+                    dropItem = herbalismBlock.getDropItem();
+                    xp = herbalismBlock.getXpGain();
+                }
+            }
+        }
+        else {
+            customBlock = ModChecks.getCustomBlock(block);
+            dropItem = customBlock.getItemDrop();
+            xp = customBlock.getXpGain();
         }
 
         if (Permissions.herbalismDoubleDrops(player)) {
-            ItemStack is = null;
-
-            if (customPlant) {
-                is = new ItemStack(ModChecks.getCustomBlock(block).getItemDrop());
-            }
-            else {
-                if (mat == Material.COCOA) {
-                    try {
-                        is = new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData());
-                    }
-                    catch (Exception e) {
-                        is = new ItemStack(Material.INK_SACK, 1, (short) 3);
-                    }
-                    catch (NoSuchMethodError e) {
-                        is = new ItemStack(Material.INK_SACK, 1, (short) 3);
-                    }
-                }
-                else if (mat == Material.CARROT) {
-                    is = new ItemStack(Material.CARROT_ITEM);
-                }
-                else if (mat == Material.POTATO) {
-                    is = new ItemStack(Material.POTATO_ITEM);
-                }
-                else {
-                    is = new ItemStack(mat);
-                }
-            }
+            int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
+            double chance = (doubleDropsMaxChance / doubleDropsMaxLevel) * Misc.skillCheck(herbLevel, doubleDropsMaxLevel);
 
             if (chance > Misc.getRandom().nextInt(activationChance)) {
-                Config configInstance = Config.getInstance();
+                Location location = block.getLocation();
 
-                switch (type) {
-                case BROWN_MUSHROOM:
-                    if (configInstance.getBrownMushroomsDoubleDropsEnabled()) {
-                        Misc.dropItem(location, is);
+                if (herbalismBlock != null && herbalismBlock.canDoubleDrop()) {
+                    Misc.dropItems(location, dropItem, dropAmount);
+                }
+                else if (customBlock != null){
+                    int minimumDropAmount = customBlock.getMinimumDropAmount();
+                    int maximumDropAmount = customBlock.getMaximumDropAmount();
+
+                    if (minimumDropAmount != maximumDropAmount) {
+                        Misc.randomDropItems(location, dropItem, 50, maximumDropAmount - minimumDropAmount);
                     }
-                    break;
 
-                case CACTUS:
-                    if (configInstance.getCactiDoubleDropsEnabled()) {
-                        Misc.dropItems(location, is, catciDrops);
-                    }
-                    break;
-
-                case CROPS:
-                    if (configInstance.getWheatDoubleDropsEnabled()) {
-                        Misc.dropItem(location, is);
-                    }
-                    break;
-
-                case MELON_BLOCK:
-                    if (configInstance.getMelonsDoubleDropsEnabled()) {
-                        Misc.dropItem(location, is);
-                    }
-                    break;
-
-                case NETHER_WARTS:
-                    if (configInstance.getNetherWartsDoubleDropsEnabled()) {
-                        Misc.dropItem(location, is);
-                    }
-                    break;
-
-                case PUMPKIN:
-                    if (configInstance.getPumpkinsDoubleDropsEnabled()) {
-                        Misc.dropItem(location, is);
-                    }
-                    break;
-
-                case RED_MUSHROOM:
-                    if (configInstance.getRedMushroomsDoubleDropsEnabled()) {
-                        Misc.dropItem(location, is);
-                    }
-                    break;
-
-                case SUGAR_CANE_BLOCK:
-                    if (configInstance.getSugarCaneDoubleDropsEnabled()) {
-                        Misc.dropItems(location, is, caneDrops);
-                    }
-                    break;
-
-                case VINE:
-                    if (configInstance.getVinesDoubleDropsEnabled()) {
-                        Misc.dropItem(location, is);
-                    }
-                    break;
-
-                case WATER_LILY:
-                    if (configInstance.getWaterLiliesDoubleDropsEnabled()) {
-                        Misc.dropItem(location, is);
-                    }
-                    break;
-
-                case YELLOW_FLOWER:
-                    if (configInstance.getYellowFlowersDoubleDropsEnabled()) {
-                        Misc.dropItem(location, is);
-                    }
-                    break;
-
-                case COCOA:
-                    if (configInstance.getCocoaDoubleDropsEnabled()) {
-                        Misc.dropItem(location, is);
-                    }
-                    break;
-
-                case CARROT:
-                    if (configInstance.getCarrotDoubleDropsEnabled()) {
-                        Misc.dropItem(location, is);
-                    }
-                    break;
-
-                case POTATO:
-                    if (configInstance.getPotatoDoubleDropsEnabled()) {
-                        Misc.dropItem(location, is);
-                    }
-                    break;
-
-                default:
-                    if (customPlant) {
-                        CustomBlock customBlock = ModChecks.getCustomBlock(block);
-                        int minimumDropAmount = customBlock.getMinimumDropAmount();
-                        int maximumDropAmount = customBlock.getMaximumDropAmount();
-
-                        is = customBlock.getItemDrop();
-
-                        if (minimumDropAmount != maximumDropAmount) {
-                            Misc.dropItems(location, is, minimumDropAmount);
-                            Misc.randomDropItems(location, is, 50, maximumDropAmount - minimumDropAmount);
-                        }
-                        else {
-                            Misc.dropItems(location, is, minimumDropAmount);
-                        }
-                    }
-                    break;
+                    Misc.dropItems(location, dropItem, minimumDropAmount);
                 }
             }
         }
-
-        if (Config.getInstance().getHerbalismAFKDisabled() && player.isInsideVehicle())
-            return;
 
         SkillTools.xpProcessing(player, profile, SkillType.HERBALISM, xp);
     }
