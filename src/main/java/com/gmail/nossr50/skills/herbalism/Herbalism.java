@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.herbalism;
 
-import org.bukkit.CropState;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,8 +9,6 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.material.CocoaPlant;
-import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.mcMMO;
