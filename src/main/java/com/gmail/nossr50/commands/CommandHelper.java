@@ -33,6 +33,15 @@ public final class CommandHelper {
         return false;
     }
 
+    public static boolean noCommandPermissions(Player player, String permission) {
+        if (!Permissions.hasPermission(player, permission)) {
+            player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
+            return true;
+        }
+
+        return false;
+    }
+
     public static boolean noConsoleUsage(CommandSender sender) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(LocaleLoader.getString("Commands.NoConsole"));

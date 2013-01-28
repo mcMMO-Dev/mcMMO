@@ -1,6 +1,5 @@
 package com.gmail.nossr50.party.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
 import org.bukkit.command.Command;
@@ -19,6 +18,9 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Users;
 
 public class PartyCommand implements CommandExecutor {
+    private Player player;
+    private PlayerProfile playerProfile;
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (CommandHelper.noConsoleUsage(sender)) {
@@ -29,85 +31,77 @@ public class PartyCommand implements CommandExecutor {
             return true;
         }
 
-        Player player = (Player) sender;
-        PlayerProfile playerProfile = Users.getProfile(player);
+        this.player = (Player) sender;
+        this.playerProfile = Users.getProfile(player);
 
-        if (args.length < 1) {
-            return party(sender);
+        if (args.length < 1 || args[0].equalsIgnoreCase("info")) {
+            return party();
         }
 
         if (args[0].equalsIgnoreCase("join")) {
-            return join(sender, args);
+            return join(args);
         }
         else if (args[0].equalsIgnoreCase("accept")) {
-            return accept(sender, args);
+            return accept();
         }
         else if (args[0].equalsIgnoreCase("create")) {
-            return create(sender, args);
-        }
-        else if (args[0].equalsIgnoreCase("info")) {
-            return party(sender);
+            return create(args);
         }
         else if (args[0].equalsIgnoreCase("?") || args[0].equalsIgnoreCase("help")) {
-            return printHelp(sender, args);
+            return printHelp();
         }
 
         if (playerProfile.inParty()) {
-            if(args[0].equalsIgnoreCase("quit") || args[0].equalsIgnoreCase("q") || args[0].equalsIgnoreCase("leave")) {
-                return quit(sender, args);
+            if (args[0].equalsIgnoreCase("quit") || args[0].equalsIgnoreCase("q") || args[0].equalsIgnoreCase("leave")) {
+                return quit();
             }
-            else if(args[0].equalsIgnoreCase("expshare")) {
-                return shareExp(sender, args);
+            else if (args[0].equalsIgnoreCase("expshare")) {
+                return shareExp();
             }
-            else if(args[0].equalsIgnoreCase("itemshare")) {
-                return shareItem(sender, args);
+            else if (args[0].equalsIgnoreCase("itemshare")) {
+                return shareItem();
             }
-            else if(args[0].equalsIgnoreCase("invite")) {
-                return invite(sender, args);
+            else if (args[0].equalsIgnoreCase("invite")) {
+                return invite(args);
             }
-            else if(args[0].equalsIgnoreCase("kick")) {
-                return kick(sender, args);
+            else if (args[0].equalsIgnoreCase("kick")) {
+                return kick(args[1]);
             }
-            else if(args[0].equalsIgnoreCase("disband")) {
-                return disband(sender, args);
+            else if (args[0].equalsIgnoreCase("disband")) {
+                return disband();
             }
-            else if(args[0].equalsIgnoreCase("owner")) {
-                return changeOwner(sender, args);
+            else if (args[0].equalsIgnoreCase("owner")) {
+                return changeOwner(args);
             }
-            else if(args[0].equalsIgnoreCase("lock")) {
-                return lock(sender, args);
+            else if (args[0].equalsIgnoreCase("lock")) {
+                return lock();
             }
-            else if(args[0].equalsIgnoreCase("unlock")) {
-                return unlock(sender, args);
+            else if (args[0].equalsIgnoreCase("unlock")) {
+                return unlock();
             }
-            else if(args[0].equalsIgnoreCase("password")) {
-                return changePassword(sender, args);
+            else if (args[0].equalsIgnoreCase("password")) {
+                return changePassword(args);
             }
-            else if(args[0].equalsIgnoreCase("rename")) {
-                return rename(sender, args);
+            else if (args[0].equalsIgnoreCase("rename")) {
+                return rename(args);
             }
             else {
-                return printUsage(sender);
+                return printUsage();
             }
         }
-        else {
-            player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-            return printUsage(sender);
-        }
+
+        player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+        return printUsage();
     }
 
-    private boolean printUsage(CommandSender sender) {
-        Player player = (Player) sender;
+    private boolean printUsage() {
         player.sendMessage(LocaleLoader.getString("Party.Help.0"));
         player.sendMessage(LocaleLoader.getString("Party.Help.1"));
         player.sendMessage(LocaleLoader.getString("Party.Help.2"));
         return true;
     }
 
-    private boolean party(CommandSender sender) {
-        Player player = (Player) sender;
-        PlayerProfile playerProfile = Users.getProfile(player);
-
+    private boolean party() {
         if (playerProfile.inParty()) {
             Party party = playerProfile.getParty();
 
@@ -139,88 +133,82 @@ public class PartyCommand implements CommandExecutor {
             player.sendMessage(LocaleLoader.getString("Commands.Party.Members", new Object[] {tempList}));
         }
         else {
-            return printUsage(sender);
+            return printUsage();
         }
         return true;
     }
 
-    private boolean join(CommandSender sender, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.join")) {
+    private boolean join(String[] args) {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.join")) {
             return true;
         }
 
-        Player player = (Player) sender;
         String playerName = player.getName();
-        PlayerProfile playerProfile = Users.getProfile(player);
         Party party = playerProfile.getParty();
 
         if (args.length < 2) {
             player.sendMessage(LocaleLoader.getString("Party.Help.0"));
             return true;
         }
-        else {
-            Player target = Bukkit.getServer().getPlayer(args[1]);
 
-            if (target == null) {
-                player.sendMessage(LocaleLoader.getString("Party.NotOnline", new Object[] {args[1]}));
-                return false;
-            }
+        Player target = mcMMO.p.getServer().getPlayer(args[1]);
 
-            if (!Users.getProfile(target).inParty()) {
-                player.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", new Object[] {args[1]}));
-                return false;
-            }
+        if (target == null) {
+            player.sendMessage(LocaleLoader.getString("Party.NotOnline", new Object[] {args[1]}));
+            return false;
+        }
 
-            if (player.equals(target)) {
-                player.sendMessage(LocaleLoader.getString("Party.Join.Self"));
+        if (!Users.getProfile(target).inParty()) {
+            player.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", new Object[] {args[1]}));
+            return false;
+        }
+
+        if (player.equals(target)) {
+            player.sendMessage(LocaleLoader.getString("Party.Join.Self"));
+            return true;
+        }
+
+        String password = null;
+        
+        if (args.length > 2) {
+            password = args[2];
+        }
+
+        String partyTarget = PartyManager.getPlayerParty(target.getName()).getName();
+        Party newParty = PartyManager.getParty(args[0]);
+
+        // Check to see if the party exists, and if it does, can the player join it?
+        if (newParty != null && !PartyManager.checkJoinability(player, newParty, null)) {
+            return true; // End before any event is fired.
+        }
+
+        if (party != null) {
+            McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, party.getName(), partyTarget, EventReason.CHANGED_PARTIES);
+            mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+            if (event.isCancelled()) {
                 return true;
             }
 
-            String password = null;
-            
-            if(args.length > 2) {
-                password = args[2];
-            }
-
-            String partyTarget = PartyManager.getPlayerParty(target.getName()).getName();
-            Party newParty = PartyManager.getParty(args[0]);
-
-            // Check to see if the party exists, and if it does, can the player join it?
-            if (newParty != null && !PartyManager.checkJoinability(player, newParty, null)) {
-                return true; // End before any event is fired.
-            }
-
-            if (party != null) {
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, party.getName(), partyTarget, EventReason.CHANGED_PARTIES);
-                mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                if (event.isCancelled()) {
-                    return true;
-                }
-
-                PartyManager.removeFromParty(playerName, party);
-            }
-            else {
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, partyTarget, EventReason.JOINED_PARTY);
-                mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                if (event.isCancelled()) {
-                    return true;
-                }
-            }
-
-            PartyManager.joinParty(player, playerProfile, partyTarget, password);
-            return true;
+            PartyManager.removeFromParty(playerName, party);
         }
+        else {
+            McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, partyTarget, EventReason.JOINED_PARTY);
+            mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+            if (event.isCancelled()) {
+                return true;
+            }
+        }
+
+        PartyManager.joinParty(player, playerProfile, partyTarget, password);
+        return true;
     }
 
-    private boolean accept(CommandSender sender, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.accept")) {
+    private boolean accept() {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.accept")) {
             return true;
         }
-
-        Player player = (Player) sender;
-        PlayerProfile playerProfile = Users.getProfile(player);
 
         if (playerProfile.hasPartyInvite()) {
             if (playerProfile.inParty()) {
@@ -253,68 +241,66 @@ public class PartyCommand implements CommandExecutor {
         return true;
     }
 
-    private boolean create(CommandSender sender, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.create")) {
+    private boolean create(String[] args) {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.create")) {
             return true;
         }
 
-        Player player = (Player) sender;
         String playerName = player.getName();
-        PlayerProfile playerProfile = Users.getProfile(player);
         Party party = playerProfile.getParty();
 
-        if(args.length < 2) {
+        if (args.length < 2) {
             player.sendMessage(LocaleLoader.getString("Party.Help.1"));
             return true;
         }
+
+        String partyname = args[1];
+        String password = null;
+
+        if (args.length > 2) {
+            password = args[2];
+        }
+
+        Party newParty = PartyManager.getParty(partyname);
+        // Check to see if the party exists, and if it does cancel creating a new party
+        if (newParty != null) {
+            player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", new Object[] {partyname}));
+            return true;
+        }
+
+        if (playerProfile.inParty()) {
+            String oldPartyName = party.getName();
+            McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, oldPartyName, partyname, EventReason.CHANGED_PARTIES);
+            mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+            if (event.isCancelled()) {
+                return true;
+            }
+
+            PartyManager.removeFromParty(playerName, party);
+            PartyManager.createParty(player, playerProfile, partyname, password);
+        }
         else {
-            String partyname = args[1];
-            String password = null;
-            if(args.length > 2) password = args[2];
+            McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, partyname, EventReason.JOINED_PARTY);
+            mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-            Party newParty = PartyManager.getParty(partyname);
-            // Check to see if the party exists, and if it does cancel creating a new party
-            if (newParty != null) {
-                player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", new Object[] {partyname}));
+            if (event.isCancelled()) {
                 return true;
             }
 
-            if (playerProfile.inParty()) {
-                String oldPartyName = party.getName();
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, oldPartyName, partyname, EventReason.CHANGED_PARTIES);
-                mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                if (event.isCancelled()) {
-                    return true;
-                }
-
-                PartyManager.removeFromParty(playerName, party);
-                PartyManager.createParty(player, playerProfile, partyname, password);
-            }
-            else {
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, partyname, EventReason.JOINED_PARTY);
-                mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                if (event.isCancelled()) {
-                    return true;
-                }
-
-                PartyManager.createParty(player, playerProfile, partyname, password);
-                return true;
-            }
+            PartyManager.createParty(player, playerProfile, partyname, password);
+            return true;
         }
 
         return true;
     }
 
-    private boolean quit(CommandSender sender, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.quit")) {
+    private boolean quit() {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.quit")) {
             return true;
         }
 
-        Player player = (Player) sender;
         String playerName = player.getName();
-        PlayerProfile playerProfile = Users.getProfile(player);
         Party party = playerProfile.getParty();
 
         if (party != null) {
@@ -334,16 +320,15 @@ public class PartyCommand implements CommandExecutor {
         return false;
     }
 
-    private boolean shareExp(CommandSender sender, String[] args) {
-        return (!CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.expshare"));
+    private boolean shareExp() {
+        return (!CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.expshare"));
     }
 
-    private boolean shareItem(CommandSender sender, String[] args) {
-        return (!CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.itemshare"));
+    private boolean shareItem() {
+        return (!CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.itemshare"));
     }
 
-    private boolean printHelp(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
+    private boolean printHelp() {
         player.sendMessage(LocaleLoader.getString("Party.Help.3"));
         player.sendMessage(LocaleLoader.getString("Party.Help.1"));
         player.sendMessage(LocaleLoader.getString("Party.Help.4"));
@@ -354,16 +339,13 @@ public class PartyCommand implements CommandExecutor {
         return true;
     }
 
-    private boolean invite(CommandSender sender, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.invite")) {
+    private boolean invite(String[] args) {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.invite")) {
             return true;
         }
 
         switch (args.length) {
         case 2:
-            Player player = (Player) sender;
-            PlayerProfile playerProfile = Users.getProfile(player);
-
             if (!playerProfile.inParty()) {
                 player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                 return true;
@@ -394,7 +376,7 @@ public class PartyCommand implements CommandExecutor {
             return true;
 
         default:
-            sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", new Object[] {"party", "invite", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"}));
+            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", new Object[] {"party", "invite", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"}));
             return true;
         }
     }
@@ -402,23 +384,21 @@ public class PartyCommand implements CommandExecutor {
     /**
      * Kick a party member
      */
-    private boolean kick(CommandSender sender, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.kick")) {
+    private boolean kick(String targetName) {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.kick")) {
             return true;
         }
 
-        Player player = (Player) sender;
         String playerName = player.getName();
-        PlayerProfile playerProfile = Users.getProfile(player);
         Party party = playerProfile.getParty();
 
         if (party.getLeader().equals(playerName)) {
-            if (!party.getMembers().contains(args[1])) {
-                player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {args[1]}));
+            if (!party.getMembers().contains(targetName)) {
+                player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {targetName}));
                 return true;
             }
 
-            Player target = mcMMO.p.getServer().getOfflinePlayer(args[1]).getPlayer();
+            Player target = mcMMO.p.getServer().getOfflinePlayer(targetName).getPlayer();
 
             if (target != null) {
                 String partyName = party.getName();
@@ -433,7 +413,7 @@ public class PartyCommand implements CommandExecutor {
                 target.sendMessage(LocaleLoader.getString("Commands.Party.Kick", new Object[] {partyName}));
             }
 
-            PartyManager.removeFromParty(args[1], party);
+            PartyManager.removeFromParty(targetName, party);
         }
         else {
             player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
@@ -445,14 +425,12 @@ public class PartyCommand implements CommandExecutor {
     /**
      * Disband the current party, kicks out all party members.
      */
-    private boolean disband(CommandSender sender, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.disband")) {
+    private boolean disband() {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.disband")) {
             return true;
         }
 
-        Player player = (Player) sender;
         String playerName = player.getName();
-        PlayerProfile playerProfile = Users.getProfile(player);
         Party party = playerProfile.getParty();
 
         if (party.getLeader().equals(playerName)) {
@@ -479,18 +457,16 @@ public class PartyCommand implements CommandExecutor {
     /**
      * Change the owner of the current party
      */
-    private boolean changeOwner(CommandSender sender, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.owner")) {
+    private boolean changeOwner(String[] args) {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.owner")) {
             return true;
         }
 
-        Player player = (Player) sender;
         String playerName = player.getName();
-        PlayerProfile playerProfile = Users.getProfile(player);
         Party party = playerProfile.getParty();
 
-        if(args.length < 2) {
-            player.sendMessage("Usage: /party owner [player]");
+        if (args.length < 2) {
+            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", new Object[] {"party", "owner", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"}));
             return true;
         }
 
@@ -509,14 +485,12 @@ public class PartyCommand implements CommandExecutor {
     /**
      * Lock the current party
      */
-    private boolean lock(CommandSender sender, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.lock")) {
+    private boolean lock() {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.lock")) {
             return true;
         }
 
-        Player player = (Player) sender;
         String playerName = player.getName();
-        PlayerProfile playerProfile = Users.getProfile(player);
         Party party = playerProfile.getParty();
 
         if (party != null) {
@@ -543,14 +517,12 @@ public class PartyCommand implements CommandExecutor {
     /**
      * Unlock the current party
      */
-    private boolean unlock(CommandSender sender, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.unlock")) {
+    private boolean unlock() {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.unlock")) {
             return true;
         }
 
-        Player player = (Player) sender;
         String playerName = player.getName();
-        PlayerProfile playerProfile = Users.getProfile(player);
         Party party = playerProfile.getParty();
 
         if (party != null) {
@@ -574,14 +546,12 @@ public class PartyCommand implements CommandExecutor {
         return true;
     }
 
-    private boolean changePassword(CommandSender sender, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.password")) {
+    private boolean changePassword(String[] args) {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.password")) {
             return true;
         }
 
-        Player player = (Player) sender;
         String playerName = player.getName();
-        PlayerProfile playerProfile = Users.getProfile(player);
         Party party = playerProfile.getParty();
 
         if (args.length < 2) {
@@ -604,14 +574,12 @@ public class PartyCommand implements CommandExecutor {
     /**
      * Rename the current party
      */
-    private boolean rename(CommandSender sender, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party.rename")) {
+    private boolean rename(String[] args) {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.rename")) {
             return true;
         }
 
-        Player player = (Player) sender;
         String playerName = player.getName();
-        PlayerProfile playerProfile = Users.getProfile(player);
         Party party = playerProfile.getParty();
         String leader = party.getLeader();
 
@@ -620,37 +588,36 @@ public class PartyCommand implements CommandExecutor {
                 player.sendMessage(LocaleLoader.getString("Commands.Usage.2", new Object[] {"party", "rename", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">"}));
                 return true;
             }
-            else {
-                String newPartyName = args[1];
 
-                // This is to prevent party leaders from spamming other players with the rename message
-                if (!party.getName().equals(newPartyName)) {
-                    Party newParty = PartyManager.getParty(newPartyName);
+            String newPartyName = args[1];
 
-                    // Check to see if the party exists, and if it does cancel renaming the party
-                    if (newParty != null) {
-                        player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", new Object[] {newPartyName}));
+            // This is to prevent party leaders from spamming other players with the rename message
+            if (!party.getName().equals(newPartyName)) {
+                Party newParty = PartyManager.getParty(newPartyName);
+
+                // Check to see if the party exists, and if it does cancel renaming the party
+                if (newParty != null) {
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", new Object[] {newPartyName}));
+                    return true;
+                }
+
+                for (Player onlineMembers : party.getOnlineMembers()) {
+                    McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(onlineMembers, party.getName(), newPartyName, EventReason.CHANGED_PARTIES);
+                    mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+                    if (event.isCancelled()) {
                         return true;
                     }
 
-                    for (Player onlineMembers : party.getOnlineMembers()) {
-                        McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(onlineMembers, party.getName(), newPartyName, EventReason.CHANGED_PARTIES);
-                        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                        if (event.isCancelled()) {
-                            return true;
-                        }
-
-                        if (!onlineMembers.getName().equals(leader)) {
-                            onlineMembers.sendMessage(LocaleLoader.getString("Party.InformedOnNameChange", new Object[] {leader, newPartyName}));
-                        }
+                    if (!onlineMembers.getName().equals(leader)) {
+                        onlineMembers.sendMessage(LocaleLoader.getString("Party.InformedOnNameChange", new Object[] {leader, newPartyName}));
                     }
-
-                    party.setName(newPartyName);
                 }
 
-                player.sendMessage(LocaleLoader.getString("Commands.Party.Rename", new Object[] {newPartyName}));
+                party.setName(newPartyName);
             }
+
+            player.sendMessage(LocaleLoader.getString("Commands.Party.Rename", new Object[] {newPartyName}));
         }
         else {
             player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
