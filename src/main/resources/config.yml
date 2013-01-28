@@ -357,6 +357,8 @@ Commands:
     ptp:
         Enabled: true
         Cooldown: 30
+        Confirm_Required: true
+        Request_Timeout: 300
     p:
         Enabled: true
     a:

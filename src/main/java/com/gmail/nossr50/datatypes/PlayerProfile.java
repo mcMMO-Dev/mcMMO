@@ -7,6 +7,8 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.bukkit.entity.Player;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
@@ -31,8 +33,9 @@ public class PlayerProfile {
     /* Party Stuff */
     private Party party;
     private Party invite;
-    private String ptpRequest;
+    private Player ptpRequest;
     private boolean ptpEnabled = true;
+    private boolean ptpConfirmRequired = Config.getInstance().getPTPCommandConfirmRequired();
 
     /* Toggles */
     private boolean loaded;
@@ -52,6 +55,7 @@ public class PlayerProfile {
     private long recentlyHurt;
     private int respawnATS;
     private long lastSave = 0L;
+    private long ptpTimeout;
 
     /* mySQL STUFF */
     private int userId;
@@ -1245,6 +1249,10 @@ public class PlayerProfile {
         invite = null;
     }
 
+    /*
+     * Party Teleportation
+     */
+
     public boolean getPtpEnabled() {
         return ptpEnabled;
     }
@@ -1253,11 +1261,11 @@ public class PlayerProfile {
         ptpEnabled = !ptpEnabled;
     }
 
-    public void setPtpRequest(String ptpRequest) {
+    public void setPtpRequest(Player ptpRequest) {
         this.ptpRequest = ptpRequest;
     }
 
-    public String getPtpRequest() {
+    public Player getPtpRequest() {
         return ptpRequest;
     }
 
@@ -1271,5 +1279,21 @@ public class PlayerProfile {
 
     public void removePtpRequest() {
         ptpRequest = null;
+    }
+
+    public boolean getPtpConfirmRequired() {
+        return ptpConfirmRequired;
+    }
+
+    public void togglePtpConfirmRequired() {
+        ptpConfirmRequired = !ptpConfirmRequired;
+    }
+
+    public long getPtpTimeout() {
+        return ptpTimeout;
+    }
+
+    public void actualizePtpTimeout() {
+        ptpTimeout = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 }

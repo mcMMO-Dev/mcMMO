@@ -15,7 +15,8 @@ Version 1.4.00-dev
  + Added '/party create <name>' command, use this to create a party
  + Added '/party disband' command, kicks out all members and deletes the party
  + Added '/ptp toggle' command, to disable party teleportation.
- + Added '/ptp accept' and '/ptp deny' commands
+ + Added '/ptp accept' and '/ptp acceptall' commands
+ + Added timeout on party teleport requests
  = Fixed Spout config files loading / generating when they shouldn't have
  = Fixed mod config files loading / generating when they shouldn't have
  = Fixed bug where Green Terra could activate on crops that weren't fully grown.
@@ -44,7 +45,7 @@ Version 1.4.00-dev
  ! Changed the way party commands work, use /party ? to check how to use the new commands
  ! Changed McMMOChatEvent to contain the plugin that the event originated from.
  ! Changed Excavation to have individual XP values for each block type, rather than a base XP value.
- ! Changed the way party teleportation works. When using /ptp, the target player needs to confirm the teleport before it takes place.
+ ! Changed the way party teleportation works. When using /ptp, the target player needs to confirm the teleport before it takes place. (Configurable)
 
 Version 1.3.14
  + Added new Hylian Luck skill to Herbalism.

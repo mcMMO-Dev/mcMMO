@@ -100,6 +100,8 @@ public class Config extends ConfigLoader {
     public boolean getCommandPartyChatPEnabled() { return config.getBoolean("Commands.p.Enabled", true); }
 
     public int getPTPCommandCooldown() { return config.getInt("Commands.ptp.Cooldown", 30); }
+    public int getPTPCommandTimeout() { return config.getInt("Commands.ptp.Request_Timeout", 300); }
+    public boolean getPTPCommandConfirmRequired() { return config.getBoolean("Commands.ptp.Confirm_Required", true); }
     public boolean getDonateMessageEnabled() { return config.getBoolean("Commands.mcmmo.Donate_Message", true); }
 
     /* Items */
