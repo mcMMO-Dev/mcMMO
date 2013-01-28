@@ -37,7 +37,7 @@ public class SpoutStuff {
     public final static String hudRetroDirectory = hudDirectory + "Retro" + File.separator;
     public final static String soundDirectory = spoutDirectory + "Sound" + File.separator;
 
-    public static boolean showPowerLevel = SpoutConfig.getInstance().getShowPowerLevel();
+    public static boolean showPowerLevel;
 
     private final static SpoutListener spoutListener = new SpoutListener();
     public static Keyboard menuKey;
@@ -161,6 +161,7 @@ public class SpoutStuff {
      * Setup Spout config options
      */
     public static void setupSpoutConfigs() {
+        showPowerLevel = SpoutConfig.getInstance().getShowPowerLevel();
         String temp = SpoutConfig.getInstance().getMenuKey();
 
         for (Keyboard x : Keyboard.values()) {

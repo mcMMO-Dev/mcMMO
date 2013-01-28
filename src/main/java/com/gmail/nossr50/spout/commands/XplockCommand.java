@@ -27,7 +27,7 @@ public class XplockCommand implements CommandExecutor {
             return true;
         }
 
-        if (!mcMMO.spoutEnabled || !SpoutConfig.getInstance().getXPBarEnabled() || !Config.getInstance().getCommandXPLockEnabled()) {
+        if (!mcMMO.spoutEnabled || !Config.getInstance().getCommandXPLockEnabled() || !SpoutConfig.getInstance().getXPBarEnabled()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
             return true;
         }

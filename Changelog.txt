@@ -16,6 +16,7 @@ Version 1.4.00-dev
  + Added '/party disband' command, kicks out all members and deletes the party
  + Added '/ptp toggle' command, to disable party teleportation.
  + Added '/ptp accept' and '/ptp deny' commands
+ = Fixed Spout config files loading / generating when they shouldn't have
  = Fixed mod config files loading / generating when they shouldn't have
  = Fixed bug where Green Terra could activate on crops that weren't fully grown.
  = Fixed several typos relating to locale string display

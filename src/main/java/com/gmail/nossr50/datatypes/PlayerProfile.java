@@ -26,7 +26,7 @@ public class PlayerProfile {
 
     /* HUD */
     private SpoutHud spoutHud;
-    private HudType hudType = SpoutConfig.getInstance().defaultHudType;
+    private HudType hudType;
 
     /* Party Stuff */
     private Party party;
@@ -66,6 +66,13 @@ public class PlayerProfile {
     public PlayerProfile(String playerName, boolean addNew) {
         this.playerName = playerName;
         party = PartyManager.getPlayerParty(playerName);
+
+        if (mcMMO.spoutEnabled) {
+            hudType = SpoutConfig.getInstance().defaultHudType;
+        }
+        else {
+            hudType = HudType.DISABLED;
+        }
 
         for (AbilityType abilityType : AbilityType.values()) {
             skillsDATS.put(abilityType, 0);
@@ -464,7 +471,7 @@ public class PlayerProfile {
             out.append(0 + ":"); //DATS
             out.append(0 + ":"); //DATS
             out.append(0 + ":"); //DATS
-            out.append(SpoutConfig.getInstance().defaultHudType.toString() + ":");//HUD
+            out.append(hudType.toString() + ":");//HUD
             out.append(0 + ":"); //Fishing
             out.append(0 +":"); //FishingXP
             out.append(0 + ":"); //Blast Mining
