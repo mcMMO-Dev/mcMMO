@@ -24,15 +24,16 @@ public class MccCommand implements CommandExecutor {
 
         if (Permissions.party(player)) {
             player.sendMessage(LocaleLoader.getString("Commands.Party.Commands"));
-            player.sendMessage("/party " + LocaleLoader.getString("Commands.Party"));
-            player.sendMessage("/party q " + LocaleLoader.getString("Commands.Party.Quit"));
+            player.sendMessage("/party create <" + LocaleLoader.getString("Commands.Usage.PartyName") + "> " + LocaleLoader.getString("Commands.Party1"));
+            player.sendMessage("/party join <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party2"));
+            player.sendMessage("/party quit " + LocaleLoader.getString("Commands.Party.Quit"));
 
             if (Permissions.partyChat(player)) {
                 player.sendMessage("/p " + LocaleLoader.getString("Commands.Party.Toggle"));
             }
 
-            player.sendMessage("/invite " + LocaleLoader.getString("Commands.Party.Invite"));
-            player.sendMessage("/accept " + LocaleLoader.getString("Commands.Party.Accept"));
+            player.sendMessage("/party invite <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party.Invite"));
+            player.sendMessage("/party accept " + LocaleLoader.getString("Commands.Party.Accept"));
 
             if (Permissions.partyTeleport(player)) {
                 player.sendMessage("/ptp " + LocaleLoader.getString("Commands.Party.Teleport"));

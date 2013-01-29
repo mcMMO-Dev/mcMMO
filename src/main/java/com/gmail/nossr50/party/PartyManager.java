@@ -229,6 +229,7 @@ public final class PartyManager {
             if (password != null) {
                 party.setPassword(password);
                 party.setLocked(true);
+                player.sendMessage(LocaleLoader.getString("Party.Password.Set", new Object[] {password}));
             }
             parties.add(party);
         }

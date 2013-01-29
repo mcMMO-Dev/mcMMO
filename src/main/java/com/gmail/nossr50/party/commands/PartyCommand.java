@@ -168,6 +168,11 @@ public class PartyCommand implements CommandExecutor {
             return true;
         }
 
+        if (party != null && party.equals(Users.getProfile(target).getParty())) {
+            player.sendMessage(LocaleLoader.getString("Party.Join.Self"));
+            return true;
+        }
+
         String password = null;
         
         if (args.length > 2) {
@@ -554,19 +559,21 @@ public class PartyCommand implements CommandExecutor {
         String playerName = player.getName();
         Party party = playerProfile.getParty();
 
-        if (args.length < 2) {
-            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", new Object[] {"party", "password", "<" + LocaleLoader.getString("Commands.Usage.Password") + ">"}));
+        if (!party.getLeader().equals(playerName)) {
+            player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
             return true;
         }
 
-        if (party.getLeader().equals(playerName)) {
+        if (args.length < 2) {
             party.setLocked(true);
-            party.setPassword(args[1]);
-            player.sendMessage(LocaleLoader.getString("Party.PasswordSet", new Object[] {args[1]}));
+            party.setPassword(null);
+            player.sendMessage(LocaleLoader.getString("Party.Password.Removed"));
+            return true;
         }
-        else {
-            player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-        }
+
+        party.setLocked(true);
+        party.setPassword(args[1]);
+        player.sendMessage(LocaleLoader.getString("Party.Password.Set", new Object[] {args[1]}));
 
         return true;
     }
