@@ -8,13 +8,11 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.TreasuresConfig;
-import com.gmail.nossr50.config.mods.CustomBlocksConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
@@ -36,9 +34,6 @@ public class Excavation {
      * @param player The player who broke the block
      */
     public static void excavationProcCheck(Block block, Player player) {
-        if (player == null)
-            return;
-
         Material type = block.getType();
         Location location = block.getLocation();
 
@@ -50,45 +45,38 @@ public class Excavation {
 
         int xp;
 
-        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
+        switch (type) {
+        case CLAY:
+            xp = Config.getInstance().getExcavationClayXP();
+            break;
 
-        if (Config.getInstance().getBlockModsEnabled() && CustomBlocksConfig.getInstance().customExcavationBlocks.contains(item)) {
-            xp = ModChecks.getCustomBlock(block).getXpGain();
-        }
-        else {
-            switch (type) {
-            case CLAY:
-                xp = Config.getInstance().getExcavationClayXP();
-                break;
+        case DIRT:
+            xp = Config.getInstance().getExcavationDirtXP();
+            break;
 
-            case DIRT:
-                xp = Config.getInstance().getExcavationDirtXP();
-                break;
+        case GRASS:
+            xp = Config.getInstance().getExcavationGrassXP();
+            break;
 
-            case GRASS:
-                xp = Config.getInstance().getExcavationGrassXP();
-                break;
+        case GRAVEL:
+            xp = Config.getInstance().getExcavationGravelXP();
+            break;
 
-            case GRAVEL:
-                xp = Config.getInstance().getExcavationGravelXP();
-                break;
+        case MYCEL:
+            xp = Config.getInstance().getExcavationMycelXP();
+            break;
 
-            case MYCEL:
-                xp = Config.getInstance().getExcavationMycelXP();
-                break;
+        case SAND:
+            xp = Config.getInstance().getExcavationSandXP();
+            break;
 
-            case SAND:
-                xp = Config.getInstance().getExcavationSandXP();
-                break;
+        case SOUL_SAND:
+            xp = Config.getInstance().getExcavationSoulSandXP();
+            break;
 
-            case SOUL_SAND:
-                xp = Config.getInstance().getExcavationSoulSandXP();
-                break;
-
-            default:
-                xp = 0;
-                break;
-            }
+        default:
+            xp = ModChecks.getCustomBlock(block).getXpGain();;
+            break;
         }
 
         if (Permissions.excavationTreasures(player)) {
@@ -154,9 +142,6 @@ public class Excavation {
      * @param block The block to check
      */
     public static void gigaDrillBreaker(Player player, Block block) {
-        if (player == null)
-            return;
-
         SkillTools.abilityDurabilityLoss(player.getItemInHand(), Misc.toolDurabilityLoss);
 
         if (!mcMMO.placeStore.isTrue(block) && Misc.blockBreakSimulate(block, player, true)) {
