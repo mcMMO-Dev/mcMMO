@@ -42,7 +42,7 @@ public final class Woodcutting {
      * @param event Event to process
      */
     public static void beginTreeFeller(BlockBreakEvent event) {
-        TreeFeller.process(event);
+        TreeFeller.process(event.getPlayer(), event.getBlock());
     }
 
     /**
@@ -78,7 +78,10 @@ public final class Woodcutting {
             }
         }
 
-        checkDoubleDrop(player, block);
+        if (Permissions.woodcuttingDoubleDrops(player)) {
+            checkForDoubleDrop(player, block);
+        }
+
         SkillTools.xpProcessing(player,  Users.getProfile(player), SkillType.WOODCUTTING, xp);
     }
 
@@ -126,11 +129,7 @@ public final class Woodcutting {
      * @param player Player breaking the block
      * @param block Block being broken
      */
-    protected static void checkDoubleDrop(Player player, Block block) {
-        if (!Permissions.woodcuttingDoubleDrops(player)) {
-            return;
-        }
-
+    protected static void checkForDoubleDrop(Player player, Block block) {
         int chance = (int) ((DOUBLE_DROP_CHANCE / DOUBLE_DROP_MAX_LEVEL) * Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING));
         int activationChance = Misc.calculateActivationChance(Permissions.luckyWoodcutting(player));
 

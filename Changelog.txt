@@ -37,6 +37,7 @@ Version 1.4.00-dev
  = Fixed a bug where /party kick would trigger the PartyChangeEvent for the wrong player
  = Fixed a bug where party join messages weren't displayed
  = Fixed a bug where Disarm and Deflect had wrong values
+ = Fixed Magic Hunter (Fishing ability) favoring certain enchants
  ! We're now using Bukkit sounds instead of Spout sounds.
  ! It is now possible to use a negative number for Max_Level in treasures.yml to not use a maximum level, changed default file accordingly
  ! A Fishing catch will now always contains a fish even if a treasure is found

@@ -320,11 +320,11 @@ public class EntityListener implements Listener {
                     break;
 
                 case COOKED_FISH:   /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                    Fishing.fishermansDiet(player, Fishing.fishermansDietRankLevel1, event);
+                    Fishing.beginFishermansDiet(player, Fishing.fishermansDietRankLevel1, event);
                     break;
 
                 case RAW_FISH:      /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                    Fishing.fishermansDiet(player, Fishing.fishermansDietRankLevel2, event);
+                    Fishing.beginFishermansDiet(player, Fishing.fishermansDietRankLevel2, event);
                     break;
 
                 default:

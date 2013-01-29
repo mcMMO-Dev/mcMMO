@@ -2,6 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,7 +11,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.event.player.PlayerFishEvent.State;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -19,6 +19,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -82,25 +83,25 @@ public class PlayerListener implements Listener {
     public void onPlayerFish(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCPlayer(player) || !Permissions.fishing(player)) {
             return;
         }
 
-        if (Permissions.fishing(player)) {
-            State state = event.getState();
+        int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.FISHING);
 
-            switch (state) {
-            case CAUGHT_FISH:
-                Fishing.processResults(event);
-                break;
-
-            case CAUGHT_ENTITY:
-                Fishing.shakeMob(event);
-                break;
-
-            default:
-                break;
+        switch (event.getState()) {
+        case CAUGHT_FISH:
+            Fishing.beginFishing(player, skillLevel, event);
+              break;
+        case CAUGHT_ENTITY:
+            if (skillLevel >= AdvancedConfig.getInstance().getShakeUnlockLevel() && Permissions.shakeMob(player)) {
+                //TODO: Unsafe cast?
+                Fishing.beginShakeMob(player, (LivingEntity) event.getCaught(), skillLevel);
             }
+
+            break;
+        default:
+            break;
         }
     }
 

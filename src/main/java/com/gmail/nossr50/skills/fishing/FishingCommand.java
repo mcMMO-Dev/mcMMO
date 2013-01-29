@@ -7,9 +7,6 @@ import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.util.Permissions;
 
 public class FishingCommand extends SkillCommand {
-
-    AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-
     private int lootTier;
     private String magicChance;
     private String magicChanceLucky;
@@ -29,10 +26,10 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        lootTier = Fishing.getFishingLootTier(profile);
+        lootTier = Fishing.getLootTier((int) skillValue);
 
         //TREASURE HUNTER
-        double enchantChance = lootTier * Fishing.magicHunterMultiplier;
+        double enchantChance = lootTier * AdvancedConfig.getInstance().getFishingMagicMultiplier();
 
         if (player.getWorld().hasStorm()) {
             chanceRaining = LocaleLoader.getString("Fishing.Chance.Raining");
@@ -44,7 +41,7 @@ public class FishingCommand extends SkillCommand {
         magicChanceLucky = treasureHunterStrings[1];
 
         //SHAKE
-        String[] shakeStrings = calculateAbilityDisplayValues(Fishing.getShakeChance(lootTier));
+        String[] shakeStrings = calculateAbilityDisplayValues(ShakeMob.getShakeProbability(lootTier));
         shakeChance = shakeStrings[0];
         shakeChanceLucky = shakeStrings[1];
 
@@ -107,8 +104,8 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canShake) {
-            if (skillValue < Fishing.shakeUnlockLevel) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Fishing.Ability.Locked.0", new Object[] { Fishing.shakeUnlockLevel }) }));
+            if (skillValue < AdvancedConfig.getInstance().getShakeUnlockLevel()) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Fishing.Ability.Locked.0", new Object[] { AdvancedConfig.getInstance().getShakeUnlockLevel() }) }));
             }
             else {
                 if (isLucky) {

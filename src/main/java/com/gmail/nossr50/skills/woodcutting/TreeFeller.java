@@ -9,7 +9,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
@@ -22,22 +21,23 @@ import com.gmail.nossr50.skills.woodcutting.Woodcutting.ExperienceGainMethod;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
-public abstract class TreeFeller {
+public final class TreeFeller {
     private static boolean treeFellerReachedThreshold = false;
+
+    private TreeFeller() {}
 
     /**
      * Begins Tree Feller
      *
-     * @param event Event to process
+     * @param player Player using Tree Feller
+     * @param block Block being broken
      */
-    public static void process(BlockBreakEvent event) {
+    public static void process(Player player, Block block) {
         List<Block> treeFellerBlocks = new ArrayList<Block>();
-        Player player = event.getPlayer();
 
-        processRecursively(event.getBlock(), treeFellerBlocks);
+        processRecursively(block, treeFellerBlocks);
 
         // If the player is trying to break to many block
         if (treeFellerReachedThreshold) {
@@ -66,7 +66,7 @@ public abstract class TreeFeller {
     /**
      * Processes Tree Feller
      *
-     * @param block Point of origin of the layer
+     * @param block Block being checked
      * @param treeFellerBlocks List of blocks to be removed
      */
     private static void processRecursively(Block block, List<Block> treeFellerBlocks) {
@@ -176,7 +176,7 @@ public abstract class TreeFeller {
 
             switch (block.getType()) {
             case LOG:
-                Woodcutting.checkDoubleDrop(player, block);
+                Woodcutting.checkForDoubleDrop(player, block);
 
                 try {
                     xp += Woodcutting.getExperienceFromLog(block, ExperienceGainMethod.TREE_FELLER);
@@ -192,7 +192,7 @@ public abstract class TreeFeller {
                 break;
             default:
                 if (ModChecks.isCustomLogBlock(block)) {
-                    Woodcutting.checkDoubleDrop(player, block);
+                    Woodcutting.checkForDoubleDrop(player, block);
 
                     CustomBlock customBlock = ModChecks.getCustomBlock(block);
                     xp = customBlock.getXpGain();
@@ -220,9 +220,6 @@ public abstract class TreeFeller {
             block.setType(Material.AIR);
         }
 
-        // Do we really have to check the permission here?
-        if (Permissions.woodcutting(player)) {
-            SkillTools.xpProcessing(player, Users.getProfile(player), SkillType.WOODCUTTING, xp);
-        }
+        SkillTools.xpProcessing(player, Users.getProfile(player), SkillType.WOODCUTTING, xp);
     }
 }
