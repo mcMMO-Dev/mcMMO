@@ -20,6 +20,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
@@ -184,7 +186,7 @@ public class BlockListener implements Listener {
                 Woodcutting.beginTreeFeller(event);
             }
             else {
-                if (Woodcutting.REQUIRES_TOOL) {
+                if (Config.getInstance().getWoodcuttingRequiresTool()) {
                     if (ItemChecks.isAxe(heldItem)) {
                         Woodcutting.beginWoodcutting(player, block);
                     }
@@ -362,9 +364,9 @@ public class BlockListener implements Listener {
                 miningManager.superBreakerBlockCheck(block);
             }
         }
-        else if ((profile.getSkillLevel(SkillType.WOODCUTTING) >= Woodcutting.LEAF_BLOWER_UNLOCK_LEVEL) && BlockChecks.isLeaves(block)) {
+        else if ((profile.getSkillLevel(SkillType.WOODCUTTING) >= AdvancedConfig.getInstance().getLeafBlowUnlockLevel()) && BlockChecks.isLeaves(block)) {
             if (SkillTools.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
-                if (Woodcutting.REQUIRES_TOOL) {
+                if (Config.getInstance().getWoodcuttingRequiresTool()) {
                     if (ItemChecks.isAxe(heldItem)) {
                         event.setInstaBreak(true);
                         Woodcutting.beginLeafBlower(player, block);

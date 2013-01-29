@@ -117,7 +117,7 @@ public final class TreeFeller {
 
         treeFellerBlocks.add(block);
 
-        if (treeFellerBlocks.size() > Woodcutting.TREE_FELLER_THRESHOLD) {
+        if (treeFellerBlocks.size() > Woodcutting.CONFIG.getTreeFellerThreshold()) {
             treeFellerReachedThreshold = true;
             return;
         }

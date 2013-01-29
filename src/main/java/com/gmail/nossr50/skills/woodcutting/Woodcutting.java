@@ -22,17 +22,13 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public final class Woodcutting {
+    static final AdvancedConfig ADVANCED_CONFIG = AdvancedConfig.getInstance();
+    static final Config CONFIG = Config.getInstance();
+
     protected enum ExperienceGainMethod {
         DEFAULT,
         TREE_FELLER,
     };
-
-    public static final int DOUBLE_DROP_MAX_LEVEL = AdvancedConfig.getInstance().getMiningDoubleDropMaxLevel();
-    public static final double DOUBLE_DROP_CHANCE = AdvancedConfig.getInstance().getMiningDoubleDropChance();
-    public static final int LEAF_BLOWER_UNLOCK_LEVEL = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
-    public static final boolean DOUBLE_DROP_DISABLED = Config.getInstance().woodcuttingDoubleDropsDisabled();
-    public static final int TREE_FELLER_THRESHOLD = Config.getInstance().getTreeFellerThreshold();
-    public static final boolean REQUIRES_TOOL = Config.getInstance().getWoodcuttingRequiresTool();
 
     private Woodcutting() {}
 
@@ -130,14 +126,17 @@ public final class Woodcutting {
      * @param block Block being broken
      */
     protected static void checkForDoubleDrop(Player player, Block block) {
-        int chance = (int) ((DOUBLE_DROP_CHANCE / DOUBLE_DROP_MAX_LEVEL) * Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING));
+        double configDoubleDropChance = ADVANCED_CONFIG.getWoodcuttingDoubleDropChance();
+        int configDoubleDropMaxLevel = ADVANCED_CONFIG.getWoodcuttingDoubleDropMaxLevel();
+
+        int probability = (int) ((configDoubleDropChance / configDoubleDropMaxLevel) * Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING));
         int activationChance = Misc.calculateActivationChance(Permissions.luckyWoodcutting(player));
 
-        if (chance > DOUBLE_DROP_CHANCE) {
-            chance = (int) DOUBLE_DROP_CHANCE;
+        if (probability > configDoubleDropChance) {
+            probability = (int) configDoubleDropChance;
         }
 
-        if (chance <= Misc.getRandom().nextInt(activationChance)) {
+        if (probability <= Misc.getRandom().nextInt(activationChance)) {
             return;
         }
 

@@ -1,5 +1,7 @@
 package com.gmail.nossr50.skills.woodcutting;
 
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillCommand;
 import com.gmail.nossr50.skills.SkillType;
@@ -27,7 +29,8 @@ public class WoodcuttingCommand extends SkillCommand {
         treeFellerLengthEndurance = treeFellerStrings[1];
 
         //DOUBLE DROPS
-        String[] doubleDropStrings = calculateAbilityDisplayValues(Woodcutting.DOUBLE_DROP_MAX_LEVEL, Woodcutting.DOUBLE_DROP_CHANCE);
+        AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+        String[] doubleDropStrings = calculateAbilityDisplayValues(advancedConfig.getWoodcuttingDoubleDropMaxLevel(), advancedConfig.getWoodcuttingDoubleDropChance());
         doubleDropChance = doubleDropStrings[0];
         doubleDropChanceLucky = doubleDropStrings[1];
     }
@@ -41,7 +44,7 @@ public class WoodcuttingCommand extends SkillCommand {
 
     @Override
     protected boolean effectsHeaderPermissions() {
-        return (canDoubleDrop && !Woodcutting.DOUBLE_DROP_DISABLED) || canLeafBlow || canTreeFell;
+        return (canDoubleDrop && !Config.getInstance().woodcuttingDoubleDropsDisabled()) || canLeafBlow || canTreeFell;
     }
 
     @Override
@@ -56,28 +59,30 @@ public class WoodcuttingCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.2"), LocaleLoader.getString("Woodcutting.Effect.3") }));
         }
 
-        if (canDoubleDrop && !Woodcutting.DOUBLE_DROP_DISABLED) {
+        if (canDoubleDrop && !Config.getInstance().woodcuttingDoubleDropsDisabled()) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.4"), LocaleLoader.getString("Woodcutting.Effect.5") }));
         }
     }
 
     @Override
     protected boolean statsHeaderPermissions() {
-        return (canDoubleDrop && !Woodcutting.DOUBLE_DROP_DISABLED) || canLeafBlow || canTreeFell;
+        return (canDoubleDrop && !Config.getInstance().woodcuttingDoubleDropsDisabled()) || canLeafBlow || canTreeFell;
     }
 
     @Override
     protected void statsDisplay() {
         if (canLeafBlow) {
-            if (skillValue < Woodcutting.LEAF_BLOWER_UNLOCK_LEVEL) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Woodcutting.Ability.Locked.0", new Object[] { Woodcutting.LEAF_BLOWER_UNLOCK_LEVEL }) }));
+            int leafBlowerUnlockLevel = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
+
+            if (skillValue < leafBlowerUnlockLevel) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Woodcutting.Ability.Locked.0", new Object[] { leafBlowerUnlockLevel }) }));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1") }));
             }
         }
 
-        if (canDoubleDrop && !Woodcutting.DOUBLE_DROP_DISABLED) {
+        if (canDoubleDrop && !Config.getInstance().woodcuttingDoubleDropsDisabled()) {
             if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));
             }
