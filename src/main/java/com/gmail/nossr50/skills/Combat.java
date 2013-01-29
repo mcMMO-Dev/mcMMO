@@ -311,6 +311,7 @@ public final class Combat {
             }
 
             if (target != shooter) {
+                archeryManager.distanceXpBonus(target);
                 startGainXp(shooter, archeryManager.getProfile(), target, SkillType.ARCHERY);
             }
         }

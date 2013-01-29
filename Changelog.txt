@@ -17,6 +17,7 @@ Version 1.4.00-dev
  + Added '/ptp toggle' command, to disable party teleportation.
  + Added '/ptp accept' and '/ptp acceptall' commands
  + Added timeout on party teleport requests
+ + Added XP bonus for Archery based on distance from shooter to target
  = Fixed Spout config files loading / generating when they shouldn't have
  = Fixed mod config files loading / generating when they shouldn't have
  = Fixed bug where Green Terra could activate on crops that weren't fully grown.
