@@ -153,7 +153,6 @@ public class SpoutStuff {
         writeFile("Icon_r.png", hudRetroDirectory);
 
         //Sound FX
-        writeFile("repair.wav", soundDirectory);
         writeFile("level.wav", soundDirectory);
     }
 
@@ -210,9 +209,6 @@ public class SpoutStuff {
         /* Blank icons */
         files.add(new File(hudStandardDirectory + "Icon.png"));
         files.add(new File(hudRetroDirectory + "Icon_r.png"));
-
-        //Repair SFX
-        files.add(new File(soundDirectory + "repair.wav"));
 
         //Level SFX
         files.add(new File(soundDirectory + "level.wav"));
