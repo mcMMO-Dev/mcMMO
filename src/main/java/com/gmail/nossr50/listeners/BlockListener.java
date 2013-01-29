@@ -3,6 +3,7 @@ package com.gmail.nossr50.listeners;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
@@ -17,7 +18,6 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -37,7 +37,6 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.woodcutting.Woodcutting;
-import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
@@ -293,8 +292,8 @@ public class BlockListener implements Listener {
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        if (mcMMO.spoutEnabled && profile.getAbilityMode(AbilityType.TREE_FELLER) && BlockChecks.isLog(block)) {
-            SpoutSounds.playSoundForPlayer(SoundEffect.FIZZ, player, block.getLocation());
+        if (profile.getAbilityMode(AbilityType.TREE_FELLER) && BlockChecks.isLog(block)) {
+            player.playSound(block.getLocation(), Sound.FIZZ, Misc.FIZZ_VOLUME, Misc.FIZZ_PITCH);
         }
     }
 
@@ -347,9 +346,7 @@ public class BlockListener implements Listener {
                 event.setInstaBreak(true);
             }
 
-            if (mcMMO.spoutEnabled) {
-                SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
-            }
+            player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
         }
         else if (profile.getAbilityMode(AbilityType.SUPER_BREAKER) && SkillTools.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
             MiningManager miningManager = new MiningManager(player);

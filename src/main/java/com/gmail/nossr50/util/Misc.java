@@ -36,6 +36,14 @@ public final class Misc {
     public static final int NORMAL_SKILL_ACTIVATION_CHANCE = 100;
     public static final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;
 
+    //Sound Pitches & Volumes from CB
+    public static final float ANVIL_USE_PITCH = 0.3F; // Not in CB directly, I went off the place sound values
+    public static final float ANVIL_USE_VOLUME = 1.0F; // Not in CB directly, I went off the place sound values
+    public static final float FIZZ_PITCH = 2.6F + (Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.8F;
+    public static final float FIZZ_VOLUME = 0.5F;
+    public static final float POP_PITCH = ((getRandom().nextFloat() - getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
+    public static final float POP_VOLUME = 0.2F;
+
     private Misc() {};
 
     /**

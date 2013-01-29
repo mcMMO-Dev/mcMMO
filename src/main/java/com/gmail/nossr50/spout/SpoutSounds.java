@@ -26,19 +26,6 @@ public class SpoutSounds {
     }
 
     /**
-     * Play noise on successful repair.
-     *
-     * @param player The player who repaired an item
-     */
-    public static void playRepairNoise(Player player, mcMMO plugin) {
-        SoundManager soundManager = SpoutManager.getSoundManager();
-        SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
-
-        //If this is pulling from online, why have it in the jar?
-        soundManager.playCustomSoundEffect(plugin, spoutPlayer, "repair.wav", false);
-    }
-
-    /**
      * Play noise on level-up.
      *
      * @param player The player who leveled up

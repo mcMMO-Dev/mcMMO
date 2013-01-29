@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +18,6 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.SkillTools;
-import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
@@ -55,9 +55,7 @@ public class Repair {
         SkillTools.xpProcessing(player, profile, SkillType.REPAIR, dif * 10);
 
         //CLANG CLANG
-        if (mcMMO.spoutEnabled) {
-            SpoutSounds.playRepairNoise(player, mcMMO.p);
-        }
+        player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
     }
 
     /**
@@ -275,6 +273,7 @@ public class Repair {
                 player.sendMessage(LocaleLoader.getString("Repair.Listener.Anvil"));
             }
 
+            player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
             profile.togglePlacedAnvil();
         }
     }

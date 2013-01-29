@@ -1,15 +1,14 @@
 package com.gmail.nossr50.skills.mining;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.skills.SkillTools;
-import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 
@@ -55,10 +54,8 @@ public class SuperBreakerEventHandler {
         manager.miningBlockCheck(block);
     }
 
-    protected void playSpoutSound() {
-        if (mcMMO.spoutEnabled) {
-            SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
-        }
+    protected void playSound() {
+        player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
     }
 
     /**

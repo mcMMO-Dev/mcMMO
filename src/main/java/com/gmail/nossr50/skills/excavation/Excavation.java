@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.sound.SoundEffect;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -18,7 +18,6 @@ import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.SkillTools;
-import com.gmail.nossr50.spout.SpoutSounds;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
@@ -152,8 +151,6 @@ public class Excavation {
             Excavation.excavationProcCheck(block, player);
         }
 
-        if (mcMMO.spoutEnabled) {
-            SpoutSounds.playSoundForPlayer(SoundEffect.POP, player, block.getLocation());
-        }
+        player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
     }
 }

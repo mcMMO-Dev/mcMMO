@@ -146,6 +146,6 @@ public class MiningManager extends SkillManager{
         eventHandler.callFakeArmswing();
         eventHandler.processDurabilityLoss();
         eventHandler.processDropsAndXP();
-        eventHandler.playSpoutSound();
+        eventHandler.playSound();
     }
 }
