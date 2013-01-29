@@ -1,5 +1,8 @@
 package com.gmail.nossr50.skills.herbalism;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -10,13 +13,14 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
+import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.GreenThumbTimer;
 import com.gmail.nossr50.skills.AbilityType;
@@ -340,31 +344,13 @@ public class Herbalism {
         int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
-            Location location = block.getLocation();
-            int dropNumber = Misc.getRandom().nextInt(3);
-            ItemStack item;
+            List<HylianTreasure> treasures = new ArrayList<HylianTreasure>();
 
             switch (block.getType()) {
             case DEAD_BUSH:
             case LONG_GRASS:
             case SAPLING:
-                if (dropNumber == 0) {
-                    item = new ItemStack(Material.MELON_SEEDS);
-                }
-                else if (dropNumber == 1) {
-                    item = new ItemStack(Material.PUMPKIN_SEEDS);
-                }
-                else {
-                    try {
-                        item = (new MaterialData(Material.INK_SACK, DyeColor.BROWN.getDyeData())).toItemStack(1);
-                    }
-                    catch (Exception e) {
-                        item = (new MaterialData(Material.INK_SACK, (byte) 0x3)).toItemStack(1);
-                    }
-                    catch (NoSuchMethodError e) {
-                        item = (new MaterialData(Material.INK_SACK, (byte) 0x3)).toItemStack(1);
-                    }
-                }
+                treasures = TreasuresConfig.getInstance().hylianFromBushes;
                 break;
 
             case RED_ROSE:
@@ -374,33 +360,20 @@ public class Herbalism {
                     return;
                 }
 
-                if (dropNumber == 0) {
-                    item = new ItemStack(Material.POTATO);
-                }
-                else if (dropNumber == 1) {
-                    item = new ItemStack(Material.CARROT);
-                }
-                else {
-                    item = new ItemStack(Material.APPLE);
-                }
-
+                treasures = TreasuresConfig.getInstance().hylianFromFlowers;
                 break;
 
             case FLOWER_POT:
-                if (dropNumber == 0) {
-                    item = new ItemStack(Material.EMERALD);
-                }
-                else if (dropNumber == 1) {
-                    item = new ItemStack(Material.DIAMOND);
-                }
-                else {
-                    item = new ItemStack(Material.GOLD_NUGGET);
-                }
+                treasures = TreasuresConfig.getInstance().hylianFromPots;
                 break;
 
             default:
                 return;
             }
+
+            int dropNumber = Misc.getRandom().nextInt(treasures.size());
+            ItemStack item = treasures.get(dropNumber + 1).getDrop();
+            Location location = block.getLocation();
 
             event.setCancelled(true);
             event.getBlock().setType(Material.AIR);

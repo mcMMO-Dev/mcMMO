@@ -14,6 +14,7 @@ import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
+import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.datatypes.treasure.Treasure;
 
 public class TreasuresConfig extends ConfigLoader {
@@ -25,6 +26,11 @@ public class TreasuresConfig extends ConfigLoader {
     public List<ExcavationTreasure> excavationFromClay = new ArrayList<ExcavationTreasure>();
     public List<ExcavationTreasure> excavationFromMycel = new ArrayList<ExcavationTreasure>();
     public List<ExcavationTreasure> excavationFromSoulSand = new ArrayList<ExcavationTreasure>();
+
+    public List<HylianTreasure> hylianFromBushes = new ArrayList<HylianTreasure>();
+    public List<HylianTreasure> hylianFromFlowers = new ArrayList<HylianTreasure>();
+    public List<HylianTreasure> hylianFromPots = new ArrayList<HylianTreasure>();
+
     public List<FishingTreasure> fishingRewards = new ArrayList<FishingTreasure>();
 
     private TreasuresConfig() {
@@ -132,8 +138,6 @@ public class TreasuresConfig extends ConfigLoader {
 
                 int maxLevel = config.getInt("Treasures." + treasureName + ".Max_Level");
 
-
-
                 if (noErrorsInTreasure(reason)) {
                     FishingTreasure fTreasure = new FishingTreasure(item, xp, dropChance, dropLevel, maxLevel);
                     treasures.put(treasureName, fTreasure);
@@ -141,6 +145,7 @@ public class TreasuresConfig extends ConfigLoader {
             }
             else {
                 ExcavationTreasure eTreasure = new ExcavationTreasure(item, xp, dropChance, dropLevel);
+                HylianTreasure hTreasure = new HylianTreasure(item, xp, dropChance, dropLevel);
 
                 if (config.getBoolean("Treasures." + treasureName + ".Drops_From.Dirt", false)) {
                     eTreasure.setDropsFromDirt();
@@ -170,18 +175,34 @@ public class TreasuresConfig extends ConfigLoader {
                     eTreasure.setDropsFromSoulSand();
                 }
 
+                if (config.getBoolean("Treasures." + treasureName + ".Drops_From.Bushes", false)) {
+                    hTreasure.setDropsFromBushes();
+                }
+
+                if (config.getBoolean("Treasures." + treasureName + ".Drops_From.Flowers", false)) {
+                    hTreasure.setDropsFromFlowers();
+                }
+
+                if (config.getBoolean("Treasures." + treasureName + ".Drops_From.Pots", false)) {
+                    hTreasure.setDropsFromPots();
+                }
+
                 if (config.getBoolean("Treasures." + treasureName + ".Drops_From.Fishing", false)) {
                     reason.add("Excavation drops cannot also be fishing drops");
                 }
 
-                if (noErrorsInTreasure(reason)) {
+                if (noErrorsInTreasure(reason) && hTreasure.getDropsFrom() == (byte) 0x0) {
                     treasures.put(treasureName, eTreasure);
+                }
+                else if (noErrorsInTreasure(reason) && eTreasure.getDropsFrom() == (byte) 0x0){
+                    treasures.put(treasureName, hTreasure);
                 }
             }
         }
 
         List<String> excavationTreasures = config.getStringList("Excavation.Treasure");
         List<String> fishingTreasures = config.getStringList("Fishing.Treasure");
+        List<String> hylianTreasures = config.getStringList("Hylian_Luck.Treasure");
 
         for (Entry<String,Treasure> nextEntry : treasures.entrySet()) {
             String treasureKey = nextEntry.getKey();
@@ -193,6 +214,25 @@ public class TreasuresConfig extends ConfigLoader {
                 }
 
                 fishingRewards.add((FishingTreasure) treasure);
+            }
+            else if (treasure instanceof HylianTreasure) {
+                if (!hylianTreasures.contains(treasureKey)) {
+                    continue;
+                }
+
+                HylianTreasure hTreasure = (HylianTreasure) treasure;
+
+                if (hTreasure.getDropsFromBushes()) {
+                    hylianFromBushes.add(hTreasure);
+                }
+
+                if (hTreasure.getDropsFromFlowers()) {
+                    hylianFromFlowers.add(hTreasure);
+                }
+
+                if (hTreasure.getDropsFromPots()) {
+                    hylianFromPots.add(hTreasure);
+                }
             }
             else if (treasure instanceof ExcavationTreasure) {
                 if (!excavationTreasures.contains(treasureKey)) {

@@ -84,7 +84,20 @@ Excavation:
         - Green_Music
         - Diamond
         - Cocoa_Beans
-
+#
+#  Settings for Hylian Luck
+###
+Hylian_Luck:
+    Treasure:
+        - Melon_Seeds
+        - Pumpkin_Seeds
+        - Cocoa
+        - Carrot
+        - Potato
+        - Apples
+        - Emeralds
+        - Diamond_Gem
+        - Gold_Nuggets
 #
 #  Configuration to define Treasures
 ###
@@ -864,3 +877,84 @@ Treasures:
         Max_Level: -1
         Drops_From:
             Fishing: true
+    Melon_Seeds:
+        ID: 362
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Bushes: true
+    Pumpkin_Seeds:
+        ID: 361
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Bushes: true
+    Cocoa:
+        ID: 351
+        Data: 3
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Bushes: true
+    Carrot:
+        ID: 391
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Flowers: true
+    Potato:
+        ID: 392
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Flowers: true
+    Apples:
+        ID: 260
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Flowers: true
+    Emeralds:
+        ID: 388
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Pots: true
+    Diamond_Gem:
+        ID: 264
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Pots: true
+    Gold_Nuggets:
+        ID: 371
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Pots: true
