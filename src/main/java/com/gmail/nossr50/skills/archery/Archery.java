@@ -29,7 +29,8 @@ public class Archery {
     public static boolean pvpEnabled = Config.getInstance().getArcheryPVP();
     public static boolean pveEnabled = Config.getInstance().getArcheryPVE();
 
-    public static double distanceXpModifer = 0.1;
+    public static double distanceXpModifer = 0.025;
+
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
         for (TrackedEntity trackedEntity : trackedEntities) {
             if (trackedEntity.getLivingEntity().getEntityId() == livingEntity.getEntityId()) {

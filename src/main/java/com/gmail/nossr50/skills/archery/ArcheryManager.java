@@ -19,9 +19,9 @@ public class ArcheryManager extends SkillManager {
     public void distanceXpBonus(LivingEntity target) {
         Location shooterLocation = player.getEyeLocation();
         Location targetLocation = target.getLocation();
-        double distance = shooterLocation.distance(targetLocation);
+        double squaredDistance = shooterLocation.distanceSquared(targetLocation);
 
-        int bonusXp = (int) (distance * Archery.distanceXpModifer);
+        int bonusXp = (int) (squaredDistance * Archery.distanceXpModifer);
         SkillTools.xpProcessing(player, profile, SkillType.ARCHERY, bonusXp);
     }
 
