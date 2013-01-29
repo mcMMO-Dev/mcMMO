@@ -80,11 +80,9 @@ public class Herbalism {
             return;
         }
 
-        if (!block.getType().equals(Material.WHEAT)) {
-            inventory.removeItem(new ItemStack(Material.SEEDS));
-            player.updateInventory();   // Needed until replacement available
-            greenTerraConvert(player, block);
-        }
+        inventory.removeItem(new ItemStack(Material.SEEDS));
+        player.updateInventory();   // Needed until replacement available
+        greenTerraConvert(player, block);
     }
 
     public static void greenTerraConvert(Player player, Block block) {
@@ -338,9 +336,7 @@ public class Herbalism {
     public static void hylianLuck(Block block, Player player, BlockBreakEvent event) {
         int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.HERBALISM);
 
-        float chance = (float) ((hylianLuckMaxChance / hylianLuckMaxLevel) * skillLevel);
-        if (chance > hylianLuckMaxChance) chance = (float) hylianLuckMaxChance;
-
+        double chance = (hylianLuckMaxChance / hylianLuckMaxLevel) * Misc.skillCheck(skillLevel, hylianLuckMaxLevel);
         int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
