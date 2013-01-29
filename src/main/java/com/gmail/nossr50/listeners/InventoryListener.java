@@ -1,6 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -69,15 +70,19 @@ public class InventoryListener implements Listener{
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceBurnEvent(FurnaceBurnEvent event) {
         Block furnaceBlock = event.getBlock();
-        FurnaceInventory inventory = ((Furnace)furnaceBlock.getState()).getInventory();
-        ItemStack smelting = inventory.getSmelting();
+        BlockState blockState = furnaceBlock.getState();
 
-        if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemChecks.isSmeltable(smelting)) {
-            Player player = plugin.getFurnacePlayer(furnaceBlock);
-
-            if (player != null) {
-                SmeltingManager smeltingManager = new SmeltingManager(player);
-                smeltingManager.fuelEfficiency(event);
+        if (blockState instanceof Furnace) {
+            FurnaceInventory inventory = ((Furnace) blockState).getInventory();
+            ItemStack smelting = inventory.getSmelting();
+    
+            if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemChecks.isSmeltable(smelting)) {
+                Player player = plugin.getFurnacePlayer(furnaceBlock);
+    
+                if (player != null) {
+                    SmeltingManager smeltingManager = new SmeltingManager(player);
+                    smeltingManager.fuelEfficiency(event);
+                }
             }
         }
     }
@@ -85,15 +90,19 @@ public class InventoryListener implements Listener{
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceSmeltEvent(FurnaceSmeltEvent event) {
         Block furnaceBlock = event.getBlock();
-        FurnaceInventory inventory = ((Furnace)furnaceBlock.getState()).getInventory();
-        ItemStack smelting = inventory.getSmelting();
+        BlockState blockState = furnaceBlock.getState();
 
-        if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemChecks.isSmeltable(smelting)) {
-            Player player = plugin.getFurnacePlayer(furnaceBlock);
-
-            if (player != null) {
-                SmeltingManager smeltingManager = new SmeltingManager(player);
-                smeltingManager.smeltProcessing(event);
+        if (blockState instanceof Furnace) {
+            FurnaceInventory inventory = ((Furnace) blockState).getInventory();
+            ItemStack smelting = inventory.getSmelting();
+    
+            if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemChecks.isSmeltable(smelting)) {
+                Player player = plugin.getFurnacePlayer(furnaceBlock);
+    
+                if (player != null) {
+                    SmeltingManager smeltingManager = new SmeltingManager(player);
+                    smeltingManager.smeltProcessing(event);
+                }
             }
         }
     }
@@ -101,12 +110,16 @@ public class InventoryListener implements Listener{
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
         Block furnaceBlock = event.getBlock();
-        FurnaceInventory inventory = ((Furnace)furnaceBlock.getState()).getInventory();
-        ItemStack result = inventory.getResult();
+        BlockState blockState = furnaceBlock.getState();
 
-        if (plugin.furnaceIsTracked(furnaceBlock) && result != null && ItemChecks.isSmelted(result)) {
-            SmeltingManager smeltingManager = new SmeltingManager(plugin.getFurnacePlayer(furnaceBlock));
-            smeltingManager.vanillaXPBoost(event);
+        if (blockState instanceof Furnace) {
+            FurnaceInventory inventory = ((Furnace) blockState).getInventory();
+            ItemStack result = inventory.getResult();
+    
+            if (plugin.furnaceIsTracked(furnaceBlock) && result != null && ItemChecks.isSmelted(result)) {
+                SmeltingManager smeltingManager = new SmeltingManager(plugin.getFurnacePlayer(furnaceBlock));
+                smeltingManager.vanillaXPBoost(event);
+            }
         }
     }
 }
