@@ -15,7 +15,10 @@ import com.gmail.nossr50.util.Users;
 public class MmoupdateCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.admin")) {
+        // DEPRECATED PERMISSION
+        boolean oldPermission = !CommandHelper.noCommandPermissions(sender, "mcmmo.admin");
+
+        if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoupdate")) {
             return true;
         }
 

@@ -137,10 +137,11 @@ permissions:
         default: false
         description: Implies all mcmmo permissions.
         children:
+            mcmmo.bypass.all: true
+            mcmmo.commands.all: true
             mcmmo.defaults: true
             mcmmo.defaultsop: true
             mcmmo.perks.all: true
-            mcmmo.bypass.all: true
     mcmmo.defaults:
         default: true
         description: mcmmo permisions that default to true
@@ -159,7 +160,10 @@ permissions:
             mcmmo.admin: true
             mcmmo.tools.all: true
     mcmmo.admin:
-        description: Allows access to mmoupdate and other sensitive commands
+        default: false
+        description: Implies access to everything in mcMMO
+        children:
+            mcmmo.all: true
     mcmmo.perks.*:
         default: false
         description: implies access to all mcmmo perks
@@ -706,6 +710,7 @@ permissions:
             mcmmo.commands.inspect.offline: true
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
+            mcmmo.commands.mmoupdate: true
     mcmmo.commands.defaults:
         description: Implies all default mcmmo.commands permissions.
         children:
@@ -721,9 +726,9 @@ permissions:
     mcmmo.commands.addlevels.others:
         description: Allows access to the addlevels command for other players
     mcmmo.commands.addxp:
-        description: Allows access to the addlevels command
+        description: Allows access to the addxp command
     mcmmo.commands.addxp.others:
-        description: Allows access to the addlevels command for other players
+        description: Allows access to the addxp command for other players
     mcmmo.commands.inspect.*:
         description: Implies access to all mcmmo.commands.inspect permissions
         children:
@@ -741,9 +746,11 @@ permissions:
     mcmmo.commands.inspect.offline:
         description: Allows access to the inspect command for offline players
     mcmmo.commands.mmoedit:
-        description: Allows access to the addlevels command
+        description: Allows access to the mmoedit command
     mcmmo.commands.mmoedit.others:
-        description: Allows access to the addlevels command for other players
+        description: Allows access to the mmoedit command for other players
+    mcmmo.commands.mmoupdate:
+        description: Allows access to the mmoupdate command
     mcmmo.commands.party.*:
         description: Implies access to all mcmmo.commands.party permissions.
         children:
