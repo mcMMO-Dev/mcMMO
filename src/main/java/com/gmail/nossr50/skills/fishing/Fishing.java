@@ -128,7 +128,7 @@ public final class Fishing {
         }
 
         SkillTools.xpProcessing(player, Users.getProfile(player), SkillType.FISHING, Config.getInstance().getFishingBaseXP() + treasureXp);
-        event.setExpToDrop(event.getExpToDrop() * Fishing.getVanillaXpMultiplier(skillLevel));
+        event.setExpToDrop(event.getExpToDrop() * getVanillaXpMultiplier(skillLevel));
     }
 
     /**
