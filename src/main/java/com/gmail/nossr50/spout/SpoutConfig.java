@@ -26,7 +26,7 @@ public class SpoutConfig extends ConfigLoader {
         String temp = config.getString("Spout.HUD.Default", "STANDARD");
 
         for (HudType hudType : HudType.values()) {
-            if (hudType.toString().equalsIgnoreCase(temp.toString())) {
+            if (hudType.toString().equalsIgnoreCase(temp)) {
                 defaultHudType = hudType;
                 break;
             }
