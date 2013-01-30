@@ -525,7 +525,7 @@ public class SkillTools {
         }
 
         if (profile.inParty()) {
-            xp = (int) ShareHandler.checkXpSharing(xp, player, profile.getParty(), type);
+            xp = (int) ShareHandler.checkXpSharing(xp, player, profile.getParty());
             ShareHandler.handleEqualExpShare(xp, player, profile.getParty(), type);
         }
 
