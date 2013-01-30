@@ -48,15 +48,15 @@ public class ACommand implements CommandExecutor {
             return true;
 
         default:
-            StringBuffer buffer = new StringBuffer();
-            buffer.append(args[0]);
+            StringBuilder builder = new StringBuilder();
+            builder.append(args[0]);
 
             for (int i = 1; i < args.length; i++) {
-                buffer.append(" ");
-                buffer.append(args[i]);
+                builder.append(" ");
+                builder.append(args[i]);
             }
 
-            String message = buffer.toString();
+            String message = builder.toString();
 
             if (sender instanceof Player) {
                 Player player = (Player) sender;

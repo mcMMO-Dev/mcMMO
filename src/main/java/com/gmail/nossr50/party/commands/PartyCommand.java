@@ -108,7 +108,7 @@ public class PartyCommand implements CommandExecutor {
 
             Server server = mcMMO.p.getServer();
             String leader = party.getLeader();
-            StringBuffer tempList = new StringBuffer();
+            StringBuilder tempList = new StringBuilder();
 
             int membersNear = PartyManager.getNearMembers(player, party, ShareHandler.partyShareRange).size();
             int membersOnline = party.getOnlineMembers().size() - 1;
@@ -128,7 +128,7 @@ public class PartyCommand implements CommandExecutor {
                 else {
                     tempList.append(ChatColor.GRAY);
                 }
-                tempList.append(otherPlayerName + " ");
+                tempList.append(otherPlayerName).append(" ");
             }
 
             String status = LocaleLoader.getString("Party.Status.Locked");
