@@ -9,6 +9,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -104,9 +105,9 @@ public final class Fishing {
      *
      * @param player Player fishing
      * @param skillLevel Fishing level of the player
-     * @param caught Item reeled
+     * @param event Event to process
      */
-    public static void beginFishing(Player player, int skillLevel, Item caught) {
+    public static void beginFishing(Player player, int skillLevel, PlayerFishEvent event) {
         int treasureXp = 0;
         FishingTreasure treasure = checkForTreasure(player, skillLevel);
 
@@ -121,11 +122,13 @@ public final class Fishing {
             }
 
             // Drop the original catch at the feet of the player and set the treasure as the real catch
+            Item caught = (Item) event.getCaught();
             Misc.dropItem(player.getEyeLocation(), caught.getItemStack());
             caught.setItemStack(treasureDrop);
         }
 
         SkillTools.xpProcessing(player, Users.getProfile(player), SkillType.FISHING, Config.getInstance().getFishingBaseXP() + treasureXp);
+        event.setExpToDrop(event.getExpToDrop() * Fishing.getVanillaXpMultiplier(skillLevel));
     }
 
     /**

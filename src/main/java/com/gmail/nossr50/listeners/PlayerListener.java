@@ -92,8 +92,7 @@ public class PlayerListener implements Listener {
 
         switch (event.getState()) {
         case CAUGHT_FISH:
-            Fishing.beginFishing(player, skillLevel, (Item) event.getCaught());
-            event.setExpToDrop(event.getExpToDrop() * Fishing.getVanillaXpMultiplier(skillLevel));
+            Fishing.beginFishing(player, skillLevel, event);
             break;
 
         case CAUGHT_ENTITY:
