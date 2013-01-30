@@ -14,11 +14,11 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 

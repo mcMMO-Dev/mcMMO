@@ -1,4 +1,4 @@
-package com.gmail.nossr50.config.mods;
+package com.gmail.nossr50.mods.config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.datatypes.mods.CustomBlock;
+import com.gmail.nossr50.mods.datatypes.CustomBlock;
 
 public class CustomBlocksConfig extends ConfigLoader {
     private static CustomBlocksConfig instance;

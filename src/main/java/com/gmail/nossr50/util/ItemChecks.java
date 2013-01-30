@@ -7,8 +7,8 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.api.SpoutToolsAPI;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.mods.CustomArmorConfig;
-import com.gmail.nossr50.config.mods.CustomToolsConfig;
+import com.gmail.nossr50.mods.config.CustomArmorConfig;
+import com.gmail.nossr50.mods.config.CustomToolsConfig;
 
 public class ItemChecks {
     private static Config configInstance = Config.getInstance();

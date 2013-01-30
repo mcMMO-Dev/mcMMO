@@ -16,11 +16,11 @@ public class ShareHandler {
     public static double partyShareRange = Config.getInstance().getPartyShareRange();
     public static double partyShareBonus = Config.getInstance().getPartyShareBonus();
 
-    protected enum PartyShareType {
-        NO_SHARE,
-        RANDOM,
-        EQUAL,
-    };
+//    protected enum PartyShareType {
+//        NO_SHARE,
+//        RANDOM,
+//        EQUAL,
+//    };
 
     public static double checkXpSharing(int oldExp, Player player, Party party) {
         int newExp = oldExp;

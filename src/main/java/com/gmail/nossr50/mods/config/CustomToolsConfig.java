@@ -1,4 +1,4 @@
-package com.gmail.nossr50.config.mods;
+package com.gmail.nossr50.mods.config;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.Set;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.datatypes.mods.CustomTool;
+import com.gmail.nossr50.mods.datatypes.CustomTool;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.RepairableFactory;
 

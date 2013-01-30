@@ -8,9 +8,9 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
+import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModChecks;
 
 public class SuperBreakerEventHandler {
     private MiningManager manager;

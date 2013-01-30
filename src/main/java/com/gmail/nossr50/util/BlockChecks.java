@@ -9,7 +9,8 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.mods.CustomBlocksConfig;
+import com.gmail.nossr50.mods.ModChecks;
+import com.gmail.nossr50.mods.config.CustomBlocksConfig;
 
 public final class BlockChecks {
     private static Config configInstance = Config.getInstance();

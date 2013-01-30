@@ -1,16 +1,16 @@
-package com.gmail.nossr50.util;
+package com.gmail.nossr50.mods;
 
 import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.mods.CustomArmorConfig;
-import com.gmail.nossr50.config.mods.CustomBlocksConfig;
-import com.gmail.nossr50.config.mods.CustomToolsConfig;
-import com.gmail.nossr50.datatypes.mods.CustomBlock;
-import com.gmail.nossr50.datatypes.mods.CustomItem;
-import com.gmail.nossr50.datatypes.mods.CustomTool;
+import com.gmail.nossr50.mods.config.CustomArmorConfig;
+import com.gmail.nossr50.mods.config.CustomBlocksConfig;
+import com.gmail.nossr50.mods.config.CustomToolsConfig;
+import com.gmail.nossr50.mods.datatypes.CustomBlock;
+import com.gmail.nossr50.mods.datatypes.CustomItem;
+import com.gmail.nossr50.mods.datatypes.CustomTool;
 
 public final class ModChecks {
     private static Config configInstance = Config.getInstance();

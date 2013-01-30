@@ -12,11 +12,11 @@ import org.bukkit.material.MaterialData;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.datatypes.mods.CustomBlock;
+import com.gmail.nossr50.mods.ModChecks;
+import com.gmail.nossr50.mods.datatypes.CustomBlock;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModChecks;
 
 public class Mining {
     private static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();

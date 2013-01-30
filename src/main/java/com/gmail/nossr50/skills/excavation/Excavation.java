@@ -16,10 +16,10 @@ import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
+import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 

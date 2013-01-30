@@ -23,6 +23,7 @@ import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
+import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.party.PartyManager;
 
 public final class Misc {

@@ -12,15 +12,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mods.ModChecks;
+import com.gmail.nossr50.mods.datatypes.CustomBlock;
 import com.gmail.nossr50.skills.Combat;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.skills.woodcutting.Woodcutting.ExperienceGainMethod;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Users;
 
 public final class TreeFeller {

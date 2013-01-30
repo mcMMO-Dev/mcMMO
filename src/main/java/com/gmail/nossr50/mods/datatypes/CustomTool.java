@@ -1,4 +1,4 @@
-package com.gmail.nossr50.datatypes.mods;
+package com.gmail.nossr50.mods.datatypes;
 
 public class CustomTool extends CustomItem {
     private double xpMultiplier;
