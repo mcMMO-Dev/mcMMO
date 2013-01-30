@@ -17,6 +17,10 @@ public class McstatsCommand implements CommandExecutor {
             return true;
         }
 
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcstats")) {
+            return true;
+        }
+
         Player player = (Player) sender;
 
         player.sendMessage(LocaleLoader.getString("Stats.Own.Stats"));

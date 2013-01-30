@@ -697,19 +697,17 @@ permissions:
     mcmmo.commands.all:
         description: Implies all mcmmo.commands permissions.
         children:
-            mcmmo.commands.ability: true
             mcmmo.commands.addlevels: true
             mcmmo.commands.addlevels.others: true
             mcmmo.commands.addxp: true
             mcmmo.commands.addxp.others: true
-            mcmmo.commands.inspect: true
-            mcmmo.commands.party.all: true
-            mcmmo.commands.ptp: true
+            mcmmo.commands.defaults: true
     mcmmo.commands.defaults:
         description: Implies all default mcmmo.commands permissions.
         children:
             mcmmo.commands.ability: true
             mcmmo.commands.inspect: true
+            mcmmo.commands.mcstats: true
             mcmmo.commands.party.all: true
             mcmmo.commands.ptp: true
     mcmmo.commands.ability:
