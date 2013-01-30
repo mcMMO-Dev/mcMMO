@@ -36,11 +36,19 @@ public final class Permissions {
     }
 
     public static boolean inspectDistanceBypass(Player player) {
-        return hasPermission(player, "mcmmo.bypass.inspect.distance");
+        // DEPRECATED PERMISSION
+        if (hasPermission(player, "mcmmo.bypass.inspect.distance"))
+            return true;
+
+        return hasPermission(player, "mcmmo.commands.inspect.far");
     }
 
     public static boolean inspectOfflineBypass(Player player) {
-        return hasPermission(player, "mcmmo.bypass.inspect.offline");
+        // DEPRECATED PERMISSION
+        if (hasPermission(player, "mcmmo.bypass.inspect.offline"))
+            return true;
+
+        return hasPermission(player, "mcmmo.commands.inspect.offline");
     }
 
     /*

@@ -22,8 +22,8 @@ public class AddxpCommand implements CommandExecutor {
         Player modifiedPlayer;
         int xp;
         SkillType skill;
-	// DEPRECATED PERMISSION
-	boolean oldPermission = !CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit");
+        // DEPRECATED PERMISSION
+        boolean oldPermission = !CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit");
         String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"addxp", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.XP") + ">" });
 
         if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addxp")) {

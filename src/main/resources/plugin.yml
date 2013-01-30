@@ -148,7 +148,7 @@ permissions:
             mcmmo.ability.all: true 
             mcmmo.item.all: true   
             mcmmo.motd: true 
-            mcmmo.commands.all: true 
+            mcmmo.commands.defaults: true 
             mcmmo.chat.partychat: true 
             mcmmo.skills.all: true
     mcmmo.defaultsop:
@@ -697,34 +697,101 @@ permissions:
     mcmmo.commands.all:
         description: Implies all mcmmo.commands permissions.
         children:
-            mcmmo.commands.ability: true  
-            mcmmo.commands.ptp: true 
-            mcmmo.commands.inspect: true 
-            mcmmo.commands.party.all: true 
+            mcmmo.commands.ability: true
+            mcmmo.commands.addlevels: true
+            mcmmo.commands.addlevels.others: true
+            mcmmo.commands.addxp: true
+            mcmmo.commands.addxp.others: true
+            mcmmo.commands.inspect: true
+            mcmmo.commands.party.all: true
+            mcmmo.commands.ptp: true
+    mcmmo.commands.defaults:
+        description: Implies all default mcmmo.commands permissions.
+        children:
+            mcmmo.commands.ability: true
+            mcmmo.commands.inspect: true
+            mcmmo.commands.party.all: true
+            mcmmo.commands.ptp: true
     mcmmo.commands.ability:
         description: Allows access to the mcability command
-    mcmmo.commands.ptp:
-        description: Allows access to the ptp command
+    mcmmo.commands.addlevels:
+        description: Allows access to the addlevels command
+    mcmmo.commands.addlevels.others:
+        description: Allows access to the addlevels command for other players
+    mcmmo.commands.addxp:
+        description: Allows access to the addlevels command
+    mcmmo.commands.addxp.others:
+        description: Allows access to the addlevels command for other players
+    mcmmo.commands.inspect.*:
+        description: Implies access to all mcmmo.commands.inspect permissions
+        children:
+            mcmmo.commands.inspect.all: true
+    mcmmo.commands.inspect.all:
+        description: Implies access to all mcmmo.commands.inspect permissions
+        children:
+            mcmmo.commands.inspect: true
+            mcmmo.commands.inspect.far: true
+            mcmmo.commands.inspect.offline: true
     mcmmo.commands.inspect:
         description: Allows access to the inspect command
-    mcmmo.commands.party.all:
-        description: Implies all mcmmo.commands.party permissions.
+    mcmmo.commands.inspect.far:
+        description: Allows access to the inspect command for far players
+    mcmmo.commands.inspect.offline:
+        description: Allows access to the inspect command for offline players
+    mcmmo.commands.party.*:
+        description: Implies access to all mcmmo.commands.party permissions.
         children:
-            mcmmo.commands.party: true 
-            mcmmo.commands.party.join: true 
-            mcmmo.commands.party.create: true 
-            mcmmo.commands.party.quit: true 
-            mcmmo.commands.party.expshare: true 
-            mcmmo.commands.party.itemshare: true 
-            mcmmo.commands.party.accept: true 
-            mcmmo.commands.party.invite: true 
-            mcmmo.commands.party.kick: true 
-            mcmmo.commands.party.disband: true 
-            mcmmo.commands.party.owner: true 
-            mcmmo.commands.party.lock: true 
-            mcmmo.commands.party.unlock: true 
-            mcmmo.commands.party.password: true 
-            mcmmo.commands.party.rename: true 
+            mcmmo.commands.party.all: true
+    mcmmo.commands.party.all:
+        description: Implies access to all mcmmo.commands.party permissions.
+        children:
+            mcmmo.commands.party: true
+            mcmmo.commands.party.accept: true
+            mcmmo.commands.party.create: true
+            mcmmo.commands.party.disband: true
+            mcmmo.commands.party.expshare: true
+            mcmmo.commands.party.invite: true
+            mcmmo.commands.party.itemshare: true
+            mcmmo.commands.party.join: true
+            mcmmo.commands.party.kick: true
+            mcmmo.commands.party.lock: true
+            mcmmo.commands.party.owner: true
+            mcmmo.commands.party.password: true
+            mcmmo.commands.party.quit: true
+            mcmmo.commands.party.rename: true
+            mcmmo.commands.party.unlock: true
+    mcmmo.commands.party:
+        description: Allows access to the party command
+    mcmmo.commands.party.accept:
+        description: Allows access to the party accept command
+    mcmmo.commands.party.create:
+        description: Allows access to the party create command
+    mcmmo.commands.party.disband:
+        description: Allows access to the party disband command
+    mcmmo.commands.party.expshare:
+        description: Allows access to the party expshare command
+    mcmmo.commands.party.invite:
+        description: Allows access to the party invite command
+    mcmmo.commands.party.itemshare:
+        description: Allows access to the party itemshare command
+    mcmmo.commands.party.join:
+        description: Allows access to the party join command
+    mcmmo.commands.party.kick:
+        description: Allows access to the party kick command
+    mcmmo.commands.party.lock:
+        description: Allows access to the party lock command
+    mcmmo.commands.party.owner:
+        description: Allows access to the party owner command
+    mcmmo.commands.party.password:
+        description: Allows access to the party password command
+    mcmmo.commands.party.quit:
+        description: Allows access to the party quit command
+    mcmmo.commands.party.rename:
+        description: Allows access to the party rename command
+    mcmmo.commands.party.unlock:
+        description: Allows access to the party unlock command
+    mcmmo.commands.ptp:
+        description: Allows access to the ptp command
     mcmmo.chat.*:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:
