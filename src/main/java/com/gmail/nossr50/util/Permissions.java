@@ -235,6 +235,10 @@ public final class Permissions {
         return hasPermission(player, "mcmmo.ability.fishing.fishermansdiet");
     }
 
+    public static boolean fishingVanillaXPBoost(Player player) {
+        return hasPermission(player, "mcmmo.ability.fishing.vanillaxpboost");
+    }
+
     /*
      * MCMMO.ABILITY.MINING.*
      */

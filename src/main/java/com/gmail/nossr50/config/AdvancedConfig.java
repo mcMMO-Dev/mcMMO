@@ -89,6 +89,13 @@ public class AdvancedConfig extends ConfigLoader {
     public int getShakeChanceRank4() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_4", 60); }
     public int getShakeChanceRank5() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_5", 75); }
 
+    /* Vanilla XP Boost */
+    public int getFishingVanillaXPModifierRank1() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_1", 1); }
+    public int getFishingVanillaXPModifierRank2() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_2", 2); }
+    public int getFishingVanillaXPModifierRank3() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_3", 3); }
+    public int getFishingVanillaXPModifierRank4() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_4", 4); }
+    public int getFishingVanillaXPModifierRank5() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_5", 5); }
+
     /* HERBALISM */
     public int getFarmerDietRankChange() { return config.getInt("Skills.Herbalism.Farmer_Diet_RankChange", 200); }
 

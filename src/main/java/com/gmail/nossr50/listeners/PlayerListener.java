@@ -92,7 +92,9 @@ public class PlayerListener implements Listener {
         switch (event.getState()) {
         case CAUGHT_FISH:
             Fishing.beginFishing(player, skillLevel, event);
-              break;
+            Fishing.awardAdditionalVanillaXP(skillLevel, event);
+            break;
+
         case CAUGHT_ENTITY:
             if (skillLevel >= AdvancedConfig.getInstance().getShakeUnlockLevel() && Permissions.shakeMob(player)) {
                 //TODO: Unsafe cast?

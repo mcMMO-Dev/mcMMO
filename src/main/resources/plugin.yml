@@ -12,7 +12,7 @@ description: >
   experience.
 
 author: nossr50
-authors: [NuclearW, GJ, Glitchfinder, TfT_02, toothplck1]
+authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, toothplck1]
 website: http://dev.bukkit.org/server-mods/mcmmo/
 
 main: com.gmail.nossr50.mcMMO
@@ -412,6 +412,7 @@ permissions:
             mcmmo.ability.fishing.treasures: true
             mcmmo.ability.fishing.magic: true
             mcmmo.ability.fishing.fishermansdiet: true
+            mcmmo.ability.fishing.vanillaxpboost: true
     mcmmo.ability.fishing.shakemob:
         description: Allows access to the Shake Mob ability
     mcmmo.ability.fishing.treasures:
@@ -420,6 +421,8 @@ permissions:
         description: Allows enchanted drops from Fishing
     mcmmo.ability.fishing.fishermansdiet:
         description: Allows access to the Fishermans's Diet ability
+    mcmmo.ability.fishing.vanillaxpboost:
+        description: Allows vanilla XP boost from Fishing
     mcmmo.ability.mining.*:
         description: Allows access to all Mining abilities
         children:

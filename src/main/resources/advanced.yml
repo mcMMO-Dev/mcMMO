@@ -106,6 +106,14 @@ Skills:
             Rank_4: 60
             Rank_5: 75
 
+        #VanillaXPBoost: Vanilla XP gained from fishing is mutliplied by these values.
+        VanillaXPBoost:
+            Rank_1: 1
+            Rank_2: 2
+            Rank_3: 3
+            Rank_4: 4
+            Rank_5: 5
+
         # Tiers
         Tier_Levels:
             Tier1: 0

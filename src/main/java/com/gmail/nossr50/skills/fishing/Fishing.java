@@ -29,11 +29,26 @@ public final class Fishing {
 
     // The order of the values is extremely important, Fishing.getLootTier() and ShakeMob.getShakeChance() depend on it to work properly
     protected enum Tier {
-        FIVE(5) {@Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier5();} @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank5();}},
-        FOUR(4) {@Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier4();} @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank4();}},
-        THREE(3) {@Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier3();} @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank3();}},
-        TWO(2) {@Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier2();} @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank2();}},
-        ONE(1) {@Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier1();} @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank1();}};
+        FIVE(5) {
+            @Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier5();}
+            @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank5();}
+            @Override public int getVanillaXPBoostModifier() {return ADVANCED_CONFIG.getFishingVanillaXPModifierRank5();}},
+        FOUR(4) {
+            @Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier4();}
+            @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank4();}
+            @Override public int getVanillaXPBoostModifier() {return ADVANCED_CONFIG.getFishingVanillaXPModifierRank4();}},
+        THREE(3) {
+            @Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier3();}
+            @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank3();}
+            @Override public int getVanillaXPBoostModifier() {return ADVANCED_CONFIG.getFishingVanillaXPModifierRank3();}},
+        TWO(2) {
+            @Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier2();}
+            @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank2();}
+            @Override public int getVanillaXPBoostModifier() {return ADVANCED_CONFIG.getFishingVanillaXPModifierRank2();}},
+        ONE(1) {
+            @Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier1();}
+            @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank1();}
+            @Override public int getVanillaXPBoostModifier() {return ADVANCED_CONFIG.getFishingVanillaXPModifierRank1();}};
 
         int numerical;
 
@@ -47,6 +62,7 @@ public final class Fishing {
 
         abstract protected int getLevel();
         abstract protected int getShakeChance();
+        abstract protected int getVanillaXPBoostModifier();
     }
 
     // TODO: Get rid of that
@@ -113,6 +129,11 @@ public final class Fishing {
         }
 
         SkillTools.xpProcessing(player, Users.getProfile(player), SkillType.FISHING, Config.getInstance().getFishingBaseXP() + xp);
+    }
+
+    public static void awardAdditionalVanillaXP(int skillLevel, PlayerFishEvent event) {
+        int xp = event.getExpToDrop();
+        event.setExpToDrop(xp * getVanillaXPMultiplier(skillLevel));
     }
 
     /**
@@ -233,4 +254,20 @@ public final class Fishing {
 
         return 0;
     }
+
+   /**
+    * Gets the Shake Mob probability for a given skill level
+    *
+    * @param skillLevel Fishing skill level
+    * @return Shake Mob probability
+    */
+   public static int getVanillaXPMultiplier(int skillLevel) {
+       for (Tier tier : Tier.values()) {
+           if (skillLevel >= tier.getLevel()) {
+               return tier.getVanillaXPBoostModifier();
+           }
+       }
+
+       return 0;
+   }
 }
