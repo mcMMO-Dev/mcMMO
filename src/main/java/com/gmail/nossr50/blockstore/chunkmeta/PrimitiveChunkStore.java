@@ -25,22 +25,12 @@ public class PrimitiveChunkStore implements ChunkStore {
     private List<UUID> spawnedMobs = new ArrayList<UUID>();
     transient private int worldHeight;
 
-    transient private int xBitShifts;
-    transient private int zBitShifts;
-    transient private boolean conversionNeeded;
-
     public PrimitiveChunkStore(World world, int cx, int cz) {
         this.cx = cx;
         this.cz = cz;
         this.worldUid = world.getUID();
-
-        this.worldHeight = world != null ? world.getMaxHeight() : 128;
-        this.xBitShifts = 11;
-        this.zBitShifts = 7;
-
+        this.worldHeight = world.getMaxHeight();
         this.store = new boolean[16][16][this.worldHeight];
-
-        conversionNeeded = false;
     }
 
     @Override
@@ -207,8 +197,6 @@ public class PrimitiveChunkStore implements ChunkStore {
         World world = mcMMO.p.getServer().getWorld(this.worldUid);
 
         this.worldHeight = world.getMaxHeight();
-        this.xBitShifts = 11;
-        this.zBitShifts = 7;
 
         store = (boolean[][][]) in.readObject();
 
