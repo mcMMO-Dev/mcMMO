@@ -55,7 +55,7 @@ public final class ChimaeraWing {
                 player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", new Object[] {SkillTools.calculateTimeLeft(recentlyHurt, 60, player)}));
             }
             else if (amount <= Config.getInstance().getChimaeraCost()) {
-                player.sendMessage(LocaleLoader.getString("SkillTools.NeedMore", new Object[] { Misc.prettyItemString(Config.getInstance().getChimaeraItemId()) }));
+                player.sendMessage(LocaleLoader.getString("Skills.NeedMore", new Object[] { Misc.prettyItemString(Config.getInstance().getChimaeraItemId()) }));
             }
         }
     }

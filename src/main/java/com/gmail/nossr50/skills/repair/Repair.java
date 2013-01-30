@@ -246,7 +246,7 @@ public class Repair {
         int activationChance = Misc.calculateActivationChance(Permissions.luckyRepair(player));
 
         if (chance > Misc.getRandom().nextInt(activationChance) && Permissions.repairBonus(player)) {
-            player.sendMessage(LocaleLoader.getString("Repair.SkillTools.FeltEasy"));
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;
         }
         return false;

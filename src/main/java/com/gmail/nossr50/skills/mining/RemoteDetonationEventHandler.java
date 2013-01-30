@@ -44,7 +44,7 @@ public class RemoteDetonationEventHandler {
 
     protected boolean cooldownOver() {
         if (!SkillTools.cooldownOver(profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR, AbilityType.BLAST_MINING.getCooldown(), player)) {
-            player.sendMessage(LocaleLoader.getString("SkillTools.TooTired", new Object[] { SkillTools.calculateTimeLeft(profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR, AbilityType.BLAST_MINING.getCooldown(), player) }));
+            player.sendMessage(LocaleLoader.getString("Skills.TooTired", new Object[] { SkillTools.calculateTimeLeft(profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR, AbilityType.BLAST_MINING.getCooldown(), player) }));
 
             return false;
         }

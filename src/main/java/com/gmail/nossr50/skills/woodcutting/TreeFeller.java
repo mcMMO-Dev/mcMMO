@@ -43,13 +43,13 @@ public final class TreeFeller {
         if (treeFellerReachedThreshold) {
             treeFellerReachedThreshold = false;
 
-            player.sendMessage(LocaleLoader.getString("Woodcutting.SkillTools.TreeFellerThreshold"));
+            player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFellerThreshold"));
             return;
         }
 
         // If the tool can't sustain the durability loss
         if (!handleDurabilityLoss(treeFellerBlocks, player)) {
-            player.sendMessage(LocaleLoader.getString("Woodcutting.SkillTools.TreeFeller.Splinter"));
+            player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFeller.Splinter"));
 
             int health = player.getHealth();
 
