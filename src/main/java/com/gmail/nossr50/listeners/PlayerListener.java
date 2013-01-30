@@ -24,16 +24,16 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
-import com.gmail.nossr50.runnables.BleedTimer;
-import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
+import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.ChatManager;
 import com.gmail.nossr50.util.ChimaeraWing;
@@ -92,7 +92,9 @@ public class PlayerListener implements Listener {
         switch (event.getState()) {
         case CAUGHT_FISH:
             Fishing.beginFishing(player, skillLevel, event);
-              break;
+            Fishing.awardAdditionalVanillaXP(skillLevel, event);
+            break;
+
         case CAUGHT_ENTITY:
             if (skillLevel >= AdvancedConfig.getInstance().getShakeUnlockLevel() && Permissions.shakeMob(player)) {
                 //TODO: Unsafe cast?
@@ -342,11 +344,11 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            ChatManager.handlePartyChat(plugin, party, player.getName(), event.getMessage());
+            ChatManager.handlePartyChat(plugin, party, player.getDisplayName(), event.getMessage());
             event.setCancelled(true);
         }
         else if (profile.getAdminChatMode()) {
-            ChatManager.handleAdminChat(plugin, player.getName(), event.getMessage());
+            ChatManager.handleAdminChat(plugin, player.getDisplayName(), event.getMessage());
             event.setCancelled(true);
         }
     }

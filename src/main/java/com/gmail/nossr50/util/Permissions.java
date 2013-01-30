@@ -3,7 +3,7 @@ package com.gmail.nossr50.util;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.utilities.SkillType;
 
 public final class Permissions {
     private Permissions() {}
@@ -241,6 +241,10 @@ public final class Permissions {
 
     public static boolean fishermansDiet(Player player) {
         return hasPermission(player, "mcmmo.ability.fishing.fishermansdiet");
+    }
+
+    public static boolean fishingVanillaXPBoost(Player player) {
+        return hasPermission(player, "mcmmo.ability.fishing.vanillaxpboost");
     }
 
     /*

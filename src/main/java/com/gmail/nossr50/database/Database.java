@@ -15,9 +15,9 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.database.runnables.SQLReconnect;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.runnables.SQLReconnect;
-import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.spout.huds.SpoutHud;
 import com.gmail.nossr50.util.Users;
@@ -179,7 +179,7 @@ public final class Database {
             break;
 
         case INDEX:
-            if(read("SHOW INDEX FROM " + tablePrefix + "skills").size() != 13) {
+            if (read("SHOW INDEX FROM " + tablePrefix + "skills").size() != 13) {
                 mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
                 write("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_taming` (`taming`) USING BTREE, "
                         + "ADD INDEX `idx_mining` (`mining`) USING BTREE, "
@@ -478,24 +478,26 @@ public final class Database {
                 for (SkillType skillType: SkillType.values()) {
                     if (skillType.isChildSkill()) continue;
                     String sql;
-                    if(skillType != SkillType.ALL) {
+                    if (skillType != SkillType.ALL) {
                         sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillType.name().toLowerCase() + " > 0 AND " + skillType.name().toLowerCase() + " > (SELECT " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "')";
-                    } else {
+                    }
+                    else {
                         sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > 0 AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > (SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "')";
                     }
                     PreparedStatement statement = connection.prepareStatement(sql);
                     resultSet = statement.executeQuery();
                     resultSet.next();
                     int rank = resultSet.getInt("rank");
-                    if(skillType != SkillType.ALL) {
+                    if (skillType != SkillType.ALL) {
                         sql = "SELECT user, " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillType.name().toLowerCase() + " > 0 AND " + skillType.name().toLowerCase() + " = (SELECT " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "') ORDER BY user";
-                    } else {
+                    }
+                    else {
                         sql = "SELECT user, taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > 0 AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing = (SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "') ORDER BY user";
                     }
                     statement = connection.prepareStatement(sql);
                     resultSet = statement.executeQuery();
                     while (resultSet.next()) {
-                        if(resultSet.getString("user").equalsIgnoreCase(playerName)) {
+                        if (resultSet.getString("user").equalsIgnoreCase(playerName)) {
                             skills.put(skillType.name(), rank + resultSet.getRow());
                             break;
                         }

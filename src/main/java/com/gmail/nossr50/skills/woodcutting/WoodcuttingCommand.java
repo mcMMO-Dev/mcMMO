@@ -4,7 +4,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillCommand;
-import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Permissions;
 
 public class WoodcuttingCommand extends SkillCommand {

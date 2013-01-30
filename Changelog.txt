@@ -20,6 +20,8 @@ Version 1.4.00-dev
  + Added XP bonus for Archery based on distance from shooter to target
  + Added ability to config Hylian Luck drops through treasures.yml
  + Added party XP sharing
+ + Added vanilla XP boost for Fishing - includes permissions, config options, etc
+ = Fixed the guide usage string showing up every time /skillname was called
  = Fixed Spout not being able to precache our resources properly, and therefore making our XP bars fail
  = Fixed Spout config files loading / generating when they shouldn't have
  = Fixed mod config files loading / generating when they shouldn't have
@@ -52,6 +54,8 @@ Version 1.4.00-dev
  ! Changed McMMOChatEvent to contain the plugin that the event originated from.
  ! Changed Excavation to have individual XP values for each block type, rather than a base XP value.
  ! Changed the way party teleportation works. When using /ptp, the target player needs to confirm the teleport before it takes place. (Configurable)
+ ! Changed BeastLore: Now also displays offline player names
+ - Removed Party "master/apprentice" system. Replaced with the new party XP share feature.
 
 Version 1.3.14
  + Added new Hylian Luck skill to Herbalism.

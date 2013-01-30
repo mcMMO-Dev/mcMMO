@@ -15,8 +15,8 @@ import org.bukkit.material.Wool;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
-import com.gmail.nossr50.skills.Combat;
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
+import com.gmail.nossr50.skills.utilities.CombatTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
@@ -92,7 +92,7 @@ public final class ShakeMob {
         }
 
         Misc.dropItem(mob.getLocation(), drop);
-        Combat.dealDamage(mob, 1); // We may want to base the damage on the entity max health
+        CombatTools.dealDamage(mob, 1); // We may want to base the damage on the entity max health
     }
 
     /**

@@ -4,8 +4,8 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.skills.SkillTools;
+import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 
 public class DodgeEventHandler extends AcrobaticsEventHandler {

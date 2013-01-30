@@ -4,7 +4,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.Combat;
+import com.gmail.nossr50.skills.utilities.CombatTools;
 import com.gmail.nossr50.util.Misc;
 
 public class CounterAttackEventHandler {
@@ -27,7 +27,7 @@ public class CounterAttackEventHandler {
     }
 
     protected void dealDamage() {
-        Combat.dealDamage(attacker, damage / Swords.counterAttackModifier);
+        CombatTools.dealDamage(attacker, damage / Swords.counterAttackModifier);
     }
 
     protected void sendAbilityMessages() {

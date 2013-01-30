@@ -10,7 +10,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.huds.HudType;
 import com.gmail.nossr50.util.Misc;

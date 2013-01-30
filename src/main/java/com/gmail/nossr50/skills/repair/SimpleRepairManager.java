@@ -12,7 +12,7 @@ import org.bukkit.inventory.PlayerInventory;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.skills.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;

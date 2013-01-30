@@ -11,7 +11,7 @@ import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.mods.datatypes.CustomTool;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.spout.huds.SpoutHud;
 import com.gmail.nossr50.util.Permissions;
 

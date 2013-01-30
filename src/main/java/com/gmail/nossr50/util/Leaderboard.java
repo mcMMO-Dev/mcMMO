@@ -10,7 +10,7 @@ import java.util.List;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerStat;
-import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.utilities.SkillType;
 
 public final class Leaderboard {
     private static HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();

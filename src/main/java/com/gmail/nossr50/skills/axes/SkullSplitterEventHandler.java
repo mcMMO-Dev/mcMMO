@@ -3,8 +3,8 @@ package com.gmail.nossr50.skills.axes;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.skills.Combat;
-import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.utilities.CombatTools;
+import com.gmail.nossr50.skills.utilities.SkillType;
 
 public class SkullSplitterEventHandler {
     private Player player;
@@ -18,6 +18,6 @@ public class SkullSplitterEventHandler {
     }
 
     protected void applyAbilityEffects() {
-        Combat.applyAbilityAoE(player, target, damage / Axes.skullSplitterModifier, SkillType.AXES);
+        CombatTools.applyAbilityAoE(player, target, damage / Axes.skullSplitterModifier, SkillType.AXES);
     }
 }

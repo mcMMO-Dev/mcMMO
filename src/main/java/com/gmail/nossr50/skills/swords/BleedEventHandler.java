@@ -4,7 +4,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.BleedTimer;
+import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.util.Misc;
 
 public class BleedEventHandler {

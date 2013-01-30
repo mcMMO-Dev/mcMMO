@@ -5,8 +5,8 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.skills.SkillTools;
-import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Users;
 
 public class ShareHandler {
