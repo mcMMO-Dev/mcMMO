@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.taming;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -36,7 +37,7 @@ public class BeastLoreEventHandler {
      * Get the name of a tameable animal's owner.
      *
      * @param beast The animal whose owner's name to get
-     * @return the name of the animal's owner, or "Offline Master" if the owner is offline
+     * @return the name of the animal's owner
      */
     private String getOwnerName() {
         AnimalTamer tamer = beast.getOwner();
@@ -44,7 +45,10 @@ public class BeastLoreEventHandler {
         if (tamer instanceof Player) {
             return ((Player) tamer).getName();
         }
+        else if (tamer instanceof OfflinePlayer) {
+            return ((OfflinePlayer)tamer).getName();
+        }
 
-        return "Offline Master";
+        return "Unknown Master";
     }
 }
