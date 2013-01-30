@@ -711,6 +711,7 @@ permissions:
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
             mcmmo.commands.mmoupdate: true
+            mcmmo.commands.skillreset.all: true
     mcmmo.commands.defaults:
         description: Implies all default mcmmo.commands permissions.
         children:
@@ -805,6 +806,107 @@ permissions:
         description: Allows access to the party unlock command
     mcmmo.commands.ptp:
         description: Allows access to the ptp command
+    mcmmo.commands.skillreset.*:
+        description: Implies access to all mcmmo.commands.skillreset permissions
+        children:
+            mcmmo.commands.skillreset.all: true
+    mcmmo.commands.skillreset.all:
+        description: Implies access to all mcmmo.commands.skillreset permissions
+        children:
+            mcmmo.commands.skillreset: true
+            mcmmo.commands.skillreset.acrobatics: true
+            mcmmo.commands.skillreset.archery: true
+            mcmmo.commands.skillreset.axes: true
+            mcmmo.commands.skillreset.excavation: true
+            mcmmo.commands.skillreset.fishing: true
+            mcmmo.commands.skillreset.herbalism: true
+            mcmmo.commands.skillreset.mining: true
+            mcmmo.commands.skillreset.others.all: true
+            mcmmo.commands.skillreset.repair: true
+            mcmmo.commands.skillreset.smelting: true
+            mcmmo.commands.skillreset.swords: true
+            mcmmo.commands.skillreset.taming: true
+            mcmmo.commands.skillreset.unarmed: true
+            mcmmo.commands.skillreset.woodcutting: true
+    mcmmo.commands.skillreset:
+        description: Allows access to the skillreset command
+    mcmmo.commands.skillreset.acrobatics:
+        description: Allows access to the skillreset command for acrobatics
+    mcmmo.commands.skillreset.archery:
+        description: Allows access to the skillreset command for archery
+    mcmmo.commands.skillreset.axes:
+        description: Allows access to the skillreset command for axes
+    mcmmo.commands.skillreset.excavation:
+        description: Allows access to the skillreset command for excavation
+    mcmmo.commands.skillreset.fishing:
+        description: Allows access to the skillreset command for fishing
+    mcmmo.commands.skillreset.herbalism:
+        description: Allows access to the skillreset command for herbalism
+    mcmmo.commands.skillreset.mining:
+        description: Allows access to the skillreset command for mining
+    mcmmo.commands.skillreset.others.*:
+        description: Implies access to all mcmmo.commands.skillreset.others permissions
+        children:
+            mcmmo.commands.skillreset.others.all: true
+    mcmmo.commands.skillreset.others.all:
+        description: Implies access to all mcmmo.commands.skillreset.others permissions
+        children:
+            mcmmo.commands.skillreset.others: true
+            mcmmo.commands.skillreset.others.acrobatics: true
+            mcmmo.commands.skillreset.others.archery: true
+            mcmmo.commands.skillreset.others.axes: true
+            mcmmo.commands.skillreset.others.excavation: true
+            mcmmo.commands.skillreset.others.fishing: true
+            mcmmo.commands.skillreset.others.herbalism: true
+            mcmmo.commands.skillreset.others.mining: true
+            mcmmo.commands.skillreset.others.repair: true
+            mcmmo.commands.skillreset.others.smelting: true
+            mcmmo.commands.skillreset.others.swords: true
+            mcmmo.commands.skillreset.others.taming: true
+            mcmmo.commands.skillreset.others.unarmed: true
+            mcmmo.commands.skillreset.others.woodcutting: true
+    mcmmo.commands.skillreset.others:
+        description: Allows access to the skillreset command for other players
+    mcmmo.commands.skillreset.others.acrobatics:
+        description: Allows access to the skillreset command for acrobatics for other players
+    mcmmo.commands.skillreset.others.archery:
+        description: Allows access to the skillreset command for archery for other players
+    mcmmo.commands.skillreset.others.axes:
+        description: Allows access to the skillreset command for axes for other players
+    mcmmo.commands.skillreset.others.excavation:
+        description: Allows access to the skillreset command for excavation for other players
+    mcmmo.commands.skillreset.others.fishing:
+        description: Allows access to the skillreset command for fishing for other players
+    mcmmo.commands.skillreset.others.herbalism:
+        description: Allows access to the skillreset command for herbalism for other players
+    mcmmo.commands.skillreset.others.mining:
+        description: Allows access to the skillreset command for mining for other players
+    mcmmo.commands.skillreset.others.repair:
+        description: Allows access to the skillreset command for repair for other players
+    mcmmo.commands.skillreset.others.smelting:
+        description: Allows access to the skillreset command for smelting for other players
+    mcmmo.commands.skillreset.others.swords:
+        description: Allows access to the skillreset command for swords for other players
+    mcmmo.commands.skillreset.others.taming:
+        description: Allows access to the skillreset command for taming for other players
+    mcmmo.commands.skillreset.others.unarmed:
+        description: Allows access to the skillreset command for unarmed for other players
+    mcmmo.commands.skillreset.others.woodcutting:
+        description: Allows access to the skillreset command for woodcutting for other players
+    mcmmo.commands.skillreset.mining:
+        description: Allows access to the skillreset command for mining
+    mcmmo.commands.skillreset.repair:
+        description: Allows access to the skillreset command for repair
+    mcmmo.commands.skillreset.smelting:
+        description: Allows access to the skillreset command for smelting
+    mcmmo.commands.skillreset.swords:
+        description: Allows access to the skillreset command for swords
+    mcmmo.commands.skillreset.taming:
+        description: Allows access to the skillreset command for taming
+    mcmmo.commands.skillreset.unarmed:
+        description: Allows access to the skillreset command for unarmed
+    mcmmo.commands.skillreset.woodcutting:
+        description: Allows access to the skillreset command for woodcutting
     mcmmo.chat.*:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:
