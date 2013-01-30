@@ -89,7 +89,9 @@ public final class SkillGuide {
                 }
             }
         }
-        else {
+
+        // We have to specify this, else we get the usage string every time we call /skillname...
+        else if (args.length != 0) {
             player.sendMessage(LocaleLoader.getString("Guides.Usage", new Object[] {localized.toLowerCase()} ));
         }
     }
