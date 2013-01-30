@@ -301,7 +301,6 @@ public final class PartyManager {
      * Check if a player can join a party
      *
      * @param player The player trying to join a party
-     * @param playerProfile The profile of the player
      * @param party The party
      * @param password The password provided by the player
      * @return true if the player can join the party
@@ -391,7 +390,7 @@ public final class PartyManager {
             if (member.getName().equals(playerName)) {
                 member.sendMessage(LocaleLoader.getString("Party.Owner.Player"));
             }
-            else if (member.equals(leaderName)) {
+            else if (member.getName().equals(leaderName)) {
                 member.sendMessage(LocaleLoader.getString("Party.Owner.NotLeader"));
             }
             else {
