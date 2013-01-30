@@ -14,6 +14,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.util.Misc;
@@ -521,6 +522,11 @@ public class SkillTools {
     public static void xpProcessing(Player player, PlayerProfile profile, SkillType type, int xp) {
         if ((type.getMaxLevel() < profile.getSkillLevel(type) + 1) || (Misc.getPowerLevelCap() < Users.getPlayer(player).getPowerLevel() + 1)) {
             return;
+        }
+
+        if (profile.inParty()) {
+            xp = (int) ShareHandler.checkXpSharing(xp, player, profile.getParty(), type);
+            ShareHandler.handleEqualExpShare(xp, player, profile.getParty(), type);
         }
 
         Users.getPlayer(player).addXP(type, xp);

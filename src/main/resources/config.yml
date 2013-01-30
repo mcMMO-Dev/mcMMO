@@ -66,6 +66,16 @@ Items:
         Item_ID: 288
 
 #
+#  Settings for Parties
+###        
+Party:
+    Sharing:
+        ExpShare_enabled: true
+        ExpShare_bonus: 1.1
+        ItemShare_enabled: true
+        Range: 75.0
+
+#
 #  Settings for Abilities
 ###
 Abilities:

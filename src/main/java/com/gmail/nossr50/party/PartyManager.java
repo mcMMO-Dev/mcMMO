@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
 public final class PartyManager {
@@ -41,6 +42,25 @@ public final class PartyManager {
         }
 
         return true;
+    }
+
+    /**
+     * Get the near party members.
+     *
+     * @param player The player to check
+     * @param range The distance
+     * @return the near party members
+     */
+    public static List<Player> getNearMembers(Player player, Party party, double range) {
+        List<Player> nearMembers = new ArrayList<Player>();
+        if (party != null) {
+            for (Player member : party.getOnlineMembers()) {
+                if (player != member && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
+                    nearMembers.add(member);
+                }
+            }
+        }
+        return nearMembers;
     }
 
     /**
@@ -224,6 +244,7 @@ public final class PartyManager {
 
             party.setName(partyName);
             party.setLeader(playerName);
+            party.setExpShareMode("NO_SHARE");
             party.setLocked(true);//Parties are now invite-only by default, can be set to open with /party unlock
 
             if (password != null) {
@@ -439,6 +460,7 @@ public final class PartyManager {
             party.setLeader(partiesFile.getString(partyName + ".Leader"));
             party.setPassword(partiesFile.getString(partyName + ".Password"));
             party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
+            party.setExpShareMode(partiesFile.getString(partyName + ".ExpShareMode"));
             party.getMembers().addAll(partiesFile.getStringList(partyName + ".Members"));
 
             parties.add(party);
@@ -463,6 +485,7 @@ public final class PartyManager {
             partiesFile.set(partyName + ".Leader", party.getLeader());
             partiesFile.set(partyName + ".Password", party.getPassword());
             partiesFile.set(partyName + ".Locked", party.isLocked());
+            partiesFile.set(partyName + ".ExpShareMode", party.getExpShareMode());
             partiesFile.set(partyName + ".Members", party.getMembers());
 
             try {

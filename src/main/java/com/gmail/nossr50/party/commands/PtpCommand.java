@@ -26,7 +26,7 @@ public class PtpCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"ptp", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"});
+        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] { "ptp", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">" });
 
         if (CommandHelper.noConsoleUsage(sender)) {
             return true;

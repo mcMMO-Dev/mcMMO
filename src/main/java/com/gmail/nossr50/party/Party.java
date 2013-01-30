@@ -13,6 +13,7 @@ public class Party {
     private String name;
     private String password;
     private boolean locked;
+    private String expShareMode;
 
     public List<String> getMembers() {
         return members;
@@ -61,5 +62,13 @@ public class Party {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public void setExpShareMode(String expShareMode) {
+        this.expShareMode = expShareMode;
+    }
+
+    public String getExpShareMode() {
+        return expShareMode;
     }
 }

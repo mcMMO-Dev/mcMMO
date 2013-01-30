@@ -288,7 +288,7 @@ public class Config extends ConfigLoader {
     public boolean getHerbalismAFKDisabled() { return config.getBoolean("Skills.Herbalism.Prevent_AFK_Leveling", true); }
 
     /* Dogde Lightning */
-    public boolean getDodgeLightningDisabled() {return config.getBoolean("Skills.Acrobatics.Prevent_Dodge_Lightning", false); }
+    public boolean getDodgeLightningDisabled() { return config.getBoolean("Skills.Acrobatics.Prevent_Dodge_Lightning", false); }
 
     /* Level Caps */
     public int getLevelCapAcrobatics() {
@@ -428,4 +428,10 @@ public class Config extends ConfigLoader {
         int cap = config.getInt(configString, 0);
         return ((cap <= 0) ? Integer.MAX_VALUE : cap);
     }
+    
+    /* Party Settings */
+    public boolean getExpShareEnabled() { return config.getBoolean("Party.Sharing.ExpShare_enabled", true); }
+    public double getPartyShareBonus() { return config.getDouble("Party.Sharing.ExpShare_bonus", 1.1); }
+    public boolean getItemShareEnabled() { return config.getBoolean("Party.Sharing.ItemShare_enabled", true); }
+    public double getPartyShareRange() { return config.getDouble("Party.Sharing.Range", 75.0); }
 }

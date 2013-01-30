@@ -12,10 +12,8 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.SkillType;
 import com.gmail.nossr50.spout.huds.SpoutHud;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
 public class McMMOPlayer {
     private Player player;
@@ -47,33 +45,6 @@ public class McMMOPlayer {
         }
 
         return powerLevel;
-    }
-
-    /**
-     * Calculate the party XP modifier.
-     *
-     * @param skillType Type of skill to check
-     * @return the party bonus multiplier
-     */
-    private double calculatePartyXPModifier(SkillType skillType) {
-        double bonusModifier = 0.0;
-
-        for (Player member : party.getOnlineMembers()) {
-            if (party.getLeader().equals(member.getName())) {
-                if (Misc.isNear(player.getLocation(), member.getLocation(), 25.0)) {
-                    PlayerProfile partyLeader = Users.getProfile(member);
-                    int leaderSkill = partyLeader.getSkillLevel(skillType);
-                    int playerSkill = profile.getSkillLevel(skillType);
-
-                    if (leaderSkill >= playerSkill) {
-                        int difference = leaderSkill - playerSkill;
-                        bonusModifier = (difference * 0.75) / 100.0;
-                    }
-                }
-            }
-        }
-
-        return bonusModifier;
     }
 
     /**
@@ -132,22 +103,7 @@ public class McMMOPlayer {
             return;
         }
 
-        double bonusModifier = 0;
-
-        if (inParty()) {
-            bonusModifier = calculatePartyXPModifier(skillType);
-        }
-
         int xp = (int)Math.floor((newValue / skillType.getXpModifier()) * Config.getInstance().getExperienceGainsGlobalMultiplier());
-
-        if (bonusModifier > 0) {
-            if (bonusModifier >= 2) {
-                bonusModifier = 2;
-            }
-
-            double trueBonus = bonusModifier * xp;
-            xp += trueBonus;
-        }
 
         if (Config.getInstance().getToolModsEnabled()) {
             ItemStack item = player.getItemInHand();
