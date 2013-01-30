@@ -594,15 +594,6 @@ public class SpoutStuff {
         }
     }
 
-    public static void setSpoutEnabled() {
-        if (plugin.getServer().getPluginManager().getPlugin("Spout") != null) {
-            mcMMO.spoutEnabled = true;
-        }
-        else {
-            mcMMO.spoutEnabled = false;
-        }
-    }
-
     public static void preCacheFiles() {
         if (mcMMO.spoutEnabled) {
             extractFiles(); //Extract source materials

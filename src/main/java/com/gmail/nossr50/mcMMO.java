@@ -128,8 +128,11 @@ public class mcMMO extends JavaPlugin {
         p = this;
         setupFilePaths();
 
-        SpoutStuff.setSpoutEnabled();
-        SpoutStuff.preCacheFiles();
+        if (p.getServer().getPluginManager().getPlugin("Spout") != null) {
+            spoutEnabled = true;
+
+            SpoutStuff.preCacheFiles();
+        }
 
         // Force the loading of config files
         Config configInstance = Config.getInstance();
@@ -175,7 +178,6 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(entityListener, this);
         pluginManager.registerEvents(inventoryListener, this);
         pluginManager.registerEvents(worldListener, this);
-
 
         if (configInstance.getHardcoreEnabled()) {
             pluginManager.registerEvents(hardcoreListener, this);
