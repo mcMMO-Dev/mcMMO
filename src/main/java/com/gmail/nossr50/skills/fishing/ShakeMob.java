@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -62,9 +63,12 @@ public final class ShakeMob {
                     return;
                 }
 
+                // TODO: Find a cleaner way to do this, maybe by using Sheep.getColor().getWoolData() (available since 1.4.7-R0.1)
+                Wool wool = (Wool) drop.getData();
+
+                wool.setColor(sheep.getColor());
+                drop.setDurability(wool.getData());
                 sheep.setSheared(true);
-                drop.setAmount(Misc.getRandom().nextInt(6) + 1);
-                ((Wool) drop.getData()).setColor(sheep.getColor());
             }
             break;
 
@@ -152,7 +156,7 @@ public final class ShakeMob {
             possibleDrops.put(new ItemStack(Material.GOLD_NUGGET), 50);
             break;
         case SHEEP:
-            possibleDrops.put(new ItemStack(Material.WOOL), 100);
+            possibleDrops.put(new ItemStack(Material.WOOL, Misc.getRandom().nextInt(6) + 1), 100);
             break;
         case SKELETON:
             possibleDrops.put(new ItemStack(Material.SKULL_ITEM), 2);
@@ -167,7 +171,7 @@ public final class ShakeMob {
             possibleDrops.put(new ItemStack(Material.SNOW_BALL, Misc.getRandom().nextInt(4) + 1), 97);
             break;
         case SQUID:
-            possibleDrops.put(new ItemStack(Material.INK_SACK, (byte) 0x0), 100);
+            possibleDrops.put(new ItemStack(Material.INK_SACK, DyeColor.BLACK.getDyeData()), 100);
             break;
         case WITCH:
             possibleDrops.put(new Potion(PotionType.INSTANT_HEAL).toItemStack(1), 1);
