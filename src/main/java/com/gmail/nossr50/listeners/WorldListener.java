@@ -20,7 +20,7 @@ import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.blockstore.conversion.BlockStoreConversionMain;
+import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionMain;
 
 public class WorldListener implements Listener {
     private ArrayList<BlockStoreConversionMain> converters = new ArrayList<BlockStoreConversionMain>();

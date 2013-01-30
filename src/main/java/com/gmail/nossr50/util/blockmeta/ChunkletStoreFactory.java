@@ -1,4 +1,4 @@
-package com.gmail.nossr50.blockstore.old;
+package com.gmail.nossr50.util.blockmeta;
 
 public class ChunkletStoreFactory {
     protected static ChunkletStore getChunkletStore() {

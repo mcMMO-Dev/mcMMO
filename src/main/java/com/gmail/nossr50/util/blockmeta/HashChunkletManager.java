@@ -1,4 +1,4 @@
-package com.gmail.nossr50.blockstore.old;
+package com.gmail.nossr50.util.blockmeta;
 
 import java.io.EOFException;
 import java.io.File;

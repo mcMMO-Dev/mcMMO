@@ -1,4 +1,4 @@
-package com.gmail.nossr50.blockstore.conversion;
+package com.gmail.nossr50.util.blockmeta.conversion;
 
 import java.io.File;
 

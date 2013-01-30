@@ -1,4 +1,4 @@
-package com.gmail.nossr50.blockstore.old;
+package com.gmail.nossr50.util.blockmeta;
 
 public class PrimitiveChunkletStore implements ChunkletStore {
     private static final long serialVersionUID = -3453078050608607478L;

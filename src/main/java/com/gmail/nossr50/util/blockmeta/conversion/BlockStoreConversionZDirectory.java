@@ -1,16 +1,16 @@
-package com.gmail.nossr50.blockstore.conversion;
+package com.gmail.nossr50.util.blockmeta.conversion;
 
 import java.io.File;
 
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.blockstore.chunkmeta.HashChunkManager;
-import com.gmail.nossr50.blockstore.chunkmeta.PrimitiveChunkStore;
-import com.gmail.nossr50.blockstore.old.ChunkletStore;
-import com.gmail.nossr50.blockstore.old.HashChunkletManager;
-import com.gmail.nossr50.blockstore.old.PrimitiveChunkletStore;
-import com.gmail.nossr50.blockstore.old.PrimitiveExChunkletStore;
+import com.gmail.nossr50.util.blockmeta.chunkmeta.HashChunkManager;
+import com.gmail.nossr50.util.blockmeta.chunkmeta.PrimitiveChunkStore;
+import com.gmail.nossr50.util.blockmeta.ChunkletStore;
+import com.gmail.nossr50.util.blockmeta.HashChunkletManager;
+import com.gmail.nossr50.util.blockmeta.PrimitiveChunkletStore;
+import com.gmail.nossr50.util.blockmeta.PrimitiveExChunkletStore;
 
 public class BlockStoreConversionZDirectory implements Runnable {
     public int taskID, cx, cz, x, y, z, y2, xPos, zPos, cxPos, czPos;

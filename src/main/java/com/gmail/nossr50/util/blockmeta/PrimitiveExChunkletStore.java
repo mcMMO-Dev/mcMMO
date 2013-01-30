@@ -1,4 +1,4 @@
-package com.gmail.nossr50.blockstore.old;
+package com.gmail.nossr50.util.blockmeta;
 
 import java.io.Externalizable;
 import java.io.IOException;

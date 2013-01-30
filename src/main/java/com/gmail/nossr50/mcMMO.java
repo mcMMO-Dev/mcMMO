@@ -16,8 +16,8 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.gmail.nossr50.blockstore.chunkmeta.ChunkManager;
-import com.gmail.nossr50.blockstore.chunkmeta.ChunkManagerFactory;
+import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
+import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.commands.general.AddlevelsCommand;
 import com.gmail.nossr50.commands.general.AddxpCommand;
 import com.gmail.nossr50.commands.general.InspectCommand;

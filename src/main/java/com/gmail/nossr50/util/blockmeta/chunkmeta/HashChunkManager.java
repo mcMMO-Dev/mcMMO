@@ -1,4 +1,4 @@
-package com.gmail.nossr50.blockstore.chunkmeta;
+package com.gmail.nossr50.util.blockmeta.chunkmeta;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.getspout.spoutapi.chunkstore.mcMMOSimpleRegionFile;
 
-import com.gmail.nossr50.blockstore.conversion.BlockStoreConversionZDirectory;
+import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionZDirectory;
 
 public class HashChunkManager implements ChunkManager {
     private HashMap<UUID, HashMap<Long, mcMMOSimpleRegionFile>> regionFiles = new HashMap<UUID, HashMap<Long, mcMMOSimpleRegionFile>>();

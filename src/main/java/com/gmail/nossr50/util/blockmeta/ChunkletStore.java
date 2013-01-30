@@ -1,39 +1,11 @@
-package com.gmail.nossr50.blockstore.chunkmeta;
+package com.gmail.nossr50.util.blockmeta;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.UUID;
-
-import com.gmail.nossr50.blockstore.old.ChunkletStore;
 
 /**
- * A ChunkStore should be responsible for a 16x16xWorldHeight area of data
+ * A ChunkletStore should be responsible for a 16x16x64 area of data
  */
-public interface ChunkStore extends Serializable {
-    /**
-     * Checks the chunk's save state
-     *
-     * @return true if the has been modified since it was last saved
-     */
-    public boolean isDirty();
-    /**
-     * Checks the chunk's save state
-     *
-     * @param dirty the save state of the current chunk
-     */
-    public void setDirty(boolean dirty);
-    /**
-     * Checks the chunk's x coordinate
-     *
-     * @return the chunk's x coordinate.
-     */
-    public int getChunkX();
-    /**
-     * Checks the chunk's z coordinate
-     *
-     * @return the chunk's z coordinate.
-     */
-    public int getChunkZ();
+public interface ChunkletStore extends Serializable {
     /**
      * Checks the value at the given coordinates
      *
@@ -73,15 +45,4 @@ public interface ChunkStore extends Serializable {
      * @param otherStore Another ChunkletStore that this one should copy all data from
      */
     public void copyFrom(ChunkletStore otherStore);
-
-    public boolean isSpawnedMob(UUID id);
-    public boolean isSpawnedPet(UUID id);
-    public void addSpawnedMob(UUID id);
-    public void addSpawnedPet(UUID id);
-    public void removeSpawnedMob(UUID id);
-    public void removeSpawnedPet(UUID id);
-    public void clearSpawnedMobs();
-    public void clearSpawnedPets();
-    public List<UUID> getSpawnedMobs();
-    public List<UUID> getSpawnedPets();
 }
