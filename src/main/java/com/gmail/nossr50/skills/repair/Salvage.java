@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.repair;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
@@ -42,11 +43,15 @@ public class Salvage {
                     player.setItemInHand(new ItemStack(Material.AIR));
                     location.setY(location.getY() + 1);
                     Misc.dropItem(location, new ItemStack(itemID, salvagedAmount));
+
+                    player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
                     player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
-                } else {
+                }
+                else {
                     player.sendMessage(LocaleLoader.getString("Repair.Skills.NotFullDurability"));
                 }
-            } else {
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptSalvage"));
             }
         }
@@ -72,6 +77,7 @@ public class Salvage {
                 player.sendMessage(LocaleLoader.getString("Repair.Listener.Anvil2"));
             }
 
+            player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
             profile.togglePlacedSalvageAnvil();
         }
     }
