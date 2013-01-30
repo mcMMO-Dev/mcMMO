@@ -22,9 +22,11 @@ public class AddlevelsCommand implements CommandExecutor{
         PlayerProfile profile;
         int levels;
         SkillType skill;
+	// DEPRECATED PERMISSION
+	boolean oldPermission = !CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit");
         String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"addlevels", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">" });
 
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
+        if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addlevels")) {
             return true;
         }
 
@@ -59,6 +61,10 @@ public class AddlevelsCommand implements CommandExecutor{
             return true;
 
         case 3:
+            if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addlevels.others")) {
+                return true;
+            }
+
             modifiedPlayer = mcMMO.p.getServer().getOfflinePlayer(args[0]);
             String playerName = modifiedPlayer.getName();
             profile = Users.getProfile(modifiedPlayer);
