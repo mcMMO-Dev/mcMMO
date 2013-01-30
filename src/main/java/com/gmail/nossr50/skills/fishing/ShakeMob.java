@@ -122,7 +122,7 @@ public final class ShakeMob {
             possibleDrops.put(new ItemStack(Material.RAW_BEEF), 49);
             break;
         case CREEPER:
-            possibleDrops.put(new ItemStack(Material.SKULL_ITEM, (byte) 0x4), 1);
+            possibleDrops.put(new ItemStack(Material.SKULL_ITEM, 1, (short) 4), 1);
             possibleDrops.put(new ItemStack(Material.SULPHUR), 99);
             break;
         case ENDERMAN:
@@ -158,7 +158,7 @@ public final class ShakeMob {
             possibleDrops.put(new ItemStack(Material.WOOL, Misc.getRandom().nextInt(6) + 1), 100);
             break;
         case SKELETON:
-            possibleDrops.put(new ItemStack(Material.SKULL_ITEM), 2);
+            possibleDrops.put(new ItemStack(Material.SKULL_ITEM, 1, (short) 0), 2);
             possibleDrops.put(new ItemStack(Material.BONE), 49);
             possibleDrops.put(new ItemStack(Material.ARROW, Misc.getRandom().nextInt(3) + 1), 49);
             break;
@@ -186,7 +186,7 @@ public final class ShakeMob {
             possibleDrops.put(new ItemStack(Material.POTION), 13);
             break;
         case ZOMBIE:
-            possibleDrops.put(new ItemStack(Material.SKULL_ITEM, (byte) 0x2), 2);
+            possibleDrops.put(new ItemStack(Material.SKULL_ITEM, 1, (short) 2), 2);
             possibleDrops.put(new ItemStack(Material.ROTTEN_FLESH), 98);
             break;
         default:
