@@ -21,9 +21,11 @@ public class MmoeditCommand implements CommandExecutor {
         int newValue;
         SkillType skill;
         String skillName;
+        // DEPRECATED PERMISSION
+        boolean oldPermission = !CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit");
         String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"mmoedit", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">" });
 
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit")) {
+        if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoedit")) {
             return true;
         }
 
@@ -62,6 +64,10 @@ public class MmoeditCommand implements CommandExecutor {
             return true;
 
         case 3:
+            if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoedit.others")) {
+                return true;
+            }
+
             if (!Misc.isInt(args[2])) {
                 sender.sendMessage(usage);
                 return true;

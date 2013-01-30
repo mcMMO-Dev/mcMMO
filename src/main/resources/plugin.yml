@@ -702,6 +702,10 @@ permissions:
             mcmmo.commands.addxp: true
             mcmmo.commands.addxp.others: true
             mcmmo.commands.defaults: true
+            mcmmo.commands.inspect.far: true
+            mcmmo.commands.inspect.offline: true
+            mcmmo.commands.mmoedit: true
+            mcmmo.commands.mmoedit.others: true
     mcmmo.commands.defaults:
         description: Implies all default mcmmo.commands permissions.
         children:
@@ -736,6 +740,10 @@ permissions:
         description: Allows access to the inspect command for far players
     mcmmo.commands.inspect.offline:
         description: Allows access to the inspect command for offline players
+    mcmmo.commands.mmoedit:
+        description: Allows access to the addlevels command
+    mcmmo.commands.mmoedit.others:
+        description: Allows access to the addlevels command for other players
     mcmmo.commands.party.*:
         description: Implies access to all mcmmo.commands.party permissions.
         children:
