@@ -33,7 +33,7 @@ public class SpoutListener implements Listener {
         PlayerProfile profile = mcMMOPlayer.getProfile();
 
         //TODO: Add custom titles based on skills
-        if (SpoutStuff.showPowerLevel) {
+        if (SpoutTools.showPowerLevel) {
             spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", new Object[] {spoutPlayer.getName(), mcMMOPlayer.getPowerLevel()}));
         }
 
@@ -82,7 +82,7 @@ public class SpoutListener implements Listener {
             return;
         }
 
-        if (event.getKey() == SpoutStuff.menuKey) {
+        if (event.getKey() == SpoutTools.menuKey) {
             SpoutHud spoutHud = Users.getProfile(spoutPlayer).getSpoutHud();
 
             if (!spoutHud.isMenuOpened()) {

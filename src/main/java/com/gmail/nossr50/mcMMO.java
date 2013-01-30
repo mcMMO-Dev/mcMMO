@@ -76,8 +76,8 @@ import com.gmail.nossr50.skills.swords.SwordsCommand;
 import com.gmail.nossr50.skills.taming.TamingCommand;
 import com.gmail.nossr50.skills.unarmed.UnarmedCommand;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingCommand;
-import com.gmail.nossr50.spout.SpoutStart;
-import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.SpoutConfig;
+import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.spout.commands.MchudCommand;
 import com.gmail.nossr50.spout.commands.XplockCommand;
 import com.gmail.nossr50.util.Anniversary;
@@ -115,7 +115,7 @@ public class mcMMO extends JavaPlugin {
     private static String modDirectory;
 
     // Spout Check
-    public static boolean spoutEnabled;
+    public static boolean spoutEnabled = false;
 
     // XP Event Check
     private boolean xpEventEnabled = false;
@@ -128,10 +128,15 @@ public class mcMMO extends JavaPlugin {
         p = this;
         setupFilePaths();
 
-        if (p.getServer().getPluginManager().getPlugin("Spout") != null) {
+        // Check for Spout
+        if (getServer().getPluginManager().getPlugin("Spout") != null) {
             spoutEnabled = true;
 
-            SpoutStuff.preCacheFiles();
+            SpoutConfig.getInstance();
+            SpoutTools.setupSpoutConfigs();
+            SpoutTools.registerCustomEvent();
+            SpoutTools.preCacheFiles();
+            SpoutTools.reloadSpoutPlayers(); // Handle spout players after a /reload
         }
 
         // Force the loading of config files
@@ -203,8 +208,6 @@ public class mcMMO extends JavaPlugin {
 
         BukkitScheduler scheduler = getServer().getScheduler();
 
-        // Schedule Spout Activation 1 second after start-up
-        scheduler.scheduleSyncDelayedTask(this, new SpoutStart(), 20);
         // Periodic save timer (Saves every 10 minutes by default)
         scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(), 0, configInstance.getSaveInterval() * 1200);
         // Regen & Cooldown timer (Runs every second)

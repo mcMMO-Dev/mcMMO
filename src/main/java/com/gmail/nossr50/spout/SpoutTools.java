@@ -28,7 +28,7 @@ import com.gmail.nossr50.skills.SkillTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
-public class SpoutStuff {
+public class SpoutTools {
     private static mcMMO plugin = mcMMO.p;
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
@@ -56,6 +56,11 @@ public class SpoutStuff {
 
         try {
             File currentFile = new File(theFilePath + theFileName);
+
+            // No point in writing the file again if it already exists.
+            if (currentFile.exists()) {
+                return;
+            }
 
             jar = new JarFile(mcMMO.mcmmo);
             JarEntry entry = jar.getJarEntry("resources/" + theFileName);
@@ -595,11 +600,9 @@ public class SpoutStuff {
     }
 
     public static void preCacheFiles() {
-        if (mcMMO.spoutEnabled) {
-            extractFiles(); //Extract source materials
-    
-            FileManager FM = SpoutManager.getFileManager();
-            FM.addToPreLoginCache(plugin, getFiles());
-        }
+        extractFiles(); //Extract source materials
+
+        FileManager FM = SpoutManager.getFileManager();
+        FM.addToPreLoginCache(plugin, getFiles());
     }
 }

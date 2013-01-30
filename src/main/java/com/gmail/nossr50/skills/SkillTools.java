@@ -15,7 +15,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutConfig;
-import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModChecks;
 import com.gmail.nossr50.util.Permissions;
@@ -248,7 +248,7 @@ public class SkillTools {
                 SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
                 if (spoutPlayer != null && spoutPlayer.isSpoutCraftEnabled()) {
-                    SpoutStuff.levelUpNotification(skillType, spoutPlayer);
+                    SpoutTools.levelUpNotification(skillType, spoutPlayer);
 
                     /* Update custom titles */
                     if (SpoutConfig.getInstance().getShowPowerLevel()) {

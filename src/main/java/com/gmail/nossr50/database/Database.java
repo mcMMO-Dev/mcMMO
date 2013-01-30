@@ -18,7 +18,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.runnables.SQLReconnect;
 import com.gmail.nossr50.skills.SkillType;
-import com.gmail.nossr50.spout.SpoutStuff;
+import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.spout.huds.SpoutHud;
 import com.gmail.nossr50.util.Users;
 
@@ -577,7 +577,7 @@ public final class Database {
                 Users.addUser(player);
 
                 if (mcMMO.spoutEnabled) {
-                    SpoutStuff.reloadSpoutPlayer(player);
+                    SpoutTools.reloadSpoutPlayer(player);
                 }
             }
         }
