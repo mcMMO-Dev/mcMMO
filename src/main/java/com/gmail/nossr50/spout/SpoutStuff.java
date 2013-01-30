@@ -16,6 +16,7 @@ import org.bukkit.entity.Player;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.keyboard.Keyboard;
+import org.getspout.spoutapi.player.FileManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
@@ -590,6 +591,24 @@ public class SpoutStuff {
         if (spoutPlayer != null) {
             SpoutCraftEnableEvent spoutCraftEnableEvent = new SpoutCraftEnableEvent(spoutPlayer);
             mcMMO.p.getServer().getPluginManager().callEvent(spoutCraftEnableEvent);
+        }
+    }
+
+    public static void setSpoutEnabled() {
+        if (plugin.getServer().getPluginManager().getPlugin("Spout") != null) {
+            mcMMO.spoutEnabled = true;
+        }
+        else {
+            mcMMO.spoutEnabled = false;
+        }
+    }
+
+    public static void preCacheFiles() {
+        if (mcMMO.spoutEnabled) {
+            extractFiles(); //Extract source materials
+    
+            FileManager FM = SpoutManager.getFileManager();
+            FM.addToPreLoginCache(plugin, getFiles());
         }
     }
 }

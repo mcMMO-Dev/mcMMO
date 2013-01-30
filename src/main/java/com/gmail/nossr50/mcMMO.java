@@ -77,6 +77,7 @@ import com.gmail.nossr50.skills.taming.TamingCommand;
 import com.gmail.nossr50.skills.unarmed.UnarmedCommand;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingCommand;
 import com.gmail.nossr50.spout.SpoutStart;
+import com.gmail.nossr50.spout.SpoutStuff;
 import com.gmail.nossr50.spout.commands.MchudCommand;
 import com.gmail.nossr50.spout.commands.XplockCommand;
 import com.gmail.nossr50.util.Anniversary;
@@ -126,6 +127,9 @@ public class mcMMO extends JavaPlugin {
     public void onEnable() {
         p = this;
         setupFilePaths();
+
+        SpoutStuff.setSpoutEnabled();
+        SpoutStuff.preCacheFiles();
 
         // Force the loading of config files
         Config configInstance = Config.getInstance();
@@ -198,7 +202,7 @@ public class mcMMO extends JavaPlugin {
         BukkitScheduler scheduler = getServer().getScheduler();
 
         // Schedule Spout Activation 1 second after start-up
-        scheduler.scheduleSyncDelayedTask(this, new SpoutStart(this), 20);
+        scheduler.scheduleSyncDelayedTask(this, new SpoutStart(), 20);
         // Periodic save timer (Saves every 10 minutes by default)
         scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(), 0, configInstance.getSaveInterval() * 1200);
         // Regen & Cooldown timer (Runs every second)
