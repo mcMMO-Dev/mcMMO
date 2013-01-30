@@ -5,7 +5,7 @@ import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.utilities.SkillType;
 
 public final class Motd {
     private static final String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");

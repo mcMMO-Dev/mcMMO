@@ -15,9 +15,9 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.database.runnables.SQLReconnect;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.runnables.SQLReconnect;
-import com.gmail.nossr50.skills.SkillType;
+import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.spout.huds.SpoutHud;
 import com.gmail.nossr50.util.Users;

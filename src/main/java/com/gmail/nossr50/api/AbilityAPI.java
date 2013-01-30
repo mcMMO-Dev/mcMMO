@@ -2,7 +2,7 @@ package com.gmail.nossr50.api;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.skills.AbilityType;
+import com.gmail.nossr50.skills.utilities.AbilityType;
 import com.gmail.nossr50.util.Users;
 
 public final class AbilityAPI {

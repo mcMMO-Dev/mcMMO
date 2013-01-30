@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.BleedTimer;
+import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.util.Misc;
 
 public class GoreEventHandler {

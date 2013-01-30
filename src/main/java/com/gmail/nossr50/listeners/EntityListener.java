@@ -31,15 +31,15 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.runnables.BleedTimer;
-import com.gmail.nossr50.skills.Combat;
 import com.gmail.nossr50.skills.acrobatics.Acrobatics;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.MiningManager;
+import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.utilities.CombatTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
@@ -121,7 +121,7 @@ public class EntityListener implements Listener {
             LivingEntity livingDefender = (LivingEntity) defender;
 
             if (!Misc.isInvincible(livingDefender, event)) {
-                Combat.combatChecks(event, attacker, livingDefender);
+                CombatTools.combatChecks(event, attacker, livingDefender);
             }
         }
     }
