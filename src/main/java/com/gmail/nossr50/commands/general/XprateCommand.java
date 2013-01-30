@@ -20,7 +20,9 @@ public class XprateCommand implements CommandExecutor {
         String usage2 = LocaleLoader.getString("Commands.xprate.proper.1");
         String usage3 = LocaleLoader.getString("Commands.xprate.proper.2");
 
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.admin")) {
+        // DEPRECATED PERMISSION
+        boolean oldPermission = !CommandHelper.noCommandPermissions(sender, "mcmmo.admin");
+        if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.xprate")) {
             return true;
         }
 
@@ -29,6 +31,10 @@ public class XprateCommand implements CommandExecutor {
         switch (args.length) {
         case 1:
             if (args[0].equalsIgnoreCase("reset")) {
+                if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.xprate.reset")) {
+                    return true;
+                }
+
                 if (xpEventEnabled) {
                     for (Player x : mcMMO.p.getServer().getOnlinePlayers()) {
                         x.sendMessage(LocaleLoader.getString("Commands.xprate.over"));
@@ -52,6 +58,9 @@ public class XprateCommand implements CommandExecutor {
 
         case 2:
             if (Misc.isInt(args[0])) {
+                if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.xprate.set")) {
+                    return true;
+                }
                 if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("false")) {
                     mcMMO.p.setXPEventEnabled(Boolean.valueOf(args[1]));
                 }

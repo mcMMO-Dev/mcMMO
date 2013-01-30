@@ -712,6 +712,7 @@ permissions:
             mcmmo.commands.mmoedit.others: true
             mcmmo.commands.mmoupdate: true
             mcmmo.commands.skillreset.all: true
+            mcmmo.commands.xprate: true
     mcmmo.commands.defaults:
         description: Implies all default mcmmo.commands permissions.
         children:
@@ -907,6 +908,22 @@ permissions:
         description: Allows access to the skillreset command for unarmed
     mcmmo.commands.skillreset.woodcutting:
         description: Allows access to the skillreset command for woodcutting
+    mcmmo.commands.xprate.*:
+        description: Implies access to all mcmmo.commands.inspect permissions
+        children:
+            mcmmo.commands.xprate.all: true
+    mcmmo.commands.xprate.all:
+        description: Implies access to all mcmmo.commands.inspect permissions
+        children:
+            mcmmo.commands.xprate: true
+            mcmmo.commands.xprate.reset: true
+            mcmmo.commands.xprate.set: true
+    mcmmo.commands.xprate:
+        description: Allows access to the xprate command
+    mcmmo.commands.xprate.reset:
+        description: Allows access to the xprate reset command
+    mcmmo.commands.xprate.set:
+        description: Allows access to the xprate command to control xp events
     mcmmo.chat.*:
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:
