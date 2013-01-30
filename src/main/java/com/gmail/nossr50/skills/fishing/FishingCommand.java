@@ -41,7 +41,7 @@ public class FishingCommand extends SkillCommand {
         magicChanceLucky = treasureHunterStrings[1];
 
         //SHAKE
-        String[] shakeStrings = calculateAbilityDisplayValues(ShakeMob.getShakeProbability(lootTier));
+        String[] shakeStrings = calculateAbilityDisplayValues(ShakeMob.getShakeProbability((int) skillValue));
         shakeChance = shakeStrings[0];
         shakeChanceLucky = shakeStrings[1];
 
