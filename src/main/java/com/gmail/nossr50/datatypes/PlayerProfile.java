@@ -212,7 +212,7 @@ public class PlayerProfile {
             //Open the user file
             FileReader file = new FileReader(location);
             BufferedReader in = new BufferedReader(file);
-            String line = "";
+            String line;
 
             while ((line = in.readLine()) != null) {
                 //Find if the line contains the player we want.
@@ -368,7 +368,7 @@ public class PlayerProfile {
                 FileReader file = new FileReader(location);
                 BufferedReader in = new BufferedReader(file);
                 StringBuilder writer = new StringBuilder();
-                String line = "";
+                String line;
 
                 //While not at the end of the file
                 while ((line = in.readLine()) != null) {
@@ -379,45 +379,45 @@ public class PlayerProfile {
                     }
                     else {
                         //Otherwise write the new player information
-                        writer.append(playerName + ":");
-                        writer.append(skills.get(SkillType.MINING) + ":");
-                        writer.append("" + ":");
-                        writer.append("" + ":");
-                        writer.append(skillsXp.get(SkillType.MINING) + ":");
-                        writer.append(skills.get(SkillType.WOODCUTTING) + ":");
-                        writer.append(skillsXp.get(SkillType.WOODCUTTING) + ":");
-                        writer.append(skills.get(SkillType.REPAIR) + ":");
-                        writer.append(skills.get(SkillType.UNARMED) + ":");
-                        writer.append(skills.get(SkillType.HERBALISM) + ":");
-                        writer.append(skills.get(SkillType.EXCAVATION) + ":");
-                        writer.append(skills.get(SkillType.ARCHERY) + ":");
-                        writer.append(skills.get(SkillType.SWORDS) + ":");
-                        writer.append(skills.get(SkillType.AXES) + ":");
-                        writer.append(skills.get(SkillType.ACROBATICS) + ":");
-                        writer.append(skillsXp.get(SkillType.REPAIR) + ":");
-                        writer.append(skillsXp.get(SkillType.UNARMED) + ":");
-                        writer.append(skillsXp.get(SkillType.HERBALISM) + ":");
-                        writer.append(skillsXp.get(SkillType.EXCAVATION) + ":");
-                        writer.append(skillsXp.get(SkillType.ARCHERY) + ":");
-                        writer.append(skillsXp.get(SkillType.SWORDS) + ":");
-                        writer.append(skillsXp.get(SkillType.AXES) + ":");
-                        writer.append(skillsXp.get(SkillType.ACROBATICS) + ":");
-                        writer.append("" + ":");
-                        writer.append(skills.get(SkillType.TAMING) + ":");
-                        writer.append(skillsXp.get(SkillType.TAMING) + ":");
+                        writer.append(playerName).append(":");
+                        writer.append(skills.get(SkillType.MINING)).append(":");
+                        writer.append(":");
+                        writer.append(":");
+                        writer.append(skillsXp.get(SkillType.MINING)).append(":");
+                        writer.append(skills.get(SkillType.WOODCUTTING)).append(":");
+                        writer.append(skillsXp.get(SkillType.WOODCUTTING)).append(":");
+                        writer.append(skills.get(SkillType.REPAIR)).append(":");
+                        writer.append(skills.get(SkillType.UNARMED)).append(":");
+                        writer.append(skills.get(SkillType.HERBALISM)).append(":");
+                        writer.append(skills.get(SkillType.EXCAVATION)).append(":");
+                        writer.append(skills.get(SkillType.ARCHERY)).append(":");
+                        writer.append(skills.get(SkillType.SWORDS)).append(":");
+                        writer.append(skills.get(SkillType.AXES)).append(":");
+                        writer.append(skills.get(SkillType.ACROBATICS)).append(":");
+                        writer.append(skillsXp.get(SkillType.REPAIR)).append(":");
+                        writer.append(skillsXp.get(SkillType.UNARMED)).append(":");
+                        writer.append(skillsXp.get(SkillType.HERBALISM)).append(":");
+                        writer.append(skillsXp.get(SkillType.EXCAVATION)).append(":");
+                        writer.append(skillsXp.get(SkillType.ARCHERY)).append(":");
+                        writer.append(skillsXp.get(SkillType.SWORDS)).append(":");
+                        writer.append(skillsXp.get(SkillType.AXES)).append(":");
+                        writer.append(skillsXp.get(SkillType.ACROBATICS)).append(":");
+                        writer.append(":");
+                        writer.append(skills.get(SkillType.TAMING)).append(":");
+                        writer.append(skillsXp.get(SkillType.TAMING)).append(":");
                         //Need to store the DATS of abilities nao
                         //Berserk, Gigadrillbreaker, Tree Feller, Green Terra, Serrated Strikes, Skull Splitter, Super Breaker
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.BERSERK)) + ":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER)) + ":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.TREE_FELLER)) + ":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.GREEN_TERRA)) + ":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SERRATED_STRIKES)) + ":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SKULL_SPLIITER)) + ":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SUPER_BREAKER)) + ":");
-                        writer.append(hudType.toString() + ":");
-                        writer.append(skills.get(SkillType.FISHING) + ":");
-                        writer.append(skillsXp.get(SkillType.FISHING) + ":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.BLAST_MINING)) + ":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.BERSERK))).append(":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER))).append(":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.TREE_FELLER))).append(":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.GREEN_TERRA))).append(":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SERRATED_STRIKES))).append(":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SKULL_SPLIITER))).append(":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SUPER_BREAKER))).append(":");
+                        writer.append(hudType.toString()).append(":");
+                        writer.append(skills.get(SkillType.FISHING)).append(":");
+                        writer.append(skillsXp.get(SkillType.FISHING)).append(":");
+                        writer.append(String.valueOf(skillsDATS.get(AbilityType.BLAST_MINING))).append(":");
                         writer.append("\r\n");
                     }
                 }
@@ -442,43 +442,43 @@ public class PlayerProfile {
             BufferedWriter out = new BufferedWriter(file);
 
             //Add the player to the end
-            out.append(playerName + ":");
-            out.append(0 + ":"); //mining
-            out.append("" + ":");
-            out.append("" + ":");
-            out.append(0 + ":"); //XP
-            out.append(0 + ":"); //woodcutting
-            out.append(0 + ":"); //woodCuttingXP
-            out.append(0 + ":"); //repair
-            out.append(0 + ":"); //unarmed
-            out.append(0 + ":"); //herbalism
-            out.append(0 + ":"); //excavation
-            out.append(0 + ":"); //archery
-            out.append(0 + ":"); //swords
-            out.append(0 + ":"); //axes
-            out.append(0 + ":"); //acrobatics
-            out.append(0 + ":"); //repairXP
-            out.append(0 + ":"); //unarmedXP
-            out.append(0 + ":"); //herbalismXP
-            out.append(0 + ":"); //excavationXP
-            out.append(0 + ":"); //archeryXP
-            out.append(0 + ":"); //swordsXP
-            out.append(0 + ":"); //axesXP
-            out.append(0 + ":"); //acrobaticsXP
-            out.append("" + ":");
-            out.append(0 + ":"); //taming
-            out.append(0 + ":"); //tamingXP
-            out.append(0 + ":"); //DATS
-            out.append(0 + ":"); //DATS
-            out.append(0 + ":"); //DATS
-            out.append(0 + ":"); //DATS
-            out.append(0 + ":"); //DATS
-            out.append(0 + ":"); //DATS
-            out.append(0 + ":"); //DATS
-            out.append(hudType.toString() + ":");//HUD
-            out.append(0 + ":"); //Fishing
-            out.append(0 +":"); //FishingXP
-            out.append(0 + ":"); //Blast Mining
+            out.append(playerName).append(":");
+            out.append("0:"); //mining
+            out.append(":");
+            out.append(":");
+            out.append("0:"); //XP
+            out.append("0:"); //woodcutting
+            out.append("0:"); //woodCuttingXP
+            out.append("0:"); //repair
+            out.append("0:"); //unarmed
+            out.append("0:"); //herbalism
+            out.append("0:"); //excavation
+            out.append("0:"); //archery
+            out.append("0:"); //swords
+            out.append("0:"); //axes
+            out.append("0:"); //acrobatics
+            out.append("0:"); //repairXP
+            out.append("0:"); //unarmedXP
+            out.append("0:"); //herbalismXP
+            out.append("0:"); //excavationXP
+            out.append("0:"); //archeryXP
+            out.append("0:"); //swordsXP
+            out.append("0:"); //axesXP
+            out.append("0:"); //acrobaticsXP
+            out.append(":");
+            out.append("0:"); //taming
+            out.append("0:"); //tamingXP
+            out.append("0:"); //DATS
+            out.append("0:"); //DATS
+            out.append("0:"); //DATS
+            out.append("0:"); //DATS
+            out.append("0:"); //DATS
+            out.append("0:"); //DATS
+            out.append("0:"); //DATS
+            out.append(hudType.toString()).append(":");//HUD
+            out.append("0:"); //Fishing
+            out.append("0:"); //FishingXP
+            out.append("0:"); //Blast Mining
 
             //Add more in the same format as the line above
 
