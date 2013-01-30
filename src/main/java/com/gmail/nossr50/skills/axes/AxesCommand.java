@@ -45,7 +45,7 @@ public class AxesCommand extends SkillCommand {
             bonusDamage = String.valueOf(Axes.bonusDamageMaxBonus);
         }
         else {
-            bonusDamage = String.valueOf(skillValue / Axes.bonusDamageMaxBonusLevel / Axes.bonusDamageMaxBonus);
+            bonusDamage = String.valueOf(skillValue / (Axes.bonusDamageMaxBonusLevel / Axes.bonusDamageMaxBonus));
         }
     }
 
