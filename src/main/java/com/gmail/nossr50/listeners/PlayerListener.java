@@ -2,6 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -91,8 +92,8 @@ public class PlayerListener implements Listener {
 
         switch (event.getState()) {
         case CAUGHT_FISH:
-            Fishing.beginFishing(player, skillLevel, event);
-            Fishing.awardAdditionalVanillaXP(skillLevel, event);
+            Fishing.beginFishing(player, skillLevel, (Item) event.getCaught());
+            event.setExpToDrop(event.getExpToDrop() * Fishing.getVanillaXpMultiplier(skillLevel));
             break;
 
         case CAUGHT_ENTITY:

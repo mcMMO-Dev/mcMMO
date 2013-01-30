@@ -9,7 +9,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -27,7 +26,7 @@ import com.gmail.nossr50.util.Users;
 public final class Fishing {
     static final AdvancedConfig ADVANCED_CONFIG = AdvancedConfig.getInstance();
 
-    // The order of the values is extremely important, Fishing.getLootTier() and ShakeMob.getShakeChance() depend on it to work properly
+    // The order of the values is extremely important, a few methods depend on it to work properly
     protected enum Tier {
         FIVE(5) {
             @Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier5();}
@@ -105,17 +104,16 @@ public final class Fishing {
      *
      * @param player Player fishing
      * @param skillLevel Fishing level of the player
-     * @param event Event to process
+     * @param caught Item reeled
      */
-    public static void beginFishing(Player player, int skillLevel, PlayerFishEvent event) {
-        // TODO: Find a way to not pass the event directly
-        int xp = 0;
+    public static void beginFishing(Player player, int skillLevel, Item caught) {
+        int treasureXp = 0;
         FishingTreasure treasure = checkForTreasure(player, skillLevel);
 
         if (treasure != null) {
             player.sendMessage(LocaleLoader.getString("Fishing.ItemFound"));
 
-            xp += treasure.getXp();
+            treasureXp = treasure.getXp();
             ItemStack treasureDrop = treasure.getDrop();
 
             if (Permissions.fishingMagic(player) && beginMagicHunter(player, skillLevel, treasureDrop, player.getWorld().hasStorm())) {
@@ -123,17 +121,11 @@ public final class Fishing {
             }
 
             // Drop the original catch at the feet of the player and set the treasure as the real catch
-            Item caught = (Item) event.getCaught();
             Misc.dropItem(player.getEyeLocation(), caught.getItemStack());
             caught.setItemStack(treasureDrop);
         }
 
-        SkillTools.xpProcessing(player, Users.getProfile(player), SkillType.FISHING, Config.getInstance().getFishingBaseXP() + xp);
-    }
-
-    public static void awardAdditionalVanillaXP(int skillLevel, PlayerFishEvent event) {
-        int xp = event.getExpToDrop();
-        event.setExpToDrop(xp * getVanillaXPMultiplier(skillLevel));
+        SkillTools.xpProcessing(player, Users.getProfile(player), SkillType.FISHING, Config.getInstance().getFishingBaseXP() + treasureXp);
     }
 
     /**
@@ -256,12 +248,12 @@ public final class Fishing {
     }
 
    /**
-    * Gets the Shake Mob probability for a given skill level
+    * Gets the vanilla xp multiplier for a given skill level
     *
     * @param skillLevel Fishing skill level
     * @return Shake Mob probability
     */
-   public static int getVanillaXPMultiplier(int skillLevel) {
+   public static int getVanillaXpMultiplier(int skillLevel) {
        for (Tier tier : Tier.values()) {
            if (skillLevel >= tier.getLevel()) {
                return tier.getVanillaXPBoostModifier();
