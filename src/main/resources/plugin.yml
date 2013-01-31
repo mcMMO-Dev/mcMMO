@@ -340,8 +340,8 @@ permissions:
     mcmmo.tools.all:
         description: Implies all mcmmo.tools permissions.
         children:
-            mcmmo.tools.mcrefresh: true 
-            mcmmo.tools.mmoedit: true 
+            mcmmo.tools.mcrefresh: true
+            mcmmo.tools.mmoedit: true
             mcmmo.tools.mcgod: true
             mcmmo.tools.mcremove: true
     mcmmo.tools.mcrefresh:

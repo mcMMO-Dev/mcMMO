@@ -35,20 +35,28 @@ public final class Permissions {
         return hasPermission(player, "mcmmo.bypass.arcanebypass");
     }
 
+    /**
+     * @deprecated Use {@link #inspectFar(player)} instead.
+     */
+    @Deprecated
     public static boolean inspectDistanceBypass(Player player) {
-        // DEPRECATED PERMISSION
-        if (hasPermission(player, "mcmmo.bypass.inspect.distance"))
-            return true;
-
-        return hasPermission(player, "mcmmo.commands.inspect.far");
+        return hasPermission(player, "mcmmo.bypass.inspect.distance");
     }
 
-    public static boolean inspectOfflineBypass(Player player) {
-        // DEPRECATED PERMISSION
-        if (hasPermission(player, "mcmmo.bypass.inspect.offline"))
-            return true;
+    public static boolean inspectFar(Player player) {
+        return (hasPermission(player, "mcmmo.commands.inspect.far") || inspectDistanceBypass(player));
+    }
 
-        return hasPermission(player, "mcmmo.commands.inspect.offline");
+    /**
+     * @deprecated Use {@link #inspectOffline(player)} instead.
+     */
+    @Deprecated
+    public static boolean inspectOfflineBypass(Player player) {
+        return hasPermission(player, "mcmmo.bypass.inspect.offline");
+    }
+
+    public static boolean inspectOffline(Player player) {
+        return (hasPermission(player, "mcmmo.commands.inspect.offline") || inspectOfflineBypass(player));
     }
 
     /*
