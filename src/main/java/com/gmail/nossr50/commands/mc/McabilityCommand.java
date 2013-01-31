@@ -10,49 +10,60 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class McabilityCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandHelper.noConsoleUsage(sender)) {
+        PlayerProfile profile;
+        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"mcability", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"});
+
+        switch (args.length) {
+        case 0:
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcability") && !Permissions.mcAbility((Player) sender)) {
+                return true;
+            }
+
+            profile = Users.getProfile((Player) sender);
+
+            if (profile.getAbilityUse()) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
+            }
+            else {
+                sender.sendMessage(LocaleLoader.getString("Commands.Ability.On"));
+            }
+
+            profile.toggleAbilityUse();
             return true;
-        }
 
-        // DEPRECATED PERMISSION
-        boolean oldPermission = !CommandHelper.noCommandPermissions(sender, "mcmmo.commands.ability");
-
-        if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcability")) {
-            return true;
-        }
-
-        PlayerProfile profile = null;
-
-        if(args.length > 0 && args[0] != null) {
-            if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcability.others")) {
+        case 1:
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcability.others")) {
                 return true;
             }
 
             OfflinePlayer modifiedPlayer = mcMMO.p.getServer().getOfflinePlayer(args[0]);
             profile = Users.getProfile(modifiedPlayer);
-        }
-	else
-            profile = Users.getProfile((Player) sender);
 
-        if (profile == null) {
-            sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+            // TODO:Not sure if we actually need a null check here
+            if (profile == null || !profile.isLoaded()) {
+                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                return true;
+            }
+
+            if (profile.getAbilityUse()) {
+                ((Player) modifiedPlayer).sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
+            }
+            else {
+                ((Player) modifiedPlayer).sendMessage(LocaleLoader.getString("Commands.Ability.On"));
+            }
+
+            profile.toggleAbilityUse();
+            return true;
+
+        default:
+            sender.sendMessage(usage);
             return true;
         }
-
-        if (profile.getAbilityUse()) {
-            sender.sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
-        }
-        else {
-            sender.sendMessage(LocaleLoader.getString("Commands.Ability.On"));
-        }
-
-        profile.toggleAbilityUse();
-
-        return true;
     }
 }

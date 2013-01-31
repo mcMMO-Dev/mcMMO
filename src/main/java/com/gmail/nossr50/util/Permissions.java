@@ -564,6 +564,14 @@ public final class Permissions {
         return (hasPermission(player, "mcmmo.commands.skillreset") || skillReset(player));
     }
 
+    public static boolean mcAbilityCommand(Player player) {
+        return (hasPermission(player, "mcmmo.commands.mcability") || mcAbility(player));
+    }
+
+    /**
+     * @deprecated Use {@link #mcAbilityCommand(player)} instead.
+     */
+    @Deprecated
     public static boolean mcAbility(Player player) {
         return hasPermission(player, "mcmmo.commands.ability");
     }
