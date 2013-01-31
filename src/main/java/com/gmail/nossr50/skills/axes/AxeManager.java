@@ -60,7 +60,8 @@ public class AxeManager extends SkillManager {
     /**
      * Check for Skull Splitter ability.
      *
-     * @param event The event to process
+     * @param target The entity hit by Skull Splitter
+     * @param damage The base damage to deal
      */
     public void skullSplitter(LivingEntity target, int damage) {
         SkullSplitterEventHandler eventHandler = new SkullSplitterEventHandler(player, damage, target);

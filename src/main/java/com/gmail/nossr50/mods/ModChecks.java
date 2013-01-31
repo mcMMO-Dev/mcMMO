@@ -145,7 +145,7 @@ public final class ModChecks {
     /**
      * Checks to see if an item is a custom tool.
      *
-     * @param is Item to check
+     * @param item Item to check
      * @return true if the item is a custom tool, false otherwise
      */
     public static boolean isCustomTool(ItemStack item) {
@@ -159,7 +159,7 @@ public final class ModChecks {
     /**
      * Checks to see if an item is custom armor.
      *
-     * @param is Item to check
+     * @param item Item to check
      * @return true if the item is custom armor, false otherwise
      */
     public static boolean isCustomArmor(ItemStack item) {

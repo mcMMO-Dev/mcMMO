@@ -51,7 +51,7 @@ public class McMMOPlayer {
      * Adds XP to the player, doesn't calculate for XP Rate
      *
      * @param skillType The skill to add XP to
-     * @param newValue The amount of XP to add
+     * @param xp The amount of XP to add
      */
     public void addXPOverride(SkillType skillType, int xp) {
         if (skillType.equals(SkillType.ALL)) {
@@ -80,7 +80,7 @@ public class McMMOPlayer {
      * Adds XP to the player, this ignores skill modifiers.
      *
      * @param skillType The skill to add XP to
-     * @param newValue The amount of XP to add
+     * @param xp The amount of XP to add
      */
     public void addXPOverrideBonus(SkillType skillType, int xp) {
         int modifiedXp = (int)Math.floor(xp * Config.getInstance().getExperienceGainsGlobalMultiplier());
@@ -91,9 +91,9 @@ public class McMMOPlayer {
      * Adds XP to the player, this is affected by skill modifiers and XP Rate and Permissions
      *
      * @param skillType The skill to add XP to
-     * @param newvalue The amount of XP to add
+     * @param xp The amount of XP to add
      */
-    public void addXP(SkillType skillType, int newValue) {
+    public void addXP(SkillType skillType, int xp) {
         if (player == null)
             return;
         else if (player.getGameMode() == null)
@@ -103,7 +103,7 @@ public class McMMOPlayer {
             return;
         }
 
-        int xp = (int)Math.floor((newValue / skillType.getXpModifier()) * Config.getInstance().getExperienceGainsGlobalMultiplier());
+        xp = (int)Math.floor((xp / skillType.getXpModifier()) * Config.getInstance().getExperienceGainsGlobalMultiplier());
 
         if (Config.getInstance().getToolModsEnabled()) {
             ItemStack item = player.getItemInHand();

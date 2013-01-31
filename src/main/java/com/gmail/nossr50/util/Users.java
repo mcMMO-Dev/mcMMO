@@ -94,7 +94,7 @@ public final class Users {
     /**
      * Get the profile of a player by name.
      *
-     * @param player The name of the player whose profile to retrieve
+     * @param playerName The name of the player whose profile to retrieve
      * @return the player's profile
      */
     public static PlayerProfile getProfile(String playerName) {
@@ -106,7 +106,7 @@ public final class Users {
     /**
      * Get the McMMOPlayer of a player by name.
      *
-     * @param player The name of the player whose McMMOPlayer to retrieve
+     * @param playerName The name of the player whose McMMOPlayer to retrieve
      * @return the player's McMMOPlayer object
      */
     public static McMMOPlayer getPlayer(String playerName) {

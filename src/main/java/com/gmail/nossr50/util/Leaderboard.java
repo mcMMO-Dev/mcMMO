@@ -166,11 +166,11 @@ public final class Leaderboard {
     /**
      * Retrieve leaderboard info.
      *
-     * @param skillName Skill to retrieve info on.
-     * @param pagenumber Which page in the leaderboards to retrieve
+     * @param skillType Skill to retrieve info on.
+     * @param pageNumber Which page in the leaderboards to retrieve
      * @return the requested leaderboard information
      */
-    public static String[] retrieveInfo(SkillType skillType, int pagenumber) {
+    public static String[] retrieveInfo(SkillType skillType, int pageNumber) {
         String[] info = new String[10];
 
         List<PlayerStat> statsList = playerStatHash.get(skillType);
@@ -179,11 +179,11 @@ public final class Leaderboard {
             int destination;
 
             //How many lines to skip through
-            if (pagenumber == 1) {
+            if (pageNumber == 1) {
                 destination = 0;
             }
             else {
-                destination = (pagenumber * 10) - 9;
+                destination = (pageNumber * 10) - 9;
             }
 
             int currentPos = 0;

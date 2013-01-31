@@ -23,8 +23,6 @@ public class MiningManager extends SkillManager{
      * Detonate TNT for Blast Mining
      *
      * @param event The PlayerInteractEvent
-     * @param player Player detonating the TNT
-     * @param plugin mcMMO plugin instance
      */
     public void detonate(PlayerInteractEvent event) {
         if (skillLevel < BlastMining.rank1) {
@@ -92,7 +90,6 @@ public class MiningManager extends SkillManager{
     /**
      * Increases the blast radius of the explosion.
      *
-     * @param player Player triggering the explosion
      * @param event Event whose explosion radius is being changed
      */
     public void biggerBombs(ExplosionPrimeEvent event) {
@@ -129,7 +126,6 @@ public class MiningManager extends SkillManager{
     /**
      * Handle the Super Breaker ability.
      *
-     * @param player The player using the ability
      * @param block The block being affected
      */
     public void superBreakerBlockCheck(Block block) {

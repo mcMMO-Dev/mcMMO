@@ -178,8 +178,8 @@ public class XpBar {
     /**
      * Update the XP bar.
      * 
-     * @param skillType
-     * @param playerProfile
+     * @param skillType The skill last used
+     * @param playerProfile The profile of the player whose XP bar should be updated
      */
     public void update(SkillType skillType, PlayerProfile playerProfile) {
         switch (playerProfile.getHudType()) {
@@ -200,8 +200,8 @@ public class XpBar {
     /**
      * Update XP bar for Standard & Small styles.
      *
-     * @param skillType
-     * @param playerProfile
+     * @param skillType The skill last used
+     * @param playerProfile The profile of the player whose XP bar should be updated
      */
     private void updateXpBarStandard(SkillType skillType, PlayerProfile playerProfile) {
         xpIcon.setUrl(Misc.getCapitalized(skillType.toString()) + ".png");
@@ -214,7 +214,8 @@ public class XpBar {
     /**
      * Update XP bar for Retro styles.
      *
-     * @param skillType
+     * @param skillType The skill last used
+     * @param playerProfile The profile of the player whose XP bar should be updated
      */
     private void updateXpBarRetro(SkillType skillType, PlayerProfile playerProfile) {
         Color color = getRetroColor(skillType);

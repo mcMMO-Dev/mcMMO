@@ -312,7 +312,7 @@ public class SkillTools {
     /**
      * Checks if the given string represents a valid skill
      *
-     * @param skillname The name of the skill to check
+     * @param skillName The name of the skill to check
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {

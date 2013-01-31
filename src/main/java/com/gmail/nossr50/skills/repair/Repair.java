@@ -42,10 +42,8 @@ public class Repair {
      *
      * @param player Player repairing the item
      * @param profile PlayerProfile of the repairing player
-     * @param is Item being repaired
      * @param durabilityBefore Durability of the item before repair
      * @param modify Amount to modify the durability by
-     * @param boost True if the modifier is a boost, false if the modifier is a reduction
      */
     protected static void xpHandler(Player player, PlayerProfile profile, short durabilityBefore, short durabilityAfter, double modify) {
         short dif = (short) (durabilityBefore - durabilityAfter);

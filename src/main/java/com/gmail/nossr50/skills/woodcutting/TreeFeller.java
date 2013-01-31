@@ -129,7 +129,7 @@ public final class TreeFeller {
      * Handles the durability loss
      *
      * @param treeFellerBlocks List of blocks to be removed
-     * @param Player Player using the ability
+     * @param player Player using the ability
      * @return True if the tool can sustain the durability loss
      */
     private static boolean handleDurabilityLoss(List<Block> treeFellerBlocks, Player player) {

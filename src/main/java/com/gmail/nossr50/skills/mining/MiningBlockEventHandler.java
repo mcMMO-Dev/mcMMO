@@ -35,9 +35,6 @@ public class MiningBlockEventHandler {
 
     /**
      * Process Mining block drops.
-     *
-     * @param player The player mining the block
-     * @param block The block being broken
      */
     protected void processDrops() {
         if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {

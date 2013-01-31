@@ -62,9 +62,9 @@ public final class Misc {
     }
 
     /**
-     * Check if a player has armor.
+     * Check if a LivingEntity has armor.
      *
-     * @param player Player whose armor to check
+     * @param entity LivingEntity whose armor to check
      * @return true if the player has armor, false otherwise
      */
     public static boolean hasArmor(LivingEntity entity) {

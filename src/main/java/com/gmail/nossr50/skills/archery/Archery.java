@@ -56,7 +56,7 @@ public class Archery {
     /**
      * Check for arrow retrieval.
      *
-     * @param entity The entity hit by the arrows
+     * @param livingEntity The entity hit by the arrows
      */
     public static void arrowRetrievalCheck(LivingEntity livingEntity) {
         for (Iterator<TrackedEntity> entityIterator = trackedEntities.iterator(); entityIterator.hasNext(); ) {

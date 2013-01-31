@@ -42,7 +42,7 @@ public class ShareHandler {
     /**
      * Calculate the party XP.
      *
-     * @param int XP without party sharing
+     * @param oldExp XP without party sharing
      * @return the party shared XP
      */
     public static double calculateSharedExp(int oldExp, Player player, Party party) {
@@ -60,8 +60,7 @@ public class ShareHandler {
     /**
      * Distribute XP amongst party members.
      *
-     * @param int XP without party sharing
-     * @return the party share experience
+     * @param xp XP without party sharing
      */
     public static void handleEqualExpShare(int xp, Player player, Party party, SkillType skillType) {
         List<Player> nearMembers = PartyManager.getNearMembers(player, party, partyShareRange);

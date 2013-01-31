@@ -554,7 +554,7 @@ public final class CombatTools {
      * Check to see if the given LivingEntity should be affected by a combat ability.
      *
      * @param player The attacking Player
-     * @param livingEntity The defending LivingEntity
+     * @param entity The defending Entity
      * @return true if the Entity should be damaged, false otherwise.
      */
     public static boolean shouldBeAffected(Player player, Entity entity) {

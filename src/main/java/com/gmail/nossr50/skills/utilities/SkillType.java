@@ -138,7 +138,7 @@ public enum SkillType {
      * Get the skill level for this skill.
      *
      * @param player The player to check
-     * @return
+     * @return the player's skill level
      */
     public int getSkillLevel(Player player) {
         return Users.getProfile(player).getSkillLevel(this);

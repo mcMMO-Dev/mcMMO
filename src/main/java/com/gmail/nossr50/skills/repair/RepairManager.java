@@ -16,7 +16,7 @@ public interface RepairManager {
     /**
      * Register a list of repairables with the RepairManager
      *
-     * @param repairable List<Repairable> to register
+     * @param repairables List<Repairable> to register
      */
     public void registerRepairables(List<Repairable> repairables);
 

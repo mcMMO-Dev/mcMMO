@@ -181,7 +181,7 @@ public enum AbilityType {
     /**
      * Check if a block is affected by this ability.
      *
-     * @param Block the block to check
+     * @param block the block to check
      * @return true if the block is affected by this ability, false otherwise
      */
     public boolean blockCheck(Block block) {

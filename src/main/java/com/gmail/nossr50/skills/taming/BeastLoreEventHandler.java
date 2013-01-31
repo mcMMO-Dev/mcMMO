@@ -36,7 +36,6 @@ public class BeastLoreEventHandler {
     /**
      * Get the name of a tameable animal's owner.
      *
-     * @param beast The animal whose owner's name to get
      * @return the name of the animal's owner
      */
     private String getOwnerName() {

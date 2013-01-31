@@ -40,7 +40,6 @@ public class UnarmedManager extends SkillManager {
     /**
      * Check for arrow deflection.
      *
-     * @param defender The defending player
      * @param event The event to modify
      */
     public void deflectCheck(EntityDamageEvent event) {
