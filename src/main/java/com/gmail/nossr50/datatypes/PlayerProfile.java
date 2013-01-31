@@ -953,26 +953,6 @@ public class PlayerProfile {
         save(false);
     }
 
-    public void resetSkill(SkillType skillType)
-    {
-        if (skillType.isChildSkill()) {
-            return;
-        }
-
-        //do a single skilltype
-        if (skillType != SkillType.ALL)
-            skills.put(skillType, 0);
-        else //do them all
-        {
-            for (SkillType skill : SkillType.values()) //iterate over all items in the enumeration
-            {
-                if (skill != SkillType.ALL) // skip the "all" value
-                    skills.put(skill,  0);
-            }
-        }
-        save(false);
-    }
-
     //    /**
     //     * Adds XP to the player, doesn't calculate for XP Rate
     //     *

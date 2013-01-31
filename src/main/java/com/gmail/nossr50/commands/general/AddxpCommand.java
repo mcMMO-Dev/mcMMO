@@ -13,6 +13,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 //TODO: Any way we can make this work for offline use?
@@ -22,16 +23,14 @@ public class AddxpCommand implements CommandExecutor {
         Player modifiedPlayer;
         int xp;
         SkillType skill;
-        // DEPRECATED PERMISSION
-        boolean oldPermission = !CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit");
         String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"addxp", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.XP") + ">" });
-
-        if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addxp")) {
-            return true;
-        }
 
         switch (args.length) {
         case 2:
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addxp") && !Permissions.mmoedit((Player) sender)) {
+                return true;
+            }
+
             if (sender instanceof Player) {
                 if (!SkillTools.isSkill(args[1])) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
@@ -72,7 +71,7 @@ public class AddxpCommand implements CommandExecutor {
             return true;
 
         case 3:
-            if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addxp")) {
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addxp.others") && !Permissions.mmoedit((Player) sender)) {
                 return true;
             }
 
@@ -81,12 +80,8 @@ public class AddxpCommand implements CommandExecutor {
             McMMOPlayer mcMMOPlayer = Users.getPlayer(modifiedPlayer);
             PlayerProfile profile = Users.getProfile(modifiedPlayer);
 
-            if (profile == null) {
-                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-                return true;
-            }
-
-            if (!profile.isLoaded()) {
+            // TODO: Not sure if we actually need a null check here
+            if (profile == null || !profile.isLoaded()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                 return true;
             }

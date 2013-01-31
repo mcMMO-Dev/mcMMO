@@ -301,7 +301,7 @@ public class SkillTools {
      */
     public static SkillType getSkillType(String skillName) {
         for (SkillType x : SkillType.values()) {
-            if (x.toString().equals(skillName.toUpperCase())) {
+            if (x.toString().equalsIgnoreCase(skillName)) {
                 return x;
             }
         }

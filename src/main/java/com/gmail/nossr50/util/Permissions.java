@@ -20,6 +20,10 @@ public final class Permissions {
         return hasPermission(player, "mcmmo.motd");
     }
 
+    /**
+     * @deprecated Use the permission "mcmmo.all" instead.
+     */
+    @Deprecated
     public static boolean admin(Player player) {
         return hasPermission(player, "mcmmo.admin");
     }
@@ -71,6 +75,10 @@ public final class Permissions {
         return hasPermission(player, "mcmmo.tools.mcremove");
     }
 
+    /**
+     * @deprecated Use {@link #mmoeditCommand(player)} instead.
+     */
+    @Deprecated
     public static boolean mmoedit(Player player) {
         return hasPermission(player, "mcmmo.tools.mmoedit");
     }
@@ -548,6 +556,14 @@ public final class Permissions {
      * MCMMO.COMMANDS.*
      */
 
+    public static boolean mmoeditCommand(Player player) {
+        return (hasPermission(player, "mcmmo.commands.mmoedit") || mmoedit(player));
+    }
+
+    public static boolean skillResetCommand(Player player) {
+        return (hasPermission(player, "mcmmo.commands.skillreset") || skillReset(player));
+    }
+
     public static boolean mcAbility(Player player) {
         return hasPermission(player, "mcmmo.commands.ability");
     }
@@ -564,6 +580,10 @@ public final class Permissions {
         return hasPermission(player, "mcmmo.commands.party");
     }
 
+    /**
+     * @deprecated Use {@link #skillResetCommand(player)} instead.
+     */
+    @Deprecated
     public static boolean skillReset(Player player) {
         return hasPermission(player, "mcmmo.skillreset");
     }

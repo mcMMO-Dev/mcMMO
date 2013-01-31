@@ -10,15 +10,13 @@ import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.runnables.SQLConversionTask;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class MmoupdateCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // DEPRECATED PERMISSION
-        boolean oldPermission = !CommandHelper.noCommandPermissions(sender, "mcmmo.admin");
-
-        if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoupdate")) {
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoupdate") && !Permissions.admin((Player) sender)) {
             return true;
         }
 

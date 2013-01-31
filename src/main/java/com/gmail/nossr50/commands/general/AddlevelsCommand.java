@@ -13,6 +13,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class AddlevelsCommand implements CommandExecutor{
@@ -22,16 +23,14 @@ public class AddlevelsCommand implements CommandExecutor{
         PlayerProfile profile;
         int levels;
         SkillType skill;
-        // DEPRECATED PERMISSION
-        boolean oldPermission = !CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit");
         String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"addlevels", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">" });
-
-        if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addlevels")) {
-            return true;
-        }
 
         switch (args.length) {
         case 2:
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addlevels") && !Permissions.mmoedit((Player) sender)) {
+                return true;
+            }
+
             if (sender instanceof Player) {
                 if (!SkillTools.isSkill(args[0])) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
@@ -61,20 +60,15 @@ public class AddlevelsCommand implements CommandExecutor{
             return true;
 
         case 3:
-            if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addlevels.others")) {
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addlevels.others") && !Permissions.mmoedit((Player) sender)) {
                 return true;
             }
 
             modifiedPlayer = mcMMO.p.getServer().getOfflinePlayer(args[0]);
-            String playerName = modifiedPlayer.getName();
             profile = Users.getProfile(modifiedPlayer);
 
-            if (profile == null) {
-                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-                return true;
-            }
-
-            if (!profile.isLoaded()) {
+            // TODO:Not sure if we actually need a null check here
+            if (profile == null || !profile.isLoaded()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                 return true;
             }
@@ -91,10 +85,10 @@ public class AddlevelsCommand implements CommandExecutor{
                 Users.getProfile(modifiedPlayer).addLevels(skill, levels);
 
                 if (skill.equals(SkillType.ALL)) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] {playerName}));
+                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] {args[0]}));
                 }
                 else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", new Object[] {Misc.getCapitalized(skill.toString()), playerName}));
+                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", new Object[] {Misc.getCapitalized(skill.toString()), args[0]}));
                 }
 
                 if (modifiedPlayer.isOnline()) {

@@ -12,6 +12,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class MmoeditCommand implements CommandExecutor {
@@ -21,16 +22,14 @@ public class MmoeditCommand implements CommandExecutor {
         int newValue;
         SkillType skill;
         String skillName;
-        // DEPRECATED PERMISSION
-        boolean oldPermission = !CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mmoedit");
         String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"mmoedit", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">" });
-
-        if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoedit")) {
-            return true;
-        }
 
         switch (args.length) {
         case 2:
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoedit") && !Permissions.mmoedit((Player) sender)) {
+                return true;
+            }
+
             if (sender instanceof Player) {
                 if (!SkillTools.isSkill(args[0])) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
@@ -64,7 +63,7 @@ public class MmoeditCommand implements CommandExecutor {
             return true;
 
         case 3:
-            if (!oldPermission && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoedit.others")) {
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoedit.others") && !Permissions.mmoedit((Player) sender)) {
                 return true;
             }
 
