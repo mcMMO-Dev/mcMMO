@@ -344,8 +344,9 @@ public final class Misc {
      */
     public static void dropItem(Location location, ItemStack itemStack) {
 
-        if(itemStack.getType() == Material.AIR)
+        if (itemStack.getType() != null || itemStack.getType() == Material.AIR) {
             return;
+        }
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
         McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);
