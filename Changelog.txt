@@ -59,6 +59,7 @@ Version 1.4.00-dev
  ! Changed BeastLore: Now also displays offline player names
  - Removed Party "master/apprentice" system. Replaced with the new party XP share feature.
  - Removed unused "healthbar" files from the resources
+ - Removed config options for disabling commands from the config.yml. This should instead be done through permissions.
 
 Version 1.3.14
  + Added new Hylian Luck skill to Herbalism.
