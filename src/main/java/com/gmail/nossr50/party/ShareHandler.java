@@ -20,6 +20,9 @@ public final class ShareHandler {
             catch (IllegalArgumentException exception) {
                 return NONE;
             }
+            catch (NullPointerException exception) {
+                return NONE;
+            }
         }
     };
 
