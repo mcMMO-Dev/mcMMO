@@ -327,92 +327,34 @@ public class mcMMO extends JavaPlugin {
         Config configInstance = Config.getInstance();
 
         // mc* commands
-        if (configInstance.getCommandMCPurgeEnabled()) {
-            getCommand("mcpurge").setExecutor(new McpurgeCommand());
-        }
-        if (configInstance.getCommandMCRemoveEnabled()) {
-            getCommand("mcremove").setExecutor(new McremoveCommand());
-        }
-
-        if (configInstance.getCommandMCAbilityEnabled()) {
-            getCommand("mcability").setExecutor(new McabilityCommand());
-        }
-
-        if (configInstance.getCommandMCCEnabled()) {
-            getCommand("mcc").setExecutor(new MccCommand());
-        }
-
-        if (configInstance.getCommandMCGodEnabled()) {
-            getCommand("mcgod").setExecutor(new McgodCommand());
-        }
-
-        if (configInstance.getCommandmcMMOEnabled()) {
-            getCommand("mcmmo").setExecutor(new McmmoCommand());
-        }
-
-        if (configInstance.getCommandMCRefreshEnabled()) {
-            getCommand("mcrefresh").setExecutor(new McrefreshCommand());
-        }
-
-        if (configInstance.getCommandMCTopEnabled()) {
-            getCommand("mctop").setExecutor(new MctopCommand());
-        }
-
-        if(configInstance.getCommandMCRankEnabled()) {
-            getCommand("mcrank").setExecutor(new McrankCommand());
-        }
-
-        if (configInstance.getCommandMCStatsEnabled()) {
-            getCommand("mcstats").setExecutor(new McstatsCommand());
-        }
-
-        if (configInstance.getCommandSkillResetEnabled()) {
-            getCommand("skillreset").setExecutor(new SkillResetCommand());
-        }
+        getCommand("mcpurge").setExecutor(new McpurgeCommand());
+        getCommand("mcremove").setExecutor(new McremoveCommand());
+        getCommand("mcability").setExecutor(new McabilityCommand());
+        getCommand("mcc").setExecutor(new MccCommand());
+        getCommand("mcgod").setExecutor(new McgodCommand());
+        getCommand("mcmmo").setExecutor(new McmmoCommand());
+        getCommand("mcrefresh").setExecutor(new McrefreshCommand());
+        getCommand("mctop").setExecutor(new MctopCommand());
+        getCommand("mcrank").setExecutor(new McrankCommand());
+        getCommand("mcstats").setExecutor(new McstatsCommand());
 
         // Party commands
-        if (configInstance.getCommandAdminChatAEnabled()) {
-            getCommand("a").setExecutor(new ACommand());
-        }
-
-        if (configInstance.getCommandPartyEnabled()) {
-            getCommand("party").setExecutor(new PartyCommand());
-        }
-
-        if (configInstance.getCommandPartyChatPEnabled()) {
-            getCommand("p").setExecutor(new PCommand(this));
-        }
-
-        if (configInstance.getCommandPTPEnabled()) {
-            getCommand("ptp").setExecutor(new PtpCommand(this));
-        }
+        getCommand("a").setExecutor(new ACommand());
+        getCommand("party").setExecutor(new PartyCommand());
+        getCommand("p").setExecutor(new PCommand(this));
+        getCommand("ptp").setExecutor(new PtpCommand(this));
 
         // Other commands
-        if (configInstance.getCommandAddXPEnabled()) {
-            getCommand("addxp").setExecutor(new AddxpCommand());
-        }
-
+        getCommand("addxp").setExecutor(new AddxpCommand());
         CommandRegistrationHelper.registerAddlevelsCommand();
-
-        if (configInstance.getCommandMmoeditEnabled()) {
-            getCommand("mmoedit").setExecutor(new MmoeditCommand());
-        }
-
-        if (configInstance.getCommandInspectEnabled()) {
-            getCommand("inspect").setExecutor(new InspectCommand());
-        }
-
-        if (configInstance.getCommandXPRateEnabled()) {
-            getCommand("xprate").setExecutor(new XprateCommand());
-        }
-
+        getCommand("mmoedit").setExecutor(new MmoeditCommand());
+        getCommand("inspect").setExecutor(new InspectCommand());
+        getCommand("xprate").setExecutor(new XprateCommand());
         getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
+        getCommand("skillreset").setExecutor(new SkillResetCommand());
 
         // Spout commands
-        if (configInstance.getCommandXPLockEnabled()) {
-            getCommand("xplock").setExecutor(new XplockCommand());
-        }
-
+        getCommand("xplock").setExecutor(new XplockCommand());
         getCommand("mchud").setExecutor(new MchudCommand());
     }
 

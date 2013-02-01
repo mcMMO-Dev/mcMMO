@@ -44,7 +44,7 @@ public class MccCommand implements CommandExecutor {
         player.sendMessage("/mcstats " + LocaleLoader.getString("Commands.Stats"));
         player.sendMessage("/mctop " + LocaleLoader.getString("Commands.Leaderboards"));
 
-        if (Config.getInstance().getCommandSkillResetEnabled() && Permissions.skillReset(player)) {
+        if (Permissions.skillReset(player)) {
             player.sendMessage("/skillreset <skill|all> " + LocaleLoader.getString("Commands.Reset"));
         }
 

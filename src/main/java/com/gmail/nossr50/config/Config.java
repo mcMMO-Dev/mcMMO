@@ -30,6 +30,7 @@ public class Config extends ConfigLoader {
     /* General Settings */
     public String getLocale() { return config.getString("General.Locale", "en_us"); }
     public boolean getMOTDEnabled() { return config.getBoolean("General.MOTD_Enabled", true); }
+    public boolean getDonateMessageEnabled() { return config.getBoolean("Commands.mcmmo.Donate_Message", true); }
     public int getSaveInterval() { return config.getInt("General.Save_Interval", 10); }
     public boolean getStatsTrackingEnabled() { return config.getBoolean("General.Stats_Tracking", true); }
     public boolean getEventCallbackEnabled() { return config.getBoolean("General.Event_Callback", true); }
@@ -74,34 +75,10 @@ public class Config extends ConfigLoader {
     public boolean getArmorModsEnabled() { return config.getBoolean("Mods.Tool_Mods_Enabled", false); }
     public boolean getBlockModsEnabled() { return config.getBoolean("Mods.Block_Mods_Enabled", false); }
 
-    /* Commands */
-    public boolean getCommandXPLockEnabled() { return config.getBoolean("Commands.xplock.Enabled", true); }
-    public boolean getCommandXPRateEnabled() { return config.getBoolean("Commands.xprate.Enabled", true); }
-    public boolean getCommandMCTopEnabled() { return config.getBoolean("Commands.mctop.Enabled", true); }
-    public boolean getCommandMCRankEnabled() { return config.getBoolean("Commands.mcrank.Enabled", true); }
-    public boolean getCommandAddXPEnabled() { return config.getBoolean("Commands.addxp.Enabled", true); }
-    public boolean getCommandMCAbilityEnabled() { return config.getBoolean("Commands.mcability.Enabled", true); }
-    public boolean getCommandMCRefreshEnabled() { return config.getBoolean("Commands.mcrefresh.Enabled", true); }
-    public boolean getCommandmcMMOEnabled() { return config.getBoolean("Commands.mcmmo.Enabled", true); }
-    public boolean getCommandMCCEnabled() { return config.getBoolean("Commands.mcc.Enabled", true); }
-    public boolean getCommandMCGodEnabled() { return config.getBoolean("Commands.mcgod.Enabled", true); }
-    public boolean getCommandMCStatsEnabled() { return config.getBoolean("Commands.mcstats.Enabled", true); }
-    public boolean getCommandSkillResetEnabled() { return config.getBoolean("Commands.skillreset.Enabled", true); }
-    public boolean getCommandMmoeditEnabled() { return config.getBoolean("Commands.mmoedit.Enabled", true); }
-    public boolean getCommandMCRemoveEnabled() { return config.getBoolean("Commands.mcremove.Enable", true); }
-    public boolean getCommandMCPurgeEnabled() { return config.getBoolean("Commands.mcpurge.Enable", true); }
-    public boolean getCommandPTPEnabled() { return config.getBoolean("Commands.ptp.Enabled", true); }
-    public boolean getCommandPartyEnabled() { return config.getBoolean("Commands.party.Enabled", true); }
-    public boolean getCommandInspectEnabled() { return config.getBoolean("Commands.inspect.Enabled", true); }
-    public boolean getCommandInviteEnabled() { return config.getBoolean("Commands.invite.Enabled", true); }
-    public boolean getCommandAcceptEnabled() { return config.getBoolean("Commands.accept.Enabled", true); }
-    public boolean getCommandAdminChatAEnabled() { return config.getBoolean("Commands.a.Enabled", true); }
-    public boolean getCommandPartyChatPEnabled() { return config.getBoolean("Commands.p.Enabled", true); }
-
+    /* Party Teleport Settings */
     public int getPTPCommandCooldown() { return config.getInt("Commands.ptp.Cooldown", 30); }
     public int getPTPCommandTimeout() { return config.getInt("Commands.ptp.Request_Timeout", 300); }
     public boolean getPTPCommandConfirmRequired() { return config.getBoolean("Commands.ptp.Confirm_Required", true); }
-    public boolean getDonateMessageEnabled() { return config.getBoolean("Commands.mcmmo.Donate_Message", true); }
 
     /* Items */
     public int getChimaeraCost() { return config.getInt("Items.Chimaera_Wing.Feather_Cost", 10); }
