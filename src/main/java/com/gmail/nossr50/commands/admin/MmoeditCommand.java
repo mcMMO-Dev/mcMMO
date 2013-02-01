@@ -26,7 +26,7 @@ public class MmoeditCommand implements CommandExecutor {
 
         switch (args.length) {
         case 2:
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoedit") && !Permissions.mmoedit((Player) sender)) {
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoedit")) {
                 return true;
             }
 
@@ -62,7 +62,7 @@ public class MmoeditCommand implements CommandExecutor {
             return true;
 
         case 3:
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoedit.others") && !Permissions.mmoedit((Player) sender)) {
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoedit.others")) {
                 return true;
             }
 

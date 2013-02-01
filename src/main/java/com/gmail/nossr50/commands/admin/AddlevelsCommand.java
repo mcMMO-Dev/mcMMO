@@ -23,11 +23,6 @@ public class AddlevelsCommand implements CommandExecutor{
 
         switch (args.length) {
         case 2:
-            if (!Permissions.mmoedit(sender)) {
-                sender.sendMessage(command.getPermissionMessage());
-                return true;
-            }
-
             if (sender instanceof Player) {
                 if (!SkillTools.isSkill(args[0])) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
@@ -55,7 +50,7 @@ public class AddlevelsCommand implements CommandExecutor{
             }
 
         case 3:
-            if (!Permissions.hasPermission(sender, "mcmmo.commands.addlevels.others") && !Permissions.mmoedit(sender)) {
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.addlevels.others")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }

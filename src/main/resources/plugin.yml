@@ -123,6 +123,7 @@ permissions:
         default: false
         description: Implies all mcmmo permissions.
         children:
+            mcmmo.admin: true
             mcmmo.bypass.all: true
             mcmmo.commands.all: true
             mcmmo.defaults: true
@@ -148,7 +149,8 @@ permissions:
         default: false
         description: Implies access to everything in mcMMO
         children:
-            mcmmo.all: true
+            mcmmo.commands.mmoupdate: true
+            mcmmo.commands.xprate.all: true
     mcmmo.perks.*:
         default: false
         description: implies access to all mcmmo perks
@@ -316,9 +318,13 @@ permissions:
     mcmmo.bypass.inspect.distance:
         default: op
         description: Allows user to bypass Inspect's distance requirements
+        children:
+            mcmmo.commands.inspect.far: true
     mcmmo.bypass.inspect.offline:
         default: op
         description: Allows user to bypass Inspect's offline player requirements
+        children:
+            mcmmo.commands.inspect.offline: true
     mcmmo.tools.*:
         description: Implies all mcmmo.tools permissions.
         children:
@@ -335,6 +341,13 @@ permissions:
     mcmmo.tools.mmoedit:
         default: false
         description: Allows access to mmoedit command
+        children:
+            mcmmo.commands.addlevels: true
+            mcmmo.commands.addlevels.others: true
+            mcmmo.commands.addxp: true
+            mcmmo.commands.addxp.others: true
+            mcmmo.commands.mmoedit: true
+            mcmmo.commands.mmoedit.others: true
     mcmmo.tools.mcgod:
         description: Allows access to mcgod command
         children:
@@ -716,8 +729,9 @@ permissions:
             mcmmo.commands.party.all: true
             mcmmo.commands.ptp: true
     mcmmo.commands.ability:
-        default: false
         description: Allows access to the mcability command
+        children:
+            mcmmo.commands.mcability: true
     mcmmo.commands.addlevels:
         description: Allows access to the addlevels command
     mcmmo.commands.addlevels.others:
@@ -987,5 +1001,7 @@ permissions:
     mcmmo.skills.smelting:
         description: Allows access to the Smelting skill
     mcmmo.skillreset:
-        default: false
         description: Allow reset of skill levels
+        children:
+            mcmmo.commands.skillreset.all: true
+            mcmmo.commands.skillreset.others.all: false

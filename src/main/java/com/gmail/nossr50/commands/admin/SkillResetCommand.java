@@ -13,7 +13,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class SkillResetCommand implements CommandExecutor {
@@ -34,7 +33,7 @@ public class SkillResetCommand implements CommandExecutor {
 
                 skill = SkillTools.getSkillType(args[0]);
 
-                if (CommandHelper.noCommandPermissions((Player) sender, "mcmmo.commands.skillreset." + skill.toString().toLowerCase()) && !Permissions.skillReset((Player) sender)) {
+                if (CommandHelper.noCommandPermissions((Player) sender, "mcmmo.commands.skillreset." + skill.toString().toLowerCase())) {
                     return true;
                 }
 
@@ -72,7 +71,7 @@ public class SkillResetCommand implements CommandExecutor {
 
             skill = SkillTools.getSkillType(args[1]);
 
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.skillreset.others." + skill.toString().toLowerCase()) && !Permissions.skillReset((Player) sender)) {
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.skillreset.others." + skill.toString().toLowerCase())) {
                 return true;
             }
 

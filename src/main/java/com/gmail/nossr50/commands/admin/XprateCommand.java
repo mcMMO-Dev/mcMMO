@@ -10,7 +10,6 @@ import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 
 public class XprateCommand implements CommandExecutor {
     private static double originalRate = Config.getInstance().getExperienceGainsGlobalMultiplier();
@@ -21,7 +20,7 @@ public class XprateCommand implements CommandExecutor {
         String usage2 = LocaleLoader.getString("Commands.xprate.proper.1");
         String usage3 = LocaleLoader.getString("Commands.xprate.proper.2");
 
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.xprate") && !Permissions.admin((Player) sender)) {
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.xprate")) {
             return true;
         }
 
@@ -30,7 +29,7 @@ public class XprateCommand implements CommandExecutor {
         switch (args.length) {
         case 1:
             if (args[0].equalsIgnoreCase("reset")) {
-                if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.xprate.reset") && !Permissions.admin((Player) sender)) {
+                if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.xprate.reset")) {
                     return true;
                 }
 
@@ -57,7 +56,7 @@ public class XprateCommand implements CommandExecutor {
 
         case 2:
             if (Misc.isInt(args[0])) {
-                if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.xprate.set") && !Permissions.admin((Player) sender)) {
+                if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.xprate.set")) {
                     return true;
                 }
                 if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("false")) {

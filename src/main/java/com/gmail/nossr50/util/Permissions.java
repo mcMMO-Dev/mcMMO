@@ -48,7 +48,7 @@ public final class Permissions {
     }
 
     public static boolean inspectFar(Player player) {
-        return (hasPermission(player, "mcmmo.commands.inspect.far") || inspectDistanceBypass(player));
+        return (hasPermission(player, "mcmmo.commands.inspect.far"));
     }
 
     /**
@@ -60,7 +60,7 @@ public final class Permissions {
     }
 
     public static boolean inspectOffline(Player player) {
-        return (hasPermission(player, "mcmmo.commands.inspect.offline") || inspectOfflineBypass(player));
+        return (hasPermission(player, "mcmmo.commands.inspect.offline"));
     }
 
     /*
@@ -561,15 +561,15 @@ public final class Permissions {
      */
 
     public static boolean mmoeditCommand(Player player) {
-        return (hasPermission(player, "mcmmo.commands.mmoedit") || mmoedit(player));
+        return (hasPermission(player, "mcmmo.commands.mmoedit"));
     }
 
     public static boolean skillResetCommand(Player player) {
-        return (hasPermission(player, "mcmmo.commands.skillreset") || skillReset(player));
+        return (hasPermission(player, "mcmmo.commands.skillreset"));
     }
 
     public static boolean mcAbilityCommand(Player player) {
-        return (hasPermission(player, "mcmmo.commands.mcability") || mcAbility(player));
+        return (hasPermission(player, "mcmmo.commands.mcability"));
     }
 
     public static boolean mcgodCommand(CommandSender sender) {

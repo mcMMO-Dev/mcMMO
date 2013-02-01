@@ -27,7 +27,7 @@ public class AddxpCommand implements CommandExecutor {
 
         switch (args.length) {
         case 2:
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addxp") && !Permissions.mmoedit((Player) sender)) {
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addxp")) {
                 return true;
             }
 
@@ -71,7 +71,7 @@ public class AddxpCommand implements CommandExecutor {
             return true;
 
         case 3:
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addxp.others") && !Permissions.mmoedit((Player) sender)) {
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addxp.others")) {
                 return true;
             }
 

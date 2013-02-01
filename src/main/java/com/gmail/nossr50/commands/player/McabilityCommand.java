@@ -10,7 +10,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class McabilityCommand implements CommandExecutor {
@@ -21,7 +20,7 @@ public class McabilityCommand implements CommandExecutor {
 
         switch (args.length) {
         case 0:
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcability") && !Permissions.mcAbility((Player) sender)) {
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcability")) {
                 return true;
             }
 
