@@ -122,6 +122,6 @@ public final class Users {
      * @return the player's McMMOPlayer object
      */
     public static McMMOPlayer getPlayer(Player player) {
-        return getPlayer(player.getName());
+        return players.get(player.getName());
     }
 }

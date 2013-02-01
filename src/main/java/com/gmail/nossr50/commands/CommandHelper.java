@@ -8,7 +8,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
 public final class CommandHelper {
     private CommandHelper() {}
@@ -55,17 +54,11 @@ public final class CommandHelper {
      * Print out details on Gathering skills. Only for online players.
      *
      * @param inspect The player to retrieve stats for
+     * @param profile The player's profile
      * @param display The sender to display stats to
      */
-    public static void printGatheringSkills(Player inspect, CommandSender display) {
+    public static void printGatheringSkills(Player inspect, PlayerProfile profile, CommandSender display) {
         if (SkillTools.hasGatheringSkills(inspect)) {
-            PlayerProfile profile = Users.getProfile(inspect);
-
-            if (profile == null) {
-                display.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-                return;
-            }
-
             display.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
 
             if (Permissions.excavation(inspect)) {
@@ -90,25 +83,19 @@ public final class CommandHelper {
         }
     }
 
-    public static void printGatheringSkills(Player player) {
-        printGatheringSkills(player, player);
+    public static void printGatheringSkills(Player player, PlayerProfile profile) {
+        printGatheringSkills(player, profile, player);
     }
 
     /**
      * Print out details on Combat skills. Only for online players.
      *
      * @param inspect The player to retrieve stats for
+     * @param profile The player's profile
      * @param display The sender to display stats to
      */
-    public static void printCombatSkills(Player inspect, CommandSender display) {
+    public static void printCombatSkills(Player inspect, PlayerProfile profile, CommandSender display) {
         if (SkillTools.hasCombatSkills(inspect)) {
-            PlayerProfile profile = Users.getProfile(inspect);
-
-            if (profile == null) {
-                display.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-                return;
-            }
-
             display.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
 
             if (Permissions.axes(inspect)) {
@@ -133,25 +120,19 @@ public final class CommandHelper {
         }
     }
 
-    public static void printCombatSkills(Player player) {
-        printCombatSkills(player, player);
+    public static void printCombatSkills(Player player, PlayerProfile profile) {
+        printCombatSkills(player, profile, player);
     }
 
     /**
      * Print out details on Misc skills. Only for online players.
      *
      * @param inspect The player to retrieve stats for
+     * @param profile The player's profile
      * @param display The sender to display stats to
      */
-    public static void printMiscSkills(Player inspect, CommandSender display) {
+    public static void printMiscSkills(Player inspect, PlayerProfile profile, CommandSender display) {
         if (SkillTools.hasMiscSkills(inspect)) {
-            PlayerProfile profile = Users.getProfile(inspect);
-
-            if (profile == null) {
-                display.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-                return;
-            }
-
             display.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
 
             if (Permissions.acrobatics(inspect)) {
@@ -164,7 +145,7 @@ public final class CommandHelper {
         }
     }
 
-    public static void printMiscSkills(Player player) {
-        printMiscSkills(player, player);
+    public static void printMiscSkills(Player player, PlayerProfile profile) {
+        printMiscSkills(player, profile, player);
     }
 }

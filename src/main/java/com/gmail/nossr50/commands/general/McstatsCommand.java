@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Users;
 
@@ -22,20 +23,23 @@ public class McstatsCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
+        PlayerProfile profile = Users.getPlayer(player).getProfile();
 
         player.sendMessage(LocaleLoader.getString("Stats.Own.Stats"));
         player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
 
-        CommandHelper.printGatheringSkills(player);
-        CommandHelper.printCombatSkills(player);
-        CommandHelper.printMiscSkills(player);
+        CommandHelper.printGatheringSkills(player, profile);
+        CommandHelper.printCombatSkills(player, profile);
+        CommandHelper.printMiscSkills(player, profile);
 
         int powerLevelCap = Config.getInstance().getPowerLevelCap();
 
-        if (powerLevelCap > 0)
+        if (powerLevelCap > 0) {
             player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", new Object[] { String.valueOf(Users.getPlayer(player).getPowerLevel()), String.valueOf(powerLevelCap) }));
-        else
+        }
+        else {
             player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { String.valueOf(Users.getPlayer(player).getPowerLevel()) }));
+        }
 
         return true;
     }

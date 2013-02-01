@@ -35,10 +35,12 @@ public class InspectCommand implements CommandExecutor {
                     return true;
                 }
 
+                PlayerProfile profile = mcmmoPlayer.getProfile();
+
                 sender.sendMessage(LocaleLoader.getString("Inspect.Stats", new Object[] { target.getName() }));
-                CommandHelper.printGatheringSkills(target, sender);
-                CommandHelper.printCombatSkills(target, sender);
-                CommandHelper.printMiscSkills(target, sender);
+                CommandHelper.printGatheringSkills(target, profile, sender);
+                CommandHelper.printCombatSkills(target, profile, sender);
+                CommandHelper.printMiscSkills(target, profile, sender);
                 sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { mcmmoPlayer.getPowerLevel() }));
 
                 return true;
