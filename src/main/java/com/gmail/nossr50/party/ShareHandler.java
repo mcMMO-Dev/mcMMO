@@ -5,7 +5,6 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Users;
 
@@ -46,7 +45,6 @@ public final class ShareHandler {
 
             for (Player member : nearMembers) {
                 Users.getPlayer(member).addXp(skillType, newExp);
-                SkillTools.xpCheckSkill(skillType, member, Users.getProfile(member));
             }
         }
 
