@@ -392,9 +392,7 @@ public class mcMMO extends JavaPlugin {
             getCommand("addxp").setExecutor(new AddxpCommand());
         }
 
-        if (configInstance.getCommandAddLevelsEnabled()) {
-            getCommand("addlevels").setExecutor(new AddlevelsCommand());
-        }
+        CommandRegistrationHelper.registerAddlevelsCommand();
 
         if (configInstance.getCommandMmoeditEnabled()) {
             getCommand("mmoedit").setExecutor(new MmoeditCommand());

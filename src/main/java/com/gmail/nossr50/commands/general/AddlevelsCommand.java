@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -18,15 +17,14 @@ import com.gmail.nossr50.util.Users;
 public class AddlevelsCommand implements CommandExecutor{
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player player;
         PlayerProfile profile;
         int levels;
         SkillType skill;
-        String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"addlevels", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">" });
 
         switch (args.length) {
         case 2:
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addlevels") && !Permissions.mmoedit((Player) sender)) {
+            if (!Permissions.mmoedit(sender)) {
+                sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
 
@@ -37,10 +35,9 @@ public class AddlevelsCommand implements CommandExecutor{
                 }
 
                 if (Misc.isInt(args[1])) {
-                    player = (Player) sender;
                     levels = Integer.valueOf(args[1]);
                     skill = SkillTools.getSkillType(args[0]);
-                    profile = Users.getPlayer(player).getProfile();
+                    profile = Users.getPlayer((Player) sender).getProfile();
 
                     if (skill.equals(SkillType.ALL)) {
                         sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
@@ -50,16 +47,16 @@ public class AddlevelsCommand implements CommandExecutor{
                     }
 
                     profile.addLevels(skill, levels);
+                    return true;
                 }
             }
             else {
-                sender.sendMessage(usage);
+                return false;
             }
 
-            return true;
-
         case 3:
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addlevels.others") && !Permissions.mmoedit((Player) sender)) {
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.addlevels.others") && !Permissions.mmoedit(sender)) {
+                sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
 
@@ -69,15 +66,14 @@ public class AddlevelsCommand implements CommandExecutor{
             }
 
             if (!Misc.isInt(args[2])) {
-                sender.sendMessage(usage);
-                return true;
+                return false;
             }
 
             McMMOPlayer mcMMOPlayer = Users.getPlayer(args[0]);
             levels = Integer.valueOf(args[2]);
             skill = SkillTools.getSkillType(args[1]);
 
-            // If the mcMMOPlayer doesn't exists, create a temporary profile and check if it's present in the database, if not abort the process
+            // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
             if (mcMMOPlayer == null) {
                 profile = new PlayerProfile(args[0], false);
 
@@ -91,20 +87,18 @@ public class AddlevelsCommand implements CommandExecutor{
             }
             else {
                 profile = mcMMOPlayer.getProfile();
-                player = mcMMOPlayer.getPlayer();
+                Player player = mcMMOPlayer.getPlayer();
 
                 profile.addLevels(skill, levels);
 
-                // This is actually not necessary but it can avoid a string building
-                if (!player.isOnline()) {
-                    return true;
-                }
-
-                if (skill.equals(SkillType.ALL)) {
-                    player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", new Object[] {levels, Misc.getCapitalized(skill.toString())}));
+                // Check if the player is online before we try to send them a message.
+                if (player.isOnline()) {
+                    if (skill.equals(SkillType.ALL)) {
+                        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
+                    }
+                    else {
+                        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", new Object[] {levels, Misc.getCapitalized(skill.toString())}));
+                    }
                 }
             }
 
@@ -118,8 +112,7 @@ public class AddlevelsCommand implements CommandExecutor{
             return true;
 
         default:
-            sender.sendMessage(usage);
-            return true;
+            return false;
         }
     }
 }

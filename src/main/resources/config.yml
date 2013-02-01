@@ -362,8 +362,6 @@ Commands:
         Enabled: true
     addxp:
         Enabled: true
-    addlevels:
-        Enabled: true
     ptp:
         Enabled: true
         Cooldown: 30

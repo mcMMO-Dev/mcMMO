@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.command.PluginCommand;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.commands.general.AddlevelsCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
@@ -25,6 +26,8 @@ import com.gmail.nossr50.util.Misc;
 
 public final class CommandRegistrationHelper {
     private CommandRegistrationHelper() {};
+
+    private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
 
     public static void registerSkillCommands() {
         for (SkillType skill : SkillType.values()) {
@@ -48,7 +51,7 @@ public final class CommandRegistrationHelper {
                 command.setAliases(aliasList);
                 command.setDescription(LocaleLoader.getString("Commands.Description.Skill", new Object[] { Misc.getCapitalized(localizedName) }));
                 command.setPermission("mcmmo.skills." + commandName);
-                command.setPermissionMessage(LocaleLoader.getString("mcMMO.NoPermission"));
+                command.setPermissionMessage(permissionsMessage);
 
                 switch (skill) {
                 case ACROBATICS:
@@ -108,5 +111,14 @@ public final class CommandRegistrationHelper {
                 }
             }
         }
+    }
+
+    public static void registerAddlevelsCommand() {
+        PluginCommand command = mcMMO.p.getCommand("addlevels");
+        command.setDescription(LocaleLoader.getString("Commands.Description.addlevels"));
+        command.setPermission("mcmmo.commands.addlevels");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.3", new Object[] {"addlevels", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">" }));
+        command.setExecutor(new AddlevelsCommand());
     }
 }

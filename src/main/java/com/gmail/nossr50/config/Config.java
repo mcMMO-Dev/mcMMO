@@ -80,7 +80,6 @@ public class Config extends ConfigLoader {
     public boolean getCommandMCTopEnabled() { return config.getBoolean("Commands.mctop.Enabled", true); }
     public boolean getCommandMCRankEnabled() { return config.getBoolean("Commands.mcrank.Enabled", true); }
     public boolean getCommandAddXPEnabled() { return config.getBoolean("Commands.addxp.Enabled", true); }
-    public boolean getCommandAddLevelsEnabled() { return config.getBoolean("Commands.addlevels.Enabled", true); }
     public boolean getCommandMCAbilityEnabled() { return config.getBoolean("Commands.mcability.Enabled", true); }
     public boolean getCommandMCRefreshEnabled() { return config.getBoolean("Commands.mcrefresh.Enabled", true); }
     public boolean getCommandmcMMOEnabled() { return config.getBoolean("Commands.mcmmo.Enabled", true); }

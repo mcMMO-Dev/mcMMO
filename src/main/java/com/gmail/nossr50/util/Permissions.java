@@ -79,8 +79,8 @@ public final class Permissions {
      * @deprecated Use {@link #mmoeditCommand(player)} instead.
      */
     @Deprecated
-    public static boolean mmoedit(Player player) {
-        return hasPermission(player, "mcmmo.tools.mmoedit");
+    public static boolean mmoedit(CommandSender sender) {
+        return hasPermission(sender, "mcmmo.tools.mmoedit");
     }
 
     public static boolean mcgod(Player player) {
