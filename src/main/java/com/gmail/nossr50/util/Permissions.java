@@ -83,8 +83,12 @@ public final class Permissions {
         return hasPermission(sender, "mcmmo.tools.mmoedit");
     }
 
-    public static boolean mcgod(Player player) {
-        return hasPermission(player, "mcmmo.tools.mcgod");
+    /**
+     * @deprecated Use {@link #mcgodCommand(player)} instead.
+     */
+    @Deprecated
+    public static boolean mcgod(CommandSender sender) {
+        return hasPermission(sender, "mcmmo.tools.mcgod");
     }
 
     /*
@@ -568,6 +572,10 @@ public final class Permissions {
         return (hasPermission(player, "mcmmo.commands.mcability") || mcAbility(player));
     }
 
+    public static boolean mcgodCommand(CommandSender sender) {
+        return (hasPermission(sender, "mcmmo.commands.mcgod"));
+    }
+
     /**
      * @deprecated Use {@link #mcAbilityCommand(player)} instead.
      */
@@ -595,7 +603,6 @@ public final class Permissions {
     public static boolean skillReset(Player player) {
         return hasPermission(player, "mcmmo.skillreset");
     }
-
 
     /*
      * MCMMO.CHAT.*
