@@ -1,4 +1,4 @@
-package com.gmail.nossr50.commands.general;
+package com.gmail.nossr50.commands.admin;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

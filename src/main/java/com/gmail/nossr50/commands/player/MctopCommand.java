@@ -1,4 +1,4 @@
-package com.gmail.nossr50.commands.mc;
+package com.gmail.nossr50.commands.player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
