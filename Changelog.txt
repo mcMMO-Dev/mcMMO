@@ -58,6 +58,7 @@ Version 1.4.00-dev
  ! Changed the way party teleportation works. When using /ptp, the target player needs to confirm the teleport before it takes place. (Configurable)
  ! Changed BeastLore: Now also displays offline player names
  - Removed Party "master/apprentice" system. Replaced with the new party XP share feature.
+ - Removed unused "healthbar" files from the resources
 
 Version 1.3.14
  + Added new Hylian Luck skill to Herbalism.
