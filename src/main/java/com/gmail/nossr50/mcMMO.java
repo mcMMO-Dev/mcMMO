@@ -19,7 +19,6 @@ import org.bukkit.scheduler.BukkitScheduler;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.commands.CommandRegistrationHelper;
-import com.gmail.nossr50.commands.admin.AddlevelsCommand;
 import com.gmail.nossr50.commands.admin.AddxpCommand;
 import com.gmail.nossr50.commands.admin.McgodCommand;
 import com.gmail.nossr50.commands.admin.McrefreshCommand;
