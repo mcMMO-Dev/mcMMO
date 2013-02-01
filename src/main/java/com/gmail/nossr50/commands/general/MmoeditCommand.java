@@ -111,6 +111,8 @@ public class MmoeditCommand implements CommandExecutor {
 
                 profile.modifySkill(skill, newValue);
                 profile.save();
+
+                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", new Object[] {skillName, args[0]}));
             }
             return true;
 
