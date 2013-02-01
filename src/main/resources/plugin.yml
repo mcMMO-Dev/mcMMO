@@ -83,44 +83,18 @@ commands:
         aliases: []
         description: Reset the level of one or all of your skills
     excavation:
-        aliases: []
-        description: Detailed skill info
     herbalism:
-        aliases: []
-        description: Detailed skill info
     mining:
-        aliases: []
-        description: Detailed skill info
     woodcutting:
-        aliases: []
-        description: Detailed skill info
     axes:
-        aliases: []
-        description: Detailed skill info
     archery:
-        aliases: []
-        description: Detailed skill info
     swords:
-        aliases: []
-        description: Detailed skill info
     taming:
-        aliases: []
-        description: Detailed skill info
     unarmed:
-        aliases: []
-        description: Detailed skill info
     acrobatics:
-        aliases: []
-        description: Detailed skill info
     repair:
-        aliases: [mcrepair]
-        description: Detailed skill info
     fishing:
-        aliases: []
-        description: Detailed skill info
     smelting:
-        aliases: []
-        description: Detailed skill info
     a:
         aliases: [ac]
         description: Toggle Admin chat or send admin chat messages

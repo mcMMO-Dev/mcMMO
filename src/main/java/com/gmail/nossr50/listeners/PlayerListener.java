@@ -9,7 +9,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -346,29 +345,6 @@ public class PlayerListener implements Listener {
         else if (profile.getAdminChatMode()) {
             ChatManager.handleAdminChat(plugin, player.getDisplayName(), event.getMessage());
             event.setCancelled(true);
-        }
-    }
-
-    /**
-     * Monitor PlayerCommandPreprocess events.
-     *
-     * @param event The event to watch
-     */
-    @EventHandler(priority = EventPriority.LOWEST)
-    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
-        String message = event.getMessage();
-        String command = message.substring(1).split(" ")[0];
-        String lowerCaseCommand = command.toLowerCase();
-
-        if (plugin.commandIsAliased(lowerCaseCommand)) {
-            String commandAlias = plugin.getCommandAlias(lowerCaseCommand);
-
-            //TODO: We should find a better way to avoid string replacement where the alias is equals to the command
-            if (command.equals(commandAlias)) {
-                return;
-            }
-
-            event.setMessage(message.replace(command, plugin.getCommandAlias(lowerCaseCommand)));
         }
     }
 }

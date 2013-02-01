@@ -18,6 +18,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
+import com.gmail.nossr50.commands.CommandRegistrationHelper;
 import com.gmail.nossr50.commands.general.AddlevelsCommand;
 import com.gmail.nossr50.commands.general.AddxpCommand;
 import com.gmail.nossr50.commands.general.InspectCommand;
@@ -48,7 +49,6 @@ import com.gmail.nossr50.listeners.HardcoreListener;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.WorldListener;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mods.config.CustomArmorConfig;
 import com.gmail.nossr50.mods.config.CustomBlocksConfig;
 import com.gmail.nossr50.mods.config.CustomToolsConfig;
@@ -59,25 +59,12 @@ import com.gmail.nossr50.party.commands.PartyCommand;
 import com.gmail.nossr50.party.commands.PtpCommand;
 import com.gmail.nossr50.runnables.MobStoreCleaner;
 import com.gmail.nossr50.runnables.SaveTimer;
-import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
-import com.gmail.nossr50.skills.archery.ArcheryCommand;
-import com.gmail.nossr50.skills.axes.AxesCommand;
-import com.gmail.nossr50.skills.excavation.ExcavationCommand;
-import com.gmail.nossr50.skills.fishing.FishingCommand;
-import com.gmail.nossr50.skills.herbalism.HerbalismCommand;
-import com.gmail.nossr50.skills.mining.MiningCommand;
-import com.gmail.nossr50.skills.repair.RepairCommand;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.RepairManagerFactory;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.config.RepairConfigManager;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.runnables.SkillMonitor;
-import com.gmail.nossr50.skills.smelting.SmeltingCommand;
-import com.gmail.nossr50.skills.swords.SwordsCommand;
-import com.gmail.nossr50.skills.taming.TamingCommand;
-import com.gmail.nossr50.skills.unarmed.UnarmedCommand;
-import com.gmail.nossr50.skills.woodcutting.WoodcuttingCommand;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.spout.commands.MchudCommand;
@@ -96,7 +83,6 @@ public class mcMMO extends JavaPlugin {
     private final WorldListener worldListener = new WorldListener();
     private final HardcoreListener hardcoreListener = new HardcoreListener();
 
-    private HashMap<String, String> aliasMap = new HashMap<String, String>(); //Alias - Command
     private HashMap<Integer, String> tntTracker = new HashMap<Integer, String>();
     private HashMap<Block, String> furnaceTracker = new HashMap<Block, String>();
 
@@ -129,7 +115,7 @@ public class mcMMO extends JavaPlugin {
         setupFilePaths();
 
         // Check for Spout
-        if (getServer().getPluginManager().getPlugin("Spout") != null) {
+        if (getServer().getPluginManager().isPluginEnabled("Spout")) {
             spoutEnabled = true;
 
             SpoutConfig.getInstance();
@@ -337,38 +323,7 @@ public class mcMMO extends JavaPlugin {
      * Register the commands.
      */
     private void registerCommands() {
-        // Register aliases with the aliasmap (used in the playercommandpreprocessevent to ugly alias them to actual commands)
-        // Skills commands
-        aliasMap.put(LocaleLoader.getString("Acrobatics.SkillName").toLowerCase(), "acrobatics");
-        aliasMap.put(LocaleLoader.getString("Archery.SkillName").toLowerCase(), "archery");
-        aliasMap.put(LocaleLoader.getString("Axes.SkillName").toLowerCase(), "axes");
-        aliasMap.put(LocaleLoader.getString("Excavation.SkillName").toLowerCase(), "excavation");
-        aliasMap.put(LocaleLoader.getString("Fishing.SkillName").toLowerCase(), "fishing");
-        aliasMap.put(LocaleLoader.getString("Herbalism.SkillName").toLowerCase(), "herbalism");
-        aliasMap.put(LocaleLoader.getString("Mining.SkillName").toLowerCase(), "mining");
-        aliasMap.put(LocaleLoader.getString("Repair.SkillName").toLowerCase(), "repair");
-        aliasMap.put(LocaleLoader.getString("Smelting.SkillName").toLowerCase(), "smelting");
-        aliasMap.put(LocaleLoader.getString("Swords.SkillName").toLowerCase(), "swords");
-        aliasMap.put(LocaleLoader.getString("Taming.SkillName").toLowerCase(), "taming");
-        aliasMap.put(LocaleLoader.getString("Unarmed.SkillName").toLowerCase(), "unarmed");
-        aliasMap.put(LocaleLoader.getString("Woodcutting.SkillName").toLowerCase(), "woodcutting");
-
-        // Register commands
-        // Skills commands
-        getCommand("acrobatics").setExecutor(new AcrobaticsCommand());
-        getCommand("archery").setExecutor(new ArcheryCommand());
-        getCommand("axes").setExecutor(new AxesCommand());
-        getCommand("excavation").setExecutor(new ExcavationCommand());
-        getCommand("fishing").setExecutor(new FishingCommand());
-        getCommand("herbalism").setExecutor(new HerbalismCommand());
-        getCommand("mining").setExecutor(new MiningCommand());
-        getCommand("repair").setExecutor(new RepairCommand());
-        getCommand("smelting").setExecutor(new SmeltingCommand());
-        getCommand("swords").setExecutor(new SwordsCommand());
-        getCommand("taming").setExecutor(new TamingCommand());
-        getCommand("unarmed").setExecutor(new UnarmedCommand());
-        getCommand("woodcutting").setExecutor(new WoodcuttingCommand());
-
+        CommandRegistrationHelper.registerSkillCommands();
         Config configInstance = Config.getInstance();
 
         // mc* commands
@@ -461,26 +416,6 @@ public class mcMMO extends JavaPlugin {
         }
 
         getCommand("mchud").setExecutor(new MchudCommand());
-    }
-
-    /**
-     * Checks to see if the alias map contains the given key.
-     *
-     * @param command The command to check
-     * @return true if the command is in the map, false otherwise
-     */
-    public boolean commandIsAliased(String command) {
-        return aliasMap.containsKey(command);
-    }
-
-    /**
-     * Get the alias of a given command.
-     *
-     * @param command The command to retrieve the alias of
-     * @return the alias of the command
-     */
-    public String getCommandAlias(String command) {
-        return aliasMap.get(command);
     }
 
     /**
