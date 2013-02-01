@@ -17,6 +17,7 @@ import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Users;
@@ -118,8 +119,12 @@ public class InventoryListener implements Listener{
             ItemStack result = inventory.getResult();
     
             if (plugin.furnaceIsTracked(furnaceBlock) && result != null && ItemChecks.isSmelted(result)) {
-                SmeltingManager smeltingManager = new SmeltingManager(Users.getPlayer(plugin.getFurnacePlayer(furnaceBlock)));
-                smeltingManager.vanillaXPBoost(event);
+                McMMOPlayer mcMMOPlayer = Users.getPlayer(plugin.getFurnacePlayer(furnaceBlock));
+
+                if (event.getPlayer().equals(mcMMOPlayer.getPlayer())) {
+                    SmeltingManager smeltingManager = new SmeltingManager(mcMMOPlayer);
+                    smeltingManager.vanillaXPBoost(event);
+                }
             }
         }
     }
