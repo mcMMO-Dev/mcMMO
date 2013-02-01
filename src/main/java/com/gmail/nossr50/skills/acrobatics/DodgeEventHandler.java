@@ -2,9 +2,8 @@ package com.gmail.nossr50.skills.acrobatics;
 
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 
@@ -39,15 +38,15 @@ public class DodgeEventHandler extends AcrobaticsEventHandler {
 
     @Override
     protected void sendAbilityMessage() {
-        player.sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));
+        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));
     }
 
     @Override
-    protected void processXPGain(int xp) {
-        PlayerProfile profile = manager.getProfile();
+    protected void processXpGain(int xp) {
+        McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
 
-        if (System.currentTimeMillis() >= profile.getRespawnATS() + Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS) {
-            SkillTools.xpProcessing(player, profile, SkillType.ACROBATICS, xp);
+        if (System.currentTimeMillis() >= mcMMOPlayer.getProfile().getRespawnATS() + Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS) {
+            manager.getMcMMOPlayer().addXp(SkillType.ACROBATICS, xp);
         }
     }
 }

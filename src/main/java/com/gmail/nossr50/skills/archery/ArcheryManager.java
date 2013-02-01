@@ -5,24 +5,25 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
 public class ArcheryManager extends SkillManager {
-    public ArcheryManager (Player player) {
-        super(player, SkillType.ARCHERY);
+    public ArcheryManager (McMMOPlayer mcMMOPlayer) {
+        super(mcMMOPlayer, SkillType.ARCHERY);
     }
 
     public void distanceXpBonus(LivingEntity target) {
+        Player player = mcMMOPlayer.getPlayer();
         Location shooterLocation = player.getEyeLocation();
         Location targetLocation = target.getLocation();
         double squaredDistance = shooterLocation.distanceSquared(targetLocation);
 
         int bonusXp = (int) (squaredDistance * Archery.distanceXpModifer);
-        SkillTools.xpProcessing(player, profile, SkillType.ARCHERY, bonusXp);
+        mcMMOPlayer.addXp(SkillType.ARCHERY, bonusXp);
     }
 
     /**
@@ -63,7 +64,7 @@ public class ArcheryManager extends SkillManager {
      * @param event The event to modify.
      */
     public void skillShot(EntityDamageEvent event) {
-        if (skillLevel >= Archery.skillShotIncreaseLevel && Permissions.archeryBonus(player)) {
+        if (skillLevel >= Archery.skillShotIncreaseLevel && Permissions.archeryBonus(mcMMOPlayer.getPlayer())) {
             SkillShotEventHandler eventHandler = new SkillShotEventHandler(this, event);
 
             eventHandler.calculateDamageBonus();

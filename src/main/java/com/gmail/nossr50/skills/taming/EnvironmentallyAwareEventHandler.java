@@ -12,7 +12,7 @@ public class EnvironmentallyAwareEventHandler {
     private Wolf wolf;
 
     protected EnvironmentallyAwareEventHandler(TamingManager manager, EntityDamageEvent event) {
-        this.player = manager.getPlayer();
+        this.player = manager.getMcMMOPlayer().getPlayer();
         this.event = event;
         this.wolf = (Wolf) event.getEntity();
     }

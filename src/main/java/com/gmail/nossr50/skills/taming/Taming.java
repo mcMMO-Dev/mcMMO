@@ -23,8 +23,8 @@ public class Taming {
     public static int thickFurUnlockLevel = AdvancedConfig.getInstance().getThickFurUnlock();
     public static int thickFurModifier = AdvancedConfig.getInstance().getThickFurModifier();
 
-    public static int wolfXP = Config.getInstance().getTamingXPWolf();
-    public static int ocelotXP = Config.getInstance().getTamingXPOcelot();
+    public static int wolfXp = Config.getInstance().getTamingXPWolf();
+    public static int ocelotXp = Config.getInstance().getTamingXPOcelot();
 
     public static boolean pvpEnabled = Config.getInstance().getTamingPVP();
     public static boolean pveEnabled = Config.getInstance().getTamingPVE();

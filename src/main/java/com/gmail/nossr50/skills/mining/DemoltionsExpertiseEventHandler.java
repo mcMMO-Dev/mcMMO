@@ -4,7 +4,6 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 public class DemoltionsExpertiseEventHandler {
     private int skillLevel;
-
     private EntityDamageEvent event;
     private int damage;
     private double damageModifier;

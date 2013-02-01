@@ -1,23 +1,19 @@
 package com.gmail.nossr50.skills.runnables;
 
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.utilities.SkillType;
 
-public class GainXp implements Runnable {
-    private Player player;
-    private PlayerProfile profile;
+public class CombatXpGiver implements Runnable {
+    private McMMOPlayer mcMMOPlayer;
     private double baseXp;
     private SkillType skillType;
     private LivingEntity target;
     private int baseHealth;
 
-    public GainXp(Player player, PlayerProfile profile, SkillType skillType, double baseXp, LivingEntity target) {
-        this.player = player;
-        this.profile = profile;
+    public CombatXpGiver(McMMOPlayer mcMMOPlayer, SkillType skillType, double baseXp, LivingEntity target) {
+        this.mcMMOPlayer = mcMMOPlayer;
         this.skillType = skillType;
         this.baseXp = baseXp;
         this.target = target;
@@ -39,6 +35,6 @@ public class GainXp implements Runnable {
             damage += health;
         }
 
-        SkillTools.xpProcessing(player, profile, skillType, (int) (damage * baseXp));
+        mcMMOPlayer.addXp(skillType, (int) (damage * baseXp));
     }
 }

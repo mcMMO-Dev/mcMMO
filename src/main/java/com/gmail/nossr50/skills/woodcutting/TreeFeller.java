@@ -12,16 +12,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.mods.datatypes.CustomBlock;
 import com.gmail.nossr50.skills.utilities.CombatTools;
-import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.skills.woodcutting.Woodcutting.ExperienceGainMethod;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Users;
 
 public final class TreeFeller {
     private static boolean treeFellerReachedThreshold = false;
@@ -31,10 +30,10 @@ public final class TreeFeller {
     /**
      * Begins Tree Feller
      *
-     * @param player Player using Tree Feller
+     * @param mcMMOPlayer Player using Tree Feller
      * @param block Block being broken
      */
-    public static void process(Player player, Block block) {
+    public static void process(McMMOPlayer mcMMOPlayer, Block block) {
         List<Block> treeFellerBlocks = new ArrayList<Block>();
 
         processRecursively(block, treeFellerBlocks);
@@ -43,13 +42,15 @@ public final class TreeFeller {
         if (treeFellerReachedThreshold) {
             treeFellerReachedThreshold = false;
 
-            player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFellerThreshold"));
+            mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFellerThreshold"));
             return;
         }
 
+        Player player = mcMMOPlayer.getPlayer();
+
         // If the tool can't sustain the durability loss
-        if (!handleDurabilityLoss(treeFellerBlocks, player)) {
-            player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFeller.Splinter"));
+        if (!handleDurabilityLoss(treeFellerBlocks, player.getItemInHand())) {
+            mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFeller.Splinter"));
 
             int health = player.getHealth();
 
@@ -60,7 +61,7 @@ public final class TreeFeller {
             return;
         }
 
-        dropBlocks(treeFellerBlocks, player);
+        dropBlocks(treeFellerBlocks, mcMMOPlayer);
     }
 
     /**
@@ -129,11 +130,10 @@ public final class TreeFeller {
      * Handles the durability loss
      *
      * @param treeFellerBlocks List of blocks to be removed
-     * @param player Player using the ability
+     * @param inHand tool being used
      * @return True if the tool can sustain the durability loss
      */
-    private static boolean handleDurabilityLoss(List<Block> treeFellerBlocks, Player player) {
-        ItemStack inHand = player.getItemInHand();
+    private static boolean handleDurabilityLoss(List<Block> treeFellerBlocks, ItemStack inHand) {
         Material inHandMaterial = inHand.getType();
 
         if (inHandMaterial != Material.AIR) {
@@ -164,19 +164,19 @@ public final class TreeFeller {
      * Handles the dropping of blocks
      *
      * @param treeFellerBlocks List of blocks to be dropped
-     * @param player Player using the ability
+     * @param mcMMOPlayer Player using the ability
      */
-    private static void dropBlocks(List<Block> treeFellerBlocks, Player player) {
+    private static void dropBlocks(List<Block> treeFellerBlocks, McMMOPlayer mcMMOPlayer) {
         int xp = 0;
 
         for (Block block : treeFellerBlocks) {
-            if (!Misc.blockBreakSimulate(block, player, true)) {
+            if (!Misc.blockBreakSimulate(block, mcMMOPlayer.getPlayer(), true)) {
                 break; // TODO: Shouldn't we use continue instead?
             }
 
             switch (block.getType()) {
             case LOG:
-                Woodcutting.checkForDoubleDrop(player, block);
+                Woodcutting.checkForDoubleDrop(mcMMOPlayer, block);
 
                 try {
                     xp += Woodcutting.getExperienceFromLog(block, ExperienceGainMethod.TREE_FELLER);
@@ -192,7 +192,7 @@ public final class TreeFeller {
                 break;
             default:
                 if (ModChecks.isCustomLogBlock(block)) {
-                    Woodcutting.checkForDoubleDrop(player, block);
+                    Woodcutting.checkForDoubleDrop(mcMMOPlayer, block);
 
                     CustomBlock customBlock = ModChecks.getCustomBlock(block);
                     xp = customBlock.getXpGain();
@@ -220,6 +220,6 @@ public final class TreeFeller {
             block.setType(Material.AIR);
         }
 
-        SkillTools.xpProcessing(player, Users.getProfile(player), SkillType.WOODCUTTING, xp);
+        mcMMOPlayer.addXp(SkillType.WOODCUTTING, xp);
     }
 }

@@ -3,10 +3,10 @@ package com.gmail.nossr50.skills.smelting;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.utilities.SkillType;
@@ -15,13 +15,11 @@ import com.gmail.nossr50.util.Permissions;
 
 public class FluxMiningEventHandler {
     private SmeltingManager manager;
-    private Player player;
     private BlockBreakEvent event;
     private Block block;
 
     protected FluxMiningEventHandler(SmeltingManager manager, BlockBreakEvent event) {
         this.manager = manager;
-        this.player = manager.getPlayer();
         this.event = event;
         this.block = event.getBlock();
     }
@@ -47,10 +45,13 @@ public class FluxMiningEventHandler {
         }
 
         Location location = block.getLocation();
+
         Misc.dropItem(location, item);
 
-        if (Permissions.secondSmelt(player)) {
-            int chance = (int) ((Mining.doubleDropsMaxChance / Mining.doubleDropsMaxLevel) * (Misc.skillCheck(manager.getProfile().getSkillLevel(SkillType.MINING), Mining.doubleDropsMaxLevel)));
+        McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
+
+        if (Permissions.secondSmelt(mcMMOPlayer.getPlayer())) {
+            int chance = (int) ((Mining.doubleDropsMaxChance / Mining.doubleDropsMaxLevel) * (Misc.skillCheck(mcMMOPlayer.getProfile().getSkillLevel(SkillType.MINING), Mining.doubleDropsMaxLevel)));
             Misc.randomDropItem(location, item, chance);
         }
     }
@@ -61,6 +62,6 @@ public class FluxMiningEventHandler {
     }
 
     protected void sendAbilityMessage() {
-        player.sendMessage(LocaleLoader.getString("Smelting.FluxMining.Success"));
+        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Smelting.FluxMining.Success"));
     }
 }

@@ -34,7 +34,7 @@ public class CriticalHitEventHandler {
     }
 
     protected void sendAbilityMessages() {
-        manager.getPlayer().sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
+        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
 
         if (defender instanceof Player) {
             ((Player) defender).sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));

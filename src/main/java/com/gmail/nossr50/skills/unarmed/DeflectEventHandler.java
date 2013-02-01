@@ -22,7 +22,7 @@ public class DeflectEventHandler {
     }
 
     protected void sendAbilityMessage() {
-        manager.getPlayer().sendMessage(LocaleLoader.getString("Combat.ArrowDeflect"));
+        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Combat.ArrowDeflect"));
     }
 
     protected void cancelEvent() {

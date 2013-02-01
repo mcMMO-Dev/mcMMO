@@ -14,29 +14,22 @@ import com.gmail.nossr50.util.Misc;
 
 public class SuperBreakerEventHandler {
     private MiningManager manager;
-    private Player player;
-
     private Block block;
     private Material blockType;
     private boolean customBlock;
-
     private ItemStack heldItem;
     private int tier;
-
     private int durabilityLoss;
     private FakePlayerAnimationEvent armswing;
 
     protected SuperBreakerEventHandler (MiningManager manager, Block block) {
         this.manager = manager;
-        this.player = manager.getPlayer();
-
         this.block = block;
         this.blockType = block.getType();
         this.customBlock = ModChecks.isCustomMiningBlock(block);
-
+        Player player = manager.getMcMMOPlayer().getPlayer();
         this.heldItem = player.getItemInHand();
         this.tier = Misc.getTier(heldItem);
-
         this.armswing = new FakePlayerAnimationEvent(player);
 
         calculateDurabilityLoss();
@@ -55,7 +48,7 @@ public class SuperBreakerEventHandler {
     }
 
     protected void playSound() {
-        player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
+        manager.getMcMMOPlayer().getPlayer().playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
     }
 
     /**

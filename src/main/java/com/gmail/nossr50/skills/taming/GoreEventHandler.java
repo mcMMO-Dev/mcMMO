@@ -35,7 +35,7 @@ public class GoreEventHandler {
             ((Player) entity).sendMessage(LocaleLoader.getString("Combat.StruckByGore"));
         }
 
-        manager.getPlayer().sendMessage(LocaleLoader.getString("Combat.Gore"));
+        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Combat.Gore"));
     }
 
     protected void applyBleed() {

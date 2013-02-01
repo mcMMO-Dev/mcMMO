@@ -18,12 +18,11 @@ public class ImpactEventHandler {
     private short durabilityDamage = 1;
     private EntityEquipment equipment;
     private ItemStack[] armorContents;
-
     protected LivingEntity defender;
 
     public ImpactEventHandler(AxeManager manager, EntityDamageByEntityEvent event, LivingEntity defender) {
         this.manager = manager;
-        this.player = manager.getPlayer();
+        this.player = manager.getMcMMOPlayer().getPlayer();
         this.event = event;
         this.defender = defender;
         this.equipment = defender.getEquipment();
@@ -31,7 +30,7 @@ public class ImpactEventHandler {
     }
 
     protected void damageArmor() {
-        /* Every 50 Skill Levels you gain 1 durability damage (default values) */
+        // Every 50 Skill Levels you gain 1 durability damage (default values)
         durabilityDamage += (short) (manager.getSkillLevel() / Axes.impactIncreaseLevel);
 
         for (ItemStack armor : armorContents) {

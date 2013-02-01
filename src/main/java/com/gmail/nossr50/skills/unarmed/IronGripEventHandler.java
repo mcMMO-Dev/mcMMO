@@ -25,6 +25,6 @@ public class IronGripEventHandler {
 
     protected void sendAbilityMessages() {
         defender.sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Defender"));
-        manager.getPlayer().sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Attacker"));
+        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Attacker"));
     }
 }

@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.taming;
 
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
@@ -11,18 +10,15 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
 public class TamingManager extends SkillManager {
-    private Config configInstance;
-
-    public TamingManager (Player player) {
-        super(player, SkillType.TAMING);
-        this.configInstance = Config.getInstance();
+    public TamingManager(McMMOPlayer mcMMOPlayer) {
+        super(mcMMOPlayer, SkillType.TAMING);
     }
 
     /**
@@ -37,11 +33,11 @@ public class TamingManager extends SkillManager {
 
         switch (event.getEntityType()) {
         case WOLF:
-            SkillTools.xpProcessing(player, profile, SkillType.TAMING, Taming.wolfXP);
+            mcMMOPlayer.addXp(SkillType.TAMING, Taming.wolfXp);
             break;
 
         case OCELOT:
-            SkillTools.xpProcessing(player, profile, SkillType.TAMING, Taming.ocelotXP);
+            mcMMOPlayer.addXp(SkillType.TAMING, Taming.ocelotXp);
             break;
 
         default:
@@ -128,14 +124,14 @@ public class TamingManager extends SkillManager {
      * Summon an ocelot to your side.
      */
     public void summonOcelot() {
-        callOfTheWild(EntityType.OCELOT, configInstance.getTamingCOTWOcelotCost());
+        callOfTheWild(EntityType.OCELOT, Config.getInstance().getTamingCOTWOcelotCost());
     }
 
     /**
      * Summon a wolf to your side.
      */
     public void summonWolf() {
-        callOfTheWild(EntityType.WOLF, configInstance.getTamingCOTWWolfCost());
+        callOfTheWild(EntityType.WOLF, Config.getInstance().getTamingCOTWWolfCost());
     }
 
     /**
@@ -144,7 +140,7 @@ public class TamingManager extends SkillManager {
      * @param livingEntity The entity to examine
      */
     public void beastLore(LivingEntity livingEntity) {
-        BeastLoreEventHandler eventHandler = new BeastLoreEventHandler(player, livingEntity);
+        BeastLoreEventHandler eventHandler = new BeastLoreEventHandler(mcMMOPlayer.getPlayer(), livingEntity);
         eventHandler.sendInspectMessage();
     }
 
@@ -155,11 +151,11 @@ public class TamingManager extends SkillManager {
      * @param summonAmount The amount of material needed to summon the entity
      */
     private void callOfTheWild(EntityType type, int summonAmount) {
-        if (!Permissions.callOfTheWild(player)) {
+        if (!Permissions.callOfTheWild(mcMMOPlayer.getPlayer())) {
             return;
         }
 
-        CallOfTheWildEventHandler eventHandler = new CallOfTheWildEventHandler(player, type, summonAmount);
+        CallOfTheWildEventHandler eventHandler = new CallOfTheWildEventHandler(mcMMOPlayer.getPlayer(), type, summonAmount);
 
         ItemStack inHand = eventHandler.inHand;
         int inHandAmount = inHand.getAmount();
@@ -186,7 +182,7 @@ public class TamingManager extends SkillManager {
      * @param cause The damage cause of the event
      */
     private void environmentallyAware(EntityDamageEvent event, DamageCause cause) {
-        if (skillLevel >= Taming.environmentallyAwareUnlockLevel && Permissions.environmentallyAware(player)) {
+        if (skillLevel >= Taming.environmentallyAwareUnlockLevel && Permissions.environmentallyAware(mcMMOPlayer.getPlayer())) {
             EnvironmentallyAwareEventHandler eventHandler = new EnvironmentallyAwareEventHandler(this, event);
 
             switch (cause) {
@@ -214,7 +210,7 @@ public class TamingManager extends SkillManager {
      * @param cause The damage cause of the event
      */
     private void thickFur(EntityDamageEvent event, DamageCause cause) {
-        if (skillLevel >= Taming.thickFurUnlockLevel && Permissions.thickFur(player)) {
+        if (skillLevel >= Taming.thickFurUnlockLevel && Permissions.thickFur(mcMMOPlayer.getPlayer())) {
             ThickFurEventHandler eventHandler = new ThickFurEventHandler(event, cause);
             eventHandler.modifyEventDamage();
         }
@@ -226,7 +222,7 @@ public class TamingManager extends SkillManager {
      * @param event The event to modify
      */
     private void shockProof(EntityDamageEvent event) {
-        if (skillLevel >= Taming.shockProofUnlockLevel && Permissions.shockProof(player)) {
+        if (skillLevel >= Taming.shockProofUnlockLevel && Permissions.shockProof(mcMMOPlayer.getPlayer())) {
             ShockProofEventHandler eventHandler = new ShockProofEventHandler(event);
             eventHandler.modifyEventDamage();
         }

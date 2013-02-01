@@ -7,7 +7,6 @@ import com.gmail.nossr50.util.Misc;
 
 public abstract class AcrobaticsEventHandler {
     protected AcrobaticsManager manager;
-    protected Player player;
 
     protected EntityDamageEvent event;
     protected int damage;
@@ -16,7 +15,6 @@ public abstract class AcrobaticsEventHandler {
 
     protected AcrobaticsEventHandler(AcrobaticsManager manager, EntityDamageEvent event) {
         this.manager = manager;
-        this.player = manager.getPlayer();
         this.event = event;
         this.damage = event.getDamage();
     }
@@ -42,9 +40,9 @@ public abstract class AcrobaticsEventHandler {
     protected abstract void sendAbilityMessage();
 
     /**
-     * Process XP gain from this event.
+     * Process Xp gain from this event.
      */
-    protected abstract void processXPGain(int xp);
+    protected abstract void processXpGain(int xp);
 
     /**
      * Check to ensure you're not gaining XP after you die.
@@ -53,6 +51,8 @@ public abstract class AcrobaticsEventHandler {
      * @return true if the damage is fatal, false otherwise
      */
     protected boolean isFatal(int damage) {
+        Player player = manager.getMcMMOPlayer().getPlayer();
+
         if (Misc.isNPCPlayer(player) || player.getHealth() - damage < 1) {
             return true;
         }

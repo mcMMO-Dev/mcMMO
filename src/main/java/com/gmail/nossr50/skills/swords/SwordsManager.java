@@ -1,15 +1,15 @@
 package com.gmail.nossr50.skills.swords;
 
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 
 public class SwordsManager extends SkillManager {
-    public SwordsManager (Player player) {
-        super(player, SkillType.SWORDS);
+    public SwordsManager(McMMOPlayer mcMMOPlayer) {
+        super(mcMMOPlayer, SkillType.SWORDS);
     }
 
     /**

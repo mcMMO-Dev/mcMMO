@@ -2,21 +2,21 @@ package com.gmail.nossr50.skills.mining;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
 public class MiningManager extends SkillManager{
-    public MiningManager (Player player) {
-        super(player, SkillType.MINING);
+    public MiningManager (McMMOPlayer mcMMOPlayer) {
+        super(mcMMOPlayer, SkillType.MINING);
     }
 
     /**
@@ -33,11 +33,11 @@ public class MiningManager extends SkillManager{
 
         eventHandler.targetTNT();
 
-        if (eventHandler.block.getType() != Material.TNT) {
+        if (eventHandler.getBlock().getType() != Material.TNT) {
             return;
         }
 
-        if (!Misc.blockBreakSimulate(eventHandler.block, player, true)) {
+        if (!Misc.blockBreakSimulate(eventHandler.getBlock(), mcMMOPlayer.getPlayer(), true)) {
             return;
         }
 
@@ -56,7 +56,7 @@ public class MiningManager extends SkillManager{
      * @param event Event whose explosion is being processed
      */
     public void blastMiningDropProcessing(EntityExplodeEvent event) {
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCPlayer(mcMMOPlayer.getPlayer())) {
             return;
         }
 
@@ -93,7 +93,7 @@ public class MiningManager extends SkillManager{
      * @param event Event whose explosion radius is being changed
      */
     public void biggerBombs(ExplosionPrimeEvent event) {
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCPlayer(mcMMOPlayer.getPlayer())) {
             return;
         }
 
@@ -112,7 +112,7 @@ public class MiningManager extends SkillManager{
         MiningBlockEventHandler eventHandler = new MiningBlockEventHandler(this, block);
         eventHandler.processXPGain();
 
-        if (!Permissions.miningDoubleDrops(player)) {
+        if (!Permissions.miningDoubleDrops(mcMMOPlayer.getPlayer())) {
             return;
         }
 
@@ -129,7 +129,7 @@ public class MiningManager extends SkillManager{
      * @param block The block being affected
      */
     public void superBreakerBlockCheck(Block block) {
-        if (mcMMO.placeStore.isTrue(block) || !Misc.blockBreakSimulate(block, player, true)) {
+        if (mcMMO.placeStore.isTrue(block) || !Misc.blockBreakSimulate(block, mcMMOPlayer.getPlayer(), true)) {
             return;
         }
 

@@ -22,6 +22,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
@@ -137,9 +138,10 @@ public class BlockListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        PlayerProfile profile = Users.getProfile(player);
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+        PlayerProfile profile = mcMMOPlayer.getProfile();
 
-        if (Misc.isNPCPlayer(player, profile)) {
+        if (Misc.isNPCPlayer(player, mcMMOPlayer.getProfile())) {
             return;
         }
 
@@ -158,10 +160,10 @@ public class BlockListener implements Listener {
              * Instead, we check it inside the drops handler.
              */
             if (Permissions.herbalism(player)) {
-                Herbalism.herbalismProcCheck(block, player, event, plugin); //Double drops
+                Herbalism.herbalismProcCheck(block, mcMMOPlayer, event, plugin); //Double drops
 
                 if (profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
-                    Herbalism.herbalismProcCheck(block, player, event, plugin); //Triple drops
+                    Herbalism.herbalismProcCheck(block, mcMMOPlayer, event, plugin); //Triple drops
                 }
             }
         }
@@ -170,12 +172,12 @@ public class BlockListener implements Listener {
         else if (BlockChecks.canBeSuperBroken(block) && Permissions.mining(player) && !mcMMO.placeStore.isTrue(block)) {
             if (Mining.requiresTool) {
                 if (ItemChecks.isPickaxe(heldItem)) {
-                    MiningManager miningManager = new MiningManager(player);
+                    MiningManager miningManager = new MiningManager(mcMMOPlayer);
                     miningManager.miningBlockCheck(block);
                 }
             }
             else {
-                MiningManager miningManager = new MiningManager(player);
+                MiningManager miningManager = new MiningManager(mcMMOPlayer);
                 miningManager.miningBlockCheck(block);
             }
         }
@@ -183,16 +185,16 @@ public class BlockListener implements Listener {
         /* WOOD CUTTING */
         else if (BlockChecks.isLog(block) && Permissions.woodcutting(player) && !mcMMO.placeStore.isTrue(block)) {
             if (profile.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemChecks.isAxe(heldItem)) {
-                Woodcutting.beginTreeFeller(event);
+                Woodcutting.beginTreeFeller(mcMMOPlayer, block);
             }
             else {
                 if (Config.getInstance().getWoodcuttingRequiresTool()) {
                     if (ItemChecks.isAxe(heldItem)) {
-                        Woodcutting.beginWoodcutting(player, block);
+                        Woodcutting.beginWoodcutting(mcMMOPlayer, block);
                     }
                 }
                 else {
-                    Woodcutting.beginWoodcutting(player, block);
+                    Woodcutting.beginWoodcutting(mcMMOPlayer, block);
                 }
             }
         }
@@ -201,11 +203,11 @@ public class BlockListener implements Listener {
         else if (BlockChecks.canBeGigaDrillBroken(block) && Permissions.excavation(player) && !mcMMO.placeStore.isTrue(block)) {
             if (Excavation.requiresTool) {
                 if (ItemChecks.isShovel(heldItem)) {
-                    Excavation.excavationProcCheck(block, player);
+                    Excavation.excavationProcCheck(block, mcMMOPlayer);
                 }
             }
             else {
-                Excavation.excavationProcCheck(block, player);
+                Excavation.excavationProcCheck(block, mcMMOPlayer);
             }
         }
 
@@ -239,7 +241,7 @@ public class BlockListener implements Listener {
             Herbalism.hylianLuck(block, player, event);
         }
         else if (BlockChecks.canBeFluxMined(block) && ItemChecks.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH) && Permissions.fluxMining(player) && !mcMMO.placeStore.isTrue(block)) {
-            SmeltingManager smeltingManager = new SmeltingManager(player);
+            SmeltingManager smeltingManager = new SmeltingManager(Users.getPlayer(player));
             smeltingManager.fluxMining(event);
         }
     }
@@ -311,7 +313,8 @@ public class BlockListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        PlayerProfile profile = Users.getProfile(player);
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+        PlayerProfile profile = mcMMOPlayer.getProfile();
 
         if (Misc.isNPCPlayer(player, profile)) {
             return;
@@ -332,12 +335,12 @@ public class BlockListener implements Listener {
             if (Excavation.requiresTool) {
                 if (ItemChecks.isShovel(heldItem)) {
                     event.setInstaBreak(true);
-                    Excavation.gigaDrillBreaker(player, block);
+                    Excavation.gigaDrillBreaker(mcMMOPlayer, block);
                 }
             }
             else {
                 event.setInstaBreak(true);
-                Excavation.gigaDrillBreaker(player, block);
+                Excavation.gigaDrillBreaker(mcMMOPlayer, block);
             }
         }
         else if (profile.getAbilityMode(AbilityType.BERSERK) && SkillTools.triggerCheck(player, block, AbilityType.BERSERK)) {
@@ -351,7 +354,7 @@ public class BlockListener implements Listener {
             player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
         }
         else if (profile.getAbilityMode(AbilityType.SUPER_BREAKER) && SkillTools.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
-            MiningManager miningManager = new MiningManager(player);
+            MiningManager miningManager = new MiningManager(mcMMOPlayer);
 
             if (Mining.requiresTool) {
                 if (ItemChecks.isPickaxe(heldItem)) {

@@ -91,7 +91,7 @@ public class PlayerListener implements Listener {
 
         switch (event.getState()) {
         case CAUGHT_FISH:
-            Fishing.beginFishing(player, skillLevel, event);
+            Fishing.beginFishing(Users.getPlayer(player), skillLevel, event);
             break;
 
         case CAUGHT_ENTITY:
@@ -200,31 +200,28 @@ public class PlayerListener implements Listener {
 
             /* REPAIR CHECKS */
             if (blockID == Repair.anvilID && Permissions.repair(player) && mcMMO.repairManager.isRepairable(heldItem)) {
-                mcMMO.repairManager.handleRepair(player, heldItem);
+                mcMMO.repairManager.handleRepair(Users.getPlayer(player), heldItem);
                 event.setCancelled(true);
                 player.updateInventory();
             }
-
             /* SALVAGE CHECKS */
             else if (blockID == Salvage.anvilID && Permissions.salvage(player) && Salvage.isSalvageable(heldItem)) {
                 Salvage.handleSalvage(player, block.getLocation(), heldItem);
                 event.setCancelled(true);
                 player.updateInventory();
             }
-
             /* BLAST MINING CHECK */
             else if (player.isSneaking() && Permissions.blastMining(player) && heldItem.getTypeId() == BlastMining.detonatorID) {
-                MiningManager miningManager = new MiningManager(player);
+                MiningManager miningManager = new MiningManager(Users.getPlayer(player));
                 miningManager.detonate(event);
             }
 
             break;
 
         case RIGHT_CLICK_AIR:
-
             /* BLAST MINING CHECK */
             if (player.isSneaking() && Permissions.blastMining(player) && heldItem.getTypeId() == BlastMining.detonatorID) {
-                MiningManager miningManager = new MiningManager(player);
+                MiningManager miningManager = new MiningManager(Users.getPlayer(player));
                 miningManager.detonate(event);
             }
 
@@ -305,11 +302,11 @@ public class PlayerListener implements Listener {
                 Material type = heldItem.getType();
 
                 if (type == Material.RAW_FISH) {
-                    TamingManager tamingManager = new TamingManager(player);
+                    TamingManager tamingManager = new TamingManager(Users.getPlayer(player));
                     tamingManager.summonOcelot();
                 }
                 else if (type == Material.BONE) {
-                    TamingManager tamingManager = new TamingManager(player);
+                    TamingManager tamingManager = new TamingManager(Users.getPlayer(player));
                     tamingManager.summonWolf();
                 }
             }

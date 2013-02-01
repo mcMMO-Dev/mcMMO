@@ -6,8 +6,7 @@ import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -28,8 +27,6 @@ public class SmeltResourceEventHandler {
     }
 
     protected void handleXPGain() {
-        Player player = manager.getPlayer();
-        PlayerProfile profile = manager.getProfile();
         Material sourceType = event.getSource().getType();
         int xp = 0;
 
@@ -67,12 +64,15 @@ public class SmeltResourceEventHandler {
             break;
         }
 
+        McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
+        Player player = mcMMOPlayer.getPlayer();
+
         if (Permissions.mining(player)) {
-            SkillTools.xpProcessing(player, profile, SkillType.MINING, xp / 2);
+            mcMMOPlayer.addXp(SkillType.MINING, xp / 2);
         }
 
         if (Permissions.repair(player)) {
-            SkillTools.xpProcessing(player, profile, SkillType.REPAIR, xp / 2);
+            mcMMOPlayer.addXp(SkillType.REPAIR, xp / 2);
         }
     }
 

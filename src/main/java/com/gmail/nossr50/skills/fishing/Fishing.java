@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.TreasuresConfig;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
@@ -22,7 +23,6 @@ import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
 public final class Fishing {
     static final AdvancedConfig ADVANCED_CONFIG = AdvancedConfig.getInstance();
@@ -103,12 +103,13 @@ public final class Fishing {
     /**
      * Begins Fishing
      *
-     * @param player Player fishing
+     * @param mcMMOPlayer Player fishing
      * @param skillLevel Fishing level of the player
      * @param event Event to process
      */
-    public static void beginFishing(Player player, int skillLevel, PlayerFishEvent event) {
+    public static void beginFishing(McMMOPlayer mcMMOPlayer, int skillLevel, PlayerFishEvent event) {
         int treasureXp = 0;
+        Player player = mcMMOPlayer.getPlayer();
         FishingTreasure treasure = checkForTreasure(player, skillLevel);
 
         if (treasure != null) {
@@ -127,7 +128,7 @@ public final class Fishing {
             caught.setItemStack(treasureDrop);
         }
 
-        SkillTools.xpProcessing(player, Users.getProfile(player), SkillType.FISHING, Config.getInstance().getFishingBaseXP() + treasureXp);
+        mcMMOPlayer.addXp(SkillType.FISHING, Config.getInstance().getFishingBaseXP() + treasureXp);
         event.setExpToDrop(event.getExpToDrop() * getVanillaXpMultiplier(skillLevel));
     }
 

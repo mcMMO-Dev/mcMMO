@@ -10,21 +10,19 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
 
 public class BlastMiningDropEventHandler {
     private MiningManager manager;
     private int skillLevel;
-
     private EntityExplodeEvent event;
     private float yield;
     private List<Block> blocks;
-
     private List<Block> ores = new ArrayList<Block>();
     private List<Block> debris = new ArrayList<Block>();
     private List<Block> droppedOres = new ArrayList<Block>();
-
     private float oreBonus;
     private float debrisReduction;
     private int dropMultiplier;
@@ -36,7 +34,6 @@ public class BlastMiningDropEventHandler {
         this.event = event;
         this.yield = event.getYield();
         this.blocks = event.blockList();
-
     }
 
     protected void sortExplosionBlocks() {
@@ -51,9 +48,11 @@ public class BlastMiningDropEventHandler {
     }
 
     protected void processXPGain() {
+        McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
+
         for (Block block : droppedOres) {
             if (!mcMMO.placeStore.isTrue(block)) {
-                Mining.miningXP(manager.getPlayer(), manager.getProfile(), block, block.getType());
+                Mining.miningXP(mcMMOPlayer, block, block.getType());
             }
         }
     }

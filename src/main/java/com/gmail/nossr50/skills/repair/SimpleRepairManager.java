@@ -9,13 +9,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.events.skills.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
 public class SimpleRepairManager implements RepairManager {
     private HashMap<Integer, Repairable> repairables;
@@ -57,12 +57,8 @@ public class SimpleRepairManager implements RepairManager {
     }
 
     @Override
-    public void handleRepair(Player player, ItemStack item) {
-        // Load some variables for use
-        PlayerProfile profile = Users.getProfile(player);
-        short startDurability = item.getDurability();
-        PlayerInventory inventory = player.getInventory();
-        int skillLevel = profile.getSkillLevel(SkillType.REPAIR);
+    public void handleRepair(McMMOPlayer mcMMOPlayer, ItemStack item) {
+        Player player = mcMMOPlayer.getPlayer();
         Repairable repairable = repairables.get(item.getTypeId());
 
         // Permissions checks on material and item types
@@ -76,11 +72,15 @@ public class SimpleRepairManager implements RepairManager {
             return;
         }
 
+        int skillLevel = mcMMOPlayer.getProfile().getSkillLevel(SkillType.REPAIR);
+
         // Level check
         if (skillLevel < repairable.getMinimumLevel()) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.Adept", new Object[] { String.valueOf(repairable.getMinimumLevel()), Misc.prettyItemString(item.getTypeId()) } ));
             return;
         }
+
+        PlayerInventory inventory = player.getInventory();
 
         // Check if they have the proper material to repair with
         if (!inventory.contains(repairable.getRepairMaterialId())) {
@@ -94,6 +94,8 @@ public class SimpleRepairManager implements RepairManager {
             player.sendMessage(message);
             return;
         }
+
+        short startDurability = item.getDurability();
 
         // Do not repair if at full durability
         if (startDurability <= 0) {
@@ -137,7 +139,7 @@ public class SimpleRepairManager implements RepairManager {
         }
 
         // Handle the enchants
-        if (Repair.advancedConfig.getArcaneForgingEnchantLossEnabled() && !Permissions.arcaneBypass(player)) {
+        if (AdvancedConfig.getInstance().getArcaneForgingEnchantLossEnabled() && !Permissions.arcaneBypass(player)) {
             // Generalize away enchantment work
             Repair.addEnchants(player, item);
         }
@@ -146,7 +148,7 @@ public class SimpleRepairManager implements RepairManager {
         removeOneFrom(inventory, repairItemLocation);
 
         // Give out XP like candy
-        Repair.xpHandler(player, profile, startDurability, newDurability, repairable.getXpMultiplier());
+        Repair.xpHandler(mcMMOPlayer, startDurability, newDurability, repairable.getXpMultiplier());
 
         // Repair the item!
         item.setDurability(newDurability);

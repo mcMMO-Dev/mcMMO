@@ -18,6 +18,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.TreasuresConfig;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -141,11 +142,13 @@ public class Herbalism {
      * Check for extra Herbalism drops.
      *
      * @param block The block to check for extra drops
-     * @param player The player getting extra drops
+     * @param mcMMOPlayer The player getting extra drops
      * @param event The event to use for Green Thumb
      * @param plugin mcMMO plugin instance
      */
-    public static void herbalismProcCheck(final Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
+    public static void herbalismProcCheck(final Block block, McMMOPlayer mcMMOPlayer, BlockBreakEvent event, mcMMO plugin) {
+        Player player = mcMMOPlayer.getPlayer();
+
         if (Config.getInstance().getHerbalismAFKDisabled() && player.isInsideVehicle()) {
             return;
         }
@@ -209,7 +212,7 @@ public class Herbalism {
             }
         }
 
-        SkillTools.xpProcessing(player, profile, SkillType.HERBALISM, xp);
+        mcMMOPlayer.addXp(SkillType.HERBALISM, xp);
     }
 
     /**

@@ -14,20 +14,19 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class Repair {
-    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    private static final AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     public static final double REPAIR_MASTERY_CHANCE_MAX = advancedConfig.getRepairMasteryMaxBonus();
     public static final int REPAIR_MASTERY_MAX_BONUS_LEVEL = advancedConfig.getRepairMasteryMaxLevel();
-
     public static final double SUPER_REPAIR_CHANCE_MAX = advancedConfig.getSuperRepairChanceMax();
     public static final int SUPER_REPAIR_MAX_BONUS_LEVEL = advancedConfig.getSuperRepairMaxLevel();
 
@@ -38,22 +37,18 @@ public class Repair {
     public static int anvilID = Config.getInstance().getRepairAnvilId();
 
     /**
-     * Handle the XP gain for repair events.
+     * Handle the Xp gain for repair events.
      *
-     * @param player Player repairing the item
-     * @param profile PlayerProfile of the repairing player
+     * @param mcMMOPlayer Player repairing the item
      * @param durabilityBefore Durability of the item before repair
      * @param modify Amount to modify the durability by
      */
-    protected static void xpHandler(Player player, PlayerProfile profile, short durabilityBefore, short durabilityAfter, double modify) {
-        short dif = (short) (durabilityBefore - durabilityAfter);
+    protected static void xpHandler(McMMOPlayer mcMMOPlayer, short durabilityBefore, short durabilityAfter, double modify) {
+        short dif = (short) ((durabilityBefore - durabilityAfter) * modify);
+        Player player = mcMMOPlayer.getPlayer();
 
-        dif = (short) (dif * modify);
-
-        SkillTools.xpProcessing(player, profile, SkillType.REPAIR, dif * 10);
-
-        //CLANG CLANG
         player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+        mcMMOPlayer.addXp(SkillType.REPAIR, dif * 10);
     }
 
     /**

@@ -1,15 +1,15 @@
 package com.gmail.nossr50.skills.acrobatics;
 
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 
 public class AcrobaticsManager extends SkillManager {
-    public AcrobaticsManager (Player player) {
-        super(player, SkillType.ACROBATICS);
+    public AcrobaticsManager (McMMOPlayer mcMMOPlayer) {
+        super(mcMMOPlayer, SkillType.ACROBATICS);
     }
 
     /**
@@ -32,10 +32,10 @@ public class AcrobaticsManager extends SkillManager {
         if (chance > Misc.getRandom().nextInt(activationChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
-            eventHandler.processXPGain(eventHandler.damage * Acrobatics.rollXpModifier);
+            eventHandler.processXpGain(eventHandler.damage * Acrobatics.rollXpModifier);
         }
         else if (!eventHandler.isFatal(event.getDamage())) {
-            eventHandler.processXPGain(eventHandler.damage * Acrobatics.fallXpModifier);
+            eventHandler.processXpGain(eventHandler.damage * Acrobatics.fallXpModifier);
         }
     }
 
@@ -52,7 +52,7 @@ public class AcrobaticsManager extends SkillManager {
         if (chance > Misc.getRandom().nextInt(activationChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
             eventHandler.modifyEventDamage();
             eventHandler.sendAbilityMessage();
-            eventHandler.processXPGain(eventHandler.damage * Acrobatics.dodgeXpModifier);
+            eventHandler.processXpGain(eventHandler.damage * Acrobatics.dodgeXpModifier);
         }
     }
 }

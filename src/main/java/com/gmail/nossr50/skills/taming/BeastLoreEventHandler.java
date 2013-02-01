@@ -13,7 +13,7 @@ public class BeastLoreEventHandler {
     private LivingEntity livingEntity;
     private Tameable beast;
 
-    protected BeastLoreEventHandler (Player player, LivingEntity livingEntity) {
+    protected BeastLoreEventHandler(Player player, LivingEntity livingEntity) {
         this.player = player;
         this.livingEntity = livingEntity;
         this.beast = (Tameable) livingEntity;
@@ -45,7 +45,7 @@ public class BeastLoreEventHandler {
             return ((Player) tamer).getName();
         }
         else if (tamer instanceof OfflinePlayer) {
-            return ((OfflinePlayer)tamer).getName();
+            return ((OfflinePlayer) tamer).getName();
         }
 
         return "Unknown Master";

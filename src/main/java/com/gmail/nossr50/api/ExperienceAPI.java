@@ -34,7 +34,7 @@ public final class ExperienceAPI {
      * @param XP The amount of XP to add
      */
     public static void addRawXP(Player player, SkillType skillType, int XP) {
-        Users.getPlayer(player).addXPOverride(skillType, XP);
+        Users.getPlayer(player).addXpOverride(skillType, XP);
         checkXP(player, skillType);
     }
 
@@ -48,7 +48,7 @@ public final class ExperienceAPI {
      * @param XP The amount of XP to add
      */
     public static void addMultipliedXP(Player player, SkillType skillType, int XP) {
-        Users.getPlayer(player).addXPOverrideBonus(skillType, XP);
+        Users.getPlayer(player).addXpOverrideBonus(skillType, XP);
         checkXP(player, skillType);
     }
 
@@ -62,7 +62,7 @@ public final class ExperienceAPI {
      * @param XP The amount of XP to add
      */
     public static void addXP(Player player, SkillType skillType, int XP) {
-        Users.getPlayer(player).addXP(skillType, XP);
+        Users.getPlayer(player).addXp(skillType, XP);
         checkXP(player, skillType);
     }
 
@@ -158,7 +158,7 @@ public final class ExperienceAPI {
      * @param newValue The value to set the XP to
      */
     public static void setXP(Player player, SkillType skillType, int newValue) {
-        Users.getProfile(player).setSkillXPLevel(skillType, newValue);
+        Users.getProfile(player).setSkillXpLevel(skillType, newValue);
     }
 
     /**
@@ -171,6 +171,6 @@ public final class ExperienceAPI {
      * @param xp The amount of XP to remove
      */
     public static void removeXP(Player player, SkillType skillType, int xp) {
-        Users.getProfile(player).removeXP(skillType, xp);
+        Users.getProfile(player).removeXp(skillType, xp);
     }
 }

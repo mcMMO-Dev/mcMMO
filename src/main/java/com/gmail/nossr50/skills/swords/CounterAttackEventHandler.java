@@ -9,15 +9,12 @@ import com.gmail.nossr50.util.Misc;
 
 public class CounterAttackEventHandler {
     private SwordsManager manager;
-    private Player player;
     private LivingEntity attacker;
     private int damage;
-
     protected int skillModifier;
 
     protected CounterAttackEventHandler(SwordsManager manager, LivingEntity attacker, int damage) {
         this.manager = manager;
-        this.player = manager.getPlayer();
         this.attacker = attacker;
         this.damage = damage;
     }
@@ -31,10 +28,7 @@ public class CounterAttackEventHandler {
     }
 
     protected void sendAbilityMessages() {
-        if (player == null)
-            return;
-
-        player.sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));
+        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));
 
         if (attacker instanceof Player) {
             ((Player) attacker).sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Hit"));

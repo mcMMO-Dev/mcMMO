@@ -87,6 +87,7 @@ public final class Users {
      * @param player The player whose profile to retrieve
      * @return the player's profile
      */
+    @Deprecated
     public static PlayerProfile getProfile(OfflinePlayer player) {
         return getProfile(player.getName());
     }
@@ -97,6 +98,7 @@ public final class Users {
      * @param playerName The name of the player whose profile to retrieve
      * @return the player's profile
      */
+    @Deprecated
     public static PlayerProfile getProfile(String playerName) {
         McMMOPlayer mcmmoPlayer = players.get(playerName);
 

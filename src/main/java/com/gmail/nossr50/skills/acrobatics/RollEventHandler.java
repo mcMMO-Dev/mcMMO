@@ -1,9 +1,9 @@
 package com.gmail.nossr50.skills.acrobatics;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -56,6 +56,8 @@ public class RollEventHandler extends AcrobaticsEventHandler {
 
     @Override
     protected void sendAbilityMessage() {
+        Player player = manager.getMcMMOPlayer().getPlayer();
+
         if (isGraceful) {
             player.sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
         }
@@ -66,14 +68,16 @@ public class RollEventHandler extends AcrobaticsEventHandler {
 
 
     @Override
-    protected void processXPGain(int xpGain) {
-        SkillTools.xpProcessing(player, manager.getProfile(), SkillType.ACROBATICS, xpGain);
+    protected void processXpGain(int xp) {
+        manager.getMcMMOPlayer().addXp(SkillType.ACROBATICS, xp);
     }
 
     /**
      * Check if this is a graceful roll.
      */
     private void isGracefulRoll() {
+        Player player = manager.getMcMMOPlayer().getPlayer();
+
         if (Permissions.gracefulRoll(player)) {
             this.isGraceful = player.isSneaking();
         }

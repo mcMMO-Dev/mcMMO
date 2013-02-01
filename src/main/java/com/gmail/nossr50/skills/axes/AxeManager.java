@@ -1,16 +1,16 @@
 package com.gmail.nossr50.skills.axes;
 
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 
 public class AxeManager extends SkillManager {
-    public AxeManager(Player player) {
-        super(player, SkillType.AXES);
+    public AxeManager(McMMOPlayer mcMMOPlayer) {
+        super(mcMMOPlayer, SkillType.AXES);
     }
 
     /**
@@ -64,7 +64,7 @@ public class AxeManager extends SkillManager {
      * @param damage The base damage to deal
      */
     public void skullSplitter(LivingEntity target, int damage) {
-        SkullSplitterEventHandler eventHandler = new SkullSplitterEventHandler(player, damage, target);
+        SkullSplitterEventHandler eventHandler = new SkullSplitterEventHandler(mcMMOPlayer.getPlayer(), damage, target);
         eventHandler.applyAbilityEffects();
     }
 }

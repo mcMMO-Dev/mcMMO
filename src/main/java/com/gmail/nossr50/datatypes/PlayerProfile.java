@@ -26,42 +26,41 @@ public class PlayerProfile {
 
     private String playerName;
 
-    /* HUD */
+    // HUD
     private SpoutHud spoutHud;
     private HudType hudType;
 
-    /* Party Stuff */
+    // Party Stuff
     private Party party;
     private Party invite;
     private Player ptpRequest;
     private boolean ptpEnabled = true;
     private boolean ptpConfirmRequired = Config.getInstance().getPTPCommandConfirmRequired();
 
-    /* Toggles */
+    // Toggles
     private boolean loaded;
-
     private boolean placedAnvil;
     private boolean placedSalvageAnvil;
     private boolean partyChatMode, adminChatMode;
     private boolean godMode;
     private boolean greenTerraMode, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, skullSplitterMode, berserkMode;
     private boolean greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true,
-            superBreakerInformed = true, blastMiningInformed = true, serratedStrikesInformed = true, treeFellerInformed = true;
+                    superBreakerInformed = true, blastMiningInformed = true, serratedStrikesInformed = true, treeFellerInformed = true;
     private boolean hoePreparationMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode,
     pickaxePreparationMode, axePreparationMode;
     private boolean abilityUse = true;
 
-    /* Timestamps */
+    // Timestamps
     private long recentlyHurt;
     private int respawnATS;
     private long lastSave = 0L;
     private long ptpTimeout;
 
-    /* mySQL STUFF */
+    // mySQL STUFF
     private int userId;
 
     private HashMap<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); //Skills and Levels
-    HashMap<SkillType, Integer> skillsXp = new HashMap<SkillType, Integer>(); //Skills and XP
+    HashMap<SkillType, Integer> skillsXp = new HashMap<SkillType, Integer>(); //Skills and Xp
     HashMap<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>();
     HashMap<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
 
@@ -209,13 +208,13 @@ public class PlayerProfile {
 
     public boolean load() {
         try {
-            //Open the user file
+            // Open the user file
             FileReader file = new FileReader(location);
             BufferedReader in = new BufferedReader(file);
             String line;
 
             while ((line = in.readLine()) != null) {
-                //Find if the line contains the player we want.
+                // Find if the line contains the player we want.
                 String[] character = line.split(":");
 
                 if (!character[0].equals(playerName)) {
@@ -316,7 +315,7 @@ public class PlayerProfile {
         if (timestamp < (lastSave + ((long) Config.getInstance().getSaveInterval() * 60000)) && !override)
             return;
 
-        // if we are using mysql save to database
+        // If we are using mysql save to database
         if (Config.getInstance().getUseMySQL()) {
             String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
@@ -362,23 +361,23 @@ public class PlayerProfile {
                     + " WHERE user_id = " + userId);
         }
         else {
-            // otherwise save to flatfile
+            // Otherwise save to flatfile
             try {
-                //Open the file
+                // Open the file
                 FileReader file = new FileReader(location);
                 BufferedReader in = new BufferedReader(file);
                 StringBuilder writer = new StringBuilder();
                 String line;
 
-                //While not at the end of the file
+                // While not at the end of the file
                 while ((line = in.readLine()) != null) {
-                    //Read the line in and copy it to the output it's not the player
-                    //we want to edit
+                    // Read the line in and copy it to the output it's not the player
+                    // we want to edit
                     if (!line.split(":")[0].equals(playerName)) {
                         writer.append(line).append("\r\n");
                     }
                     else {
-                        //Otherwise write the new player information
+                        // Otherwise write the new player information
                         writer.append(playerName).append(":");
                         writer.append(skills.get(SkillType.MINING)).append(":");
                         writer.append(":");
@@ -405,8 +404,8 @@ public class PlayerProfile {
                         writer.append(":");
                         writer.append(skills.get(SkillType.TAMING)).append(":");
                         writer.append(skillsXp.get(SkillType.TAMING)).append(":");
-                        //Need to store the DATS of abilities nao
-                        //Berserk, Gigadrillbreaker, Tree Feller, Green Terra, Serrated Strikes, Skull Splitter, Super Breaker
+                        // Need to store the DATS of abilities nao
+                        // Berserk, Gigadrillbreaker, Tree Feller, Green Terra, Serrated Strikes, Skull Splitter, Super Breaker
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.BERSERK))).append(":");
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER))).append(":");
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.TREE_FELLER))).append(":");
@@ -423,7 +422,7 @@ public class PlayerProfile {
                 }
 
                 in.close();
-                //Write the new file
+                // Write the new file
                 FileWriter out = new FileWriter(location);
                 out.write(writer.toString());
                 out.close();
@@ -437,50 +436,50 @@ public class PlayerProfile {
 
     public void addPlayer() {
         try {
-            //Open the file to write the player
+            // Open the file to write the player
             FileWriter file = new FileWriter(location, true);
             BufferedWriter out = new BufferedWriter(file);
 
-            //Add the player to the end
+            // Add the player to the end
             out.append(playerName).append(":");
-            out.append("0:"); //mining
+            out.append("0:"); // mining
             out.append(":");
             out.append(":");
-            out.append("0:"); //XP
-            out.append("0:"); //woodcutting
-            out.append("0:"); //woodCuttingXP
-            out.append("0:"); //repair
-            out.append("0:"); //unarmed
-            out.append("0:"); //herbalism
-            out.append("0:"); //excavation
-            out.append("0:"); //archery
-            out.append("0:"); //swords
-            out.append("0:"); //axes
-            out.append("0:"); //acrobatics
-            out.append("0:"); //repairXP
-            out.append("0:"); //unarmedXP
-            out.append("0:"); //herbalismXP
-            out.append("0:"); //excavationXP
-            out.append("0:"); //archeryXP
-            out.append("0:"); //swordsXP
-            out.append("0:"); //axesXP
-            out.append("0:"); //acrobaticsXP
+            out.append("0:"); // Xp
+            out.append("0:"); // woodcutting
+            out.append("0:"); // woodCuttingXp
+            out.append("0:"); // repair
+            out.append("0:"); // unarmed
+            out.append("0:"); // herbalism
+            out.append("0:"); // excavation
+            out.append("0:"); // archery
+            out.append("0:"); // swords
+            out.append("0:"); // axes
+            out.append("0:"); // acrobatics
+            out.append("0:"); // repairXp
+            out.append("0:"); // unarmedXp
+            out.append("0:"); // herbalismXp
+            out.append("0:"); // excavationXp
+            out.append("0:"); // archeryXp
+            out.append("0:"); // swordsXp
+            out.append("0:"); // axesXp
+            out.append("0:"); // acrobaticsXp
             out.append(":");
-            out.append("0:"); //taming
-            out.append("0:"); //tamingXP
-            out.append("0:"); //DATS
-            out.append("0:"); //DATS
-            out.append("0:"); //DATS
-            out.append("0:"); //DATS
-            out.append("0:"); //DATS
-            out.append("0:"); //DATS
-            out.append("0:"); //DATS
-            out.append(hudType.toString()).append(":");//HUD
-            out.append("0:"); //Fishing
-            out.append("0:"); //FishingXP
-            out.append("0:"); //Blast Mining
+            out.append("0:"); // taming
+            out.append("0:"); // tamingXp
+            out.append("0:"); // DATS
+            out.append("0:"); // DATS
+            out.append("0:"); // DATS
+            out.append("0:"); // DATS
+            out.append("0:"); // DATS
+            out.append("0:"); // DATS
+            out.append("0:"); // DATS
+            out.append(hudType.toString()).append(":"); // HUD
+            out.append("0:"); // Fishing
+            out.append("0:"); // FishingXp
+            out.append("0:"); // Blast Mining
 
-            //Add more in the same format as the line above
+            // Add more in the same format as the line above
 
             out.newLine();
             out.close();
@@ -918,7 +917,7 @@ public class PlayerProfile {
     }
 
     /*
-     * XP Functions
+     * Xp Functions
      */
 
     public int getSkillLevel(SkillType skillType) {
@@ -943,7 +942,7 @@ public class PlayerProfile {
         return skillsXp.get(skillType);
     }
 
-    public void setSkillXPLevel(SkillType skillType, int newValue) {
+    public void setSkillXpLevel(SkillType skillType, int newValue) {
         skillsXp.put(skillType, newValue);
         save(false);
     }
@@ -954,12 +953,12 @@ public class PlayerProfile {
     }
 
     //    /**
-    //     * Adds XP to the player, doesn't calculate for XP Rate
+    //     * Adds Xp to the player, doesn't calculate for Xp Rate
     //     *
-    //     * @param skillType The skill to add XP to
-    //     * @param newValue The amount of XP to add
+    //     * @param skillType The skill to add Xp to
+    //     * @param newValue The amount of Xp to add
     //     */
-    //    public void addXPOverride(SkillType skillType, int newValue) {
+    //    public void addXpOverride(SkillType skillType, int newValue) {
     //        if (skillType.equals(SkillType.ALL)) {
     //            for (SkillType x : SkillType.values()) {
     //                if (x.equals(SkillType.ALL)) {
@@ -978,23 +977,23 @@ public class PlayerProfile {
     //    }
 
     //    /**
-    //     * Adds XP to the player, this ignores skill modifiers.
+    //     * Adds Xp to the player, this ignores skill modifiers.
     //     *
-    //     * @param skillType The skill to add XP to
-    //     * @param newValue The amount of XP to add
+    //     * @param skillType The skill to add Xp to
+    //     * @param newValue The amount of Xp to add
     //     */
-    //    public void addXPOverrideBonus(SkillType skillType, int newValue) {
+    //    public void addXpOverrideBonus(SkillType skillType, int newValue) {
     //        int xp = newValue * Config.getInstance().xpGainMultiplier;
-    //        addXPOverride(skillType, xp);
+    //        addXpOverride(skillType, xp);
     //    }
 
     //    /**
-    //     * Adds XP to the player, this is affected by skill modifiers and XP Rate and Permissions
+    //     * Adds Xp to the player, this is affected by skill modifiers and Xp Rate and Permissions
     //     *
-    //     * @param skillType The skill to add XP to
-    //     * @param newvalue The amount of XP to add
+    //     * @param skillType The skill to add Xp to
+    //     * @param newvalue The amount of Xp to add
     //     */
-    //    public void addXP(SkillType skillType, int newValue) {
+    //    public void addXp(SkillType skillType, int newValue) {
     //        if (player.getGameMode().equals(GameMode.CREATIVE)) {
     //            return;
     //        }
@@ -1048,12 +1047,12 @@ public class PlayerProfile {
     //    }
 
     /**
-     * Remove XP from a skill.
+     * Remove Xp from a skill.
      *
      * @param skillType Type of skill to modify
      * @param xp Amount of xp to remove
      */
-    public void removeXP(SkillType skillType, int xp) {
+    public void removeXp(SkillType skillType, int xp) {
         if (skillType.isChildSkill()) {
             return;
         }
@@ -1130,10 +1129,10 @@ public class PlayerProfile {
     }
 
     /**
-     * Get the amount of XP remaining before the next level.
+     * Get the amount of Xp remaining before the next level.
      *
      * @param skillType Type of skill to check
-     * @return the XP remaining until next level
+     * @return the Xp remaining until next level
      */
     public int getXpToLevel(SkillType skillType) {
         return 1020 + (skills.get(skillType) *  Config.getInstance().getFormulaMultiplierCurve());
@@ -1157,7 +1156,7 @@ public class PlayerProfile {
     //    }
 
     //    /**
-    //     * Calculate the party XP modifier.
+    //     * Calculate the party Xp modifier.
     //     *
     //     * @param skillType Type of skill to check
     //     * @return the party bonus multiplier

@@ -44,6 +44,6 @@ public class DazeEventHandler {
 
     protected void sendAbilityMessages() {
         defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
-        manager.getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
+        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
     }
 }

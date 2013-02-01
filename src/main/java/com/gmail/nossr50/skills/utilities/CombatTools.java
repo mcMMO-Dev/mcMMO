@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
@@ -33,7 +34,7 @@ import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxeManager;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
-import com.gmail.nossr50.skills.runnables.GainXp;
+import com.gmail.nossr50.skills.runnables.CombatXpGiver;
 import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.Taming;
@@ -80,8 +81,9 @@ public final class CombatTools {
                 }
 
                 if (Permissions.swords(player)) {
-                    SwordsManager swordsManager = new SwordsManager(player);
-                    PlayerProfile profile = swordsManager.getProfile();
+                    McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+                    PlayerProfile profile = mcMMOPlayer.getProfile();
+                    SwordsManager swordsManager = new SwordsManager(mcMMOPlayer);
                     boolean canSerratedStrike = Permissions.serratedStrikes(player); //So we don't have to check the same permission twice
 
                     if (profile.getToolPreparationMode(ToolType.SWORD) && canSerratedStrike) {
@@ -96,7 +98,7 @@ public final class CombatTools {
                         swordsManager.serratedStrikes(target, event.getDamage());
                     }
 
-                    startGainXp(player, profile, target, SkillType.SWORDS);
+                    startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
                 }
             }
             else if (ItemChecks.isAxe(heldItem)) {
@@ -110,8 +112,9 @@ public final class CombatTools {
                 }
 
                 if (Permissions.axes(player)) {
-                    AxeManager axeManager = new AxeManager(player);
-                    PlayerProfile profile = axeManager.getProfile();
+                    McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+                    PlayerProfile profile = mcMMOPlayer.getProfile();
+                    AxeManager axeManager = new AxeManager(mcMMOPlayer);
                     boolean canSkullSplit = Permissions.skullSplitter(player); //So we don't have to check the same permission twice
                     if (profile.getToolPreparationMode(ToolType.AXE) && canSkullSplit) {
                         SkillTools.abilityCheck(player, SkillType.AXES);
@@ -133,7 +136,7 @@ public final class CombatTools {
                         axeManager.skullSplitter(target, event.getDamage());
                     }
 
-                    startGainXp(player, profile, target, SkillType.AXES);
+                    startGainXp(mcMMOPlayer, target, SkillType.AXES);
                 }
             }
             else if (heldItemType == Material.AIR) {
@@ -147,8 +150,9 @@ public final class CombatTools {
                 }
 
                 if (Permissions.unarmed(player)) {
-                    UnarmedManager unarmedManager = new UnarmedManager(player);
-                    PlayerProfile profile = unarmedManager.getProfile();
+                    McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+                    PlayerProfile profile = mcMMOPlayer.getProfile();
+                    UnarmedManager unarmedManager = new UnarmedManager(mcMMOPlayer);
                     boolean canBerserk = Permissions.berserk(player); //So we don't have to check the same permission twice
 
                     if (profile.getToolPreparationMode(ToolType.FISTS) && canBerserk) {
@@ -167,11 +171,11 @@ public final class CombatTools {
                         unarmedManager.disarmCheck(target);
                     }
 
-                    startGainXp(player, unarmedManager.getProfile(), target, SkillType.UNARMED);
+                    startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
                 }
             }
             else if (heldItemType == Material.BONE && target instanceof Tameable && Permissions.beastLore(player)) {
-                TamingManager tamingManager = new TamingManager(player);
+                TamingManager tamingManager = new TamingManager(Users.getPlayer(player));
                 tamingManager.beastLore(target);
                 event.setCancelled(true);
             }
@@ -200,7 +204,8 @@ public final class CombatTools {
                 }
 
                 if (Permissions.taming(master)) {
-                    TamingManager tamingManager = new TamingManager(master);
+                    McMMOPlayer mcMMOPlayer = Users.getPlayer(master);
+                    TamingManager tamingManager = new TamingManager(mcMMOPlayer);
                     int skillLevel = tamingManager.getSkillLevel();
 
                     if (skillLevel >= Taming.fastFoodServiceUnlockLevel && Permissions.fastFoodService(master)) {
@@ -216,7 +221,7 @@ public final class CombatTools {
                     }
 
                     if (target != master) {
-                        startGainXp(master, tamingManager.getProfile(), target, SkillType.TAMING);
+                        startGainXp(mcMMOPlayer, target, SkillType.TAMING);
                     }
                 }
             }
@@ -258,28 +263,28 @@ public final class CombatTools {
 
             if (damager instanceof Player) {
                 if (Swords.pvpEnabled && ItemChecks.isSword(heldItem) && Permissions.counterAttack(player)) {
-                    SwordsManager swordsManager = new SwordsManager(player);
+                    SwordsManager swordsManager = new SwordsManager(Users.getPlayer(player));
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 
                 if (Acrobatics.pvpEnabled && Permissions.dodge(player)) {
-                    AcrobaticsManager acrobaticsManager = new AcrobaticsManager(player);
+                    AcrobaticsManager acrobaticsManager = new AcrobaticsManager(Users.getPlayer(player));
                     acrobaticsManager.dodgeCheck(event);
                 }
 
                 if (Unarmed.pvpEnabled && heldItem.getType() == Material.AIR && Permissions.deflect(player)) {
-                    UnarmedManager unarmedManager = new UnarmedManager(player);
+                    UnarmedManager unarmedManager = new UnarmedManager(Users.getPlayer(player));
                     unarmedManager.deflectCheck(event);
                 }
             }
             else {
                 if (Swords.pveEnabled && damager instanceof LivingEntity && ItemChecks.isSword(heldItem) && Permissions.counterAttack(player)) {
-                    SwordsManager swordsManager = new SwordsManager(player);
+                    SwordsManager swordsManager = new SwordsManager(Users.getPlayer(player));
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 
                 if (Acrobatics.pveEnabled && !(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) && Permissions.dodge(player)) {
-                    AcrobaticsManager acrobaticsManager = new AcrobaticsManager(player);
+                    AcrobaticsManager acrobaticsManager = new AcrobaticsManager(Users.getPlayer(player));
                     acrobaticsManager.dodgeCheck(event);
                 }
             }
@@ -299,7 +304,8 @@ public final class CombatTools {
         }
 
         if (Permissions.archery(shooter)) {
-            ArcheryManager archeryManager = new ArcheryManager(shooter);
+            McMMOPlayer mcMMOPlayer = Users.getPlayer(shooter);
+            ArcheryManager archeryManager = new ArcheryManager(mcMMOPlayer);
             archeryManager.skillShot(event);
 
             if (target instanceof Player && Permissions.daze(shooter)) {
@@ -312,7 +318,7 @@ public final class CombatTools {
 
             if (target != shooter) {
                 archeryManager.distanceXpBonus(target);
-                startGainXp(shooter, archeryManager.getProfile(), target, SkillType.ARCHERY);
+                startGainXp(mcMMOPlayer, target, SkillType.ARCHERY);
             }
         }
     }
@@ -430,12 +436,11 @@ public final class CombatTools {
     /**
      * Start the task that gives combat XP.
      *
-     * @param attacker The attacking player
-     * @param profile The player's PlayerProfile
+     * @param mcMMOPlayer The attacking player
      * @param target The defending entity
      * @param skillType The skill being used
      */
-    public static void startGainXp(Player attacker, PlayerProfile profile, LivingEntity target, SkillType skillType) {
+    public static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, SkillType skillType) {
         double baseXP = 0;
 
         if (target instanceof Player) {
@@ -546,7 +551,7 @@ public final class CombatTools {
         }
 
         if (baseXP != 0) {
-            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new GainXp(attacker, profile, skillType, baseXP, target), 0);
+            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new CombatXpGiver(mcMMOPlayer, skillType, baseXP, target), 0);
         }
     }
 

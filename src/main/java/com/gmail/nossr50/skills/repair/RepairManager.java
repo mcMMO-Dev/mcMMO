@@ -2,8 +2,9 @@ package com.gmail.nossr50.skills.repair;
 
 import java.util.List;
 
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 
 public interface RepairManager {
     /**
@@ -47,8 +48,8 @@ public interface RepairManager {
     /**
      * Handle the repairing of this object
      *
-     * @param player Player that is repairing an item
+     * @param mcMMOPlayer Player that is repairing an item
      * @param item ItemStack that is being repaired
      */
-    public void handleRepair(Player player, ItemStack item);
+    public void handleRepair(McMMOPlayer mcMMOPlayer, ItemStack item);
 }

@@ -11,7 +11,6 @@ public class BleedEventHandler {
     private SwordsManager manager;
     private int skillLevel;
     private LivingEntity defender;
-
     protected int skillModifier;
 
     protected BleedEventHandler(SwordsManager manager, LivingEntity defender) {
@@ -40,7 +39,7 @@ public class BleedEventHandler {
     }
 
     protected void sendAbilityMessages() {
-        manager.getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
+        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
 
         if (defender instanceof Player) {
             ((Player) defender).sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding.Started"));

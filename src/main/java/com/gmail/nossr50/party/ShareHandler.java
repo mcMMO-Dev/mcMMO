@@ -9,68 +9,51 @@ import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Users;
 
-public class ShareHandler {
+public final class ShareHandler {
+    public enum XpShareMode {
+        NONE,
+        EQUAL;
 
-    public static boolean expShareEnabled = Config.getInstance().getExpShareEnabled();
-    public static boolean itemShareEnabled = Config.getInstance().getItemShareEnabled();
-    public static double partyShareRange = Config.getInstance().getPartyShareRange();
-    public static double partyShareBonus = Config.getInstance().getPartyShareBonus();
-
-//    protected enum PartyShareType {
-//        NO_SHARE,
-//        RANDOM,
-//        EQUAL,
-//    };
-
-    public static double checkXpSharing(int oldExp, Player player, Party party) {
-        int newExp = oldExp;
-
-        if (party.getExpShareMode() == null) {
-            party.setExpShareMode("NO_SHARE");
+        public static XpShareMode getFromString(String string) {
+            try {
+                return valueOf(string);
+            }
+            catch (IllegalArgumentException exception) {
+                return NONE;
+            }
         }
+    };
 
-        if (party.getExpShareMode().equals("NO_SHARE")) {
-            return newExp;
-        }
-        else if (party.getExpShareMode().equals("EQUAL")) {
-            newExp = (int) calculateSharedExp(oldExp, player, party);
-        }
+    private static boolean running; // Used to prevent permanent sharing, McMMOPlayer.addXp() uses it
 
-        return newExp;
-    }
-
-    /**
-     * Calculate the party XP.
-     *
-     * @param oldExp XP without party sharing
-     * @return the party shared XP
-     */
-    public static double calculateSharedExp(int oldExp, Player player, Party party) {
-        int newExp = oldExp;
-        List<Player> nearMembers = PartyManager.getNearMembers(player, party, partyShareRange);
-
-        if (nearMembers.size() > 0) {
-            newExp = (int) ((oldExp / (nearMembers.size() + 1)) * partyShareBonus);
-        }
-
-        return newExp;
-    }
-
+    private ShareHandler() {}
 
     /**
      * Distribute XP amongst party members.
      *
      * @param xp XP without party sharing
      */
-    public static void handleEqualExpShare(int xp, Player player, Party party, SkillType skillType) {
-        List<Player> nearMembers = PartyManager.getNearMembers(player, party, partyShareRange);
+    public static void handleEqualXpShare(int xp, Player player, Party party, SkillType skillType) {
+        running = true;
+        int newExp = xp;
 
-        for (Player member : nearMembers) {
+        if (party.getXpShareMode() == XpShareMode.EQUAL) {
+            List<Player> nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
+
             if (nearMembers.size() > 0) {
-                Users.getPlayer(member).addXP(skillType, xp);
+                newExp = (int) ((xp / (nearMembers.size() + 1)) * Config.getInstance().getPartyShareBonus());
+            }
 
+            for (Player member : nearMembers) {
+                Users.getPlayer(member).addXp(skillType, newExp);
                 SkillTools.xpCheckSkill(skillType, member, Users.getProfile(member));
             }
         }
+
+        running = false;
+    }
+
+    public static boolean isRunning() {
+        return running;
     }
 }

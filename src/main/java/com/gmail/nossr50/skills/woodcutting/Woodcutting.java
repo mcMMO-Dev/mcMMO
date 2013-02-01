@@ -6,16 +6,15 @@ import org.bukkit.Sound;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.mods.datatypes.CustomBlock;
-import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -35,10 +34,11 @@ public final class Woodcutting {
     /**
      * Begins the Tree Feller ability
      *
-     * @param event Event to process
+     * @param mcMMOPlayer Player using the ability
+     * @param block Block being broken
      */
-    public static void beginTreeFeller(BlockBreakEvent event) {
-        TreeFeller.process(event.getPlayer(), event.getBlock());
+    public static void beginTreeFeller(McMMOPlayer mcMMOPlayer, Block block) {
+        TreeFeller.process(mcMMOPlayer, block);
     }
 
     /**
@@ -56,10 +56,10 @@ public final class Woodcutting {
     /**
      * Begins Woodcutting
      *
-     * @param player Player breaking the block
+     * @param mcMMOPlayer Player breaking the block
      * @param block Block being broken
      */
-    public static void beginWoodcutting(Player player, Block block) {
+    public static void beginWoodcutting(McMMOPlayer mcMMOPlayer, Block block) {
         int xp = 0;
 
         if (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(block)) {
@@ -74,11 +74,13 @@ public final class Woodcutting {
             }
         }
 
+        Player player = mcMMOPlayer.getPlayer();
+
         if (Permissions.woodcuttingDoubleDrops(player)) {
-            checkForDoubleDrop(player, block);
+            checkForDoubleDrop(mcMMOPlayer, block);
         }
 
-        SkillTools.xpProcessing(player,  Users.getProfile(player), SkillType.WOODCUTTING, xp);
+        mcMMOPlayer.addXp(SkillType.WOODCUTTING, xp);
     }
 
     /**
@@ -122,13 +124,13 @@ public final class Woodcutting {
     /**
      * Checks for double drops
      *
-     * @param player Player breaking the block
+     * @param mcMMOPlayer Player breaking the block
      * @param block Block being broken
      */
-    protected static void checkForDoubleDrop(Player player, Block block) {
+    protected static void checkForDoubleDrop(McMMOPlayer mcMMOPlayer, Block block) {
+        Player player = mcMMOPlayer.getPlayer();
         double configDoubleDropChance = ADVANCED_CONFIG.getWoodcuttingDoubleDropChance();
         int configDoubleDropMaxLevel = ADVANCED_CONFIG.getWoodcuttingDoubleDropMaxLevel();
-
         int probability = (int) ((configDoubleDropChance / configDoubleDropMaxLevel) * Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING));
         int activationChance = Misc.calculateActivationChance(Permissions.luckyWoodcutting(player));
 

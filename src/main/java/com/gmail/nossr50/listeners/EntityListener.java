@@ -27,6 +27,7 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
@@ -153,7 +154,8 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            PlayerProfile profile = Users.getProfile(player);
+            McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+            PlayerProfile profile = mcMMOPlayer.getProfile();
 
             if (Misc.isNPCPlayer(player, profile)) {
                 return;
@@ -167,11 +169,11 @@ public class EntityListener implements Listener {
 
             if (!Misc.isInvincible(player, event)) {
                 if (cause == DamageCause.FALL && player.getItemInHand().getType() != Material.ENDER_PEARL && !(Acrobatics.afkLevelingDisabled && player.isInsideVehicle()) && Permissions.roll(player)) {
-                    AcrobaticsManager acroManager = new AcrobaticsManager(player);
-                    acroManager.rollCheck(event);
+                    AcrobaticsManager acrobaticsManager = new AcrobaticsManager(mcMMOPlayer);
+                    acrobaticsManager.rollCheck(event);
                 }
                 else if (cause == DamageCause.BLOCK_EXPLOSION && Permissions.demolitionsExpertise(player)) {
-                    MiningManager miningManager = new MiningManager(player);
+                    MiningManager miningManager = new MiningManager(mcMMOPlayer);
                     miningManager.demolitionsExpertise(event);
                 }
 
@@ -185,7 +187,7 @@ public class EntityListener implements Listener {
             AnimalTamer owner = pet.getOwner();
 
             if ((!Misc.isInvincible(livingEntity, event)) && pet.isTamed() && owner instanceof Player && pet instanceof Wolf) {
-                TamingManager tamingManager = new TamingManager((Player) owner);
+                TamingManager tamingManager = new TamingManager(Users.getPlayer((Player) owner));
                 tamingManager.preventDamage(event);
             }
         }
@@ -244,7 +246,7 @@ public class EntityListener implements Listener {
                 Player player = plugin.getTNTPlayer(id);
 
                 if (Permissions.biggerBombs(player)) {
-                    MiningManager miningManager = new MiningManager(player);
+                    MiningManager miningManager = new MiningManager(Users.getPlayer(player));
                     miningManager.biggerBombs(event);
                 }
             }
@@ -266,7 +268,7 @@ public class EntityListener implements Listener {
             if (plugin.tntIsTracked(id)) {
                 Player player = plugin.getTNTPlayer(id);
 
-                MiningManager miningManager = new MiningManager(player);
+                MiningManager miningManager = new MiningManager(Users.getPlayer(player));
                 miningManager.blastMiningDropProcessing(event);
 
                 plugin.removeFromTNTTracker(id);
@@ -347,7 +349,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        TamingManager tamingManager = new TamingManager(player);
+        TamingManager tamingManager = new TamingManager(Users.getPlayer(player));
         tamingManager.awardTamingXP(event);
     }
 }

@@ -6,6 +6,7 @@ import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
@@ -13,8 +14,8 @@ import com.gmail.nossr50.util.Permissions;
 
 public class SmeltingManager extends SkillManager {
 
-    public SmeltingManager(Player player) {
-        super(player, SkillType.SMELTING);
+    public SmeltingManager(McMMOPlayer mcMMOPlayer) {
+        super(mcMMOPlayer, SkillType.SMELTING);
     }
 
     /**
@@ -23,6 +24,8 @@ public class SmeltingManager extends SkillManager {
      * @param event The {@link FurnaceBurnEvent} to modify.
      */
     public void fuelEfficiency(FurnaceBurnEvent event) {
+        Player player = mcMMOPlayer.getPlayer();
+
         if (Misc.isNPCPlayer(player) || !Permissions.fuelEfficiency(player)) {
             return;
         }
@@ -33,6 +36,8 @@ public class SmeltingManager extends SkillManager {
     }
 
     public void smeltProcessing(FurnaceSmeltEvent event) {
+        Player player = mcMMOPlayer.getPlayer();
+
         if (Misc.isNPCPlayer(player)) {
             return;
         }
@@ -69,7 +74,7 @@ public class SmeltingManager extends SkillManager {
     }
 
     public void vanillaXPBoost(FurnaceExtractEvent event) {
-        if (skillLevel < Smelting.vanillaXPBoostRank1Level || !Permissions.smeltingVanillaXPBoost(player)) {
+        if (skillLevel < Smelting.vanillaXPBoostRank1Level || !Permissions.smeltingVanillaXPBoost(mcMMOPlayer.getPlayer())) {
             return;
         }
 

@@ -44,7 +44,7 @@ public class AddxpCommand implements CommandExecutor {
 
                     PlayerProfile profile = Users.getProfile(modifiedPlayer);
                     McMMOPlayer mcMMOPlayer = Users.getPlayer(modifiedPlayer);
-                    mcMMOPlayer.addXPOverride(skill, xp);
+                    mcMMOPlayer.addXpOverride(skill, xp);
 
                     if (skill.equals(SkillType.ALL)) {
                         modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", new Object[] {xp}));
@@ -95,7 +95,7 @@ public class AddxpCommand implements CommandExecutor {
                 xp = Integer.valueOf(args[2]);
                 skill = SkillTools.getSkillType(args[1]);
 
-                mcMMOPlayer.addXPOverride(skill, xp);
+                mcMMOPlayer.addXpOverride(skill, xp);
 
                 if (skill.equals(SkillType.ALL)) {
                     sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] {playerName}));

@@ -5,16 +5,14 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.mods.datatypes.CustomBlock;
-import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 
@@ -35,10 +33,10 @@ public class Mining {
     /**
      * Award XP for Mining blocks.
      *
-     * @param player The player to award XP to
+     * @param mcMMOPlayer The player to award XP to
      * @param block The block to award XP for
      */
-    protected static void miningXP(Player player, PlayerProfile profile, Block block, Material type) {
+    protected static void miningXP(McMMOPlayer mcMMOPlayer, Block block, Material type) {
         int xp = 0;
 
         switch (type) {
@@ -106,7 +104,7 @@ public class Mining {
             break;
         }
 
-        SkillTools.xpProcessing(player, profile, SkillType.MINING, xp);
+        mcMMOPlayer.addXp(SkillType.MINING, xp);
     }
 
     /**

@@ -15,7 +15,6 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mods.ModChecks;
-import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.util.Misc;
@@ -230,7 +229,7 @@ public class SkillTools {
 
             while (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
                 if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Misc.getPowerLevelCap() >= Users.getPlayer(player).getPowerLevel() + 1)) {
-                    profile.removeXP(skillType, profile.getXpToLevel(skillType));
+                    profile.removeXp(skillType, profile.getXpToLevel(skillType));
                     skillups++;
                     profile.skillUp(skillType, 1);
 
@@ -509,27 +508,5 @@ public class SkillTools {
         }
 
         return activate;
-    }
-
-    /**
-     * Handle the processing of XP gain from individual skills.
-     *
-     * @param player The player that gained XP
-     * @param profile The profile of the player gaining XP
-     * @param type The type of skill to gain XP from
-     * @param xp the amount of XP to gain
-     */
-    public static void xpProcessing(Player player, PlayerProfile profile, SkillType type, int xp) {
-        if ((type.getMaxLevel() < profile.getSkillLevel(type) + 1) || (Misc.getPowerLevelCap() < Users.getPlayer(player).getPowerLevel() + 1)) {
-            return;
-        }
-
-        if (profile.inParty()) {
-            xp = (int) ShareHandler.checkXpSharing(xp, player, profile.getParty());
-            ShareHandler.handleEqualExpShare(xp, player, profile.getParty(), type);
-        }
-
-        Users.getPlayer(player).addXP(type, xp);
-        xpCheckSkill(type, player, profile);
     }
 }
