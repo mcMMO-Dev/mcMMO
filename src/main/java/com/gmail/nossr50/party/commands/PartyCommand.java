@@ -372,13 +372,13 @@ public class PartyCommand implements CommandExecutor {
 
         if (party.getLeader().equals(playerName)) {
             if (args[1].equalsIgnoreCase("none") || args[1].equalsIgnoreCase("false")) {
-                party.setXpShareMode(ShareHandler.XpShareMode.getFromString("NONE"));
+                party.setXpShareMode(ShareHandler.XpShareMode.NONE);
 
                 for (Player onlineMembers : party.getOnlineMembers()) {
                     onlineMembers.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", new Object[] {LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode.NoShare")}));
                 }
             } else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even")) {
-                party.setXpShareMode(ShareHandler.XpShareMode.getFromString("EQUAL"));
+                party.setXpShareMode(ShareHandler.XpShareMode.EQUAL);
 
                 for (Player onlineMembers : party.getOnlineMembers()) {
                     onlineMembers.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", new Object[] {LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode.Equal")}));
