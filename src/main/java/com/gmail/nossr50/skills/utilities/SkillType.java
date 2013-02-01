@@ -144,6 +144,7 @@ public enum SkillType {
         return Users.getProfile(player).getSkillLevel(this);
     }
 
+    // TODO: This is a little "hacky", we probably need to add something to distinguish child skills in the enum, or to use another enum for them
     public boolean isChildSkill() {
         switch (this) {
         case SMELTING:

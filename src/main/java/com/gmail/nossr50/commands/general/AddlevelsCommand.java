@@ -1,13 +1,12 @@
 package com.gmail.nossr50.commands.general;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
@@ -19,7 +18,7 @@ import com.gmail.nossr50.util.Users;
 public class AddlevelsCommand implements CommandExecutor{
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        OfflinePlayer modifiedPlayer;
+        Player player;
         PlayerProfile profile;
         int levels;
         SkillType skill;
@@ -38,10 +37,10 @@ public class AddlevelsCommand implements CommandExecutor{
                 }
 
                 if (Misc.isInt(args[1])) {
-                    modifiedPlayer = (Player) sender;
+                    player = (Player) sender;
                     levels = Integer.valueOf(args[1]);
                     skill = SkillTools.getSkillType(args[0]);
-                    profile = Users.getProfile(modifiedPlayer);
+                    profile = Users.getPlayer(player).getProfile();
 
                     if (skill.equals(SkillType.ALL)) {
                         sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
@@ -64,44 +63,56 @@ public class AddlevelsCommand implements CommandExecutor{
                 return true;
             }
 
-            modifiedPlayer = mcMMO.p.getServer().getOfflinePlayer(args[0]);
-            profile = Users.getProfile(modifiedPlayer);
-
-            // TODO:Not sure if we actually need a null check here
-            if (profile == null || !profile.isLoaded()) {
-                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-                return true;
-            }
-
             if (!SkillTools.isSkill(args[1])) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
 
-            if (Misc.isInt(args[2])) {
-                levels = Integer.valueOf(args[2]);
-                skill = SkillTools.getSkillType(args[1]);
+            if (!Misc.isInt(args[2])) {
+                sender.sendMessage(usage);
+                return true;
+            }
 
-                Users.getProfile(modifiedPlayer).addLevels(skill, levels);
+            McMMOPlayer mcMMOPlayer = Users.getPlayer(args[0]);
+            levels = Integer.valueOf(args[2]);
+            skill = SkillTools.getSkillType(args[1]);
 
-                if (skill.equals(SkillType.ALL)) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] {args[0]}));
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", new Object[] {Misc.getCapitalized(skill.toString()), args[0]}));
+            // If the mcMMOPlayer doesn't exists, create a temporary profile and check if it's present in the database, if not abort the process
+            if (mcMMOPlayer == null) {
+                profile = new PlayerProfile(args[0], false);
+
+                if (!profile.isLoaded()) {
+                    sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                    return true;
                 }
 
-                if (modifiedPlayer.isOnline()) {
-                    if (skill.equals(SkillType.ALL)) {
-                        ((Player) modifiedPlayer).sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
-                    }
-                    else {
-                        ((Player) modifiedPlayer).sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", new Object[] {levels, Misc.getCapitalized(skill.toString())}));
-                    }
-                }
+                profile.addLevels(skill, levels);
+                profile.save(); // Since this is a temporary profile, we save it here.
             }
             else {
-                sender.sendMessage(usage);
+                profile = mcMMOPlayer.getProfile();
+                player = mcMMOPlayer.getPlayer();
+
+                profile.addLevels(skill, levels);
+
+                // This is actually not necessary but it can avoid a string building
+                if (!player.isOnline()) {
+                    return true;
+                }
+
+                if (skill.equals(SkillType.ALL)) {
+                    player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
+                }
+                else {
+                    player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", new Object[] {levels, Misc.getCapitalized(skill.toString())}));
+                }
+            }
+
+            if (skill.equals(SkillType.ALL)) {
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] {args[0]}));
+            }
+            else {
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", new Object[] {Misc.getCapitalized(skill.toString()), args[0]}));
             }
 
             return true;

@@ -21,6 +21,7 @@ Version 1.4.00-dev
  + Added ability to config Hylian Luck drops through treasures.yml
  + Added party XP sharing
  + Added vanilla XP boost for Fishing - includes permissions, config options, etc
+ = Fixed /addlevels not working properly on offline players
  = Fixed /mmoedit not giving feedback when modifying another players stats
  = Fixed the guide usage string showing up every time /skillname was called
  = Fixed Spout not being able to precache our resources properly, and therefore making our XP bars fail

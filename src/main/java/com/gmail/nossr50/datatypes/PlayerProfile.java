@@ -1111,9 +1111,9 @@ public class PlayerProfile {
             return;
         }
 
-        if (skillType.equals(SkillType.ALL)) {
+        if (skillType == SkillType.ALL) {
             for (SkillType skill : SkillType.values()) {
-                if (skill.equals(SkillType.ALL)) {
+                if (skill == SkillType.ALL || skill.isChildSkill()) {
                     continue;
                 }
 
