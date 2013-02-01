@@ -19,7 +19,6 @@ import com.gmail.nossr50.util.Users;
 public abstract class SkillCommand implements CommandExecutor {
     private SkillType skill;
     private String skillString;
-    private String permission;
 
     protected Player player;
     protected PlayerProfile profile;
@@ -33,16 +32,11 @@ public abstract class SkillCommand implements CommandExecutor {
     public SkillCommand(SkillType skill) {
         this.skill = skill;
         this.skillString = Misc.getCapitalized(skill.toString());
-        this.permission = "mcmmo.skills." + skillString.toLowerCase();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
-        }
-
-        if (CommandHelper.noCommandPermissions(sender, permission)) {
             return true;
         }
 
