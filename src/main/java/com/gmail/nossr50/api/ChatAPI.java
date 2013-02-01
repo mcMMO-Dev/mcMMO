@@ -14,12 +14,27 @@ public final class ChatAPI {
      * This function is designed for API usage.
      *
      * @param plugin The plugin sending the message
+     * @param sender The name of the sender
+     * @param displayName The display name of the sender
+     * @param party The name of the party to send to
+     * @param message The message to send
+     */
+    public static void sendPartyChat(Plugin plugin, String sender, String displayName, String party, String message) {
+        ChatManager.handlePartyChat(plugin, PartyManager.getParty(party), sender, displayName, message);
+    }
+
+    /**
+     * Send a message to all members of a party
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param plugin The plugin sending the message
      * @param sender The name of the sender to display in the chat
      * @param party The name of the party to send to
      * @param message The message to send
      */
     public static void sendPartyChat(Plugin plugin, String sender, String party, String message) {
-        ChatManager.handlePartyChat(plugin, PartyManager.getParty(party), sender, message);
+        ChatManager.handlePartyChat(plugin, PartyManager.getParty(party), sender, sender, message);
     }
 
     /**
@@ -35,7 +50,21 @@ public final class ChatAPI {
      */
     @Deprecated
     public static void sendPartyChat(String sender, String party, String message) {
-        sendPartyChat(null, party, sender, message);
+        sendPartyChat(null, party, sender, sender, message);
+    }
+
+    /**
+     * Send a message to administrators
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param plugin The plugin sending the message
+     * @param sender The name of the sender
+     * @param displayName The display name of the sender
+     * @param message The message to send
+     */
+    public static void sendAdminChat(Plugin plugin, String sender, String displayName, String message) {
+        ChatManager.handleAdminChat(plugin, sender, displayName, message);
     }
 
     /**
@@ -48,7 +77,7 @@ public final class ChatAPI {
      * @param message The message to send
      */
     public static void sendAdminChat(Plugin plugin, String sender, String message) {
-        ChatManager.handleAdminChat(plugin, sender, message);
+        ChatManager.handleAdminChat(plugin, sender, sender, message);
     }
 
     /**
@@ -63,6 +92,6 @@ public final class ChatAPI {
      */
     @Deprecated
     public static void sendAdminChat(String sender, String message) {
-        sendAdminChat(null, sender, message);
+        sendAdminChat(null, sender, sender, message);
     }
 }

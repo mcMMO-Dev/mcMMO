@@ -9,11 +9,13 @@ public class McMMOChatEvent extends Event implements Cancellable {
     private boolean cancelled;
     private Plugin plugin;
     private String sender;
+    private String displayName;
     private String message;
 
-    protected McMMOChatEvent(Plugin plugin, String sender, String message) {
+    protected McMMOChatEvent(Plugin plugin, String sender, String displayName, String message) {
         this.plugin = plugin;
         this.sender = sender;
+        this.displayName = displayName;
         this.message = message;
     }
 
@@ -32,10 +34,24 @@ public class McMMOChatEvent extends Event implements Cancellable {
     }
 
     /**
+     * @return String display name of the player who sent the chat, or "Console"
+     */
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    /**
      * @return String message that will be sent
      */
     public String getMessage() {
         return message;
+    }
+
+    /**
+     * @param displayName String display name of the player who sent the chat
+     */
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     /**

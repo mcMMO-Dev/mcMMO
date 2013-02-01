@@ -369,5 +369,9 @@ Commands:
         Request_Timeout: 300
     p:
         Enabled: true
+        #Allow mcMMO to use player display names in chat instead of their usernames
+        Use_Display_Names: true
     a:
         Enabled: true
+        #Allow mcMMO to use player display names in chat instead of their usernames
+        Use_Display_Names: true

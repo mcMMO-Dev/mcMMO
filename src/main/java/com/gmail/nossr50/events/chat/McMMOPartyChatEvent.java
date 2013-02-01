@@ -8,8 +8,8 @@ import org.bukkit.plugin.Plugin;
 public class McMMOPartyChatEvent extends McMMOChatEvent {
     private String party;
 
-    public McMMOPartyChatEvent(Plugin plugin, String sender, String party, String message) {
-        super(plugin, sender, message);
+    public McMMOPartyChatEvent(Plugin plugin, String sender, String displayName, String party, String message) {
+        super(plugin, sender, displayName, message);
         this.party = party;
     }
 

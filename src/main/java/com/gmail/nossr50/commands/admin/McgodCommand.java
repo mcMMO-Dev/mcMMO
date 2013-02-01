@@ -18,7 +18,7 @@ public class McgodCommand implements CommandExecutor {
         PlayerProfile profile;
 
         switch (args.length) {
-	case 0:
+        case 0:
             if (CommandHelper.noConsoleUsage(sender)) {
                 return true;
             }

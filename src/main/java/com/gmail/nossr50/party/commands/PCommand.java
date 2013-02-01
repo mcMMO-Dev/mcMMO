@@ -8,10 +8,10 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.ChatManager;
 import com.gmail.nossr50.util.Users;
 
 public class PCommand implements CommandExecutor {
@@ -73,22 +73,7 @@ public class PCommand implements CommandExecutor {
                 }
 
                 String message = builder.toString();
-
-                McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(plugin, player.getName(), party.getName(), message);
-                plugin.getServer().getPluginManager().callEvent(chatEvent);
-
-                if (chatEvent.isCancelled()) {
-                    return true;
-                }
-
-                message = chatEvent.getMessage();
-                String prefix = LocaleLoader.getString("Commands.Party.Chat.Prefix", new Object[] {player.getName()} );
-
-                plugin.getLogger().info("[P](" + party.getName() + ")" + "<" + player.getName() + "> " + message);
-
-                for (Player member : party.getOnlineMembers()) {
-                    member.sendMessage(prefix + message);
-                }
+                ChatManager.handlePartyChat(plugin, party, player.getName(), player.getDisplayName(), message);
             }
             else {
                 if (args.length < 2) {
@@ -96,7 +81,9 @@ public class PCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (!PartyManager.isParty(args[0])) {
+                Party party = PartyManager.getParty(args[0]);
+
+                if (party == null) {
                     sender.sendMessage(LocaleLoader.getString("Party.InvalidName"));
                     return true;
                 }
@@ -109,23 +96,10 @@ public class PCommand implements CommandExecutor {
                     builder.append(args[i]);
                 }
 
+                String ssender = LocaleLoader.getString("Commands.Chat.Console");
                 String message = builder.toString();
 
-                McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(plugin, "Console", args[0], message);
-                plugin.getServer().getPluginManager().callEvent(chatEvent);
-
-                if (chatEvent.isCancelled()) {
-                    return true;
-                }
-
-                message = chatEvent.getMessage();
-                String prefix = LocaleLoader.getString("Commands.Party.Chat.Prefix", new Object[] {LocaleLoader.getString("Commands.Chat.Console")} );
-
-                plugin.getLogger().info("[P](" + args[0] + ")" + "<*Console*> " + message);
-
-                for (Player member : PartyManager.getOnlineMembers(args[0])) {
-                    member.sendMessage(prefix + message);
-                }
+                ChatManager.handlePartyChat(plugin, party, ssender, ssender, message);
             }
 
             return true;

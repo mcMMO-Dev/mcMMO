@@ -8,8 +8,8 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.ChatManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
@@ -60,43 +60,11 @@ public class ACommand implements CommandExecutor {
 
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-
-                McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(mcMMO.p, player.getName(), message);
-                mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
-
-                if (chatEvent.isCancelled()) {
-                    return true;
-                }
-
-                message = chatEvent.getMessage();
-                String prefix = LocaleLoader.getString("Commands.AdminChat.Prefix", new Object[] {player.getName()} );
-
-                mcMMO.p.getLogger().info("[A]<" + player.getName() + "> " + message);
-
-                for (Player otherPlayer : mcMMO.p.getServer().getOnlinePlayers()) {
-                    if (Permissions.adminChat(otherPlayer) || otherPlayer.isOp()) {
-                        otherPlayer.sendMessage(prefix + message);
-                    }
-                }
+                ChatManager.handleAdminChat(mcMMO.p, player.getName(), player.getDisplayName(), message);
             }
             else {
-                McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(mcMMO.p, "Console", message);
-                mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
-
-                if (chatEvent.isCancelled()) {
-                    return true;
-                }
-
-                message = chatEvent.getMessage();
-                String prefix = LocaleLoader.getString("Commands.AdminChat.Prefix", new Object[] {LocaleLoader.getString("Commands.Chat.Console")} );
-
-                mcMMO.p.getLogger().info("[A]<*Console*> " + message);
-
-                for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-                    if (Permissions.adminChat(player) || player.isOp()) {
-                        player.sendMessage(prefix + message);
-                    }
-                }
+                String ssender = LocaleLoader.getString("Commands.Chat.Console");
+                ChatManager.handleAdminChat(mcMMO.p, ssender, ssender, message);
             }
 
             return true;
