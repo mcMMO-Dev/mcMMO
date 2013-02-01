@@ -344,7 +344,7 @@ public final class Misc {
      */
     public static void dropItem(Location location, ItemStack itemStack) {
 
-        if (itemStack.getType() == null || itemStack.getType() == Material.AIR) {
+        if (itemStack == null || itemStack.getType() == Material.AIR) {
             return;
         }
 
