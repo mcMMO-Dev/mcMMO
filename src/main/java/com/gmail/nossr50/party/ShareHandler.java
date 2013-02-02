@@ -41,7 +41,7 @@ public final class ShareHandler {
         if (party.getXpShareMode() == XpShareMode.EQUAL) {
             List<Player> nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
 
-            if (nearMembers.size() <= 0) {
+            if (nearMembers.isEmpty()) {
                 running = false;
                 return;
             }
