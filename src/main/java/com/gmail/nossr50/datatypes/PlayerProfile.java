@@ -53,7 +53,6 @@ public class PlayerProfile {
     // Timestamps
     private long recentlyHurt;
     private int respawnATS;
-    private long lastSave = 0L;
     private long ptpTimeout;
 
     // mySQL STUFF
@@ -309,10 +308,6 @@ public class PlayerProfile {
     public void save() {
         Long timestamp = System.currentTimeMillis();
 
-        if (timestamp < (lastSave + ((long) Config.getInstance().getSaveInterval() * 60000))) {
-            return;
-        }
-
         // If we are using mysql save to database
         if (Config.getInstance().getUseMySQL()) {
             String tablePrefix = Config.getInstance().getMySQLTablePrefix();
@@ -429,7 +424,6 @@ public class PlayerProfile {
                 e.printStackTrace();
             }
         }
-        lastSave = timestamp;
     }
 
     public void addPlayer() {
