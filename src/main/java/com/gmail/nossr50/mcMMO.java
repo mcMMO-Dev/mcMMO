@@ -1,7 +1,9 @@
 package com.gmail.nossr50;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +17,8 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.mcstats.Metrics;
+import org.mcstats.Metrics.Graph;
 
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
@@ -69,8 +73,6 @@ import com.gmail.nossr50.spout.commands.MchudCommand;
 import com.gmail.nossr50.spout.commands.XplockCommand;
 import com.gmail.nossr50.util.Anniversary;
 import com.gmail.nossr50.util.Leaderboard;
-import com.gmail.nossr50.util.Metrics;
-import com.gmail.nossr50.util.Metrics.Graph;
 import com.gmail.nossr50.util.Users;
 
 public class mcMMO extends JavaPlugin {
@@ -214,10 +216,10 @@ public class mcMMO extends JavaPlugin {
         if (configInstance.getStatsTrackingEnabled()) {
             try {
                 Metrics metrics = new Metrics(this);
-                Graph graph = metrics.createGraph("Percentage of servers using timings");
+                Graph timingsGraph = metrics.createGraph("Percentage of servers using timings");
 
                 if (pluginManager.useTimings()) {
-                    graph.addPlotter(new Metrics.Plotter("Enabled") {
+                    timingsGraph.addPlotter(new Metrics.Plotter("Enabled") {
                         @Override
                         public int getValue() {
                             return 1;
@@ -225,7 +227,73 @@ public class mcMMO extends JavaPlugin {
                     });
                 }
                 else {
-                    graph.addPlotter(new Metrics.Plotter("Disabled") {
+                    timingsGraph.addPlotter(new Metrics.Plotter("Disabled") {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    });
+                }
+
+                Graph versionDonutGraph = metrics.createGraph("Donut Version");
+
+                boolean haveVersionInformation = false;
+                boolean isOfficialBuild = false;
+                String officialKey = "e14cfacdd442a953343ebd8529138680";
+
+                String version = getDescription().getVersion();
+
+                InputStreamReader isr = new InputStreamReader(getResource(".jenkins"));
+                BufferedReader br = new BufferedReader(isr);
+                char[] key = new char[32];
+                br.read(key);
+                if (officialKey.equals(String.valueOf(key)))
+                {
+                    isOfficialBuild = true;
+                }
+
+                if (version.contains("-")) {
+                    String majorVersion = version.substring(0, version.indexOf("-"));
+                    String subVersion = "";
+                    if (isOfficialBuild) {
+                        int startIndex = version.indexOf("-");
+                        if (version.substring(startIndex + 1).contains("-")) {
+                            subVersion = version.substring(startIndex, version.indexOf("-", startIndex + 1));
+                        } else {
+                            subVersion = "-release";
+                        }
+                    } else {
+                        subVersion = "-custom";
+                    }
+
+                    version = majorVersion + "~=~" + subVersion;
+                    haveVersionInformation = true;
+                } else {
+                    haveVersionInformation = false;
+                }
+
+                if (haveVersionInformation) {
+                    /*
+                    versionDonutGraph(new Metrics.Plotter(version) {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                        */
+                }
+
+                Graph officialGraph = metrics.createGraph("Built by official ci");
+
+                if (isOfficialBuild) {
+                    officialGraph.addPlotter(new Metrics.Plotter("Yes") {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    });
+                }
+                else {
+                    officialGraph.addPlotter(new Metrics.Plotter("No") {
                         @Override
                         public int getValue() {
                             return 1;
