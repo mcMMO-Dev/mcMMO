@@ -21,7 +21,6 @@ import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.chat.commands.ACommand;
 import com.gmail.nossr50.chat.commands.PCommand;
 import com.gmail.nossr50.commands.CommandRegistrationHelper;
-import com.gmail.nossr50.commands.admin.AddxpCommand;
 import com.gmail.nossr50.commands.admin.McgodCommand;
 import com.gmail.nossr50.commands.admin.McrefreshCommand;
 import com.gmail.nossr50.commands.admin.MmoeditCommand;
@@ -344,7 +343,7 @@ public class mcMMO extends JavaPlugin {
         getCommand("ptp").setExecutor(new PtpCommand(this));
 
         // Other commands
-        getCommand("addxp").setExecutor(new AddxpCommand());
+        CommandRegistrationHelper.registerAddxpCommand();
         CommandRegistrationHelper.registerAddlevelsCommand();
         getCommand("mmoedit").setExecutor(new MmoeditCommand());
         getCommand("inspect").setExecutor(new InspectCommand());
