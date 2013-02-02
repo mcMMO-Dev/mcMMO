@@ -37,17 +37,20 @@ public final class ShareHandler {
      */
     public static void handleEqualXpShare(int xp, Player player, Party party, SkillType skillType) {
         running = true;
-        int newExp = xp;
 
         if (party.getXpShareMode() == XpShareMode.EQUAL) {
             List<Player> nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
 
-            if (nearMembers.size() > 0) {
-                newExp = (int) ((xp / (nearMembers.size() + 1)) * Config.getInstance().getPartyShareBonus());
+            if (nearMembers.size() <= 0) {
+                running = false;
+                return;
             }
 
+            double partySize = nearMembers.size() + 1;
+            double splitXp = xp / partySize * Config.getInstance().getPartyShareBonus();
+
             for (Player member : nearMembers) {
-                Users.getPlayer(member).addXp(skillType, newExp);
+                Users.getPlayer(member).addXp(skillType, (int) Math.ceil(splitXp));
             }
         }
 
