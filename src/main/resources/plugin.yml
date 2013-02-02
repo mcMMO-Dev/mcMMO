@@ -108,7 +108,7 @@ commands:
     smelting:
         description: Detailed mcMMO skill info
     a:
-        aliases: [ac]
+        aliases: []
         description: Toggle Admin chat or send admin chat messages
     mcpurge:
         aliases: []
