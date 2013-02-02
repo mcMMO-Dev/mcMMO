@@ -271,11 +271,6 @@ public final class CombatTools {
                     AcrobaticsManager acrobaticsManager = new AcrobaticsManager(Users.getPlayer(player));
                     acrobaticsManager.dodgeCheck(event);
                 }
-
-                if (Unarmed.pvpEnabled && heldItem.getType() == Material.AIR && Permissions.deflect(player)) {
-                    UnarmedManager unarmedManager = new UnarmedManager(Users.getPlayer(player));
-                    unarmedManager.deflectCheck(event);
-                }
             }
             else {
                 if (Swords.pveEnabled && damager instanceof LivingEntity && ItemChecks.isSword(heldItem) && Permissions.counterAttack(player)) {
@@ -308,8 +303,16 @@ public final class CombatTools {
             ArcheryManager archeryManager = new ArcheryManager(mcMMOPlayer);
             archeryManager.skillShot(event);
 
-            if (target instanceof Player && Permissions.daze(shooter)) {
-                archeryManager.dazeCheck((Player) target, event);
+            if (target instanceof Player) {
+                if (Unarmed.pvpEnabled && ((Player) target).getItemInHand().getType() == Material.AIR && Permissions.deflect((Player) target)) {
+                    UnarmedManager unarmedManager = new UnarmedManager(Users.getPlayer((Player) target));
+                    unarmedManager.deflectCheck(event);
+                }
+
+
+                if (Permissions.daze(shooter)) {
+                    archeryManager.dazeCheck((Player) target, event);
+                }
             }
 
             if (!(shooter.getItemInHand().containsEnchantment(Enchantment.ARROW_INFINITE)) && Permissions.trackArrows(shooter)) {
