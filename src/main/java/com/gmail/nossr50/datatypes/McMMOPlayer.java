@@ -99,16 +99,17 @@ public class McMMOPlayer {
      * @param xp The amount of Xp to add
      */
     public void addXp(SkillType skillType, int xp) {
-        if ((skillType.getMaxLevel() < profile.getSkillLevel(skillType) + 1) || (Misc.getPowerLevelCap() < getPowerLevel() + 1)) {
-            return;
-        }
-
         if (player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
         if (party != null && !ShareHandler.isRunning()) {
-            ShareHandler.handleEqualXpShare(xp, player, party, skillType);
+            ShareHandler.handleEqualXpShare(xp, this, skillType);
+            return;
+        }
+
+        if ((skillType.getMaxLevel() < profile.getSkillLevel(skillType) + 1) || (Misc.getPowerLevelCap() < getPowerLevel() + 1)) {
+            return;
         }
 
         xp = (int) (xp / skillType.getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier());

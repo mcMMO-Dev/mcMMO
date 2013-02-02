@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Users;
 
@@ -31,14 +32,18 @@ public final class ShareHandler {
     private ShareHandler() {}
 
     /**
-     * Distribute XP amongst party members.
+     * Distribute Xp amongst party members.
      *
-     * @param xp XP without party sharing
+     * @param xp Xp without party sharing
+     * @param mcMMOPlayer Player initiating the Xp gain
+     * @param skillType Skill being used
      */
-    public static void handleEqualXpShare(int xp, Player player, Party party, SkillType skillType) {
+    public static void handleEqualXpShare(int xp, McMMOPlayer mcMMOPlayer, SkillType skillType) {
         running = true;
+        Party party = mcMMOPlayer.getParty();
 
         if (party.getXpShareMode() == XpShareMode.EQUAL) {
+            Player player = mcMMOPlayer.getPlayer();
             List<Player> nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
 
             if (nearMembers.isEmpty()) {
@@ -48,10 +53,13 @@ public final class ShareHandler {
 
             double partySize = nearMembers.size() + 1;
             double splitXp = xp / partySize * Config.getInstance().getPartyShareBonus();
+            int roundedXp = (int) Math.ceil(splitXp);
 
             for (Player member : nearMembers) {
-                Users.getPlayer(member).addXp(skillType, (int) Math.ceil(splitXp));
+                Users.getPlayer(member).addXp(skillType, roundedXp);
             }
+
+            mcMMOPlayer.addXp(skillType, roundedXp);
         }
 
         running = false;
