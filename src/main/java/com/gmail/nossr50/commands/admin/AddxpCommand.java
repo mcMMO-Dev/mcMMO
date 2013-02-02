@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -64,16 +63,6 @@ public class AddxpCommand implements CommandExecutor {
                 return true;
             }
 
-            modifiedPlayer = mcMMO.p.getServer().getPlayer(args[0]);
-            mcMMOPlayer = Users.getPlayer(modifiedPlayer);
-            profile = mcMMOPlayer.getProfile();
-
-          //TODO: Any way we can make this work for offline use?
-            if (profile == null || !profile.isLoaded()) {
-                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-                return true;
-            }
-
             if (!SkillTools.isSkill(args[1])) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
@@ -83,21 +72,62 @@ public class AddxpCommand implements CommandExecutor {
                 return false;
             }
 
+            mcMMOPlayer = Users.getPlayer(args[0]);
             xp = Integer.valueOf(args[2]);
             skill = SkillTools.getSkillType(args[1]);
-            String playerName = modifiedPlayer.getName();
 
-            mcMMOPlayer.addXpOverride(skill, xp);
+            // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
+            if (mcMMOPlayer == null) {
+                profile = new PlayerProfile(args[0], false);
 
-            if (skill.equals(SkillType.ALL)) {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
-                modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
-                SkillTools.xpCheckAll(modifiedPlayer, profile);
+                if (!profile.isLoaded()) {
+                    sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                    return true;
+                }
+
+                // This is basically a copy of McMMOPlayer.addXpOverride(), this method should probably be moved to PlayerProfile to avoid that
+                if (skill.equals(SkillType.ALL)) {
+                    for (SkillType type : SkillType.values()) {
+                        if (type.equals(SkillType.ALL) || type.isChildSkill()) {
+                            continue;
+                        }
+
+                        profile.setSkillXpLevel(type, profile.getSkillXpLevel(type) + xp);
+                    }
+                    // TODO: Find a way to make it work, it currently requires a valid Player
+                    // SkillTools.xpCheckAll(modifiedPlayer, profile);
+                }
+                else {
+                    profile.setSkillXpLevel(skill, profile.getSkillXpLevel(skill) + xp);
+                    // TODO: Find a way to make it work, it currently requires a valid Player
+                    // SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
+                }
+
+                profile.save(); // Since this is a temporary profile, we save it here.
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", Misc.getCapitalized(skill.toString()), playerName));
-                modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(skill.toString())));
-                SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
+                mcMMOPlayer.addXpOverride(skill, xp);
+
+                modifiedPlayer = mcMMOPlayer.getPlayer();
+                profile = mcMMOPlayer.getProfile();
+
+                if (modifiedPlayer.isOnline()) {
+                    if (skill.equals(SkillType.ALL)) {
+                        modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
+                        SkillTools.xpCheckAll(modifiedPlayer, profile);
+                    }
+                    else {
+                        modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(skill.toString())));
+                        SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
+                    }
+                }
+            }
+
+            if (skill.equals(SkillType.ALL)) {
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
+            }
+            else {
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", Misc.getCapitalized(skill.toString()), args[0]));
             }
 
             return true;
