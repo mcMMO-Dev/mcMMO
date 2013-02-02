@@ -18,6 +18,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -34,7 +35,6 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.BlockChecks;
-import com.gmail.nossr50.util.ChatManager;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Misc;

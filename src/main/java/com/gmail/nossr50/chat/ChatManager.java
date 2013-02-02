@@ -1,4 +1,4 @@
-package com.gmail.nossr50.util;
+package com.gmail.nossr50.chat;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -10,6 +10,7 @@ import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.util.Permissions;
 
 public final class ChatManager {
     public ChatManager () {}

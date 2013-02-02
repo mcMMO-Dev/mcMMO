@@ -18,6 +18,8 @@ import org.bukkit.scheduler.BukkitScheduler;
 
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
+import com.gmail.nossr50.chat.commands.ACommand;
+import com.gmail.nossr50.chat.commands.PCommand;
 import com.gmail.nossr50.commands.CommandRegistrationHelper;
 import com.gmail.nossr50.commands.admin.AddxpCommand;
 import com.gmail.nossr50.commands.admin.McgodCommand;
@@ -52,8 +54,6 @@ import com.gmail.nossr50.mods.config.CustomArmorConfig;
 import com.gmail.nossr50.mods.config.CustomBlocksConfig;
 import com.gmail.nossr50.mods.config.CustomToolsConfig;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.party.commands.ACommand;
-import com.gmail.nossr50.party.commands.PCommand;
 import com.gmail.nossr50.party.commands.PartyCommand;
 import com.gmail.nossr50.party.commands.PtpCommand;
 import com.gmail.nossr50.runnables.MobStoreCleaner;

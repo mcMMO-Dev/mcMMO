@@ -2,8 +2,8 @@ package com.gmail.nossr50.api;
 
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.ChatManager;
 
 public final class ChatAPI {
     private ChatAPI() {}
