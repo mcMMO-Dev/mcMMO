@@ -27,6 +27,10 @@ public class McrankCommand implements CommandExecutor {
             return true;
         }
 
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcrank")) {
+            return true;
+        }
+
         Player player = (Player) sender;
         String playerName;
         switch (args.length) {

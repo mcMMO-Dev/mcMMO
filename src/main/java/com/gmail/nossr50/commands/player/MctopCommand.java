@@ -8,6 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -19,10 +20,13 @@ import com.gmail.nossr50.util.Misc;
 public class MctopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mctop")) {
+            return true;
+        }
+
         String usage = LocaleLoader.getString("Commands.Usage.2", "mctop", "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]");
 
         if (!Config.getInstance().getUseMySQL()) {
-
             switch (args.length) {
             case 0:
                 flatfileDisplay(1, "ALL", sender);

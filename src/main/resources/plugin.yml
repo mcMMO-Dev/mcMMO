@@ -725,7 +725,9 @@ permissions:
         children:
             mcmmo.commands.inspect: true
             mcmmo.commands.mcability: true
+            mcmmo.commands.mcrank: true
             mcmmo.commands.mcstats: true
+            mcmmo.commands.mctop: true
             mcmmo.commands.party.all: true
             mcmmo.commands.ptp: true
     mcmmo.commands.ability:
@@ -764,6 +766,12 @@ permissions:
         description: Allows access to the mcgod command
     mcmmo.commands.mcgod.others:
         description: Allows access to the mcgod command for other players
+    mcmmo.commands.mcrank:
+        description: Allows access to the mcrank command
+    mcmmo.commands.mcstats:
+        description: Allows access to the mcstats command
+    mcmmo.commands.mctop:
+        description: Allows access to the mctop command
     mcmmo.commands.mmoedit:
         description: Allows access to the mmoedit command
     mcmmo.commands.mmoedit.others:
