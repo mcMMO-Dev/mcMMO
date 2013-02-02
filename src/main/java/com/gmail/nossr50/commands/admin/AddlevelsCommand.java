@@ -23,31 +23,32 @@ public class AddlevelsCommand implements CommandExecutor{
 
         switch (args.length) {
         case 2:
-            if (sender instanceof Player) {
-                if (!SkillTools.isSkill(args[0])) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
-                    return true;
-                }
-
-                if (Misc.isInt(args[1])) {
-                    levels = Integer.valueOf(args[1]);
-                    skill = SkillTools.getSkillType(args[0]);
-                    profile = Users.getPlayer((Player) sender).getProfile();
-
-                    if (skill.equals(SkillType.ALL)) {
-                        sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
-                    }
-                    else {
-                        sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", new Object[] {levels, Misc.getCapitalized(skill.toString())}));
-                    }
-
-                    profile.addLevels(skill, levels);
-                    return true;
-                }
-            }
-            else {
+            if (!(sender instanceof Player)) {
                 return false;
             }
+
+            if (!SkillTools.isSkill(args[0])) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
+                return true;
+            }
+
+            if (!Misc.isInt(args[1])) {
+                return false;
+            }
+
+            levels = Integer.valueOf(args[1]);
+            skill = SkillTools.getSkillType(args[0]);
+            profile = Users.getPlayer((Player) sender).getProfile();
+
+            if (skill.equals(SkillType.ALL)) {
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
+            }
+            else {
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", new Object[] {levels, Misc.getCapitalized(skill.toString())}));
+            }
+
+            profile.addLevels(skill, levels);
+            return true;
 
         case 3:
             if (!Permissions.hasPermission(sender, "mcmmo.commands.addlevels.others")) {
@@ -86,7 +87,7 @@ public class AddlevelsCommand implements CommandExecutor{
 
                 profile.addLevels(skill, levels);
 
-                // Check if the player is online before we try to send them a message.
+                // TODO: Is it even possible for the player to be offline at this point?
                 if (player.isOnline()) {
                     if (skill.equals(SkillType.ALL)) {
                         player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
