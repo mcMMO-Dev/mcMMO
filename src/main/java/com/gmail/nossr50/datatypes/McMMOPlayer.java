@@ -104,8 +104,10 @@ public class McMMOPlayer {
         }
 
         if (party != null && !ShareHandler.isRunning()) {
-            ShareHandler.handleEqualXpShare(xp, this, skillType);
-            return;
+            // Return if the Xp has been shared
+            if (ShareHandler.handleEqualXpShare(xp, this, skillType)) {
+                return;
+            }
         }
 
         if ((skillType.getMaxLevel() < profile.getSkillLevel(skillType) + 1) || (Misc.getPowerLevelCap() < getPowerLevel() + 1)) {

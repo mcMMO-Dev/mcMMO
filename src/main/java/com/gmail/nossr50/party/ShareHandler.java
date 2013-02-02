@@ -37,8 +37,9 @@ public final class ShareHandler {
      * @param xp Xp without party sharing
      * @param mcMMOPlayer Player initiating the Xp gain
      * @param skillType Skill being used
+     * @return True is the xp has been shared
      */
-    public static void handleEqualXpShare(int xp, McMMOPlayer mcMMOPlayer, SkillType skillType) {
+    public static boolean handleEqualXpShare(int xp, McMMOPlayer mcMMOPlayer, SkillType skillType) {
         running = true;
         Party party = mcMMOPlayer.getParty();
 
@@ -48,7 +49,7 @@ public final class ShareHandler {
 
             if (nearMembers.isEmpty()) {
                 running = false;
-                return;
+                return false;
             }
 
             double partySize = nearMembers.size() + 1;
@@ -63,6 +64,7 @@ public final class ShareHandler {
         }
 
         running = false;
+        return true;
     }
 
     public static boolean isRunning() {
