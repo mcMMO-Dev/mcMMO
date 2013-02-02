@@ -60,6 +60,7 @@ Version 1.4.00-dev
  - Removed Party "master/apprentice" system. Replaced with the new party XP share feature.
  - Removed unused "healthbar" files from the resources
  - Removed config options for disabling commands from the config.yml. This should instead be done through permissions.
+ - Removed "ac" alias from /a due to Essentials incompatibilities.
 
 Version 1.3.14
  + Added new Hylian Luck skill to Herbalism.
