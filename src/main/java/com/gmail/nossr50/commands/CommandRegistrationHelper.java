@@ -7,6 +7,7 @@ import org.bukkit.command.PluginCommand;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.admin.AddlevelsCommand;
+import com.gmail.nossr50.commands.admin.AddxpCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
@@ -120,5 +121,14 @@ public final class CommandRegistrationHelper {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.3", new Object[] {"addlevels", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">" }));
         command.setExecutor(new AddlevelsCommand());
+    }
+
+    public static void registerAddxpCommand() {
+        PluginCommand command = mcMMO.p.getCommand("addxp");
+        command.setDescription(LocaleLoader.getString("Commands.Description.addxp"));
+        command.setPermission("mcmmo.commands.addxp");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.3", new Object[] {"addxp", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.XP") + ">" }));
+        command.setExecutor(new AddxpCommand());
     }
 }

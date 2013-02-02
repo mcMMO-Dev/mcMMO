@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -16,71 +15,60 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
-//TODO: Any way we can make this work for offline use?
 public class AddxpCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         Player modifiedPlayer;
         int xp;
         SkillType skill;
-        String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"addxp", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.XP") + ">" });
+        McMMOPlayer mcMMOPlayer;
+        PlayerProfile profile;
 
         switch (args.length) {
         case 2:
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addxp")) {
+            if (!(sender instanceof Player)) {
+                return false;
+            }
+
+            if (!SkillTools.isSkill(args[1])) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
 
-            if (sender instanceof Player) {
-                if (!SkillTools.isSkill(args[1])) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
-                    return true;
-                }
+            if (!Misc.isInt(args[1])) {
+                return false;
+            }
 
-                if (Misc.isInt(args[1])) {
-                    modifiedPlayer = (Player) sender;
-                    xp = Integer.valueOf(args[1]);
-                    skill = SkillTools.getSkillType(args[0]);
+            xp = Integer.valueOf(args[1]);
+            skill = SkillTools.getSkillType(args[0]);
+            modifiedPlayer = (Player) sender;
+            mcMMOPlayer = Users.getPlayer(modifiedPlayer);
+            profile = mcMMOPlayer.getProfile();
 
-                    PlayerProfile profile = Users.getProfile(modifiedPlayer);
-                    McMMOPlayer mcMMOPlayer = Users.getPlayer(modifiedPlayer);
-                    mcMMOPlayer.addXpOverride(skill, xp);
+            mcMMOPlayer.addXpOverride(skill, xp);
 
-                    if (skill.equals(SkillType.ALL)) {
-                        modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", new Object[] {xp}));
-                    }
-                    else {
-                        modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", new Object[] {xp, Misc.getCapitalized(skill.toString())}));
-                    }
-
-                    if (skill.equals(SkillType.ALL)) {
-                        SkillTools.xpCheckAll(modifiedPlayer, profile);
-                    }
-                    else {
-                        SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
-                    }
-                }
-                else {
-                    sender.sendMessage(usage);
-                }
+            if (skill.equals(SkillType.ALL)) {
+                SkillTools.xpCheckAll(modifiedPlayer, profile);
+                sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", new Object[] { xp }));
             }
             else {
-                sender.sendMessage(usage);
+                SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
+                sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", new Object[] { xp, Misc.getCapitalized(skill.toString()) }));
             }
 
             return true;
 
         case 3:
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.addxp.others")) {
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.addxp.others")) {
+                sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
 
             modifiedPlayer = mcMMO.p.getServer().getPlayer(args[0]);
-            String playerName = modifiedPlayer.getName();
-            McMMOPlayer mcMMOPlayer = Users.getPlayer(modifiedPlayer);
-            PlayerProfile profile = Users.getProfile(modifiedPlayer);
+            mcMMOPlayer = Users.getPlayer(modifiedPlayer);
+            profile = mcMMOPlayer.getProfile();
 
-            // TODO: Not sure if we actually need a null check here
+          //TODO: Any way we can make this work for offline use?
             if (profile == null || !profile.isLoaded()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                 return true;
@@ -91,37 +79,31 @@ public class AddxpCommand implements CommandExecutor {
                 return true;
             }
 
-            if (Misc.isInt(args[2])) {
-                xp = Integer.valueOf(args[2]);
-                skill = SkillTools.getSkillType(args[1]);
+            if (!Misc.isInt(args[2])) {
+                return false;
+            }
 
-                mcMMOPlayer.addXpOverride(skill, xp);
+            xp = Integer.valueOf(args[2]);
+            skill = SkillTools.getSkillType(args[1]);
+            String playerName = modifiedPlayer.getName();
 
-                if (skill.equals(SkillType.ALL)) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] {playerName}));
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", new Object[] {Misc.getCapitalized(skill.toString()), playerName}));
-                }
+            mcMMOPlayer.addXpOverride(skill, xp);
 
-                if (skill.equals(SkillType.ALL)) {
-                    modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", new Object[] {xp}));
-                    SkillTools.xpCheckAll(modifiedPlayer, profile);
-                }
-                else {
-                    modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", new Object[] {xp, Misc.getCapitalized(skill.toString())}));
-                    SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
-                }
+            if (skill.equals(SkillType.ALL)) {
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] { playerName }));
+                modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", new Object[] { xp }));
+                SkillTools.xpCheckAll(modifiedPlayer, profile);
             }
             else {
-                sender.sendMessage(usage);
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", new Object[] { Misc.getCapitalized(skill.toString()), playerName }));
+                modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", new Object[] { xp, Misc.getCapitalized(skill.toString()) }));
+                SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
             }
 
             return true;
 
         default:
-            sender.sendMessage(usage);
-            return true;
+            return false;
         }
     }
 }

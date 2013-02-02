@@ -43,7 +43,7 @@ commands:
         description: Show your individual ranking in mcMMO
     addxp:
         aliases: []
-        description: Add XP to a user
+        description: Add mcMMO XP to a user
     addlevels:
         description: Add mcMMO levels to a user
     mcability:
