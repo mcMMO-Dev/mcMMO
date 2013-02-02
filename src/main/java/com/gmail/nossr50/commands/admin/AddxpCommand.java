@@ -30,7 +30,7 @@ public class AddxpCommand implements CommandExecutor {
                 return false;
             }
 
-            if (!SkillTools.isSkill(args[1])) {
+            if (!SkillTools.isSkill(args[0])) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
