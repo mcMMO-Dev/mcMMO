@@ -26,7 +26,7 @@ public class McRankAsync implements Runnable {
             @Override
             public void run() {
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", new Object[] {playerName}));
+                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
 
                 for (SkillType skillType : SkillType.values()) {
                     if (skillType.isChildSkill()) {
@@ -37,18 +37,18 @@ public class McRankAsync implements Runnable {
                         continue; // We want the overall ranking to be at the bottom
 
                     if (skills.get(skillType.name()) == null) {
-                        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {SkillTools.localizeSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked")} ));
+                        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.localizeSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked")));
                     }
                     else {
-                        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {SkillTools.localizeSkillName(skillType), skills.get(skillType.name())} ));
+                        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.localizeSkillName(skillType), skills.get(skillType.name())));
                     }
                 }
 
                 if (skills.get("ALL") == null) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", new Object[] {LocaleLoader.getString("Commands.mcrank.Unranked")} ));
+                    sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", LocaleLoader.getString("Commands.mcrank.Unranked")));
                 }
                 else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", new Object[] {skills.get("ALL")} ));
+                    sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", skills.get("ALL")));
                 }
             }
 

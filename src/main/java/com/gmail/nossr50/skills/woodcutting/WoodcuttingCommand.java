@@ -52,15 +52,15 @@ public class WoodcuttingCommand extends SkillCommand {
         luckyEffectsDisplay();
 
         if (canTreeFell) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.0"), LocaleLoader.getString("Woodcutting.Effect.1") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.0"), LocaleLoader.getString("Woodcutting.Effect.1")));
         }
 
         if (canLeafBlow) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.2"), LocaleLoader.getString("Woodcutting.Effect.3") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.2"), LocaleLoader.getString("Woodcutting.Effect.3")));
         }
 
         if (canDoubleDrop && !Config.getInstance().woodcuttingDoubleDropsDisabled()) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Woodcutting.Effect.4"), LocaleLoader.getString("Woodcutting.Effect.5") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.4"), LocaleLoader.getString("Woodcutting.Effect.5")));
         }
     }
 
@@ -75,28 +75,28 @@ public class WoodcuttingCommand extends SkillCommand {
             int leafBlowerUnlockLevel = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
 
             if (skillValue < leafBlowerUnlockLevel) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Woodcutting.Ability.Locked.0", new Object[] { leafBlowerUnlockLevel }) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock",  LocaleLoader.getString("Woodcutting.Ability.Locked.0", leafBlowerUnlockLevel)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1") }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Woodcutting.Ability.0"), LocaleLoader.getString("Woodcutting.Ability.1")));
             }
         }
 
         if (canDoubleDrop && !Config.getInstance().woodcuttingDoubleDropsDisabled()) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", doubleDropChance) + LocaleLoader.getString("Perks.lucky.bonus", doubleDropChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", new Object[] { doubleDropChance }));
+                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", doubleDropChance));
             }
         }
 
         if (canTreeFell) {
             if (hasEndurance) {
-                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", new Object[] { treeFellerLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { treeFellerLengthEndurance }));
+                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", treeFellerLength) + LocaleLoader.getString("Perks.activationtime.bonus", treeFellerLengthEndurance));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", new Object[] { treeFellerLength }));
+                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", treeFellerLength));
             }
         }
     }

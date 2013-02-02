@@ -20,7 +20,7 @@ import com.gmail.nossr50.util.Users;
 public class XplockCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"xplock", "[skill]"});
+        String usage = LocaleLoader.getString("Commands.Usage.1", "xplock", "[skill]");
 
         if (CommandHelper.noConsoleUsage(sender)) {
             return true;
@@ -53,7 +53,7 @@ public class XplockCommand implements CommandExecutor {
             if (lastGained != null) {
                 spoutHud.toggleXpBarLocked();
                 spoutHud.setSkillLock(lastGained);
-                player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", new Object[] { Misc.getCapitalized(lastGained.toString()) }));
+                player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", Misc.getCapitalized(lastGained.toString())));
             }
             else {
                 player.sendMessage(usage);
@@ -68,7 +68,7 @@ public class XplockCommand implements CommandExecutor {
                     spoutHud.setSkillLock(SkillTools.getSkillType(args[0]));
                     spoutHud.updateXpBar();
 
-                    player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", new Object[] { Misc.getCapitalized(args[0]) }));
+                    player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", Misc.getCapitalized(args[0])));
                 }
                 else {
                     player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));

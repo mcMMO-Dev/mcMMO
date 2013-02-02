@@ -122,11 +122,11 @@ public enum AbilityType {
     }
 
     public String getAbilityPlayer(Player player) {
-        return LocaleLoader.getString(this.abilityPlayer, new Object[] {player.getName()});
+        return LocaleLoader.getString(this.abilityPlayer, player.getName());
     }
 
     public String getAbilityPlayerOff(Player player) {
-        return LocaleLoader.getString(this.abilityPlayerOff, new Object[] {player.getName()});
+        return LocaleLoader.getString(this.abilityPlayerOff, player.getName());
     }
 
     public String getAbilityRefresh() {

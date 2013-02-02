@@ -55,21 +55,21 @@ public abstract class SkillCommand implements CommandExecutor {
         dataCalculations();
         permissionsCheck();
 
-        player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString(skillString + ".SkillName") }));
+        player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString(skillString + ".SkillName")));
 
         if (!skill.isChildSkill()) {
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain", new Object[] { LocaleLoader.getString("Commands.XPGain." + skillString) }));
-            player.sendMessage(LocaleLoader.getString("Effects.Level", new Object[] { profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill) }));
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + skillString)));
+            player.sendMessage(LocaleLoader.getString("Effects.Level", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill)));
         }
 
         if (effectsHeaderPermissions()) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Effects.Effects") }));
+            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.Effects")));
         }
 
         effectsDisplay();
 
         if (statsHeaderPermissions()) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", new Object[] { LocaleLoader.getString("Commands.Stats.Self") }));
+            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Commands.Stats.Self")));
         }
 
         statsDisplay();
@@ -155,7 +155,7 @@ public abstract class SkillCommand implements CommandExecutor {
     protected void luckyEffectsDisplay() {
         if (isLucky) {
             String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", new Object[] { SkillTools.localizeSkillName(skill) }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", SkillTools.localizeSkillName(skill))));
         }
     }
 

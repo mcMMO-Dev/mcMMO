@@ -40,11 +40,11 @@ public class ExcavationCommand extends SkillCommand {
         luckyEffectsDisplay();
 
         if (canGigaDrill) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Excavation.Effect.0"), LocaleLoader.getString("Excavation.Effect.1") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Excavation.Effect.0"), LocaleLoader.getString("Excavation.Effect.1")));
         }
 
         if (canTreasureHunt) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Excavation.Effect.2"), LocaleLoader.getString("Excavation.Effect.3") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Excavation.Effect.2"), LocaleLoader.getString("Excavation.Effect.3")));
         }
     }
 
@@ -57,10 +57,10 @@ public class ExcavationCommand extends SkillCommand {
     protected void statsDisplay() {
         if (canGigaDrill) {
             if (hasEndurance) {
-                player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", new Object[] { gigaDrillBreakerLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { gigaDrillBreakerLengthEndurance }));
+                player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength) + LocaleLoader.getString("Perks.activationtime.bonus", gigaDrillBreakerLengthEndurance));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", new Object[] { gigaDrillBreakerLength }));
+                player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength));
             }
         }
     }

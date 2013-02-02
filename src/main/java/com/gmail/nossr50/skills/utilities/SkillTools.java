@@ -160,7 +160,7 @@ public class SkillTools {
         if (ability.getPermissions(player) && tool.inHand(inHand) && !profile.getToolPreparationMode(tool)) {
             if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
                 if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                    player.sendMessage(LocaleLoader.getString("Skills.TooTired", new Object[] { calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player) }));
+                    player.sendMessage(LocaleLoader.getString("Skills.TooTired", calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)));
                     return;
                 }
             }
@@ -252,15 +252,15 @@ public class SkillTools {
 
                     /* Update custom titles */
                     if (SpoutConfig.getInstance().getShowPowerLevel()) {
-                        spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", new Object[] {spoutPlayer.getName(), Users.getPlayer(player).getPowerLevel()} ));
+                        spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", spoutPlayer.getName(), Users.getPlayer(player).getPowerLevel()));
                     }
                 }
                 else {
-                    player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", new Object[] {String.valueOf(skillups), profile.getSkillLevel(skillType)}));
+                    player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", String.valueOf(skillups), profile.getSkillLevel(skillType)));
                 }
             }
             else {
-                player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", new Object[] {String.valueOf(skillups), profile.getSkillLevel(skillType)}));
+                player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", String.valueOf(skillups), profile.getSkillLevel(skillType)));
             }
         }
 
@@ -432,7 +432,7 @@ public class SkillTools {
          */
         if (type == SkillType.WOODCUTTING || type == SkillType.AXES) {
             if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                player.sendMessage(LocaleLoader.getString("Skills.TooTired", new Object[] { calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player) }));
+                player.sendMessage(LocaleLoader.getString("Skills.TooTired", calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)));
                 return;
             }
         }

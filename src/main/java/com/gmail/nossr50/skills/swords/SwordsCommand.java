@@ -64,16 +64,16 @@ public class SwordsCommand extends SkillCommand {
         luckyEffectsDisplay();
 
         if (canCounter) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.0"), LocaleLoader.getString("Swords.Effect.1", new Object[] {percent.format(1.0D / Swords.counterAttackModifier)} ) }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Swords.Effect.0"), LocaleLoader.getString("Swords.Effect.1", percent.format(1.0D / Swords.counterAttackModifier))));
         }
 
         if (canSerratedStrike) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.2"), LocaleLoader.getString("Swords.Effect.3", new Object[] {percent.format(1.0D / Swords.serratedStrikesModifier)}) }));
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.4"), LocaleLoader.getString("Swords.Effect.5", new Object[] {Swords.serratedStrikesBleedTicks}) }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Swords.Effect.2"), LocaleLoader.getString("Swords.Effect.3", percent.format(1.0D / Swords.serratedStrikesModifier))));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Swords.Effect.4"), LocaleLoader.getString("Swords.Effect.5", Swords.serratedStrikesBleedTicks)));
         }
 
         if (canBleed) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Swords.Effect.6"), LocaleLoader.getString("Swords.Effect.7") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Swords.Effect.6"), LocaleLoader.getString("Swords.Effect.7")));
         }
     }
 
@@ -86,31 +86,31 @@ public class SwordsCommand extends SkillCommand {
     protected void statsDisplay() {
         if (canCounter) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", new Object[] { counterAttackChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { counterAttackChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", counterAttackChance) + LocaleLoader.getString("Perks.lucky.bonus", counterAttackChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", new Object[] { counterAttackChance }));
+                player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", counterAttackChance));
             }
         }
 
         if (canBleed) {
-            player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Length", new Object[] { bleedLength }));
+            player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Length", bleedLength));
             player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Note"));
 
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", new Object[] { bleedChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { bleedChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", bleedChance) + LocaleLoader.getString("Perks.lucky.bonus", bleedChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", new Object[] { bleedChance }));
+                player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", bleedChance));
             }
         }
 
         if (canSerratedStrike) {
             if (hasEndurance) {
-                player.sendMessage(LocaleLoader.getString("Swords.SS.Length", new Object[] { serratedStrikesLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { serratedStrikesLengthEndurance }));
+                player.sendMessage(LocaleLoader.getString("Swords.SS.Length", serratedStrikesLength) + LocaleLoader.getString("Perks.activationtime.bonus", serratedStrikesLengthEndurance));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Swords.SS.Length", new Object[] { serratedStrikesLength }));
+                player.sendMessage(LocaleLoader.getString("Swords.SS.Length", serratedStrikesLength));
             }
         }
     }

@@ -26,10 +26,10 @@ public class BeastLoreEventHandler {
         String message = LocaleLoader.getString("Combat.BeastLore") + " ";
 
         if (beast.isTamed()) {
-            message = message.concat(LocaleLoader.getString("Combat.BeastLoreOwner", new Object[] { getOwnerName() }) + " ");
+            message = message.concat(LocaleLoader.getString("Combat.BeastLoreOwner", getOwnerName()) + " ");
         }
 
-        message = message.concat(LocaleLoader.getString("Combat.BeastLoreHealth", new Object[] { livingEntity.getHealth(), livingEntity.getMaxHealth() }));
+        message = message.concat(LocaleLoader.getString("Combat.BeastLoreHealth", livingEntity.getHealth(), livingEntity.getMaxHealth()));
         player.sendMessage(message);
     }
 

@@ -19,7 +19,7 @@ import com.gmail.nossr50.util.Misc;
 public class MctopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = LocaleLoader.getString("Commands.Usage.2", new Object[] {"mctop", "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"});
+        String usage = LocaleLoader.getString("Commands.Usage.2", "mctop", "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]");
 
         if (!Config.getInstance().getUseMySQL()) {
 
@@ -124,7 +124,7 @@ public class MctopCommand implements CommandExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", new Object[] { Misc.getCapitalized(skill) }));
+            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", Misc.getCapitalized(skill)));
         }
 
         int n = (page * 10) - 9; // Position
@@ -155,7 +155,7 @@ public class MctopCommand implements CommandExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", new Object[] { Misc.getCapitalized(query) }));
+            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", Misc.getCapitalized(query)));
         }
         int place = (page * 10) - 9;
         for (int i = 1; i <= 10; i++) {

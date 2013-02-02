@@ -32,7 +32,7 @@ public final class ChatManager {
 
         for (Player otherPlayer : mcMMO.p.getServer().getOnlinePlayers()) {
             if (Permissions.adminChat(otherPlayer) || otherPlayer.isOp()) {
-                otherPlayer.sendMessage(LocaleLoader.getString("Commands.AdminChat.Prefix", new Object[] {displayName}) + adminMessage);
+                otherPlayer.sendMessage(LocaleLoader.getString("Commands.AdminChat.Prefix", displayName) + adminMessage);
             }
         }
 
@@ -58,7 +58,7 @@ public final class ChatManager {
         String partyMessage = chatEvent.getMessage();
 
         for (Player member : party.getOnlineMembers()) {
-            member.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Prefix", new Object[] {displayName}) + partyMessage);
+            member.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Prefix", displayName) + partyMessage);
         }
 
         displayName = ChatColor.stripColor(displayName);

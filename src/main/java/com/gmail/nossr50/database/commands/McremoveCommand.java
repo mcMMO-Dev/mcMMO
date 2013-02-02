@@ -21,7 +21,7 @@ public class McremoveCommand implements CommandExecutor {
         String playerName;
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
         //String databaseName = Config.getInstance().getMySQLDatabaseName();
-        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"mcremove", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"});
+        String usage = LocaleLoader.getString("Commands.Usage.1", "mcremove", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">");
         String success;
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mcremove")) {
@@ -31,7 +31,7 @@ public class McremoveCommand implements CommandExecutor {
         switch (args.length) {
         case 1:
             playerName = args[0];
-            success = LocaleLoader.getString("Commands.mcremove.Success", new Object[] {playerName});
+            success = LocaleLoader.getString("Commands.mcremove.Success", playerName);
             break;
 
         default:

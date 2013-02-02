@@ -16,7 +16,7 @@ public final class LocaleLoader {
     private LocaleLoader() {};
 
     public static String getString(String key) {
-        return getString(key, null);
+        return getString(key, (Object[]) null);
     }
 
     /**
@@ -26,7 +26,7 @@ public final class LocaleLoader {
      * @param messageArguments Any arguments to be added to the string
      * @return The properly formatted locale string
      */
-    public static String getString(String key, Object[] messageArguments) {
+    public static String getString(String key, Object ... messageArguments) {
         try {
             if (RESOURCE_BUNDLE == null) {
                 Locale.setDefault(new Locale("en", "US"));

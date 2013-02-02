@@ -26,7 +26,7 @@ public class PtpCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] { "ptp", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">" });
+        String usage = LocaleLoader.getString("Commands.Usage.1", "ptp", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">");
 
         if (CommandHelper.noConsoleUsage(sender)) {
             return true;
@@ -51,7 +51,7 @@ public class PtpCommand implements CommandExecutor {
             int ptpCooldown = Config.getInstance().getPTPCommandCooldown();
 
             if (playerProfile.getRecentlyHurt() + (ptpCooldown * Misc.TIME_CONVERSION_FACTOR) > System.currentTimeMillis()) {
-                player.sendMessage(LocaleLoader.getString("Party.Teleport.Hurt", new Object[] { ptpCooldown }));
+                player.sendMessage(LocaleLoader.getString("Party.Teleport.Hurt", ptpCooldown));
                 return true;
             }
 
@@ -89,7 +89,7 @@ public class PtpCommand implements CommandExecutor {
             PlayerProfile targetProfile = Users.getProfile(target);
 
             if (!targetProfile.getPtpEnabled()) {
-                player.sendMessage(LocaleLoader.getString("Party.Teleport.Disabled", new Object[] { target.getName() }));
+                player.sendMessage(LocaleLoader.getString("Party.Teleport.Disabled", target.getName()));
                 return true;
             }
 
@@ -102,8 +102,8 @@ public class PtpCommand implements CommandExecutor {
                 }
 
                 player.teleport(target);
-                player.sendMessage(LocaleLoader.getString("Party.Teleport.Player", new Object[] { player.getName() }));
-                target.sendMessage(LocaleLoader.getString("Party.Teleport.Target", new Object[] { target.getName() }));
+                player.sendMessage(LocaleLoader.getString("Party.Teleport.Player", player.getName()));
+                target.sendMessage(LocaleLoader.getString("Party.Teleport.Target", target.getName()));
                 playerProfile.setRecentlyHurt(System.currentTimeMillis());
             } else {
                 targetProfile.setPtpRequest(player);
@@ -111,12 +111,12 @@ public class PtpCommand implements CommandExecutor {
                 player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
 
                 int ptpRequestExpire = Config.getInstance().getPTPCommandTimeout();
-                target.sendMessage(LocaleLoader.getString("Commands.ptp.Request1", new Object[] { player.getName() }));
-                target.sendMessage(LocaleLoader.getString("Commands.ptp.Request2", new Object[] { ptpRequestExpire }));
+                target.sendMessage(LocaleLoader.getString("Commands.ptp.Request1", player.getName()));
+                target.sendMessage(LocaleLoader.getString("Commands.ptp.Request2", ptpRequestExpire));
             }
         }
         else {
-            player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] { target.getName() }));
+            player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", target.getName()));
         }
         return true;
     }
@@ -155,8 +155,8 @@ public class PtpCommand implements CommandExecutor {
         }
 
         target.teleport(player);
-        target.sendMessage(LocaleLoader.getString("Party.Teleport.Player", new Object[] { player.getName() }));
-        player.sendMessage(LocaleLoader.getString("Party.Teleport.Target", new Object[] { target.getName() }));
+        target.sendMessage(LocaleLoader.getString("Party.Teleport.Player", player.getName()));
+        player.sendMessage(LocaleLoader.getString("Party.Teleport.Target", target.getName()));
         playerProfile.setRecentlyHurt(System.currentTimeMillis());
         return true;
     }

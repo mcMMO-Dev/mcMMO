@@ -33,7 +33,7 @@ public final class SkillGuide {
         ArrayList<String> allStrings = new ArrayList<String>();
         String split[] = LocaleLoader.getString(address).split("\n");
 
-        allStrings.add(LocaleLoader.getString("Guides.Header", new Object[] {header} ));
+        allStrings.add(LocaleLoader.getString("Guides.Header", header));
 
         //Add targeted strings
         while (allStrings.size() < 9) {
@@ -59,7 +59,7 @@ public final class SkillGuide {
         String skillName = skilltype.toString();
         String capitalized = Misc.getCapitalized(skillName);
         String localized = SkillTools.localizeSkillName(skilltype);
-        player.sendMessage(LocaleLoader.getString("Guides.Available", new Object[] {localized, localized.toLowerCase()} ));
+        player.sendMessage(LocaleLoader.getString("Guides.Available", localized, localized.toLowerCase()));
 
         if (args.length >= 1 && args[0].equals("?")) {
             String address = "Guides." + capitalized;
@@ -85,14 +85,14 @@ public final class SkillGuide {
                     }
                 }
                 else {
-                    player.sendMessage(LocaleLoader.getString("Guides.Page.OutOfRange", new Object[] {totalPages} ));
+                    player.sendMessage(LocaleLoader.getString("Guides.Page.OutOfRange", totalPages));
                 }
             }
         }
 
         // We have to specify this, else we get the usage string every time we call /skillname...
         else if (args.length != 0) {
-            player.sendMessage(LocaleLoader.getString("Guides.Usage", new Object[] {localized.toLowerCase()} ));
+            player.sendMessage(LocaleLoader.getString("Guides.Usage", localized.toLowerCase()));
         }
     }
 }

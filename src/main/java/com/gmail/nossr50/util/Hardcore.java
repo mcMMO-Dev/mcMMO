@@ -74,12 +74,12 @@ public final class Hardcore {
         }
 
         if (totalStolen > 0) {
-            killer.sendMessage(LocaleLoader.getString("Vampirism.Killer.Success", new Object[] {totalStolen, victim.getName()} ));
-            victim.sendMessage(LocaleLoader.getString("Vampirism.Victim.Success", new Object[] {killer.getName(), totalStolen} ));
+            killer.sendMessage(LocaleLoader.getString("Vampirism.Killer.Success", totalStolen, victim.getName()));
+            victim.sendMessage(LocaleLoader.getString("Vampirism.Victim.Success", killer.getName(), totalStolen));
         }
         else {
-            killer.sendMessage(LocaleLoader.getString("Vampirism.Killer.Failure", new Object[] {victim.getName()} ));
-            victim.sendMessage(LocaleLoader.getString("Vampirism.Victim.Failure", new Object[] {killer.getName()} ));
+            killer.sendMessage(LocaleLoader.getString("Vampirism.Killer.Failure", victim.getName()));
+            victim.sendMessage(LocaleLoader.getString("Vampirism.Victim.Failure", killer.getName()));
         }
     }
 }

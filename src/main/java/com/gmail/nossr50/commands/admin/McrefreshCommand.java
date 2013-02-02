@@ -17,7 +17,7 @@ public class McrefreshCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         OfflinePlayer player;
         PlayerProfile profile;
-        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"mcrefresh", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"});
+        String usage = LocaleLoader.getString("Commands.Usage.1", "mcrefresh", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]");
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mcrefresh")) {
             return true;
@@ -50,7 +50,7 @@ public class McrefreshCommand implements CommandExecutor {
                 return true;
             }
 
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrefresh.Success", new Object[] {playerName}));
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrefresh.Success", playerName));
 
             break;
 

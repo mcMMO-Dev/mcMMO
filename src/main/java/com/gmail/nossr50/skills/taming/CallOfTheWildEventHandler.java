@@ -30,7 +30,7 @@ public class CallOfTheWildEventHandler {
         if (player == null)
             return;
 
-        player.sendMessage(LocaleLoader.getString("Skills.NeedMore", new Object[] { Misc.prettyItemString(inHand.getTypeId()) }));
+        player.sendMessage(LocaleLoader.getString("Skills.NeedMore", Misc.prettyItemString(inHand.getTypeId())));
     }
 
     protected boolean nearbyEntityExists() {

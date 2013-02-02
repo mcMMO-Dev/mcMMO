@@ -67,19 +67,19 @@ public class FishingCommand extends SkillCommand {
         luckyEffectsDisplay();
 
         if (canTreasureHunt) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Fishing.Effect.0"), LocaleLoader.getString("Fishing.Effect.1") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.0"), LocaleLoader.getString("Fishing.Effect.1")));
         }
 
         if (canMagicHunt) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Fishing.Effect.2"), LocaleLoader.getString("Fishing.Effect.3") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.2"), LocaleLoader.getString("Fishing.Effect.3")));
         }
 
         if (canShake) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Fishing.Effect.4"), LocaleLoader.getString("Fishing.Effect.5") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.4"), LocaleLoader.getString("Fishing.Effect.5")));
         }
 
         if (canFishermansDiet) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Fishing.Effect.6"), LocaleLoader.getString("Fishing.Effect.7") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.6"), LocaleLoader.getString("Fishing.Effect.7")));
         }
     }
 
@@ -91,34 +91,34 @@ public class FishingCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canTreasureHunt) {
-            player.sendMessage(LocaleLoader.getString("Fishing.Ability.Rank", new Object[] { lootTier }));
+            player.sendMessage(LocaleLoader.getString("Fishing.Ability.Rank", lootTier));
         }
 
         if (canMagicHunt) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", new Object[] { magicChance}) + chanceRaining +  LocaleLoader.getString("Perks.lucky.bonus", new Object[] { magicChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", magicChance) + chanceRaining +  LocaleLoader.getString("Perks.lucky.bonus", magicChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", new Object[] { magicChance}) + chanceRaining);
+                player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", magicChance) + chanceRaining);
             }
         }
 
         if (canShake) {
             if (skillValue < AdvancedConfig.getInstance().getShakeUnlockLevel()) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Fishing.Ability.Locked.0", new Object[] { AdvancedConfig.getInstance().getShakeUnlockLevel() }) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.0", AdvancedConfig.getInstance().getShakeUnlockLevel())));
             }
             else {
                 if (isLucky) {
-                    player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", new Object[] { shakeChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { shakeChanceLucky }));
+                    player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", shakeChance) + LocaleLoader.getString("Perks.lucky.bonus", shakeChanceLucky));
                 }
                 else {
-                    player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", new Object[] { shakeChance }));
+                    player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", shakeChance));
                 }
             }
         }
 
         if (canFishermansDiet) {
-            player.sendMessage(LocaleLoader.getString("Fishing.Ability.FD", new Object[] { fishermansDietRank }));
+            player.sendMessage(LocaleLoader.getString("Fishing.Ability.FD", fishermansDietRank));
         }
     }
 }

@@ -35,7 +35,7 @@ public class Menu extends GenericPopup {
         escapeLabel.setX(titleLabel.getX() - 15);
         escapeLabel.setY(titleLabel.getY() + 10);
 
-        hudButton = new McmmoButton(LocaleLoader.getString("Spout.Menu.HudButton.1", new Object[] {playerProfile.getHudType().toString()}), LocaleLoader.getString("Spout.Menu.HudButton.2"));
+        hudButton = new McmmoButton(LocaleLoader.getString("Spout.Menu.HudButton.1", playerProfile.getHudType().toString()), LocaleLoader.getString("Spout.Menu.HudButton.2"));
         hudButton.setWidth(120);
         hudButton.setHeight(20);
         hudButton.setX(centerX - (hudButton.getWidth() / 2));

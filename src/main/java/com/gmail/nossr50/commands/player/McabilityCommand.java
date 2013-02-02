@@ -16,7 +16,7 @@ public class McabilityCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         PlayerProfile profile;
-        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"mcability", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"});
+        String usage = LocaleLoader.getString("Commands.Usage.1", "mcability", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">");
 
         switch (args.length) {
         case 0:

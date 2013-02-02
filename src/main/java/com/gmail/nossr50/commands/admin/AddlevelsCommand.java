@@ -41,10 +41,10 @@ public class AddlevelsCommand implements CommandExecutor{
             profile = Users.getPlayer((Player) sender).getProfile();
 
             if (skill.equals(SkillType.ALL)) {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", levels));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", new Object[] {levels, Misc.getCapitalized(skill.toString())}));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", levels, Misc.getCapitalized(skill.toString())));
             }
 
             profile.addLevels(skill, levels);
@@ -90,19 +90,19 @@ public class AddlevelsCommand implements CommandExecutor{
                 // TODO: Is it even possible for the player to be offline at this point?
                 if (player.isOnline()) {
                     if (skill.equals(SkillType.ALL)) {
-                        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", new Object[] {levels}));
+                        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", levels));
                     }
                     else {
-                        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", new Object[] {levels, Misc.getCapitalized(skill.toString())}));
+                        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", levels, Misc.getCapitalized(skill.toString())));
                     }
                 }
             }
 
             if (skill.equals(SkillType.ALL)) {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] {args[0]}));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", new Object[] {Misc.getCapitalized(skill.toString()), args[0]}));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", Misc.getCapitalized(skill.toString()), args[0]));
             }
 
             return true;

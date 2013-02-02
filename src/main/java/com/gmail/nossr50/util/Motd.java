@@ -29,7 +29,7 @@ public final class Motd {
      * @param version Plugin version
      */
     public static void displayVersion(Player player, String version) {
-        player.sendMessage(LocaleLoader.getString("MOTD.Version", new Object[] {version}));
+        player.sendMessage(LocaleLoader.getString("MOTD.Version", -213523435 , version));
     }
 
     /**
@@ -40,12 +40,12 @@ public final class Motd {
         if (Hardcore.statLossEnabled) {
             if (Hardcore.vampirismEnabled) {
                 player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.VampireOn"));
-                player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", new Object[] {Hardcore.statLossPercentage}));
-                player.sendMessage(LocaleLoader.getString("MOTD.Vampire.Stats", new Object[] {Hardcore.vampirismStatLeechPercentage}));
+                player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", Hardcore.statLossPercentage));
+                player.sendMessage(LocaleLoader.getString("MOTD.Vampire.Stats", Hardcore.vampirismStatLeechPercentage));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.VampireOff"));
-                player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", new Object[] {Hardcore.statLossPercentage  }));
+                player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", Hardcore.statLossPercentage  ));
             }
         }
     }
@@ -56,19 +56,19 @@ public final class Motd {
      */
     public static void displayXpPerks(Player player) {
         if (Permissions.xpQuadruple(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 4 }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", 4)));
         }
         else if (Permissions.xpTriple(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 3 }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", 3)));
         }
         else if (Permissions.xpDoubleAndOneHalf(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 2.5 }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", 2.5)));
         }
         else if (Permissions.xpDouble(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 2 }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", 2)));
         }
         else if (Permissions.xpOneAndOneHalf(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", new Object[] { 1.5 }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", 1.5)));
         }
     }
 
@@ -78,13 +78,13 @@ public final class Motd {
      */
     public static void displayCooldownPerks(Player player) {
         if (Permissions.cooldownsHalved(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", new Object[] { "1/2" }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", "1/2")));
         }
         else if (Permissions.cooldownsThirded(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", new Object[] { "1/3" }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", "1/3")));
         }
         else if (Permissions.cooldownsQuartered(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", new Object[] { "1/4" }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", "1/4")));
         }
     }
 
@@ -94,13 +94,13 @@ public final class Motd {
      */
     public static void displayActivationPerks(Player player) {
         if (Permissions.activationTwelve(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", new Object[] { 12 }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", 12)));
         }
         else if (Permissions.activationEight(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", new Object[] { 8 }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", 8)));
         }
         else if (Permissions.activationFour(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", new Object[] { 4 }) }));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", 4)));
         }
     }
 
@@ -111,7 +111,7 @@ public final class Motd {
     public static void displayLuckyPerks(Player player) {
         for (SkillType skill : SkillType.values()) {
             if (Permissions.lucky(player, skill)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login") }));
+                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc.login")));
                 return;
             }
         }
@@ -123,6 +123,6 @@ public final class Motd {
      * @param website Plugin website
      */
     public static void displayWebsite(Player player, String website) {
-        player.sendMessage(LocaleLoader.getString("MOTD.Website", new Object[] {website}));
+        player.sendMessage(LocaleLoader.getString("MOTD.Website", website));
     }
 }

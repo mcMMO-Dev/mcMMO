@@ -54,7 +54,7 @@ public class McrankCommand implements CommandExecutor {
 
     public void flatfileDisplay(CommandSender sender, String playerName) {
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
-        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", new Object[] {playerName}));
+        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
         for (SkillType skillType : SkillType.values()) {
             int[] rankInts = Leaderboard.getPlayerRank(playerName, skillType);
             if (skillType.isChildSkill()) {
@@ -66,10 +66,10 @@ public class McrankCommand implements CommandExecutor {
             }
 
             if (rankInts[1] == 0) {
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {SkillTools.localizeSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked")} )); //Don't bother showing ranking for players without skills
+                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.localizeSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked"))); //Don't bother showing ranking for players without skills
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", new Object[] {SkillTools.localizeSkillName(skillType), String.valueOf(rankInts[0])} ));
+                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.localizeSkillName(skillType), String.valueOf(rankInts[0])));
             }
         }
 
@@ -77,10 +77,10 @@ public class McrankCommand implements CommandExecutor {
         int[] rankInts = Leaderboard.getPlayerRank(playerName, SkillType.ALL);
 
         if (rankInts[1] == 0) {
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overalll", new Object[] {LocaleLoader.getString("Commands.mcrank.Unranked")} )); //Don't bother showing ranking for players without skills
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overalll", LocaleLoader.getString("Commands.mcrank.Unranked"))); //Don't bother showing ranking for players without skills
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", new Object[] {String.valueOf(rankInts[0])} ));
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", String.valueOf(rankInts[0])));
         }
     }
 

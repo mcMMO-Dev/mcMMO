@@ -21,7 +21,7 @@ public class SkillResetCommand implements CommandExecutor {
         OfflinePlayer modifiedPlayer;
         PlayerProfile profile;
         SkillType skill;
-        String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"skillreset", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">"});
+        String usage = LocaleLoader.getString("Commands.Usage.3", "skillreset", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">");
 
         switch (args.length) {
         case 1:
@@ -45,7 +45,7 @@ public class SkillResetCommand implements CommandExecutor {
                     sender.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
                 }
                 else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Reset.Single", new Object[] { Misc.getCapitalized(skill.toString()) }));
+                    sender.sendMessage(LocaleLoader.getString("Commands.Reset.Single", Misc.getCapitalized(skill.toString())));
                 }
             }
             else {
@@ -82,11 +82,11 @@ public class SkillResetCommand implements CommandExecutor {
                     ((Player)modifiedPlayer).sendMessage(LocaleLoader.getString("Commands.Reset.All"));
                 }
                 else {
-                    ((Player)modifiedPlayer).sendMessage(LocaleLoader.getString("Commands.Reset.Single", new Object[] { Misc.getCapitalized(skill.toString()) }));
+                    ((Player)modifiedPlayer).sendMessage(LocaleLoader.getString("Commands.Reset.Single", Misc.getCapitalized(skill.toString())));
                 }
             }
 
-            sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", new Object[] { Misc.getCapitalized(skill.toString()), args[0] }));
+            sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", Misc.getCapitalized(skill.toString()), args[0]));
             return true;
 
         default:

@@ -76,7 +76,7 @@ public class SimpleRepairManager implements RepairManager {
 
         // Level check
         if (skillLevel < repairable.getMinimumLevel()) {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.Adept", new Object[] { String.valueOf(repairable.getMinimumLevel()), Misc.prettyItemString(item.getTypeId()) } ));
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.Adept", String.valueOf(repairable.getMinimumLevel()), Misc.prettyItemString(item.getTypeId())));
             return;
         }
 
@@ -84,7 +84,7 @@ public class SimpleRepairManager implements RepairManager {
 
         // Check if they have the proper material to repair with
         if (!inventory.contains(repairable.getRepairMaterialId())) {
-            String message = LocaleLoader.getString("Skills.NeedMore", new Object[] { Misc.prettyItemString(repairable.getRepairMaterialId()) });
+            String message = LocaleLoader.getString("Skills.NeedMore", Misc.prettyItemString(repairable.getRepairMaterialId()));
             if (repairable.getRepairMaterialMetadata() != (byte) -1) {
                 // TODO: Do something nicer than append the metadata as a :# ?
                 if (findInInventory(inventory, repairable.getRepairMaterialId(), repairable.getRepairMaterialMetadata()) == -1) {

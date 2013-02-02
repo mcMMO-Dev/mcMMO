@@ -16,7 +16,7 @@ public class ACommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         PlayerProfile profile;
-        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"a", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">"});
+        String usage = LocaleLoader.getString("Commands.Usage.1", "a", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">");
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.chat.adminchat")) {
             return true;

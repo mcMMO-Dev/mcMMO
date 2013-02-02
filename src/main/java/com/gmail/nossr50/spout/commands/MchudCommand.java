@@ -17,7 +17,7 @@ import com.gmail.nossr50.util.Users;
 public class MchudCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = LocaleLoader.getString("Commands.Usage.1", new Object[] {"mchud", "<DISABLED | STANDARD | SMALL | RETRO>"});
+        String usage = LocaleLoader.getString("Commands.Usage.1", "mchud", "<DISABLED | STANDARD | SMALL | RETRO>");
         String invalid = LocaleLoader.getString("Commands.mchud.Invalid");
 
         if (CommandHelper.noConsoleUsage(sender)) {

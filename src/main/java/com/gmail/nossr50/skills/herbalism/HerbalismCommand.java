@@ -78,27 +78,27 @@ public class HerbalismCommand extends SkillCommand {
         luckyEffectsDisplay();
 
         if (canGreenTerra) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.0"), LocaleLoader.getString("Herbalism.Effect.1") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.0"), LocaleLoader.getString("Herbalism.Effect.1")));
         }
 
         if (canGreenThumbWheat) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.2"), LocaleLoader.getString("Herbalism.Effect.3") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.2"), LocaleLoader.getString("Herbalism.Effect.3")));
         }
 
         if (canGreenThumbBlocks) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.4"), LocaleLoader.getString("Herbalism.Effect.5") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.4"), LocaleLoader.getString("Herbalism.Effect.5")));
         }
 
         if (canFarmersDiet) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.6"), LocaleLoader.getString("Herbalism.Effect.7") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.6"), LocaleLoader.getString("Herbalism.Effect.7")));
         }
 
         if (hasHylianLuck) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.10"), LocaleLoader.getString("Herbalism.Effect.11") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.10"), LocaleLoader.getString("Herbalism.Effect.11")));
         }
 
         if (canDoubleDrop && !doubleDropsDisabled) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Herbalism.Effect.8"), LocaleLoader.getString("Herbalism.Effect.9") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.8"), LocaleLoader.getString("Herbalism.Effect.9")));
         }
     }
 
@@ -111,44 +111,44 @@ public class HerbalismCommand extends SkillCommand {
     protected void statsDisplay() {
         if (canGreenTerra) {
             if (hasEndurance) {
-                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", new Object[] { greenTerraLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { greenTerraLengthEndurance }));
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", greenTerraLength) + LocaleLoader.getString("Perks.activationtime.bonus", greenTerraLengthEndurance));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", new Object[] { greenTerraLength }));
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", greenTerraLength));
             }
         }
 
         if (canGreenThumbBlocks || canGreenThumbWheat) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", new Object[] { greenThumbChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { greenThumbChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", greenThumbChance) + LocaleLoader.getString("Perks.lucky.bonus", greenThumbChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", new Object[] { greenThumbChance }));
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", greenThumbChance));
             }
         }
 
         if (canGreenThumbWheat) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Stage", new Object[] { greenThumbStage }));
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Stage", greenThumbStage));
         }
 
         if (canFarmersDiet) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.FD", new Object[] { farmersDietRank } ));
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.FD", farmersDietRank));
         }
 
         if (hasHylianLuck) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.HylianLuck", new Object[] { hylianLuckChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { hylianLuckChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.HylianLuck", hylianLuckChance) + LocaleLoader.getString("Perks.lucky.bonus", hylianLuckChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.HylianLuck", new Object[] { hylianLuckChance }));
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.HylianLuck", hylianLuckChance));
             }
         }
         if (canDoubleDrop && !doubleDropsDisabled) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", doubleDropChance) + LocaleLoader.getString("Perks.lucky.bonus", doubleDropChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", new Object[] { doubleDropChance }));
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", doubleDropChance));
             }
         }
     }

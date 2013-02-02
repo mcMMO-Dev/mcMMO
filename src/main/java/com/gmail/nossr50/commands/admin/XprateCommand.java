@@ -72,11 +72,11 @@ public class XprateCommand implements CommandExecutor {
                 if (xpEventEnabled) {
                     for (Player x : mcMMO.p.getServer().getOnlinePlayers()) {
                         x.sendMessage(LocaleLoader.getString("Commands.xprate.started.0"));
-                        x.sendMessage(LocaleLoader.getString("Commands.xprate.started.1", new Object[] {newRate}));
+                        x.sendMessage(LocaleLoader.getString("Commands.xprate.started.1", newRate));
                     }
                 }
                 else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", new Object[] {newRate}));
+                    sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", newRate));
                 }
             }
             else {

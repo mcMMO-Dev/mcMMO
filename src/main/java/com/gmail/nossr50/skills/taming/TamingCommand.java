@@ -52,37 +52,37 @@ public class TamingCommand extends SkillCommand {
         luckyEffectsDisplay();
 
         if (canBeastLore) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Taming.Effect.0"), LocaleLoader.getString("Taming.Effect.1") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.0"), LocaleLoader.getString("Taming.Effect.1")));
         }
 
         if (canGore) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Taming.Effect.2"), LocaleLoader.getString("Taming.Effect.3") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.2"), LocaleLoader.getString("Taming.Effect.3")));
         }
 
         if (canSharpenedClaws) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Taming.Effect.4"), LocaleLoader.getString("Taming.Effect.5") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.4"), LocaleLoader.getString("Taming.Effect.5")));
         }
 
         if (canEnvironmentallyAware) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Taming.Effect.6"), LocaleLoader.getString("Taming.Effect.7") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.6"), LocaleLoader.getString("Taming.Effect.7")));
         }
 
         if (canThickFur) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Taming.Effect.8"), LocaleLoader.getString("Taming.Effect.9") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.8"), LocaleLoader.getString("Taming.Effect.9")));
         }
 
         if (canShockProof) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Taming.Effect.10"), LocaleLoader.getString("Taming.Effect.11") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.10"), LocaleLoader.getString("Taming.Effect.11")));
         }
 
         if (canFastFood) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Taming.Effect.16"), LocaleLoader.getString("Taming.Effect.17") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.16"), LocaleLoader.getString("Taming.Effect.17")));
         }
 
         if (canCallWild) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Taming.Effect.12"), LocaleLoader.getString("Taming.Effect.13") }));
-            player.sendMessage(LocaleLoader.getString("Taming.Effect.14", new Object[] { Config.getInstance().getTamingCOTWOcelotCost() }));
-            player.sendMessage(LocaleLoader.getString("Taming.Effect.15", new Object[] { Config.getInstance().getTamingCOTWWolfCost() }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.12"), LocaleLoader.getString("Taming.Effect.13")));
+            player.sendMessage(LocaleLoader.getString("Taming.Effect.14", Config.getInstance().getTamingCOTWOcelotCost()));
+            player.sendMessage(LocaleLoader.getString("Taming.Effect.15", Config.getInstance().getTamingCOTWWolfCost()));
         }
     }
 
@@ -95,55 +95,55 @@ public class TamingCommand extends SkillCommand {
     protected void statsDisplay() {
         if (canFastFood) {
             if (skillValue < Taming.fastFoodServiceUnlockLevel) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.4", new Object[] { Taming.fastFoodServiceUnlockLevel } ) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.4", Taming.fastFoodServiceUnlockLevel)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Taming.Ability.Bonus.8"), LocaleLoader.getString("Taming.Ability.Bonus.9", new Object[] { percent.format(Taming.fastFoodServiceActivationChance) } ) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.8"), LocaleLoader.getString("Taming.Ability.Bonus.9", percent.format(Taming.fastFoodServiceActivationChance))));
             }
         }
 
         if (canEnvironmentallyAware) {
             if (skillValue < Taming.environmentallyAwareUnlockLevel) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.0", new Object[] { Taming.environmentallyAwareUnlockLevel } ) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.0", Taming.environmentallyAwareUnlockLevel)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Taming.Ability.Bonus.0"), LocaleLoader.getString("Taming.Ability.Bonus.1") }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.0"), LocaleLoader.getString("Taming.Ability.Bonus.1")));
             }
         }
 
         if (canThickFur) {
             if (skillValue < Taming.thickFurUnlockLevel) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.1", new Object[] { Taming.thickFurUnlockLevel } ) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.1", Taming.thickFurUnlockLevel)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Taming.Ability.Bonus.2"), LocaleLoader.getString("Taming.Ability.Bonus.3", new Object[] { Taming.thickFurModifier }) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.2"), LocaleLoader.getString("Taming.Ability.Bonus.3", Taming.thickFurModifier)));
             }
         }
 
         if (canShockProof) {
             if (skillValue < Taming.shockProofUnlockLevel) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.2", new Object[] { Taming.shockProofUnlockLevel } ) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.2", Taming.shockProofUnlockLevel)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Taming.Ability.Bonus.4"), LocaleLoader.getString("Taming.Ability.Bonus.5", new Object[] { Taming.shockProofModifier }) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.4"), LocaleLoader.getString("Taming.Ability.Bonus.5", Taming.shockProofModifier)));
             }
         }
 
         if (canSharpenedClaws) {
             if (skillValue < Taming.sharpenedClawsUnlockLevel) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Taming.Ability.Locked.3", new Object[] { Taming.sharpenedClawsUnlockLevel } ) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.3", Taming.sharpenedClawsUnlockLevel)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Taming.Ability.Bonus.6"), LocaleLoader.getString("Taming.Ability.Bonus.7", new Object[] { Taming.sharpenedClawsBonusDamage }) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.6"), LocaleLoader.getString("Taming.Ability.Bonus.7", Taming.sharpenedClawsBonusDamage)));
             }
         }
 
         if (canGore) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", new Object[] { goreChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { goreChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", goreChance) + LocaleLoader.getString("Perks.lucky.bonus", goreChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", new Object[] { goreChance }));
+                player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", goreChance));
             }
         }
     }

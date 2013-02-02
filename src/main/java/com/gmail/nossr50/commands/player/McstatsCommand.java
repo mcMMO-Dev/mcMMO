@@ -35,10 +35,10 @@ public class McstatsCommand implements CommandExecutor {
         int powerLevelCap = Config.getInstance().getPowerLevelCap();
 
         if (powerLevelCap > 0) {
-            player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", new Object[] { String.valueOf(Users.getPlayer(player).getPowerLevel()), String.valueOf(powerLevelCap) }));
+            player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", String.valueOf(Users.getPlayer(player).getPowerLevel()), String.valueOf(powerLevelCap)));
         }
         else {
-            player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", new Object[] { String.valueOf(Users.getPlayer(player).getPowerLevel()) }));
+            player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", String.valueOf(Users.getPlayer(player).getPowerLevel())));
         }
 
         return true;

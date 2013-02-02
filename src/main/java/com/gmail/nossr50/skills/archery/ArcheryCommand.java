@@ -60,15 +60,15 @@ public class ArcheryCommand extends SkillCommand {
         luckyEffectsDisplay();
 
         if (canSkillShot) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Archery.Effect.0"), LocaleLoader.getString("Archery.Effect.1") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Archery.Effect.0"), LocaleLoader.getString("Archery.Effect.1")));
         }
 
         if (canDaze) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Archery.Effect.2"), LocaleLoader.getString("Archery.Effect.3", new Object[] {Archery.dazeModifier}) }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Archery.Effect.2"), LocaleLoader.getString("Archery.Effect.3", Archery.dazeModifier)));
         }
 
         if (canRetrieve) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Archery.Effect.4"), LocaleLoader.getString("Archery.Effect.5") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Archery.Effect.4"), LocaleLoader.getString("Archery.Effect.5")));
         }
     }
 
@@ -80,24 +80,24 @@ public class ArcheryCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canSkillShot) {
-            player.sendMessage(LocaleLoader.getString("Archery.Combat.SkillshotBonus", new Object[] { skillShotBonus }));
+            player.sendMessage(LocaleLoader.getString("Archery.Combat.SkillshotBonus", skillShotBonus));
         }
 
         if (canDaze) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", new Object[] { dazeChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { dazeChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", dazeChance) + LocaleLoader.getString("Perks.lucky.bonus", dazeChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", new Object[] { dazeChance }));
+                player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", dazeChance));
             }
         }
 
         if (canRetrieve) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", new Object[] { retrieveChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { retrieveChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", retrieveChance) + LocaleLoader.getString("Perks.lucky.bonus", retrieveChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", new Object[] { retrieveChance }));
+                player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", retrieveChance));
             }
         }
     }

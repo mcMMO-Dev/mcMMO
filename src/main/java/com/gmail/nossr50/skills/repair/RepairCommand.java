@@ -92,40 +92,40 @@ public class RepairCommand extends SkillCommand {
     protected void effectsDisplay() {
         luckyEffectsDisplay();
 
-        player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.0"), LocaleLoader.getString("Repair.Effect.1") }));
+        player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.0"), LocaleLoader.getString("Repair.Effect.1")));
 
         if (canMasterRepair) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.2"), LocaleLoader.getString("Repair.Effect.3") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.2"), LocaleLoader.getString("Repair.Effect.3")));
         }
 
         if (canSuperRepair) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.4"), LocaleLoader.getString("Repair.Effect.5") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.4"), LocaleLoader.getString("Repair.Effect.5")));
         }
 
         /* Repair Level Requirements */
 
         if (canRepairStone && stoneLevel > 0) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.14", new Object[] { stoneLevel }), LocaleLoader.getString("Repair.Effect.15") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.14", stoneLevel), LocaleLoader.getString("Repair.Effect.15")));
         }
 
         if (canRepairIron && ironLevel > 0) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.12", new Object[] { ironLevel }), LocaleLoader.getString("Repair.Effect.13") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.12", ironLevel), LocaleLoader.getString("Repair.Effect.13")));
         }
 
         if (canRepairGold && goldLevel > 0) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.10", new Object[] { goldLevel }), LocaleLoader.getString("Repair.Effect.11") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.10", goldLevel), LocaleLoader.getString("Repair.Effect.11")));
         }
 
         if (canRepairDiamond && diamondLevel > 0) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.6", new Object[] { diamondLevel }), LocaleLoader.getString("Repair.Effect.7") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.6", diamondLevel), LocaleLoader.getString("Repair.Effect.7")));
         }
 
         if (canSalvage && Salvage.salvageUnlockLevel > 0) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.16", new Object[] { Salvage.salvageUnlockLevel }), LocaleLoader.getString("Repair.Effect.17") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.16", Salvage.salvageUnlockLevel), LocaleLoader.getString("Repair.Effect.17")));
         }
 
         if (canArcaneForge) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Repair.Effect.8"), LocaleLoader.getString("Repair.Effect.9") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.8"), LocaleLoader.getString("Repair.Effect.9")));
         }
     }
 
@@ -137,27 +137,27 @@ public class RepairCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canMasterRepair) {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.Mastery", new Object[] { repairMasteryBonus }));
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.Mastery", repairMasteryBonus));
         }
 
         if (canSuperRepair) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", new Object[] { superRepairChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { superRepairChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", superRepairChance) + LocaleLoader.getString("Perks.lucky.bonus", superRepairChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", new Object[] { superRepairChance }));
+                player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", superRepairChance));
             }
         }
 
         if (canArcaneForge) {
-            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Rank", new Object[] { arcaneForgingRank }));
+            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Rank", arcaneForgingRank));
 
             if (Repair.arcaneForgingEnchantLoss) {
-                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Success", new Object[] { (arcaneBypass ? 100 : Repair.getEnchantChance(arcaneForgingRank)) }));
+                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Success", (arcaneBypass ? 100 : Repair.getEnchantChance(arcaneForgingRank))));
             }
 
             if (Repair.arcaneForgingDowngrades) {
-                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", new Object[] { (arcaneBypass ? 0 : Repair.getDowngradeChance(arcaneForgingRank)) }));
+                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", (arcaneBypass ? 0 : Repair.getDowngradeChance(arcaneForgingRank))));
             }
         }
     }

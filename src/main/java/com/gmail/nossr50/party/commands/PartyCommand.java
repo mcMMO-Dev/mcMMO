@@ -138,17 +138,17 @@ public class PartyCommand implements CommandExecutor {
             }
 
             player.sendMessage(LocaleLoader.getString("Commands.Party.Header"));
-            player.sendMessage(LocaleLoader.getString("Commands.Party.Status", new Object[] {party.getName(), status}));
+            player.sendMessage(LocaleLoader.getString("Commands.Party.Status", party.getName(), status));
 
             boolean xpShareEnabled = Config.getInstance().getExpShareEnabled();
             boolean itemShareEnabled = Config.getInstance().getItemShareEnabled();
 
             if (xpShareEnabled) {
-                ExpShare = LocaleLoader.getString("Commands.Party.ExpShare", new Object[] { party.getXpShareMode().toString() });
+                ExpShare = LocaleLoader.getString("Commands.Party.ExpShare", party.getXpShareMode().toString());
             }
 
             if (itemShareEnabled) {
-                ItemShare = LocaleLoader.getString("Commands.Party.ItemShare", new Object[] { itemShareMode });
+                ItemShare = LocaleLoader.getString("Commands.Party.ItemShare", itemShareMode);
             }
 
             if (xpShareEnabled && itemShareEnabled) {
@@ -160,8 +160,8 @@ public class PartyCommand implements CommandExecutor {
             }
 
             player.sendMessage(LocaleLoader.getString("Commands.Party.Members.Header"));
-            player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", new Object[] { membersNear, membersOnline }));
-            player.sendMessage(LocaleLoader.getString("Commands.Party.Members", new Object[] {tempList}));
+            player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", membersNear, membersOnline));
+            player.sendMessage(LocaleLoader.getString("Commands.Party.Members", tempList));
         }
         else {
             return printUsage();
@@ -185,12 +185,12 @@ public class PartyCommand implements CommandExecutor {
         Player target = mcMMO.p.getServer().getPlayer(args[1]);
 
         if (target == null) {
-            player.sendMessage(LocaleLoader.getString("Party.NotOnline", new Object[] {args[1]}));
+            player.sendMessage(LocaleLoader.getString("Party.NotOnline", args[1]));
             return false;
         }
 
         if (!Users.getProfile(target).inParty()) {
-            player.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", new Object[] {args[1]}));
+            player.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", args[1]));
             return false;
         }
 
@@ -300,7 +300,7 @@ public class PartyCommand implements CommandExecutor {
         Party newParty = PartyManager.getParty(partyname);
         // Check to see if the party exists, and if it does cancel creating a new party
         if (newParty != null) {
-            player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", new Object[] {partyname}));
+            player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", partyname));
             return true;
         }
 
@@ -366,7 +366,7 @@ public class PartyCommand implements CommandExecutor {
         Party party = playerProfile.getParty();
 
         if (args.length < 2) {
-            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", new Object[] {"party", "expshare", "[sharemode]"}));
+            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "expshare", "[sharemode]"));
             return true;
         }
 
@@ -375,13 +375,13 @@ public class PartyCommand implements CommandExecutor {
                 party.setXpShareMode(ShareHandler.XpShareMode.NONE);
 
                 for (Player onlineMembers : party.getOnlineMembers()) {
-                    onlineMembers.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", new Object[] {LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode.NoShare")}));
+                    onlineMembers.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode.NoShare")));
                 }
             } else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even")) {
                 party.setXpShareMode(ShareHandler.XpShareMode.EQUAL);
 
                 for (Player onlineMembers : party.getOnlineMembers()) {
-                    onlineMembers.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", new Object[] {LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode.Equal")}));
+                    onlineMembers.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode.Equal")));
                 }
             }
         }
@@ -428,7 +428,7 @@ public class PartyCommand implements CommandExecutor {
 
                     Users.getProfile(target).setInvite(party);
                     player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
-                    target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", new Object[] {party.getName(), player.getName()}));
+                    target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", party.getName(), player.getName()));
                     target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.1"));
                     return true;
                 }
@@ -441,7 +441,7 @@ public class PartyCommand implements CommandExecutor {
             return true;
 
         default:
-            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", new Object[] {"party", "invite", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"}));
+            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "invite", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
             return true;
         }
     }
@@ -459,7 +459,7 @@ public class PartyCommand implements CommandExecutor {
 
         if (party.getLeader().equals(playerName)) {
             if (!party.getMembers().contains(targetName)) {
-                player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {targetName}));
+                player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetName));
                 return true;
             }
 
@@ -475,7 +475,7 @@ public class PartyCommand implements CommandExecutor {
                     return true;
                 }
 
-                target.sendMessage(LocaleLoader.getString("Commands.Party.Kick", new Object[] {partyName}));
+                target.sendMessage(LocaleLoader.getString("Commands.Party.Kick", partyName));
             }
 
             PartyManager.removeFromParty(targetName, party);
@@ -531,13 +531,13 @@ public class PartyCommand implements CommandExecutor {
         Party party = playerProfile.getParty();
 
         if (args.length < 2) {
-            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", new Object[] {"party", "owner", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"}));
+            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "owner", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
             return true;
         }
 
         if (party.getLeader().equals(playerName)) {
             if (!party.getMembers().contains(args[1])) {
-                player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", new Object[] {args[1]}));
+                player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", args[1]));
                 return true;
             }
 
@@ -633,7 +633,7 @@ public class PartyCommand implements CommandExecutor {
 
         party.setLocked(true);
         party.setPassword(args[1]);
-        player.sendMessage(LocaleLoader.getString("Party.Password.Set", new Object[] {args[1]}));
+        player.sendMessage(LocaleLoader.getString("Party.Password.Set", args[1]));
 
         return true;
     }
@@ -652,7 +652,7 @@ public class PartyCommand implements CommandExecutor {
 
         if (party.getLeader().equals(playerName)) {
             if (args.length < 2) {
-                player.sendMessage(LocaleLoader.getString("Commands.Usage.2", new Object[] {"party", "rename", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">"}));
+                player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "rename", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">"));
                 return true;
             }
 
@@ -664,7 +664,7 @@ public class PartyCommand implements CommandExecutor {
 
                 // Check to see if the party exists, and if it does cancel renaming the party
                 if (newParty != null) {
-                    player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", new Object[] {newPartyName}));
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", newPartyName));
                     return true;
                 }
 
@@ -677,14 +677,14 @@ public class PartyCommand implements CommandExecutor {
                     }
 
                     if (!onlineMembers.getName().equals(leader)) {
-                        onlineMembers.sendMessage(LocaleLoader.getString("Party.InformedOnNameChange", new Object[] {leader, newPartyName}));
+                        onlineMembers.sendMessage(LocaleLoader.getString("Party.InformedOnNameChange", leader, newPartyName));
                     }
                 }
 
                 party.setName(newPartyName);
             }
 
-            player.sendMessage(LocaleLoader.getString("Commands.Party.Rename", new Object[] {newPartyName}));
+            player.sendMessage(LocaleLoader.getString("Commands.Party.Rename", newPartyName));
         }
         else {
             player.sendMessage(LocaleLoader.getString("Party.NotOwner"));

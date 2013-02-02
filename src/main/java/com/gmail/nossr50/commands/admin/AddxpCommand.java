@@ -49,11 +49,11 @@ public class AddxpCommand implements CommandExecutor {
 
             if (skill.equals(SkillType.ALL)) {
                 SkillTools.xpCheckAll(modifiedPlayer, profile);
-                sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", new Object[] { xp }));
+                sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
             }
             else {
                 SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
-                sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", new Object[] { xp, Misc.getCapitalized(skill.toString()) }));
+                sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(skill.toString())));
             }
 
             return true;
@@ -90,13 +90,13 @@ public class AddxpCommand implements CommandExecutor {
             mcMMOPlayer.addXpOverride(skill, xp);
 
             if (skill.equals(SkillType.ALL)) {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] { playerName }));
-                modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", new Object[] { xp }));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
+                modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
                 SkillTools.xpCheckAll(modifiedPlayer, profile);
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", new Object[] { Misc.getCapitalized(skill.toString()), playerName }));
-                modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", new Object[] { xp, Misc.getCapitalized(skill.toString()) }));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", Misc.getCapitalized(skill.toString()), playerName));
+                modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(skill.toString())));
                 SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
             }
 

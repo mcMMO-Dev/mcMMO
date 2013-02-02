@@ -157,7 +157,7 @@ public class PlayerListener implements Listener {
         }
 
         if (plugin.isXPEventEnabled()) {
-            player.sendMessage(LocaleLoader.getString("XPRate.Event", new Object[] {Config.getInstance().getExperienceGainsGlobalMultiplier()}));
+            player.sendMessage(LocaleLoader.getString("XPRate.Event", Config.getInstance().getExperienceGainsGlobalMultiplier()));
         }
     }
 

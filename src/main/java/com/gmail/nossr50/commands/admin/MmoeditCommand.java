@@ -21,7 +21,7 @@ public class MmoeditCommand implements CommandExecutor {
         int newValue;
         SkillType skill;
         String skillName;
-        String usage = LocaleLoader.getString("Commands.Usage.3", new Object[] {"mmoedit", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">" });
+        String usage = LocaleLoader.getString("Commands.Usage.3", "mmoedit", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">");
 
         switch (args.length) {
         case 2:
@@ -42,10 +42,10 @@ public class MmoeditCommand implements CommandExecutor {
                     profile = Users.getProfile(player);
 
                     if (skill.equals(SkillType.ALL)) {
-                        sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", new Object[] { newValue }));
+                        sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", newValue));
                     }
                     else {
-                        sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", new Object[] { Misc.getCapitalized(skill.toString()), newValue }));
+                        sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", Misc.getCapitalized(skill.toString()), newValue));
                     }
 
                     profile.modifySkill(skill, newValue);
@@ -90,14 +90,14 @@ public class MmoeditCommand implements CommandExecutor {
 
                 profile.modifySkill(skill, newValue);
                 if (skill == SkillType.ALL) {
-                    mcmmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", new Object[] { newValue }));
-                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] { args[0] }));
+                    mcmmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", newValue));
+                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
                 }
                 else {
                     skillName = Misc.getCapitalized(skill.toString());
 
-                    mcmmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", new Object[] { skillName, newValue }));
-                    sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", new Object[] { skillName, args[0] }));
+                    mcmmoPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", skillName, newValue));
+                    sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", skillName, args[0]));
                 }
             }
             else {
@@ -112,10 +112,10 @@ public class MmoeditCommand implements CommandExecutor {
                 profile.save();
 
                 if (skill == SkillType.ALL) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", new Object[] { args[0] }));
+                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
                 }
                 else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", new Object[] { Misc.getCapitalized(skill.toString()), args[0] }));
+                    sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", Misc.getCapitalized(skill.toString()), args[0]));
                 }
             }
             return true;

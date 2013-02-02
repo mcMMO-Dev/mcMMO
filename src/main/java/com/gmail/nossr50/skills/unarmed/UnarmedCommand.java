@@ -76,23 +76,23 @@ public class UnarmedCommand extends SkillCommand {
         luckyEffectsDisplay();
 
         if (canBerserk) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Unarmed.Effect.0"), LocaleLoader.getString("Unarmed.Effect.1") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.0"), LocaleLoader.getString("Unarmed.Effect.1")));
         }
 
         if (canDisarm) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Unarmed.Effect.2"), LocaleLoader.getString("Unarmed.Effect.3") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.2"), LocaleLoader.getString("Unarmed.Effect.3")));
         }
 
         if (canBonusDamage) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Unarmed.Effect.4"), LocaleLoader.getString("Unarmed.Effect.5") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.4"), LocaleLoader.getString("Unarmed.Effect.5")));
         }
 
         if (canDeflect) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Unarmed.Effect.6"), LocaleLoader.getString("Unarmed.Effect.7") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.6"), LocaleLoader.getString("Unarmed.Effect.7")));
         }
 
         if (canIronGrip) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Unarmed.Effect.8"), LocaleLoader.getString("Unarmed.Effect.9") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.8"), LocaleLoader.getString("Unarmed.Effect.9")));
         }
     }
 
@@ -104,42 +104,42 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canBonusDamage) {
-            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", new Object[] { LocaleLoader.getString("Unarmed.Ability.Bonus.0"), LocaleLoader.getString("Unarmed.Ability.Bonus.1", new Object[] {ironArmBonus}) }));
+            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Unarmed.Ability.Bonus.0"), LocaleLoader.getString("Unarmed.Ability.Bonus.1", ironArmBonus)));
         }
 
         if (canDeflect) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", new Object[] { deflectChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { deflectChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", deflectChance) + LocaleLoader.getString("Perks.lucky.bonus", deflectChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", new Object[] { deflectChance }));
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", deflectChance));
             }
         }
 
         if (canDisarm) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", new Object[] { disarmChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { disarmChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", disarmChance) + LocaleLoader.getString("Perks.lucky.bonus", disarmChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", new Object[] { disarmChance }));
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", disarmChance));
             }
         }
 
         if (canIronGrip) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", new Object[] { ironGripChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { ironGripChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + LocaleLoader.getString("Perks.lucky.bonus", ironGripChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", new Object[] { ironGripChance }));
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance));
             }
         }
 
         if (canBerserk) {
             if (hasEndurance) {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", new Object[] { berserkLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { berserkLengthEndurance }));
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", berserkLength) + LocaleLoader.getString("Perks.activationtime.bonus", berserkLengthEndurance));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", new Object[] { berserkLength }));
+                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", berserkLength));
             }
         }
     }

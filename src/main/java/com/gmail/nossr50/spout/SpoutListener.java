@@ -34,7 +34,7 @@ public class SpoutListener implements Listener {
 
         //TODO: Add custom titles based on skills
         if (SpoutTools.showPowerLevel) {
-            spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", new Object[] {spoutPlayer.getName(), mcMMOPlayer.getPowerLevel()}));
+            spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", spoutPlayer.getName(), mcMMOPlayer.getPowerLevel()));
         }
 
         profile.setSpoutHud(new SpoutHud(mcMMOPlayer)); //Setup Party HUD stuff

@@ -72,7 +72,7 @@ public final class PartyManager {
     private static void informPartyMembersJoin(String playerName, Party party) {
         for (Player member : party.getOnlineMembers()) {
             if (!member.getName().equals(playerName)) {
-                member.sendMessage(LocaleLoader.getString("Party.InformedOnJoin", new Object[] {playerName}));
+                member.sendMessage(LocaleLoader.getString("Party.InformedOnJoin", playerName));
             }
         }
     }
@@ -86,7 +86,7 @@ public final class PartyManager {
     private static void informPartyMembersQuit(String playerName, Party party) {
         for (Player member : party.getOnlineMembers()) {
             if (!member.getName().equals(playerName)) {
-                member.sendMessage(LocaleLoader.getString("Party.InformedOnQuit", new Object[] {playerName}));
+                member.sendMessage(LocaleLoader.getString("Party.InformedOnQuit", playerName));
             }
         }
     }
@@ -250,7 +250,7 @@ public final class PartyManager {
             if (password != null) {
                 party.setPassword(password);
                 party.setLocked(true);
-                player.sendMessage(LocaleLoader.getString("Party.Password.Set", new Object[] {password}));
+                player.sendMessage(LocaleLoader.getString("Party.Password.Set", password));
             }
             parties.add(party);
         }
@@ -259,7 +259,7 @@ public final class PartyManager {
             return;
         }
 
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Create", new Object[] {party.getName()}));
+        player.sendMessage(LocaleLoader.getString("Commands.Party.Create", party.getName()));
         addToParty(player.getName(), playerProfile, party);
     }
 
@@ -293,7 +293,7 @@ public final class PartyManager {
             return;
         }
 
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Join", new Object[]{party.getName()}));
+        player.sendMessage(LocaleLoader.getString("Commands.Party.Join", party.getName()));
         addToParty(player.getName(), playerProfile, party);
     }
 
@@ -313,7 +313,7 @@ public final class PartyManager {
             if (partyPassword != null) {
                 if (password == null) {
                     player.sendMessage(LocaleLoader.getString("Party.Password.None"));
-                    player.sendMessage(LocaleLoader.getString("Commands.Usage.3", new Object[] {"party", "join", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">", "<" + LocaleLoader.getString("Commands.Usage.Password") + ">"}));
+                    player.sendMessage(LocaleLoader.getString("Commands.Usage.3", "party", "join", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">", "<" + LocaleLoader.getString("Commands.Usage.Password") + ">"));
                     return false;
                 }
                 else if (!password.equals(partyPassword)) {
@@ -343,7 +343,7 @@ public final class PartyManager {
             parties.add(invite);
         }
 
-        player.sendMessage(LocaleLoader.getString("Commands.Invite.Accepted", new Object[]{invite.getName()}));
+        player.sendMessage(LocaleLoader.getString("Commands.Invite.Accepted", invite.getName()));
         playerProfile.removeInvite();
         addToParty(player.getName(), playerProfile, invite);
     }
@@ -394,7 +394,7 @@ public final class PartyManager {
                 member.sendMessage(LocaleLoader.getString("Party.Owner.NotLeader"));
             }
             else {
-                member.sendMessage(LocaleLoader.getString("Party.Owner.New", new Object[] {playerName}));
+                member.sendMessage(LocaleLoader.getString("Party.Owner.New", playerName));
             }
         }
 

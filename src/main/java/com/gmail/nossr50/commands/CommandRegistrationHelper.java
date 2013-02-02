@@ -50,7 +50,7 @@ public final class CommandRegistrationHelper {
                 }
 
                 command.setAliases(aliasList);
-                command.setDescription(LocaleLoader.getString("Commands.Description.Skill", new Object[] { Misc.getCapitalized(localizedName) }));
+                command.setDescription(LocaleLoader.getString("Commands.Description.Skill", Misc.getCapitalized(localizedName)));
                 command.setPermission("mcmmo.skills." + commandName);
                 command.setPermissionMessage(permissionsMessage);
 
@@ -119,7 +119,7 @@ public final class CommandRegistrationHelper {
         command.setDescription(LocaleLoader.getString("Commands.Description.addlevels"));
         command.setPermission("mcmmo.commands.addlevels");
         command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.3", new Object[] {"addlevels", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">" }));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.3", "addlevels", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">"));
         command.setExecutor(new AddlevelsCommand());
     }
 
@@ -128,7 +128,7 @@ public final class CommandRegistrationHelper {
         command.setDescription(LocaleLoader.getString("Commands.Description.addxp"));
         command.setPermission("mcmmo.commands.addxp");
         command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.3", new Object[] {"addxp", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.XP") + ">" }));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.3", "addxp", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.XP") + ">"));
         command.setExecutor(new AddxpCommand());
     }
 }

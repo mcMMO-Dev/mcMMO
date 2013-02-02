@@ -106,23 +106,23 @@ public class MiningCommand extends SkillCommand {
         luckyEffectsDisplay();
 
         if (canSuperBreaker) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.0"), LocaleLoader.getString("Mining.Effect.1") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Mining.Effect.0"), LocaleLoader.getString("Mining.Effect.1")));
         }
 
         if (canDoubleDrop && !doubleDropsDisabled) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.2"), LocaleLoader.getString("Mining.Effect.3") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Mining.Effect.2"), LocaleLoader.getString("Mining.Effect.3")));
         }
 
         if (canBlast) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.4"), LocaleLoader.getString("Mining.Effect.5") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Mining.Effect.4"), LocaleLoader.getString("Mining.Effect.5")));
         }
 
         if (canBiggerBombs) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.6"), LocaleLoader.getString("Mining.Effect.7") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Mining.Effect.6"), LocaleLoader.getString("Mining.Effect.7")));
         }
 
         if (canDemoExpert) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", new Object[] { LocaleLoader.getString("Mining.Effect.8"), LocaleLoader.getString("Mining.Effect.9") }));
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Mining.Effect.8"), LocaleLoader.getString("Mining.Effect.9")));
         }
     }
 
@@ -135,46 +135,46 @@ public class MiningCommand extends SkillCommand {
     protected void statsDisplay() {
         if (canDoubleDrop && !doubleDropsDisabled) {
             if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", new Object[] { doubleDropChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { doubleDropChanceLucky }));
+                player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + LocaleLoader.getString("Perks.lucky.bonus", doubleDropChanceLucky));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", new Object[] { doubleDropChance }));
+                player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance));
             }
         }
 
         if (canSuperBreaker) {
             if (hasEndurance) {
-                player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", new Object[] { superBreakerLength }) + LocaleLoader.getString("Perks.activationtime.bonus", new Object[] { superBreakerLengthEndurance }));
+                player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", superBreakerLength) + LocaleLoader.getString("Perks.activationtime.bonus", superBreakerLengthEndurance));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", new Object[] { superBreakerLength }));
+                player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", superBreakerLength));
             }
         }
 
         if (canBlast) {
             if (skillValue < BlastMining.rank1) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.0", new Object[] { BlastMining.rank1 })  }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.0", BlastMining.rank1)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Mining.Blast.Rank", new Object[] { blastMiningRank, LocaleLoader.getString("Mining.Blast.Effect." + (Misc.getInt(blastMiningRank) - 1)) }));
+                player.sendMessage(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, LocaleLoader.getString("Mining.Blast.Effect." + (Misc.getInt(blastMiningRank) - 1))));
             }
         }
 
         if (canBiggerBombs) {
             if (skillValue < BlastMining.rank2) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.1", new Object[] { BlastMining.rank2 }) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.1", BlastMining.rank2)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Mining.Blast.Radius.Increase", new Object[] { blastRadiusIncrease }));
+                player.sendMessage(LocaleLoader.getString("Mining.Blast.Radius.Increase", blastRadiusIncrease));
             }
         }
 
         if (canDemoExpert) {
             if (skillValue < BlastMining.rank4) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", new Object[] { LocaleLoader.getString("Mining.Ability.Locked.2", new Object[] { BlastMining.rank4 }) }));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.2", BlastMining.rank4)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Mining.Effect.Decrease", new Object[] { blastDamageDecrease }));
+                player.sendMessage(LocaleLoader.getString("Mining.Effect.Decrease", blastDamageDecrease));
             }
         }
     }
