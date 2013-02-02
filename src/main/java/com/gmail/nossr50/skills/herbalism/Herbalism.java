@@ -374,7 +374,7 @@ public class Herbalism {
             }
 
             int dropNumber = Misc.getRandom().nextInt(treasures.size());
-            ItemStack item = treasures.get(dropNumber + 1).getDrop();
+            ItemStack item = treasures.get(dropNumber).getDrop();
             Location location = block.getLocation();
 
             event.setCancelled(true);
