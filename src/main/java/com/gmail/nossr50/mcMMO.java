@@ -272,13 +272,12 @@ public class mcMMO extends JavaPlugin {
                 }
 
                 if (haveVersionInformation) {
-                    /*
-                    versionDonutGraph(new Metrics.Plotter(version) {
+                    versionDonutGraph.addPlotter(new Metrics.Plotter(version) {
                         @Override
                         public int getValue() {
                             return 1;
                         }
-                        */
+                    });
                 }
 
                 Graph officialGraph = metrics.createGraph("Built by official ci");
