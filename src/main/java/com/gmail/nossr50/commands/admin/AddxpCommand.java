@@ -44,14 +44,17 @@ public class AddxpCommand implements CommandExecutor {
             mcMMOPlayer = Users.getPlayer(modifiedPlayer);
             profile = mcMMOPlayer.getProfile();
 
-            mcMMOPlayer.addXpOverride(skill, xp);
-
             if (skill.equals(SkillType.ALL)) {
-                SkillTools.xpCheckAll(modifiedPlayer, profile);
+                for (SkillType skillType : SkillType.values()) {
+                    if (!skillType.isChildSkill()) {
+                        mcMMOPlayer.applyXpGain(skill, xp);
+                    }
+                }
+
                 sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
             }
             else {
-                SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
+                mcMMOPlayer.applyXpGain(skill, xp);
                 sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(skill.toString())));
             }
 
@@ -85,7 +88,7 @@ public class AddxpCommand implements CommandExecutor {
                     return true;
                 }
 
-                // This is basically a copy of McMMOPlayer.addXpOverride(), this method should probably be moved to PlayerProfile to avoid that
+                // TODO: Currently the offline player doesn't level up automatically
                 if (skill.equals(SkillType.ALL)) {
                     for (SkillType type : SkillType.values()) {
                         if (type.equals(SkillType.ALL) || type.isChildSkill()) {
@@ -94,19 +97,15 @@ public class AddxpCommand implements CommandExecutor {
 
                         profile.setSkillXpLevel(type, profile.getSkillXpLevel(type) + xp);
                     }
-                    // TODO: Find a way to make it work, it currently requires a valid Player
-                    // SkillTools.xpCheckAll(modifiedPlayer, profile);
                 }
                 else {
                     profile.setSkillXpLevel(skill, profile.getSkillXpLevel(skill) + xp);
-                    // TODO: Find a way to make it work, it currently requires a valid Player
-                    // SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
                 }
 
                 profile.save(); // Since this is a temporary profile, we save it here.
             }
             else {
-                mcMMOPlayer.addXpOverride(skill, xp);
+                mcMMOPlayer.applyXpGain(skill, xp);
 
                 modifiedPlayer = mcMMOPlayer.getPlayer();
                 profile = mcMMOPlayer.getProfile();
@@ -114,11 +113,9 @@ public class AddxpCommand implements CommandExecutor {
                 if (modifiedPlayer.isOnline()) {
                     if (skill.equals(SkillType.ALL)) {
                         modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
-                        SkillTools.xpCheckAll(modifiedPlayer, profile);
                     }
                     else {
                         modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(skill.toString())));
-                        SkillTools.xpCheckSkill(skill, modifiedPlayer, profile);
                     }
                 }
             }

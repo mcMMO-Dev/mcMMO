@@ -46,7 +46,7 @@ public class DodgeEventHandler extends AcrobaticsEventHandler {
         McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
 
         if (System.currentTimeMillis() >= mcMMOPlayer.getProfile().getRespawnATS() + Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS) {
-            manager.getMcMMOPlayer().addXp(SkillType.ACROBATICS, xp);
+            manager.getMcMMOPlayer().beginXpGain(SkillType.ACROBATICS, xp);
         }
     }
 }

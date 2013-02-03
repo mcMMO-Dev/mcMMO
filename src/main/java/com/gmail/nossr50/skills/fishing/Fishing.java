@@ -128,7 +128,7 @@ public final class Fishing {
             caught.setItemStack(treasureDrop);
         }
 
-        mcMMOPlayer.addXp(SkillType.FISHING, Config.getInstance().getFishingBaseXP() + treasureXp);
+        mcMMOPlayer.beginXpGain(SkillType.FISHING, Config.getInstance().getFishingBaseXP() + treasureXp);
         event.setExpToDrop(event.getExpToDrop() * getVanillaXpMultiplier(skillLevel));
     }
 

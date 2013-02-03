@@ -53,65 +53,69 @@ public class McMMOPlayer {
     }
 
     /**
-     * Adds Xp to the player, doesn't calculate for Xp Rate
+     * Begins an experience gain. The amount will be affected by skill modifiers, global rate, perks, and may be shared with the party
      *
-     * @param skillType The skill to add Xp to
-     * @param xp The amount of Xp to add
+     * @param skillType Skill being used
+     * @param xp Experience amount to process
      */
-    public void addXpOverride(SkillType skillType, int xp) {
-        if (skillType.equals(SkillType.ALL)) {
-            for (SkillType type : SkillType.values()) {
-                if (type.equals(SkillType.ALL) || type.isChildSkill()) {
-                    continue;
-                }
-
-                mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, type, xp));
-                profile.setSkillXpLevel(type, profile.getSkillXpLevel(type) + xp);
-            }
-        }
-        else {
-            mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
-            profile.setSkillXpLevel(skillType, profile.getSkillXpLevel(skillType) + xp);
-
-            SpoutHud spoutHud = profile.getSpoutHud();
-
-            if (spoutHud != null) {
-                spoutHud.setLastGained(skillType);
-            }
-        }
-    }
-
-    /**
-     * Adds Xp to the player, this ignores skill modifiers.
-     *
-     * @param skillType The skill to add Xp to
-     * @param xp The amount of Xp to add
-     */
-    public void addXpOverrideBonus(SkillType skillType, int xp) {
-        int modifiedXp = (int) Math.floor(xp * Config.getInstance().getExperienceGainsGlobalMultiplier());
-        addXpOverride(skillType, modifiedXp);
-    }
-
-    /**
-     * Adds experience to the player, this is affected by skill modifiers, rate and permissions
-     *
-     * @param skillType The skill to add Xp to
-     * @param xp The amount of Xp to add
-     */
-    public void addXp(SkillType skillType, int xp) {
-        if (player.getGameMode() == GameMode.CREATIVE) {
+    public void beginXpGain(SkillType skillType, int xp) {
+        // Return if the experience has been shared
+        if (party != null && ShareHandler.handleXpShare(xp, this, skillType)) {
             return;
         }
 
-        if (party != null && !ShareHandler.isRunning()) {
-            // Return if the Xp has been shared
-            if (ShareHandler.handleEqualXpShare(xp, this, skillType)) {
-                return;
-            }
+        beginUnsharedXpGain(skillType, xp);
+    }
+
+    /**
+     * Begins an experience gain. The amount will be affected by skill modifiers, global rate and perks
+     *
+     * @param skillType Skill being used
+     * @param xp Experience amount to process
+     */
+    public void beginUnsharedXpGain(SkillType skillType, int xp) {
+        xp = modifyXpGain(skillType, xp);
+
+        if (xp == 0) {
+            return;
+        }
+
+        applyXpGain(skillType, xp);
+    }
+
+    /**
+     * Applies an experience gain
+     *
+     * @param skillType Skill being used
+     * @param xp Experience amount to add
+     */
+    public void applyXpGain(SkillType skillType, int xp) {
+        mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
+        profile.setSkillXpLevel(skillType, profile.getSkillXpLevel(skillType) + xp);
+
+        SpoutHud spoutHud = profile.getSpoutHud();
+
+        if (spoutHud != null) {
+            spoutHud.setLastGained(skillType);
+        }
+
+        SkillTools.xpCheckSkill(skillType, player, profile);
+    }
+
+    /**
+     * Modifies an experience gain using skill modifiers, global rate and perks
+     *
+     * @param skillType Skill being used
+     * @param xp Experience amount to process
+     * @return Modified experience
+     */
+    private int modifyXpGain(SkillType skillType, int xp) {
+        if (player.getGameMode() == GameMode.CREATIVE) {
+            return 0;
         }
 
         if ((skillType.getMaxLevel() < profile.getSkillLevel(skillType) + 1) || (Misc.getPowerLevelCap() < getPowerLevel() + 1)) {
-            return;
+            return 0;
         }
 
         xp = (int) (xp / skillType.getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier());
@@ -121,11 +125,11 @@ public class McMMOPlayer {
             CustomTool tool = ModChecks.getToolFromItemStack(item);
 
             if (tool != null) {
-                xp = (int) (xp * tool.getXpMultiplier());
+                xp *= tool.getXpMultiplier();
             }
         }
 
-        // TODO: find a better way to do this, if possible
+        // TODO: Too many permission checks here, is there no way to avoid that? 
         if (Permissions.xpQuadruple(player)) {
             xp *= 4;
         }
@@ -142,16 +146,7 @@ public class McMMOPlayer {
             xp *= 1.5;
         }
 
-        mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerXpGainEvent(player, skillType, xp));
-        profile.setSkillXpLevel(skillType, profile.getSkillXpLevel(skillType) + xp);
-
-        SpoutHud spoutHud = profile.getSpoutHud();
-
-        if (spoutHud != null) {
-            spoutHud.setLastGained(skillType);
-        }
-
-        SkillTools.xpCheckSkill(skillType, player, profile);
+        return xp;
     }
 
     // Players & Profiles

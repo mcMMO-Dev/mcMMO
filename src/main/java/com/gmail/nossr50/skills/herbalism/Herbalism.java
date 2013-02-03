@@ -212,7 +212,7 @@ public class Herbalism {
             }
         }
 
-        mcMMOPlayer.addXp(SkillType.HERBALISM, xp);
+        mcMMOPlayer.beginXpGain(SkillType.HERBALISM, xp);
     }
 
     /**

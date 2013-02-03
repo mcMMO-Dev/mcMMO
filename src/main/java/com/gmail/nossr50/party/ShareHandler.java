@@ -27,8 +27,6 @@ public final class ShareHandler {
         }
     };
 
-    private static boolean running; // Used to prevent permanent sharing, McMMOPlayer.addXp() uses it
-
     private ShareHandler() {}
 
     /**
@@ -39,8 +37,7 @@ public final class ShareHandler {
      * @param skillType Skill being used
      * @return True is the xp has been shared
      */
-    public static boolean handleEqualXpShare(int xp, McMMOPlayer mcMMOPlayer, SkillType skillType) {
-        running = true;
+    public static boolean handleXpShare(int xp, McMMOPlayer mcMMOPlayer, SkillType skillType) {
         Party party = mcMMOPlayer.getParty();
 
         switch (party.getXpShareMode()) {
@@ -49,7 +46,6 @@ public final class ShareHandler {
             List<Player> nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
 
             if (nearMembers.isEmpty()) {
-                running = false;
                 return false;
             }
 
@@ -58,21 +54,16 @@ public final class ShareHandler {
             int roundedXp = (int) Math.ceil(splitXp);
 
             for (Player member : nearMembers) {
-                Users.getPlayer(member).addXp(skillType, roundedXp);
+                Users.getPlayer(member).beginUnsharedXpGain(skillType, roundedXp);
             }
 
-            mcMMOPlayer.addXp(skillType, roundedXp);
+            mcMMOPlayer.beginUnsharedXpGain(skillType, roundedXp);
 
-            running = false;
             return true;
         case NONE:
         default:
-            running = false;
             return false;
         }
     }
-
-    public static boolean isRunning() {
-        return running;
-    }
 }
+

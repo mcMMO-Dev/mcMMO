@@ -68,11 +68,11 @@ public class SmeltResourceEventHandler {
         Player player = mcMMOPlayer.getPlayer();
 
         if (Permissions.mining(player)) {
-            mcMMOPlayer.addXp(SkillType.MINING, xp / 2);
+            mcMMOPlayer.beginXpGain(SkillType.MINING, xp / 2);
         }
 
         if (Permissions.repair(player)) {
-            mcMMOPlayer.addXp(SkillType.REPAIR, xp / 2);
+            mcMMOPlayer.beginXpGain(SkillType.REPAIR, xp / 2);
         }
     }
 

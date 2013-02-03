@@ -35,6 +35,6 @@ public class CombatXpGiver implements Runnable {
             damage += health;
         }
 
-        mcMMOPlayer.addXp(skillType, (int) (damage * baseXp));
+        mcMMOPlayer.beginXpGain(skillType, (int) (damage * baseXp));
     }
 }

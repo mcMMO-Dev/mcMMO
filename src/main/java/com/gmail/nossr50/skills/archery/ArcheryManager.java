@@ -34,7 +34,7 @@ public class ArcheryManager extends SkillManager {
         }
 
         int bonusXp = (int) (squaredDistance * Archery.distanceXpModifer);
-        mcMMOPlayer.addXp(SkillType.ARCHERY, bonusXp);
+        mcMMOPlayer.beginXpGain(SkillType.ARCHERY, bonusXp);
     }
 
     /**

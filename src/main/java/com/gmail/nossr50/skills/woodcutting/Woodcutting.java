@@ -80,7 +80,7 @@ public final class Woodcutting {
             checkForDoubleDrop(mcMMOPlayer, block);
         }
 
-        mcMMOPlayer.addXp(SkillType.WOODCUTTING, xp);
+        mcMMOPlayer.beginXpGain(SkillType.WOODCUTTING, xp);
     }
 
     /**

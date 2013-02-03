@@ -48,7 +48,7 @@ public class Repair {
         Player player = mcMMOPlayer.getPlayer();
 
         player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-        mcMMOPlayer.addXp(SkillType.REPAIR, dif * 10);
+        mcMMOPlayer.beginXpGain(SkillType.REPAIR, dif * 10);
     }
 
     /**

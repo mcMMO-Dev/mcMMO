@@ -119,7 +119,7 @@ public class Excavation {
             }
         }
 
-        mcMMOPlayer.addXp(SkillType.EXCAVATION, xp);
+        mcMMOPlayer.beginXpGain(SkillType.EXCAVATION, xp);
     }
 
     /**

@@ -33,11 +33,11 @@ public class TamingManager extends SkillManager {
 
         switch (event.getEntityType()) {
         case WOLF:
-            mcMMOPlayer.addXp(SkillType.TAMING, Taming.wolfXp);
+            mcMMOPlayer.beginXpGain(SkillType.TAMING, Taming.wolfXp);
             break;
 
         case OCELOT:
-            mcMMOPlayer.addXp(SkillType.TAMING, Taming.ocelotXp);
+            mcMMOPlayer.beginXpGain(SkillType.TAMING, Taming.ocelotXp);
             break;
 
         default:

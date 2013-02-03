@@ -2,6 +2,7 @@ package com.gmail.nossr50.api;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Users;
@@ -14,6 +15,7 @@ public final class ExperienceAPI {
      *
      * @param player The player to check
      * @param skillType The skill to check
+     * @deprecated Calling this function is no longer needed and should be avoided
      */
     private static void checkXP(Player player, SkillType skillType) {
         if (skillType.equals(SkillType.ALL)) {
@@ -25,7 +27,7 @@ public final class ExperienceAPI {
     }
 
     /**
-     * Adds XP to the player, doesn't calculate for XP Rate or other modifiers.
+     * Adds raw XP to the player.
      * </br>
      * This function is designed for API usage.
      *
@@ -34,12 +36,11 @@ public final class ExperienceAPI {
      * @param XP The amount of XP to add
      */
     public static void addRawXP(Player player, SkillType skillType, int XP) {
-        Users.getPlayer(player).addXpOverride(skillType, XP);
-        checkXP(player, skillType);
+        Users.getPlayer(player).applyXpGain(skillType, XP);
     }
 
     /**
-     * Adds XP to the player, calculates for XP Rate but not skill modifiers.
+     * Adds XP to the player, calculates for XP Rate only.
      * </br>
      * This function is designed for API usage.
      *
@@ -48,12 +49,11 @@ public final class ExperienceAPI {
      * @param XP The amount of XP to add
      */
     public static void addMultipliedXP(Player player, SkillType skillType, int XP) {
-        Users.getPlayer(player).addXpOverrideBonus(skillType, XP);
-        checkXP(player, skillType);
+        Users.getPlayer(player).applyXpGain(skillType, (int) (XP * Config.getInstance().getExperienceGainsGlobalMultiplier()));
     }
 
     /**
-     * Adds XP to the player, calculates for XP Rate and skill modifiers.
+     * Adds XP to the player, calculates for XP Rate, skill modifiers and perks. May be shared with the party.
      * </br>
      * This function is designed for API usage.
      *
@@ -62,8 +62,7 @@ public final class ExperienceAPI {
      * @param XP The amount of XP to add
      */
     public static void addXP(Player player, SkillType skillType, int XP) {
-        Users.getPlayer(player).addXp(skillType, XP);
-        checkXP(player, skillType);
+        Users.getPlayer(player).beginXpGain(skillType, XP);
     }
 
     /**
@@ -100,7 +99,8 @@ public final class ExperienceAPI {
      * @param player The player to add levels to
      * @param skillType Type of skill to add levels to
      * @param levels Number of levels to add
-     * @param notify True if this should fire a level up notification, false otherwise.
+     * @param notify Unused argument
+     * @deprecated Use addLevel(Player, SKillType, int) instead
      */
     public static void addLevel(Player player, SkillType skillType, int levels, boolean notify) {
         Users.getProfile(player).addLevels(skillType, levels);
@@ -108,6 +108,20 @@ public final class ExperienceAPI {
         if (notify) {
             checkXP(player, skillType);
         }
+    }
+
+    /**
+     * Add levels to a skill.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to add levels to
+     * @param skillType Type of skill to add levels to
+     * @param levels Number of levels to add
+     * @param notify True if this should fire a level up notification, false otherwise.
+     */
+    public static void addLevel(Player player, SkillType skillType, int levels) {
+        Users.getProfile(player).addLevels(skillType, levels);
     }
 
     /**

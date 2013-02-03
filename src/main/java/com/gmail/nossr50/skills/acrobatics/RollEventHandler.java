@@ -69,7 +69,7 @@ public class RollEventHandler extends AcrobaticsEventHandler {
 
     @Override
     protected void processXpGain(int xp) {
-        manager.getMcMMOPlayer().addXp(SkillType.ACROBATICS, xp);
+        manager.getMcMMOPlayer().beginXpGain(SkillType.ACROBATICS, xp);
     }
 
     /**

@@ -104,7 +104,7 @@ public class Mining {
             break;
         }
 
-        mcMMOPlayer.addXp(SkillType.MINING, xp);
+        mcMMOPlayer.beginXpGain(SkillType.MINING, xp);
     }
 
     /**
