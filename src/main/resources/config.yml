@@ -323,55 +323,15 @@ Experience:
 #  Settings for commands
 ###
 Commands:
-    invite:
-        Enabled: true
-    mctop:
-        Enabled: true
-    mcrank:
-        Enabled: true
-    xplock:
-        Enabled: true
-    inspect:
-        Enabled: true
-    mcc:
-        Enabled: true
-    mcpurge:
-        Enabled: true
-    mcremove:
-        Enabled: true
-    mmoedit:
-        Enabled: true
-    accept:
-        Enabled: true
-    mcstats:
-        Enabled: true
-    skillreset:
-        Enabled: true
-    mcability:
-        Enabled: true
-    party:
-        Enabled: true
-    xprate:
-        Enabled: true
-    mcgod:
-        Enabled: true
     mcmmo:
-        Enabled: true
         Donate_Message: true
-    mcrefresh:
-        Enabled: true
-    addxp:
-        Enabled: true
     ptp:
-        Enabled: true
         Cooldown: 30
         Confirm_Required: true
         Request_Timeout: 300
     p:
-        Enabled: true
         #Allow mcMMO to use player display names in chat instead of their usernames
         Use_Display_Names: true
     a:
-        Enabled: true
         #Allow mcMMO to use player display names in chat instead of their usernames
         Use_Display_Names: true
