@@ -14,6 +14,7 @@ import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PtpCommand implements CommandExecutor {
@@ -129,6 +130,10 @@ public class PtpCommand implements CommandExecutor {
             return true;
         }
 
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.ptp.accept")) {
+            return true;
+        }
+
         int ptpRequestExpire = Config.getInstance().getPTPCommandTimeout();
 
         if ((mcMMOPlayer.getPtpTimeout() + ptpRequestExpire) * Misc.TIME_CONVERSION_FACTOR < System.currentTimeMillis()) {
@@ -149,7 +154,20 @@ public class PtpCommand implements CommandExecutor {
             return true;
         }
 
-        McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, mcMMOPlayer.getParty().getName());
+        if(Config.getInstance().getPTPCommandWorldPermissions()) {
+            String perm = "mcmmo.commands.ptp.world.";
+
+            if(!Permissions.hasDynamicPermission(target, perm + "all", "op")) {
+                if(!Permissions.hasDynamicPermission(target, perm + target.getWorld().getName(), "op")) {
+                    return true;
+                }
+                else if(target.getWorld() != player.getWorld() && !Permissions.hasDynamicPermission(target, perm + player.getWorld().getName(), "op")) {
+                    return true;
+                }
+            }
+        }
+
+        McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(target, player, mcMMOPlayer.getParty().getName());
         plugin.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
@@ -164,6 +182,10 @@ public class PtpCommand implements CommandExecutor {
     }
 
     private boolean acceptAnyTeleportRequest() {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.ptp.acceptall")) {
+            return true;
+        }
+
         if (mcMMOPlayer.getPtpConfirmRequired()) {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.AcceptAny.Disabled"));
         }
@@ -176,6 +198,10 @@ public class PtpCommand implements CommandExecutor {
     }
 
     private boolean togglePartyTeleportation() {
+        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.ptp.toggle")) {
+            return true;
+        }
+
         if (mcMMOPlayer.getPtpEnabled()) {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.Disabled"));
         }

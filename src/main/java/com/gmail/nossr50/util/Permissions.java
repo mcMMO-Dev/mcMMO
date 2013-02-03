@@ -1,7 +1,13 @@
 package com.gmail.nossr50.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.Permission;
+import org.bukkit.plugin.PluginManager;
 
 import com.gmail.nossr50.skills.utilities.SkillType;
 
@@ -10,6 +16,22 @@ public final class Permissions {
 
     public static boolean hasPermission(CommandSender sender, String perm) {
         return (sender.hasPermission(perm));
+    }
+
+    public static boolean hasDynamicPermission(CommandSender sender, String perm, String defaultType) {
+        Map<String, Object> m = new HashMap<String, Object>();
+
+        if(defaultType != null) {
+            m.put("default", defaultType);
+        }
+
+        PluginManager manager = Bukkit.getPluginManager();
+
+        if (manager.getPermission(perm) == null) {
+            Permission.loadPermission(perm, m);
+        }
+
+        return hasPermission(sender, perm);
     }
 
     /*

@@ -727,6 +727,7 @@ permissions:
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
             mcmmo.commands.mmoupdate: true
+            mcmmo.commands.ptp.world.all: true
             mcmmo.commands.skillreset.all: true
             mcmmo.commands.xprate: true
     mcmmo.commands.defaults:
@@ -740,6 +741,9 @@ permissions:
             mcmmo.commands.mctop.all: true
             mcmmo.commands.party.all: true
             mcmmo.commands.ptp: true
+            mcmmo.commands.ptp.accept: true
+            mcmmo.commands.ptp.acceptall: true
+            mcmmo.commands.ptp.toggle: true
     mcmmo.commands.ability:
         description: Allows access to the mcability command
         children:
@@ -913,8 +917,32 @@ permissions:
         description: Allows access to the party rename command
     mcmmo.commands.party.unlock:
         description: Allows access to the party unlock command
+    mcmmo.commands.ptp.*:
+        description: Implies access to all mcmmo.commands.ptp permissions.
+        children:
+            mcmmo.commands.ptp.all: true
+    mcmmo.commands.ptp.all:
+        description: Implies access to all mcmmo.commands.ptp permissions.
+        children:
+            mcmmo.commands.ptp: true
+            mcmmo.commands.ptp.accept: true
+            mcmmo.commands.ptp.acceptall: true
+            mcmmo.commands.ptp.toggle: true
+            mcmmo.commands.ptp.world.all: true
     mcmmo.commands.ptp:
         description: Allows access to the ptp command
+    mcmmo.commands.ptp.accept:
+        description: Allows access to the ptp accept command
+    mcmmo.commands.ptp.acceptall:
+        description: Allows access to the ptp acceptall command
+    mcmmo.commands.ptp.toggle:
+        description: Allows access to the ptp toggle command
+    mcmmo.commands.ptp.world.*:
+        description: Implies access to all mcmmo.commands.ptp.world permissions.
+        children:
+            mcmmo.commands.ptp.world.all: true
+    mcmmo.commands.ptp.world.all:
+        description: Implies access to all mcmmo.commands.ptp.world permissions.
     mcmmo.commands.skillreset.*:
         description: Implies access to all mcmmo.commands.skillreset permissions
         children:

@@ -329,6 +329,9 @@ Commands:
         Cooldown: 30
         Confirm_Required: true
         Request_Timeout: 300
+        #If true, require players to have a mcmmo.commands.ptp.world.[WorldName] permission
+        #to teleport to, from, or within any given world.
+        World_Based_Permissions: false
     p:
         #Allow mcMMO to use player display names in chat instead of their usernames
         Use_Display_Names: true

@@ -81,6 +81,7 @@ public class Config extends ConfigLoader {
     public int getPTPCommandCooldown() { return config.getInt("Commands.ptp.Cooldown", 30); }
     public int getPTPCommandTimeout() { return config.getInt("Commands.ptp.Request_Timeout", 300); }
     public boolean getPTPCommandConfirmRequired() { return config.getBoolean("Commands.ptp.Confirm_Required", true); }
+    public boolean getPTPCommandWorldPermissions() { return config.getBoolean("Commands.ptp.World_Based_Permissions", false); }
 
     /* Items */
     public int getChimaeraCost() { return config.getInt("Items.Chimaera_Wing.Feather_Cost", 10); }
