@@ -87,7 +87,7 @@ public class AddlevelsCommand implements CommandExecutor{
 
                 profile.addLevels(skill, levels);
 
-                // TODO: Is it even possible for the player to be offline at this point?
+                // Check if the player is online before we try to send them a message.
                 if (player.isOnline()) {
                     if (skill.equals(SkillType.ALL)) {
                         player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", levels));

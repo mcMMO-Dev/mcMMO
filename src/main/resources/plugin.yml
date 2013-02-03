@@ -42,7 +42,6 @@ commands:
         aliases: []
         description: Show your individual ranking in mcMMO
     addxp:
-        aliases: []
         description: Add mcMMO XP to a user
     addlevels:
         description: Add mcMMO levels to a user
@@ -53,8 +52,7 @@ commands:
         aliases: []
         description: Refresh all cooldowns for mcMMO
     mcgod:
-        aliases: []
-        description: Make yourself invulnerable
+        description: Toggles mcMMO god-mode on/off
     mcstats:
         aliases: [/stats]
         description: Shows your mcMMO stats and xp
