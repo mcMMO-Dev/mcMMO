@@ -19,7 +19,7 @@ public class McrefreshCommand implements CommandExecutor {
         PlayerProfile profile;
         String usage = LocaleLoader.getString("Commands.Usage.1", "mcrefresh", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]");
 
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mcrefresh")) {
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcrefresh")) {
             return true;
         }
 
@@ -36,6 +36,10 @@ public class McrefreshCommand implements CommandExecutor {
             break;
 
         case 1:
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcrefresh.others")) {
+                return true;
+            }
+
             player = mcMMO.p.getServer().getOfflinePlayer(args[0]);
             profile = Users.getProfile(player);
             String playerName = player.getName();
