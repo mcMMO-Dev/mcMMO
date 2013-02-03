@@ -419,7 +419,7 @@ public class PartyCommand implements CommandExecutor {
 
             if (target != null) {
                 if (PartyManager.inSameParty(player, target)) {
-                    player.sendMessage(LocaleLoader.getString("Party.Player.InSameParty"));
+                    player.sendMessage(LocaleLoader.getString("Party.Player.InSameParty", target.getName()));
                     return true;
                 }
 
