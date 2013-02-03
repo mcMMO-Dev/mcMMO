@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
@@ -19,8 +18,8 @@ public class McgodCommand implements CommandExecutor {
 
         switch (args.length) {
         case 0:
-            if (CommandHelper.noConsoleUsage(sender)) {
-                return true;
+            if (!(sender instanceof Player)) {
+                return false;
             }
 
             profile = Users.getPlayer((Player) sender).getProfile();
