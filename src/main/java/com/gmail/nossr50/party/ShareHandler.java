@@ -43,7 +43,8 @@ public final class ShareHandler {
         running = true;
         Party party = mcMMOPlayer.getParty();
 
-        if (party.getXpShareMode() == XpShareMode.EQUAL) {
+        switch (party.getXpShareMode()) {
+        case EQUAL:
             Player player = mcMMOPlayer.getPlayer();
             List<Player> nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
 
@@ -61,10 +62,14 @@ public final class ShareHandler {
             }
 
             mcMMOPlayer.addXp(skillType, roundedXp);
-        }
 
-        running = false;
-        return true;
+            running = false;
+            return true;
+        case NONE:
+        default:
+            running = false;
+            return false;
+        }
     }
 
     public static boolean isRunning() {
