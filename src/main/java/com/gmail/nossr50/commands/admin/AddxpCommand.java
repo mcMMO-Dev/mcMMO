@@ -45,10 +45,12 @@ public class AddxpCommand implements CommandExecutor {
             profile = mcMMOPlayer.getProfile();
 
             if (skill.equals(SkillType.ALL)) {
-                for (SkillType skillType : SkillType.values()) {
-                    if (!skillType.isChildSkill()) {
-                        mcMMOPlayer.applyXpGain(skill, xp);
+                for (SkillType type : SkillType.values()) {
+                    if (type.equals(SkillType.ALL) || type.isChildSkill()) {
+                        continue;
                     }
+
+                    mcMMOPlayer.applyXpGain(type, xp);
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
@@ -105,10 +107,21 @@ public class AddxpCommand implements CommandExecutor {
                 profile.save(); // Since this is a temporary profile, we save it here.
             }
             else {
-                mcMMOPlayer.applyXpGain(skill, xp);
+                if (skill.equals(SkillType.ALL)) {
+                    for (SkillType type : SkillType.values()) {
+                        if (type.equals(SkillType.ALL) || type.isChildSkill()) {
+                            continue;
+                        }
+
+                        mcMMOPlayer.applyXpGain(type, xp);
+                    }
+                }
+                else {
+                    mcMMOPlayer.applyXpGain(skill, xp);
+                }
 
                 modifiedPlayer = mcMMOPlayer.getPlayer();
-                profile = mcMMOPlayer.getProfile();
+                
 
                 if (modifiedPlayer.isOnline()) {
                     if (skill.equals(SkillType.ALL)) {
