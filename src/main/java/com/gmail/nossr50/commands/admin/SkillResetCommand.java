@@ -21,7 +21,7 @@ public class SkillResetCommand implements CommandExecutor {
         OfflinePlayer modifiedPlayer;
         PlayerProfile profile;
         SkillType skill;
-        String usage = LocaleLoader.getString("Commands.Usage.3", "skillreset", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">");
+        String usage = LocaleLoader.getString("Commands.Usage.2", "skillreset", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">");
 
         switch (args.length) {
         case 1:
