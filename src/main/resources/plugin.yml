@@ -737,7 +737,7 @@ permissions:
             mcmmo.commands.mcmmo: true
             mcmmo.commands.mcrank: true
             mcmmo.commands.mcstats: true
-            mcmmo.commands.mctop: true
+            mcmmo.commands.mctop.all: true
             mcmmo.commands.party.all: true
             mcmmo.commands.ptp: true
     mcmmo.commands.ability:
@@ -806,8 +806,55 @@ permissions:
         description: Allows access to the mcremove command
     mcmmo.commands.mcstats:
         description: Allows access to the mcstats command
+    mcmmo.commands.mctop.*:
+        description: Implies access to all mcmmo.commands.mctop permissions
+        children:
+            mcmmo.commands.mctop.all: true
+    mcmmo.commands.mctop.all:
+        description: Implies access to all mcmmo.commands.mctop permissions
+        children:
+            mcmmo.commands.mctop: true
+            mcmmo.commands.mctop.acrobatics: true
+            mcmmo.commands.mctop.archery: true
+            mcmmo.commands.mctop.axes: true
+            mcmmo.commands.mctop.excavation: true
+            mcmmo.commands.mctop.fishing: true
+            mcmmo.commands.mctop.herbalism: true
+            mcmmo.commands.mctop.mining: true
+            mcmmo.commands.mctop.repair: true
+            mcmmo.commands.mctop.smelting: true
+            mcmmo.commands.mctop.swords: true
+            mcmmo.commands.mctop.taming: true
+            mcmmo.commands.mctop.unarmed: true
+            mcmmo.commands.mctop.woodcutting: true
     mcmmo.commands.mctop:
         description: Allows access to the mctop command
+    mcmmo.commands.mctop.acrobatics:
+        description: Allows access to the mctop command for acrobatics
+    mcmmo.commands.mctop.archery:
+        description: Allows access to the mctop command for archery
+    mcmmo.commands.mctop.axes:
+        description: Allows access to the mctop command for axes
+    mcmmo.commands.mctop.excavation:
+        description: Allows access to the mctop command for excavation
+    mcmmo.commands.mctop.fishing:
+        description: Allows access to the mctop command for fishing
+    mcmmo.commands.mctop.herbalism:
+        description: Allows access to the mctop command for herbalism
+    mcmmo.commands.mctop.mining:
+        description: Allows access to the mctop command for mining
+    mcmmo.commands.mctop.repair:
+        description: Allows access to the mctop command for repair
+    mcmmo.commands.mctop.smelting:
+        description: Allows access to the mctop command for smelting
+    mcmmo.commands.mctop.swords:
+        description: Allows access to the mctop command for swords
+    mcmmo.commands.mctop.taming:
+        description: Allows access to the mctop command for taming
+    mcmmo.commands.mctop.unarmed:
+        description: Allows access to the mctop command for unarmed
+    mcmmo.commands.mctop.woodcutting:
+        description: Allows access to the mctop command for woodcutting
     mcmmo.commands.mmoedit:
         description: Allows access to the mmoedit command
     mcmmo.commands.mmoedit.others:
@@ -955,8 +1002,6 @@ permissions:
         description: Allows access to the skillreset command for unarmed for other players
     mcmmo.commands.skillreset.others.woodcutting:
         description: Allows access to the skillreset command for woodcutting for other players
-    mcmmo.commands.skillreset.mining:
-        description: Allows access to the skillreset command for mining
     mcmmo.commands.skillreset.repair:
         description: Allows access to the skillreset command for repair
     mcmmo.commands.skillreset.smelting:

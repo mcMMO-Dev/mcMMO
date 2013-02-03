@@ -120,6 +120,10 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void flatfileDisplay(int page, String skill, CommandSender sender) {
+        if (!skill.equalsIgnoreCase("all") && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mctop." + skill.toLowerCase())) {
+            return;
+        }
+
         Leaderboard.updateLeaderboards(); //Make sure we have the latest information
         SkillType skillType = SkillType.getSkill(skill);
         String[] info = Leaderboard.retrieveInfo(skillType, page);
@@ -152,6 +156,11 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(int page, String query, CommandSender sender) {
+        if (!query.equalsIgnoreCase("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mctop." + query.toLowerCase())) {
+                return;
+            }
+        }
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
         HashMap<Integer, ArrayList<String>> userslist = Database.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT "+((page * 10) - 10)+",10");
 
