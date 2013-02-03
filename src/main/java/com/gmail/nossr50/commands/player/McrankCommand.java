@@ -39,6 +39,10 @@ public class McrankCommand implements CommandExecutor {
             break;
 
         case 1:
+            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcrank.others")) {
+                return true;
+            }
+
             playerName = args[0];
             break;
 
