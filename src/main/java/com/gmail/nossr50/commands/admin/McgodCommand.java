@@ -23,11 +23,7 @@ public class McgodCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!Permissions.mcgodCommand(sender)) {
-                return true;
-            }
-
-            profile = Users.getProfile((Player) sender);
+            profile = Users.getPlayer((Player) sender).getProfile();
 
             if (profile == null) {
                 sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
@@ -43,11 +39,13 @@ public class McgodCommand implements CommandExecutor {
 
             profile.toggleGodMode();
             return true;
+
         case 1:
             if (!Permissions.hasPermission(sender, "mcmmo.commands.mcgod.others")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
+
             McMMOPlayer mcMMOPlayer = Users.getPlayer(args[0]);
 
             // If the mcMMOPlayer doesn't exist, create a temporary profile and
@@ -77,6 +75,7 @@ public class McgodCommand implements CommandExecutor {
 
             profile.toggleGodMode();
             return true;
+
         default:
             return false;
         }

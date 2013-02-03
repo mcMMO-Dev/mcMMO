@@ -25,7 +25,6 @@ import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.chat.commands.ACommand;
 import com.gmail.nossr50.chat.commands.PCommand;
 import com.gmail.nossr50.commands.CommandRegistrationHelper;
-import com.gmail.nossr50.commands.admin.McgodCommand;
 import com.gmail.nossr50.commands.admin.McrefreshCommand;
 import com.gmail.nossr50.commands.admin.MmoeditCommand;
 import com.gmail.nossr50.commands.admin.SkillResetCommand;
@@ -397,7 +396,7 @@ public class mcMMO extends JavaPlugin {
         getCommand("mcremove").setExecutor(new McremoveCommand());
         getCommand("mcability").setExecutor(new McabilityCommand());
         getCommand("mcc").setExecutor(new MccCommand());
-        getCommand("mcgod").setExecutor(new McgodCommand());
+        CommandRegistrationHelper.registerMcgodCommand();
         getCommand("mcmmo").setExecutor(new McmmoCommand());
         getCommand("mcrefresh").setExecutor(new McrefreshCommand());
         getCommand("mctop").setExecutor(new MctopCommand());

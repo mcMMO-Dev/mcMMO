@@ -8,6 +8,7 @@ import org.bukkit.command.PluginCommand;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.admin.AddlevelsCommand;
 import com.gmail.nossr50.commands.admin.AddxpCommand;
+import com.gmail.nossr50.commands.admin.McgodCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
@@ -130,5 +131,14 @@ public final class CommandRegistrationHelper {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.3", "addxp", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.XP") + ">"));
         command.setExecutor(new AddxpCommand());
+    }
+
+    public static void registerMcgodCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mcgod");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcgod"));
+        command.setPermission("mcmmo.commands.mcgod");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcgod", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
+        command.setExecutor(new McgodCommand());
     }
 }
