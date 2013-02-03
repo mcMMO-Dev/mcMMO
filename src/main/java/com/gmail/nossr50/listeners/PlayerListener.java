@@ -57,11 +57,12 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerWorldChangeEvent(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile profile = Users.getProfile(player);
 
-        if (Misc.isNPCPlayer(player, profile)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
+
+        PlayerProfile profile = Users.getProfile(player);
 
         if (profile.getGodMode() && !Permissions.mcgod(player)) {
             profile.toggleGodMode();
@@ -170,11 +171,12 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile profile = Users.getProfile(player);
 
-        if (Misc.isNPCPlayer(player, profile)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
+
+        PlayerProfile profile = Users.getProfile(player);
 
         profile.actualizeRespawnATS();
     }
@@ -327,11 +329,12 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile profile = Users.getProfile(player);
 
-        if (Misc.isNPCPlayer(player, profile)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
+
+        PlayerProfile profile = Users.getProfile(player);
 
         if (profile.getPartyChatMode()) {
             Party party = profile.getParty();

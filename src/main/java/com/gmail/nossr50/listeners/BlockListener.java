@@ -138,13 +138,13 @@ public class BlockListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
-        PlayerProfile profile = mcMMOPlayer.getProfile();
 
-        if (Misc.isNPCPlayer(player, mcMMOPlayer.getProfile())) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+        PlayerProfile profile = mcMMOPlayer.getProfile();
         Block block = event.getBlock();
         ItemStack heldItem = player.getItemInHand();
 
@@ -258,12 +258,12 @@ public class BlockListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        PlayerProfile profile = Users.getProfile(player);
 
-        if (Misc.isNPCPlayer(player, profile)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 
+        PlayerProfile profile = Users.getProfile(player);
         Block block = event.getBlock();
 
         /*
@@ -313,13 +313,13 @@ public class BlockListener implements Listener {
         }
 
         Player player = event.getPlayer();
-        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
-        PlayerProfile profile = mcMMOPlayer.getProfile();
 
-        if (Misc.isNPCPlayer(player, profile)) {
+        if (Misc.isNPCPlayer(player)) {
             return;
         }
 
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+        PlayerProfile profile = mcMMOPlayer.getProfile();
         ItemStack heldItem = player.getItemInHand();
         Block block = event.getBlock();
 

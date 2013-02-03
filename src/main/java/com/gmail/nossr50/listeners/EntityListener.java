@@ -150,16 +150,12 @@ public class EntityListener implements Listener {
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
 
-            if (!player.isOnline()) {
+            if (!player.isOnline() || Misc.isNPCPlayer(player)) {
                 return;
             }
 
             McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
             PlayerProfile profile = mcMMOPlayer.getProfile();
-
-            if (Misc.isNPCPlayer(player, profile)) {
-                return;
-            }
 
             /* Check for invincibility */
             if (profile.getGodMode()) {
@@ -287,9 +283,8 @@ public class EntityListener implements Listener {
 
         if (entity instanceof Player) {
             Player player = (Player) entity;
-            PlayerProfile profile = Users.getProfile(player);
 
-            if (Misc.isNPCPlayer(player, profile)) {
+            if (Misc.isNPCPlayer(player)) {
                 return;
             }
 

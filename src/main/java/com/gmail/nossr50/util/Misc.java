@@ -102,15 +102,7 @@ public final class Misc {
     }
 
     public static boolean isNPCPlayer(Player player) {
-        if (player == null || Users.getProfile(player) == null || player.hasMetadata("NPC")) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public static boolean isNPCPlayer(Player player, PlayerProfile profile) {
-        if (player == null || profile == null || player.hasMetadata("NPC")) {
+        if (player == null || player.hasMetadata("NPC")) {
             return true;
         }
 
