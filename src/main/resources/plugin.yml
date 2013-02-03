@@ -356,6 +356,8 @@ permissions:
             mcmmo.commands.mcgod: true
     mcmmo.tools.mcremove:
         decription: Allows access to mcremove and mcpurge command
+        children:
+            mcmmo.commands.mcremove: true
     mcmmo.ability.*:
         description: Implies all mcmmo.ability permissions.
         children:
@@ -721,6 +723,7 @@ permissions:
             mcmmo.commands.mcrank.others.all: true
             mcmmo.commands.mcrefresh: true
             mcmmo.commands.mcrefresh.others: true
+            mcmmo.commands.mcremove: true
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
             mcmmo.commands.mmoupdate: true
@@ -799,6 +802,8 @@ permissions:
         description: Allows access to the mcrefresh command
     mcmmo.commands.mcrefresh.others:
         description: Allows access to the mcrefresh command for other players
+    mcmmo.commands.mcremove:
+        description: Allows access to the mcremove command
     mcmmo.commands.mcstats:
         description: Allows access to the mcstats command
     mcmmo.commands.mctop:

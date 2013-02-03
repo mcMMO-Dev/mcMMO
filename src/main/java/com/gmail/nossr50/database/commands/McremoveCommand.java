@@ -24,7 +24,7 @@ public class McremoveCommand implements CommandExecutor {
         String usage = LocaleLoader.getString("Commands.Usage.1", "mcremove", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">");
         String success;
 
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.tools.mcremove")) {
+        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcremove")) {
             return true;
         }
 
