@@ -2,6 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -94,9 +95,10 @@ public class PlayerListener implements Listener {
             break;
 
         case CAUGHT_ENTITY:
-            if (skillLevel >= AdvancedConfig.getInstance().getShakeUnlockLevel() && Permissions.shakeMob(player)) {
-                //TODO: Unsafe cast?
-                Fishing.beginShakeMob(player, (LivingEntity) event.getCaught(), skillLevel);
+            Entity entity = event.getCaught();
+
+            if (entity instanceof LivingEntity && skillLevel >= AdvancedConfig.getInstance().getShakeUnlockLevel() && Permissions.shakeMob(player)) {
+                Fishing.beginShakeMob(player, (LivingEntity) entity, skillLevel);
             }
 
             break;
