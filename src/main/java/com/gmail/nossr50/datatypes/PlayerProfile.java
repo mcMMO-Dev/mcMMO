@@ -7,13 +7,9 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
-import com.gmail.nossr50.party.Party;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.utilities.AbilityType;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.skills.utilities.ToolType;
@@ -23,25 +19,16 @@ import com.gmail.nossr50.spout.huds.SpoutHud;
 import com.gmail.nossr50.util.Misc;
 
 public class PlayerProfile {
-
     private String playerName;
 
     // HUD
     private SpoutHud spoutHud;
     private HudType hudType;
 
-    // Party Stuff
-    private Party party;
-    private Party invite;
-    private Player ptpRequest;
-    private boolean ptpEnabled = true;
-    private boolean ptpConfirmRequired = Config.getInstance().getPTPCommandConfirmRequired();
-
     // Toggles
     private boolean loaded;
     private boolean placedAnvil;
     private boolean placedSalvageAnvil;
-    private boolean partyChatMode, adminChatMode;
     private boolean godMode;
     private boolean greenTerraMode, treeFellerMode, superBreakerMode, gigaDrillBreakerMode, serratedStrikesMode, skullSplitterMode, berserkMode;
     private boolean greenTerraInformed = true, berserkInformed = true, skullSplitterInformed = true, gigaDrillBreakerInformed = true,
@@ -53,7 +40,6 @@ public class PlayerProfile {
     // Timestamps
     private long recentlyHurt;
     private int respawnATS;
-    private long ptpTimeout;
 
     // mySQL STUFF
     private int userId;
@@ -67,7 +53,6 @@ public class PlayerProfile {
 
     public PlayerProfile(String playerName, boolean addNew) {
         this.playerName = playerName;
-        party = PartyManager.getPlayerParty(playerName);
 
         if (mcMMO.spoutEnabled) {
             hudType = SpoutConfig.getInstance().defaultHudType;
@@ -544,26 +529,6 @@ public class PlayerProfile {
 
     public void setHudType(HudType hudType) {
         this.hudType = hudType;
-    }
-
-    /*
-     * Chat Stuff
-     */
-
-    public boolean getAdminChatMode() {
-        return adminChatMode;
-    }
-
-    public void toggleAdminChat() {
-        adminChatMode = !adminChatMode;
-    }
-
-    public boolean getPartyChatMode() {
-        return partyChatMode;
-    }
-
-    public void togglePartyChat() {
-        partyChatMode = !partyChatMode;
     }
 
     /*
@@ -1172,92 +1137,4 @@ public class PlayerProfile {
     /*
      * Party Stuff
      */
-
-    public void setInvite(Party invite) {
-        this.invite = invite;
-    }
-
-    public Party getInvite() {
-        return invite;
-    }
-
-    public boolean hasPartyInvite() {
-        if (invite != null) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public void setParty(Party party) {
-        this.party = party;
-    }
-
-    public Party getParty() {
-        return party;
-    }
-
-    public boolean inParty() {
-        if (party != null) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public void removeParty() {
-        party = null;
-    }
-
-    public void removeInvite() {
-        invite = null;
-    }
-
-    /*
-     * Party Teleportation
-     */
-
-    public boolean getPtpEnabled() {
-        return ptpEnabled;
-    }
-
-    public void togglePtpUse() {
-        ptpEnabled = !ptpEnabled;
-    }
-
-    public void setPtpRequest(Player ptpRequest) {
-        this.ptpRequest = ptpRequest;
-    }
-
-    public Player getPtpRequest() {
-        return ptpRequest;
-    }
-
-    public boolean hasPtpRequest() {
-        if (ptpRequest != null) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public void removePtpRequest() {
-        ptpRequest = null;
-    }
-
-    public boolean getPtpConfirmRequired() {
-        return ptpConfirmRequired;
-    }
-
-    public void togglePtpConfirmRequired() {
-        ptpConfirmRequired = !ptpConfirmRequired;
-    }
-
-    public long getPtpTimeout() {
-        return ptpTimeout;
-    }
-
-    public void actualizePtpTimeout() {
-        ptpTimeout = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-    }
 }

@@ -8,6 +8,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
@@ -27,15 +28,15 @@ public final class PartyManager {
      * @return true if they are in the same party, false otherwise
      */
     public static boolean inSameParty(Player firstPlayer, Player secondPlayer) {
-        PlayerProfile firstProfile = Users.getProfile(firstPlayer);
-        PlayerProfile secondProfile = Users.getProfile(secondPlayer);
+        McMMOPlayer firstMcMMOPlayer = Users.getPlayer(firstPlayer);
+        McMMOPlayer secondMcMMOPlayer = Users.getPlayer(secondPlayer);
 
-        if (firstProfile == null || secondProfile == null) {
+        if (firstMcMMOPlayer == null || secondMcMMOPlayer == null) {
             return false;
         }
 
-        Party firstParty = firstProfile.getParty();
-        Party secondParty = secondProfile.getParty();
+        Party firstParty = firstMcMMOPlayer.getParty();
+        Party secondParty = secondMcMMOPlayer.getParty();
 
         if (firstParty == null || secondParty == null || firstParty != secondParty) {
             return false;
@@ -98,7 +99,7 @@ public final class PartyManager {
      * @return all the players in the player's party
      */
     public static List<String> getAllMembers(Player player) {
-        Party party = Users.getProfile(player).getParty();
+        Party party = Users.getPlayer(player).getParty();
 
         if (party == null) {
             return null;
@@ -197,10 +198,10 @@ public final class PartyManager {
             informPartyMembersQuit(playerName, party);
         }
 
-        PlayerProfile playerProfile = Users.getProfile(playerName);
-
-        if (playerProfile != null) {
-            playerProfile.removeParty();
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(playerName);
+ 
+        if (mcMMOPlayer != null) {
+            mcMMOPlayer.removeParty();
         }
     }
 
@@ -213,10 +214,11 @@ public final class PartyManager {
         List<String> members = party.getMembers();
 
         for (String member : party.getMembers()) {
-            PlayerProfile playerProfile = Users.getProfile(member);
 
-            if (playerProfile != null) {
-                playerProfile.removeParty();
+            McMMOPlayer mcMMOPlayer = Users.getPlayer(member);
+
+            if (mcMMOPlayer != null) {
+                mcMMOPlayer.removeParty();
             }
         }
 
@@ -230,11 +232,11 @@ public final class PartyManager {
      * Create a new party
      *
      * @param player The player to add to the party
-     * @param playerProfile The profile of the player to add to the party
+     * @param mcMMOPlayer The player to add to the party
      * @param partyName The party to add the player to
-     * @param password the password for this party, null if there was no password
+     * @param password The password for this party, null if there was no password
      */
-    public static void createParty(Player player, PlayerProfile playerProfile, String partyName, String password) {
+    public static void createParty(Player player, McMMOPlayer mcMMOPlayer, String partyName, String password) {
         partyName = partyName.replace(".", "");
         Party party = getParty(partyName);
         String playerName = player.getName();
@@ -260,18 +262,18 @@ public final class PartyManager {
         }
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.Create", party.getName()));
-        addToParty(player.getName(), playerProfile, party);
+        addToParty(player.getName(), mcMMOPlayer, party);
     }
 
     /**
      * Add a player to a party.
      *
      * @param player The player to add to the party
-     * @param playerProfile The profile of the player to add to the party
+     * @param mcMMOPlayer The player to add to the party
      * @param partyName The party to add the player to
      * @param password the password for this party, null if there was no password
      */
-    public static void joinParty(Player player, PlayerProfile playerProfile, String partyName, String password) {
+    public static void joinParty(Player player, McMMOPlayer mcMMOPlayer, String partyName, String password) {
         partyName = partyName.replace(".", "");
         Party party = getParty(partyName);
         String playerName = player.getName();
@@ -294,7 +296,7 @@ public final class PartyManager {
         }
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.Join", party.getName()));
-        addToParty(player.getName(), playerProfile, party);
+        addToParty(player.getName(), mcMMOPlayer, party);
     }
 
     /**
@@ -333,31 +335,31 @@ public final class PartyManager {
     /**
      * Accept a party invitation
      * 
-     * @param player The player to add to the party
-     * @param playerProfile The profile of the player
+     * @param Player The plaer to add to the party
+     * @param mcMMOPlayer The player to add to the party
      */
-    public static void joinInvitedParty(Player player, PlayerProfile playerProfile) {
-        Party invite = playerProfile.getInvite();
+    public static void joinInvitedParty(Player player, McMMOPlayer mcMMOPlayer) {
+        Party invite = mcMMOPlayer.getInvite();
 
         if (!parties.contains(invite)) {
             parties.add(invite);
         }
 
         player.sendMessage(LocaleLoader.getString("Commands.Invite.Accepted", invite.getName()));
-        playerProfile.removeInvite();
-        addToParty(player.getName(), playerProfile, invite);
+        mcMMOPlayer.removeInvite();
+        addToParty(player.getName(), mcMMOPlayer, invite);
     }
 
     /**
      * Add a player to a party
      * 
      * @param playerName The name of the player to add to a party
-     * @param playerProfile The profile of the player
+     * @param mcMMOPlayer The player to add to the party
      * @param party The party
      */
-    public static void addToParty(String playerName, PlayerProfile playerProfile, Party party) {
+    public static void addToParty(String playerName, McMMOPlayer mcMMOPlayer, Party party) {
         informPartyMembersJoin(playerName, party);
-        playerProfile.setParty(party);
+        mcMMOPlayer.setParty(party);
         party.getMembers().add(playerName);
     }
 
@@ -402,14 +404,14 @@ public final class PartyManager {
     }
 
     /**
-     * Check if a player can invite others to their party.
+     * Check if a player can invite others to his party.
      *
      * @param player The player to check
-     * @param playerProfile The profile of the given player
+     * @param mcMMOPlayer The player to check
      * @return true if the player can invite
      */
-    public static boolean canInvite(Player player, PlayerProfile playerProfile) {
-        Party party = playerProfile.getParty();
+    public static boolean canInvite(Player player, McMMOPlayer mcMMOPlayer) {
+        Party party = mcMMOPlayer.getParty();
 
         if (party == null || (party.isLocked() && !party.getLeader().equals(player.getName()))) {
             return false;

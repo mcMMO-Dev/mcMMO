@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -18,7 +19,7 @@ import com.gmail.nossr50.util.Users;
 public class PtpCommand implements CommandExecutor {
     private final mcMMO plugin;
     private Player player;
-    private PlayerProfile playerProfile;
+    private McMMOPlayer mcMMOPlayer;
 
     public PtpCommand(mcMMO instance) {
         this.plugin = instance;
@@ -38,8 +39,9 @@ public class PtpCommand implements CommandExecutor {
 
         switch (args.length) {
         case 1:
-            this.player = (Player) sender;
-            this.playerProfile = Users.getProfile(player);
+            player = (Player) sender;
+            mcMMOPlayer = Users.getPlayer(player);
+            PlayerProfile playerProfile = mcMMOPlayer.getProfile();
 
             if (args[0].equalsIgnoreCase("toggle")) {
                 return togglePartyTeleportation();
@@ -86,15 +88,15 @@ public class PtpCommand implements CommandExecutor {
         }
 
         if (PartyManager.inSameParty(player, target)) {
-            PlayerProfile targetProfile = Users.getProfile(target);
+            McMMOPlayer targetMcMMOPlayer = Users.getPlayer(target);
 
-            if (!targetProfile.getPtpEnabled()) {
+            if (!targetMcMMOPlayer.getPtpEnabled()) {
                 player.sendMessage(LocaleLoader.getString("Party.Teleport.Disabled", target.getName()));
                 return true;
             }
 
-            if (!Users.getProfile(target).getPtpConfirmRequired()) {
-                McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, playerProfile.getParty().getName());
+            if (!targetMcMMOPlayer.getPtpConfirmRequired()) {
+                McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, mcMMOPlayer.getParty().getName());
                 plugin.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) {
@@ -104,10 +106,10 @@ public class PtpCommand implements CommandExecutor {
                 player.teleport(target);
                 player.sendMessage(LocaleLoader.getString("Party.Teleport.Player", player.getName()));
                 target.sendMessage(LocaleLoader.getString("Party.Teleport.Target", target.getName()));
-                playerProfile.setRecentlyHurt(System.currentTimeMillis());
+                mcMMOPlayer.getProfile().setRecentlyHurt(System.currentTimeMillis());
             } else {
-                targetProfile.setPtpRequest(player);
-                targetProfile.actualizePtpTimeout();
+                targetMcMMOPlayer.setPtpRequest(player);
+                targetMcMMOPlayer.actualizePtpTimeout();
                 player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
 
                 int ptpRequestExpire = Config.getInstance().getPTPCommandTimeout();
@@ -122,20 +124,20 @@ public class PtpCommand implements CommandExecutor {
     }
 
     private boolean acceptTeleportRequest() {
-        if (!playerProfile.hasPtpRequest()) {
+        if (!mcMMOPlayer.hasPtpRequest()) {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.NoRequests"));
             return true;
         }
 
         int ptpRequestExpire = Config.getInstance().getPTPCommandTimeout();
 
-        if ((playerProfile.getPtpTimeout() + ptpRequestExpire) * Misc.TIME_CONVERSION_FACTOR < System.currentTimeMillis()) {
-            playerProfile.removePtpRequest();
+        if ((mcMMOPlayer.getPtpTimeout() + ptpRequestExpire) * Misc.TIME_CONVERSION_FACTOR < System.currentTimeMillis()) {
+            mcMMOPlayer.removePtpRequest();
             player.sendMessage(LocaleLoader.getString("Commands.ptp.RequestExpired"));
             return true;
         }
 
-        Player target = playerProfile.getPtpRequest();
+        Player target = mcMMOPlayer.getPtpRequest();
 
         if (target == null) {
             player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
@@ -147,7 +149,7 @@ public class PtpCommand implements CommandExecutor {
             return true;
         }
 
-        McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, playerProfile.getParty().getName());
+        McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, mcMMOPlayer.getParty().getName());
         plugin.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
@@ -157,31 +159,31 @@ public class PtpCommand implements CommandExecutor {
         target.teleport(player);
         target.sendMessage(LocaleLoader.getString("Party.Teleport.Player", player.getName()));
         player.sendMessage(LocaleLoader.getString("Party.Teleport.Target", target.getName()));
-        playerProfile.setRecentlyHurt(System.currentTimeMillis());
+        mcMMOPlayer.getProfile().setRecentlyHurt(System.currentTimeMillis());
         return true;
     }
 
     private boolean acceptAnyTeleportRequest() {
-        if (playerProfile.getPtpConfirmRequired()) {
+        if (mcMMOPlayer.getPtpConfirmRequired()) {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.AcceptAny.Disabled"));
         }
         else {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.AcceptAny.Enabled"));
         }
 
-        playerProfile.togglePtpConfirmRequired();
+        mcMMOPlayer.togglePtpConfirmRequired();
         return true;
     }
 
     private boolean togglePartyTeleportation() {
-        if (playerProfile.getPtpEnabled()) {
+        if (mcMMOPlayer.getPtpEnabled()) {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.Disabled"));
         }
         else {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.Enabled"));
         }
 
-        playerProfile.togglePtpUse();
+        mcMMOPlayer.togglePtpUse();
         return true;
     }
 }

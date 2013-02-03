@@ -23,6 +23,12 @@ public class McMMOPlayer {
     private PlayerProfile profile;
     private Party party;
     private Party invite;
+    private Player ptpRequest;
+    private boolean ptpEnabled = true;
+    private boolean ptpConfirmRequired = Config.getInstance().getPTPCommandConfirmRequired();
+    private long ptpTimeout;
+    private boolean partyChatMode;
+    private boolean adminChatMode;
 
     public McMMOPlayer (Player player) {
         String playerName = player.getName();
@@ -203,5 +209,61 @@ public class McMMOPlayer {
 
     public void removeInvite() {
         invite = null;
+    }
+    
+    public boolean getPtpEnabled() {
+        return ptpEnabled;
+    }
+
+    public void togglePtpUse() {
+        ptpEnabled = !ptpEnabled;
+    }
+
+    public Player getPtpRequest() {
+        return ptpRequest;
+    }
+
+    public void setPtpRequest(Player ptpRequest) {
+        this.ptpRequest = ptpRequest;
+    }
+
+    public boolean hasPtpRequest() {
+        return (ptpRequest != null) ? true : false;
+    }
+
+    public void removePtpRequest() {
+        ptpRequest = null;
+    }
+
+    public boolean getPtpConfirmRequired() {
+        return ptpConfirmRequired;
+    }
+
+    public void togglePtpConfirmRequired() {
+        ptpConfirmRequired = !ptpConfirmRequired;
+    }
+
+    public long getPtpTimeout() {
+        return ptpTimeout;
+    }
+
+    public void actualizePtpTimeout() {
+        ptpTimeout = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+    }
+
+    public boolean getAdminChatMode() {
+        return adminChatMode;
+    }
+
+    public void toggleAdminChat() {
+        adminChatMode = !adminChatMode;
+    }
+
+    public boolean getPartyChatMode() {
+        return partyChatMode;
+    }
+
+    public void togglePartyChat() {
+        partyChatMode = !partyChatMode;
     }
 }

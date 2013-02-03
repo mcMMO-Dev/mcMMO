@@ -20,7 +20,7 @@ public final class PartyAPI {
      * @return the name of the player's party
      */
     public static String getPartyName(Player player) {
-        return Users.getPlayer(player).getProfile().getParty().getName();
+        return Users.getPlayer(player).getParty().getName();
     }
 
     /**
@@ -32,7 +32,7 @@ public final class PartyAPI {
      * @return true if the player is in a party, false otherwise
      */
     public static boolean inParty(Player player) {
-        return Users.getPlayer(player).getProfile().inParty();
+        return Users.getPlayer(player).inParty();
     }
 
     /**
@@ -77,7 +77,7 @@ public final class PartyAPI {
             party.setLeader(playerName);
         }
 
-        PartyManager.addToParty(playerName, Users.getPlayer(player).getProfile(), party);
+        PartyManager.addToParty(playerName, Users.getPlayer(player), party);
     }
 
     /**
@@ -88,7 +88,7 @@ public final class PartyAPI {
      * @param player The player to remove
      */
     public static void removeFromParty(Player player) {
-        PartyManager.removeFromParty(player.getName(), Users.getPlayer(player).getProfile().getParty());
+        PartyManager.removeFromParty(player.getName(), Users.getPlayer(player).getParty());
     }
 
     /**

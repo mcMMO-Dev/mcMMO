@@ -8,14 +8,14 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Users;
 
 public class ACommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        PlayerProfile profile;
+        McMMOPlayer mcMMOPlayer;
         String usage = LocaleLoader.getString("Commands.Usage.1", "a", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">");
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.chat.adminchat")) {
@@ -25,15 +25,15 @@ public class ACommand implements CommandExecutor {
         switch (args.length) {
         case 0:
             if (sender instanceof Player) {
-                profile = Users.getProfile((Player) sender);
+                mcMMOPlayer = Users.getPlayer((Player) sender);
 
-                if (profile.getPartyChatMode()) {
-                    profile.togglePartyChat();
+                if (mcMMOPlayer.getPartyChatMode()) {
+                    mcMMOPlayer.togglePartyChat();
                 }
 
-                profile.toggleAdminChat();
+                mcMMOPlayer.toggleAdminChat();
 
-                if (profile.getAdminChatMode()) {
+                if (mcMMOPlayer.getAdminChatMode()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.AdminChat.On"));
                 }
                 else {

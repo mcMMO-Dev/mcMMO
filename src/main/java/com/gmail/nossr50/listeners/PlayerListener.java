@@ -63,15 +63,16 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        PlayerProfile profile = Users.getPlayer(player).getProfile();
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+        PlayerProfile profile = mcMMOPlayer.getProfile();
 
         if (profile.getGodMode() && !Permissions.mcgod(player)) {
             profile.toggleGodMode();
             player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));
         }
 
-        if (profile.inParty() && !Permissions.party(player)) {
-            profile.removeParty();
+        if (mcMMOPlayer.inParty() && !Permissions.party(player)) {
+            mcMMOPlayer.removeParty();
             player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
         }
     }
@@ -334,10 +335,10 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        PlayerProfile profile = Users.getPlayer(player).getProfile();
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
 
-        if (profile.getPartyChatMode()) {
-            Party party = profile.getParty();
+        if (mcMMOPlayer.getPartyChatMode()) {
+            Party party = mcMMOPlayer.getParty();
 
             if (party == null) {
                 player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
@@ -347,7 +348,7 @@ public class PlayerListener implements Listener {
             ChatManager.handlePartyChat(plugin, party, player.getName(), player.getDisplayName(), event.getMessage());
             event.setCancelled(true);
         }
-        else if (profile.getAdminChatMode()) {
+        else if (mcMMOPlayer.getAdminChatMode()) {
             ChatManager.handleAdminChat(plugin, player.getName(), player.getDisplayName(), event.getMessage());
             event.setCancelled(true);
         }

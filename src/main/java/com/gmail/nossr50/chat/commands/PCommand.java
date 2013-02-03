@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
@@ -23,7 +23,7 @@ public class PCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        PlayerProfile profile;
+        McMMOPlayer mcMMOPlayer;
         String usage = LocaleLoader.getString("Commands.Usage.2", "p", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">");
 
         if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party")) {
@@ -33,15 +33,15 @@ public class PCommand implements CommandExecutor {
         switch (args.length) {
         case 0:
             if (sender instanceof Player) {
-                profile = Users.getProfile((Player) sender);
+                mcMMOPlayer = Users.getPlayer((Player) sender);
 
-                if (profile.getAdminChatMode()) {
-                    profile.toggleAdminChat();
+                if (mcMMOPlayer.getAdminChatMode()) {
+                    mcMMOPlayer.toggleAdminChat();
                 }
 
-                profile.togglePartyChat();
+                mcMMOPlayer.togglePartyChat();
 
-                if (profile.getPartyChatMode()) {
+                if (mcMMOPlayer.getPartyChatMode()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Party.Chat.On"));
                 }
                 else {
@@ -57,7 +57,7 @@ public class PCommand implements CommandExecutor {
         default:
             if (sender instanceof Player) {
                 Player player = (Player) sender;
-                Party party = Users.getProfile(player).getParty();
+                Party party = Users.getPlayer(player).getParty();
 
                 if (party == null) {
                     player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
