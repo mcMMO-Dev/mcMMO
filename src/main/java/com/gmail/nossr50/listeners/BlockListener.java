@@ -263,7 +263,7 @@ public class BlockListener implements Listener {
             return;
         }
 
-        PlayerProfile profile = Users.getProfile(player);
+        PlayerProfile profile = Users.getPlayer(player).getProfile();
         Block block = event.getBlock();
 
         /*

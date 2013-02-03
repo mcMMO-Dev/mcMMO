@@ -22,6 +22,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
@@ -62,7 +63,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        PlayerProfile profile = Users.getProfile(player);
+        PlayerProfile profile = Users.getPlayer(player).getProfile();
 
         if (profile.getGodMode() && !Permissions.mcgod(player)) {
             profile.toggleGodMode();
@@ -88,11 +89,12 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.FISHING);
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+        int skillLevel = mcMMOPlayer.getProfile().getSkillLevel(SkillType.FISHING);
 
         switch (event.getState()) {
         case CAUGHT_FISH:
-            Fishing.beginFishing(Users.getPlayer(player), skillLevel, event);
+            Fishing.beginFishing(mcMMOPlayer, skillLevel, event);
             break;
 
         case CAUGHT_ENTITY:
@@ -176,9 +178,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        PlayerProfile profile = Users.getProfile(player);
-
-        profile.actualizeRespawnATS();
+        Users.getPlayer(player).getProfile().actualizeRespawnATS();
     }
 
     /**
@@ -334,7 +334,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        PlayerProfile profile = Users.getProfile(player);
+        PlayerProfile profile = Users.getPlayer(player).getProfile();
 
         if (profile.getPartyChatMode()) {
             Party party = profile.getParty();
