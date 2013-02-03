@@ -8,11 +8,15 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.McRankAsync;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Leaderboard;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class McrankCommand implements CommandExecutor {
     @Override
@@ -44,6 +48,22 @@ public class McrankCommand implements CommandExecutor {
             }
 
             playerName = args[0];
+
+            McMMOPlayer mcmmoPlayer = Users.getPlayer(playerName);
+
+            if (mcmmoPlayer != null) {
+                Player target = mcmmoPlayer.getPlayer();
+
+                if (sender instanceof Player && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), 5.0) && !Permissions.hasPermission(sender, "mcmmo.commands.mcrank.others.far")) {
+                    sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
+                    return true;
+                }
+            }
+            else if (sender instanceof Player && !Permissions.hasPermission(sender, "mcmmo.commands.mcrank.others.offline")) {
+                sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
+                return true;
+            }
+
             break;
 
         default:

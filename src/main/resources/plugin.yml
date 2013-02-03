@@ -715,7 +715,7 @@ permissions:
             mcmmo.commands.mcgod: true
             mcmmo.commands.mcgod.others: true
             mcmmo.commands.mcpurge: true
-            mcmmo.commands.mcrank.others: true
+            mcmmo.commands.mcrank.others.all: true
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
             mcmmo.commands.mmoupdate: true
@@ -774,8 +774,22 @@ permissions:
         description: Allows access to the mcpurge command
     mcmmo.commands.mcrank:
         description: Allows access to the mcrank command
+    mcmmo.commands.mcrank.others.*:
+        description: Implies access to all mcmmo.commands.mcrank.others permissions
+        children:
+            mcmmo.commands.mcrank.others.all: true
+    mcmmo.commands.mcrank.others.all:
+        description: Implies access to all mcmmo.commands.mcrank.others permissions
+        children:
+            mcmmo.commands.mcrank.others: true
+            mcmmo.commands.mcrank.others.far: true
+            mcmmo.commands.mcrank.others.offline: true
     mcmmo.commands.mcrank.others:
         description: Allows access to the mcrank command for other players
+    mcmmo.commands.mcrank.others.far:
+        description: Allows access to the mcrank command for far players
+    mcmmo.commands.mcrank.others.offline:
+        description: Allows access to the mcrank command for offline players
     mcmmo.commands.mcstats:
         description: Allows access to the mcstats command
     mcmmo.commands.mctop:
