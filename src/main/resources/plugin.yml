@@ -344,6 +344,7 @@ permissions:
             mcmmo.commands.addlevels.others: true
             mcmmo.commands.addxp: true
             mcmmo.commands.addxp.others: true
+            mcmmo.commands.mcpurge: true
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
     mcmmo.tools.mcgod:
@@ -713,6 +714,7 @@ permissions:
             mcmmo.commands.mcability.others: true
             mcmmo.commands.mcgod: true
             mcmmo.commands.mcgod.others: true
+            mcmmo.commands.mcpurge: true
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
             mcmmo.commands.mmoupdate: true
@@ -767,6 +769,8 @@ permissions:
         description: Allows access to the mcgod command for other players
     mcmmo.commands.mcmmo:
         description: Allows access to the mcmmo command
+    mcmmo.commands.mcpurge:
+        description: Allows access to the mcpurge command
     mcmmo.commands.mcrank:
         description: Allows access to the mcrank command
     mcmmo.commands.mcstats:
