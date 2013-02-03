@@ -265,7 +265,7 @@ public class SkillTools {
         }
 
         if (mcMMO.spoutEnabled) {
-            SpoutPlayer spoutPlayer = (SpoutPlayer) player;
+            SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
             if (spoutPlayer != null && spoutPlayer.isSpoutCraftEnabled()) {
                 if (SpoutConfig.getInstance().getXPBarEnabled()) {
