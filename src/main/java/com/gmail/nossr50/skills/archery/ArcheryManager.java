@@ -18,9 +18,20 @@ public class ArcheryManager extends SkillManager {
 
     public void distanceXpBonus(LivingEntity target) {
         Player player = mcMMOPlayer.getPlayer();
-        Location shooterLocation = player.getEyeLocation();
+        Location shooterLocation = player.getLocation();
         Location targetLocation = target.getLocation();
+
+        if (!shooterLocation.getWorld().equals(targetLocation.getWorld())) {
+            return;
+        }
+
         double squaredDistance = shooterLocation.distanceSquared(targetLocation);
+
+        // Cap distance at 100^2 to prevent teleport exploit.
+        // TODO: Better way to handle this would be great...
+        if (squaredDistance > 10000) {
+            squaredDistance = 10000;
+        }
 
         int bonusXp = (int) (squaredDistance * Archery.distanceXpModifer);
         mcMMOPlayer.addXp(SkillType.ARCHERY, bonusXp);
