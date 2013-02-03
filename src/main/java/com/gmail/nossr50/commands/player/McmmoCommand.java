@@ -11,10 +11,15 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Anniversary;
+import com.gmail.nossr50.util.Permissions;
 
 public class McmmoCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!Permissions.hasPermission(sender, "mcmmo.commands.mcmmo")) {
+            return true;
+        }
+
         String description = LocaleLoader.getString("mcMMO.Description");
         String[] mcSplit = description.split(",");
         sender.sendMessage(mcSplit);
