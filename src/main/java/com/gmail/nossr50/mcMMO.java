@@ -215,6 +215,8 @@ public class mcMMO extends JavaPlugin {
         if (configInstance.getStatsTrackingEnabled()) {
             try {
                 Metrics metrics = new Metrics(this);
+
+                // Timings Graph
                 Graph timingsGraph = metrics.createGraph("Percentage of servers using timings");
 
                 if (pluginManager.useTimings()) {
@@ -234,6 +236,7 @@ public class mcMMO extends JavaPlugin {
                     });
                 }
 
+                // Donut Version Graph
                 Graph versionDonutGraph = metrics.createGraph("Donut Version");
 
                 boolean haveVersionInformation = false;
@@ -280,6 +283,7 @@ public class mcMMO extends JavaPlugin {
                     });
                 }
 
+                // Official v Custom build Graph
                 Graph officialGraph = metrics.createGraph("Built by official ci");
 
                 if (isOfficialBuild) {
@@ -292,6 +296,46 @@ public class mcMMO extends JavaPlugin {
                 }
                 else {
                     officialGraph.addPlotter(new Metrics.Plotter("No") {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    });
+                }
+
+                // Chunkmeta enabled Graph
+                Graph chunkmetaGraph = metrics.createGraph("Uses Chunkmeta");
+
+                if (HiddenConfig.getInstance().getChunkletsEnabled()) {
+                    chunkmetaGraph.addPlotter(new Metrics.Plotter("Yes") {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    });
+                }
+                else {
+                    chunkmetaGraph.addPlotter(new Metrics.Plotter("No") {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    });
+                }
+
+                // Storage method Graph
+                Graph storageGraph = metrics.createGraph("Storage method");
+
+                if (configInstance.getUseMySQL()) {
+                    storageGraph.addPlotter(new Metrics.Plotter("SQL") {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    });
+                }
+                else {
+                    storageGraph.addPlotter(new Metrics.Plotter("Flatfile") {
                         @Override
                         public int getValue() {
                             return 1;
