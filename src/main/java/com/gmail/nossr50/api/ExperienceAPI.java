@@ -75,7 +75,7 @@ public final class ExperienceAPI {
      * @return the amount of XP in a given skill
      */
     public static int getXP(Player player, SkillType skillType) {
-        return Users.getProfile(player).getSkillXpLevel(skillType);
+        return Users.getPlayer(player).getProfile().getSkillXpLevel(skillType);
     }
 
     /**
@@ -88,7 +88,7 @@ public final class ExperienceAPI {
      * @return the amount of XP left before leveling up a specifc skill
      */
     public static int getXPToNextLevel(Player player, SkillType skillType) {
-        return Users.getProfile(player).getXpToLevel(skillType);
+        return Users.getPlayer(player).getProfile().getXpToLevel(skillType);
     }
 
     /**
@@ -121,7 +121,7 @@ public final class ExperienceAPI {
      * @param notify True if this should fire a level up notification, false otherwise.
      */
     public static void addLevel(Player player, SkillType skillType, int levels) {
-        Users.getProfile(player).addLevels(skillType, levels);
+        Users.getPlayer(player).getProfile().addLevels(skillType, levels);
     }
 
     /**
@@ -134,7 +134,7 @@ public final class ExperienceAPI {
      * @return the level of a given skill
      */
     public static int getLevel(Player player, SkillType skillType) {
-        return Users.getProfile(player).getSkillLevel(skillType);
+        return Users.getPlayer(player).getProfile().getSkillLevel(skillType);
     }
 
     /**
@@ -159,7 +159,7 @@ public final class ExperienceAPI {
      * @param skillLevel The value to set the level to
      */
     public static void setLevel(Player player, SkillType skillType, int skillLevel) {
-        Users.getProfile(player).modifySkill(skillType, skillLevel);
+        Users.getPlayer(player).getProfile().modifySkill(skillType, skillLevel);
     }
 
     /**
@@ -172,7 +172,7 @@ public final class ExperienceAPI {
      * @param newValue The value to set the XP to
      */
     public static void setXP(Player player, SkillType skillType, int newValue) {
-        Users.getProfile(player).setSkillXpLevel(skillType, newValue);
+        Users.getPlayer(player).getProfile().setSkillXpLevel(skillType, newValue);
     }
 
     /**
@@ -185,6 +185,6 @@ public final class ExperienceAPI {
      * @param xp The amount of XP to remove
      */
     public static void removeXP(Player player, SkillType skillType, int xp) {
-        Users.getProfile(player).removeXp(skillType, xp);
+        Users.getPlayer(player).getProfile().removeXp(skillType, xp);
     }
 }
