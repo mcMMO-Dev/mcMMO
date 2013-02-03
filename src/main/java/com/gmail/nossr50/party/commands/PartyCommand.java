@@ -489,7 +489,7 @@ public class PartyCommand implements CommandExecutor {
             return true;
 
         default:
-            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "invite", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
+            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "kick", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
             return true;
         }
     }
