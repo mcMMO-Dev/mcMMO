@@ -538,7 +538,7 @@ public class PartyCommand implements CommandExecutor {
         Party party = mcMMOPlayer.getParty();
 
         if (args.length < 2) {
-            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "kick", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
+            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "owner", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
             return true;
         }
 
