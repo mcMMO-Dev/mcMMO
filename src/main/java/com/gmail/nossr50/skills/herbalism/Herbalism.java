@@ -373,13 +373,13 @@ public class Herbalism {
                 return;
             }
 
-            int dropNumber = Misc.getRandom().nextInt(treasures.size());
-            ItemStack item = treasures.get(dropNumber).getDrop();
-            Location location = block.getLocation();
+            if (treasures.isEmpty()) {
+                return;
+            }
 
             event.setCancelled(true);
             event.getBlock().setType(Material.AIR);
-            Misc.dropItem(location, item);
+            Misc.dropItem(block.getLocation(), treasures.get(Misc.getRandom().nextInt(treasures.size())).getDrop());
             player.sendMessage(LocaleLoader.getString("Herbalism.HylianLuck"));
         }
     }
