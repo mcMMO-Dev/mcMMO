@@ -67,7 +67,7 @@ public class PartyCommand implements CommandExecutor {
                 return invite(args);
             }
             else if (args[0].equalsIgnoreCase("kick")) {
-                return kick(args[1]);
+                return kick(args);
             }
             else if (args[0].equalsIgnoreCase("disband")) {
                 return disband();
@@ -449,42 +449,49 @@ public class PartyCommand implements CommandExecutor {
     /**
      * Kick a party member
      */
-    private boolean kick(String targetName) {
+    private boolean kick(String[] args) {
         if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.kick")) {
             return true;
         }
 
-        String playerName = player.getName();
-        Party party = mcMMOPlayer.getParty();
+        switch (args.length) {
+        case 2:
+            String playerName = player.getName();
+            Party party = mcMMOPlayer.getParty();
 
-        if (party.getLeader().equals(playerName)) {
-            if (!party.getMembers().contains(targetName)) {
-                player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetName));
-                return true;
-            }
-
-            Player target = mcMMO.p.getServer().getOfflinePlayer(targetName).getPlayer();
-
-            if (target != null) {
-                String partyName = party.getName();
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(target, partyName, null, EventReason.KICKED_FROM_PARTY);
-
-                mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                if (event.isCancelled()) {
+            if (party.getLeader().equals(playerName)) {
+                if (!party.getMembers().contains(args[1])) {
+                    player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", args[1]));
                     return true;
                 }
 
-                target.sendMessage(LocaleLoader.getString("Commands.Party.Kick", partyName));
+                Player target = mcMMO.p.getServer().getOfflinePlayer(args[1]).getPlayer();
+
+                if (target != null) {
+                    String partyName = party.getName();
+                    McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(target, partyName, null, EventReason.KICKED_FROM_PARTY);
+
+                    mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+                    if (event.isCancelled()) {
+                        return true;
+                    }
+
+                    target.sendMessage(LocaleLoader.getString("Commands.Party.Kick", partyName));
+                }
+
+                PartyManager.removeFromParty(args[1], party);
+            }
+            else {
+                player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
             }
 
-            PartyManager.removeFromParty(targetName, party);
-        }
-        else {
-            player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-        }
+            return true;
 
-        return true;
+        default:
+            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "invite", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
+            return true;
+        }
     }
 
     /**
@@ -531,7 +538,7 @@ public class PartyCommand implements CommandExecutor {
         Party party = mcMMOPlayer.getParty();
 
         if (args.length < 2) {
-            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "owner", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
+            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "kick", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
             return true;
         }
 
