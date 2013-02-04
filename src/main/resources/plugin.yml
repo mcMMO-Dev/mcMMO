@@ -45,7 +45,6 @@ commands:
     addlevels:
         description: Add mcMMO levels to a user
     mcability:
-        aliases: []
         description: Toggle whether or not abilities get readied on right click
     mcrefresh:
         description: Refresh all cooldowns for mcMMO
