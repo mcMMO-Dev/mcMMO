@@ -540,5 +540,9 @@ public class mcMMO extends JavaPlugin {
     public void setXPEventEnabled(boolean enabled) {
         this.xpEventEnabled = enabled;
     }
+
+    public void toggleXpEventEnabled() {
+        xpEventEnabled = !xpEventEnabled;
+    }
 }
 
