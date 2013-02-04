@@ -687,16 +687,6 @@ permissions:
         description: Allows access to the Second Smelt ability
     mcmmo.ability.smelting.vanillaxpboost:
         description: Allows vanilla XP boost from Smelting
-    mcmmo.item.*:
-        description: Implies all mcmmo.item permissions
-        children:
-            mcmmo.item.all: true 
-    mcmmo.item.all:
-        description: Implies all mcmmo.item permissions
-        children:
-            mcmmo.item.chimaerawing: true 
-    mcmmo.item.chimaerawing:
-        description: Allows use of Chimaera Wing item
     mcmmo.motd:
         description: Allows access to the motd
     mcmmo.commands.*:

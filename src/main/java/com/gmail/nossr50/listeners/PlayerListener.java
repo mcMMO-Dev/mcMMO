@@ -37,7 +37,6 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.BlockChecks;
-import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -269,8 +268,6 @@ public class PlayerListener implements Listener {
                     SkillTools.activationCheck(player, SkillType.UNARMED);
                     SkillTools.activationCheck(player, SkillType.WOODCUTTING);
                 }
-
-                ChimaeraWing.activationCheck(player);
             }
 
             /* GREEN THUMB CHECK */
@@ -292,9 +289,6 @@ public class PlayerListener implements Listener {
                 SkillTools.activationCheck(player, SkillType.UNARMED);
                 SkillTools.activationCheck(player, SkillType.WOODCUTTING);
             }
-
-            /* ITEM CHECKS */
-            ChimaeraWing.activationCheck(player);
 
             break;
 
