@@ -539,15 +539,15 @@ public final class Permissions {
      */
 
     public static boolean biggerBombs(Player player) {
-        return hasPermission(player, "mcmmo.ability.blastmining.biggerbombs");
+        return hasPermission(player, "mcmmo.ability.mining.blastmining.biggerbombs");
     }
 
     public static boolean demolitionsExpertise(Player player) {
-        return hasPermission(player, "mcmmo.ability.blastmining.demolitionsexpertise");
+        return hasPermission(player, "mcmmo.ability.mining.blastmining.demolitionsexpertise");
     }
 
     public static boolean blastMining(Player player) {
-        return hasPermission(player, "mcmmo.ability.blastmining.detonate");
+        return hasPermission(player, "mcmmo.ability.mining.blastmining.detonate");
     }
 
     /*
