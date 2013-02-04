@@ -13,7 +13,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Misc;
 
@@ -125,10 +124,10 @@ public class MctopCommand implements CommandExecutor {
         }
 
         Leaderboard.updateLeaderboards(); //Make sure we have the latest information
-        SkillType skillType = SkillType.getSkill(skill);
-        String[] info = Leaderboard.retrieveInfo(skillType, page);
 
-        if (skill.equalsIgnoreCase("ALL")) {
+        String[] info = Leaderboard.retrieveInfo(skill, page);
+
+        if (skill.equalsIgnoreCase("all")) {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
         }
         else {

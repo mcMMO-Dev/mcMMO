@@ -66,7 +66,7 @@ public class PlayerProfile {
         }
 
         for (SkillType skillType : SkillType.values()) {
-            if (skillType != SkillType.ALL && !skillType.isChildSkill()) {
+            if (!skillType.isChildSkill()) {
                 skills.put(skillType, 0);
                 skillsXp.put(skillType, 0);
             }
@@ -1012,18 +1012,7 @@ public class PlayerProfile {
             return;
         }
 
-        if (skillType.equals(SkillType.ALL)) {
-            for (SkillType skill : SkillType.values()) {
-                if (skill.equals(SkillType.ALL)) {
-                    continue;
-                }
-
-                skillsXp.put(skill, skillsXp.get(skill) - xp);
-            }
-        }
-        else {
-            skillsXp.put(skillType, skillsXp.get(skillType) - xp);
-        }
+        skillsXp.put(skillType, skillsXp.get(skillType) - xp);
     }
 
     /**
@@ -1037,20 +1026,8 @@ public class PlayerProfile {
             return;
         }
 
-        if (skillType.equals(SkillType.ALL)) {
-            for (SkillType skill : SkillType.values()) {
-                if (skill.equals(SkillType.ALL)) {
-                    continue;
-                }
-
-                skills.put(skill, newValue);
-                skillsXp.put(skill, 0);
-            }
-        }
-        else {
-            skills.put(skillType, newValue);
-            skillsXp.put(skillType, 0);
-        }
+        skills.put(skillType, newValue);
+        skillsXp.put(skillType, 0);
     }
 
     /**
@@ -1064,20 +1041,8 @@ public class PlayerProfile {
             return;
         }
 
-        if (skillType == SkillType.ALL) {
-            for (SkillType skill : SkillType.values()) {
-                if (skill == SkillType.ALL || skill.isChildSkill()) {
-                    continue;
-                }
-
-                skills.put(skill, skills.get(skill) + levels);
-                skillsXp.put(skill, 0);
-            }
-        }
-        else {
-            skills.put(skillType, skills.get(skillType) + levels);
-            skillsXp.put(skillType, 0);
-        }
+        skills.put(skillType, skills.get(skillType) + levels);
+        skillsXp.put(skillType, 0);
     }
 
     /**
@@ -1133,8 +1098,4 @@ public class PlayerProfile {
     //
     //        return bonusModifier;
     //    }
-
-    /*
-     * Party Stuff
-     */
 }

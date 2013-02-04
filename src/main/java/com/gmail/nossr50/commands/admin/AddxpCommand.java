@@ -17,11 +17,10 @@ import com.gmail.nossr50.util.Users;
 public class AddxpCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        Player modifiedPlayer;
         int xp;
-        SkillType skill;
         McMMOPlayer mcMMOPlayer;
         PlayerProfile profile;
+        boolean allSkills = false;
 
         switch (args.length) {
         case 2:
@@ -29,7 +28,10 @@ public class AddxpCommand implements CommandExecutor {
                 return false;
             }
 
-            if (!SkillTools.isSkill(args[0])) {
+            if (args[0].equalsIgnoreCase("all")) {
+                allSkills = true;
+            }
+            else if (!SkillTools.isSkill(args[0])) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
@@ -39,25 +41,23 @@ public class AddxpCommand implements CommandExecutor {
             }
 
             xp = Integer.valueOf(args[1]);
-            skill = SkillTools.getSkillType(args[0]);
-            modifiedPlayer = (Player) sender;
-            mcMMOPlayer = Users.getPlayer(modifiedPlayer);
+            mcMMOPlayer = Users.getPlayer((Player) sender);
             profile = mcMMOPlayer.getProfile();
 
-            if (skill.equals(SkillType.ALL)) {
-                for (SkillType type : SkillType.values()) {
-                    if (type.equals(SkillType.ALL) || type.isChildSkill()) {
+            if (allSkills) {
+                for (SkillType skillType : SkillType.values()) {
+                    if (skillType.isChildSkill()) {
                         continue;
                     }
 
-                    mcMMOPlayer.applyXpGain(type, xp);
+                    mcMMOPlayer.applyXpGain(skillType, xp);
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
             }
             else {
-                mcMMOPlayer.applyXpGain(skill, xp);
-                sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(skill.toString())));
+                mcMMOPlayer.applyXpGain(SkillTools.getSkillType(args[0]), xp);
+                sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(args[0])));
             }
 
             return true;
@@ -68,7 +68,10 @@ public class AddxpCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!SkillTools.isSkill(args[1])) {
+            if (args[1].equalsIgnoreCase("all")) {
+                allSkills = true;
+            }
+            else if (!SkillTools.isSkill(args[1])) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
@@ -79,7 +82,6 @@ public class AddxpCommand implements CommandExecutor {
 
             mcMMOPlayer = Users.getPlayer(args[0]);
             xp = Integer.valueOf(args[2]);
-            skill = SkillTools.getSkillType(args[1]);
 
             // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
             if (mcMMOPlayer == null) {
@@ -91,53 +93,44 @@ public class AddxpCommand implements CommandExecutor {
                 }
 
                 // TODO: Currently the offline player doesn't level up automatically
-                if (skill.equals(SkillType.ALL)) {
-                    for (SkillType type : SkillType.values()) {
-                        if (type.equals(SkillType.ALL) || type.isChildSkill()) {
+                if (allSkills) {
+                    for (SkillType skillType : SkillType.values()) {
+                        if (skillType.isChildSkill()) {
                             continue;
                         }
 
-                        profile.setSkillXpLevel(type, profile.getSkillXpLevel(type) + xp);
+                        profile.setSkillXpLevel(skillType, xp);
                     }
                 }
                 else {
-                    profile.setSkillXpLevel(skill, profile.getSkillXpLevel(skill) + xp);
+                    profile.setSkillXpLevel(SkillTools.getSkillType(args[1]), xp);
                 }
 
                 profile.save(); // Since this is a temporary profile, we save it here.
             }
             else {
-                if (skill.equals(SkillType.ALL)) {
-                    for (SkillType type : SkillType.values()) {
-                        if (type.equals(SkillType.ALL) || type.isChildSkill()) {
+                if (allSkills) {
+                    for (SkillType skillType : SkillType.values()) {
+                        if (skillType.isChildSkill()) {
                             continue;
                         }
 
-                        mcMMOPlayer.applyXpGain(type, xp);
+                        mcMMOPlayer.applyXpGain(skillType, xp);
                     }
+
+                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
                 }
                 else {
-                    mcMMOPlayer.applyXpGain(skill, xp);
-                }
-
-                modifiedPlayer = mcMMOPlayer.getPlayer();
-                
-
-                if (modifiedPlayer.isOnline()) {
-                    if (skill.equals(SkillType.ALL)) {
-                        modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
-                    }
-                    else {
-                        modifiedPlayer.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(skill.toString())));
-                    }
+                    mcMMOPlayer.applyXpGain(SkillTools.getSkillType(args[1]), xp);
+                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(args[1])));
                 }
             }
 
-            if (skill.equals(SkillType.ALL)) {
+            if (allSkills) {
                 sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", Misc.getCapitalized(skill.toString()), args[0]));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", Misc.getCapitalized(args[1]), args[0]));
             }
 
             return true;

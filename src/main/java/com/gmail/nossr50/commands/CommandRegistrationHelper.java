@@ -35,84 +35,82 @@ public final class CommandRegistrationHelper {
 
     public static void registerSkillCommands() {
         for (SkillType skill : SkillType.values()) {
-            if (skill != SkillType.ALL) {
-                String commandName = skill.toString().toLowerCase();
-                String localizedName = LocaleLoader.getString(Misc.getCapitalized(commandName) + ".SkillName").toLowerCase();
+            String commandName = skill.toString().toLowerCase();
+            String localizedName = LocaleLoader.getString(Misc.getCapitalized(commandName) + ".SkillName").toLowerCase();
 
-                List<String> aliasList = new ArrayList<String>();
-                aliasList.add(localizedName);
+            List<String> aliasList = new ArrayList<String>();
+            aliasList.add(localizedName);
 
-                PluginCommand command;
+            PluginCommand command;
 
-                // Make us play nice with Essentials
-                if (skill == SkillType.REPAIR && mcMMO.p.getServer().getPluginManager().isPluginEnabled("Essentials")) {
-                    command = mcMMO.p.getCommand("mcrepair");
-                }
-                else {
-                    command = mcMMO.p.getCommand(commandName);
-                }
+            // Make us play nice with Essentials
+            if (skill == SkillType.REPAIR && mcMMO.p.getServer().getPluginManager().isPluginEnabled("Essentials")) {
+                command = mcMMO.p.getCommand("mcrepair");
+            }
+            else {
+                command = mcMMO.p.getCommand(commandName);
+            }
 
-                command.setAliases(aliasList);
-                command.setDescription(LocaleLoader.getString("Commands.Description.Skill", Misc.getCapitalized(localizedName)));
-                command.setPermission("mcmmo.commands." + commandName);
-                command.setPermissionMessage(permissionsMessage);
+            command.setAliases(aliasList);
+            command.setDescription(LocaleLoader.getString("Commands.Description.Skill", Misc.getCapitalized(localizedName)));
+            command.setPermission("mcmmo.commands." + commandName);
+            command.setPermissionMessage(permissionsMessage);
 
-                switch (skill) {
-                case ACROBATICS:
-                    command.setExecutor(new AcrobaticsCommand());
-                    break;
+            switch (skill) {
+            case ACROBATICS:
+                command.setExecutor(new AcrobaticsCommand());
+                break;
 
-                case ARCHERY:
-                    command.setExecutor(new ArcheryCommand());
-                    break;
+            case ARCHERY:
+                command.setExecutor(new ArcheryCommand());
+                break;
 
-                case AXES:
-                    command.setExecutor(new AxesCommand());
-                    break;
+            case AXES:
+                command.setExecutor(new AxesCommand());
+                break;
 
-                case EXCAVATION:
-                    command.setExecutor(new ExcavationCommand());
-                    break;
+            case EXCAVATION:
+                command.setExecutor(new ExcavationCommand());
+                break;
 
-                case FISHING:
-                    command.setExecutor(new FishingCommand());
-                    break;
+            case FISHING:
+                command.setExecutor(new FishingCommand());
+                break;
 
-                case HERBALISM:
-                    command.setExecutor(new HerbalismCommand());
-                    break;
+            case HERBALISM:
+                command.setExecutor(new HerbalismCommand());
+                break;
 
-                case MINING:
-                    command.setExecutor(new MiningCommand());
-                    break;
+            case MINING:
+                command.setExecutor(new MiningCommand());
+                break;
 
-                case REPAIR:
-                    command.setExecutor(new RepairCommand());
-                    break;
+            case REPAIR:
+                command.setExecutor(new RepairCommand());
+                break;
 
-                case SMELTING:
-                    command.setExecutor(new SmeltingCommand());
-                    break;
+            case SMELTING:
+                command.setExecutor(new SmeltingCommand());
+                break;
 
-                case SWORDS:
-                    command.setExecutor(new SwordsCommand());
-                    break;
+            case SWORDS:
+                command.setExecutor(new SwordsCommand());
+                break;
 
-                case TAMING:
-                    command.setExecutor(new TamingCommand());
-                    break;
+            case TAMING:
+                command.setExecutor(new TamingCommand());
+                break;
 
-                case UNARMED:
-                    command.setExecutor(new UnarmedCommand());
-                    break;
+            case UNARMED:
+                command.setExecutor(new UnarmedCommand());
+                break;
 
-                case WOODCUTTING:
-                    command.setExecutor(new WoodcuttingCommand());
-                    break;
+            case WOODCUTTING:
+                command.setExecutor(new WoodcuttingCommand());
+                break;
 
-                default:
-                    break;
-                }
+            default:
+                break;
             }
         }
     }

@@ -276,23 +276,6 @@ public class SkillTools {
     }
 
     /**
-     * Check XP of all skills.
-     *
-     * @param player The player to check XP for.
-     * @param profile The profile of the player whose skill to check
-     */
-    public static void xpCheckAll(Player player, PlayerProfile profile) {
-        for (SkillType skillType : SkillType.values()) {
-            //Don't want to do anything with this one
-            if (skillType == SkillType.ALL || skillType.isChildSkill()) {
-                continue;
-            }
-
-            xpCheckSkill(skillType, player, profile);
-        }
-    }
-
-    /**
      * Get the skill represented by the given string
      *
      * @param skillName The name of the skill

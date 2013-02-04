@@ -18,12 +18,7 @@ public final class ExperienceAPI {
      * @deprecated Calling this function is no longer needed and should be avoided
      */
     private static void checkXP(Player player, SkillType skillType) {
-        if (skillType.equals(SkillType.ALL)) {
-            SkillTools.xpCheckAll(player, Users.getProfile(player));
-        }
-        else {
-            SkillTools.xpCheckSkill(skillType, player, Users.getProfile(player));
-        }
+        SkillTools.xpCheckSkill(skillType, player, Users.getProfile(player));
     }
 
     /**

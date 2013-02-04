@@ -24,13 +24,12 @@ public final class Hardcore {
         int totalLost = 0;
 
         for (SkillType skillType : SkillType.values()) {
-            if (skillType.equals(SkillType.ALL) || skillType.isChildSkill()) {
+            if (skillType.isChildSkill()) {
                 continue;
             }
 
             int playerSkillLevel = playerProfile.getSkillLevel(skillType);
 
-            //Should we really care about negative skill levels?
             if (playerSkillLevel <= 0) {
                 continue;
             }
@@ -54,14 +53,13 @@ public final class Hardcore {
         int totalStolen = 0;
 
         for (SkillType skillType : SkillType.values()) {
-            if (skillType.equals(SkillType.ALL) || skillType.isChildSkill()) {
+            if (skillType.isChildSkill()) {
                 continue;
             }
 
             int killerSkillLevel = killerProfile.getSkillLevel(skillType);
             int victimSkillLevel = victimProfile.getSkillLevel(skillType);
 
-            //Should we really care about negative skill levels?
             if (victimSkillLevel <= 0 || victimSkillLevel < killerSkillLevel / 2) {
                 continue;
             }

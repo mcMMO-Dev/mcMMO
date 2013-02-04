@@ -5,6 +5,7 @@ import java.util.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
@@ -22,7 +23,8 @@ public class McRankAsync implements Runnable {
     @Override
     public void run() {
         final Map<String, Integer> skills = Database.readSQLRank(playerName);
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Bukkit.getPluginManager().getPlugin("mcMMO"), new Runnable() {
+
+        Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
             @Override
             public void run() {
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
@@ -32,9 +34,6 @@ public class McRankAsync implements Runnable {
                     if (skillType.isChildSkill()) {
                         continue;
                     }
-
-                    if (skillType.equals(SkillType.ALL))
-                        continue; // We want the overall ranking to be at the bottom
 
                     if (skills.get(skillType.name()) == null) {
                         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.localizeSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked")));

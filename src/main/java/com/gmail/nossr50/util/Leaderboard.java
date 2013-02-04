@@ -14,6 +14,7 @@ import com.gmail.nossr50.skills.utilities.SkillType;
 
 public final class Leaderboard {
     private static HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
+    private static List<PlayerStat> powerLevels = new ArrayList<PlayerStat>();
     private static long lastUpdate = 0;
 
     private Leaderboard() {}
@@ -29,7 +30,7 @@ public final class Leaderboard {
         lastUpdate = System.currentTimeMillis(); //Log when the last update was run
 
         //Initialize lists
-        List<PlayerStat> mining, woodcutting, herbalism, excavation, acrobatics, repair, swords, axes, archery, unarmed, taming, fishing, powerlevel;
+        List<PlayerStat> mining, woodcutting, herbalism, excavation, acrobatics, repair, swords, axes, archery, unarmed, taming, fishing;
 
         mining = new ArrayList<PlayerStat>();
         woodcutting = new ArrayList<PlayerStat>();
@@ -43,7 +44,6 @@ public final class Leaderboard {
         unarmed = new ArrayList<PlayerStat>();
         taming = new ArrayList<PlayerStat>();
         fishing = new ArrayList<PlayerStat>();
-        powerlevel = new ArrayList<PlayerStat>();
 
         //Read from the FlatFile database and fill our arrays with information
         try {
@@ -125,7 +125,7 @@ public final class Leaderboard {
                     powerLevel += Integer.valueOf(character[34]);
                 }
 
-                powerlevel.add(new PlayerStat(p, powerLevel));
+                powerLevels.add(new PlayerStat(p, powerLevel));
             }
             in.close();
         }
@@ -146,7 +146,7 @@ public final class Leaderboard {
         Collections.sort(acrobatics, c);
         Collections.sort(taming, c);
         Collections.sort(fishing, c);
-        Collections.sort(powerlevel, c);
+        Collections.sort(powerLevels, c);
 
         playerStatHash.put(SkillType.MINING, mining);
         playerStatHash.put(SkillType.WOODCUTTING, woodcutting);
@@ -160,7 +160,6 @@ public final class Leaderboard {
         playerStatHash.put(SkillType.ACROBATICS, acrobatics);
         playerStatHash.put(SkillType.TAMING, taming);
         playerStatHash.put(SkillType.FISHING, fishing);
-        playerStatHash.put(SkillType.ALL, powerlevel);
     }
 
     /**
@@ -170,41 +169,62 @@ public final class Leaderboard {
      * @param pageNumber Which page in the leaderboards to retrieve
      * @return the requested leaderboard information
      */
-    public static String[] retrieveInfo(SkillType skillType, int pageNumber) {
+    public static String[] retrieveInfo(String skillType, int pageNumber) {
         String[] info = new String[10];
+        List<PlayerStat> statsList;
 
-        List<PlayerStat> statsList = playerStatHash.get(skillType);
+        if (skillType.equalsIgnoreCase("all")) {
+            statsList = powerLevels;
+        }
+        else {
+            statsList = playerStatHash.get(SkillType.getSkill(skillType));
+        }
 
-        if(statsList != null) {
-            int destination;
+        int destination;
 
-            //How many lines to skip through
-            if (pageNumber == 1) {
-                destination = 0;
-            }
-            else {
-                destination = (pageNumber * 10) - 9;
-            }
+        // How many lines to skip through
+        if (pageNumber == 1) {
+            destination = 0;
+        }
+        else {
+            destination = (pageNumber * 10) - 9;
+        }
 
-            int currentPos = 0;
+        int currentPos = 0;
 
-            for(PlayerStat ps : statsList) {
-                if(currentPos == 10)
-                    break;
-                if(destination > 1) {
-                    destination--;
-                    continue;
-                }
-
-                info[currentPos] = ps.name+":"+ps.statVal;
-                currentPos++;
+        for (PlayerStat ps : statsList) {
+            if (currentPos == 10) {
+                break;
             }
 
-        } else {
-            info[0] = "DummyPlayer:0"; //Coming up with a better solution soon...
+            if (destination > 1) {
+                destination--;
+                continue;
+            }
+
+            info[currentPos] = ps.name + ":" + ps.statVal;
+            currentPos++;
         }
 
         return info;
+    }
+
+    public static int[] getPlayerRank(String playerName) {
+        int currentPos = 1;
+
+        if (powerLevels != null) {
+            for (PlayerStat stat : powerLevels) {
+                if (stat.name.equalsIgnoreCase(playerName)) {
+                    return new int[] {currentPos, stat.statVal};
+                }
+
+                currentPos++;
+                continue;
+            }
+            return new int[] {0, 0};
+        }
+
+        return new int[] {0, 0};
     }
 
     public static int[] getPlayerRank(String playerName, SkillType skillType) {

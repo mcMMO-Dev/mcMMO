@@ -8,7 +8,6 @@ import com.gmail.nossr50.util.Users;
 
 public enum SkillType {
     ACROBATICS(Config.getInstance().getLevelCapAcrobatics(), Config.getInstance().getFormulaMultiplierAcrobatics()),
-    ALL, //This one is just for convenience
     ARCHERY(Config.getInstance().getLevelCapArchery(), Config.getInstance().getFormulaMultiplierArchery()),
     AXES(AbilityType.SKULL_SPLIITER, Config.getInstance().getLevelCapAxes(), ToolType.AXE, Config.getInstance().getFormulaMultiplierAxes()),
     EXCAVATION(AbilityType.GIGA_DRILL_BREAKER, Config.getInstance().getLevelCapExcavation(), ToolType.SHOVEL, Config.getInstance().getFormulaMultiplierExcavation()),
@@ -120,10 +119,6 @@ public enum SkillType {
     }
 
     public static SkillType getSkill(String skillName) {
-        if (skillName.equalsIgnoreCase("powerlevel") || skillName.equalsIgnoreCase("all")) {
-            return SkillType.ALL;
-        }
-
         for (SkillType type : SkillType.values()) {
             if (type.name().equalsIgnoreCase(skillName)) {
                 return type;
@@ -141,6 +136,7 @@ public enum SkillType {
      * @return the player's skill level
      */
     public int getSkillLevel(Player player) {
+        // TODO: Child skills aren't handled here
         return Users.getPlayer(player).getProfile().getSkillLevel(this);
     }
 

@@ -473,44 +473,43 @@ public final class Database {
     public static Map<String, Integer> readSQLRank(String playerName) {
         ResultSet resultSet;
         Map<String, Integer> skills = new HashMap<String, Integer>();
+
         if (checkConnected()) {
             try {
                 for (SkillType skillType: SkillType.values()) {
-                    if (skillType.isChildSkill()) continue;
-                    String sql;
-                    if (skillType != SkillType.ALL) {
-                        sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillType.name().toLowerCase() + " > 0 AND " + skillType.name().toLowerCase() + " > (SELECT " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "')";
+                    if (skillType.isChildSkill()) {
+                        continue;
                     }
-                    else {
-                        sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > 0 AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > (SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "')";
-                    }
+
+                    String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillType.name().toLowerCase() + " > 0 AND " + skillType.name().toLowerCase() + " > (SELECT " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "')";
+
                     PreparedStatement statement = connection.prepareStatement(sql);
                     resultSet = statement.executeQuery();
+
                     resultSet.next();
+
                     int rank = resultSet.getInt("rank");
-                    if (skillType != SkillType.ALL) {
-                        sql = "SELECT user, " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillType.name().toLowerCase() + " > 0 AND " + skillType.name().toLowerCase() + " = (SELECT " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "') ORDER BY user";
-                    }
-                    else {
-                        sql = "SELECT user, taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > 0 AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing = (SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "') ORDER BY user";
-                    }
+
+                    sql = "SELECT user, " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillType.name().toLowerCase() + " > 0 AND " + skillType.name().toLowerCase() + " = (SELECT " + skillType.name().toLowerCase() + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "') ORDER BY user";
+
                     statement = connection.prepareStatement(sql);
                     resultSet = statement.executeQuery();
+
                     while (resultSet.next()) {
                         if (resultSet.getString("user").equalsIgnoreCase(playerName)) {
                             skills.put(skillType.name(), rank + resultSet.getRow());
                             break;
                         }
                     }
+
                     statement.close();
                 }
-
-
             }
             catch (SQLException ex) {
                 printErrors(ex);
             }
         }
+
         return skills;
     }
 

@@ -19,7 +19,7 @@ public class MmoeditCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         PlayerProfile profile;
         int newValue;
-        SkillType skill;
+        boolean allSkills = false;
 
         switch (args.length) {
         case 2:
@@ -27,7 +27,10 @@ public class MmoeditCommand implements CommandExecutor {
                 return false;
             }
 
-            if (!SkillTools.isSkill(args[0])) {
+            if (args[0].equalsIgnoreCase("all")) {
+                allSkills = true;
+            }
+            else if (!SkillTools.isSkill(args[0])) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
@@ -37,26 +40,36 @@ public class MmoeditCommand implements CommandExecutor {
             }
 
             newValue = Integer.valueOf(args[1]);
-            skill = SkillTools.getSkillType(args[0]);
             profile = Users.getPlayer((Player) sender).getProfile();
 
-            if (skill == SkillType.ALL) {
+            if (allSkills) {
+                for (SkillType skillType : SkillType.values()) {
+                    if (skillType.isChildSkill()) {
+                        continue;
+                    }
+
+                    profile.modifySkill(skillType, newValue);
+                }
+
                 sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", newValue));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", Misc.getCapitalized(skill.toString()), newValue));
+                profile.modifySkill(SkillTools.getSkillType(args[0]), newValue);
+                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", Misc.getCapitalized(args[0]), newValue));
             }
 
-            profile.modifySkill(skill, newValue);
             return true;
 
         case 3:
-            if (Permissions.hasPermission(sender, "mcmmo.commands.mmoedit.others")) {
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.mmoedit.others")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
 
-            if (!SkillTools.isSkill(args[1])) {
+            if (args[1].equalsIgnoreCase("all")) {
+                allSkills = true;
+            }
+            else if (!SkillTools.isSkill(args[1])) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
                 return true;
             }
@@ -66,43 +79,57 @@ public class MmoeditCommand implements CommandExecutor {
             }
 
             newValue = Integer.valueOf(args[2]);
-            skill = SkillTools.getSkillType(args[1]);
             McMMOPlayer mcMMOPlayer = Users.getPlayer(args[0]);
 
             // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
             if (mcMMOPlayer == null) {
-                profile = new PlayerProfile(args[0], false); //Temporary Profile
+                profile = new PlayerProfile(args[0], false);
 
                 if (!profile.isLoaded()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                     return true;
                 }
 
-                profile.modifySkill(skill, newValue);
+                if (allSkills) {
+                    for (SkillType skillType : SkillType.values()) {
+                        if (skillType.isChildSkill()) {
+                            continue;
+                        }
+
+                        profile.modifySkill(skillType, newValue);
+                    }
+                }
+                else {
+                    profile.modifySkill(SkillTools.getSkillType(args[1]), newValue);
+                }
+
                 profile.save(); // Since this is a temporary profile, we save it here.
             }
             else {
                 profile = mcMMOPlayer.getProfile();
-                Player player = mcMMOPlayer.getPlayer();
 
-                profile.modifySkill(skill, newValue);
+                if (allSkills) {
+                    for (SkillType skillType : SkillType.values()) {
+                        if (skillType.isChildSkill()) {
+                            continue;
+                        }
 
-                // Check if the player is online before we try to send them a message.
-                if (player.isOnline()) {
-                    if (skill == SkillType.ALL) {
-                        player.sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", newValue));
+                        profile.modifySkill(skillType, newValue);
                     }
-                    else {
-                        player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1",  Misc.getCapitalized(skill.toString()), newValue));
-                    }
+
+                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", newValue));
+                }
+                else {
+                    profile.modifySkill(SkillTools.getSkillType(args[1]), newValue);
+                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1",  Misc.getCapitalized(args[1]), newValue));
                 }
             }
 
-            if (skill == SkillType.ALL) {
+            if (allSkills) {
                 sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", Misc.getCapitalized(skill.toString()), args[0]));
+                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", Misc.getCapitalized(args[1]), args[0]));
             }
 
             return true;
