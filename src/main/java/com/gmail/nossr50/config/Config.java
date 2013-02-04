@@ -77,16 +77,22 @@ public class Config extends ConfigLoader {
     public boolean getArmorModsEnabled() { return config.getBoolean("Mods.Tool_Mods_Enabled", false); }
     public boolean getBlockModsEnabled() { return config.getBoolean("Mods.Block_Mods_Enabled", false); }
 
+    /* Items */
+    public int getChimaeraCost() { return config.getInt("Items.Chimaera_Wing.Feather_Cost", 10); }
+    public int getChimaeraItemId() { return config.getInt("Items.Chimaera_Wing.Item_ID", 288); }
+    public boolean getChimaeraEnabled() { return config.getBoolean("Items.Chimaera_Wing.Enabled", true); }
+    
+    /* PARTY SETTINGS */
+    public boolean getExpShareEnabled() { return config.getBoolean("Party.Sharing.ExpShare_enabled", true); }
+    public double getPartyShareBonus() { return config.getDouble("Party.Sharing.ExpShare_bonus", 1.1); }
+    public boolean getItemShareEnabled() { return config.getBoolean("Party.Sharing.ItemShare_enabled", true); }
+    public double getPartyShareRange() { return config.getDouble("Party.Sharing.Range", 75.0); }
+
     /* Party Teleport Settings */
     public int getPTPCommandCooldown() { return config.getInt("Commands.ptp.Cooldown", 30); }
     public int getPTPCommandTimeout() { return config.getInt("Commands.ptp.Request_Timeout", 300); }
     public boolean getPTPCommandConfirmRequired() { return config.getBoolean("Commands.ptp.Confirm_Required", true); }
     public boolean getPTPCommandWorldPermissions() { return config.getBoolean("Commands.ptp.World_Based_Permissions", false); }
-
-    /* Items */
-    public int getChimaeraCost() { return config.getInt("Items.Chimaera_Wing.Feather_Cost", 10); }
-    public int getChimaeraItemId() { return config.getInt("Items.Chimaera_Wing.Item_ID", 288); }
-    public boolean getChimaeraEnabled() { return config.getBoolean("Items.Chimaera_Wing.Enabled", true); }
 
     /*
      * ABILITY SETTINGS
@@ -407,10 +413,4 @@ public class Config extends ConfigLoader {
         int cap = config.getInt(configString, 0);
         return ((cap <= 0) ? Integer.MAX_VALUE : cap);
     }
-    
-    /* Party Settings */
-    public boolean getExpShareEnabled() { return config.getBoolean("Party.Sharing.ExpShare_enabled", true); }
-    public double getPartyShareBonus() { return config.getDouble("Party.Sharing.ExpShare_bonus", 1.1); }
-    public boolean getItemShareEnabled() { return config.getBoolean("Party.Sharing.ItemShare_enabled", true); }
-    public double getPartyShareRange() { return config.getDouble("Party.Sharing.Range", 75.0); }
 }

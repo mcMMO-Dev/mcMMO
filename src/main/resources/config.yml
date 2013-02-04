@@ -67,7 +67,7 @@ Items:
 
 #
 #  Settings for Parties
-###        
+###
 Party:
     Sharing:
         ExpShare_enabled: true
