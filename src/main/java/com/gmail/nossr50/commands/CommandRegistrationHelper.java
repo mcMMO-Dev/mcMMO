@@ -11,6 +11,7 @@ import com.gmail.nossr50.commands.admin.AddxpCommand;
 import com.gmail.nossr50.commands.admin.McgodCommand;
 import com.gmail.nossr50.commands.admin.McrefreshCommand;
 import com.gmail.nossr50.commands.admin.MmoeditCommand;
+import com.gmail.nossr50.commands.admin.SkillresetCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
@@ -159,5 +160,14 @@ public final class CommandRegistrationHelper {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.3", "mmoedit", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">"));
         command.setExecutor(new MmoeditCommand());
+    }
+
+    public static void registerSkillresetCommand() {
+        PluginCommand command = mcMMO.p.getCommand("skillreset");
+        command.setDescription(LocaleLoader.getString("Commands.Description.skillreset"));
+        command.setPermission("mcmmo.commands.skillreset");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.2", "skillreset", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">"));
+        command.setExecutor(new SkillresetCommand());
     }
 }

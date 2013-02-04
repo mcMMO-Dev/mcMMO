@@ -25,7 +25,6 @@ import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.chat.commands.ACommand;
 import com.gmail.nossr50.chat.commands.PCommand;
 import com.gmail.nossr50.commands.CommandRegistrationHelper;
-import com.gmail.nossr50.commands.admin.SkillResetCommand;
 import com.gmail.nossr50.commands.admin.XprateCommand;
 import com.gmail.nossr50.commands.player.InspectCommand;
 import com.gmail.nossr50.commands.player.McabilityCommand;
@@ -456,7 +455,7 @@ public class mcMMO extends JavaPlugin {
         getCommand("inspect").setExecutor(new InspectCommand());
         getCommand("xprate").setExecutor(new XprateCommand());
         getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
-        getCommand("skillreset").setExecutor(new SkillResetCommand());
+        CommandRegistrationHelper.registerSkillresetCommand();
 
         // Spout commands
         getCommand("xplock").setExecutor(new XplockCommand());
