@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.gmail.nossr50.mcMMO;
+
 public class Config extends ConfigLoader {
     private static Config instance;
 
@@ -394,6 +396,12 @@ public class Config extends ConfigLoader {
 
     private boolean doubleDropsDisabled(String skillName) {
         ConfigurationSection section = config.getConfigurationSection("Double_Drops." + skillName);
+
+        if (section == null) {
+            mcMMO.p.getLogger().warning("The configuration files are outdated!"); //TODO Locale and more descriptive message!
+            return false;
+        }
+
         Set<String> keys = section.getKeys(false);
 
         boolean disabled = true;
