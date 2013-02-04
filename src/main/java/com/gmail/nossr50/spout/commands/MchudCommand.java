@@ -12,6 +12,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.huds.HudType;
 import com.gmail.nossr50.spout.huds.SpoutHud;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class MchudCommand implements CommandExecutor {
@@ -21,6 +22,10 @@ public class MchudCommand implements CommandExecutor {
         String invalid = LocaleLoader.getString("Commands.mchud.Invalid");
 
         if (CommandHelper.noConsoleUsage(sender)) {
+            return true;
+        }
+
+        if (!Permissions.hasPermission(sender, "mcmmo.commands.mchud")) {
             return true;
         }
 

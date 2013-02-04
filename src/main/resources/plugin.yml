@@ -728,6 +728,7 @@ permissions:
             mcmmo.commands.herbalism: true
             mcmmo.commands.inspect: true
             mcmmo.commands.mcability: true
+            mcmmo.commands.mchud: true
             mcmmo.commands.mcmmo: true
             mcmmo.commands.mcrank: true
             mcmmo.commands.mcstats: true
@@ -792,6 +793,8 @@ permissions:
         description: Allows access to the mcgod command
     mcmmo.commands.mcgod.others:
         description: Allows access to the mcgod command for other players
+    mcmmo.commands.mchud:
+        description: Allows access to the mchud command
     mcmmo.commands.mcmmo:
         description: Allows access to the mcmmo command
     mcmmo.commands.mcpurge:
