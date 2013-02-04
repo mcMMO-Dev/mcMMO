@@ -141,4 +141,13 @@ public final class CommandRegistrationHelper {
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcgod", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
         command.setExecutor(new McgodCommand());
     }
+
+    public static void registerMcrefreshCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mcrefresh");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcrefresh"));
+        command.setPermission("mcmmo.commands.mcrefresh");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcrefresh", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
+        command.setExecutor(new McgodCommand());
+    }
 }

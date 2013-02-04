@@ -49,10 +49,9 @@ commands:
         aliases: []
         description: Toggle whether or not abilities get readied on right click
     mcrefresh:
-        aliases: []
         description: Refresh all cooldowns for mcMMO
     mcgod:
-        description: Toggles mcMMO god-mode on/off
+        description: Toggle mcMMO god-mode on/off
     mcstats:
         aliases: [/stats]
         description: Shows your mcMMO stats and xp

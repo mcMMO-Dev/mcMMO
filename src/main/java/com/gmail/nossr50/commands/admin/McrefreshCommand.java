@@ -1,77 +1,68 @@
 package com.gmail.nossr50.commands.admin;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class McrefreshCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        OfflinePlayer player;
         PlayerProfile profile;
-        String usage = LocaleLoader.getString("Commands.Usage.1", "mcrefresh", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]");
-
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcrefresh")) {
-            return true;
-        }
 
         switch (args.length) {
         case 0:
-            if (sender instanceof Player) {
-                player = (Player) sender;
-                profile = Users.getProfile(player);
+            if (!(sender instanceof Player)) {
+                return false;
             }
-            else {
-                sender.sendMessage(usage);
-                return true;
-            }
+
+            profile = Users.getPlayer(sender.getName()).getProfile();
+            sender.sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
             break;
 
         case 1:
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcrefresh.others")) {
-                return true;
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.mcrefresh.others")) {
+                sender.sendMessage(command.getPermissionMessage());
             }
 
-            player = mcMMO.p.getServer().getOfflinePlayer(args[0]);
-            profile = Users.getProfile(player);
-            String playerName = player.getName();
+            McMMOPlayer mcMMOPlayer = Users.getPlayer(args[0]);
 
-            if (profile == null) {
-                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-                return true;
+            // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
+            if (mcMMOPlayer == null) {
+                profile = new PlayerProfile(args[0], false);
+
+                if (!profile.isLoaded()) {
+                    sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                    return true;
+                }
+            }
+            else {
+                profile = mcMMOPlayer.getProfile();
+                Player player = mcMMOPlayer.getPlayer();
+
+                // Check if the player is online before we try to send them a message.
+                if (player.isOnline()) {
+                    player.sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
+                }
             }
 
-            if (!profile.isLoaded()) {
-                sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-                return true;
-            }
-
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrefresh.Success", playerName));
-
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrefresh.Success", args[0]));
             break;
 
         default:
-            sender.sendMessage(usage);
-            return true;
+            return false;
         }
 
         profile.setRecentlyHurt(0);
         profile.resetCooldowns();
         profile.resetToolPrepMode();
         profile.resetAbilityMode();
-
-        if (player.isOnline()) {
-            ((Player) player).sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
-        }
-
         return true;
     }
 }
