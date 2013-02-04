@@ -26,6 +26,10 @@ public class XplockCommand implements CommandExecutor {
             return true;
         }
 
+        if (!Permissions.hasPermission(sender, "mcmmo.commands.xplock")) {
+            return true;
+        }
+
         if (!mcMMO.spoutEnabled || !SpoutConfig.getInstance().getXPBarEnabled()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
             return true;
@@ -63,7 +67,7 @@ public class XplockCommand implements CommandExecutor {
 
         case 1:
             if (SkillTools.isSkill(args[0])) {
-                if (Permissions.hasPermission(player, "mcmmo.skills." + args[0].toLowerCase())) {
+                if (Permissions.hasPermission(player, "mcmmo.commands.xplock." + args[0].toLowerCase())) {
                     spoutHud.setXpBarLocked(true);
                     spoutHud.setSkillLock(SkillTools.getSkillType(args[0]));
                     spoutHud.updateXpBar();
