@@ -16,6 +16,7 @@ Version 1.4.00-dev
  + Added '/party disband' command, kicks out all members and deletes the party
  + Added '/ptp toggle' command, to disable party teleportation.
  + Added '/ptp accept' and '/ptp acceptall' commands
+ + Added a automatic party kick when a party member has been offline for 7 days (default)
  + Added timeout on party teleport requests
  + Added XP bonus for Archery based on distance from shooter to target
  + Added ability to config Hylian Luck drops through treasures.yml
