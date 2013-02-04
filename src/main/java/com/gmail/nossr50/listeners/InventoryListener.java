@@ -119,9 +119,9 @@ public class InventoryListener implements Listener{
             ItemStack result = inventory.getResult();
     
             if (plugin.furnaceIsTracked(furnaceBlock) && result != null && ItemChecks.isSmelted(result)) {
-                McMMOPlayer mcMMOPlayer = Users.getPlayer(plugin.getFurnacePlayer(furnaceBlock));
+                McMMOPlayer mcMMOPlayer = Users.getPlayer(event.getPlayer());
 
-                if (event.getPlayer().equals(mcMMOPlayer.getPlayer())) {
+                if (mcMMOPlayer.getPlayer().equals(plugin.getFurnacePlayer(furnaceBlock))) {
                     SmeltingManager smeltingManager = new SmeltingManager(mcMMOPlayer);
                     smeltingManager.vanillaXPBoost(event);
                 }
