@@ -50,7 +50,11 @@ public final class ShareHandler {
             }
 
             double partySize = nearMembers.size() + 1;
-            double splitXp = xp / partySize * Config.getInstance().getPartyShareBonus();
+            double shareBonus = Config.getInstance().getPartyShareBonusBase() + partySize * Config.getInstance().getPartyShareBonusIncrease();
+            if (shareBonus > Config.getInstance().getPartyShareBonusCap()) {
+                shareBonus = Config.getInstance().getPartyShareBonusCap();
+            }
+            double splitXp = xp / partySize * shareBonus;
             int roundedXp = (int) Math.ceil(splitXp);
 
             for (Player member : nearMembers) {

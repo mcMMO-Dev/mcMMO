@@ -71,7 +71,9 @@ Items:
 Party:
     Sharing:
         ExpShare_enabled: true
-        ExpShare_bonus: 1.1
+        ExpShare_bonus_base: 1.1
+        ExpShare_bonus_increase: 1.05
+        ExpShare_bonus_cap: 1.5
         ItemShare_enabled: true
         Range: 75.0
 

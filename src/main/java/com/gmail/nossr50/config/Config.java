@@ -84,7 +84,9 @@ public class Config extends ConfigLoader {
     
     /* PARTY SETTINGS */
     public boolean getExpShareEnabled() { return config.getBoolean("Party.Sharing.ExpShare_enabled", true); }
-    public double getPartyShareBonus() { return config.getDouble("Party.Sharing.ExpShare_bonus", 1.1); }
+    public double getPartyShareBonusBase() { return config.getDouble("Party.Sharing.ExpShare_bonus_base", 1.1); }
+    public double getPartyShareBonusIncrease() { return config.getDouble("Party.Sharing.ExpShare_bonus_increase", 0.05); }
+    public double getPartyShareBonusCap() { return config.getDouble("Party.Sharing.ExpShare_bonus_cap", 1.5); }
     public boolean getItemShareEnabled() { return config.getBoolean("Party.Sharing.ItemShare_enabled", true); }
     public double getPartyShareRange() { return config.getDouble("Party.Sharing.Range", 75.0); }
 
