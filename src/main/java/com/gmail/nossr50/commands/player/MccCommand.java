@@ -17,6 +17,10 @@ public class MccCommand implements CommandExecutor {
             return true;
         }
 
+        if (!Permissions.hasPermission(sender, "mcmmo.commands.mcc")) {
+            return true;
+        }
+
         Player player = (Player) sender;
 
         player.sendMessage(LocaleLoader.getString("Commands.mcc.Header"));
