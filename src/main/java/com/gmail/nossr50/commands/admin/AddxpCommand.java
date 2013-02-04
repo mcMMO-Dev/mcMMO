@@ -24,6 +24,11 @@ public class AddxpCommand implements CommandExecutor {
 
         switch (args.length) {
         case 2:
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.addxp")) {
+                sender.sendMessage(command.getPermissionMessage());
+                return true;
+            }
+
             if (!(sender instanceof Player)) {
                 return false;
             }

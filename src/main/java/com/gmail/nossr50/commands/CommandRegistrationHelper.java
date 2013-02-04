@@ -119,7 +119,7 @@ public final class CommandRegistrationHelper {
     public static void registerAddlevelsCommand() {
         PluginCommand command = mcMMO.p.getCommand("addlevels");
         command.setDescription(LocaleLoader.getString("Commands.Description.addlevels"));
-        command.setPermission("mcmmo.commands.addlevels");
+        command.setPermission("mcmmo.commands.addlevels;mcmmo.commands.addlevels.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.3", "addlevels", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">"));
         command.setExecutor(new AddlevelsCommand());
@@ -128,7 +128,7 @@ public final class CommandRegistrationHelper {
     public static void registerAddxpCommand() {
         PluginCommand command = mcMMO.p.getCommand("addxp");
         command.setDescription(LocaleLoader.getString("Commands.Description.addxp"));
-        command.setPermission("mcmmo.commands.addxp");
+        command.setPermission("mcmmo.commands.addxp;mcmmo.commands.addxp.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.3", "addxp", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.XP") + ">"));
         command.setExecutor(new AddxpCommand());
@@ -137,7 +137,7 @@ public final class CommandRegistrationHelper {
     public static void registerMcgodCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcgod");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcgod"));
-        command.setPermission("mcmmo.commands.mcgod");
+        command.setPermission("mcmmo.commands.mcgod;mcmmo.commands.mcgod.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcgod", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
         command.setExecutor(new McgodCommand());
@@ -146,7 +146,7 @@ public final class CommandRegistrationHelper {
     public static void registerMcrefreshCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcrefresh");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcrefresh"));
-        command.setPermission("mcmmo.commands.mcrefresh");
+        command.setPermission("mcmmo.commands.mcrefresh;mcmmo.commands.mcrefresh.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcrefresh", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
         command.setExecutor(new McrefreshCommand());
@@ -155,7 +155,7 @@ public final class CommandRegistrationHelper {
     public static void registerMmoeditCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmoedit");
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoedit"));
-        command.setPermission("mcmmo.commands.mmoedit");
+        command.setPermission("mcmmo.commands.mmoedit;mcmmo.commands.mmoedit.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.3", "mmoedit", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">"));
         command.setExecutor(new MmoeditCommand());
@@ -164,7 +164,7 @@ public final class CommandRegistrationHelper {
     public static void registerSkillresetCommand() {
         PluginCommand command = mcMMO.p.getCommand("skillreset");
         command.setDescription(LocaleLoader.getString("Commands.Description.skillreset"));
-        command.setPermission("mcmmo.commands.skillreset");
+        command.setPermission("mcmmo.commands.skillreset;mcmmo.commands.skillreset.others"); // Only need the main ones, not the individual skill ones
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.2", "skillreset", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">"));
         command.setExecutor(new SkillresetCommand());

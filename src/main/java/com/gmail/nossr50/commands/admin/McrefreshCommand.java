@@ -18,6 +18,11 @@ public class McrefreshCommand implements CommandExecutor {
 
         switch (args.length) {
         case 0:
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.mcrefresh")) {
+                sender.sendMessage(command.getPermissionMessage());
+                return true;
+            }
+
             if (!(sender instanceof Player)) {
                 return false;
             }
@@ -29,6 +34,7 @@ public class McrefreshCommand implements CommandExecutor {
         case 1:
             if (!Permissions.hasPermission(sender, "mcmmo.commands.mcrefresh.others")) {
                 sender.sendMessage(command.getPermissionMessage());
+                return true;
             }
 
             McMMOPlayer mcMMOPlayer = Users.getPlayer(args[0]);

@@ -22,6 +22,11 @@ public class SkillresetCommand implements CommandExecutor {
 
         switch (args.length) {
         case 1:
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.skillreset")) {
+                sender.sendMessage(command.getPermissionMessage());
+                return true;
+            }
+
             if (!(sender instanceof Player)) {
                 return false;
             }
@@ -74,6 +79,11 @@ public class SkillresetCommand implements CommandExecutor {
             return true;
 
         case 2:
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.skillreset.others")) {
+                sender.sendMessage(command.getPermissionMessage());
+                return true;
+            }
+
             if (args[1].equalsIgnoreCase("all")) {
                 allSkills = true;
             }
@@ -88,14 +98,14 @@ public class SkillresetCommand implements CommandExecutor {
                         continue;
                     }
 
-                    if (!Permissions.hasPermission(sender, "mcmmo.commands.skillreset." + args[1].toLowerCase())) {
+                    if (!Permissions.hasPermission(sender, "mcmmo.commands.skillreset.others." + args[1].toLowerCase())) {
                         sender.sendMessage(command.getPermissionMessage());
                         return true;
                     }
                 }
             }
             else {
-                if (!Permissions.hasPermission(sender, "mcmmo.commands.skillreset." + args[1].toLowerCase())) {
+                if (!Permissions.hasPermission(sender, "mcmmo.commands.skillreset.others." + args[1].toLowerCase())) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }

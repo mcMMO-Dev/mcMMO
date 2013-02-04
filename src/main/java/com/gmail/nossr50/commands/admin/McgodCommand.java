@@ -18,6 +18,11 @@ public class McgodCommand implements CommandExecutor {
 
         switch (args.length) {
         case 0:
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.mcgod")) {
+                sender.sendMessage(command.getPermissionMessage());
+                return true;
+            }
+
             if (!(sender instanceof Player)) {
                 return false;
             }
