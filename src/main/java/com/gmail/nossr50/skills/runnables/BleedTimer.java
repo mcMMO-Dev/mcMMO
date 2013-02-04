@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Effect;
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -48,6 +50,7 @@ public class BleedTimer implements Runnable {
                 //Never kill with Bleeding
                 if (player.getHealth() - 1 > 0) {
                     CombatTools.dealDamage(player, 1);
+                    player.getWorld().playEffect(player.getEyeLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
                 }
 
                 entry.setValue(entry.getValue() - 1);
@@ -60,6 +63,7 @@ public class BleedTimer implements Runnable {
             else {
                 CombatTools.dealDamage(entity, 2);
                 entry.setValue(entry.getValue() - 1);
+                entity.getWorld().playEffect(entity.getEyeLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
             }
         }
 
