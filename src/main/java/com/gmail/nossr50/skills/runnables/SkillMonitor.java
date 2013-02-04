@@ -15,7 +15,7 @@ public class SkillMonitor implements Runnable {
         long curTime = System.currentTimeMillis();
 
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-            PlayerProfile profile = Users.getProfile(player);
+            PlayerProfile profile = Users.getPlayer(player).getProfile();
 
             /*
              * MONITOR SKILLS

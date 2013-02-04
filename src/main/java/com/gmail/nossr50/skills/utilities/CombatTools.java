@@ -453,7 +453,7 @@ public final class CombatTools {
 
             Player defender = (Player) target;
 
-            if (System.currentTimeMillis() >= Users.getProfile(defender).getRespawnATS() + 5) {
+            if (System.currentTimeMillis() >= Users.getPlayer(defender).getProfile().getRespawnATS() + 5) {
                 baseXP = 20 * configInstance.getPlayerVersusPlayerXP();
             }
         }
@@ -569,7 +569,7 @@ public final class CombatTools {
         if (entity instanceof Player) {
             Player defender = (Player) entity;
 
-            if (!defender.getWorld().getPVP() || defender == player || PartyManager.inSameParty(player, defender) || Users.getProfile(defender).getGodMode()) {
+            if (!defender.getWorld().getPVP() || defender == player || PartyManager.inSameParty(player, defender) || Users.getPlayer(defender).getProfile().getGodMode()) {
                 return false;
             }
 

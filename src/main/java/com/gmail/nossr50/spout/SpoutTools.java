@@ -236,7 +236,7 @@ public class SpoutTools {
      * @param spoutPlayer The player that leveled up
      */
     public static void levelUpNotification(SkillType skillType, SpoutPlayer spoutPlayer) {
-        PlayerProfile profile = Users.getProfile(spoutPlayer);
+        PlayerProfile profile = Users.getPlayer(spoutPlayer).getProfile();
         int notificationTier = getNotificationTier(profile.getSkillLevel(skillType));
         Material mat = null;
 

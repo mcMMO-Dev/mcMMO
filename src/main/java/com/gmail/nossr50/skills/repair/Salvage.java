@@ -29,8 +29,7 @@ public class Salvage {
         }
 
         if (player.getGameMode() == GameMode.SURVIVAL) {
-            final PlayerProfile profile = Users.getProfile(player);
-            final int skillLevel = profile.getSkillLevel(SkillType.REPAIR);
+            final int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(SkillType.REPAIR);
             final int unlockLevel = configInstance.getSalvageUnlockLevel();
 
             if (skillLevel >= unlockLevel) {
@@ -64,7 +63,7 @@ public class Salvage {
      * @param anvilID The item ID of the anvil block
      */
     public static void placedAnvilCheck(final Player player, final int anvilID) {
-        final PlayerProfile profile = Users.getProfile(player);
+        final PlayerProfile profile = Users.getPlayer(player).getProfile();
 
         if (!profile.getPlacedSalvageAnvil()) {
             if (mcMMO.spoutEnabled) {

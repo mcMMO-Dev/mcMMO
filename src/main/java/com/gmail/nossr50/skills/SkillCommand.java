@@ -41,7 +41,7 @@ public abstract class SkillCommand implements CommandExecutor {
         }
 
         player = (Player) sender;
-        profile = Users.getProfile(player);
+        profile = Users.getPlayer(player).getProfile();
 
         if (profile == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));

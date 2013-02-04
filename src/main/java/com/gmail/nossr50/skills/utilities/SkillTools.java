@@ -27,7 +27,7 @@ public class SkillTools {
     public static boolean abilitiesEnabled = Config.getInstance().getAbilitiesEnabled();
 
     public static void handleFoodSkills(Player player, SkillType skill, FoodLevelChangeEvent event, int baseLevel, int maxLevel, int rankChange) {
-        int skillLevel = Users.getProfile(player).getSkillLevel(skill);
+        int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(skill);
         int currentFoodLevel = player.getFoodLevel();
         int newFoodLevel = event.getFoodLevel();
         int foodChange = newFoodLevel - currentFoodLevel;
@@ -130,7 +130,7 @@ public class SkillTools {
             return;
         }
 
-        PlayerProfile profile = Users.getProfile(player);
+        PlayerProfile profile = Users.getPlayer(player).getProfile();
         AbilityType ability = skill.getAbility();
         ToolType tool = skill.getTool();
         ItemStack inHand = player.getItemInHand();
@@ -421,7 +421,7 @@ public class SkillTools {
      * @param type The skill the ability is based on
      */
     public static void abilityCheck(Player player, SkillType type) {
-        PlayerProfile profile = Users.getProfile(player);
+        PlayerProfile profile = Users.getPlayer(player).getProfile();
         ToolType tool = type.getTool();
         AbilityType ability = type.getAbility();
 

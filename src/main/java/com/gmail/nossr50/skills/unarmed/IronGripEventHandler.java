@@ -20,7 +20,7 @@ public class IronGripEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(Users.getProfile(defender).getSkillLevel(SkillType.UNARMED), Unarmed.ironGripMaxBonusLevel);
+        this.skillModifier = Misc.skillCheck(Users.getPlayer(defender).getProfile().getSkillLevel(SkillType.UNARMED), Unarmed.ironGripMaxBonusLevel);
     }
 
     protected void sendAbilityMessages() {

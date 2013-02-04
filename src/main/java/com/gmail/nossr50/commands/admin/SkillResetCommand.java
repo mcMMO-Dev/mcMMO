@@ -38,7 +38,7 @@ public class SkillResetCommand implements CommandExecutor {
                 }
 
                 modifiedPlayer = (Player) sender;
-                profile = Users.getProfile(modifiedPlayer);
+                profile = Users.getPlayer((Player) sender).getProfile();
                 profile.modifySkill(skill, 0);
 
                 if (skill == SkillType.ALL) {
@@ -56,7 +56,7 @@ public class SkillResetCommand implements CommandExecutor {
 
         case 2:
             modifiedPlayer = mcMMO.p.getServer().getOfflinePlayer(args[0]);
-            profile = Users.getProfile(modifiedPlayer);
+            profile = Users.getPlayer(args[0]).getProfile();
 
             // TODO:Not sure if we actually need a null check here
             if (profile == null || !profile.isLoaded()) {

@@ -94,7 +94,7 @@ public class Repair {
             return;
         }
 
-        int rank = getArcaneForgingRank(Users.getProfile(player));
+        int rank = getArcaneForgingRank(Users.getPlayer(player).getProfile());
 
         if (rank == 0 || !Permissions.arcaneForging(player)) {
             for (Enchantment x : enchants.keySet()) {
@@ -231,7 +231,7 @@ public class Repair {
      * @return true if bonus granted, false otherwise
      */
     public static boolean checkPlayerProcRepair(Player player) {
-        int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.REPAIR);
+        int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(SkillType.REPAIR);
 
         int chance = (int) ((SUPER_REPAIR_CHANCE_MAX / SUPER_REPAIR_MAX_BONUS_LEVEL) * skillLevel);
         if (skillLevel >= SUPER_REPAIR_MAX_BONUS_LEVEL) chance = (int) SUPER_REPAIR_CHANCE_MAX;
@@ -252,7 +252,7 @@ public class Repair {
      * @param anvilID The item ID of the anvil block
      */
     public static void placedAnvilCheck(Player player, int anvilID) {
-        PlayerProfile profile = Users.getProfile(player);
+        PlayerProfile profile = Users.getPlayer(player).getProfile();
 
         if (!profile.getPlacedAnvil()) {
             if (mcMMO.spoutEnabled) {

@@ -374,7 +374,7 @@ public class mcMMO extends JavaPlugin {
      * @return the PlayerProfile object
      */
     public PlayerProfile getPlayerProfile(String playerName) {
-        return Users.getProfile(playerName);
+        return Users.getPlayer(playerName).getProfile();
     }
 
     /**
@@ -386,7 +386,7 @@ public class mcMMO extends JavaPlugin {
      * @return the PlayerProfile object
      */
     public PlayerProfile getPlayerProfile(OfflinePlayer player) {
-        return Users.getProfile(player);
+        return Users.getPlayer(player.getName()).getProfile();
     }
 
     /**

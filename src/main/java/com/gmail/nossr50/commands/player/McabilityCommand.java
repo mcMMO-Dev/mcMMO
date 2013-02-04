@@ -24,7 +24,7 @@ public class McabilityCommand implements CommandExecutor {
                 return true;
             }
 
-            profile = Users.getProfile((Player) sender);
+            profile = Users.getPlayer((Player) sender).getProfile();
 
             if (profile.getAbilityUse()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
@@ -42,7 +42,7 @@ public class McabilityCommand implements CommandExecutor {
             }
 
             OfflinePlayer modifiedPlayer = mcMMO.p.getServer().getOfflinePlayer(args[0]);
-            profile = Users.getProfile(modifiedPlayer);
+            profile = Users.getPlayer(args[0]).getProfile();
 
             // TODO:Not sure if we actually need a null check here
             if (profile == null || !profile.isLoaded()) {

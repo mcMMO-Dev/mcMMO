@@ -30,7 +30,7 @@ public class MchudCommand implements CommandExecutor {
         }
 
         Player player = (Player) sender;
-        PlayerProfile playerProfile = Users.getProfile(player);
+        PlayerProfile playerProfile = Users.getPlayer(player).getProfile();
         SpoutHud spoutHud = playerProfile.getSpoutHud();
 
         if (spoutHud == null) {

@@ -153,7 +153,7 @@ public class Herbalism {
             return;
         }
 
-        PlayerProfile profile = Users.getProfile(player);
+        PlayerProfile profile = mcMMOPlayer.getProfile();
         int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
         Material blockType = block.getType();
 
@@ -224,7 +224,7 @@ public class Herbalism {
      * @param plugin mcMMO plugin instance
      */
     private static void greenThumbWheat(Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
-        PlayerProfile profile = Users.getProfile(player);
+        PlayerProfile profile = Users.getPlayer(player).getProfile();
         int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
         PlayerInventory inventory = player.getInventory();
         boolean hasSeeds = false;
@@ -320,7 +320,7 @@ public class Herbalism {
      * @param block The block being used in the ability
      */
     public static void greenThumbBlocks(ItemStack is, Player player, Block block) {
-        PlayerProfile profile = Users.getProfile(player);
+        PlayerProfile profile = Users.getPlayer(player).getProfile();
         int skillLevel = profile.getSkillLevel(SkillType.HERBALISM);
         int seeds = is.getAmount();
 
@@ -340,7 +340,7 @@ public class Herbalism {
     }
 
     public static void hylianLuck(Block block, Player player, BlockBreakEvent event) {
-        int skillLevel = Users.getProfile(player).getSkillLevel(SkillType.HERBALISM);
+        int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(SkillType.HERBALISM);
 
         double chance = (hylianLuckMaxChance / hylianLuckMaxLevel) * Misc.skillCheck(skillLevel, hylianLuckMaxLevel);
         int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));

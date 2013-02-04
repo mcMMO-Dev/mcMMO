@@ -64,7 +64,7 @@ public class SpoutListener implements Listener {
         if (event.getScreen() instanceof Menu) {
             SpoutPlayer spoutPlayer = event.getPlayer();
 
-            Users.getProfile(spoutPlayer).getSpoutHud().onMenuClose();
+            Users.getPlayer(spoutPlayer).getProfile().getSpoutHud().onMenuClose();
             spoutPlayer.getMainScreen().setDirty(true);
         }
     }
@@ -83,7 +83,7 @@ public class SpoutListener implements Listener {
         }
 
         if (event.getKey() == SpoutTools.menuKey) {
-            SpoutHud spoutHud = Users.getProfile(spoutPlayer).getSpoutHud();
+            SpoutHud spoutHud = Users.getPlayer(spoutPlayer).getProfile().getSpoutHud();
 
             if (!spoutHud.isMenuOpened()) {
                 spoutHud.openMenu();

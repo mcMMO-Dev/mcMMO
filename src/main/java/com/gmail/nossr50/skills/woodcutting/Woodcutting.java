@@ -131,7 +131,7 @@ public final class Woodcutting {
         Player player = mcMMOPlayer.getPlayer();
         double configDoubleDropChance = ADVANCED_CONFIG.getWoodcuttingDoubleDropChance();
         int configDoubleDropMaxLevel = ADVANCED_CONFIG.getWoodcuttingDoubleDropMaxLevel();
-        int probability = (int) ((configDoubleDropChance / configDoubleDropMaxLevel) * Users.getProfile(player).getSkillLevel(SkillType.WOODCUTTING));
+        int probability = (int) ((configDoubleDropChance / configDoubleDropMaxLevel) * Users.getPlayer(player).getProfile().getSkillLevel(SkillType.WOODCUTTING));
         int activationChance = Misc.calculateActivationChance(Permissions.luckyWoodcutting(player));
 
         if (probability > configDoubleDropChance) {

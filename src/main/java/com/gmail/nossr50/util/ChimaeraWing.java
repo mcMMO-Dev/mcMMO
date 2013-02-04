@@ -25,7 +25,7 @@ public final class ChimaeraWing {
             return;
         }
 
-        PlayerProfile profile = Users.getProfile(player);
+        PlayerProfile profile = Users.getPlayer(player).getProfile();
         Block block = player.getLocation().getBlock();
         int amount = inHand.getAmount();
         long recentlyHurt = profile.getRecentlyHurt();

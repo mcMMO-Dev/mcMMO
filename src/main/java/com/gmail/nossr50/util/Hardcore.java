@@ -20,7 +20,7 @@ public final class Hardcore {
             return;
         }
 
-        PlayerProfile playerProfile = Users.getProfile(player);
+        PlayerProfile playerProfile = Users.getPlayer(player).getProfile();
         int totalLost = 0;
 
         for (SkillType skillType : SkillType.values()) {
@@ -49,8 +49,8 @@ public final class Hardcore {
             return;
         }
 
-        PlayerProfile killerProfile = Users.getProfile(killer);
-        PlayerProfile victimProfile = Users.getProfile(victim);
+        PlayerProfile killerProfile = Users.getPlayer(killer).getProfile();
+        PlayerProfile victimProfile = Users.getPlayer(victim).getProfile();
         int totalStolen = 0;
 
         for (SkillType skillType : SkillType.values()) {

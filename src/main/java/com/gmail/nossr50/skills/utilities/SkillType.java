@@ -141,7 +141,7 @@ public enum SkillType {
      * @return the player's skill level
      */
     public int getSkillLevel(Player player) {
-        return Users.getProfile(player).getSkillLevel(this);
+        return Users.getPlayer(player).getProfile().getSkillLevel(this);
     }
 
     // TODO: This is a little "hacky", we probably need to add something to distinguish child skills in the enum, or to use another enum for them
