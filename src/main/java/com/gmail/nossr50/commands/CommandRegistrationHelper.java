@@ -52,7 +52,7 @@ public final class CommandRegistrationHelper {
 
                 command.setAliases(aliasList);
                 command.setDescription(LocaleLoader.getString("Commands.Description.Skill", Misc.getCapitalized(localizedName)));
-                command.setPermission("mcmmo.skills." + commandName);
+                command.setPermission("mcmmo.commands." + commandName);
                 command.setPermissionMessage(permissionsMessage);
 
                 switch (skill) {

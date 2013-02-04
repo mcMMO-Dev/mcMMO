@@ -733,21 +733,36 @@ permissions:
     mcmmo.commands.defaults:
         description: Implies all default mcmmo.commands permissions.
         children:
+            mcmmo.commands.acrobatics: true
+            mcmmo.commands.archery: true
+            mcmmo.commands.axes: true
+            mcmmo.commands.excavation: true
+            mcmmo.commands.fishing: true
+            mcmmo.commands.herbalism: true
             mcmmo.commands.inspect: true
             mcmmo.commands.mcability: true
             mcmmo.commands.mcmmo: true
             mcmmo.commands.mcrank: true
             mcmmo.commands.mcstats: true
             mcmmo.commands.mctop.all: true
+            mcmmo.commands.mining: true
             mcmmo.commands.party.all: true
             mcmmo.commands.ptp: true
             mcmmo.commands.ptp.accept: true
             mcmmo.commands.ptp.acceptall: true
             mcmmo.commands.ptp.toggle: true
+            mcmmo.commands.repair: true
+            mcmmo.commands.smelting: true
+            mcmmo.commands.swords: true
+            mcmmo.commands.taming: true
+            mcmmo.commands.unarmed: true
+            mcmmo.commands.woodcutting: true
     mcmmo.commands.ability:
         description: Allows access to the mcability command
         children:
             mcmmo.commands.mcability: true
+    mcmmo.commands.acrobatics:
+        description: Allows access to the acrobatics command
     mcmmo.commands.addlevels:
         description: Allows access to the addlevels command
     mcmmo.commands.addlevels.others:
@@ -756,6 +771,16 @@ permissions:
         description: Allows access to the addxp command
     mcmmo.commands.addxp.others:
         description: Allows access to the addxp command for other players
+    mcmmo.commands.archery:
+        description: Allows access to the archery command
+    mcmmo.commands.axes:
+        description: Allows access to the axes command
+    mcmmo.commands.excavation:
+        description: Allows access to the excavation command
+    mcmmo.commands.fishing:
+        description: Allows access to the fishing command
+    mcmmo.commands.herbalism:
+        description: Allows access to the herbalism command
     mcmmo.commands.inspect.*:
         description: Implies access to all mcmmo.commands.inspect permissions
         children:
@@ -859,6 +884,8 @@ permissions:
         description: Allows access to the mctop command for unarmed
     mcmmo.commands.mctop.woodcutting:
         description: Allows access to the mctop command for woodcutting
+    mcmmo.commands.mining:
+        description: Allows access to the mining command
     mcmmo.commands.mmoedit:
         description: Allows access to the mmoedit command
     mcmmo.commands.mmoedit.others:
@@ -942,7 +969,9 @@ permissions:
         children:
             mcmmo.commands.ptp.world.all: true
     mcmmo.commands.ptp.world.all:
-        description: Implies access to all mcmmo.commands.ptp.world permissions.
+        description: Implies access to all mcmmo.commands.ptp.world permissions
+    mcmmo.commands.repair:
+        description: Allows access to the repair command
     mcmmo.commands.skillreset.*:
         description: Implies access to all mcmmo.commands.skillreset permissions
         children:
@@ -1042,6 +1071,16 @@ permissions:
         description: Allows access to the skillreset command for unarmed
     mcmmo.commands.skillreset.woodcutting:
         description: Allows access to the skillreset command for woodcutting
+    mcmmo.commands.smelting:
+        description: Allows access to the smelting command
+    mcmmo.commands.swords:
+        description: Allows access to the swords command
+    mcmmo.commands.taming:
+        description: Allows access to the taming command
+    mcmmo.commands.unarmed:
+        description: Allows access to the unarmed command
+    mcmmo.commands.woodcutting:
+        description: Allows access to the woodcutting command
     mcmmo.commands.xprate.*:
         description: Implies access to all mcmmo.commands.inspect permissions
         children:
@@ -1071,6 +1110,11 @@ permissions:
         description: Allows participation in admin chat
     mcmmo.chat.partychat:
         description: Allows participation in party chat
+    mcmmo.skillreset:
+        description: Allow reset of skill levels
+        children:
+            mcmmo.commands.skillreset.all: true
+            mcmmo.commands.skillreset.others.all: false
     mcmmo.skills.*:
         description: Implies all mcmmo.skills permissions.
         children:
@@ -1078,47 +1122,68 @@ permissions:
     mcmmo.skills.all:
         description: Implies all mcmmo.skills permissions.
         children:
-            mcmmo.skills.fishing: true
-            mcmmo.skills.taming: true 
-            mcmmo.skills.mining: true 
-            mcmmo.skills.woodcutting: true 
-            mcmmo.skills.repair: true 
-            mcmmo.skills.unarmed: true 
-            mcmmo.skills.archery: true 
-            mcmmo.skills.herbalism: true 
-            mcmmo.skills.excavation: true 
-            mcmmo.skills.swords: true 
-            mcmmo.skills.axes: true 
             mcmmo.skills.acrobatics: true
+            mcmmo.skills.archery: true
+            mcmmo.skills.axes: true
+            mcmmo.skills.excavation: true
+            mcmmo.skills.fishing: true
+            mcmmo.skills.herbalism: true
+            mcmmo.skills.mining: true
+            mcmmo.skills.repair: true
+            mcmmo.skills.swords: true
             mcmmo.skills.smelting: true
-    mcmmo.skills.fishing:
-        description: Allows access to the Fishing skill
-    mcmmo.skills.taming:
-        description: Allows access to the Taming skill
-    mcmmo.skills.mining:
-        description: Allows access to the Mining skill
-    mcmmo.skills.woodcutting:
-        description: Allows access to the Woodcutting skill
-    mcmmo.skills.repair:
-        description: Allows access to the Repair skill
-    mcmmo.skills.unarmed:
-        description: Allows access to the Unarmed skill
-    mcmmo.skills.archery:
-        description: Allows access to the Archery skill
-    mcmmo.skills.herbalism:
-        description: Allows access to the Herbalism skill
-    mcmmo.skills.excavation:
-        description: Allows access to the Excavation skill
-    mcmmo.skills.swords:
-        description: Allows access to the Swords skill
-    mcmmo.skills.axes:
-        description: Allows access to the Axes skill
+            mcmmo.skills.taming: true
+            mcmmo.skills.unarmed: true
+            mcmmo.skills.woodcutting: true
     mcmmo.skills.acrobatics:
         description: Allows access to the Acrobatics skill
+        children:
+            mcmmo.commands.acrobatics: true
+    mcmmo.skills.archery:
+        description: Allows access to the Archery skill
+        children:
+            mcmmo.commands.archery: true
+    mcmmo.skills.axes:
+        description: Allows access to the Axes skill
+        children:
+            mcmmo.commands.axes: true
+    mcmmo.skills.excavation:
+        description: Allows access to the Excavation skill
+        children:
+            mcmmo.commands.excavation: true
+    mcmmo.skills.fishing:
+        description: Allows access to the Fishing skill
+        children:
+            mcmmo.commands.fishing: true
+    mcmmo.skills.herbalism:
+        description: Allows access to the Herbalism skill
+        children:
+            mcmmo.commands.herbalism: true
+    mcmmo.skills.mining:
+        description: Allows access to the Mining skill
+        children:
+            mcmmo.commands.mining: true
+    mcmmo.skills.repair:
+        description: Allows access to the Repair skill
+        children:
+            mcmmo.commands.repair: true
     mcmmo.skills.smelting:
         description: Allows access to the Smelting skill
-    mcmmo.skillreset:
-        description: Allow reset of skill levels
         children:
-            mcmmo.commands.skillreset.all: true
-            mcmmo.commands.skillreset.others.all: false
+            mcmmo.commands.smelting: true
+    mcmmo.skills.swords:
+        description: Allows access to the Swords skill
+        children:
+            mcmmo.commands.swords: true
+    mcmmo.skills.taming:
+        description: Allows access to the Taming skill
+        children:
+            mcmmo.commands.taming: true
+    mcmmo.skills.unarmed:
+        description: Allows access to the Unarmed skill
+        children:
+            mcmmo.commands.unarmed: true
+    mcmmo.skills.woodcutting:
+        description: Allows access to the Woodcutting skill
+        children:
+            mcmmo.commands.woodcutting: true
