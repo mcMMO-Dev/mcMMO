@@ -312,7 +312,7 @@ public final class BlockChecks {
     }
 
     public static boolean isLog(Block block) {
-        if (block.getType().equals(Material.LOG) || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLogBlock(block))) {
+        if (block.getType() == Material.LOG || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLogBlock(block))) {
             return true;
         }
 
@@ -320,7 +320,7 @@ public final class BlockChecks {
     }
 
     public static boolean isLeaves(Block block) {
-        if (block.getType().equals(Material.LEAVES) || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block))) {
+        if (block.getType() == Material.LEAVES || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block))) {
             return true;
         }
 

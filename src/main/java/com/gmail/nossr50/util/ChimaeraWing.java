@@ -35,14 +35,14 @@ public final class ChimaeraWing {
                 player.setItemInHand(new ItemStack(Config.getInstance().getChimaeraItemId(), amount - Config.getInstance().getChimaeraCost()));
 
                 for (int y = 1; block.getY() + y < player.getWorld().getMaxHeight(); y++) {
-                    if (!block.getRelative(0, y, 0).getType().equals(Material.AIR)) {
+                    if (!(block.getRelative(0, y, 0).getType() == Material.AIR)) {
                         player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
                         player.teleport(block.getRelative(0, y - 1, 0).getLocation());
                         return;
                     }
                 }
 
-                if (player.getBedSpawnLocation() != null && player.getBedSpawnLocation().getBlock().getType().equals(Material.BED_BLOCK)) {
+                if (player.getBedSpawnLocation() != null && player.getBedSpawnLocation().getBlock().getType() == Material.BED_BLOCK) {
                     player.teleport(player.getBedSpawnLocation());
                 }
                 else {

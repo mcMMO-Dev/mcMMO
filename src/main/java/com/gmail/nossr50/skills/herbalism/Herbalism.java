@@ -130,7 +130,7 @@ public class Herbalism {
 
         for (int y = 0;  y <= 2; y++) {
             Block relativeBlock = block.getRelative(BlockFace.UP, y);
-            if (relativeBlock.getType().equals(blockType) && !mcMMO.placeStore.isTrue(relativeBlock)) {
+            if (relativeBlock.getType() == blockType && !mcMMO.placeStore.isTrue(relativeBlock)) {
                 dropAmount++;
             }
         }

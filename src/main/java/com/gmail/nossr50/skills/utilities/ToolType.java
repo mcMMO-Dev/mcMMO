@@ -42,7 +42,7 @@ public enum ToolType {
             return ItemChecks.isAxe(is);
 
         case FISTS:
-            return is.getType().equals(Material.AIR);
+            return is.getType() == Material.AIR;
 
         case HOE:
             return ItemChecks.isHoe(is);

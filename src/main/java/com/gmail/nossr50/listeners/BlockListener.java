@@ -286,7 +286,7 @@ public class BlockListener implements Listener {
             else if (profile.getToolPreparationMode(ToolType.SHOVEL) && ItemChecks.isShovel(heldItem) && BlockChecks.canBeGigaDrillBroken(block) && Permissions.gigaDrillBreaker(player)) {
                 SkillTools.abilityCheck(player, SkillType.EXCAVATION);
             }
-            else if (profile.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockChecks.canBeGigaDrillBroken(block) || block.getType().equals(Material.SNOW)) && Permissions.berserk(player)) {
+            else if (profile.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockChecks.canBeGigaDrillBroken(block) || block.getType() == Material.SNOW) && Permissions.berserk(player)) {
                 SkillTools.abilityCheck(player, SkillType.UNARMED);
             }
         }
@@ -344,7 +344,7 @@ public class BlockListener implements Listener {
             }
         }
         else if (profile.getAbilityMode(AbilityType.BERSERK) && SkillTools.triggerCheck(player, block, AbilityType.BERSERK)) {
-            if (heldItem.getType().equals(Material.AIR)) {
+            if (heldItem.getType() == Material.AIR) {
                 FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
                 plugin.getServer().getPluginManager().callEvent(armswing);
 
@@ -375,7 +375,7 @@ public class BlockListener implements Listener {
                         Woodcutting.beginLeafBlower(player, block);
                     }
                 }
-                else if (!heldItem.getType().equals(Material.SHEARS)) {
+                else if (!(heldItem.getType() == Material.SHEARS)) {
                     event.setInstaBreak(true);
                     Woodcutting.beginLeafBlower(player, block);
                 }

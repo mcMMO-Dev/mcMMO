@@ -221,7 +221,7 @@ public class EntityListener implements Listener {
 
         SpawnReason reason = event.getSpawnReason();
 
-        if (reason.equals(SpawnReason.SPAWNER) || reason.equals(SpawnReason.SPAWNER_EGG)) {
+        if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) {
             mcMMO.placeStore.addSpawnedMob(event.getEntity());
         }
     }
