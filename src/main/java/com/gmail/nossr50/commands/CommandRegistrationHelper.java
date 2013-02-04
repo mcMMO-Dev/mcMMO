@@ -9,6 +9,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.admin.AddlevelsCommand;
 import com.gmail.nossr50.commands.admin.AddxpCommand;
 import com.gmail.nossr50.commands.admin.McgodCommand;
+import com.gmail.nossr50.commands.admin.McrefreshCommand;
+import com.gmail.nossr50.commands.admin.MmoeditCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
@@ -28,7 +30,6 @@ import com.gmail.nossr50.util.Misc;
 
 public final class CommandRegistrationHelper {
     private CommandRegistrationHelper() {};
-
     private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
 
     public static void registerSkillCommands() {
@@ -148,6 +149,15 @@ public final class CommandRegistrationHelper {
         command.setPermission("mcmmo.commands.mcrefresh");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcrefresh", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
-        command.setExecutor(new McgodCommand());
+        command.setExecutor(new McrefreshCommand());
+    }
+
+    public static void registerMmoeditCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mmoedit");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mmoedit"));
+        command.setPermission("mcmmo.commands.mmoedit");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.3", "mmoedit", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">", "<" + LocaleLoader.getString("Commands.Usage.Level") + ">"));
+        command.setExecutor(new MmoeditCommand());
     }
 }

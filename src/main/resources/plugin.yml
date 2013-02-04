@@ -59,8 +59,7 @@ commands:
         aliases: []
         description: Remove a user from the database
     mmoedit:
-        aliases: []
-        description: Edit the skill values for a user
+        description: Edit the mcMMO skill values for a user
     ptp:
         aliases: []
         description: Teleport to a party member
