@@ -12,6 +12,7 @@ import com.gmail.nossr50.commands.admin.McgodCommand;
 import com.gmail.nossr50.commands.admin.McrefreshCommand;
 import com.gmail.nossr50.commands.admin.MmoeditCommand;
 import com.gmail.nossr50.commands.admin.SkillresetCommand;
+import com.gmail.nossr50.commands.admin.XprateCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
@@ -167,5 +168,15 @@ public final class CommandRegistrationHelper {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.2", "skillreset", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">"));
         command.setExecutor(new SkillresetCommand());
+    }
+
+    public static void registerXprateCommand() {
+        PluginCommand command = mcMMO.p.getCommand("xprate");
+        command.setDescription(LocaleLoader.getString("Commands.Description.xprate"));
+        command.setPermission("mcmmo.commands.xprate;mcmmo.commands.xprate.reset;mcmmo.commands.xprate.set");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.2", "xprate", "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">", "<" + LocaleLoader.getString("Commands.Usage.True") + "|" + LocaleLoader.getString("Commands.Usage.False")+ ">"));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "xprate", "reset"));
+        command.setExecutor(new XprateCommand());
     }
 }

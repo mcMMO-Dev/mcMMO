@@ -6,88 +6,70 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 
 public class XprateCommand implements CommandExecutor {
     private static double originalRate = Config.getInstance().getExperienceGainsGlobalMultiplier();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage1 = LocaleLoader.getString("Commands.xprate.proper.0");
-        String usage2 = LocaleLoader.getString("Commands.xprate.proper.1");
-        String usage3 = LocaleLoader.getString("Commands.xprate.proper.2");
-
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.xprate")) {
-            return true;
-        }
-
         switch (args.length) {
         case 1:
-            if (args[0].equalsIgnoreCase("reset")) {
-                if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.xprate.reset")) {
-                    return true;
-                }
-
-                if (mcMMO.p.isXPEventEnabled()) {
-                    for (Player x : mcMMO.p.getServer().getOnlinePlayers()) {
-                        x.sendMessage(LocaleLoader.getString("Commands.xprate.over"));
-                    }
-
-                    mcMMO.p.toggleXpEventEnabled();
-                    Config.getInstance().setExperienceGainsGlobalMultiplier(originalRate);
-                }
-                else {
-                    Config.getInstance().setExperienceGainsGlobalMultiplier(originalRate);
-                }
-            }
-            else if (Misc.isInt(args[0])) {
-                sender.sendMessage(usage3);
-            }
-            else {
-                sender.sendMessage(usage2);
+            if (!args[0].equalsIgnoreCase("reset")) {
+                return false;
             }
 
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.xprate.reset")) {
+                sender.sendMessage(command.getPermissionMessage());
+                return true;
+            }
+
+            if (mcMMO.p.isXPEventEnabled()) {
+                for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
+                    player.sendMessage(LocaleLoader.getString("Commands.xprate.over"));
+                }
+
+                mcMMO.p.toggleXpEventEnabled();
+            }
+
+            Config.getInstance().setExperienceGainsGlobalMultiplier(originalRate);
             return true;
 
         case 2:
-            if (Misc.isInt(args[0])) {
-                if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.xprate.set")) {
-                    return true;
-                }
-                if (args[1].equalsIgnoreCase("true") || args[1].equalsIgnoreCase("false")) {
-                    mcMMO.p.setXPEventEnabled(Boolean.valueOf(args[1]));
-                }
-                else {
-                    sender.sendMessage(usage3);
-                }
+            if (!Misc.isInt(args[0])) {
+                return false;
+            }
 
-                int newRate = Misc.getInt(args[0]);
-                Config.getInstance().setExperienceGainsGlobalMultiplier(newRate);
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.xprate.set")) {
+                sender.sendMessage(command.getPermissionMessage());
+                return true;
+            }
 
-                if (mcMMO.p.isXPEventEnabled()) {
-                    for (Player x : mcMMO.p.getServer().getOnlinePlayers()) {
-                        x.sendMessage(LocaleLoader.getString("Commands.xprate.started.0"));
-                        x.sendMessage(LocaleLoader.getString("Commands.xprate.started.1", newRate));
-                    }
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", newRate));
+            if (!args[1].equalsIgnoreCase("true") && !args[1].equalsIgnoreCase("false")) {
+                return false;
+            }
+
+            mcMMO.p.setXPEventEnabled(Boolean.valueOf(args[1]));
+            int newXpRate = Misc.getInt(args[0]);
+            Config.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
+
+            if (mcMMO.p.isXPEventEnabled()) {
+                for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
+                    player.sendMessage(LocaleLoader.getString("Commands.xprate.started.0"));
+                    player.sendMessage(LocaleLoader.getString("Commands.xprate.started.1", newXpRate));
                 }
             }
             else {
-                sender.sendMessage(usage1);
-                sender.sendMessage(usage2);
+                sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", newXpRate));
             }
 
             return true;
 
         default:
-            sender.sendMessage(usage1);
-            sender.sendMessage(usage2);
-            return true;
+            return false;
         }
     }
 }
