@@ -13,6 +13,7 @@ import com.gmail.nossr50.commands.admin.McrefreshCommand;
 import com.gmail.nossr50.commands.admin.MmoeditCommand;
 import com.gmail.nossr50.commands.admin.SkillresetCommand;
 import com.gmail.nossr50.commands.admin.XprateCommand;
+import com.gmail.nossr50.commands.player.InspectCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
@@ -182,5 +183,14 @@ public final class CommandRegistrationHelper {
         command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "xprate", "reset"));
         command.setAliases(aliasList);
         command.setExecutor(new XprateCommand());
+    }
+
+    public static void registerInspectCommand() {
+        PluginCommand command = mcMMO.p.getCommand("inspect");
+        command.setDescription(LocaleLoader.getString("Commands.Description.inspect"));
+        command.setPermission("mcmmo.commands.inspect;mcmmo.commands.inspect.far;mcmmo.commands.inspect.offline");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "inspect", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
+        command.setExecutor(new InspectCommand());
     }
 }
