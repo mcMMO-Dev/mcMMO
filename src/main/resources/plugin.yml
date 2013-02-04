@@ -1125,11 +1125,11 @@ permissions:
     mcmmo.commands.xplock.woodcutting:
         description: Allows access to the xplock command for woodcutting
     mcmmo.commands.xprate.*:
-        description: Implies access to all mcmmo.commands.inspect permissions
+        description: Implies access to all mcmmo.commands.xprate permissions
         children:
             mcmmo.commands.xprate.all: true
     mcmmo.commands.xprate.all:
-        description: Implies access to all mcmmo.commands.inspect permissions
+        description: Implies access to all mcmmo.commands.xprate permissions
         children:
             mcmmo.commands.xprate: true
             mcmmo.commands.xprate.reset: true
