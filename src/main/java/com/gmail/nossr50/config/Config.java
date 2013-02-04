@@ -81,7 +81,7 @@ public class Config extends ConfigLoader {
     public int getChimaeraCost() { return config.getInt("Items.Chimaera_Wing.Feather_Cost", 10); }
     public int getChimaeraItemId() { return config.getInt("Items.Chimaera_Wing.Item_ID", 288); }
     public boolean getChimaeraEnabled() { return config.getBoolean("Items.Chimaera_Wing.Enabled", true); }
-    
+
     /* PARTY SETTINGS */
     public boolean getExpShareEnabled() { return config.getBoolean("Party.Sharing.ExpShare_enabled", true); }
     public double getPartyShareBonusBase() { return config.getDouble("Party.Sharing.ExpShare_bonus_base", 1.1); }

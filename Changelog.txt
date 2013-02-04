@@ -19,7 +19,7 @@ Version 1.4.00-dev
  + Added timeout on party teleport requests
  + Added XP bonus for Archery based on distance from shooter to target
  + Added ability to config Hylian Luck drops through treasures.yml
- + Added party XP sharing
+ + Added party XP sharing, when more party members are near the share bonus increases.
  + Added vanilla XP boost for Fishing - includes permissions, config options, etc
  + Added particle effect for bleeding
  = Fixed multiple commands not working properly on offline players
