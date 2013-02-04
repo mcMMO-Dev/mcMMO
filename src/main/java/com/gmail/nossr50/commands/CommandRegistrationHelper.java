@@ -171,12 +171,16 @@ public final class CommandRegistrationHelper {
     }
 
     public static void registerXprateCommand() {
+        List<String> aliasList = new ArrayList<String>();
+        aliasList.add("mcxprate");
+
         PluginCommand command = mcMMO.p.getCommand("xprate");
         command.setDescription(LocaleLoader.getString("Commands.Description.xprate"));
         command.setPermission("mcmmo.commands.xprate;mcmmo.commands.xprate.reset;mcmmo.commands.xprate.set");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.2", "xprate", "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">", "<" + LocaleLoader.getString("Commands.Usage.True") + "|" + LocaleLoader.getString("Commands.Usage.False")+ ">"));
         command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "xprate", "reset"));
+        command.setAliases(aliasList);
         command.setExecutor(new XprateCommand());
     }
 }
