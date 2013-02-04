@@ -504,6 +504,29 @@ public final class Database {
 
                     statement.close();
                 }
+
+                String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > 0 AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > (SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "')";
+
+                PreparedStatement statement = connection.prepareStatement(sql);
+                resultSet = statement.executeQuery();
+
+                resultSet.next();
+
+                int rank = resultSet.getInt("rank");
+
+                sql = "SELECT user, taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > 0 AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing = (SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "') ORDER BY user";
+
+                statement = connection.prepareStatement(sql);
+                resultSet = statement.executeQuery();
+
+                while (resultSet.next()) {
+                    if (resultSet.getString("user").equalsIgnoreCase(playerName)) {
+                        skills.put("ALL", rank + resultSet.getRow());
+                        break;
+                    }
+                }
+
+                statement.close();
             }
             catch (SQLException ex) {
                 printErrors(ex);
