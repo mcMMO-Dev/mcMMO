@@ -26,7 +26,6 @@ public class PartyAutoKick implements Runnable {
                 long lastPlayed = mcMMO.p.getServer().getOfflinePlayer(member).getLastPlayed();
 
                 if (currentTime - lastPlayed > kickTime) {
-                    System.out.println("Removing " + member + " from " + party.getName()); // Debug, remove this later
                     PartyManager.removeFromParty(member, party);
                 }
             }
