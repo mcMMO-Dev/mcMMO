@@ -59,6 +59,7 @@ import com.gmail.nossr50.skills.repair.RepairManagerFactory;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.config.RepairConfigManager;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
+import com.gmail.nossr50.skills.runnables.PartyAutoKick;
 import com.gmail.nossr50.skills.runnables.SkillMonitor;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
@@ -202,6 +203,16 @@ public class mcMMO extends JavaPlugin {
         }
         else if (purgeInterval > 0) {
             scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), 0, purgeInterval * 60L * 60L * 20L);
+        }
+
+        // Automatically remove old members from parties
+        long kickInterval = Config.getInstance().getAutoPartyKickInterval();
+
+        if (kickInterval == 0) {
+            scheduler.scheduleSyncDelayedTask(this, new PartyAutoKick(), 40); // Start 2 seconds after startup.
+        }
+        else if (kickInterval > 0) {
+            scheduler.scheduleSyncRepeatingTask(this, new PartyAutoKick(), 0, kickInterval * 60L * 60L * 20L);
         }
 
         registerCommands();
