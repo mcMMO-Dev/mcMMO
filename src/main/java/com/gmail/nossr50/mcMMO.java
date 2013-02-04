@@ -430,7 +430,6 @@ public class mcMMO extends JavaPlugin {
      */
     private void registerCommands() {
         CommandRegistrationHelper.registerSkillCommands();
-        Config configInstance = Config.getInstance();
 
         // mc* commands
         getCommand("mcpurge").setExecutor(new McpurgeCommand());
