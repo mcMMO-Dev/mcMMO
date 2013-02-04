@@ -960,48 +960,4 @@ public class PlayerProfile {
     public int getXpToLevel(SkillType skillType) {
         return 1020 + (skills.get(skillType) *  Config.getInstance().getFormulaMultiplierCurve());
     }
-
-    //    /**
-    //     * Gets the power level of a player.
-    //     *
-    //     * @return the power level of the player
-    //     */
-    //    public int getPowerLevel() {
-    //        int powerLevel = 0;
-    //
-    //        for (SkillType type : SkillType.values()) {
-    //            if (type.getPermissions(player)) {
-    //                powerLevel += getSkillLevel(type);
-    //            }
-    //        }
-    //
-    //        return powerLevel;
-    //    }
-
-    //    /**
-    //     * Calculate the party Xp modifier.
-    //     *
-    //     * @param skillType Type of skill to check
-    //     * @return the party bonus multiplier
-    //     */
-    //    private double partyModifier(SkillType skillType) {
-    //        double bonusModifier = 0.0;
-    //
-    //        for (Player member : party.getOnlineMembers()) {
-    //            if (party.getLeader().equals(member.getName())) {
-    //                if (Misc.isNear(player.getLocation(), member.getLocation(), 25.0)) {
-    //                    PlayerProfile PartyLeader = Users.getProfile(member);
-    //                    int leaderSkill = PartyLeader.getSkillLevel(skillType);
-    //                    int playerSkill = getSkillLevel(skillType);
-    //
-    //                    if (leaderSkill >= playerSkill) {
-    //                        int difference = leaderSkill - playerSkill;
-    //                        bonusModifier = (difference * 0.75) / 100.0;
-    //                    }
-    //                }
-    //            }
-    //        }
-    //
-    //        return bonusModifier;
-    //    }
 }
