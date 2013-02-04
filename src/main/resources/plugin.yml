@@ -75,7 +75,6 @@ commands:
         aliases: [pc]
         description: Toggle Party chat or send party chat messages
     skillreset:
-        aliases: []
         description: Reset the level of one or all of your skills
     excavation:
         description: Detailed mcMMO skill info
