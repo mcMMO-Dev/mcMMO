@@ -199,7 +199,7 @@ public final class CommandRegistrationHelper {
     public static void registerMcabilityCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcability");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcability"));
-        command.setPermission("mcmmo.commands.ability;mcmmo.commands.mcability.others");
+        command.setPermission("mcmmo.commands.mcability;mcmmo.commands.mcability.others");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcability", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
         command.setExecutor(new McabilityCommand());
