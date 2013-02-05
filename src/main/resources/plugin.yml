@@ -49,7 +49,6 @@ commands:
     mcgod:
         description: Toggle mcMMO god-mode on/off
     mcstats:
-        aliases: [/stats]
         description: Shows your mcMMO stats and xp
     mcremove:
         aliases: []

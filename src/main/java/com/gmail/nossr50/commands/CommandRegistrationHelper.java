@@ -17,6 +17,7 @@ import com.gmail.nossr50.commands.player.InspectCommand;
 import com.gmail.nossr50.commands.player.McabilityCommand;
 import com.gmail.nossr50.commands.player.McmmoCommand;
 import com.gmail.nossr50.commands.player.McrankCommand;
+import com.gmail.nossr50.commands.player.McstatsCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
@@ -228,5 +229,17 @@ public final class CommandRegistrationHelper {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcrank", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
         command.setExecutor(new McrankCommand());
+    }
+
+    public static void registerMcstatsCommand() {
+        List<String> aliasList = new ArrayList<String>();
+        aliasList.add("stats");
+
+        PluginCommand command = mcMMO.p.getCommand("mcstats");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcstats"));
+        command.setPermission("mcmmo.commands.mcstats");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcstats"));
+        command.setExecutor(new McstatsCommand());
     }
 }
