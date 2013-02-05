@@ -118,6 +118,7 @@ permissions:
             mcmmo.defaultsop: true
             mcmmo.perks.all: true
     mcmmo.ability.*:
+        default: false
         description: Implies all mcmmo.ability permissions.
         children:
             mcmmo.ability.all: true
@@ -138,6 +139,7 @@ permissions:
             mcmmo.ability.unarmed.all: true
             mcmmo.ability.woodcutting.all: true
     mcmmo.ability.acrobatics.*:
+        default: false
         description: Allows access to all Acrobatics abilities
         children:
             mcmmo.ability.acrobatics.all: true
@@ -154,22 +156,24 @@ permissions:
     mcmmo.ability.acrobatics.roll:
         description: Allows access to the Roll ability
     mcmmo.ability.archery.*:
+        default: false
         description: Allows access to all Archery abilities
         children:
             mcmmo.ability.archery.all: true
     mcmmo.ability.archery.all:
         description: Allows access to all Archery abilities
         children:
-            mcmmo.ability.archery.bonusdamage : true
+            mcmmo.ability.archery.bonusdamage: true
             mcmmo.ability.archery.daze: true
             mcmmo.ability.archery.trackarrows: true
-    mcmmo.ability.archery.daze:
-        description: Allows access to the Daze ability
     mcmmo.ability.archery.bonusdamage:
         description: Allows bonus damage from Archery
+    mcmmo.ability.archery.daze:
+        description: Allows access to the Daze ability
     mcmmo.ability.archery.trackarrows:
         description: Allows tracking & retrieval of arrows
     mcmmo.ability.axes.*:
+        default: false
         description: Allows access to all Axes abilities
         children:
             mcmmo.ability.axes.all: true
@@ -192,28 +196,34 @@ permissions:
     mcmmo.ability.axes.skullsplitter:
         description: Allows access to the Skull Splitter ability
     mcmmo.ability.blastmining.*:
+        default: false
         description: Allows access to all Blast Mining abilities
         children:
             mcmmo.ability.blastmining.all: true
     mcmmo.ability.blastmining.all:
+        default: false
         description: Allows access to all Blast Mining abilities
         children:
             mcmmo.ability.blastmining.biggerbombs: true
             mcmmo.ability.blastmining.demolitionsexpertise: true
             mcmmo.ability.blastmining.detonate: true
     mcmmo.ability.blastmining.biggerbombs:
+        default: false
         description: Allows access to the Bigger Bombs ability
         children:
             mcmmo.ability.mining.blastmining.biggerbombs: true
     mcmmo.ability.blastmining.demolitionsexpertise:
+        default: false
         description: Allows access to the Demolitions Expertise ability
         children:
             mcmmo.ability.mining.blastmining.demolitionsexpertise: true
     mcmmo.ability.blastmining.detonate:
+        default: false
         description: Allows for remote TNT detonation
         children:
             mcmmo.ability.mining.blastmining.detonate: true
     mcmmo.ability.excavation.*:
+        default: false
         description: Allows access to all Excavation abilities
         children:
             mcmmo.ability.excavation.all: true
@@ -227,6 +237,7 @@ permissions:
     mcmmo.ability.excavation.treasures:
         description: Allows treasure drops from Excavation
     mcmmo.ability.fishing.*:
+        default: false
         description: Allows access to all Fishing abilities
         children:
             mcmmo.ability.fishing.all: true
@@ -249,6 +260,7 @@ permissions:
     mcmmo.ability.fishing.vanillaxpboost:
         description: Allows vanilla XP boost from Fishing
     mcmmo.ability.herbalism.*:
+        default: false
         description: Allows access to all Herbalism abilities
         children:
             mcmmo.ability.herbalism.all: true
@@ -286,6 +298,7 @@ permissions:
     mcmmo.ability.herbalism.hylianluck:
         description: Allows access to the Hylian Luck ability
     mcmmo.ability.mining.*:
+        default: false
         description: Allows access to all Mining abilities
         children:
             mcmmo.ability.mining.all: true
@@ -296,6 +309,7 @@ permissions:
             mcmmo.ability.mining.doubledrops: true
             mcmmo.ability.mining.superbreaker: true
     mcmmo.ability.mining.blastmining.*:
+        default: false
         description: Allows access to all Blast Mining abilities
         children:
             mcmmo.ability.mining.blastmining.all: true
@@ -316,6 +330,7 @@ permissions:
     mcmmo.ability.mining.superbreaker:
         description: Allows access to the Super Breaker ability
     mcmmo.ability.repair.*:
+        default: false
         description: Allows access to all Repair abilities
         children:
             mcmmo.ability.repair.all: true
@@ -343,10 +358,10 @@ permissions:
         description: Allows ability to repair armor
     mcmmo.ability.repair.diamondrepair:
         description: Allows ability to repair Diamond tools & armor
-    mcmmo.ability.repair.ironrepair:
-        description: Allows ability to repair Iron tools & armor
     mcmmo.ability.repair.goldrepair:
         description: Allows ability to repair Gold tools & armor
+    mcmmo.ability.repair.ironrepair:
+        description: Allows ability to repair Iron tools & armor
     mcmmo.ability.repair.leatherrepair:
         description: Allows ability to repair Leather armor
     mcmmo.ability.repair.othermaterialrepair:
@@ -368,6 +383,7 @@ permissions:
     mcmmo.ability.repair.woodrepair:
         description: Allows ability to repair Wood tools
     mcmmo.ability.smelting.*:
+        default: false
         description: Allows access to all Smelting abilities
         children:
             mcmmo.ability.smelting.all: true
@@ -387,6 +403,7 @@ permissions:
     mcmmo.ability.smelting.vanillaxpboost:
         description: Allows vanilla XP boost from Smelting
     mcmmo.ability.swords.*:
+        default: false
         description: Allows access to all Swords abilities
         children:
             mcmmo.ability.swords.all: true
@@ -403,6 +420,7 @@ permissions:
     mcmmo.ability.swords.serratedstrikes:
         description: Allows access to the Serrated Strikes ability
     mcmmo.ability.taming.*:
+        default: false
         description: Allows access to all Taming abilities
         children:
             mcmmo.ability.taming.all: true
@@ -434,6 +452,7 @@ permissions:
     mcmmo.ability.taming.thickfur:
         description: Allows access to the Thick Fur ability
     mcmmo.ability.unarmed.*:
+        default: false
         description: Allows access to all Unarmed abilities
         children:
             mcmmo.ability.unarmed.all: true
@@ -456,6 +475,7 @@ permissions:
     mcmmo.ability.unarmed.irongrip:
         description: Allows access to the Iron Grip ability
     mcmmo.ability.woodcutting.*:
+        default: false
         description: Allows access to all Woodcutting abilities
         children:
             mcmmo.ability.woodcutting.all: true
@@ -488,8 +508,8 @@ permissions:
         children:
             mcmmo.bypass.arcanebypass: true
             mcmmo.bypass.hardcoremode: true
-            mcmmo.bypass.inspect.distance: true
-            mcmmo.bypass.inspect.offline: true
+            mcmmo.commands.inspect.far: true
+            mcmmo.commands.inspect.offline: true
     mcmmo.bypass.arcanebypass:
         default: false
         description: Allows user to bypass Arcane Repair so he will never lose enchantments
@@ -497,16 +517,17 @@ permissions:
         default: false
         description: Allows user to bypass negative penalties of Hardcore mode
     mcmmo.bypass.inspect.distance:
-        default: op
+        default: false
         description: Allows user to bypass Inspect's distance requirements
         children:
             mcmmo.commands.inspect.far: true
     mcmmo.bypass.inspect.offline:
-        default: op
+        default: false
         description: Allows user to bypass Inspect's offline player requirements
         children:
             mcmmo.commands.inspect.offline: true
     mcmmo.chat.*:
+        default: false
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
         children:
             mcmmo.chat.all: true
@@ -520,6 +541,7 @@ permissions:
     mcmmo.chat.partychat:
         description: Allows participation in party chat
     mcmmo.commands.*:
+        default: false
         description: Implies all mcmmo.commands permissions.
         children:
             mcmmo.commands.all: true
@@ -578,6 +600,7 @@ permissions:
             mcmmo.commands.woodcutting: true
             mcmmo.commands.xplock.all: true
     mcmmo.commands.ability:
+        default: false
         description: Allows access to the mcability command
         children:
             mcmmo.commands.mcability: true
@@ -602,6 +625,7 @@ permissions:
     mcmmo.commands.herbalism:
         description: Allows access to the herbalism command
     mcmmo.commands.inspect.*:
+        default: false
         description: Implies access to all mcmmo.commands.inspect permissions
         children:
             mcmmo.commands.inspect.all: true
@@ -636,6 +660,7 @@ permissions:
     mcmmo.commands.mcrank:
         description: Allows access to the mcrank command
     mcmmo.commands.mcrank.others.*:
+        default: false
         description: Implies access to all mcmmo.commands.mcrank.others permissions
         children:
             mcmmo.commands.mcrank.others.all: true
@@ -660,6 +685,7 @@ permissions:
     mcmmo.commands.mcstats:
         description: Allows access to the mcstats command
     mcmmo.commands.mctop.*:
+        default: false
         description: Implies access to all mcmmo.commands.mctop permissions
         children:
             mcmmo.commands.mctop.all: true
@@ -717,6 +743,7 @@ permissions:
     mcmmo.commands.mmoupdate:
         description: Allows access to the mmoupdate command
     mcmmo.commands.party.*:
+        default: false
         description: Implies access to all mcmmo.commands.party permissions.
         children:
             mcmmo.commands.party.all: true
@@ -769,6 +796,7 @@ permissions:
     mcmmo.commands.party.unlock:
         description: Allows access to the party unlock command
     mcmmo.commands.ptp.*:
+        default: false
         description: Implies access to all mcmmo.commands.ptp permissions.
         children:
             mcmmo.commands.ptp.all: true
@@ -789,6 +817,7 @@ permissions:
     mcmmo.commands.ptp.toggle:
         description: Allows access to the ptp toggle command
     mcmmo.commands.ptp.world.*:
+        default: false
         description: Implies access to all mcmmo.commands.ptp.world permissions.
         children:
             mcmmo.commands.ptp.world.all: true
@@ -797,6 +826,7 @@ permissions:
     mcmmo.commands.repair:
         description: Allows access to the repair command
     mcmmo.commands.skillreset.*:
+        default: false
         description: Implies access to all mcmmo.commands.skillreset permissions
         children:
             mcmmo.commands.skillreset.all: true
@@ -835,6 +865,7 @@ permissions:
     mcmmo.commands.skillreset.mining:
         description: Allows access to the skillreset command for mining
     mcmmo.commands.skillreset.others.*:
+        default: false
         description: Implies access to all mcmmo.commands.skillreset.others permissions
         children:
             mcmmo.commands.skillreset.others.all: true
@@ -906,6 +937,7 @@ permissions:
     mcmmo.commands.woodcutting:
         description: Allows access to the woodcutting command
     mcmmo.commands.xplock.*:
+        default: false
         description: Implies access to all mcmmo.commands.xplock permissions
         children:
             mcmmo.commands.xplock.all: true
@@ -955,6 +987,7 @@ permissions:
     mcmmo.commands.xplock.woodcutting:
         description: Allows access to the xplock command for woodcutting
     mcmmo.commands.xprate.*:
+        default: false
         description: Implies access to all mcmmo.commands.xprate permissions
         children:
             mcmmo.commands.xprate.all: true
@@ -1134,11 +1167,13 @@ permissions:
         default: false
         description: Triples incoming XP
     mcmmo.skillreset:
+        default: false
         description: Allow reset of skill levels
         children:
             mcmmo.commands.skillreset.all: true
             mcmmo.commands.skillreset.others.all: false
     mcmmo.skills.*:
+        default: false
         description: Implies all mcmmo.skills permissions.
         children:
             mcmmo.skills.all: true
@@ -1224,10 +1259,12 @@ permissions:
             mcmmo.commands.woodcutting: true
             mcmmo.commands.xplock.woodcutting: true
     mcmmo.tools.*:
+        default: false
         description: Implies all mcmmo.tools permissions.
         children:
             mcmmo.tools.all: true 
     mcmmo.tools.all:
+        default: false
         description: Implies all mcmmo.tools permissions.
         children:
             mcmmo.tools.mcgod: true
@@ -1235,15 +1272,18 @@ permissions:
             mcmmo.tools.mcremove: true
             mcmmo.tools.mmoedit: true
     mcmmo.tools.mcgod:
+        default: false
         description: Allows access to mcgod command
         children:
             mcmmo.commands.mcgod: true
     mcmmo.tools.mcrefresh:
+        default: false
         description: Allows access to mcrefresh command
         children:
             mcmmo.commands.mcrefresh: true
             mcmmo.commands.mcrefresh.others: true
     mcmmo.tools.mcremove:
+        default: false
         decription: Allows access to mcremove and mcpurge command
         children:
             mcmmo.commands.mcremove: true
