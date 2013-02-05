@@ -196,7 +196,7 @@ public class Herbalism {
             if (chance > Misc.getRandom().nextInt(activationChance)) {
                 Location location = block.getLocation();
 
-                if (herbalismBlock != null && dropItem != null && herbalismBlock.canDoubleDrop()) {
+                if (dropItem != null && herbalismBlock != null && herbalismBlock.canDoubleDrop()) {
                     Misc.dropItems(location, dropItem, dropAmount);
                 }
                 else if (customBlock != null){
