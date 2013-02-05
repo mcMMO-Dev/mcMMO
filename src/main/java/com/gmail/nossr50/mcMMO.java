@@ -26,7 +26,6 @@ import com.gmail.nossr50.chat.commands.ACommand;
 import com.gmail.nossr50.chat.commands.PCommand;
 import com.gmail.nossr50.commands.CommandRegistrationHelper;
 import com.gmail.nossr50.commands.player.MccCommand;
-import com.gmail.nossr50.commands.player.McmmoCommand;
 import com.gmail.nossr50.commands.player.McrankCommand;
 import com.gmail.nossr50.commands.player.McstatsCommand;
 import com.gmail.nossr50.commands.player.MctopCommand;
@@ -444,7 +443,7 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationHelper.registerMcabilityCommand();
         getCommand("mcc").setExecutor(new MccCommand());
         CommandRegistrationHelper.registerMcgodCommand();
-        getCommand("mcmmo").setExecutor(new McmmoCommand());
+        CommandRegistrationHelper.registerMcmmoCommand();
         CommandRegistrationHelper.registerMcrefreshCommand();
         getCommand("mctop").setExecutor(new MctopCommand());
         getCommand("mcrank").setExecutor(new McrankCommand());

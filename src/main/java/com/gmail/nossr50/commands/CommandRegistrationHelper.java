@@ -15,6 +15,7 @@ import com.gmail.nossr50.commands.admin.SkillresetCommand;
 import com.gmail.nossr50.commands.admin.XprateCommand;
 import com.gmail.nossr50.commands.player.InspectCommand;
 import com.gmail.nossr50.commands.player.McabilityCommand;
+import com.gmail.nossr50.commands.player.McmmoCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
@@ -202,5 +203,18 @@ public final class CommandRegistrationHelper {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcability", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
         command.setExecutor(new McabilityCommand());
+    }
+
+    public static void registerMcmmoCommand() {
+        List<String> aliasList = new ArrayList<String>();
+        aliasList.add("mcinfo");
+
+        PluginCommand command = mcMMO.p.getCommand("mcmmo");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcmmo"));
+        command.setPermission("mcmmo.commands.mcmmo");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcmmo"));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "mcmmo", "?"));
+        command.setExecutor(new McmmoCommand());
     }
 }

@@ -11,32 +11,32 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Anniversary;
-import com.gmail.nossr50.util.Permissions;
 
 public class McmmoCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Permissions.hasPermission(sender, "mcmmo.commands.mcmmo")) {
+
+        if (args.length == 0 || (args.length == 1 && args[0].equals("?"))) {
+            String description = LocaleLoader.getString("mcMMO.Description");
+            String[] mcSplit = description.split(",");
+            sender.sendMessage(mcSplit);
+
+            if (Config.getInstance().getDonateMessageEnabled()) {
+                if (mcMMO.spoutEnabled && sender instanceof SpoutPlayer) {
+                    SpoutPlayer spoutPlayer = (SpoutPlayer) sender;
+                    spoutPlayer.sendNotification(LocaleLoader.getString("Spout.Donate"), ChatColor.GREEN + "gjmcferrin@gmail.com", Material.DIAMOND);
+                }
+
+                sender.sendMessage(LocaleLoader.getString("MOTD.Donate"));
+                sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "gjmcferrin@gmail.com" + ChatColor.GOLD + " Paypal");
+            }
+
+            sender.sendMessage(LocaleLoader.getString("MOTD.Version", mcMMO.p.getDescription().getVersion()));
+
+            Anniversary.anniversaryCheck(sender);
             return true;
         }
 
-        String description = LocaleLoader.getString("mcMMO.Description");
-        String[] mcSplit = description.split(",");
-        sender.sendMessage(mcSplit);
-
-        if (Config.getInstance().getDonateMessageEnabled()) {
-            if (mcMMO.spoutEnabled && sender instanceof SpoutPlayer) {
-                SpoutPlayer spoutPlayer = (SpoutPlayer) sender;
-
-                spoutPlayer.sendNotification(LocaleLoader.getString("Spout.Donate"), ChatColor.GREEN + "gjmcferrin@gmail.com", Material.DIAMOND);
-            }
-
-            sender.sendMessage(LocaleLoader.getString("MOTD.Donate"));
-            sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "gjmcferrin@gmail.com" + ChatColor.GOLD + " Paypal");
-        }
-        sender.sendMessage(LocaleLoader.getString("MOTD.Version", mcMMO.p.getDescription().getVersion()));
-
-        Anniversary.anniversaryCheck(sender);
-        return true;
+        return false;
     }
 }

@@ -32,7 +32,6 @@ commands:
         aliases: []
         description: Lists mcMMO commands
     mcmmo:
-        aliases: []
         description: Shows a brief mod description
     mctop:
         aliases: []
