@@ -14,10 +14,8 @@ import org.bukkit.Bukkit;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Users;
 
 public final class Leaderboard {
     private static HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
@@ -320,14 +318,8 @@ public final class Leaderboard {
         mcMMO.p.getLogger().info("Purging powerless users...");
 
         int purgedUsers = 0;
-        for (McMMOPlayer player : Users.getPlayers().values()) {
-            String playerName = player.getPlayer().getName();
-
-            if (playerName == null || Bukkit.getOfflinePlayer(playerName).isOnline()) {
-                continue;
-            }
-
-            if (getPlayerRank(playerName)[1] == 0 && removeFlatFileUser(playerName)) {
+        for (PlayerStat stat : powerLevels) {
+            if (stat.statVal == 0 && removeFlatFileUser(stat.name) && !Bukkit.getOfflinePlayer(stat.name).isOnline()) {
                 purgedUsers++;
             }
         }
@@ -359,7 +351,8 @@ public final class Leaderboard {
             while ((line = in.readLine()) != null) {
 
                 /* Write out the same file but when we get to the player we want to remove, we skip his line. */
-                if (currentTime - (Misc.getLong(line.split(":")[37]) * 1000) <= purgeTime) {
+                String[] splitLine = line.split(":");
+                if (splitLine.length > 37 && currentTime - (Misc.getLong(line.split(":")[37]) * 1000) <= purgeTime) {
                     writer.append(line).append("\r\n");
                 }
                 else {
