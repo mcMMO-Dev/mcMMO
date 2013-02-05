@@ -216,7 +216,6 @@ public class PartyCommand implements CommandExecutor {
             return true; // End before any event is fired.
         }
 
-        // TODO: We shoudln't fire the event before checking if the password is correct
         if (party != null) {
             McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, party.getName(), targetParty.getName(), EventReason.CHANGED_PARTIES);
             mcMMO.p.getServer().getPluginManager().callEvent(event);
@@ -362,7 +361,7 @@ public class PartyCommand implements CommandExecutor {
         }
 
         if (args.length < 2) {
-            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "expshare", "[sharemode]"));
+            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "expshare", "[NONE / EQUAL]"));
             return true;
         }
 
@@ -376,12 +375,17 @@ public class PartyCommand implements CommandExecutor {
                 for (Player onlineMembers : party.getOnlineMembers()) {
                     onlineMembers.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode.NoShare")));
                 }
-            } else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even")) {
+            }
+            else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even")) {
                 party.setXpShareMode(ShareHandler.XpShareMode.EQUAL);
 
                 for (Player onlineMembers : party.getOnlineMembers()) {
                     onlineMembers.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode.Equal")));
                 }
+            }
+            else {
+                player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "expshare", "[NONE / EQUAL]"));
+                return true;
             }
         }
 
@@ -565,24 +569,23 @@ public class PartyCommand implements CommandExecutor {
         String playerName = player.getName();
         Party party = mcMMOPlayer.getParty();
 
-        if (party != null) {
-            if (party.getLeader().equals(playerName)) {
-                if (party.isLocked()) {
-                    player.sendMessage(LocaleLoader.getString("Party.IsLocked"));
-                }
-                else {
-                    party.setLocked(true);
-                    player.sendMessage(LocaleLoader.getString("Party.Locked"));
-                }
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-            }
-        }
-        else {
+        if (party == null) {
             player.sendMessage("Commands.Party.None");
+            return true;
         }
 
+        if (!party.getLeader().equals(playerName)) {
+            player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
+            return true;
+        }
+
+        if (party.isLocked()) {
+            player.sendMessage(LocaleLoader.getString("Party.IsLocked"));
+        }
+        else {
+            party.setLocked(true);
+            player.sendMessage(LocaleLoader.getString("Party.Locked"));
+        }
         return true;
     }
 
@@ -597,24 +600,23 @@ public class PartyCommand implements CommandExecutor {
         String playerName = player.getName();
         Party party = mcMMOPlayer.getParty();
 
-        if (party != null) {
-            if (party.getLeader().equals(playerName)) {
-                if (!party.isLocked()) {
-                    player.sendMessage(LocaleLoader.getString("Party.IsntLocked"));
-                }
-                else {
-                    party.setLocked(false);
-                    player.sendMessage(LocaleLoader.getString("Party.Unlocked"));
-                }
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-            }
-        }
-        else {
+        if (party == null) {
             player.sendMessage("Commands.Party.None");
+            return true;
         }
 
+        if (!party.getLeader().equals(playerName)) {
+            player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
+            return true;
+        }
+
+        if (!party.isLocked()) {
+            player.sendMessage(LocaleLoader.getString("Party.IsntLocked"));
+        }
+        else {
+            party.setLocked(false);
+            player.sendMessage(LocaleLoader.getString("Party.Unlocked"));
+        }
         return true;
     }
 
