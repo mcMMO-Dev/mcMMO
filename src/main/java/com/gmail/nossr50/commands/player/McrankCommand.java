@@ -88,7 +88,7 @@ public class McrankCommand implements CommandExecutor {
         }
     }
 
-    public void flatfileDisplay(CommandSender sender, String playerName) {
+    private void flatfileDisplay(CommandSender sender, String playerName) {
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
 
