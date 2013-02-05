@@ -50,16 +50,24 @@ public class McabilityCommand implements CommandExecutor {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                     return true;
                 }
+
+                sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+                return true;
+            }
+
+            Player player = mcMMOPlayer.getPlayer();
+            profile = mcMMOPlayer.getProfile();
+
+            if (!player.isOnline()) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+                return true;
+            }
+
+            if (profile.getAbilityUse()) {
+                player.sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
             }
             else {
-                profile = mcMMOPlayer.getProfile();
-
-                if (profile.getAbilityUse()) {
-                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
-                }
-                else {
-                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Ability.On"));
-                }
+                player.sendMessage(LocaleLoader.getString("Commands.Ability.On"));
             }
 
             profile.toggleAbilityUse();

@@ -52,8 +52,6 @@ public class McgodCommand implements CommandExecutor {
 
             McMMOPlayer mcMMOPlayer = Users.getPlayer(args[0]);
 
-            // If the mcMMOPlayer doesn't exist, create a temporary profile and
-            // check if it's present in the database. If it's not, abort the process.
             if (mcMMOPlayer == null) {
                 profile = new PlayerProfile(args[0], false);
 
@@ -61,20 +59,24 @@ public class McgodCommand implements CommandExecutor {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                     return true;
                 }
+
+                sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+                return true;
+            }
+
+            profile = mcMMOPlayer.getProfile();
+            Player player = mcMMOPlayer.getPlayer();
+
+            if (!player.isOnline()) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+                return true;
+            }
+
+            if (profile.getGodMode()) {
+                player.sendMessage(LocaleLoader.getString("Commands.GodMode.Disabled"));
             }
             else {
-                profile = mcMMOPlayer.getProfile();
-                Player player = mcMMOPlayer.getPlayer();
-
-                // Check if the player is online before we try to send them a message.
-                if (player.isOnline()) {
-                    if (profile.getGodMode()) {
-                        player.sendMessage(LocaleLoader.getString("Commands.GodMode.Disabled"));
-                    }
-                    else {
-                        player.sendMessage(LocaleLoader.getString("Commands.GodMode.Enabled"));
-                    }
-                }
+                player.sendMessage(LocaleLoader.getString("Commands.GodMode.Enabled"));
             }
 
             profile.toggleGodMode();
