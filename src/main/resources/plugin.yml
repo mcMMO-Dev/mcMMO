@@ -34,8 +34,7 @@ commands:
     mcmmo:
         description: Shows a brief mod description
     mctop:
-        aliases: []
-        description: Shows leader boards for mcMMO
+        description: Show mcMMO leader boards
     mcrank:
         description: Show mcMMO ranking for a player
     addxp:

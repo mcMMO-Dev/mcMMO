@@ -19,74 +19,22 @@ import com.gmail.nossr50.util.Misc;
 public class MctopCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mctop")) {
-            return true;
-        }
-
-        String usage = LocaleLoader.getString("Commands.Usage.2", "mctop", "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]");
-
-        if (!Config.getInstance().getUseMySQL()) {
-            switch (args.length) {
-            case 0:
-                flatfileDisplay(1, "ALL", sender);
-                return true;
-
-            case 1:
-                if (Misc.isInt(args[0])) {
-                    flatfileDisplay(Integer.valueOf(args[0]), "ALL", sender);
-                }
-                else if (SkillTools.isSkill(args[0])) {
-                    flatfileDisplay(1, args[0].toUpperCase(), sender);
-                }
-                else if (SkillTools.isLocalizedSkill(args[0])) {
-                    flatfileDisplay(1, SkillTools.translateLocalizedSkill(args[0]).toUpperCase(), sender);
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
-                }
-
-                return true;
-
-            case 2:
-                if (Misc.isInt(args[1])) {
-                    if (SkillTools.isSkill(args[0])) {
-                        flatfileDisplay(Integer.valueOf(args[1]), args[0].toUpperCase(), sender);
-                    }
-                    else if (SkillTools.isLocalizedSkill(args[0])) {
-                        flatfileDisplay(Integer.valueOf(args[1]), SkillTools.translateLocalizedSkill(args[0]).toUpperCase(), sender);
-                    }
-                    else {
-                        sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
-                    }
-                }
-                else {
-                    sender.sendMessage(usage);
-                }
-
-                return true;
-
-            default:
-                sender.sendMessage(usage);
-                return true;
-            }
-        }
-
-        String powerlevel = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing";
+        boolean useMySQL = Config.getInstance().getUseMySQL();
 
         switch (args.length) {
         case 0:
-            sqlDisplay(1, powerlevel, sender);
+            display(1, "ALL", sender, useMySQL);
             return true;
 
         case 1:
             if (Misc.isInt(args[0])) {
-                sqlDisplay(Integer.valueOf(args[0]), powerlevel, sender);
+                display(Integer.valueOf(args[0]), "ALL", sender, useMySQL);
             }
             else if (SkillTools.isSkill(args[0])) {
-                sqlDisplay(1, args[0].toLowerCase(), sender);
+                display(1, args[0], sender, useMySQL);
             }
             else if (SkillTools.isLocalizedSkill(args[0])) {
-                sqlDisplay(1, SkillTools.translateLocalizedSkill(args[0]).toLowerCase(), sender);
+                display(1, SkillTools.translateLocalizedSkill(args[0]), sender, useMySQL);
             }
             else {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
@@ -95,26 +43,38 @@ public class MctopCommand implements CommandExecutor {
             return true;
 
         case 2:
-            if (Misc.isInt(args[1])) {
-                if (SkillTools.isSkill(args[0])) {
-                    sqlDisplay(Integer.valueOf(args[1]), args[0].toLowerCase(), sender);
-                }
-                else if (SkillTools.isLocalizedSkill(args[0])) {
-                    sqlDisplay(Integer.valueOf(args[1]), SkillTools.translateLocalizedSkill(args[0]).toLowerCase(), sender);
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
-                }
+            if (!Misc.isInt(args[1])) {
+                return false;
+            }
+
+            if (SkillTools.isSkill(args[0])) {
+                display(Integer.valueOf(args[1]), args[0], sender, useMySQL);
+            }
+            else if (SkillTools.isLocalizedSkill(args[0])) {
+                display(Integer.valueOf(args[1]), SkillTools.translateLocalizedSkill(args[0]), sender, useMySQL);
             }
             else {
-                sender.sendMessage(usage);
+                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
             }
 
             return true;
 
         default:
-            sender.sendMessage(usage);
-            return true;
+            return false;
+        }
+    }
+
+    private void display(int page, String skill, CommandSender sender, boolean sql) {
+        if (sql) {
+            if (skill.equalsIgnoreCase("all")) {
+                sqlDisplay(page, "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing", sender);
+            }
+            else {
+                sqlDisplay(page, skill, sender);
+            }
+        }
+        else {
+            flatfileDisplay(page, skill, sender);
         }
     }
 
@@ -169,11 +129,14 @@ public class MctopCommand implements CommandExecutor {
         else {
             sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", Misc.getCapitalized(query)));
         }
+
         int place = (page * 10) - 9;
         for (int i = 1; i <= 10; i++) {
-            if(userslist.get(i) == null) {
+            if (userslist.get(i) == null) {
                 break;
             }
+
+         // Format: 1. Playername - skill value
             sender.sendMessage(String.valueOf(place) + ". " + ChatColor.GREEN + userslist.get(i).get(1) + " - " + ChatColor.WHITE + userslist.get(i).get(0));
             place++;
         }

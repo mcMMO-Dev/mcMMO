@@ -18,6 +18,7 @@ import com.gmail.nossr50.commands.player.McabilityCommand;
 import com.gmail.nossr50.commands.player.McmmoCommand;
 import com.gmail.nossr50.commands.player.McrankCommand;
 import com.gmail.nossr50.commands.player.McstatsCommand;
+import com.gmail.nossr50.commands.player.MctopCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
@@ -241,5 +242,14 @@ public final class CommandRegistrationHelper {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcstats"));
         command.setExecutor(new McstatsCommand());
+    }
+
+    public static void registerMctopCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mctop");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mctop"));
+        command.setPermission("mcmmo.commands.mctop"); // Only need the main one, not the individual skill ones
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.2", "mctop", "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
+        command.setExecutor(new MctopCommand());
     }
 }
