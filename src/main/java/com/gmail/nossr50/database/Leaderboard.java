@@ -352,13 +352,19 @@ public final class Leaderboard {
 
                 /* Write out the same file but when we get to the player we want to remove, we skip his line. */
                 String[] splitLine = line.split(":");
-                if (splitLine.length > 37 && currentTime - (Misc.getLong(line.split(":")[37]) * 1000) <= purgeTime) {
-                    writer.append(line).append("\r\n");
+
+                if (splitLine.length > 37) {
+                    if (currentTime - (Misc.getLong(line.split(":")[37]) * 1000) <= purgeTime) {
+                        writer.append(line).append("\r\n");
+                    }
+                    else {
+                        System.out.println("User found, removing...");
+                        removedPlayers++;
+                        continue; //Skip the player
+                    }
                 }
                 else {
-                    System.out.println("User found, removing...");
-                    removedPlayers++;
-                    continue; //Skip the player
+                    writer.append(line).append("\r\n");
                 }
             }
 
