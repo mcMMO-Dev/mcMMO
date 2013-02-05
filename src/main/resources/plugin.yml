@@ -37,8 +37,7 @@ commands:
         aliases: []
         description: Shows leader boards for mcMMO
     mcrank:
-        aliases: []
-        description: Show your individual ranking in mcMMO
+        description: Show mcMMO ranking for a player
     addxp:
         description: Add mcMMO XP to a user
     addlevels:

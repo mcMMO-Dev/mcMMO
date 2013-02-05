@@ -7,9 +7,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.McRankAsync;
 import com.gmail.nossr50.skills.utilities.SkillTools;
@@ -22,62 +22,70 @@ import com.gmail.nossr50.util.Users;
 public class McrankCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        // TODO: Better input handling, add usage string
-        if (!Config.getInstance().getUseMySQL()) {
-            Leaderboard.updateLeaderboards(); // Make sure the information is up to date
-        }
-
-        if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
-        }
-
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcrank")) {
-            return true;
-        }
-
-        Player player = (Player) sender;
-        String playerName;
-
         switch (args.length) {
         case 0:
-            playerName = player.getName();
-            break;
-
-        case 1:
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mcrank.others")) {
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.mcrank")) {
+                sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
 
-            playerName = args[0];
-            McMMOPlayer mcmmoPlayer = Users.getPlayer(playerName);
+            if (!(sender instanceof Player)) {
+                return false;
+            }
 
-            if (mcmmoPlayer != null) {
-                Player target = mcmmoPlayer.getPlayer();
+            if (Config.getInstance().getUseMySQL()) {
+                sqlDisplay(sender, sender.getName());
+            }
+            else {
+                Leaderboard.updateLeaderboards(); // Make sure the information is up to date
+                flatfileDisplay(sender, sender.getName());
+            }
+
+            return true;
+
+        case 1:
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.mcrank.others")) {
+                sender.sendMessage(command.getPermissionMessage());
+                return true;
+            }
+
+            McMMOPlayer mcMMOPlayer = Users.getPlayer(args[0]);
+
+            if (mcMMOPlayer == null) {
+                PlayerProfile profile = new PlayerProfile(args[0], false); //Temporary Profile
+
+                if (!profile.isLoaded()) {
+                    sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                    return true;
+                }
+
+                if (sender instanceof Player && !!Permissions.hasPermission(sender, "mcmmo.commands.mcrank.others.offline")) {
+                    sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
+                    return true;
+                }
+            }
+            else {
+                Player target = mcMMOPlayer.getPlayer();
 
                 if (sender instanceof Player && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), 5.0) && !Permissions.hasPermission(sender, "mcmmo.commands.mcrank.others.far")) {
                     sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
                     return true;
                 }
             }
-            else if (sender instanceof Player && !Permissions.hasPermission(sender, "mcmmo.commands.mcrank.others.offline")) {
-                sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
-                return true;
+
+            if (Config.getInstance().getUseMySQL()) {
+                sqlDisplay(sender, args[0]);
+            }
+            else {
+                Leaderboard.updateLeaderboards(); // Make sure the information is up to date
+                flatfileDisplay(sender, args[0]);
             }
 
-            break;
+            return true;
 
         default:
             return false;
         }
-
-        if (Config.getInstance().getUseMySQL()) {
-            sqlDisplay(sender, playerName);
-        }
-        else {
-            flatfileDisplay(sender, playerName);
-        }
-
-        return true;
     }
 
     public void flatfileDisplay(CommandSender sender, String playerName) {
