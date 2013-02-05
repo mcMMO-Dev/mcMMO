@@ -243,6 +243,7 @@ public final class CommandRegistrationHelper {
         command.setPermission("mcmmo.commands.mcstats");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcstats"));
+        command.setAliases(aliasList);
         command.setExecutor(new McstatsCommand());
     }
 

@@ -2,6 +2,7 @@ package com.gmail.nossr50.database.runnables;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
+import com.gmail.nossr50.database.Leaderboard;
 
 public class UserPurgeTask implements Runnable {
     @Override
@@ -14,7 +15,11 @@ public class UserPurgeTask implements Runnable {
             }
         }
         else {
-            //TODO: Make this work for Flatfile data.
+            Leaderboard.purgePowerlessFlatfile();
+
+            if (Config.getInstance().getOldUsersCutoff() != -1) {
+                Leaderboard.purgeOldFlatfile();
+            }
         }
     }
 }

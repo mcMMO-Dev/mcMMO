@@ -170,6 +170,19 @@ public final class Misc {
     }
 
     /**
+     * Gets the long represented by this string.
+     *
+     * @param string The string to parse
+     * @return the long represented by this string
+     */
+    public static long getLong(String string) {
+        if (isLong(string)) {
+            return Long.parseLong(string);
+        }
+
+        return 0;
+    }
+    /**
      * Checks to see if an entity is currently invincible.
      *
      * @param le The LivingEntity to check
@@ -280,6 +293,22 @@ public final class Misc {
     public static boolean isInt(String string) {
         try {
             Integer.parseInt(string);
+            return true;
+        }
+        catch (NumberFormatException nFE) {
+            return false;
+        }
+    }
+
+    /**
+     * Determine if a string represents a Long
+     *
+     * @param string String to check
+     * @return true if the string is a Long, false otherwise
+     */
+    public static boolean isLong(String string) {
+        try {
+            Long.parseLong(string);
             return true;
         }
         catch (NumberFormatException nFE) {

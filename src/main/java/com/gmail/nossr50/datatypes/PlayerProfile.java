@@ -395,6 +395,7 @@ public class PlayerProfile {
                         writer.append(skills.get(SkillType.FISHING)).append(":");
                         writer.append(skillsXp.get(SkillType.FISHING)).append(":");
                         writer.append(String.valueOf(skillsDATS.get(AbilityType.BLAST_MINING))).append(":");
+                        writer.append(String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)).append(":");
                         writer.append("\r\n");
                     }
                 }
@@ -455,6 +456,7 @@ public class PlayerProfile {
             out.append("0:"); // Fishing
             out.append("0:"); // FishingXp
             out.append("0:"); // Blast Mining
+            out.append(String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)).append(":"); //LastLogin
 
             // Add more in the same format as the line above
 

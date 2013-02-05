@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
+import com.gmail.nossr50.database.Leaderboard;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class McpurgeCommand implements CommandExecutor{
@@ -21,7 +22,11 @@ public class McpurgeCommand implements CommandExecutor{
                 }
             }
             else {
-                //TODO: Make this work for Flatfile data.
+                Leaderboard.purgePowerlessFlatfile();
+
+                if (Config.getInstance().getOldUsersCutoff() != -1) {
+                    Leaderboard.purgeOldFlatfile();
+                }
             }
 
             sender.sendMessage(LocaleLoader.getString("Commands.mcpurge.Success"));

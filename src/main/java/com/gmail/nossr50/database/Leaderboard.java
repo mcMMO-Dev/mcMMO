@@ -2,15 +2,22 @@ package com.gmail.nossr50.database;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Bukkit;
+
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Users;
 
 public final class Leaderboard {
     private static HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
@@ -252,4 +259,143 @@ public final class Leaderboard {
             return (o2.statVal - o1.statVal);
         }
     }
+
+    public static boolean removeFlatFileUser(String playerName) {
+        boolean worked = false;
+
+        BufferedReader in = null;
+        FileWriter out = null;
+        String usersFilePath = mcMMO.getUsersFilePath();
+
+        try {
+            FileReader file = new FileReader(usersFilePath);
+            in = new BufferedReader(file);
+            StringBuilder writer = new StringBuilder();
+            String line = "";
+
+            while ((line = in.readLine()) != null) {
+
+                /* Write out the same file but when we get to the player we want to remove, we skip his line. */
+                if (!line.split(":")[0].equalsIgnoreCase(playerName)) {
+                    writer.append(line).append("\r\n");
+                }
+                else {
+                    System.out.println("User found, removing...");
+                    worked = true;
+                    continue; //Skip the player
+                }
+            }
+
+            out = new FileWriter(usersFilePath); //Write out the new file
+            out.write(writer.toString());
+        }
+        catch (Exception e) {
+            mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+        }
+        finally {
+            if (in != null) {
+                try {
+                    in.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            if (out != null) {
+                try {
+                    out.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return worked;
+    }
+
+    
+    public static void purgePowerlessFlatfile() {
+        mcMMO.p.getLogger().info("Purging powerless users...");
+
+        int purgedUsers = 0;
+        for (McMMOPlayer player : Users.getPlayers().values()) {
+            String playerName = player.getPlayer().getName();
+
+            if (playerName == null || Bukkit.getOfflinePlayer(playerName).isOnline()) {
+                continue;
+            }
+
+            if (getPlayerRank(playerName)[1] == 0 && removeFlatFileUser(playerName)) {
+                purgedUsers++;
+            }
+        }
+
+        mcMMO.p.getLogger().info("Purged " + purgedUsers + " users from the database.");
+    }
+
+    public static void purgeOldFlatfile() {
+        mcMMO.p.getLogger().info("Purging old users...");
+        int purgedUsers = removeOldFlatfileUsers();
+        mcMMO.p.getLogger().info("Purged " + purgedUsers + " users from the database.");
+    }
+
+    private static int removeOldFlatfileUsers() {
+        int removedPlayers = 0;
+        long currentTime = System.currentTimeMillis();
+        long purgeTime = 2630000000L * Config.getInstance().getOldUsersCutoff();
+
+        BufferedReader in = null;
+        FileWriter out = null;
+        String usersFilePath = mcMMO.getUsersFilePath();
+
+        try {
+            FileReader file = new FileReader(usersFilePath);
+            in = new BufferedReader(file);
+            StringBuilder writer = new StringBuilder();
+            String line = "";
+
+            while ((line = in.readLine()) != null) {
+
+                /* Write out the same file but when we get to the player we want to remove, we skip his line. */
+                if (currentTime - (Misc.getLong(line.split(":")[37]) * 1000) <= purgeTime) {
+                    writer.append(line).append("\r\n");
+                }
+                else {
+                    System.out.println("User found, removing...");
+                    removedPlayers++;
+                    continue; //Skip the player
+                }
+            }
+
+            out = new FileWriter(usersFilePath); //Write out the new file
+            out.write(writer.toString());
+        }
+        catch (Exception e) {
+            mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+        }
+        finally {
+            if (in != null) {
+                try {
+                    in.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            if (out != null) {
+                try {
+                    out.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+
+        return removedPlayers;
+    }
+
 }
