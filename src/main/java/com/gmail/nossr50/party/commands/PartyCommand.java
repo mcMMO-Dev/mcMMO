@@ -214,7 +214,7 @@ public class PartyCommand implements CommandExecutor {
         Party targetParty = mcMMOTarget.getParty();
 
         // Check to see if the party exists, and if it does, can the player join it?
-        if (targetParty != null && !PartyManager.checkJoinability(player, targetParty, null)) {
+        if (targetParty == null || !PartyManager.checkJoinability(player, targetParty, null)) {
             return true; // End before any event is fired.
         }
 
