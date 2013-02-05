@@ -11,9 +11,9 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
+import com.gmail.nossr50.database.Leaderboard;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Misc;
 
 public class MctopCommand implements CommandExecutor {

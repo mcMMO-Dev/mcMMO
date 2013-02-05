@@ -1,4 +1,4 @@
-package com.gmail.nossr50.util;
+package com.gmail.nossr50.database;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.PlayerStat;
 import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.Misc;
 
 public final class Leaderboard {
     private static HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();

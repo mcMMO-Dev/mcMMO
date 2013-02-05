@@ -30,6 +30,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.database.Database;
+import com.gmail.nossr50.database.Leaderboard;
 import com.gmail.nossr50.database.commands.McremoveCommand;
 import com.gmail.nossr50.database.commands.MmoupdateCommand;
 import com.gmail.nossr50.database.runnables.UserPurgeTask;
@@ -60,7 +61,6 @@ import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.spout.commands.MchudCommand;
 import com.gmail.nossr50.spout.commands.XplockCommand;
 import com.gmail.nossr50.util.Anniversary;
-import com.gmail.nossr50.util.Leaderboard;
 import com.gmail.nossr50.util.Users;
 
 public class mcMMO extends JavaPlugin {
