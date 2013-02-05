@@ -35,6 +35,7 @@ Version 1.4.00-dev
  = Fixed bug where all skill guide headers appeared as "Skillname Guide Guide"
  = Fixed bug where Impact was applied incorrectly due to an inverted method call
  = Fixed bug where Impact improperly determined the defender's armor
+ = Fixed a bug which made it impossible to join other players' parties
  = Fixed ArrayIndexOutOfBoundsException resulting from being unranked in a skill when using FlatFile
  = Fixed Woodcutting accidentally using Mining double drop values.
  = Fixed Hylian Luck not removing the block-placed flag from flowers.

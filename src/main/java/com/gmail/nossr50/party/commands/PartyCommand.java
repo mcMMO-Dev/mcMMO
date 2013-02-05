@@ -186,7 +186,9 @@ public class PartyCommand implements CommandExecutor {
             return false;
         }
 
-        if (!mcMMOPlayer.inParty()) {
+        McMMOPlayer mcMMOTarget = Users.getPlayer(target);
+
+        if (!mcMMOTarget.inParty()) {
             player.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", args[1]));
             return false;
         }
@@ -209,7 +211,7 @@ public class PartyCommand implements CommandExecutor {
             password = args[2];
         }
 
-        Party targetParty = Users.getPlayer(target).getParty();
+        Party targetParty = mcMMOTarget.getParty();
 
         // Check to see if the party exists, and if it does, can the player join it?
         if (targetParty != null && !PartyManager.checkJoinability(player, targetParty, null)) {
