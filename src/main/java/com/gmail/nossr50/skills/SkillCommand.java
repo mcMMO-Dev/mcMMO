@@ -74,9 +74,7 @@ public abstract class SkillCommand implements CommandExecutor {
 
         statsDisplay();
 
-        SkillGuide.grabGuidePageForSkill(skill, player, args);
-
-        return true;
+        return SkillGuide.grabGuidePageForSkill(skill, player, args);
     }
 
     protected String calculateRank(int maxLevel, int rankChangeLevel) {

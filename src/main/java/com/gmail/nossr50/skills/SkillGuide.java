@@ -55,44 +55,55 @@ public final class SkillGuide {
         }
     }
 
-    public static void grabGuidePageForSkill(SkillType skilltype, Player player, String[] args) {
+    public static boolean grabGuidePageForSkill(SkillType skilltype, Player player, String[] args) {
         String skillName = skilltype.toString();
         String capitalized = Misc.getCapitalized(skillName);
         String localized = SkillTools.localizeSkillName(skilltype);
         player.sendMessage(LocaleLoader.getString("Guides.Available", localized, localized.toLowerCase()));
 
-        if (args.length >= 1 && args[0].equals("?")) {
-            String address = "Guides." + capitalized;
+        String address = "Guides." + capitalized;
+
+        switch (args.length) {
+        case 0:
+            // We have to specify this, otherwise we get the usage string every time we call /skillname...
+            return true;
+
+        case 1:
+            if (!args[0].equals("?")) {
+                return false;
+            }
+
+            SkillGuide.clearChat(player);
+
+            for (String target : SkillGuide.grabPageContents(localized, address, 1)) {
+                player.sendMessage(target);
+            }
+
+            return true;
+
+        case 2:
             int totalPages = SkillGuide.getTotalPageNumber(address);
 
-            if (args.length == 1) {
-                SkillGuide.clearChat(player);
-
-                for (String target : SkillGuide.grabPageContents(localized, address, 1)) {
-                    player.sendMessage(target);
-                }
+            if (!Misc.isInt(args[1])) {
+                player.sendMessage(LocaleLoader.getString("Guides.Page.Invalid"));
+                return true;
             }
-            else {
-                if (!Misc.isInt(args[1])) {
-                    player.sendMessage(LocaleLoader.getString("Guides.Page.Invalid"));
-                }
 
-                if (Misc.getInt(args[1]) <= totalPages) {
-                    SkillGuide.clearChat(player);
-
-                    for (String target : SkillGuide.grabPageContents(localized, address, Misc.getInt(args[1]))) {
-                        player.sendMessage(target);
-                    }
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Guides.Page.OutOfRange", totalPages));
-                }
+            if (Misc.getInt(args[1]) > totalPages) {
+                player.sendMessage(LocaleLoader.getString("Guides.Page.OutOfRange", totalPages));
+                return true;
             }
-        }
 
-        // We have to specify this, else we get the usage string every time we call /skillname...
-        else if (args.length != 0) {
-            player.sendMessage(LocaleLoader.getString("Guides.Usage", localized.toLowerCase()));
+            SkillGuide.clearChat(player);
+
+            for (String target : SkillGuide.grabPageContents(localized, address, Misc.getInt(args[1]))) {
+                player.sendMessage(target);
+            }
+
+            return true;
+
+        default:
+            return false;
         }
     }
 }
