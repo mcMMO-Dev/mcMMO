@@ -569,7 +569,11 @@ public final class CombatTools {
         if (entity instanceof Player) {
             Player defender = (Player) entity;
 
-            if (!defender.getWorld().getPVP() || defender == player || PartyManager.inSameParty(player, defender) || Users.getPlayer(defender).getProfile().getGodMode()) {
+            if (!defender.getWorld().getPVP() || defender == player || Users.getPlayer(defender).getProfile().getGodMode()) {
+                return false;
+            }
+
+            if (PartyManager.inSameParty(player, defender) && !Config.getInstance().getPartyFriendlyFire()) {
                 return false;
             }
 
@@ -582,7 +586,7 @@ public final class CombatTools {
             }
         }
         else if (entity instanceof Tameable) {
-            if (Misc.isFriendlyPet(player, (Tameable) entity)) {
+            if (Misc.isFriendlyPet(player, (Tameable) entity) && !Config.getInstance().getPartyFriendlyFire()) {
                 return false;
             }
         }

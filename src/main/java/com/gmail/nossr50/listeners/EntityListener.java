@@ -27,6 +27,7 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
@@ -111,7 +112,7 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            if (attacker instanceof Player && PartyManager.inSameParty(defendingPlayer, (Player) attacker)) {
+            if (attacker instanceof Player && PartyManager.inSameParty(defendingPlayer, (Player) attacker) && !Config.getInstance().getPartyFriendlyFire()) {
                 event.setCancelled(true);
                 return;
             }

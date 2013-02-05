@@ -82,6 +82,7 @@ public class Config extends ConfigLoader {
     /* PARTY SETTINGS */
     public int getAutoPartyKickInterval() { return config.getInt("Party.AutoKick_Interval", 12); }
     public int getAutoPartyKickTime() { return config.getInt("Party.Old_Party_Member_Cutoff", 7); }
+    public boolean getPartyFriendlyFire() { return config.getBoolean("Party.FriendlyFire_Enabled", false); }
     public boolean getExpShareEnabled() { return config.getBoolean("Party.Sharing.ExpShare_enabled", true); }
     public double getPartyShareBonusBase() { return config.getDouble("Party.Sharing.ExpShare_bonus_base", 1.1); }
     public double getPartyShareBonusIncrease() { return config.getDouble("Party.Sharing.ExpShare_bonus_increase", 0.05); }
