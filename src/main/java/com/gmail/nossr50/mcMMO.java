@@ -13,7 +13,6 @@ import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -104,18 +103,113 @@ public class mcMMO extends JavaPlugin {
     public void onEnable() {
         p = this;
         setupFilePaths();
+        setupSpout();
+        loadConfigFiles();
 
-        // Check for Spout
-        if (getServer().getPluginManager().isPluginEnabled("Spout")) {
-            spoutEnabled = true;
-
-            SpoutConfig.getInstance();
-            SpoutTools.setupSpoutConfigs();
-            SpoutTools.registerCustomEvent();
-            SpoutTools.preCacheFiles();
-            SpoutTools.reloadSpoutPlayers(); // Handle spout players after a /reload
+        if (!Config.getInstance().getUseMySQL()) {
+            Users.loadUsers();
         }
 
+        registerEvents();
+
+        // Setup the leader boards
+        if (Config.getInstance().getUseMySQL()) {
+            // TODO: Why do we have to check for a connection that hasn't be made yet? 
+            Database.checkConnected();
+            Database.createStructure();
+        }
+        else {
+            Leaderboard.updateLeaderboards();
+        }
+
+        for (Player player : getServer().getOnlinePlayers()) {
+            Users.addUser(player); // In case of reload add all users back into PlayerProfile
+        }
+
+        getLogger().info("Version " + getDescription().getVersion() + " is enabled!");
+
+        scheduleTasks();
+        registerCommands();
+        setupMetrics();
+
+        placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
+
+        new MobStoreCleaner(); // Automatically starts and stores itself
+        Anniversary.createAnniversaryFile(); // Create Anniversary files
+    }
+
+    /**
+     * Setup the various storage file paths
+     */
+    private void setupFilePaths() {
+        mcmmo = getFile();
+        mainDirectory = getDataFolder().getPath() + File.separator;
+        flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
+        usersFile = flatFileDirectory + "mcmmo.users";
+        modDirectory = mainDirectory + "ModConfigs" + File.separator;
+    }
+
+    /**
+     * Get profile of the player by name.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param playerName Name of player whose profile to get
+     * @return the PlayerProfile object
+     */
+    public PlayerProfile getPlayerProfile(String playerName) {
+        return Users.getPlayer(playerName).getProfile();
+    }
+
+    /**
+     * Get profile of the player.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player player whose profile to get
+     * @return the PlayerProfile object
+     */
+    public PlayerProfile getPlayerProfile(OfflinePlayer player) {
+        return Users.getPlayer(player.getName()).getProfile();
+    }
+
+    /**
+     * Get profile of the player.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player player whose profile to get
+     * @return the PlayerProfile object
+     */
+    @Deprecated
+    public PlayerProfile getPlayerProfile(Player player) {
+        return Users.getProfile(player);
+    }
+
+    /**
+     * Things to be run when the plugin is disabled.
+     */
+    @Override
+    public void onDisable() {
+        Users.saveAll(); // Make sure to save player information if the server shuts down
+        PartyManager.saveParties();
+        getServer().getScheduler().cancelTasks(this); // This removes our tasks
+        placeStore.saveAll(); // Save our metadata
+        placeStore.cleanUp(); // Cleanup empty metadata stores
+
+        // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
+        try {
+            ZipLibrary.mcMMObackup();
+        }
+        catch (IOException e) {
+            getLogger().severe(e.toString());
+        }
+
+        Anniversary.saveAnniversaryFiles();
+        getLogger().info("Was disabled."); //How informative!
+    }
+
+    private void loadConfigFiles() {
         // Force the loading of config files
         Config configInstance = Config.getInstance();
         TreasuresConfig.getInstance();
@@ -147,11 +241,22 @@ public class mcMMO extends JavaPlugin {
         if (configInstance.getSalvageAnvilId() == configInstance.getRepairAnvilId()) {
             getLogger().warning("Can't use the same itemID for Repair/Salvage Anvils!");
         }
+    }
 
-        if (!configInstance.getUseMySQL()) {
-            Users.loadUsers();
+    private void setupSpout() {
+        // Check for Spout
+        if (getServer().getPluginManager().isPluginEnabled("Spout")) {
+            spoutEnabled = true;
+
+            SpoutConfig.getInstance();
+            SpoutTools.setupSpoutConfigs();
+            SpoutTools.registerCustomEvent();
+            SpoutTools.preCacheFiles();
+            SpoutTools.reloadSpoutPlayers(); // Handle spout players after a /reload
         }
+    }
 
+    private void registerEvents() {
         PluginManager pluginManager = getServer().getPluginManager();
 
         // Register events
@@ -161,32 +266,54 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(inventoryListener, this);
         pluginManager.registerEvents(worldListener, this);
 
-        if (configInstance.getHardcoreEnabled()) {
+        if (Config.getInstance().getHardcoreEnabled()) {
             pluginManager.registerEvents(hardcoreListener, this);
         }
+    }
 
-        PluginDescriptionFile pdfFile = getDescription();
+    /**
+     * Register the commands.
+     */
+    private void registerCommands() {
+        CommandRegistrationHelper.registerSkillCommands();
 
-        // Setup the leader boards
-        if (configInstance.getUseMySQL()) {
-            // TODO: Why do we have to check for a connection that hasn't be made yet? 
-            Database.checkConnected();
-            Database.createStructure();
-        }
-        else {
-            Leaderboard.updateLeaderboards();
-        }
+        // mc* commands
+        getCommand("mcpurge").setExecutor(new McpurgeCommand());
+        getCommand("mcremove").setExecutor(new McremoveCommand());
+        CommandRegistrationHelper.registerMcabilityCommand();
+        getCommand("mcc").setExecutor(new MccCommand());
+        CommandRegistrationHelper.registerMcgodCommand();
+        CommandRegistrationHelper.registerMcmmoCommand();
+        CommandRegistrationHelper.registerMcrefreshCommand();
+        getCommand("mctop").setExecutor(new MctopCommand());
+        CommandRegistrationHelper.registerMcrankCommand();
+        CommandRegistrationHelper.registerMcstatsCommand();
 
-        for (Player player : getServer().getOnlinePlayers()) {
-            Users.addUser(player); // In case of reload add all users back into PlayerProfile
-        }
+        // Party commands
+        getCommand("a").setExecutor(new ACommand());
+        getCommand("party").setExecutor(new PartyCommand());
+        getCommand("p").setExecutor(new PCommand(this));
+        getCommand("ptp").setExecutor(new PtpCommand(this));
 
-        getLogger().info("Version " + pdfFile.getVersion() + " is enabled!");
+        // Other commands
+        CommandRegistrationHelper.registerAddxpCommand();
+        CommandRegistrationHelper.registerAddlevelsCommand();
+        CommandRegistrationHelper.registerMmoeditCommand();
+        CommandRegistrationHelper.registerInspectCommand();
+        CommandRegistrationHelper.registerXprateCommand();
+        getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
+        CommandRegistrationHelper.registerSkillresetCommand();
 
+        // Spout commands
+        getCommand("xplock").setExecutor(new XplockCommand());
+        getCommand("mchud").setExecutor(new MchudCommand());
+    }
+
+    private void scheduleTasks() {
         BukkitScheduler scheduler = getServer().getScheduler();
 
         // Periodic save timer (Saves every 10 minutes by default)
-        scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(), 0, configInstance.getSaveInterval() * 1200);
+        scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(), 0, Config.getInstance().getSaveInterval() * 1200L);
         // Regen & Cooldown timer (Runs every second)
         scheduler.scheduleSyncRepeatingTask(this, new SkillMonitor(), 0, 20);
         // Bleed timer (Runs every two seconds)
@@ -211,17 +338,17 @@ public class mcMMO extends JavaPlugin {
         else if (kickInterval > 0) {
             scheduler.scheduleSyncRepeatingTask(this, new PartyAutoKick(), 0, kickInterval * 60L * 60L * 20L);
         }
+    }
 
-        registerCommands();
-
-        if (configInstance.getStatsTrackingEnabled()) {
+    private void setupMetrics() {
+        if (Config.getInstance().getStatsTrackingEnabled()) {
             try {
                 Metrics metrics = new Metrics(this);
 
                 // Timings Graph
                 Graph timingsGraph = metrics.createGraph("Percentage of servers using timings");
 
-                if (pluginManager.useTimings()) {
+                if (getServer().getPluginManager().useTimings()) {
                     timingsGraph.addPlotter(new Metrics.Plotter("Enabled") {
                         @Override
                         public int getValue() {
@@ -251,8 +378,7 @@ public class mcMMO extends JavaPlugin {
                 BufferedReader br = new BufferedReader(isr);
                 char[] key = new char[32];
                 br.read(key);
-                if (officialKey.equals(String.valueOf(key)))
-                {
+                if (officialKey.equals(String.valueOf(key))) {
                     isOfficialBuild = true;
                 }
 
@@ -328,7 +454,7 @@ public class mcMMO extends JavaPlugin {
                 // Storage method Graph
                 Graph storageGraph = metrics.createGraph("Storage method");
 
-                if (configInstance.getUseMySQL()) {
+                if (Config.getInstance().getUseMySQL()) {
                     storageGraph.addPlotter(new Metrics.Plotter("SQL") {
                         @Override
                         public int getValue() {
@@ -351,122 +477,7 @@ public class mcMMO extends JavaPlugin {
                 System.out.println("Failed to submit stats.");
             }
         }
-
-        placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
-
-        new MobStoreCleaner(); // Automatically starts and stores itself
-        Anniversary.createAnniversaryFile(); // Create Anniversary files
     }
-
-    /**
-     * Setup the various storage file paths
-     */
-    public void setupFilePaths() {
-        mcmmo = getFile();
-        mainDirectory = getDataFolder().getPath() + File.separator;
-        flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
-        usersFile = flatFileDirectory + "mcmmo.users";
-        modDirectory = mainDirectory + "ModConfigs" + File.separator;
-    }
-
-    /**
-     * Get profile of the player by name.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param playerName Name of player whose profile to get
-     * @return the PlayerProfile object
-     */
-    public PlayerProfile getPlayerProfile(String playerName) {
-        return Users.getPlayer(playerName).getProfile();
-    }
-
-    /**
-     * Get profile of the player.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player player whose profile to get
-     * @return the PlayerProfile object
-     */
-    public PlayerProfile getPlayerProfile(OfflinePlayer player) {
-        return Users.getPlayer(player.getName()).getProfile();
-    }
-
-    /**
-     * Get profile of the player.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player player whose profile to get
-     * @return the PlayerProfile object
-     */
-    @Deprecated
-    public PlayerProfile getPlayerProfile(Player player) {
-        return Users.getProfile(player);
-    }
-
-    /**
-     * Things to be run when the plugin is disabled.
-     */
-    @Override
-    public void onDisable() {
-        Users.saveAll(); // Make sure to save player information if the server shuts down
-        PartyManager.saveParties();
-        getServer().getScheduler().cancelTasks(this); // This removes our tasks
-        placeStore.saveAll(); // Save our metadata
-        placeStore.cleanUp(); // Cleanup empty metadata stores
-
-        // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
-        try {
-            ZipLibrary.mcMMObackup();
-        }
-        catch (IOException e) {
-            getLogger().severe(e.toString());
-        }
-
-        Anniversary.saveAnniversaryFiles();
-        getLogger().info("Was disabled."); //How informative!
-    }
-
-    /**
-     * Register the commands.
-     */
-    private void registerCommands() {
-        CommandRegistrationHelper.registerSkillCommands();
-
-        // mc* commands
-        getCommand("mcpurge").setExecutor(new McpurgeCommand());
-        getCommand("mcremove").setExecutor(new McremoveCommand());
-        CommandRegistrationHelper.registerMcabilityCommand();
-        getCommand("mcc").setExecutor(new MccCommand());
-        CommandRegistrationHelper.registerMcgodCommand();
-        CommandRegistrationHelper.registerMcmmoCommand();
-        CommandRegistrationHelper.registerMcrefreshCommand();
-        getCommand("mctop").setExecutor(new MctopCommand());
-        CommandRegistrationHelper.registerMcrankCommand();
-        CommandRegistrationHelper.registerMcstatsCommand();
-
-        // Party commands
-        getCommand("a").setExecutor(new ACommand());
-        getCommand("party").setExecutor(new PartyCommand());
-        getCommand("p").setExecutor(new PCommand(this));
-        getCommand("ptp").setExecutor(new PtpCommand(this));
-
-        // Other commands
-        CommandRegistrationHelper.registerAddxpCommand();
-        CommandRegistrationHelper.registerAddlevelsCommand();
-        CommandRegistrationHelper.registerMmoeditCommand();
-        CommandRegistrationHelper.registerInspectCommand();
-        CommandRegistrationHelper.registerXprateCommand();
-        getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
-        CommandRegistrationHelper.registerSkillresetCommand();
-
-        // Spout commands
-        getCommand("xplock").setExecutor(new XplockCommand());
-        getCommand("mchud").setExecutor(new MchudCommand());
-    }
-
     /**
      * Add a set of values to the TNT tracker.
      *
