@@ -30,7 +30,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.database.Database;
-import com.gmail.nossr50.database.commands.McpurgeCommand;
 import com.gmail.nossr50.database.commands.McremoveCommand;
 import com.gmail.nossr50.database.commands.MmoupdateCommand;
 import com.gmail.nossr50.database.runnables.UserPurgeTask;
@@ -277,7 +276,7 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationHelper.registerSkillCommands();
 
         // mc* commands
-        getCommand("mcpurge").setExecutor(new McpurgeCommand());
+        CommandRegistrationHelper.registerMcpurgeCommand();
         getCommand("mcremove").setExecutor(new McremoveCommand());
         CommandRegistrationHelper.registerMcabilityCommand();
         getCommand("mcc").setExecutor(new MccCommand());

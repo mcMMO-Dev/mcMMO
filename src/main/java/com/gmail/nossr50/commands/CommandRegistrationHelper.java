@@ -19,6 +19,8 @@ import com.gmail.nossr50.commands.player.McmmoCommand;
 import com.gmail.nossr50.commands.player.McrankCommand;
 import com.gmail.nossr50.commands.player.McstatsCommand;
 import com.gmail.nossr50.commands.player.MctopCommand;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.database.commands.McpurgeCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
@@ -251,5 +253,14 @@ public final class CommandRegistrationHelper {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.2", "mctop", "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
         command.setExecutor(new MctopCommand());
+    }
+
+    public static void registerMcpurgeCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mcpurge");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcpurge", Config.getInstance().getOldUsersCutoff()));
+        command.setPermission("mcmmo.commands.mcpurge");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcpurge"));
+        command.setExecutor(new McpurgeCommand());
     }
 }
