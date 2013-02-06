@@ -29,7 +29,7 @@ public final class Motd {
      * @param version Plugin version
      */
     public static void displayVersion(Player player, String version) {
-        player.sendMessage(LocaleLoader.getString("MOTD.Version", -213523435 , version));
+        player.sendMessage(LocaleLoader.getString("MOTD.Version", version));
     }
 
     /**
