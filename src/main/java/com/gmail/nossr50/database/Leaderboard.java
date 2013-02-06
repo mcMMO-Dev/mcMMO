@@ -49,6 +49,7 @@ public final class Leaderboard {
         unarmed = new ArrayList<PlayerStat>();
         taming = new ArrayList<PlayerStat>();
         fishing = new ArrayList<PlayerStat>();
+        powerLevels = new ArrayList<PlayerStat>();
 
         //Read from the FlatFile database and fill our arrays with information
         try {
