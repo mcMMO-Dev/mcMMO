@@ -546,29 +546,14 @@ permissions:
         children:
             mcmmo.commands.all: true
     mcmmo.commands.all:
+        default: false
         description: Implies all mcmmo.commands permissions.
         children:
-            mcmmo.commands.addlevels: true
-            mcmmo.commands.addlevels.others: true
-            mcmmo.commands.addxp: true
-            mcmmo.commands.addxp.others: true
             mcmmo.commands.defaults: true
-            mcmmo.commands.inspect.far: true
-            mcmmo.commands.inspect.offline: true
-            mcmmo.commands.mcability.others: true
-            mcmmo.commands.mcgod: true
-            mcmmo.commands.mcgod.others: true
+            mcmmo.commands.defaultsop: true
             mcmmo.commands.mcpurge: true
-            mcmmo.commands.mcrank.others.all: true
-            mcmmo.commands.mcrefresh: true
-            mcmmo.commands.mcrefresh.others: true
             mcmmo.commands.mcremove: true
-            mcmmo.commands.mmoedit: true
-            mcmmo.commands.mmoedit.others: true
             mcmmo.commands.mmoupdate: true
-            mcmmo.commands.ptp.world.all: true
-            mcmmo.commands.skillreset.all: true
-            mcmmo.commands.xprate: true
     mcmmo.commands.defaults:
         description: Implies all default mcmmo.commands permissions.
         children:
@@ -599,6 +584,27 @@ permissions:
             mcmmo.commands.unarmed: true
             mcmmo.commands.woodcutting: true
             mcmmo.commands.xplock.all: true
+    mcmmo.commands.defaultsop:
+        description: Implies all default op mcmmo.commands permissions.
+        children:
+            mcmmo.commands.addlevels: true
+            mcmmo.commands.addlevels.others: true
+            mcmmo.commands.addxp: true
+            mcmmo.commands.addxp.others: true
+            mcmmo.commands.defaults: true
+            mcmmo.commands.inspect.far: true
+            mcmmo.commands.inspect.offline: true
+            mcmmo.commands.mcability.others: true
+            mcmmo.commands.mcgod: true
+            mcmmo.commands.mcgod.others: true
+            mcmmo.commands.mcrank.others.all: true
+            mcmmo.commands.mcrefresh: true
+            mcmmo.commands.mcrefresh.others: true
+            mcmmo.commands.mmoedit: true
+            mcmmo.commands.mmoedit.others: true
+            mcmmo.commands.ptp.world.all: true
+            mcmmo.commands.skillreset.all: true
+            mcmmo.commands.xprate: true
     mcmmo.commands.ability:
         default: false
         description: Allows access to the mcability command
@@ -1018,6 +1024,7 @@ permissions:
         description: mcmmo permissions that default to op
         children:
             mcmmo.chat.adminchat: true
+            mcmmo.commands.defaultsop: true
             mcmmo.tools.all: true
     mcmmo.motd:
         description: Allows access to the motd
