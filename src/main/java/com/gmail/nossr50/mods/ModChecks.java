@@ -1,14 +1,17 @@
 package com.gmail.nossr50.mods;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.mods.config.CustomArmorConfig;
 import com.gmail.nossr50.mods.config.CustomBlocksConfig;
+import com.gmail.nossr50.mods.config.CustomEntityConfig;
 import com.gmail.nossr50.mods.config.CustomToolsConfig;
 import com.gmail.nossr50.mods.datatypes.CustomBlock;
+import com.gmail.nossr50.mods.datatypes.CustomEntity;
 import com.gmail.nossr50.mods.datatypes.CustomItem;
 import com.gmail.nossr50.mods.datatypes.CustomTool;
 
@@ -17,6 +20,7 @@ public final class ModChecks {
     private static boolean customToolsEnabled = configInstance.getToolModsEnabled();
     private static boolean customArmorEnabled = configInstance.getArmorModsEnabled();
     private static boolean customBlocksEnabled = configInstance.getBlockModsEnabled();
+    private static boolean customEntitiesEnabled = configInstance.getEntityModsEnabled();
 
     private ModChecks() {}
 
@@ -62,6 +66,19 @@ public final class ModChecks {
         return null;
     }
 
+    public static CustomEntity getCustomEntity(Entity entity) {
+        if (!CustomEntityConfig.getInstance().customEntityIds.contains(entity.getEntityId()) && !CustomEntityConfig.getInstance().customEntityTypes.contains(entity.getType())) {
+            return null;
+        }
+
+        for (CustomEntity customEntity : CustomEntityConfig.getInstance().customEntities) {
+            if ((customEntity.getEntityID() == entity.getEntityId()) && (customEntity.getEntityType() == entity.getType())) {
+                return customEntity;
+            }
+        }
+
+        return null;
+    }
     /**
      * Check if a custom block is a custom block.
      *
@@ -164,6 +181,14 @@ public final class ModChecks {
      */
     public static boolean isCustomArmor(ItemStack item) {
         if (customArmorEnabled && CustomArmorConfig.getInstance().customArmor.containsKey(item.getTypeId())) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isCustomEntity(Entity entity) {
+        if (customEntitiesEnabled && CustomEntityConfig.getInstance().customEntityIds.contains(entity.getEntityId())) {
             return true;
         }
 

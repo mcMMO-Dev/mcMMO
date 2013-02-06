@@ -26,6 +26,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.acrobatics.Acrobatics;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
@@ -459,7 +460,12 @@ public final class CombatTools {
         }
         else if (!mcMMO.placeStore.isSpawnedMob(target)) {
             if (target instanceof Animals && !mcMMO.placeStore.isSpawnedPet(target)) {
-                baseXP = configInstance.getAnimalsXP();
+                if (ModChecks.isCustomEntity(target)) {
+                    baseXP = ModChecks.getCustomEntity(target).getXpMultiplier();
+                }
+                else {
+                    baseXP = configInstance.getAnimalsXP();
+                }
             }
             else {
                 EntityType type = target.getType();
@@ -546,6 +552,10 @@ public final class CombatTools {
                     break;
 
                 default:
+                    if (ModChecks.isCustomEntity(target)) {
+                        baseXP = ModChecks.getCustomEntity(target).getXpMultiplier();
+                    }
+
                     break;
                 }
             }

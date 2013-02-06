@@ -78,6 +78,7 @@ public class Config extends ConfigLoader {
     public boolean getToolModsEnabled() { return config.getBoolean("Mods.Tool_Mods_Enabled", false); }
     public boolean getArmorModsEnabled() { return config.getBoolean("Mods.Tool_Mods_Enabled", false); }
     public boolean getBlockModsEnabled() { return config.getBoolean("Mods.Block_Mods_Enabled", false); }
+    public boolean getEntityModsEnabled() { return config.getBoolean("Mods.Entity_Mods_Enabled", false); }
 
     /* PARTY SETTINGS */
     public int getAutoPartyKickInterval() { return config.getInt("Party.AutoKick_Interval", 12); }

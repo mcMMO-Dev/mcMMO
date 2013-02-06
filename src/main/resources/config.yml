@@ -55,6 +55,7 @@ Mods:
     Tool_Mods_Enabled: false
     Armor_Mods_Enabled: false
     Block_Mods_Enabled: false
+    Entity_Mods_Enabled: false
 
 #
 #  Settings for Parties

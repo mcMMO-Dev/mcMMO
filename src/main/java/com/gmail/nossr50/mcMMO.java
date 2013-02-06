@@ -43,6 +43,7 @@ import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.mods.config.CustomArmorConfig;
 import com.gmail.nossr50.mods.config.CustomBlocksConfig;
+import com.gmail.nossr50.mods.config.CustomEntityConfig;
 import com.gmail.nossr50.mods.config.CustomToolsConfig;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.commands.PartyCommand;
@@ -227,6 +228,10 @@ public class mcMMO extends JavaPlugin {
 
         if (configInstance.getBlockModsEnabled()) {
             CustomBlocksConfig.getInstance();
+        }
+
+        if (configInstance.getEntityModsEnabled()) {
+            CustomEntityConfig.getInstance();
         }
 
         // Load repair configs, make manager, and register them at this time

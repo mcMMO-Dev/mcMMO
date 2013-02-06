@@ -26,6 +26,7 @@ Version 1.4.00-dev
  + Added particle effect for bleeding
  + Added methods to check if a player is in party or admin chat to the ChatAPI
  + Added /mcpurge functionality for Flatfile users
+ + Added basic support for Mo' Creatures (and other entity mods) - specify mob info in entities.yml
  = Fixed multiple commands not working properly on offline players
  = Fixed /mmoedit not giving feedback when modifying another players stats
  = Fixed the guide usage string showing up every time /skillname was called
