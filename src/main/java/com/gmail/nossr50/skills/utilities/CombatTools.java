@@ -551,6 +551,11 @@ public final class CombatTools {
                     baseXP = configInstance.getZombieXP();
                     break;
 
+                // Temporary workaround for custom entities
+                case UNKNOWN:
+                    baseXP = 1.0;
+                    break;
+
                 default:
                     if (ModChecks.isCustomEntity(target)) {
                         baseXP = ModChecks.getCustomEntity(target).getXpMultiplier();
