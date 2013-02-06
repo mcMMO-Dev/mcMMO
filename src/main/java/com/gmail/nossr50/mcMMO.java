@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
@@ -41,6 +42,7 @@ import com.gmail.nossr50.listeners.HardcoreListener;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.WorldListener;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mods.config.CustomArmorConfig;
 import com.gmail.nossr50.mods.config.CustomBlocksConfig;
 import com.gmail.nossr50.mods.config.CustomEntityConfig;
@@ -473,6 +475,16 @@ public class mcMMO extends JavaPlugin {
                         }
                     });
                 }
+
+                // Locale Graph
+                Graph localeGraph = metrics.createGraph("Locale");
+
+                localeGraph.addPlotter(new Metrics.Plotter(LocaleLoader.getCurrentLocale().getDisplayLanguage(Locale.US)) {
+                    @Override
+                    public int getValue() {
+                        return 1;
+                    }
+                });
 
                 metrics.start();
             }
