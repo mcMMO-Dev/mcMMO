@@ -9,11 +9,6 @@ XP:
         Enabled: true
         X_POS: 78
         Y_POS: 2
-Party:
-    HUD:
-        Show_Faces: true
-        Enabled: true
-        Show_Display_Name: false
 HUD:
     Show_Power_Level: true
     Default: STANDARD
