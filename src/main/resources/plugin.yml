@@ -123,6 +123,7 @@ permissions:
         children:
             mcmmo.ability.all: true
     mcmmo.ability.all:
+        default: false
         description: Implies all mcmmo.ability permissions.
         children:
             mcmmo.ability.acrobatics.all: true
@@ -1018,7 +1019,6 @@ permissions:
         default: true
         description: mcmmo permisions that default to true
         children:
-            mcmmo.ability.all: true
             mcmmo.item.all: true
             mcmmo.motd: true 
             mcmmo.commands.defaults: true
@@ -1208,66 +1208,79 @@ permissions:
     mcmmo.skills.acrobatics:
         description: Allows access to the Acrobatics skill
         children:
+            mcmmo.ability.acrobatics.all: true
             mcmmo.commands.acrobatics: true
             mcmmo.commands.xplock.acrobatics: true
     mcmmo.skills.archery:
         description: Allows access to the Archery skill
         children:
+            mcmmo.ability.archery.all: true
             mcmmo.commands.archery: true
             mcmmo.commands.xplock.archery: true
     mcmmo.skills.axes:
         description: Allows access to the Axes skill
         children:
+            mcmmo.ability.axes.all: true
             mcmmo.commands.axes: true
             mcmmo.commands.xplock.axes: true
     mcmmo.skills.excavation:
         description: Allows access to the Excavation skill
         children:
+            mcmmo.ability.excavation.all: true
             mcmmo.commands.excavation: true
             mcmmo.commands.xplock.excavation: true
     mcmmo.skills.fishing:
         description: Allows access to the Fishing skill
         children:
+            mcmmo.ability.fishing.all: true
             mcmmo.commands.fishing: true
             mcmmo.commands.xplock.fishing: true
     mcmmo.skills.herbalism:
         description: Allows access to the Herbalism skill
         children:
+            mcmmo.ability.herbalism.all: true
             mcmmo.commands.herbalism: true
             mcmmo.commands.xplock.herbalism: true
     mcmmo.skills.mining:
         description: Allows access to the Mining skill
         children:
+            mcmmo.ability.mining.all: true
             mcmmo.commands.mining: true
             mcmmo.commands.xplock.mining: true
     mcmmo.skills.repair:
         description: Allows access to the Repair skill
         children:
+            mcmmo.ability.repair.all: true
             mcmmo.commands.repair: true
             mcmmo.commands.xplock.repair: true
     mcmmo.skills.smelting:
         description: Allows access to the Smelting skill
         children:
+            mcmmo.ability.smelting.all: true
             mcmmo.commands.smelting: true
             mcmmo.commands.xplock.smelting: true
     mcmmo.skills.swords:
         description: Allows access to the Swords skill
         children:
+            mcmmo.ability.swords.all: true
             mcmmo.commands.swords: true
             mcmmo.commands.xplock.swords: true
     mcmmo.skills.taming:
         description: Allows access to the Taming skill
         children:
+            mcmmo.ability.taming.all: true
             mcmmo.commands.taming: true
             mcmmo.commands.xplock.taming: true
     mcmmo.skills.unarmed:
         description: Allows access to the Unarmed skill
         children:
+            mcmmo.ability.unarmed.all: true
             mcmmo.commands.unarmed: true
             mcmmo.commands.xplock.unarmed: true
     mcmmo.skills.woodcutting:
         description: Allows access to the Woodcutting skill
         children:
+            mcmmo.ability.woodcutting.all: true
             mcmmo.commands.woodcutting: true
             mcmmo.commands.xplock.woodcutting: true
     mcmmo.tools.*:
