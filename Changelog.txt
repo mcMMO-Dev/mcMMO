@@ -66,6 +66,7 @@ Version 1.4.00-dev
  ! Changed the way party teleportation works. When using /ptp, the target player needs to confirm the teleport before it takes place. (Configurable)
  ! Changed BeastLore: Now also displays offline player names
  ! Changed backup task to include ALL config files
+ ! Deprecated most functions in ExperienceAPI, replaced them with identical versions that use a String for the SkillName rather than the SkillType enum values
  - Removed Party "master/apprentice" system. Replaced with the new party XP share feature.
  - Removed unused "healthbar" files from the resources
  - Removed config options for disabling commands from the config.yml. This should instead be done through permissions.
