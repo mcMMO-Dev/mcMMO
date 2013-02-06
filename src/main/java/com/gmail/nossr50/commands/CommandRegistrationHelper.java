@@ -22,6 +22,7 @@ import com.gmail.nossr50.commands.player.MctopCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.commands.McpurgeCommand;
 import com.gmail.nossr50.database.commands.McremoveCommand;
+import com.gmail.nossr50.database.commands.MmoupdateCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
@@ -250,10 +251,19 @@ public final class CommandRegistrationHelper {
 
     public static void registerMcremoveCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcremove");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mcremove", Config.getInstance().getOldUsersCutoff()));
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcremove"));
         command.setPermission("mcmmo.commands.mcremove");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcremove", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
         command.setExecutor(new McremoveCommand());
+    }
+
+    public static void registerMmoupdateCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mmoupdate");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mmoupdate"));
+        command.setPermission("mcmmo.commands.mmoupdate");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mmoupdate"));
+        command.setExecutor(new MmoupdateCommand());
     }
 }

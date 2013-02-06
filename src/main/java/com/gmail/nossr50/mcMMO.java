@@ -32,7 +32,6 @@ import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.database.Leaderboard;
-import com.gmail.nossr50.database.commands.MmoupdateCommand;
 import com.gmail.nossr50.database.runnables.UserPurgeTask;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.listeners.BlockListener;
@@ -305,7 +304,7 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationHelper.registerMmoeditCommand();
         CommandRegistrationHelper.registerInspectCommand();
         CommandRegistrationHelper.registerXprateCommand();
-        getCommand("mmoupdate").setExecutor(new MmoupdateCommand());
+        CommandRegistrationHelper.registerMmoupdateCommand();
         CommandRegistrationHelper.registerSkillresetCommand();
 
         // Spout commands

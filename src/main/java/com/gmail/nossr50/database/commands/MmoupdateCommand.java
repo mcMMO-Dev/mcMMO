@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.runnables.SQLConversionTask;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -15,21 +14,22 @@ import com.gmail.nossr50.util.Users;
 public class MmoupdateCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mmoupdate")) {
+        switch (args.length) {
+        case 0:
+            sender.sendMessage(LocaleLoader.getString("Commands.mmoupdate.Start"));
+            Users.clearAll();
+            convertToMySQL();
+
+            for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
+                Users.addUser(player);
+            }
+
+            sender.sendMessage(LocaleLoader.getString("Commands.mmoupdate.Finish"));
             return true;
+
+        default:
+            return false;
         }
-
-        sender.sendMessage(LocaleLoader.getString("Commands.mmoupdate.Start"));
-        Users.clearAll();
-        convertToMySQL();
-
-        for (Player x : mcMMO.p.getServer().getOnlinePlayers()) {
-            Users.addUser(x);
-        }
-
-        sender.sendMessage(LocaleLoader.getString("Commands.mmoupdate.Finish"));
-
-        return true;
     }
 
     /**

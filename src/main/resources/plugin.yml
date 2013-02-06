@@ -63,7 +63,6 @@ commands:
     inspect:
         description: View detailed mcMMO info on another player
     mmoupdate:
-        aliases: []
         description: Convert from Flat File to MySQL
     p:
         aliases: [pc]
