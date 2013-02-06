@@ -255,12 +255,20 @@ public class McMMOPlayer {
         return adminChatMode;
     }
 
+    public void setAdminChat(boolean enabled) {
+        adminChatMode = enabled;
+    }
+
     public void toggleAdminChat() {
         adminChatMode = !adminChatMode;
     }
 
     public boolean getPartyChatMode() {
         return partyChatMode;
+    }
+
+    public void setPartyChat(boolean enabled) {
+        partyChatMode = enabled;
     }
 
     public void togglePartyChat() {

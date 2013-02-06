@@ -7,46 +7,61 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
-import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Users;
 
-public class ACommand implements CommandExecutor {
+public class AdminChatCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         McMMOPlayer mcMMOPlayer;
-        String usage = LocaleLoader.getString("Commands.Usage.1", "a", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">");
-
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.chat.adminchat")) {
-            return true;
-        }
 
         switch (args.length) {
         case 0:
-            if (sender instanceof Player) {
-                mcMMOPlayer = Users.getPlayer((Player) sender);
+            if (!(sender instanceof Player)) {
+                return false;
+            }
 
-                if (mcMMOPlayer.getPartyChatMode()) {
-                    mcMMOPlayer.togglePartyChat();
-                }
+            mcMMOPlayer = Users.getPlayer((Player) sender);
 
-                mcMMOPlayer.toggleAdminChat();
+            // Can't have both party & admin chat at the same time.
+            if (mcMMOPlayer.getPartyChatMode()) {
+                mcMMOPlayer.togglePartyChat();
+            }
 
-                if (mcMMOPlayer.getAdminChatMode()) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.AdminChat.On"));
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.AdminChat.Off"));
-                }
+            mcMMOPlayer.toggleAdminChat();
+
+            if (mcMMOPlayer.getAdminChatMode()) {
+                sender.sendMessage(LocaleLoader.getString("Commands.AdminChat.On"));
             }
             else {
-                sender.sendMessage(usage);
+                sender.sendMessage(LocaleLoader.getString("Commands.AdminChat.Off"));
             }
 
             return true;
 
         default:
+            if (args.length == 1) {
+                if (!(sender instanceof Player)) {
+                    return false;
+                }
+
+                mcMMOPlayer = Users.getPlayer((Player) sender);
+
+                if (args[0].equalsIgnoreCase("on")) {
+                    mcMMOPlayer.setPartyChat(false);
+                    mcMMOPlayer.setAdminChat(true);
+                    sender.sendMessage(LocaleLoader.getString("Commands.AdminChat.On"));
+                    return true;
+                }
+
+                if (args[0].equalsIgnoreCase("off")) {
+                    mcMMOPlayer.setAdminChat(false);
+                    sender.sendMessage(LocaleLoader.getString("Commands.AdminChat.Off"));
+                    return true;
+                }
+            }
+
             StringBuilder builder = new StringBuilder();
             builder.append(args[0]);
 

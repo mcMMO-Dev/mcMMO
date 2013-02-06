@@ -64,8 +64,8 @@ commands:
         description: View detailed mcMMO info on another player
     mmoupdate:
         description: Convert from Flat File to MySQL
-    p:
-        aliases: [pc]
+    partychat:
+        aliases: [pc, p]
         description: Toggle Party chat or send party chat messages
     skillreset:
         description: Reset the level of one or all of your skills
@@ -95,8 +95,8 @@ commands:
         description: Detailed mcMMO skill info
     smelting:
         description: Detailed mcMMO skill info
-    a:
-        aliases: []
+    adminchat:
+        aliases: [ac, a]
         description: Toggle Admin chat or send admin chat messages
     mcpurge:
         description: Purge users with 0 powerlevel and/or who haven't connected in several months from the server DB.

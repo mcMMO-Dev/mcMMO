@@ -22,8 +22,6 @@ import org.mcstats.Metrics.Graph;
 
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
-import com.gmail.nossr50.chat.commands.ACommand;
-import com.gmail.nossr50.chat.commands.PCommand;
 import com.gmail.nossr50.commands.CommandRegistrationHelper;
 import com.gmail.nossr50.commands.player.MccCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -293,9 +291,9 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationHelper.registerMcstatsCommand();
 
         // Party commands
-        getCommand("a").setExecutor(new ACommand());
+        CommandRegistrationHelper.registerAdminChatCommand();
         getCommand("party").setExecutor(new PartyCommand());
-        getCommand("p").setExecutor(new PCommand(this));
+        CommandRegistrationHelper.registerPartyChatCommand();
         getCommand("ptp").setExecutor(new PtpCommand(this));
 
         // Other commands

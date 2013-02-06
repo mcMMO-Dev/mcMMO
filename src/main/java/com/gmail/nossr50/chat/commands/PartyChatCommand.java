@@ -7,60 +7,69 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
-import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Users;
 
-public class PCommand implements CommandExecutor {
-    private final mcMMO plugin;
-
-    public PCommand (mcMMO plugin) {
-        this.plugin = plugin;
-    }
-
+public class PartyChatCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         McMMOPlayer mcMMOPlayer;
-        String usage = LocaleLoader.getString("Commands.Usage.2", "p", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">");
-
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party")) {
-            return true;
-        }
 
         switch (args.length) {
         case 0:
-            if (sender instanceof Player) {
-                mcMMOPlayer = Users.getPlayer((Player) sender);
+            if (!(sender instanceof Player)) {
+                return false;
+            }
 
-                if (mcMMOPlayer.getAdminChatMode()) {
-                    mcMMOPlayer.toggleAdminChat();
-                }
+            mcMMOPlayer = Users.getPlayer((Player) sender);
 
-                mcMMOPlayer.togglePartyChat();
+            // Can't have both party & admin chat at the same time.
+            if (mcMMOPlayer.getAdminChatMode()) {
+                mcMMOPlayer.toggleAdminChat();
+            }
 
-                if (mcMMOPlayer.getPartyChatMode()) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Party.Chat.On"));
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Off"));
-                }
+            mcMMOPlayer.togglePartyChat();
+
+            if (mcMMOPlayer.getPartyChatMode()) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Party.Chat.On"));
             }
             else {
-                sender.sendMessage(usage);
+                sender.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Off"));
             }
 
             return true;
 
         default:
+            if (args.length == 1) {
+                if (!(sender instanceof Player)) {
+                    return false;
+                }
+
+                mcMMOPlayer = Users.getPlayer((Player) sender);
+
+                if (args[0].equalsIgnoreCase("on")) {
+                    mcMMOPlayer.setAdminChat(false);
+                    mcMMOPlayer.setPartyChat(true);
+                    sender.sendMessage(LocaleLoader.getString("Commands.Party.Chat.On"));
+                    return true;
+                }
+
+                if (args[0].equalsIgnoreCase("off")) {
+                    mcMMOPlayer.setPartyChat(false);
+                    sender.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Off"));
+                    return true;
+                }
+            }
+
             if (sender instanceof Player) {
                 Player player = (Player) sender;
                 Party party = Users.getPlayer(player).getParty();
 
                 if (party == null) {
-                    player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                     return true;
                 }
 
@@ -73,11 +82,11 @@ public class PCommand implements CommandExecutor {
                 }
 
                 String message = builder.toString();
-                ChatManager.handlePartyChat(plugin, party, player.getName(), player.getDisplayName(), message);
+                ChatManager.handlePartyChat(mcMMO.p, party, player.getName(), player.getDisplayName(), message);
             }
             else {
                 if (args.length < 2) {
-                    sender.sendMessage(usage);
+                    sender.sendMessage(LocaleLoader.getString("Party.Specify"));
                     return true;
                 }
 
@@ -96,10 +105,10 @@ public class PCommand implements CommandExecutor {
                     builder.append(args[i]);
                 }
 
-                String ssender = LocaleLoader.getString("Commands.Chat.Console");
+                String consoleSender = LocaleLoader.getString("Commands.Chat.Console");
                 String message = builder.toString();
 
-                ChatManager.handlePartyChat(plugin, party, ssender, ssender, message);
+                ChatManager.handlePartyChat(mcMMO.p, party, consoleSender, consoleSender, message);
             }
 
             return true;
