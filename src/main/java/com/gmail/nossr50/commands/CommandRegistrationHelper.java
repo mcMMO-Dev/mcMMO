@@ -49,14 +49,7 @@ public final class CommandRegistrationHelper {
 
             PluginCommand command;
 
-            // Make us play nice with Essentials
-            if (skill == SkillType.REPAIR && mcMMO.p.getServer().getPluginManager().isPluginEnabled("Essentials")) {
-                command = mcMMO.p.getCommand("mcrepair");
-            }
-            else {
-                command = mcMMO.p.getCommand(commandName);
-            }
-
+            command = mcMMO.p.getCommand(commandName);
             command.setDescription(LocaleLoader.getString("Commands.Description.Skill", Misc.getCapitalized(localizedName)));
             command.setPermission("mcmmo.commands." + commandName);
             command.setPermissionMessage(permissionsMessage);
@@ -209,9 +202,6 @@ public final class CommandRegistrationHelper {
     }
 
     public static void registerMcmmoCommand() {
-        List<String> aliasList = new ArrayList<String>();
-        aliasList.add("mcinfo");
-
         PluginCommand command = mcMMO.p.getCommand("mcmmo");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcmmo"));
         command.setPermission("mcmmo.commands.mcmmo");
@@ -231,15 +221,11 @@ public final class CommandRegistrationHelper {
     }
 
     public static void registerMcstatsCommand() {
-        List<String> aliasList = new ArrayList<String>();
-        aliasList.add("stats");
-
         PluginCommand command = mcMMO.p.getCommand("mcstats");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcstats"));
         command.setPermission("mcmmo.commands.mcstats");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcstats"));
-        command.setAliases(aliasList);
         command.setExecutor(new McstatsCommand());
     }
 
