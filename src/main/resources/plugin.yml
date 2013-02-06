@@ -51,7 +51,6 @@ commands:
         aliases: [stats]
         description: Shows your mcMMO stats and xp
     mcremove:
-        aliases: []
         description: Remove a user from the database
     mmoedit:
         description: Edit the mcMMO skill values for a user

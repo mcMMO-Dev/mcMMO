@@ -284,7 +284,7 @@ public class mcMMO extends JavaPlugin {
 
         // mc* commands
         CommandRegistrationHelper.registerMcpurgeCommand();
-        getCommand("mcremove").setExecutor(new McremoveCommand());
+        CommandRegistrationHelper.registerMcremoveCommand();
         CommandRegistrationHelper.registerMcabilityCommand();
         getCommand("mcc").setExecutor(new MccCommand());
         CommandRegistrationHelper.registerMcgodCommand();
