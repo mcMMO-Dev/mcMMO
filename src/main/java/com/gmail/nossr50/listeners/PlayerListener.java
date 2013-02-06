@@ -10,6 +10,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -345,6 +346,34 @@ public class PlayerListener implements Listener {
         else if (mcMMOPlayer.getAdminChatMode()) {
             ChatManager.handleAdminChat(plugin, player.getName(), player.getDisplayName(), event.getMessage());
             event.setCancelled(true);
+        }
+    }
+
+    /**
+     * Handle "ugly" aliasing /skillname commands, since setAliases doesn't work.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerCommandPreprocess(PlayerCommandPreprocessEvent event) {
+        if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
+            String message = event.getMessage();
+            String command = message.substring(1).split(" ")[0];
+            String lowerCaseCommand = command.toLowerCase();
+
+            for (SkillType skill : SkillType.values()) {
+                String commandName = skill.toString().toLowerCase();
+                String localizedName = LocaleLoader.getString(Misc.getCapitalized(commandName) + ".SkillName").toLowerCase();
+
+                if (lowerCaseCommand.equals(localizedName)) {
+                    break;
+                }
+
+                if (lowerCaseCommand.equals(commandName)) {
+                    event.setMessage(message.replace(command, localizedName));
+                    break;
+                }
+            }
         }
     }
 }

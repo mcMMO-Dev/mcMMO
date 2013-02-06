@@ -47,9 +47,6 @@ public final class CommandRegistrationHelper {
             String commandName = skill.toString().toLowerCase();
             String localizedName = LocaleLoader.getString(Misc.getCapitalized(commandName) + ".SkillName").toLowerCase();
 
-            List<String> aliasList = new ArrayList<String>();
-            aliasList.add(localizedName);
-
             PluginCommand command;
 
             // Make us play nice with Essentials
@@ -60,7 +57,6 @@ public final class CommandRegistrationHelper {
                 command = mcMMO.p.getCommand(commandName);
             }
 
-            command.setAliases(aliasList);
             command.setDescription(LocaleLoader.getString("Commands.Description.Skill", Misc.getCapitalized(localizedName)));
             command.setPermission("mcmmo.commands." + commandName);
             command.setPermissionMessage(permissionsMessage);
