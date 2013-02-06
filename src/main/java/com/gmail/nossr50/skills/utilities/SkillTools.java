@@ -28,6 +28,7 @@ public class SkillTools {
 
     public static void handleFoodSkills(Player player, SkillType skill, FoodLevelChangeEvent event, int baseLevel, int maxLevel, int rankChange) {
         int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(skill);
+
         int currentFoodLevel = player.getFoodLevel();
         int newFoodLevel = event.getFoodLevel();
         int foodChange = newFoodLevel - currentFoodLevel;
@@ -38,14 +39,7 @@ public class SkillTools {
             }
         }
 
-        /* Make sure we don't go over the max value */
-        newFoodLevel = currentFoodLevel + foodChange;
-        if (newFoodLevel > 20) {
-            event.setFoodLevel(20);
-        }
-        else {
-            event.setFoodLevel(newFoodLevel);
-        }
+        event.setFoodLevel(currentFoodLevel + foodChange);
     }
 
     /**
