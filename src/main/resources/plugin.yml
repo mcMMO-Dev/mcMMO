@@ -604,7 +604,7 @@ permissions:
             mcmmo.commands.mmoedit.others: true
             mcmmo.commands.ptp.world.all: true
             mcmmo.commands.skillreset.all: true
-            mcmmo.commands.xprate: true
+            mcmmo.commands.xprate.all: true
     mcmmo.commands.ability:
         default: false
         description: Allows access to the mcability command
@@ -636,6 +636,7 @@ permissions:
         children:
             mcmmo.commands.inspect.all: true
     mcmmo.commands.inspect.all:
+        default: false
         description: Implies access to all mcmmo.commands.inspect permissions
         children:
             mcmmo.commands.inspect: true
@@ -662,6 +663,7 @@ permissions:
     mcmmo.commands.mcmmo:
         description: Allows access to the mcmmo command
     mcmmo.commands.mcpurge:
+        default: false
         description: Allows access to the mcpurge command
     mcmmo.commands.mcrank:
         description: Allows access to the mcrank command
@@ -687,6 +689,7 @@ permissions:
     mcmmo.commands.mcrefresh.others:
         description: Allows access to the mcrefresh command for other players
     mcmmo.commands.mcremove:
+        default: false
         description: Allows access to the mcremove command
     mcmmo.commands.mcstats:
         description: Allows access to the mcstats command
@@ -747,6 +750,7 @@ permissions:
     mcmmo.commands.mmoedit.others:
         description: Allows access to the mmoedit command for other players
     mcmmo.commands.mmoupdate:
+        default: false
         description: Allows access to the mmoupdate command
     mcmmo.commands.party.*:
         default: false
@@ -807,6 +811,7 @@ permissions:
         children:
             mcmmo.commands.ptp.all: true
     mcmmo.commands.ptp.all:
+        default: false
         description: Implies access to all mcmmo.commands.ptp permissions.
         children:
             mcmmo.commands.ptp: true
