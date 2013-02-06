@@ -10,8 +10,8 @@ import org.bukkit.ChatColor;
 import com.gmail.nossr50.config.Config;
 
 public final class LocaleLoader {
-    private static final String BUNDLE_NAME = "com.gmail.nossr50.locale.locale";
-    private static ResourceBundle RESOURCE_BUNDLE = null;
+    private static final String BUNDLE_ROOT = "com.gmail.nossr50.locale.locale";
+    private static ResourceBundle bundle = null;
 
     private LocaleLoader() {};
 
@@ -27,23 +27,12 @@ public final class LocaleLoader {
      * @return The properly formatted locale string
      */
     public static String getString(String key, Object ... messageArguments) {
+        if (bundle == null) {
+            initialize();
+        }
+
         try {
-            if (RESOURCE_BUNDLE == null) {
-                Locale.setDefault(new Locale("en", "US"));
-                Locale locale = null;
-                String[] myLocale = Config.getInstance().getLocale().split("[-_ ]");
-
-                if (myLocale.length == 1) {
-                    locale = new Locale(myLocale[0]);
-                }
-                else if (myLocale.length >= 2) {
-                    locale = new Locale(myLocale[0], myLocale[1]);
-                }
-
-                RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME, locale);
-            }
-
-            String output = RESOURCE_BUNDLE.getString(key);
+            String output = bundle.getString(key);
 
             if (messageArguments != null) {
                 MessageFormat formatter = new MessageFormat("");
@@ -57,6 +46,30 @@ public final class LocaleLoader {
         }
         catch (MissingResourceException e) {
             return '!' + key + '!';
+        }
+    }
+
+    public static Locale getCurrentLocale() {
+        if (bundle == null) {
+            initialize();
+        }
+        return bundle.getLocale();
+    }
+
+    private static void initialize() {
+        if (bundle == null) {
+            Locale.setDefault(new Locale("en", "US"));
+            Locale locale = null;
+            String[] myLocale = Config.getInstance().getLocale().split("[-_ ]");
+
+            if (myLocale.length == 1) {
+                locale = new Locale(myLocale[0]);
+            }
+            else if (myLocale.length >= 2) {
+                locale = new Locale(myLocale[0], myLocale[1]);
+            }
+
+            bundle = ResourceBundle.getBundle(BUNDLE_ROOT, locale);
         }
     }
 

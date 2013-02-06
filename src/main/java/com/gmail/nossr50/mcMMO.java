@@ -564,4 +564,3 @@ public class mcMMO extends JavaPlugin {
         xpEventEnabled = !xpEventEnabled;
     }
 }
-
