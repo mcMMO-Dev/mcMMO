@@ -85,18 +85,19 @@ public class Salvage {
         int salvagedItem = 0;
         if (ItemChecks.isDiamondTool(inHand) || ItemChecks.isDiamondArmor(inHand)) salvagedItem = 264;
         else if (ItemChecks.isGoldTool(inHand) || ItemChecks.isGoldArmor(inHand)) salvagedItem = 266;
-        else if (ItemChecks.isIronTool(inHand) || ItemChecks.isIronArmor(inHand)) salvagedItem = 265;
+        else if (ItemChecks.isIronTool(inHand) || ItemChecks.isIronArmor(inHand) || inHand.getType() == Material.BUCKET || inHand.getType() == Material.SHEARS) salvagedItem = 265;
         else if (ItemChecks.isStoneTool(inHand)) salvagedItem = 4;
         else if (ItemChecks.isWoodTool(inHand)) salvagedItem = 5;
-        else if ( ItemChecks.isLeatherArmor(inHand)) salvagedItem = 334;
+        else if (ItemChecks.isLeatherArmor(inHand)) salvagedItem = 334;
+        else if (ItemChecks.isStringTool(inHand)) salvagedItem = 287;
         return salvagedItem;
     }
 
     public static int getSalvagedAmount(final ItemStack inHand) {
         int salvagedAmount = 0;
-        if (ItemChecks.isPickaxe(inHand) || ItemChecks.isAxe(inHand)) salvagedAmount = 3;
+        if (ItemChecks.isPickaxe(inHand) || ItemChecks.isAxe(inHand) || inHand.getType() == Material.BOW || inHand.getType() == Material.BUCKET) salvagedAmount = 3;
         else if (ItemChecks.isShovel(inHand)) salvagedAmount = 1;
-        else if (ItemChecks.isSword(inHand) || ItemChecks.isHoe(inHand)) salvagedAmount = 2;
+        else if (ItemChecks.isSword(inHand) || ItemChecks.isHoe(inHand) || inHand.getType() == Material.FISHING_ROD || inHand.getType() == Material.SHEARS) salvagedAmount = 2;
         else if (ItemChecks.isHelmet(inHand)) salvagedAmount = 5;
         else if (ItemChecks.isChestplate(inHand)) salvagedAmount = 8;
         else if (ItemChecks.isPants(inHand)) salvagedAmount = 7;
@@ -110,7 +111,7 @@ public class Salvage {
      * @return true if the item is salvageable, false otherwise
      */
     public static boolean isSalvageable(final ItemStack is) {
-        if (configInstance.getSalvageTools() && ItemChecks.isTool(is)) {
+        if (configInstance.getSalvageTools() && (ItemChecks.isTool(is) || ItemChecks.isStringTool(is) || is.getType() == Material.BUCKET || is.getType() == Material.SHEARS)) {
             return true;
         }
         if (configInstance.getSalvageArmor() && ItemChecks.isArmor(is)) {
