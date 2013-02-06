@@ -14,7 +14,6 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -112,23 +111,6 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Monitor PlayerLogin events.
-     *
-     * @param event The event to watch
-     */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerLogin(PlayerLoginEvent event) {
-        Player player = event.getPlayer();
-
-        /* We can't use the other check here because a profile hasn't been created yet.*/
-        if (player == null || player.hasMetadata("NPC")) {
-            return;
-        }
-
-        Users.addUser(player).getProfile().actualizeRespawnATS();
-    }
-
-    /**
      * Monitor PlayerQuit events.
      *
      * @param event The event to watch
@@ -154,9 +136,12 @@ public class PlayerListener implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        /* We can't use the other check here because a profile hasn't been created yet.*/
+        if (player == null || player.hasMetadata("NPC")) {
             return;
         }
+
+        Users.addUser(player).getProfile().actualizeRespawnATS();
 
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
             Motd.displayAll(player);
