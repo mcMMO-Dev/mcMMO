@@ -85,7 +85,7 @@ public class Salvage {
         int salvagedItem = 0;
         if (ItemChecks.isDiamondTool(inHand) || ItemChecks.isDiamondArmor(inHand)) salvagedItem = 264;
         else if (ItemChecks.isGoldTool(inHand) || ItemChecks.isGoldArmor(inHand)) salvagedItem = 266;
-        else if (ItemChecks.isIronTool(inHand) || ItemChecks.isIronArmor(inHand) || inHand.getType() == Material.BUCKET || inHand.getType() == Material.SHEARS) salvagedItem = 265;
+        else if (ItemChecks.isIronTool(inHand) || ItemChecks.isIronArmor(inHand) || inHand.getType() == Material.BUCKET) salvagedItem = 265;
         else if (ItemChecks.isStoneTool(inHand)) salvagedItem = 4;
         else if (ItemChecks.isWoodTool(inHand)) salvagedItem = 5;
         else if (ItemChecks.isLeatherArmor(inHand)) salvagedItem = 334;
@@ -111,7 +111,7 @@ public class Salvage {
      * @return true if the item is salvageable, false otherwise
      */
     public static boolean isSalvageable(final ItemStack is) {
-        if (configInstance.getSalvageTools() && (ItemChecks.isTool(is) || ItemChecks.isStringTool(is) || is.getType() == Material.BUCKET || is.getType() == Material.SHEARS)) {
+        if (configInstance.getSalvageTools() && (ItemChecks.isTool(is) || ItemChecks.isStringTool(is) || is.getType() == Material.BUCKET)) {
             return true;
         }
         if (configInstance.getSalvageArmor() && ItemChecks.isArmor(is)) {
