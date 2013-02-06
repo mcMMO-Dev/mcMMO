@@ -392,6 +392,7 @@ public class ItemChecks {
     public static boolean isStringTool(ItemStack is) {
         switch (is.getType()) {
         case BOW:
+        case CARROT_STICK:
         case FISHING_ROD:
             return true;
 
@@ -429,6 +430,8 @@ public class ItemChecks {
      */
     public static boolean isIronTool(ItemStack is) {
         switch (is.getType()) {
+        case BUCKET:
+        case FLINT_AND_STEEL:
         case IRON_AXE:
         case IRON_HOE:
         case IRON_PICKAXE:

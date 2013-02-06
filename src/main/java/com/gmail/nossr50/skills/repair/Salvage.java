@@ -37,15 +37,13 @@ public class Salvage {
                 return;
             }
 
-            final float currentdura = item.getDurability();
+            final float currentDurability = item.getDurability();
 
-            if (currentdura == 0) {
-                final int salvagedAmount = getSalvagedAmount(item);
-                final int itemID = getSalvagedItemID(item);
-
+            if (currentDurability == 0) {
                 player.setItemInHand(new ItemStack(Material.AIR));
                 location.setY(location.getY() + 1);
-                Misc.dropItem(location, new ItemStack(itemID, salvagedAmount));
+
+                Misc.dropItems(location, new ItemStack(getSalvagedItem(item)), getSalvagedAmount(item));
 
                 player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
                 player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
@@ -73,7 +71,8 @@ public class Salvage {
                 if (spoutPlayer.isSpoutCraftEnabled()) {
                     spoutPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to salvage!", Material.getMaterial(anvilID));
                 }
-            } else {
+            }
+            else {
                 player.sendMessage(LocaleLoader.getString("Repair.Listener.Anvil2"));
             }
 
@@ -82,28 +81,58 @@ public class Salvage {
         }
     }
 
-    public static int getSalvagedItemID(final ItemStack inHand) {
-        int salvagedItem = 0;
-        if (ItemChecks.isDiamondTool(inHand) || ItemChecks.isDiamondArmor(inHand)) salvagedItem = 264;
-        else if (ItemChecks.isGoldTool(inHand) || ItemChecks.isGoldArmor(inHand)) salvagedItem = 266;
-        else if (ItemChecks.isIronTool(inHand) || ItemChecks.isIronArmor(inHand) || inHand.getType() == Material.BUCKET) salvagedItem = 265;
-        else if (ItemChecks.isStoneTool(inHand)) salvagedItem = 4;
-        else if (ItemChecks.isWoodTool(inHand)) salvagedItem = 5;
-        else if (ItemChecks.isLeatherArmor(inHand)) salvagedItem = 334;
-        else if (ItemChecks.isStringTool(inHand)) salvagedItem = 287;
-        return salvagedItem;
+    private static Material getSalvagedItem(final ItemStack inHand) {
+        if (ItemChecks.isDiamondTool(inHand) || ItemChecks.isDiamondArmor(inHand)) {
+            return Material.DIAMOND;
+        }
+        else if (ItemChecks.isGoldTool(inHand) || ItemChecks.isGoldArmor(inHand)) {
+            return Material.GOLD_INGOT;
+        }
+        else if (ItemChecks.isIronTool(inHand) || ItemChecks.isIronArmor(inHand)) {
+            return Material.IRON_INGOT;
+        }
+        else if (ItemChecks.isStoneTool(inHand)) {
+            return Material.COBBLESTONE;
+        }
+        else if (ItemChecks.isWoodTool(inHand)) {
+            return Material.WOOD;
+        }
+        else if (ItemChecks.isLeatherArmor(inHand)) {
+            return Material.LEATHER;
+        }
+        else if (ItemChecks.isStringTool(inHand)) {
+            return Material.STRING;
+        }
+        else {
+            return null;
+        }
     }
 
-    public static int getSalvagedAmount(final ItemStack inHand) {
-        int salvagedAmount = 0;
-        if (ItemChecks.isPickaxe(inHand) || ItemChecks.isAxe(inHand) || inHand.getType() == Material.BOW || inHand.getType() == Material.BUCKET) salvagedAmount = 3;
-        else if (ItemChecks.isShovel(inHand)) salvagedAmount = 1;
-        else if (ItemChecks.isSword(inHand) || ItemChecks.isHoe(inHand) || inHand.getType() == Material.FISHING_ROD || inHand.getType() == Material.SHEARS) salvagedAmount = 2;
-        else if (ItemChecks.isHelmet(inHand)) salvagedAmount = 5;
-        else if (ItemChecks.isChestplate(inHand)) salvagedAmount = 8;
-        else if (ItemChecks.isPants(inHand)) salvagedAmount = 7;
-        else if (ItemChecks.isBoots(inHand)) salvagedAmount = 4;
-        return salvagedAmount;
+    private static int getSalvagedAmount(final ItemStack inHand) {
+        if (ItemChecks.isPickaxe(inHand) || ItemChecks.isAxe(inHand) || inHand.getType() == Material.BOW || inHand.getType() == Material.BUCKET) {
+            return 3;
+        }
+        else if (ItemChecks.isShovel(inHand) || inHand.getType() == Material.FLINT_AND_STEEL) {
+            return 1;
+        }
+        else if (ItemChecks.isSword(inHand) || ItemChecks.isHoe(inHand) || inHand.getType() == Material.CARROT_STICK || inHand.getType() == Material.FISHING_ROD || inHand.getType() == Material.SHEARS) {
+            return 2;
+        }
+        else if (ItemChecks.isHelmet(inHand)) {
+            return 5;
+        }
+        else if (ItemChecks.isChestplate(inHand)) {
+            return 8;
+        }
+        else if (ItemChecks.isPants(inHand)) {
+            return 7;
+        }
+        else if (ItemChecks.isBoots(inHand)) {
+            return 4;
+        }
+        else {
+            return 0;
+        }
     }
     /**
      * Checks if the item is salvageable.
