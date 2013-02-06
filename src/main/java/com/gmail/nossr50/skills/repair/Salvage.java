@@ -23,7 +23,7 @@ public class Salvage {
     public static int salvageUnlockLevel = Config.getInstance().getSalvageUnlockLevel();
     public static int anvilID = Config.getInstance().getSalvageAnvilId();
 
-    public static void handleSalvage(final Player player, final Location location, final ItemStack inHand) {
+    public static void handleSalvage(final Player player, final Location location, final ItemStack item) {
         if (!configInstance.getSalvageEnabled()) {
             return;
         }
@@ -32,28 +32,29 @@ public class Salvage {
             final int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(SkillType.REPAIR);
             final int unlockLevel = configInstance.getSalvageUnlockLevel();
 
-            if (skillLevel >= unlockLevel) {
-                final float currentdura = inHand.getDurability();
+            if (skillLevel < unlockLevel) {
+                player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptSalvage"));
+                return;
+            }
 
-                if (currentdura == 0) {
-                    final int salvagedAmount = getSalvagedAmount(inHand);
-                    final int itemID = getSalvagedItemID(inHand);
+            final float currentdura = item.getDurability();
 
-                    player.setItemInHand(new ItemStack(Material.AIR));
-                    location.setY(location.getY() + 1);
-                    Misc.dropItem(location, new ItemStack(itemID, salvagedAmount));
+            if (currentdura == 0) {
+                final int salvagedAmount = getSalvagedAmount(item);
+                final int itemID = getSalvagedItemID(item);
 
-                    player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-                    player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Repair.Skills.NotFullDurability"));
-                }
+                player.setItemInHand(new ItemStack(Material.AIR));
+                location.setY(location.getY() + 1);
+                Misc.dropItem(location, new ItemStack(itemID, salvagedAmount));
+
+                player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+                player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptSalvage"));
+                player.sendMessage(LocaleLoader.getString("Repair.Skills.NotFullDurability"));
             }
         }
+        
     }
 
     /**
