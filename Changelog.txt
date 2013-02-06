@@ -63,6 +63,7 @@ Version 1.4.00-dev
  ! Changed Excavation to have individual XP values for each block type, rather than a base XP value.
  ! Changed the way party teleportation works. When using /ptp, the target player needs to confirm the teleport before it takes place. (Configurable)
  ! Changed BeastLore: Now also displays offline player names
+ ! Changed backup task to include ALL config files
  - Removed Party "master/apprentice" system. Replaced with the new party XP share feature.
  - Removed unused "healthbar" files from the resources
  - Removed config options for disabling commands from the config.yml. This should instead be done through permissions.

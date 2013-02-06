@@ -20,9 +20,11 @@ public class ZipLibrary {
     private static File BackupDir = new File(BackupDirectory);
     private static File FlatFileDirectory = new File(mcMMO.getFlatFileDirectory());
     private static File ModFileDirectory = new File(mcMMO.getModDirectory());
-    private static File UsersFile = new File(mcMMO.getUsersFilePath());
     private static File ConfigFile = new File(mcMMO.getMainDirectory() + "config.yml");
     private static File TreasuresFile = new File(mcMMO.getMainDirectory() + "treasures.yml");
+    private static File AdvancedConfigFile = new File(mcMMO.getMainDirectory() + "advanced.yml");
+    private static File SpoutFile = new File(mcMMO.getMainDirectory() + "spout.yml");
+    private static File RepairFile = new File(mcMMO.getMainDirectory() + "repair.vanilla.yml");
 
     public static void mcMMObackup() throws IOException {
         if (Config.getInstance().getUseMySQL()) {
@@ -46,12 +48,17 @@ public class ZipLibrary {
         //Create the Source List, and add directories/etc to the file.
         List<File> sources = new ArrayList<File>();
         sources.add(FlatFileDirectory);
-        sources.add(UsersFile);
         sources.add(ConfigFile);
         sources.add(TreasuresFile);
+        sources.add(AdvancedConfigFile);
+        sources.add(RepairFile);
 
         if (ModFileDirectory.exists()) {
             sources.add(ModFileDirectory);
+        }
+
+        if (SpoutFile.exists()) {
+            sources.add(SpoutFile);
         }
 
         //Actually do something
