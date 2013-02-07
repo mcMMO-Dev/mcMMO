@@ -116,6 +116,7 @@ permissions:
             mcmmo.defaults: true
             mcmmo.defaultsop: true
             mcmmo.perks.all: true
+            mcmmo.party.all: true
     mcmmo.ability.*:
         default: false
         description: Implies all mcmmo.ability permissions.
@@ -1032,6 +1033,19 @@ permissions:
             mcmmo.tools.all: true
     mcmmo.motd:
         description: Allows access to the motd
+    mcmmo.party.*:
+        default: false
+        description: Implies access to all mcmmo party permissions
+        children:
+            mcmmo.party.all: true
+    mcmmo.party.all:
+        default: false
+        description: Implies access to all mcmmo party permissions
+        children:
+            mcmmo.party.friendlyfire: true
+    mcmmo.party.friendlyfire:
+        default: false
+        description: Allows in-party friendly fire if both attacker and victim have this permission
     mcmmo.perks.*:
         default: false
         description: implies access to all mcmmo perks

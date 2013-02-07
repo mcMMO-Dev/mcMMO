@@ -689,4 +689,12 @@ public final class Permissions {
     public static boolean smelting(Player player) {
         return hasPermission(player, "mcmmo.skills.smelting");
     }
+
+    /*
+     * MCMMO.PARTY.*
+     */
+
+    public static boolean friendlyFire(Player player) {
+        return hasPermission(player, "mcmmo.party.friendlyfire");
+    }
 }

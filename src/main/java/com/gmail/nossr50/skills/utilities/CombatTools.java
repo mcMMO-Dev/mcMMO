@@ -588,7 +588,7 @@ public final class CombatTools {
                 return false;
             }
 
-            if (PartyManager.inSameParty(player, defender) && !Config.getInstance().getPartyFriendlyFire()) {
+            if (PartyManager.inSameParty(player, defender) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
                 return false;
             }
 
@@ -601,8 +601,13 @@ public final class CombatTools {
             }
         }
         else if (entity instanceof Tameable) {
-            if (Misc.isFriendlyPet(player, (Tameable) entity) && !Config.getInstance().getPartyFriendlyFire()) {
-                return false;
+            if (Misc.isFriendlyPet(player, (Tameable) entity)) {
+                // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
+                // So we can make some assumptions here, about our casting and our check
+                Player owner = (Player) ((Tameable) entity).getOwner();
+                if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire(owner))) {
+                    return false;
+                }
             }
         }
 

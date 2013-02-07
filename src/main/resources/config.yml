@@ -67,8 +67,6 @@ Party:
     AutoKick_Interval: 12
     #Any user who hasn't connected in this many days will get kicked from their party
     Old_Party_Member_Cutoff: 7
-    #Set this to true to allow party members to attack each other.
-    FriendlyFire_Enabled: false
     #Settings for party share modes
     Sharing:
         ExpShare_enabled: true
