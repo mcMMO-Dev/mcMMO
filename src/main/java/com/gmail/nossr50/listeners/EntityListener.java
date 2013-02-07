@@ -23,6 +23,7 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityTameEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
@@ -349,5 +350,23 @@ public class EntityListener implements Listener {
 
         TamingManager tamingManager = new TamingManager(Users.getPlayer(player));
         tamingManager.awardTamingXP(event);
+    }
+
+    @EventHandler (ignoreCancelled = true)
+    public void onEntityTarget(EntityTargetEvent event) {
+        if (event.getEntity() instanceof Tameable && event.getTarget() instanceof Player) {
+            Player player = (Player) event.getTarget();
+            Tameable tameable = (Tameable) event.getEntity();
+
+            if (Misc.isFriendlyPet(player, tameable)) {
+                // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
+                // So we can make some assumptions here, about our casting and our check
+                Player owner = (Player) tameable.getOwner();
+                if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire(owner))) {
+                    event.setCancelled(true);
+                    return;
+                }
+            }
+        }
     }
 }
