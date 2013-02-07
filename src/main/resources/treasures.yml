@@ -46,6 +46,7 @@ Fishing:
         - Record_9
         - Record_10
         - Record_11
+        - Record_12
         - Diamond_Sword
         - Diamond_Shovel
         - Diamond_Pickaxe
@@ -819,6 +820,16 @@ Treasures:
             Fishing: true
     Record_11:
         ID: 2266
+        Data: 0
+        Amount: 1
+        XP: 200
+        Drop_Chance: 35.0
+        Drop_Level: 600
+        Max_Level: -1
+        Drops_From:
+            Fishing: true
+    Record_12:
+        ID: 2267
         Data: 0
         Amount: 1
         XP: 200
