@@ -12,20 +12,12 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.huds.HudType;
 import com.gmail.nossr50.spout.huds.SpoutHud;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class MchudCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = LocaleLoader.getString("Commands.Usage.1", "mchud", "<DISABLED | STANDARD | SMALL | RETRO>");
-        String invalid = LocaleLoader.getString("Commands.mchud.Invalid");
-
         if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
-        }
-
-        if (!Permissions.hasPermission(sender, "mcmmo.commands.mchud")) {
             return true;
         }
 
@@ -34,8 +26,7 @@ public class MchudCommand implements CommandExecutor {
             return true;
         }
 
-        Player player = (Player) sender;
-        PlayerProfile playerProfile = Users.getPlayer(player).getProfile();
+        PlayerProfile playerProfile = Users.getPlayer((Player) sender).getProfile();
         SpoutHud spoutHud = playerProfile.getSpoutHud();
 
         if (spoutHud == null) {
@@ -55,12 +46,11 @@ public class MchudCommand implements CommandExecutor {
                 }
             }
 
-            player.sendMessage(invalid);
+            sender.sendMessage(LocaleLoader.getString("Commands.mchud.Invalid"));
             return true;
 
         default:
-            player.sendMessage(usage);
-            return true;
+            return false;
         }
     }
 }

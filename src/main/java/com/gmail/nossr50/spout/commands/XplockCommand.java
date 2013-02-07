@@ -20,13 +20,7 @@ import com.gmail.nossr50.util.Users;
 public class XplockCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = LocaleLoader.getString("Commands.Usage.1", "xplock", "[skill]");
-
         if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
-        }
-
-        if (!Permissions.hasPermission(sender, "mcmmo.commands.xplock")) {
             return true;
         }
 
@@ -35,9 +29,9 @@ public class XplockCommand implements CommandExecutor {
             return true;
         }
 
-        Player player = (Player) sender;
-        PlayerProfile playerProfile = Users.getPlayer(player).getProfile();
+        PlayerProfile playerProfile = Users.getPlayer((Player) sender).getProfile();
         SpoutHud spoutHud = playerProfile.getSpoutHud();
+        SkillType lastGained;
 
         if (spoutHud == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
@@ -48,45 +42,59 @@ public class XplockCommand implements CommandExecutor {
         case 0:
             if (spoutHud.getXpBarLocked()) {
                 spoutHud.toggleXpBarLocked();
-                player.sendMessage(LocaleLoader.getString("Commands.xplock.unlocked"));
+                sender.sendMessage(LocaleLoader.getString("Commands.xplock.unlocked"));
                 return true;
             }
 
-            SkillType lastGained = spoutHud.getLastGained();
+            lastGained = spoutHud.getLastGained();
 
-            if (lastGained != null) {
-                spoutHud.toggleXpBarLocked();
-                spoutHud.setSkillLock(lastGained);
-                player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", Misc.getCapitalized(lastGained.toString())));
-            }
-            else {
-                player.sendMessage(usage);
+            if (lastGained == null) {
+                return false;
             }
 
+            spoutHud.toggleXpBarLocked();
+            spoutHud.setSkillLock(lastGained);
+            spoutHud.updateXpBar();
+
+            sender.sendMessage(LocaleLoader.getString("Commands.xplock.locked", Misc.getCapitalized(lastGained.toString())));
             return true;
 
         case 1:
-            if (SkillTools.isSkill(args[0])) {
-                if (Permissions.hasPermission(player, "mcmmo.commands.xplock." + args[0].toLowerCase())) {
-                    spoutHud.setXpBarLocked(true);
-                    spoutHud.setSkillLock(SkillTools.getSkillType(args[0]));
-                    spoutHud.updateXpBar();
+            if (args[0].equalsIgnoreCase("on")) {
+                lastGained = spoutHud.getLastGained();
 
-                    player.sendMessage(LocaleLoader.getString("Commands.xplock.locked", Misc.getCapitalized(args[0])));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
-                }
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
+                spoutHud.setXpBarLocked(true);
+                spoutHud.setSkillLock(lastGained);
+                spoutHud.updateXpBar();
+
+                sender.sendMessage(LocaleLoader.getString("Commands.xplock.locked", Misc.getCapitalized(lastGained.toString())));
+                return true;
             }
 
+            if (args[0].equalsIgnoreCase("off")) {
+                spoutHud.setXpBarLocked(false);
+                sender.sendMessage(LocaleLoader.getString("Commands.xplock.unlocked"));
+                return true;
+            }
+
+            if (!SkillTools.isSkill(args[0])) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
+                return true;
+            }
+
+            if (!Permissions.hasPermission(sender, "mcmmo.commands.xplock." + args[0].toLowerCase())) {
+                sender.sendMessage(command.getPermissionMessage());
+            }
+
+            spoutHud.setXpBarLocked(true);
+            spoutHud.setSkillLock(SkillTools.getSkillType(args[0]));
+            spoutHud.updateXpBar();
+
+            sender.sendMessage(LocaleLoader.getString("Commands.xplock.locked", Misc.getCapitalized(args[0])));
             return true;
 
         default:
-            player.sendMessage(usage);
-            return true;
+            return false;
         }
     }
 }

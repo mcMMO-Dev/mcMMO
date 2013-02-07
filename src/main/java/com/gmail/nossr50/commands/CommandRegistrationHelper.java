@@ -40,6 +40,8 @@ import com.gmail.nossr50.skills.taming.TamingCommand;
 import com.gmail.nossr50.skills.unarmed.UnarmedCommand;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingCommand;
+import com.gmail.nossr50.spout.commands.MchudCommand;
+import com.gmail.nossr50.spout.commands.XplockCommand;
 import com.gmail.nossr50.util.Misc;
 
 public final class CommandRegistrationHelper {
@@ -181,7 +183,7 @@ public final class CommandRegistrationHelper {
         command.setDescription(LocaleLoader.getString("Commands.Description.xprate"));
         command.setPermission("mcmmo.commands.xprate;mcmmo.commands.xprate.reset;mcmmo.commands.xprate.set");
         command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.2", "xprate", "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">", "<" + LocaleLoader.getString("Commands.Usage.True") + "|" + LocaleLoader.getString("Commands.Usage.False")+ ">"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.2", "xprate", "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">", "<true|false>"));
         command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "xprate", "reset"));
         command.setAliases(aliasList);
         command.setExecutor(new XprateCommand());
@@ -275,7 +277,7 @@ public final class CommandRegistrationHelper {
         command.setPermission("mcmmo.chat.adminchat");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "adminchat"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "adminchat", "<" + LocaleLoader.getString("Commands.Usage.On") + "|" + LocaleLoader.getString("Commands.Usage.Off")+ ">"));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "adminchat", "<on|off>"));
         command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "adminchat", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">"));
         command.setExecutor(new AdminChatCommand());
     }
@@ -286,8 +288,28 @@ public final class CommandRegistrationHelper {
         command.setPermission("mcmmo.chat.partychat;mcmmo.commands.party");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "partychat"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "partychat", "<" + LocaleLoader.getString("Commands.Usage.On") + "|" + LocaleLoader.getString("Commands.Usage.Off")+ ">"));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "partychat", "<on|off>"));
         command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "partychat", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">"));
         command.setExecutor(new PartyChatCommand());
+    }
+
+    public static void registerMchudCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mchud");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mchud"));
+        command.setPermission("mcmmo.commands.mchud");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mchud", "<DISABLED | STANDARD | SMALL | RETRO>"));
+        command.setExecutor(new MchudCommand());
+    }
+
+    public static void registerXplockCommand() {
+        PluginCommand command = mcMMO.p.getCommand("xplock");
+        command.setDescription(LocaleLoader.getString("Commands.Description.xplock"));
+        command.setPermission("mcmmo.commands.xplock");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "xplock"));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "xplock", "<on|off>"));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "xplock", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">"));
+        command.setExecutor(new XplockCommand());
     }
 }

@@ -57,7 +57,6 @@ import com.gmail.nossr50.skills.runnables.PartyAutoKick;
 import com.gmail.nossr50.skills.runnables.SkillMonitor;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
-import com.gmail.nossr50.spout.commands.MchudCommand;
 import com.gmail.nossr50.spout.commands.XplockCommand;
 import com.gmail.nossr50.util.Anniversary;
 import com.gmail.nossr50.util.Users;
@@ -306,8 +305,8 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationHelper.registerSkillresetCommand();
 
         // Spout commands
-        getCommand("xplock").setExecutor(new XplockCommand());
-        getCommand("mchud").setExecutor(new MchudCommand());
+        CommandRegistrationHelper.registerXplockCommand();
+        CommandRegistrationHelper.registerMchudCommand();
     }
 
     private void scheduleTasks() {

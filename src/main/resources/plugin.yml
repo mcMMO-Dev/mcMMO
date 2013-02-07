@@ -24,7 +24,7 @@ commands:
         description: Change your HUD
     xplock:
         aliases: [mcxplock]
-        description: Lock your xp bar
+        description: Lock your mcMMO XP bar
     xprate:
         aliases: [mcxprate]
         description: Modify the xp rate or start an event
