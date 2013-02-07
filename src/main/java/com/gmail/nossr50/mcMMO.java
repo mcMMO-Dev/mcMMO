@@ -57,7 +57,6 @@ import com.gmail.nossr50.skills.runnables.PartyAutoKick;
 import com.gmail.nossr50.skills.runnables.SkillMonitor;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
-import com.gmail.nossr50.util.Anniversary;
 import com.gmail.nossr50.util.Users;
 
 public class mcMMO extends JavaPlugin {
@@ -130,7 +129,6 @@ public class mcMMO extends JavaPlugin {
         placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
         new MobStoreCleaner(); // Automatically starts and stores itself
-        Anniversary.createAnniversaryFile(); // Create Anniversary files
     }
 
     /**
@@ -200,7 +198,6 @@ public class mcMMO extends JavaPlugin {
             getLogger().severe(e.toString());
         }
 
-        Anniversary.saveAnniversaryFiles();
         getLogger().info("Was disabled."); //How informative!
     }
 
