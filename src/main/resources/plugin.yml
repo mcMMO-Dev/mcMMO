@@ -21,12 +21,12 @@ load: STARTUP
 
 commands:
     mchud:
-        aliases: []
         description: Change your HUD
     xplock:
         aliases: [mcxplock]
         description: Lock your xp bar
     xprate:
+        aliases: [mcxprate]
         description: Modify the xp rate or start an event
     mcc:
         aliases: []
