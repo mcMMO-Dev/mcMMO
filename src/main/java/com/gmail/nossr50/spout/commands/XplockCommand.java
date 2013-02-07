@@ -43,7 +43,7 @@ public class XplockCommand extends SpoutCommand {
             return true;
         }
 
-        lockXpBar(sender, SkillTools.getSkillType(args[0]));
+        lockXpBar(sender, SkillType.getSkill(args[0]));
         return true;
     }
 

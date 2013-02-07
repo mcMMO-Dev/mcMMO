@@ -59,7 +59,7 @@ public class MmoeditCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", newValue));
             }
             else {
-                profile.modifySkill(SkillTools.getSkillType(args[0]), newValue);
+                profile.modifySkill(SkillType.getSkill(args[0]), newValue);
                 sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", Misc.getCapitalized(args[0]), newValue));
             }
 
@@ -105,7 +105,7 @@ public class MmoeditCommand implements CommandExecutor {
                     }
                 }
                 else {
-                    profile.modifySkill(SkillTools.getSkillType(args[1]), newValue);
+                    profile.modifySkill(SkillType.getSkill(args[1]), newValue);
                 }
 
                 profile.save(); // Since this is a temporary profile, we save it here.
@@ -125,7 +125,7 @@ public class MmoeditCommand implements CommandExecutor {
                     mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", newValue));
                 }
                 else {
-                    profile.modifySkill(SkillTools.getSkillType(args[1]), newValue);
+                    profile.modifySkill(SkillType.getSkill(args[1]), newValue);
                     mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1",  Misc.getCapitalized(args[1]), newValue));
                 }
             }

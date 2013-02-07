@@ -61,7 +61,7 @@ public class AddxpCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
             }
             else {
-                mcMMOPlayer.applyXpGain(SkillTools.getSkillType(args[0]), xp);
+                mcMMOPlayer.applyXpGain(SkillType.getSkill(args[0]), xp);
                 sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(args[0])));
             }
 
@@ -108,7 +108,7 @@ public class AddxpCommand implements CommandExecutor {
                     }
                 }
                 else {
-                    profile.setSkillXpLevel(SkillTools.getSkillType(args[1]), xp);
+                    profile.setSkillXpLevel(SkillType.getSkill(args[1]), xp);
                 }
 
                 profile.save(); // Since this is a temporary profile, we save it here.
@@ -126,7 +126,7 @@ public class AddxpCommand implements CommandExecutor {
                     mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
                 }
                 else {
-                    mcMMOPlayer.applyXpGain(SkillTools.getSkillType(args[1]), xp);
+                    mcMMOPlayer.applyXpGain(SkillType.getSkill(args[1]), xp);
                     mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(args[1])));
                 }
             }

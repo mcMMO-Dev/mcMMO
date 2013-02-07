@@ -72,7 +72,7 @@ public class SkillresetCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
             }
             else {
-                profile.modifySkill(SkillTools.getSkillType(args[0]), 0);
+                profile.modifySkill(SkillType.getSkill(args[0]), 0);
                 sender.sendMessage(LocaleLoader.getString("Commands.Reset.Single", Misc.getCapitalized(args[0])));
             }
 
@@ -132,7 +132,7 @@ public class SkillresetCommand implements CommandExecutor {
                     }
                 }
                 else {
-                    profile.modifySkill(SkillTools.getSkillType(args[1]), 0);
+                    profile.modifySkill(SkillType.getSkill(args[1]), 0);
                 }
 
                 profile.save(); // Since this is a temporary profile, we save it here.
@@ -152,7 +152,7 @@ public class SkillresetCommand implements CommandExecutor {
                     mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Reset.All"));
                 }
                 else {
-                    profile.modifySkill(SkillTools.getSkillType(args[1]), 0);
+                    profile.modifySkill(SkillType.getSkill(args[1]), 0);
                     mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Reset.Single", Misc.getCapitalized(args[1])));
                 }
             }

@@ -270,29 +270,13 @@ public class SkillTools {
     }
 
     /**
-     * Get the skill represented by the given string
-     *
-     * @param skillName The name of the skill
-     * @return the SkillType if it exists, null otherwise
-     */
-    public static SkillType getSkillType(String skillName) {
-        for (SkillType x : SkillType.values()) {
-            if (x.toString().equalsIgnoreCase(skillName)) {
-                return x;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Checks if the given string represents a valid skill
      *
      * @param skillName The name of the skill to check
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
-        if (getSkillType(skillName) != null) {
+        if (SkillType.getSkill(skillName) != null) {
             return true;
         }
 
