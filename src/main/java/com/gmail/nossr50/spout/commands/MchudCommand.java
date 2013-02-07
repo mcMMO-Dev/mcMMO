@@ -1,56 +1,29 @@
 package com.gmail.nossr50.spout.commands;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.huds.HudType;
-import com.gmail.nossr50.spout.huds.SpoutHud;
-import com.gmail.nossr50.util.Users;
 
-public class MchudCommand implements CommandExecutor {
+public class MchudCommand extends SpoutCommand {
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
-        }
+    protected boolean noArguments(Command command, CommandSender sender, String[] args) {
+        return false;
+    }
 
-        if (!mcMMO.spoutEnabled || !SpoutConfig.getInstance().getXPBarEnabled()) {
-            sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
-            return true;
-        }
-
-        PlayerProfile playerProfile = Users.getPlayer((Player) sender).getProfile();
-        SpoutHud spoutHud = playerProfile.getSpoutHud();
-
-        if (spoutHud == null) {
-            sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
-            return true;
-        }
-
-        switch (args.length) {
-        case 1:
-            for (HudType hudType : HudType.values()) {
-                if (hudType.toString().equalsIgnoreCase(args[0])) {
-                    playerProfile.setHudType(hudType);
-                    spoutHud.initializeXpBar();
-                    spoutHud.updateXpBar();
-
-                    return true;
-                }
+    @Override
+    protected boolean oneArgument(Command command, CommandSender sender, String[] args) {
+        for (HudType hudType : HudType.values()) {
+            if (hudType.toString().equalsIgnoreCase(args[0])) {
+                playerProfile.setHudType(hudType);
+                spoutHud.initializeXpBar();
+                spoutHud.updateXpBar();
+                return true;
             }
-
-            sender.sendMessage(LocaleLoader.getString("Commands.mchud.Invalid"));
-            return true;
-
-        default:
-            return false;
         }
+
+        sender.sendMessage(LocaleLoader.getString("Commands.mchud.Invalid"));
+        return true;
     }
 }
