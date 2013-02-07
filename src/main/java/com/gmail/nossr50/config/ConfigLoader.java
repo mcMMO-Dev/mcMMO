@@ -59,7 +59,7 @@ public abstract class ConfigLoader {
             }
         }
         else {
-            plugin.getLogger().severe("Missing ressource file: '" + fileName + "' please notify the plugin authors");
+            plugin.getLogger().severe("Missing resource file: '" + fileName + "' please notify the plugin authors");
         }
     }
 
