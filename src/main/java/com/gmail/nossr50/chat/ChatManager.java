@@ -40,6 +40,10 @@ public final class ChatManager {
         mcMMO.p.getLogger().info("[A]<" + displayName + "> " + adminMessage);
     }
 
+    public static void handleAdminChat(Plugin plugin, String senderName, String message) {
+        handleAdminChat(plugin, senderName, senderName, message);
+    }
+
     public static void handlePartyChat(Plugin plugin, Party party, String playerName, String displayName, String message) {
         String partyName = party.getName();
 
@@ -63,5 +67,9 @@ public final class ChatManager {
 
         displayName = ChatColor.stripColor(displayName);
         mcMMO.p.getLogger().info("[P](" + partyName + ")" + "<" + displayName + "> " + partyMessage);
+    }
+
+    public static void handlePartyChat(Plugin plugin, Party party, String senderName, String message) {
+        handlePartyChat(plugin, party, senderName, senderName, message);
     }
 }
