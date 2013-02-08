@@ -10,7 +10,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Anniversary;
 
 public class McmmoCommand implements CommandExecutor {
     @Override
@@ -32,8 +31,6 @@ public class McmmoCommand implements CommandExecutor {
             }
 
             sender.sendMessage(LocaleLoader.getString("MOTD.Version", mcMMO.p.getDescription().getVersion()));
-
-            Anniversary.anniversaryCheck(sender);
             return true;
         }
 
