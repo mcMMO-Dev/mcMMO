@@ -27,7 +27,7 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyAcceptCommand = new PartyAcceptCommand();
     private CommandExecutor partyCreateCommand = new PartyCreateCommand();
     private CommandExecutor partyQuitCommand = new PartyQuitCommand();
-    private CommandExecutor partyShareExpCommand = new PartyShareExpCommand();
+    private CommandExecutor partyExpShareCommand = new PartyExpShareCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -69,7 +69,7 @@ public class PartyCommand implements CommandExecutor {
             return partyQuitCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("expshare")) {
-            return partyShareExpCommand.onCommand(sender, command, label, args);
+            return partyExpShareCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("itemshare")) {
             return shareItem();

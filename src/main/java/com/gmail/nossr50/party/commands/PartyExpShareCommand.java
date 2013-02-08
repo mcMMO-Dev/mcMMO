@@ -13,7 +13,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
-public class PartyShareExpCommand implements CommandExecutor {
+public class PartyExpShareCommand implements CommandExecutor {
     private Player player;
     private Party playerParty;
 
