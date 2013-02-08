@@ -26,6 +26,7 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyJoinCommand = new PartyJoinCommand();
     private CommandExecutor partyAcceptCommand = new PartyAcceptCommand();
     private CommandExecutor partyCreateCommand = new PartyCreateCommand();
+    private CommandExecutor partyQuitCommand = new PartyQuitCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -59,7 +60,7 @@ public class PartyCommand implements CommandExecutor {
 
         if (mcMMOPlayer.inParty()) {
             if (args[0].equalsIgnoreCase("quit") || args[0].equalsIgnoreCase("q") || args[0].equalsIgnoreCase("leave")) {
-                return quit();
+                return partyQuitCommand.onCommand(sender, command, label, args);
             }
             else if (args[0].equalsIgnoreCase("expshare")) {
                 return shareExp(args);
@@ -171,31 +172,6 @@ public class PartyCommand implements CommandExecutor {
             return printUsage();
         }
         return true;
-    }
-
-    private boolean quit() {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.quit")) {
-            return true;
-        }
-
-        String playerName = player.getName();
-        Party party = mcMMOPlayer.getParty();
-
-        if (party != null) {
-            McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, party.getName(), null, EventReason.LEFT_PARTY);
-            mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-            if (event.isCancelled()) {
-                return true;
-            }
-            PartyManager.removeFromParty(playerName, party);
-            player.sendMessage(LocaleLoader.getString("Commands.Party.Leave"));
-        }
-        else {
-            player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-        }
-
-        return false;
     }
 
     private boolean shareExp(String[] args) {
