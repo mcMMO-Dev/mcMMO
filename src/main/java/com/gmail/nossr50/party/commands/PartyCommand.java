@@ -17,6 +17,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyCommand implements CommandExecutor {
@@ -34,7 +35,8 @@ public class PartyCommand implements CommandExecutor {
             return true;
         }
 
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.party")) {
+        if (!Permissions.hasPermission(sender, "mcmmo.commands.party")) {
+            sender.sendMessage(command.getPermissionMessage());
             return true;
         }
 
@@ -58,47 +60,47 @@ public class PartyCommand implements CommandExecutor {
             return printHelp();
         }
 
-        if (mcMMOPlayer.inParty()) {
-            if (args[0].equalsIgnoreCase("quit") || args[0].equalsIgnoreCase("q") || args[0].equalsIgnoreCase("leave")) {
-                return partyQuitCommand.onCommand(sender, command, label, args);
-            }
-            else if (args[0].equalsIgnoreCase("expshare")) {
-                return shareExp(args);
-            }
-            else if (args[0].equalsIgnoreCase("itemshare")) {
-                return shareItem();
-            }
-            else if (args[0].equalsIgnoreCase("invite")) {
-                return invite(args);
-            }
-            else if (args[0].equalsIgnoreCase("kick")) {
-                return kick(args);
-            }
-            else if (args[0].equalsIgnoreCase("disband")) {
-                return disband();
-            }
-            else if (args[0].equalsIgnoreCase("owner")) {
-                return changeOwner(args);
-            }
-            else if (args[0].equalsIgnoreCase("lock")) {
-                return lock();
-            }
-            else if (args[0].equalsIgnoreCase("unlock")) {
-                return unlock();
-            }
-            else if (args[0].equalsIgnoreCase("password")) {
-                return changePassword(args);
-            }
-            else if (args[0].equalsIgnoreCase("rename")) {
-                return rename(args);
-            }
-            else {
-                return printUsage();
-            }
+        if (!mcMMOPlayer.inParty()) {
+            sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+            return printUsage();
         }
 
-        player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-        return printUsage();
+        if (args[0].equalsIgnoreCase("quit") || args[0].equalsIgnoreCase("q") || args[0].equalsIgnoreCase("leave")) {
+            return partyQuitCommand.onCommand(sender, command, label, args);
+        }
+        else if (args[0].equalsIgnoreCase("expshare")) {
+            return shareExp(args);
+        }
+        else if (args[0].equalsIgnoreCase("itemshare")) {
+            return shareItem();
+        }
+        else if (args[0].equalsIgnoreCase("invite")) {
+            return invite(args);
+        }
+        else if (args[0].equalsIgnoreCase("kick")) {
+            return kick(args);
+        }
+        else if (args[0].equalsIgnoreCase("disband")) {
+            return disband();
+        }
+        else if (args[0].equalsIgnoreCase("owner")) {
+            return changeOwner(args);
+        }
+        else if (args[0].equalsIgnoreCase("lock")) {
+            return lock();
+        }
+        else if (args[0].equalsIgnoreCase("unlock")) {
+            return unlock();
+        }
+        else if (args[0].equalsIgnoreCase("password")) {
+            return changePassword(args);
+        }
+        else if (args[0].equalsIgnoreCase("rename")) {
+            return rename(args);
+        }
+        else {
+            return printUsage();
+        }
     }
 
     private boolean printUsage() {
