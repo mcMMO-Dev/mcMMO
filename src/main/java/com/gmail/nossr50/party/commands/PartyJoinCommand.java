@@ -75,7 +75,7 @@ public class PartyJoinCommand implements CommandExecutor {
                 return false;
             }
 
-            sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+            sender.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
             return false;
         }
 
