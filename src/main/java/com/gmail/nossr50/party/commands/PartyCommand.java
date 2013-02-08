@@ -25,6 +25,7 @@ public class PartyCommand implements CommandExecutor {
 
     private CommandExecutor partyJoinCommand = new PartyJoinCommand();
     private CommandExecutor partyAcceptCommand = new PartyAcceptCommand();
+    private CommandExecutor partyCreateCommand = new PartyCreateCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -50,7 +51,7 @@ public class PartyCommand implements CommandExecutor {
             return partyAcceptCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("create")) {
-            return create(args);
+            return partyCreateCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("?") || args[0].equalsIgnoreCase("help")) {
             return printHelp();
@@ -169,60 +170,6 @@ public class PartyCommand implements CommandExecutor {
         else {
             return printUsage();
         }
-        return true;
-    }
-
-    private boolean create(String[] args) {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.create")) {
-            return true;
-        }
-
-        String playerName = player.getName();
-        Party party = mcMMOPlayer.getParty();
-
-        if (args.length < 2) {
-            player.sendMessage(LocaleLoader.getString("Party.Help.1"));
-            return true;
-        }
-
-        String partyname = args[1];
-        String password = null;
-
-        if (args.length > 2) {
-            password = args[2];
-        }
-
-        Party newParty = PartyManager.getParty(partyname);
-        // Check to see if the party exists, and if it does cancel creating a new party
-        if (newParty != null) {
-            player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", partyname));
-            return true;
-        }
-
-        if (mcMMOPlayer.inParty()) {
-            String oldPartyName = party.getName();
-            McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, oldPartyName, partyname, EventReason.CHANGED_PARTIES);
-            mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-            if (event.isCancelled()) {
-                return true;
-            }
-
-            PartyManager.removeFromParty(playerName, party);
-            PartyManager.createParty(player, mcMMOPlayer, partyname, password);
-        }
-        else {
-            McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, partyname, EventReason.JOINED_PARTY);
-            mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-            if (event.isCancelled()) {
-                return true;
-            }
-
-            PartyManager.createParty(player, mcMMOPlayer, partyname, password);
-            return true;
-        }
-
         return true;
     }
 
