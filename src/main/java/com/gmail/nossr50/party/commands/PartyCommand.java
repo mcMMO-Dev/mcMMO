@@ -68,7 +68,7 @@ public class PartyCommand implements CommandExecutor {
         if (args[0].equalsIgnoreCase("quit") || args[0].equalsIgnoreCase("q") || args[0].equalsIgnoreCase("leave")) {
             return partyQuitCommand.onCommand(sender, command, label, args);
         }
-        else if (args[0].equalsIgnoreCase("expshare")) {
+        else if (args[0].equalsIgnoreCase("expshare") || args[0].equalsIgnoreCase("xpshare") || args[0].equalsIgnoreCase("sharexp") || args[0].equalsIgnoreCase("shareexp")) {
             return partyExpShareCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("itemshare")) {
