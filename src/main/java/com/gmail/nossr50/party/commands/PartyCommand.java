@@ -47,7 +47,7 @@ public class PartyCommand implements CommandExecutor {
             return partyJoinCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("accept")) {
-            return accept();
+            return partyAcceptCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("create")) {
             return create(args);
@@ -169,42 +169,6 @@ public class PartyCommand implements CommandExecutor {
         else {
             return printUsage();
         }
-        return true;
-    }
-
-    private boolean accept() {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.accept")) {
-            return true;
-        }
-
-        if (mcMMOPlayer.hasPartyInvite()) {
-            if (mcMMOPlayer.inParty()) {
-                Party party = mcMMOPlayer.getParty();
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, party.getName(), mcMMOPlayer.getPartyInvite().getName(), EventReason.CHANGED_PARTIES);
-
-                mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                if (event.isCancelled()) {
-                    return true;
-                }
-
-                PartyManager.removeFromParty(player.getName(), party);
-            }
-            else {
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, mcMMOPlayer.getPartyInvite().getName(), EventReason.JOINED_PARTY);
-                mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                if (event.isCancelled()) {
-                    return true;
-                }
-            }
-
-            PartyManager.joinInvitedParty(player, mcMMOPlayer);
-        }
-        else {
-            player.sendMessage(LocaleLoader.getString("mcMMO.NoInvites"));
-        }
-
         return true;
     }
 
