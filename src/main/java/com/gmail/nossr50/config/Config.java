@@ -368,7 +368,7 @@ public class Config extends ConfigLoader {
     public double getSlimeXP() { return config.getDouble("Experience.Combat.Multiplier.Slime", 2.0); }
     public double getZombieXP() { return config.getDouble("Experience.Combat.Multiplier.Zombie", 2.0); }
     public double getPigZombieXP() { return config.getDouble("Experience.Combat.Multiplier.Pig_Zombie", 3.0); }
-    public double getEndermanXP() { return config.getDouble("Experience.Combat.Multiplier.Enderman", 2.0); }
+    public double getEndermanXP() { return config.getDouble("Experience.Combat.Multiplier.Enderman", 1.0); }
     public double getCaveSpiderXP() { return config.getDouble("Experience.Combat.Multiplier.Cave_Spider", 3.0); }
     public double getSilverfishXP() { return config.getDouble("Experience.Combat.Multiplier.Silverfish", 3.0); }
     public double getBlazeXP() { return config.getDouble("Experience.Combat.Multiplier.Blaze", 3.0); }
