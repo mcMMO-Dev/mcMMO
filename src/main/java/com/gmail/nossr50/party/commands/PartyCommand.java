@@ -16,7 +16,6 @@ import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
@@ -28,6 +27,7 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyAcceptCommand = new PartyAcceptCommand();
     private CommandExecutor partyCreateCommand = new PartyCreateCommand();
     private CommandExecutor partyQuitCommand = new PartyQuitCommand();
+    private CommandExecutor partyShareExpCommand = new PartyShareExpCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -69,7 +69,7 @@ public class PartyCommand implements CommandExecutor {
             return partyQuitCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("expshare")) {
-            return shareExp(args);
+            return partyShareExpCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("itemshare")) {
             return shareItem();
@@ -173,43 +173,6 @@ public class PartyCommand implements CommandExecutor {
         else {
             return printUsage();
         }
-        return true;
-    }
-
-    private boolean shareExp(String[] args) {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.expshare")) {
-            return true;
-        }
-
-        if (args.length < 2) {
-            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "expshare", "[NONE / EQUAL]"));
-            return true;
-        }
-
-        String playerName = player.getName();
-        Party party = mcMMOPlayer.getParty();
-
-        if (party.getLeader().equals(playerName)) {
-            if (args[1].equalsIgnoreCase("none") || args[1].equalsIgnoreCase("false")) {
-                party.setXpShareMode(ShareHandler.XpShareMode.NONE);
-
-                for (Player onlineMembers : party.getOnlineMembers()) {
-                    onlineMembers.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode.NoShare")));
-                }
-            }
-            else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even")) {
-                party.setXpShareMode(ShareHandler.XpShareMode.EQUAL);
-
-                for (Player onlineMembers : party.getOnlineMembers()) {
-                    onlineMembers.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode.Equal")));
-                }
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "expshare", "[NONE / EQUAL]"));
-                return true;
-            }
-        }
-
         return true;
     }
 
