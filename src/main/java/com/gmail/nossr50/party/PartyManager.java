@@ -339,14 +339,14 @@ public final class PartyManager {
      * @param mcMMOPlayer The player to add to the party
      */
     public static void joinInvitedParty(Player player, McMMOPlayer mcMMOPlayer) {
-        Party invite = mcMMOPlayer.getInvite();
+        Party invite = mcMMOPlayer.getPartyInvite();
 
         if (!parties.contains(invite)) {
             parties.add(invite);
         }
 
         player.sendMessage(LocaleLoader.getString("Commands.Invite.Accepted", invite.getName()));
-        mcMMOPlayer.removeInvite();
+        mcMMOPlayer.removePartyInvite();
         addToParty(player.getName(), mcMMOPlayer, invite);
     }
 

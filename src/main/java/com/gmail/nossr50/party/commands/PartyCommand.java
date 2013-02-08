@@ -24,6 +24,7 @@ public class PartyCommand implements CommandExecutor {
     private Player player;
 
     private CommandExecutor partyJoinCommand = new PartyJoinCommand();
+    private CommandExecutor partyAcceptCommand = new PartyAcceptCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -179,7 +180,7 @@ public class PartyCommand implements CommandExecutor {
         if (mcMMOPlayer.hasPartyInvite()) {
             if (mcMMOPlayer.inParty()) {
                 Party party = mcMMOPlayer.getParty();
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, party.getName(), mcMMOPlayer.getInvite().getName(), EventReason.CHANGED_PARTIES);
+                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, party.getName(), mcMMOPlayer.getPartyInvite().getName(), EventReason.CHANGED_PARTIES);
 
                 mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -190,7 +191,7 @@ public class PartyCommand implements CommandExecutor {
                 PartyManager.removeFromParty(player.getName(), party);
             }
             else {
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, mcMMOPlayer.getInvite().getName(), EventReason.JOINED_PARTY);
+                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, mcMMOPlayer.getPartyInvite().getName(), EventReason.JOINED_PARTY);
                 mcMMO.p.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) {
@@ -361,7 +362,7 @@ public class PartyCommand implements CommandExecutor {
                 if (PartyManager.canInvite(player, mcMMOPlayer)) {
                     Party party = mcMMOPlayer.getParty();
 
-                    Users.getPlayer(target).setInvite(party);
+                    Users.getPlayer(target).setPartyInvite(party);
                     player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
                     target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", party.getName(), player.getName()));
                     target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.1"));

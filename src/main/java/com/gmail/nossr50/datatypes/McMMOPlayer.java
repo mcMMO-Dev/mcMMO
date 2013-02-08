@@ -171,11 +171,11 @@ public class McMMOPlayer {
 
     // Party Stuff
 
-    public void setInvite(Party invite) {
+    public void setPartyInvite(Party invite) {
         this.invite = invite;
     }
 
-    public Party getInvite() {
+    public Party getPartyInvite() {
         return invite;
     }
 
@@ -207,7 +207,7 @@ public class McMMOPlayer {
         party = null;
     }
 
-    public void removeInvite() {
+    public void removePartyInvite() {
         invite = null;
     }
     
