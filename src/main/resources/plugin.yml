@@ -1018,10 +1018,9 @@ permissions:
         default: true
         description: mcmmo permisions that default to true
         children:
-            mcmmo.item.all: true
-            mcmmo.motd: true 
-            mcmmo.commands.defaults: true
             mcmmo.chat.partychat: true
+            mcmmo.commands.defaults: true
+            mcmmo.motd: true 
             mcmmo.skills.all: true
     mcmmo.defaultsop:
         default: op
