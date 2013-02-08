@@ -28,6 +28,7 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyCreateCommand = new PartyCreateCommand();
     private CommandExecutor partyQuitCommand = new PartyQuitCommand();
     private CommandExecutor partyExpShareCommand = new PartyExpShareCommand();
+    private CommandExecutor partyInviteCommand = new PartyInviteCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -75,7 +76,7 @@ public class PartyCommand implements CommandExecutor {
             return shareItem();
         }
         else if (args[0].equalsIgnoreCase("invite")) {
-            return invite(args);
+            return partyInviteCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("kick")) {
             return kick(args);
@@ -189,49 +190,6 @@ public class PartyCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Party.Help.7"));
         player.sendMessage(LocaleLoader.getString("Party.Help.8"));
         return true;
-    }
-
-    private boolean invite(String[] args) {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.invite")) {
-            return true;
-        }
-
-        switch (args.length) {
-        case 2:
-            if (!mcMMOPlayer.inParty()) {
-                player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-                return true;
-            }
-
-            Player target = mcMMO.p.getServer().getPlayer(args[1]);
-
-            if (target != null) {
-                if (PartyManager.inSameParty(player, target)) {
-                    player.sendMessage(LocaleLoader.getString("Party.Player.InSameParty", target.getName()));
-                    return true;
-                }
-
-                if (PartyManager.canInvite(player, mcMMOPlayer)) {
-                    Party party = mcMMOPlayer.getParty();
-
-                    Users.getPlayer(target).setPartyInvite(party);
-                    player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
-                    target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", party.getName(), player.getName()));
-                    target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.1"));
-                    return true;
-                }
-
-                player.sendMessage(LocaleLoader.getString("Party.Locked"));
-                return true;
-            }
-
-            player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
-            return true;
-
-        default:
-            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "invite", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
-            return true;
-        }
     }
 
     /**
