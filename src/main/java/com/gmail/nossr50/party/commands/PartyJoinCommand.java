@@ -76,14 +76,12 @@ public class PartyJoinCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                 return false;
             }
-        }
 
-        target = mcMMOTarget.getPlayer();
-
-        if (!target.isOnline()) {
             sender.sendMessage(LocaleLoader.getString("Party.NotOnline", targetName));
             return false;
         }
+
+        target = mcMMOTarget.getPlayer();
 
         if (!mcMMOTarget.inParty()) {
             sender.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", targetName));
