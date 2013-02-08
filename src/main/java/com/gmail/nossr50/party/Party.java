@@ -13,7 +13,7 @@ public class Party {
     private String name;
     private String password;
     private boolean locked;
-    private ShareHandler.XpShareMode xpShareMode;
+    private ShareHandler.ShareMode xpShareMode;
 
     public List<String> getMembers() {
         return members;
@@ -64,11 +64,11 @@ public class Party {
         this.locked = locked;
     }
 
-    public void setXpShareMode(ShareHandler.XpShareMode xpShareMode) {
+    public void setXpShareMode(ShareHandler.ShareMode xpShareMode) {
         this.xpShareMode = xpShareMode;
     }
 
-    public ShareHandler.XpShareMode getXpShareMode() {
+    public ShareHandler.ShareMode getXpShareMode() {
         return xpShareMode;
     }
 }

@@ -10,11 +10,11 @@ import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Users;
 
 public final class ShareHandler {
-    public enum XpShareMode {
+    public enum ShareMode {
         NONE,
         EQUAL;
 
-        public static XpShareMode getFromString(String string) {
+        public static ShareMode getFromString(String string) {
             try {
                 return valueOf(string);
             }

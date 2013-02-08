@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.ShareHandler;
-import com.gmail.nossr50.party.ShareHandler.XpShareMode;
+import com.gmail.nossr50.party.ShareHandler.ShareMode;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
@@ -35,10 +35,10 @@ public class PartyExpShareCommand implements CommandExecutor {
             }
 
             if (args[1].equalsIgnoreCase("none") || args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
-                handleChangingShareMode(XpShareMode.NONE);
+                handleChangingShareMode(ShareMode.NONE);
             }
             else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even") || args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true")) {
-                handleChangingShareMode(XpShareMode.EQUAL);
+                handleChangingShareMode(ShareMode.EQUAL);
             }
             else {
                 sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "expshare", "[NONE | EQUAL]"));
@@ -52,7 +52,7 @@ public class PartyExpShareCommand implements CommandExecutor {
         }
     }
 
-    private void handleChangingShareMode(ShareHandler.XpShareMode mode) {
+    private void handleChangingShareMode(ShareHandler.ShareMode mode) {
         playerParty.setXpShareMode(mode);
 
         for (Player member : playerParty.getOnlineMembers()) {

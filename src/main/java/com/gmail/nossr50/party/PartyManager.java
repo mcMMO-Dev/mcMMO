@@ -262,7 +262,7 @@ public final class PartyManager {
 
             party.setName(partyName);
             party.setLeader(playerName);
-            party.setXpShareMode(ShareHandler.XpShareMode.NONE);
+            party.setXpShareMode(ShareHandler.ShareMode.NONE);
             party.setLocked(true);//Parties are now invite-only by default, can be set to open with /party unlock
 
             if (password != null) {
@@ -476,7 +476,7 @@ public final class PartyManager {
             party.setLeader(partiesFile.getString(partyName + ".Leader"));
             party.setPassword(partiesFile.getString(partyName + ".Password"));
             party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
-            party.setXpShareMode(ShareHandler.XpShareMode.getFromString(partiesFile.getString(partyName + ".ExpShareMode")));
+            party.setXpShareMode(ShareHandler.ShareMode.getFromString(partiesFile.getString(partyName + ".ExpShareMode")));
             party.getMembers().addAll(partiesFile.getStringList(partyName + ".Members"));
 
             parties.add(party);
