@@ -23,6 +23,8 @@ public class PartyCommand implements CommandExecutor {
     private McMMOPlayer mcMMOPlayer;
     private Player player;
 
+    private CommandExecutor partyJoinCommand = new PartyJoinCommand();
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (CommandHelper.noConsoleUsage(sender)) {
@@ -41,7 +43,7 @@ public class PartyCommand implements CommandExecutor {
         }
 
         if (args[0].equalsIgnoreCase("join")) {
-            return join(args);
+            return partyJoinCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("accept")) {
             return accept();
@@ -166,79 +168,6 @@ public class PartyCommand implements CommandExecutor {
         else {
             return printUsage();
         }
-        return true;
-    }
-
-    private boolean join(String[] args) {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.join")) {
-            return true;
-        }
-
-        if (args.length < 2) {
-            player.sendMessage(LocaleLoader.getString("Party.Help.0"));
-            return true;
-        }
-
-        Player target = mcMMO.p.getServer().getPlayer(args[1]);
-
-        if (target == null) {
-            player.sendMessage(LocaleLoader.getString("Party.NotOnline", args[1]));
-            return false;
-        }
-
-        McMMOPlayer mcMMOTarget = Users.getPlayer(target);
-
-        if (!mcMMOTarget.inParty()) {
-            player.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", args[1]));
-            return false;
-        }
-
-        if (player.equals(target)) {
-            player.sendMessage(LocaleLoader.getString("Party.Join.Self"));
-            return true;
-        }
-
-        Party party = mcMMOPlayer.getParty();
-
-        if (party != null && party.equals(Users.getPlayer(target).getParty())) {
-            player.sendMessage(LocaleLoader.getString("Party.Join.Self"));
-            return true;
-        }
-
-        String password = null;
-        
-        if (args.length > 2) {
-            password = args[2];
-        }
-
-        Party targetParty = mcMMOTarget.getParty();
-
-        // Check to see if the party exists, and if it does, can the player join it?
-        if (targetParty == null || !PartyManager.checkJoinability(player, targetParty, null)) {
-            return true; // End before any event is fired.
-        }
-
-        if (party != null) {
-            McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, party.getName(), targetParty.getName(), EventReason.CHANGED_PARTIES);
-            mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-            if (event.isCancelled()) {
-                return true;
-            }
-
-            PartyManager.removeFromParty(player.getName(), party);
-        }
-        else {
-            McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, null, targetParty.getName(), EventReason.JOINED_PARTY);
-            mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-            if (event.isCancelled()) {
-                return true;
-            }
-        }
-
-        
-        PartyManager.joinParty(player, mcMMOPlayer, targetParty.getName(), password);
         return true;
     }
 

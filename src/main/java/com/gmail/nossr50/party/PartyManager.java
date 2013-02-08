@@ -290,7 +290,7 @@ public final class PartyManager {
 
             parties.add(party);
         }
-        else if (!checkJoinability(player, party, password)) {
+        else if (!checkPartyPassword(player, party, password)) {
             return;
         }
 
@@ -306,7 +306,7 @@ public final class PartyManager {
      * @param password The password provided by the player
      * @return true if the player can join the party
      */
-    public static boolean checkJoinability(Player player, Party party, String password) {
+    public static boolean checkPartyPassword(Player player, Party party, String password) {
         //Don't care about passwords if it isn't locked
         if (party.isLocked()) {
             String partyPassword = party.getPassword();
@@ -314,7 +314,6 @@ public final class PartyManager {
             if (partyPassword != null) {
                 if (password == null) {
                     player.sendMessage(LocaleLoader.getString("Party.Password.None"));
-                    player.sendMessage(LocaleLoader.getString("Commands.Usage.3", "party", "join", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">", "<" + LocaleLoader.getString("Commands.Usage.Password") + ">"));
                     return false;
                 }
                 else if (!password.equals(partyPassword)) {
