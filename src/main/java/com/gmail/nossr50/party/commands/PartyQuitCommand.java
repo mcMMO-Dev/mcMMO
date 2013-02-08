@@ -28,11 +28,6 @@ public class PartyQuitCommand implements CommandExecutor {
             player = (Player) sender;
             playerParty = Users.getPlayer(player).getParty();
 
-            if (playerParty == null) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-                return true;
-            }
-
             if (!PartyManager.handlePartyChangeEvent(player, playerParty.getName(), null, EventReason.LEFT_PARTY)) {
                 return true;
             }
