@@ -5,6 +5,7 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
 import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.Users;
 
 /**
  * Generic event for mcMMO skill handling.
@@ -16,7 +17,7 @@ public abstract class McMMOPlayerSkillEvent extends PlayerEvent {
     protected McMMOPlayerSkillEvent(Player player, SkillType skill) {
         super(player);
         this.skill = skill;
-        this.skillLevel = skill.getSkillLevel(player);
+        this.skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(skill);
     }
 
     /**
