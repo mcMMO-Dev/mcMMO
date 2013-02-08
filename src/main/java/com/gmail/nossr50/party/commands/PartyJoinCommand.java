@@ -100,6 +100,7 @@ public class PartyJoinCommand implements CommandExecutor {
 
         player = (Player) sender;
         mcMMOPlayer = Users.getPlayer(player);
+        playerParty = mcMMOPlayer.getParty();
         targetParty = mcMMOTarget.getParty();
 
         if (player.equals(target) || (mcMMOPlayer.inParty() && playerParty.equals(targetParty))) {
