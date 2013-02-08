@@ -21,6 +21,21 @@ public final class PartyManager {
 
     private PartyManager() {}
 
+    public static boolean changeOrJoinParty(McMMOPlayer mcMMOPlayer, Player player, Party oldParty, Party newParty) {
+        if (mcMMOPlayer.inParty()) {
+            if (!handlePartyChangeEvent(player, oldParty.getName(), newParty.getName(), EventReason.CHANGED_PARTIES)) {
+                return false;
+            }
+
+            removeFromParty(player.getName(), oldParty);
+        }
+        else if (!handlePartyChangeEvent(player, null, newParty.getName(), EventReason.JOINED_PARTY)) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * Check if two players are in the same party.
      *

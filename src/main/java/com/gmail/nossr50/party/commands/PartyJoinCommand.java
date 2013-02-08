@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
@@ -46,18 +45,11 @@ public class PartyJoinCommand implements CommandExecutor {
             }
 
             // Changing parties
-            if (mcMMOPlayer.inParty()) {
-                if (!PartyManager.handlePartyChangeEvent(player, playerParty.getName(), targetParty.getName(), EventReason.CHANGED_PARTIES)) {
-                    return true;
-                }
-
-                PartyManager.removeFromParty(player.getName(), playerParty);
-            }
-            else if (!PartyManager.handlePartyChangeEvent(player, null, targetParty.getName(), EventReason.JOINED_PARTY)) {
+            if (!PartyManager.changeOrJoinParty(mcMMOPlayer, player, playerParty, targetParty)) {
                 return true;
             }
 
-            PartyManager.joinParty(player, mcMMOPlayer, targetParty.getName(), password);
+            PartyManager.joinParty(player, mcMMOPlayer, playerParty.getName(), password);
             return true;
 
         default:

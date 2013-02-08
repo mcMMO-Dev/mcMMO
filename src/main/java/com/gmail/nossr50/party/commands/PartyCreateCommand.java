@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
@@ -16,7 +15,6 @@ import com.gmail.nossr50.util.Users;
 public class PartyCreateCommand implements CommandExecutor {
     private McMMOPlayer mcMMOPlayer;
     private Player player;
-    private Party playerParty;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -40,15 +38,7 @@ public class PartyCreateCommand implements CommandExecutor {
             mcMMOPlayer = Users.getPlayer(player);
 
             // Changing parties
-            if (mcMMOPlayer.inParty()) {
-                playerParty = mcMMOPlayer.getParty();
-                if (!PartyManager.handlePartyChangeEvent(player, playerParty.getName(), args[1], EventReason.CHANGED_PARTIES)) {
-                    return true;
-                }
-
-                PartyManager.removeFromParty(player.getName(), playerParty);
-            }
-            else if (!PartyManager.handlePartyChangeEvent(player, null, args[1], EventReason.JOINED_PARTY)) {
+            if (!PartyManager.changeOrJoinParty(mcMMOPlayer, player, mcMMOPlayer.getParty(), newParty)) {
                 return true;
             }
 
