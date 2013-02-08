@@ -58,7 +58,6 @@ commands:
         aliases: []
         description: Teleport to a party member
     party:
-        aliases: []
         description: Create/join a party
     inspect:
         description: View detailed mcMMO info on another player

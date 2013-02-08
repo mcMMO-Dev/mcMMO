@@ -26,6 +26,7 @@ import com.gmail.nossr50.database.commands.McpurgeCommand;
 import com.gmail.nossr50.database.commands.McremoveCommand;
 import com.gmail.nossr50.database.commands.MmoupdateCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.party.commands.PartyCommand;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
 import com.gmail.nossr50.skills.axes.AxesCommand;
@@ -311,5 +312,16 @@ public final class CommandRegistrationHelper {
         command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "xplock", "<on|off>"));
         command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "xplock", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">"));
         command.setExecutor(new XplockCommand());
+    }
+
+    public static void registerPartyCommand() {
+        PluginCommand command = mcMMO.p.getCommand("party");
+        command.setDescription(LocaleLoader.getString("Commands.Description.party"));
+        command.setPermission("mcmmo.commands.party;mcmmo.commands.party.accept;mcmmo.commands.party.create;mcmmo.commands.party.disband;" +
+                              "mcmmo.commands.party.expshare;mcmmo.commands.party.invite;mcmmo.commands.party.itemshare;mcmmo.commands.party.join;" +
+                              "mcmmo.commands.party.kick;mcmmo.commands.party.lock;mcmmo.commands.party.owner;mcmmo.commands.party.password;" +
+                              "mcmmo.commands.party.quit;mcmmo.commands.party.rename;mcmmo.commands.party.unlock");
+        command.setPermissionMessage(permissionsMessage);
+        command.setExecutor(new PartyCommand());
     }
 }
