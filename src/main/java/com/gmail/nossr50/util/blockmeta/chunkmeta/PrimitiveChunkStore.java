@@ -178,16 +178,15 @@ public class PrimitiveChunkStore implements ChunkStore {
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        int fileVersionNumber; // Can be used to determine the format of the file
-
-        long lsb = in.readLong();
-        if (((int) (lsb >> 32)) == MAGIC_NUMBER) {
-            fileVersionNumber = (int) lsb;
-            lsb = in.readLong();
-        } else {
+        int magic = in.readInt();
+        // Can be used to determine the format of the file
+        int fileVersionNumber = in.readInt();
+        
+        if (magic != MAGIC_NUMBER) {
             fileVersionNumber = 0;
         }
 
+        long lsb = in.readLong();
         long msb = in.readLong();
         worldUid = new UUID(msb, lsb);
         cx = in.readInt();
