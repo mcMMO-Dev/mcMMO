@@ -81,6 +81,10 @@ public final class Anniversary {
             GregorianCalendar anniversaryEnd = new GregorianCalendar(2013, Calendar.FEBRUARY, 6);
             GregorianCalendar day = new GregorianCalendar();
 
+            if (hasCelebrated == null) {
+                createAnniversaryFile();
+            }
+
             if (hasCelebrated.contains(sender.getName())) {
                 return;
             }
