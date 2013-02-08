@@ -67,14 +67,14 @@ public class PartyJoinCommand implements CommandExecutor {
     }
 
     private boolean canJoinParty(CommandSender sender, String targetName) {
+        if (!mcMMO.p.getServer().getOfflinePlayer(targetName).isOnline()) {
+            sender.sendMessage(LocaleLoader.getString("Party.NotOnline", targetName));
+            return false;
+        }
+
         mcMMOTarget = Users.getPlayer(targetName);
 
         if (mcMMOTarget == null) {
-            if (!mcMMO.p.getServer().getOfflinePlayer(targetName).isOnline()) {
-                sender.sendMessage(LocaleLoader.getString("Party.NotOnline", targetName));
-                return false;
-            }
-
             sender.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
             return false;
         }
