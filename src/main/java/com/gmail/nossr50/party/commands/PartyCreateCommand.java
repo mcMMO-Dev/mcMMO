@@ -30,7 +30,7 @@ public class PartyCreateCommand implements CommandExecutor {
 
             // Check to see if the party exists, and if it does cancel creating a new party
             if (newParty != null) {
-                player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", args[1]));
+                sender.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", args[1]));
                 return true;
             }
 
