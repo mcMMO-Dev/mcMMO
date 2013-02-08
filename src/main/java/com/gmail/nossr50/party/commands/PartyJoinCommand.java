@@ -5,10 +5,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
@@ -49,11 +47,14 @@ public class PartyJoinCommand implements CommandExecutor {
 
             // Changing parties
             if (mcMMOPlayer.inParty()) {
-                handlePartyChangeEvent(playerParty.getName(), EventReason.CHANGED_PARTIES);
+                if (!PartyManager.handlePartyChangeEvent(player, playerParty.getName(), targetParty.getName(), EventReason.CHANGED_PARTIES)) {
+                    return true;
+                }
+
                 PartyManager.removeFromParty(player.getName(), playerParty);
             }
-            else {
-                handlePartyChangeEvent(null, EventReason.JOINED_PARTY);
+            else if (!PartyManager.handlePartyChangeEvent(player, null, targetParty.getName(), EventReason.JOINED_PARTY)) {
+                return true;
             }
 
             PartyManager.joinParty(player, mcMMOPlayer, targetParty.getName(), password);
@@ -107,19 +108,5 @@ public class PartyJoinCommand implements CommandExecutor {
         }
 
         return true;
-    }
-
-    /**
-     * Handle party change event.
-     *
-     * @param partyName The name of the old party
-     * @param reason The reason for changing parties
-     * @return true if the change event was successful, false otherwise
-     */
-    private boolean handlePartyChangeEvent(String oldPartyName, EventReason reason) {
-        McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, oldPartyName, targetParty.getName(), reason);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        return !event.isCancelled();
     }
 }

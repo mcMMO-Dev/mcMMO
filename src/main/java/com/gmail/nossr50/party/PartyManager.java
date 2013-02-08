@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
+import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
@@ -493,5 +495,21 @@ public final class PartyManager {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Handle party change event.
+     *
+     * @param player The player changing parties
+     * @param oldPartyName The name of the old party
+     * @param newPartyName The name of the new party
+     * @param reason The reason for changing parties
+     * @return true if the change event was successful, false otherwise
+     */
+    public static boolean handlePartyChangeEvent(Player player, String oldPartyName, String newPartyName, EventReason reason) {
+        McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, oldPartyName, newPartyName, reason);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return !event.isCancelled();
     }
 }
