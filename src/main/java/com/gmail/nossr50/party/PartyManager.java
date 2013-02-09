@@ -21,15 +21,15 @@ public final class PartyManager {
 
     private PartyManager() {}
 
-    public static boolean changeOrJoinParty(McMMOPlayer mcMMOPlayer, Player player, Party oldParty, Party newParty) {
+    public static boolean changeOrJoinParty(McMMOPlayer mcMMOPlayer, Player player, Party oldParty, String newPartyName) {
         if (mcMMOPlayer.inParty()) {
-            if (!handlePartyChangeEvent(player, oldParty.getName(), newParty.getName(), EventReason.CHANGED_PARTIES)) {
+            if (!handlePartyChangeEvent(player, oldParty.getName(), newPartyName, EventReason.CHANGED_PARTIES)) {
                 return false;
             }
 
             removeFromParty(player.getName(), oldParty);
         }
-        else if (!handlePartyChangeEvent(player, null, newParty.getName(), EventReason.JOINED_PARTY)) {
+        else if (!handlePartyChangeEvent(player, null, newPartyName, EventReason.JOINED_PARTY)) {
             return false;
         }
 

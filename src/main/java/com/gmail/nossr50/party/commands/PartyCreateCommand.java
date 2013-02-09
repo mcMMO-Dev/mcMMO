@@ -38,7 +38,7 @@ public class PartyCreateCommand implements CommandExecutor {
             mcMMOPlayer = Users.getPlayer(player);
 
             // Changing parties
-            if (!PartyManager.changeOrJoinParty(mcMMOPlayer, player, mcMMOPlayer.getParty(), newParty)) {
+            if (!PartyManager.changeOrJoinParty(mcMMOPlayer, player, mcMMOPlayer.getParty(), args[1])) {
                 return true;
             }
 

@@ -34,7 +34,7 @@ public class PartyAcceptCommand implements CommandExecutor {
 
 
             // Changing parties
-            if (!PartyManager.changeOrJoinParty(mcMMOPlayer, player, mcMMOPlayer.getParty(), mcMMOPlayer.getPartyInvite())) {
+            if (!PartyManager.changeOrJoinParty(mcMMOPlayer, player, mcMMOPlayer.getParty(), mcMMOPlayer.getPartyInvite().getName())) {
                 return true;
             }
 
