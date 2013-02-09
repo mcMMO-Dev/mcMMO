@@ -516,4 +516,117 @@ public class ItemChecks {
             return false;
         }
     }
+
+    /**
+     * Check if an item is sharable.
+     *
+     * @param item Item that will get shared
+     * @return True if the item can be shared.
+     */
+    public static boolean isShareable(ItemStack is) {
+        return isMiningDrop(is) || isWoodcuttingDrop(is) || isMobDrop(is) || isHerbalismDrop(is);
+    }
+
+    /**
+     * Checks to see if an item is a mining drop.
+     *
+     * @param is Item to check
+     * @return true if the item is a mining drop, false otherwise
+     */
+    public static boolean isMiningDrop(ItemStack is) {
+        switch (is.getType()) {
+        case COAL:
+        case COAL_ORE:
+        case DIAMOND:
+        case DIAMOND_ORE:
+        case EMERALD:
+        case EMERALD_ORE:
+        case GOLD_ORE:
+        case IRON_ORE:
+        case LAPIS_ORE:
+        case REDSTONE_ORE:
+        case REDSTONE:
+        case GLOWSTONE_DUST:
+            return true;
+
+        case INK_SACK:
+            if (is.getData().getData() == DyeColor.BLUE.getDyeData()) {
+                return true;
+            }
+
+        default:
+            return false;
+        }
+    }
+
+    public static boolean isHerbalismDrop(ItemStack is) {
+        switch (is.getType()) {
+        case WHEAT:
+        case SEEDS:
+        case CARROT:
+        case POTATO:
+        case COCOA:
+        case NETHER_WARTS:
+        case APPLE:
+        case BROWN_MUSHROOM:
+        case RED_MUSHROOM:
+        case RED_ROSE:
+        case YELLOW_FLOWER:
+        case CACTUS:
+        case SUGAR_CANE:
+            //TODO Add the rest
+            return true;
+
+        default:
+            return false;
+        }
+    }
+
+    public static boolean isMobDrop(ItemStack is) {
+        switch (is.getType()) {
+        case STRING:
+        case FEATHER:
+        case RAW_CHICKEN:
+        case COOKED_CHICKEN:
+        case LEATHER:
+        case RAW_BEEF:
+        case COOKED_BEEF:
+        case PORK:
+        case GRILLED_PORK:
+        case WOOL:
+        case RED_ROSE:
+        case IRON_INGOT:
+        case SNOW_BALL:
+        case BLAZE_ROD:
+        case SPIDER_EYE:
+        case SULPHUR:
+        case ENDER_PEARL:
+        case GHAST_TEAR:
+        case MAGMA_CREAM:
+        case BONE:
+        case ARROW:
+        case SLIME_BALL:
+        case NETHER_STAR:
+        case COAL:
+        case ROTTEN_FLESH:
+        case GOLD_NUGGET:
+        case EGG:
+            return true;
+
+        default:
+            return false;
+        }
+    }
+
+    public static boolean isWoodcuttingDrop(ItemStack is) {
+        switch (is.getType()) {
+        case LOG:
+        case LEAVES:
+        case SAPLING:
+            return true;
+
+        default:
+            return false;
+        }
+    }
 }

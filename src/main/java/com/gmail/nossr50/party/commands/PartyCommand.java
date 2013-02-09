@@ -28,6 +28,7 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyCreateCommand = new PartyCreateCommand();
     private CommandExecutor partyQuitCommand = new PartyQuitCommand();
     private CommandExecutor partyExpShareCommand = new PartyExpShareCommand();
+    private CommandExecutor partyItemShareCommand = new PartyItemShareCommand();
     private CommandExecutor partyInviteCommand = new PartyInviteCommand();
 
     @Override
@@ -72,8 +73,8 @@ public class PartyCommand implements CommandExecutor {
         else if (args[0].equalsIgnoreCase("expshare") || args[0].equalsIgnoreCase("xpshare") || args[0].equalsIgnoreCase("sharexp") || args[0].equalsIgnoreCase("shareexp")) {
             return partyExpShareCommand.onCommand(sender, command, label, args);
         }
-        else if (args[0].equalsIgnoreCase("itemshare")) {
-            return shareItem();
+        else if (args[0].equalsIgnoreCase("itemshare") || args[0].equalsIgnoreCase("shareitem") || args[0].equalsIgnoreCase("shareitems")) {
+            return partyItemShareCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("invite")) {
             return partyInviteCommand.onCommand(sender, command, label, args);
@@ -125,7 +126,6 @@ public class PartyCommand implements CommandExecutor {
             String ItemShare = "";
             String ExpShare = "";
             String Split = "";
-            String itemShareMode = "NONE";
 
             for (String otherPlayerName : party.getMembers()) {
                 if (leader.equals(otherPlayerName)) {
@@ -156,7 +156,7 @@ public class PartyCommand implements CommandExecutor {
             }
 
             if (itemShareEnabled) {
-                ItemShare = LocaleLoader.getString("Commands.Party.ItemShare", itemShareMode);
+                ItemShare = LocaleLoader.getString("Commands.Party.ItemShare", party.getItemShareMode().toString());
             }
 
             if (xpShareEnabled && itemShareEnabled) {
@@ -175,10 +175,6 @@ public class PartyCommand implements CommandExecutor {
             return printUsage();
         }
         return true;
-    }
-
-    private boolean shareItem() {
-        return (!CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.itemshare"));
     }
 
     private boolean printHelp() {

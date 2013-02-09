@@ -14,6 +14,7 @@ public class Party {
     private String password;
     private boolean locked;
     private ShareHandler.ShareMode xpShareMode;
+    private ShareHandler.ShareMode itemShareMode;
 
     public List<String> getMembers() {
         return members;
@@ -70,5 +71,13 @@ public class Party {
 
     public ShareHandler.ShareMode getXpShareMode() {
         return xpShareMode;
+    }
+
+    public void setItemShareMode(ShareHandler.ShareMode itemShareMode) {
+        this.itemShareMode = itemShareMode;
+    }
+
+    public ShareHandler.ShareMode getItemShareMode() {
+        return itemShareMode;
     }
 }

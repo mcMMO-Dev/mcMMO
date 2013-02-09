@@ -475,6 +475,7 @@ public final class PartyManager {
             party.setPassword(partiesFile.getString(partyName + ".Password"));
             party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
             party.setXpShareMode(ShareHandler.ShareMode.getFromString(partiesFile.getString(partyName + ".ExpShareMode")));
+            party.setItemShareMode(ShareHandler.ShareMode.getFromString(partiesFile.getString(partyName + ".ItemShareMode")));
             party.getMembers().addAll(partiesFile.getStringList(partyName + ".Members"));
 
             parties.add(party);
@@ -500,6 +501,7 @@ public final class PartyManager {
             partiesFile.set(partyName + ".Password", party.getPassword());
             partiesFile.set(partyName + ".Locked", party.isLocked());
             partiesFile.set(partyName + ".ExpShareMode", party.getXpShareMode().toString());
+            partiesFile.set(partyName + ".ItemShareMode", party.getItemShareMode().toString());
             partiesFile.set(partyName + ".Members", party.getMembers());
 
             try {

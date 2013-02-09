@@ -3,6 +3,7 @@ package com.gmail.nossr50.listeners;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,6 +15,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -26,6 +28,7 @@ import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.BlastMining;
@@ -37,6 +40,7 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.BlockChecks;
+import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -107,6 +111,27 @@ public class PlayerListener implements Listener {
             break;
         default:
             break;
+        }
+    }
+
+    /**
+     * Monitor PlayerPickupItem events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
+        Player player = event.getPlayer();
+        Item item = event.getItem();
+
+        if (Misc.isNPCPlayer(player)) {
+            return;
+        }
+
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+
+        if (mcMMOPlayer.inParty() && ItemChecks.isShareable(item.getItemStack())) {
+            ShareHandler.handleItemShare(event, mcMMOPlayer);
         }
     }
 
