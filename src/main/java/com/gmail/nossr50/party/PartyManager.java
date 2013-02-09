@@ -287,27 +287,11 @@ public final class PartyManager {
      *
      * @param player The player to add to the party
      * @param mcMMOPlayer The player to add to the party
-     * @param partyName The party to add the player to
+     * @param party The party to add the player to
      * @param password the password for this party, null if there was no password
      */
-    public static void joinParty(Player player, McMMOPlayer mcMMOPlayer, String partyName, String password) {
-        partyName = partyName.replace(".", "");
-        Party party = getParty(partyName);
-
-        if (party == null) {
-            party = new Party();
-
-            party.setName(partyName);
-            party.setLeader(player.getName());
-
-            if (password != null) {
-                party.setPassword(password);
-                party.setLocked(true);
-            }
-
-            parties.add(party);
-        }
-        else if (!checkPartyPassword(player, party, password)) {
+    public static void joinParty(Player player, McMMOPlayer mcMMOPlayer, Party party, String password) {
+        if (!checkPartyPassword(player, party, password)) {
             return;
         }
 

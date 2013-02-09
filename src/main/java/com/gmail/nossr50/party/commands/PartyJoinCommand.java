@@ -49,7 +49,7 @@ public class PartyJoinCommand implements CommandExecutor {
                 return true;
             }
 
-            PartyManager.joinParty(player, mcMMOPlayer, playerParty.getName(), password);
+            PartyManager.joinParty(player, mcMMOPlayer, targetParty, password);
             return true;
 
         default:
