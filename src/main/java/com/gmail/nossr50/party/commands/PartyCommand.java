@@ -136,7 +136,7 @@ public class PartyCommand implements CommandExecutor {
                     tempList.append(ChatColor.GRAY);
                 }
 
-                tempList.append(otherMember).append(" ");
+                tempList.append(otherMember.getName()).append(" ");
             }
 
             String status = LocaleLoader.getString("Party.Status.Locked");
