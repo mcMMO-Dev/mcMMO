@@ -309,6 +309,9 @@ public class mcMMO extends JavaPlugin {
     private void scheduleTasks() {
         BukkitScheduler scheduler = getServer().getScheduler();
 
+        // Parties are loaded at the end of first server tick otherwise Server.getOfflinePlayer throws an IndexOutOfBoundsException
+        scheduler.scheduleSyncDelayedTask(this, new PartiesLoader(), 0);
+
         // Periodic save timer (Saves every 10 minutes by default)
         scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(), 0, Config.getInstance().getSaveInterval() * 1200L);
         // Regen & Cooldown timer (Runs every second)
@@ -335,9 +338,6 @@ public class mcMMO extends JavaPlugin {
         else if (kickInterval > 0) {
             scheduler.scheduleSyncRepeatingTask(this, new PartyAutoKick(), 0, kickInterval * 60L * 60L * 20L);
         }
-
-        // Parties are loaded at the end of first server tick otherwise Server.getOfflinePlayer throws an IndexOutOfBoundsException
-        scheduler.scheduleSyncDelayedTask(this, new PartiesLoader(), 0);
     }
 
     private void setupMetrics() {
