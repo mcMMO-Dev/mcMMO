@@ -102,8 +102,8 @@ public final class Anniversary {
                         }
                     }, 20 * delay);
                 }
+                hasCelebrated.add(sender.getName());
             }
-            hasCelebrated.add(sender.getName());
         }
     }
 
