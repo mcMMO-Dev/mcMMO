@@ -313,11 +313,13 @@ public class mcMMO extends JavaPlugin {
         scheduler.scheduleSyncDelayedTask(this, new PartiesLoader(), 0);
 
         // Periodic save timer (Saves every 10 minutes by default)
-        scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(), 0, Config.getInstance().getSaveInterval() * 1200L);
+        long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
+
+        scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(), saveIntervalTicks, saveIntervalTicks);
         // Regen & Cooldown timer (Runs every second)
-        scheduler.scheduleSyncRepeatingTask(this, new SkillMonitor(), 0, 20);
+        scheduler.scheduleSyncRepeatingTask(this, new SkillMonitor(), 20, 20);
         // Bleed timer (Runs every two seconds)
-        scheduler.scheduleSyncRepeatingTask(this, new BleedTimer(), 0, 40);
+        scheduler.scheduleSyncRepeatingTask(this, new BleedTimer(), 40, 40);
 
         // Old & Powerless User remover
         int purgeInterval = Config.getInstance().getPurgeInterval();
@@ -326,7 +328,9 @@ public class mcMMO extends JavaPlugin {
             scheduler.scheduleSyncDelayedTask(this, new UserPurgeTask(), 40); // Start 2 seconds after startup.
         }
         else if (purgeInterval > 0) {
-            scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), 0, purgeInterval * 60L * 60L * 20L);
+            long purgeIntervalTicks = purgeInterval * 60 * 60 * 20;
+
+            scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), purgeIntervalTicks, purgeIntervalTicks);
         }
 
         // Automatically remove old members from parties
@@ -336,7 +340,9 @@ public class mcMMO extends JavaPlugin {
             scheduler.scheduleSyncDelayedTask(this, new PartyAutoKick(), 40); // Start 2 seconds after startup.
         }
         else if (kickInterval > 0) {
-            scheduler.scheduleSyncRepeatingTask(this, new PartyAutoKick(), 0, kickInterval * 60L * 60L * 20L);
+            long kickIntervalTicks = kickInterval * 60 * 60 * 20;
+
+            scheduler.scheduleSyncRepeatingTask(this, new PartyAutoKick(), kickIntervalTicks, kickIntervalTicks);
         }
     }
 
