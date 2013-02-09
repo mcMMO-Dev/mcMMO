@@ -12,8 +12,8 @@ public class Party {
     private String name;
     private String password;
     private boolean locked;
-    private ShareHandler.ShareMode xpShareMode;
-    private ShareHandler.ShareMode itemShareMode;
+    private ShareHandler.ShareMode xpShareMode = ShareHandler.ShareMode.NONE;
+    private ShareHandler.ShareMode itemShareMode = ShareHandler.ShareMode.NONE;
 
     public List<OfflinePlayer> getMembers() {
         return members;

@@ -260,7 +260,6 @@ public final class PartyManager {
 
             party.setName(partyName);
             party.setLeader(player.getName());
-            party.setXpShareMode(ShareHandler.ShareMode.NONE);
             party.setLocked(true); // Parties are now invite-only by default, can be set to open with /party unlock
 
             if (password != null) {
