@@ -52,6 +52,7 @@ import com.gmail.nossr50.skills.repair.RepairManagerFactory;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.config.RepairConfigManager;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
+import com.gmail.nossr50.skills.runnables.PartiesLoader;
 import com.gmail.nossr50.skills.runnables.PartyAutoKick;
 import com.gmail.nossr50.skills.runnables.SkillMonitor;
 import com.gmail.nossr50.spout.SpoutConfig;
@@ -206,7 +207,8 @@ public class mcMMO extends JavaPlugin {
         TreasuresConfig.getInstance();
         HiddenConfig.getInstance();
         AdvancedConfig.getInstance();
-        PartyManager.loadParties();
+
+        
 
         List<Repairable> repairables = new ArrayList<Repairable>();
 
@@ -333,6 +335,9 @@ public class mcMMO extends JavaPlugin {
         else if (kickInterval > 0) {
             scheduler.scheduleSyncRepeatingTask(this, new PartyAutoKick(), 0, kickInterval * 60L * 60L * 20L);
         }
+
+        // Parties are loaded at the end of first server tick otherwise Server.getOfflinePlayer throws an IndexOutOfBoundsException
+        scheduler.scheduleSyncDelayedTask(this, new PartiesLoader(), 0);
     }
 
     private void setupMetrics() {
