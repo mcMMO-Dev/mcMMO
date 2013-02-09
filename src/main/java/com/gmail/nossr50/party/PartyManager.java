@@ -176,10 +176,13 @@ public final class PartyManager {
      */
     public static Party getPlayerParty(String playerName) {
         for (Party party : parties) {
-            if (party.getMembers().contains(playerName)) {
-                return party;
+            for (OfflinePlayer member : party.getMembers()) {
+                if (member.getName().equals(playerName)) {
+                    return party;
+                }
             }
         }
+
         return null;
     }
 
