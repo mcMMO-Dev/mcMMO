@@ -32,7 +32,7 @@ public class PartyQuitCommand implements CommandExecutor {
                 return true;
             }
 
-            PartyManager.removeFromParty(player.getName(), playerParty);
+            PartyManager.removeFromParty(player, playerParty);
             sender.sendMessage(LocaleLoader.getString("Commands.Party.Leave"));
             return true;
 

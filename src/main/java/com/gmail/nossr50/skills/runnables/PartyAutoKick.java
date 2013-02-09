@@ -1,14 +1,12 @@
 package com.gmail.nossr50.skills.runnables;
 
-import java.util.ArrayList;
+import org.bukkit.OfflinePlayer;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 
 public class PartyAutoKick implements Runnable {
-
     @Override
     public void run() {
         updatePartyMembers();
@@ -18,14 +16,9 @@ public class PartyAutoKick implements Runnable {
         long currentTime = System.currentTimeMillis();
         long kickTime = 24L * 60L * 60L * 1000L * Config.getInstance().getAutoPartyKickTime();
 
-        ArrayList<Party> parties = new ArrayList<Party>(PartyManager.getParties());
-
-        for (Party party : parties) {
-            ArrayList<String> members = new ArrayList<String>(party.getMembers());
-            for (String member : members) {
-                long lastPlayed = mcMMO.p.getServer().getOfflinePlayer(member).getLastPlayed();
-
-                if (currentTime - lastPlayed > kickTime) {
+        for (Party party : PartyManager.getParties()) {
+            for (OfflinePlayer member : party.getMembers()) {
+                if (currentTime - member.getLastPlayed() > kickTime) {
                     PartyManager.removeFromParty(member, party);
                 }
             }

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.party.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -115,8 +115,6 @@ public class PartyCommand implements CommandExecutor {
     private boolean party() {
         if (mcMMOPlayer.inParty()) {
             Party party = mcMMOPlayer.getParty();
-
-            Server server = mcMMO.p.getServer();
             String leader = party.getLeader();
             StringBuilder tempList = new StringBuilder();
 
@@ -127,17 +125,18 @@ public class PartyCommand implements CommandExecutor {
             String ExpShare = "";
             String Split = "";
 
-            for (String otherPlayerName : party.getMembers()) {
-                if (leader.equals(otherPlayerName)) {
+            for (OfflinePlayer otherMember : party.getMembers()) {
+                if (leader.equals(otherMember.getName())) {
                     tempList.append(ChatColor.GOLD);
                 }
-                else if (server.getPlayer(otherPlayerName) != null) {
+                else if (otherMember.isOnline()) {
                     tempList.append(ChatColor.WHITE);
                 }
                 else {
                     tempList.append(ChatColor.GRAY);
                 }
-                tempList.append(otherPlayerName).append(" ");
+
+                tempList.append(otherMember).append(" ");
             }
 
             String status = LocaleLoader.getString("Party.Status.Locked");
@@ -174,6 +173,7 @@ public class PartyCommand implements CommandExecutor {
         else {
             return printUsage();
         }
+
         return true;
     }
 
@@ -202,16 +202,17 @@ public class PartyCommand implements CommandExecutor {
             Party party = mcMMOPlayer.getParty();
 
             if (party.getLeader().equals(playerName)) {
-                if (!party.getMembers().contains(args[1])) {
+                OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(args[1]);
+
+                if (!party.getMembers().contains(member)) {
                     player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", args[1]));
                     return true;
                 }
 
-                Player target = mcMMO.p.getServer().getOfflinePlayer(args[1]).getPlayer();
-
-                if (target != null) {
+                if (member.isOnline()) {
+                    Player onlineMember = member.getPlayer();
                     String partyName = party.getName();
-                    McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(target, partyName, null, EventReason.KICKED_FROM_PARTY);
+                    McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(onlineMember, partyName, null, EventReason.KICKED_FROM_PARTY);
 
                     mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -219,10 +220,10 @@ public class PartyCommand implements CommandExecutor {
                         return true;
                     }
 
-                    target.sendMessage(LocaleLoader.getString("Commands.Party.Kick", partyName));
+                    onlineMember.sendMessage(LocaleLoader.getString("Commands.Party.Kick", partyName));
                 }
 
-                PartyManager.removeFromParty(args[1], party);
+                PartyManager.removeFromParty(member, party);
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
@@ -285,7 +286,7 @@ public class PartyCommand implements CommandExecutor {
         }
 
         if (party.getLeader().equals(playerName)) {
-            if (!party.getMembers().contains(args[1])) {
+            if (!party.getMembers().contains(mcMMO.p.getServer().getOfflinePlayer(args[1]))) {
                 player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", args[1]));
                 return true;
             }
@@ -324,6 +325,7 @@ public class PartyCommand implements CommandExecutor {
             party.setLocked(true);
             player.sendMessage(LocaleLoader.getString("Party.Locked"));
         }
+
         return true;
     }
 

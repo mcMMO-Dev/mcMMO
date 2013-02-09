@@ -1,7 +1,9 @@
 package com.gmail.nossr50.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.party.Party;
@@ -69,15 +71,14 @@ public final class PartyAPI {
      */
     public static void addToParty(Player player, String partyName) {
         Party party = PartyManager.getParty(partyName);
-        String playerName = player.getName();
 
         if (party == null) {
             party = new Party();
             party.setName(partyName);
-            party.setLeader(playerName);
+            party.setLeader(player.getName());
         }
 
-        PartyManager.addToParty(playerName, Users.getPlayer(player), party);
+        PartyManager.addToParty(player, Users.getPlayer(player), party);
     }
 
     /**
@@ -88,7 +89,7 @@ public final class PartyAPI {
      * @param player The player to remove
      */
     public static void removeFromParty(Player player) {
-        PartyManager.removeFromParty(player.getName(), Users.getPlayer(player).getParty());
+        PartyManager.removeFromParty(player, Users.getPlayer(player).getParty());
     }
 
     /**
@@ -122,9 +123,18 @@ public final class PartyAPI {
      *
      * @param player The player to check
      * @return all the players in the player's party
+     * @deprecated
      */
+    // TODO: I naively tried to add another getAllMembers that returns a List<OffflinePlayer>, but that wasn't possible
+    // since the return type isn't part of the the method's signature. If anybody has an idea...
     public static List<String> getAllMembers(Player player) {
-        return PartyManager.getAllMembers(player);
+        List<String> memberNames = new ArrayList<String>();
+
+        for (OfflinePlayer member : PartyManager.getAllMembers(player)) {
+            memberNames.add(member.getName());
+        }
+
+        return memberNames;
     }
 
     /**

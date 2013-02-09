@@ -3,12 +3,11 @@ package com.gmail.nossr50.party;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
-
 public class Party {
-    private List<String> members = new ArrayList<String>();
+    private List<OfflinePlayer> members = new ArrayList<OfflinePlayer>();
     private String leader;
     private String name;
     private String password;
@@ -16,17 +15,16 @@ public class Party {
     private ShareHandler.ShareMode xpShareMode;
     private ShareHandler.ShareMode itemShareMode;
 
-    public List<String> getMembers() {
+    public List<OfflinePlayer> getMembers() {
         return members;
     }
 
     public List<Player> getOnlineMembers() {
-        Player[] onlinePlayers = mcMMO.p.getServer().getOnlinePlayers();
         List<Player> onlineMembers = new ArrayList<Player>();
 
-        for (Player onlinePlayer : onlinePlayers) {
-            if (members.contains(onlinePlayer.getName())) {
-                onlineMembers.add(onlinePlayer);
+        for (OfflinePlayer member : members) {
+            if (member.isOnline()) {
+                onlineMembers.add(member.getPlayer());
             }
         }
 
