@@ -506,7 +506,14 @@ public final class PartyManager {
             partiesFile.set(partyName + ".Locked", party.isLocked());
             partiesFile.set(partyName + ".ExpShareMode", party.getXpShareMode().toString());
             partiesFile.set(partyName + ".ItemShareMode", party.getItemShareMode().toString());
-            partiesFile.set(partyName + ".Members", party.getMembers());
+
+            List<String> memberNames = new ArrayList<String>();
+
+            for (OfflinePlayer member : party.getMembers()) {
+                memberNames.add(member.getName());
+            }
+
+            partiesFile.set(partyName + ".Members", memberNames);
 
             try {
                 partiesFile.save(new File(partiesFilePath));
