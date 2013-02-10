@@ -6,20 +6,20 @@ Hostile:
         ID: 9999
         XP_Multiplier: 1.0
         Tameable: false
-            Taming_XP: 250
-            CanBeSummoned: false
-            COTW_Material_ID: 999
-            COTW_Material_Data: 9
-            COTW_Material_Amount: 99
+        Taming_XP: 250
+        CanBeSummoned: false
+        COTW_Material_ID: 999
+        COTW_Material_Data: 9
+        COTW_Material_Amount: 99
     Mob_2:
         ID: 9999
         XP_Multiplier: 1.0
         Tameable: false
-            Taming_XP: 250
-            CanBeSummoned: false
-            COTW_Material_ID: 999
-            COTW_Material_Data: 9
-            COTW_Material_Amount: 99
+        Taming_XP: 250
+        CanBeSummoned: false
+        COTW_Material_ID: 999
+        COTW_Material_Data: 9
+        COTW_Material_Amount: 99
 #
 #  Settings for Neutral Mobs
 ###
@@ -28,20 +28,20 @@ Neutral:
         ID: 9999
         XP_Multiplier: 1.0
         Tameable: false
-            Taming_XP: 250
-            CanBeSummoned: false
-            COTW_Material_ID: 999
-            COTW_Material_Data: 9
-            COTW_Material_Amount: 99
+        Taming_XP: 250
+        CanBeSummoned: false
+        COTW_Material_ID: 999
+        COTW_Material_Data: 9
+        COTW_Material_Amount: 99
     Mob_2:
         ID: 9999
         XP_Multiplier: 1.0
         Tameable: false
-            Taming_XP: 250
-            CanBeSummoned: false
-            COTW_Material_ID: 999
-            COTW_Material_Data: 9
-            COTW_Material_Amount: 99
+        Taming_XP: 250
+        CanBeSummoned: false
+        COTW_Material_ID: 999
+        COTW_Material_Data: 9
+        COTW_Material_Amount: 99
 #
 #  Settings for Passive Mobs
 ###
@@ -50,17 +50,17 @@ Passive:
         ID: 9999
         XP_Multiplier: 1.0
         Tameable: false
-            Taming_XP: 250
-            CanBeSummoned: false
-            COTW_Material_ID: 999
-            COTW_Material_Data: 9
-            COTW_Material_Amount: 99
+        Taming_XP: 250
+        CanBeSummoned: false
+        COTW_Material_ID: 999
+        COTW_Material_Data: 9
+        COTW_Material_Amount: 99
     Mob_2:
         ID: 9999
         XP_Multiplier: 1.0
         Tameable: false
-            Taming_XP: 250
-            CanBeSummoned: false
-            COTW_Material_ID: 999
-            COTW_Material_Data: 9
-            COTW_Material_Amount: 99	
+        Taming_XP: 250
+        CanBeSummoned: false
+        COTW_Material_ID: 999
+        COTW_Material_Data: 9
+        COTW_Material_Amount: 99
