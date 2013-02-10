@@ -54,11 +54,11 @@ public class CustomEntityConfig extends ConfigLoader {
             EntityType type = EntityType.fromId(id);
             double xpMultiplier = config.getDouble(entityType + "." + entityName + ".XP_Multiplier", 1.0D);
             boolean canBeTamed = config.getBoolean(entityType + "." + entityName + ".Tameable", false);
-            int tamingXp = config.getInt(entityType + "." + entityName + ".Tameable.Taming_XP", 0);
-            boolean canBeSummoned = config.getBoolean(entityType + "." + entityName + ".Tameable.CanBeSummoned", false);
-            int callOfTheWildId = config.getInt(entityType + "." + entityName + ".Tameable.COTW_Material_ID", 0);
-            int callOfTheWildData = config.getInt(entityType + "." + entityName + ".Tameable.COTW_Material_Data", 0);
-            int callOfTheWildAmount = config.getInt(entityType + "." + entityName + ".Tameable.COTW_Material_Amount", 0);
+            int tamingXp = config.getInt(entityType + "." + entityName + "Taming_XP", 0);
+            boolean canBeSummoned = config.getBoolean(entityType + "." + entityName + "CanBeSummoned", false);
+            int callOfTheWildId = config.getInt(entityType + "." + entityName + "COTW_Material_ID", 0);
+            int callOfTheWildData = config.getInt(entityType + "." + entityName + "COTW_Material_Data", 0);
+            int callOfTheWildAmount = config.getInt(entityType + "." + entityName + "COTW_Material_Amount", 0);
 
             CustomEntity entity;
 
