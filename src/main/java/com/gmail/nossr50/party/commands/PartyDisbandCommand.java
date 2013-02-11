@@ -23,25 +23,33 @@ public class PartyDisbandCommand implements CommandExecutor {
             return true;
         }
 
-        player = (Player) sender;
-        playerParty = Users.getPlayer(player).getParty();
+        switch (args.length) {
+        case 1:
+            player = (Player) sender;
+            playerParty = Users.getPlayer(player).getParty();
 
-        if (!playerParty.getLeader().equals(player.getName())) {
-            sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-            return true;
-        }
-
-        for (Player member : playerParty.getOnlineMembers()) {
-            if (!PartyManager.handlePartyChangeEvent(member, playerParty.getName(), null, EventReason.KICKED_FROM_PARTY)) {
+            if (!playerParty.getLeader().equals(player.getName())) {
+                sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
                 return true;
             }
 
-            member.sendMessage(LocaleLoader.getString("Party.Disband"));
+            for (Player member : playerParty.getOnlineMembers()) {
+                if (!PartyManager.handlePartyChangeEvent(member, playerParty.getName(), null, EventReason.KICKED_FROM_PARTY)) {
+                    return true;
+                }
+
+                member.sendMessage(LocaleLoader.getString("Party.Disband"));
+            }
+
+            PartyManager.disbandParty(playerParty);
+            return true;
+
+        default:
+            sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "disband"));
+            return true;
         }
 
-        PartyManager.disbandParty(playerParty);
-        return true;
-
+        
     }
 
 }
