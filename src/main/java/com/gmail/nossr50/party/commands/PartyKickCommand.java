@@ -73,9 +73,6 @@ public class PartyKickCommand implements CommandExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "kick", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
             return true;
         }
-
-        // TODO Auto-generated method stub
-        return false;
     }
 
 }
