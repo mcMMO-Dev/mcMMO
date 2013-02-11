@@ -51,6 +51,7 @@ Version 1.4.00-dev
  = Fixed Experience.Gains.Mobspawners.Enabled not being used correctly (the check was inverted)
  = Fixed bug where Iron Grip was using the attacker's skill values rather than the defender's.
  = Fixed a bug where /party kick would trigger the PartyChangeEvent for the wrong player
+ = Fixed /party kick not working on offline players
  = Fixed a bug where party join messages weren't displayed
  = Fixed a bug where Disarm and Deflect had wrong values
  = Fixed Magic Hunter (Fishing ability) favoring certain enchants
