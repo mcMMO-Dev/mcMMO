@@ -48,8 +48,5 @@ public class PartyDisbandCommand implements CommandExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "disband"));
             return true;
         }
-
-        
     }
-
 }
