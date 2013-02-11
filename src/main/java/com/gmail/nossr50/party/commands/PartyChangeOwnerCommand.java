@@ -42,7 +42,7 @@ public class PartyChangeOwnerCommand implements CommandExecutor {
             return true;
 
         default:
-            sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "owner", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "owner", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
             return true;
         }
     }
