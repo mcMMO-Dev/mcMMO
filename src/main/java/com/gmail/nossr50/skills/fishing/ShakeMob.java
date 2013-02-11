@@ -148,7 +148,7 @@ public final class ShakeMob {
             possibleDrops.put(new ItemStack(Material.RED_MUSHROOM, Misc.getRandom().nextInt(3) + 1), 30);
             break;
         case PIG:
-            possibleDrops.put(new ItemStack(Material.PORK), 3);
+            possibleDrops.put(new ItemStack(Material.PORK), 100);
             break;
         case PIG_ZOMBIE:
             possibleDrops.put(new ItemStack(Material.ROTTEN_FLESH), 50);
