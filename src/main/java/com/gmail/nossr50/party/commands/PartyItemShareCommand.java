@@ -44,15 +44,15 @@ public class PartyItemShareCommand implements CommandExecutor {
                 handleChangingShareMode(ShareMode.RANDOM);
             }
             else {
-//                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "[NONE | EQUAL | RANDOM]"));
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "[NONE | RANDOM]"));
+//                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | EQUAL | RANDOM>"));
+                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | RANDOM>"));
             }
 
             return true;
 
         default:
-//          sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "[NONE | EQUAL | RANDOM]"));
-          sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "[NONE | RANDOM]"));
+//          sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | EQUAL | RANDOM>"));
+          sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | RANDOM>"));
             return true;
         }
     }
