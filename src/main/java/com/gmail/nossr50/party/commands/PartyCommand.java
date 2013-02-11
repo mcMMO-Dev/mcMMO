@@ -30,6 +30,7 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyExpShareCommand = new PartyExpShareCommand();
     private CommandExecutor partyItemShareCommand = new PartyItemShareCommand();
     private CommandExecutor partyInviteCommand = new PartyInviteCommand();
+    private CommandExecutor partyKickCommand = new PartyKickCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -80,7 +81,7 @@ public class PartyCommand implements CommandExecutor {
             return partyInviteCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("kick")) {
-            return kick(args);
+            return partyKickCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("disband")) {
             return disband();
@@ -186,55 +187,6 @@ public class PartyCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Party.Help.7"));
         player.sendMessage(LocaleLoader.getString("Party.Help.8"));
         return true;
-    }
-
-    /**
-     * Kick a party member
-     */
-    private boolean kick(String[] args) {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.kick")) {
-            return true;
-        }
-
-        switch (args.length) {
-        case 2:
-            String playerName = player.getName();
-            Party party = mcMMOPlayer.getParty();
-
-            if (party.getLeader().equals(playerName)) {
-                OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(args[1]);
-
-                if (!party.getMembers().contains(member)) {
-                    player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", args[1]));
-                    return true;
-                }
-
-                if (member.isOnline()) {
-                    Player onlineMember = member.getPlayer();
-                    String partyName = party.getName();
-                    McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(onlineMember, partyName, null, EventReason.KICKED_FROM_PARTY);
-
-                    mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                    if (event.isCancelled()) {
-                        return true;
-                    }
-
-                    onlineMember.sendMessage(LocaleLoader.getString("Commands.Party.Kick", partyName));
-                }
-
-                PartyManager.removeFromParty(member, party);
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-            }
-
-            return true;
-
-        default:
-            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "kick", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
-            return true;
-        }
     }
 
     /**
