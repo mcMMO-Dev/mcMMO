@@ -7,7 +7,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
@@ -47,10 +46,7 @@ public class PartyKickCommand implements CommandExecutor {
                 Player onlineTarget = target.getPlayer();
                 String partyName = playerParty.getName();
 
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(onlineTarget, partyName, null, EventReason.KICKED_FROM_PARTY);
-                mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                if (event.isCancelled()) {
+                if (!PartyManager.handlePartyChangeEvent(onlineTarget, partyName, null, EventReason.KICKED_FROM_PARTY)) {
                     return true;
                 }
 
