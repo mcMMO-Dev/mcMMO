@@ -33,6 +33,7 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyKickCommand = new PartyKickCommand();
     private CommandExecutor partyDisbandCommand = new PartyDisbandCommand();
     private CommandExecutor partyChangeOwnerCommand = new PartyChangeOwnerCommand();
+    private CommandExecutor partyLockCommand = new PartyLockCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -91,11 +92,8 @@ public class PartyCommand implements CommandExecutor {
         else if (args[0].equalsIgnoreCase("owner")) {
             return partyChangeOwnerCommand.onCommand(sender, command, label, args);
         }
-        else if (args[0].equalsIgnoreCase("lock")) {
-            return lock();
-        }
-        else if (args[0].equalsIgnoreCase("unlock")) {
-            return unlock();
+        else if (args[0].equalsIgnoreCase("lock") || args[0].equalsIgnoreCase("unlock")) {
+            return partyLockCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("password")) {
             return changePassword(args);
@@ -188,69 +186,6 @@ public class PartyCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Party.Help.6"));
         player.sendMessage(LocaleLoader.getString("Party.Help.7"));
         player.sendMessage(LocaleLoader.getString("Party.Help.8"));
-        return true;
-    }
-
-    /**
-     * Lock the current party
-     */
-    private boolean lock() {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.lock")) {
-            return true;
-        }
-
-        String playerName = player.getName();
-        Party party = mcMMOPlayer.getParty();
-
-        if (party == null) {
-            player.sendMessage("Commands.Party.None");
-            return true;
-        }
-
-        if (!party.getLeader().equals(playerName)) {
-            player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-            return true;
-        }
-
-        if (party.isLocked()) {
-            player.sendMessage(LocaleLoader.getString("Party.IsLocked"));
-        }
-        else {
-            party.setLocked(true);
-            player.sendMessage(LocaleLoader.getString("Party.Locked"));
-        }
-
-        return true;
-    }
-
-    /**
-     * Unlock the current party
-     */
-    private boolean unlock() {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.unlock")) {
-            return true;
-        }
-
-        String playerName = player.getName();
-        Party party = mcMMOPlayer.getParty();
-
-        if (party == null) {
-            player.sendMessage("Commands.Party.None");
-            return true;
-        }
-
-        if (!party.getLeader().equals(playerName)) {
-            player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-            return true;
-        }
-
-        if (!party.isLocked()) {
-            player.sendMessage(LocaleLoader.getString("Party.IsntLocked"));
-        }
-        else {
-            party.setLocked(false);
-            player.sendMessage(LocaleLoader.getString("Party.Unlocked"));
-        }
         return true;
     }
 
