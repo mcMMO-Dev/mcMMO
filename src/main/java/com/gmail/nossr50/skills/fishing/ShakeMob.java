@@ -138,7 +138,7 @@ public final class ShakeMob {
             possibleDrops.put(new ItemStack(Material.RED_ROSE), 85);
             break;
         case MAGMA_CUBE:
-            possibleDrops.put(new ItemStack(Material.MAGMA_CREAM), 3);
+            possibleDrops.put(new ItemStack(Material.MAGMA_CREAM), 100);
             break;
         case MUSHROOM_COW:
             possibleDrops.put(new ItemStack(Material.MILK_BUCKET), 5);
