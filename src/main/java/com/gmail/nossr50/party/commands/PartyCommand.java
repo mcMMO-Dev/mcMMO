@@ -32,6 +32,7 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyInviteCommand = new PartyInviteCommand();
     private CommandExecutor partyKickCommand = new PartyKickCommand();
     private CommandExecutor partyDisbandCommand = new PartyDisbandCommand();
+    private CommandExecutor partyChangeOwnerCommand = new PartyChangeOwnerCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -88,7 +89,7 @@ public class PartyCommand implements CommandExecutor {
             return partyDisbandCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("owner")) {
-            return changeOwner(args);
+            return partyChangeOwnerCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("lock")) {
             return lock();
@@ -187,34 +188,6 @@ public class PartyCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Party.Help.6"));
         player.sendMessage(LocaleLoader.getString("Party.Help.7"));
         player.sendMessage(LocaleLoader.getString("Party.Help.8"));
-        return true;
-    }
-
-    /**
-     * Change the owner of the current party
-     */
-    private boolean changeOwner(String[] args) {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.owner")) {
-            return true;
-        }
-
-        String playerName = player.getName();
-        Party party = mcMMOPlayer.getParty();
-
-        if (args.length < 2) {
-            player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "owner", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
-            return true;
-        }
-
-        if (party.getLeader().equals(playerName)) {
-            if (!party.getMembers().contains(mcMMO.p.getServer().getOfflinePlayer(args[1]))) {
-                player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", args[1]));
-                return true;
-            }
-
-            PartyManager.setPartyLeader(args[1], party);
-        }
-
         return true;
     }
 
