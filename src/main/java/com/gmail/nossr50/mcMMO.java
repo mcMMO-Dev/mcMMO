@@ -487,6 +487,26 @@ public class mcMMO extends JavaPlugin {
                     }
                 });
 
+                // GlobalMultiplier Graph
+                Graph globalMultiplierGraph = metrics.createGraph("Global Multiplier Graph");
+
+                globalMultiplierGraph.addPlotter(new Metrics.Plotter(Config.getInstance().getExperienceGainsGlobalMultiplier() + "") {
+                    @Override
+                    public int getValue() {
+                        return 1;
+                    }
+                });
+
+                // GlobalCurveModifier Graph
+                Graph globalCurveModifierGraph = metrics.createGraph("Global Curve Modifier Graph");
+
+                globalCurveModifierGraph.addPlotter(new Metrics.Plotter(Config.getInstance().getFormulaMultiplierCurve() + "") {
+                    @Override
+                    public int getValue() {
+                        return 1;
+                    }
+                });
+
                 metrics.start();
             }
             catch (IOException e) {
