@@ -31,6 +31,7 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyItemShareCommand = new PartyItemShareCommand();
     private CommandExecutor partyInviteCommand = new PartyInviteCommand();
     private CommandExecutor partyKickCommand = new PartyKickCommand();
+    private CommandExecutor partyDisbandCommand = new PartyDisbandCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -84,7 +85,7 @@ public class PartyCommand implements CommandExecutor {
             return partyKickCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("disband")) {
-            return disband();
+            return partyDisbandCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("owner")) {
             return changeOwner(args);
@@ -186,38 +187,6 @@ public class PartyCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Party.Help.6"));
         player.sendMessage(LocaleLoader.getString("Party.Help.7"));
         player.sendMessage(LocaleLoader.getString("Party.Help.8"));
-        return true;
-    }
-
-    /**
-     * Disband the current party, kicks out all party members.
-     */
-    private boolean disband() {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.disband")) {
-            return true;
-        }
-
-        String playerName = player.getName();
-        Party party = mcMMOPlayer.getParty();
-
-        if (party.getLeader().equals(playerName)) {
-            for (Player onlineMembers : party.getOnlineMembers()) {
-                McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(onlineMembers, party.getName(), null, EventReason.KICKED_FROM_PARTY);
-                mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                if (event.isCancelled()) {
-                    return true;
-                }
-
-                onlineMembers.sendMessage(LocaleLoader.getString("Party.Disband"));
-            }
-
-            PartyManager.disbandParty(party);
-        }
-        else {
-            player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-        }
-
         return true;
     }
 
