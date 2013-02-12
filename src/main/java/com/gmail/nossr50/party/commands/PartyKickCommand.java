@@ -15,9 +15,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyKickCommand implements CommandExecutor {
-    private Player player;
-    private Party playerParty;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!Permissions.hasPermission(sender, "mcmmo.commands.party.kick")) {
@@ -27,13 +24,7 @@ public class PartyKickCommand implements CommandExecutor {
 
         switch (args.length) {
         case 2:
-            player = (Player) sender;
-            playerParty = Users.getPlayer(player).getParty();
-
-            if (!playerParty.getLeader().equals(player.getName())) {
-                sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-                return true;
-            }
+            Party playerParty = Users.getPlayer((Player) sender).getParty();
 
             OfflinePlayer target = mcMMO.p.getServer().getOfflinePlayer(args[1]);
 
@@ -61,5 +52,4 @@ public class PartyKickCommand implements CommandExecutor {
             return true;
         }
     }
-
 }

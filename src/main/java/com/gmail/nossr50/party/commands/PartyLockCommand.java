@@ -11,18 +11,11 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyLockCommand implements CommandExecutor {
-    private Player player;
     private Party playerParty;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        player = (Player) sender;
-        playerParty = Users.getPlayer(player).getParty();
-
-        if (!playerParty.getLeader().equals(player.getName())) {
-            sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-            return true;
-        }
+        playerParty = Users.getPlayer((Player) sender).getParty();
 
         switch (args.length) {
         case 1:
@@ -89,11 +82,11 @@ public class PartyLockCommand implements CommandExecutor {
         }
 
         if (!playerParty.isLocked()) {
-            player.sendMessage(LocaleLoader.getString("Party.IsntLocked"));
+            sender.sendMessage(LocaleLoader.getString("Party.IsntLocked"));
             return;
         }
 
         playerParty.setLocked(false);
-        player.sendMessage(LocaleLoader.getString("Party.Unlocked"));
+        sender.sendMessage(LocaleLoader.getString("Party.Unlocked"));
     }
 }

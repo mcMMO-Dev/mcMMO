@@ -13,9 +13,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyChangeOwnerCommand implements CommandExecutor {
-    private Player player;
-    private Party playerParty;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!Permissions.hasPermission(sender, "mcmmo.commands.party.owner")) {
@@ -25,16 +22,10 @@ public class PartyChangeOwnerCommand implements CommandExecutor {
 
         switch (args.length) {
         case 2:
-            player = (Player) sender;
-            playerParty = Users.getPlayer(player).getParty();
-
-            if (!playerParty.getLeader().equals(player.getName())) {
-                sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-                return true;
-            }
+            Party playerParty = Users.getPlayer((Player) sender).getParty();
 
             if (!playerParty.getMembers().contains(mcMMO.p.getServer().getOfflinePlayer(args[1]))) {
-                player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", args[1]));
+                sender.sendMessage(LocaleLoader.getString("Party.NotInYourParty", args[1]));
                 return true;
             }
 

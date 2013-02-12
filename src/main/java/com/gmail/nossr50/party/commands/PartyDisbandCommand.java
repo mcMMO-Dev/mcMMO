@@ -13,9 +13,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyDisbandCommand implements CommandExecutor {
-    private Player player;
-    private Party playerParty;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!Permissions.hasPermission(sender, "mcmmo.commands.party.disband")) {
@@ -25,13 +22,7 @@ public class PartyDisbandCommand implements CommandExecutor {
 
         switch (args.length) {
         case 1:
-            player = (Player) sender;
-            playerParty = Users.getPlayer(player).getParty();
-
-            if (!playerParty.getLeader().equals(player.getName())) {
-                sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-                return true;
-            }
+            Party playerParty = Users.getPlayer((Player) sender).getParty();
 
             for (Player member : playerParty.getOnlineMembers()) {
                 if (!PartyManager.handlePartyChangeEvent(member, playerParty.getName(), null, EventReason.KICKED_FROM_PARTY)) {

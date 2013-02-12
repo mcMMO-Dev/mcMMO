@@ -83,7 +83,13 @@ public class PartyCommand implements CommandExecutor {
         else if (args[0].equalsIgnoreCase("invite")) {
             return partyInviteCommand.onCommand(sender, command, label, args);
         }
-        else if (args[0].equalsIgnoreCase("kick")) {
+
+        if (!mcMMOPlayer.getParty().getLeader().equals(player.getName())) {
+            sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
+            return true;
+        }
+
+        if (args[0].equalsIgnoreCase("kick")) {
             return partyKickCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("disband")) {
