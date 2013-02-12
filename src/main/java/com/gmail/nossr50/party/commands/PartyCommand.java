@@ -29,6 +29,7 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyChangePasswordCommand = new PartyChangePasswordCommand();
     private CommandExecutor partyRenameCommand = new PartyRenameCommand();
     private CommandExecutor partyInfoCommand = new PartyInfoCommand();
+    private CommandExecutor partyHelpCommand = new PartyHelpCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -67,7 +68,7 @@ public class PartyCommand implements CommandExecutor {
         case CREATE:
             return partyCreateCommand.onCommand(sender, command, label, args);
         case HELP:
-            return printHelp();
+            return partyHelpCommand.onCommand(sender, command, label, args);
         default:
             break;
         }
@@ -124,17 +125,6 @@ public class PartyCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Party.Help.0", "/party join"));
         player.sendMessage(LocaleLoader.getString("Party.Help.1", "/party create"));
         player.sendMessage(LocaleLoader.getString("Party.Help.2", "/party ?"));
-        return true;
-    }
-
-    private boolean printHelp() {
-        player.sendMessage(LocaleLoader.getString("Party.Help.3", "/party join", "/party quit"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.1", "/party create")); 
-        player.sendMessage(LocaleLoader.getString("Party.Help.4", "/party <lock|unlock>"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.5", "/party password"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.6", "/party kick"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.7", "/party owner"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.8", "/party disband"));
         return true;
     }
 }
