@@ -1,18 +1,13 @@
 package com.gmail.nossr50.party.commands;
 
-import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.commands.CommandHelper;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.Party;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
