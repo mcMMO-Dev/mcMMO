@@ -18,13 +18,8 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PtpCommand implements CommandExecutor {
-    private final mcMMO plugin;
     private Player player;
     private McMMOPlayer mcMMOPlayer;
-
-    public PtpCommand(mcMMO instance) {
-        this.plugin = instance;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -71,7 +66,7 @@ public class PtpCommand implements CommandExecutor {
     }
 
     private boolean sendTeleportRequest(String args) {
-        Player target = plugin.getServer().getPlayer(args);
+        Player target = mcMMO.p.getServer().getPlayer(args);
 
         if (player.equals(target)) {
             player.sendMessage(LocaleLoader.getString("Party.Teleport.Self"));
@@ -98,7 +93,7 @@ public class PtpCommand implements CommandExecutor {
 
             if (!targetMcMMOPlayer.getPtpConfirmRequired()) {
                 McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, mcMMOPlayer.getParty().getName());
-                plugin.getServer().getPluginManager().callEvent(event);
+                mcMMO.p.getServer().getPluginManager().callEvent(event);
 
                 if (event.isCancelled()) {
                     return true;
@@ -168,7 +163,7 @@ public class PtpCommand implements CommandExecutor {
         }
 
         McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(target, player, mcMMOPlayer.getParty().getName());
-        plugin.getServer().getPluginManager().callEvent(event);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
             return true;
