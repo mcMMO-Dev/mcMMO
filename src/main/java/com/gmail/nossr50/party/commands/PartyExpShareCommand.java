@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.ShareHandler;
@@ -18,6 +19,11 @@ public class PartyExpShareCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!Config.getInstance().getExpShareEnabled()) {
+            sender.sendMessage(LocaleLoader.getString("Party.ExpShare.Disabled"));
+            return true;
+        }
+
         if (!Permissions.hasPermission(sender, "mcmmo.commands.party.expshare")) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
