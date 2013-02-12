@@ -121,20 +121,20 @@ public class PartyCommand implements CommandExecutor {
     }
 
     private boolean printUsage() {
-        player.sendMessage(LocaleLoader.getString("Party.Help.0", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">", "[" + LocaleLoader.getString("Commands.Usage.Password") + "]"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.1", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">", "[" + LocaleLoader.getString("Commands.Usage.Password") + "]"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.2"));
+        player.sendMessage(LocaleLoader.getString("Party.Help.0", "/party join"));
+        player.sendMessage(LocaleLoader.getString("Party.Help.1", "/party create"));
+        player.sendMessage(LocaleLoader.getString("Party.Help.2", "/party ?"));
         return true;
     }
 
     private boolean printHelp() {
-        player.sendMessage(LocaleLoader.getString("Party.Help.3"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.1"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.4"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.5"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.6"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.7"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.8"));
+        player.sendMessage(LocaleLoader.getString("Party.Help.3", "/party join", "/party quit"));
+        player.sendMessage(LocaleLoader.getString("Party.Help.1", "/party create")); 
+        player.sendMessage(LocaleLoader.getString("Party.Help.4", "/party <lock|unlock>"));
+        player.sendMessage(LocaleLoader.getString("Party.Help.5", "/party password"));
+        player.sendMessage(LocaleLoader.getString("Party.Help.6", "/party kick"));
+        player.sendMessage(LocaleLoader.getString("Party.Help.7", "/party owner"));
+        player.sendMessage(LocaleLoader.getString("Party.Help.8", "/party disband"));
         return true;
     }
 }
