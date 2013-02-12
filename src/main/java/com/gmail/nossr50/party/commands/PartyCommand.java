@@ -68,7 +68,7 @@ public class PartyCommand implements CommandExecutor {
 
         if (!mcMMOPlayer.inParty()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-            return printUsage();
+            return true;
         }
 
         if (args[0].equalsIgnoreCase("quit") || args[0].equalsIgnoreCase("q") || args[0].equalsIgnoreCase("leave")) {
