@@ -60,22 +60,6 @@ public final class Misc {
         return NORMAL_SKILL_ACTIVATION_CHANCE;
     }
 
-    /**
-     * Check if a LivingEntity has armor.
-     *
-     * @param entity LivingEntity whose armor to check
-     * @return true if the player has armor, false otherwise
-     */
-    public static boolean hasArmor(LivingEntity entity) {
-        for (ItemStack armor : entity.getEquipment().getArmorContents()) {
-            if (armor.getType() != Material.AIR) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static boolean isFriendlyPet(Player attacker, Tameable pet) {
         if (pet.isTamed()) {
             AnimalTamer tamer = pet.getOwner();
