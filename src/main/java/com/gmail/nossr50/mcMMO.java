@@ -290,7 +290,7 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationHelper.registerAdminChatCommand();
         CommandRegistrationHelper.registerPartyCommand();
         CommandRegistrationHelper.registerPartyChatCommand();
-        getCommand("ptp").setExecutor(new PtpCommand());
+        CommandRegistrationHelper.registerPtpCommand();
 
         // Other commands
         CommandRegistrationHelper.registerAddxpCommand();

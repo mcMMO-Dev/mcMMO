@@ -27,6 +27,7 @@ import com.gmail.nossr50.database.commands.McremoveCommand;
 import com.gmail.nossr50.database.commands.MmoupdateCommand;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.commands.PartyCommand;
+import com.gmail.nossr50.party.commands.PtpCommand;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsCommand;
 import com.gmail.nossr50.skills.archery.ArcheryCommand;
 import com.gmail.nossr50.skills.axes.AxesCommand;
@@ -323,5 +324,15 @@ public final class CommandRegistrationHelper {
                               "mcmmo.commands.party.quit;mcmmo.commands.party.rename;mcmmo.commands.party.unlock");
         command.setPermissionMessage(permissionsMessage);
         command.setExecutor(new PartyCommand());
+    }
+
+    public static void registerPtpCommand() {
+        PluginCommand command = mcMMO.p.getCommand("ptp");
+        command.setDescription(LocaleLoader.getString("Commands.Description.ptp"));
+        command.setPermission("mcmmo.commands.ptp;mcmmo.commands.ptp.accept;mcmmo.commands.ptp.acceptall;mcmmo.commands.ptp.toggle");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "ptp", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "ptp", "<toggle|accept|acceptall>"));
+        command.setExecutor(new PtpCommand());
     }
 }

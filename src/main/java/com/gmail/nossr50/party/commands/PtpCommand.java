@@ -23,13 +23,7 @@ public class PtpCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = LocaleLoader.getString("Commands.Usage.1", "ptp", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">");
-
         if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
-        }
-
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.ptp")) {
             return true;
         }
 
@@ -42,7 +36,8 @@ public class PtpCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("toggle")) {
                 return togglePartyTeleportation();
             }
-            else if (args[0].equalsIgnoreCase("acceptany") || args[0].equalsIgnoreCase("acceptall")) {
+
+            if (args[0].equalsIgnoreCase("acceptany") || args[0].equalsIgnoreCase("acceptall")) {
                 return acceptAnyTeleportRequest();
             }
 
@@ -60,21 +55,27 @@ public class PtpCommand implements CommandExecutor {
             return sendTeleportRequest(args[0]);
 
         default:
-            sender.sendMessage(usage);
-            return true;
+            return false;
         }
     }
 
-    private boolean sendTeleportRequest(String args) {
-        Player target = mcMMO.p.getServer().getPlayer(args);
-
-        if (player.equals(target)) {
-            player.sendMessage(LocaleLoader.getString("Party.Teleport.Self"));
+    private boolean sendTeleportRequest(String playerName) {
+        if (!mcMMO.p.getServer().getOfflinePlayer(playerName).isOnline()) {
+            player.sendMessage(LocaleLoader.getString("Party.NotOnline", playerName));
             return true;
         }
 
-        if (target == null) {
+        McMMOPlayer mcMMOTarget = Users.getPlayer(playerName);
+
+        if (mcMMOTarget == null) {
             player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
+            return true;
+        }
+
+        Player target = mcMMOTarget.getPlayer();
+
+        if (player.equals(target)) {
+            player.sendMessage(LocaleLoader.getString("Party.Teleport.Self"));
             return true;
         }
 
