@@ -44,7 +44,6 @@ import com.gmail.nossr50.mods.config.CustomBlocksConfig;
 import com.gmail.nossr50.mods.config.CustomEntityConfig;
 import com.gmail.nossr50.mods.config.CustomToolsConfig;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.party.commands.PtpCommand;
 import com.gmail.nossr50.party.runnables.PartiesLoader;
 import com.gmail.nossr50.party.runnables.PartyAutoKick;
 import com.gmail.nossr50.runnables.MobStoreCleaner;
