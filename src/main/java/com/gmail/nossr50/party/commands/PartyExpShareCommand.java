@@ -29,11 +29,6 @@ public class PartyExpShareCommand implements CommandExecutor {
             player = (Player) sender;
             playerParty = Users.getPlayer(player).getParty();
 
-            if (!playerParty.getLeader().equals(player.getName())) {
-                sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-                return true;
-            }
-
             if (args[1].equalsIgnoreCase("none") || args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
                 handleChangingShareMode(ShareMode.NONE);
             }
