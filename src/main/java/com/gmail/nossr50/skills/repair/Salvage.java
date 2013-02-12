@@ -124,7 +124,7 @@ public class Salvage {
         else if (ItemChecks.isChestplate(inHand)) {
             return 8;
         }
-        else if (ItemChecks.isPants(inHand)) {
+        else if (ItemChecks.isLeggings(inHand)) {
             return 7;
         }
         else if (ItemChecks.isBoots(inHand)) {

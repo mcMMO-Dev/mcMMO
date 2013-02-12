@@ -207,7 +207,7 @@ public class ItemChecks {
      * @param is Item to check
      * @return true if the item is a pair of pants, false otherwise
      */
-    public static boolean isPants(ItemStack is) {
+    public static boolean isLeggings(ItemStack is) {
         switch (is.getType()) {
         case DIAMOND_LEGGINGS:
         case GOLD_LEGGINGS:
@@ -254,7 +254,7 @@ public class ItemChecks {
      * @return true if the item is armor, false otherwise
      */
     public static boolean isArmor(ItemStack is) {
-        return isHelmet(is) || isChestplate(is) || isPants(is) || isBoots(is);
+        return isHelmet(is) || isChestplate(is) || isLeggings(is) || isBoots(is);
     }
 
     /**
