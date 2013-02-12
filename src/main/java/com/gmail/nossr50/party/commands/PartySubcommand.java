@@ -16,7 +16,9 @@ public enum PartySubcommand {
     LOCK,
     UNLOCK,
     PASSWORD,
-    RENAME;
+    RENAME,
+    TELEPORT,
+    CHAT;
 
     public static PartySubcommand getSubcommand(String commandName) {
         for (PartySubcommand command : values()) {

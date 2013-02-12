@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.chat.commands.PartyChatCommand;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -30,6 +31,8 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyRenameCommand = new PartyRenameCommand();
     private CommandExecutor partyInfoCommand = new PartyInfoCommand();
     private CommandExecutor partyHelpCommand = new PartyHelpCommand();
+    private CommandExecutor partyTeleportCommand = new PtpCommand();
+    private CommandExecutor partyChatCommand = new PartyChatCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -86,6 +89,10 @@ public class PartyCommand implements CommandExecutor {
             return partyQuitCommand.onCommand(sender, command, label, args);
         case INVITE:
             return partyInviteCommand.onCommand(sender, command, label, args);
+        case TELEPORT:
+            return partyTeleportCommand.onCommand(sender, command, label, extractArgs(args));
+        case CHAT:
+            return partyChatCommand.onCommand(sender, command, label, extractArgs(args));
         default:
             break;
         }
@@ -126,5 +133,15 @@ public class PartyCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Party.Help.1", "/party create"));
         player.sendMessage(LocaleLoader.getString("Party.Help.2", "/party ?"));
         return true;
+    }
+
+    private String[] extractArgs(String[] args) {
+        String[] newArgs = new String[args.length - 1];
+
+        for (int i = 1; i < args.length; i++) {
+            newArgs[i - 1] = args[1];
+        }
+
+        return newArgs;
     }
 }
