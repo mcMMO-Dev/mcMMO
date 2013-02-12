@@ -14,7 +14,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyExpShareCommand implements CommandExecutor {
-    private Player player;
     private Party playerParty;
 
     @Override
@@ -26,8 +25,7 @@ public class PartyExpShareCommand implements CommandExecutor {
 
         switch (args.length) {
         case 2:
-            player = (Player) sender;
-            playerParty = Users.getPlayer(player).getParty();
+            playerParty = Users.getPlayer((Player) sender).getParty();
 
             if (args[1].equalsIgnoreCase("none") || args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
                 handleChangingShareMode(ShareMode.NONE);
