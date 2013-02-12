@@ -30,7 +30,7 @@ public class PartyLockCommand implements CommandExecutor {
 
         case 2:
             if (!args[0].equalsIgnoreCase("lock")) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "lock", "[on|off]"));
+                sendUsageStrings(sender);
                 return true;
             }
 
@@ -41,13 +41,13 @@ public class PartyLockCommand implements CommandExecutor {
                 unlockParty(sender, command);
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "lock", "[on|off]"));
+                sendUsageStrings(sender);
             }
 
             return true;
 
         default:
-            sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "lock", "[on|off]"));
+            sendUsageStrings(sender);
             return true;
         }
     }
@@ -88,5 +88,10 @@ public class PartyLockCommand implements CommandExecutor {
 
         playerParty.setLocked(false);
         sender.sendMessage(LocaleLoader.getString("Party.Unlocked"));
+    }
+
+    private void sendUsageStrings(CommandSender sender) {
+        sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "lock", "[on|off]"));
+        sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "unlock"));
     }
 }
