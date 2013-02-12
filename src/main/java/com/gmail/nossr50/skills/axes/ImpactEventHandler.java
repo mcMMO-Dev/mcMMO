@@ -37,8 +37,11 @@ public class ImpactEventHandler {
 
         for (ItemStack itemStack : entityEquipment.getArmorContents()) {
             if (ItemChecks.isArmor(itemStack)) {
-                damageArmor(itemStack);
                 hasArmor = true;
+
+                if (Misc.getRandom().nextInt(100) < 25) {
+                    damageArmor(itemStack);
+                }
             }
         }
 
@@ -46,10 +49,6 @@ public class ImpactEventHandler {
     }
 
     private void damageArmor(ItemStack armor) {
-        if (Misc.getRandom().nextInt(100) >= 25) {
-            return;
-        }
-
         float modifier = 1;
 
         if (armor.containsEnchantment(Enchantment.DURABILITY)) {
