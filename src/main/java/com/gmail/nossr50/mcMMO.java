@@ -23,7 +23,6 @@ import org.mcstats.Metrics.Graph;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.commands.CommandRegistrationHelper;
-import com.gmail.nossr50.commands.player.MccCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
@@ -277,7 +276,6 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationHelper.registerMcpurgeCommand();
         CommandRegistrationHelper.registerMcremoveCommand();
         CommandRegistrationHelper.registerMcabilityCommand();
-        getCommand("mcc").setExecutor(new MccCommand());
         CommandRegistrationHelper.registerMcgodCommand();
         CommandRegistrationHelper.registerMcmmoCommand();
         CommandRegistrationHelper.registerMcrefreshCommand();

@@ -28,9 +28,6 @@ commands:
     xprate:
         aliases: [mcxprate]
         description: Modify the xp rate or start an event
-    mcc:
-        aliases: []
-        description: Lists mcMMO commands
     mcmmo:
         description: Shows a brief mod description
     mctop:
@@ -564,9 +561,8 @@ permissions:
             mcmmo.commands.herbalism: true
             mcmmo.commands.inspect: true
             mcmmo.commands.mcability: true
-            mcmmo.commands.mcc: true
             mcmmo.commands.mchud: true
-            mcmmo.commands.mcmmo: true
+            mcmmo.commands.mcmmo.all: true
             mcmmo.commands.mcrank: true
             mcmmo.commands.mcstats: true
             mcmmo.commands.mctop.all: true
@@ -651,16 +647,21 @@ permissions:
         description: Allows access to the mcability command
     mcmmo.commands.mcability.others:
         description: Allows access to the mcability command for other players
-    mcmmo.commands.mcc:
-        description: Allows access to the mcc command
     mcmmo.commands.mcgod:
         description: Allows access to the mcgod command
     mcmmo.commands.mcgod.others:
         description: Allows access to the mcgod command for other players
     mcmmo.commands.mchud:
         description: Allows access to the mchud command
+    mcmmo.commands.mcmmo.all:
+        description: Implies access to all mcmmo.commands.mcmmo permissions.
+        children:
+            mcmmo.commands.mcmmo: true
+            mcmmo.commands.mcmmo.help: true
     mcmmo.commands.mcmmo:
         description: Allows access to the mcmmo command
+    mcmmo.commands.mcmmo.help:
+        description: Allows access to the mcmmo help command
     mcmmo.commands.mcpurge:
         default: false
         description: Allows access to the mcpurge command
