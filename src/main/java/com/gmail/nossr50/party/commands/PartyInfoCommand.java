@@ -22,23 +22,12 @@ public class PartyInfoCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         player = (Player) sender;
         McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
-
-        if (!mcMMOPlayer.inParty()) {
-            sendUsageStrings(sender);
-        }
-
         playerParty = mcMMOPlayer.getParty();
 
         displayPartyHeader();
         displayShareModeInfo();
         displayMemberInfo();
         return true;
-    }
-
-    private void sendUsageStrings(CommandSender sender) {
-        sender.sendMessage(LocaleLoader.getString("Party.Help.0", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">", "[" + LocaleLoader.getString("Commands.Usage.Password") + "]"));
-        sender.sendMessage(LocaleLoader.getString("Party.Help.1", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">", "[" + LocaleLoader.getString("Commands.Usage.Password") + "]"));
-        sender.sendMessage(LocaleLoader.getString("Party.Help.2"));
     }
 
     private String createMembersList() {

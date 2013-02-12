@@ -44,71 +44,85 @@ public class PartyCommand implements CommandExecutor {
         player = (Player) sender;
         mcMMOPlayer = Users.getPlayer(player);
 
-        if (args.length < 1 || args[0].equalsIgnoreCase("info")) {
+        if (args.length < 1) {
+            if (!mcMMOPlayer.inParty()) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+                return printUsage();
+            }
+
             return partyInfoCommand.onCommand(sender, command, label, args);
         }
-        else if (args[0].equalsIgnoreCase("join")) {
-            return partyJoinCommand.onCommand(sender, command, label, args);
-        }
-        else if (args[0].equalsIgnoreCase("accept")) {
-            return partyAcceptCommand.onCommand(sender, command, label, args);
-        }
-        else if (args[0].equalsIgnoreCase("create")) {
-            return partyCreateCommand.onCommand(sender, command, label, args);
-        }
-        else if (args[0].equalsIgnoreCase("?") || args[0].equalsIgnoreCase("help")) {
-            return printHelp();
+
+        PartySubcommand subcommand = PartySubcommand.getSubcommand(args[0]);
+
+        if (subcommand == null) {
+            return printUsage();
         }
 
+        switch (subcommand) {
+        case JOIN:
+            return partyJoinCommand.onCommand(sender, command, label, args);
+        case ACCEPT:
+            return partyAcceptCommand.onCommand(sender, command, label, args);
+        case CREATE:
+            return partyCreateCommand.onCommand(sender, command, label, args);
+        case HELP:
+            return printHelp();
+        default:
+            break;
+        }
+
+        // Party member commands
         if (!mcMMOPlayer.inParty()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-            return true;
+            return printUsage();
         }
 
-        if (args[0].equalsIgnoreCase("quit") || args[0].equalsIgnoreCase("q") || args[0].equalsIgnoreCase("leave")) {
+        switch (subcommand) {
+        case INFO:
+            return partyInfoCommand.onCommand(sender, command, label, args);
+        case QUIT:
             return partyQuitCommand.onCommand(sender, command, label, args);
-        }
-        else if (args[0].equalsIgnoreCase("expshare") || args[0].equalsIgnoreCase("xpshare") || args[0].equalsIgnoreCase("sharexp") || args[0].equalsIgnoreCase("shareexp")) {
-            return partyExpShareCommand.onCommand(sender, command, label, args);
-        }
-        else if (args[0].equalsIgnoreCase("itemshare") || args[0].equalsIgnoreCase("shareitem") || args[0].equalsIgnoreCase("shareitems")) {
-            return partyItemShareCommand.onCommand(sender, command, label, args);
-        }
-        else if (args[0].equalsIgnoreCase("invite")) {
+        case INVITE:
             return partyInviteCommand.onCommand(sender, command, label, args);
+        default:
+            break;
         }
 
+        // Party leader commands
         if (!mcMMOPlayer.getParty().getLeader().equals(player.getName())) {
             sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("kick")) {
+        switch (subcommand) {
+        case EXPSHARE:
+            return partyExpShareCommand.onCommand(sender, command, label, args);
+        case ITEMSHARE:
+            return partyItemShareCommand.onCommand(sender, command, label, args);
+        case KICK:
             return partyKickCommand.onCommand(sender, command, label, args);
-        }
-        else if (args[0].equalsIgnoreCase("disband")) {
+        case DISBAND:
             return partyDisbandCommand.onCommand(sender, command, label, args);
-        }
-        else if (args[0].equalsIgnoreCase("owner")) {
+        case OWNER:
             return partyChangeOwnerCommand.onCommand(sender, command, label, args);
-        }
-        else if (args[0].equalsIgnoreCase("lock") || args[0].equalsIgnoreCase("unlock")) {
+        case LOCK:
+        case UNLOCK:
             return partyLockCommand.onCommand(sender, command, label, args);
-        }
-        else if (args[0].equalsIgnoreCase("password")) {
+        case PASSWORD:
             return partyChangePasswordCommand.onCommand(sender, command, label, args);
-        }
-        else if (args[0].equalsIgnoreCase("rename")) {
+        case RENAME:
             return partyRenameCommand.onCommand(sender, command, label, args);
+        default:
+            break;
         }
-        else {
-            return printUsage();
-        }
+
+        return true;
     }
 
     private boolean printUsage() {
-        player.sendMessage(LocaleLoader.getString("Party.Help.0"));
-        player.sendMessage(LocaleLoader.getString("Party.Help.1"));
+        player.sendMessage(LocaleLoader.getString("Party.Help.0", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">", "[" + LocaleLoader.getString("Commands.Usage.Password") + "]"));
+        player.sendMessage(LocaleLoader.getString("Party.Help.1", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">", "[" + LocaleLoader.getString("Commands.Usage.Password") + "]"));
         player.sendMessage(LocaleLoader.getString("Party.Help.2"));
         return true;
     }
