@@ -1,6 +1,6 @@
 package com.gmail.nossr50.party.commands;
 
-public enum PartySubcommand {
+public enum PartySubcommandType {
     JOIN,
     ACCEPT,
     CREATE,
@@ -20,8 +20,8 @@ public enum PartySubcommand {
     TELEPORT,
     CHAT;
 
-    public static PartySubcommand getSubcommand(String commandName) {
-        for (PartySubcommand command : values()) {
+    public static PartySubcommandType getSubcommand(String commandName) {
+        for (PartySubcommandType command : values()) {
             if (command.name().equalsIgnoreCase(commandName)) {
                 return command;
             }

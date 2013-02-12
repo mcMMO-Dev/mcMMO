@@ -57,7 +57,7 @@ public class PartyCommand implements CommandExecutor {
             return partyInfoCommand.onCommand(sender, command, label, args);
         }
 
-        PartySubcommand subcommand = PartySubcommand.getSubcommand(args[0]);
+        PartySubcommandType subcommand = PartySubcommandType.getSubcommand(args[0]);
 
         if (subcommand == null) {
             return printUsage();
