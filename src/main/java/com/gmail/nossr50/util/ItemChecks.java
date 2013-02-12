@@ -254,7 +254,7 @@ public class ItemChecks {
      * @return true if the item is armor, false otherwise
      */
     public static boolean isArmor(ItemStack is) {
-        return isLeatherArmor(is) || isGoldArmor(is) || isIronArmor(is) || isDiamondArmor(is);
+        return isHelmet(is) || isChestplate(is) || isPants(is) || isBoots(is);
     }
 
     /**
