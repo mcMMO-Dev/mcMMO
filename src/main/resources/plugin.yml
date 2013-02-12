@@ -55,7 +55,6 @@ commands:
     mmoedit:
         description: Edit the mcMMO skill values for a user
     ptp:
-        aliases: []
         description: Teleport to a party member
     party:
         description: Create/join a party
