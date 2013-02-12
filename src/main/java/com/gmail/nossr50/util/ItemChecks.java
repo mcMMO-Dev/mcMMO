@@ -258,6 +258,16 @@ public class ItemChecks {
     }
 
     /**
+     * Checks to see if an item is a wearable armor piece.
+     *
+     * @param is Item to check
+     * @return true if the item is armor, false otherwise
+     */
+    public static boolean isMinecraftArmor(ItemStack is) {
+        return isDiamondArmor(is) || isGoldArmor(is) || isIronArmor(is) || isDiamondArmor(is);
+    }
+
+    /**
      * Checks to see if an item is a leather armor piece.
      *
      * @param is Item to check
@@ -339,7 +349,7 @@ public class ItemChecks {
      * @param is Item to check
      * @return true if the item is a tool, false otherwise
      */
-    public static boolean isTool(ItemStack is) {
+    public static boolean isMinecraftTool(ItemStack is) {
         return isStoneTool(is) || isWoodTool(is) || isGoldTool(is) || isIronTool(is) || isDiamondTool(is) || isStringTool(is);
     }
 
