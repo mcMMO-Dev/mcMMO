@@ -32,14 +32,14 @@ public class PartyInviteCommand implements CommandExecutor {
         case 2:
             if (!mcMMO.p.getServer().getOfflinePlayer(args[1]).isOnline()) {
                 sender.sendMessage(LocaleLoader.getString("Party.NotOnline", args[1]));
-                return false;
+                return true;
             }
 
             mcMMOTarget = Users.getPlayer(args[1]);
 
             if (mcMMOTarget == null) {
                 sender.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
-                return false;
+                return true;
             }
 
             target = mcMMOTarget.getPlayer();
