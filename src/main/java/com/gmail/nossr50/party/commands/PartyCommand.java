@@ -7,12 +7,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
-import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
@@ -35,6 +32,7 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyChangeOwnerCommand = new PartyChangeOwnerCommand();
     private CommandExecutor partyLockCommand = new PartyLockCommand();
     private CommandExecutor partyChangePasswordCommand = new PartyChangePasswordCommand();
+    private CommandExecutor partyRenameCommand = new PartyRenameCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -106,7 +104,7 @@ public class PartyCommand implements CommandExecutor {
             return partyChangePasswordCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("rename")) {
-            return rename(args);
+            return partyRenameCommand.onCommand(sender, command, label, args);
         }
         else {
             return printUsage();
@@ -193,61 +191,6 @@ public class PartyCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Party.Help.6"));
         player.sendMessage(LocaleLoader.getString("Party.Help.7"));
         player.sendMessage(LocaleLoader.getString("Party.Help.8"));
-        return true;
-    }
-
-    /**
-     * Rename the current party
-     */
-    private boolean rename(String[] args) {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.rename")) {
-            return true;
-        }
-
-        String playerName = player.getName();
-        Party party = mcMMOPlayer.getParty();
-        String leader = party.getLeader();
-
-        if (party.getLeader().equals(playerName)) {
-            if (args.length < 2) {
-                player.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "rename", "<" + LocaleLoader.getString("Commands.Usage.PartyName") + ">"));
-                return true;
-            }
-
-            String newPartyName = args[1];
-
-            // This is to prevent party leaders from spamming other players with the rename message
-            if (!party.getName().equals(newPartyName)) {
-                Party newParty = PartyManager.getParty(newPartyName);
-
-                // Check to see if the party exists, and if it does cancel renaming the party
-                if (newParty != null) {
-                    player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", newPartyName));
-                    return true;
-                }
-
-                for (Player onlineMembers : party.getOnlineMembers()) {
-                    McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(onlineMembers, party.getName(), newPartyName, EventReason.CHANGED_PARTIES);
-                    mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-                    if (event.isCancelled()) {
-                        return true;
-                    }
-
-                    if (!onlineMembers.getName().equals(leader)) {
-                        onlineMembers.sendMessage(LocaleLoader.getString("Party.InformedOnNameChange", leader, newPartyName));
-                    }
-                }
-
-                party.setName(newPartyName);
-            }
-
-            player.sendMessage(LocaleLoader.getString("Commands.Party.Rename", newPartyName));
-        }
-        else {
-            player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-        }
-
         return true;
     }
 }
