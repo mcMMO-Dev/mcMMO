@@ -34,6 +34,7 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyDisbandCommand = new PartyDisbandCommand();
     private CommandExecutor partyChangeOwnerCommand = new PartyChangeOwnerCommand();
     private CommandExecutor partyLockCommand = new PartyLockCommand();
+    private CommandExecutor partyChangePasswordCommand = new PartyChangePasswordCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -102,7 +103,7 @@ public class PartyCommand implements CommandExecutor {
             return partyLockCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("password")) {
-            return changePassword(args);
+            return partyChangePasswordCommand.onCommand(sender, command, label, args);
         }
         else if (args[0].equalsIgnoreCase("rename")) {
             return rename(args);
@@ -192,33 +193,6 @@ public class PartyCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Party.Help.6"));
         player.sendMessage(LocaleLoader.getString("Party.Help.7"));
         player.sendMessage(LocaleLoader.getString("Party.Help.8"));
-        return true;
-    }
-
-    private boolean changePassword(String[] args) {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.party.password")) {
-            return true;
-        }
-
-        String playerName = player.getName();
-        Party party = mcMMOPlayer.getParty();
-
-        if (!party.getLeader().equals(playerName)) {
-            player.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-            return true;
-        }
-
-        if (args.length < 2) {
-            party.setLocked(true);
-            party.setPassword(null);
-            player.sendMessage(LocaleLoader.getString("Party.Password.Removed"));
-            return true;
-        }
-
-        party.setLocked(true);
-        party.setPassword(args[1]);
-        player.sendMessage(LocaleLoader.getString("Party.Password.Set", args[1]));
-
         return true;
     }
 
