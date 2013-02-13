@@ -11,7 +11,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class AddxpCommand implements CommandExecutor {
@@ -24,7 +23,7 @@ public class AddxpCommand implements CommandExecutor {
 
         switch (args.length) {
         case 2:
-            if (!Permissions.hasPermission(sender, "mcmmo.commands.addxp")) {
+            if (!sender.hasPermission("mcmmo.commands.addxp")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -68,7 +67,7 @@ public class AddxpCommand implements CommandExecutor {
             return true;
 
         case 3:
-            if (!Permissions.hasPermission(sender, "mcmmo.commands.addxp.others")) {
+            if (!sender.hasPermission("mcmmo.commands.addxp.others")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
