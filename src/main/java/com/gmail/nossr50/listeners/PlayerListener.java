@@ -372,15 +372,15 @@ public class PlayerListener implements Listener {
             String lowerCaseCommand = command.toLowerCase();
 
             for (SkillType skill : SkillType.values()) {
-                String commandName = skill.toString().toLowerCase();
-                String localizedName = LocaleLoader.getString(Misc.getCapitalized(commandName) + ".SkillName").toLowerCase();
+                String skillName = skill.toString().toLowerCase();
+                String localizedName = LocaleLoader.getString(Misc.getCapitalized(skillName) + ".SkillName").toLowerCase();
 
                 if (lowerCaseCommand.equals(localizedName)) {
+                    event.setMessage(message.replace(command, skillName));
                     break;
                 }
 
-                if (lowerCaseCommand.equals(commandName)) {
-                    event.setMessage(message.replace(command, localizedName));
+                if (lowerCaseCommand.equals(skillName)) {
                     break;
                 }
             }
