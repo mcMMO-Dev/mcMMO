@@ -564,6 +564,8 @@ public class ItemChecks {
                 return true;
             }
 
+            return false;
+
         default:
             return false;
         }

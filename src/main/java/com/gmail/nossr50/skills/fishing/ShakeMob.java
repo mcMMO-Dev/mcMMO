@@ -86,6 +86,7 @@ public final class ShakeMob {
                     break;
                 }
             }
+            break;
 
         default:
             break;

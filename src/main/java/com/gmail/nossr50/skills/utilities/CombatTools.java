@@ -532,6 +532,8 @@ public final class CombatTools {
                         baseXP = configInstance.getSkeletonXP();
                         break;
                     }
+                    break;
+
                 case SLIME:
                     baseXP = configInstance.getSlimeXP();
                     break;

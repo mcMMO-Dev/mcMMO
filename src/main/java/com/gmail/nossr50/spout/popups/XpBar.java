@@ -42,6 +42,9 @@ public class XpBar {
 
         case DISABLED:
             break;
+
+        default:
+            break;
         }
 
         spoutPlayer.getMainScreen().setDirty(true);
@@ -193,6 +196,9 @@ public class XpBar {
             break;
 
         case DISABLED:
+            break;
+
+        default:
             break;
         }
     }

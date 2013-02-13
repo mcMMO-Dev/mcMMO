@@ -173,6 +173,7 @@ public final class Database {
             write("ALTER TABLE `" + tablePrefix + "experience` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;");
             write("ALTER TABLE `" + tablePrefix + "cooldowns` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;");
             write("ALTER TABLE `" + tablePrefix + "skills` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;");
+            break;
 
         case FISHING:
             sql = "SELECT * FROM  `" + tablePrefix + "experience` ORDER BY  `" + tablePrefix + "experience`.`fishing` ASC LIMIT 0 , 30";

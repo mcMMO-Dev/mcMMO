@@ -162,9 +162,11 @@ public final class BlockChecks {
             return true;
         case SMOOTH_BRICK:
         case COBBLE_WALL:
-            if (block.getData() == 0) {
+            if (block.getData() == (byte)0x0) {
                 return true;
             }
+
+            return false;
 
         default:
             return false;
