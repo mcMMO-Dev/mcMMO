@@ -23,7 +23,7 @@ public class AddlevelsCommand implements CommandExecutor{
 
         switch (args.length) {
         case 2:
-            if (!Permissions.hasPermission(sender, "mcmmo.commands.addlevels")) {
+            if (!sender.hasPermission("mcmmo.commands.addlevels")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -70,7 +70,7 @@ public class AddlevelsCommand implements CommandExecutor{
             return true;
 
         case 3:
-            if (!Permissions.hasPermission(sender, "mcmmo.commands.addlevels.others")) {
+            if (!sender.hasPermission("mcmmo.commands.addlevels.others")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
