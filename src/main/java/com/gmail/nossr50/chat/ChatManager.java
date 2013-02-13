@@ -10,7 +10,6 @@ import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
-import com.gmail.nossr50.util.Permissions;
 
 public final class ChatManager {
     public ChatManager () {}
@@ -30,14 +29,8 @@ public final class ChatManager {
 
         String adminMessage = chatEvent.getMessage();
 
-        for (Player otherPlayer : mcMMO.p.getServer().getOnlinePlayers()) {
-            if (Permissions.adminChat(otherPlayer) || otherPlayer.isOp()) {
-                otherPlayer.sendMessage(LocaleLoader.getString("Commands.AdminChat.Prefix", displayName) + adminMessage);
-            }
-        }
-
-        displayName = ChatColor.stripColor(displayName);
-        mcMMO.p.getLogger().info("[A]<" + displayName + "> " + adminMessage);
+        mcMMO.p.getServer().broadcast(LocaleLoader.getString("Commands.AdminChat.Prefix", displayName) + adminMessage, "mcmmo.chat.admin");
+        mcMMO.p.getLogger().info("[A]<" + ChatColor.stripColor(displayName) + "> " + adminMessage);
     }
 
     public static void handleAdminChat(Plugin plugin, String senderName, String message) {
@@ -65,8 +58,7 @@ public final class ChatManager {
             member.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Prefix", displayName) + partyMessage);
         }
 
-        displayName = ChatColor.stripColor(displayName);
-        mcMMO.p.getLogger().info("[P](" + partyName + ")" + "<" + displayName + "> " + partyMessage);
+        mcMMO.p.getLogger().info("[P](" + partyName + ")" + "<" + ChatColor.stripColor(displayName) + "> " + partyMessage);
     }
 
     public static void handlePartyChat(Plugin plugin, Party party, String senderName, String message) {
