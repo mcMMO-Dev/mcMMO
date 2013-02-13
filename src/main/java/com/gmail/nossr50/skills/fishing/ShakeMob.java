@@ -138,7 +138,7 @@ public final class ShakeMob {
             possibleDrops.put(new ItemStack(Material.RED_ROSE), 85);
             break;
         case MAGMA_CUBE:
-            possibleDrops.put(new ItemStack(Material.MAGMA_CREAM), 3);
+            possibleDrops.put(new ItemStack(Material.MAGMA_CREAM), 100);
             break;
         case MUSHROOM_COW:
             possibleDrops.put(new ItemStack(Material.MILK_BUCKET), 5);
@@ -148,7 +148,7 @@ public final class ShakeMob {
             possibleDrops.put(new ItemStack(Material.RED_MUSHROOM, Misc.getRandom().nextInt(3) + 1), 30);
             break;
         case PIG:
-            possibleDrops.put(new ItemStack(Material.PORK), 3);
+            possibleDrops.put(new ItemStack(Material.PORK), 100);
             break;
         case PIG_ZOMBIE:
             possibleDrops.put(new ItemStack(Material.ROTTEN_FLESH), 50);

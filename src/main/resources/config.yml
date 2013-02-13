@@ -118,7 +118,7 @@ Skills:
         Enabled_For_PVE: true
         Prevent_AFK_Leveling: true
         Prevent_Dodge_Lightning: false
-        Level_Cap: 0 
+        Level_Cap: 0
     Archery:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
@@ -176,7 +176,7 @@ Skills:
         Requires_Axe: true
 
 #
-#  Settings for Double Drops  
+#  Settings for Double Drops
 ###
 Double_Drops:
     Herbalism:

@@ -23,7 +23,6 @@ import org.mcstats.Metrics.Graph;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.commands.CommandRegistrationHelper;
-import com.gmail.nossr50.commands.player.MccCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
@@ -44,7 +43,8 @@ import com.gmail.nossr50.mods.config.CustomBlocksConfig;
 import com.gmail.nossr50.mods.config.CustomEntityConfig;
 import com.gmail.nossr50.mods.config.CustomToolsConfig;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.party.commands.PtpCommand;
+import com.gmail.nossr50.party.runnables.PartiesLoader;
+import com.gmail.nossr50.party.runnables.PartyAutoKick;
 import com.gmail.nossr50.runnables.MobStoreCleaner;
 import com.gmail.nossr50.runnables.SaveTimer;
 import com.gmail.nossr50.skills.repair.RepairManager;
@@ -52,8 +52,6 @@ import com.gmail.nossr50.skills.repair.RepairManagerFactory;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.config.RepairConfigManager;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
-import com.gmail.nossr50.skills.runnables.PartiesLoader;
-import com.gmail.nossr50.skills.runnables.PartyAutoKick;
 import com.gmail.nossr50.skills.runnables.SkillMonitor;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
@@ -278,7 +276,6 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationHelper.registerMcpurgeCommand();
         CommandRegistrationHelper.registerMcremoveCommand();
         CommandRegistrationHelper.registerMcabilityCommand();
-        getCommand("mcc").setExecutor(new MccCommand());
         CommandRegistrationHelper.registerMcgodCommand();
         CommandRegistrationHelper.registerMcmmoCommand();
         CommandRegistrationHelper.registerMcrefreshCommand();
@@ -290,7 +287,7 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationHelper.registerAdminChatCommand();
         CommandRegistrationHelper.registerPartyCommand();
         CommandRegistrationHelper.registerPartyChatCommand();
-        getCommand("ptp").setExecutor(new PtpCommand(this));
+        CommandRegistrationHelper.registerPtpCommand();
 
         // Other commands
         CommandRegistrationHelper.registerAddxpCommand();

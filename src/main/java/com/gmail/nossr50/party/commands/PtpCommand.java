@@ -18,23 +18,16 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PtpCommand implements CommandExecutor {
-    private final mcMMO plugin;
     private Player player;
     private McMMOPlayer mcMMOPlayer;
+    private PlayerProfile playerProfile;
 
-    public PtpCommand(mcMMO instance) {
-        this.plugin = instance;
-    }
+    private Player target;
+    private McMMOPlayer mcMMOTarget;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        String usage = LocaleLoader.getString("Commands.Usage.1", "ptp", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">");
-
         if (CommandHelper.noConsoleUsage(sender)) {
-            return true;
-        }
-
-        if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.ptp")) {
             return true;
         }
 
@@ -42,12 +35,23 @@ public class PtpCommand implements CommandExecutor {
         case 1:
             player = (Player) sender;
             mcMMOPlayer = Users.getPlayer(player);
-            PlayerProfile playerProfile = mcMMOPlayer.getProfile();
+            playerProfile = mcMMOPlayer.getProfile();
 
             if (args[0].equalsIgnoreCase("toggle")) {
+                if (!Permissions.hasPermission(sender, "mcmmo.commands.ptp.toggle")) {
+                    sender.sendMessage(command.getPermissionMessage());
+                    return true;
+                }
+
                 return togglePartyTeleportation();
             }
-            else if (args[0].equalsIgnoreCase("acceptany") || args[0].equalsIgnoreCase("acceptall")) {
+
+            if (args[0].equalsIgnoreCase("acceptany") || args[0].equalsIgnoreCase("acceptall")) {
+                if (!Permissions.hasPermission(sender, "mcmmo.commands.ptp.acceptall")) {
+                    sender.sendMessage(command.getPermissionMessage());
+                    return true;
+                }
+
                 return acceptAnyTeleportRequest();
             }
 
@@ -59,78 +63,43 @@ public class PtpCommand implements CommandExecutor {
             }
 
             if (args[0].equalsIgnoreCase("accept")) {
+                if (!Permissions.hasPermission(sender, "mcmmo.commands.ptp.accept")) {
+                    sender.sendMessage(command.getPermissionMessage());
+                    return true;
+                }
+
                 return acceptTeleportRequest();
             }
 
             return sendTeleportRequest(args[0]);
 
         default:
-            sender.sendMessage(usage);
-            return true;
+            return false;
         }
     }
 
-    private boolean sendTeleportRequest(String args) {
-        Player target = plugin.getServer().getPlayer(args);
-
-        if (player.equals(target)) {
-            player.sendMessage(LocaleLoader.getString("Party.Teleport.Self"));
+    private boolean sendTeleportRequest(String targetName) {
+        if (!canTeleport(targetName)) {
             return true;
         }
 
-        if (target == null) {
-            player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
-            return true;
+        if (!mcMMOTarget.getPtpConfirmRequired()) {
+            return handlePartyTeleportEvent();
         }
 
-        if (target.isDead()) {
-            player.sendMessage(LocaleLoader.getString("Party.Teleport.Dead"));
-            return true;
-        }
+        mcMMOTarget.setPtpRequest(player);
+        mcMMOTarget.actualizePtpTimeout();
+        player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
 
-        if (PartyManager.inSameParty(player, target)) {
-            McMMOPlayer targetMcMMOPlayer = Users.getPlayer(target);
-
-            if (!targetMcMMOPlayer.getPtpEnabled()) {
-                player.sendMessage(LocaleLoader.getString("Party.Teleport.Disabled", target.getName()));
-                return true;
-            }
-
-            if (!targetMcMMOPlayer.getPtpConfirmRequired()) {
-                McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, mcMMOPlayer.getParty().getName());
-                plugin.getServer().getPluginManager().callEvent(event);
-
-                if (event.isCancelled()) {
-                    return true;
-                }
-
-                player.teleport(target);
-                player.sendMessage(LocaleLoader.getString("Party.Teleport.Player", player.getName()));
-                target.sendMessage(LocaleLoader.getString("Party.Teleport.Target", target.getName()));
-                mcMMOPlayer.getProfile().setRecentlyHurt(System.currentTimeMillis());
-            } else {
-                targetMcMMOPlayer.setPtpRequest(player);
-                targetMcMMOPlayer.actualizePtpTimeout();
-                player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
-
-                int ptpRequestExpire = Config.getInstance().getPTPCommandTimeout();
-                target.sendMessage(LocaleLoader.getString("Commands.ptp.Request1", player.getName()));
-                target.sendMessage(LocaleLoader.getString("Commands.ptp.Request2", ptpRequestExpire));
-            }
-        }
-        else {
-            player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", target.getName()));
-        }
+        int ptpRequestExpire = Config.getInstance().getPTPCommandTimeout();
+        target.sendMessage(LocaleLoader.getString("Commands.ptp.Request1", player.getName()));
+        target.sendMessage(LocaleLoader.getString("Commands.ptp.Request2", ptpRequestExpire));
         return true;
     }
 
     private boolean acceptTeleportRequest() {
         if (!mcMMOPlayer.hasPtpRequest()) {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.NoRequests"));
-            return true;
-        }
-
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.ptp.accept")) {
             return true;
         }
 
@@ -144,48 +113,28 @@ public class PtpCommand implements CommandExecutor {
 
         Player target = mcMMOPlayer.getPtpRequest();
 
-        if (target == null) {
-            player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
+        if (!canTeleport(target.getName())) {
             return true;
         }
 
-        if (target.isDead()) {
-            player.sendMessage(LocaleLoader.getString("Party.Teleport.Dead"));
-            return true;
-        }
-
-        if(Config.getInstance().getPTPCommandWorldPermissions()) {
+        //TODO: Someone want to clarify what's going on with these dynamic permissions?
+        if (Config.getInstance().getPTPCommandWorldPermissions()) {
             String perm = "mcmmo.commands.ptp.world.";
 
-            if(!Permissions.hasDynamicPermission(target, perm + "all", "op")) {
-                if(!Permissions.hasDynamicPermission(target, perm + target.getWorld().getName(), "op")) {
+            if (!Permissions.hasDynamicPermission(target, perm + "all", "op")) {
+                if (!Permissions.hasDynamicPermission(target, perm + target.getWorld().getName(), "op")) {
                     return true;
                 }
-                else if(target.getWorld() != player.getWorld() && !Permissions.hasDynamicPermission(target, perm + player.getWorld().getName(), "op")) {
+                else if (target.getWorld() != player.getWorld() && !Permissions.hasDynamicPermission(target, perm + player.getWorld().getName(), "op")) {
                     return true;
                 }
             }
         }
 
-        McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(target, player, mcMMOPlayer.getParty().getName());
-        plugin.getServer().getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
-            return true;
-        }
-
-        target.teleport(player);
-        target.sendMessage(LocaleLoader.getString("Party.Teleport.Player", player.getName()));
-        player.sendMessage(LocaleLoader.getString("Party.Teleport.Target", target.getName()));
-        mcMMOPlayer.getProfile().setRecentlyHurt(System.currentTimeMillis());
-        return true;
+        return handlePartyTeleportEvent();
     }
 
     private boolean acceptAnyTeleportRequest() {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.ptp.acceptall")) {
-            return true;
-        }
-
         if (mcMMOPlayer.getPtpConfirmRequired()) {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.AcceptAny.Disabled"));
         }
@@ -198,10 +147,6 @@ public class PtpCommand implements CommandExecutor {
     }
 
     private boolean togglePartyTeleportation() {
-        if (CommandHelper.noCommandPermissions(player, "mcmmo.commands.ptp.toggle")) {
-            return true;
-        }
-
         if (mcMMOPlayer.getPtpEnabled()) {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.Disabled"));
         }
@@ -210,6 +155,59 @@ public class PtpCommand implements CommandExecutor {
         }
 
         mcMMOPlayer.togglePtpUse();
+        return true;
+    }
+
+    private boolean canTeleport(String targetName) {
+        if (!mcMMO.p.getServer().getOfflinePlayer(targetName).isOnline()) {
+            player.sendMessage(LocaleLoader.getString("Party.NotOnline", targetName));
+            return false;
+        }
+
+        mcMMOTarget = Users.getPlayer(targetName);
+
+        if (mcMMOTarget == null) {
+            player.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
+            return false;
+        }
+
+        target = mcMMOTarget.getPlayer();
+
+        if (player.equals(target)) {
+            player.sendMessage(LocaleLoader.getString("Party.Teleport.Self"));
+            return false;
+        }
+
+        if (!PartyManager.inSameParty(player, target)) {
+            player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetName));
+            return false;
+        }
+
+        if (!mcMMOTarget.getPtpEnabled()) {
+            player.sendMessage(LocaleLoader.getString("Party.Teleport.Disabled", target.getName()));
+            return false;
+        }
+
+        if (target.isDead()) {
+            player.sendMessage(LocaleLoader.getString("Party.Teleport.Dead"));
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean handlePartyTeleportEvent() {
+        McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, mcMMOPlayer.getParty().getName());
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return true;
+        }
+
+        player.teleport(target);
+        player.sendMessage(LocaleLoader.getString("Party.Teleport.Player", player.getName()));
+        target.sendMessage(LocaleLoader.getString("Party.Teleport.Target", target.getName()));
+        playerProfile.setRecentlyHurt(System.currentTimeMillis());
         return true;
     }
 }

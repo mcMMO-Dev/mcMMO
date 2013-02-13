@@ -125,8 +125,7 @@ public final class PartyAPI {
      * @return all the players in the player's party
      * @deprecated
      */
-    // TODO: I naively tried to add another getAllMembers that returns a List<OffflinePlayer>, but that wasn't possible
-    // since the return type isn't part of the the method's signature. If anybody has an idea...
+    @Deprecated
     public static List<String> getAllMembers(Player player) {
         List<String> memberNames = new ArrayList<String>();
 
@@ -135,6 +134,18 @@ public final class PartyAPI {
         }
 
         return memberNames;
+    }
+
+    /**
+     * Get a list of all players in this player's party.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to check
+     * @return all the players in the player's party
+     */
+    public static List<OfflinePlayer> getOnlineAndOfflineMembers(Player player) {
+        return PartyManager.getAllMembers(player);
     }
 
     /**

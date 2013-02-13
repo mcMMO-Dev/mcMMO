@@ -49,10 +49,7 @@ public class AxeManager extends SkillManager {
     public void impact(EntityDamageByEntityEvent event, LivingEntity target) {
         ImpactEventHandler eventHandler = new ImpactEventHandler(this, event, target);
 
-        if (Misc.hasArmor(target)) {
-            eventHandler.damageArmor();
-        }
-        else {
+        if (!eventHandler.applyImpact()) {
             eventHandler.applyGreaterImpact();
         }
     }

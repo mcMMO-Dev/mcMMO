@@ -8,6 +8,7 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
@@ -16,38 +17,45 @@ public class ImpactEventHandler {
     private Player player;
     private EntityDamageByEntityEvent event;
     private short durabilityDamage = 1;
-    private EntityEquipment equipment;
-    private ItemStack[] armorContents;
+    private EntityEquipment entityEquipment;
     protected LivingEntity defender;
+    boolean impactApplied;
 
     public ImpactEventHandler(AxeManager manager, EntityDamageByEntityEvent event, LivingEntity defender) {
         this.manager = manager;
         this.player = manager.getMcMMOPlayer().getPlayer();
         this.event = event;
         this.defender = defender;
-        this.equipment = defender.getEquipment();
-        this.armorContents = equipment.getArmorContents();
+        this.entityEquipment = defender.getEquipment();
     }
 
-    protected void damageArmor() {
+    protected boolean applyImpact() {
         // Every 50 Skill Levels you gain 1 durability damage (default values)
         durabilityDamage += (short) (manager.getSkillLevel() / Axes.impactIncreaseLevel);
+        // getArmorContents.length can't be used because it's always equal to 4 (no armor = air block)
+        boolean hasArmor = false;
 
-        for (ItemStack armor : armorContents) {
-            if (Misc.getRandom().nextInt(100) > 75) {
+        for (ItemStack itemStack : entityEquipment.getArmorContents()) {
+            if (ItemChecks.isArmor(itemStack)) {
+                hasArmor = true;
 
-                for (int i = 0; i <= durabilityDamage; i++) {
-                    if (armor.containsEnchantment(Enchantment.DURABILITY)) {
-                        handleDurabilityEnchantment(armor);
-                    }
+                if (Misc.getRandom().nextInt(100) < 25) {
+                    damageArmor(itemStack);
                 }
-
-                damageValidation(armor);
-                armor.setDurability((short) (armor.getDurability() + durabilityDamage));
             }
         }
 
-        equipment.setArmorContents(armorContents);
+        return hasArmor;
+    }
+
+    private void damageArmor(ItemStack armor) {
+        float modifier = 1;
+
+        if (armor.containsEnchantment(Enchantment.DURABILITY)) {
+            modifier /= armor.getEnchantmentLevel(Enchantment.DURABILITY) + 1;
+        }
+
+        armor.setDurability((short) (durabilityDamage * modifier + armor.getDurability()));
     }
 
     protected void applyGreaterImpact() {
@@ -71,22 +79,6 @@ public class ImpactEventHandler {
 
         if (defender instanceof Player) {
             ((Player) defender).sendMessage(LocaleLoader.getString("Axes.Combat.GI.Struck"));
-        }
-    }
-
-    private void handleDurabilityEnchantment(ItemStack armor) {
-        int enchantmentLevel = armor.getEnchantmentLevel(Enchantment.DURABILITY);
-
-        if (Misc.getRandom().nextInt(enchantmentLevel + 1) > 0) {
-            durabilityDamage--;
-        }
-    }
-
-    private void damageValidation(ItemStack armor) {
-        short maxDurability = (short) (armor.getType().getMaxDurability() * Axes.impactMaxDurabilityDamageModifier);
-
-        if (durabilityDamage > maxDurability) {
-            durabilityDamage = maxDurability;
         }
     }
 }

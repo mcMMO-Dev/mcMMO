@@ -207,7 +207,7 @@ public class ItemChecks {
      * @param is Item to check
      * @return true if the item is a pair of pants, false otherwise
      */
-    public static boolean isPants(ItemStack is) {
+    public static boolean isLeggings(ItemStack is) {
         switch (is.getType()) {
         case DIAMOND_LEGGINGS:
         case GOLD_LEGGINGS:
@@ -254,7 +254,17 @@ public class ItemChecks {
      * @return true if the item is armor, false otherwise
      */
     public static boolean isArmor(ItemStack is) {
-        return isLeatherArmor(is) || isGoldArmor(is) || isIronArmor(is) || isDiamondArmor(is);
+        return isHelmet(is) || isChestplate(is) || isLeggings(is) || isBoots(is);
+    }
+
+    /**
+     * Checks to see if an item is a wearable armor piece.
+     *
+     * @param is Item to check
+     * @return true if the item is armor, false otherwise
+     */
+    public static boolean isMinecraftArmor(ItemStack is) {
+        return isDiamondArmor(is) || isGoldArmor(is) || isIronArmor(is) || isDiamondArmor(is);
     }
 
     /**
@@ -339,7 +349,7 @@ public class ItemChecks {
      * @param is Item to check
      * @return true if the item is a tool, false otherwise
      */
-    public static boolean isTool(ItemStack is) {
+    public static boolean isMinecraftTool(ItemStack is) {
         return isStoneTool(is) || isWoodTool(is) || isGoldTool(is) || isIronTool(is) || isDiamondTool(is) || isStringTool(is);
     }
 

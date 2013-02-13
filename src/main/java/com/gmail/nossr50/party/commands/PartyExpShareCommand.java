@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.ShareHandler;
@@ -14,11 +15,15 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyExpShareCommand implements CommandExecutor {
-    private Player player;
     private Party playerParty;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!Config.getInstance().getExpShareEnabled()) {
+            sender.sendMessage(LocaleLoader.getString("Party.ExpShare.Disabled"));
+            return true;
+        }
+
         if (!Permissions.hasPermission(sender, "mcmmo.commands.party.expshare")) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
@@ -26,13 +31,7 @@ public class PartyExpShareCommand implements CommandExecutor {
 
         switch (args.length) {
         case 2:
-            player = (Player) sender;
-            playerParty = Users.getPlayer(player).getParty();
-
-            if (!playerParty.getLeader().equals(player.getName())) {
-                sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
-                return true;
-            }
+            playerParty = Users.getPlayer((Player) sender).getParty();
 
             if (args[1].equalsIgnoreCase("none") || args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
                 handleChangingShareMode(ShareMode.NONE);

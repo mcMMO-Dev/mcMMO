@@ -124,7 +124,7 @@ public class Salvage {
         else if (ItemChecks.isChestplate(inHand)) {
             return 8;
         }
-        else if (ItemChecks.isPants(inHand)) {
+        else if (ItemChecks.isLeggings(inHand)) {
             return 7;
         }
         else if (ItemChecks.isBoots(inHand)) {
@@ -141,10 +141,10 @@ public class Salvage {
      * @return true if the item is salvageable, false otherwise
      */
     public static boolean isSalvageable(final ItemStack is) {
-        if (configInstance.getSalvageTools() && (ItemChecks.isTool(is) || ItemChecks.isStringTool(is) || is.getType() == Material.BUCKET)) {
+        if (configInstance.getSalvageTools() && (ItemChecks.isMinecraftTool(is) || ItemChecks.isStringTool(is) || is.getType() == Material.BUCKET)) {
             return true;
         }
-        if (configInstance.getSalvageArmor() && ItemChecks.isArmor(is)) {
+        if (configInstance.getSalvageArmor() && ItemChecks.isMinecraftArmor(is)) {
             return true;
         }
         return false;

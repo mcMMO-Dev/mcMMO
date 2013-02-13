@@ -50,9 +50,7 @@ public final class SkillGuide {
     }
 
     public static void clearChat(Player player) {
-        for (int x = 0; x < 20; x++) {
-            player.sendMessage("");
-        }
+        player.sendMessage("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
     }
 
     public static boolean grabGuidePageForSkill(SkillType skilltype, Player player, String[] args) {

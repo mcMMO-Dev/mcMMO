@@ -39,7 +39,7 @@ public final class PartyManager {
     }
 
     /**
-     * Check if two players are in the same party.
+     * Check if two online players are in the same party.
      *
      * @param firstPlayer The first player
      * @param secondPlayer The second player

@@ -121,7 +121,7 @@ public final class Users {
      * @param player The player whose McMMOPlayer to retrieve
      * @return the player's McMMOPlayer object
      */
-    public static McMMOPlayer getPlayer(Player player) {
+    public static McMMOPlayer getPlayer(OfflinePlayer player) {
         return players.get(player.getName());
     }
 }

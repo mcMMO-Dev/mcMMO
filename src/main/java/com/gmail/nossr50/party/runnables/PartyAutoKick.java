@@ -1,4 +1,4 @@
-package com.gmail.nossr50.skills.runnables;
+package com.gmail.nossr50.party.runnables;
 
 import org.bukkit.OfflinePlayer;
 
