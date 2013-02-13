@@ -31,6 +31,7 @@ Version 1.4.00-dev
  + Added the "wait" music disc to the default fishing treasures
  + Added "Chinese (Taiwan)" localization files (zh_TW)
  + Added '/hardcore' and '/vampirism' commands for toggling these modes on or off.
+ = Fixed bug where splash potions could raise a player's unarmed level
  = Fixed /ptp telporting the target to the player, rather than the other way around.
  = Fixed Impact reducing the durability of non-armor equipped blocks
  = Fixed Impact reducing improperly the durability of armors (as a consequence it is now more effective)

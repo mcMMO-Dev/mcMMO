@@ -70,8 +70,9 @@ public final class CombatTools {
 
             ItemStack heldItem = player.getItemInHand();
             Material heldItemType = heldItem.getType();
+            DamageCause damageCause = event.getCause();
 
-            if (ItemChecks.isSword(heldItem)) {
+            if (ItemChecks.isSword(heldItem) && damageCause != DamageCause.MAGIC) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!Swords.pvpEnabled) {
                         return;
@@ -102,7 +103,7 @@ public final class CombatTools {
                     startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
                 }
             }
-            else if (ItemChecks.isAxe(heldItem)) {
+            else if (ItemChecks.isAxe(heldItem) && damageCause != DamageCause.MAGIC) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!Axes.pvpEnabled) {
                         return;
@@ -140,7 +141,7 @@ public final class CombatTools {
                     startGainXp(mcMMOPlayer, target, SkillType.AXES);
                 }
             }
-            else if (heldItemType == Material.AIR) {
+            else if (heldItemType == Material.AIR && damageCause != DamageCause.MAGIC) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!configInstance.getUnarmedPVP()) {
                         return;
@@ -175,7 +176,7 @@ public final class CombatTools {
                     startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
                 }
             }
-            else if (heldItemType == Material.BONE && target instanceof Tameable && Permissions.beastLore(player)) {
+            else if (heldItemType == Material.BONE && target instanceof Tameable && Permissions.beastLore(player) && damageCause != DamageCause.MAGIC) {
                 TamingManager tamingManager = new TamingManager(Users.getPlayer(player));
                 tamingManager.beastLore(target);
                 event.setCancelled(true);
