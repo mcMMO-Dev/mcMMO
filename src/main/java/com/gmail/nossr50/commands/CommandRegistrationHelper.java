@@ -10,10 +10,12 @@ import com.gmail.nossr50.chat.commands.AdminChatCommand;
 import com.gmail.nossr50.chat.commands.PartyChatCommand;
 import com.gmail.nossr50.commands.admin.AddlevelsCommand;
 import com.gmail.nossr50.commands.admin.AddxpCommand;
+import com.gmail.nossr50.commands.admin.HardcoreCommand;
 import com.gmail.nossr50.commands.admin.McgodCommand;
 import com.gmail.nossr50.commands.admin.McrefreshCommand;
 import com.gmail.nossr50.commands.admin.MmoeditCommand;
 import com.gmail.nossr50.commands.admin.SkillresetCommand;
+import com.gmail.nossr50.commands.admin.VampirismCommand;
 import com.gmail.nossr50.commands.admin.XprateCommand;
 import com.gmail.nossr50.commands.player.InspectCommand;
 import com.gmail.nossr50.commands.player.McabilityCommand;
@@ -334,5 +336,25 @@ public final class CommandRegistrationHelper {
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "ptp", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
         command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "ptp", "<toggle|accept|acceptall>"));
         command.setExecutor(new PtpCommand());
+    }
+
+    public static void registerHardcoreCommand() {
+        PluginCommand command = mcMMO.p.getCommand("hardcore");
+        command.setDescription(LocaleLoader.getString("Commands.Description.hardcore"));
+        command.setPermission("mcmmo.commands.hardcore;mcmmo.commands.hardcore.toggle;mcmmo.commands.hardcore.modify");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "hardcore", "[on|off]"));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "hardcore", "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">"));
+        command.setExecutor(new HardcoreCommand());
+    }
+
+    public static void registerVampirismCommand() {
+        PluginCommand command = mcMMO.p.getCommand("vampirism");
+        command.setDescription(LocaleLoader.getString("Commands.Description.vampirism"));
+        command.setPermission("mcmmo.commands.vampirism;mcmmo.commands.vampirism.toggle;mcmmo.commands.vampirism.modify");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "vampirism", "[on|off]"));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "vampirism", "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">"));
+        command.setExecutor(new VampirismCommand());
     }
 }

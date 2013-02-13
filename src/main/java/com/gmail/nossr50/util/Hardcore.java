@@ -8,14 +8,11 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillType;
 
 public final class Hardcore {
-    public static double statLossPercentage = Config.getInstance().getHardcoreDeathStatPenaltyPercentage();
-    public static double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
-    public static boolean statLossEnabled = Config.getInstance().getHardcoreEnabled();
-    public static boolean vampirismEnabled = Config.getInstance().getHardcoreVampirismEnabled();
-
     private Hardcore() {}
 
     public static void invokeStatPenalty(Player player) {
+        double statLossPercentage = Config.getInstance().getHardcoreDeathStatPenaltyPercentage();
+
         if (statLossPercentage <= 0 || statLossPercentage > 100) {
             return;
         }
@@ -44,6 +41,8 @@ public final class Hardcore {
     }
 
     public static void invokeVampirism(Player killer, Player victim) {
+        double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
+
         if (vampirismStatLeechPercentage <= 0 || vampirismStatLeechPercentage > 100) {
             return;
         }

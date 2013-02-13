@@ -70,9 +70,16 @@ public class Config extends ConfigLoader {
 
     /* Hardcore Mode */
     public boolean getHardcoreEnabled() { return config.getBoolean("Hardcore.Enabled", false); }
-    public double getHardcoreDeathStatPenaltyPercentage() { return config.getDouble("Hardcore.Death_Stat_Loss_Penalty_Percentage", 75); }
-    public double getHardcoreVampirismStatLeechPercentage() { return config.getDouble("Hardcore.Vampirism_Stat_Leech_Percentage", 5); }
+    public void setHardcoreEnabled(boolean enabled) { config.set("Hardcore.Enabled", enabled); }
+
+    public double getHardcoreDeathStatPenaltyPercentage() { return config.getDouble("Hardcore.Death_Stat_Loss_Penalty_Percentage", 75.0); }
+    public void setHardcoreDeathStatPenaltyPercentage(double value) { config.set("Hardcore.Death_Stat_Loss_Penalty_Percentage", value); }
+
+    public double getHardcoreVampirismStatLeechPercentage() { return config.getDouble("Hardcore.Vampirism_Stat_Leech_Percentage", 5.0); }
+    public void setHardcoreVampirismStatLeechPercentage(double value) { config.set("Hardcore.Vampirism_Stat_Leech_Percentage", value); }
+
     public boolean getHardcoreVampirismEnabled() { return config.getBoolean("Hardcore.Vampirism", false); }
+    public void setHardcoreVampirismEnabled(boolean enabled) { config.set("Hardcore.Vampirism", enabled); }
 
     /* SMP Mods */
     public boolean getToolModsEnabled() { return config.getBoolean("Mods.Tool_Mods_Enabled", false); }

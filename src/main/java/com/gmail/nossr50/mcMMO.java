@@ -260,10 +260,7 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(entityListener, this);
         pluginManager.registerEvents(inventoryListener, this);
         pluginManager.registerEvents(worldListener, this);
-
-        if (Config.getInstance().getHardcoreEnabled()) {
-            pluginManager.registerEvents(hardcoreListener, this);
-        }
+        pluginManager.registerEvents(hardcoreListener, this);
     }
 
     /**
@@ -297,6 +294,8 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationHelper.registerXprateCommand();
         CommandRegistrationHelper.registerMmoupdateCommand();
         CommandRegistrationHelper.registerSkillresetCommand();
+        CommandRegistrationHelper.registerHardcoreCommand();
+        CommandRegistrationHelper.registerVampirismCommand();
 
         // Spout commands
         CommandRegistrationHelper.registerXplockCommand();

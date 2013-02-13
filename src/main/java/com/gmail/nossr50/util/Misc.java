@@ -166,6 +166,21 @@ public final class Misc {
 
         return 0;
     }
+
+    /**
+     * Gets the long represented by this string.
+     *
+     * @param string The string to parse
+     * @return the long represented by this string
+     */
+    public static double getDouble(String string) {
+        if (isDouble(string)) {
+            return Double.parseDouble(string);
+        }
+
+        return 0;
+    }
+
     /**
      * Checks to see if an entity is currently invincible.
      *
@@ -293,6 +308,22 @@ public final class Misc {
     public static boolean isLong(String string) {
         try {
             Long.parseLong(string);
+            return true;
+        }
+        catch (NumberFormatException nFE) {
+            return false;
+        }
+    }
+
+    /**
+     * Determine if a string represents a Double
+     *
+     * @param string String to check
+     * @return true if the string is a Double, false otherwise
+     */
+    public static boolean isDouble(String string) {
+        try {
+            Double.parseDouble(string);
             return true;
         }
         catch (NumberFormatException nFE) {

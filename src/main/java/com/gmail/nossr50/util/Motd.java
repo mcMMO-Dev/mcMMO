@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillType;
 
@@ -37,15 +38,15 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayHardcoreSettings(Player player) {
-        if (Hardcore.statLossEnabled) {
-            if (Hardcore.vampirismEnabled) {
+        if (Config.getInstance().getHardcoreEnabled()) {
+            if (Config.getInstance().getHardcoreVampirismEnabled()) {
                 player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.VampireOn"));
-                player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", Hardcore.statLossPercentage));
-                player.sendMessage(LocaleLoader.getString("MOTD.Vampire.Stats", Hardcore.vampirismStatLeechPercentage));
+                player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", Config.getInstance().getHardcoreDeathStatPenaltyPercentage()));
+                player.sendMessage(LocaleLoader.getString("MOTD.Vampire.Stats", Config.getInstance().getHardcoreVampirismStatLeechPercentage()));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.VampireOff"));
-                player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", Hardcore.statLossPercentage  ));
+                player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", Config.getInstance().getHardcoreDeathStatPenaltyPercentage()));
             }
         }
     }

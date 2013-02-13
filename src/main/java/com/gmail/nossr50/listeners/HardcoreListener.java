@@ -6,6 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.util.Hardcore;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -18,6 +19,10 @@ public class HardcoreListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event) {
+        if (!Config.getInstance().getHardcoreEnabled()) {
+            return;
+        }
+
         Player player = event.getEntity();
 
         if (Misc.isNPCPlayer(player)) {
@@ -27,7 +32,7 @@ public class HardcoreListener implements Listener {
         if (!Permissions.hardcoremodeBypass(player)) {
             Player killer = player.getKiller();
 
-            if (killer != null && Hardcore.vampirismEnabled) {
+            if (killer != null && Config.getInstance().getHardcoreVampirismEnabled()) {
                 Hardcore.invokeVampirism(killer, player);
             }
 
