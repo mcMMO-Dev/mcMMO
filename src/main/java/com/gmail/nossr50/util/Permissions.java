@@ -102,7 +102,7 @@ public final class Permissions {
      */
     @Deprecated
     public static boolean mmoedit(CommandSender sender) {
-        return player.hasPermission("mcmmo.tools.mmoedit");
+        return sender.hasPermission("mcmmo.tools.mmoedit");
     }
 
     /**
@@ -110,7 +110,7 @@ public final class Permissions {
      */
     @Deprecated
     public static boolean mcgod(CommandSender sender) {
-        return player.hasPermission("mcmmo.tools.mcgod");
+        return sender.hasPermission("mcmmo.tools.mcgod");
     }
 
     /*
