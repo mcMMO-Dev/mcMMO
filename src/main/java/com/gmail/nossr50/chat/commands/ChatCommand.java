@@ -29,26 +29,29 @@ public abstract class ChatCommand implements CommandExecutor {
 
             if (chatMode.isEnabled(mcMMOPlayer)) {
                 disableChatMode(sender);
-                return true;
+            }
+            else {
+                enableChatMode(sender);
             }
 
-            enableChatMode(sender);
             return true;
 
         default:
             if (args.length == 1) {
-                if (!(sender instanceof Player)) {
-                    return false;
-                }
-
-                mcMMOPlayer = Users.getPlayer((Player) sender);
-
                 if (args[0].equalsIgnoreCase("on")) {
+                    if (!(sender instanceof Player)) {
+                        return false;
+                    }
+
                     enableChatMode(sender);
                     return true;
                 }
 
                 if (args[0].equalsIgnoreCase("off")) {
+                    if (!(sender instanceof Player)) {
+                        return false;
+                    }
+
                     disableChatMode(sender);
                     return true;
                 }
