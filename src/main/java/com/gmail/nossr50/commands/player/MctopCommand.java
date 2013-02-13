@@ -8,7 +8,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.database.Leaderboard;
@@ -79,7 +78,7 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void flatfileDisplay(int page, String skill, CommandSender sender) {
-        if (!skill.equalsIgnoreCase("all") && CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mctop." + skill.toLowerCase())) {
+        if (!skill.equalsIgnoreCase("all") && sender.hasPermission("mcmmo.commands.mctop." + skill.toLowerCase())) {
             return;
         }
 
@@ -116,7 +115,7 @@ public class MctopCommand implements CommandExecutor {
 
     private void sqlDisplay(int page, String query, CommandSender sender) {
         if (!query.equalsIgnoreCase("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
-            if (CommandHelper.noCommandPermissions(sender, "mcmmo.commands.mctop." + query.toLowerCase())) {
+            if (!sender.hasPermission("mcmmo.commands.mctop." + query.toLowerCase())) {
                 return;
             }
         }
