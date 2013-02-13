@@ -11,7 +11,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class SkillresetCommand implements CommandExecutor {
@@ -22,7 +21,7 @@ public class SkillresetCommand implements CommandExecutor {
 
         switch (args.length) {
         case 1:
-            if (!Permissions.hasPermission(sender, "mcmmo.commands.skillreset")) {
+            if (!sender.hasPermission("mcmmo.commands.skillreset")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -45,14 +44,14 @@ public class SkillresetCommand implements CommandExecutor {
                         continue;
                     }
 
-                    if (!Permissions.hasPermission(sender, "mcmmo.commands.skillreset." + args[0].toLowerCase())) {
+                    if (!sender.hasPermission("mcmmo.commands.skillreset." + args[0].toLowerCase())) {
                         sender.sendMessage(command.getPermissionMessage());
                         return true;
                     }
                 }
             }
             else {
-                if (!Permissions.hasPermission(sender, "mcmmo.commands.skillreset." + args[0].toLowerCase())) {
+                if (!sender.hasPermission("mcmmo.commands.skillreset." + args[0].toLowerCase())) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -79,7 +78,7 @@ public class SkillresetCommand implements CommandExecutor {
             return true;
 
         case 2:
-            if (!Permissions.hasPermission(sender, "mcmmo.commands.skillreset.others")) {
+            if (!sender.hasPermission("mcmmo.commands.skillreset.others")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -98,14 +97,14 @@ public class SkillresetCommand implements CommandExecutor {
                         continue;
                     }
 
-                    if (!Permissions.hasPermission(sender, "mcmmo.commands.skillreset.others." + args[1].toLowerCase())) {
+                    if (!sender.hasPermission("mcmmo.commands.skillreset.others." + args[1].toLowerCase())) {
                         sender.sendMessage(command.getPermissionMessage());
                         return true;
                     }
                 }
             }
             else {
-                if (!Permissions.hasPermission(sender, "mcmmo.commands.skillreset.others." + args[1].toLowerCase())) {
+                if (!sender.hasPermission("mcmmo.commands.skillreset.others." + args[1].toLowerCase())) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
