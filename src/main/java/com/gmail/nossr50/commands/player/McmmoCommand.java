@@ -10,7 +10,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
 
 public class McmmoCommand implements CommandExecutor {
     @Override
@@ -37,7 +36,7 @@ public class McmmoCommand implements CommandExecutor {
 
         case 1:
             if (args[0].equalsIgnoreCase("?") || args[0].equalsIgnoreCase("help") || args[0].equalsIgnoreCase("commands")) {
-                if (!Permissions.hasPermission(sender, "mcmmo.commands.mcmmo.help")) {
+                if (!sender.hasPermission("mcmmo.commands.mcmmo.help")) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
