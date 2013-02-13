@@ -9,7 +9,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 
 public class XprateCommand implements CommandExecutor {
     private static double originalRate = Config.getInstance().getExperienceGainsGlobalMultiplier();
@@ -22,7 +21,7 @@ public class XprateCommand implements CommandExecutor {
                 return false;
             }
 
-            if (!Permissions.hasPermission(sender, "mcmmo.commands.xprate.reset")) {
+            if (!sender.hasPermission("mcmmo.commands.xprate.reset")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -43,7 +42,7 @@ public class XprateCommand implements CommandExecutor {
                 return false;
             }
 
-            if (!Permissions.hasPermission(sender, "mcmmo.commands.xprate.set")) {
+            if (!sender.hasPermission("mcmmo.commands.xprate.set")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }

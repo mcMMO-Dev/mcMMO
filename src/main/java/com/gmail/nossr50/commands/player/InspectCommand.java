@@ -11,7 +11,6 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class InspectCommand implements CommandExecutor {
@@ -21,7 +20,7 @@ public class InspectCommand implements CommandExecutor {
 
         switch (args.length) {
         case 1:
-            if (!Permissions.hasPermission(sender, "mcmmo.commands.inspect")) {
+            if (!sender.hasPermission("mcmmo.commands.inspect")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -37,7 +36,7 @@ public class InspectCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (sender instanceof Player && !Permissions.inspectOffline((Player) sender)) {
+                if (sender instanceof Player && !sender.hasPermission("mcmmo.commands.inspect.offline")) {
                     sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
                     return true;
                 }
@@ -68,7 +67,7 @@ public class InspectCommand implements CommandExecutor {
                 if (sender instanceof Player) {
                     Player inspector = (Player) sender;
 
-                    if (!Misc.isNear(inspector.getLocation(), target.getLocation(), 5.0) && !Permissions.inspectFar(inspector)) {
+                    if (!Misc.isNear(inspector.getLocation(), target.getLocation(), 5.0) && !inspector.hasPermission("mcmmo.commands.inspect.far")) {
                         sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
                         return true;
                     }
