@@ -72,7 +72,7 @@ public final class CombatTools {
             Material heldItemType = heldItem.getType();
             DamageCause damageCause = event.getCause();
 
-            if (ItemChecks.isSword(heldItem) && damageCause != DamageCause.MAGIC) {
+            if (ItemChecks.isSword(heldItem) && damageCause == DamageCause.ENTITY_ATTACK) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!Swords.pvpEnabled) {
                         return;
@@ -103,7 +103,7 @@ public final class CombatTools {
                     startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
                 }
             }
-            else if (ItemChecks.isAxe(heldItem) && damageCause != DamageCause.MAGIC) {
+            else if (ItemChecks.isAxe(heldItem) && damageCause == DamageCause.ENTITY_ATTACK) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!Axes.pvpEnabled) {
                         return;
@@ -141,7 +141,7 @@ public final class CombatTools {
                     startGainXp(mcMMOPlayer, target, SkillType.AXES);
                 }
             }
-            else if (heldItemType == Material.AIR && damageCause != DamageCause.MAGIC) {
+            else if (heldItemType == Material.AIR && damageCause == DamageCause.ENTITY_ATTACK) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!configInstance.getUnarmedPVP()) {
                         return;
@@ -176,7 +176,7 @@ public final class CombatTools {
                     startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
                 }
             }
-            else if (heldItemType == Material.BONE && target instanceof Tameable && Permissions.beastLore(player) && damageCause != DamageCause.MAGIC) {
+            else if (heldItemType == Material.BONE && target instanceof Tameable && Permissions.beastLore(player) && damageCause == DamageCause.ENTITY_ATTACK) {
                 TamingManager tamingManager = new TamingManager(Users.getPlayer(player));
                 tamingManager.beastLore(target);
                 event.setCancelled(true);
