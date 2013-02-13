@@ -678,6 +678,11 @@ permissions:
         description: Allows access to the mcgod command for other players
     mcmmo.commands.mchud:
         description: Allows access to the mchud command
+    mcmmo.commands.mcmmo.*:
+        default: false
+        description: Implies access to all mcmmo.commands.mcmmo permissions
+        children:
+            mcmmo.commands.mcmmo.all: true
     mcmmo.commands.mcmmo.all:
         description: Implies access to all mcmmo.commands.mcmmo permissions.
         children:
