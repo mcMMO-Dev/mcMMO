@@ -8,6 +8,7 @@ import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -49,13 +50,22 @@ public class ImpactEventHandler {
     }
 
     private void damageArmor(ItemStack armor) {
+        // Modifier simulate the durability enchantment behavior
         float modifier = 1;
 
         if (armor.containsEnchantment(Enchantment.DURABILITY)) {
             modifier /= armor.getEnchantmentLevel(Enchantment.DURABILITY) + 1;
         }
 
-        armor.setDurability((short) (durabilityDamage * modifier + armor.getDurability()));
+        float modifiedDurabilityDamage = durabilityDamage * modifier;
+        short maxDurabilityDamage = ModChecks.isCustomArmor(armor) ? ModChecks.getArmorFromItemStack(armor).getDurability() : armor.getType().getMaxDurability();
+        maxDurabilityDamage *= Axes.impactMaxDurabilityDamageModifier;
+
+        if (modifiedDurabilityDamage > maxDurabilityDamage) {
+            modifiedDurabilityDamage = maxDurabilityDamage;
+        }
+
+        armor.setDurability((short) (modifiedDurabilityDamage + armor.getDurability()));
     }
 
     protected void applyGreaterImpact() {

@@ -32,7 +32,8 @@ Version 1.4.00-dev
  + Added "Chinese (Taiwan)" localization files (zh_TW)
  + Added '/hardcore' and '/vampirism' commands for toggling these modes on or off.
  = Fixed /ptp telporting the target to the player, rather than the other way around.
- = Fixed Impact reducing durability of non-armor equipped blocks
+ = Fixed Impact reducing the durability of non-armor equipped blocks
+ = Fixed Impact reducing improperly the durability of armors (as a consequence it is now more effective)
  = Fixed multiple commands not working properly on offline players
  = Fixed /mmoedit not giving feedback when modifying another players stats
  = Fixed the guide usage string showing up every time /skillname was called
