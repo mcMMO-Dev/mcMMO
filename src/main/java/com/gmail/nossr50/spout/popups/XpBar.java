@@ -13,7 +13,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.huds.HudType;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public class XpBar {
     private SpoutPlayer spoutPlayer;
@@ -204,7 +204,7 @@ public class XpBar {
      * @param playerProfile The profile of the player whose XP bar should be updated
      */
     private void updateXpBarStandard(SkillType skillType, PlayerProfile playerProfile) {
-        xpIcon.setUrl(Misc.getCapitalized(skillType.toString()) + ".png");
+        xpIcon.setUrl(StringUtils.getCapitalized(skillType.toString()) + ".png");
 
         ((GenericTexture) xpBar).setUrl(getUrlBar(getXpInc(playerProfile.getSkillXpLevel(skillType), playerProfile.getXpToLevel(skillType), HudType.STANDARD)));
 
@@ -220,7 +220,7 @@ public class XpBar {
     private void updateXpBarRetro(SkillType skillType, PlayerProfile playerProfile) {
         Color color = getRetroColor(skillType);
 
-        xpIcon.setUrl(Misc.getCapitalized(skillType.toString()) + "_r.png");
+        xpIcon.setUrl(StringUtils.getCapitalized(skillType.toString()) + "_r.png");
 
         xpFill.setBottomColor(color);
         xpFill.setTopColor(color);

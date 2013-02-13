@@ -9,7 +9,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public class AddxpCommand implements CommandExecutor {
@@ -39,11 +39,11 @@ public class AddxpCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!Misc.isInt(args[1])) {
+            if (!StringUtils.isInt(args[1])) {
                 return false;
             }
 
-            xp = Integer.valueOf(args[1]);
+            xp = Integer.parseInt(args[1]);
             mcMMOPlayer = Users.getPlayer((Player) sender);
             profile = mcMMOPlayer.getProfile();
 
@@ -60,7 +60,7 @@ public class AddxpCommand implements CommandExecutor {
             }
             else {
                 mcMMOPlayer.applyXpGain(SkillType.getSkill(args[0]), xp);
-                sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(args[0])));
+                sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, StringUtils.getCapitalized(args[0])));
             }
 
             return true;
@@ -79,12 +79,12 @@ public class AddxpCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!Misc.isInt(args[2])) {
+            if (!StringUtils.isInt(args[2])) {
                 return false;
             }
 
             mcMMOPlayer = Users.getPlayer(args[0]);
-            xp = Integer.valueOf(args[2]);
+            xp = Integer.parseInt(args[2]);
 
             // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
             if (mcMMOPlayer == null) {
@@ -125,7 +125,7 @@ public class AddxpCommand implements CommandExecutor {
                 }
                 else {
                     mcMMOPlayer.applyXpGain(SkillType.getSkill(args[1]), xp);
-                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, Misc.getCapitalized(args[1])));
+                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, StringUtils.getCapitalized(args[1])));
                 }
             }
 
@@ -133,7 +133,7 @@ public class AddxpCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", Misc.getCapitalized(args[1]), args[0]));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", StringUtils.getCapitalized(args[1]), args[0]));
             }
 
             return true;

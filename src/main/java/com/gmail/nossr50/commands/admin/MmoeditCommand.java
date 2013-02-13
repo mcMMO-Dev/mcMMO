@@ -10,7 +10,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public class MmoeditCommand implements CommandExecutor {
@@ -39,11 +39,11 @@ public class MmoeditCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!Misc.isInt(args[1])) {
+            if (!StringUtils.isInt(args[1])) {
                 return false;
             }
 
-            newValue = Integer.valueOf(args[1]);
+            newValue = Integer.parseInt(args[1]);
             profile = Users.getPlayer((Player) sender).getProfile();
 
             if (allSkills) {
@@ -59,7 +59,7 @@ public class MmoeditCommand implements CommandExecutor {
             }
             else {
                 profile.modifySkill(SkillType.getSkill(args[0]), newValue);
-                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", Misc.getCapitalized(args[0]), newValue));
+                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", StringUtils.getCapitalized(args[0]), newValue));
             }
 
             return true;
@@ -78,11 +78,11 @@ public class MmoeditCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!Misc.isInt(args[2])) {
+            if (!StringUtils.isInt(args[2])) {
                 return false;
             }
 
-            newValue = Integer.valueOf(args[2]);
+            newValue = Integer.parseInt(args[2]);
             McMMOPlayer mcMMOPlayer = Users.getPlayer(args[0]);
 
             // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
@@ -125,7 +125,7 @@ public class MmoeditCommand implements CommandExecutor {
                 }
                 else {
                     profile.modifySkill(SkillType.getSkill(args[1]), newValue);
-                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1",  Misc.getCapitalized(args[1]), newValue));
+                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1",  StringUtils.getCapitalized(args[1]), newValue));
                 }
             }
 
@@ -133,7 +133,7 @@ public class MmoeditCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", Misc.getCapitalized(args[1]), args[0]));
+                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", StringUtils.getCapitalized(args[1]), args[0]));
             }
 
             return true;

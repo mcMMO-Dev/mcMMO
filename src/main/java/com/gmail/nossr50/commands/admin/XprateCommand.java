@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public class XprateCommand implements CommandExecutor {
     private static double originalRate = Config.getInstance().getExperienceGainsGlobalMultiplier();
@@ -34,7 +34,7 @@ public class XprateCommand implements CommandExecutor {
             return true;
 
         case 2:
-            if (!Misc.isInt(args[0])) {
+            if (!StringUtils.isInt(args[0])) {
                 return false;
             }
 
@@ -48,7 +48,7 @@ public class XprateCommand implements CommandExecutor {
             }
 
             mcMMO.p.setXPEventEnabled(Boolean.valueOf(args[1]));
-            int newXpRate = Misc.getInt(args[0]);
+            int newXpRate = Integer.parseInt(args[0]);
             Config.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
 
             if (mcMMO.p.isXPEventEnabled()) {

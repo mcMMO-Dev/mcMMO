@@ -44,6 +44,7 @@ import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public class PlayerListener implements Listener {
@@ -373,7 +374,7 @@ public class PlayerListener implements Listener {
 
             for (SkillType skill : SkillType.values()) {
                 String skillName = skill.toString().toLowerCase();
-                String localizedName = LocaleLoader.getString(Misc.getCapitalized(skillName) + ".SkillName").toLowerCase();
+                String localizedName = LocaleLoader.getString(StringUtils.getCapitalized(skillName) + ".SkillName").toLowerCase();
 
                 if (lowerCaseCommand.equals(localizedName)) {
                     event.setMessage(message.replace(command, skillName));

@@ -10,7 +10,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public class SkillresetCommand implements CommandExecutor {
@@ -72,7 +72,7 @@ public class SkillresetCommand implements CommandExecutor {
             }
             else {
                 profile.modifySkill(SkillType.getSkill(args[0]), 0);
-                sender.sendMessage(LocaleLoader.getString("Commands.Reset.Single", Misc.getCapitalized(args[0])));
+                sender.sendMessage(LocaleLoader.getString("Commands.Reset.Single", StringUtils.getCapitalized(args[0])));
             }
 
             return true;
@@ -152,7 +152,7 @@ public class SkillresetCommand implements CommandExecutor {
                 }
                 else {
                     profile.modifySkill(SkillType.getSkill(args[1]), 0);
-                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Reset.Single", Misc.getCapitalized(args[1])));
+                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Reset.Single", StringUtils.getCapitalized(args[1])));
                 }
             }
 
@@ -160,7 +160,7 @@ public class SkillresetCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", Misc.getCapitalized(args[1]), args[0]));
+                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", StringUtils.getCapitalized(args[1]), args[0]));
             }
 
             return true;

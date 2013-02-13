@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public class CallOfTheWildEventHandler {
     protected Player player;
@@ -30,7 +31,7 @@ public class CallOfTheWildEventHandler {
         if (player == null)
             return;
 
-        player.sendMessage(LocaleLoader.getString("Skills.NeedMore", Misc.prettyItemString(inHand.getTypeId())));
+        player.sendMessage(LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(inHand.getTypeId())));
     }
 
     protected boolean nearbyEntityExists() {

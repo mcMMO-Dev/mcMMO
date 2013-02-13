@@ -15,7 +15,7 @@ import org.bukkit.Bukkit;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public final class Leaderboard {
     private static HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
@@ -71,64 +71,64 @@ public final class Leaderboard {
 
                 players.add(p);
 
-                if (character.length > 1 && Misc.isInt(character[1])) {
-                    mining.add(new PlayerStat(p, Integer.valueOf(character[1])));
-                    powerLevel += Integer.valueOf(character[1]);
+                if (character.length > 1 && StringUtils.isInt(character[1])) {
+                    mining.add(new PlayerStat(p, Integer.parseInt(character[1])));
+                    powerLevel += Integer.parseInt(character[1]);
                 }
 
-                if (character.length > 5 && Misc.isInt(character[5])) {
-                    woodcutting.add(new PlayerStat(p, Integer.valueOf(character[5])));
-                    powerLevel += Integer.valueOf(character[5]);
+                if (character.length > 5 && StringUtils.isInt(character[5])) {
+                    woodcutting.add(new PlayerStat(p, Integer.parseInt(character[5])));
+                    powerLevel += Integer.parseInt(character[5]);
                 }
 
-                if (character.length > 7 && Misc.isInt(character[7])) {
-                    repair.add(new PlayerStat(p, Integer.valueOf(character[7])));
-                    powerLevel += Integer.valueOf(character[7]);
+                if (character.length > 7 && StringUtils.isInt(character[7])) {
+                    repair.add(new PlayerStat(p, Integer.parseInt(character[7])));
+                    powerLevel += Integer.parseInt(character[7]);
                 }
 
-                if (character.length > 8 && Misc.isInt(character[8])) {
-                    unarmed.add(new PlayerStat(p, Integer.valueOf(character[8])));
-                    powerLevel += Integer.valueOf(character[8]);
+                if (character.length > 8 && StringUtils.isInt(character[8])) {
+                    unarmed.add(new PlayerStat(p, Integer.parseInt(character[8])));
+                    powerLevel += Integer.parseInt(character[8]);
                 }
 
-                if (character.length > 9 && Misc.isInt(character[9])) {
-                    herbalism.add(new PlayerStat(p, Integer.valueOf(character[9])));
-                    powerLevel += Integer.valueOf(character[9]);
+                if (character.length > 9 && StringUtils.isInt(character[9])) {
+                    herbalism.add(new PlayerStat(p, Integer.parseInt(character[9])));
+                    powerLevel += Integer.parseInt(character[9]);
                 }
 
-                if (character.length > 10 && Misc.isInt(character[10])) {
-                    excavation.add(new PlayerStat(p, Integer.valueOf(character[10])));
-                    powerLevel += Integer.valueOf(character[10]);
+                if (character.length > 10 && StringUtils.isInt(character[10])) {
+                    excavation.add(new PlayerStat(p, Integer.parseInt(character[10])));
+                    powerLevel += Integer.parseInt(character[10]);
                 }
 
-                if (character.length > 11 && Misc.isInt(character[11])) {
-                    archery.add(new PlayerStat(p, Integer.valueOf(character[11])));
-                    powerLevel += Integer.valueOf(character[11]);
+                if (character.length > 11 && StringUtils.isInt(character[11])) {
+                    archery.add(new PlayerStat(p, Integer.parseInt(character[11])));
+                    powerLevel += Integer.parseInt(character[11]);
                 }
 
-                if (character.length > 12 && Misc.isInt(character[12])) {
-                    swords.add(new PlayerStat(p, Integer.valueOf(character[12])));
-                    powerLevel += Integer.valueOf(character[12]);
+                if (character.length > 12 && StringUtils.isInt(character[12])) {
+                    swords.add(new PlayerStat(p, Integer.parseInt(character[12])));
+                    powerLevel += Integer.parseInt(character[12]);
                 }
 
-                if (character.length > 13 && Misc.isInt(character[13])) {
-                    axes.add(new PlayerStat(p, Integer.valueOf(character[13])));
-                    powerLevel += Integer.valueOf(character[13]);
+                if (character.length > 13 && StringUtils.isInt(character[13])) {
+                    axes.add(new PlayerStat(p, Integer.parseInt(character[13])));
+                    powerLevel += Integer.parseInt(character[13]);
                 }
 
-                if (character.length > 14 && Misc.isInt(character[14])) {
-                    acrobatics.add(new PlayerStat(p, Integer.valueOf(character[14])));
-                    powerLevel += Integer.valueOf(character[14]);
+                if (character.length > 14 && StringUtils.isInt(character[14])) {
+                    acrobatics.add(new PlayerStat(p, Integer.parseInt(character[14])));
+                    powerLevel += Integer.parseInt(character[14]);
                 }
 
-                if (character.length > 24 && Misc.isInt(character[24])) {
-                    taming.add(new PlayerStat(p, Integer.valueOf(character[24])));
-                    powerLevel += Integer.valueOf(character[24]);
+                if (character.length > 24 && StringUtils.isInt(character[24])) {
+                    taming.add(new PlayerStat(p, Integer.parseInt(character[24])));
+                    powerLevel += Integer.parseInt(character[24]);
                 }
 
-                if (character.length > 34 && Misc.isInt(character[34])) {
-                    fishing.add(new PlayerStat(p, Integer.valueOf(character[34])));
-                    powerLevel += Integer.valueOf(character[34]);
+                if (character.length > 34 && StringUtils.isInt(character[34])) {
+                    fishing.add(new PlayerStat(p, Integer.parseInt(character[34])));
+                    powerLevel += Integer.parseInt(character[34]);
                 }
 
                 powerLevels.add(new PlayerStat(p, powerLevel));
@@ -355,7 +355,7 @@ public final class Leaderboard {
                 String[] splitLine = line.split(":");
 
                 if (splitLine.length > 37) {
-                    if (currentTime - (Misc.getLong(line.split(":")[37]) * 1000) <= purgeTime) {
+                    if (currentTime - (StringUtils.getLong(line.split(":")[37]) * 1000) <= purgeTime) {
                         writer.append(line).append("\r\n");
                     }
                     else {

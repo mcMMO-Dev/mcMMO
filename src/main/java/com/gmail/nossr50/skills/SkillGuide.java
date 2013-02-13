@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public final class SkillGuide {
     private SkillGuide() {}
@@ -55,7 +55,7 @@ public final class SkillGuide {
 
     public static boolean grabGuidePageForSkill(SkillType skilltype, Player player, String[] args) {
         String skillName = skilltype.toString();
-        String capitalized = Misc.getCapitalized(skillName);
+        String capitalized = StringUtils.getCapitalized(skillName);
         String localized = SkillTools.localizeSkillName(skilltype);
         player.sendMessage(LocaleLoader.getString("Guides.Available", localized, localized.toLowerCase()));
 
@@ -82,19 +82,19 @@ public final class SkillGuide {
         case 2:
             int totalPages = SkillGuide.getTotalPageNumber(address);
 
-            if (!Misc.isInt(args[1])) {
+            if (!StringUtils.isInt(args[1])) {
                 player.sendMessage(LocaleLoader.getString("Guides.Page.Invalid"));
                 return true;
             }
 
-            if (Misc.getInt(args[1]) > totalPages) {
+            if (Integer.parseInt(args[1]) > totalPages) {
                 player.sendMessage(LocaleLoader.getString("Guides.Page.OutOfRange", totalPages));
                 return true;
             }
 
             SkillGuide.clearChat(player);
 
-            for (String target : SkillGuide.grabPageContents(localized, address, Misc.getInt(args[1]))) {
+            for (String target : SkillGuide.grabPageContents(localized, address, Integer.parseInt(args[1]))) {
                 player.sendMessage(target);
             }
 

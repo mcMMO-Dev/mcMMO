@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public class VampirismCommand implements CommandExecutor {
 
@@ -57,7 +57,7 @@ public class VampirismCommand implements CommandExecutor {
                 return true;
             }
 
-            if (!Misc.isDouble(args[0])) {
+            if (!StringUtils.isDouble(args[0])) {
                 return false;
             }
 
@@ -67,7 +67,7 @@ public class VampirismCommand implements CommandExecutor {
             }
 
             DecimalFormat percent = new DecimalFormat("##0.00%");
-            double newPercent = Misc.getDouble(args[0]);
+            double newPercent = Double.parseDouble(args[0]);
 
             Config.getInstance().setHardcoreVampirismStatLeechPercentage(newPercent);
             sender.sendMessage(LocaleLoader.getString("Vampirism.PercentageChanged", percent.format(newPercent / 100D)));

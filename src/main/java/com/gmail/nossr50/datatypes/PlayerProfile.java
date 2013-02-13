@@ -17,6 +17,7 @@ import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.huds.HudType;
 import com.gmail.nossr50.spout.huds.SpoutHud;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public class PlayerProfile {
     private String playerName;
@@ -205,49 +206,49 @@ public class PlayerProfile {
                     continue;
                 }
 
-                if (character.length > 1 && Misc.isInt(character[1]))
+                if (character.length > 1 && StringUtils.isInt(character[1]))
                     skills.put(SkillType.MINING, Integer.valueOf(character[1]));
-                if (character.length > 4 && Misc.isInt(character[4]))
+                if (character.length > 4 && StringUtils.isInt(character[4]))
                     skillsXp.put(SkillType.MINING, Integer.valueOf(character[4]));
-                if (character.length > 5 && Misc.isInt(character[5]))
+                if (character.length > 5 && StringUtils.isInt(character[5]))
                     skills.put(SkillType.WOODCUTTING, Integer.valueOf(character[5]));
-                if (character.length > 6 && Misc.isInt(character[6]))
+                if (character.length > 6 && StringUtils.isInt(character[6]))
                     skillsXp.put(SkillType.WOODCUTTING, Integer.valueOf(character[6]));
-                if (character.length > 7 && Misc.isInt(character[7]))
+                if (character.length > 7 && StringUtils.isInt(character[7]))
                     skills.put(SkillType.REPAIR, Integer.valueOf(character[7]));
-                if (character.length > 8 && Misc.isInt(character[8]))
+                if (character.length > 8 && StringUtils.isInt(character[8]))
                     skills.put(SkillType.UNARMED,  Integer.valueOf(character[8]));
-                if (character.length > 9 && Misc.isInt(character[9]))
+                if (character.length > 9 && StringUtils.isInt(character[9]))
                     skills.put(SkillType.HERBALISM, Integer.valueOf(character[9]));
-                if (character.length > 10 && Misc.isInt(character[10]))
+                if (character.length > 10 && StringUtils.isInt(character[10]))
                     skills.put(SkillType.EXCAVATION, Integer.valueOf(character[10]));
-                if (character.length > 11 && Misc.isInt(character[11]))
+                if (character.length > 11 && StringUtils.isInt(character[11]))
                     skills.put(SkillType.ARCHERY, Integer.valueOf(character[11]));
-                if (character.length > 12 && Misc.isInt(character[12]))
+                if (character.length > 12 && StringUtils.isInt(character[12]))
                     skills.put(SkillType.SWORDS, Integer.valueOf(character[12]));
-                if (character.length > 13 && Misc.isInt(character[13]))
+                if (character.length > 13 && StringUtils.isInt(character[13]))
                     skills.put(SkillType.AXES, Integer.valueOf(character[13]));
-                if (character.length > 14 && Misc.isInt(character[14]))
+                if (character.length > 14 && StringUtils.isInt(character[14]))
                     skills.put(SkillType.ACROBATICS, Integer.valueOf(character[14]));
-                if (character.length > 15 && Misc.isInt(character[15]))
+                if (character.length > 15 && StringUtils.isInt(character[15]))
                     skillsXp.put(SkillType.REPAIR, Integer.valueOf(character[15]));
-                if (character.length > 16 && Misc.isInt(character[16]))
+                if (character.length > 16 && StringUtils.isInt(character[16]))
                     skillsXp.put(SkillType.UNARMED, Integer.valueOf(character[16]));
-                if (character.length > 17 && Misc.isInt(character[17]))
+                if (character.length > 17 && StringUtils.isInt(character[17]))
                     skillsXp.put(SkillType.HERBALISM, Integer.valueOf(character[17]));
-                if (character.length > 18 && Misc.isInt(character[18]))
+                if (character.length > 18 && StringUtils.isInt(character[18]))
                     skillsXp.put(SkillType.EXCAVATION, Integer.valueOf(character[18]));
-                if (character.length > 19 && Misc.isInt(character[19]))
+                if (character.length > 19 && StringUtils.isInt(character[19]))
                     skillsXp.put(SkillType.ARCHERY, Integer.valueOf(character[19]));
-                if (character.length > 20 && Misc.isInt(character[20]))
+                if (character.length > 20 && StringUtils.isInt(character[20]))
                     skillsXp.put(SkillType.SWORDS, Integer.valueOf(character[20]));
-                if (character.length > 21 && Misc.isInt(character[21]))
+                if (character.length > 21 && StringUtils.isInt(character[21]))
                     skillsXp.put(SkillType.AXES, Integer.valueOf(character[21]));
-                if (character.length > 22 && Misc.isInt(character[22]))
+                if (character.length > 22 && StringUtils.isInt(character[22]))
                     skillsXp.put(SkillType.ACROBATICS, Integer.valueOf(character[22]));
-                if (character.length > 24 && Misc.isInt(character[24]))
+                if (character.length > 24 && StringUtils.isInt(character[24]))
                     skills.put(SkillType.TAMING, Integer.valueOf(character[24]));
-                if (character.length > 25 && Misc.isInt(character[25]))
+                if (character.length > 25 && StringUtils.isInt(character[25]))
                     skillsXp.put(SkillType.TAMING, Integer.valueOf(character[25]));
                 if (character.length > 26)
                     skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(character[26]));
@@ -384,18 +385,18 @@ public class PlayerProfile {
                         writer.append(skillsXp.get(SkillType.TAMING)).append(":");
                         // Need to store the DATS of abilities nao
                         // Berserk, Gigadrillbreaker, Tree Feller, Green Terra, Serrated Strikes, Skull Splitter, Super Breaker
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.BERSERK))).append(":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER))).append(":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.TREE_FELLER))).append(":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.GREEN_TERRA))).append(":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SERRATED_STRIKES))).append(":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SKULL_SPLIITER))).append(":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.SUPER_BREAKER))).append(":");
+                        writer.append(skillsDATS.get(AbilityType.BERSERK)).append(":");
+                        writer.append(skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER)).append(":");
+                        writer.append(skillsDATS.get(AbilityType.TREE_FELLER)).append(":");
+                        writer.append(skillsDATS.get(AbilityType.GREEN_TERRA)).append(":");
+                        writer.append(skillsDATS.get(AbilityType.SERRATED_STRIKES)).append(":");
+                        writer.append(skillsDATS.get(AbilityType.SKULL_SPLIITER)).append(":");
+                        writer.append(skillsDATS.get(AbilityType.SUPER_BREAKER)).append(":");
                         writer.append(hudType.toString()).append(":");
                         writer.append(skills.get(SkillType.FISHING)).append(":");
                         writer.append(skillsXp.get(SkillType.FISHING)).append(":");
-                        writer.append(String.valueOf(skillsDATS.get(AbilityType.BLAST_MINING))).append(":");
-                        writer.append(String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)).append(":");
+                        writer.append(skillsDATS.get(AbilityType.BLAST_MINING)).append(":");
+                        writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
                         writer.append("\r\n");
                     }
                 }

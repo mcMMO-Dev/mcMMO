@@ -46,7 +46,7 @@ import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingCommand;
 import com.gmail.nossr50.spout.commands.MchudCommand;
 import com.gmail.nossr50.spout.commands.XplockCommand;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public final class CommandRegistrationHelper {
     private CommandRegistrationHelper() {};
@@ -55,12 +55,12 @@ public final class CommandRegistrationHelper {
     public static void registerSkillCommands() {
         for (SkillType skill : SkillType.values()) {
             String commandName = skill.toString().toLowerCase();
-            String localizedName = LocaleLoader.getString(Misc.getCapitalized(commandName) + ".SkillName").toLowerCase();
+            String localizedName = LocaleLoader.getString(StringUtils.getCapitalized(commandName) + ".SkillName").toLowerCase();
 
             PluginCommand command;
 
             command = mcMMO.p.getCommand(commandName);
-            command.setDescription(LocaleLoader.getString("Commands.Description.Skill", Misc.getCapitalized(localizedName)));
+            command.setDescription(LocaleLoader.getString("Commands.Description.Skill", StringUtils.getCapitalized(localizedName)));
             command.setPermission("mcmmo.commands." + commandName);
             command.setPermissionMessage(permissionsMessage);
             command.setUsage(LocaleLoader.getString("Commands.Usage.0", localizedName));

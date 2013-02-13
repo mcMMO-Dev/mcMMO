@@ -7,6 +7,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public class SQLConversionTask implements Runnable {
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
@@ -175,34 +176,34 @@ public class SQLConversionTask implements Runnable {
                     Database.write("UPDATE "
                             + tablePrefix
                             + "skills SET "
-                            + "  taming = taming+" + Misc.getInt(taming)
-                            + ", mining = mining+" + Misc.getInt(mining)
-                            + ", repair = repair+" + Misc.getInt(repair)
-                            + ", woodcutting = woodcutting+" + Misc.getInt(woodcutting)
-                            + ", unarmed = unarmed+" + Misc.getInt(unarmed)
-                            + ", herbalism = herbalism+" + Misc.getInt(herbalism)
-                            + ", excavation = excavation+" + Misc.getInt(excavation)
-                            + ", archery = archery+" + Misc.getInt(archery)
-                            + ", swords = swords+" + Misc.getInt(swords)
-                            + ", axes = axes+" + Misc.getInt(axes)
-                            + ", acrobatics = acrobatics+" + Misc.getInt(acrobatics)
-                            + ", fishing = fishing+" + Misc.getInt(fishing)
+                            + "  taming = taming+" + StringUtils.getInt(taming)
+                            + ", mining = mining+" + StringUtils.getInt(mining)
+                            + ", repair = repair+" + StringUtils.getInt(repair)
+                            + ", woodcutting = woodcutting+" + StringUtils.getInt(woodcutting)
+                            + ", unarmed = unarmed+" + StringUtils.getInt(unarmed)
+                            + ", herbalism = herbalism+" + StringUtils.getInt(herbalism)
+                            + ", excavation = excavation+" + StringUtils.getInt(excavation)
+                            + ", archery = archery+" + StringUtils.getInt(archery)
+                            + ", swords = swords+" + StringUtils.getInt(swords)
+                            + ", axes = axes+" + StringUtils.getInt(axes)
+                            + ", acrobatics = acrobatics+" + StringUtils.getInt(acrobatics)
+                            + ", fishing = fishing+" + StringUtils.getInt(fishing)
                             + " WHERE user_id = " + id);
                     Database.write("UPDATE "
                             + tablePrefix
                             + "experience SET "
-                            + "  taming = " + Misc.getInt(tamingXP)
-                            + ", mining = " + Misc.getInt(miningXP)
-                            + ", repair = " + Misc.getInt(repairXP)
-                            + ", woodcutting = " + Misc.getInt(woodCuttingXP)
-                            + ", unarmed = " + Misc.getInt(unarmedXP)
-                            + ", herbalism = " + Misc.getInt(herbalismXP)
-                            + ", excavation = " + Misc.getInt(excavationXP)
-                            + ", archery = " + Misc.getInt(archeryXP)
-                            + ", swords = " + Misc.getInt(swordsXP)
-                            + ", axes = " + Misc.getInt(axesXP)
-                            + ", acrobatics = " + Misc.getInt(acrobaticsXP)
-                            + ", fishing = " + Misc.getInt(fishingXP)
+                            + "  taming = " + StringUtils.getInt(tamingXP)
+                            + ", mining = " + StringUtils.getInt(miningXP)
+                            + ", repair = " + StringUtils.getInt(repairXP)
+                            + ", woodcutting = " + StringUtils.getInt(woodCuttingXP)
+                            + ", unarmed = " + StringUtils.getInt(unarmedXP)
+                            + ", herbalism = " + StringUtils.getInt(herbalismXP)
+                            + ", excavation = " + StringUtils.getInt(excavationXP)
+                            + ", archery = " + StringUtils.getInt(archeryXP)
+                            + ", swords = " + StringUtils.getInt(swordsXP)
+                            + ", axes = " + StringUtils.getInt(axesXP)
+                            + ", acrobatics = " + StringUtils.getInt(acrobaticsXP)
+                            + ", fishing = " + StringUtils.getInt(fishingXP)
                             + " WHERE user_id = " + id);
                 }
                 else {
@@ -237,34 +238,34 @@ public class SQLConversionTask implements Runnable {
                     Database.write("UPDATE "
                             + tablePrefix
                             + "skills SET "
-                            + "  taming = taming+" + Misc.getInt(taming)
-                            + ", mining = mining+" + Misc.getInt(mining)
-                            + ", repair = repair+" + Misc.getInt(repair)
-                            + ", woodcutting = woodcutting+" + Misc.getInt(woodcutting)
-                            + ", unarmed = unarmed+" + Misc.getInt(unarmed)
-                            + ", herbalism = herbalism+" + Misc.getInt(herbalism)
-                            + ", excavation = excavation+" + Misc.getInt(excavation)
-                            + ", archery = archery+" + Misc.getInt(archery)
-                            + ", swords = swords+" + Misc.getInt(swords)
-                            + ", axes = axes+" + Misc.getInt(axes)
-                            + ", acrobatics = acrobatics+" + Misc.getInt(acrobatics)
-                            + ", fishing = fishing+" + Misc.getInt(fishing)
+                            + "  taming = taming+" + StringUtils.getInt(taming)
+                            + ", mining = mining+" + StringUtils.getInt(mining)
+                            + ", repair = repair+" + StringUtils.getInt(repair)
+                            + ", woodcutting = woodcutting+" + StringUtils.getInt(woodcutting)
+                            + ", unarmed = unarmed+" + StringUtils.getInt(unarmed)
+                            + ", herbalism = herbalism+" + StringUtils.getInt(herbalism)
+                            + ", excavation = excavation+" + StringUtils.getInt(excavation)
+                            + ", archery = archery+" + StringUtils.getInt(archery)
+                            + ", swords = swords+" + StringUtils.getInt(swords)
+                            + ", axes = axes+" + StringUtils.getInt(axes)
+                            + ", acrobatics = acrobatics+" + StringUtils.getInt(acrobatics)
+                            + ", fishing = fishing+" + StringUtils.getInt(fishing)
                             + " WHERE user_id = " + id);
                     Database.write("UPDATE "
                             + tablePrefix
                             + "experience SET "
-                            + "  taming = " + Misc.getInt(tamingXP)
-                            + ", mining = " + Misc.getInt(miningXP)
-                            + ", repair = " + Misc.getInt(repairXP)
-                            + ", woodcutting = " + Misc.getInt(woodCuttingXP)
-                            + ", unarmed = " + Misc.getInt(unarmedXP)
-                            + ", herbalism = " + Misc.getInt(herbalismXP)
-                            + ", excavation = " + Misc.getInt(excavationXP)
-                            + ", archery = " + Misc.getInt(archeryXP)
-                            + ", swords = " + Misc.getInt(swordsXP)
-                            + ", axes = " + Misc.getInt(axesXP)
-                            + ", acrobatics = " + Misc.getInt(acrobaticsXP)
-                            + ", fishing = " + Misc.getInt(fishingXP)
+                            + "  taming = " + StringUtils.getInt(tamingXP)
+                            + ", mining = " + StringUtils.getInt(miningXP)
+                            + ", repair = " + StringUtils.getInt(repairXP)
+                            + ", woodcutting = " + StringUtils.getInt(woodCuttingXP)
+                            + ", unarmed = " + StringUtils.getInt(unarmedXP)
+                            + ", herbalism = " + StringUtils.getInt(herbalismXP)
+                            + ", excavation = " + StringUtils.getInt(excavationXP)
+                            + ", archery = " + StringUtils.getInt(archeryXP)
+                            + ", swords = " + StringUtils.getInt(swordsXP)
+                            + ", axes = " + StringUtils.getInt(axesXP)
+                            + ", acrobatics = " + StringUtils.getInt(acrobaticsXP)
+                            + ", fishing = " + StringUtils.getInt(fishingXP)
                             + " WHERE user_id = " + id);
                 }
             }

@@ -14,6 +14,7 @@ import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public abstract class SkillCommand implements CommandExecutor {
@@ -31,7 +32,7 @@ public abstract class SkillCommand implements CommandExecutor {
 
     public SkillCommand(SkillType skill) {
         this.skill = skill;
-        this.skillString = Misc.getCapitalized(skill.toString());
+        this.skillString = StringUtils.getCapitalized(skill.toString());
     }
 
     @Override

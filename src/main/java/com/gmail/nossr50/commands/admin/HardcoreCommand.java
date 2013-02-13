@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public class HardcoreCommand implements CommandExecutor{
 
@@ -52,7 +52,7 @@ public class HardcoreCommand implements CommandExecutor{
                 return true;
             }
 
-            if (!Misc.isDouble(args[0])) {
+            if (!StringUtils.isDouble(args[0])) {
                 return false;
             }
 
@@ -62,7 +62,7 @@ public class HardcoreCommand implements CommandExecutor{
             }
 
             DecimalFormat percent = new DecimalFormat("##0.00%");
-            double newPercent = Misc.getDouble(args[0]);
+            double newPercent = Double.parseDouble(args[0]);
 
             Config.getInstance().setHardcoreDeathStatPenaltyPercentage(newPercent);
             sender.sendMessage(LocaleLoader.getString("Hardcore.PercentageChanged", percent.format(newPercent / 100D)));

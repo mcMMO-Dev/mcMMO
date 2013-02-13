@@ -19,6 +19,7 @@ import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public class SkillTools {
@@ -235,7 +236,7 @@ public class SkillTools {
                 }
             }
 
-            String capitalized = Misc.getCapitalized(skillType.toString());
+            String capitalized = StringUtils.getCapitalized(skillType.toString());
 
             /* Spout Stuff */
             if (mcMMO.spoutEnabled) {
@@ -285,7 +286,7 @@ public class SkillTools {
 
     public static boolean isLocalizedSkill(String skillName) {
         for (SkillType skill : SkillType.values()) {
-            if (skillName.equalsIgnoreCase(LocaleLoader.getString(Misc.getCapitalized(skill.toString() + ".SkillName")))) {
+            if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString() + ".SkillName")))) {
                 return true;
             }
         }
@@ -295,7 +296,7 @@ public class SkillTools {
 
     public static String translateLocalizedSkill(String skillName) {
         for (SkillType skill : SkillType.values()) {
-            if (skillName.equalsIgnoreCase(LocaleLoader.getString(Misc.getCapitalized(skill.toString() + ".SkillName")))) {
+            if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString() + ".SkillName")))) {
                 return skill.toString();
             }
         }
@@ -304,7 +305,7 @@ public class SkillTools {
     }
 
     public static String localizeSkillName(SkillType skill) {
-        return Misc.getCapitalized(LocaleLoader.getString(Misc.getCapitalized(skill.toString()) + ".SkillName"));
+        return StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"));
     }
 
     /**

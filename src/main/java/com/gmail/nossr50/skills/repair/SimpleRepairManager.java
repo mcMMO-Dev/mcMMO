@@ -14,8 +14,8 @@ import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.events.skills.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
 
 public class SimpleRepairManager implements RepairManager {
     private HashMap<Integer, Repairable> repairables;
@@ -76,7 +76,7 @@ public class SimpleRepairManager implements RepairManager {
 
         // Level check
         if (skillLevel < repairable.getMinimumLevel()) {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.Adept", String.valueOf(repairable.getMinimumLevel()), Misc.prettyItemString(item.getTypeId())));
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.Adept", String.valueOf(repairable.getMinimumLevel()), StringUtils.getPrettyItemString(item.getTypeId())));
             return;
         }
 
@@ -84,7 +84,7 @@ public class SimpleRepairManager implements RepairManager {
 
         // Check if they have the proper material to repair with
         if (!inventory.contains(repairable.getRepairMaterialId())) {
-            String message = LocaleLoader.getString("Skills.NeedMore", Misc.prettyItemString(repairable.getRepairMaterialId()));
+            String message = LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(repairable.getRepairMaterialId()));
             if (repairable.getRepairMaterialMetadata() != (byte) -1) {
                 // TODO: Do something nicer than append the metadata as a :# ?
                 if (findInInventory(inventory, repairable.getRepairMaterialId(), repairable.getRepairMaterialMetadata()) == -1) {

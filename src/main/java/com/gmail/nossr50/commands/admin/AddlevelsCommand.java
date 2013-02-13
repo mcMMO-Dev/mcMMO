@@ -10,7 +10,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public class AddlevelsCommand implements CommandExecutor{
@@ -39,11 +39,11 @@ public class AddlevelsCommand implements CommandExecutor{
                 return true;
             }
 
-            if (!Misc.isInt(args[1])) {
+            if (!StringUtils.isInt(args[1])) {
                 return false;
             }
 
-            levels = Integer.valueOf(args[1]);
+            levels = Integer.parseInt(args[1]);
             profile = Users.getPlayer((Player) sender).getProfile();
 
             if (allSkills) {
@@ -63,7 +63,7 @@ public class AddlevelsCommand implements CommandExecutor{
                 sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", levels));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", levels, Misc.getCapitalized(args[0])));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", levels, StringUtils.getCapitalized(args[0])));
             }
 
             return true;
@@ -82,12 +82,12 @@ public class AddlevelsCommand implements CommandExecutor{
                 return true;
             }
 
-            if (!Misc.isInt(args[2])) {
+            if (!StringUtils.isInt(args[2])) {
                 return false;
             }
 
             McMMOPlayer mcMMOPlayer = Users.getPlayer(args[0]);
-            levels = Integer.valueOf(args[2]);
+            levels = Integer.parseInt(args[2]);
 
             // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
             if (mcMMOPlayer == null) {
@@ -129,7 +129,7 @@ public class AddlevelsCommand implements CommandExecutor{
                 }
                 else {
                     profile.addLevels(SkillType.getSkill(args[1]), levels);
-                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", levels, Misc.getCapitalized(args[1])));
+                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", levels, StringUtils.getCapitalized(args[1])));
                 }
             }
 
@@ -137,7 +137,7 @@ public class AddlevelsCommand implements CommandExecutor{
                 sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", Misc.getCapitalized(args[1]), args[0]));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", StringUtils.getCapitalized(args[1]), args[0]));
             }
 
             return true;

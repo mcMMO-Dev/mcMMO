@@ -25,7 +25,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public class SpoutTools {
@@ -147,8 +147,8 @@ public class SpoutTools {
             }
 
             String skillTypeString = skillType.toString();
-            String standardFileName = Misc.getCapitalized(skillTypeString)+".png";
-            String retroFileName = Misc.getCapitalized(skillTypeString)+"_r.png";
+            String standardFileName = StringUtils.getCapitalized(skillTypeString)+".png";
+            String retroFileName = StringUtils.getCapitalized(skillTypeString)+"_r.png";
 
             writeFile(standardFileName, hudStandardDirectory);
             writeFile(retroFileName, hudRetroDirectory);
@@ -210,8 +210,8 @@ public class SpoutTools {
 
             String skillTypeString = skillType.toString();
 
-            files.add(new File(hudStandardDirectory + Misc.getCapitalized(skillTypeString) + ".png"));
-            files.add(new File(hudRetroDirectory + Misc.getCapitalized(skillTypeString) + "_r.png"));
+            files.add(new File(hudStandardDirectory + StringUtils.getCapitalized(skillTypeString) + ".png"));
+            files.add(new File(hudRetroDirectory + StringUtils.getCapitalized(skillTypeString) + "_r.png"));
         }
 
         // Blank icons
