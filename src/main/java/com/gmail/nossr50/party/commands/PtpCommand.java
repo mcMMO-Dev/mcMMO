@@ -84,7 +84,7 @@ public class PtpCommand implements CommandExecutor {
         }
 
         if (!mcMMOTarget.getPtpConfirmRequired()) {
-            return handlePartyTeleportEvent();
+            return handlePartyTeleportEvent(player, target);
         }
 
         mcMMOTarget.setPtpRequest(player);
@@ -111,9 +111,9 @@ public class PtpCommand implements CommandExecutor {
             return true;
         }
 
-        Player target = mcMMOPlayer.getPtpRequest();
+        Player requestTarget = mcMMOPlayer.getPtpRequest();
 
-        if (!canTeleport(target.getName())) {
+        if (!canTeleport(requestTarget.getName())) {
             return true;
         }
 
@@ -121,17 +121,17 @@ public class PtpCommand implements CommandExecutor {
         if (Config.getInstance().getPTPCommandWorldPermissions()) {
             String perm = "mcmmo.commands.ptp.world.";
 
-            if (!Permissions.hasDynamicPermission(target, perm + "all", "op")) {
-                if (!Permissions.hasDynamicPermission(target, perm + target.getWorld().getName(), "op")) {
+            if (!Permissions.hasDynamicPermission(requestTarget, perm + "all", "op")) {
+                if (!Permissions.hasDynamicPermission(requestTarget, perm + requestTarget.getWorld().getName(), "op")) {
                     return true;
                 }
-                else if (target.getWorld() != player.getWorld() && !Permissions.hasDynamicPermission(target, perm + player.getWorld().getName(), "op")) {
+                else if (requestTarget.getWorld() != player.getWorld() && !Permissions.hasDynamicPermission(requestTarget, perm + player.getWorld().getName(), "op")) {
                     return true;
                 }
             }
         }
 
-        return handlePartyTeleportEvent();
+        return handlePartyTeleportEvent(player, requestTarget);
     }
 
     private boolean acceptAnyTeleportRequest() {
@@ -196,7 +196,9 @@ public class PtpCommand implements CommandExecutor {
         return true;
     }
 
-    private boolean handlePartyTeleportEvent() {
+    private boolean handlePartyTeleportEvent(Player player, Player target) {
+        McMMOPlayer mcMMOPlayer= Users.getPlayer(player);
+
         McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, mcMMOPlayer.getParty().getName());
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
@@ -207,7 +209,7 @@ public class PtpCommand implements CommandExecutor {
         player.teleport(target);
         player.sendMessage(LocaleLoader.getString("Party.Teleport.Player", player.getName()));
         target.sendMessage(LocaleLoader.getString("Party.Teleport.Target", target.getName()));
-        playerProfile.setRecentlyHurt(System.currentTimeMillis());
+        mcMMOPlayer.getProfile().setRecentlyHurt(System.currentTimeMillis());
         return true;
     }
 }
