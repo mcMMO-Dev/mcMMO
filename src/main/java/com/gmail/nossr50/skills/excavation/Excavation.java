@@ -109,7 +109,7 @@ public class Excavation {
 
             for (ExcavationTreasure treasure : treasures) {
                 if (mcMMOPlayer.getProfile().getSkillLevel(SkillType.EXCAVATION) >= treasure.getDropLevel()) {
-                    int activationChance = Misc.calculateActivationChance(Permissions.luckyExcavation(player));
+                    int activationChance = SkillTools.calculateActivationChance(Permissions.luckyExcavation(player));
 
                     if (Misc.getRandom().nextDouble() * activationChance <= treasure.getDropChance()) {
                         xp += treasure.getXp();

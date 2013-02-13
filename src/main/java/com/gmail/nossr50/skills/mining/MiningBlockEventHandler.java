@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 
 public class MiningBlockEventHandler {
     private MiningManager manager;
@@ -24,7 +24,7 @@ public class MiningBlockEventHandler {
     }
 
     private void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Mining.doubleDropsMaxLevel);
+        this.skillModifier = SkillTools.skillCheck(manager.getSkillLevel(), Mining.doubleDropsMaxLevel);
     }
 
     /**

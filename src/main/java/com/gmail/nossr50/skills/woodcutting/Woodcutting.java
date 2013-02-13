@@ -15,6 +15,7 @@ import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.mods.datatypes.CustomBlock;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -132,7 +133,7 @@ public final class Woodcutting {
         double configDoubleDropChance = ADVANCED_CONFIG.getWoodcuttingDoubleDropChance();
         int configDoubleDropMaxLevel = ADVANCED_CONFIG.getWoodcuttingDoubleDropMaxLevel();
         int probability = (int) ((configDoubleDropChance / configDoubleDropMaxLevel) * Users.getPlayer(player).getProfile().getSkillLevel(SkillType.WOODCUTTING));
-        int activationChance = Misc.calculateActivationChance(Permissions.luckyWoodcutting(player));
+        int activationChance = SkillTools.calculateActivationChance(Permissions.luckyWoodcutting(player));
 
         if (probability > configDoubleDropChance) {
             probability = (int) configDoubleDropChance;

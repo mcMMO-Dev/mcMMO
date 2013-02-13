@@ -7,7 +7,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 
 public class GoreEventHandler {
     private TamingManager manager;
@@ -23,7 +23,7 @@ public class GoreEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Taming.goreMaxBonusLevel);
+        this.skillModifier = SkillTools.skillCheck(manager.getSkillLevel(), Taming.goreMaxBonusLevel);
     }
 
     protected void modifyEventDamage() {

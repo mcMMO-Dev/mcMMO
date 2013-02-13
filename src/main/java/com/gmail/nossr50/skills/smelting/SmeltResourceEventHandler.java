@@ -7,8 +7,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
 public class SmeltResourceEventHandler {
@@ -23,7 +23,7 @@ public class SmeltResourceEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Smelting.secondSmeltMaxLevel);
+        this.skillModifier = SkillTools.skillCheck(manager.getSkillLevel(), Smelting.secondSmeltMaxLevel);
     }
 
     protected void handleXPGain() {

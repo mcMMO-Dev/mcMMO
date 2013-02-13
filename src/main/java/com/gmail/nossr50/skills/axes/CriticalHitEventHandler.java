@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 
 public class CriticalHitEventHandler {
     private AxeManager manager;
@@ -42,6 +42,6 @@ public class CriticalHitEventHandler {
     }
 
     private void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Axes.criticalHitMaxBonusLevel);
+        this.skillModifier = SkillTools.skillCheck(manager.getSkillLevel(), Axes.criticalHitMaxBonusLevel);
     }
 }

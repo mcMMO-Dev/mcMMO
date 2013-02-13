@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.CombatTools;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 
 public class CounterAttackEventHandler {
     private SwordsManager manager;
@@ -20,7 +20,7 @@ public class CounterAttackEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Swords.counterAttackMaxBonusLevel);
+        this.skillModifier = SkillTools.skillCheck(manager.getSkillLevel(), Swords.counterAttackMaxBonusLevel);
     }
 
     protected void dealDamage() {

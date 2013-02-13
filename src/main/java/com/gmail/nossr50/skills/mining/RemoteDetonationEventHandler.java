@@ -55,7 +55,7 @@ public class RemoteDetonationEventHandler {
     protected void sendMessages() {
         Player player = manager.getMcMMOPlayer().getPlayer();
 
-        Misc.sendSkillMessage(player, AbilityType.BLAST_MINING.getAbilityPlayer(player));
+        SkillTools.sendSkillMessage(player, AbilityType.BLAST_MINING.getAbilityPlayer(player));
         player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
     }
 

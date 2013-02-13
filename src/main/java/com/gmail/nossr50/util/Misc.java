@@ -33,9 +33,6 @@ public final class Misc {
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
-    public static final int NORMAL_SKILL_ACTIVATION_CHANCE = 100;
-    public static final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;
-
     //Sound Pitches & Volumes from CB
     public static final float ANVIL_USE_PITCH = 0.3F; // Not in CB directly, I went off the place sound values
     public static final float ANVIL_USE_VOLUME = 1.0F; // Not in CB directly, I went off the place sound values
@@ -45,20 +42,6 @@ public final class Misc {
     public static final float POP_VOLUME = 0.2F;
 
     private Misc() {};
-
-    /**
-     * Calculate activation chance for a skill.
-     *
-     * @param isLucky true if the player has the appropriate "lucky" perk, false otherwise
-     * @return the activation chance
-     */
-    public static int calculateActivationChance(boolean isLucky) {
-        if (isLucky) {
-            return LUCKY_SKILL_ACTIVATION_CHANCE;
-        }
-
-        return NORMAL_SKILL_ACTIVATION_CHANCE;
-    }
 
     public static boolean isFriendlyPet(Player attacker, Tameable pet) {
         if (pet.isTamed()) {
@@ -90,14 +73,6 @@ public final class Misc {
         }
 
         return false;
-    }
-
-    public static void sendSkillMessage(Player player, String message) {
-        for (Player otherPlayer : player.getWorld().getPlayers()) {
-            if (otherPlayer != player && Misc.isNear(player.getLocation(), otherPlayer.getLocation(), Misc.SKILL_MESSAGE_MAX_SENDING_DISTANCE)) {
-                otherPlayer.sendMessage(message);
-            }
-        }
     }
 
     /**
@@ -267,22 +242,6 @@ public final class Misc {
         cloned.setAmount(newItem.getItemStack().getAmount());
 
         newItem.setItemStack(cloned);
-    }
-
-    /**
-     * Check if a skill level is higher than the max bonus level of the ability.
-     *
-     * @param skillLevel Skill level to check
-     * @param maxLevel Max level of the ability
-     * @return whichever value is lower
-     */
-    public static int skillCheck(int skillLevel, int maxLevel) {
-        //TODO: Could we just use Math.min(skillLevel, maxLevel) here?
-        if (skillLevel > maxLevel) {
-            return maxLevel;
-        }
-
-        return skillLevel;
     }
 
     /**

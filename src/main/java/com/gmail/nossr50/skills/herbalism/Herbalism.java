@@ -190,8 +190,8 @@ public class Herbalism {
         }
 
         if (Permissions.herbalismDoubleDrops(player)) {
-            int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
-            double chance = (doubleDropsMaxChance / doubleDropsMaxLevel) * Misc.skillCheck(herbLevel, doubleDropsMaxLevel);
+            int activationChance = SkillTools.calculateActivationChance(Permissions.luckyHerbalism(player));
+            double chance = (doubleDropsMaxChance / doubleDropsMaxLevel) * SkillTools.skillCheck(herbLevel, doubleDropsMaxLevel);
 
             if (chance > Misc.getRandom().nextInt(activationChance)) {
                 Location location = block.getLocation();
@@ -259,7 +259,7 @@ public class Herbalism {
             break;
         }
 
-        int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
+        int activationChance = SkillTools.calculateActivationChance(Permissions.luckyHerbalism(player));
 
         float chance = (float) ((greenThumbMaxChance / greenThumbMaxLevel) * herbLevel);
         if (chance > greenThumbMaxChance) chance = (float) greenThumbMaxChance;
@@ -326,7 +326,7 @@ public class Herbalism {
 
         player.setItemInHand(new ItemStack(Material.SEEDS, seeds - 1));
 
-        int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
+        int activationChance = SkillTools.calculateActivationChance(Permissions.luckyHerbalism(player));
 
         float chance = (float) ((greenThumbMaxChance / greenThumbMaxLevel) * skillLevel);
         if (chance > greenThumbMaxChance) chance = (float) greenThumbMaxChance;
@@ -342,8 +342,8 @@ public class Herbalism {
     public static void hylianLuck(Block block, Player player, BlockBreakEvent event) {
         int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(SkillType.HERBALISM);
 
-        double chance = (hylianLuckMaxChance / hylianLuckMaxLevel) * Misc.skillCheck(skillLevel, hylianLuckMaxLevel);
-        int activationChance = Misc.calculateActivationChance(Permissions.luckyHerbalism(player));
+        double chance = (hylianLuckMaxChance / hylianLuckMaxLevel) * SkillTools.skillCheck(skillLevel, hylianLuckMaxLevel);
+        int activationChance = SkillTools.calculateActivationChance(Permissions.luckyHerbalism(player));
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
             List<HylianTreasure> treasures = new ArrayList<HylianTreasure>();

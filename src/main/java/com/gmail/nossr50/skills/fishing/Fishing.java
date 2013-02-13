@@ -160,7 +160,7 @@ public final class Fishing {
 
         FishingTreasure treasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
         ItemStack treasureDrop = treasure.getDrop();
-        int activationChance = Misc.calculateActivationChance(Permissions.luckyFishing(player));
+        int activationChance = SkillTools.calculateActivationChance(Permissions.luckyFishing(player));
 
         if (Misc.getRandom().nextDouble() * activationChance > treasure.getDropChance()) {
             return null;
@@ -189,7 +189,7 @@ public final class Fishing {
             return false;
         }
 
-        int activationChance = Misc.calculateActivationChance(Permissions.luckyFishing(player));
+        int activationChance = SkillTools.calculateActivationChance(Permissions.luckyFishing(player));
 
         if (storm) {
             activationChance = (int) (activationChance * 0.909);

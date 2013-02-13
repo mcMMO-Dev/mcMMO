@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 
 public class BleedEventHandler {
     private SwordsManager manager;
@@ -22,7 +22,7 @@ public class BleedEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(skillLevel, Swords.bleedMaxBonusLevel);
+        this.skillModifier = SkillTools.skillCheck(skillLevel, Swords.bleedMaxBonusLevel);
     }
 
     protected void addBleedTicks() {

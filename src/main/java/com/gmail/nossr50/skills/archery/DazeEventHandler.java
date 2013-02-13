@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.util.Misc;
 
 public class DazeEventHandler {
@@ -25,7 +26,7 @@ public class DazeEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Archery.dazeMaxBonusLevel);
+        this.skillModifier = SkillTools.skillCheck(manager.getSkillLevel(), Archery.dazeMaxBonusLevel);
     }
 
     protected void handleDazeEffect() {

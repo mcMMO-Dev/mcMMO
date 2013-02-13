@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.skills.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.util.Misc;
 
 public class DisarmEventHandler {
@@ -26,7 +27,7 @@ public class DisarmEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Unarmed.disarmMaxBonusLevel);
+        this.skillModifier = SkillTools.skillCheck(manager.getSkillLevel(), Unarmed.disarmMaxBonusLevel);
     }
 
     private void sendAbilityMessage() {

@@ -4,6 +4,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 
@@ -17,7 +18,7 @@ public class DodgeEventHandler extends AcrobaticsEventHandler {
 
     @Override
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Acrobatics.dodgeMaxBonusLevel);
+        this.skillModifier = SkillTools.skillCheck(manager.getSkillLevel(), Acrobatics.dodgeMaxBonusLevel);
     }
 
     @Override

@@ -3,8 +3,8 @@ package com.gmail.nossr50.skills.unarmed;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
 public class IronGripEventHandler {
@@ -20,7 +20,7 @@ public class IronGripEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(Users.getPlayer(defender).getProfile().getSkillLevel(SkillType.UNARMED), Unarmed.ironGripMaxBonusLevel);
+        this.skillModifier = SkillTools.skillCheck(Users.getPlayer(defender).getProfile().getSkillLevel(SkillType.UNARMED), Unarmed.ironGripMaxBonusLevel);
     }
 
     protected void sendAbilityMessages() {

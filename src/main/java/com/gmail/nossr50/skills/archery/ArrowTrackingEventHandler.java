@@ -2,7 +2,7 @@ package com.gmail.nossr50.skills.archery;
 
 import org.bukkit.entity.LivingEntity;
 
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 
 public class ArrowTrackingEventHandler {
     private ArcheryManager manager;
@@ -18,7 +18,7 @@ public class ArrowTrackingEventHandler {
     }
 
     protected void calculateSkillModifier() {
-        this.skillModifier = Misc.skillCheck(manager.getSkillLevel(), Archery.retrieveMaxBonusLevel);
+        this.skillModifier = SkillTools.skillCheck(manager.getSkillLevel(), Archery.retrieveMaxBonusLevel);
     }
 
     protected void addToTracker() {

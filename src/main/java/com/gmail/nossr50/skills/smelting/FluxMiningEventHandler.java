@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.mining.Mining;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -51,7 +52,7 @@ public class FluxMiningEventHandler {
         McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
 
         if (Permissions.secondSmelt(mcMMOPlayer.getPlayer())) {
-            int chance = (int) ((Mining.doubleDropsMaxChance / Mining.doubleDropsMaxLevel) * (Misc.skillCheck(mcMMOPlayer.getProfile().getSkillLevel(SkillType.MINING), Mining.doubleDropsMaxLevel)));
+            int chance = (int) ((Mining.doubleDropsMaxChance / Mining.doubleDropsMaxLevel) * (SkillTools.skillCheck(mcMMOPlayer.getProfile().getSkillLevel(SkillType.MINING), Mining.doubleDropsMaxLevel)));
             Misc.randomDropItem(location, item, chance);
         }
     }

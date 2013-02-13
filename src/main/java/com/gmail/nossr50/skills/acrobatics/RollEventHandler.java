@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
 public class RollEventHandler extends AcrobaticsEventHandler {
@@ -29,7 +29,7 @@ public class RollEventHandler extends AcrobaticsEventHandler {
             skillModifer = skillModifer * 2;
         }
 
-        skillModifer = Misc.skillCheck(skillModifer, Acrobatics.rollMaxBonusLevel);
+        skillModifer = SkillTools.skillCheck(skillModifer, Acrobatics.rollMaxBonusLevel);
         this.skillModifier = skillModifer;
     }
 
