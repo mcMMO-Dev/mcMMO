@@ -3,6 +3,7 @@ package com.gmail.nossr50.listeners;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 
 /**
@@ -23,7 +24,7 @@ public class SelfListener implements Listener {
                 throw new Exception("Gained negative XP!");
             }
             catch (Exception e) {
-                System.out.println(e.getMessage());
+                mcMMO.p.getLogger().severe(e.getMessage());
                 e.printStackTrace();
             }
         }

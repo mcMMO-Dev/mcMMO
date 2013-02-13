@@ -12,35 +12,6 @@ import com.gmail.nossr50.util.Permissions;
 public final class CommandHelper {
     private CommandHelper() {}
 
-    /**
-     * Checks for command permissions.
-     *
-     * @param sender The command sender
-     * @param permission The permission to check
-     * @return true if the sender is a player without permissions, false otherwise
-     */
-    public static boolean noCommandPermissions(CommandSender sender, String permission) {
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
-
-            if (!Permissions.hasPermission(player, permission)) {
-                player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public static boolean noCommandPermissions(Player player, String permission) {
-        if (!Permissions.hasPermission(player, permission)) {
-            player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
-            return true;
-        }
-
-        return false;
-    }
-
     public static boolean noConsoleUsage(CommandSender sender) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(LocaleLoader.getString("Commands.NoConsole"));

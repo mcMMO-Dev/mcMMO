@@ -279,7 +279,7 @@ public final class Leaderboard {
                     writer.append(line).append("\r\n");
                 }
                 else {
-                    System.out.println("User found, removing...");
+                    mcMMO.p.getLogger().info("User found, removing...");
                     worked = true;
                     continue; //Skip the player
                 }
@@ -359,7 +359,7 @@ public final class Leaderboard {
                         writer.append(line).append("\r\n");
                     }
                     else {
-                        System.out.println("User found, removing...");
+                        mcMMO.p.getLogger().info("User found, removing...");
                         removedPlayers++;
                         continue; //Skip the player
                     }

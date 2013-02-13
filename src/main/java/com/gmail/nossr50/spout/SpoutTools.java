@@ -176,7 +176,7 @@ public class SpoutTools {
         }
 
         if (menuKey == null) {
-            System.out.println("Invalid KEY for Menu.Key, using KEY_M");
+            mcMMO.p.getLogger().warning("Invalid KEY for Menu.Key, using KEY_M");
             menuKey = Keyboard.KEY_M;
         }
     }

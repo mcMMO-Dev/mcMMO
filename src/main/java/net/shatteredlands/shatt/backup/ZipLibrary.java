@@ -28,7 +28,7 @@ public class ZipLibrary {
 
     public static void mcMMObackup() throws IOException {
         if (Config.getInstance().getUseMySQL()) {
-            System.out.println("No Backup performed, in SQL Mode.");
+            mcMMO.p.getLogger().info("No Backup performed, in SQL Mode.");
             return;
         }
 
@@ -62,7 +62,7 @@ public class ZipLibrary {
         }
 
         //Actually do something
-        System.out.println("Backing up your mcMMO Configuration... ");
+        mcMMO.p.getLogger().info("Backing up your mcMMO Configuration... ");
 
         packZip(fileZip, sources);
     }
@@ -82,7 +82,7 @@ public class ZipLibrary {
 
         zipOut.flush();
         zipOut.close();
-        System.out.println("Backup Completed.");
+        mcMMO.p.getLogger().info("Backup Completed.");
     }
 
     private static String buildPath(String path, String file) {
@@ -95,7 +95,7 @@ public class ZipLibrary {
 
     private static void zipDir(ZipOutputStream zos, String path, File dir) throws IOException {
         if (!dir.canRead()) {
-            System.out.println("Cannot read " + dir.getCanonicalPath() + " (Maybe because of permissions?)");
+            mcMMO.p.getLogger().severe("Cannot read " + dir.getCanonicalPath() + " (Maybe because of permissions?)");
             return;
         }
 
@@ -114,7 +114,7 @@ public class ZipLibrary {
 
     private static void zipFile(ZipOutputStream zos, String path, File file) throws IOException {
         if (!file.canRead()) {
-            System.out.println("Cannot read " + file.getCanonicalPath() + "(File Permissions?)");
+            mcMMO.p.getLogger().severe("Cannot read " + file.getCanonicalPath() + "(File Permissions?)");
             return;
         }
 

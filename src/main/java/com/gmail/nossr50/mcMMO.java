@@ -507,7 +507,7 @@ public class mcMMO extends JavaPlugin {
                 metrics.start();
             }
             catch (IOException e) {
-                System.out.println("Failed to submit stats.");
+                mcMMO.p.getLogger().warning("Failed to submit stats.");
             }
         }
     }
