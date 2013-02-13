@@ -269,7 +269,7 @@ public class SQLConversionTask implements Runnable {
                 }
             }
 
-            System.out.println("[mcMMO] MySQL Updated from users file, " + theCount + " items added/updated to MySQL DB");
+            mcMMO.p.getLogger().info("[mcMMO] MySQL Updated from users file, " + theCount + " items added/updated to MySQL DB");
             in.close();
         }
         catch (Exception e) {

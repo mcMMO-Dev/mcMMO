@@ -579,9 +579,9 @@ public final class Database {
     }
 
     private static void printErrors(SQLException ex) {
-        System.out.println("SQLException: " + ex.getMessage());
-        System.out.println("SQLState: " + ex.getSQLState());
-        System.out.println("VendorError: " + ex.getErrorCode());
+        mcMMO.p.getLogger().severe("SQLException: " + ex.getMessage());
+        mcMMO.p.getLogger().severe("SQLState: " + ex.getSQLState());
+        mcMMO.p.getLogger().severe("VendorError: " + ex.getErrorCode());
     }
 
     public static void profileCleanup(String playerName) {

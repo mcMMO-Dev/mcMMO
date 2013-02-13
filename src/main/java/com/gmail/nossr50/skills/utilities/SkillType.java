@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.utilities;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.util.Permissions;
 
@@ -124,7 +125,7 @@ public enum SkillType {
             }
         }
 
-        System.out.println("[DEBUG] Invalid mcMMO skill (" + skillName + ")");
+        mcMMO.p.getLogger().warning("[DEBUG] Invalid mcMMO skill (" + skillName + ")");
         return null;
     }
 

@@ -38,7 +38,7 @@ public final class Anniversary {
             try {
                 anniversaryFile.createNewFile();
             } catch (IOException ex) {
-                System.out.println(ex);
+                mcMMO.p.getLogger().severe(ex.toString());
             }
         }
         hasCelebrated = new ArrayList<String>();
@@ -55,7 +55,7 @@ public final class Anniversary {
 
             reader.close();
         } catch (Exception ex) {
-            System.out.println(ex);
+            mcMMO.p.getLogger().severe(ex.toString());
         }
     }
 
@@ -70,7 +70,7 @@ public final class Anniversary {
             writer.close();
         }
         catch (Exception ex) {
-            System.out.println(ex);
+            mcMMO.p.getLogger().severe(ex.toString());
         }
     }
 
