@@ -39,7 +39,7 @@ public final class Permissions {
      */
 
     public static boolean motd(Player player) {
-        return hasPermission(player, "mcmmo.motd");
+        return player.hasPermission("mcmmo.motd");
     }
 
     /**
@@ -47,18 +47,18 @@ public final class Permissions {
      */
     @Deprecated
     public static boolean admin(Player player) {
-        return hasPermission(player, "mcmmo.admin");
+        return player.hasPermission("mcmmo.admin");
     }
 
     /*
      * MCMMO.BYPASS.*
      */
     public static boolean hardcoremodeBypass(Player player) {
-        return hasPermission(player, "mcmmo.bypass.hardcoremode");
+        return player.hasPermission("mcmmo.bypass.hardcoremode");
     }
 
     public static boolean arcaneBypass(Player player) {
-        return hasPermission(player, "mcmmo.bypass.arcanebypass");
+        return player.hasPermission("mcmmo.bypass.arcanebypass");
     }
 
     /**
@@ -66,11 +66,11 @@ public final class Permissions {
      */
     @Deprecated
     public static boolean inspectDistanceBypass(Player player) {
-        return hasPermission(player, "mcmmo.bypass.inspect.distance");
+        return player.hasPermission("mcmmo.bypass.inspect.distance");
     }
 
     public static boolean inspectFar(Player player) {
-        return (hasPermission(player, "mcmmo.commands.inspect.far"));
+        return (player.hasPermission("mcmmo.commands.inspect.far"));
     }
 
     /**
@@ -78,11 +78,11 @@ public final class Permissions {
      */
     @Deprecated
     public static boolean inspectOfflineBypass(Player player) {
-        return hasPermission(player, "mcmmo.bypass.inspect.offline");
+        return player.hasPermission("mcmmo.bypass.inspect.offline");
     }
 
     public static boolean inspectOffline(Player player) {
-        return (hasPermission(player, "mcmmo.commands.inspect.offline"));
+        return (player.hasPermission("mcmmo.commands.inspect.offline"));
     }
 
     /*
@@ -90,11 +90,11 @@ public final class Permissions {
      */
 
     public static boolean mcrefresh(Player player) {
-        return hasPermission(player, "mcmmo.tools.mcrefresh");
+        return player.hasPermission("mcmmo.tools.mcrefresh");
     }
 
     public static boolean mcremove(Player player) {
-        return hasPermission(player, "mcmmo.tools.mcremove");
+        return player.hasPermission("mcmmo.tools.mcremove");
     }
 
     /**
@@ -102,7 +102,7 @@ public final class Permissions {
      */
     @Deprecated
     public static boolean mmoedit(CommandSender sender) {
-        return hasPermission(sender, "mcmmo.tools.mmoedit");
+        return player.hasPermission("mcmmo.tools.mmoedit");
     }
 
     /**
@@ -110,7 +110,7 @@ public final class Permissions {
      */
     @Deprecated
     public static boolean mcgod(CommandSender sender) {
-        return hasPermission(sender, "mcmmo.tools.mcgod");
+        return player.hasPermission("mcmmo.tools.mcgod");
     }
 
     /*
@@ -118,59 +118,59 @@ public final class Permissions {
      */
 
     public static boolean lucky(Player player, SkillType skill) {
-        return hasPermission(player, "mcmmo.perks.lucky." + skill.toString().toLowerCase());
+        return player.hasPermission("mcmmo.perks.lucky." + skill.toString().toLowerCase());
     }
 
     public static boolean luckyAcrobatics(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.acrobatics");
+        return player.hasPermission("mcmmo.perks.lucky.acrobatics");
     }
 
     public static boolean luckyArchery(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.archery");
+        return player.hasPermission("mcmmo.perks.lucky.archery");
     }
 
     public static boolean luckyAxes(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.axes");
+        return player.hasPermission("mcmmo.perks.lucky.axes");
     }
 
     public static boolean luckyExcavation(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.excavation");
+        return player.hasPermission("mcmmo.perks.lucky.excavation");
     }
 
     public static boolean luckyFishing(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.fishing");
+        return player.hasPermission("mcmmo.perks.lucky.fishing");
     }
 
     public static boolean luckyHerbalism(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.herbalism");
+        return player.hasPermission("mcmmo.perks.lucky.herbalism");
     }
 
     public static boolean luckyMining(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.mining");
+        return player.hasPermission("mcmmo.perks.lucky.mining");
     }
 
     public static boolean luckyRepair(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.repair");
+        return player.hasPermission("mcmmo.perks.lucky.repair");
     }
 
     public static boolean luckySmelting(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.smelting");
+        return player.hasPermission("mcmmo.perks.lucky.smelting");
     }
 
     public static boolean luckySwords(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.swords");
+        return player.hasPermission("mcmmo.perks.lucky.swords");
     }
 
     public static boolean luckyTaming(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.taming");
+        return player.hasPermission("mcmmo.perks.lucky.taming");
     }
 
     public static boolean luckyUnarmed(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.unarmed");
+        return player.hasPermission("mcmmo.perks.lucky.unarmed");
     }
 
     public static boolean luckyWoodcutting(Player player) {
-        return hasPermission(player, "mcmmo.perks.lucky.woodcutting");
+        return player.hasPermission("mcmmo.perks.lucky.woodcutting");
     }
 
     /*
@@ -178,23 +178,23 @@ public final class Permissions {
      */
 
     public static boolean xpQuadruple(Player player) {
-        return hasPermission(player, "mcmmo.perks.xp.quadruple");
+        return player.hasPermission("mcmmo.perks.xp.quadruple");
     }
 
     public static boolean xpTriple(Player player) {
-        return hasPermission(player, "mcmmo.perks.xp.triple");
+        return player.hasPermission("mcmmo.perks.xp.triple");
     }
 
     public static boolean xpDoubleAndOneHalf(Player player) {
-        return hasPermission(player, "mcmmo.perks.xp.150percentboost");
+        return player.hasPermission("mcmmo.perks.xp.150percentboost");
     }
 
     public static boolean xpDouble(Player player) {
-        return hasPermission(player, "mcmmo.perks.xp.double");
+        return player.hasPermission("mcmmo.perks.xp.double");
     }
 
     public static boolean xpOneAndOneHalf(Player player) {
-        return hasPermission(player, "mcmmo.perks.xp.50percentboost");
+        return player.hasPermission("mcmmo.perks.xp.50percentboost");
     }
 
     /*
@@ -202,15 +202,15 @@ public final class Permissions {
      */
 
     public static boolean cooldownsHalved(Player player) {
-        return hasPermission(player, "mcmmo.perks.cooldowns.halved");
+        return player.hasPermission("mcmmo.perks.cooldowns.halved");
     }
 
     public static boolean cooldownsThirded(Player player) {
-        return hasPermission(player, "mcmmo.perks.cooldowns.thirded");
+        return player.hasPermission("mcmmo.perks.cooldowns.thirded");
     }
 
     public static boolean cooldownsQuartered(Player player) {
-        return hasPermission(player, "mcmmo.perks.cooldowns.quartered");
+        return player.hasPermission("mcmmo.perks.cooldowns.quartered");
     }
 
     /*
@@ -218,15 +218,15 @@ public final class Permissions {
      */
 
     public static boolean activationTwelve(Player player) {
-        return hasPermission(player, "mcmmo.perks.activationtime.twelveseconds");
+        return player.hasPermission("mcmmo.perks.activationtime.twelveseconds");
     }
 
     public static boolean activationEight(Player player) {
-        return hasPermission(player, "mcmmo.perks.activationtime.eightseconds");
+        return player.hasPermission("mcmmo.perks.activationtime.eightseconds");
     }
 
     public static boolean activationFour(Player player) {
-        return hasPermission(player, "mcmmo.perks.activationtime.fourseconds");
+        return player.hasPermission("mcmmo.perks.activationtime.fourseconds");
     }
 
     /*
@@ -234,35 +234,35 @@ public final class Permissions {
      */
 
     public static boolean fastFoodService(Player player) {
-        return hasPermission(player, "mcmmo.ability.taming.fastfoodservice");
+        return player.hasPermission("mcmmo.ability.taming.fastfoodservice");
     }
 
     public static boolean sharpenedClaws(Player player) {
-        return hasPermission(player, "mcmmo.ability.taming.sharpenedclaws");
+        return player.hasPermission("mcmmo.ability.taming.sharpenedclaws");
     }
 
     public static boolean gore(Player player) {
-        return hasPermission(player, "mcmmo.ability.taming.gore");
+        return player.hasPermission("mcmmo.ability.taming.gore");
     }
 
     public static boolean callOfTheWild(Player player) {
-        return hasPermission(player, "mcmmo.ability.taming.callofthewild");
+        return player.hasPermission("mcmmo.ability.taming.callofthewild");
     }
 
     public static boolean environmentallyAware(Player player) {
-        return hasPermission(player, "mcmmo.ability.taming.environmentallyaware");
+        return player.hasPermission("mcmmo.ability.taming.environmentallyaware");
     }
 
     public static boolean thickFur(Player player) {
-        return hasPermission(player, "mcmmo.ability.taming.thickfur");
+        return player.hasPermission("mcmmo.ability.taming.thickfur");
     }
 
     public static boolean shockProof(Player player) {
-        return hasPermission(player, "mcmmo.ability.taming.shockproof");
+        return player.hasPermission("mcmmo.ability.taming.shockproof");
     }
 
     public static boolean beastLore(Player player) {
-        return hasPermission(player, "mcmmo.ability.taming.beastlore");
+        return player.hasPermission("mcmmo.ability.taming.beastlore");
     }
 
     /*
@@ -270,23 +270,23 @@ public final class Permissions {
      */
 
     public static boolean shakeMob(Player player) {
-        return hasPermission(player, "mcmmo.ability.fishing.shakemob");
+        return player.hasPermission("mcmmo.ability.fishing.shakemob");
     }
 
     public static boolean fishingTreasures(Player player) {
-        return hasPermission(player, "mcmmo.ability.fishing.treasures");
+        return player.hasPermission("mcmmo.ability.fishing.treasures");
     }
 
     public static boolean fishingMagic(Player player) {
-        return hasPermission(player, "mcmmo.ability.fishing.magic");
+        return player.hasPermission("mcmmo.ability.fishing.magic");
     }
 
     public static boolean fishermansDiet(Player player) {
-        return hasPermission(player, "mcmmo.ability.fishing.fishermansdiet");
+        return player.hasPermission("mcmmo.ability.fishing.fishermansdiet");
     }
 
     public static boolean fishingVanillaXPBoost(Player player) {
-        return hasPermission(player, "mcmmo.ability.fishing.vanillaxpboost");
+        return player.hasPermission("mcmmo.ability.fishing.vanillaxpboost");
     }
 
     /*
@@ -294,11 +294,11 @@ public final class Permissions {
      */
 
     public static boolean superBreaker(Player player) {
-        return hasPermission(player, "mcmmo.ability.mining.superbreaker");
+        return player.hasPermission("mcmmo.ability.mining.superbreaker");
     }
 
     public static boolean miningDoubleDrops(Player player) {
-        return hasPermission(player, "mcmmo.ability.mining.doubledrops");
+        return player.hasPermission("mcmmo.ability.mining.doubledrops");
     }
 
     /*
@@ -306,15 +306,15 @@ public final class Permissions {
      */
 
     public static boolean treeFeller(Player player) {
-        return hasPermission(player, "mcmmo.ability.woodcutting.treefeller");
+        return player.hasPermission("mcmmo.ability.woodcutting.treefeller");
     }
 
     public static boolean leafBlower(Player player) {
-        return hasPermission(player, "mcmmo.ability.woodcutting.leafblower");
+        return player.hasPermission("mcmmo.ability.woodcutting.leafblower");
     }
 
     public static boolean woodcuttingDoubleDrops(Player player) {
-        return hasPermission(player, "mcmmo.ability.woodcutting.doubledrops");
+        return player.hasPermission("mcmmo.ability.woodcutting.doubledrops");
     }
 
     /*
@@ -322,63 +322,63 @@ public final class Permissions {
      */
 
     public static boolean repairBonus(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.repairbonus");
+        return player.hasPermission("mcmmo.ability.repair.repairbonus");
     }
 
     public static boolean repairMastery(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.repairmastery");
+        return player.hasPermission("mcmmo.ability.repair.repairmastery");
     }
 
     public static boolean arcaneForging(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.arcaneforging");
+        return player.hasPermission("mcmmo.ability.repair.arcaneforging");
     }
 
     public static boolean woodRepair(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.woodrepair");
+        return player.hasPermission("mcmmo.ability.repair.woodrepair");
     }
 
     public static boolean stoneRepair(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.stonerepair");
+        return player.hasPermission("mcmmo.ability.repair.stonerepair");
     }
 
     public static boolean leatherRepair(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.leatherrepair");
+        return player.hasPermission("mcmmo.ability.repair.leatherrepair");
     }
 
     public static boolean ironRepair(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.ironrepair");
+        return player.hasPermission("mcmmo.ability.repair.ironrepair");
     }
 
     public static boolean goldRepair(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.goldrepair");
+        return player.hasPermission("mcmmo.ability.repair.goldrepair");
     }
 
     public static boolean diamondRepair(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.diamondrepair");
+        return player.hasPermission("mcmmo.ability.repair.diamondrepair");
     }
 
     public static boolean armorRepair(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.armorrepair");
+        return player.hasPermission("mcmmo.ability.repair.armorrepair");
     }
 
     public static boolean toolRepair(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.toolrepair");
+        return player.hasPermission("mcmmo.ability.repair.toolrepair");
     }
 
     public static boolean otherMaterialRepair(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.othermaterialrepair");
+        return player.hasPermission("mcmmo.ability.repair.othermaterialrepair");
     }
 
     public static boolean otherRepair(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.otherrepair");
+        return player.hasPermission("mcmmo.ability.repair.otherrepair");
     }
 
     public static boolean stringRepair(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.stringrepair");
+        return player.hasPermission("mcmmo.ability.repair.stringrepair");
     }
 
     public static boolean salvage(Player player) {
-        return hasPermission(player, "mcmmo.ability.repair.salvage");
+        return player.hasPermission("mcmmo.ability.repair.salvage");
     }
 
 
@@ -387,23 +387,23 @@ public final class Permissions {
      */
 
     public static boolean unarmedBonus(Player player) {
-        return hasPermission(player, "mcmmo.ability.unarmed.bonusdamage");
+        return player.hasPermission("mcmmo.ability.unarmed.bonusdamage");
     }
 
     public static boolean disarm(Player player) {
-        return hasPermission(player, "mcmmo.ability.unarmed.disarm");
+        return player.hasPermission("mcmmo.ability.unarmed.disarm");
     }
 
     public static boolean berserk(Player player) {
-        return hasPermission(player, "mcmmo.ability.unarmed.berserk");
+        return player.hasPermission("mcmmo.ability.unarmed.berserk");
     }
 
     public static boolean deflect(Player player) {
-        return hasPermission(player, "mcmmo.ability.unarmed.deflect");
+        return player.hasPermission("mcmmo.ability.unarmed.deflect");
     }
 
     public static boolean ironGrip(Player player) {
-        return hasPermission(player, "mcmmo.ability.unarmed.irongrip");
+        return player.hasPermission("mcmmo.ability.unarmed.irongrip");
     }
 
     /*
@@ -411,15 +411,15 @@ public final class Permissions {
      */
 
     public static boolean trackArrows(Player player) {
-        return hasPermission(player, "mcmmo.ability.archery.trackarrows");
+        return player.hasPermission("mcmmo.ability.archery.trackarrows");
     }
 
     public static boolean daze(Player player) {
-        return hasPermission(player, "mcmmo.ability.archery.daze");
+        return player.hasPermission("mcmmo.ability.archery.daze");
     }
 
     public static boolean archeryBonus(Player player) {
-        return hasPermission(player, "mcmmo.ability.archery.bonusdamage");
+        return player.hasPermission("mcmmo.ability.archery.bonusdamage");
     }
 
     /*
@@ -427,43 +427,43 @@ public final class Permissions {
      */
 
     public static boolean herbalismDoubleDrops(Player player) {
-        return hasPermission(player, "mcmmo.ability.herbalism.doubledrops");
+        return player.hasPermission("mcmmo.ability.herbalism.doubledrops");
     }
 
     public static boolean greenTerra(Player player) {
-        return hasPermission(player, "mcmmo.ability.herbalism.greenterra");
+        return player.hasPermission("mcmmo.ability.herbalism.greenterra");
     }
 
     public static boolean greenThumbBlocks(Player player) {
-        return hasPermission(player, "mcmmo.ability.herbalism.greenthumbblocks");
+        return player.hasPermission("mcmmo.ability.herbalism.greenthumbblocks");
     }
 
     public static boolean greenThumbCarrots(Player player) {
-        return hasPermission(player, "mcmmo.ability.herbalism.greenthumbcarrots");
+        return player.hasPermission("mcmmo.ability.herbalism.greenthumbcarrots");
     }
 
     public static boolean greenThumbCocoa(Player player) {
-        return hasPermission(player, "mcmmo.ability.herbalism.greenthumbcocoa");
+        return player.hasPermission("mcmmo.ability.herbalism.greenthumbcocoa");
     }
 
     public static boolean greenThumbNetherwart(Player player) {
-        return hasPermission(player, "mcmmo.ability.herbalism.greenthumbnetherwart");
+        return player.hasPermission("mcmmo.ability.herbalism.greenthumbnetherwart");
     }
 
     public static boolean greenThumbPotatoes(Player player) {
-        return hasPermission(player, "mcmmo.ability.herbalism.greenthumbpotatoes");
+        return player.hasPermission("mcmmo.ability.herbalism.greenthumbpotatoes");
     }
 
     public static boolean greenThumbWheat(Player player) {
-        return hasPermission(player, "mcmmo.ability.herbalism.greenthumbwheat");
+        return player.hasPermission("mcmmo.ability.herbalism.greenthumbwheat");
     }
 
     public static boolean farmersDiet(Player player) {
-        return hasPermission(player, "mcmmo.ability.herbalism.farmersdiet");
+        return player.hasPermission("mcmmo.ability.herbalism.farmersdiet");
     }
 
     public static boolean hylianLuck(Player player) {
-        return hasPermission(player, "mcmmo.ability.herbalism.hylianluck");
+        return player.hasPermission("mcmmo.ability.herbalism.hylianluck");
     }
 
     /*
@@ -471,11 +471,11 @@ public final class Permissions {
      */
 
     public static boolean gigaDrillBreaker(Player player) {
-        return hasPermission(player, "mcmmo.ability.excavation.gigadrillbreaker");
+        return player.hasPermission("mcmmo.ability.excavation.gigadrillbreaker");
     }
 
     public static boolean excavationTreasures(Player player) {
-        return hasPermission(player, "mcmmo.ability.excavation.treasures");
+        return player.hasPermission("mcmmo.ability.excavation.treasures");
     }
 
     /*
@@ -483,15 +483,15 @@ public final class Permissions {
      */
 
     public static boolean swordsBleed(Player player) {
-        return hasPermission(player, "mcmmo.ability.swords.bleed");
+        return player.hasPermission("mcmmo.ability.swords.bleed");
     }
 
     public static boolean serratedStrikes(Player player) {
-        return hasPermission(player, "mcmmo.ability.swords.serratedstrikes");
+        return player.hasPermission("mcmmo.ability.swords.serratedstrikes");
     }
 
     public static boolean counterAttack(Player player) {
-        return hasPermission(player, "mcmmo.ability.swords.counterattack");
+        return player.hasPermission("mcmmo.ability.swords.counterattack");
     }
 
     /*
@@ -499,23 +499,23 @@ public final class Permissions {
      */
 
     public static boolean skullSplitter(Player player) {
-        return hasPermission(player, "mcmmo.ability.axes.skullsplitter");
+        return player.hasPermission("mcmmo.ability.axes.skullsplitter");
     }
 
     public static boolean axeBonus(Player player) {
-        return hasPermission(player, "mcmmo.ability.axes.bonusdamage");
+        return player.hasPermission("mcmmo.ability.axes.bonusdamage");
     }
 
     public static boolean criticalHit(Player player) {
-        return hasPermission(player, "mcmmo.ability.axes.criticalhit");
+        return player.hasPermission("mcmmo.ability.axes.criticalhit");
     }
 
     public static boolean impact(Player player) {
-        return hasPermission(player, "mcmmo.ability.axes.impact");
+        return player.hasPermission("mcmmo.ability.axes.impact");
     }
 
     public static boolean greaterImpact(Player player) {
-        return hasPermission(player, "mcmmo.ability.axes.greaterimpact");
+        return player.hasPermission("mcmmo.ability.axes.greaterimpact");
     }
 
     /*
@@ -523,15 +523,15 @@ public final class Permissions {
      */
 
     public static boolean roll(Player player) {
-        return hasPermission(player, "mcmmo.ability.acrobatics.roll");
+        return player.hasPermission("mcmmo.ability.acrobatics.roll");
     }
 
     public static boolean gracefulRoll(Player player) {
-        return hasPermission(player, "mcmmo.ability.acrobatics.gracefulroll");
+        return player.hasPermission("mcmmo.ability.acrobatics.gracefulroll");
     }
 
     public static boolean dodge(Player player) {
-        return hasPermission(player, "mcmmo.ability.acrobatics.dodge");
+        return player.hasPermission("mcmmo.ability.acrobatics.dodge");
     }
 
     /*
@@ -539,15 +539,15 @@ public final class Permissions {
      */
 
     public static boolean biggerBombs(Player player) {
-        return hasPermission(player, "mcmmo.ability.mining.blastmining.biggerbombs");
+        return player.hasPermission("mcmmo.ability.mining.blastmining.biggerbombs");
     }
 
     public static boolean demolitionsExpertise(Player player) {
-        return hasPermission(player, "mcmmo.ability.mining.blastmining.demolitionsexpertise");
+        return player.hasPermission("mcmmo.ability.mining.blastmining.demolitionsexpertise");
     }
 
     public static boolean blastMining(Player player) {
-        return hasPermission(player, "mcmmo.ability.mining.blastmining.detonate");
+        return player.hasPermission("mcmmo.ability.mining.blastmining.detonate");
     }
 
     /*
@@ -555,19 +555,19 @@ public final class Permissions {
      */
 
     public static boolean fuelEfficiency(Player player) {
-        return hasPermission(player, "mcmmo.ability.smelting.fuelefficiency");
+        return player.hasPermission("mcmmo.ability.smelting.fuelefficiency");
     }
 
     public static boolean secondSmelt(Player player) {
-        return hasPermission(player, "mcmmo.ability.smelting.secondsmelt");
+        return player.hasPermission("mcmmo.ability.smelting.secondsmelt");
     }
 
     public static boolean fluxMining(Player player) {
-        return hasPermission(player, "mcmmo.ability.smelting.fluxmining");
+        return player.hasPermission("mcmmo.ability.smelting.fluxmining");
     }
 
     public static boolean smeltingVanillaXPBoost(Player player) {
-        return hasPermission(player, "mcmmo.ability.smelting.vanillaxpboost");
+        return player.hasPermission("mcmmo.ability.smelting.vanillaxpboost");
     }
 
     /*
@@ -575,15 +575,15 @@ public final class Permissions {
      */
 
     public static boolean mmoeditCommand(Player player) {
-        return (hasPermission(player, "mcmmo.commands.mmoedit"));
+        return (player.hasPermission("mcmmo.commands.mmoedit"));
     }
 
     public static boolean skillResetCommand(Player player) {
-        return (hasPermission(player, "mcmmo.commands.skillreset"));
+        return (player.hasPermission("mcmmo.commands.skillreset"));
     }
 
     public static boolean mcAbilityCommand(Player player) {
-        return (hasPermission(player, "mcmmo.commands.mcability"));
+        return (player.hasPermission("mcmmo.commands.mcability"));
     }
 
     public static boolean mcgodCommand(CommandSender sender) {
@@ -595,19 +595,19 @@ public final class Permissions {
      */
     @Deprecated
     public static boolean mcAbility(Player player) {
-        return hasPermission(player, "mcmmo.commands.ability");
+        return player.hasPermission("mcmmo.commands.ability");
     }
 
     public static boolean partyTeleport(Player player) {
-        return hasPermission(player, "mcmmo.commands.ptp");
+        return player.hasPermission("mcmmo.commands.ptp");
     }
 
     public static boolean inspect(Player player) {
-        return hasPermission(player, "mcmmo.commands.inspect");
+        return player.hasPermission("mcmmo.commands.inspect");
     }
 
     public static boolean party(Player player) {
-        return hasPermission(player, "mcmmo.commands.party");
+        return player.hasPermission("mcmmo.commands.party");
     }
 
     /**
@@ -615,7 +615,7 @@ public final class Permissions {
      */
     @Deprecated
     public static boolean skillReset(Player player) {
-        return hasPermission(player, "mcmmo.skillreset");
+        return player.hasPermission("mcmmo.skillreset");
     }
 
     /*
@@ -623,15 +623,15 @@ public final class Permissions {
      */
 
     public static boolean partyChat(Player player) {
-        return hasPermission(player, "mcmmo.chat.partychat");
+        return player.hasPermission("mcmmo.chat.partychat");
     }
 
     public static boolean partyLock(Player player) {
-        return hasPermission(player, "mcmmo.chat.partylock");
+        return player.hasPermission("mcmmo.chat.partylock");
     }
 
     public static boolean adminChat(Player player) {
-        return hasPermission(player, "mcmmo.chat.adminchat");
+        return player.hasPermission("mcmmo.chat.adminchat");
     }
 
     /*
@@ -639,55 +639,55 @@ public final class Permissions {
      */
 
     public static boolean taming(Player player) {
-        return hasPermission(player, "mcmmo.skills.taming");
+        return player.hasPermission("mcmmo.skills.taming");
     }
 
     public static boolean mining(Player player) {
-        return hasPermission(player, "mcmmo.skills.mining");
+        return player.hasPermission("mcmmo.skills.mining");
     }
 
     public static boolean fishing(Player player) {
-        return hasPermission(player, "mcmmo.skills.fishing");
+        return player.hasPermission("mcmmo.skills.fishing");
     }
 
     public static boolean woodcutting(Player player) {
-        return hasPermission(player, "mcmmo.skills.woodcutting");
+        return player.hasPermission("mcmmo.skills.woodcutting");
     }
 
     public static boolean repair(Player player) {
-        return hasPermission(player, "mcmmo.skills.repair");
+        return player.hasPermission("mcmmo.skills.repair");
     }
 
     public static boolean unarmed(Player player) {
-        return hasPermission(player, "mcmmo.skills.unarmed");
+        return player.hasPermission("mcmmo.skills.unarmed");
     }
 
     public static boolean archery(Player player) {
-        return hasPermission(player, "mcmmo.skills.archery");
+        return player.hasPermission("mcmmo.skills.archery");
     }
 
     public static boolean herbalism(Player player) {
-        return hasPermission(player, "mcmmo.skills.herbalism");
+        return player.hasPermission("mcmmo.skills.herbalism");
     }
 
     public static boolean excavation(Player player) {
-        return hasPermission(player, "mcmmo.skills.excavation");
+        return player.hasPermission("mcmmo.skills.excavation");
     }
 
     public static boolean swords(Player player) {
-        return hasPermission(player, "mcmmo.skills.swords");
+        return player.hasPermission("mcmmo.skills.swords");
     }
 
     public static boolean axes(Player player) {
-        return hasPermission(player, "mcmmo.skills.axes");
+        return player.hasPermission("mcmmo.skills.axes");
     }
 
     public static boolean acrobatics(Player player) {
-        return hasPermission(player, "mcmmo.skills.acrobatics");
+        return player.hasPermission("mcmmo.skills.acrobatics");
     }
 
     public static boolean smelting(Player player) {
-        return hasPermission(player, "mcmmo.skills.smelting");
+        return player.hasPermission("mcmmo.skills.smelting");
     }
 
     /*
@@ -695,6 +695,6 @@ public final class Permissions {
      */
 
     public static boolean friendlyFire(Player player) {
-        return hasPermission(player, "mcmmo.party.friendlyfire");
+        return player.hasPermission("mcmmo.party.friendlyfire");
     }
 }
