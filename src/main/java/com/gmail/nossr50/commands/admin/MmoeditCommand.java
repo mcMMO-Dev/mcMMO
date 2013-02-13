@@ -11,7 +11,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class MmoeditCommand implements CommandExecutor {
@@ -23,7 +22,7 @@ public class MmoeditCommand implements CommandExecutor {
 
         switch (args.length) {
         case 2:
-            if (!Permissions.hasPermission(sender, "mcmmo.commands.mmoedit")) {
+            if (!sender.hasPermission("mcmmo.commands.mmoedit")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -66,7 +65,7 @@ public class MmoeditCommand implements CommandExecutor {
             return true;
 
         case 3:
-            if (!Permissions.hasPermission(sender, "mcmmo.commands.mmoedit.others")) {
+            if (!sender.hasPermission("mcmmo.commands.mmoedit.others")) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
