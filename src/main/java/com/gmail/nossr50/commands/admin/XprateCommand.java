@@ -27,10 +27,7 @@ public class XprateCommand implements CommandExecutor {
             }
 
             if (mcMMO.p.isXPEventEnabled()) {
-                for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-                    player.sendMessage(LocaleLoader.getString("Commands.xprate.over"));
-                }
-
+                mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.xprate.over"));
                 mcMMO.p.toggleXpEventEnabled();
             }
 
@@ -56,10 +53,8 @@ public class XprateCommand implements CommandExecutor {
             Config.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
 
             if (mcMMO.p.isXPEventEnabled()) {
-                for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-                    player.sendMessage(LocaleLoader.getString("Commands.xprate.started.0"));
-                    player.sendMessage(LocaleLoader.getString("Commands.xprate.started.1", newXpRate));
-                }
+                mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.xprate.started.0"));
+                mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.xprate.started.1", newXpRate));
             }
             else {
                 sender.sendMessage(LocaleLoader.getString("Commands.xprate.modified", newXpRate));
