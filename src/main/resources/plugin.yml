@@ -94,13 +94,13 @@ commands:
         aliases: [ac, a]
         description: Toggle Admin chat or send admin chat messages
     mcpurge:
-        description: Purge users with 0 powerlevel and/or who haven't connected in several months from the server DB.	
+        description: Purge users with 0 powerlevel and/or who haven't connected in several months from the server DB.
     hardcore:
-        aliases: [mchardcore]	
+        aliases: [mchardcore]
         description: Modify the mcMMO hardcore percentage or toggle hardcore mode on/off
     vampirism:
-        aliases: [mcvampirism]	
-        description: Modify the mcMMO vampirism percentage or toggle vampirism mode on/off		
+        aliases: [mcvampirism]
+        description: Modify the mcMMO vampirism percentage or toggle vampirism mode on/off
 permissions:
     mcmmo.*:
         default: false
@@ -606,7 +606,7 @@ permissions:
             mcmmo.commands.mmoedit.others: true
             mcmmo.commands.ptp.world.all: true
             mcmmo.commands.skillreset.all: true
-            mcmmo.commands.vampirism.all: true			
+            mcmmo.commands.vampirism.all: true
             mcmmo.commands.xprate.all: true
     mcmmo.commands.ability:
         default: false
