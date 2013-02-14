@@ -3,8 +3,10 @@ package com.gmail.nossr50.skills.mining;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
@@ -21,13 +23,14 @@ public class SuperBreakerEventHandler {
     private int tier;
     private int durabilityLoss;
     private FakePlayerAnimationEvent armswing;
+    private Player player;
 
     protected SuperBreakerEventHandler (MiningManager manager, Block block) {
         this.manager = manager;
         this.block = block;
         this.blockType = block.getType();
         this.customBlock = ModChecks.isCustomMiningBlock(block);
-        Player player = manager.getMcMMOPlayer().getPlayer();
+        this.player = manager.getMcMMOPlayer().getPlayer();
         this.heldItem = player.getItemInHand();
         this.tier = Misc.getTier(heldItem);
         this.armswing = new FakePlayerAnimationEvent(player);
@@ -48,7 +51,7 @@ public class SuperBreakerEventHandler {
     }
 
     protected void playSound() {
-        manager.getMcMMOPlayer().getPlayer().playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
+        player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
     }
 
     /**
@@ -58,7 +61,7 @@ public class SuperBreakerEventHandler {
      */
     protected boolean tierCheck() {
         if (customBlock) {
-            if (ModChecks.getCustomBlock(block).getTier() < tier) {
+            if (tier < ModChecks.getCustomBlock(block).getTier()) {
                 return false;
             }
 
