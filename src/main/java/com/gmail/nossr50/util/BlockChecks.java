@@ -354,9 +354,10 @@ public final class BlockChecks {
     public static boolean canBeCracked(Block block) {
         switch(block.getType()) {
             case SMOOTH_BRICK:
-                if (block.getData() == 0) {
+                if (block.getData() == 0x0) {
                     return true;
                 }
+                return false;
 
             default:
                 return false;
