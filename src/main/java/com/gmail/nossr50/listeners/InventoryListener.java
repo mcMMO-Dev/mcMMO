@@ -138,7 +138,7 @@ public class InventoryListener implements Listener{
     public void onInventoryClickEvent(InventoryClickEvent event) {
         ItemStack item = event.getCurrentItem();
 
-        if (item.containsEnchantment(Enchantment.DIG_SPEED)) {
+        if (item != null && item.containsEnchantment(Enchantment.DIG_SPEED)) {
             ItemMeta itemMeta = item.getItemMeta();
 
             if (itemMeta.hasLore()) {
