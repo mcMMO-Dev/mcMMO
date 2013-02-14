@@ -1,7 +1,10 @@
 package com.gmail.nossr50.listeners;
 
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -9,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -20,6 +24,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
@@ -42,6 +47,7 @@ import com.gmail.nossr50.skills.utilities.AbilityType;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.BlockChecks;
+import com.gmail.nossr50.util.Hardcore;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Misc;
@@ -54,6 +60,76 @@ public class PlayerListener implements Listener {
 
     public PlayerListener(final mcMMO plugin) {
         this.plugin = plugin;
+    }
+
+    /**
+     * Handle PlayerDeath events where the event is modified.
+     *
+     * @param event The event to modify
+     */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerDeathHigher(PlayerDeathEvent event) {
+        Player player = event.getEntity();
+
+        if (Misc.isNPCPlayer(player)) {
+            return;
+        }
+
+        PlayerProfile playerProfile = Users.getPlayer(player).getProfile();
+
+        if (playerProfile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) || playerProfile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
+            for (ItemStack item : event.getDrops()) {
+                if (item.containsEnchantment(Enchantment.DIG_SPEED)) {
+                    ItemMeta itemMeta = item.getItemMeta();
+
+                    if (itemMeta.hasLore()) {
+                        int efficiencyLevel = item.getEnchantmentLevel(Enchantment.DIG_SPEED);
+                        List<String> itemLore = itemMeta.getLore();
+
+                        if (itemLore.remove("mcMMO Ability Tool")) {
+                            if (efficiencyLevel <= 5) {
+                                item.removeEnchantment(Enchantment.DIG_SPEED);
+                            }
+                            else {
+                                itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - 5, true);
+                            }
+
+                            itemMeta.setLore(itemLore);
+                            item.setItemMeta(itemMeta);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Monitor PlayerDeath events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        if (!Config.getInstance().getHardcoreEnabled()) {
+            return;
+        }
+
+        Player player = event.getEntity();
+
+        if (Misc.isNPCPlayer(player)) {
+            return;
+        }
+
+        if (!Permissions.hardcoremodeBypass(player)) {
+            Player killer = player.getKiller();
+
+            if (killer != null && Config.getInstance().getHardcoreVampirismEnabled()) {
+                Hardcore.invokeVampirism(killer, player);
+            }
+
+            Hardcore.invokeStatPenalty(player);
+        }
     }
 
     /**

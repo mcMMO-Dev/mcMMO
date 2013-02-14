@@ -33,7 +33,6 @@ import com.gmail.nossr50.database.runnables.UserPurgeTask;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
-import com.gmail.nossr50.listeners.HardcoreListener;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.WorldListener;
@@ -63,7 +62,6 @@ public class mcMMO extends JavaPlugin {
     private final EntityListener entityListener = new EntityListener(this);
     private final InventoryListener inventoryListener = new InventoryListener(this);
     private final WorldListener worldListener = new WorldListener();
-    private final HardcoreListener hardcoreListener = new HardcoreListener();
 
     private HashMap<Integer, String> tntTracker = new HashMap<Integer, String>();
     private HashMap<Block, String> furnaceTracker = new HashMap<Block, String>();
@@ -260,7 +258,6 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(entityListener, this);
         pluginManager.registerEvents(inventoryListener, this);
         pluginManager.registerEvents(worldListener, this);
-        pluginManager.registerEvents(hardcoreListener, this);
     }
 
     /**
