@@ -273,6 +273,8 @@ public class PlayerListener implements Listener {
         if (plugin.isXPEventEnabled()) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", Config.getInstance().getExperienceGainsGlobalMultiplier()));
         }
+
+        SkillTools.handleAbilitySpeedDecrease(player); //Remove enchants left over in case of disconnect or server crash
     }
 
     /**
