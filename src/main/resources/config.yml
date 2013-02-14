@@ -171,6 +171,8 @@ Skills:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
         Level_Cap: 0
+        Block_Cracker:
+            SmoothBrick_To_CrackedBrick: true
     Woodcutting:
         Level_Cap: 0
         Requires_Axe: true

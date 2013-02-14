@@ -35,6 +35,7 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
+import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.skills.utilities.AbilityType;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
@@ -286,7 +287,7 @@ public class BlockListener implements Listener {
             else if (profile.getToolPreparationMode(ToolType.SHOVEL) && ItemChecks.isShovel(heldItem) && BlockChecks.canBeGigaDrillBroken(block) && Permissions.gigaDrillBreaker(player)) {
                 SkillTools.abilityCheck(player, SkillType.EXCAVATION);
             }
-            else if (profile.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockChecks.canBeGigaDrillBroken(block) || block.getType() == Material.SNOW) && Permissions.berserk(player)) {
+            else if (profile.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockChecks.canBeGigaDrillBroken(block) || block.getType() == Material.SNOW || (block.getType() == Material.SMOOTH_BRICK && block.getData() == 0x0)) && Permissions.berserk(player)) {
                 SkillTools.abilityCheck(player, SkillType.UNARMED);
             }
         }
@@ -344,15 +345,20 @@ public class BlockListener implements Listener {
                 Excavation.gigaDrillBreaker(mcMMOPlayer, block);
             }
         }
-        else if (profile.getAbilityMode(AbilityType.BERSERK) && SkillTools.triggerCheck(player, block, AbilityType.BERSERK)) {
-            if (heldItem.getType() == Material.AIR) {
-                FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-                plugin.getServer().getPluginManager().callEvent(armswing);
+        else if (profile.getAbilityMode(AbilityType.BERSERK)) {
+            if (SkillTools.triggerCheck(player, block, AbilityType.BERSERK)) {
+                if (heldItem.getType() == Material.AIR) {
+                    FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
+                    plugin.getServer().getPluginManager().callEvent(armswing);
 
-                event.setInstaBreak(true);
+                    event.setInstaBreak(true);
+                    player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
+                }
             }
-
-            player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
+            // Another perm check for the cracked blocks activation
+            else if (BlockChecks.canBeCracked(block) && player.hasPermission("mcmmo.ability.unarmed.blockcracker")) {
+                Unarmed.blockCracker(player, block);
+            }
         }
         else if (profile.getAbilityMode(AbilityType.SUPER_BREAKER) && SkillTools.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
             MiningManager miningManager = new MiningManager(mcMMOPlayer);

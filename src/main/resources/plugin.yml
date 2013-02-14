@@ -462,12 +462,15 @@ permissions:
         description: Allows access to all Unarmed abilities
         children:
             mcmmo.ability.unarmed.berserk: true
+            mcmmo.ability.unarmed.blockcracker: true
             mcmmo.ability.unarmed.bonusdamage: true
             mcmmo.ability.unarmed.deflect: true
             mcmmo.ability.unarmed.disarm: true
             mcmmo.ability.unarmed.irongrip: true
     mcmmo.ability.unarmed.berserk:
         description: Allows access to the Berserker ability
+    mcmmo.ability.unarmed.blockcracker:
+        description: Allows access to the Block Cracker ability
     mcmmo.ability.unarmed.bonusdamage:
         description: Allows bonus damage from Unarmed
     mcmmo.ability.unarmed.deflect:

@@ -256,6 +256,9 @@ public class Config extends ConfigLoader {
     public int getSmeltingXPLapis() { return config.getInt("Experience.Smelting.Lapis", 40); }
     public int getSmeltingXPEmerald() { return config.getInt("Experience.Smelting.Emerald", 100); }
 
+    /* Unarmed */
+    public boolean getUnarmedBlockCrackerSmoothbrickToCracked() { return config.getBoolean("Skills.Unarmed.Block_Cracker.SmoothBrick_To_CrackedBrick", true); }
+
     /* Taming */
     public int getTamingXPWolf() { return config.getInt("Experience.Taming.Animal_Taming.Wolf", 250); }
     public int getTamingXPOcelot() { return config.getInt("Experience.Taming.Animal_Taming.Ocelot", 500); }
