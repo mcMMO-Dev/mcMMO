@@ -1,8 +1,11 @@
 package com.gmail.nossr50.listeners;
 
+import java.util.List;
+
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,11 +13,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
@@ -124,6 +129,33 @@ public class InventoryListener implements Listener{
                 if (mcMMOPlayer.getPlayer().equals(plugin.getFurnacePlayer(furnaceBlock))) {
                     SmeltingManager smeltingManager = new SmeltingManager(mcMMOPlayer);
                     smeltingManager.vanillaXPBoost(event);
+                }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onInventoryClickEvent(InventoryClickEvent event) {
+        ItemStack item = event.getCurrentItem();
+
+        if (item.containsEnchantment(Enchantment.DIG_SPEED)) {
+            ItemMeta itemMeta = item.getItemMeta();
+
+            if (itemMeta.hasLore()) {
+                int efficiencyLevel = item.getEnchantmentLevel(Enchantment.DIG_SPEED);
+                List<String> itemLore = itemMeta.getLore();
+
+                if (itemLore.remove("mcMMO Ability Tool")) {
+                    if (efficiencyLevel <= 5) {
+                        itemMeta.removeEnchant(Enchantment.DIG_SPEED);
+                    }
+                    else {
+                        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - 5, true);
+                    }
+
+                    itemMeta.setLore(itemLore);
+                    item.setItemMeta(itemMeta);
+                    return;
                 }
             }
         }
