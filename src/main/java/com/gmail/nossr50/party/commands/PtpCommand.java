@@ -84,7 +84,7 @@ public class PtpCommand implements CommandExecutor {
         }
 
         if (!mcMMOTarget.getPtpConfirmRequired()) {
-            return handlePartyTeleportEvent();
+            return handlePartyTeleportEvent(player, target);
         }
 
         mcMMOTarget.setPtpRequest(player);
@@ -132,7 +132,7 @@ public class PtpCommand implements CommandExecutor {
             }
         }
 
-        return handlePartyTeleportEvent();
+        return handlePartyTeleportEvent(target, player);
     }
 
     private boolean acceptAnyTeleportRequest() {
@@ -197,7 +197,7 @@ public class PtpCommand implements CommandExecutor {
         return true;
     }
 
-    private boolean handlePartyTeleportEvent() {
+    private boolean handlePartyTeleportEvent(Player player, Player target) {
         McMMOPlayer mcMMOPlayer= Users.getPlayer(player);
 
         McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, mcMMOPlayer.getParty().getName());
