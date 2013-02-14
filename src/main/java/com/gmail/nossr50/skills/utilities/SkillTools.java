@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.utilities;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.block.Block;
@@ -553,25 +552,18 @@ public class SkillTools {
                     int efficiencyLevel = item.getEnchantmentLevel(Enchantment.DIG_SPEED);
                     List<String> itemLore = itemMeta.getLore();
 
-                    for (Iterator<String> loreIterator = itemLore.iterator(); loreIterator.hasNext();) {
-                        String lore = loreIterator.next();
-
-                        if (lore.equalsIgnoreCase("mcMMO Ability Tool")) {
-                            loreIterator.remove();
-                            break;
+                    if (itemLore.remove("mcMMO Ability Tool")) {
+                        if (efficiencyLevel <= 5) {
+                            item.removeEnchantment(Enchantment.DIG_SPEED);
                         }
-                    }
+                        else {
+                            itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - 5, true);
+                        }
 
-                    if (efficiencyLevel == 5) {
-                        item.removeEnchantment(Enchantment.DIG_SPEED);
+                        itemMeta.setLore(itemLore);
+                        item.setItemMeta(itemMeta);
+                        return;
                     }
-                    else {
-                        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - 5, true);
-                    }
-
-                    itemMeta.setLore(itemLore);
-                    item.setItemMeta(itemMeta);
-                    return;
                 }
             }
         }
