@@ -92,7 +92,7 @@ public class PlayerListener implements Listener {
 
                         if (itemLore.remove("mcMMO Ability Tool")) {
                             if (efficiencyLevel <= 5) {
-                                item.removeEnchantment(Enchantment.DIG_SPEED);
+                                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
                             }
                             else {
                                 itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - 5, true);
