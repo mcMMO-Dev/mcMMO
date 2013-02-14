@@ -248,12 +248,12 @@ public class BlockListener implements Listener {
     }
 
     /**
-     * Handle BlockDamage events where the event is modified.
+     * Monitor BlockDamage events.
      *
-     * @param event The event to modify
+     * @param event The event to watch
      */
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onBlockDamageHigher(BlockDamageEvent event) {
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onBlockDamage(BlockDamageEvent event) {
         if (event instanceof FakeBlockDamageEvent) {
             return;
         }
@@ -303,12 +303,12 @@ public class BlockListener implements Listener {
     }
 
     /**
-     * Monitor BlockDamage events.
+     * Handle BlockDamage events where the event is modified.
      *
-     * @param event The event to watch
+     * @param event The event to modify
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onBlockDamage(BlockDamageEvent event) {
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockDamageHigher(BlockDamageEvent event) {
         if (event instanceof FakeBlockDamageEvent) {
             return;
         }
