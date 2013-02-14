@@ -328,7 +328,8 @@ public class BlockListener implements Listener {
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        if (profile.getAbilityMode(AbilityType.GREEN_TERRA) && BlockChecks.canMakeMossy(block)) {
+        // Except right here, which is for the Green Thumb activation, not the normal effect of Green Terra
+        if (profile.getAbilityMode(AbilityType.GREEN_TERRA) && BlockChecks.canMakeMossy(block) && Permissions.greenThumbBlocks(player)) {
             Herbalism.greenTerra(player, block);
         }
         else if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && SkillTools.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {
