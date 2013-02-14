@@ -175,11 +175,19 @@ public class BlockListener implements Listener {
                 if (ItemChecks.isPickaxe(heldItem)) {
                     MiningManager miningManager = new MiningManager(mcMMOPlayer);
                     miningManager.miningBlockCheck(block);
+
+                    if (profile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
+                        miningManager.miningBlockCheck(block);
+                    }
                 }
             }
             else {
                 MiningManager miningManager = new MiningManager(mcMMOPlayer);
                 miningManager.miningBlockCheck(block);
+
+                if (profile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
+                    miningManager.miningBlockCheck(block);
+                }
             }
         }
 
@@ -205,10 +213,18 @@ public class BlockListener implements Listener {
             if (Excavation.requiresTool) {
                 if (ItemChecks.isShovel(heldItem)) {
                     Excavation.excavationProcCheck(block, mcMMOPlayer);
+
+                    if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
+                        Excavation.gigaDrillBreaker(mcMMOPlayer, block);
+                    }
                 }
             }
             else {
                 Excavation.excavationProcCheck(block, mcMMOPlayer);
+
+                if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
+                    Excavation.gigaDrillBreaker(mcMMOPlayer, block);
+                }
             }
         }
 
@@ -333,18 +349,6 @@ public class BlockListener implements Listener {
         if (profile.getAbilityMode(AbilityType.GREEN_TERRA) && BlockChecks.canMakeMossy(block) && Permissions.greenThumbBlocks(player)) {
             Herbalism.greenTerra(player, block);
         }
-        else if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && SkillTools.triggerCheck(player, block, AbilityType.GIGA_DRILL_BREAKER)) {
-            if (Excavation.requiresTool) {
-                if (ItemChecks.isShovel(heldItem)) {
-                    event.setInstaBreak(true);
-                    Excavation.gigaDrillBreaker(mcMMOPlayer, block);
-                }
-            }
-            else {
-                event.setInstaBreak(true);
-                Excavation.gigaDrillBreaker(mcMMOPlayer, block);
-            }
-        }
         else if (profile.getAbilityMode(AbilityType.BERSERK)) {
             if (SkillTools.triggerCheck(player, block, AbilityType.BERSERK)) {
                 if (heldItem.getType() == Material.AIR) {
@@ -358,20 +362,6 @@ public class BlockListener implements Listener {
             // Another perm check for the cracked blocks activation
             else if (BlockChecks.canBeCracked(block) && player.hasPermission("mcmmo.ability.unarmed.blockcracker")) {
                 Unarmed.blockCracker(player, block);
-            }
-        }
-        else if (profile.getAbilityMode(AbilityType.SUPER_BREAKER) && SkillTools.triggerCheck(player, block, AbilityType.SUPER_BREAKER)) {
-            MiningManager miningManager = new MiningManager(mcMMOPlayer);
-
-            if (Mining.requiresTool) {
-                if (ItemChecks.isPickaxe(heldItem)) {
-                    event.setInstaBreak(true);
-                    miningManager.superBreakerBlockCheck(block);
-                }
-            }
-            else {
-                event.setInstaBreak(true);
-                miningManager.superBreakerBlockCheck(block);
             }
         }
         else if ((profile.getSkillLevel(SkillType.WOODCUTTING) >= AdvancedConfig.getInstance().getLeafBlowUnlockLevel()) && BlockChecks.isLeaves(block)) {

@@ -5,16 +5,13 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
-import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
@@ -128,19 +125,8 @@ public class Excavation {
      * @param mcMMOPlayer The player using the ability
      * @param block The block to check
      */
-    public static void gigaDrillBreaker(McMMOPlayer mcMMOplayer, Block block) {
-        Player player = mcMMOplayer.getPlayer();
-
-        SkillTools.abilityDurabilityLoss(player.getItemInHand(), Misc.toolDurabilityLoss);
-
-        if (!mcMMO.placeStore.isTrue(block) && Misc.blockBreakSimulate(block, player, true)) {
-            FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
-
-            Excavation.excavationProcCheck(block, mcMMOplayer);
-            Excavation.excavationProcCheck(block, mcMMOplayer);
-        }
-
-        player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
-    }
+    public static void gigaDrillBreaker(McMMOPlayer mcMMOPlayer, Block block) {
+        Excavation.excavationProcCheck(block, mcMMOPlayer);
+        Excavation.excavationProcCheck(block, mcMMOPlayer);
+   }
 }

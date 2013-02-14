@@ -1,10 +1,16 @@
 package com.gmail.nossr50.skills.utilities;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -57,7 +63,7 @@ public class SkillTools {
     public static boolean cooldownOver(long oldTime, int cooldown, Player player) {
         long currentTime = System.currentTimeMillis();
         int adjustedCooldown = cooldown;
-
+        
         //Reduced Cooldown Donor Perks
         if (Permissions.cooldownsHalved(player)) {
             adjustedCooldown = (int) (adjustedCooldown * 0.5);
@@ -202,6 +208,9 @@ public class SkillTools {
             if (profile.getAbilityMode(ability) && (profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR) <= curTime) {
                 if (ability == AbilityType.BERSERK) {
                     player.setCanPickupItems(true);
+                }
+                else if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
+                    handleAbilitySpeedDecrease(player);
                 }
 
                 profile.setAbilityMode(ability, false);
@@ -427,8 +436,12 @@ public class SkillTools {
 
             profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
             profile.setAbilityMode(ability, true);
+
             if (ability == AbilityType.BERSERK) {
                 player.setCanPickupItems(false);
+            }
+            else if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
+                handleAbilitySpeedIncrease(player.getItemInHand());
             }
         }
     }
@@ -511,5 +524,56 @@ public class SkillTools {
         }
     
         return skillLevel;
+    }
+
+    public static void handleAbilitySpeedIncrease(ItemStack heldItem) {
+        int efficiencyLevel = heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
+        ItemMeta itemMeta = heldItem.getItemMeta();
+        List<String> itemLore = new ArrayList<String>();
+
+        if (itemMeta.hasLore()) {
+            itemLore = itemMeta.getLore();
+        }
+
+        itemLore.add("mcMMO Ability Tool");
+        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + 5, true);
+
+        itemMeta.setLore(itemLore);
+        heldItem.setItemMeta(itemMeta);
+    }
+
+    public static void handleAbilitySpeedDecrease(Player player) {
+        PlayerInventory playerInventory = player.getInventory();
+
+        for (ItemStack item : playerInventory.getContents()) {
+            if (item.containsEnchantment(Enchantment.DIG_SPEED)) {
+                ItemMeta itemMeta = item.getItemMeta();
+
+                if (itemMeta.hasLore()) {
+                    int efficiencyLevel = item.getEnchantmentLevel(Enchantment.DIG_SPEED);
+                    List<String> itemLore = itemMeta.getLore();
+
+                    for (Iterator<String> loreIterator = itemLore.iterator(); loreIterator.hasNext();) {
+                        String lore = loreIterator.next();
+
+                        if (lore.equalsIgnoreCase("mcMMO Ability Tool")) {
+                            loreIterator.remove();
+                            break;
+                        }
+                    }
+
+                    if (efficiencyLevel == 5) {
+                        item.removeEnchantment(Enchantment.DIG_SPEED);
+                    }
+                    else {
+                        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - 5, true);
+                    }
+
+                    itemMeta.setLore(itemLore);
+                    item.setItemMeta(itemMeta);
+                    return;
+                }
+            }
+        }
     }
 }

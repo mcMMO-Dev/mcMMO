@@ -7,7 +7,6 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.utilities.SkillType;
@@ -121,27 +120,5 @@ public class MiningManager extends SkillManager{
         if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.processDrops();
         }
-    }
-
-    /**
-     * Handle the Super Breaker ability.
-     *
-     * @param block The block being affected
-     */
-    public void superBreakerBlockCheck(Block block) {
-        if (mcMMO.placeStore.isTrue(block) || !Misc.blockBreakSimulate(block, mcMMOPlayer.getPlayer(), true)) {
-            return;
-        }
-
-        SuperBreakerEventHandler eventHandler = new SuperBreakerEventHandler(this, block);
-
-        if (!eventHandler.tierCheck()) {
-            return;
-        }
-
-        eventHandler.callFakeArmswing();
-        eventHandler.processDurabilityLoss();
-        eventHandler.processDropsAndXP();
-        eventHandler.playSound();
     }
 }

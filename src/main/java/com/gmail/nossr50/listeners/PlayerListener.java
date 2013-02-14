@@ -12,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -37,6 +38,7 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.utilities.AbilityType;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.BlockChecks;
@@ -78,6 +80,21 @@ public class PlayerListener implements Listener {
         if (mcMMOPlayer.inParty() && !Permissions.party(player)) {
             mcMMOPlayer.removeParty();
             player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
+        }
+    }
+
+    /**
+     * Handle PlayerDropItem events that involve modifying the event.
+     *
+     * @param event The event to modify
+     */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
+        Player player = event.getPlayer();
+        PlayerProfile playerProfile = Users.getPlayer(player).getProfile();
+
+        if (playerProfile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) || playerProfile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
+            event.setCancelled(true);
         }
     }
 
