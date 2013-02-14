@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -545,6 +546,10 @@ public class SkillTools {
         PlayerInventory playerInventory = player.getInventory();
 
         for (ItemStack item : playerInventory.getContents()) {
+            if (item == null || item.getType() == Material.AIR ) {
+                continue;
+            }
+
             if (item.containsEnchantment(Enchantment.DIG_SPEED)) {
                 ItemMeta itemMeta = item.getItemMeta();
 

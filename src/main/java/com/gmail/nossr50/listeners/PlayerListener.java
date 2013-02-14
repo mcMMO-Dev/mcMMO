@@ -79,6 +79,10 @@ public class PlayerListener implements Listener {
 
         if (playerProfile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) || playerProfile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
             for (ItemStack item : event.getDrops()) {
+                if (item == null || item.getType() == Material.AIR ) {
+                    continue;
+                }
+
                 if (item.containsEnchantment(Enchantment.DIG_SPEED)) {
                     ItemMeta itemMeta = item.getItemMeta();
 
