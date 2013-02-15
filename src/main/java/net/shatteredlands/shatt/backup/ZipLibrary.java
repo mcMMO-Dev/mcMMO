@@ -28,15 +28,16 @@ public class ZipLibrary {
 
     public static void mcMMObackup() throws IOException {
         if (Config.getInstance().getUseMySQL()) {
-            mcMMO.p.getLogger().info("No Backup performed, in SQL Mode.");
-            return;
+            mcMMO.p.getLogger().info("This server is running in SQL Mode.");
+            mcMMO.p.getLogger().info("Only config files will be backed up.");
         }
 
         try {
             if (BackupDir.mkdir()) {
                 mcMMO.p.getLogger().info("Created Backup Directory.");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             mcMMO.p.getLogger().severe(e.toString());
         }
 
@@ -47,7 +48,10 @@ public class ZipLibrary {
 
         //Create the Source List, and add directories/etc to the file.
         List<File> sources = new ArrayList<File>();
-        sources.add(FlatFileDirectory);
+        if (!Config.getInstance().getUseMySQL()) {
+            sources.add(FlatFileDirectory);
+        }
+
         sources.add(ConfigFile);
         sources.add(TreasuresFile);
         sources.add(AdvancedConfigFile);

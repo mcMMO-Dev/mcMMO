@@ -65,6 +65,7 @@ Version 1.4.00-dev
  = Fixed a bug where a new party leader wasn't appointed, after the previous party leader left
  = Fixed a bug where Disarm and Deflect had wrong values
  = Fixed Magic Hunter (Fishing ability) favoring certain enchants
+ ! Config files are now backed up even when running in SQL mode
  ! Changed /p and /a to use /partychat and /adminchat as the default command name. The use of /p, /pc, /a, and /ac is still supported.
  ! We're now using Bukkit sounds instead of Spout sounds.
  ! It is now possible to use a negative number for Max_Level in treasures.yml to not use a maximum level, changed default file accordingly
