@@ -61,6 +61,7 @@ Version 1.4.00-dev
  = Fixed a bug where /party kick would trigger the PartyChangeEvent for the wrong player
  = Fixed /party kick not working on offline players
  = Fixed a bug where party join messages weren't displayed
+ = Fixed a bug where a new party leader wasn't appointed, after the previous party leader left
  = Fixed a bug where Disarm and Deflect had wrong values
  = Fixed Magic Hunter (Fishing ability) favoring certain enchants
  ! Changed /p and /a to use /partychat and /adminchat as the default command name. The use of /p, /pc, /a, and /ac is still supported.
