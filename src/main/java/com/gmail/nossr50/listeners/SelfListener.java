@@ -1,6 +1,7 @@
 package com.gmail.nossr50.listeners;
 
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.gmail.nossr50.mcMMO;
@@ -15,7 +16,7 @@ public class SelfListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerXpGain(McMMOPlayerXpGainEvent event) {
         int xp = event.getXpGained();
 

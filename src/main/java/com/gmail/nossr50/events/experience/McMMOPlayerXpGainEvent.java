@@ -21,4 +21,11 @@ public class McMMOPlayerXpGainEvent extends McMMOPlayerExperienceEvent {
     public int getXpGained() {
         return xpGained;
     }
+
+    /**
+     * @param xpGained int amount of experience gained in this event
+     */
+    public void setXpGained(int xpGained) {
+        this.xpGained = xpGained;
+    }
 }
