@@ -80,6 +80,7 @@ Version 1.4.00-dev
  ! Changed backup task to include ALL config files
  ! Deprecated most functions in ExperienceAPI, replaced them with identical versions that use a String for the SkillName rather than the SkillType enum values
  ! Changed Super Breaker & Giga Drill Breaker to be an enchantment-based boost, rather than an instabreak.
+ ! Changed locales to fall back on English when translated strings cannot be found.
  - Removed Party "master/apprentice" system. Replaced with the new party XP share feature.
  - Removed unused "healthbar" files from the resources
  - Removed config options for disabling commands from the config.yml. This should instead be done through permissions.
