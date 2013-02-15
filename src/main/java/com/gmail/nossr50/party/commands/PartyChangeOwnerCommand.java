@@ -9,13 +9,12 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyChangeOwnerCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Permissions.hasPermission(sender, "mcmmo.commands.party.owner")) {
+        if (!sender.hasPermission("mcmmo.commands.party.owner")) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }

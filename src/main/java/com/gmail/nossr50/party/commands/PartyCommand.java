@@ -9,7 +9,6 @@ import com.gmail.nossr50.chat.commands.PartyChatCommand;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyCommand implements CommandExecutor {
@@ -40,7 +39,7 @@ public class PartyCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Permissions.hasPermission(sender, "mcmmo.commands.party")) {
+        if (!sender.hasPermission("mcmmo.commands.party")) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }

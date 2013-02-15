@@ -7,14 +7,13 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyChangePasswordCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Permissions.hasPermission(sender, "mcmmo.commands.party.password")) {
+        if (!sender.hasPermission("mcmmo.commands.party.password")) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }

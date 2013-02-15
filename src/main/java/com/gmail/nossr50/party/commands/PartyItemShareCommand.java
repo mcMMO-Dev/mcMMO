@@ -10,8 +10,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.party.ShareHandler.ShareMode;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
 public class PartyItemShareCommand implements CommandExecutor {
@@ -24,7 +23,7 @@ public class PartyItemShareCommand implements CommandExecutor {
             return true;
         }
 
-        if (!Permissions.hasPermission(sender, "mcmmo.commands.party.itemshare")) {
+        if (!sender.hasPermission("mcmmo.commands.party.itemshare")) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
@@ -60,7 +59,7 @@ public class PartyItemShareCommand implements CommandExecutor {
         playerParty.setItemShareMode(mode);
 
         for (Player member : playerParty.getOnlineMembers()) {
-            member.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Item"), LocaleLoader.getString("Party.ShareMode." + StringUtils.getCapitalized(mode.toString()))));
+            member.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Item"), LocaleLoader.getString("Party.ShareMode." + Misc.getCapitalized(mode.toString()))));
         }
     }
 }

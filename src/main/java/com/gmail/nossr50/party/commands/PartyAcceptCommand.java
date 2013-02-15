@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyAcceptCommand implements CommandExecutor {
@@ -17,7 +16,7 @@ public class PartyAcceptCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Permissions.hasPermission(sender, "mcmmo.commands.party.accept")) {
+        if (!sender.hasPermission("mcmmo.commands.party.accept")) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }

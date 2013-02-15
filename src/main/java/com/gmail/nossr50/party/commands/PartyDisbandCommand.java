@@ -9,13 +9,12 @@ import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyDisbandCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Permissions.hasPermission(sender, "mcmmo.commands.party.disband")) {
+        if (!sender.hasPermission("mcmmo.commands.party.disband")) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
