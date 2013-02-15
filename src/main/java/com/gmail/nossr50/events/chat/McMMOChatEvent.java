@@ -5,7 +5,7 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.Plugin;
 
-public class McMMOChatEvent extends Event implements Cancellable {
+public abstract class McMMOChatEvent extends Event implements Cancellable {
     private boolean cancelled;
     private Plugin plugin;
     private String sender;
