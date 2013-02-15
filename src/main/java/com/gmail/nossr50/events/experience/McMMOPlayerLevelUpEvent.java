@@ -12,7 +12,12 @@ public class McMMOPlayerLevelUpEvent extends McMMOPlayerExperienceEvent {
 
     public McMMOPlayerLevelUpEvent(Player player, SkillType skill) {
         super(player, skill);
-        this.levelsGained = 1;    // Always 1 for now as we call in the loop where the levelups are calculated, could change later!
+        this.levelsGained = 1;
+    }
+
+    public McMMOPlayerLevelUpEvent(Player player, SkillType skill, int levelsGained) {
+        super(player, skill);
+        this.levelsGained = levelsGained;
     }
 
     /**
@@ -20,5 +25,12 @@ public class McMMOPlayerLevelUpEvent extends McMMOPlayerExperienceEvent {
      */
     public int getLevelsGained() {
         return levelsGained;
+    }
+
+    /**
+     * @param levelsGained int number of levels gained in this event
+     */
+    public void setLevelsGained(int levelsGained) {
+        this.levelsGained = levelsGained;
     }
 }
