@@ -545,32 +545,39 @@ public class SkillTools {
     public static void handleAbilitySpeedDecrease(Player player) {
         PlayerInventory playerInventory = player.getInventory();
 
-        for (ItemStack item : playerInventory.getContents()) {
-            if (item == null || item.getType() == Material.AIR ) {
-                continue;
-            }
+        for (int i = 0; i < playerInventory.getContents().length; i++) {
+            ItemStack item = playerInventory.getItem(i);
+            playerInventory.setItem(i, removeAbilityBuff(item));
+        }
+    }
 
-            if (item.containsEnchantment(Enchantment.DIG_SPEED)) {
-                ItemMeta itemMeta = item.getItemMeta();
+    public static ItemStack removeAbilityBuff(ItemStack item) {
+        if (item == null || item.getType() == Material.AIR ) {
+            return item;
+        }
 
-                if (itemMeta.hasLore()) {
+        if (item.containsEnchantment(Enchantment.DIG_SPEED)) {
+            ItemMeta itemMeta = item.getItemMeta();
+
+            if (itemMeta.hasLore()) {
+                List<String> itemLore = itemMeta.getLore();
+
+                if (itemLore.remove("mcMMO Ability Tool")) {
                     int efficiencyLevel = item.getEnchantmentLevel(Enchantment.DIG_SPEED);
-                    List<String> itemLore = itemMeta.getLore();
 
-                    if (itemLore.remove("mcMMO Ability Tool")) {
-                        if (efficiencyLevel <= 5) {
-                            itemMeta.removeEnchant(Enchantment.DIG_SPEED);
-                        }
-                        else {
-                            itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - 5, true);
-                        }
-
-                        itemMeta.setLore(itemLore);
-                        item.setItemMeta(itemMeta);
-                        return;
+                    if (efficiencyLevel <= 5) {
+                        itemMeta.removeEnchant(Enchantment.DIG_SPEED);
                     }
+                    else {
+                        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - 5, true);
+                    }
+
+                    itemMeta.setLore(itemLore);
+                    item.setItemMeta(itemMeta);
                 }
             }
         }
+
+        return item;
     }
 }

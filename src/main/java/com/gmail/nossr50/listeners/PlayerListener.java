@@ -1,10 +1,7 @@
 package com.gmail.nossr50.listeners;
 
-import java.util.List;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -24,7 +21,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
@@ -49,8 +45,8 @@ import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Hardcore;
 import com.gmail.nossr50.util.ItemChecks;
-import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
@@ -79,31 +75,7 @@ public class PlayerListener implements Listener {
 
         if (playerProfile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) || playerProfile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
             for (ItemStack item : event.getDrops()) {
-                if (item == null || item.getType() == Material.AIR ) {
-                    continue;
-                }
-
-                if (item.containsEnchantment(Enchantment.DIG_SPEED)) {
-                    ItemMeta itemMeta = item.getItemMeta();
-
-                    if (itemMeta.hasLore()) {
-                        int efficiencyLevel = item.getEnchantmentLevel(Enchantment.DIG_SPEED);
-                        List<String> itemLore = itemMeta.getLore();
-
-                        if (itemLore.remove("mcMMO Ability Tool")) {
-                            if (efficiencyLevel <= 5) {
-                                itemMeta.removeEnchant(Enchantment.DIG_SPEED);
-                            }
-                            else {
-                                itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - 5, true);
-                            }
-
-                            itemMeta.setLore(itemLore);
-                            item.setItemMeta(itemMeta);
-                            return;
-                        }
-                    }
-                }
+                SkillTools.removeAbilityBuff(item);
             }
         }
     }
