@@ -102,7 +102,7 @@ public class McrankCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.getSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked"))); // Don't bother showing ranking for players without skills
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.getSkillName(skillType), String.valueOf(rankInts[0])));
+                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.getSkillName(skillType), rankInts[0]));
             }
         }
 
@@ -113,7 +113,7 @@ public class McrankCommand implements CommandExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", LocaleLoader.getString("Commands.mcrank.Unranked"))); // Don't bother showing ranking for players without skills
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", String.valueOf(rankInts[0])));
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", rankInts[0]));
         }
     }
 

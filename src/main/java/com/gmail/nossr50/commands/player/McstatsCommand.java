@@ -35,10 +35,10 @@ public class McstatsCommand implements CommandExecutor {
             int powerLevelCap = Config.getInstance().getPowerLevelCap();
 
             if (powerLevelCap != Integer.MAX_VALUE) {
-                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", String.valueOf(mcMMOPlayer.getPowerLevel()), String.valueOf(powerLevelCap)));
+                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", mcMMOPlayer.getPowerLevel(), powerLevelCap));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", String.valueOf(mcMMOPlayer.getPowerLevel())));
+                player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", mcMMOPlayer.getPowerLevel()));
             }
 
             return true;

@@ -54,7 +54,7 @@ public class McTopAsync implements Runnable {
                     }
 
                     // Format: 1. Playername - skill value
-                    sender.sendMessage(String.valueOf(place) + ". " + ChatColor.GREEN + userslist.get(i).get(1) + " - " + ChatColor.WHITE + userslist.get(i).get(0));
+                    sender.sendMessage(place + ". " + ChatColor.GREEN + userslist.get(i).get(1) + " - " + ChatColor.WHITE + userslist.get(i).get(0));
                     place++;
                 }
 

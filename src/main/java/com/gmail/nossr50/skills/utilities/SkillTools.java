@@ -263,11 +263,11 @@ public class SkillTools {
                     }
                 }
                 else {
-                    player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", String.valueOf(skillups), profile.getSkillLevel(skillType)));
+                    player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", skillups, profile.getSkillLevel(skillType)));
                 }
             }
             else {
-                player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", String.valueOf(skillups), profile.getSkillLevel(skillType)));
+                player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", skillups, profile.getSkillLevel(skillType)));
             }
         }
 

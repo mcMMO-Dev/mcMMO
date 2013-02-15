@@ -76,7 +76,7 @@ public class SimpleRepairManager implements RepairManager {
 
         // Level check
         if (skillLevel < repairable.getMinimumLevel()) {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.Adept", String.valueOf(repairable.getMinimumLevel()), StringUtils.getPrettyItemString(item.getTypeId())));
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.Adept", repairable.getMinimumLevel(), StringUtils.getPrettyItemString(item.getTypeId())));
             return;
         }
 
