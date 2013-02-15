@@ -99,12 +99,12 @@
                 <configuration>
                     <artifactSet>
                         <includes>
-                            <include>org.mcstats.bukkit:metrics</include>
+                            <include>com.turt2live.metrics:MetricsExtension</include>
                         </includes>
                     </artifactSet>
                     <relocations>
                         <relocation>
-                            <pattern>org.mcstats</pattern>
+                            <pattern>com.turt2live.metrics</pattern>
                             <shadedPattern>com.gmail.nossr50.util.mcstats</shadedPattern>
                         </relocation>
                     </relocations>
@@ -152,8 +152,8 @@
                 <updatePolicy>always</updatePolicy>
                 <checksumPolicy>fail</checksumPolicy>
             </snapshots>
-            <id>Plugin Metrics</id>
-            <url>http://repo.mcstats.org/content/repositories/public</url>
+            <id>Plugin MetricsExtension</id>
+            <url>http://repo.turt2live.com</url>
         </repository>
     </repositories>
     <dependencies>
@@ -178,9 +178,10 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mcstats.bukkit</groupId>
-            <artifactId>metrics</artifactId>
-            <version>R6</version>
+            <groupId>com.turt2live.metrics</groupId>
+            <artifactId>MetricsExtension</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <type>jar</type>
             <scope>compile</scope>
         </dependency>
     </dependencies>

@@ -17,8 +17,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.mcstats.Metrics;
-import org.mcstats.Metrics.Graph;
+
+import com.turt2live.metrics.Metrics;
+import com.turt2live.metrics.Metrics.Graph;
 
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
