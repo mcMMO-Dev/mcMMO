@@ -10,7 +10,6 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public class SkillresetCommand implements CommandExecutor {
@@ -48,7 +47,7 @@ public class SkillresetCommand implements CommandExecutor {
                         continue;
                     }
 
-                    if (!sender.hasPermission("mcmmo.commands.skillreset." + SkillTools.getSkillName(skillType).toLowerCase())) {
+                    if (!sender.hasPermission("mcmmo.commands.skillreset." + skillType.toString().toLowerCase())) {
                         sender.sendMessage(command.getPermissionMessage());
                         continue;
                     }
@@ -62,13 +61,13 @@ public class SkillresetCommand implements CommandExecutor {
                 skill = SkillType.getSkill(args[0]);
                 skillName = SkillTools.getSkillName(skill);
 
-                if (!sender.hasPermission("mcmmo.commands.skillreset." + skillName.toLowerCase())) {
+                if (!sender.hasPermission("mcmmo.commands.skillreset." + skill.toString().toLowerCase())) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
 
                 profile.modifySkill(skill, 0);
-                sender.sendMessage(LocaleLoader.getString("Commands.Reset.Single", StringUtils.getCapitalized(skillName)));
+                sender.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skillName));
             }
 
             return true;
@@ -91,7 +90,7 @@ public class SkillresetCommand implements CommandExecutor {
                 skill = SkillType.getSkill(args[1]);
                 skillName = SkillTools.getSkillName(skill);
 
-                if (!sender.hasPermission("mcmmo.commands.skillreset.others." + skillName.toLowerCase())) {
+                if (!sender.hasPermission("mcmmo.commands.skillreset.others." + skill.toString().toLowerCase())) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -114,7 +113,7 @@ public class SkillresetCommand implements CommandExecutor {
                             continue;
                         }
 
-                        if (!sender.hasPermission("mcmmo.commands.skillreset.others." + SkillTools.getSkillName(skillType).toLowerCase())) {
+                        if (!sender.hasPermission("mcmmo.commands.skillreset.others." + skillType.toString().toLowerCase())) {
                             sender.sendMessage(command.getPermissionMessage());
                             continue;
                         }
@@ -137,7 +136,7 @@ public class SkillresetCommand implements CommandExecutor {
                             continue;
                         }
 
-                        if (!sender.hasPermission("mcmmo.commands.skillreset.others." + SkillTools.getSkillName(skillType).toLowerCase())) {
+                        if (!sender.hasPermission("mcmmo.commands.skillreset.others." + skillType.toString().toLowerCase())) {
                             sender.sendMessage(command.getPermissionMessage());
                             continue;
                         }
@@ -149,7 +148,7 @@ public class SkillresetCommand implements CommandExecutor {
                 }
                 else {
                     profile.modifySkill(skill, 0);
-                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Reset.Single", StringUtils.getCapitalized(skillName)));
+                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Reset.Single", skillName));
                 }
             }
 
@@ -157,7 +156,7 @@ public class SkillresetCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", StringUtils.getCapitalized(skillName), args[0]));
+                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", skillName, args[0]));
             }
 
             return true;
