@@ -180,7 +180,7 @@ public final class Database {
             break;
 
         case INDEX:
-            if (read("SHOW INDEX FROM " + tablePrefix + "skills").size() != 13) {
+            if (read("SHOW INDEX FROM " + tablePrefix + "skills").size() != 13 && checkConnected()) {
                 mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
                 write("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_taming` (`taming`) USING BTREE, "
                         + "ADD INDEX `idx_mining` (`mining`) USING BTREE, "
