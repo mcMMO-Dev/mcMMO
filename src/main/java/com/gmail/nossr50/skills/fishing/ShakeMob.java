@@ -173,7 +173,7 @@ public final class ShakeMob {
             possibleDrops.put(new ItemStack(Material.SNOW_BALL, Misc.getRandom().nextInt(4) + 1), 97);
             break;
         case SQUID:
-            possibleDrops.put(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 100);
+            possibleDrops.put(new ItemStack(Material.INK_SACK, 1, DyeColor.BLACK.getDyeData()), 100);
             break;
         case WITCH:
             possibleDrops.put(new Potion(PotionType.INSTANT_HEAL).toItemStack(1), 1);
