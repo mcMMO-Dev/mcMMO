@@ -110,7 +110,7 @@ public class McrankCommand implements CommandExecutor {
         int[] rankInts = Leaderboard.getPlayerRank(playerName);
 
         if (rankInts[1] == 0) {
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overalll", LocaleLoader.getString("Commands.mcrank.Unranked"))); // Don't bother showing ranking for players without skills
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", LocaleLoader.getString("Commands.mcrank.Unranked"))); // Don't bother showing ranking for players without skills
         }
         else {
             sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", String.valueOf(rankInts[0])));
