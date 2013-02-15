@@ -73,6 +73,7 @@ Version 1.4.00-dev
  ! Changed how Berserk handles not picking up items to avoid listening to PlayerPickupItemEvent
  ! Moved Hylian Luck into a separate listener since it actually cancels the event and shouldn't just be on MONITOR.
  ! Changed how Tree Feller is handled, it should now put less stress on the CPU
+ ! Changed Tree Feller to work on huge mushrooms
  ! Changed Fisherman's Diet and Farmer's Diet to use two seperate config values
  ! Major refactoring - please take note, this WILL break any mcMMO-related plugin not properly hooking into the API.
  ! Changed the way party commands work, use /party ? to check how to use the new commands

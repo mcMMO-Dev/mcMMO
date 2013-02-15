@@ -271,6 +271,8 @@ Experience:
         Spruce: 80
         Birch: 90
         Jungle: 100
+        Huge_Mushroom_Red: 70
+        Huge_Mushroom_Brown: 70
     Herbalism:
         Sugar_Cane: 30
         Cactus: 30

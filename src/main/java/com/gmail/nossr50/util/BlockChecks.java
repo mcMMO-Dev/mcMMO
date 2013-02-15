@@ -300,6 +300,8 @@ public final class BlockChecks {
         switch (block.getType()) {
         case LOG:
         case LEAVES:
+        case HUGE_MUSHROOM_1:
+        case HUGE_MUSHROOM_2:
             return true;
 
         default:
