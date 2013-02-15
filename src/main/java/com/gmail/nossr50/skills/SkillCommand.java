@@ -13,7 +13,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
@@ -50,8 +49,8 @@ public abstract class SkillCommand implements CommandExecutor {
         }
 
         skillValue = profile.getSkillLevel(skill);
-        isLucky = Permissions.lucky(player, skill);
-        hasEndurance = (Permissions.activationTwelve(player) || Permissions.activationEight(player) || Permissions.activationFour(player));
+        isLucky = player.hasPermission("mcmmo.perks.lucky." + skill.toString().toLowerCase());
+        hasEndurance = (player.hasPermission("mcmmo.perks.activationtime.twelveseconds") || player.hasPermission("mcmmo.perks.activationtime.eightseconds") || player.hasPermission("mcmmo.perks.activationtime.fourseconds"));
 
         dataCalculations();
         permissionsCheck();
@@ -128,13 +127,13 @@ public abstract class SkillCommand implements CommandExecutor {
         int length = 2 + (int) (skillValue / Misc.abilityLengthIncreaseLevel);
         int enduranceLength = 0;
 
-        if (Permissions.activationTwelve(player)) {
+        if (player.hasPermission("mcmmo.perks.activationtime.twelveseconds")) {
             enduranceLength = length + 12;
         }
-        else if (Permissions.activationEight(player)) {
+        else if (player.hasPermission("mcmmo.perks.activationtime.eightseconds")) {
             enduranceLength = length + 8;
         }
-        else if (Permissions.activationFour(player)) {
+        else if (player.hasPermission("mcmmo.perks.activationtime.fourseconds")) {
             enduranceLength = length + 4;
         }
 
