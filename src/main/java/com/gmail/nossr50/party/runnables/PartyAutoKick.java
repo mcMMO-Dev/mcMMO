@@ -18,7 +18,9 @@ public class PartyAutoKick implements Runnable {
         long currentTime = System.currentTimeMillis();
         long kickTime = 24L * 60L * 60L * 1000L * Config.getInstance().getAutoPartyKickTime();
 
-        for (Party party : PartyManager.getParties()) {
+        for (Iterator<Party> partyIterator = PartyManager.getParties().iterator(); partyIterator.hasNext();) {
+            Party party = partyIterator.next();
+
             for (Iterator<OfflinePlayer> memberIterator = party.getMembers().iterator(); memberIterator.hasNext();) {
                 OfflinePlayer member = memberIterator.next();
 
