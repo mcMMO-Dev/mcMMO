@@ -12,6 +12,7 @@ import com.gmail.nossr50.config.Config;
 public final class LocaleLoader {
     private static final String BUNDLE_ROOT = "com.gmail.nossr50.locale.locale";
     private static ResourceBundle bundle = null;
+    private static ResourceBundle enBundle = null;
 
     private LocaleLoader() {};
 
@@ -32,21 +33,30 @@ public final class LocaleLoader {
         }
 
         try {
-            String output = bundle.getString(key);
-
-            if (messageArguments != null) {
-                MessageFormat formatter = new MessageFormat("");
-                formatter.applyPattern(output);
-                output = formatter.format(messageArguments);
+            return getString(key, bundle, messageArguments);
+        }
+        catch (MissingResourceException ex) {
+            try {
+                return getString(key, enBundle, messageArguments);
             }
-
-            output = addColors(output);
-
-            return output;
+            catch (MissingResourceException ex2) {
+                return '!' + key + '!';
+            }
         }
-        catch (MissingResourceException e) {
-            return '!' + key + '!';
+    }
+
+    private static String getString(String key, ResourceBundle bundle, Object ... messageArguments) throws MissingResourceException {
+        String output = bundle.getString(key);
+
+        if (messageArguments != null) {
+            MessageFormat formatter = new MessageFormat("");
+            formatter.applyPattern(output);
+            output = formatter.format(messageArguments);
         }
+
+        output = addColors(output);
+
+        return output;
     }
 
     public static Locale getCurrentLocale() {
@@ -70,6 +80,7 @@ public final class LocaleLoader {
             }
 
             bundle = ResourceBundle.getBundle(BUNDLE_ROOT, locale);
+            enBundle = ResourceBundle.getBundle(BUNDLE_ROOT, Locale.US);
         }
     }
 
