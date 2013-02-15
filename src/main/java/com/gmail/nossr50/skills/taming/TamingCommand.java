@@ -98,7 +98,7 @@ public class TamingCommand extends SkillCommand {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.4", Taming.fastFoodServiceUnlockLevel)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.8"), LocaleLoader.getString("Taming.Ability.Bonus.9", percent.format(Taming.fastFoodServiceActivationChance))));
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.8"), LocaleLoader.getString("Taming.Ability.Bonus.9", percent.format(Taming.fastFoodServiceActivationChance / 100D))));
             }
         }
 
