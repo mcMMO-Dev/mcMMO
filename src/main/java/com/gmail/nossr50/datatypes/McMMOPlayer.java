@@ -16,7 +16,6 @@ import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.spout.huds.SpoutHud;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 
 public class McMMOPlayer {
     private Player player;
@@ -142,19 +141,19 @@ public class McMMOPlayer {
         }
 
         // TODO: Too many permission checks here, is there no way to avoid that? 
-        if (Permissions.xpQuadruple(player)) {
+        if (player.hasPermission("mcmmo.perks.xp.quadruple")) {
             xp *= 4;
         }
-        else if (Permissions.xpTriple(player)) {
+        else if (player.hasPermission("mcmmo.perks.xp.triple")) {
             xp *= 3;
         }
-        else if (Permissions.xpDoubleAndOneHalf(player)) {
+        else if (player.hasPermission("mcmmo.perks.xp.150percentboost")) {
             xp *= 2.5;
         }
-        else if (Permissions.xpDouble(player)) {
+        else if (player.hasPermission("mcmmo.perks.xp.150percentboost")) {
             xp *= 2;
         }
-        else if (Permissions.xpOneAndOneHalf(player)) {
+        else if (player.hasPermission("mcmmo.perks.xp.50percentboost")) {
             xp *= 1.5;
         }
 
