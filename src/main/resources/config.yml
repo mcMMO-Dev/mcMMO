@@ -16,6 +16,8 @@ General:
     Stats_Tracking: true
     #Allow mcMMO to inform other plugins of damage being dealt
     Event_Callback: true
+    #Allow mcMMO to create zip backups for flatfile data on shutdown.
+    Generate_Backups: true
     Power_Level_Cap: 0
 
 Database_Purging:

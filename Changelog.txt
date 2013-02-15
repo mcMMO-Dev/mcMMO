@@ -32,6 +32,7 @@ Version 1.4.00-dev
  + Added "Chinese (Taiwan)" localization files (zh_TW)
  + Added '/hardcore' and '/vampirism' commands for toggling these modes on or off.
  + Added Block Cracker to Unarmed's Berserk, turn smooth brick into cracked smooth brick
+ + Added config option to disable automatic zip backups.
  = Fixed Green Terra not also checking Green Thumb permissions
  = Fixed bug where splash potions could raise a player's unarmed level
  = Fixed bug where fired arrows could raise skill levels other than Archery

@@ -186,12 +186,14 @@ public class mcMMO extends JavaPlugin {
         placeStore.saveAll(); // Save our metadata
         placeStore.cleanUp(); // Cleanup empty metadata stores
 
-        // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
-        try {
-            ZipLibrary.mcMMObackup();
-        }
-        catch (IOException e) {
-            getLogger().severe(e.toString());
+        if (Config.getInstance().getBackupsEnabled()) {
+            // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
+            try {
+                ZipLibrary.mcMMObackup();
+            }
+            catch (IOException e) {
+                getLogger().severe(e.toString());
+            }
         }
 
         getLogger().info("Was disabled."); //How informative!

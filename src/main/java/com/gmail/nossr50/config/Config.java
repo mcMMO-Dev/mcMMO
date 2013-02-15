@@ -36,6 +36,7 @@ public class Config extends ConfigLoader {
     public int getSaveInterval() { return config.getInt("General.Save_Interval", 10); }
     public boolean getStatsTrackingEnabled() { return config.getBoolean("General.Stats_Tracking", true); }
     public boolean getEventCallbackEnabled() { return config.getBoolean("General.Event_Callback", true); }
+    public boolean getBackupsEnabled() { return config.getBoolean("General.Generate_Backups", true); }
     public boolean getPartyDisplayNames() { return config.getBoolean("Commands.p.Use_Display_Names", true); }
     public boolean getAdminDisplayNames() { return config.getBoolean("Commands.a.Use_Display_Names", true); }
 
