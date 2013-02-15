@@ -212,7 +212,7 @@ public final class PartyManager {
         else {
             //If the leaving player was the party leader, appoint a new leader from the party members
             if (party.getLeader().equals(player.getName())) {
-                String newLeader = members.get(0).getName().toString();
+                String newLeader = members.get(0).getName();
                 party.setLeader(newLeader);
             }
 
