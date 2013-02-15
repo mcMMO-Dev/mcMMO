@@ -13,6 +13,7 @@ import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.database.Leaderboard;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.StringUtils;
 
 public class MctopCommand implements CommandExecutor {
@@ -30,10 +31,7 @@ public class MctopCommand implements CommandExecutor {
                 display(Integer.parseInt(args[0]), "ALL", sender, useMySQL, command);
             }
             else if (SkillTools.isSkill(args[0])) {
-                display(1, args[0], sender, useMySQL, command);
-            }
-            else if (SkillTools.isLocalizedSkill(args[0])) {
-                display(1, SkillTools.translateLocalizedSkill(args[0]), sender, useMySQL, command);
+                display(1, SkillType.getSkill(args[0]).toString(), sender, useMySQL, command);
             }
             else {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
@@ -47,10 +45,7 @@ public class MctopCommand implements CommandExecutor {
             }
 
             if (SkillTools.isSkill(args[0])) {
-                display(Integer.parseInt(args[1]), args[0], sender, useMySQL, command);
-            }
-            else if (SkillTools.isLocalizedSkill(args[0])) {
-                display(Integer.parseInt(args[1]), SkillTools.translateLocalizedSkill(args[0]), sender, useMySQL, command);
+                display(Integer.parseInt(args[1]), SkillType.getSkill(args[0]).toString(), sender, useMySQL, command);
             }
             else {
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));

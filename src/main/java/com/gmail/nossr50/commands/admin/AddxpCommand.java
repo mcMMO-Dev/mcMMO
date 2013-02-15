@@ -19,6 +19,7 @@ public class AddxpCommand implements CommandExecutor {
         McMMOPlayer mcMMOPlayer;
         PlayerProfile profile;
         boolean allSkills = false;
+        SkillType skill = null;
 
         switch (args.length) {
         case 2:
@@ -59,8 +60,10 @@ public class AddxpCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
             }
             else {
-                mcMMOPlayer.applyXpGain(SkillType.getSkill(args[0]), xp);
-                sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, StringUtils.getCapitalized(args[0])));
+                skill = SkillType.getSkill(args[0]);
+
+                mcMMOPlayer.applyXpGain(skill, xp);
+                sender.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, SkillTools.getSkillName(skill)));
             }
 
             return true;
@@ -106,7 +109,8 @@ public class AddxpCommand implements CommandExecutor {
                     }
                 }
                 else {
-                    profile.setSkillXpLevel(SkillType.getSkill(args[1]), xp);
+                    skill = SkillType.getSkill(args[1]);
+                    profile.setSkillXpLevel(skill, xp);
                 }
 
                 profile.save(); // Since this is a temporary profile, we save it here.
@@ -124,8 +128,9 @@ public class AddxpCommand implements CommandExecutor {
                     mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addxp.AwardAll", xp));
                 }
                 else {
-                    mcMMOPlayer.applyXpGain(SkillType.getSkill(args[1]), xp);
-                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, StringUtils.getCapitalized(args[1])));
+                    skill = SkillType.getSkill(args[1]);
+                    mcMMOPlayer.applyXpGain(skill, xp);
+                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", xp, SkillTools.getSkillName(skill)));
                 }
             }
 
@@ -133,7 +138,7 @@ public class AddxpCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", StringUtils.getCapitalized(args[1]), args[0]));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", SkillTools.getSkillName(skill), args[0]));
             }
 
             return true;

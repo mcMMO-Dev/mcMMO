@@ -19,6 +19,7 @@ public class AddlevelsCommand implements CommandExecutor{
         PlayerProfile profile;
         int levels;
         boolean allSkills = false;
+        SkillType skill = null;
 
         switch (args.length) {
         case 2:
@@ -56,14 +57,15 @@ public class AddlevelsCommand implements CommandExecutor{
                 }
             }
             else {
-                profile.addLevels(SkillType.getSkill(args[0]), levels);
+                skill = SkillType.getSkill(args[0]);
+                profile.addLevels(skill, levels);
             }
 
             if (allSkills) {
                 sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", levels));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", levels, StringUtils.getCapitalized(args[0])));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", levels, SkillTools.getSkillName(skill)));
             }
 
             return true;
@@ -108,7 +110,8 @@ public class AddlevelsCommand implements CommandExecutor{
                     }
                 }
                 else {
-                    profile.addLevels(SkillType.getSkill(args[1]), levels);
+                    skill = SkillType.getSkill(args[1]);
+                    profile.addLevels(skill, levels);
                 }
 
                 profile.save(); // Since this is a temporary profile, we save it here.
@@ -128,8 +131,9 @@ public class AddlevelsCommand implements CommandExecutor{
                     mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.1", levels));
                 }
                 else {
-                    profile.addLevels(SkillType.getSkill(args[1]), levels);
-                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", levels, StringUtils.getCapitalized(args[1])));
+                    skill = SkillType.getSkill(args[1]);
+                    profile.addLevels(skill, levels);
+                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", levels, SkillTools.getSkillName(skill)));
                 }
             }
 
@@ -137,7 +141,7 @@ public class AddlevelsCommand implements CommandExecutor{
                 sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", StringUtils.getCapitalized(args[1]), args[0]));
+                sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", SkillTools.getSkillName(skill), args[0]));
             }
 
             return true;

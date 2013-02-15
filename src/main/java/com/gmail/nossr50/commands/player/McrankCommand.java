@@ -99,10 +99,10 @@ public class McrankCommand implements CommandExecutor {
             }
 
             if (rankInts[1] == 0) {
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.localizeSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked"))); // Don't bother showing ranking for players without skills
+                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.getSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked"))); // Don't bother showing ranking for players without skills
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.localizeSkillName(skillType), String.valueOf(rankInts[0])));
+                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.getSkillName(skillType), String.valueOf(rankInts[0])));
             }
         }
 

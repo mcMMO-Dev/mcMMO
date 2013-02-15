@@ -19,6 +19,7 @@ public class MmoeditCommand implements CommandExecutor {
         PlayerProfile profile;
         int newValue;
         boolean allSkills = false;
+        SkillType skill = null;
 
         switch (args.length) {
         case 2:
@@ -58,8 +59,9 @@ public class MmoeditCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", newValue));
             }
             else {
-                profile.modifySkill(SkillType.getSkill(args[0]), newValue);
-                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", StringUtils.getCapitalized(args[0]), newValue));
+                skill = SkillType.getSkill(args[0]);
+                profile.modifySkill(skill, newValue);
+                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", SkillTools.getSkillName(skill), newValue));
             }
 
             return true;
@@ -104,7 +106,8 @@ public class MmoeditCommand implements CommandExecutor {
                     }
                 }
                 else {
-                    profile.modifySkill(SkillType.getSkill(args[1]), newValue);
+                    skill = SkillType.getSkill(args[1]);
+                    profile.modifySkill(skill, newValue);
                 }
 
                 profile.save(); // Since this is a temporary profile, we save it here.
@@ -124,8 +127,9 @@ public class MmoeditCommand implements CommandExecutor {
                     mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", newValue));
                 }
                 else {
-                    profile.modifySkill(SkillType.getSkill(args[1]), newValue);
-                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1",  StringUtils.getCapitalized(args[1]), newValue));
+                    skill = SkillType.getSkill(args[1]);
+                    profile.modifySkill(skill, newValue);
+                    mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1",  SkillTools.getSkillName(skill), newValue));
                 }
             }
 
@@ -133,7 +137,7 @@ public class MmoeditCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
             }
             else {
-                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", StringUtils.getCapitalized(args[1]), args[0]));
+                sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", SkillTools.getSkillName(skill), args[0]));
             }
 
             return true;

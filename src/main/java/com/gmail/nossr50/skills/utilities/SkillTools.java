@@ -289,6 +289,10 @@ public class SkillTools {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
+        if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
+            return isLocalizedSkill(skillName);
+        }
+
         if (SkillType.getSkill(skillName) != null) {
             return true;
         }
@@ -296,9 +300,9 @@ public class SkillTools {
         return false;
     }
 
-    public static boolean isLocalizedSkill(String skillName) {
+    private static boolean isLocalizedSkill(String skillName) {
         for (SkillType skill : SkillType.values()) {
-            if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString() + ".SkillName")))) {
+            if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"))) {
                 return true;
             }
         }
@@ -306,18 +310,12 @@ public class SkillTools {
         return false;
     }
 
-    public static String translateLocalizedSkill(String skillName) {
-        for (SkillType skill : SkillType.values()) {
-            if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString() + ".SkillName")))) {
-                return skill.toString();
-            }
+    public static String getSkillName(SkillType skill) {
+        if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
+            return StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"));
         }
 
-        return null;
-    }
-
-    public static String localizeSkillName(SkillType skill) {
-        return StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"));
+        return StringUtils.getCapitalized(skill.toString());
     }
 
     /**

@@ -36,10 +36,10 @@ public class McRankAsync implements Runnable {
                     }
 
                     if (skills.get(skillType.name()) == null) {
-                        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.localizeSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked")));
+                        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.getSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked")));
                     }
                     else {
-                        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.localizeSkillName(skillType), skills.get(skillType.name())));
+                        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillTools.getSkillName(skillType), skills.get(skillType.name())));
                     }
                 }
 

@@ -4,7 +4,9 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
 
 public enum SkillType {
     ACROBATICS(Config.getInstance().getLevelCapAcrobatics(), Config.getInstance().getFormulaMultiplierAcrobatics()),
@@ -119,6 +121,14 @@ public enum SkillType {
     }
 
     public static SkillType getSkill(String skillName) {
+        if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
+            for (SkillType type : values()) {
+                if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name()) + ".SkillName"))) {
+                    return type;
+                }
+            }
+        }
+
         for (SkillType type : values()) {
             if (type.name().equalsIgnoreCase(skillName)) {
                 return type;
