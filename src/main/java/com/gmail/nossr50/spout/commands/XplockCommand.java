@@ -39,7 +39,7 @@ public class XplockCommand extends SpoutCommand {
 
         SkillType skill = SkillType.getSkill(args[0]);
 
-        if (!sender.hasPermission("mcmmo.commands.xplock." + SkillTools.getSkillName(skill).toLowerCase())) {
+        if (!sender.hasPermission("mcmmo.commands.xplock." + skill.toString().toLowerCase())) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
