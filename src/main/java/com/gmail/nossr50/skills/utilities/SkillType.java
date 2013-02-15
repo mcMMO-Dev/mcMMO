@@ -1,11 +1,8 @@
 package com.gmail.nossr50.skills.utilities;
 
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 
 public enum SkillType {
@@ -65,55 +62,6 @@ public enum SkillType {
 
     public ToolType getTool() {
         return tool;
-    }
-
-    /**
-     * Get the base permissions associated with this skill.
-     *
-     * @param player The player to check the permissions for
-     * @return true if the player has permissions, false otherwise
-     */
-    public boolean getPermissions(Player player) {
-        switch (this) {
-        case ACROBATICS:
-            return Permissions.acrobatics(player);
-
-        case ARCHERY:
-            return Permissions.archery(player);
-
-        case AXES:
-            return Permissions.axes(player);
-
-        case EXCAVATION:
-            return Permissions.excavation(player);
-
-        case FISHING:
-            return Permissions.fishing(player);
-
-        case HERBALISM:
-            return Permissions.herbalism(player);
-
-        case MINING:
-            return Permissions.mining(player);
-
-        case REPAIR:
-            return Permissions.repair(player);
-
-        case SWORDS:
-            return Permissions.swords(player);
-
-        case TAMING:
-            return Permissions.taming(player);
-
-        case UNARMED:
-            return Permissions.unarmed(player);
-
-        case WOODCUTTING:
-            return Permissions.woodcutting(player);
-
-        default:
-            return false;
-        }
     }
 
     public double getXpModifier() {

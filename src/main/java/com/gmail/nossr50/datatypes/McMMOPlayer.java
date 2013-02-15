@@ -50,7 +50,7 @@ public class McMMOPlayer {
                 continue;
             }
 
-            if (type.getPermissions(player)) {
+            if (player.hasPermission("mcmmo.skills." + type.toString().toLowerCase())) {
                 powerLevel += profile.getSkillLevel(type);
             }
         }
