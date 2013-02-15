@@ -88,6 +88,11 @@ public class Config extends ConfigLoader {
     public boolean getBlockModsEnabled() { return config.getBoolean("Mods.Block_Mods_Enabled", false); }
     public boolean getEntityModsEnabled() { return config.getBoolean("Mods.Entity_Mods_Enabled", false); }
 
+    /* Items */
+    public int getChimaeraCost() { return config.getInt("Items.Chimaera_Wing.Feather_Cost", 10); }
+    public int getChimaeraItemId() { return config.getInt("Items.Chimaera_Wing.Item_ID", 288); }
+    public boolean getChimaeraEnabled() { return config.getBoolean("Items.Chimaera_Wing.Enabled", true); }
+
     /* PARTY SETTINGS */
     public int getAutoPartyKickInterval() { return config.getInt("Party.AutoKick_Interval", 12); }
     public int getAutoPartyKickTime() { return config.getInt("Party.Old_Party_Member_Cutoff", 7); }

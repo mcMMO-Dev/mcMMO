@@ -60,6 +60,15 @@ Mods:
     Entity_Mods_Enabled: false
 
 #
+#  Settings for mcMMO items
+###
+Items:
+    Chimaera_Wing:
+        Enabled: true
+        Feather_Cost: 10
+        Item_ID: 288
+
+#
 #  Settings for Parties
 ###
 Party:

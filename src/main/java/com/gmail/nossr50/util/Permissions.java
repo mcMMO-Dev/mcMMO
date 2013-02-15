@@ -571,6 +571,14 @@ public final class Permissions {
     }
 
     /*
+     * MCMMO.ITEM.*
+     */
+
+    public static boolean chimaeraWing(Player player) {
+        return hasPermission(player, "mcmmo.item.chimaerawing");
+    }
+
+    /*
      * MCMMO.COMMANDS.*
      */
 
