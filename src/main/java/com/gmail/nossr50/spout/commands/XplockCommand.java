@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.StringUtils;
 
 public class XplockCommand extends SpoutCommand {
     @Override
@@ -53,7 +52,7 @@ public class XplockCommand extends SpoutCommand {
             spoutHud.setXpBarLocked(true);
             spoutHud.setSkillLock(skill);
             spoutHud.updateXpBar();
-            sender.sendMessage(LocaleLoader.getString("Commands.xplock.locked", StringUtils.getCapitalized(skill.toString())));
+            sender.sendMessage(LocaleLoader.getString("Commands.xplock.locked", SkillTools.getSkillName(skill)));
         }
     }
 

@@ -42,6 +42,7 @@ import com.gmail.nossr50.skills.smelting.SmeltingCommand;
 import com.gmail.nossr50.skills.swords.SwordsCommand;
 import com.gmail.nossr50.skills.taming.TamingCommand;
 import com.gmail.nossr50.skills.unarmed.UnarmedCommand;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingCommand;
 import com.gmail.nossr50.spout.commands.MchudCommand;
@@ -55,7 +56,7 @@ public final class CommandRegistrationHelper {
     public static void registerSkillCommands() {
         for (SkillType skill : SkillType.values()) {
             String commandName = skill.toString().toLowerCase();
-            String localizedName = LocaleLoader.getString(StringUtils.getCapitalized(commandName) + ".SkillName").toLowerCase();
+            String localizedName = SkillTools.getSkillName(skill);
 
             PluginCommand command;
 
