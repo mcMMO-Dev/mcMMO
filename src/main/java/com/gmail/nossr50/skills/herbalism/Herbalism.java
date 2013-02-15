@@ -236,15 +236,7 @@ public class Herbalism {
             hasSeeds = inventory.contains(Material.SEEDS);
             break;
         case COCOA:
-            try {
-                hasSeeds = inventory.containsAtLeast(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 1);
-            }
-            catch(Exception e) {
-                hasSeeds = inventory.containsAtLeast(new ItemStack(Material.INK_SACK, 1, (short) 3), 1);
-            }
-            catch(NoSuchMethodError e) {
-                hasSeeds = inventory.containsAtLeast(new ItemStack(Material.INK_SACK, 1, (short) 3), 1);
-            }
+            hasSeeds = inventory.containsAtLeast(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 1);
             break;
         case CARROT:
             hasSeeds = inventory.contains(Material.CARROT_ITEM);
@@ -274,18 +266,8 @@ public class Herbalism {
                 inventory.removeItem(new ItemStack(Material.SEEDS));
                 break;
             case COCOA:
-                try {
-                    Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 3);
-                    inventory.removeItem(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()));
-                }
-                catch(Exception e) {
-                    Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, (short) 3), 3);
-                    inventory.removeItem(new ItemStack(Material.INK_SACK, 1, (short) 3));
-                }
-                catch(NoSuchMethodError e) {
-                    Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, (short) 3), 3);
-                    inventory.removeItem(new ItemStack(Material.INK_SACK, 1, (short) 3));
-                }
+                Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 3);
+                inventory.removeItem(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()));
                 break;
             case CARROT:
                 Misc.dropItem(location, new ItemStack(Material.CARROT_ITEM));

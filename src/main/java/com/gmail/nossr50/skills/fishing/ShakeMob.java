@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -172,7 +173,7 @@ public final class ShakeMob {
             possibleDrops.put(new ItemStack(Material.SNOW_BALL, Misc.getRandom().nextInt(4) + 1), 97);
             break;
         case SQUID:
-            possibleDrops.put(new ItemStack(Material.INK_SACK), 100); // TODO: Add DyeColor.BLACK.getDyeData() to make it more explicit (available since 1.4.7-R0.1)
+            possibleDrops.put(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 100);
             break;
         case WITCH:
             possibleDrops.put(new Potion(PotionType.INSTANT_HEAL).toItemStack(1), 1);

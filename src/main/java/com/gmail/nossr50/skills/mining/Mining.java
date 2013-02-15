@@ -244,16 +244,7 @@ public class Mining {
 
         case LAPIS_ORE:
             if (config.getLapisDoubleDropsEnabled()) {
-                try {
-                    item = (new MaterialData(Material.INK_SACK, DyeColor.BLUE.getDyeData())).toItemStack(1);
-                }
-                catch(Exception e) {
-                    item = (new MaterialData(Material.INK_SACK, (byte) 4)).toItemStack(1);
-                }
-                catch(NoSuchMethodError e) {
-                    item = (new MaterialData(Material.INK_SACK, (byte) 4)).toItemStack(1);
-                }
-
+                item = new ItemStack(Material.INK_SACK, 1, DyeColor.BLUE.getDyeData());
                 Misc.dropItems(location, item, 4);
                 Misc.randomDropItems(location, item, 50, 4);
             }

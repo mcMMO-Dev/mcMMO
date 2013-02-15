@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.herbalism;
 
 import java.util.Map;
 
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,7 +16,7 @@ public enum HerbalismBlock {
     BROWN_MUSHROOM(Material.BROWN_MUSHROOM, Config.getInstance().getHerbalismXPMushrooms(), Config.getInstance().getBrownMushroomsDoubleDropsEnabled()),
     CACTUS(Material.CACTUS, Config.getInstance().getHerbalismXPCactus(), Config.getInstance().getCactiDoubleDropsEnabled()),
     CARROT(Material.CARROT, Material.CARROT_ITEM, Config.getInstance().getHerbalismXPCarrot(), Config.getInstance().getCarrotDoubleDropsEnabled()),
-    COCOA(Material.COCOA, new ItemStack(Material.INK_SACK, 1, (short) 3), Config.getInstance().getHerbalismXPCocoa(), Config.getInstance().getCocoaDoubleDropsEnabled()), //Change to DyeColor.BROWN once we remove backwards compatibility
+    COCOA(Material.COCOA, new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), Config.getInstance().getHerbalismXPCocoa(), Config.getInstance().getCocoaDoubleDropsEnabled()),
     CROPS(Material.CROPS, Material.WHEAT, Config.getInstance().getHerbalismXPWheat(), Config.getInstance().getWheatDoubleDropsEnabled()),
     MELON_BLOCK(Material.MELON_BLOCK, Material.MELON, Config.getInstance().getHerbalismXPMelon(), Config.getInstance().getMelonsDoubleDropsEnabled()),
     NETHER_WARTS(Material.NETHER_WARTS, Material.NETHER_STALK, Config.getInstance().getHerbalismXPNetherWart(), Config.getInstance().getNetherWartsDoubleDropsEnabled()),
