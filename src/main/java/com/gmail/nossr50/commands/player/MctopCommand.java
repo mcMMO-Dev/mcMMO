@@ -1,17 +1,16 @@
 package com.gmail.nossr50.commands.player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.database.Leaderboard;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.runnables.McTopAsync;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.StringUtils;
@@ -110,33 +109,6 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(int page, String query, CommandSender sender, Command command) {
-        if (!query.equalsIgnoreCase("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
-            if (!sender.hasPermission("mcmmo.commands.mctop." + query.toLowerCase())) {
-                sender.sendMessage(command.getPermissionMessage());
-                return;
-            }
-        }
-        String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-        HashMap<Integer, ArrayList<String>> userslist = Database.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT "+((page * 10) - 10)+",10");
-
-        if (query.equals("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
-            sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
-        }
-        else {
-            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", StringUtils.getCapitalized(query)));
-        }
-
-        int place = (page * 10) - 9;
-        for (int i = 1; i <= 10; i++) {
-            if (userslist.get(i) == null) {
-                break;
-            }
-
-         // Format: 1. Playername - skill value
-            sender.sendMessage(String.valueOf(place) + ". " + ChatColor.GREEN + userslist.get(i).get(1) + " - " + ChatColor.WHITE + userslist.get(i).get(0));
-            place++;
-        }
-
-        sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
+        Bukkit.getScheduler().runTaskAsynchronously(mcMMO.p, new McTopAsync(page, query, sender, command));
     }
 }
