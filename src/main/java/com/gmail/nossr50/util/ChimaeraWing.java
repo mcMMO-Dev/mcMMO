@@ -9,6 +9,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.util.metrics.MetricsManager;
 
 public final class ChimaeraWing {
     private ChimaeraWing() {}
@@ -49,6 +50,7 @@ public final class ChimaeraWing {
                     player.teleport(player.getWorld().getSpawnLocation());
                 }
 
+                MetricsManager.chimeraWingUsed();
                 player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
             }
             else if (!SkillTools.cooldownOver(recentlyHurt, 60, player) && amount >= Config.getInstance().getChimaeraCost()) {

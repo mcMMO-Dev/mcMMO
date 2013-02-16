@@ -13,9 +13,13 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.turt2live.metrics.EMetrics;
 import com.turt2live.metrics.Metrics;
 import com.turt2live.metrics.Metrics.Graph;
+import com.turt2live.metrics.tracker.Tracker;
 
 public class MetricsManager {
     private static boolean setup = false;
+
+    private static Tracker chimeraUseTracker;
+    private static Tracker chimeraServerUseTracker;
 
     public static void setup() {
         if (setup) {
@@ -183,6 +187,15 @@ public class MetricsManager {
                     }
                 });
 
+                // Chimera Wing Usage Trackers
+                final String chimeraGraphName = "Chimera Wing Usage";
+
+                chimeraUseTracker = EMetrics.createBasicTracker(chimeraGraphName, "Player use");
+                chimeraServerUseTracker = EMetrics.createEnabledTracker(chimeraGraphName, "Server use");
+
+                emetrics.addTracker(chimeraUseTracker);
+                emetrics.addTracker(chimeraServerUseTracker);
+
                 // Chimera Wing Enabled Graph
                 Graph chimeraGraph = metrics.createGraph("Chimera Wing");
 
@@ -209,5 +222,10 @@ public class MetricsManager {
                 mcMMO.p.getLogger().warning("Failed to submit stats.");
             }
         }
+    }
+
+    public static void chimeraWingUsed() {
+        chimeraUseTracker.increment(1);
+        chimeraServerUseTracker.increment(1);
     }
 }
