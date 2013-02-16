@@ -93,19 +93,16 @@ public final class Woodcutting {
      * @throws IllegalArgumentException if 'log' is invalid
      */
     protected static int getExperienceFromLog(Block log, ExperienceGainMethod experienceGainMethod) {
-    	
-    	//Mushrooms aren't trees so we could never get species data from them
-    	if(log.getType() == Material.HUGE_MUSHROOM_1 || log.getType() == Material.HUGE_MUSHROOM_2) {
-    		switch(log.getType()) {
-    		case HUGE_MUSHROOM_1:
-    			return Config.getInstance().getWoodcuttingXPHugeBrownMushroom();
-    		case HUGE_MUSHROOM_2:
-    			return Config.getInstance().getWoodcuttingXPHugeRedMushroom();
-    		default:
-                throw new IllegalArgumentException();
-    		}
-    	}
-    	
+        // Mushrooms aren't trees so we could never get species data from them
+        switch (log.getType()) {
+            case HUGE_MUSHROOM_1:
+                return Config.getInstance().getWoodcuttingXPHugeBrownMushroom();
+            case HUGE_MUSHROOM_2:
+                return Config.getInstance().getWoodcuttingXPHugeRedMushroom();
+            default:
+                break;
+        }
+
         TreeSpecies logType = TreeSpecies.getByData(extractLogItemData(log.getData()));
 
         // Apparently species can be null in certain cases (custom server mods?)
