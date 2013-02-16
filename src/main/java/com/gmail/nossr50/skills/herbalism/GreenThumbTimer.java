@@ -40,18 +40,7 @@ public class GreenThumbTimer implements Runnable {
         case POTATO:
             //This replants the wheat at a certain stage in development based on Herbalism Skill
             if (!this.profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
-                if (greenThumbStage == 3) {
-                    this.block.setData(CropState.MEDIUM.getData());
-                }
-                else if (greenThumbStage == 2) {
-                    this.block.setData(CropState.SMALL.getData());
-                }
-                else if (greenThumbStage == 1) {
-                    this.block.setData(CropState.VERY_SMALL.getData());
-                }
-                else {
-                    this.block.setData(CropState.GERMINATED.getData());
-                }
+                this.block.setData((byte) greenThumbStage);
             }
             else {
                 this.block.setData(CropState.MEDIUM.getData());
