@@ -212,7 +212,7 @@ public final class Misc {
      * @param quantity The amount of items to drop
      */
     public static void randomDropItems(Location location, ItemStack is, int chance, int quantity) {
-    	int dropCount = random.nextInt(quantity);
+    	int dropCount = random.nextInt(quantity + 1);
     	
     	if(dropCount > 0) {
     		is.setAmount(dropCount);
