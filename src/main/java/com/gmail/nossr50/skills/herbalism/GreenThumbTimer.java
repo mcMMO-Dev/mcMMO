@@ -3,8 +3,9 @@ package com.gmail.nossr50.skills.herbalism;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.material.CocoaPlant;
+import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.skills.utilities.AbilityType;
 import com.gmail.nossr50.skills.utilities.SkillType;
@@ -27,7 +28,7 @@ public class GreenThumbTimer implements Runnable {
         }
 
         int skillLevel = this.profile.getSkillLevel(SkillType.HERBALISM);
-        int greenThumbStage = (int) ((double) skillLevel / (double) AdvancedConfig.getInstance().getGreenThumbStageChange());
+        int greenThumbStage = skillLevel / Herbalism.greenThumbStageChangeLevel;
 
         if (greenThumbStage > 4) {
             greenThumbStage = 4;
@@ -59,34 +60,37 @@ public class GreenThumbTimer implements Runnable {
         case NETHER_WARTS:
             if (!this.profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
                 if (greenThumbStage == 3) {
-                    this.block.setData((byte) 2);
+                    this.block.setData((byte) 0x2);
                 }
                 else if (greenThumbStage == 2) {
-                    this.block.setData((byte) 1);
+                    this.block.setData((byte) 0x1);
                 }
                 else {
-                    this.block.setData((byte) 0);
+                    this.block.setData((byte) 0x0);
                 }
             }
             else {
-                this.block.setData((byte) 2);
+                this.block.setData((byte) 0x2);
             }
             break;
         case COCOA:
+            CocoaPlant plant = (CocoaPlant) block.getState().getData();
+
             if (!this.profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
                 if (greenThumbStage == 3) {
-                    this.block.setData((byte) ((this.block.getData() ^ ((byte) 0xc)) | ((byte) 4)));
+                    plant.setSize(CocoaPlantSize.MEDIUM);
                 }
                 else if (greenThumbStage == 2) {
-                    this.block.setData((byte) ((this.block.getData() ^ ((byte) 0xc)) | ((byte) 4)));
+                    plant.setSize(CocoaPlantSize.MEDIUM);
                 }
                 else {
-                    this.block.setData((byte) (this.block.getData() ^ ((byte) 0xc)));
+                    plant.setSize(CocoaPlantSize.SMALL);
                 }
             }
             else {
-                this.block.setData((byte) ((this.block.getData() ^ ((byte) 0xc)) | ((byte) 4)));
+                plant.setSize(CocoaPlantSize.MEDIUM);
             }
+            block.setData(plant.getData());
             break;
         default:
             break;
