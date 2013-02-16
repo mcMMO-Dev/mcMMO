@@ -212,9 +212,12 @@ public final class Misc {
      * @param quantity The amount of items to drop
      */
     public static void randomDropItems(Location location, ItemStack is, int chance, int quantity) {
-        for (int i = 0; i < quantity; i++) {
-            randomDropItem(location, is, chance);
-        }
+    	int dropCount = random.nextInt(quantity);
+    	
+    	//I could just have the itemstacks quantity value changed but I think this will make it look more natural
+    	for (int i = 0; i < dropCount; i++) {
+    		dropItem(location, is);
+    	}
     }
 
     /**
