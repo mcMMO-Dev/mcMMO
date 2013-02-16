@@ -177,33 +177,24 @@ public final class TreeFeller {
             switch (block.getType()) {
             case HUGE_MUSHROOM_1:
             case HUGE_MUSHROOM_2:
-            	Woodcutting.checkForDoubleDrop(mcMMOPlayer, block);
-            	
-            	try {
+                // TODO: checkForDoubleDrop doesn't handle mushrooms, what's intended? Double drop or not?
+                // Woodcutting.checkForDoubleDrop(mcMMOPlayer, block);
+
+                try {
                     xp += Woodcutting.getExperienceFromLog(block, ExperienceGainMethod.TREE_FELLER);
                 }
                 catch (IllegalArgumentException exception) {
                     break;
                 }
-            	
-            	//Stems have a block data value of 15 and should not drop mushrooms
-            	//0-2 mushrooms drop when you break a block
-            	if(block.getData() != (byte) 15) {
-            		switch(block.getType()) {
-            		case HUGE_MUSHROOM_1:
-                		Misc.randomDropItem(block.getLocation(), new ItemStack(Material.BROWN_MUSHROOM, 1), 50);
-                		Misc.randomDropItem(block.getLocation(), new ItemStack(Material.BROWN_MUSHROOM, 1), 50);
-            			break;
-            		case HUGE_MUSHROOM_2:
-                		Misc.randomDropItem(block.getLocation(), new ItemStack(Material.RED_MUSHROOM, 1), 50);
-                		Misc.randomDropItem(block.getLocation(), new ItemStack(Material.RED_MUSHROOM, 1), 50);
-                		break;
-                	default:
-                		break;
-            		}
-            	}
-            	
-            	break;
+
+                // Stems have a block data value of 15 and should not drop mushrooms
+                // 0-2 mushrooms drop when you break a block
+                if (block.getData() == (byte) 15) {
+                    break;
+                }
+
+                Misc.randomDropItems(block.getLocation(), new ItemStack(block.getType(), 1), 50, 2);
+                break;
             case LOG:
                 Woodcutting.checkForDoubleDrop(mcMMOPlayer, block);
 
