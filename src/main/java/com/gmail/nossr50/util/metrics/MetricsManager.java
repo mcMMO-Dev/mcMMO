@@ -183,6 +183,26 @@ public class MetricsManager {
                     }
                 });
 
+                // Chimera Wing Enabled Graph
+                Graph chimeraGraph = metrics.createGraph("Chimera Wing");
+
+                if (Config.getInstance().getChimaeraEnabled()) {
+                    chimeraGraph.addPlotter(new Metrics.Plotter("Enabled") {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    });
+                }
+                else {
+                    chimeraGraph.addPlotter(new Metrics.Plotter("Disabled") {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    });
+                }
+
                 emetrics.startMetrics();
             }
             catch (IOException e) {
