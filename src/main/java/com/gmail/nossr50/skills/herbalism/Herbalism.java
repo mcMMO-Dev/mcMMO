@@ -289,7 +289,7 @@ public class Herbalism {
                 break;
             }
 
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, profile, type), 1);
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new GreenThumbTimer(block, profile, type), 0);
             player.updateInventory();   // Needed until replacement available
         }
     }
