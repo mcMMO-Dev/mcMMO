@@ -174,12 +174,11 @@ public final class TreeFeller {
                 break; // TODO: Shouldn't we use continue instead?
             }
 
-            switch (block.getType()) {
+            Material material = block.getType();
+
+            switch (material) {
             case HUGE_MUSHROOM_1:
             case HUGE_MUSHROOM_2:
-                // TODO: checkForDoubleDrop doesn't handle mushrooms, what's intended? Double drop or not?
-                // Woodcutting.checkForDoubleDrop(mcMMOPlayer, block);
-
                 try {
                     xp += Woodcutting.getExperienceFromLog(block, ExperienceGainMethod.TREE_FELLER);
                 }
@@ -193,7 +192,13 @@ public final class TreeFeller {
                     break;
                 }
 
-                Misc.randomDropItems(block.getLocation(), new ItemStack(block.getType(), 1), 50, 2);
+                if (material == Material.HUGE_MUSHROOM_1) {
+                    Misc.randomDropItems(block.getLocation(), new ItemStack(Material.BROWN_MUSHROOM), 50, 2);
+                }
+                else {
+                    Misc.randomDropItems(block.getLocation(), new ItemStack(Material.RED_MUSHROOM), 50, 2);
+                }
+
                 break;
             case LOG:
                 Woodcutting.checkForDoubleDrop(mcMMOPlayer, block);
