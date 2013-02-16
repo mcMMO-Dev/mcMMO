@@ -160,10 +160,10 @@ public class BlockListener implements Listener {
              * Instead, we check it inside the drops handler.
              */
             if (player.hasPermission("mcmmo.skills.herbalism")) {
-                Herbalism.herbalismProcCheck(block, mcMMOPlayer, event, plugin); //Double drops
+                Herbalism.herbalismProcCheck(block, mcMMOPlayer, plugin); //Double drops
 
                 if (profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
-                    Herbalism.herbalismProcCheck(block, mcMMOPlayer, event, plugin); //Triple drops
+                    Herbalism.herbalismProcCheck(block, mcMMOPlayer, plugin); //Triple drops
                 }
             }
         }

@@ -146,7 +146,7 @@ public class Herbalism {
      * @param event The event to use for Green Thumb
      * @param plugin mcMMO plugin instance
      */
-    public static void herbalismProcCheck(final Block block, McMMOPlayer mcMMOPlayer, BlockBreakEvent event, mcMMO plugin) {
+    public static void herbalismProcCheck(final Block block, McMMOPlayer mcMMOPlayer, mcMMO plugin) {
         Player player = mcMMOPlayer.getPlayer();
 
         if (Config.getInstance().getHerbalismAFKDisabled() && player.isInsideVehicle()) {
@@ -174,7 +174,7 @@ public class Herbalism {
                 dropItem = herbalismBlock.getDropItem();
                 xp = herbalismBlock.getXpGain();
 
-                greenThumbWheat(block, player, event, plugin);
+                greenThumbWheat(block, player, plugin);
             }
             else {
                 if (!mcMMO.placeStore.isTrue(block)) {
@@ -223,7 +223,7 @@ public class Herbalism {
      * @param event The event triggering the ability
      * @param plugin mcMMO plugin instance
      */
-    private static void greenThumbWheat(Block block, Player player, BlockBreakEvent event, mcMMO plugin) {
+    private static void greenThumbWheat(Block block, Player player, mcMMO plugin) {
         PlayerProfile profile = Users.getPlayer(player).getProfile();
         int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
         PlayerInventory inventory = player.getInventory();
