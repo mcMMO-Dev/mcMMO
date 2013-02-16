@@ -228,7 +228,6 @@ public class Herbalism {
         int herbLevel = profile.getSkillLevel(SkillType.HERBALISM);
         PlayerInventory inventory = player.getInventory();
         boolean hasSeeds = false;
-        Location location = block.getLocation();
         Material type = block.getType();
 
         switch(type) {
@@ -251,12 +250,18 @@ public class Herbalism {
             break;
         }
 
+        if (!hasSeeds) {
+            return;
+        }
+
         int activationChance = SkillTools.calculateActivationChance(Permissions.luckyHerbalism(player));
+        float chance = (float) (greenThumbMaxChance / greenThumbMaxLevel * herbLevel);
 
-        float chance = (float) ((greenThumbMaxChance / greenThumbMaxLevel) * herbLevel);
-        if (chance > greenThumbMaxChance) chance = (float) greenThumbMaxChance;
+        if (chance > greenThumbMaxChance) {
+            chance = (float) greenThumbMaxChance;
+        }
 
-        if (hasSeeds && (profile.getAbilityMode(AbilityType.GREEN_TERRA) || chance > Misc.getRandom().nextInt(activationChance))) {
+        if (profile.getAbilityMode(AbilityType.GREEN_TERRA) || chance > Misc.getRandom().nextInt(activationChance)) {
             switch(type) {
             case CROPS:
                 inventory.removeItem(new ItemStack(Material.SEEDS));
