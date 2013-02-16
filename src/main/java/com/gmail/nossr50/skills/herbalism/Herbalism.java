@@ -257,32 +257,20 @@ public class Herbalism {
         if (chance > greenThumbMaxChance) chance = (float) greenThumbMaxChance;
 
         if (hasSeeds && (profile.getAbilityMode(AbilityType.GREEN_TERRA) || chance > Misc.getRandom().nextInt(activationChance))) {
-            event.setCancelled(true);
-
             switch(type) {
             case CROPS:
-                Misc.dropItem(location, new ItemStack(Material.WHEAT));
-                Misc.randomDropItems(location, new ItemStack(Material.SEEDS), 50, 3);
                 inventory.removeItem(new ItemStack(Material.SEEDS));
                 break;
             case COCOA:
-                Misc.dropItems(location, new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()), 3);
                 inventory.removeItem(new ItemStack(Material.INK_SACK, 1, DyeColor.BROWN.getDyeData()));
                 break;
             case CARROT:
-                Misc.dropItem(location, new ItemStack(Material.CARROT_ITEM));
-                Misc.randomDropItems(location, new ItemStack(Material.CARROT_ITEM), 50, 3);
                 inventory.removeItem(new ItemStack(Material.CARROT_ITEM));
                 break;
             case POTATO:
-                Misc.dropItem(location, new ItemStack(Material.POTATO_ITEM));
-                Misc.randomDropItems(location, new ItemStack(Material.POTATO_ITEM), 50, 3);
-                Misc.randomDropItem(location, new ItemStack(Material.POISONOUS_POTATO), 2);
                 inventory.removeItem(new ItemStack(Material.POTATO_ITEM));
                 break;
             case NETHER_WARTS:
-                Misc.dropItems(location, new ItemStack(Material.NETHER_STALK), 2);
-                Misc.randomDropItems(location, new ItemStack(Material.NETHER_STALK), 50, 2);
                 inventory.removeItem(new ItemStack(Material.NETHER_STALK));
                 break;
             default:
