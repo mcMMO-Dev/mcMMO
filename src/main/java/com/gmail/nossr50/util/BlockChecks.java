@@ -316,11 +316,15 @@ public final class BlockChecks {
     }
 
     public static boolean isLog(Block block) {
-        if (block.getType() == Material.LOG || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLogBlock(block))) {
+        switch (block.getType()) {
+        case LOG:
+        case HUGE_MUSHROOM_1:
+        case HUGE_MUSHROOM_2:
             return true;
-        }
 
-        return false;
+        default:
+            return (configInstance.getBlockModsEnabled() && ModChecks.isCustomLogBlock(block));
+        }
     }
 
     public static boolean isLeaves(Block block) {
@@ -330,6 +334,7 @@ public final class BlockChecks {
 
         return false;
     }
+
     public static boolean canBeFluxMined(Block block) {
         switch (block.getType()) {
         case IRON_ORE:
