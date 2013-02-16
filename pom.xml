@@ -180,7 +180,7 @@
         <dependency>
             <groupId>com.turt2live.metrics</groupId>
             <artifactId>MetricsExtension</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.2-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
