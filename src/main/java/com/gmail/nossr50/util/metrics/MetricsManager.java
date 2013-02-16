@@ -14,12 +14,16 @@ import com.turt2live.metrics.EMetrics;
 import com.turt2live.metrics.Metrics;
 import com.turt2live.metrics.Metrics.Graph;
 import com.turt2live.metrics.tracker.Tracker;
+import com.turt2live.metrics.data.*;
 
 public class MetricsManager {
     private static boolean setup = false;
 
     private static Tracker chimeraUseTracker;
     private static Tracker chimeraServerUseTracker;
+
+    private static DataTracker tracker;
+    private static EMetrics emetrics;
 
     public static void setup() {
         if (setup) {
@@ -28,7 +32,7 @@ public class MetricsManager {
 
         if (Config.getInstance().getStatsTrackingEnabled()) {
             try {
-                EMetrics emetrics = new EMetrics(mcMMO.p);
+                emetrics = new EMetrics(mcMMO.p);
                 Metrics metrics = emetrics.getMetrics();
 
                 // Timings Graph
@@ -216,6 +220,10 @@ public class MetricsManager {
                     });
                 }
 
+                tracker = emetrics.getDataTracker();
+                tracker.enable();
+                tracker.setFilter(new DataEvent.DataType [] { DataEvent.DataType.SEND_DATA });
+
                 emetrics.startMetrics();
             }
             catch (IOException e) {
@@ -227,5 +235,19 @@ public class MetricsManager {
     public static void chimeraWingUsed() {
         chimeraUseTracker.increment();
         chimeraServerUseTracker.increment();
+
+        debug();
+    }
+
+    private static void debug() {
+        emetrics.getMetrics().flush();
+
+        for (DataEvent event : tracker.getEvents()) {
+            String graphName = event.getGraphName();
+            String colName = event.getTrackerName();
+            int value = event.getValueSent();
+
+            System.out.println("Graph: " + graphName + ", Column: " + colName + ", Value: " + value);
+        }
     }
 }
