@@ -22,6 +22,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
@@ -266,8 +267,15 @@ public class BlockListener implements Listener {
         if (BlockChecks.canActivateAbilities(block)) {
             ItemStack heldItem = player.getItemInHand();
 
-            if ((ItemChecks.isPickaxe(heldItem) && !profile.getAbilityMode(AbilityType.SUPER_BREAKER)) || (ItemChecks.isShovel(heldItem) && !profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER))) {
-                SkillTools.removeAbilityBuff(heldItem);
+            if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
+                if ((ItemChecks.isPickaxe(heldItem) && !profile.getAbilityMode(AbilityType.SUPER_BREAKER)) || (ItemChecks.isShovel(heldItem) && !profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER))) {
+                    SkillTools.removeAbilityBuff(heldItem);
+                }
+            }
+            else {
+                if ((profile.getAbilityMode(AbilityType.SUPER_BREAKER) && !BlockChecks.canBeSuperBroken(block)) || (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && !BlockChecks.canBeGigaDrillBroken(block))) {
+                    SkillTools.handleAbilitySpeedDecrease(player);
+                }
             }
 
             if (profile.getToolPreparationMode(ToolType.HOE) && ItemChecks.isHoe(heldItem) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.canMakeMossy(block)) && player.hasPermission("mcmmo.ability.herbalism.greenterra")) {

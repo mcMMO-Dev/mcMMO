@@ -7,3 +7,5 @@ Options:
     Chunklets: true
     # Square root of the number of chunks to convert per tick.
     ConversionRate: 1
+    # true to use enchantment buffs for Super Breaker & Giga Drill Breaker, false to use potion buffs
+    EnchantmentBuffs: true

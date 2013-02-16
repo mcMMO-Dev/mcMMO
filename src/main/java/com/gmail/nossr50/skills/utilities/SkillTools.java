@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.utilities;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -11,12 +12,15 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -525,33 +529,67 @@ public class SkillTools {
     }
 
     public static void handleAbilitySpeedIncrease(Player player) {
-        ItemStack heldItem = player.getItemInHand();
+        if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
+            ItemStack heldItem = player.getItemInHand();
 
-        if (heldItem == null || heldItem.getType() == Material.AIR ) {
-            return;
+            if (heldItem == null || heldItem.getType() == Material.AIR ) {
+                return;
+            }
+
+            int efficiencyLevel = heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
+            ItemMeta itemMeta = heldItem.getItemMeta();
+            List<String> itemLore = new ArrayList<String>();
+
+            if (itemMeta.hasLore()) {
+                itemLore = itemMeta.getLore();
+            }
+
+            itemLore.add("mcMMO Ability Tool");
+            itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + 5, true);
+
+            itemMeta.setLore(itemLore);
+            heldItem.setItemMeta(itemMeta);
         }
+        else {
+            int duration = 0;
+            int amplifier = 0;
 
-        int efficiencyLevel = heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
-        ItemMeta itemMeta = heldItem.getItemMeta();
-        List<String> itemLore = new ArrayList<String>();
+            if (player.hasPotionEffect(PotionEffectType.FAST_DIGGING)) {
+                for (PotionEffect effect : player.getActivePotionEffects()) {
+                    if (effect.getType() == PotionEffectType.FAST_DIGGING) {
+                        duration = effect.getDuration();
+                        amplifier = effect.getAmplifier();
+                        break;
+                    }
+                }
+            }
 
-        if (itemMeta.hasLore()) {
-            itemLore = itemMeta.getLore();
+            PlayerProfile profile = Users.getPlayer(player).getProfile();
+            int ticks = 0;
+
+            if (profile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
+                ticks = ((int) (profile.getSkillDATS(AbilityType.SUPER_BREAKER) - System.currentTimeMillis())) / Misc.TIME_CONVERSION_FACTOR;
+            }
+            else if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
+                ticks = ((int) (profile.getSkillDATS(AbilityType.GIGA_DRILL_BREAKER) - System.currentTimeMillis())) / Misc.TIME_CONVERSION_FACTOR;
+            }
+
+            PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
+            player.addPotionEffect(abilityBuff, true);
         }
-
-        itemLore.add("mcMMO Ability Tool");
-        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + 5, true);
-
-        itemMeta.setLore(itemLore);
-        heldItem.setItemMeta(itemMeta);
     }
 
     public static void handleAbilitySpeedDecrease(Player player) {
-        PlayerInventory playerInventory = player.getInventory();
+        if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
+            PlayerInventory playerInventory = player.getInventory();
 
-        for (int i = 0; i < playerInventory.getContents().length; i++) {
-            ItemStack item = playerInventory.getItem(i);
-            playerInventory.setItem(i, removeAbilityBuff(item));
+            for (int i = 0; i < playerInventory.getContents().length; i++) {
+                ItemStack item = playerInventory.getItem(i);
+                playerInventory.setItem(i, removeAbilityBuff(item));
+            }
+        }
+        else {
+            player.removePotionEffect(PotionEffectType.FAST_DIGGING);
         }
     }
 

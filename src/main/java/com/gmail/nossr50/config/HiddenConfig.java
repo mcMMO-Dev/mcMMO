@@ -10,6 +10,7 @@ public class HiddenConfig {
     private static YamlConfiguration config;
     private static boolean chunkletsEnabled;
     private static int conversionRate;
+    private static boolean useEnchantmentBuffs;
 
     public HiddenConfig(String fileName) {
         HiddenConfig.fileName = fileName;
@@ -29,6 +30,7 @@ public class HiddenConfig {
             config = YamlConfiguration.loadConfiguration(mcMMO.p.getResource(fileName));
             chunkletsEnabled = config.getBoolean("Options.Chunklets", true);
             conversionRate = config.getInt("Options.ConversionRate", 1);
+            useEnchantmentBuffs = config.getBoolean("Options.EnchantmentBuffs", true);
         }
     }
 
@@ -38,5 +40,9 @@ public class HiddenConfig {
 
     public int getConversionRate() {
         return conversionRate;
+    }
+
+    public boolean useEnchantmentBuffs() {
+        return useEnchantmentBuffs;
     }
 }
