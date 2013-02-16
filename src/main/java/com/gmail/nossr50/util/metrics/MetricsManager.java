@@ -249,5 +249,7 @@ public class MetricsManager {
 
             System.out.println("Graph: " + graphName + ", Column: " + colName + ", Value: " + value);
         }
+
+        tracker.resetEvents();
     }
 }
