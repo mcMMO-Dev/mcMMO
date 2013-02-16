@@ -439,7 +439,7 @@ public class SkillTools {
                 player.setCanPickupItems(false);
             }
             else if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
-                handleAbilitySpeedIncrease(player.getItemInHand());
+                handleAbilitySpeedIncrease(player);
             }
         }
     }
@@ -524,7 +524,13 @@ public class SkillTools {
         return skillLevel;
     }
 
-    public static void handleAbilitySpeedIncrease(ItemStack heldItem) {
+    public static void handleAbilitySpeedIncrease(Player player) {
+        ItemStack heldItem = player.getItemInHand();
+
+        if (heldItem == null || heldItem.getType() == Material.AIR ) {
+            return;
+        }
+
         int efficiencyLevel = heldItem.getEnchantmentLevel(Enchantment.DIG_SPEED);
         ItemMeta itemMeta = heldItem.getItemMeta();
         List<String> itemLore = new ArrayList<String>();
