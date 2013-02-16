@@ -140,7 +140,6 @@ Skills:
         Level_Cap: 0
     Excavation:
         Level_Cap: 0
-        Requires_Shovel: true
     Fishing:
         Drops_Enabled: true
         Level_Cap: 0
@@ -154,7 +153,6 @@ Skills:
             Dirt_To_Grass: true
     Mining:
         Level_Cap: 0
-        Requires_Pickaxe: true
         Detonator_ID: 259
     Repair:
         Level_Cap: 0

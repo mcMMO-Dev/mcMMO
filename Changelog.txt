@@ -91,6 +91,7 @@ Version 1.4.00-dev
  - Removed unused "healthbar" files from the resources
  - Removed config options for disabling commands from the config.yml. This should instead be done through permissions.
  - Removed /mcc command. Replaced with /mcmmo [?|help|commands]
+ - Removed options to allow Mining & Excavation without a tool due to the changes to their abilities
 
 Version 1.3.14
  + Added new Hylian Luck skill to Herbalism.

@@ -30,7 +30,6 @@ import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.runnables.StickyPistonTracker;
 import com.gmail.nossr50.skills.excavation.Excavation;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
-import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
@@ -169,24 +168,12 @@ public class BlockListener implements Listener {
         }
 
         /* MINING */
-        else if (BlockChecks.canBeSuperBroken(block) && player.hasPermission("mcmmo.skills.mining") && !mcMMO.placeStore.isTrue(block)) {
-            if (Mining.requiresTool) {
-                if (ItemChecks.isPickaxe(heldItem)) {
-                    MiningManager miningManager = new MiningManager(mcMMOPlayer);
-                    miningManager.miningBlockCheck(block);
+        else if (BlockChecks.canBeSuperBroken(block) && ItemChecks.isPickaxe(heldItem) && player.hasPermission("mcmmo.skills.mining") && !mcMMO.placeStore.isTrue(block)) {
+            MiningManager miningManager = new MiningManager(mcMMOPlayer);
+            miningManager.miningBlockCheck(block);
 
-                    if (profile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
-                        miningManager.miningBlockCheck(block);
-                    }
-                }
-            }
-            else {
-                MiningManager miningManager = new MiningManager(mcMMOPlayer);
+            if (profile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
                 miningManager.miningBlockCheck(block);
-
-                if (profile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
-                    miningManager.miningBlockCheck(block);
-                }
             }
         }
 
@@ -208,22 +195,11 @@ public class BlockListener implements Listener {
         }
 
         /* EXCAVATION */
-        else if (BlockChecks.canBeGigaDrillBroken(block) && player.hasPermission("mcmmo.skills.excavation") && !mcMMO.placeStore.isTrue(block)) {
-            if (Excavation.requiresTool) {
-                if (ItemChecks.isShovel(heldItem)) {
-                    Excavation.excavationProcCheck(block, mcMMOPlayer);
+        else if (BlockChecks.canBeGigaDrillBroken(block) && ItemChecks.isShovel(heldItem) && player.hasPermission("mcmmo.skills.excavation") && !mcMMO.placeStore.isTrue(block)) {
+            Excavation.excavationProcCheck(block, mcMMOPlayer);
 
-                    if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
-                        Excavation.gigaDrillBreaker(mcMMOPlayer, block);
-                    }
-                }
-            }
-            else {
-                Excavation.excavationProcCheck(block, mcMMOPlayer);
-
-                if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
-                    Excavation.gigaDrillBreaker(mcMMOPlayer, block);
-                }
+            if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
+                Excavation.gigaDrillBreaker(mcMMOPlayer, block);
             }
         }
 
@@ -289,6 +265,10 @@ public class BlockListener implements Listener {
          */
         if (BlockChecks.canActivateAbilities(block)) {
             ItemStack heldItem = player.getItemInHand();
+
+            if ((ItemChecks.isPickaxe(heldItem) && !profile.getAbilityMode(AbilityType.SUPER_BREAKER)) || (ItemChecks.isShovel(heldItem) && !profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER))) {
+                SkillTools.removeAbilityBuff(heldItem);
+            }
 
             if (profile.getToolPreparationMode(ToolType.HOE) && ItemChecks.isHoe(heldItem) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.canMakeMossy(block)) && player.hasPermission("mcmmo.ability.herbalism.greenterra")) {
                 SkillTools.abilityCheck(player, SkillType.HERBALISM);

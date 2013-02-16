@@ -59,28 +59,6 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Handle PlayerDeath events where the event is modified.
-     *
-     * @param event The event to modify
-     */
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerDeathHigher(PlayerDeathEvent event) {
-        Player player = event.getEntity();
-
-        if (Misc.isNPCPlayer(player)) {
-            return;
-        }
-
-        PlayerProfile playerProfile = Users.getPlayer(player).getProfile();
-
-        if (playerProfile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) || playerProfile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
-            for (ItemStack item : event.getDrops()) {
-                SkillTools.removeAbilityBuff(item);
-            }
-        }
-    }
-
-    /**
      * Monitor PlayerDeath events.
      *
      * @param event The event to watch
@@ -245,8 +223,6 @@ public class PlayerListener implements Listener {
         if (plugin.isXPEventEnabled()) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", Config.getInstance().getExperienceGainsGlobalMultiplier()));
         }
-
-        SkillTools.handleAbilitySpeedDecrease(player); //Remove enchants left over in case of disconnect or server crash
     }
 
     /**

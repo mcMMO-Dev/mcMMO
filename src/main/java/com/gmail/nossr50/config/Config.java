@@ -150,8 +150,6 @@ public class Config extends ConfigLoader {
      */
 
     /* Tool Requirements */
-    public boolean getMiningRequiresTool() { return config.getBoolean("Skills.Mining.Requires_Pickaxe", true); }
-    public boolean getExcavationRequiresTool() { return config.getBoolean("Skills.Excavation.Requires_Shovel", true); }
     public boolean getWoodcuttingRequiresTool() { return config.getBoolean("Skills.Woodcutting.Requires_Axe", true); }
 
     /* Excavation */

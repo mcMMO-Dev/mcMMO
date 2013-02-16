@@ -10,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -20,7 +19,6 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
-import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Users;
 
@@ -129,11 +127,5 @@ public class InventoryListener implements Listener{
                 }
             }
         }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onInventoryClickEvent(InventoryClickEvent event) {
-        ItemStack item = event.getCurrentItem();
-        SkillTools.removeAbilityBuff(item); //Remove enchants if they try to move them in an inventory
     }
 }

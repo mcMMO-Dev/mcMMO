@@ -8,7 +8,6 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.util.Users;
 
 public class McrefreshCommand implements CommandExecutor {
@@ -33,7 +32,6 @@ public class McrefreshCommand implements CommandExecutor {
             profile.resetCooldowns();
             profile.resetToolPrepMode();
             profile.resetAbilityMode();
-            SkillTools.handleAbilitySpeedDecrease((Player) sender); //Remove enchants left over
 
             sender.sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
             return true;
@@ -69,7 +67,6 @@ public class McrefreshCommand implements CommandExecutor {
             profile.resetCooldowns();
             profile.resetToolPrepMode();
             profile.resetAbilityMode();
-            SkillTools.handleAbilitySpeedDecrease(player); //Remove enchants left over
 
             player.sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
             sender.sendMessage(LocaleLoader.getString("Commands.mcrefresh.Success", args[0]));
