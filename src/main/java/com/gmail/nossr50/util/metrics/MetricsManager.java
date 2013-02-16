@@ -220,9 +220,11 @@ public class MetricsManager {
                     });
                 }
 
+                /* Debug stuff
                 tracker = emetrics.getDataTracker();
                 tracker.enable();
                 tracker.setFilter(new DataEvent.DataType [] { DataEvent.DataType.SEND_DATA });
+                */
 
                 emetrics.startMetrics();
             }
@@ -235,10 +237,9 @@ public class MetricsManager {
     public static void chimeraWingUsed() {
         chimeraUseTracker.increment();
         chimeraServerUseTracker.increment();
-
-        debug();
     }
 
+    @SuppressWarnings("unused")
     private static void debug() {
         emetrics.getMetrics().flush();
 
