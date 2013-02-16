@@ -256,7 +256,7 @@ public class Herbalism {
         float chance = (float) ((greenThumbMaxChance / greenThumbMaxLevel) * herbLevel);
         if (chance > greenThumbMaxChance) chance = (float) greenThumbMaxChance;
 
-        if (hasSeeds && profile.getAbilityMode(AbilityType.GREEN_TERRA) || hasSeeds && (chance > Misc.getRandom().nextInt(activationChance))) {
+        if (hasSeeds && (profile.getAbilityMode(AbilityType.GREEN_TERRA) || chance > Misc.getRandom().nextInt(activationChance))) {
             event.setCancelled(true);
 
             switch(type) {
