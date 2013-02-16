@@ -214,8 +214,8 @@ public final class Misc {
     public static void randomDropItems(Location location, ItemStack is, int chance, int quantity) {
     	int dropCount = random.nextInt(quantity);
     	
-    	//I could just have the itemstacks quantity value changed but I think this will make it look more natural
-    	for (int i = 0; i < dropCount; i++) {
+    	if(dropCount > 0) {
+    		is.setAmount(dropCount);
     		dropItem(location, is);
     	}
     }
