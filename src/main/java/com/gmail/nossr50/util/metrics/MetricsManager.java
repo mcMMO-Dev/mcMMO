@@ -10,6 +10,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 
+import com.turt2live.metrics.EMetrics;
 import com.turt2live.metrics.Metrics;
 import com.turt2live.metrics.Metrics.Graph;
 
@@ -23,7 +24,8 @@ public class MetricsManager {
 
         if (Config.getInstance().getStatsTrackingEnabled()) {
             try {
-                Metrics metrics = new Metrics(mcMMO.p);
+                EMetrics emetrics = new EMetrics(mcMMO.p);
+                Metrics metrics = emetrics.getMetrics();
 
                 // Timings Graph
                 Graph timingsGraph = metrics.createGraph("Percentage of servers using timings");
@@ -181,7 +183,7 @@ public class MetricsManager {
                     }
                 });
 
-                metrics.start();
+                emetrics.startMetrics();
             }
             catch (IOException e) {
                 mcMMO.p.getLogger().warning("Failed to submit stats.");
