@@ -225,7 +225,7 @@ public class MetricsManager {
     }
 
     public static void chimeraWingUsed() {
-        chimeraUseTracker.increment(1);
-        chimeraServerUseTracker.increment(1);
+        chimeraUseTracker.increment();
+        chimeraServerUseTracker.increment();
     }
 }
