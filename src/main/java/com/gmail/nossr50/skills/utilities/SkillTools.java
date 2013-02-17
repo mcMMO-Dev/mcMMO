@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.utilities;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.Material;
