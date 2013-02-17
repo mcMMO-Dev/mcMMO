@@ -225,7 +225,6 @@ public class EntityListener implements Listener {
         SpawnReason reason = event.getSpawnReason();
 
         if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) {
-            event.getEntity().setRemoveWhenFarAway(false);
             mcMMO.p.setIsSpawned(event.getEntity());
         }
     }
