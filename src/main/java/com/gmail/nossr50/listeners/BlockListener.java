@@ -65,17 +65,17 @@ public class BlockListener implements Listener {
         Block futureEmptyBlock = event.getBlock().getRelative(direction); // Block that would be air after piston is finished
 
         for (Block b : blocks) {
-            if (mcMMO.placeStore.isTrue(b)) {
+            if (mcMMO.p.isPlaced(b)) {
                 b.getRelative(direction).setMetadata("pistonTrack", new FixedMetadataValue(plugin, true));
                 if (b.equals(futureEmptyBlock)) {
-                    mcMMO.placeStore.setFalse(b);
+                    mcMMO.p.setNotPlaced(b);
                 }
             }
         }
 
         for (Block b : blocks) {
             if (b.getRelative(direction).hasMetadata("pistonTrack")) {
-                mcMMO.placeStore.setTrue(b.getRelative(direction));
+                mcMMO.p.setIsPlaced(b.getRelative(direction));
                 b.getRelative(direction).removeMetadata("pistonTrack", plugin);
             }
         }
@@ -111,7 +111,7 @@ public class BlockListener implements Listener {
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockChecks.shouldBeWatched(block)) {
-            mcMMO.placeStore.setTrue(block);
+            mcMMO.p.setIsPlaced(block);
         }
 
         if (Repair.anvilMessagesEnabled) {
@@ -169,7 +169,7 @@ public class BlockListener implements Listener {
         }
 
         /* MINING */
-        else if (BlockChecks.canBeSuperBroken(block) && ItemChecks.isPickaxe(heldItem) && player.hasPermission("mcmmo.skills.mining") && !mcMMO.placeStore.isTrue(block)) {
+        else if (BlockChecks.canBeSuperBroken(block) && ItemChecks.isPickaxe(heldItem) && player.hasPermission("mcmmo.skills.mining") && !mcMMO.p.isPlaced(block)) {
             MiningManager miningManager = new MiningManager(mcMMOPlayer);
             miningManager.miningBlockCheck(block);
 
@@ -179,7 +179,7 @@ public class BlockListener implements Listener {
         }
 
         /* WOOD CUTTING */
-        else if (BlockChecks.isLog(block) && player.hasPermission("mcmmo.skills.woodcutting") && !mcMMO.placeStore.isTrue(block)) {
+        else if (BlockChecks.isLog(block) && player.hasPermission("mcmmo.skills.woodcutting") && !mcMMO.p.isPlaced(block)) {
             if (profile.getAbilityMode(AbilityType.TREE_FELLER) && player.hasPermission("mcmmo.ability.woodcutting.treefeller") && ItemChecks.isAxe(heldItem)) {
                 Woodcutting.beginTreeFeller(mcMMOPlayer, block);
             }
@@ -196,7 +196,7 @@ public class BlockListener implements Listener {
         }
 
         /* EXCAVATION */
-        else if (BlockChecks.canBeGigaDrillBroken(block) && ItemChecks.isShovel(heldItem) && player.hasPermission("mcmmo.skills.excavation") && !mcMMO.placeStore.isTrue(block)) {
+        else if (BlockChecks.canBeGigaDrillBroken(block) && ItemChecks.isShovel(heldItem) && player.hasPermission("mcmmo.skills.excavation") && !mcMMO.p.isPlaced(block)) {
             Excavation.excavationProcCheck(block, mcMMOPlayer);
 
             if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
@@ -205,8 +205,8 @@ public class BlockListener implements Listener {
         }
 
         /* Remove metadata from placed watched blocks */
-        if (BlockChecks.shouldBeWatched(block) && mcMMO.placeStore.isTrue(block)) {
-            mcMMO.placeStore.setFalse(block);
+        if (BlockChecks.shouldBeWatched(block) && mcMMO.p.isPlaced(block)) {
+            mcMMO.p.setNotPlaced(block);
         }
     }
 
@@ -233,7 +233,7 @@ public class BlockListener implements Listener {
         if (player.hasPermission("mcmmo.ability.herbalism.hylianluck") && ItemChecks.isSword(heldItem)) {
             Herbalism.hylianLuck(block, player, event);
         }
-        else if (BlockChecks.canBeFluxMined(block) && ItemChecks.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH) && player.hasPermission("mcmmo.ability.smelting.fluxmining") && !mcMMO.placeStore.isTrue(block)) {
+        else if (BlockChecks.canBeFluxMined(block) && ItemChecks.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH) && player.hasPermission("mcmmo.ability.smelting.fluxmining") && !mcMMO.p.isPlaced(block)) {
             SmeltingManager smeltingManager = new SmeltingManager(Users.getPlayer(player));
             smeltingManager.fluxMining(event);
         }

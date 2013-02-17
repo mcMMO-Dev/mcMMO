@@ -65,13 +65,13 @@ public class EntityListener implements Listener {
         if (entity instanceof FallingBlock) {
             Block block = event.getBlock();
 
-            if (mcMMO.placeStore.isTrue(block) && !mcMMO.placeStore.isSpawnedMob(entity)) {
-                mcMMO.placeStore.setFalse(block);
-                mcMMO.placeStore.addSpawnedMob(entity);
+            if (mcMMO.p.isPlaced(block) && !mcMMO.p.isSpawned(entity)) {
+                mcMMO.p.setNotPlaced(block);
+                mcMMO.p.setIsSpawned(entity);
             }
-            else if (mcMMO.placeStore.isSpawnedMob(entity)) {
-                mcMMO.placeStore.setTrue(block);
-                mcMMO.placeStore.removeSpawnedMob(entity);
+            else if (mcMMO.p.isSpawned(entity)) {
+                mcMMO.p.setIsPlaced(block);
+                mcMMO.p.setNotSpawned(entity);
             }
         }
     }
@@ -208,7 +208,7 @@ public class EntityListener implements Listener {
         entity.setFireTicks(0);
         BleedTimer.remove(entity);
         Archery.arrowRetrievalCheck(entity);
-        mcMMO.placeStore.removeSpawnedMob(entity);
+        mcMMO.p.setNotSpawned(entity);
     }
 
     /**
@@ -225,7 +225,8 @@ public class EntityListener implements Listener {
         SpawnReason reason = event.getSpawnReason();
 
         if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) {
-            mcMMO.placeStore.addSpawnedMob(event.getEntity());
+            event.getEntity().setRemoveWhenFarAway(false);
+            mcMMO.p.setIsSpawned(event.getEntity());
         }
     }
 

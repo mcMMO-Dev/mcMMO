@@ -459,8 +459,8 @@ public final class CombatTools {
                 baseXP = 20 * configInstance.getPlayerVersusPlayerXP();
             }
         }
-        else if (!mcMMO.placeStore.isSpawnedMob(target)) {
-            if (target instanceof Animals && !mcMMO.placeStore.isSpawnedPet(target)) {
+        else if (!mcMMO.p.isSpawned(target)) {
+            if (target instanceof Animals) {
                 if (ModChecks.isCustomEntity(target)) {
                     baseXP = ModChecks.getCustomEntity(target).getXpMultiplier();
                 }

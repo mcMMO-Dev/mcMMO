@@ -130,7 +130,7 @@ public class Herbalism {
 
         for (int y = 0;  y <= 2; y++) {
             Block relativeBlock = block.getRelative(BlockFace.UP, y);
-            if (relativeBlock.getType() == blockType && !mcMMO.placeStore.isTrue(relativeBlock)) {
+            if (relativeBlock.getType() == blockType && !mcMMO.p.isPlaced(relativeBlock)) {
                 dropAmount++;
             }
         }
@@ -177,7 +177,7 @@ public class Herbalism {
                 greenThumbWheat(block, player, plugin);
             }
             else {
-                if (!mcMMO.placeStore.isTrue(block)) {
+                if (!mcMMO.p.isPlaced(block)) {
                     dropItem = herbalismBlock.getDropItem();
                     xp = herbalismBlock.getXpGain();
                 }
@@ -332,8 +332,8 @@ public class Herbalism {
 
             case RED_ROSE:
             case YELLOW_FLOWER:
-                if (mcMMO.placeStore.isTrue(block)) {
-                    mcMMO.placeStore.setFalse(block);
+                if (mcMMO.p.isPlaced(block)) {
+                    mcMMO.p.setNotPlaced(block);
                     return;
                 }
 

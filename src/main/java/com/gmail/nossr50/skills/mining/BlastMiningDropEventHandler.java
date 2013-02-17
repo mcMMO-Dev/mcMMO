@@ -51,7 +51,7 @@ public class BlastMiningDropEventHandler {
         McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
 
         for (Block block : droppedOres) {
-            if (!mcMMO.placeStore.isTrue(block)) {
+            if (!mcMMO.p.isPlaced(block)) {
                 Mining.miningXP(mcMMOPlayer, block, block.getType());
             }
         }
@@ -66,7 +66,7 @@ public class BlastMiningDropEventHandler {
                 droppedOres.add(block);
                 Mining.miningDrops(block, location, type);
 
-                if (!mcMMO.placeStore.isTrue(block)) {
+                if (!mcMMO.p.isPlaced(block)) {
                     for (int i = 1 ; i < dropMultiplier ; i++) {
                         droppedOres.add(block);
                         Mining.miningDrops(block, location, type);

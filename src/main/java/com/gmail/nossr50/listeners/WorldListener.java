@@ -38,9 +38,9 @@ public class WorldListener implements Listener {
             return;
         }
 
-        if (mcMMO.placeStore.isTrue(event.getLocation().getBlock())) {
+        if (mcMMO.p.isPlaced(event.getLocation().getBlock())) {
             for (BlockState block : event.getBlocks()) {
-                mcMMO.placeStore.setFalse(block.getBlock());
+                mcMMO.p.setNotPlaced(block.getBlock());
             }
         }
     }
@@ -73,7 +73,7 @@ public class WorldListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldUnload(WorldUnloadEvent event) {
-        mcMMO.placeStore.unloadWorld(event.getWorld());
+        mcMMO.p.setUnloaded(event.getWorld());
     }
 
     /**
@@ -83,9 +83,7 @@ public class WorldListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChunkUnload(ChunkUnloadEvent event) {
-        Chunk chunk = event.getChunk();
-
-        mcMMO.placeStore.chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());
+        mcMMO.p.setUnloaded(event.getChunk(), event.getWorld());
     }
 
     /**
@@ -100,7 +98,7 @@ public class WorldListener implements Listener {
 
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity || entity instanceof FallingBlock) {
-                mcMMO.placeStore.loadChunk(chunk.getX(), chunk.getZ(), event.getWorld(), entities);
+                mcMMO.p.setLoaded(chunk, event.getWorld(), entities);
                 return;
             }
         }
