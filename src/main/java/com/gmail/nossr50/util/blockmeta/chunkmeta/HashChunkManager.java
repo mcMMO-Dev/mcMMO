@@ -619,11 +619,9 @@ public class HashChunkManager implements ChunkManager {
 
         List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
         for (Entity entity : tempSpawnedMobs) {
-            if (entity.isDead())
+            if (entity.isDead() || !entity.isValid()) {
                 mobsToRemove.add(entity);
-
-            if (!entity.isValid())
-                mobsToRemove.add(entity);
+            }
         }
 
         spawnedMobs.removeAll(mobsToRemove);
