@@ -225,7 +225,7 @@ public class Mining {
             if (config.getGlowstoneDoubleDropsEnabled()) {
                 item = new ItemStack(Material.GLOWSTONE_DUST);
                 Misc.dropItems(location, item, 2);
-                Misc.randomDropItems(location, item, 50, 2);
+                Misc.randomDropItems(location, item, 2);
             }
             break;
 
@@ -245,7 +245,7 @@ public class Mining {
             if (config.getLapisDoubleDropsEnabled()) {
                 item = new ItemStack(Material.INK_SACK, 1, DyeColor.BLUE.getDyeData());
                 Misc.dropItems(location, item, 4);
-                Misc.randomDropItems(location, item, 50, 4);
+                Misc.randomDropItems(location, item, 4);
             }
             break;
 
@@ -297,7 +297,7 @@ public class Mining {
 
                 if (minimumDropAmount != maximumDropAmount) {
                     Misc.dropItems(location, item, minimumDropAmount);
-                    Misc.randomDropItems(location, item, 50, maximumDropAmount - minimumDropAmount);
+                    Misc.randomDropItems(location, item, maximumDropAmount - minimumDropAmount);
                 }
                 else {
                     Misc.dropItems(location, item, minimumDropAmount);

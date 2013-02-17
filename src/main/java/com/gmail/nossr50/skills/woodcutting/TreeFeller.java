@@ -193,10 +193,10 @@ public final class TreeFeller {
                 }
 
                 if (material == Material.HUGE_MUSHROOM_1) {
-                    Misc.randomDropItems(block.getLocation(), new ItemStack(Material.BROWN_MUSHROOM), 50, 2);
+                    Misc.randomDropItems(block.getLocation(), new ItemStack(Material.BROWN_MUSHROOM), 2);
                 }
                 else {
-                    Misc.randomDropItems(block.getLocation(), new ItemStack(Material.RED_MUSHROOM), 50, 2);
+                    Misc.randomDropItems(block.getLocation(), new ItemStack(Material.RED_MUSHROOM), 2);
                 }
 
                 break;
@@ -229,7 +229,7 @@ public final class TreeFeller {
                     Misc.dropItems(location, item, minimumDropAmount);
 
                     if (minimumDropAmount < maximumDropAmount) {
-                        Misc.randomDropItems(location, item, 50, maximumDropAmount - minimumDropAmount);
+                        Misc.randomDropItems(location, item, maximumDropAmount - minimumDropAmount);
                     }
                 }
                 else if (ModChecks.isCustomLeafBlock(block)) {

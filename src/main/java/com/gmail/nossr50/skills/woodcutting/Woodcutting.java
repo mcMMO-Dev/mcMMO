@@ -163,7 +163,7 @@ public final class Woodcutting {
             Misc.dropItems(location, item, minimumDropAmount);
 
             if (minimumDropAmount != maximumDropAmount) {
-                Misc.randomDropItems(location, item, 50, maximumDropAmount - minimumDropAmount);
+                Misc.randomDropItems(location, item, maximumDropAmount - minimumDropAmount);
             }
         }
         else {

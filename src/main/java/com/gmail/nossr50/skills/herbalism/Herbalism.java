@@ -204,7 +204,7 @@ public class Herbalism {
                     int maximumDropAmount = customBlock.getMaximumDropAmount();
 
                     if (minimumDropAmount != maximumDropAmount) {
-                        Misc.randomDropItems(location, dropItem, 50, maximumDropAmount - minimumDropAmount);
+                        Misc.randomDropItems(location, dropItem, maximumDropAmount - minimumDropAmount);
                     }
 
                     Misc.dropItems(location, dropItem, minimumDropAmount);

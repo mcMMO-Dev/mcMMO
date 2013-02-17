@@ -211,13 +211,13 @@ public final class Misc {
      * @param chance The percentage chance for the item to drop
      * @param quantity The amount of items to drop
      */
-    public static void randomDropItems(Location location, ItemStack is, int chance, int quantity) {
-    	int dropCount = random.nextInt(quantity + 1);
-    	
-    	if(dropCount > 0) {
-    		is.setAmount(dropCount);
-    		dropItem(location, is);
-    	}
+    public static void randomDropItems(Location location, ItemStack is, int quantity) {
+        int dropCount = random.nextInt(quantity + 1);
+
+        if (dropCount > 0) {
+            is.setAmount(dropCount);
+            dropItem(location, is);
+        }
     }
 
     /**
