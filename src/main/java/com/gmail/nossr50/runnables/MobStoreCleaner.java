@@ -33,6 +33,6 @@ public class MobStoreCleaner implements Runnable {
 
     @Override
     public void run() {
-        mcMMO.p.cleanMobLists();
+        mcMMO.placeStore.cleanMobLists();
     }
 }

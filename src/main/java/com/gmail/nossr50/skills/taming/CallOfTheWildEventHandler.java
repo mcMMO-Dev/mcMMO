@@ -67,7 +67,7 @@ public class CallOfTheWildEventHandler {
             return;
 
         LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), type);
-        mcMMO.p.setIsSpawned(entity);
+        mcMMO.placeStore.addSpawnedPet(entity);
 
         ((Tameable) entity).setOwner(player);
 

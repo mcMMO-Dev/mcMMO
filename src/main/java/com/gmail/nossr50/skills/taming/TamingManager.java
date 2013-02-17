@@ -27,7 +27,7 @@ public class TamingManager extends SkillManager {
      * @param event The event to award XP for
      */
     public void awardTamingXP(EntityTameEvent event) {
-        if (mcMMO.p.isSpawned(event.getEntity())) {
+        if (mcMMO.placeStore.isSpawnedMob(event.getEntity())) {
             return;
         }
 

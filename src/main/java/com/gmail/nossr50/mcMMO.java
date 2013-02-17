@@ -8,11 +8,8 @@ import java.util.List;
 
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
-import org.bukkit.Chunk;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -66,7 +63,7 @@ public class mcMMO extends JavaPlugin {
 
     public static mcMMO p;
 
-    private ChunkManager placeStore;
+    public static ChunkManager placeStore;
     public static RepairManager repairManager;
 
     // Jar Stuff
@@ -421,49 +418,5 @@ public class mcMMO extends JavaPlugin {
 
     public void toggleXpEventEnabled() {
         xpEventEnabled = !xpEventEnabled;
-    }
-
-    public boolean isPlaced(Block block) {
-        return placeStore.isTrue(block);
-    }
-
-    public void setNotPlaced(Block block) {
-        placeStore.setFalse(block);
-    }
-
-    public void setIsPlaced(Block block) {
-        placeStore.setTrue(block);
-    }
-
-    public boolean isSpawned(Entity entity) {
-        return placeStore.isSpawnedMob(entity);
-    }
-
-    public void setIsSpawned(Entity entity) {
-        placeStore.addSpawnedMob(entity);
-    }
-
-    public void setNotSpawned(Entity entity) {
-        placeStore.removeSpawnedMob(entity);
-    }
-
-    public void setUnloaded(World world) {
-        placeStore.unloadWorld(world);
-    }
-
-    public void setUnloaded(Chunk chunk, World world) {
-        placeStore.chunkUnloaded(chunk.getX(), chunk.getZ(), world);
-    }
-
-    public void setLoaded(Chunk chunk, World world, Entity[] entities) {
-        placeStore.loadChunk(chunk.getX(), chunk.getZ(), world, entities);
-    }
-
-    public void cleanMobLists() {
-        placeStore.cleanMobLists();
-    }
-
-    public ChunkManager getChunkStore() {
-        return placeStore;
     }
 }

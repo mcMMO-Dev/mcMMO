@@ -112,7 +112,7 @@ public final class TreeFeller {
      * @param treeFellerBlocks List of blocks to be removed
      */
     private static void handleBlock(Block block, List<Block> futureCenterBlocks, List<Block> treeFellerBlocks) {
-        if (!BlockChecks.treeFellerCompatible(block) || mcMMO.p.isPlaced(block) || treeFellerBlocks.contains(block)) {
+        if (!BlockChecks.treeFellerCompatible(block) || mcMMO.placeStore.isTrue(block) || treeFellerBlocks.contains(block)) {
             return;
         }
 

@@ -22,11 +22,11 @@ public class StickyPistonTracker implements Runnable {
             return;
         }
 
-        if (!mcMMO.p.isPlaced(originalBlock)) {
+        if (!mcMMO.placeStore.isTrue(originalBlock)) {
             return;
         }
 
-        mcMMO.p.setNotPlaced(originalBlock);
-        mcMMO.p.setIsPlaced(newBlock);
+        mcMMO.placeStore.setFalse(originalBlock);
+        mcMMO.placeStore.setTrue(newBlock);
     }
 }
