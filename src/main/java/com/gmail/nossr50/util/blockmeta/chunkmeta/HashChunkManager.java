@@ -219,6 +219,8 @@ public class HashChunkManager implements ChunkManager {
                 removalCheckedMobs.clear();
                 iteratingMobs = false;
             }
+
+            // closeChunkStore(world, cx, cz);
         }
     }
 
