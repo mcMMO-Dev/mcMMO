@@ -5,13 +5,9 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
@@ -23,7 +19,6 @@ import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.mods.ModChecks;
-import com.gmail.nossr50.party.PartyManager;
 
 public final class Misc {
     private static Random random = new Random();
@@ -43,22 +38,6 @@ public final class Misc {
 
     private Misc() {};
 
-    public static boolean isFriendlyPet(Player attacker, Tameable pet) {
-        if (pet.isTamed()) {
-            AnimalTamer tamer = pet.getOwner();
-
-            if (tamer instanceof Player) {
-                Player owner = (Player) tamer;
-
-                if (owner == attacker || PartyManager.inSameParty(attacker, owner)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
-    }
-
     public static boolean isNPCEntity(Entity entity) {
         if (entity == null || entity.hasMetadata("NPC")) {
             return true;
@@ -69,26 +48,6 @@ public final class Misc {
 
     public static boolean isNPCPlayer(Player player) {
         if (player == null || player.hasMetadata("NPC")) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Checks to see if an entity is currently invincible.
-     *
-     * @param le The LivingEntity to check
-     * @param event The event the entity is involved in
-     * @return true if the entity is invincible, false otherwise
-     */
-    public static boolean isInvincible(LivingEntity le, EntityDamageEvent event) {
-
-        /*
-         * So apparently if you do more damage to a LivingEntity than its last damage int you bypass the invincibility.
-         * So yeah, this is for that.
-         */
-        if (le.getNoDamageTicks() > le.getMaximumNoDamageTicks() / 2.0F && event.getDamage() <= le.getLastDamage()) {
             return true;
         }
 

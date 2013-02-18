@@ -124,7 +124,7 @@ public class EntityListener implements Listener {
         if (defender instanceof LivingEntity) {
             LivingEntity livingDefender = (LivingEntity) defender;
 
-            if (!Misc.isInvincible(livingDefender, event)) {
+            if (!CombatTools.isInvincible(livingDefender, event)) {
                 CombatTools.combatChecks(event, attacker, livingDefender);
             }
         }
@@ -166,7 +166,7 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            if (!Misc.isInvincible(player, event)) {
+            if (!CombatTools.isInvincible(player, event)) {
                 if (cause == DamageCause.FALL && player.getItemInHand().getType() != Material.ENDER_PEARL && !(Acrobatics.afkLevelingDisabled && player.isInsideVehicle()) && Permissions.roll(player)) {
                     AcrobaticsManager acrobaticsManager = new AcrobaticsManager(mcMMOPlayer);
                     acrobaticsManager.rollCheck(event);
@@ -185,7 +185,7 @@ public class EntityListener implements Listener {
             Tameable pet = (Tameable) livingEntity;
             AnimalTamer owner = pet.getOwner();
 
-            if ((!Misc.isInvincible(livingEntity, event)) && pet.isTamed() && owner instanceof Player && pet instanceof Wolf) {
+            if ((!CombatTools.isInvincible(livingEntity, event)) && pet.isTamed() && owner instanceof Player && pet instanceof Wolf) {
                 TamingManager tamingManager = new TamingManager(Users.getPlayer((Player) owner));
                 tamingManager.preventDamage(event);
             }
@@ -357,7 +357,7 @@ public class EntityListener implements Listener {
             Player player = (Player) event.getTarget();
             Tameable tameable = (Tameable) event.getEntity();
 
-            if (Misc.isFriendlyPet(player, tameable)) {
+            if (CombatTools.isFriendlyPet(player, tameable)) {
                 // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
                 // So we can make some assumptions here, about our casting and our check
                 Player owner = (Player) tameable.getOwner();

@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.utilities;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -604,7 +605,7 @@ public final class CombatTools {
             }
         }
         else if (entity instanceof Tameable) {
-            if (Misc.isFriendlyPet(player, (Tameable) entity)) {
+            if (isFriendlyPet(player, (Tameable) entity)) {
                 // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
                 // So we can make some assumptions here, about our casting and our check
                 Player owner = (Player) ((Tameable) entity).getOwner();
@@ -615,5 +616,48 @@ public final class CombatTools {
         }
 
         return true;
+    }
+
+    /**
+     * Checks to see if an entity is currently invincible.
+     *
+     * @param le The LivingEntity to check
+     * @param event The event the entity is involved in
+     * @return true if the entity is invincible, false otherwise
+     */
+    public static boolean isInvincible(LivingEntity le, EntityDamageEvent event) {
+
+        /*
+         * So apparently if you do more damage to a LivingEntity than its last damage int you bypass the invincibility.
+         * So yeah, this is for that.
+         */
+        if (le.getNoDamageTicks() > le.getMaximumNoDamageTicks() / 2.0F && event.getDamage() <= le.getLastDamage()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Checks to see if an entity is currently friendly toward a given player.
+     *
+     * @param attacker The player to check.
+     * @param pet The entity to check.
+     * @return true if the entity is friendly, false otherwise
+     */
+    public static boolean isFriendlyPet(Player attacker, Tameable pet) {
+        if (pet.isTamed()) {
+            AnimalTamer tamer = pet.getOwner();
+
+            if (tamer instanceof Player) {
+                Player owner = (Player) tamer;
+
+                if (owner == attacker || PartyManager.inSameParty(attacker, owner)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
