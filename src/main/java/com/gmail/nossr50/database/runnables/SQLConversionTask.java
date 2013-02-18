@@ -65,7 +65,7 @@ public class SQLConversionTask implements Runnable {
                 }
                 
                 /*
-                 * Looks like we still have party as the 3rd string in the array but we don't use it anymore
+                 * Looks like we still have party as the 4th string in the array but we don't use it anymore
                 if (character.length > 3) {
                     party = character[3];
                 }
