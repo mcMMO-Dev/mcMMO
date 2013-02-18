@@ -223,9 +223,7 @@ public final class CombatTools {
                         tamingManager.gore(event);
                     }
 
-                    if (target != master) {
-                        startGainXp(mcMMOPlayer, target, SkillType.TAMING);
-                    }
+                    startGainXp(mcMMOPlayer, target, SkillType.TAMING);
                 }
             }
 
@@ -322,10 +320,8 @@ public final class CombatTools {
                 archeryManager.trackArrows(target);
             }
 
-            if (target != shooter) {
-                archeryManager.distanceXpBonus(target);
-                startGainXp(mcMMOPlayer, target, SkillType.ARCHERY);
-            }
+            archeryManager.distanceXpBonus(target);
+            startGainXp(mcMMOPlayer, target, SkillType.ARCHERY);
         }
     }
 
@@ -402,7 +398,7 @@ public final class CombatTools {
         }
 
         for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
-            if ((entity instanceof Player && Misc.isNPCPlayer((Player) entity)) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
+            if (Misc.isNPCEntity(entity) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
                 continue;
             }
 

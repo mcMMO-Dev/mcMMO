@@ -108,14 +108,22 @@ public class EntityListener implements Listener {
         if (defender instanceof Player) {
             Player defendingPlayer = (Player) defender;
 
+            // TODO: Is this even possible?
             if (!defendingPlayer.isOnline()) {
                 return;
             }
 
-            if (attacker instanceof Player && PartyManager.inSameParty(defendingPlayer, (Player) attacker)) {
-                if (!(Permissions.friendlyFire((Player) attacker) && Permissions.friendlyFire(defendingPlayer))) {
-                    event.setCancelled(true);
+            if (attacker instanceof Player) {
+                Player attackingPlayer = (Player) attacker;
+
+                if (defendingPlayer == attackingPlayer) {
                     return;
+                }
+                else if (PartyManager.inSameParty(defendingPlayer, attackingPlayer)) {
+                    if (!(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
+                        event.setCancelled(true);
+                        return;
+                    }
                 }
             }
         }
