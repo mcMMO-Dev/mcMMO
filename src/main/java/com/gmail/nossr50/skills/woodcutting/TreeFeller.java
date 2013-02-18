@@ -17,6 +17,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.mods.datatypes.CustomBlock;
 import com.gmail.nossr50.skills.utilities.CombatTools;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.skills.woodcutting.Woodcutting.ExperienceGainMethod;
 import com.gmail.nossr50.util.BlockChecks;
@@ -142,7 +143,7 @@ public final class TreeFeller {
 
             for (Block block : treeFellerBlocks) {
                 if (BlockChecks.isLog(block) && Misc.getRandom().nextInt(unbreakingLevel + 1) == 0) {
-                     durabilityLoss += Misc.toolDurabilityLoss;
+                     durabilityLoss += SkillTools.toolDurabilityLoss;
                 }
             }
 

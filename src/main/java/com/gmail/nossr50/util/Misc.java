@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
@@ -22,8 +21,6 @@ import com.gmail.nossr50.mods.ModChecks;
 
 public final class Misc {
     private static Random random = new Random();
-    public static int toolDurabilityLoss = Config.getInstance().getAbilityToolDamage();
-    public static int abilityLengthIncreaseLevel = AdvancedConfig.getInstance().getAbilityLength();
     public static boolean isSpawnerXPEnabled = Config.getInstance().getExperienceGainsMobspawnersEnabled();
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final int TIME_CONVERSION_FACTOR = 1000;

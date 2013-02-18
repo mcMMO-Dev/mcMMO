@@ -12,7 +12,6 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
@@ -124,7 +123,7 @@ public abstract class SkillCommand implements CommandExecutor {
 
     protected String[] calculateLengthDisplayValues() {
         int maxLength = skill.getAbility().getMaxTicks();
-        int length = 2 + (int) (skillValue / Misc.abilityLengthIncreaseLevel);
+        int length = 2 + (int) (skillValue / SkillTools.abilityLengthIncreaseLevel);
         int enduranceLength = 0;
 
         if (player.hasPermission("mcmmo.perks.activationtime.twelveseconds")) {

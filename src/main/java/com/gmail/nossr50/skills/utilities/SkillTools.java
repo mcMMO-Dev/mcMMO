@@ -33,8 +33,9 @@ import com.gmail.nossr50.util.Users;
 
 public class SkillTools {
     static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-    public static int abilityLengthIncreaseLevel = advancedConfig.getAbilityLength();
     public static boolean abilitiesEnabled = Config.getInstance().getAbilitiesEnabled();
+    public static int toolDurabilityLoss = Config.getInstance().getAbilityToolDamage();
+    public static int abilityLengthIncreaseLevel = AdvancedConfig.getInstance().getAbilityLength();
 
     public static final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;
     public static final int NORMAL_SKILL_ACTIVATION_CHANCE = 100;
