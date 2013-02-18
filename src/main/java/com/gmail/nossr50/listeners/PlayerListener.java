@@ -17,6 +17,8 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -110,6 +112,25 @@ public class PlayerListener implements Listener {
         if (mcMMOPlayer.inParty() && !Permissions.party(player)) {
             mcMMOPlayer.removeParty();
             player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
+        }
+    }
+
+    /**
+     * Monitor PlayerLogin events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerLoginEvent(PlayerLoginEvent event) {
+        if (event.getResult() == Result.ALLOWED) {
+            Player player = event.getPlayer();
+
+            /* We can't use the other check here because a profile hasn't been created yet.*/
+            if (player == null || player.hasMetadata("NPC")) {
+                return;
+            }
+
+            Users.addUser(player).getProfile().actualizeRespawnATS();
         }
     }
 
@@ -208,13 +229,6 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-
-        /* We can't use the other check here because a profile hasn't been created yet.*/
-        if (player == null || player.hasMetadata("NPC")) {
-            return;
-        }
-
-        Users.addUser(player).getProfile().actualizeRespawnATS();
 
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
             Motd.displayAll(player);
