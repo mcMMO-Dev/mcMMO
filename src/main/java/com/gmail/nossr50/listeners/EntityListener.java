@@ -351,7 +351,7 @@ public class EntityListener implements Listener {
         tamingManager.awardTamingXP(event);
     }
 
-    @EventHandler (ignoreCancelled = true)
+    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
         if (event.getEntity() instanceof Tameable && event.getTarget() instanceof Player) {
             Player player = (Player) event.getTarget();
