@@ -20,6 +20,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -234,21 +235,31 @@ public class SkillTools {
      */
     public static void xpCheckSkill(SkillType skillType, Player player, PlayerProfile profile) {
         int skillups = 0;
+        int xpRemoved = 0;
 
         if (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
 
             while (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
                 if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Misc.getPowerLevelCap() >= Users.getPlayer(player).getPowerLevel() + 1)) {
-                    profile.removeXp(skillType, profile.getXpToLevel(skillType));
+                    int xp = profile.getXpToLevel(skillType);
+                    xpRemoved += xp;
+
+                    profile.removeXp(skillType, xp);
                     skillups++;
                     profile.skillUp(skillType, 1);
-
-                    McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType);
-                    mcMMO.p.getServer().getPluginManager().callEvent(eventToFire);
                 }
                 else {
                     profile.addLevels(skillType, 0);
                 }
+            }
+
+            McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType, skillups);
+            mcMMO.p.getServer().getPluginManager().callEvent(eventToFire);
+
+            if (eventToFire.isCancelled()) {
+                profile.modifySkill(skillType, profile.getSkillLevel(skillType) - skillups);
+                profile.setSkillXpLevel(skillType, profile.getSkillXpLevel(skillType) + xpRemoved);
+                return;
             }
 
             String capitalized = StringUtils.getCapitalized(skillType.toString());
