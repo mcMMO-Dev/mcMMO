@@ -125,8 +125,7 @@ public class PlayerListener implements Listener {
         if (event.getResult() == Result.ALLOWED) {
             Player player = event.getPlayer();
 
-            /* We can't use the other check here because a profile hasn't been created yet.*/
-            if (player == null || player.hasMetadata("NPC")) {
+            if (Misc.isNPCPlayer(player)) {
                 return;
             }
 
