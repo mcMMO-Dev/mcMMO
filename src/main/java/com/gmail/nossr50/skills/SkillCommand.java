@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.StringUtils;
@@ -124,25 +125,11 @@ public abstract class SkillCommand implements CommandExecutor {
     protected String[] calculateLengthDisplayValues() {
         int maxLength = skill.getAbility().getMaxTicks();
         int length = 2 + (int) (skillValue / SkillTools.abilityLengthIncreaseLevel);
-        int enduranceLength = 0;
-
-        if (player.hasPermission("mcmmo.perks.activationtime.twelveseconds")) {
-            enduranceLength = length + 12;
-        }
-        else if (player.hasPermission("mcmmo.perks.activationtime.eightseconds")) {
-            enduranceLength = length + 8;
-        }
-        else if (player.hasPermission("mcmmo.perks.activationtime.fourseconds")) {
-            enduranceLength = length + 4;
-        }
+        int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
 
         if (maxLength != 0) {
             if (length > maxLength) {
                 length = maxLength;
-            }
-
-            if (enduranceLength > maxLength) {
-                enduranceLength = maxLength;
             }
         }
 

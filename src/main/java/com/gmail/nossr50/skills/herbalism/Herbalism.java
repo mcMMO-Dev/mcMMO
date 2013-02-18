@@ -25,6 +25,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.mods.datatypes.CustomBlock;
 import com.gmail.nossr50.skills.utilities.AbilityType;
+import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
@@ -190,7 +191,7 @@ public class Herbalism {
         }
 
         if (Permissions.herbalismDoubleDrops(player)) {
-            int activationChance = SkillTools.calculateActivationChance(Permissions.luckyHerbalism(player));
+            int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyHerbalism(player));
             double chance = (doubleDropsMaxChance / doubleDropsMaxLevel) * SkillTools.skillCheck(herbLevel, doubleDropsMaxLevel);
 
             if (chance > Misc.getRandom().nextInt(activationChance)) {
@@ -254,7 +255,7 @@ public class Herbalism {
             return;
         }
 
-        int activationChance = SkillTools.calculateActivationChance(Permissions.luckyHerbalism(player));
+        int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyHerbalism(player));
         float chance = (float) (greenThumbMaxChance / greenThumbMaxLevel * herbLevel);
 
         if (chance > greenThumbMaxChance) {
@@ -301,7 +302,7 @@ public class Herbalism {
 
         player.setItemInHand(new ItemStack(Material.SEEDS, seeds - 1));
 
-        int activationChance = SkillTools.calculateActivationChance(Permissions.luckyHerbalism(player));
+        int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyHerbalism(player));
 
         float chance = (float) ((greenThumbMaxChance / greenThumbMaxLevel) * skillLevel);
         if (chance > greenThumbMaxChance) chance = (float) greenThumbMaxChance;
@@ -318,7 +319,7 @@ public class Herbalism {
         int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(SkillType.HERBALISM);
 
         double chance = (hylianLuckMaxChance / hylianLuckMaxLevel) * SkillTools.skillCheck(skillLevel, hylianLuckMaxLevel);
-        int activationChance = SkillTools.calculateActivationChance(Permissions.luckyHerbalism(player));
+        int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyHerbalism(player));
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
             List<HylianTreasure> treasures = new ArrayList<HylianTreasure>();

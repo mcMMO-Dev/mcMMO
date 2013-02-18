@@ -12,6 +12,7 @@ import com.gmail.nossr50.mods.datatypes.CustomTool;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
+import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.spout.huds.SpoutHud;
@@ -140,23 +141,7 @@ public class McMMOPlayer {
             }
         }
 
-        // TODO: Too many permission checks here, is there no way to avoid that? 
-        if (player.hasPermission("mcmmo.perks.xp.quadruple")) {
-            xp *= 4;
-        }
-        else if (player.hasPermission("mcmmo.perks.xp.triple")) {
-            xp *= 3;
-        }
-        else if (player.hasPermission("mcmmo.perks.xp.150percentboost")) {
-            xp *= 2.5;
-        }
-        else if (player.hasPermission("mcmmo.perks.xp.150percentboost")) {
-            xp *= 2;
-        }
-        else if (player.hasPermission("mcmmo.perks.xp.50percentboost")) {
-            xp *= 1.5;
-        }
-
+        xp = PerksUtils.handleXpPerks(player, xp);
         return xp;
     }
 

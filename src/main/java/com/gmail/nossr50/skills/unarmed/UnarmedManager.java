@@ -6,7 +6,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -87,7 +87,7 @@ public class UnarmedManager extends SkillManager {
 
         double chance = (Unarmed.ironGripMaxChance / Unarmed.ironGripMaxBonusLevel) * eventHandler.skillModifier;
 
-        if (chance > Misc.getRandom().nextInt(SkillTools.calculateActivationChance(Permissions.luckyUnarmed(defender)))) {
+        if (chance > Misc.getRandom().nextInt(PerksUtils.handleLuckyPerks(Permissions.luckyUnarmed(defender)))) {
             eventHandler.sendAbilityMessages();
             return true;
         }

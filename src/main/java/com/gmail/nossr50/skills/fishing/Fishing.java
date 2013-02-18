@@ -18,6 +18,7 @@ import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.ItemChecks;
@@ -160,7 +161,7 @@ public final class Fishing {
 
         FishingTreasure treasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
         ItemStack treasureDrop = treasure.getDrop();
-        int activationChance = SkillTools.calculateActivationChance(Permissions.luckyFishing(player));
+        int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyFishing(player));
 
         if (Misc.getRandom().nextDouble() * activationChance > treasure.getDropChance()) {
             return null;
@@ -189,7 +190,7 @@ public final class Fishing {
             return false;
         }
 
-        int activationChance = SkillTools.calculateActivationChance(Permissions.luckyFishing(player));
+        int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyFishing(player));
 
         if (storm) {
             activationChance = (int) (activationChance * 0.909);

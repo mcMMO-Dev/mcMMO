@@ -41,9 +41,6 @@ public class SkillTools {
     public static int toolDurabilityLoss = Config.getInstance().getAbilityToolDamage();
     public static int abilityLengthIncreaseLevel = AdvancedConfig.getInstance().getAbilityLength();
 
-    public static final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;
-    public static final int NORMAL_SKILL_ACTIVATION_CHANCE = 100;
-
     public static void handleFoodSkills(Player player, SkillType skill, FoodLevelChangeEvent event, int baseLevel, int maxLevel, int rankChange) {
         int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(skill);
 
@@ -70,18 +67,7 @@ public class SkillTools {
      */
     public static boolean cooldownOver(long oldTime, int cooldown, Player player) {
         long currentTime = System.currentTimeMillis();
-        int adjustedCooldown = cooldown;
-        
-        //Reduced Cooldown Donor Perks
-        if (Permissions.cooldownsHalved(player)) {
-            adjustedCooldown = (int) (adjustedCooldown * 0.5);
-        }
-        else if (Permissions.cooldownsThirded(player)) {
-            adjustedCooldown = (int) (adjustedCooldown * 0.66);
-        }
-        else if (Permissions.cooldownsQuartered(player)) {
-            adjustedCooldown = (int) (adjustedCooldown * 0.75);
-        }
+        int adjustedCooldown = PerksUtils.handleCooldownPerks(player, cooldown);
 
         if (currentTime - oldTime >= (adjustedCooldown * Misc.TIME_CONVERSION_FACTOR)) {
             return true;
@@ -98,20 +84,7 @@ public class SkillTools {
      * @return the number of seconds remaining before the cooldown expires
      */
     public static int calculateTimeLeft(long deactivatedTimeStamp, int cooldown, Player player) {
-        int adjustedCooldown = cooldown;
-
-        //Reduced Cooldown Donor Perks
-        if (Permissions.cooldownsHalved(player)) {
-            adjustedCooldown = (int) (adjustedCooldown * 0.5);
-        }
-        else if (Permissions.cooldownsThirded(player)) {
-            adjustedCooldown = (int) (adjustedCooldown * 0.66);
-        }
-        else if (Permissions.cooldownsQuartered(player)) {
-            adjustedCooldown = (int) (adjustedCooldown * 0.75);
-        }
-
-        return (int) (((deactivatedTimeStamp + (adjustedCooldown * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
+        return (int) (((deactivatedTimeStamp + (PerksUtils.handleCooldownPerks(player, cooldown) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /**
@@ -387,24 +360,6 @@ public class SkillTools {
     }
 
     /**
-     * Handle tool durability loss from abilities.
-     *
-     * @param inHand The item to damage
-     * @param durabilityLoss The durability to remove from the item
-     */
-    public static void abilityDurabilityLoss(ItemStack inHand, int durabilityLoss) {
-        if (Config.getInstance().getAbilitiesDamageTools()) {
-            if (inHand.containsEnchantment(Enchantment.DURABILITY)) {
-                int level = inHand.getEnchantmentLevel(Enchantment.DURABILITY);
-                if (Misc.getRandom().nextInt(level + 1) > 0) {
-                    return;
-                }
-            }
-            inHand.setDurability((short) (inHand.getDurability() + durabilityLoss));
-        }
-    }
-
-    /**
      * Check to see if an ability can be activated.
      *
      * @param player The player activating the ability
@@ -427,30 +382,12 @@ public class SkillTools {
             }
         }
 
-        int ticks = 2 + (profile.getSkillLevel(type) / abilityLengthIncreaseLevel);
-
-        if (Permissions.activationTwelve(player)) {
-            ticks = ticks + 12;
-        }
-        else if (Permissions.activationEight(player)) {
-            ticks = ticks + 8;
-        }
-        else if (Permissions.activationFour(player)) {
-            ticks = ticks + 4;
-        }
-
-        int maxTicks = ability.getMaxTicks();
-
-        if (maxTicks != 0 && ticks > maxTicks) {
-            ticks = maxTicks;
-        }
-
         if (!profile.getAbilityMode(ability) && cooldownOver(profile.getSkillDATS(ability), ability.getCooldown(), player)) {
             player.sendMessage(ability.getAbilityOn());
 
             SkillTools.sendSkillMessage(player, ability.getAbilityPlayer(player));
 
-            profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
+            profile.setSkillDATS(ability, System.currentTimeMillis() + (PerksUtils.handleActivationPerks(player, 2 + (profile.getSkillLevel(type) / abilityLengthIncreaseLevel), ability.getMaxTicks()) * Misc.TIME_CONVERSION_FACTOR));
             profile.setAbilityMode(ability, true);
 
             if (ability == AbilityType.BERSERK) {
@@ -502,20 +439,6 @@ public class SkillTools {
         }
 
         return activate;
-    }
-
-    /**
-     * Calculate activation chance for a skill.
-     *
-     * @param isLucky true if the player has the appropriate "lucky" perk, false otherwise
-     * @return the activation chance
-     */
-    public static int calculateActivationChance(boolean isLucky) {
-        if (isLucky) {
-            return LUCKY_SKILL_ACTIVATION_CHANCE;
-        }
-    
-        return NORMAL_SKILL_ACTIVATION_CHANCE;
     }
 
     public static void sendSkillMessage(Player player, String message) {

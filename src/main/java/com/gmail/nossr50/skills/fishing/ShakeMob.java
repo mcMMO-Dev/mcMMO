@@ -18,7 +18,7 @@ import org.bukkit.potion.PotionType;
 
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
 import com.gmail.nossr50.skills.utilities.CombatTools;
-import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
@@ -33,7 +33,7 @@ public final class ShakeMob {
      * @param skillLevel Fishing level of the player
      */
     public static void process(Player player, LivingEntity mob, int skillLevel) {
-        int activationChance = SkillTools.calculateActivationChance(Permissions.luckyFishing(player));
+        int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyFishing(player));
 
         if (getShakeProbability(skillLevel) <= Misc.getRandom().nextInt(activationChance)) {
             return;

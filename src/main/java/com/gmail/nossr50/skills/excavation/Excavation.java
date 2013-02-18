@@ -13,7 +13,7 @@ import com.gmail.nossr50.config.TreasuresConfig;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.mods.ModChecks;
-import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -105,7 +105,7 @@ public class Excavation {
 
             for (ExcavationTreasure treasure : treasures) {
                 if (mcMMOPlayer.getProfile().getSkillLevel(SkillType.EXCAVATION) >= treasure.getDropLevel()) {
-                    int activationChance = SkillTools.calculateActivationChance(Permissions.luckyExcavation(player));
+                    int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyExcavation(player));
 
                     if (Misc.getRandom().nextDouble() * activationChance <= treasure.getDropChance()) {
                         xp += treasure.getXp();

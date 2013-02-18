@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Permissions;
 
@@ -13,7 +13,7 @@ public abstract class SkillManager {
     public SkillManager(McMMOPlayer mcMMOPlayer, SkillType skill) {
         this.mcMMOPlayer = mcMMOPlayer;
         this.skillLevel = mcMMOPlayer.getProfile().getSkillLevel(skill);
-        this.activationChance = SkillTools.calculateActivationChance(Permissions.lucky(mcMMOPlayer.getPlayer(), skill));
+        this.activationChance = PerksUtils.handleLuckyPerks(Permissions.lucky(mcMMOPlayer.getPlayer(), skill));
     }
 
     public McMMOPlayer getMcMMOPlayer() {

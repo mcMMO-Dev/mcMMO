@@ -1,11 +1,14 @@
 package com.gmail.nossr50.util;
 
+import java.text.DecimalFormat;
+
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.skills.utilities.SkillType;
 
 public final class Motd {
@@ -56,21 +59,7 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayXpPerks(Player player) {
-        if (Permissions.xpQuadruple(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", 4)));
-        }
-        else if (Permissions.xpTriple(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", 3)));
-        }
-        else if (Permissions.xpDoubleAndOneHalf(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", 2.5)));
-        }
-        else if (Permissions.xpDouble(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", 2)));
-        }
-        else if (Permissions.xpOneAndOneHalf(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", 1.5)));
-        }
+        player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", PerksUtils.handleXpPerks(player, 1))));
     }
 
     /**
@@ -78,15 +67,10 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayCooldownPerks(Player player) {
-        if (Permissions.cooldownsHalved(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", "1/2")));
-        }
-        else if (Permissions.cooldownsThirded(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", "1/3")));
-        }
-        else if (Permissions.cooldownsQuartered(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", "1/4")));
-        }
+        double cooldownReduction = 1 - (PerksUtils.handleCooldownPerks(player, 12) / 12.0);
+        DecimalFormat percent = new DecimalFormat("##0.00%");
+
+        player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", percent.format(cooldownReduction))));
     }
 
     /**
@@ -94,15 +78,7 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayActivationPerks(Player player) {
-        if (Permissions.activationTwelve(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", 12)));
-        }
-        else if (Permissions.activationEight(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", 8)));
-        }
-        else if (Permissions.activationFour(player)) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", 4)));
-        }
+        player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", PerksUtils.handleActivationPerks(player, 0, 0))));
     }
 
     /**
