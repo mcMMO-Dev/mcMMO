@@ -65,6 +65,10 @@ public class McMMOPlayer {
      * @param xp Experience amount to process
      */
     public void beginXpGain(SkillType skillType, int xp) {
+    	if (xp == 0) {
+            return;
+        }
+    	
         // Return if the experience has been shared
         if (party != null && ShareHandler.handleXpShare(xp, this, skillType)) {
             return;
@@ -81,10 +85,6 @@ public class McMMOPlayer {
      */
     public void beginUnsharedXpGain(SkillType skillType, int xp) {
         xp = modifyXpGain(skillType, xp);
-
-        if (xp == 0) {
-            return;
-        }
 
         applyXpGain(skillType, xp);
     }
