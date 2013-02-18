@@ -21,7 +21,7 @@ public class SQLConversionTask implements Runnable {
             BufferedReader in = new BufferedReader(file);
             String line = "";
             String playerName = null;
-            String party = null;
+            //String party = null;
             String mining = null;
             String woodcutting = null;
             String repair = null;
@@ -63,10 +63,13 @@ public class SQLConversionTask implements Runnable {
                 if (character.length > 1) {
                     mining = character[1];
                 }
-
+                
+                /*
+                 * Looks like we still have party as the 3rd string in the array but we don't use it anymore
                 if (character.length > 3) {
                     party = character[3];
                 }
+                */
 
                 if (character.length > 4) {
                     miningXP = character[4];
@@ -231,10 +234,12 @@ public class SQLConversionTask implements Runnable {
                             + tablePrefix
                             + "users SET lastlogin = " + 0
                             + " WHERE id = " + id);
+                    /*
                     Database.write("UPDATE "
                             + tablePrefix
                             + "users SET party = '" + party
                             + "' WHERE id = " + id);
+                    */
                     Database.write("UPDATE "
                             + tablePrefix
                             + "skills SET "
