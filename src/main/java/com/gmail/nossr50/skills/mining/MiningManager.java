@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -36,7 +37,7 @@ public class MiningManager extends SkillManager{
             return;
         }
 
-        if (!Misc.blockBreakSimulate(eventHandler.getBlock(), mcMMOPlayer.getPlayer(), true)) {
+        if (!SkillTools.blockBreakSimulate(eventHandler.getBlock(), mcMMOPlayer.getPlayer(), true)) {
             return;
         }
 

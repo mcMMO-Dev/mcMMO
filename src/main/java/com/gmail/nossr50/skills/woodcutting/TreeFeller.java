@@ -171,7 +171,7 @@ public final class TreeFeller {
         int xp = 0;
 
         for (Block block : treeFellerBlocks) {
-            if (!Misc.blockBreakSimulate(block, mcMMOPlayer.getPlayer(), true)) {
+            if (!SkillTools.blockBreakSimulate(block, mcMMOPlayer.getPlayer(), true)) {
                 break; // TODO: Shouldn't we use continue instead?
             }
 

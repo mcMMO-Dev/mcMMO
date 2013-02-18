@@ -11,6 +11,7 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.getspout.spoutapi.SpoutManager;
@@ -22,6 +23,9 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
+import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
+import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
+import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.spout.SpoutConfig;
@@ -479,7 +483,7 @@ public class SkillTools {
                 break;
             }
 
-            if (!Misc.blockBreakSimulate(block, player, true)) {
+            if (!blockBreakSimulate(block, player, true)) {
                 activate = false;
                 break;
             }
@@ -631,5 +635,36 @@ public class SkillTools {
         }
 
         return item;
+    }
+
+    /**
+     * Simulate a block break event.
+     *
+     * @param block The block to break
+     * @param player The player breaking the block
+     * @param shouldArmSwing true if an armswing event should be fired, false otherwise
+     * @return true if the event wasn't cancelled, false otherwise
+     */
+    public static boolean blockBreakSimulate(Block block, Player player, Boolean shouldArmSwing) {
+
+        //Support for NoCheat
+        if (shouldArmSwing) {
+            FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
+            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
+        }
+
+        PluginManager pluginManger = mcMMO.p.getServer().getPluginManager();
+
+        FakeBlockDamageEvent damageEvent = new FakeBlockDamageEvent(player, block, player.getItemInHand(), true);
+        pluginManger.callEvent(damageEvent);
+
+        FakeBlockBreakEvent breakEvent = new FakeBlockBreakEvent(block, player);
+        pluginManger.callEvent(breakEvent);
+
+        if (!damageEvent.isCancelled() && !breakEvent.isCancelled()) {
+            return true;
+        }
+
+        return false;
     }
 }

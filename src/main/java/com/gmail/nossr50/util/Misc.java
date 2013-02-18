@@ -4,18 +4,13 @@ import java.util.Random;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.PluginManager;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
-import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
-import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.mods.ModChecks;
 
@@ -45,37 +40,6 @@ public final class Misc {
 
     public static boolean isNPCPlayer(Player player) {
         if (player == null || player.hasMetadata("NPC")) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Simulate a block break event.
-     *
-     * @param block The block to break
-     * @param player The player breaking the block
-     * @param shouldArmSwing true if an armswing event should be fired, false otherwise
-     * @return true if the event wasn't cancelled, false otherwise
-     */
-    public static boolean blockBreakSimulate(Block block, Player player, Boolean shouldArmSwing) {
-
-        //Support for NoCheat
-        if (shouldArmSwing) {
-            FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
-        }
-
-        PluginManager pluginManger = mcMMO.p.getServer().getPluginManager();
-
-        FakeBlockDamageEvent damageEvent = new FakeBlockDamageEvent(player, block, player.getItemInHand(), true);
-        pluginManger.callEvent(damageEvent);
-
-        FakeBlockBreakEvent breakEvent = new FakeBlockBreakEvent(block, player);
-        pluginManger.callEvent(breakEvent);
-
-        if (!damageEvent.isCancelled() && !breakEvent.isCancelled()) {
             return true;
         }
 

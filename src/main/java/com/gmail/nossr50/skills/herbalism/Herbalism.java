@@ -90,7 +90,7 @@ public class Herbalism {
     }
 
     public static void greenTerraConvert(Player player, Block block) {
-        if (Misc.blockBreakSimulate(block, player, false)) {
+        if (SkillTools.blockBreakSimulate(block, player, false)) {
             Material type = block.getType();
 
             switch (type) {

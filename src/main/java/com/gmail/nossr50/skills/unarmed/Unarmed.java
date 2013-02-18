@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 
 public class Unarmed {
     public static int ironArmMaxBonusDamage = AdvancedConfig.getInstance().getIronArmMaxBonus();
@@ -29,7 +29,7 @@ public class Unarmed {
     public static double berserkDamageModifier = 1.5;
 
     public static void blockCracker(Player player, Block block) {
-        if (Misc.blockBreakSimulate(block, player, false)) {
+        if (SkillTools.blockBreakSimulate(block, player, false)) {
             Material type = block.getType();
 
             switch (type) {
