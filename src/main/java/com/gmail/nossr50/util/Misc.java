@@ -247,21 +247,6 @@ public final class Misc {
         newItem.setItemStack(cloned);
     }
 
-    /**
-     * Get the max power level for a player.
-     *
-     * @return the maximum power level for a player
-     */
-    public static int getPowerLevelCap() {
-        int levelCap = Config.getInstance().getPowerLevelCap();
-
-        if (levelCap > 0) {
-            return levelCap;
-        }
-
-        return Integer.MAX_VALUE;
-    }
-
     public static Random getRandom() {
         return random;
     }

@@ -125,7 +125,7 @@ public class McMMOPlayer {
             return 0;
         }
 
-        if ((skillType.getMaxLevel() < profile.getSkillLevel(skillType) + 1) || (Misc.getPowerLevelCap() < getPowerLevel() + 1)) {
+        if ((skillType.getMaxLevel() < profile.getSkillLevel(skillType) + 1) || (Config.getInstance().getPowerLevelCap() < getPowerLevel() + 1)) {
             return 0;
         }
 

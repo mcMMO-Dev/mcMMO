@@ -239,7 +239,7 @@ public class SkillTools {
         if (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
 
             while (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
-                if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Misc.getPowerLevelCap() >= Users.getPlayer(player).getPowerLevel() + 1)) {
+                if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Config.getInstance().getPowerLevelCap() >= Users.getPlayer(player).getPowerLevel() + 1)) {
                     int xp = profile.getXpToLevel(skillType);
                     xpRemoved += xp;
 
