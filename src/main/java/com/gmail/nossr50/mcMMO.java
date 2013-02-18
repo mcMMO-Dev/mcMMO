@@ -32,6 +32,7 @@ import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.WorldListener;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mods.config.CustomArmorConfig;
 import com.gmail.nossr50.mods.config.CustomBlocksConfig;
 import com.gmail.nossr50.mods.config.CustomEntityConfig;
@@ -49,6 +50,7 @@ import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.runnables.SkillMonitor;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
+import com.gmail.nossr50.util.UpdateCheck;
 import com.gmail.nossr50.util.Users;
 
 public class mcMMO extends JavaPlugin {
@@ -74,6 +76,9 @@ public class mcMMO extends JavaPlugin {
     private static String flatFileDirectory;
     private static String usersFile;
     private static String modDirectory;
+
+    // Update Check
+    public boolean updateAvailable;
 
     // Spout Check
     public static boolean spoutEnabled = false;
@@ -121,6 +126,16 @@ public class mcMMO extends JavaPlugin {
         placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
         new MobStoreCleaner(); // Automatically starts and stores itself
+
+        try {
+            updateAvailable = Config.getInstance().getUpdateCheckEnabled() && UpdateCheck.updateAvailable();
+        } catch (Exception e) {
+            updateAvailable = false;
+        }
+        if (updateAvailable) {
+            getLogger().info(LocaleLoader.getString("UpdateChecker.outdated"));
+            getLogger().info(LocaleLoader.getString("UpdateChecker.newavailable"));
+        }
     }
 
     /**

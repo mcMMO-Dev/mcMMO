@@ -14,6 +14,9 @@ General:
     Save_Interval: 10
     #Allow mcMMO to report on basic anonymous usage
     Stats_Tracking: true
+    #Allow mcMMO to check if a new version is available
+    Update_Check: true
+    Prefer_Beta: false
     #Allow mcMMO to inform other plugins of damage being dealt
     Event_Callback: true
     #Allow mcMMO to create zip backups for flatfile data on shutdown.

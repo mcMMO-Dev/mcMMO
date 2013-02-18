@@ -236,6 +236,11 @@ public class PlayerListener implements Listener {
         if (plugin.isXPEventEnabled()) {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", Config.getInstance().getExperienceGainsGlobalMultiplier()));
         }
+
+        if (player.hasPermission("mcmmo.tools.updatecheck") && mcMMO.p.updateAvailable) {
+            player.sendMessage(LocaleLoader.getString("UpdateChecker.outdated"));
+            player.sendMessage(LocaleLoader.getString("UpdateChecker.newavailable"));
+        }
     }
 
     /**
