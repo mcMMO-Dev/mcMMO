@@ -97,7 +97,7 @@ public final class CombatTools {
                         SkillTools.abilityCheck(player, SkillType.SWORDS);
                     }
 
-                    if (Permissions.swordsBleed(player) && shouldBeAffected(player, target)) {
+                    if (Permissions.swordsBleed(player)) {
                         swordsManager.bleedCheck(target);
                     }
 
@@ -131,7 +131,7 @@ public final class CombatTools {
                         axeManager.bonusDamage(event);
                     }
 
-                    if (!target.isDead() && Permissions.criticalHit(player) && shouldBeAffected(player, target)) {
+                    if (!target.isDead() && Permissions.criticalHit(player)) {
                         axeManager.criticalHitCheck(event, target);
                     }
 
