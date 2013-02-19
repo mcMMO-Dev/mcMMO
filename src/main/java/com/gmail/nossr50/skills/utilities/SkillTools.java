@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Effect;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -12,8 +13,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -196,6 +199,7 @@ public class SkillTools {
 
                 profile.setAbilityMode(ability, false);
                 profile.setAbilityInformed(ability, false);
+                player.playEffect(player.getEyeLocation(), Effect.POTION_BREAK, new Potion(PotionType.STRENGTH));
                 player.sendMessage(ability.getAbilityOff());
 
                 sendSkillMessage(player, ability.getAbilityPlayerOff(player));
@@ -385,11 +389,13 @@ public class SkillTools {
         }
 
         if (!profile.getAbilityMode(ability) && cooldownOver(profile.getSkillDATS(ability), ability.getCooldown(), player)) {
-            player.sendMessage(ability.getAbilityOn());
+            int ticks = PerksUtils.handleActivationPerks(player, 2 + (profile.getSkillLevel(type) / abilityLengthIncreaseLevel), ability.getMaxTicks());
 
+            player.playEffect(player.getEyeLocation(), Effect.POTION_BREAK, new Potion(PotionType.POISON));
+            player.sendMessage(ability.getAbilityOn());
             SkillTools.sendSkillMessage(player, ability.getAbilityPlayer(player));
 
-            profile.setSkillDATS(ability, System.currentTimeMillis() + (PerksUtils.handleActivationPerks(player, 2 + (profile.getSkillLevel(type) / abilityLengthIncreaseLevel), ability.getMaxTicks()) * Misc.TIME_CONVERSION_FACTOR));
+            profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
             profile.setAbilityMode(ability, true);
 
             if (ability == AbilityType.BERSERK) {
