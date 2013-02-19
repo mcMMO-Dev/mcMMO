@@ -1,5 +1,8 @@
 package com.gmail.nossr50.skills.acrobatics;
 
+import org.bukkit.Effect;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
@@ -39,7 +42,14 @@ public class DodgeEventHandler extends AcrobaticsEventHandler {
 
     @Override
     protected void sendAbilityMessage() {
-        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));
+        McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
+        Player dodgingPlayer = mcMMOPlayer.getPlayer();
+
+        dodgingPlayer.playEffect(dodgingPlayer.getEyeLocation(), Effect.SMOKE, BlockFace.SELF);
+
+        if (mcMMOPlayer.getProfile().useChatNotifications()) {
+            dodgingPlayer.sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));
+        }
     }
 
     @Override
