@@ -166,12 +166,4 @@ public interface ChunkManager {
      * Delete any ChunkletStores that are empty
      */
     public void cleanUp();
-
-    public boolean isSpawnedMob(Entity entity);
-    public boolean isSpawnedPet(Entity entity);
-    public void addSpawnedMob(Entity entity);
-    public void addSpawnedPet(Entity entity);
-    public void removeSpawnedMob(Entity entity);
-    public void removeSpawnedPet(Entity entity);
-    public void cleanMobLists();
 }

@@ -11,6 +11,7 @@ import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -40,7 +41,6 @@ import com.gmail.nossr50.mods.config.CustomToolsConfig;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.runnables.PartiesLoader;
 import com.gmail.nossr50.party.runnables.PartyAutoKick;
-import com.gmail.nossr50.runnables.MobStoreCleaner;
 import com.gmail.nossr50.runnables.SaveTimer;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.RepairManagerFactory;
@@ -86,12 +86,17 @@ public class mcMMO extends JavaPlugin {
     // XP Event Check
     private boolean xpEventEnabled = false;
 
+    // Entity Metadata Values
+    public static FixedMetadataValue entityMetadata;
+    public final static String entityMetadataKey = "mcMMO: Spawned Entity";
+
     /**
      * Things to be run when the plugin is enabled.
      */
     @Override
     public void onEnable() {
         p = this;
+        entityMetadata = new FixedMetadataValue(mcMMO.p, true);
         setupFilePaths();
         setupSpout();
         loadConfigFiles();
@@ -124,8 +129,6 @@ public class mcMMO extends JavaPlugin {
         MetricsManager.setup();
 
         placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
-
-        new MobStoreCleaner(); // Automatically starts and stores itself
 
         try {
             updateAvailable = Config.getInstance().getUpdateCheckEnabled() && UpdateCheck.updateAvailable();

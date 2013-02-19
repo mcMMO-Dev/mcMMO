@@ -87,19 +87,4 @@ public class NullChunkManager implements ChunkManager {
 
     @Override
     public void cleanUp() {}
-
-    @Override
-    public boolean isSpawnedMob(Entity entity) {return false;}
-    @Override
-    public boolean isSpawnedPet(Entity entity) {return false;}
-    @Override
-    public void addSpawnedMob(Entity entity) {}
-    @Override
-    public void addSpawnedPet(Entity entity) {}
-    @Override
-    public void removeSpawnedMob(Entity entity) {}
-    @Override
-    public void removeSpawnedPet(Entity entity) {}
-    @Override
-    public synchronized void cleanMobLists() {}
 }

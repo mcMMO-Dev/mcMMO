@@ -65,13 +65,12 @@ public class EntityListener implements Listener {
         if (entity instanceof FallingBlock) {
             Block block = event.getBlock();
 
-            if (mcMMO.placeStore.isTrue(block) && !mcMMO.placeStore.isSpawnedMob(entity)) {
+            if (mcMMO.placeStore.isTrue(block) && !entity.hasMetadata(mcMMO.entityMetadataKey)) {
                 mcMMO.placeStore.setFalse(block);
-                mcMMO.placeStore.addSpawnedMob(entity);
+                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.entityMetadata);
             }
-            else if (mcMMO.placeStore.isSpawnedMob(entity)) {
+            else if (entity.hasMetadata(mcMMO.entityMetadataKey)) {
                 mcMMO.placeStore.setTrue(block);
-                mcMMO.placeStore.removeSpawnedMob(entity);
             }
         }
     }
@@ -216,7 +215,6 @@ public class EntityListener implements Listener {
         entity.setFireTicks(0);
         BleedTimer.remove(entity);
         Archery.arrowRetrievalCheck(entity);
-        mcMMO.placeStore.removeSpawnedMob(entity);
     }
 
     /**
@@ -229,11 +227,14 @@ public class EntityListener implements Listener {
         if (Misc.isSpawnerXPEnabled) {
             return;
         }
+        else if (event.getEntity() == null) {
+            return;
+        }
 
         SpawnReason reason = event.getSpawnReason();
 
         if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) {
-            mcMMO.placeStore.addSpawnedMob(event.getEntity());
+            event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.entityMetadata);
         }
     }
 

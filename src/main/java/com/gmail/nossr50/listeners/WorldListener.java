@@ -13,7 +13,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.StructureGrowEvent;
 import org.bukkit.event.world.WorldInitEvent;
@@ -86,23 +85,5 @@ public class WorldListener implements Listener {
         Chunk chunk = event.getChunk();
 
         mcMMO.placeStore.chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());
-    }
-
-    /**
-     * Monitor ChunkLoad events.
-     *
-     * @param event The event to watch
-     */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onChunkLoad(ChunkLoadEvent event) {
-        Chunk chunk = event.getChunk();
-        Entity[] entities = chunk.getEntities();
-
-        for (Entity entity : entities) {
-            if (entity instanceof LivingEntity || entity instanceof FallingBlock) {
-                mcMMO.placeStore.loadChunk(chunk.getX(), chunk.getZ(), event.getWorld(), entities);
-                return;
-            }
-        }
     }
 }

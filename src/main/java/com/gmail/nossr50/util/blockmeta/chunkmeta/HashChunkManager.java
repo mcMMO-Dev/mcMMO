@@ -25,15 +25,6 @@ public class HashChunkManager implements ChunkManager {
     public HashMap<String, ChunkStore> store = new HashMap<String, ChunkStore>();
     public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<BlockStoreConversionZDirectory>();
     private HashMap<UUID, Boolean> oldData = new HashMap<UUID, Boolean>();
-    // TODO: Investigate whether or not a LinkedList would be faster
-    private List<Entity> spawnedMobs = new ArrayList<Entity>();
-    private List<Entity> mobsToRemove = new ArrayList<Entity>();
-    private List<String> savedChunks = new ArrayList<String>();
-    private List<Entity> checkedMobs = new ArrayList<Entity>();
-    private List<Entity> removalCheckedMobs = new ArrayList<Entity>();
-    private boolean safeToRemoveMobs = true;
-    private boolean savingWorld = false;
-    private boolean iteratingMobs = false;
 
     @Override
     public synchronized void closeAll() {
@@ -171,26 +162,6 @@ public class HashChunkManager implements ChunkManager {
             return;
 
         store.put(world.getName() + "," + cx + "," + cz, chunkStore);
-
-        List<UUID> mobs = chunkStore.getSpawnedMobs();
-
-        if (mobs.isEmpty())
-            return;
-
-        if (entities == null)
-            entities = world.getChunkAt(cx, cz).getEntities();
-
-        iteratingMobs = true;
-
-        for (Entity entity : entities) {
-            if (mobs.contains(entity.getUniqueId()))
-                addSpawnedMob(entity);
-        }
-
-        if (safeToRemoveMobs)
-            iteratingMobs = false;
-
-        chunkStore.clearSpawnedMobs();
     }
 
     @Override
@@ -199,26 +170,6 @@ public class HashChunkManager implements ChunkManager {
 
         if (store.containsKey(world.getName() + "," + cx + "," + cz)) {
             store.remove(world.getName() + "," + cx + "," + cz);
-
-            iteratingMobs = true;
-
-            List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
-            tempSpawnedMobs.removeAll(removalCheckedMobs);
-            tempSpawnedMobs.removeAll(checkedMobs);
-            for (Entity entity : tempSpawnedMobs) {
-                if (!isEntityInChunk(entity, cx, cz, world))
-                    continue;
-
-                mobsToRemove.add(entity);
-                removalCheckedMobs.add(entity);
-            }
-
-            if (safeToRemoveMobs) {
-                spawnedMobs.removeAll(mobsToRemove);
-                mobsToRemove.clear();
-                removalCheckedMobs.clear();
-                iteratingMobs = false;
-            }
 
             // closeChunkStore(world, cx, cz);
         }
@@ -229,71 +180,16 @@ public class HashChunkManager implements ChunkManager {
         if (world == null)
             return;
 
-        if (savingWorld && savedChunks.contains(world.getName() + "," + cx + "," + cz))
-            return;
-
-        boolean unloaded = false;
         String key = world.getName() + "," + cx + "," + cz;
-
-        if (!store.containsKey(key)) {
-            List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
-            tempSpawnedMobs.removeAll(checkedMobs);
-            for (Entity entity : tempSpawnedMobs) {
-                if (!isEntityInChunk(entity, cx, cz, world))
-                    continue;
-
-                loadChunk(cx, cz, world, null);
-                unloaded = true;
-                break;
-            }
-        }
-
-        if (!store.containsKey(key) && unloaded) {
-            ChunkStore cStore = ChunkStoreFactory.getChunkStore(world, cx, cz);
-            store.put(world.getName() + "," + cx + "," + cz, cStore);
-        }
 
         if (store.containsKey(key)) {
             ChunkStore out = store.get(world.getName() + "," + cx + "," + cz);
-
-            List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
-            tempSpawnedMobs.removeAll(checkedMobs);
-            for (Entity entity : tempSpawnedMobs) {
-                if (!isEntityInChunk(entity, cx, cz, world))
-                    continue;
-
-                out.addSpawnedMob(entity.getUniqueId());
-                checkedMobs.add(entity);
-            }
 
             if (!out.isDirty())
                 return;
 
             writeChunkStore(world, cx, cz, out);
         }
-
-        if(savingWorld)
-            savedChunks.add(world.getName() + "," + cx + "," + cz);
-        else
-            checkedMobs.clear();
-    }
-
-    private boolean isEntityInChunk(Entity entity, int cx, int cz, World world) {
-        if (entity == null || world == null)
-            return false;
-
-        Chunk chunk = entity.getLocation().getChunk();
-
-        if (chunk.getX() != cx)
-            return false;
-
-        if (chunk.getZ() != cz)
-            return false;
-
-        if (entity.getWorld() != world)
-            return false;
-
-        return true;
     }
 
     @Override
@@ -322,7 +218,6 @@ public class HashChunkManager implements ChunkManager {
 
         closeAll();
         String worldName = world.getName();
-        savingWorld = true;
 
         List<String> keys = new ArrayList<String>(store.keySet());
         for (String key : keys) {
@@ -341,24 +236,6 @@ public class HashChunkManager implements ChunkManager {
                 saveChunk(cx, cz, world);
             }
         }
-
-        List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
-        tempSpawnedMobs.removeAll(checkedMobs);
-        for (Entity entity : tempSpawnedMobs) {
-            World entityWorld = entity.getWorld();
-
-            if (world != entityWorld)
-                continue;
-
-            int cx = entity.getLocation().getChunk().getX();
-            int cz = entity.getLocation().getChunk().getZ();
-
-            saveChunk(cx, cz, world);
-        }
-
-        savingWorld = false;
-        savedChunks.clear();
-        checkedMobs.clear();
     }
 
     @Override
@@ -368,7 +245,6 @@ public class HashChunkManager implements ChunkManager {
 
         closeAll();
         String worldName = world.getName();
-        savingWorld = true;
 
         List<String> keys = new ArrayList<String>(store.keySet());
         for (String key : keys) {
@@ -387,32 +263,6 @@ public class HashChunkManager implements ChunkManager {
                 unloadChunk(cx, cz, world);
             }
         }
-
-        safeToRemoveMobs = false;
-
-        List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
-        tempSpawnedMobs.removeAll(checkedMobs);
-        tempSpawnedMobs.removeAll(removalCheckedMobs);
-        for (Entity entity : tempSpawnedMobs) {
-            World entityWorld = entity.getWorld();
-
-            if (world != entityWorld)
-                continue;
-
-            int cx = entity.getLocation().getChunk().getX();
-            int cz = entity.getLocation().getChunk().getZ();
-
-            unloadChunk(cx, cz, world);
-        }
-
-        safeToRemoveMobs = true;
-
-        spawnedMobs.removeAll(mobsToRemove);
-        mobsToRemove.clear();
-        checkedMobs.clear();
-        removalCheckedMobs.clear();
-        savingWorld = false;
-        savedChunks.clear();
     }
 
     @Override
@@ -574,57 +424,5 @@ public class HashChunkManager implements ChunkManager {
         }
 
         return true;
-    }
-
-    @Override
-    public boolean isSpawnedMob(Entity entity) {
-        return spawnedMobs.contains(entity);
-    }
-
-    @Override
-    public boolean isSpawnedPet(Entity entity) {
-        return spawnedMobs.contains(entity);
-    }
-
-    @Override
-    public void addSpawnedMob(Entity entity) {
-        if (!isSpawnedMob(entity))
-            spawnedMobs.add(entity);
-    }
-
-    @Override
-    public void addSpawnedPet(Entity entity) {
-        if (!isSpawnedMob(entity))
-            spawnedMobs.add(entity);
-    }
-
-    @Override
-    public void removeSpawnedMob(Entity entity) {
-        if (isSpawnedMob(entity))
-            spawnedMobs.remove(entity);
-    }
-
-    @Override
-    public void removeSpawnedPet(Entity entity) {
-        if (isSpawnedMob(entity))
-            spawnedMobs.remove(entity);
-    }
-
-    @Override
-    public synchronized void cleanMobLists() {
-        if (!safeToRemoveMobs || iteratingMobs)
-            return;
-
-        mobsToRemove.clear();
-
-        List<Entity> tempSpawnedMobs = new ArrayList<Entity>(spawnedMobs);
-        for (Entity entity : tempSpawnedMobs) {
-            if (!entity.isValid()) {
-                mobsToRemove.add(entity);
-            }
-        }
-
-        spawnedMobs.removeAll(mobsToRemove);
-        mobsToRemove.clear();
     }
 }

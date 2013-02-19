@@ -22,7 +22,6 @@ public class PrimitiveChunkStore implements ChunkStore {
     private int cx;
     private int cz;
     private UUID worldUid;
-    private List<UUID> spawnedMobs = new ArrayList<UUID>();
     transient private int worldHeight;
 
     public PrimitiveChunkStore(World world, int cx, int cz) {
@@ -94,74 +93,6 @@ public class PrimitiveChunkStore implements ChunkStore {
         dirty = true;
     }
 
-    @Override
-    public boolean isSpawnedMob(UUID id) {
-        return spawnedMobs.contains(id);
-    }
-
-    @Override
-    public boolean isSpawnedPet(UUID id) {
-        return spawnedMobs.contains(id);
-    }
-
-    @Override
-    public void addSpawnedMob(UUID id) {
-        if (!isSpawnedMob(id)) {
-            spawnedMobs.add(id);
-            dirty = true;
-        }
-    }
-
-    @Override
-    public void addSpawnedPet(UUID id) {
-        if (!isSpawnedPet(id)) {
-            spawnedMobs.add(id);
-            dirty = true;
-        }
-    }
-
-    @Override
-    public void removeSpawnedMob(UUID id) {
-        if (isSpawnedMob(id)) {
-            spawnedMobs.remove(id);
-            dirty = true;
-        }
-    }
-
-    @Override
-    public void removeSpawnedPet(UUID id) {
-        if (isSpawnedPet(id)) {
-            spawnedMobs.remove(id);
-            dirty = true;
-        }
-    }
-
-    @Override
-    public void clearSpawnedMobs() {
-        if (!spawnedMobs.isEmpty()) {
-            spawnedMobs.clear();
-            dirty = true;
-        }
-    }
-
-    @Override
-    public void clearSpawnedPets() {
-        if (!spawnedMobs.isEmpty()) {
-            spawnedMobs.clear();
-            dirty = true;
-        }
-    }
-
-    @Override
-    public List<UUID> getSpawnedMobs() {
-        return spawnedMobs;
-    }
-
-    @Override
-    public List<UUID> getSpawnedPets() {
-        return spawnedMobs;
-    }
-
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.writeInt(MAGIC_NUMBER);
         out.writeInt(CURRENT_VERSION);
@@ -171,8 +102,6 @@ public class PrimitiveChunkStore implements ChunkStore {
         out.writeInt(cx);
         out.writeInt(cz);
         out.writeObject(store);
-
-        out.writeObject(spawnedMobs);
 
         dirty = false;
     }
@@ -199,24 +128,9 @@ public class PrimitiveChunkStore implements ChunkStore {
 
         store = (boolean[][][]) in.readObject();
 
-        if (fileVersionNumber < CURRENT_VERSION) {
-            if (fileVersionNumber < 5)
-                fixArray();
-            if (fileVersionNumber < 6) {
-                spawnedMobs = new ArrayList<UUID>();
-            }
+        if (fileVersionNumber < 5) {
+            fixArray();
             dirty = true;
-        }
-
-        if (fileVersionNumber == 6) {
-            //What do we want to do about this? These casts are unchecked.
-            spawnedMobs = (ArrayList<UUID>) in.readObject();
-            List<UUID> spawnedPets = (ArrayList<UUID>) in.readObject();
-            spawnedMobs.addAll(spawnedPets);
-        }
-
-        if(fileVersionNumber >= 7) {
-            spawnedMobs = (ArrayList<UUID>) in.readObject();
         }
     }
 
