@@ -1,8 +1,6 @@
 package com.gmail.nossr50.util.blockmeta.chunkmeta;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.UUID;
 
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 

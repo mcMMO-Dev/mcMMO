@@ -3,8 +3,6 @@ package com.gmail.nossr50.util.blockmeta.chunkmeta;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.World;
