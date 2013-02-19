@@ -8,13 +8,11 @@ import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 
 public class BleedEventHandler {
-    private SwordsManager manager;
     private int skillLevel;
     private LivingEntity defender;
     protected int skillModifier;
 
     protected BleedEventHandler(SwordsManager manager, LivingEntity defender) {
-        this.manager = manager;
         this.skillLevel = manager.getSkillLevel();
         this.defender = defender;
 
