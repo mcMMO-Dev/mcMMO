@@ -119,8 +119,8 @@ permissions:
             mcmmo.commands.all: true
             mcmmo.defaults: true
             mcmmo.defaultsop: true
-            mcmmo.perks.all: true
             mcmmo.party.all: true
+            mcmmo.perks.all: true
     mcmmo.ability.*:
         default: false
         description: Implies all mcmmo.ability permissions.
@@ -275,8 +275,7 @@ permissions:
             mcmmo.ability.herbalism.doubledrops: true
             mcmmo.ability.herbalism.farmersdiet: true
             mcmmo.ability.herbalism.greenterra: true
-            mcmmo.ability.herbalism.greenthumb.blocks.all: true
-            mcmmo.ability.herbalims.greenthumb.plants.all: true
+            mcmmo.ability.herbalism.greenthumb.all: true
             mcmmo.ability.herbalism.hylianluck: true
     mcmmo.ability.herbalism.doubledrops:
         description: Allows double drop chance from Herbalism
@@ -284,6 +283,21 @@ permissions:
         description: Allows access to the Farmer's Diet ability
     mcmmo.ability.herbalism.greenterra:
         description: Allows access to the Green Terra ability
+    mcmmo.ability.herbalism.greenthumb.*:
+        default: false
+        description: Allows access to all Green Thumb abilities
+        children:
+            mcmmo.ability.herbalism.greenthumb.all: true
+    mcmmo.ability.herbalism.greenthumb.all:
+        description: Allows access to all Green Thumb abilities for blocks
+        children:
+            mcmmo.ability.herbalism.greenthumb.blocks.all: true
+            mcmmo.ability.herbalism.greenthumb.plants.all: true
+    mcmmo.ability.herbalism.greenthumb.blocks.*:
+        default: false
+        description: Allows access to all Green Thumb abilities for blocks
+        children:
+            mcmmo.ability.herbalism.greenthumb.blocks.all: true
     mcmmo.ability.herbalism.greenthumb.blocks.all:
         description: Allows access to all Green Thumb abilities for blocks
         children:
@@ -299,6 +313,11 @@ permissions:
         description: Allows access to the Green Thumb ability for dirt
     mcmmo.ability.herbalism.greenthumb.blocks.smoothbrick:
         description: Allows access to the Green Thumb ability for smooth brick
+    mcmmo.ability.herbalism.greenthumb.plants.*:
+        default: false
+        description: Allows access to all Green Thumb abilities for plants
+        children:
+            mcmmo.ability.herbalism.greenthumb.plants.all: true
     mcmmo.ability.herbalism.greenthumb.plants.all:
         description: Allows access to all Green Thumb abilities for plants
         children:
@@ -317,6 +336,36 @@ permissions:
         description: Allows access to the Green Thumb ability for netherwart
     mcmmo.ability.herbalism.greenthumb.plants.potato:
         description: Allows access to the Green Thumb ability for potatoes
+    mcmmo.ability.herbalism.greenthumbblocks:
+        default: false
+        description: Allows access to all Green Thumb abilities for blocks
+        children:
+            mcmmo.ability.herbalism.greenthumb.blocks.all: true
+    mcmmo.ability.herbalism.greenthumbcarrots:
+        default: false
+        description: Allows access to the Green Thumb ability for carrots
+        children:
+            mcmmo.ability.herbalism.greenthumb.plants.carrot: true
+    mcmmo.ability.herbalism.greenthumbcocoa:
+        default: false
+        description: Allows access to the Green Thumb ability for cocoa
+        children:
+            mcmmo.ability.herbalism.greenthumb.plants.cocoa: true
+    mcmmo.ability.herbalism.greenthumbnetherwart:
+        default: false
+        description: Allows access to the Green Thumb ability for netherwart
+        children:
+            mcmmo.ability.herbalism.greenthumb.plants.netherwarts: true
+    mcmmo.ability.herbalism.greenthumbpotatoes:
+        default: false
+        description: Allows access to the Green Thumb ability for potatoes
+        children:
+            mcmmo.ability.herbalism.greenthumb.plants.potato: true
+    mcmmo.ability.herbalism.greenthumbwheat:
+        default: false
+        description: Allows access to the Green Thumb ability for wheat
+        children:
+            mcmmo.ability.herbalism.greenthumb.plants.crops: true
     mcmmo.ability.herbalism.hylianluck:
         description: Allows access to the Hylian Luck ability
     mcmmo.ability.mining.*:
@@ -412,16 +461,21 @@ permissions:
     mcmmo.ability.smelting.all:
         description: Allows access to all Smelting abilities
         children:
+            mcmmo.ability.smelting.doubledrops: true
             mcmmo.ability.smelting.fluxmining: true
             mcmmo.ability.smelting.fuelefficiency: true
-            mcmmo.ability.smelting.secondsmelt: true
             mcmmo.ability.smelting.vanillaxpboost: true
+    mcmmo.ability.smelting.doubledrops:
+        description: Allows access to the Second Smelt ability
     mcmmo.ability.smelting.fluxmining:
         description: Allows access to the Flux Mining ability
     mcmmo.ability.smelting.fuelefficiency:
         description: Allows access to the Fuel Efficiency ability
-    mcmmo.ability.smelting.doubledrops:
+    mcmmo.ability.smelting.secondsmelt:
+        default: false
         description: Allows access to the Second Smelt ability
+        children:
+            mcmmo.ability.smelting.doubledrops: true
     mcmmo.ability.smelting.vanillaxpboost:
         description: Allows vanilla XP boost from Smelting
     mcmmo.ability.swords.*:
@@ -565,16 +619,6 @@ permissions:
         description: Allows participation in admin chat
     mcmmo.chat.partychat:
         description: Allows participation in party chat
-    mcmmo.item.*:
-        description: Implies all mcmmo.item permissions
-        children:
-            mcmmo.item.all: true 
-    mcmmo.item.all:
-        description: Implies all mcmmo.item permissions
-        children:
-            mcmmo.item.chimaerawing: true 
-    mcmmo.item.chimaerawing:
-        description: Allows use of Chimaera Wing item
     mcmmo.motd:
         description: Allows access to the motd
     mcmmo.commands.*:
@@ -708,6 +752,11 @@ permissions:
         description: Allows access to the mcability command
     mcmmo.commands.mcability.others:
         description: Allows access to the mcability command for other players
+    mcmmo.commands.mcc:
+        default: false
+        description: Allows access to the mcmmo help command
+        children:
+            mcmmo.commands.mcmmo.help: true
     mcmmo.commands.mcgod:
         description: Allows access to the mcgod command
     mcmmo.commands.mcgod.others:
@@ -1129,7 +1178,19 @@ permissions:
         children:
             mcmmo.chat.adminchat: true
             mcmmo.commands.defaultsop: true
-            mcmmo.tools.all: true
+            mcmmo.item.all: true
+            mcmmo.tools.updatecheck: true
+    mcmmo.item.*:
+        default: false
+        description: Implies all mcmmo.item permissions
+        children:
+            mcmmo.item.all: true 
+    mcmmo.item.all:
+        description: Implies all mcmmo.item permissions
+        children:
+            mcmmo.item.chimaerawing: true 
+    mcmmo.item.chimaerawing:
+        description: Allows use of Chimaera Wing item
     mcmmo.motd:
         description: Allows access to the motd
     mcmmo.party.*:
