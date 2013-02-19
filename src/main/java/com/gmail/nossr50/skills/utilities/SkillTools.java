@@ -200,7 +200,10 @@ public class SkillTools {
                 profile.setAbilityMode(ability, false);
                 profile.setAbilityInformed(ability, false);
                 player.playEffect(player.getEyeLocation(), Effect.POTION_BREAK, new Potion(PotionType.STRENGTH));
-                player.sendMessage(ability.getAbilityOff());
+
+                if (profile.useChatNotifications()) {
+                    player.sendMessage(ability.getAbilityOff());
+                }
 
                 sendSkillMessage(player, ability.getAbilityPlayerOff(player));
             }
@@ -392,7 +395,11 @@ public class SkillTools {
             int ticks = PerksUtils.handleActivationPerks(player, 2 + (profile.getSkillLevel(type) / abilityLengthIncreaseLevel), ability.getMaxTicks());
 
             player.playEffect(player.getEyeLocation(), Effect.POTION_BREAK, new Potion(PotionType.POISON));
-            player.sendMessage(ability.getAbilityOn());
+
+            if (profile.useChatNotifications()) {
+                player.sendMessage(ability.getAbilityOn());
+            }
+
             SkillTools.sendSkillMessage(player, ability.getAbilityPlayer(player));
 
             profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));

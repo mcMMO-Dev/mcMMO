@@ -6,12 +6,15 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Users;
 
 public class DazeEventHandler {
     private ArcheryManager manager;
+    private McMMOPlayer mcMMOPlayer;
     private EntityDamageEvent event;
     private Player defender;
 
@@ -21,6 +24,7 @@ public class DazeEventHandler {
 
     protected DazeEventHandler (ArcheryManager manager, EntityDamageEvent event, Player defender) {
         this.manager = manager;
+        this.mcMMOPlayer = manager.getMcMMOPlayer();
         this.event = event;
         this.defender = defender;
 
@@ -48,7 +52,12 @@ public class DazeEventHandler {
     }
 
     protected void sendAbilityMessages() {
-        defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
-        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
+        if (Users.getPlayer(defender).getProfile().useChatNotifications()) {
+            defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
+        }
+
+        if (mcMMOPlayer.getProfile().useChatNotifications()) {
+            mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
+        }
     }
 }

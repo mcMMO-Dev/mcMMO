@@ -3,18 +3,20 @@ package com.gmail.nossr50.skills.swords;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.util.Users;
 
 public class BleedEventHandler {
-    private SwordsManager manager;
+    private McMMOPlayer mcMMOPlayer;
     private int skillLevel;
     private LivingEntity defender;
     protected int skillModifier;
 
     protected BleedEventHandler(SwordsManager manager, LivingEntity defender) {
-        this.manager = manager;
+        this.mcMMOPlayer = manager.getMcMMOPlayer();
         this.skillLevel = manager.getSkillLevel();
         this.defender = defender;
 
@@ -39,10 +41,16 @@ public class BleedEventHandler {
     }
 
     protected void sendAbilityMessages() {
-        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
+        if (mcMMOPlayer.getProfile().useChatNotifications()) {
+            mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
+        }
 
         if (defender instanceof Player) {
-            ((Player) defender).sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding.Started"));
+            Player defendingPlayer = (Player) defender;
+
+            if (Users.getPlayer(defendingPlayer).getProfile().useChatNotifications()) {
+                defendingPlayer.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding.Started"));
+            }
         }
     }
 }
