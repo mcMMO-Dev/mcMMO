@@ -95,9 +95,7 @@ public class Herbalism {
 
             switch (type) {
             case SMOOTH_BRICK:
-                if (block.getData() == 0x0) {
-                    block.setData((byte) 0x1);
-                }
+                block.setData((byte) 0x1);
                 return;
 
             case DIRT:
@@ -109,9 +107,7 @@ public class Herbalism {
                 return;
 
             case COBBLE_WALL:
-                if (block.getData() == 0x0) {
-                    block.setData((byte) 0x1);
-                }
+                block.setData((byte) 0x1);
                 return;
 
             default:
