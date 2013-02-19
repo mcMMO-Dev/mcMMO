@@ -26,7 +26,7 @@ public class SmeltingManager extends SkillManager {
     public void fuelEfficiency(FurnaceBurnEvent event) {
         Player player = mcMMOPlayer.getPlayer();
 
-        if (Misc.isNPCPlayer(player) || !Permissions.fuelEfficiency(player)) {
+        if (Misc.isNPCEntity(player) || !Permissions.fuelEfficiency(player)) {
             return;
         }
 
@@ -38,7 +38,7 @@ public class SmeltingManager extends SkillManager {
     public void smeltProcessing(FurnaceSmeltEvent event) {
         Player player = mcMMOPlayer.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 

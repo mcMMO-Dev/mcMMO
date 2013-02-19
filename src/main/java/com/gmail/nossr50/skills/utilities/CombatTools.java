@@ -65,7 +65,7 @@ public final class CombatTools {
         if (attacker instanceof Player) {
             Player player = (Player) attacker;
 
-            if (Misc.isNPCPlayer(player)) {
+            if (Misc.isNPCEntity(player)) {
                 return;
             }
 
@@ -193,7 +193,7 @@ public final class CombatTools {
             if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
                 Player master = (Player) wolf.getOwner();
 
-                if (Misc.isNPCPlayer(master)) {
+                if (Misc.isNPCEntity(master)) {
                     return;
                 }
 
@@ -256,7 +256,7 @@ public final class CombatTools {
         if (targetIsPlayer) {
             Player player = (Player) target;
 
-            if (Misc.isNPCPlayer(player)) {
+            if (Misc.isNPCEntity(player)) {
                 return;
             }
 
@@ -295,7 +295,7 @@ public final class CombatTools {
      * @param event The event to run the archery checks on.
      */
     private static void archeryCheck(Player shooter, LivingEntity target, EntityDamageByEntityEvent event) {
-        if (Misc.isNPCPlayer(shooter)) {
+        if (Misc.isNPCEntity(shooter)) {
             return;
         }
 

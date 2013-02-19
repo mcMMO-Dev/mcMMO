@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
@@ -32,14 +31,6 @@ public final class Misc {
 
     public static boolean isNPCEntity(Entity entity) {
         if (entity == null || entity.hasMetadata("NPC")) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public static boolean isNPCPlayer(Player player) {
-        if (player == null || player.hasMetadata("NPC")) {
             return true;
         }
 

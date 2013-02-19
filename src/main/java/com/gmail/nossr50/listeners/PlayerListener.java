@@ -73,7 +73,7 @@ public class PlayerListener implements Listener {
 
         Player player = event.getEntity();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 
@@ -97,7 +97,7 @@ public class PlayerListener implements Listener {
     public void onPlayerWorldChangeEvent(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 
@@ -125,7 +125,7 @@ public class PlayerListener implements Listener {
         if (event.getResult() == Result.ALLOWED) {
             Player player = event.getPlayer();
 
-            if (Misc.isNPCPlayer(player)) {
+            if (Misc.isNPCEntity(player)) {
                 return;
             }
 
@@ -157,7 +157,7 @@ public class PlayerListener implements Listener {
     public void onPlayerFish(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player) || !Permissions.fishing(player)) {
+        if (Misc.isNPCEntity(player) || !Permissions.fishing(player)) {
             return;
         }
 
@@ -192,7 +192,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         Item item = event.getItem();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 
@@ -212,7 +212,7 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 
@@ -251,7 +251,7 @@ public class PlayerListener implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 
@@ -267,7 +267,7 @@ public class PlayerListener implements Listener {
     public void onPlayerInteractLowest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 
@@ -321,7 +321,7 @@ public class PlayerListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 
@@ -407,7 +407,7 @@ public class PlayerListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 

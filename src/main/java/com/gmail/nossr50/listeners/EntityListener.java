@@ -160,7 +160,7 @@ public class EntityListener implements Listener {
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
 
-            if (!player.isOnline() || Misc.isNPCPlayer(player)) {
+            if (!player.isOnline() || Misc.isNPCEntity(player)) {
                 return;
             }
 
@@ -296,7 +296,7 @@ public class EntityListener implements Listener {
         if (entity instanceof Player) {
             Player player = (Player) entity;
 
-            if (Misc.isNPCPlayer(player)) {
+            if (Misc.isNPCEntity(player)) {
                 return;
             }
 
@@ -352,7 +352,7 @@ public class EntityListener implements Listener {
     public void onEntityTame(EntityTameEvent event) {
         Player player = (Player) event.getOwner();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 

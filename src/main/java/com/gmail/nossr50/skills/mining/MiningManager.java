@@ -56,7 +56,7 @@ public class MiningManager extends SkillManager{
      * @param event Event whose explosion is being processed
      */
     public void blastMiningDropProcessing(EntityExplodeEvent event) {
-        if (Misc.isNPCPlayer(mcMMOPlayer.getPlayer())) {
+        if (Misc.isNPCEntity(mcMMOPlayer.getPlayer())) {
             return;
         }
 
@@ -93,7 +93,7 @@ public class MiningManager extends SkillManager{
      * @param event Event whose explosion radius is being changed
      */
     public void biggerBombs(ExplosionPrimeEvent event) {
-        if (Misc.isNPCPlayer(mcMMOPlayer.getPlayer())) {
+        if (Misc.isNPCEntity(mcMMOPlayer.getPlayer())) {
             return;
         }
 

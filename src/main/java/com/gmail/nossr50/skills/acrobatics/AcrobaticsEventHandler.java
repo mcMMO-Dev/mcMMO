@@ -53,7 +53,7 @@ public abstract class AcrobaticsEventHandler {
     protected boolean isFatal(int damage) {
         Player player = manager.getMcMMOPlayer().getPlayer();
 
-        if (Misc.isNPCPlayer(player) || player.getHealth() - damage < 1) {
+        if (Misc.isNPCEntity(player) || player.getHealth() - damage < 1) {
             return true;
         }
 

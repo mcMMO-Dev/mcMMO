@@ -103,7 +103,7 @@ public class BlockListener implements Listener {
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 
@@ -139,7 +139,7 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 
@@ -223,7 +223,7 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 
@@ -252,7 +252,7 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 
@@ -318,7 +318,7 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (Misc.isNPCPlayer(player)) {
+        if (Misc.isNPCEntity(player)) {
             return;
         }
 
