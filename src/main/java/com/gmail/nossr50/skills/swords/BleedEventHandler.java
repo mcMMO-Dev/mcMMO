@@ -39,8 +39,6 @@ public class BleedEventHandler {
     }
 
     protected void sendAbilityMessages() {
-        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
-
         if (defender instanceof Player) {
             ((Player) defender).sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding.Started"));
         }
