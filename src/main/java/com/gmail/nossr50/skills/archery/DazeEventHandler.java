@@ -3,6 +3,8 @@ package com.gmail.nossr50.skills.archery;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
@@ -40,11 +42,12 @@ public class DazeEventHandler {
         }
 
         defender.teleport(location);
+        defender.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 10));
+
         event.setDamage(event.getDamage() + Archery.dazeModifier);
     }
 
     protected void sendAbilityMessages() {
-        defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
         manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
     }
 }
