@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -161,16 +160,10 @@ public class SimpleRepairManager implements RepairManager {
      * @param index Item index to decrement
      */
     private void removeOneFrom(PlayerInventory inventory, int index) {
-        ItemStack item = inventory.getItem(index);
-        if (item.getAmount() > 1) {
-            item.setAmount(item.getAmount() - 1);
-        }
-        else {
-            item = new ItemStack(Material.AIR);
-        }
+        ItemStack item = inventory.getItem(index).clone();
+        item.setAmount(1);
 
-        // I suspect this may not be needed, but I don't think it hurts
-        inventory.setItem(index, item);
+        inventory.removeItem(item);
     }
 
     /**
@@ -201,8 +194,8 @@ public class SimpleRepairManager implements RepairManager {
      */
     private int findInInventory(PlayerInventory inventory, int itemId, byte metadata) {
         int location = -1;
-
         ItemStack[] contents = inventory.getContents();
+
         for (int i = 0; i < contents.length; i++) {
             ItemStack item = contents[i];
 
@@ -210,14 +203,8 @@ public class SimpleRepairManager implements RepairManager {
                 continue;
             }
 
-            if (item.getTypeId() == itemId) {
-                if (item.getData().getData() == metadata) {
-                    location = i;
-                }
-            }
-
-            if (location != -1) {
-                break;
+            if (item.getTypeId() == itemId && item.getData().getData() == metadata) {
+                return location;
             }
         }
 
