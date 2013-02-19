@@ -52,9 +52,9 @@ public class AxesCommand extends SkillCommand {
     @Override
     protected void permissionsCheck() {
         canSkullSplitter = Permissions.skullSplitter(player);
-        canCritical = Permissions.criticalHit(player);
-        canBonusDamage = Permissions.axeBonus(player);
-        canImpact = Permissions.impact(player);
+        canCritical = Permissions.criticalStrikes(player);
+        canBonusDamage = Permissions.bonusDamage(player, skill);
+        canImpact = Permissions.armorImpact(player);
         canGreaterImpact = Permissions.greaterImpact(player);
     }
 

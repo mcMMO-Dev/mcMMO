@@ -60,8 +60,8 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected void permissionsCheck() {
         canBerserk = Permissions.berserk(player);
-        canBonusDamage = Permissions.unarmedBonus(player);
-        canDeflect = Permissions.deflect(player);
+        canBonusDamage = Permissions.bonusDamage(player, skill);
+        canDeflect = Permissions.arrowDeflect(player);
         canDisarm = Permissions.disarm(player);
         canIronGrip = Permissions.ironGrip(player);
     }

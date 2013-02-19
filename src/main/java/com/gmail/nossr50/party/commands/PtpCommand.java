@@ -38,7 +38,7 @@ public class PtpCommand implements CommandExecutor {
             playerProfile = mcMMOPlayer.getProfile();
 
             if (args[0].equalsIgnoreCase("toggle")) {
-                if (!sender.hasPermission("mcmmo.commands.ptp.toggle")) {
+                if (!Permissions.partyTeleportToggle(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -47,7 +47,7 @@ public class PtpCommand implements CommandExecutor {
             }
 
             if (args[0].equalsIgnoreCase("acceptany") || args[0].equalsIgnoreCase("acceptall")) {
-                if (!sender.hasPermission("mcmmo.commands.ptp.acceptall")) {
+                if (!Permissions.partyTeleportAcceptAll(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -63,7 +63,7 @@ public class PtpCommand implements CommandExecutor {
             }
 
             if (args[0].equalsIgnoreCase("accept")) {
-                if (!sender.hasPermission("mcmmo.commands.ptp.accept")) {
+                if (!Permissions.partyTeleportAccept(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }

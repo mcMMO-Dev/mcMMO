@@ -51,9 +51,9 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        canTreasureHunt = Permissions.fishingTreasures(player);
-        canMagicHunt = Permissions.fishingMagic(player);
-        canShake = Permissions.shakeMob(player);
+        canTreasureHunt = Permissions.fishingTreasureHunter(player);
+        canMagicHunt = Permissions.magicHunter(player);
+        canShake = Permissions.shake(player);
         canFishermansDiet = Permissions.fishermansDiet(player);
     }
 

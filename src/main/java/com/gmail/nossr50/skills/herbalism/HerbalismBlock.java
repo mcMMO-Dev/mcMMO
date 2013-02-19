@@ -69,20 +69,7 @@ public enum HerbalismBlock {
     }
 
     public boolean hasGreenThumbPermission(Player player) {
-        switch (this) {
-        case CARROT:
-            return Permissions.greenThumbCarrots(player);
-        case COCOA:
-            return Permissions.greenThumbCocoa(player);
-        case CROPS:
-            return Permissions.greenThumbWheat(player);
-        case POTATO:
-            return Permissions.greenThumbPotatoes(player);
-        case NETHER_WARTS:
-            return Permissions.greenThumbNetherwart(player);
-        default:
-            return false;
-        }
+        return Permissions.greenThumbPlant(player, blockType);
     }
 
     public static HerbalismBlock getHerbalismBlock(Material blockType) {

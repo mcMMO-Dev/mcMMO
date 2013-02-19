@@ -13,11 +13,12 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public abstract class SkillCommand implements CommandExecutor {
-    private SkillType skill;
+    protected SkillType skill;
     private String skillString;
 
     protected Player player;
@@ -49,8 +50,8 @@ public abstract class SkillCommand implements CommandExecutor {
         }
 
         skillValue = profile.getSkillLevel(skill);
-        isLucky = player.hasPermission("mcmmo.perks.lucky." + skill.toString().toLowerCase());
-        hasEndurance = (player.hasPermission("mcmmo.perks.activationtime.twelveseconds") || player.hasPermission("mcmmo.perks.activationtime.eightseconds") || player.hasPermission("mcmmo.perks.activationtime.fourseconds"));
+        isLucky = Permissions.lucky(sender, skill);
+        hasEndurance = (Permissions.twelveSecondActivationBoost(sender) || Permissions.eightSecondActivationBoost(sender) || Permissions.fourSecondActivationBoost(sender));
 
         dataCalculations();
         permissionsCheck();

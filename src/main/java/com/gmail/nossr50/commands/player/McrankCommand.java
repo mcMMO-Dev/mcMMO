@@ -16,6 +16,7 @@ import com.gmail.nossr50.runnables.McRankAsync;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class McrankCommand implements CommandExecutor {
@@ -23,7 +24,7 @@ public class McrankCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
         case 0:
-            if (!sender.hasPermission("mcmmo.commands.mcrank")) {
+            if (!Permissions.mcrank(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -43,7 +44,7 @@ public class McrankCommand implements CommandExecutor {
             return true;
 
         case 1:
-            if (!sender.hasPermission("mcmmo.commands.mcrank.others")) {
+            if (!Permissions.mcrankOthers(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -58,7 +59,7 @@ public class McrankCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (sender instanceof Player && !!sender.hasPermission("mcmmo.commands.mcrank.others.offline")) {
+                if (sender instanceof Player && !Permissions.mcrankOffline(sender)) {
                     sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
                     return true;
                 }
@@ -66,7 +67,7 @@ public class McrankCommand implements CommandExecutor {
             else {
                 Player target = mcMMOPlayer.getPlayer();
 
-                if (sender instanceof Player && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), 5.0) && !sender.hasPermission("mcmmo.commands.mcrank.others.far")) {
+                if (sender instanceof Player && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), 5.0) && !Permissions.mcrankFar(sender)) {
                     sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
                     return true;
                 }

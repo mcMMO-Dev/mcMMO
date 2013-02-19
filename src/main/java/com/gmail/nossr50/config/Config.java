@@ -182,11 +182,6 @@ public class Config extends ConfigLoader {
     public int getHerbalismXPCarrot() { return config.getInt("Experience.Herbalism.Carrot", 50); }
     public int getHerbalismXPPotato() { return config.getInt("Experience.Herbalism.Potato", 50); }
 
-    public boolean getHerbalismGreenThumbCobbleToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Cobble_To_Mossy", true); }
-    public boolean getHerbalismGreenThumbCobbleWallToMossyWall() { return config.getBoolean("Skills.Herbalism.Green_Thumb.CobbleWall_To_MossyWall", true); }
-    public boolean getHerbalismGreenThumbSmoothbrickToMossy() { return config.getBoolean("Skills.Herbalism.Green_Thumb.SmoothBrick_To_MossyBrick", true); }
-    public boolean getHerbalismGreenThumbDirtToGrass() { return config.getBoolean("Skills.Herbalism.Green_Thumb.Dirt_To_Grass", true); }
-
     public boolean getBrownMushroomsDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Brown_Mushrooms", true); }
     public boolean getCactiDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Cacti", true); }
     public boolean getWheatDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Herbalism.Wheat", true); }

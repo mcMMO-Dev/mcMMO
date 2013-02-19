@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 
 public class VampirismCommand implements CommandExecutor {
@@ -22,7 +23,7 @@ public class VampirismCommand implements CommandExecutor {
 
         switch (args.length) {
         case 0:
-            if (!sender.hasPermission("mcmmo.commands.vampirism.toggle")) {
+            if (!Permissions.vampirismToggle(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -38,7 +39,7 @@ public class VampirismCommand implements CommandExecutor {
 
         case 1:
             if (args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("true") || args[0].equalsIgnoreCase("enabled")) {
-                if (!sender.hasPermission("mcmmo.commands.vampirism.toggle")) {
+                if (!Permissions.vampirismToggle(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -48,7 +49,7 @@ public class VampirismCommand implements CommandExecutor {
             }
 
             if (args[0].equalsIgnoreCase("off") || args[0].equalsIgnoreCase("false") || args[0].equalsIgnoreCase("disabled")) {
-                if (!sender.hasPermission("mcmmo.commands.vampirism.toggle")) {
+                if (!Permissions.vampirismToggle(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -61,7 +62,7 @@ public class VampirismCommand implements CommandExecutor {
                 return false;
             }
 
-            if (!sender.hasPermission("mcmmo.commands.vampirism.modify")) {
+            if (!Permissions.vampirismModify(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }

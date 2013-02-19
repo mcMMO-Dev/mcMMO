@@ -215,7 +215,7 @@ public final class CommandRegistrationHelper {
     public static void registerMcmmoCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcmmo");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcmmo"));
-        command.setPermission("mcmmo.commands.mcmmo;mcmmo.commands.mcmmo.help");
+        command.setPermission("mcmmo.commands.mcmmo.description;mcmmo.commands.mcmmo.help");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcmmo"));
         command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "mcmmo", "help"));

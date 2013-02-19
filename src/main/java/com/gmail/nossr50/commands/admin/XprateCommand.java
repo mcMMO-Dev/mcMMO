@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 
 public class XprateCommand implements CommandExecutor {
@@ -20,7 +21,7 @@ public class XprateCommand implements CommandExecutor {
                 return false;
             }
 
-            if (!sender.hasPermission("mcmmo.commands.xprate.reset")) {
+            if (!Permissions.xprateReset(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -38,7 +39,7 @@ public class XprateCommand implements CommandExecutor {
                 return false;
             }
 
-            if (!sender.hasPermission("mcmmo.commands.xprate.set")) {
+            if (!Permissions.xprateSet(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }

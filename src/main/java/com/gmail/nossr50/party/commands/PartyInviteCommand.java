@@ -21,11 +21,6 @@ public class PartyInviteCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("mcmmo.commands.party.invite")) {
-            sender.sendMessage(command.getPermissionMessage());
-            return true;
-        }
-
         switch (args.length) {
         case 2:
             if (!mcMMO.p.getServer().getOfflinePlayer(args[1]).isOnline()) {

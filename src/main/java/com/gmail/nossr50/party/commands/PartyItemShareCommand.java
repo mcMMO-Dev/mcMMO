@@ -23,11 +23,6 @@ public class PartyItemShareCommand implements CommandExecutor {
             return true;
         }
 
-        if (!sender.hasPermission("mcmmo.commands.party.itemshare")) {
-            sender.sendMessage(command.getPermissionMessage());
-            return true;
-        }
-
         switch (args.length) {
         case 2:
             playerParty = Users.getPlayer((Player) sender).getParty();

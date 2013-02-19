@@ -9,6 +9,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
@@ -23,7 +24,7 @@ public class AddxpCommand implements CommandExecutor {
 
         switch (args.length) {
         case 2:
-            if (!sender.hasPermission("mcmmo.commands.addxp")) {
+            if (!Permissions.addxp(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -69,7 +70,7 @@ public class AddxpCommand implements CommandExecutor {
             return true;
 
         case 3:
-            if (!sender.hasPermission("mcmmo.commands.addxp.others")) {
+            if (!Permissions.addxpOthers(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }

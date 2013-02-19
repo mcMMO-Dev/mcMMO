@@ -27,7 +27,7 @@ public class ExcavationCommand extends SkillCommand {
     @Override
     protected void permissionsCheck() {
         canGigaDrill = Permissions.gigaDrillBreaker(player);
-        canTreasureHunt = Permissions.excavationTreasures(player);
+        canTreasureHunt = Permissions.excavationTreasureHunter(player);
     }
 
     @Override

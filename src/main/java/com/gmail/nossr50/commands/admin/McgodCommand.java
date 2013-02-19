@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class McgodCommand implements CommandExecutor {
@@ -17,7 +18,7 @@ public class McgodCommand implements CommandExecutor {
 
         switch (args.length) {
         case 0:
-            if (!sender.hasPermission("mcmmo.commands.mcgod")) {
+            if (!Permissions.mcgod(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -44,7 +45,7 @@ public class McgodCommand implements CommandExecutor {
             return true;
 
         case 1:
-            if (!sender.hasPermission("mcmmo.commands.mcgod.others")) {
+            if (!Permissions.mcgodOthers(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }

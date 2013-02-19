@@ -69,17 +69,17 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        canSuperRepair = Permissions.repairBonus(player);
+        canSuperRepair = Permissions.superRepair(player);
         canMasterRepair = Permissions.repairMastery(player);
         canArcaneForge = Permissions.arcaneForging(player);
         canSalvage = Permissions.salvage(player);
-        canRepairDiamond = Permissions.diamondRepair(player);
-        canRepairGold = Permissions.goldRepair(player);
-        canRepairIron = Permissions.ironRepair(player);
-        canRepairStone = Permissions.stoneRepair(player);
-        canRepairString = Permissions.stringRepair(player);
-        canRepairLeather = Permissions.leatherRepair(player);
-        canRepairWood = Permissions.woodRepair(player);
+        canRepairDiamond = Permissions.repairDiamond(player);
+        canRepairGold = Permissions.repairGold(player);
+        canRepairIron = Permissions.repairIron(player);
+        canRepairStone = Permissions.repairStone(player);
+        canRepairString = Permissions.repairString(player);
+        canRepairLeather = Permissions.repairLeather(player);
+        canRepairWood = Permissions.repairWood(player);
         arcaneBypass = Permissions.arcaneBypass(player);
     }
 

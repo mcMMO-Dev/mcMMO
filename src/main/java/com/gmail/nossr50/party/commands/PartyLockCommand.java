@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyLockCommand implements CommandExecutor {
@@ -55,7 +56,7 @@ public class PartyLockCommand implements CommandExecutor {
      * Handle locking a party.
      */
     private void lockParty(CommandSender sender, Command command) {
-        if (!sender.hasPermission("mcmmo.commands.party.lock")) {
+        if (!Permissions.partySubcommand(sender, PartySubcommandType.LOCK)) {
             sender.sendMessage(command.getPermissionMessage());
             return;
         }
@@ -75,7 +76,7 @@ public class PartyLockCommand implements CommandExecutor {
      * @return true if party is successfully unlocked, false otherwise.
      */
     private void unlockParty(CommandSender sender, Command command) {
-        if (!sender.hasPermission("mcmmo.commands.party.unlock")) {
+        if (!Permissions.partySubcommand(sender, PartySubcommandType.UNLOCK)) {
             sender.sendMessage(command.getPermissionMessage());
             return;
         }

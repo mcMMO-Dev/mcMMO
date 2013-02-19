@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.Permissions;
 
 public class XplockCommand extends SpoutCommand {
     @Override
@@ -38,7 +39,7 @@ public class XplockCommand extends SpoutCommand {
 
         SkillType skill = SkillType.getSkill(args[0]);
 
-        if (!sender.hasPermission("mcmmo.commands.xplock." + skill.toString().toLowerCase())) {
+        if (!Permissions.xplock(sender, skill)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }

@@ -45,9 +45,9 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        canSkillShot = Permissions.archeryBonus(player);
+        canSkillShot = Permissions.bonusDamage(player, skill);
         canDaze = Permissions.daze(player);
-        canRetrieve = Permissions.trackArrows(player);
+        canRetrieve = Permissions.arrowRetrieval(player);
     }
 
     @Override

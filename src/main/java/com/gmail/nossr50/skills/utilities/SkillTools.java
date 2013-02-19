@@ -316,11 +316,11 @@ public class SkillTools {
      * @return true if the player has combat skills, false otherwise
      */
     public static boolean hasCombatSkills(Player player) {
-        if (Permissions.axes(player)
-                || Permissions.archery(player)
-                || Permissions.swords(player)
-                || Permissions.taming(player)
-                || Permissions.unarmed(player)) {
+        if (Permissions.skillEnabled(player, SkillType.AXES)
+                || Permissions.skillEnabled(player, SkillType.ARCHERY)
+                || Permissions.skillEnabled(player, SkillType.SWORDS)
+                || Permissions.skillEnabled(player, SkillType.TAMING)
+                || Permissions.skillEnabled(player, SkillType.UNARMED)) {
             return true;
         }
 
@@ -334,11 +334,11 @@ public class SkillTools {
      * @return true if the player has gathering skills, false otherwise
      */
     public static boolean hasGatheringSkills(Player player) {
-        if (Permissions.excavation(player)
-                || Permissions.fishing(player)
-                || Permissions.herbalism(player)
-                || Permissions.mining(player)
-                || Permissions.woodcutting(player)) {
+        if (Permissions.skillEnabled(player, SkillType.EXCAVATION)
+                || Permissions.skillEnabled(player, SkillType.FISHING)
+                || Permissions.skillEnabled(player, SkillType.HERBALISM)
+                || Permissions.skillEnabled(player, SkillType.MINING)
+                || Permissions.skillEnabled(player, SkillType.WOODCUTTING)) {
             return true;
         }
 
@@ -352,7 +352,9 @@ public class SkillTools {
      * @return true if the player has misc skills, false otherwise
      */
     public static boolean hasMiscSkills(Player player) {
-        if (Permissions.acrobatics(player) || Permissions.repair(player)) {
+        if (Permissions.skillEnabled(player, SkillType.ACROBATICS)
+                || Permissions.skillEnabled(player, SkillType.SMELTING)
+                || Permissions.skillEnabled(player, SkillType.REPAIR)) {
             return true;
         }
 

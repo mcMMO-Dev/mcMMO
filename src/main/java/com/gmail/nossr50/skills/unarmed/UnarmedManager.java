@@ -87,7 +87,7 @@ public class UnarmedManager extends SkillManager {
 
         double chance = (Unarmed.ironGripMaxChance / Unarmed.ironGripMaxBonusLevel) * eventHandler.skillModifier;
 
-        if (chance > Misc.getRandom().nextInt(PerksUtils.handleLuckyPerks(Permissions.luckyUnarmed(defender)))) {
+        if (chance > Misc.getRandom().nextInt(PerksUtils.handleLuckyPerks(defender, skill))) {
             eventHandler.sendAbilityMessages();
             return true;
         }

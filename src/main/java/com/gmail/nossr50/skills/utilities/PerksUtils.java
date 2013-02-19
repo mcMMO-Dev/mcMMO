@@ -11,13 +11,13 @@ public final class PerksUtils {
     private PerksUtils() {};
 
     public static int handleCooldownPerks(Player player, int cooldown) {
-        if (Permissions.cooldownsHalved(player)) {
+        if (Permissions.halvedCooldowns(player)) {
             cooldown *= 0.5;
         }
-        else if (Permissions.cooldownsThirded(player)) {
+        else if (Permissions.thirdedCooldowns(player)) {
             cooldown *= (1.0 / 3.0);
         }
-        else if (Permissions.cooldownsQuartered(player)) {
+        else if (Permissions.quarteredCooldowns(player)) {
             cooldown *= 0.75;
         }
 
@@ -25,13 +25,13 @@ public final class PerksUtils {
     }
 
     public static int handleActivationPerks(Player player, int ticks, int maxTicks) {
-        if (Permissions.activationTwelve(player)) {
+        if (Permissions.twelveSecondActivationBoost(player)) {
             ticks += 12;
         }
-        else if (Permissions.activationEight(player)) {
+        else if (Permissions.eightSecondActivationBoost(player)) {
             ticks += 8;
         }
-        else if (Permissions.activationFour(player)) {
+        else if (Permissions.fourSecondActivationBoost(player)) {
             ticks += 4;
         }
 
@@ -43,19 +43,19 @@ public final class PerksUtils {
     }
 
     public static int handleXpPerks(Player player, int xp) {
-        if (player.hasPermission("mcmmo.perks.xp.quadruple")) {
+        if (Permissions.quadrupleXp(player)) {
             xp *= 4;
         }
-        else if (player.hasPermission("mcmmo.perks.xp.triple")) {
+        else if (Permissions.tripleXp(player)) {
             xp *= 3;
         }
-        else if (player.hasPermission("mcmmo.perks.xp.150percentboost")) {
+        else if (Permissions.doubleAndOneHalfXp(player)) {
             xp *= 2.5;
         }
-        else if (player.hasPermission("mcmmo.perks.xp.150percentboost")) {
+        else if (Permissions.doubleXp(player)) {
             xp *= 2;
         }
-        else if (player.hasPermission("mcmmo.perks.xp.50percentboost")) {
+        else if (Permissions.oneAndOneHalfXp(player)) {
             xp *= 1.5;
         }
 
@@ -68,8 +68,8 @@ public final class PerksUtils {
      * @param isLucky true if the player has the appropriate "lucky" perk, false otherwise
      * @return the activation chance
      */
-    public static int handleLuckyPerks(boolean isLucky) {
-        if (isLucky) {
+    public static int handleLuckyPerks(Player player, SkillType skill) {
+        if (Permissions.lucky(player, skill)) {
             return LUCKY_SKILL_ACTIVATION_CHANCE;
         }
     

@@ -17,11 +17,6 @@ public class PartyCreateCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("mcmmo.commands.party.create")) {
-            sender.sendMessage(command.getPermissionMessage());
-            return true;
-        }
-
         switch (args.length) {
         case 2:
         case 3:

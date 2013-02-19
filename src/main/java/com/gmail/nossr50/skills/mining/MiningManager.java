@@ -112,7 +112,7 @@ public class MiningManager extends SkillManager{
         MiningBlockEventHandler eventHandler = new MiningBlockEventHandler(this, block);
         eventHandler.processXPGain();
 
-        if (!Permissions.miningDoubleDrops(mcMMOPlayer.getPlayer())) {
+        if (!Permissions.doubleDrops(mcMMOPlayer.getPlayer(), skill)) {
             return;
         }
 

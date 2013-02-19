@@ -150,7 +150,7 @@ public enum AbilityType {
             return Permissions.berserk(player);
 
         case BLAST_MINING:
-            return Permissions.blastMining(player);
+            return Permissions.remoteDetonation(player);
 
         case GIGA_DRILL_BREAKER:
             return Permissions.gigaDrillBreaker(player);

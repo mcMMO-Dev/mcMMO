@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class McrefreshCommand implements CommandExecutor {
@@ -17,7 +18,7 @@ public class McrefreshCommand implements CommandExecutor {
 
         switch (args.length) {
         case 0:
-            if (!sender.hasPermission("mcmmo.commands.mcrefresh")) {
+            if (!Permissions.mcrefresh(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -37,7 +38,7 @@ public class McrefreshCommand implements CommandExecutor {
             return true;
 
         case 1:
-            if (!sender.hasPermission("mcmmo.commands.mcrefresh.others")) {
+            if (!Permissions.mcrefreshOthers(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }

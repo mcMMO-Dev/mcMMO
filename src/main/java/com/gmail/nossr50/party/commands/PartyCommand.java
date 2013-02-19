@@ -9,6 +9,7 @@ import com.gmail.nossr50.chat.commands.PartyChatCommand;
 import com.gmail.nossr50.commands.CommandHelper;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class PartyCommand implements CommandExecutor {
@@ -39,7 +40,7 @@ public class PartyCommand implements CommandExecutor {
             return true;
         }
 
-        if (!sender.hasPermission("mcmmo.commands.party")) {
+        if (!Permissions.party(sender)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
@@ -60,6 +61,12 @@ public class PartyCommand implements CommandExecutor {
 
         if (subcommand == null) {
             return printUsage();
+        }
+
+        // Can't use this for lock/unlock since they're handled by the same command
+        if (subcommand != PartySubcommandType.LOCK && subcommand != PartySubcommandType.UNLOCK && !Permissions.partySubcommand(sender, subcommand)) {
+            sender.sendMessage(command.getPermissionMessage());
+            return true;
         }
 
         switch (subcommand) {

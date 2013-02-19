@@ -50,11 +50,6 @@ public class Herbalism {
     public static double hylianLuckMaxChance = AdvancedConfig.getInstance().getHylianLuckChanceMax();
     public static int hylianLuckMaxLevel = AdvancedConfig.getInstance().getHylianLucksMaxLevel();
 
-    public static boolean greenTerraWalls = Config.getInstance().getHerbalismGreenThumbCobbleWallToMossyWall();
-    public static boolean greenTerraSmoothBrick = Config.getInstance().getHerbalismGreenThumbSmoothbrickToMossy();
-    public static boolean greenTerraDirt = Config.getInstance().getHerbalismGreenThumbDirtToGrass();
-    public static boolean greenTerraCobble = Config.getInstance().getHerbalismGreenThumbCobbleToMossy();
-
     /**
      * Handle the farmers diet skill.
      *
@@ -94,27 +89,27 @@ public class Herbalism {
         if (SkillTools.blockBreakSimulate(block, player, false)) {
             Material type = block.getType();
 
+            if (!Permissions.greenThumbBlock(player, type)) {
+                return;
+            }
+
             switch (type) {
             case SMOOTH_BRICK:
-                if (greenTerraSmoothBrick && block.getData() == 0x0) {
+                if (block.getData() == 0x0) {
                     block.setData((byte) 0x1);
                 }
                 return;
 
             case DIRT:
-                if (greenTerraDirt) {
-                    block.setType(Material.GRASS);
-                }
+                block.setType(Material.GRASS);
                 return;
 
             case COBBLESTONE:
-                if (greenTerraCobble) {
-                    block.setType(Material.MOSSY_COBBLESTONE);
-                }
+                block.setType(Material.MOSSY_COBBLESTONE);
                 return;
 
             case COBBLE_WALL:
-                if (greenTerraWalls && block.getData() == 0x0) {
+                if (block.getData() == 0x0) {
                     block.setData((byte) 0x1);
                 }
                 return;
@@ -190,8 +185,8 @@ public class Herbalism {
             xp = customBlock.getXpGain();
         }
 
-        if (Permissions.herbalismDoubleDrops(player)) {
-            int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyHerbalism(player));
+        if (Permissions.doubleDrops(player, SkillType.HERBALISM)) {
+            int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.HERBALISM);
             double chance = (doubleDropsMaxChance / doubleDropsMaxLevel) * SkillTools.skillCheck(herbLevel, doubleDropsMaxLevel);
 
             if (chance > Misc.getRandom().nextInt(activationChance)) {
@@ -255,7 +250,7 @@ public class Herbalism {
             return;
         }
 
-        int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyHerbalism(player));
+        int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.HERBALISM);
         float chance = (float) (greenThumbMaxChance / greenThumbMaxLevel * herbLevel);
 
         if (chance > greenThumbMaxChance) {
@@ -302,7 +297,7 @@ public class Herbalism {
 
         player.setItemInHand(new ItemStack(Material.SEEDS, seeds - 1));
 
-        int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyHerbalism(player));
+        int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.HERBALISM);
 
         float chance = (float) ((greenThumbMaxChance / greenThumbMaxLevel) * skillLevel);
         if (chance > greenThumbMaxChance) chance = (float) greenThumbMaxChance;
@@ -319,7 +314,7 @@ public class Herbalism {
         int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(SkillType.HERBALISM);
 
         double chance = (hylianLuckMaxChance / hylianLuckMaxLevel) * SkillTools.skillCheck(skillLevel, hylianLuckMaxLevel);
-        int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyHerbalism(player));
+        int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.HERBALISM);
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
             List<HylianTreasure> treasures = new ArrayList<HylianTreasure>();

@@ -110,7 +110,7 @@ public class Repair {
         for (Entry<Enchantment, Integer> enchant : enchants.entrySet()) {
             Enchantment enchantment = enchant.getKey();
 
-            int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyRepair(player));
+            int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.REPAIR);
 
             if (Misc.getRandom().nextInt(activationChance) <= getEnchantChance(rank)) {
                 int enchantLevel = enchant.getValue();
@@ -237,9 +237,9 @@ public class Repair {
         int chance = (int) ((SUPER_REPAIR_CHANCE_MAX / SUPER_REPAIR_MAX_BONUS_LEVEL) * skillLevel);
         if (skillLevel >= SUPER_REPAIR_MAX_BONUS_LEVEL) chance = (int) SUPER_REPAIR_CHANCE_MAX;
 
-        int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyRepair(player));
+        int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.REPAIR);
 
-        if (chance > Misc.getRandom().nextInt(activationChance) && Permissions.repairBonus(player)) {
+        if (chance > Misc.getRandom().nextInt(activationChance) && Permissions.superRepair(player)) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;
         }

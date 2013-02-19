@@ -18,13 +18,13 @@ public enum RepairItemType {
     public boolean getPermissions(Player player) {
         switch (this) {
         case ARMOR:
-            return Permissions.armorRepair(player);
+            return Permissions.repairArmor(player);
 
         case TOOL:
-            return Permissions.toolRepair(player);
+            return Permissions.repairTools(player);
 
         case OTHER:
-            return Permissions.otherRepair(player);
+            return Permissions.repairOtherItems(player);
 
         default:
             return false;

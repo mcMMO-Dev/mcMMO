@@ -16,11 +16,6 @@ import com.gmail.nossr50.util.Users;
 public class PartyKickCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("mcmmo.commands.party.kick")) {
-            sender.sendMessage(command.getPermissionMessage());
-            return true;
-        }
-
         switch (args.length) {
         case 2:
             Party playerParty = Users.getPlayer((Player) sender).getParty();

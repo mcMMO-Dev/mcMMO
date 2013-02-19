@@ -272,12 +272,8 @@ permissions:
             mcmmo.ability.herbalism.doubledrops: true
             mcmmo.ability.herbalism.farmersdiet: true
             mcmmo.ability.herbalism.greenterra: true
-            mcmmo.ability.herbalism.greenthumbblocks: true
-            mcmmo.ability.herbalism.greenthumbcarrots: true
-            mcmmo.ability.herbalism.greenthumbcocoa: true
-            mcmmo.ability.herbalism.greenthumbnetherwart: true
-            mcmmo.ability.herbalism.greenthumbpotatoes: true
-            mcmmo.ability.herbalism.greenthumbwheat: true
+            mcmmo.ability.herbalism.greenthumb.blocks.all: true
+            mcmmo.ability.herbalims.greenthumb.plants.all: true
             mcmmo.ability.herbalism.hylianluck: true
     mcmmo.ability.herbalism.doubledrops:
         description: Allows double drop chance from Herbalism
@@ -285,18 +281,39 @@ permissions:
         description: Allows access to the Farmer's Diet ability
     mcmmo.ability.herbalism.greenterra:
         description: Allows access to the Green Terra ability
-    mcmmo.ability.herbalism.greenthumbblocks:
-        description: Allows access to the Green Thumb ability for blocks
-    mcmmo.ability.herbalism.greenthumbcarrots:
+    mcmmo.ability.herbalism.greenthumb.blocks.all:
+        description: Allows access to all Green Thumb abilities for blocks
+        children:
+            mcmmo.ability.herbalism.greenthumb.blocks.cobblestone: true
+            mcmmo.ability.herbalism.greenthumb.blocks.cobblewall: true
+            mcmmo.ability.herbalism.greenthumb.blocks.dirt: true
+            mcmmo.ability.herbalism.greenthumb.blocks.smoothbrick: true
+    mcmmo.ability.herbalism.greenthumb.blocks.cobblestone:
+        description: Allows access to the Green Thumb ability for cobblestone
+    mcmmo.ability.herbalism.greenthumb.blocks.cobblewall:
+        description: Allows access to the Green Thumb ability for cobblestone walls
+    mcmmo.ability.herbalism.greenthumb.blocks.dirt:
+        description: Allows access to the Green Thumb ability for dirt
+    mcmmo.ability.herbalism.greenthumb.blocks.smoothbrick:
+        description: Allows access to the Green Thumb ability for smooth brick
+    mcmmo.ability.herbalism.greenthumb.plants.all:
+        description: Allows access to all Green Thumb abilities for plants
+        children:
+            mcmmo.ability.herbalism.greenthumb.plants.carrot: true
+            mcmmo.ability.herbalism.greenthumb.plants.cocoa: true
+            mcmmo.ability.herbalism.greenthumb.plants.crops: true
+            mcmmo.ability.herbalism.greenthumb.plants.netherwarts: true
+            mcmmo.ability.herbalism.greenthumb.plants.potato: true
+    mcmmo.ability.herbalism.greenthumb.plants.carrot:
         description: Allows access to the Green Thumb ability for carrots
-    mcmmo.ability.herbalism.greenthumbcocoa:
+    mcmmo.ability.herbalism.greenthumb.plants.cocoa:
         description: Allows access to the Green Thumb ability for cocoa
-    mcmmo.ability.herbalism.greenthumbnetherwart:
-        description: Allows access to the Green Thumb ability for netherwart
-    mcmmo.ability.herbalism.greenthumbpotatoes:
-        description: Allows access to the Green Thumb ability for potatoes
-    mcmmo.ability.herbalism.greenthumbwheat:
+    mcmmo.ability.herbalism.greenthumb.plants.crops:
         description: Allows access to the Green Thumb ability for wheat
+    mcmmo.ability.herbalism.greenthumb.plants.netherwarts:
+        description: Allows access to the Green Thumb ability for netherwart
+    mcmmo.ability.herbalism.greenthumb.plants.potato:
+        description: Allows access to the Green Thumb ability for potatoes
     mcmmo.ability.herbalism.hylianluck:
         description: Allows access to the Hylian Luck ability
     mcmmo.ability.mining.*:
@@ -400,7 +417,7 @@ permissions:
         description: Allows access to the Flux Mining ability
     mcmmo.ability.smelting.fuelefficiency:
         description: Allows access to the Fuel Efficiency ability
-    mcmmo.ability.smelting.secondsmelt:
+    mcmmo.ability.smelting.doubledrops:
         description: Allows access to the Second Smelt ability
     mcmmo.ability.smelting.vanillaxpboost:
         description: Allows vanilla XP boost from Smelting
@@ -701,9 +718,9 @@ permissions:
     mcmmo.commands.mcmmo.all:
         description: Implies access to all mcmmo.commands.mcmmo permissions.
         children:
-            mcmmo.commands.mcmmo: true
+            mcmmo.commands.mcmmo.description: true
             mcmmo.commands.mcmmo.help: true
-    mcmmo.commands.mcmmo:
+    mcmmo.commands.mcmmo.description:
         description: Allows access to the mcmmo command
     mcmmo.commands.mcmmo.help:
         description: Allows access to the mcmmo help command
@@ -807,9 +824,12 @@ permissions:
         children:
             mcmmo.commands.party: true
             mcmmo.commands.party.accept: true
+            mcmmo.commands.party.chat: true
             mcmmo.commands.party.create: true
             mcmmo.commands.party.disband: true
             mcmmo.commands.party.expshare: true
+            mcmmo.commands.party.help: true
+            mcmmo.commands.party.info: true
             mcmmo.commands.party.invite: true
             mcmmo.commands.party.itemshare: true
             mcmmo.commands.party.join: true
@@ -819,17 +839,26 @@ permissions:
             mcmmo.commands.party.password: true
             mcmmo.commands.party.quit: true
             mcmmo.commands.party.rename: true
+            mcmmo.commands.party.teleport: true
             mcmmo.commands.party.unlock: true
     mcmmo.commands.party:
         description: Allows access to the party command
     mcmmo.commands.party.accept:
         description: Allows access to the party accept command
+    mcmmo.commands.party.chat:
+        description: Dummy permission for mcmmo.chat.partychat
+        children:
+            mcmmo.chat.partychat: true
     mcmmo.commands.party.create:
         description: Allows access to the party create command
     mcmmo.commands.party.disband:
         description: Allows access to the party disband command
     mcmmo.commands.party.expshare:
         description: Allows access to the party expshare command
+    mcmmo.commands.party.help:
+        description: Allows access to the party help command
+    mcmmo.commands.party.info:
+        description: Allows access to the party info command
     mcmmo.commands.party.invite:
         description: Allows access to the party invite command
     mcmmo.commands.party.itemshare:
@@ -848,6 +877,10 @@ permissions:
         description: Allows access to the party quit command
     mcmmo.commands.party.rename:
         description: Allows access to the party rename command
+    mcmmo.commands.party.teleport:
+        description: Dummy permission for mcmmo.commands.ptp
+        children:
+            mcmmo.commands.ptp: true
     mcmmo.commands.party.unlock:
         description: Allows access to the party unlock command
     mcmmo.commands.ptp.*:

@@ -49,7 +49,7 @@ public class SwordsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck() {
-        canBleed = Permissions.swordsBleed(player);
+        canBleed = Permissions.bleed(player);
         canCounter = Permissions.counterAttack(player);
         canSerratedStrike = Permissions.serratedStrikes(player);
     }

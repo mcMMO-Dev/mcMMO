@@ -87,7 +87,7 @@ public final class CombatTools {
                     return;
                 }
 
-                if (Permissions.swords(player)) {
+                if (Permissions.skillEnabled(player, SkillType.SWORDS)) {
                     McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
                     PlayerProfile profile = mcMMOPlayer.getProfile();
                     SwordsManager swordsManager = new SwordsManager(mcMMOPlayer);
@@ -97,7 +97,7 @@ public final class CombatTools {
                         SkillTools.abilityCheck(player, SkillType.SWORDS);
                     }
 
-                    if (Permissions.swordsBleed(player)) {
+                    if (Permissions.bleed(player)) {
                         swordsManager.bleedCheck(target);
                     }
 
@@ -118,7 +118,7 @@ public final class CombatTools {
                     return;
                 }
 
-                if (Permissions.axes(player)) {
+                if (Permissions.skillEnabled(player, SkillType.AXES)) {
                     McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
                     PlayerProfile profile = mcMMOPlayer.getProfile();
                     AxeManager axeManager = new AxeManager(mcMMOPlayer);
@@ -127,15 +127,15 @@ public final class CombatTools {
                         SkillTools.abilityCheck(player, SkillType.AXES);
                     }
 
-                    if (Permissions.axeBonus(player)) {
+                    if (Permissions.bonusDamage(player, axeManager.getSkill())) {
                         axeManager.bonusDamage(event);
                     }
 
-                    if (!target.isDead() && Permissions.criticalHit(player)) {
+                    if (!target.isDead() && Permissions.criticalStrikes(player)) {
                         axeManager.criticalHitCheck(event, target);
                     }
 
-                    if (!target.isDead() && Permissions.impact(player)) {
+                    if (!target.isDead() && Permissions.armorImpact(player)) {
                         axeManager.impact(event, target);
                     }
 
@@ -156,7 +156,7 @@ public final class CombatTools {
                     return;
                 }
 
-                if (Permissions.unarmed(player)) {
+                if (Permissions.skillEnabled(player, SkillType.UNARMED)) {
                     McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
                     PlayerProfile profile = mcMMOPlayer.getProfile();
                     UnarmedManager unarmedManager = new UnarmedManager(mcMMOPlayer);
@@ -166,7 +166,7 @@ public final class CombatTools {
                         SkillTools.abilityCheck(player, SkillType.UNARMED);
                     }
 
-                    if (Permissions.unarmedBonus(player)) {
+                    if (Permissions.bonusDamage(player, unarmedManager.getSkill())) {
                         unarmedManager.bonusDamage(event);
                     }
 
@@ -210,7 +210,7 @@ public final class CombatTools {
                     return;
                 }
 
-                if (Permissions.taming(master)) {
+                if (Permissions.skillEnabled(master, SkillType.TAMING)) {
                     McMMOPlayer mcMMOPlayer = Users.getPlayer(master);
                     TamingManager tamingManager = new TamingManager(mcMMOPlayer);
                     int skillLevel = tamingManager.getSkillLevel();
@@ -303,13 +303,13 @@ public final class CombatTools {
             return;
         }
 
-        if (Permissions.archery(shooter)) {
+        if (Permissions.skillEnabled(shooter, SkillType.ARCHERY)) {
             McMMOPlayer mcMMOPlayer = Users.getPlayer(shooter);
             ArcheryManager archeryManager = new ArcheryManager(mcMMOPlayer);
             archeryManager.skillShot(event);
 
             if (target instanceof Player) {
-                if (Unarmed.pvpEnabled && ((Player) target).getItemInHand().getType() == Material.AIR && Permissions.deflect((Player) target)) {
+                if (Unarmed.pvpEnabled && ((Player) target).getItemInHand().getType() == Material.AIR && Permissions.arrowDeflect((Player) target)) {
                     UnarmedManager unarmedManager = new UnarmedManager(Users.getPlayer((Player) target));
                     unarmedManager.deflectCheck(event);
                 }
@@ -320,7 +320,7 @@ public final class CombatTools {
                 }
             }
 
-            if (!(shooter.getItemInHand().containsEnchantment(Enchantment.ARROW_INFINITE)) && Permissions.trackArrows(shooter)) {
+            if (!(shooter.getItemInHand().containsEnchantment(Enchantment.ARROW_INFINITE)) && Permissions.arrowRetrieval(shooter)) {
                 archeryManager.trackArrows(target);
             }
 

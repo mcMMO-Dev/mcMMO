@@ -67,7 +67,7 @@ public class Excavation {
         Player player = mcMMOPlayer.getPlayer();
         List<ExcavationTreasure> treasures = new ArrayList<ExcavationTreasure>();
 
-        if (Permissions.excavationTreasures(player)) {
+        if (Permissions.excavationTreasureHunter(player)) {
             switch (material) {
             case DIRT:
                 treasures = TreasuresConfig.getInstance().excavationFromDirt;
@@ -105,7 +105,7 @@ public class Excavation {
 
             for (ExcavationTreasure treasure : treasures) {
                 if (mcMMOPlayer.getProfile().getSkillLevel(SkillType.EXCAVATION) >= treasure.getDropLevel()) {
-                    int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyExcavation(player));
+                    int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.EXCAVATION);
 
                     if (Misc.getRandom().nextDouble() * activationChance <= treasure.getDropChance()) {
                         xp += treasure.getXp();

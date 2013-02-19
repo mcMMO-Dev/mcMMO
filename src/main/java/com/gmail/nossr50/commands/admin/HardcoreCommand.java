@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 
 public class HardcoreCommand implements CommandExecutor{
@@ -17,7 +18,7 @@ public class HardcoreCommand implements CommandExecutor{
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
         case 0:
-            if (!sender.hasPermission("mcmmo.commands.hardcore.toggle")) {
+            if (!Permissions.hardcoreToggle(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -33,7 +34,7 @@ public class HardcoreCommand implements CommandExecutor{
 
         case 1:
             if (args[0].equalsIgnoreCase("on") || args[0].equalsIgnoreCase("true") || args[0].equalsIgnoreCase("enabled")) {
-                if (!sender.hasPermission("mcmmo.commands.hardcore.toggle")) {
+                if (!Permissions.hardcoreToggle(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -43,7 +44,7 @@ public class HardcoreCommand implements CommandExecutor{
             }
 
             if (args[0].equalsIgnoreCase("off") || args[0].equalsIgnoreCase("false") || args[0].equalsIgnoreCase("disabled")) {
-                if (!sender.hasPermission("mcmmo.commands.hardcore.toggle")) {
+                if (!Permissions.hardcoreToggle(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -56,7 +57,7 @@ public class HardcoreCommand implements CommandExecutor{
                 return false;
             }
 
-            if (!sender.hasPermission("mcmmo.commands.hardcore.modify")) {
+            if (!Permissions.hardcoreModify(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }

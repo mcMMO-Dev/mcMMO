@@ -88,9 +88,9 @@ public class MiningCommand extends SkillCommand {
     @Override
     protected void permissionsCheck() {
         canBiggerBombs = Permissions.biggerBombs(player);
-        canBlast = Permissions.blastMining(player);
+        canBlast = Permissions.remoteDetonation(player);
         canDemoExpert = Permissions.demolitionsExpertise(player);
-        canDoubleDrop = Permissions.miningDoubleDrops(player);
+        canDoubleDrop = Permissions.doubleDrops(player, skill);
         canSuperBreaker = Permissions.superBreaker(player);
         doubleDropsDisabled = Mining.doubleDropsDisabled;
     }

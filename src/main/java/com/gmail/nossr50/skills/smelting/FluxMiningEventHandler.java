@@ -51,7 +51,7 @@ public class FluxMiningEventHandler {
 
         McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
 
-        if (Permissions.secondSmelt(mcMMOPlayer.getPlayer())) {
+        if (Permissions.doubleDrops(mcMMOPlayer.getPlayer(), manager.getSkill())) {
             int chance = (int) ((Mining.doubleDropsMaxChance / Mining.doubleDropsMaxLevel) * (SkillTools.skillCheck(mcMMOPlayer.getProfile().getSkillLevel(SkillType.MINING), Mining.doubleDropsMaxLevel)));
             Misc.randomDropItem(location, item, chance);
         }

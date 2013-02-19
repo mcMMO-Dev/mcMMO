@@ -23,11 +23,6 @@ public class PartyExpShareCommand implements CommandExecutor {
             return true;
         }
 
-        if (!sender.hasPermission("mcmmo.commands.party.expshare")) {
-            sender.sendMessage(command.getPermissionMessage());
-            return true;
-        }
-
         switch (args.length) {
         case 2:
             playerParty = Users.getPlayer((Player) sender).getParty();

@@ -13,6 +13,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.McTopAsync;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 
 public class MctopCommand implements CommandExecutor {
@@ -72,7 +73,7 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void flatfileDisplay(int page, String skill, CommandSender sender, Command command) {
-        if (!skill.equalsIgnoreCase("all") && !sender.hasPermission("mcmmo.commands.mctop." + skill.toLowerCase())) {
+        if (!skill.equalsIgnoreCase("all") && !Permissions.mctop(sender, SkillType.getSkill(skill))) {
             sender.sendMessage(command.getPermissionMessage());
             return;
         }

@@ -10,6 +10,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class SkillresetCommand implements CommandExecutor {
@@ -22,7 +23,7 @@ public class SkillresetCommand implements CommandExecutor {
 
         switch (args.length) {
         case 1:
-            if (!sender.hasPermission("mcmmo.commands.skillreset")) {
+            if (!Permissions.skillreset(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -47,7 +48,7 @@ public class SkillresetCommand implements CommandExecutor {
                         continue;
                     }
 
-                    if (!sender.hasPermission("mcmmo.commands.skillreset." + skillType.toString().toLowerCase())) {
+                    if (!Permissions.skillreset(sender, skillType)) {
                         sender.sendMessage(command.getPermissionMessage());
                         continue;
                     }
@@ -61,7 +62,7 @@ public class SkillresetCommand implements CommandExecutor {
                 skill = SkillType.getSkill(args[0]);
                 skillName = SkillTools.getSkillName(skill);
 
-                if (!sender.hasPermission("mcmmo.commands.skillreset." + skill.toString().toLowerCase())) {
+                if (!Permissions.skillreset(sender, skill)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -73,7 +74,7 @@ public class SkillresetCommand implements CommandExecutor {
             return true;
 
         case 2:
-            if (!sender.hasPermission("mcmmo.commands.skillreset.others")) {
+            if (!Permissions.skillresetOthers(sender)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return true;
             }
@@ -90,7 +91,7 @@ public class SkillresetCommand implements CommandExecutor {
                 skill = SkillType.getSkill(args[1]);
                 skillName = SkillTools.getSkillName(skill);
 
-                if (!sender.hasPermission("mcmmo.commands.skillreset.others." + skill.toString().toLowerCase())) {
+                if (!Permissions.skillresetOthers(sender, skill)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
@@ -113,7 +114,7 @@ public class SkillresetCommand implements CommandExecutor {
                             continue;
                         }
 
-                        if (!sender.hasPermission("mcmmo.commands.skillreset.others." + skillType.toString().toLowerCase())) {
+                        if (!Permissions.skillresetOthers(sender, skill)) {
                             sender.sendMessage(command.getPermissionMessage());
                             continue;
                         }
@@ -136,7 +137,7 @@ public class SkillresetCommand implements CommandExecutor {
                             continue;
                         }
 
-                        if (!sender.hasPermission("mcmmo.commands.skillreset.others." + skillType.toString().toLowerCase())) {
+                        if (!Permissions.skillresetOthers(sender, skill)) {
                             sender.sendMessage(command.getPermissionMessage());
                             continue;
                         }

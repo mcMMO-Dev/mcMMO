@@ -1,5 +1,7 @@
 package com.gmail.nossr50.skills.herbalism;
 
+import org.bukkit.Material;
+
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillCommand;
 import com.gmail.nossr50.skills.utilities.SkillType;
@@ -61,10 +63,10 @@ public class HerbalismCommand extends SkillCommand {
     protected void permissionsCheck() {
         hasHylianLuck = Permissions.hylianLuck(player);
         canGreenTerra = Permissions.greenTerra(player);
-        canGreenThumbWheat = Permissions.greenThumbWheat(player);
-        canGreenThumbBlocks = Permissions.greenThumbBlocks(player);
+        canGreenThumbWheat = Permissions.greenThumbPlant(player, Material.CROPS); //TODO: This isn't really accurate - they could have perms for other crops but not wheat.
+        canGreenThumbBlocks = (Permissions.greenThumbBlock(player, Material.DIRT) || Permissions.greenThumbBlock(player, Material.COBBLESTONE) || Permissions.greenThumbBlock(player, Material.COBBLE_WALL) || Permissions.greenThumbBlock(player, Material.SMOOTH_BRICK));
         canFarmersDiet = Permissions.farmersDiet(player);
-        canDoubleDrop = Permissions.herbalismDoubleDrops(player);
+        canDoubleDrop = Permissions.doubleDrops(player, skill);
         doubleDropsDisabled = Herbalism.doubleDropsDisabled;
     }
 

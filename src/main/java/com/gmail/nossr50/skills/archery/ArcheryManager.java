@@ -75,7 +75,7 @@ public class ArcheryManager extends SkillManager {
      * @param event The event to modify.
      */
     public void skillShot(EntityDamageEvent event) {
-        if (skillLevel >= Archery.skillShotIncreaseLevel && Permissions.archeryBonus(mcMMOPlayer.getPlayer())) {
+        if (skillLevel >= Archery.skillShotIncreaseLevel && Permissions.bonusDamage(mcMMOPlayer.getPlayer(), skill)) {
             SkillShotEventHandler eventHandler = new SkillShotEventHandler(this, event);
 
             eventHandler.calculateDamageBonus();

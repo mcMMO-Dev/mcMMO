@@ -119,7 +119,7 @@ public final class Fishing {
             treasureXp = treasure.getXp();
             ItemStack treasureDrop = treasure.getDrop();
 
-            if (Permissions.fishingMagic(player) && beginMagicHunter(player, skillLevel, treasureDrop, player.getWorld().hasStorm())) {
+            if (Permissions.magicHunter(player) && beginMagicHunter(player, skillLevel, treasureDrop, player.getWorld().hasStorm())) {
                 player.sendMessage(LocaleLoader.getString("Fishing.MagicFound"));
             }
 
@@ -130,7 +130,9 @@ public final class Fishing {
         }
 
         mcMMOPlayer.beginXpGain(SkillType.FISHING, Config.getInstance().getFishingBaseXP() + treasureXp);
-        event.setExpToDrop(event.getExpToDrop() * getVanillaXpMultiplier(skillLevel));
+        if (Permissions.vanillaXpBoost(player, SkillType.FISHING)) {
+            event.setExpToDrop(event.getExpToDrop() * getVanillaXpMultiplier(skillLevel));
+        }
     }
 
     /**
@@ -141,7 +143,7 @@ public final class Fishing {
      * @return Chosen treasure
      */
     private static FishingTreasure checkForTreasure(Player player, int skillLevel) {
-        if (!Config.getInstance().getFishingDropsEnabled() || !Permissions.fishingTreasures(player)) {
+        if (!Config.getInstance().getFishingDropsEnabled() || !Permissions.fishingTreasureHunter(player)) {
             return null;
         }
 
@@ -161,7 +163,7 @@ public final class Fishing {
 
         FishingTreasure treasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
         ItemStack treasureDrop = treasure.getDrop();
-        int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyFishing(player));
+        int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.FISHING);
 
         if (Misc.getRandom().nextDouble() * activationChance > treasure.getDropChance()) {
             return null;
@@ -190,7 +192,7 @@ public final class Fishing {
             return false;
         }
 
-        int activationChance = PerksUtils.handleLuckyPerks(Permissions.luckyFishing(player));
+        int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.FISHING);
 
         if (storm) {
             activationChance = (int) (activationChance * 0.909);

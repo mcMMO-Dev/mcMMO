@@ -17,6 +17,7 @@ import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.spout.huds.SpoutHud;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 
 public class McMMOPlayer {
     private Player player;
@@ -50,7 +51,7 @@ public class McMMOPlayer {
                 continue;
             }
 
-            if (player.hasPermission("mcmmo.skills." + type.toString().toLowerCase())) {
+            if (Permissions.skillEnabled(player, type)) {
                 powerLevel += profile.getSkillLevel(type);
             }
         }

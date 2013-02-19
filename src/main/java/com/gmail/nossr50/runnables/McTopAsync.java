@@ -12,6 +12,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 
 public class McTopAsync implements Runnable {
@@ -31,7 +33,7 @@ public class McTopAsync implements Runnable {
     @Override
     public void run() {
         if (!query.equalsIgnoreCase("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
-            if (!sender.hasPermission("mcmmo.commands.mctop." + query.toLowerCase())) {
+            if (!Permissions.mctop(sender, SkillType.getSkill(query))) {
                 sender.sendMessage(command.getPermissionMessage());
                 return;
             }

@@ -44,11 +44,11 @@ public class SmeltingManager extends SkillManager {
 
         SmeltResourceEventHandler eventHandler = new SmeltResourceEventHandler(this, event);
 
-        if (Permissions.smelting(player)) {
+        if (Permissions.skillEnabled(player, skill)) {
             eventHandler.handleXPGain();
         }
 
-        if (!Permissions.secondSmelt(player)) {
+        if (!Permissions.doubleDrops(player, skill)) {
             return;
         }
 
@@ -74,7 +74,7 @@ public class SmeltingManager extends SkillManager {
     }
 
     public void vanillaXPBoost(FurnaceExtractEvent event) {
-        if (skillLevel < Smelting.vanillaXPBoostRank1Level || !Permissions.smeltingVanillaXPBoost(mcMMOPlayer.getPlayer())) {
+        if (skillLevel < Smelting.vanillaXPBoostRank1Level || !Permissions.vanillaXpBoost(mcMMOPlayer.getPlayer(), skill)) {
             return;
         }
 

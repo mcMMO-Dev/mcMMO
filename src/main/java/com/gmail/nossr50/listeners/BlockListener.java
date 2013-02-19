@@ -44,6 +44,7 @@ import com.gmail.nossr50.skills.woodcutting.Woodcutting;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class BlockListener implements Listener {
@@ -151,7 +152,7 @@ public class BlockListener implements Listener {
         /* HERBALISM */
         if (BlockChecks.canBeGreenTerra(block)) {
             /* Green Terra */
-            if (profile.getToolPreparationMode(ToolType.HOE) && player.hasPermission("mcmmo.ability.herbalism.greenterra")) {
+            if (profile.getToolPreparationMode(ToolType.HOE) && Permissions.greenTerra(player)) {
                 SkillTools.abilityCheck(player, SkillType.HERBALISM);
             }
 
@@ -159,7 +160,7 @@ public class BlockListener implements Listener {
              * We don't check the block store here because herbalism has too many unusual edge cases.
              * Instead, we check it inside the drops handler.
              */
-            if (player.hasPermission("mcmmo.skills.herbalism")) {
+            if (Permissions.skillEnabled(player, SkillType.HERBALISM)) {
                 Herbalism.herbalismProcCheck(block, mcMMOPlayer, plugin); //Double drops
 
                 if (profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
@@ -169,7 +170,7 @@ public class BlockListener implements Listener {
         }
 
         /* MINING */
-        else if (BlockChecks.canBeSuperBroken(block) && ItemChecks.isPickaxe(heldItem) && player.hasPermission("mcmmo.skills.mining") && !mcMMO.placeStore.isTrue(block)) {
+        else if (BlockChecks.canBeSuperBroken(block) && ItemChecks.isPickaxe(heldItem) && Permissions.skillEnabled(player, SkillType.MINING) && !mcMMO.placeStore.isTrue(block)) {
             MiningManager miningManager = new MiningManager(mcMMOPlayer);
             miningManager.miningBlockCheck(block);
 
@@ -179,8 +180,8 @@ public class BlockListener implements Listener {
         }
 
         /* WOOD CUTTING */
-        else if (BlockChecks.isLog(block) && player.hasPermission("mcmmo.skills.woodcutting") && !mcMMO.placeStore.isTrue(block)) {
-            if (profile.getAbilityMode(AbilityType.TREE_FELLER) && player.hasPermission("mcmmo.ability.woodcutting.treefeller") && ItemChecks.isAxe(heldItem)) {
+        else if (BlockChecks.isLog(block) && Permissions.skillEnabled(player, SkillType.WOODCUTTING) && !mcMMO.placeStore.isTrue(block)) {
+            if (profile.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemChecks.isAxe(heldItem)) {
                 Woodcutting.beginTreeFeller(mcMMOPlayer, block);
             }
             else {
@@ -196,7 +197,7 @@ public class BlockListener implements Listener {
         }
 
         /* EXCAVATION */
-        else if (BlockChecks.canBeGigaDrillBroken(block) && ItemChecks.isShovel(heldItem) && player.hasPermission("mcmmo.skills.excavation") && !mcMMO.placeStore.isTrue(block)) {
+        else if (BlockChecks.canBeGigaDrillBroken(block) && ItemChecks.isShovel(heldItem) && Permissions.skillEnabled(player, SkillType.EXCAVATION) && !mcMMO.placeStore.isTrue(block)) {
             Excavation.excavationProcCheck(block, mcMMOPlayer);
 
             if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
@@ -230,10 +231,10 @@ public class BlockListener implements Listener {
         Block block = event.getBlock();
         ItemStack heldItem = player.getItemInHand();
 
-        if (player.hasPermission("mcmmo.ability.herbalism.hylianluck") && ItemChecks.isSword(heldItem)) {
+        if (Permissions.hylianLuck(player) && ItemChecks.isSword(heldItem)) {
             Herbalism.hylianLuck(block, player, event);
         }
-        else if (BlockChecks.canBeFluxMined(block) && ItemChecks.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH) && player.hasPermission("mcmmo.ability.smelting.fluxmining") && !mcMMO.placeStore.isTrue(block)) {
+        else if (BlockChecks.canBeFluxMined(block) && ItemChecks.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH) && Permissions.fluxMining(player) && !mcMMO.placeStore.isTrue(block)) {
             SmeltingManager smeltingManager = new SmeltingManager(Users.getPlayer(player));
             smeltingManager.fluxMining(event);
         }
@@ -278,19 +279,19 @@ public class BlockListener implements Listener {
                 }
             }
 
-            if (profile.getToolPreparationMode(ToolType.HOE) && ItemChecks.isHoe(heldItem) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.canMakeMossy(block)) && player.hasPermission("mcmmo.ability.herbalism.greenterra")) {
+            if (profile.getToolPreparationMode(ToolType.HOE) && ItemChecks.isHoe(heldItem) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.canMakeMossy(block)) && Permissions.greenTerra(player)) {
                 SkillTools.abilityCheck(player, SkillType.HERBALISM);
             }
-            else if (profile.getToolPreparationMode(ToolType.AXE) && ItemChecks.isAxe(heldItem) && BlockChecks.isLog(block) && player.hasPermission("mcmmo.ability.woodcutting.treefeller")) {
+            else if (profile.getToolPreparationMode(ToolType.AXE) && ItemChecks.isAxe(heldItem) && BlockChecks.isLog(block) && Permissions.treeFeller(player)) {
                 SkillTools.abilityCheck(player, SkillType.WOODCUTTING);
             }
-            else if (profile.getToolPreparationMode(ToolType.PICKAXE) && ItemChecks.isPickaxe(heldItem) && BlockChecks.canBeSuperBroken(block) && player.hasPermission("mcmmo.ability.mining.superbreaker")) {
+            else if (profile.getToolPreparationMode(ToolType.PICKAXE) && ItemChecks.isPickaxe(heldItem) && BlockChecks.canBeSuperBroken(block) && Permissions.superBreaker(player)) {
                 SkillTools.abilityCheck(player, SkillType.MINING);
             }
-            else if (profile.getToolPreparationMode(ToolType.SHOVEL) && ItemChecks.isShovel(heldItem) && BlockChecks.canBeGigaDrillBroken(block) && player.hasPermission("mcmmo.ability.excavation.gigadrillbreaker")) {
+            else if (profile.getToolPreparationMode(ToolType.SHOVEL) && ItemChecks.isShovel(heldItem) && BlockChecks.canBeGigaDrillBroken(block) && Permissions.gigaDrillBreaker(player)) {
                 SkillTools.abilityCheck(player, SkillType.EXCAVATION);
             }
-            else if (profile.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockChecks.canBeGigaDrillBroken(block) || block.getType() == Material.SNOW || (block.getType() == Material.SMOOTH_BRICK && block.getData() == 0x0)) && player.hasPermission("mcmmo.ability.unarmed.berserk")) {
+            else if (profile.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockChecks.canBeGigaDrillBroken(block) || block.getType() == Material.SNOW || (block.getType() == Material.SMOOTH_BRICK && block.getData() == 0x0)) && Permissions.berserk(player)) {
                 SkillTools.abilityCheck(player, SkillType.UNARMED);
             }
         }
@@ -332,8 +333,7 @@ public class BlockListener implements Listener {
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        // Except right here, which is for the Green Thumb activation, not the normal effect of Green Terra
-        if (profile.getAbilityMode(AbilityType.GREEN_TERRA) && BlockChecks.canMakeMossy(block) && player.hasPermission("mcmmo.ability.herbalism.greenthumbblocks")) {
+        if (profile.getAbilityMode(AbilityType.GREEN_TERRA) && BlockChecks.canMakeMossy(block)) {
             Herbalism.greenTerra(player, block);
         }
         else if (profile.getAbilityMode(AbilityType.BERSERK)) {
@@ -347,7 +347,7 @@ public class BlockListener implements Listener {
                 }
             }
             // Another perm check for the cracked blocks activation
-            else if (BlockChecks.canBeCracked(block) && player.hasPermission("mcmmo.ability.unarmed.blockcracker")) {
+            else if (BlockChecks.canBeCracked(block) && Permissions.blockCracker(player)) {
                 Unarmed.blockCracker(player, block);
             }
         }

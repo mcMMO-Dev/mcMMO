@@ -77,7 +77,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if (!Permissions.hardcoremodeBypass(player)) {
+        if (!Permissions.hardcoreBypass(player)) {
             Player killer = player.getKiller();
 
             if (killer != null && Config.getInstance().getHardcoreVampirismEnabled()) {
@@ -157,7 +157,7 @@ public class PlayerListener implements Listener {
     public void onPlayerFish(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player) || !Permissions.fishing(player)) {
+        if (Misc.isNPCEntity(player) || !Permissions.skillEnabled(player, SkillType.FISHING)) {
             return;
         }
 
@@ -172,7 +172,7 @@ public class PlayerListener implements Listener {
         case CAUGHT_ENTITY:
             Entity entity = event.getCaught();
 
-            if (entity instanceof LivingEntity && skillLevel >= AdvancedConfig.getInstance().getShakeUnlockLevel() && Permissions.shakeMob(player)) {
+            if (entity instanceof LivingEntity && skillLevel >= AdvancedConfig.getInstance().getShakeUnlockLevel() && Permissions.shake(player)) {
                 Fishing.beginShakeMob(player, (LivingEntity) entity, skillLevel);
             }
 
@@ -237,7 +237,7 @@ public class PlayerListener implements Listener {
             player.sendMessage(LocaleLoader.getString("XPRate.Event", Config.getInstance().getExperienceGainsGlobalMultiplier()));
         }
 
-        if (player.hasPermission("mcmmo.tools.updatecheck") && mcMMO.p.updateAvailable) {
+        if (Permissions.updateNotifications(player) && mcMMO.p.updateAvailable) {
             player.sendMessage(LocaleLoader.getString("UpdateChecker.outdated"));
             player.sendMessage(LocaleLoader.getString("UpdateChecker.newavailable"));
         }
@@ -279,7 +279,7 @@ public class PlayerListener implements Listener {
             int blockID = block.getTypeId();
 
             /* REPAIR CHECKS */
-            if (blockID == Repair.anvilID && Permissions.repair(player) && mcMMO.repairManager.isRepairable(heldItem)) {
+            if (blockID == Repair.anvilID && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.repairManager.isRepairable(heldItem)) {
                 mcMMO.repairManager.handleRepair(Users.getPlayer(player), heldItem);
                 event.setCancelled(true);
                 player.updateInventory();
@@ -291,7 +291,7 @@ public class PlayerListener implements Listener {
                 player.updateInventory();
             }
             /* BLAST MINING CHECK */
-            else if (player.isSneaking() && Permissions.blastMining(player) && heldItem.getTypeId() == BlastMining.detonatorID) {
+            else if (player.isSneaking() && Permissions.remoteDetonation(player) && heldItem.getTypeId() == BlastMining.detonatorID) {
                 MiningManager miningManager = new MiningManager(Users.getPlayer(player));
                 miningManager.detonate(event);
             }
@@ -300,7 +300,7 @@ public class PlayerListener implements Listener {
 
         case RIGHT_CLICK_AIR:
             /* BLAST MINING CHECK */
-            if (player.isSneaking() && Permissions.blastMining(player) && heldItem.getTypeId() == BlastMining.detonatorID) {
+            if (player.isSneaking() && Permissions.remoteDetonation(player) && heldItem.getTypeId() == BlastMining.detonatorID) {
                 MiningManager miningManager = new MiningManager(Users.getPlayer(player));
                 miningManager.detonate(event);
             }
@@ -350,7 +350,7 @@ public class PlayerListener implements Listener {
             }
 
             /* GREEN THUMB CHECK */
-            if (heldItem.getType() == Material.SEEDS && BlockChecks.canMakeMossy(block) && Permissions.greenThumbBlocks(player)) {
+            if (heldItem.getType() == Material.SEEDS && BlockChecks.canMakeMossy(block)) {
                 Herbalism.greenThumbBlocks(heldItem, player, block);
             }
 

@@ -15,11 +15,6 @@ public class PartyRenameCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!sender.hasPermission("mcmmo.commands.party.rename")) {
-            sender.sendMessage(command.getPermissionMessage());
-            return true;
-        }
-
         Party playerParty = Users.getPlayer((Player) sender).getParty();
         String leaderName = playerParty.getLeader();
 

@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.Permissions;
 
 public final class CommandHelper {
     private CommandHelper() {}
@@ -31,23 +32,23 @@ public final class CommandHelper {
         if (SkillTools.hasGatheringSkills(inspect)) {
             display.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
 
-            if (inspect.hasPermission("mcmmo.skills.excavation")) {
+            if (Permissions.skillEnabled(inspect, SkillType.EXCAVATION)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString("Excavation.Listener"), profile.getSkillLevel(SkillType.EXCAVATION), profile.getSkillXpLevel(SkillType.EXCAVATION), profile.getXpToLevel(SkillType.EXCAVATION)));
             }
 
-            if (inspect.hasPermission("mcmmo.skills.fishing")) {
+            if (Permissions.skillEnabled(inspect, SkillType.FISHING)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString("Fishing.Listener"), profile.getSkillLevel(SkillType.FISHING), profile.getSkillXpLevel(SkillType.FISHING), profile.getXpToLevel(SkillType.FISHING)));
             }
 
-            if (inspect.hasPermission("mcmmo.skills.fishing")) {
+            if (Permissions.skillEnabled(inspect, SkillType.HERBALISM)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString("Herbalism.Listener"), profile.getSkillLevel(SkillType.HERBALISM), profile.getSkillXpLevel(SkillType.HERBALISM), profile.getXpToLevel(SkillType.HERBALISM)));
             }
 
-            if (inspect.hasPermission("mcmmo.skills.mining")) {
+            if (Permissions.skillEnabled(inspect, SkillType.MINING)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString("Mining.Listener"), profile.getSkillLevel(SkillType.MINING), profile.getSkillXpLevel(SkillType.MINING), profile.getXpToLevel(SkillType.MINING)));
             }
 
-            if (inspect.hasPermission("mcmmo.skills.woodcutting")) {
+            if (Permissions.skillEnabled(inspect, SkillType.WOODCUTTING)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString("Woodcutting.Listener"), profile.getSkillLevel(SkillType.WOODCUTTING), profile.getSkillXpLevel(SkillType.WOODCUTTING), profile.getXpToLevel(SkillType.WOODCUTTING)));
             }
         }
@@ -68,23 +69,23 @@ public final class CommandHelper {
         if (SkillTools.hasCombatSkills(inspect)) {
             display.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
 
-            if (inspect.hasPermission("mcmmo.skills.axes")) {
+            if (Permissions.skillEnabled(inspect, SkillType.AXES)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString("Axes.Listener"), profile.getSkillLevel(SkillType.AXES), profile.getSkillXpLevel(SkillType.AXES), profile.getXpToLevel(SkillType.AXES)));
             }
 
-            if (inspect.hasPermission("mcmmo.skills.archery")) {
+            if (Permissions.skillEnabled(inspect, SkillType.ARCHERY)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString("Archery.Listener"), profile.getSkillLevel(SkillType.ARCHERY), profile.getSkillXpLevel(SkillType.ARCHERY), profile.getXpToLevel(SkillType.ARCHERY)));
             }
 
-            if (inspect.hasPermission("mcmmo.skills.swords")) {
+            if (Permissions.skillEnabled(inspect, SkillType.SWORDS)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString("Swords.Listener"), profile.getSkillLevel(SkillType.SWORDS), profile.getSkillXpLevel(SkillType.SWORDS), profile.getXpToLevel(SkillType.SWORDS)));
             }
 
-            if (inspect.hasPermission("mcmmo.skills.taming")) {
+            if (Permissions.skillEnabled(inspect, SkillType.TAMING)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString("Taming.Listener"), profile.getSkillLevel(SkillType.TAMING), profile.getSkillXpLevel(SkillType.TAMING), profile.getXpToLevel(SkillType.TAMING)));
             }
 
-            if (inspect.hasPermission("mcmmo.skills.unarmed")) {
+            if (Permissions.skillEnabled(inspect, SkillType.UNARMED)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString("Unarmed.Listener"), profile.getSkillLevel(SkillType.UNARMED), profile.getSkillXpLevel(SkillType.UNARMED), profile.getXpToLevel(SkillType.UNARMED)));
             }
         }
@@ -105,11 +106,11 @@ public final class CommandHelper {
         if (SkillTools.hasMiscSkills(inspect)) {
             display.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
 
-            if (inspect.hasPermission("mcmmo.skills.acrobatics")) {
+            if (Permissions.skillEnabled(inspect, SkillType.ACROBATICS)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString("Acrobatics.Listener"), profile.getSkillLevel(SkillType.ACROBATICS), profile.getSkillXpLevel(SkillType.ACROBATICS), profile.getXpToLevel(SkillType.ACROBATICS)));
             }
 
-            if (inspect.hasPermission("mcmmo.skills.repair")) {
+            if (Permissions.skillEnabled(inspect, SkillType.REPAIR)) {
                 display.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString("Repair.Listener"), profile.getSkillLevel(SkillType.REPAIR), profile.getSkillXpLevel(SkillType.REPAIR), profile.getXpToLevel(SkillType.REPAIR)));
             }
         }
