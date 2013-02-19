@@ -69,6 +69,10 @@ public final class CombatTools {
                 return;
             }
 
+            if (target instanceof Tameable && isFriendlyPet(player, (Tameable) target)) {
+                return;
+            }
+
             ItemStack heldItem = player.getItemInHand();
             Material heldItemType = heldItem.getType();
             DamageCause damageCause = event.getCause();
