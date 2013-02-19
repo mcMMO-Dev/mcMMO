@@ -101,6 +101,9 @@ commands:
     vampirism:
         aliases: [mcvampirism]
         description: Modify the mcMMO vampirism percentage or toggle vampirism mode on/off
+    mcnotify:
+        aliases: [notify]
+        description: Toggle mcMMO abilities chat display notifications on/off
 permissions:
     mcmmo.*:
         default: false
@@ -601,6 +604,7 @@ permissions:
             mcmmo.commands.mcability: true
             mcmmo.commands.mchud: true
             mcmmo.commands.mcmmo.all: true
+            mcmmo.commands.mcnotify: true
             mcmmo.commands.mcrank: true
             mcmmo.commands.mcstats: true
             mcmmo.commands.mctop.all: true
@@ -724,6 +728,8 @@ permissions:
         description: Allows access to the mcmmo command
     mcmmo.commands.mcmmo.help:
         description: Allows access to the mcmmo help command
+    mcmmo.commands.mcnotify:
+        description: Allows access to the mcnotify command
     mcmmo.commands.mcpurge:
         default: false
         description: Allows access to the mcpurge command

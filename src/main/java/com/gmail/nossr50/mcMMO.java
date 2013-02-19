@@ -309,6 +309,7 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationHelper.registerSkillresetCommand();
         CommandRegistrationHelper.registerHardcoreCommand();
         CommandRegistrationHelper.registerVampirismCommand();
+        CommandRegistrationHelper.registerMcnotifyCommand();
 
         // Spout commands
         CommandRegistrationHelper.registerXplockCommand();

@@ -20,6 +20,7 @@ import com.gmail.nossr50.commands.admin.XprateCommand;
 import com.gmail.nossr50.commands.player.InspectCommand;
 import com.gmail.nossr50.commands.player.McabilityCommand;
 import com.gmail.nossr50.commands.player.McmmoCommand;
+import com.gmail.nossr50.commands.player.McnotifyCommand;
 import com.gmail.nossr50.commands.player.McrankCommand;
 import com.gmail.nossr50.commands.player.McstatsCommand;
 import com.gmail.nossr50.commands.player.MctopCommand;
@@ -357,5 +358,14 @@ public final class CommandRegistrationHelper {
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "vampirism", "[on|off]"));
         command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "vampirism", "<" + LocaleLoader.getString("Commands.Usage.Rate") + ">"));
         command.setExecutor(new VampirismCommand());
+    }
+
+    public static void registerMcnotifyCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mcnotify");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcnotify"));
+        command.setPermission("mcmmo.commands.mcnotify");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcnotify"));
+        command.setExecutor(new McnotifyCommand());
     }
 }

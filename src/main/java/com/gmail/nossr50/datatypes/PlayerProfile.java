@@ -37,6 +37,7 @@ public class PlayerProfile {
     private boolean hoePreparationMode, shovelPreparationMode, swordsPreparationMode, fistsPreparationMode,
     pickaxePreparationMode, axePreparationMode;
     private boolean abilityUse = true;
+    private boolean displaySkillNotifications = true;
 
     // Timestamps
     private long recentlyHurt;
@@ -828,6 +829,18 @@ public class PlayerProfile {
 
     public void actualizeRecentlyHurt() {
         respawnATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+    }
+
+    /*
+     * Ability Notifications
+     */
+
+    public boolean useChatNotifications() {
+        return displaySkillNotifications;
+    }
+
+    public void toggleChatNotifications() {
+        displaySkillNotifications = !displaySkillNotifications;
     }
 
     /*
