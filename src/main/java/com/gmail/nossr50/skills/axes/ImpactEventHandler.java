@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.axes;
 
+import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class ImpactEventHandler {
     private AxeManager manager;
@@ -81,14 +83,24 @@ public class ImpactEventHandler {
 
     private void handleGreaterImpactEffect() {
         event.setDamage(event.getDamage() + Axes.greaterImpactBonusDamage);
+
+        Location location = defender.getEyeLocation();
+        defender.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
+
         defender.setVelocity(player.getLocation().getDirection().normalize().multiply(Axes.greaterImpactKnockbackMultiplier));
     }
 
     private void sendAbilityMessge() {
-        player.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));
+        if (manager.getMcMMOPlayer().getProfile().useChatNotifications()) {
+            player.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));
+        }
 
         if (defender instanceof Player) {
-            ((Player) defender).sendMessage(LocaleLoader.getString("Axes.Combat.GI.Struck"));
+            Player defendingPlayer = (Player) defender;
+
+            if (Users.getPlayer(defendingPlayer).getProfile().useChatNotifications()) {
+                defendingPlayer.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Struck"));
+            }
         }
     }
 }
