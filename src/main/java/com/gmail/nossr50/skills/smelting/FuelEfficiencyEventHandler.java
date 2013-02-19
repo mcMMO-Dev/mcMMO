@@ -13,7 +13,7 @@ public class FuelEfficiencyEventHandler {
     }
 
     protected void calculateBurnModifier() {
-        this.burnModifier = 1 + ((manager.getSkillLevel() / Smelting.burnModifierMaxLevel) * Smelting.burnTimeMultiplier);
+        this.burnModifier = 1 + (((double) manager.getSkillLevel() / Smelting.burnModifierMaxLevel) * Smelting.burnTimeMultiplier);
     }
 
     protected void modifyBurnTime() {
