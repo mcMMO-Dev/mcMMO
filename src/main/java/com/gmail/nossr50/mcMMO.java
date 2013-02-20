@@ -130,15 +130,7 @@ public class mcMMO extends JavaPlugin {
 
         placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
-        try {
-            updateAvailable = Config.getInstance().getUpdateCheckEnabled() && UpdateCheck.updateAvailable();
-        } catch (Exception e) {
-            updateAvailable = false;
-        }
-        if (updateAvailable) {
-            getLogger().info(LocaleLoader.getString("UpdateChecker.outdated"));
-            getLogger().info(LocaleLoader.getString("UpdateChecker.newavailable"));
-        }
+        checkForUpdates();
     }
 
     /**
@@ -150,6 +142,22 @@ public class mcMMO extends JavaPlugin {
         flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
         usersFile = flatFileDirectory + "mcmmo.users";
         modDirectory = mainDirectory + "ModConfigs" + File.separator;
+    }
+
+    private void checkForUpdates() {
+        if (Config.getInstance().getUpdateCheckEnabled()) {
+            try {
+                updateAvailable = UpdateCheck.updateAvailable();
+            }
+            catch (Exception e) {
+                updateAvailable = false;
+            }
+
+            if (updateAvailable) {
+                getLogger().info(LocaleLoader.getString("UpdateChecker.outdated"));
+                getLogger().info(LocaleLoader.getString("UpdateChecker.newavailable"));
+            }
+        }
     }
 
     /**
