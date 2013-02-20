@@ -22,6 +22,8 @@ General:
     #Allow mcMMO to create zip backups for flatfile data on shutdown.
     Generate_Backups: true
     Power_Level_Cap: 0
+    #Should mcMMO print out debug messages?
+    Verbose_Logging: false
 
 Database_Purging:
     #Amount of time (in hours) to wait between database purging

@@ -51,6 +51,7 @@ import com.gmail.nossr50.skills.runnables.SkillMonitor;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.LogFilter;
 import com.gmail.nossr50.util.UpdateCheck;
 import com.gmail.nossr50.util.Users;
 
@@ -97,6 +98,7 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onEnable() {
         p = this;
+        getLogger().setFilter(new LogFilter(this));
         entityMetadata = new FixedMetadataValue(mcMMO.p, true);
         setupFilePaths();
         setupSpout();
@@ -450,5 +452,9 @@ public class mcMMO extends JavaPlugin {
 
     public void toggleXpEventEnabled() {
         xpEventEnabled = !xpEventEnabled;
+    }
+
+    public void debug(String message) {
+        getLogger().info("[Debug] " + message);
     }
 }
