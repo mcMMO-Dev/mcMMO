@@ -11,6 +11,7 @@ import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -214,6 +215,7 @@ public class mcMMO extends JavaPlugin {
         getServer().getScheduler().cancelTasks(this); // This removes our tasks
         placeStore.saveAll(); // Save our metadata
         placeStore.cleanUp(); // Cleanup empty metadata stores
+        HandlerList.unregisterAll(this); // Cancel event registrations
 
         if (Config.getInstance().getBackupsEnabled()) {
             // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
