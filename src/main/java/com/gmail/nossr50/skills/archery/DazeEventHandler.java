@@ -18,8 +18,6 @@ public class DazeEventHandler {
     private EntityDamageEvent event;
     private Player defender;
 
-    private final static int DAZE_CHANCE = 50;
-
     protected int skillModifier;
 
     protected DazeEventHandler (ArcheryManager manager, EntityDamageEvent event, Player defender) {
@@ -37,13 +35,7 @@ public class DazeEventHandler {
 
     protected void handleDazeEffect() {
         Location location = defender.getLocation();
-
-        if (Misc.getRandom().nextInt(100) > DAZE_CHANCE) {
-            location.setPitch(90);
-        }
-        else {
-            location.setPitch(-90);
-        }
+        location.setPitch(90 - Misc.getRandom().nextInt(181));
 
         defender.teleport(location);
         defender.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 10));
