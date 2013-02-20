@@ -59,7 +59,11 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayXpPerks(Player player) {
-        player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", PerksUtils.handleXpPerks(player, 1))));
+        int perkAmount = PerksUtils.handleXpPerks(player, 1);
+
+        if (perkAmount > 1) {
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", perkAmount)));
+        }
     }
 
     /**
@@ -68,9 +72,11 @@ public final class Motd {
      */
     public static void displayCooldownPerks(Player player) {
         double cooldownReduction = 1 - (PerksUtils.handleCooldownPerks(player, 12) / 12.0);
-        DecimalFormat percent = new DecimalFormat("##0.00%");
 
-        player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", percent.format(cooldownReduction))));
+        if (cooldownReduction > 0.0) {
+            DecimalFormat percent = new DecimalFormat("##0.00%");
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.cooldowns.name"), LocaleLoader.getString("Perks.cooldowns.desc", percent.format(cooldownReduction))));
+        }
     }
 
     /**
@@ -78,7 +84,11 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayActivationPerks(Player player) {
-        player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", PerksUtils.handleActivationPerks(player, 0, 0))));
+        int perkAmount = PerksUtils.handleActivationPerks(player, 0, 0);
+
+        if (perkAmount > 0) {
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.activationtime.name"), LocaleLoader.getString("Perks.activationtime.desc", perkAmount)));
+        }
     }
 
     /**
