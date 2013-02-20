@@ -1,11 +1,14 @@
 package com.gmail.nossr50.skills.axes;
 
+import org.bukkit.Effect;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.util.Users;
 
 public class CriticalHitEventHandler {
     private AxeManager manager;
@@ -34,10 +37,21 @@ public class CriticalHitEventHandler {
     }
 
     protected void sendAbilityMessages() {
-        manager.getMcMMOPlayer().getPlayer().sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
+        McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
+        Player attacker = mcMMOPlayer.getPlayer();
+
+        attacker.playEffect(defender.getEyeLocation(), Effect.MOBSPAWNER_FLAMES, 0);
+
+        if (mcMMOPlayer.getProfile().useChatNotifications()) {
+            attacker.sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
+        }
 
         if (defender instanceof Player) {
-            ((Player) defender).sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
+            Player defendingPlayer = (Player) defender;
+
+            if (Users.getPlayer(defendingPlayer).getProfile().useChatNotifications()) {
+                defendingPlayer.sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
+            }
         }
     }
 
