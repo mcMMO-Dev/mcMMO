@@ -47,7 +47,7 @@ public class Herbalism {
     public static int doubleDropsMaxLevel = AdvancedConfig.getInstance().getHerbalismDoubleDropsMaxLevel();
 
     public static double hylianLuckMaxChance = AdvancedConfig.getInstance().getHylianLuckChanceMax();
-    public static int hylianLuckMaxLevel = AdvancedConfig.getInstance().getHylianLucksMaxLevel();
+    public static int hylianLuckMaxLevel = AdvancedConfig.getInstance().getHylianLuckMaxLevel();
 
     /**
      * Handle the farmers diet skill.
