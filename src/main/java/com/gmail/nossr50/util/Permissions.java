@@ -1,15 +1,14 @@
 package com.gmail.nossr50.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
+import org.bukkit.Server;
+import org.bukkit.World;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.Permission;
+import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.commands.PartySubcommandType;
 import com.gmail.nossr50.skills.utilities.SkillType;
 
@@ -216,20 +215,23 @@ public final class Permissions {
     public static boolean partyTeleportAcceptAll(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.ptp.acceptall"); }
     public static boolean partyTeleportToggle(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.ptp.toggle"); }
 
-    // TODO: Still think there's a better way to handle this
-    public static boolean hasDynamicPermission(CommandSender sender, String perm, String defaultType) {
-        Map<String, Object> m = new HashMap<String, Object>();
+    public static boolean partyTeleportAllWorlds(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.ptp.world.all"); }
+    public static boolean partyTeleportWorld(Permissible permissible, World world) { return permissible.hasPermission("mcmmo.commands.ptp.world." + world.getName()); }
 
-        if(defaultType != null) {
-            m.put("default", defaultType);
+    public static void generateWorldTeleportPermissions() {
+        Server server = mcMMO.p.getServer();
+        PluginManager pluginManager = server.getPluginManager();
+
+        for (World world : server.getWorlds()) {
+            addDynamicPermission("mcmmo.commands.ptp.world." + world.getName(), PermissionDefault.OP, pluginManager);
         }
 
-        PluginManager manager = Bukkit.getPluginManager();
+        addDynamicPermission("mcmmo.commands.ptp.world.all", PermissionDefault.OP, pluginManager);
+    }
 
-        if (manager.getPermission(perm) == null) {
-            Permission.loadPermission(perm, m);
-        }
-
-        return sender.hasPermission(perm);
+    private static void addDynamicPermission(String permissionName, PermissionDefault permissionDefault, PluginManager pluginManager) {
+        Permission permission = new Permission(permissionName);
+        permission.setDefault(permissionDefault);
+        pluginManager.addPermission(permission);
     }
 }

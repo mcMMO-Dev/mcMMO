@@ -50,6 +50,7 @@ import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.runnables.SkillMonitor;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.UpdateCheck;
 import com.gmail.nossr50.util.Users;
 
@@ -131,6 +132,10 @@ public class mcMMO extends JavaPlugin {
         placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
         checkForUpdates();
+
+        if (Config.getInstance().getPTPCommandWorldPermissions()) {
+            Permissions.generateWorldTeleportPermissions();
+        }
     }
 
     /**

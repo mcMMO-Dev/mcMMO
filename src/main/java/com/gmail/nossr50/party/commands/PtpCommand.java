@@ -1,5 +1,6 @@
 package com.gmail.nossr50.party.commands;
 
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -118,15 +119,17 @@ public class PtpCommand implements CommandExecutor {
             return true;
         }
 
-        //TODO: Someone want to clarify what's going on with these dynamic permissions?
         if (Config.getInstance().getPTPCommandWorldPermissions()) {
-            String perm = "mcmmo.commands.ptp.world.";
+            World targetWorld = target.getWorld();
+            World playerWorld = player.getWorld();
 
-            if (!Permissions.hasDynamicPermission(target, perm + "all", "op")) {
-                if (!Permissions.hasDynamicPermission(target, perm + target.getWorld().getName(), "op")) {
+            if (!Permissions.partyTeleportAllWorlds(target)) {
+                if (!Permissions.partyTeleportWorld(target, targetWorld)) {
+                    target.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions", targetWorld.getName()));
                     return true;
                 }
-                else if (target.getWorld() != player.getWorld() && !Permissions.hasDynamicPermission(target, perm + player.getWorld().getName(), "op")) {
+                else if (targetWorld != playerWorld && !Permissions.partyTeleportWorld(target, playerWorld)) {
+                    target.sendMessage(LocaleLoader.getString("Commands.ptp.NoWorldPermissions", playerWorld.getName()));
                     return true;
                 }
             }
