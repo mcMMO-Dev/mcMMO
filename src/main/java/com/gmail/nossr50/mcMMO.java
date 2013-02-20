@@ -8,6 +8,7 @@ import java.util.List;
 
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -98,46 +99,52 @@ public class mcMMO extends JavaPlugin {
      */
     @Override
     public void onEnable() {
-        p = this;
-        getLogger().setFilter(new LogFilter(this));
-        entityMetadata = new FixedMetadataValue(mcMMO.p, true);
-        setupFilePaths();
-        setupSpout();
-        loadConfigFiles();
+        try {
+            p = this;
+            getLogger().setFilter(new LogFilter(this));
+            entityMetadata = new FixedMetadataValue(mcMMO.p, true);
+            setupFilePaths();
+            setupSpout();
+            loadConfigFiles();
 
-        if (!Config.getInstance().getUseMySQL()) {
-            Users.loadUsers();
+            if (!Config.getInstance().getUseMySQL()) {
+                Users.loadUsers();
+            }
+
+            registerEvents();
+
+            // Setup the leader boards
+            if (Config.getInstance().getUseMySQL()) {
+                // TODO: Why do we have to check for a connection that hasn't be made yet? 
+                Database.checkConnected();
+                Database.createStructure();
+            }
+            else {
+                Leaderboard.updateLeaderboards();
+            }
+
+            for (Player player : getServer().getOnlinePlayers()) {
+                Users.addUser(player); // In case of reload add all users back into PlayerProfile
+            }
+
+            getLogger().info("Version " + getDescription().getVersion() + " is enabled!");
+
+            scheduleTasks();
+            registerCommands();
+
+            MetricsManager.setup();
+
+            placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
+
+            checkForUpdates();
+
+            if (Config.getInstance().getPTPCommandWorldPermissions()) {
+                Permissions.generateWorldTeleportPermissions();
+            }
         }
-
-        registerEvents();
-
-        // Setup the leader boards
-        if (Config.getInstance().getUseMySQL()) {
-            // TODO: Why do we have to check for a connection that hasn't be made yet? 
-            Database.checkConnected();
-            Database.createStructure();
-        }
-        else {
-            Leaderboard.updateLeaderboards();
-        }
-
-        for (Player player : getServer().getOnlinePlayers()) {
-            Users.addUser(player); // In case of reload add all users back into PlayerProfile
-        }
-
-        getLogger().info("Version " + getDescription().getVersion() + " is enabled!");
-
-        scheduleTasks();
-        registerCommands();
-
-        MetricsManager.setup();
-
-        placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
-
-        checkForUpdates();
-
-        if (Config.getInstance().getPTPCommandWorldPermissions()) {
-            Permissions.generateWorldTeleportPermissions();
+        catch (Throwable t) {
+            getLogger().severe("There was an error while enabling mcMMO! Disabling now");
+            Bukkit.getPluginManager().disablePlugin(this);
         }
     }
 
@@ -210,11 +217,15 @@ public class mcMMO extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        Users.saveAll(); // Make sure to save player information if the server shuts down
-        PartyManager.saveParties();
+        try {
+            Users.saveAll(); // Make sure to save player information if the server shuts down
+            PartyManager.saveParties();
+            placeStore.saveAll(); // Save our metadata
+            placeStore.cleanUp(); // Cleanup empty metadata stores
+        }
+        catch (NullPointerException e) {}
+
         getServer().getScheduler().cancelTasks(this); // This removes our tasks
-        placeStore.saveAll(); // Save our metadata
-        placeStore.cleanUp(); // Cleanup empty metadata stores
         HandlerList.unregisterAll(this); // Cancel event registrations
 
         if (Config.getInstance().getBackupsEnabled()) {
@@ -224,6 +235,14 @@ public class mcMMO extends JavaPlugin {
             }
             catch (IOException e) {
                 getLogger().severe(e.toString());
+            }
+            catch (Throwable e) {
+                if (e instanceof NoClassDefFoundError) {
+                    getLogger().severe("Backup class not found. Do not replace the mcMMO jar during runtime.");
+                }
+                else {
+                    getLogger().severe(e.toString());
+                }
             }
         }
 
