@@ -26,7 +26,7 @@ public final class AbilityAPI {
     }
 
     public static boolean skullSplitterEnabled(Player player) {
-        return Users.getPlayer(player).getProfile().getAbilityMode(AbilityType.SKULL_SPLIITER);
+        return Users.getPlayer(player).getProfile().getAbilityMode(AbilityType.SKULL_SPLITTER);
     }
 
     public static boolean superBreakerEnabled(Player player) {

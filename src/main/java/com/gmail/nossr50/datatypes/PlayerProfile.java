@@ -130,7 +130,7 @@ public class PlayerProfile {
             skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(cooldownValues.get(3)));
             skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(cooldownValues.get(4)));
             skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(cooldownValues.get(5)));
-            skillsDATS.put(AbilityType.SKULL_SPLIITER, Integer.valueOf(cooldownValues.get(6)));
+            skillsDATS.put(AbilityType.SKULL_SPLITTER, Integer.valueOf(cooldownValues.get(6)));
             skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(cooldownValues.get(7)));
         }
 
@@ -262,7 +262,7 @@ public class PlayerProfile {
                 if (character.length > 30)
                     skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(character[30]));
                 if (character.length > 31)
-                    skillsDATS.put(AbilityType.SKULL_SPLIITER, Integer.valueOf(character[31]));
+                    skillsDATS.put(AbilityType.SKULL_SPLITTER, Integer.valueOf(character[31]));
                 if (character.length > 32)
                     skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(character[32]));
                 if (character.length > 33) {
@@ -308,7 +308,7 @@ public class PlayerProfile {
                     + ", herbalism = " + skillsDATS.get(AbilityType.GREEN_TERRA)
                     + ", excavation = " + skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER)
                     + ", swords = " + skillsDATS.get(AbilityType.SERRATED_STRIKES)
-                    + ", axes = " + skillsDATS.get(AbilityType.SKULL_SPLIITER)
+                    + ", axes = " + skillsDATS.get(AbilityType.SKULL_SPLITTER)
                     + ", blast_mining = " + skillsDATS.get(AbilityType.BLAST_MINING)
                     + " WHERE user_id = " + userId);
             Database.write("UPDATE " + tablePrefix + "skills SET "
@@ -391,7 +391,7 @@ public class PlayerProfile {
                         writer.append(skillsDATS.get(AbilityType.TREE_FELLER)).append(":");
                         writer.append(skillsDATS.get(AbilityType.GREEN_TERRA)).append(":");
                         writer.append(skillsDATS.get(AbilityType.SERRATED_STRIKES)).append(":");
-                        writer.append(skillsDATS.get(AbilityType.SKULL_SPLIITER)).append(":");
+                        writer.append(skillsDATS.get(AbilityType.SKULL_SPLITTER)).append(":");
                         writer.append(skillsDATS.get(AbilityType.SUPER_BREAKER)).append(":");
                         writer.append(hudType.toString()).append(":");
                         writer.append(skills.get(SkillType.FISHING)).append(":");
@@ -670,7 +670,7 @@ public class PlayerProfile {
         case GREEN_TERRA:
             return greenTerraMode;
 
-        case SKULL_SPLIITER:
+        case SKULL_SPLITTER:
             return skullSplitterMode;
 
         case TREE_FELLER:
@@ -708,7 +708,7 @@ public class PlayerProfile {
             greenTerraMode = bool;
             break;
 
-        case SKULL_SPLIITER:
+        case SKULL_SPLITTER:
             skullSplitterMode = bool;
             break;
 
@@ -748,7 +748,7 @@ public class PlayerProfile {
         case GREEN_TERRA:
             return greenTerraInformed;
 
-        case SKULL_SPLIITER:
+        case SKULL_SPLITTER:
             return skullSplitterInformed;
 
         case TREE_FELLER:
@@ -790,7 +790,7 @@ public class PlayerProfile {
             greenTerraInformed = bool;
             break;
 
-        case SKULL_SPLIITER:
+        case SKULL_SPLITTER:
             skullSplitterInformed = bool;
             break;
 

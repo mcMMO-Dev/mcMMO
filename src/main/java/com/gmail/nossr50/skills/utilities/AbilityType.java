@@ -8,6 +8,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
 
 public enum AbilityType {
     BERSERK(
@@ -46,7 +47,7 @@ public enum AbilityType {
             "Herbalism.Skills.GTe.Refresh",
             "Herbalism.Skills.GTe.Other.Off"),
 
-    SKULL_SPLIITER(
+    SKULL_SPLITTER(
             Config.getInstance().getAbilityCooldownSkullSplitter(),
             Config.getInstance().getAbilityMaxTicksSkullSplitter(),
             "Axes.Skills.SS.On",
@@ -137,6 +138,27 @@ public enum AbilityType {
         return this.maxTicks;
     }
 
+    @Override
+    public String toString() {
+        String baseString = name();
+        String[] substrings = baseString.split("_");
+        String formattedString = "";
+
+        int size = 1;
+
+        for (String string : substrings) {
+            formattedString = formattedString.concat(StringUtils.getCapitalized(string));
+
+            if (size < substrings.length) {
+                formattedString = formattedString.concat("_");
+            }
+
+            size++;
+        }
+
+        return formattedString;
+    }
+
     /**
      * Get the permissions for this ability.
      *
@@ -164,7 +186,7 @@ public enum AbilityType {
         case SERRATED_STRIKES:
             return Permissions.serratedStrikes(player);
 
-        case SKULL_SPLIITER:
+        case SKULL_SPLITTER:
             return Permissions.skullSplitter(player);
 
         case SUPER_BREAKER:

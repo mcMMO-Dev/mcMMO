@@ -139,7 +139,7 @@ public final class CombatTools {
                         axeManager.impact(event, target);
                     }
 
-                    if (!target.isDead() && profile.getAbilityMode(AbilityType.SKULL_SPLIITER) && canSkullSplit) {
+                    if (!target.isDead() && profile.getAbilityMode(AbilityType.SKULL_SPLITTER) && canSkullSplit) {
                         axeManager.skullSplitter(target, event.getDamage());
                     }
 
