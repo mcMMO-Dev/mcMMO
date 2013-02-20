@@ -30,7 +30,6 @@ public final class ChatManager {
         String adminMessage = chatEvent.getMessage();
 
         mcMMO.p.getServer().broadcast(LocaleLoader.getString("Commands.AdminChat.Prefix", displayName) + adminMessage, "mcmmo.chat.adminchat");
-        mcMMO.p.getLogger().info("[A]<" + ChatColor.stripColor(displayName) + "> " + adminMessage);
     }
 
     public static void handleAdminChat(Plugin plugin, String senderName, String message) {
