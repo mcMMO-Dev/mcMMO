@@ -51,6 +51,10 @@ public final class ModChecks {
      * @return the block if it exists, null otherwise
      */
     public static CustomBlock getCustomBlock(Block block) {
+        if (!Config.getInstance().getBlockModsEnabled()) {
+            return null;
+        }
+
         ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
         if (!CustomBlocksConfig.getInstance().customItems.contains(item)) {
@@ -79,8 +83,9 @@ public final class ModChecks {
 
         return null;
     }
+
     /**
-     * Check if a custom block is a custom block.
+     * Check if a custom block is a mining block.
      *
      * @param block The block to check
      * @return true if the block is custom, false otherwise
@@ -89,6 +94,26 @@ public final class ModChecks {
         ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
 
         if (customBlocksEnabled && CustomBlocksConfig.getInstance().customMiningBlocks.contains(item)) {
+            for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
+                if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if a custom block is a mining block.
+     *
+     * @param block The block to check
+     * @return true if the block is custom, false otherwise
+     */
+    public static boolean isCustomExcavationBlock(Block block) {
+        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
+
+        if (customBlocksEnabled && CustomBlocksConfig.getInstance().customExcavationBlocks.contains(item)) {
             for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
                 if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
                     return true;

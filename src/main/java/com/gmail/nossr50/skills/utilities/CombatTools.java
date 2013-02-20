@@ -31,17 +31,14 @@ import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.acrobatics.Acrobatics;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
-import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxeManager;
-import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.runnables.CombatXpGiver;
 import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
-import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
@@ -79,11 +76,11 @@ public final class CombatTools {
 
             if (ItemChecks.isSword(heldItem) && damageCause == DamageCause.ENTITY_ATTACK) {
                 if (targetIsPlayer || targetIsTamedPet) {
-                    if (!Swords.pvpEnabled) {
+                    if (!SkillType.SWORDS.getPVPEnabled()) {
                         return;
                     }
                 }
-                else if (!Swords.pveEnabled) {
+                else if (!SkillType.SWORDS.getPVEEnabled()) {
                     return;
                 }
 
@@ -110,11 +107,11 @@ public final class CombatTools {
             }
             else if (ItemChecks.isAxe(heldItem) && damageCause == DamageCause.ENTITY_ATTACK) {
                 if (targetIsPlayer || targetIsTamedPet) {
-                    if (!Axes.pvpEnabled) {
+                    if (!SkillType.AXES.getPVPEnabled()) {
                         return;
                     }
                 }
-                else if (!Axes.pveEnabled) {
+                else if (!SkillType.AXES.getPVEEnabled()) {
                     return;
                 }
 
@@ -148,11 +145,11 @@ public final class CombatTools {
             }
             else if (heldItemType == Material.AIR && damageCause == DamageCause.ENTITY_ATTACK) {
                 if (targetIsPlayer || targetIsTamedPet) {
-                    if (!configInstance.getUnarmedPVP()) {
+                    if (!SkillType.UNARMED.getPVPEnabled()) {
                         return;
                     }
                 }
-                else if (!configInstance.getUnarmedPVE()) {
+                else if (!SkillType.UNARMED.getPVEEnabled()) {
                     return;
                 }
 
@@ -202,11 +199,11 @@ public final class CombatTools {
                 }
 
                 if (targetIsPlayer || targetIsTamedPet) {
-                    if (!Taming.pvpEnabled) {
+                    if (!SkillType.TAMING.getPVPEnabled()) {
                         return;
                     }
                 }
-                else if (!Taming.pveEnabled) {
+                else if (!SkillType.TAMING.getPVEEnabled()) {
                     return;
                 }
 
@@ -242,11 +239,11 @@ public final class CombatTools {
             }
 
             if (targetIsPlayer || targetIsTamedPet) {
-                if (!Archery.pvpEnabled) {
+                if (!SkillType.ARCHERY.getPVPEnabled()) {
                     return;
                 }
             }
-            else if (!Archery.pveEnabled) {
+            else if (!SkillType.ARCHERY.getPVEEnabled()) {
                 return;
             }
 
@@ -267,23 +264,23 @@ public final class CombatTools {
             ItemStack heldItem = player.getItemInHand();
 
             if (damager instanceof Player) {
-                if (Swords.pvpEnabled && ItemChecks.isSword(heldItem) && Permissions.counterAttack(player)) {
+                if (SkillType.SWORDS.getPVPEnabled() && ItemChecks.isSword(heldItem) && Permissions.counterAttack(player)) {
                     SwordsManager swordsManager = new SwordsManager(Users.getPlayer(player));
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 
-                if (Acrobatics.pvpEnabled && Permissions.dodge(player)) {
+                if (SkillType.ACROBATICS.getPVPEnabled() && Permissions.dodge(player)) {
                     AcrobaticsManager acrobaticsManager = new AcrobaticsManager(Users.getPlayer(player));
                     acrobaticsManager.dodgeCheck(event);
                 }
             }
             else {
-                if (Swords.pveEnabled && damager instanceof LivingEntity && ItemChecks.isSword(heldItem) && Permissions.counterAttack(player)) {
+                if (SkillType.SWORDS.getPVEEnabled() && damager instanceof LivingEntity && ItemChecks.isSword(heldItem) && Permissions.counterAttack(player)) {
                     SwordsManager swordsManager = new SwordsManager(Users.getPlayer(player));
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
 
-                if (Acrobatics.pveEnabled && !(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) && Permissions.dodge(player)) {
+                if (SkillType.ACROBATICS.getPVEEnabled() && !(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) && Permissions.dodge(player)) {
                     AcrobaticsManager acrobaticsManager = new AcrobaticsManager(Users.getPlayer(player));
                     acrobaticsManager.dodgeCheck(event);
                 }
@@ -309,7 +306,7 @@ public final class CombatTools {
             archeryManager.skillShot(event);
 
             if (target instanceof Player) {
-                if (Unarmed.pvpEnabled && ((Player) target).getItemInHand().getType() == Material.AIR && Permissions.arrowDeflect((Player) target)) {
+                if (SkillType.UNARMED.getPVPEnabled() && ((Player) target).getItemInHand().getType() == Material.AIR && Permissions.arrowDeflect((Player) target)) {
                     UnarmedManager unarmedManager = new UnarmedManager(Users.getPlayer((Player) target));
                     unarmedManager.deflectCheck(event);
                 }
@@ -478,50 +475,26 @@ public final class CombatTools {
                     break;
 
                 case BLAZE:
-                    baseXP = configInstance.getBlazeXP();
-                    break;
-
                 case CAVE_SPIDER:
-                    baseXP = configInstance.getCaveSpiderXP();
-                    break;
-
                 case CREEPER:
-                    baseXP = configInstance.getCreeperXP();
-                    break;
-
                 case ENDER_DRAGON:
-                    baseXP = configInstance.getEnderDragonXP();
-                    break;
-
                 case ENDERMAN:
-                    baseXP = configInstance.getEndermanXP();
-                    break;
-
                 case GHAST:
-                    baseXP = configInstance.getGhastXP();
-                    break;
-
                 case GIANT:
-                    baseXP = configInstance.getGiantXP();
-                    break;
-
                 case MAGMA_CUBE:
-                    baseXP = configInstance.getMagmaCubeXP();
-                    break;
-
-                case IRON_GOLEM:
-                    if (!((IronGolem) target).isPlayerCreated()) {
-                        baseXP = configInstance.getIronGolemXP();
-                    }
-
-                    break;
-
                 case PIG_ZOMBIE:
-                    baseXP = configInstance.getPigZombieXP();
+                case SILVERFISH:
+                case SLIME:
+                case SPIDER:
+                case WITCH:
+                case WITHER:
+                case ZOMBIE:
+                    baseXP = Config.getInstance().getCombatXP(type);
                     break;
 
-                case SILVERFISH:
-                    baseXP = configInstance.getSilverfishXP();
+                // Temporary workaround for custom entities
+                case UNKNOWN:
+                    baseXP = 1.0;
                     break;
 
                 case SKELETON:
@@ -530,41 +503,21 @@ public final class CombatTools {
                         baseXP = configInstance.getWitherSkeletonXP();
                         break;
                     default:
-                        baseXP = configInstance.getSkeletonXP();
+                        baseXP = Config.getInstance().getCombatXP(type);
                         break;
                     }
                     break;
 
-                case SLIME:
-                    baseXP = configInstance.getSlimeXP();
-                    break;
-
-                case SPIDER:
-                    baseXP = configInstance.getSpiderXP();
-                    break;
-
-                case WITCH:
-                    baseXP = configInstance.getWitchXP();
-                    break;
-
-                case WITHER:
-                    baseXP = configInstance.getWitherXP();
-                    break;
-
-                case ZOMBIE:
-                    baseXP = configInstance.getZombieXP();
-                    break;
-
-                // Temporary workaround for custom entities
-                case UNKNOWN:
-                    baseXP = 1.0;
+                case IRON_GOLEM:
+                    if (!((IronGolem) target).isPlayerCreated()) {
+                        baseXP = Config.getInstance().getCombatXP(type);
+                    }
                     break;
 
                 default:
                     if (ModChecks.isCustomEntity(target)) {
                         baseXP = ModChecks.getCustomEntity(target).getXpMultiplier();
                     }
-
                     break;
                 }
             }

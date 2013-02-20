@@ -67,7 +67,7 @@ public class HerbalismCommand extends SkillCommand {
         canGreenThumbBlocks = (Permissions.greenThumbBlock(player, Material.DIRT) || Permissions.greenThumbBlock(player, Material.COBBLESTONE) || Permissions.greenThumbBlock(player, Material.COBBLE_WALL) || Permissions.greenThumbBlock(player, Material.SMOOTH_BRICK));
         canFarmersDiet = Permissions.farmersDiet(player);
         canDoubleDrop = Permissions.doubleDrops(player, skill);
-        doubleDropsDisabled = Herbalism.doubleDropsDisabled;
+        doubleDropsDisabled = skill.getDoubleDropsDisabled();
     }
 
     @Override

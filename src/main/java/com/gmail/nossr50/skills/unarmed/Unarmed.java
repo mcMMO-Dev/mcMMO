@@ -23,9 +23,6 @@ public class Unarmed {
 
     public static boolean blockCrackerSmoothBrick = Config.getInstance().getUnarmedBlockCrackerSmoothbrickToCracked();
 
-    public static boolean pvpEnabled = Config.getInstance().getUnarmedPVP();
-    public static boolean pveEnabled = Config.getInstance().getUnarmedPVE();
-
     public static double berserkDamageModifier = 1.5;
 
     public static void blockCracker(Player player, Block block) {

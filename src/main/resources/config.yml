@@ -101,23 +101,23 @@ Abilities:
     Activation:
         Only_Activate_When_Sneaking: false
     Cooldowns:
+        Berserk: 240
         Blast_Mining: 60
         Giga_Drill_Breaker: 240
-        Berserk: 240
         Green_Terra: 240
-        Skull_Splitter: 240
         Serrated_Strikes: 240
-        Tree_Feller: 240
+        Skull_Splitter: 240
         Super_Breaker: 240
+        Tree_Feller: 240
     Max_Seconds:
+        Berserk: 0
         Blast_Mining: 0
         Giga_Drill_Breaker: 0
-        Berserk: 0
         Green_Terra: 0
-        Skull_Splitter: 0
         Serrated_Strikes: 0
-        Tree_Feller: 0
+        Skull_Splitter: 0
         Super_Breaker: 0
+        Tree_Feller: 0
     Limits:
        Tree_Feller_Threshold: 500
     Tools:
@@ -191,36 +191,36 @@ Skills:
 ###
 Double_Drops:
     Herbalism:
-        Brown_Mushrooms: true
-        Cacti: true
-        Melons: true
-        Nether_Warts: true
-        Pumpkins: true
-        Red_Mushrooms: true
-        Red_Roses: true
-        Sugar_Cane: true
-        Vines: true
-        Water_Lilies: true
-        Wheat: true
-        Yellow_Flowers: true
-        Cocoa: true
+        Brown_Mushroom: true
+        Cactus: true
         Carrot: true
+        Cocoa: true
+        Crops: true
+        Melon_Block: true
+        Nether_Warts: true
         Potato: true
+        Pumpkin: true
+        Red_Mushroom: true
+        Red_Rose: true
+        Sugar_Cane_Block: true
+        Vine: true
+        Water_Lily: true
+        Yellow_Flower: true
     Mining:
-        Coal: true
-        Diamond: true
-        End_Stone: true
+        Coal_Ore: true
+        Diamond_Ore: true
+        Emerald_Ore: true
+        Ender_Stone: true
         Glowstone: true
-        Gold: true
-        Iron: true
-        Lapis: true
-        Moss_Stone: true
+        Gold_Ore: true
+        Iron_Ore: true
+        Lapis_Ore: true
+        Mossy_Cobblestone: true
         Netherrack: true
         Obsidian: true
-        Redstone: true
+        Redstone_Ore: true
         Sandstone: true
         Stone: true
-        Emerald: true
     Woodcutting:
         Oak: true
         Birch: true
@@ -263,7 +263,7 @@ Experience:
         Gravel: 40
         Mycel: 40
         Sand: 40
-        SoulSand: 40
+        Soul_Sand: 40
     Woodcutting:
         Oak: 70
         Spruce: 80
@@ -272,42 +272,44 @@ Experience:
         Huge_Mushroom_Red: 70
         Huge_Mushroom_Brown: 70
     Herbalism:
-        Sugar_Cane: 30
+        Brown_Mushroom: 150
         Cactus: 30
-        Flowers: 100
-        Pumpkin: 20
-        Mushrooms: 150
-        Wheat: 50
-        Melon: 20
-        Nether_Wart: 50
-        Lily_Pads: 100
-        Vines: 10
-        Cocoa: 30
         Carrot: 50
+        Cocoa: 30
+        Crops: 50
+        Melon_Block: 20
+        Nether_Warts: 50
         Potato: 50
+        Pumpkin: 20
+        Red_Mushroom: 150
+        Red_Rose: 100
+        Sugar_Cane_Block: 30
+        Vine: 10
+        Water_Lily: 100
+        Yellow_Flower: 100
     Mining:
-        Sandstone: 30
+        Coal_Ore: 100
+        Diamond_Ore: 750
+        Emerald_Ore: 1000
+        Ender_Stone: 150
         Glowstone: 30
-        Lapis: 400
-        Obsidian: 150
-        Stone: 30
+        Gold_Ore: 350
+        Iron_Ore: 250
+        Lapis_Ore: 400
+        Mossy_Cobblestone: 30
         Netherrack: 30
-        Gold: 350
-        Redstone: 150
-        Coal: 100
-        Diamond: 750
-        Iron: 250
-        End_Stone: 150
-        Moss_Stone: 30
-        Emerald: 1000
+        Obsidian: 150
+        Redstone_Ore: 150
+        Sandstone: 30
+        Stone: 30
     Smelting:
-        Coal: 10
-        Redstone: 15
-        Iron: 25
-        Gold: 35
-        Lapis: 40
-        Diamond: 75
-        Emerald: 100
+        Coal_Ore: 10
+        Diamond_Ore: 75
+        Emerald_Ore: 100
+        Gold_Ore: 35
+        Iron_Ore: 25
+        Lapis_Ore: 40
+        Redstone_Ore: 15
     Taming:
         Animal_Taming:
             Wolf: 250
@@ -318,7 +320,10 @@ Experience:
             Creeper: 4.0
             Skeleton: 3.0
             Spider: 2.0
+            Giant: 4.0
             Zombie: 2.0
+            Slime: 2.0
+            Ghast: 3.0
             Pig_Zombie: 3.0
             Enderman: 1.0
             Cave_Spider: 3.0
@@ -326,13 +331,10 @@ Experience:
             Blaze: 3.0
             Magma_Cube: 2.0
             Ender_Dragon: 8.0
-            Slime: 2.0
-            Ghast: 3.0
-            Iron_Golem: 2.0
-            Giant: 4.0
             Wither: 7.0
-            Wither_Skeleton: 4.0
             Witch: 4.0
+            Iron_Golem: 2.0
+            Wither_Skeleton: 4.0;
 #
 #  Settings for commands
 ###

@@ -28,40 +28,10 @@ public class SmeltResourceEventHandler {
 
     protected void handleXPGain() {
         Material sourceType = event.getSource().getType();
-        int xp = 0;
+        int xp = Config.getInstance().getXp(SkillType.SMELTING, sourceType);
 
-        switch (sourceType) {
-        case COAL_ORE:
-            xp = Config.getInstance().getSmeltingXPCoal();
-            break;
-
-        case GLOWING_REDSTONE_ORE:
-        case REDSTONE_ORE:
-            xp = Config.getInstance().getSmeltingXPRedstone();
-            break;
-
-        case IRON_ORE:
-            xp = Config.getInstance().getSmeltingXPIron();
-            break;
-
-        case GOLD_ORE:
-            xp = Config.getInstance().getSmeltingXPGold();
-            break;
-
-        case DIAMOND_ORE:
-            xp = Config.getInstance().getSmeltingXPDiamond();
-            break;
-
-        case LAPIS_ORE:
-            xp = Config.getInstance().getSmeltingXPLapis();
-            break;
-
-        case EMERALD_ORE:
-            xp = Config.getInstance().getSmeltingXPEmerald();
-            break;
-
-        default:
-            break;
+        if (sourceType == Material.GLOWING_REDSTONE_ORE) {
+            xp = Config.getInstance().getXp(SkillType.SMELTING, Material.REDSTONE_ORE);
         }
 
         McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();

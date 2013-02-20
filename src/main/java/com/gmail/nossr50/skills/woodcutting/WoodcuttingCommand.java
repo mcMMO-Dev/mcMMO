@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.woodcutting;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillCommand;
 import com.gmail.nossr50.skills.utilities.SkillType;
@@ -16,6 +15,7 @@ public class WoodcuttingCommand extends SkillCommand {
     private boolean canTreeFell;
     private boolean canLeafBlow;
     private boolean canDoubleDrop;
+    private boolean doubleDropsDisabled;
 
     public WoodcuttingCommand() {
         super(SkillType.WOODCUTTING);
@@ -40,11 +40,12 @@ public class WoodcuttingCommand extends SkillCommand {
         canTreeFell = Permissions.treeFeller(player);
         canDoubleDrop = Permissions.doubleDrops(player, skill);
         canLeafBlow = Permissions.leafBlower(player);
+        doubleDropsDisabled = skill.getDoubleDropsDisabled();
     }
 
     @Override
     protected boolean effectsHeaderPermissions() {
-        return (canDoubleDrop && !Config.getInstance().woodcuttingDoubleDropsDisabled()) || canLeafBlow || canTreeFell;
+        return (canDoubleDrop && !doubleDropsDisabled) || canLeafBlow || canTreeFell;
     }
 
     @Override
@@ -59,14 +60,14 @@ public class WoodcuttingCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.2"), LocaleLoader.getString("Woodcutting.Effect.3")));
         }
 
-        if (canDoubleDrop && !Config.getInstance().woodcuttingDoubleDropsDisabled()) {
+        if (canDoubleDrop && !doubleDropsDisabled) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.4"), LocaleLoader.getString("Woodcutting.Effect.5")));
         }
     }
 
     @Override
     protected boolean statsHeaderPermissions() {
-        return (canDoubleDrop && !Config.getInstance().woodcuttingDoubleDropsDisabled()) || canLeafBlow || canTreeFell;
+        return (canDoubleDrop && !doubleDropsDisabled) || canLeafBlow || canTreeFell;
     }
 
     @Override
@@ -82,7 +83,7 @@ public class WoodcuttingCommand extends SkillCommand {
             }
         }
 
-        if (canDoubleDrop && !Config.getInstance().woodcuttingDoubleDropsDisabled()) {
+        if (canDoubleDrop && !doubleDropsDisabled) {
             if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", doubleDropChance) + LocaleLoader.getString("Perks.lucky.bonus", doubleDropChanceLucky));
             }

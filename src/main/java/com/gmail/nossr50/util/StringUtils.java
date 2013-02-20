@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 
 public class StringUtils {
 
@@ -22,16 +23,27 @@ public class StringUtils {
      * Gets a nicely formatted string version of an item name from a given item ID.
      *
      * @param itemID The ID of the item to convert to string.
-     * @return the nicely formatting string
+     * @return the nicely formatted string
      */
     public static String getPrettyItemString(int itemID) {
-        String baseString = Material.getMaterial(itemID).toString();
+        return createPrettyEnumString(Material.getMaterial(itemID).toString());
+    }
+
+    public static String getPrettyItemString(Material material) {
+        return createPrettyEnumString(material.toString());
+    }
+
+    public static String getPrettyEntityTypeString(EntityType entity) {
+        return createPrettyEnumString(entity.toString());
+    }
+
+    private static String createPrettyEnumString(String baseString) {
         String[] substrings = baseString.split("_");
         String prettyString = "";
         int size = 1;
 
-        for (String s : substrings) {
-            prettyString = prettyString.concat(getCapitalized(s));
+        for (String string : substrings) {
+            prettyString = prettyString.concat(getCapitalized(string));
 
             if (size < substrings.length) {
                 prettyString = prettyString.concat(" ");

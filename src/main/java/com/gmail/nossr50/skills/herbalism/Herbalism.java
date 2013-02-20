@@ -45,7 +45,6 @@ public class Herbalism {
 
     public static double doubleDropsMaxChance = AdvancedConfig.getInstance().getHerbalismDoubleDropsChanceMax();
     public static int doubleDropsMaxLevel = AdvancedConfig.getInstance().getHerbalismDoubleDropsMaxLevel();
-    public static boolean doubleDropsDisabled = Config.getInstance().herbalismDoubleDropsDisabled();
 
     public static double hylianLuckMaxChance = AdvancedConfig.getInstance().getHylianLuckChanceMax();
     public static int hylianLuckMaxLevel = AdvancedConfig.getInstance().getHylianLucksMaxLevel();

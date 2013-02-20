@@ -17,9 +17,6 @@ public class Acrobatics {
     public static int rollXpModifier = AdvancedConfig.getInstance().getRollXPModifier();
     public static int fallXpModifier = AdvancedConfig.getInstance().getFallXPModifier();
 
-    public static boolean pvpEnabled = Config.getInstance().getAcrobaticsPVP();
-    public static boolean pveEnabled = Config.getInstance().getAcrobaticsPVE();
-
     public static boolean afkLevelingDisabled = Config.getInstance().getAcrobaticsAFKDisabled();
     public static boolean dodgeLightningDisabled = Config.getInstance().getDodgeLightningDisabled();
 }

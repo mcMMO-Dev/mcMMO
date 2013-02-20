@@ -6,41 +6,31 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 
 public enum SkillType {
-    ACROBATICS(Config.getInstance().getLevelCapAcrobatics(), Config.getInstance().getFormulaMultiplierAcrobatics()),
-    ARCHERY(Config.getInstance().getLevelCapArchery(), Config.getInstance().getFormulaMultiplierArchery()),
-    AXES(AbilityType.SKULL_SPLITTER, Config.getInstance().getLevelCapAxes(), ToolType.AXE, Config.getInstance().getFormulaMultiplierAxes()),
-    EXCAVATION(AbilityType.GIGA_DRILL_BREAKER, Config.getInstance().getLevelCapExcavation(), ToolType.SHOVEL, Config.getInstance().getFormulaMultiplierExcavation()),
-    FISHING(Config.getInstance().getLevelCapFishing(), Config.getInstance().getFormulaMultiplierFishing()),
-    HERBALISM(AbilityType.GREEN_TERRA, Config.getInstance().getLevelCapHerbalism(), ToolType.HOE, Config.getInstance().getFormulaMultiplierHerbalism()),
-    MINING(AbilityType.SUPER_BREAKER, Config.getInstance().getLevelCapMining(), ToolType.PICKAXE, Config.getInstance().getFormulaMultiplierMining()),
-    REPAIR(Config.getInstance().getLevelCapRepair(), Config.getInstance().getFormulaMultiplierRepair()),
-    SMELTING(Config.getInstance().getLevelCapSmelting(), 0),
-    SWORDS(AbilityType.SERRATED_STRIKES, Config.getInstance().getLevelCapSwords(), ToolType.SWORD, Config.getInstance().getFormulaMultiplierSwords()),
-    TAMING(Config.getInstance().getLevelCapTaming(), Config.getInstance().getFormulaMultiplierTaming()),
-    UNARMED(AbilityType.BERSERK, Config.getInstance().getLevelCapUnarmed(), ToolType.FISTS, Config.getInstance().getFormulaMultiplierUnarmed()),
-    WOODCUTTING(AbilityType.TREE_FELLER, Config.getInstance().getLevelCapWoodcutting(), ToolType.AXE, Config.getInstance().getFormulaMultiplierWoodcutting());
+    ACROBATICS,
+    ARCHERY,
+    AXES(AbilityType.SKULL_SPLITTER, ToolType.AXE),
+    EXCAVATION(AbilityType.GIGA_DRILL_BREAKER, ToolType.SHOVEL),
+    FISHING,
+    HERBALISM(AbilityType.GREEN_TERRA, ToolType.HOE),
+    MINING(AbilityType.SUPER_BREAKER, ToolType.PICKAXE),
+    REPAIR,
+    SMELTING,
+    SWORDS(AbilityType.SERRATED_STRIKES, ToolType.SWORD),
+    TAMING,
+    UNARMED(AbilityType.BERSERK, ToolType.FISTS),
+    WOODCUTTING(AbilityType.TREE_FELLER, ToolType.AXE);
 
     private AbilityType ability;
-    private int maxLevel;
     private ToolType tool;
-    private double xpModifier;
 
     private SkillType() {
         this.ability = null;
-        this.maxLevel = 0;
         this.tool = null;
-        this.xpModifier = 0;
     }
 
-    private SkillType(AbilityType ability, int maxLevel, ToolType tool, double xpModifier) {
+    private SkillType(AbilityType ability, ToolType tool) {
         this.ability = ability;
-        this.maxLevel = maxLevel;
         this.tool = tool;
-        this.xpModifier = xpModifier;
-    }
-
-    private SkillType(int maxLevel, double xpModifier) {
-        this(null, maxLevel, null, xpModifier);
     }
 
     public AbilityType getAbility() {
@@ -53,11 +43,19 @@ public enum SkillType {
      * @return the max level of this skill
      */
     public int getMaxLevel() {
-        if (maxLevel > 0) {
-            return maxLevel;
-        }
+        return Config.getInstance().getLevelCap(this);
+    }
 
-        return Integer.MAX_VALUE;
+    public boolean getPVPEnabled() {
+        return Config.getInstance().getPVPEnabled(this);
+    }
+
+    public boolean getPVEEnabled() {
+        return Config.getInstance().getPVEEnabled(this);
+    }
+
+    public boolean getDoubleDropsDisabled() {
+        return Config.getInstance().getDoubleDropsDisabled(this);
     }
 
     public ToolType getTool() {
@@ -65,7 +63,7 @@ public enum SkillType {
     }
 
     public double getXpModifier() {
-        return xpModifier;
+        return Config.getInstance().getForumulaMultiplier(this);
     }
 
     public static SkillType getSkill(String skillName) {

@@ -9,7 +9,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.util.Misc;
 
 public class Archery {
@@ -25,9 +24,6 @@ public class Archery {
     public static int dazeMaxBonusLevel = AdvancedConfig.getInstance().getDazeMaxBonusLevel();
     public static double dazeMaxBonus = AdvancedConfig.getInstance().getDazeBonusMax();
     public static int dazeModifier = AdvancedConfig.getInstance().getDazeModifier();
-
-    public static boolean pvpEnabled = Config.getInstance().getArcheryPVP();
-    public static boolean pveEnabled = Config.getInstance().getArcheryPVE();
 
     public static double distanceXpModifer = 0.025;
 

@@ -92,7 +92,7 @@ public class MiningCommand extends SkillCommand {
         canDemoExpert = Permissions.demolitionsExpertise(player);
         canDoubleDrop = Permissions.doubleDrops(player, skill);
         canSuperBreaker = Permissions.superBreaker(player);
-        doubleDropsDisabled = Mining.doubleDropsDisabled;
+        doubleDropsDisabled = skill.getDoubleDropsDisabled();
     }
 
     @Override

@@ -25,7 +25,4 @@ public class Taming {
 
     public static int wolfXp = Config.getInstance().getTamingXPWolf();
     public static int ocelotXp = Config.getInstance().getTamingXPOcelot();
-
-    public static boolean pvpEnabled = Config.getInstance().getTamingPVP();
-    public static boolean pveEnabled = Config.getInstance().getTamingPVE();
 }

@@ -28,40 +28,10 @@ public class Excavation {
      */
     public static void excavationProcCheck(Block block, McMMOPlayer mcMMOPlayer) {
         Material material = block.getType();
-        int xp;
+        int xp = Config.getInstance().getXp(SkillType.EXCAVATION, material);
 
-        switch (material) {
-        case CLAY:
-            xp = Config.getInstance().getExcavationClayXP();
-            break;
-
-        case DIRT:
-            xp = Config.getInstance().getExcavationDirtXP();
-            break;
-
-        case GRASS:
-            xp = Config.getInstance().getExcavationGrassXP();
-            break;
-
-        case GRAVEL:
-            xp = Config.getInstance().getExcavationGravelXP();
-            break;
-
-        case MYCEL:
-            xp = Config.getInstance().getExcavationMycelXP();
-            break;
-
-        case SAND:
-            xp = Config.getInstance().getExcavationSandXP();
-            break;
-
-        case SOUL_SAND:
-            xp = Config.getInstance().getExcavationSoulSandXP();
-            break;
-
-        default:
-            xp = ModChecks.getCustomBlock(block).getXpGain();;
-            break;
+        if (xp == 0 && ModChecks.isCustomExcavationBlock(block)) {
+            xp = ModChecks.getCustomBlock(block).getXpGain();
         }
 
         Player player = mcMMOPlayer.getPlayer();
