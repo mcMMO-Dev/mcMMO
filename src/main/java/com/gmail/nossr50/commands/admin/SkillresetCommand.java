@@ -137,7 +137,7 @@ public class SkillresetCommand implements CommandExecutor {
                             continue;
                         }
 
-                        if (!Permissions.skillresetOthers(sender, skill)) {
+                        if (!Permissions.skillresetOthers(sender, skillType)) {
                             sender.sendMessage(command.getPermissionMessage());
                             continue;
                         }
