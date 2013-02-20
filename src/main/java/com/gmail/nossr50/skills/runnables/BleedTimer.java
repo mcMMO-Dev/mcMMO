@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.CombatTools;
+import com.gmail.nossr50.util.ParticleEffectUtils;
 
 public class BleedTimer implements Runnable {
     private final static int MAX_BLEED_TICKS = 10;
@@ -50,7 +51,7 @@ public class BleedTimer implements Runnable {
                 //Never kill with Bleeding
                 if (player.getHealth() - 1 > 0) {
                     CombatTools.dealDamage(player, 1);
-                    player.getWorld().playEffect(player.getEyeLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+                    ParticleEffectUtils.playBleedEffect(player);
                 }
 
                 entry.setValue(entry.getValue() - 1);

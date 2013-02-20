@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.acrobatics;
 
-import org.bukkit.Effect;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
@@ -10,6 +8,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ParticleEffectUtils;
 
 public class DodgeEventHandler extends AcrobaticsEventHandler {
     protected DodgeEventHandler(AcrobaticsManager manager, EntityDamageEvent event) {
@@ -45,7 +44,7 @@ public class DodgeEventHandler extends AcrobaticsEventHandler {
         McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
         Player dodgingPlayer = mcMMOPlayer.getPlayer();
 
-        dodgingPlayer.playEffect(dodgingPlayer.getEyeLocation(), Effect.SMOKE, BlockFace.SELF);
+        ParticleEffectUtils.playDodgeEffect(dodgingPlayer);
 
         if (mcMMOPlayer.getProfile().useChatNotifications()) {
             dodgingPlayer.sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));

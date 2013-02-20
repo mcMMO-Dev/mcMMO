@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.axes;
 
-import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -12,6 +11,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ParticleEffectUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
@@ -84,9 +84,7 @@ public class ImpactEventHandler {
     private void handleGreaterImpactEffect() {
         event.setDamage(event.getDamage() + Axes.greaterImpactBonusDamage);
 
-        Location location = defender.getEyeLocation();
-        defender.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
-
+        ParticleEffectUtils.playGreaterImpactEffect(defender);
         defender.setVelocity(player.getLocation().getDirection().normalize().multiply(Axes.greaterImpactKnockbackMultiplier));
     }
 

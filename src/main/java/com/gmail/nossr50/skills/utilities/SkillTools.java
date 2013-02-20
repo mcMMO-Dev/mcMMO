@@ -3,20 +3,13 @@ package com.gmail.nossr50.skills.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.FireworkEffect.Type;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffect;
@@ -38,6 +31,7 @@ import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ParticleEffectUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
@@ -204,17 +198,7 @@ public class SkillTools {
                 profile.setAbilityMode(ability, false);
                 profile.setAbilityInformed(ability, false);
 
-                Location location = player.getLocation();
-                location.setY(location.getY() - 2.0);
-                location.setPitch(-90);
-
-                Firework firework = (Firework) player.getWorld().spawnEntity(location, EntityType.FIREWORK);
-                FireworkMeta fireworkMeta = firework.getFireworkMeta();
-                FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(Color.RED). with(Type.BALL_LARGE).trail(true).build();
-                fireworkMeta.addEffect(effect);
-                fireworkMeta.addEffect(effect);
-                fireworkMeta.setPower(0);
-                firework.setFireworkMeta(fireworkMeta);
+                ParticleEffectUtils.playAbilityDisabledEffect(player);
 
                 if (profile.useChatNotifications()) {
                     player.sendMessage(ability.getAbilityOff());
@@ -409,17 +393,7 @@ public class SkillTools {
         if (!profile.getAbilityMode(ability) && cooldownOver(profile.getSkillDATS(ability), ability.getCooldown(), player)) {
             int ticks = PerksUtils.handleActivationPerks(player, 2 + (profile.getSkillLevel(type) / abilityLengthIncreaseLevel), ability.getMaxTicks());
 
-            Location location = player.getLocation();
-            location.setY(location.getY() - 2.0);
-            location.setPitch(-90);
-
-            Firework firework = (Firework) player.getWorld().spawnEntity(location, EntityType.FIREWORK);
-            FireworkMeta fireworkMeta = firework.getFireworkMeta();
-            FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(Color.GREEN). with(Type.BALL_LARGE).trail(true).build();
-            fireworkMeta.addEffect(effect);
-            fireworkMeta.addEffect(effect);
-            fireworkMeta.setPower(0);
-            firework.setFireworkMeta(fireworkMeta);
+            ParticleEffectUtils.playAbilityEnabledEffect(player);
 
             if (profile.useChatNotifications()) {
                 player.sendMessage(ability.getAbilityOn());
