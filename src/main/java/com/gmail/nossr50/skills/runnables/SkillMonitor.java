@@ -7,6 +7,7 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.skills.utilities.AbilityType;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
 public class SkillMonitor implements Runnable {
@@ -15,6 +16,10 @@ public class SkillMonitor implements Runnable {
         long curTime = System.currentTimeMillis();
 
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
+            if (Misc.isNPCEntity(player)) {
+                continue;
+            }
+
             PlayerProfile profile = Users.getPlayer(player).getProfile();
 
             /*
