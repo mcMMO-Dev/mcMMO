@@ -121,7 +121,13 @@ public abstract class ConfigLoader {
 
             // Save it
             try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(new File(plugin.getDataFolder(), fileName)));
+                String saveName = fileName;
+                // At this stage we cannot guarantee that Config has been loaded, so we do the check directly here
+                if (!plugin.getConfig().getBoolean("General.Config_Update_Overwrite", true)) {
+                    saveName += ".new";
+                }
+
+                BufferedWriter writer = new BufferedWriter(new FileWriter(new File(plugin.getDataFolder(), saveName)));
                 writer.write(output);
                 writer.flush();
                 writer.close();
