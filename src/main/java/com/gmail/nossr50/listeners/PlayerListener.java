@@ -335,7 +335,7 @@ public class PlayerListener implements Listener {
 
             /* ACTIVATION & ITEM CHECKS */
             if (BlockChecks.canActivateAbilities(blockState)) {
-                if (SkillTools.abilitiesEnabled) {
+                if (Config.getInstance().getAbilitiesEnabled()) {
                     if (BlockChecks.canActivateHerbalism(blockState)) {
                         SkillTools.activationCheck(player, SkillType.HERBALISM);
                     }
@@ -365,7 +365,7 @@ public class PlayerListener implements Listener {
         case RIGHT_CLICK_AIR:
 
             /* ACTIVATION CHECKS */
-            if (SkillTools.abilitiesEnabled) {
+            if (Config.getInstance().getAbilitiesEnabled()) {
                 SkillTools.activationCheck(player, SkillType.AXES);
                 SkillTools.activationCheck(player, SkillType.EXCAVATION);
                 SkillTools.activationCheck(player, SkillType.HERBALISM);

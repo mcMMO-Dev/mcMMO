@@ -143,7 +143,7 @@ public final class TreeFeller {
 
             for (BlockState blockState : treeFellerBlocks) {
                 if (BlockChecks.isLog(blockState) && Misc.getRandom().nextInt(unbreakingLevel + 1) == 0) {
-                     durabilityLoss += SkillTools.toolDurabilityLoss;
+                     durabilityLoss += Config.getInstance().getAbilityToolDamage();
                 }
             }
 

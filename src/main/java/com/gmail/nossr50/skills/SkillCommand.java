@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.commands.CommandHelper;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.PerksUtils;
@@ -125,7 +126,7 @@ public abstract class SkillCommand implements CommandExecutor {
 
     protected String[] calculateLengthDisplayValues() {
         int maxLength = skill.getAbility().getMaxTicks();
-        int length = 2 + (int) (skillValue / SkillTools.abilityLengthIncreaseLevel);
+        int length = 2 + (int) (skillValue / AdvancedConfig.getInstance().getAbilityLength());
         int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
 
         if (maxLength != 0) {

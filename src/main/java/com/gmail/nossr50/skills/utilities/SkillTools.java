@@ -37,11 +37,6 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public class SkillTools {
-    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-    public static boolean abilitiesEnabled = Config.getInstance().getAbilitiesEnabled();
-    public static int toolDurabilityLoss = Config.getInstance().getAbilityToolDamage();
-    public static int abilityLengthIncreaseLevel = AdvancedConfig.getInstance().getAbilityLength();
-
     public static void handleFoodSkills(Player player, SkillType skill, FoodLevelChangeEvent event, int baseLevel, int maxLevel, int rankChange) {
         int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(skill);
 
@@ -391,7 +386,7 @@ public class SkillTools {
         }
 
         if (!profile.getAbilityMode(ability) && cooldownOver(profile.getSkillDATS(ability), ability.getCooldown(), player)) {
-            int ticks = PerksUtils.handleActivationPerks(player, 2 + (profile.getSkillLevel(type) / abilityLengthIncreaseLevel), ability.getMaxTicks());
+            int ticks = PerksUtils.handleActivationPerks(player, 2 + (profile.getSkillLevel(type) / AdvancedConfig.getInstance().getAbilityLength()), ability.getMaxTicks());
 
             ParticleEffectUtils.playAbilityEnabledEffect(player);
 
