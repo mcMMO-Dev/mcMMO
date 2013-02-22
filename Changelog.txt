@@ -70,6 +70,7 @@ Version 1.4.00-dev
  = Fixed a bug where a new party leader wasn't appointed, after the previous party leader left
  = Fixed a bug where Disarm and Deflect had wrong values
  = Fixed Magic Hunter (Fishing ability) favoring certain enchants
+ ! Changed some config value key names regarding double drops and XP - make sure you copy any custom values to your new config after updating.
  ! Changed Green Terra blocks to be determined via permissions instead of the config file
  ! Config files are now backed up even when running in SQL mode
  ! Changed /p and /a to use /partychat and /adminchat as the default command name. The use of /p, /pc, /a, and /ac is still supported.
