@@ -6,11 +6,11 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
 
@@ -20,9 +20,9 @@ public class BlastMiningDropEventHandler {
     private EntityExplodeEvent event;
     private float yield;
     private List<Block> blocks;
-    private List<Block> ores = new ArrayList<Block>();
-    private List<Block> debris = new ArrayList<Block>();
-    private List<Block> droppedOres = new ArrayList<Block>();
+    private List<BlockState> ores = new ArrayList<BlockState>();
+    private List<BlockState> debris = new ArrayList<BlockState>();
+    private List<BlockState> droppedOres = new ArrayList<BlockState>();
     private float oreBonus;
     private float debrisReduction;
     private int dropMultiplier;
@@ -38,38 +38,35 @@ public class BlastMiningDropEventHandler {
 
     protected void sortExplosionBlocks() {
         for (Block block : blocks) {
-            if (BlockChecks.isOre(block)) {
-                ores.add(block);
+            BlockState blockState = block.getState();
+
+            if (BlockChecks.isOre(blockState)) {
+                ores.add(blockState);
             }
             else {
-                debris.add(block);
+                debris.add(blockState);
             }
         }
     }
 
     protected void processXPGain() {
-        McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
-
-        for (Block block : droppedOres) {
-            if (!mcMMO.placeStore.isTrue(block)) {
-                Mining.miningXP(mcMMOPlayer, block, block.getType());
+        for (BlockState blockState : droppedOres) {
+            if (!mcMMO.placeStore.isTrue(blockState)) {
+                Mining.awardMiningXp(blockState, manager.getMcMMOPlayer().getPlayer());
             }
         }
     }
 
     protected void processDroppedBlocks() {
-        for (Block block : ores) {
-            Location location = block.getLocation();
-            Material type = block.getType();
-
+        for (BlockState blockState : ores) {
             if (Misc.getRandom().nextFloat() < (yield + oreBonus)) {
-                droppedOres.add(block);
-                Mining.miningDrops(block, location, type);
+                droppedOres.add(blockState);
+                Mining.handleMiningDrops(blockState);
 
-                if (!mcMMO.placeStore.isTrue(block)) {
+                if (!mcMMO.placeStore.isTrue(blockState)) {
                     for (int i = 1 ; i < dropMultiplier ; i++) {
-                        droppedOres.add(block);
-                        Mining.miningDrops(block, location, type);
+                        droppedOres.add(blockState);
+                        Mining.handleMiningDrops(blockState);
                     }
                 }
             }
@@ -78,9 +75,9 @@ public class BlastMiningDropEventHandler {
         float debrisYield  = yield - debrisReduction;
 
         if (debrisYield > 0) {
-            for (Block block : debris) {
-                Location location = block.getLocation();
-                Material type = block.getType();
+            for (BlockState blockState : debris) {
+                Location location = blockState.getLocation();
+                Material type = blockState.getType();
 
                 if (Misc.getRandom().nextFloat() < debrisYield) {
                     Misc.dropItem(location, new ItemStack(type));

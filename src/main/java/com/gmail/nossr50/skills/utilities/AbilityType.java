@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.utilities;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
@@ -181,28 +181,28 @@ public enum AbilityType {
     /**
      * Check if a block is affected by this ability.
      *
-     * @param block the block to check
+     * @param blockState the block to check
      * @return true if the block is affected by this ability, false otherwise
      */
-    public boolean blockCheck(Block block) {
+    public boolean blockCheck(BlockState blockState) {
         switch (this) {
         case BERSERK:
-            return (BlockChecks.canBeGigaDrillBroken(block) || block.getType() == Material.SNOW);
+            return (BlockChecks.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW);
 
         case GIGA_DRILL_BREAKER:
-            return BlockChecks.canBeGigaDrillBroken(block);
+            return BlockChecks.affectedByGigaDrillBreaker(blockState);
 
         case GREEN_TERRA:
-            return BlockChecks.canMakeMossy(block);
+            return BlockChecks.canMakeMossy(blockState);
 
         case LEAF_BLOWER:
-            return block.getType() == Material.LEAVES;
+            return BlockChecks.isLeaves(blockState);
 
         case SUPER_BREAKER:
-            return BlockChecks.canBeSuperBroken(block);
+            return BlockChecks.affectedBySuperBreaker(blockState);
 
         case TREE_FELLER:
-            return block.getType() == Material.LOG;
+            return BlockChecks.isLog(blockState);
 
         default:
             return false;

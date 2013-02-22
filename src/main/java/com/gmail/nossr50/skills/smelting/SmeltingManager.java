@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.smelting;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
@@ -57,19 +56,6 @@ public class SmeltingManager extends SkillManager {
         double chance = (Smelting.secondSmeltMaxChance / Smelting.secondSmeltMaxLevel) * eventHandler.skillModifier;
         if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.handleBonusSmelts();
-        }
-    }
-
-    public void fluxMining(BlockBreakEvent event) {
-        if (skillLevel < Smelting.fluxMiningUnlockLevel) {
-            return;
-        }
-
-        if (Smelting.fluxMiningChance > Misc.getRandom().nextInt(activationChance)) {
-            FluxMiningEventHandler eventHandler = new FluxMiningEventHandler(this, event);
-            eventHandler.processDrops();
-            eventHandler.eventCancellationAndProcessing();
-            eventHandler.sendAbilityMessage();
         }
     }
 

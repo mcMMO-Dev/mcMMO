@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.unarmed;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -25,20 +25,22 @@ public class Unarmed {
 
     public static double berserkDamageModifier = 1.5;
 
-    public static void blockCracker(Player player, Block block) {
-        if (SkillTools.blockBreakSimulate(block, player, false)) {
-            Material type = block.getType();
+    public static boolean blockCracker(Player player, BlockState blockState) {
+        if (SkillTools.blockBreakSimulate(blockState.getBlock(), player, false)) {
+            Material type = blockState.getType();
 
             switch (type) {
                 case SMOOTH_BRICK:
-                    if (blockCrackerSmoothBrick && block.getData() == 0x0) {
-                        block.setData((byte) 0x2);
+                    if (blockCrackerSmoothBrick && blockState.getRawData() == (byte) 0x0) {
+                        blockState.setRawData((byte) 0x2);
                     }
-                    return;
+                    return true;
 
                 default:
-                    return;
+                    return false;
             }
         }
+
+        return false;
     }
 }

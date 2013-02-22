@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
@@ -17,67 +16,34 @@ import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class Excavation {
 
     /**
-     * Check to see if treasures were found.
+     * Process treasure drops & XP gain for Excavation.
      *
-     * @param block The block to check
-     * @param mcMMOPlayer The player who broke the block
+     * @param blockState The {@link BlockState} to check ability activation for
+     * @param player The {@link Player} using this ability
      */
-    public static void excavationProcCheck(Block block, McMMOPlayer mcMMOPlayer) {
-        Material material = block.getType();
-        int xp = Config.getInstance().getXp(SkillType.EXCAVATION, material);
+    public static void excavationBlockCheck(BlockState blockState, Player player) {
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+        int xp = Config.getInstance().getXp(SkillType.EXCAVATION, blockState.getType());
 
-        if (xp == 0 && ModChecks.isCustomExcavationBlock(block)) {
-            xp = ModChecks.getCustomBlock(block).getXpGain();
+        if (xp == 0 && ModChecks.isCustomExcavationBlock(blockState)) {
+            xp = ModChecks.getCustomBlock(blockState).getXpGain();
         }
 
-        Player player = mcMMOPlayer.getPlayer();
-        List<ExcavationTreasure> treasures = new ArrayList<ExcavationTreasure>();
-
         if (Permissions.excavationTreasureHunter(player)) {
-            switch (material) {
-            case DIRT:
-                treasures = TreasuresConfig.getInstance().excavationFromDirt;
-                break;
+            List<ExcavationTreasure> treasures = getTreasures(blockState);
 
-            case GRASS:
-                treasures = TreasuresConfig.getInstance().excavationFromGrass;
-                break;
+            if (!treasures.isEmpty()) {
+                int skillLevel = mcMMOPlayer.getProfile().getSkillLevel(SkillType.EXCAVATION);
+                int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.EXCAVATION);
+                Location location = blockState.getLocation();
 
-            case SAND:
-                treasures = TreasuresConfig.getInstance().excavationFromSand;
-                break;
-
-            case GRAVEL:
-                treasures = TreasuresConfig.getInstance().excavationFromGravel;
-                break;
-
-            case CLAY:
-                treasures = TreasuresConfig.getInstance().excavationFromClay;
-                break;
-
-            case MYCEL:
-                treasures = TreasuresConfig.getInstance().excavationFromMycel;
-                break;
-
-            case SOUL_SAND:
-                treasures = TreasuresConfig.getInstance().excavationFromSoulSand;
-                break;
-
-            default:
-                break;
-            }
-
-            Location location = block.getLocation();
-
-            for (ExcavationTreasure treasure : treasures) {
-                if (mcMMOPlayer.getProfile().getSkillLevel(SkillType.EXCAVATION) >= treasure.getDropLevel()) {
-                    int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.EXCAVATION);
-
-                    if (Misc.getRandom().nextDouble() * activationChance <= treasure.getDropChance()) {
+                for (ExcavationTreasure treasure : treasures) {
+                    if (skillLevel >= treasure.getDropLevel() && Misc.getRandom().nextDouble() * activationChance <= treasure.getDropChance()) {
                         xp += treasure.getXp();
                         Misc.dropItem(location, treasure.getDrop());
                     }
@@ -89,13 +55,47 @@ public class Excavation {
     }
 
     /**
-     * Handle triple drops from Giga Drill Breaker.
+     * Process the Giga Drill Breaker ability.
      *
-     * @param mcMMOPlayer The player using the ability
-     * @param block The block to check
+     * @param blockState The {@link BlockState} to check ability activation for
+     * @param player The {@link Player} using this ability
      */
-    public static void gigaDrillBreaker(McMMOPlayer mcMMOPlayer, Block block) {
-        Excavation.excavationProcCheck(block, mcMMOPlayer);
-        Excavation.excavationProcCheck(block, mcMMOPlayer);
+    public static void gigaDrillBreaker(BlockState blockState, Player player) {
+        Excavation.excavationBlockCheck(blockState, player);
+        Excavation.excavationBlockCheck(blockState, player);
    }
+
+    /**
+     * Get the list of possible {@link ExcavationTreasure|ExcavationTreasures} obtained from a given block.
+     *
+     * @param blockState The {@link BlockState} of the block to check.
+     * @return the list of treasures that could be found
+     */
+    private static List<ExcavationTreasure> getTreasures(BlockState blockState) {
+        switch (blockState.getType()) {
+        case DIRT:
+            return TreasuresConfig.getInstance().excavationFromDirt;
+
+        case GRASS:
+            return TreasuresConfig.getInstance().excavationFromGrass;
+
+        case SAND:
+            return TreasuresConfig.getInstance().excavationFromSand;
+
+        case GRAVEL:
+            return TreasuresConfig.getInstance().excavationFromGravel;
+
+        case CLAY:
+            return TreasuresConfig.getInstance().excavationFromClay;
+
+        case MYCEL:
+            return TreasuresConfig.getInstance().excavationFromMycel;
+
+        case SOUL_SAND:
+            return TreasuresConfig.getInstance().excavationFromSoulSand;
+
+        default:
+            return new ArrayList<ExcavationTreasure>();
+        }
+    }
 }

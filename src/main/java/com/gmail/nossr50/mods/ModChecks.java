@@ -1,9 +1,8 @@
 package com.gmail.nossr50.mods;
 
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.mods.config.CustomArmorConfig;
@@ -47,23 +46,19 @@ public final class ModChecks {
     /**
      * Get the custom block associated with an block.
      *
-     * @param block The block to check
+     * @param blockState The block to check
      * @return the block if it exists, null otherwise
      */
-    public static CustomBlock getCustomBlock(Block block) {
-        if (!Config.getInstance().getBlockModsEnabled()) {
-            return null;
-        }
+    public static CustomBlock getCustomBlock(BlockState blockState) {
+        if (customBlocksEnabled) {
+            ItemStack item = blockState.getData().toItemStack();
 
-        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
-
-        if (!CustomBlocksConfig.getInstance().customItems.contains(item)) {
-            return null;
-        }
-
-        for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
-            if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
-                return b;
+            if (CustomBlocksConfig.getInstance().customItems.contains(item)) {
+                for (CustomBlock block : CustomBlocksConfig.getInstance().customBlocks) {
+                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                        return block;
+                    }
+                }
             }
         }
 
@@ -85,18 +80,42 @@ public final class ModChecks {
     }
 
     /**
-     * Check if a custom block is a mining block.
+     * Check if a custom block is a woodcutting block.
      *
      * @param block The block to check
-     * @return true if the block is custom, false otherwise
+     * @return true if the block represents a log, false otherwise
      */
-    public static boolean isCustomMiningBlock(Block block) {
-        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
+    public static boolean isCustomWoodcuttingBlock(BlockState blockState) {
+        if (customBlocksEnabled) {
+            ItemStack item = blockState.getData().toItemStack();
 
-        if (customBlocksEnabled && CustomBlocksConfig.getInstance().customMiningBlocks.contains(item)) {
-            for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
-                if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
-                    return true;
+            if (CustomBlocksConfig.getInstance().customWoodcuttingBlocks.contains(item)) {
+                for (CustomBlock block : CustomBlocksConfig.getInstance().customBlocks) {
+                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if a custom block should not activate abilites.
+     *
+     * @param block The block to check
+     * @return true if the block represents an ability block, false otherwise
+     */
+    public static boolean isCustomAbilityBlock(BlockState blockState) {
+        if (customBlocksEnabled) {
+            ItemStack item = blockState.getData().toItemStack();
+
+            if (CustomBlocksConfig.getInstance().customAbilityBlocks.contains(item)) {
+                for (CustomBlock block : CustomBlocksConfig.getInstance().customBlocks) {
+                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                        return true;
+                    }
                 }
             }
         }
@@ -110,13 +129,59 @@ public final class ModChecks {
      * @param block The block to check
      * @return true if the block is custom, false otherwise
      */
-    public static boolean isCustomExcavationBlock(Block block) {
-        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
+    public static boolean isCustomMiningBlock(BlockState blockState) {
+        if (customBlocksEnabled) {
+            ItemStack item = blockState.getData().toItemStack();
 
-        if (customBlocksEnabled && CustomBlocksConfig.getInstance().customExcavationBlocks.contains(item)) {
-            for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
-                if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
-                    return true;
+            if (CustomBlocksConfig.getInstance().customMiningBlocks.contains(item)) {
+                for (CustomBlock block : CustomBlocksConfig.getInstance().customBlocks) {
+                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if a custom block is an excavation block.
+     *
+     * @param block The block to check
+     * @return true if the block is custom, false otherwise
+     */
+    public static boolean isCustomExcavationBlock(BlockState blockState) {
+        if (customBlocksEnabled) {
+            ItemStack item = blockState.getData().toItemStack();
+
+            if (CustomBlocksConfig.getInstance().customExcavationBlocks.contains(item)) {
+                for (CustomBlock block : CustomBlocksConfig.getInstance().customBlocks) {
+                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if a custom block is an herbalism block.
+     *
+     * @param blockState The block to check
+     * @return true if the block is custom, false otherwise
+     */
+    public static boolean isCustomHerbalismBlock(BlockState blockState) {
+        if (customBlocksEnabled) {
+            ItemStack item = blockState.getData().toItemStack();
+
+            if (CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(item)) {
+                for (CustomBlock block : CustomBlocksConfig.getInstance().customBlocks) {
+                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                        return true;
+                    }
                 }
             }
         }
@@ -130,13 +195,15 @@ public final class ModChecks {
      * @param block The block to check
      * @return true if the block represents leaves, false otherwise
      */
-    public static boolean isCustomLeafBlock(Block block) {
-        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
+    public static boolean isCustomLeafBlock(BlockState blockState) {
+        if (customBlocksEnabled) {
+            ItemStack item = blockState.getData().toItemStack();
 
-        if (CustomBlocksConfig.getInstance().customLeaves.contains(item)) {
-            for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
-                if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
-                    return true;
+            if (CustomBlocksConfig.getInstance().customLeaves.contains(item)) {
+                for (CustomBlock block : CustomBlocksConfig.getInstance().customBlocks) {
+                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                        return true;
+                    }
                 }
             }
         }
@@ -150,13 +217,15 @@ public final class ModChecks {
      * @param block The block to check
      * @return true if the block represents a log, false otherwise
      */
-    public static boolean isCustomLogBlock(Block block) {
-        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
+    public static boolean isCustomLogBlock(BlockState blockState) {
+        if (customBlocksEnabled) {
+            ItemStack item = blockState.getData().toItemStack();
 
-        if (CustomBlocksConfig.getInstance().customLogs.contains(item)) {
-            for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
-                if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
-                    return true;
+            if (CustomBlocksConfig.getInstance().customLogs.contains(item)) {
+                for (CustomBlock block : CustomBlocksConfig.getInstance().customBlocks) {
+                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                        return true;
+                    }
                 }
             }
         }
@@ -167,16 +236,18 @@ public final class ModChecks {
     /**
      * Check if a custom block is an ore block.
      *
-     * @param block The block to check
+     * @param blockState The block to check
      * @return true if the block represents an ore, false otherwise
      */
-    public static boolean isCustomOreBlock(Block block) {
-        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
+    public static boolean isCustomOreBlock(BlockState blockState) {
+        if (customBlocksEnabled) {
+            ItemStack item = blockState.getData().toItemStack();
 
-        if (CustomBlocksConfig.getInstance().customOres.contains(item)) {
-            for (CustomBlock b : CustomBlocksConfig.getInstance().customBlocks) {
-                if ((b.getItemID() == block.getTypeId()) && (b.getDataValue() == block.getData())) {
-                    return true;
+            if (CustomBlocksConfig.getInstance().customOres.contains(item)) {
+                for (CustomBlock block : CustomBlocksConfig.getInstance().customBlocks) {
+                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                        return true;
+                    }
                 }
             }
         }

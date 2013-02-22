@@ -2,6 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -326,15 +327,16 @@ public class PlayerListener implements Listener {
         }
 
         Block block = event.getClickedBlock();
+        BlockState blockState = block.getState();
         ItemStack heldItem = player.getItemInHand();
 
         switch (event.getAction()) {
         case RIGHT_CLICK_BLOCK:
 
             /* ACTIVATION & ITEM CHECKS */
-            if (BlockChecks.canActivateAbilities(block)) {
+            if (BlockChecks.canActivateAbilities(blockState)) {
                 if (SkillTools.abilitiesEnabled) {
-                    if (BlockChecks.canActivateHerbalism(block)) {
+                    if (BlockChecks.canActivateHerbalism(blockState)) {
                         SkillTools.activationCheck(player, SkillType.HERBALISM);
                     }
 
@@ -350,8 +352,12 @@ public class PlayerListener implements Listener {
             }
 
             /* GREEN THUMB CHECK */
-            if (heldItem.getType() == Material.SEEDS && BlockChecks.canMakeMossy(block)) {
-                Herbalism.greenThumbBlocks(heldItem, player, block);
+            if (heldItem.getType() == Material.SEEDS && BlockChecks.canMakeMossy(blockState)) {
+                heldItem.setAmount(heldItem.getAmount() - 1);
+
+                if (Herbalism.processGreenThumbBlocks(blockState, player) && SkillTools.blockBreakSimulate(block, player, false)) {
+                    blockState.update();
+                }
             }
 
             break;

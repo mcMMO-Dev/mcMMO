@@ -426,10 +426,8 @@ public class SkillTools {
 
         switch (ability) {
         case BERSERK:
-        case GIGA_DRILL_BREAKER:
-        case SUPER_BREAKER:
         case LEAF_BLOWER:
-            if (!ability.blockCheck(block)) {
+            if (!ability.blockCheck(block.getState())) {
                 activate = false;
                 break;
             }
@@ -440,8 +438,10 @@ public class SkillTools {
             }
             break;
 
+        case GIGA_DRILL_BREAKER:
+        case SUPER_BREAKER:
         case GREEN_TERRA:
-            if (!ability.blockCheck(block)) {
+            if (!ability.blockCheck(block.getState())) {
                 activate = false;
                 break;
             }
@@ -480,7 +480,7 @@ public class SkillTools {
     }
 
     public static void handleAbilitySpeedIncrease(Player player) {
-        if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
+        if (HiddenConfig.getInstance().useEnchantmentBuffs()) { 
             ItemStack heldItem = player.getItemInHand();
 
             if (heldItem == null || heldItem.getType() == Material.AIR ) {
@@ -583,14 +583,12 @@ public class SkillTools {
      * @return true if the event wasn't cancelled, false otherwise
      */
     public static boolean blockBreakSimulate(Block block, Player player, Boolean shouldArmSwing) {
+        PluginManager pluginManger = mcMMO.p.getServer().getPluginManager();
 
         //Support for NoCheat
         if (shouldArmSwing) {
-            FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
+            pluginManger.callEvent(new FakePlayerAnimationEvent(player));
         }
-
-        PluginManager pluginManger = mcMMO.p.getServer().getPluginManager();
 
         FakeBlockDamageEvent damageEvent = new FakeBlockDamageEvent(player, block, player.getItemInHand(), true);
         pluginManger.callEvent(damageEvent);
@@ -603,5 +601,21 @@ public class SkillTools {
         }
 
         return false;
+    }
+
+    public static boolean activationSuccessful(Player player, SkillType skill, double maxChance, int maxLevel) {
+        int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(skill);
+        int activationChance = PerksUtils.handleLuckyPerks(player, skill);
+        double chance = (maxChance / maxLevel) * Math.min(skillLevel, maxLevel);
+
+        return chance > Misc.getRandom().nextInt(activationChance);
+    }
+
+    public static boolean activationSuccessful(Player player, SkillType skill, double chance) {
+        return chance > Misc.getRandom().nextInt(PerksUtils.handleLuckyPerks(player, skill));
+    }
+
+    public static boolean unlockLevelReached(Player player, SkillType skill, int unlockLevel) {
+        return Users.getPlayer(player).getProfile().getSkillLevel(skill) > unlockLevel;
     }
 }

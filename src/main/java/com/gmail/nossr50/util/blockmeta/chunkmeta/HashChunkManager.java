@@ -14,6 +14,7 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.getspout.spoutapi.chunkstore.mcMMOSimpleRegionFile;
 
@@ -318,6 +319,15 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
+    public synchronized boolean isTrue(BlockState blockState) {
+        if (blockState == null) {
+            return false;
+        }
+
+        return isTrue(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
+    }
+
+    @Override
     public synchronized void setTrue(int x, int y, int z, World world) {
         if (world == null)
             return;
@@ -353,6 +363,14 @@ public class HashChunkManager implements ChunkManager {
     }
 
     @Override
+    public void setTrue(BlockState blockState) {
+        if (blockState == null)
+            return;
+
+        setTrue(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
+    }
+
+    @Override
     public synchronized void setFalse(int x, int y, int z, World world) {
         if (world == null)
             return;
@@ -380,10 +398,20 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void setFalse(Block block) {
-        if (block == null)
+        if (block == null) {
             return;
+        }
 
         setFalse(block.getX(), block.getY(), block.getZ(), block.getWorld());
+    }
+
+    @Override
+    public synchronized void setFalse(BlockState blockState) {
+        if (blockState == null) {
+            return;
+        }
+
+        setFalse(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
     }
 
     @Override

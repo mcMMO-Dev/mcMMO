@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.mining;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
@@ -12,7 +11,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 
 public class MiningManager extends SkillManager{
     public MiningManager (McMMOPlayer mcMMOPlayer) {
@@ -101,25 +99,5 @@ public class MiningManager extends SkillManager{
 
         eventHandler.calculateRadiusIncrease();
         eventHandler.modifyBlastRadius();
-    }
-
-    /**
-     * Process Mining block drops.
-     *
-     * @param block The block being broken
-     */
-    public void miningBlockCheck(Block block) {
-        MiningBlockEventHandler eventHandler = new MiningBlockEventHandler(this, block);
-        eventHandler.processXPGain();
-
-        if (!Permissions.doubleDrops(mcMMOPlayer.getPlayer(), skill)) {
-            return;
-        }
-
-        float chance = ((float) Mining.doubleDropsMaxChance / Mining.doubleDropsMaxLevel) * eventHandler.skillModifier;
-
-        if (chance > Misc.getRandom().nextInt(activationChance)) {
-            eventHandler.processDrops();
-        }
     }
 }

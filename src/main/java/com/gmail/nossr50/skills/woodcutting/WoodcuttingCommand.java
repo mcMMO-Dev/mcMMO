@@ -29,8 +29,7 @@ public class WoodcuttingCommand extends SkillCommand {
         treeFellerLengthEndurance = treeFellerStrings[1];
 
         //DOUBLE DROPS
-        AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
-        String[] doubleDropStrings = calculateAbilityDisplayValues(advancedConfig.getWoodcuttingDoubleDropMaxLevel(), advancedConfig.getWoodcuttingDoubleDropChance());
+        String[] doubleDropStrings = calculateAbilityDisplayValues(Woodcutting.doubleDropsMaxLevel, Woodcutting.doubleDropsMaxChance);
         doubleDropChance = doubleDropStrings[0];
         doubleDropChanceLucky = doubleDropStrings[1];
     }

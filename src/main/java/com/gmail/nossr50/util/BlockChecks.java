@@ -1,30 +1,24 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.CropState;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.block.BlockState;
 import org.bukkit.material.CocoaPlant;
-import org.bukkit.material.MaterialData;
 import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.mods.ModChecks;
-import com.gmail.nossr50.mods.config.CustomBlocksConfig;
 
 public final class BlockChecks {
-    private static Config configInstance = Config.getInstance();
-
     private BlockChecks() {}
 
     /**
-     * Checks to see if a block type awards XP.
+     * Checks to see if a given block awards XP.
      *
-     * @param block Block to check
-     * @return true if the block type awards XP, false otherwise
+     * @param blockState The {@link BlockState} of the block to check
+     * @return true if the block awards XP, false otherwise
      */
-    public static boolean shouldBeWatched(Block block) {
-        switch (block.getType()) {
+    public static boolean shouldBeWatched(BlockState blockState) {
+        switch (blockState.getType()) {
         case BROWN_MUSHROOM:
         case CACTUS:
         case CLAY:
@@ -64,30 +58,18 @@ public final class BlockChecks {
             return true;
 
         default:
-            ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
-
-            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customItems.contains(item)) {
-                return true;
-            }
-
-            return false;
+            return ModChecks.getCustomBlock(blockState) != null;
         }
     }
 
     /**
-     * Check if a block should allow for the activation of abilities.
+     * Check if a given block should allow for the activation of abilities
      *
-     * @param block Block to check
+     * @param blockState The {@link BlockState} of the block to check
      * @return true if the block should allow ability activation, false otherwise
      */
-    public static boolean canActivateAbilities(Block block) {
-        ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
-
-        if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customAbilityBlocks.contains(item)) {
-            return false;
-        }
-
-        switch (block.getType()) {
+    public static boolean canActivateAbilities(BlockState blockState) {
+        switch (blockState.getType()) {
         case BED_BLOCK:
         case BREWING_STAND:
         case BOOKSHELF:
@@ -114,7 +96,13 @@ public final class BlockChecks {
             return false;
 
         default:
-            if (block.getTypeId() == Config.getInstance().getRepairAnvilId() || block.getTypeId() == Config.getInstance().getSalvageAnvilId()) {
+            int blockId = blockState.getTypeId();
+
+            if (blockId == Config.getInstance().getRepairAnvilId() || blockId == Config.getInstance().getSalvageAnvilId()) {
+                return false;
+            }
+
+            if (ModChecks.isCustomAbilityBlock(blockState)) {
                 return false;
             }
 
@@ -123,13 +111,13 @@ public final class BlockChecks {
     }
 
     /**
-     * Check if a block type is an ore.
+     * Check if a given block is an ore
      *
-     * @param block Block to check
-     * @return true if the Block is an ore, false otherwise
+     * @param blockState The {@link BlockState} of the block to check
+     * @return true if the block is an ore, false otherwise
      */
-    public static boolean isOre(Block block) {
-        switch (block.getType()) {
+    public static boolean isOre(BlockState blockState) {
+        switch (blockState.getType()) {
         case COAL_ORE:
         case DIAMOND_ORE:
         case GLOWING_REDSTONE_ORE:
@@ -141,32 +129,25 @@ public final class BlockChecks {
             return true;
 
         default:
-            if (configInstance.getBlockModsEnabled() && ModChecks.isCustomOreBlock(block)) {
-                return true;
-            }
-
-            return false;
+            return ModChecks.isCustomOreBlock(blockState);
         }
     }
 
     /**
-     * Check if a block can be made mossy.
+     * Determine if a given block can be made mossy
      *
-     * @param block The block to check
+     * @param blockState The {@link BlockState} of the block to check
      * @return true if the block can be made mossy, false otherwise
      */
-    public static boolean canMakeMossy(Block block) {
-        switch (block.getType()) {
+    public static boolean canMakeMossy(BlockState blockState) {
+        switch (blockState.getType()) {
         case COBBLESTONE:
         case DIRT:
             return true;
+
         case SMOOTH_BRICK:
         case COBBLE_WALL:
-            if (block.getData() == (byte)0x0) {
-                return true;
-            }
-
-            return false;
+            return blockState.getRawData() == (byte) 0x0;
 
         default:
             return false;
@@ -174,13 +155,13 @@ public final class BlockChecks {
     }
 
     /**
-     * Check if a block is affected by Herbalism abilities.
+     * Determine if a given block should be affected by Green Terra
      *
-     * @param block Block to check
-     * @return true if the block is affected, false otherwise
+     * @param blockState The {@link BlockState} of the block to check
+     * @return true if the block should affected by Green Terra, false otherwise
      */
-    public static boolean canBeGreenTerra(Block block) {
-        switch (block.getType()) {
+    public static boolean affectedByGreenTerra(BlockState blockState) {
+        switch (blockState.getType()) {
         case BROWN_MUSHROOM:
         case CACTUS:
         case MELON_BLOCK:
@@ -196,44 +177,27 @@ public final class BlockChecks {
         case CARROT:
         case CROPS:
         case POTATO:
-            if (block.getData() == CropState.RIPE.getData()) {
-                return true;
-            }
-            return false;
+            return blockState.getRawData() == CropState.RIPE.getData();
 
         case NETHER_WARTS:
-            if (block.getData() == (byte) 0x3) {
-                return true;
-            }
-            return false;
+            return blockState.getRawData() == (byte) 0x3;
 
         case COCOA:
-            CocoaPlant plant = (CocoaPlant) block.getState().getData();
-
-            if (plant.getSize() == CocoaPlantSize.LARGE) {
-                return true;
-            }
-            return false;
+            return ((CocoaPlant) blockState.getData()).getSize() == CocoaPlantSize.LARGE;
 
         default:
-            ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
-
-            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customHerbalismBlocks.contains(item)) {
-                return true;
-            }
-
-            return false;
+            return ModChecks.isCustomHerbalismBlock(blockState);
         }
     }
 
     /**
-     * Check to see if a block is broken by Super Breaker.
+     * Determine if a given block should be affected by Super Breaker
      *
-     * @param block Block to check
-     * @return true if the block would be broken by Super Breaker, false otherwise
+     * @param blockState The {@link BlockState} of the block to check
+     * @return true if the block should affected by Super Breaker, false otherwise
      */
-    public static Boolean canBeSuperBroken(Block block) {
-        switch (block.getType()) {
+    public static Boolean affectedBySuperBreaker(BlockState blockState) {
+        switch (blockState.getType()) {
         case COAL_ORE:
         case DIAMOND_ORE:
         case ENDER_STONE:
@@ -252,24 +216,18 @@ public final class BlockChecks {
             return true;
 
         default:
-            ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
-
-            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customMiningBlocks.contains(item)) {
-                return true;
-            }
-
-            return false;
+            return ModChecks.isCustomMiningBlock(blockState);
         }
     }
 
     /**
-     * Check to see if a block can be broken by Giga Drill Breaker.
+     * Determine if a given block should be affected by Giga Drill Breaker
      *
-     * @param block Block to check
-     * @return true if the block can be broken by Giga Drill Breaker, false otherwise
+     * @param blockState The {@link BlockState} of the block to check
+     * @return true if the block should affected by Giga Drill Breaker, false otherwise
      */
-    public static boolean canBeGigaDrillBroken(Block block) {
-        switch (block.getType()) {
+    public static boolean affectedByGigaDrillBreaker(BlockState blockState) {
+        switch (blockState.getType()) {
         case CLAY:
         case DIRT:
         case GRASS:
@@ -280,24 +238,18 @@ public final class BlockChecks {
             return true;
 
         default:
-            ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
-
-            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customExcavationBlocks.contains(item)) {
-                return true;
-            }
-
-            return false;
+            return ModChecks.isCustomExcavationBlock(blockState);
         }
     }
 
     /**
-     * Checks if the block is affected by Tree Feller.
+     * Determine if a given block should be affected by Tree Feller
      *
-     * @param block Block to check
-     * @return true if the block is affected by Tree Feller, false otherwise
+     * @param blockState The {@link BlockState} of the block to check
+     * @return true if the block should affected by Tree Feller, false otherwise
      */
-    public static boolean treeFellerCompatible(Block block) {
-        switch (block.getType()) {
+    public static boolean affectedByTreeFeller(BlockState blockState) {
+        switch (blockState.getType()) {
         case LOG:
         case LEAVES:
         case HUGE_MUSHROOM_1:
@@ -305,38 +257,52 @@ public final class BlockChecks {
             return true;
 
         default:
-            ItemStack item = (new MaterialData(block.getTypeId(), block.getData())).toItemStack(1);
-
-            if (configInstance.getBlockModsEnabled() && CustomBlocksConfig.getInstance().customWoodcuttingBlocks.contains(item)) {
-                return true;
-            }
-
-            return false;
+            return ModChecks.isCustomWoodcuttingBlock(blockState);
         }
     }
 
-    public static boolean isLog(Block block) {
-        switch (block.getType()) {
+    /**
+     * Check if a given block is a log
+     *
+     * @param blockState The {@link BlockState} of the block to check
+     * @return true if the block is a log, false otherwise
+     */
+    public static boolean isLog(BlockState blockState) {
+        switch (blockState.getType()) {
         case LOG:
         case HUGE_MUSHROOM_1:
         case HUGE_MUSHROOM_2:
             return true;
 
         default:
-            return (configInstance.getBlockModsEnabled() && ModChecks.isCustomLogBlock(block));
+            return ModChecks.isCustomLogBlock(blockState);
         }
     }
 
-    public static boolean isLeaves(Block block) {
-        if (block.getType() == Material.LEAVES || (configInstance.getBlockModsEnabled() && ModChecks.isCustomLeafBlock(block))) {
+    /**
+     * Check if a given block is a leaf
+     *
+     * @param blockState The {@link BlockState} of the block to check
+     * @return true if the block is a leaf, false otherwise
+     */
+    public static boolean isLeaves(BlockState blockState) {
+        switch (blockState.getType()) {
+        case LEAVES:
             return true;
-        }
 
-        return false;
+        default:
+            return ModChecks.isCustomLeafBlock(blockState);
+        }
     }
 
-    public static boolean canBeFluxMined(Block block) {
-        switch (block.getType()) {
+    /**
+     * Determine if a given block should be affected by Flux Mining
+     *
+     * @param blockState The {@link BlockState} of the block to check
+     * @return true if the block should affected by Flux Mining, false otherwise
+     */
+    public static boolean affectedByFluxMining(BlockState blockState) {
+        switch (blockState.getType()) {
         case IRON_ORE:
         case GOLD_ORE:
             return true;
@@ -346,8 +312,14 @@ public final class BlockChecks {
         }
     }
 
-    public static boolean canActivateHerbalism(Block block) {
-        switch (block.getType()) {
+    /**
+     * Determine if a given block can activate Herbalism abilities
+     *
+     * @param blockState The {@link BlockState} of the block to check
+     * @return true if the block can be made mossy, false otherwise
+     */
+    public static boolean canActivateHerbalism(BlockState blockState) {
+        switch (blockState.getType()) {
         case DIRT:
         case GRASS:
         case SOIL:
@@ -358,13 +330,16 @@ public final class BlockChecks {
         }
     }
 
-    public static boolean canBeCracked(Block block) {
-        switch(block.getType()) {
+    /**
+     * Determine if a given block should be affected by Block Cracker
+     *
+     * @param blockState The {@link BlockState} of the block to check
+     * @return true if the block should affected by Block Cracker, false otherwise
+     */
+    public static boolean affectedByBlockCracker(BlockState blockState) {
+        switch (blockState.getType()) {
             case SMOOTH_BRICK:
-                if (block.getData() == 0x0) {
-                    return true;
-                }
-                return false;
+                return blockState.getRawData() == (byte) 0x0;
 
             default:
                 return false;
