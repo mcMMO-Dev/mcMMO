@@ -131,7 +131,7 @@ public class EntityListener implements Listener {
         if (defender instanceof LivingEntity) {
             LivingEntity livingDefender = (LivingEntity) defender;
 
-            if (!CombatTools.isInvincible(livingDefender, event)) {
+            if (!CombatTools.isInvincible(livingDefender, event.getDamage())) {
                 CombatTools.combatChecks(event, attacker, livingDefender);
             }
         }
@@ -160,6 +160,7 @@ public class EntityListener implements Listener {
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
 
+            // TODO: Is it even possible for the player to be off-line here?
             if (!player.isOnline() || Misc.isNPCEntity(player)) {
                 return;
             }
@@ -173,7 +174,7 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            if (!CombatTools.isInvincible(player, event)) {
+            if (!CombatTools.isInvincible(player, event.getDamage())) {
                 if (cause == DamageCause.FALL && player.getItemInHand().getType() != Material.ENDER_PEARL && !(Acrobatics.afkLevelingDisabled && player.isInsideVehicle()) && Permissions.roll(player)) {
                     AcrobaticsManager acrobaticsManager = new AcrobaticsManager(mcMMOPlayer);
                     acrobaticsManager.rollCheck(event);
@@ -192,7 +193,7 @@ public class EntityListener implements Listener {
             Tameable pet = (Tameable) livingEntity;
             AnimalTamer owner = pet.getOwner();
 
-            if ((!CombatTools.isInvincible(livingEntity, event)) && pet.isTamed() && owner instanceof Player && pet instanceof Wolf) {
+            if ((!CombatTools.isInvincible(livingEntity, event.getDamage())) && pet.isTamed() && owner instanceof Player && pet instanceof Wolf) {
                 TamingManager tamingManager = new TamingManager(Users.getPlayer((Player) owner));
                 tamingManager.preventDamage(event);
             }

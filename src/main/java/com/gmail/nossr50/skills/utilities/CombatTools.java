@@ -572,17 +572,17 @@ public final class CombatTools {
     /**
      * Checks to see if an entity is currently invincible.
      *
-     * @param le The LivingEntity to check
-     * @param event The event the entity is involved in
+     * @param entity The {@link LivingEntity} to check
+     * @param eventDamage The damage from the event the entity is involved in
      * @return true if the entity is invincible, false otherwise
      */
-    public static boolean isInvincible(LivingEntity le, EntityDamageEvent event) {
+    public static boolean isInvincible(LivingEntity entity, int eventDamage) {
 
         /*
          * So apparently if you do more damage to a LivingEntity than its last damage int you bypass the invincibility.
          * So yeah, this is for that.
          */
-        if (le.getNoDamageTicks() > le.getMaximumNoDamageTicks() / 2.0F && event.getDamage() <= le.getLastDamage()) {
+        if ((entity.getNoDamageTicks() > entity.getMaximumNoDamageTicks() / 2.0F) && (eventDamage <= entity.getLastDamage())) {
             return true;
         }
 
