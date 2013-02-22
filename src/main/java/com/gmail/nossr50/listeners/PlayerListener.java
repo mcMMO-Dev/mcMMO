@@ -326,17 +326,12 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        Block block = event.getClickedBlock();
-        BlockState blockState = null;
-
-        if (block != null) {
-            blockState = block.getState();
-        }
-
         ItemStack heldItem = player.getItemInHand();
 
         switch (event.getAction()) {
         case RIGHT_CLICK_BLOCK:
+            Block block = event.getClickedBlock();
+            BlockState blockState = block.getState();
 
             /* ACTIVATION & ITEM CHECKS */
             if (BlockChecks.canActivateAbilities(blockState)) {
