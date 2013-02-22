@@ -22,6 +22,8 @@ public class MetricsManager {
     private static Tracker chimeraUseTracker;
     private static Tracker chimeraServerUseTracker;
 
+    private static boolean customConfig = false;
+
     private static DataTracker tracker;
     private static EMetrics emetrics;
 
@@ -220,6 +222,26 @@ public class MetricsManager {
                     });
                 }
 
+                // Vanilla v Modified config graph
+                Graph customConfigGraph = metrics.createGraph("Modified Configs");
+
+                if (customConfig) {
+                    customConfigGraph.addPlotter(new Metrics.Plotter("Edited") {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    });
+                }
+                else {
+                    customConfigGraph.addPlotter(new Metrics.Plotter("Vanilla") {
+                        @Override
+                        public int getValue() {
+                            return 1;
+                        }
+                    });
+                }
+
                 /* Debug stuff
                 tracker = emetrics.getDataTracker();
                 tracker.enable();
@@ -237,6 +259,10 @@ public class MetricsManager {
     public static void chimeraWingUsed() {
         chimeraUseTracker.increment();
         chimeraServerUseTracker.increment();
+    }
+
+    public static void customConfig() {
+        customConfig = true;
     }
 
     @SuppressWarnings("unused")

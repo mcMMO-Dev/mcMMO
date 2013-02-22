@@ -16,6 +16,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.metrics.MetricsManager;
 
 public abstract class ConfigLoader {
     protected static final mcMMO plugin = mcMMO.p;
@@ -127,6 +128,14 @@ public abstract class ConfigLoader {
             }
             catch (Exception e) {
                 e.printStackTrace();
+            }
+        }
+        else {
+            for (String key : configKeys) {
+                if (!config.isConfigurationSection(key) && !config.get(key).equals(internalConfig.get(key))) {
+                    MetricsManager.customConfig();
+                    break;
+                }
             }
         }
     }
