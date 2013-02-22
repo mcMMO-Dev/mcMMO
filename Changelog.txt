@@ -38,6 +38,7 @@ Version 1.4.00-dev
  + Added '/mcnotify' command to toggle ability notifications on/off
  + Added ability for config files to automatically update with new keys, and prune out old ones
  + Added config option to make .new config files instead over writing over old ones when updating
+ + Added "Holy Hound" ability to Taming
  = Fixed Green Thumb on wheat not working properly at rank 4
  = Fixed Green Thumb and Green Terra consuming twice the amount of seed needed
  = Fixed Green Terra not also checking Green Thumb permissions

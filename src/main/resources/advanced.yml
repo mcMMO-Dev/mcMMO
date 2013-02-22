@@ -290,6 +290,9 @@ Skills:
         ThickFur_UnlockLevel: 250
         ThickFur_Modifier: 2
 
+        # HolyHound_UnlockLevel: Level when HolyHound unlocks
+        HolyHound_UnlockLevel: 375
+
         # ShockProof_UnlockLevel: Level when ShockProof unlocks
         # ShockProof_Modifier: Damage will get divided by this modifier
         ShockProof_UnlockLevel: 500

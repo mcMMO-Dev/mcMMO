@@ -197,6 +197,8 @@ public class AdvancedConfig extends ConfigLoader {
     public int getThickFurUnlock() { return config.getInt("Skills.Taming.ThickFur_UnlockLevel", 250); }
     public int getThickFurModifier() { return config.getInt("Skills.Taming.ThickFur_Modifier", 2); }
 
+    public int getHolyHoundUnlock() {return config.getInt("Skills.Taming.HolyHound_UnlockLevel", 375); }
+
     public int getShockProofUnlock() { return config.getInt("Skills.Taming.ShockProof_UnlockLevel", 500); }
     public int getShockProofModifier() { return config.getInt("Skills.Taming.ShockProof_Modifier", 6); }
 

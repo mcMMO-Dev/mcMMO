@@ -508,6 +508,7 @@ permissions:
             mcmmo.ability.taming.environmentallyaware: true
             mcmmo.ability.taming.fastfoodservice: true
             mcmmo.ability.taming.gore: true
+            mcmmo.ability.taming.holyhound: true
             mcmmo.ability.taming.sharpenedclaws: true
             mcmmo.ability.taming.shockproof: true
             mcmmo.ability.taming.thickfur: true
@@ -521,6 +522,8 @@ permissions:
         description: Allows access to the Fast Food Service ability
     mcmmo.ability.taming.gore:
         description: Allows access to the Gore ability
+    mcmmo.ability.taming.holyhound:
+        description: Allows access to the Holy Hound ability
     mcmmo.ability.taming.sharpenedclaws:
         description: Allows access to the Sharpened Claws ability
     mcmmo.ability.taming.shockproof:

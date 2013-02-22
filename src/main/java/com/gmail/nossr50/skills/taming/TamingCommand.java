@@ -18,6 +18,7 @@ public class TamingCommand extends SkillCommand {
     private boolean canShockProof;
     private boolean canCallWild;
     private boolean canFastFood;
+    private boolean canHolyHound;
 
     public TamingCommand() {
         super(SkillType.TAMING);
@@ -40,11 +41,12 @@ public class TamingCommand extends SkillCommand {
         canSharpenedClaws = Permissions.sharpenedClaws(player);
         canShockProof = Permissions.shockProof(player);
         canThickFur = Permissions.thickFur(player);
+        canHolyHound = Permissions.holyHound(player);
     }
 
     @Override
     protected boolean effectsHeaderPermissions() {
-        return canBeastLore || canCallWild || canEnvironmentallyAware || canFastFood || canGore || canSharpenedClaws || canShockProof || canThickFur;
+        return canBeastLore || canCallWild || canEnvironmentallyAware || canFastFood || canGore || canSharpenedClaws || canShockProof || canThickFur || canHolyHound;
     }
 
     @Override
@@ -79,6 +81,10 @@ public class TamingCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.16"), LocaleLoader.getString("Taming.Effect.17")));
         }
 
+        if (canHolyHound) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.18"), LocaleLoader.getString("Taming.Effect.19")));
+        }
+
         if (canCallWild) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.12"), LocaleLoader.getString("Taming.Effect.13")));
             player.sendMessage(LocaleLoader.getString("Taming.Effect.14", Config.getInstance().getTamingCOTWOcelotCost()));
@@ -88,7 +94,7 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected boolean statsHeaderPermissions() {
-        return canEnvironmentallyAware || canFastFood || canGore || canSharpenedClaws || canShockProof || canThickFur;
+        return canEnvironmentallyAware || canFastFood || canGore || canSharpenedClaws || canShockProof || canThickFur || canHolyHound;
     }
 
     @Override
@@ -117,6 +123,15 @@ public class TamingCommand extends SkillCommand {
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.2"), LocaleLoader.getString("Taming.Ability.Bonus.3", Taming.thickFurModifier)));
+            }
+        }
+
+        if (canHolyHound) {
+            if (skillValue < Taming.holyHoundUnlockLevel) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Taming.Ability.Locked.5", Taming.holyHoundUnlockLevel)));
+            }
+            else {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Taming.Ability.Bonus.10"), LocaleLoader.getString("Taming.Ability.Bonus.11")));
             }
         }
 

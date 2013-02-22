@@ -187,6 +187,7 @@ public final class Permissions {
     public static boolean environmentallyAware(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.environmentallyaware"); }
     public static boolean fastFoodService(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.fastfoodservice"); }
     public static boolean gore(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.gore"); }
+    public static boolean holyHound(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.holyhound"); }
     public static boolean thickFur(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.thickfur"); }
     public static boolean sharpenedClaws(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.sharpenedclaws"); }
     public static boolean shockProof(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.shockproof"); }

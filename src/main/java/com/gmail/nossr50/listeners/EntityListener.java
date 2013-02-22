@@ -219,8 +219,8 @@ public class EntityListener implements Listener {
 
                 switch (cause) {
                 case CONTACT:
-                case LAVA:
                 case FIRE:
+                case LAVA:
                     if (Taming.canUseEnvironmentallyAware(player)) {
                         Taming.processEnvironmentallyAware(player, wolf, event.getDamage());
                     }
@@ -235,7 +235,7 @@ public class EntityListener implements Listener {
                 case ENTITY_ATTACK:
                 case PROJECTILE:
                     if (Taming.canUseThickFur(player)) {
-                        event.setDamage(Taming.processThickFur(event.getDamage()));
+                        event.setDamage(Taming.processThickFur(wolf, event.getDamage()));
 
                         if (event.getDamage() == 0) {
                             event.setCancelled(true);
@@ -245,7 +245,15 @@ public class EntityListener implements Listener {
 
                 case FIRE_TICK:
                     if (Taming.canUseThickFur(player)) {
-                        wolf.setFireTicks(0);
+                        Taming.processThickFurFire(wolf);
+                    }
+                    return;
+
+                case MAGIC:
+                case POISON:
+                case WITHER:
+                    if (Taming.canUseHolyHound(player)) {
+                        Taming.processHolyHound(wolf, event.getDamage());
                     }
                     return;
 
@@ -253,7 +261,7 @@ public class EntityListener implements Listener {
                 case ENTITY_EXPLOSION:
                 case LIGHTNING:
                     if (Taming.canUseShockProof(player)) {
-                        event.setDamage(Taming.processShockProof(event.getDamage()));
+                        event.setDamage(Taming.processShockProof(wolf, event.getDamage()));
 
                         if (event.getDamage() == 0) {
                             event.setCancelled(true);

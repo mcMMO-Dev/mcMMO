@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.taming;
 
+import org.bukkit.EntityEffect;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
@@ -14,6 +15,7 @@ import com.gmail.nossr50.util.Permissions;
 
 public class Taming {
     public static int environmentallyAwareUnlockLevel = AdvancedConfig.getInstance().getEnviromentallyAwareUnlock();
+    public static int holyHoundUnlockLevel = AdvancedConfig.getInstance().getHolyHoundUnlock();
 
     public static double fastFoodServiceActivationChance = AdvancedConfig.getInstance().getFastFoodChance();
     public static int fastFoodServiceUnlockLevel = AdvancedConfig.getInstance().getFastFoodUnlock();
@@ -51,8 +53,18 @@ public class Taming {
         return SkillTools.unlockLevelReached(player, SkillType.TAMING, shockProofUnlockLevel) && Permissions.shockProof(player);
     }
 
-    public static int processThickFur(int damage) {
+    public static boolean canUseHolyHound(Player player) {
+        return SkillTools.unlockLevelReached(player, SkillType.TAMING, holyHoundUnlockLevel) && Permissions.holyHound(player);
+    }
+
+    public static int processThickFur(Wolf wolf, int damage) {
+        wolf.playEffect(EntityEffect.WOLF_SHAKE);
         return damage / thickFurModifier;
+    }
+
+    public static void processThickFurFire(Wolf wolf) {
+        wolf.playEffect(EntityEffect.WOLF_SMOKE);
+        wolf.setFireTicks(0);
     }
 
     public static void processEnvironmentallyAware(Player player, Wolf wolf, int damage) {
@@ -64,8 +76,15 @@ public class Taming {
         player.sendMessage(LocaleLoader.getString("Taming.Listener.Wolf"));
     }
 
-    public static int processShockProof(int damage) {
+    public static int processShockProof(Wolf wolf, int damage) {
+        wolf.playEffect(EntityEffect.WOLF_SHAKE);
         return damage / shockProofModifier;
     }
 
+    public static void processHolyHound(Wolf wolf, int damage) {
+        int modifiedHealth = Math.min(wolf.getHealth() + damage, wolf.getMaxHealth());
+
+        wolf.setHealth(modifiedHealth);
+        wolf.playEffect(EntityEffect.WOLF_HEARTS);
+    }
 }
