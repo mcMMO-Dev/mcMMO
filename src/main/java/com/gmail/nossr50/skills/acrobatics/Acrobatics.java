@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.acrobatics;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -32,6 +33,10 @@ public final class Acrobatics {
     public static boolean dodgeLightningDisabled = Config.getInstance().getDodgeLightningDisabled();
 
     private Acrobatics() {};
+
+    public static boolean canRoll(Player player) {
+        return (player.getItemInHand().getType() != Material.ENDER_PEARL) && !(afkLevelingDisabled && player.isInsideVehicle()) && Permissions.roll(player);
+    }
 
     public static int processRoll(Player player, int damage) {
         if (player.isSneaking() && Permissions.gracefulRoll(player)) {

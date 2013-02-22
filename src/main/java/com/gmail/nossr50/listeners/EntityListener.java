@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
@@ -37,8 +36,10 @@ import com.gmail.nossr50.skills.acrobatics.Acrobatics;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
+import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
+import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.utilities.CombatTools;
 import com.gmail.nossr50.util.Misc;
@@ -156,6 +157,10 @@ public class EntityListener implements Listener {
         DamageCause cause = event.getCause();
         LivingEntity livingEntity = (LivingEntity) entity;
 
+        if (CombatTools.isInvincible(livingEntity, event.getDamage())) {
+            return;
+        }
+
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
 
@@ -173,31 +178,92 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            if (!CombatTools.isInvincible(player, event.getDamage())) {
-                if (cause == DamageCause.FALL && player.getItemInHand().getType() != Material.ENDER_PEARL && !(Acrobatics.afkLevelingDisabled && player.isInsideVehicle()) && Permissions.roll(player)) {
+            switch (cause) {
+            case FALL:
+                if (Acrobatics.canRoll(player)) {
                     event.setDamage(Acrobatics.processRoll(player, event.getDamage()));
 
                     if (event.getDamage() == 0) {
                         event.setCancelled(true);
+                        return;
                     }
                 }
-                else if (cause == DamageCause.BLOCK_EXPLOSION && Permissions.demolitionsExpertise(player)) {
-                    MiningManager miningManager = new MiningManager(mcMMOPlayer);
-                    miningManager.demolitionsExpertise(event);
-                }
+                break;
 
-                if (event.getDamage() >= 1) {
-                    profile.actualizeRecentlyHurt();
+            case BLOCK_EXPLOSION:
+                if (Permissions.demolitionsExpertise(player)) {
+                    event.setDamage(BlastMining.processDemolitionsExpertise(player, event.getDamage()));
+
+                    if (event.getDamage() == 0) {
+                        event.setCancelled(true);
+                        return;
+                    }
                 }
+                break;
+
+            default:
+                break;
+            }
+
+            if (event.getDamage() >= 1) {
+                profile.actualizeRecentlyHurt();
             }
         }
         else if (livingEntity instanceof Tameable) {
             Tameable pet = (Tameable) livingEntity;
             AnimalTamer owner = pet.getOwner();
 
-            if ((!CombatTools.isInvincible(livingEntity, event.getDamage())) && pet.isTamed() && owner instanceof Player && pet instanceof Wolf) {
-                TamingManager tamingManager = new TamingManager(Users.getPlayer((Player) owner));
-                tamingManager.preventDamage(event);
+            if (Taming.canPreventDamage(pet, owner)) {
+                Player player = (Player) owner;
+                Wolf wolf = (Wolf) pet;
+
+                switch (cause) {
+                case CONTACT:
+                case LAVA:
+                case FIRE:
+                    if (Taming.canUseEnvironmentallyAware(player)) {
+                        Taming.processEnvironmentallyAware(player, wolf, event.getDamage());
+                    }
+                    return;
+
+                case FALL:
+                    if (Taming.canUseEnvironmentallyAware(player)) {
+                        event.setCancelled(true);
+                    }
+                    return;
+
+                case ENTITY_ATTACK:
+                case PROJECTILE:
+                    if (Taming.canUseThickFur(player)) {
+                        event.setDamage(Taming.processThickFur(event.getDamage()));
+
+                        if (event.getDamage() == 0) {
+                            event.setCancelled(true);
+                        }
+                    }
+                    return;
+
+                case FIRE_TICK:
+                    if (Taming.canUseThickFur(player)) {
+                        wolf.setFireTicks(0);
+                    }
+                    return;
+
+                case BLOCK_EXPLOSION:
+                case ENTITY_EXPLOSION:
+                case LIGHTNING:
+                    if (Taming.canUseShockProof(player)) {
+                        event.setDamage(Taming.processShockProof(event.getDamage()));
+
+                        if (event.getDamage() == 0) {
+                            event.setCancelled(true);
+                        }
+                    }
+                    return;
+
+                default:
+                    return;
+                }
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.mining;
 
 import org.bukkit.Material;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -71,18 +70,6 @@ public class MiningManager extends SkillManager{
         eventHandler.processDroppedBlocks();
 
         eventHandler.processXPGain();
-    }
-
-    /**
-     * Decreases damage dealt by the explosion from TNT activated by Blast Mining.
-     *
-     * @param event Event whose explosion damage is being reduced
-     */
-    public void demolitionsExpertise(EntityDamageEvent event) {
-        DemoltionsExpertiseEventHandler eventHandler = new DemoltionsExpertiseEventHandler(this, event);
-
-        eventHandler.calculateDamageModifier();
-        eventHandler.modifyEventDamage();
     }
 
     /**

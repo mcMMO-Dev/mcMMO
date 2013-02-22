@@ -1,7 +1,16 @@
 package com.gmail.nossr50.skills.taming;
 
+import org.bukkit.entity.AnimalTamer;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
+import org.bukkit.entity.Wolf;
+
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.Permissions;
 
 public class Taming {
     public static int environmentallyAwareUnlockLevel = AdvancedConfig.getInstance().getEnviromentallyAwareUnlock();
@@ -25,4 +34,38 @@ public class Taming {
 
     public static int wolfXp = Config.getInstance().getTamingXPWolf();
     public static int ocelotXp = Config.getInstance().getTamingXPOcelot();
+
+    public static boolean canPreventDamage(Tameable pet, AnimalTamer owner) {
+        return pet.isTamed() && owner instanceof Player && pet instanceof Wolf;
+    }
+
+    public static boolean canUseThickFur(Player player) {
+        return SkillTools.unlockLevelReached(player, SkillType.TAMING, thickFurUnlockLevel) && Permissions.thickFur(player);
+    }
+
+    public static boolean canUseEnvironmentallyAware(Player player) {
+        return SkillTools.unlockLevelReached(player, SkillType.TAMING, environmentallyAwareUnlockLevel) && Permissions.environmentallyAware(player);
+    }
+
+    public static boolean canUseShockProof(Player player) {
+        return SkillTools.unlockLevelReached(player, SkillType.TAMING, shockProofUnlockLevel) && Permissions.shockProof(player);
+    }
+
+    public static int processThickFur(int damage) {
+        return damage / thickFurModifier;
+    }
+
+    public static void processEnvironmentallyAware(Player player, Wolf wolf, int damage) {
+        if (damage > wolf.getHealth()) {
+            return;
+        }
+
+        wolf.teleport(player);
+        player.sendMessage(LocaleLoader.getString("Taming.Listener.Wolf"));
+    }
+
+    public static int processShockProof(int damage) {
+        return damage / shockProofModifier;
+    }
+
 }

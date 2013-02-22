@@ -4,7 +4,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -91,39 +90,6 @@ public class TamingManager extends SkillManager {
     }
 
     /**
-     * Prevent damage to wolves based on various skills.
-     *
-     * @param event The event to modify
-     */
-    public void preventDamage(EntityDamageEvent event) {
-        DamageCause cause = event.getCause();
-
-        switch (cause) {
-        case CONTACT:
-        case LAVA:
-        case FIRE:
-        case FALL:
-            environmentallyAware(event, cause);
-            break;
-
-        case ENTITY_ATTACK:
-        case FIRE_TICK:
-        case PROJECTILE:
-            thickFur(event, cause);
-            break;
-
-        case BLOCK_EXPLOSION:
-        case ENTITY_EXPLOSION:
-        case LIGHTNING:
-            shockProof(event);
-            break;
-
-        default:
-            break;
-        }
-    }
-
-    /**
      * Summon an ocelot to your side.
      */
     public void summonOcelot() {
@@ -175,59 +141,6 @@ public class TamingManager extends SkillManager {
             eventHandler.spawnCreature();
             eventHandler.processResourceCost();
             eventHandler.sendSuccessMessage();
-        }
-    }
-
-    /**
-     * Handle the Environmentally Aware ability.
-     *
-     * @param event The event to modify
-     * @param cause The damage cause of the event
-     */
-    private void environmentallyAware(EntityDamageEvent event, DamageCause cause) {
-        if (skillLevel >= Taming.environmentallyAwareUnlockLevel && Permissions.environmentallyAware(mcMMOPlayer.getPlayer())) {
-            EnvironmentallyAwareEventHandler eventHandler = new EnvironmentallyAwareEventHandler(this, event);
-
-            switch (cause) {
-            case CONTACT:
-            case FIRE:
-            case LAVA:
-                eventHandler.teleportWolf();
-                eventHandler.sendAbilityMessage();
-                break;
-
-            case FALL:
-                eventHandler.cancelEvent();
-                break;
-
-            default:
-                break;
-            }
-        }
-    }
-
-    /**
-     * Handle the Thick Fur ability.
-     *
-     * @param event The event to modify
-     * @param cause The damage cause of the event
-     */
-    private void thickFur(EntityDamageEvent event, DamageCause cause) {
-        if (skillLevel >= Taming.thickFurUnlockLevel && Permissions.thickFur(mcMMOPlayer.getPlayer())) {
-            ThickFurEventHandler eventHandler = new ThickFurEventHandler(event, cause);
-            eventHandler.modifyEventDamage();
-        }
-    }
-
-    /**
-     * Handle the Shock Proof ability.
-     *
-     * @param event The event to modify
-     */
-    private void shockProof(EntityDamageEvent event) {
-        if (skillLevel >= Taming.shockProofUnlockLevel && Permissions.shockProof(mcMMOPlayer.getPlayer())) {
-            ShockProofEventHandler eventHandler = new ShockProofEventHandler(event);
-            eventHandler.modifyEventDamage();
         }
     }
 }
