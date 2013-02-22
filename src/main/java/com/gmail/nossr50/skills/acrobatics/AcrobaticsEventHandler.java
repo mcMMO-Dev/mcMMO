@@ -3,8 +3,6 @@ package com.gmail.nossr50.skills.acrobatics;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 
-import com.gmail.nossr50.util.Misc;
-
 public abstract class AcrobaticsEventHandler {
     protected AcrobaticsManager manager;
 
@@ -53,7 +51,7 @@ public abstract class AcrobaticsEventHandler {
     protected boolean isFatal(int damage) {
         Player player = manager.getMcMMOPlayer().getPlayer();
 
-        if (Misc.isNPCEntity(player) || player.getHealth() - damage < 1) {
+        if (player.getHealth() - damage < 1) {
             return true;
         }
 
