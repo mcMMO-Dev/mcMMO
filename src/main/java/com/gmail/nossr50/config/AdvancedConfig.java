@@ -20,6 +20,7 @@ public class AdvancedConfig extends ConfigLoader {
     protected void loadKeys() {
         // TODO Do we need to use this?
     }
+
     /* GENERAL */
     public int getAbilityLength() { return config.getInt("Skills.General.Ability_IncreaseLevel", 50); }
 
@@ -29,9 +30,12 @@ public class AdvancedConfig extends ConfigLoader {
 
     public double getRollChanceMax() { return config.getDouble("Skills.Acrobatics.Roll_ChanceMax", 100.0D); }
     public int getRollMaxBonusLevel() { return config.getInt("Skills.Acrobatics.Roll_MaxBonusLevel", 1000); }
+    public int getRollDamageThreshold() { return config.getInt("Skills.Acrobatics.Roll_DamageThreshold", 7); }
 
     public double getGracefulRollChanceMax() { return config.getDouble("Skills.Acrobatics.GracefulRoll_ChanceMax", 100.0D); }
     public int getGracefulRollMaxBonusLevel() { return config.getInt("Skills.Acrobatics.GracefulRoll_MaxBonusLevel", 500); }
+    public int getGracefulRollDamageThreshold() { return config.getInt("Skills.Acrobatics.GracefulRoll_DamageThreshold", 14); }
+    public int getGracefulRollSuccessModifer() { return config.getInt("Skills.Acrobatics.GracefulRoll_SuccessModifier", 2); }
 
     public int getDodgeXPModifier() { return config.getInt("Skills.Acrobatics.Dodge_XP_Modifier", 120); }
     public int getRollXPModifier() { return config.getInt("Skills.Acrobatics.Roll_XP_Modifier", 80); }

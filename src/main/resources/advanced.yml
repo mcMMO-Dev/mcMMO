@@ -27,13 +27,19 @@ Skills:
 
         # Roll_ChanceMax: Maximum chance of rolling when on Roll_MaxBonusLevel or higher
         # Roll_MaxBonusLevel: On this level or higher, the roll chance will not go higher than Roll_ChanceMax
+        # Roll_DamageThreshold: The max damage a player can negate with a roll
         Roll_ChanceMax: 100.0
         Roll_MaxBonusLevel: 1000
+        Roll_DamageThreshold: 7
 
         # GracefulRoll_ChanceMax: Maximum chance of graceful rolling when on GracefulRoll_MaxBonusLevel or higher
         # GracefulRoll_MaxBonusLevel: On this level or higher, the graceful roll chance will not go higher than GracefulRoll_ChanceMax
+        # GracefulRoll_DamageThreshold: The max damage a player can negate with a graceful roll
+        # GracefulRoll_SuccessModifier: Graceful rolls will be this many times more likely to succeed than regular rolls
         GracefulRoll_ChanceMax: 100.0
         GracefulRoll_MaxBonusLevel: 500
+        GracefulRoll_DamageThreshold: 14
+        GracefulRoll_SuccessModifier: 2
 
         # Amount of experience for performing a dodge, roll or fall
         Dodge_XP_Modifier: 120

@@ -13,33 +13,6 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     /**
-     * Check for fall damage reduction.
-     *
-     * @param event The event to check
-     */
-    public void rollCheck(EntityDamageEvent event) {
-        RollEventHandler eventHandler = new RollEventHandler(this, event);
-
-        double chance;
-
-        if (eventHandler.isGraceful) {
-            chance = (Acrobatics.gracefulRollMaxChance / Acrobatics.gracefulRollMaxBonusLevel) * eventHandler.skillModifier;
-        }
-        else {
-            chance = (Acrobatics.rollMaxChance / Acrobatics.rollMaxBonusLevel) * eventHandler.skillModifier;
-        }
-
-        if (chance > Misc.getRandom().nextInt(activationChance) && !eventHandler.isFatal(eventHandler.modifiedDamage)) {
-            eventHandler.modifyEventDamage();
-            eventHandler.sendAbilityMessage();
-            eventHandler.processXpGain(eventHandler.damage * Acrobatics.rollXpModifier);
-        }
-        else if (!eventHandler.isFatal(event.getDamage())) {
-            eventHandler.processXpGain(eventHandler.damage * Acrobatics.fallXpModifier);
-        }
-    }
-
-    /**
      * Check for dodge damage reduction.
      *
      * @param event The event to check

@@ -34,7 +34,6 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.acrobatics.Acrobatics;
-import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
@@ -176,8 +175,11 @@ public class EntityListener implements Listener {
 
             if (!CombatTools.isInvincible(player, event.getDamage())) {
                 if (cause == DamageCause.FALL && player.getItemInHand().getType() != Material.ENDER_PEARL && !(Acrobatics.afkLevelingDisabled && player.isInsideVehicle()) && Permissions.roll(player)) {
-                    AcrobaticsManager acrobaticsManager = new AcrobaticsManager(mcMMOPlayer);
-                    acrobaticsManager.rollCheck(event);
+                    event.setDamage(Acrobatics.processRoll(player, event.getDamage()));
+
+                    if (event.getDamage() == 0) {
+                        event.setCancelled(true);
+                    }
                 }
                 else if (cause == DamageCause.BLOCK_EXPLOSION && Permissions.demolitionsExpertise(player)) {
                     MiningManager miningManager = new MiningManager(mcMMOPlayer);
