@@ -58,8 +58,9 @@ public final class CombatTools {
     public static void combatChecks(EntityDamageByEntityEvent event, Entity attacker, LivingEntity target) {
         boolean targetIsPlayer = (target.getType() == EntityType.PLAYER);
         boolean targetIsTamedPet = (target instanceof Tameable) ? ((Tameable) target).isTamed() : false;
+        Entity damager = event.getDamager();
 
-        if (attacker instanceof Player) {
+        if (attacker instanceof Player && damager.getType() == EntityType.PLAYER) {
             Player player = (Player) attacker;
 
             if (Misc.isNPCEntity(player)) {
@@ -72,9 +73,8 @@ public final class CombatTools {
 
             ItemStack heldItem = player.getItemInHand();
             Material heldItemType = heldItem.getType();
-            DamageCause damageCause = event.getCause();
 
-            if (ItemChecks.isSword(heldItem) && damageCause == DamageCause.ENTITY_ATTACK) {
+            if (ItemChecks.isSword(heldItem)) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!SkillType.SWORDS.getPVPEnabled()) {
                         return;
@@ -105,7 +105,7 @@ public final class CombatTools {
                     startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
                 }
             }
-            else if (ItemChecks.isAxe(heldItem) && damageCause == DamageCause.ENTITY_ATTACK) {
+            else if (ItemChecks.isAxe(heldItem)) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!SkillType.AXES.getPVPEnabled()) {
                         return;
@@ -143,7 +143,7 @@ public final class CombatTools {
                     startGainXp(mcMMOPlayer, target, SkillType.AXES);
                 }
             }
-            else if (heldItemType == Material.AIR && damageCause == DamageCause.ENTITY_ATTACK) {
+            else if (heldItemType == Material.AIR) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!SkillType.UNARMED.getPVPEnabled()) {
                         return;
@@ -178,14 +178,12 @@ public final class CombatTools {
                     startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
                 }
             }
-            else if (heldItemType == Material.BONE && target instanceof Tameable && Permissions.beastLore(player) && damageCause == DamageCause.ENTITY_ATTACK) {
+            else if (heldItemType == Material.BONE && target instanceof Tameable && Permissions.beastLore(player)) {
                 TamingManager tamingManager = new TamingManager(Users.getPlayer(player));
                 tamingManager.beastLore(target);
                 event.setCancelled(true);
             }
         }
-
-        Entity damager = event.getDamager();
 
         switch (damager.getType()) {
         case WOLF:
