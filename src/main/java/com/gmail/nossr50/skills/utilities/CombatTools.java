@@ -46,8 +46,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public final class CombatTools {
-    private static Config configInstance = Config.getInstance();
-
     private CombatTools() {}
 
     /**
@@ -342,7 +340,7 @@ public final class CombatTools {
      * @param cause DamageCause to pass to damage event
      */
     private static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
-        if (configInstance.getEventCallbackEnabled()) {
+        if (Config.getInstance().getEventCallbackEnabled()) {
             EntityDamageEvent ede = new FakeEntityDamageEvent(target, cause, dmg);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
@@ -365,7 +363,7 @@ public final class CombatTools {
      * @param attacker Player to pass to event as damager
      */
     private static void dealDamage(LivingEntity target, int dmg, Player attacker) {
-        if (configInstance.getEventCallbackEnabled()) {
+        if (Config.getInstance().getEventCallbackEnabled()) {
             EntityDamageEvent ede = new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
@@ -445,14 +443,14 @@ public final class CombatTools {
         double baseXP = 0;
 
         if (target instanceof Player) {
-            if (!configInstance.getExperienceGainsPlayerVersusPlayerEnabled()) {
+            if (!Config.getInstance().getExperienceGainsPlayerVersusPlayerEnabled()) {
                 return;
             }
 
             Player defender = (Player) target;
 
             if (System.currentTimeMillis() >= Users.getPlayer(defender).getProfile().getRespawnATS() + 5) {
-                baseXP = 20 * configInstance.getPlayerVersusPlayerXP();
+                baseXP = 20 * Config.getInstance().getPlayerVersusPlayerXP();
             }
         }
         else if (!target.hasMetadata(mcMMO.entityMetadataKey)) {
@@ -461,7 +459,7 @@ public final class CombatTools {
                     baseXP = ModChecks.getCustomEntity(target).getXpMultiplier();
                 }
                 else {
-                    baseXP = configInstance.getAnimalsXP();
+                    baseXP = Config.getInstance().getAnimalsXP();
                 }
             }
             else {
@@ -469,7 +467,7 @@ public final class CombatTools {
 
                 switch (type) {
                 case BAT:
-                    baseXP = configInstance.getAnimalsXP();
+                    baseXP = Config.getInstance().getAnimalsXP();
                     break;
 
                 case BLAZE:
@@ -498,7 +496,7 @@ public final class CombatTools {
                 case SKELETON:
                     switch(((Skeleton) target).getSkeletonType()) {
                     case WITHER:
-                        baseXP = configInstance.getWitherSkeletonXP();
+                        baseXP = Config.getInstance().getWitherSkeletonXP();
                         break;
                     default:
                         baseXP = Config.getInstance().getCombatXP(type);
