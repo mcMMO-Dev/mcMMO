@@ -67,7 +67,7 @@ public class EntityListener implements Listener {
 
             if (mcMMO.placeStore.isTrue(block) && !entity.hasMetadata(mcMMO.entityMetadataKey)) {
                 mcMMO.placeStore.setFalse(block);
-                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.entityMetadata);
+                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
             }
             else if (entity.hasMetadata(mcMMO.entityMetadataKey)) {
                 mcMMO.placeStore.setTrue(block);
@@ -308,7 +308,7 @@ public class EntityListener implements Listener {
         SpawnReason reason = event.getSpawnReason();
 
         if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) {
-            event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.entityMetadata);
+            event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
         }
     }
 

@@ -90,12 +90,9 @@ public class mcMMO extends JavaPlugin {
     // XP Event Check
     private boolean xpEventEnabled = false;
 
-    // Entity Metadata Values
-    public static FixedMetadataValue entityMetadata;
+    // Metadata Values
+    public static FixedMetadataValue metadataValue;
     public final static String entityMetadataKey = "mcMMO: Spawned Entity";
-
-    // Block Metadata Values
-    public static FixedMetadataValue blockMetadata;
     public final static String blockMetadataKey = "mcMMO: Piston Tracking";
 
     /**
@@ -106,8 +103,7 @@ public class mcMMO extends JavaPlugin {
         try {
             p = this;
             getLogger().setFilter(new LogFilter(this));
-            entityMetadata = new FixedMetadataValue(this, true);
-            blockMetadata = new FixedMetadataValue(this, true);
+            metadataValue = new FixedMetadataValue(this, true);
 
             setupFilePaths();
             setupSpout();

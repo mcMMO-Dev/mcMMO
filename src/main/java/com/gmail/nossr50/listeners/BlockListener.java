@@ -68,7 +68,7 @@ public class BlockListener implements Listener {
 
         for (Block b : blocks) {
             if (mcMMO.placeStore.isTrue(b)) {
-                b.getRelative(direction).setMetadata(mcMMO.blockMetadataKey, mcMMO.blockMetadata);
+                b.getRelative(direction).setMetadata(mcMMO.blockMetadataKey, mcMMO.metadataValue);
                 if (b.equals(futureEmptyBlock)) {
                     mcMMO.placeStore.setFalse(b);
                 }
