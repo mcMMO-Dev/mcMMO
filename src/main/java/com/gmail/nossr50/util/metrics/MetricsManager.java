@@ -197,8 +197,7 @@ public class MetricsManager {
                 Graph globalMultiplierGraphFuzzy = metrics.createGraph("Global Multiplier Fuzz");
 
                 if (Config.getInstance().getExperienceGainsGlobalMultiplier() > 1.0) {
-                        globalMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Higher") {
-
+                    globalMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Higher") {
                         @Override
                         public int getValue() {
                             return 1;
@@ -206,8 +205,7 @@ public class MetricsManager {
                     });
                 }
                 else if (Config.getInstance().getExperienceGainsGlobalMultiplier() < 1.0) {
-                        globalMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Lower") {
-
+                    globalMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Lower") {
                         @Override
                         public int getValue() {
                             return 1;
@@ -215,27 +213,19 @@ public class MetricsManager {
                     });
                 }
                 else {
-                        globalMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Default") {
-
+                    globalMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Default") {
                         @Override
                         public int getValue() {
                             return 1;
                         }
                     });
                 }
-                globalMultiplierGraph.addPlotter(new Metrics.Plotter(Config.getInstance().getExperienceGainsGlobalMultiplier() + "") {
-                    @Override
-                    public int getValue() {
-                        return 1;
-                    }
-                });
 
                 //GlobalCurveModifier Fuzzy Logic Numbers
                 Graph globalCurveMultiplierGraphFuzzy = metrics.createGraph("Global Curve Multiplier Fuzz");
 
                 if (Config.getInstance().getFormulaMultiplierCurve() > 20.0) {
-                        globalCurveMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Higher") {
-
+                    globalCurveMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Higher") {
                         @Override
                         public int getValue() {
                             return 1;
@@ -243,8 +233,7 @@ public class MetricsManager {
                     });
                 }
                 else if (Config.getInstance().getFormulaMultiplierCurve() < 20.0) {
-                        globalCurveMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Lower") {
-
+                    globalCurveMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Lower") {
                         @Override
                         public int getValue() {
                             return 1;
@@ -252,8 +241,7 @@ public class MetricsManager {
                     });
                 }
                 else {
-                        globalCurveMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Default") {
-
+                    globalCurveMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Default") {
                         @Override
                         public int getValue() {
                             return 1;
