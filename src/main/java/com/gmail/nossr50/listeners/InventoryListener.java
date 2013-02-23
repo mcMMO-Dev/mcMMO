@@ -3,22 +3,27 @@ package com.gmail.nossr50.listeners;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event.Result;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Users;
 
@@ -126,6 +131,13 @@ public class InventoryListener implements Listener{
                     smeltingManager.vanillaXPBoost(event);
                 }
             }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onInventoryClickEvent(InventoryClickEvent event) {
+        if (event.getInventory() instanceof AnvilInventory) {
+            SkillTools.removeAbilityBuff(event.getCurrentItem());
         }
     }
 }
