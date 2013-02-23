@@ -177,22 +177,14 @@ public final class TreeFeller {
 
             Material material = blockState.getType();
 
-            switch (material) {
-            case HUGE_MUSHROOM_1:
-            case HUGE_MUSHROOM_2:
+            if (material == Material.HUGE_MUSHROOM_1 || material == Material.HUGE_MUSHROOM_2) {
                 xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
 
                 for (ItemStack drop : blockState.getBlock().getDrops()) {
                     Misc.dropItem(blockState.getLocation(), drop);
                 }
-
-                break;
-
-            default:
-                break;
             }
-
-            if (ModChecks.isCustomLogBlock(blockState)) {
+            else if (ModChecks.isCustomLogBlock(blockState)) {
                 Woodcutting.checkForDoubleDrop(player, blockState);
 
                 CustomBlock customBlock = ModChecks.getCustomBlock(blockState);
@@ -211,21 +203,22 @@ public final class TreeFeller {
             else if (ModChecks.isCustomLeafBlock(blockState)) {
                 Misc.randomDropItem(blockState.getLocation(), ModChecks.getCustomBlock(blockState).getItemDrop(), 10);
             }
+            else {
+                Tree tree = (Tree) blockState.getData();
+                switch (material) {
+                case LOG:
+                    Woodcutting.checkForDoubleDrop(player, blockState);
+                    xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
+                    Misc.dropItem(blockState.getLocation(), new ItemStack(Material.LOG, 1, tree.getSpecies().getData()));
+                    break;
 
-            Tree tree = (Tree) blockState.getData();
-            switch (material) {
-            case LOG:
-                Woodcutting.checkForDoubleDrop(player, blockState);
-                xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
-                Misc.dropItem(blockState.getLocation(), new ItemStack(Material.LOG, 1, tree.getSpecies().getData()));
-                break;
+                case LEAVES:
+                    Misc.randomDropItem(blockState.getLocation(), new ItemStack(Material.SAPLING, 1, tree.getSpecies().getData()), 10);
+                    break;
 
-            case LEAVES:
-                Misc.randomDropItem(blockState.getLocation(), new ItemStack(Material.SAPLING, 1, tree.getSpecies().getData()), 10);
-                break;
-
-            default:
-                break;
+                default:
+                    break;
+                }
             }
 
             blockState.setRawData((byte) 0x0);

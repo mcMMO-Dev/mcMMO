@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.woodcutting;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -61,7 +62,11 @@ public final class Woodcutting {
         int xp = getExperienceFromLog(blockState, ExperienceGainMethod.DEFAULT);
 
         if (Permissions.doubleDrops(player, SkillType.WOODCUTTING)) {
-            checkForDoubleDrop(player, blockState);
+            Material blockType = blockState.getType();
+
+            if (blockType != Material.HUGE_MUSHROOM_1 && blockType != Material.HUGE_MUSHROOM_2) {
+                checkForDoubleDrop(player, blockState);
+            }
         }
 
         Users.getPlayer(player).beginXpGain(SkillType.WOODCUTTING, xp);
