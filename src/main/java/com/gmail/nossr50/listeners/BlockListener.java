@@ -18,7 +18,6 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -62,13 +61,14 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+
         List<Block> blocks = event.getBlocks();
         BlockFace direction = event.getDirection();
         Block futureEmptyBlock = event.getBlock().getRelative(direction); // Block that would be air after piston is finished
 
         for (Block b : blocks) {
             if (mcMMO.placeStore.isTrue(b)) {
-                b.getRelative(direction).setMetadata("pistonTrack", new FixedMetadataValue(plugin, true));
+                b.getRelative(direction).setMetadata(mcMMO.blockMetadataKey, mcMMO.blockMetadata);
                 if (b.equals(futureEmptyBlock)) {
                     mcMMO.placeStore.setFalse(b);
                 }
@@ -76,9 +76,9 @@ public class BlockListener implements Listener {
         }
 
         for (Block b : blocks) {
-            if (b.getRelative(direction).hasMetadata("pistonTrack")) {
+            if (b.getRelative(direction).hasMetadata(mcMMO.blockMetadataKey)) {
                 mcMMO.placeStore.setTrue(b.getRelative(direction));
-                b.getRelative(direction).removeMetadata("pistonTrack", plugin);
+                b.getRelative(direction).removeMetadata(mcMMO.blockMetadataKey, plugin);
             }
         }
     }

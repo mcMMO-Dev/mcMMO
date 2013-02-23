@@ -301,10 +301,7 @@ public class EntityListener implements Listener {
      */
     @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if (Misc.isSpawnerXPEnabled) {
-            return;
-        }
-        else if (event.getEntity() == null) {
+        if (Misc.isSpawnerXPEnabled || event.getEntity() == null) {
             return;
         }
 
