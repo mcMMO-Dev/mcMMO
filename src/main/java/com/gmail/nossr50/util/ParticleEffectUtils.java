@@ -14,15 +14,25 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
+import com.gmail.nossr50.config.Config;
+
 public final class ParticleEffectUtils {
 
     private ParticleEffectUtils() {};
 
     public static void playBleedEffect(Player player) {
+        if (!Config.getInstance().getBleedEffectEnabled()) {
+            return;
+        }
+
         player.getWorld().playEffect(player.getEyeLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
     }
 
     public static void playDodgeEffect(Player player) {
+        if (!Config.getInstance().getDodgeEffectEnabled()) {
+            return;
+        }
+
         Location location = player.getEyeLocation();
         World world = player.getWorld();
 
@@ -38,16 +48,28 @@ public final class ParticleEffectUtils {
     }
 
     public static void playGreaterImpactEffect(LivingEntity livingEntity) {
+        if (!Config.getInstance().getGreaterImpactEffectEnabled()) {
+            return;
+        }
+
         Location location = livingEntity.getEyeLocation();
 
         livingEntity.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
     }
 
     public static void playAbilityEnabledEffect(Player player) {
+        if (!Config.getInstance().getAbilityActivationEffectEnabled()) {
+            return;
+        }
+
         fireworkParticleShower(player, Color.GREEN);
     }
 
     public static void playAbilityDisabledEffect(Player player) {
+        if (!Config.getInstance().getAbilityDeactivationEffectEnabled()) {
+            return;
+        }
+
         fireworkParticleShower(player, Color.RED);
     }
 

@@ -106,6 +106,13 @@ public class Config extends AutoUpdateConfigLoader {
     public int getChimaeraItemId() { return config.getInt("Items.Chimaera_Wing.Item_ID", 288); }
     public boolean getChimaeraEnabled() { return config.getBoolean("Items.Chimaera_Wing.Enabled", true); }
 
+    /* Particles */
+    public boolean getAbilityActivationEffectEnabled() { return config.getBoolean("Particles.Ability_Activation", true); }
+    public boolean getAbilityDeactivationEffectEnabled() { return config.getBoolean("Particles.Ability_Deactivation", true); }
+    public boolean getDodgeEffectEnabled() { return config.getBoolean("Particles.Dodge", true); }
+    public boolean getBleedEffectEnabled() { return config.getBoolean("Particles.Bleed", true); }
+    public boolean getGreaterImpactEffectEnabled() { return config.getBoolean("Particles.Greater_Impact", true); }
+
     /* PARTY SETTINGS */
     public int getAutoPartyKickInterval() { return config.getInt("Party.AutoKick_Interval", 12); }
     public int getAutoPartyKickTime() { return config.getInt("Party.Old_Party_Member_Cutoff", 7); }

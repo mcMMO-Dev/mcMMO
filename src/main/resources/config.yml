@@ -356,3 +356,12 @@ Commands:
     a:
         #Allow mcMMO to use player display names in chat instead of their usernames
         Use_Display_Names: true
+#
+#  Settings for particles
+###
+Particles:
+    Ability_Activation: true
+    Ability_Deactivation: true
+    Dodge: true
+    Bleed: true
+    Greater_Impact: true
