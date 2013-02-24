@@ -427,11 +427,11 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            ChatManager.handlePartyChat(plugin, party, player.getName(), player.getDisplayName(), event.getMessage());
+            ChatManager.handlePartyChat(plugin, party, player.getName(), player.getDisplayName(), event.getMessage(), true);
             event.setCancelled(true);
         }
         else if (mcMMOPlayer.getAdminChatMode()) {
-            ChatManager.handleAdminChat(plugin, player.getName(), player.getDisplayName(), event.getMessage());
+            ChatManager.handleAdminChat(plugin, player.getName(), player.getDisplayName(), event.getMessage(), true);
             event.setCancelled(true);
         }
     }

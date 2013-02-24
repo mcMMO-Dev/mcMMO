@@ -9,4 +9,8 @@ public class McMMOAdminChatEvent extends McMMOChatEvent {
     public McMMOAdminChatEvent(Plugin plugin, String sender, String displayName, String message) {
         super(plugin, sender, displayName, message);
     }
+
+    public McMMOAdminChatEvent(Plugin plugin, String sender, String displayName, String message, boolean isAsync) {
+        super(plugin, sender, displayName, message, isAsync);
+    }
 }

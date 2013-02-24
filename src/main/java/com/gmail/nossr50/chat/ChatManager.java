@@ -14,8 +14,8 @@ import com.gmail.nossr50.party.Party;
 public final class ChatManager {
     public ChatManager () {}
 
-    public static void handleAdminChat(Plugin plugin, String playerName, String displayName, String message) {
-        McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(plugin, playerName, displayName, message);
+    public static void handleAdminChat(Plugin plugin, String playerName, String displayName, String message, boolean isAsync) {
+        McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(plugin, playerName, displayName, message, isAsync);
         mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
         if (chatEvent.isCancelled()) {
@@ -36,10 +36,14 @@ public final class ChatManager {
         handleAdminChat(plugin, senderName, senderName, message);
     }
 
-    public static void handlePartyChat(Plugin plugin, Party party, String playerName, String displayName, String message) {
+    public static void handleAdminChat(Plugin plugin, String playerName, String displayName, String message) {
+        handleAdminChat(plugin, playerName, displayName, message, false);
+    }
+
+    public static void handlePartyChat(Plugin plugin, Party party, String playerName, String displayName, String message, boolean isAsync) {
         String partyName = party.getName();
 
-        McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(plugin, playerName, displayName, partyName, message);
+        McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(plugin, playerName, displayName, partyName, message, isAsync);
         mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
 
         if (chatEvent.isCancelled()) {
@@ -62,5 +66,9 @@ public final class ChatManager {
 
     public static void handlePartyChat(Plugin plugin, Party party, String senderName, String message) {
         handlePartyChat(plugin, party, senderName, senderName, message);
+    }
+
+    public static void handlePartyChat(Plugin plugin, Party party, String playerName, String displayName, String message) {
+        handlePartyChat(plugin, party, playerName, displayName, message, false);
     }
 }

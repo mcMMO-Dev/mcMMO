@@ -13,6 +13,11 @@ public class McMMOPartyChatEvent extends McMMOChatEvent {
         this.party = party;
     }
 
+    public McMMOPartyChatEvent(Plugin plugin, String sender, String displayName, String party, String message, boolean isAsync) {
+        super(plugin, sender, displayName, message, isAsync);
+        this.party = party;
+    }
+
     /**
      * @return String name of the party the message will be sent to
      */

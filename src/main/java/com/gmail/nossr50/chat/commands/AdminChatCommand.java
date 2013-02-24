@@ -15,14 +15,12 @@ public class AdminChatCommand extends ChatCommand {
 
     @Override
     protected void handleChatSending(CommandSender sender, String[] args) {
-        String message = buildChatMessage(args, 0);
-
         if (sender instanceof Player) {
             Player player = (Player) sender;
-            ChatManager.handleAdminChat(mcMMO.p, player.getName(), player.getDisplayName(), message);
+            ChatManager.handleAdminChat(mcMMO.p, player.getName(), player.getDisplayName(), buildChatMessage(args, 0));
         }
         else {
-            ChatManager.handleAdminChat(mcMMO.p, LocaleLoader.getString("Commands.Chat.Console"), message);
+            ChatManager.handleAdminChat(mcMMO.p, LocaleLoader.getString("Commands.Chat.Console"), buildChatMessage(args, 0));
         }
     }
 }
