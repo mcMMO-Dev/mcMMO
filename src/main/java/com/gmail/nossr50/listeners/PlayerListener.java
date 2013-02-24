@@ -353,10 +353,10 @@ public class PlayerListener implements Listener {
 
             /* GREEN THUMB CHECK */
             if (heldItem.getType() == Material.SEEDS && BlockChecks.canMakeMossy(blockState)) {
-                heldItem.setAmount(heldItem.getAmount() - 1);
+                player.setItemInHand(new ItemStack(Material.SEEDS, heldItem.getAmount() - 1));
 
                 if (Herbalism.processGreenThumbBlocks(blockState, player) && SkillTools.blockBreakSimulate(block, player, false)) {
-                    blockState.update();
+                    blockState.update(true);
                 }
             }
 
