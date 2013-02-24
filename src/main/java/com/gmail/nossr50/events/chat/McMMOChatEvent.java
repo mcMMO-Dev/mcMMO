@@ -13,6 +13,7 @@ public abstract class McMMOChatEvent extends Event implements Cancellable {
     private String message;
 
     protected McMMOChatEvent(Plugin plugin, String sender, String displayName, String message) {
+        super(true);
         this.plugin = plugin;
         this.sender = sender;
         this.displayName = displayName;
