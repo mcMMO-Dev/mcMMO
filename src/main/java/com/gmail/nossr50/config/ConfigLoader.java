@@ -1,22 +1,14 @@
 package com.gmail.nossr50.config;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.metrics.MetricsManager;
 
 public abstract class ConfigLoader {
     protected static final mcMMO plugin = mcMMO.p;
