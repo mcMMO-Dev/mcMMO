@@ -274,7 +274,7 @@ public class Herbalism {
      * @return true if the ability was successful, false otherwise
      */
     private static boolean convertGreenThumbPlants(BlockState blockState, int skillLevel) {
-        int greenThumbStage = Math.min(skillLevel, greenThumbStageMaxLevel) / 4;
+        int greenThumbStage = Math.min(skillLevel, greenThumbStageMaxLevel) / greenThumbStageChangeLevel;
 
         switch(blockState.getType()) {
         case CROPS:
