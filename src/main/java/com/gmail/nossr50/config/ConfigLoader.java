@@ -46,13 +46,7 @@ public abstract class ConfigLoader {
         }
 
         config = YamlConfiguration.loadConfiguration(configFile);
-        InputStream resource = plugin.getResource(fileName);
-
-        if (resource == null) {
-            return;
-        }
-
-        FileConfiguration internalConfig = YamlConfiguration.loadConfiguration(resource);
+        FileConfiguration internalConfig = YamlConfiguration.loadConfiguration(plugin.getResource(fileName));
 
         Set<String> configKeys = config.getKeys(true);
         Set<String> internalConfigKeys = internalConfig.getKeys(true);
