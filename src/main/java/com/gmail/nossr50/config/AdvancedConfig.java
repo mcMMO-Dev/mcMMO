@@ -1,6 +1,6 @@
 package com.gmail.nossr50.config;
 
-public class AdvancedConfig extends ConfigLoader {
+public class AdvancedConfig extends AutoUpdateConfigLoader {
     private static AdvancedConfig instance;
 
     private AdvancedConfig() {

@@ -10,7 +10,7 @@ import com.gmail.nossr50.skills.utilities.AbilityType;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.StringUtils;
 
-public class Config extends ConfigLoader {
+public class Config extends AutoUpdateConfigLoader {
     private static Config instance;
 
     private Config() {
@@ -45,6 +45,7 @@ public class Config extends ConfigLoader {
     public boolean getBackupsEnabled() { return config.getBoolean("General.Generate_Backups", true); }
     public boolean getVerboseLoggingEnabled() { return config.getBoolean("General.Verbose_Logging", false); }
     public boolean getConfigOverwriteEnabled() { return config.getBoolean("General.Config_Update_Overwrite", true); }
+
     public boolean getPartyDisplayNames() { return config.getBoolean("Commands.p.Use_Display_Names", true); }
     public boolean getAdminDisplayNames() { return config.getBoolean("Commands.a.Use_Display_Names", true); }
 
