@@ -320,22 +320,19 @@ public class Herbalism {
      * @return true if the ability was successful, false otherwise
      */
     private static boolean processGreenThumbPlants(BlockState blockState, Player player) {
-        PlayerInventory playerInventory = player.getInventory();
-        ItemStack seed = HerbalismBlock.getHerbalismBlock(blockState.getType()).getDropItem();
-
-        if (!playerInventory.containsAtLeast(seed, 1)) {
-            return false;
-        }
-
         PlayerProfile playerProfile = Users.getPlayer(player).getProfile();
 
         if (playerProfile.getAbilityMode(AbilityType.GREEN_TERRA)) {
-            playerInventory.removeItem(seed);
-            player.updateInventory(); // Needed until replacement available
-
             return convertGreenTerraPlants(blockState);
         }
         else if (SkillTools.activationSuccessful(player, SkillType.HERBALISM, greenThumbMaxChance, greenThumbMaxLevel)) {
+            PlayerInventory playerInventory = player.getInventory();
+            ItemStack seed = HerbalismBlock.getHerbalismBlock(blockState.getType()).getDropItem();
+
+            if (!playerInventory.containsAtLeast(seed, 1)) {
+                return false;
+            }
+
             playerInventory.removeItem(seed);
             player.updateInventory(); // Needed until replacement available
 
