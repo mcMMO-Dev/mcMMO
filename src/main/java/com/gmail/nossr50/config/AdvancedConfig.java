@@ -17,9 +17,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     }
 
     @Override
-    protected void loadKeys() {
-        // TODO Do we need to use this?
-    }
+    protected void loadKeys() {}
 
     /* GENERAL */
     public int getAbilityLength() { return config.getInt("Skills.General.Ability_IncreaseLevel", 50); }
