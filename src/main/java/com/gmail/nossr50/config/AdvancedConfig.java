@@ -25,6 +25,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /* ACROBATICS */
     public double getDodgeChanceMax() { return config.getDouble("Skills.Acrobatics.Dodge_ChanceMax", 20.0D); }
     public int getDodgeMaxBonusLevel() { return config.getInt("Skills.Acrobatics.Dodge_MaxBonusLevel", 800); }
+    public int getDodgeDamageModifier() { return config.getInt("Skills.Acrobatics.Dodge_DamageModifer", 2); }
 
     public double getRollChanceMax() { return config.getDouble("Skills.Acrobatics.Roll_ChanceMax", 100.0D); }
     public int getRollMaxBonusLevel() { return config.getInt("Skills.Acrobatics.Roll_MaxBonusLevel", 1000); }

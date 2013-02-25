@@ -8,7 +8,6 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.IronGolem;
-import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
@@ -253,22 +252,18 @@ public final class CombatTools {
 
             ItemStack heldItem = player.getItemInHand();
 
+            if (Acrobatics.canDodge(player, damager)) {
+                event.setDamage(SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).dodgeCheck(event.getDamage()));
+            }
+
             if (damager instanceof Player) {
                 if (SkillType.SWORDS.getPVPEnabled() && ItemChecks.isSword(heldItem) && Permissions.counterAttack(player)) {
                     SkillManagerStore.getInstance().getSwordsManager(player.getName()).counterAttackChecks((LivingEntity) damager, event.getDamage());
-                }
-
-                if (SkillType.ACROBATICS.getPVPEnabled() && Permissions.dodge(player)) {
-                    SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).dodgeCheck(event);
                 }
             }
             else {
                 if (SkillType.SWORDS.getPVEEnabled() && damager instanceof LivingEntity && ItemChecks.isSword(heldItem) && Permissions.counterAttack(player)) {
                     SkillManagerStore.getInstance().getSwordsManager(player.getName()).counterAttackChecks((LivingEntity) damager, event.getDamage());
-                }
-
-                if (SkillType.ACROBATICS.getPVEEnabled() && !(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) && Permissions.dodge(player)) {
-                    SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).dodgeCheck(event);
                 }
             }
         }

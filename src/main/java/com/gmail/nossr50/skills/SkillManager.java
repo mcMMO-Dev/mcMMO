@@ -41,4 +41,8 @@ public abstract class SkillManager {
     public SkillType getSkill() {
         return skill;
     }
+
+    public void applyXpGain(int xp) {
+        mcMMOPlayer.beginXpGain(skill, xp);
+    }
 }

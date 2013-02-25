@@ -22,8 +22,10 @@ Skills:
     Acrobatics:
         # Dodge_ChanceMax: Maximum chance of dodging when on Dodge_MaxBonusLevel or higher
         # Dodge_MaxBonusLevel: On this level or higher, the dodge chance will not go higher than Dodge_ChanceMax
+        # Dodge_DamageModifer: Dodge damage will be divided by this multiplier
         Dodge_ChanceMax: 20.0
         Dodge_MaxBonusLevel: 800
+        Dodge_DamageModifier: 2
 
         # Roll_ChanceMax: Maximum chance of rolling when on Roll_MaxBonusLevel or higher
         # Roll_MaxBonusLevel: On this level or higher, the roll chance will not go higher than Roll_ChanceMax
