@@ -294,6 +294,10 @@ public final class PartyManager {
             return;
         }
 
+        if (mcMMOPlayer.getParty() == party) {
+            return;
+        }
+
         player.sendMessage(LocaleLoader.getString("Commands.Party.Join", party.getName()));
         addToParty(player, mcMMOPlayer, party);
     }
@@ -339,6 +343,10 @@ public final class PartyManager {
     public static void joinInvitedParty(Player player, McMMOPlayer mcMMOPlayer) {
         Party invite = mcMMOPlayer.getPartyInvite();
 
+        if (mcMMOPlayer.getParty() == invite) {
+            return;
+        }
+
         if (!parties.contains(invite)) {
             parties.add(invite);
         }
@@ -356,6 +364,10 @@ public final class PartyManager {
      * @param party The party
      */
     public static void addToParty(OfflinePlayer player, McMMOPlayer mcMMOPlayer, Party party) {
+        if (mcMMOPlayer.getParty() == party) {
+            return;
+        }
+
         informPartyMembersJoin(player, party);
         mcMMOPlayer.setParty(party);
         party.getMembers().add(player);
