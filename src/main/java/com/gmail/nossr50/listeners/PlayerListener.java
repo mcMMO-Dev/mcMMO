@@ -363,6 +363,12 @@ public class PlayerListener implements Listener {
                 }
             }
 
+            /* SHROOM THUMB CHECK */
+            else if (BlockChecks.canMakeShroomy(blockState)) {
+                if (Herbalism.processGreenThumbBlocks(blockState, player) && SkillTools.blockBreakSimulate(block, player, false)) {
+                    blockState.update(true);
+                }
+            }
             break;
 
         case RIGHT_CLICK_AIR:

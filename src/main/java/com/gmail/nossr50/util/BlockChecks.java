@@ -345,4 +345,21 @@ public final class BlockChecks {
                 return false;
         }
     }
+
+    /**
+     * Determine if a given block can be made into Mycelium
+     *
+     * @param blockState The {@link BlockState} of the block to check
+     * @return true if the block can be made in Mycelium, false otherwise
+     */
+    public static boolean canMakeShroomy(BlockState blockState) {
+        switch (blockState.getType()) {
+        case DIRT:
+        case GRASS:
+            return true;
+
+        default:
+            return false;
+        }
+    }
 }

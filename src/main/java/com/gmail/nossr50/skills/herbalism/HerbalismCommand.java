@@ -18,6 +18,8 @@ public class HerbalismCommand extends SkillCommand {
     private String doubleDropChanceLucky;
     private String hylianLuckChance;
     private String hylianLuckChanceLucky;
+    private String shroomThumbChance;
+    private String shroomThumbChanceLucky;
 
     private boolean hasHylianLuck;
     private boolean canGreenTerra;
@@ -25,6 +27,7 @@ public class HerbalismCommand extends SkillCommand {
     private boolean canGreenThumbBlocks;
     private boolean canFarmersDiet;
     private boolean canDoubleDrop;
+    private boolean canShroomThumb;
     private boolean doubleDropsDisabled;
 
     public HerbalismCommand() {
@@ -57,6 +60,11 @@ public class HerbalismCommand extends SkillCommand {
         String[] hylianLuckStrings = calculateAbilityDisplayValues(Herbalism.hylianLuckMaxLevel, Herbalism.hylianLuckMaxChance);
         hylianLuckChance = hylianLuckStrings[0];
         hylianLuckChanceLucky = hylianLuckStrings[1];
+
+        //SHROOM THUMB
+        String[] shroomThumbStrings = calculateAbilityDisplayValues(Herbalism.shroomThumbMaxLevel, Herbalism.shroomThumbMaxChance);
+        shroomThumbChance = shroomThumbStrings[0];
+        shroomThumbChanceLucky = shroomThumbStrings[1];
     }
 
     @Override
@@ -68,11 +76,12 @@ public class HerbalismCommand extends SkillCommand {
         canFarmersDiet = Permissions.farmersDiet(player);
         canDoubleDrop = Permissions.doubleDrops(player, skill);
         doubleDropsDisabled = skill.getDoubleDropsDisabled();
+        canShroomThumb = Permissions.shroomThumb(player);
     }
 
     @Override
     protected boolean effectsHeaderPermissions() {
-        return canGreenTerra || (canDoubleDrop && !doubleDropsDisabled) || canFarmersDiet || canGreenThumbBlocks || canGreenThumbWheat;
+        return canGreenTerra || (canDoubleDrop && !doubleDropsDisabled) || canFarmersDiet || canGreenThumbBlocks || canGreenThumbWheat || canShroomThumb;
     }
 
     @Override
@@ -99,6 +108,10 @@ public class HerbalismCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.10"), LocaleLoader.getString("Herbalism.Effect.11")));
         }
 
+        if (canShroomThumb) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.12"), LocaleLoader.getString("Herbalism.Effect.13")));
+        }
+
         if (canDoubleDrop && !doubleDropsDisabled) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Herbalism.Effect.8"), LocaleLoader.getString("Herbalism.Effect.9")));
         }
@@ -106,7 +119,7 @@ public class HerbalismCommand extends SkillCommand {
 
     @Override
     protected boolean statsHeaderPermissions() {
-        return canGreenTerra || (canDoubleDrop && !doubleDropsDisabled) || canFarmersDiet || canGreenThumbBlocks || canGreenThumbWheat;
+        return canGreenTerra || (canDoubleDrop && !doubleDropsDisabled) || canFarmersDiet || canGreenThumbBlocks || canGreenThumbWheat || canShroomThumb;
     }
 
     @Override
@@ -145,6 +158,16 @@ public class HerbalismCommand extends SkillCommand {
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.HylianLuck", hylianLuckChance));
             }
         }
+
+        if (canShroomThumb) {
+            if (isLucky) {
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.ShroomThumb.Chance", shroomThumbChance) + LocaleLoader.getString("Perks.lucky.bonus", shroomThumbChanceLucky));
+            }
+            else {
+                player.sendMessage(LocaleLoader.getString("Herbalism.Ability.ShroomThumb.Chance", shroomThumbChance));
+            }
+        }
+
         if (canDoubleDrop && !doubleDropsDisabled) {
             if (isLucky) {
                 player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", doubleDropChance) + LocaleLoader.getString("Perks.lucky.bonus", doubleDropChanceLucky));

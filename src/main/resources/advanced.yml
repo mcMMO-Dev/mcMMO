@@ -156,6 +156,11 @@ Skills:
         # HylianLuck_MaxBonusLevel: On this level, Hylian Luck chance will be HylianLuck_ChanceMax
         HylianLuck_ChanceMax: 10.0
         HylianLuck_MaxBonusLevel: 1000
+
+        # ShroomThumb_ChanceMax: Maximum chance of ShroomThumb
+        # ShroomThumb_MaxBonusLevel: On this level, ShroomThumb chance will be ShroomThumb_ChanceMax
+        ShroomThumb_ChanceMax: 50.0
+        ShroomThumb_MaxBonusLevel: 1500
     #
     #  Settings for Mining
     ###

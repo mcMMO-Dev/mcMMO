@@ -111,6 +111,9 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getHylianLuckChanceMax() { return config.getDouble("Skills.Herbalism.HylianLuck_ChanceMax", 10.0D); }
     public int getHylianLuckMaxLevel() { return config.getInt("Skills.Herbalism.HylianLuck_MaxBonusLevel", 1000); }
 
+    public double getShroomThumbChanceMax() { return config.getDouble("Skills.Herbalism.ShroomThumb_ChanceMax", 50.0D); }
+    public int getShroomThumbMaxLevel() { return config.getInt("Skills.Herbalism.ShroomThumb_MaxBonusLevel", 1500); }
+
     /* MINING */
     public double getMiningDoubleDropChance() { return config.getDouble("Skills.Mining.DoubleDrops_ChanceMax", 100.0D); }
     public int getMiningDoubleDropMaxLevel() { return config.getInt("Skills.Mining.DoubleDrops_MaxBonusLevel", 1000); }

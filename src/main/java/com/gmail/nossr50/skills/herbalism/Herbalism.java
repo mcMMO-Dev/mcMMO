@@ -27,6 +27,7 @@ import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public class Herbalism {
@@ -45,6 +46,9 @@ public class Herbalism {
 
     public static double hylianLuckMaxChance = AdvancedConfig.getInstance().getHylianLuckChanceMax();
     public static int hylianLuckMaxLevel = AdvancedConfig.getInstance().getHylianLuckMaxLevel();
+
+    public static double shroomThumbMaxChance = AdvancedConfig.getInstance().getShroomThumbChanceMax();
+    public static int shroomThumbMaxLevel = AdvancedConfig.getInstance().getShroomThumbMaxLevel();
 
     /**
      * Handle the farmers diet skill.
@@ -313,5 +317,60 @@ public class Herbalism {
         Misc.dropItem(blockState.getLocation(), treasures.get(Misc.getRandom().nextInt(treasures.size())).getDrop());
         player.sendMessage(LocaleLoader.getString("Herbalism.HylianLuck"));
         return true;
+    }
+
+    /**
+     * Process the Shroom Thumb ability.
+     *
+     * @param blockState The {@link BlockState} to check ability activation for
+     * @param player The {@link Player} using this ability
+     * @return true if the ability was successful, false otherwise
+     */
+    public static boolean processShroomThumb(BlockState blockState, Player player) {
+        PlayerInventory playerInventory = player.getInventory();
+
+        if (!playerInventory.contains(Material.BROWN_MUSHROOM)) {
+            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM)));
+            return false;
+        }
+
+        if (!playerInventory.contains(Material.RED_MUSHROOM)) {
+            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(Material.RED_MUSHROOM)));
+            return false;
+        }
+
+        playerInventory.removeItem(new ItemStack(Material.BROWN_MUSHROOM));
+        playerInventory.removeItem(new ItemStack(Material.RED_MUSHROOM));
+        player.updateInventory();
+
+        if (!SkillTools.activationSuccessful(player, SkillType.HERBALISM, shroomThumbMaxChance, shroomThumbMaxLevel)) {
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.ShroomThumb.Fail"));
+            return false;
+        }
+
+        return convertShroomThumb(blockState, player);
+    }
+
+    /**
+     * Convert blocks affected by the Green Thumb & Green Terra abilities.
+     *
+     * @param blockState The {@link BlockState} to check ability activation for
+     * @param player The {@link Player} using this ability
+     * @return true if the ability was successful, false otherwise
+     */
+    private static boolean convertShroomThumb(BlockState blockState, Player player) {
+        if (!Permissions.shroomThumb(player)) {
+            return false;
+        }
+
+        switch (blockState.getType()){
+        case DIRT:
+        case GRASS:
+            blockState.setType(Material.MYCEL);
+            return true;
+
+        default:
+            return false;
+        }
     }
 }

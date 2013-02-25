@@ -146,6 +146,7 @@ public final class Permissions {
     public static boolean greenThumbBlock(Permissible permissible, Material material) { return permissible.hasPermission("mcmmo.ability.herbalism.greenthumb.blocks." + material.toString().replace("_", "").toLowerCase()); }
     public static boolean greenThumbPlant(Permissible permissible, Material material) { return permissible.hasPermission("mcmmo.ability.herbalism.greenthumb.plants." + material.toString().replace("_", "").toLowerCase()); }
     public static boolean hylianLuck(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.herbalism.hylianluck"); }
+    public static boolean shroomThumb(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.herbalism.shroomthumb"); }
 
     /* MINING */
     public static boolean biggerBombs(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.mining.blastmining.biggerbombs"); }
