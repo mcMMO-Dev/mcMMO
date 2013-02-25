@@ -316,7 +316,7 @@ public final class BlockChecks {
      * Determine if a given block can activate Herbalism abilities
      *
      * @param blockState The {@link BlockState} of the block to check
-     * @return true if the block can be made mossy, false otherwise
+     * @return true if the block can be activate Herbalism abilities, false otherwise
      */
     public static boolean canActivateHerbalism(BlockState blockState) {
         switch (blockState.getType()) {
