@@ -20,7 +20,7 @@ public class SwordsManager extends SkillManager {
     public void bleedCheck(LivingEntity defender) {
         BleedEventHandler eventHandler = new BleedEventHandler(this, defender);
 
-        float chance = (float) ((Swords.bleedMaxChance / Swords.bleedMaxBonusLevel) * skillLevel);
+        float chance = (float) ((Swords.bleedMaxChance / Swords.bleedMaxBonusLevel) * getSkillLevel());
         if (chance > Swords.bleedMaxChance) chance = (float) Swords.bleedMaxChance;
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
@@ -33,7 +33,7 @@ public class SwordsManager extends SkillManager {
         CounterAttackEventHandler eventHandler = new CounterAttackEventHandler(this, attacker, damage);
         eventHandler.calculateSkillModifier();
 
-        float chance = (float) ((Swords.counterAttackMaxChance / Swords.counterAttackMaxBonusLevel) * skillLevel);
+        float chance = (float) ((Swords.counterAttackMaxChance / Swords.counterAttackMaxBonusLevel) * getSkillLevel());
         if (chance > Swords.counterAttackMaxChance) chance = (float) Swords.counterAttackMaxChance;
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {

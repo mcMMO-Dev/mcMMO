@@ -28,7 +28,7 @@ public class UnarmedManager extends SkillManager {
         if (eventHandler.isHoldingItem()) {
             eventHandler.calculateSkillModifier();
 
-            float chance = (float) ((Unarmed.disarmMaxChance / Unarmed.disarmMaxBonusLevel) * skillLevel);
+            float chance = (float) ((Unarmed.disarmMaxChance / Unarmed.disarmMaxBonusLevel) * getSkillLevel());
             if (chance > Unarmed.disarmMaxChance) chance = (float) Unarmed.disarmMaxChance;
 
             if (chance > Misc.getRandom().nextInt(activationChance)) {
@@ -47,7 +47,7 @@ public class UnarmedManager extends SkillManager {
     public void deflectCheck(EntityDamageEvent event) {
         DeflectEventHandler eventHandler = new DeflectEventHandler(this, event);
 
-        float chance = (float) ((Unarmed.deflectMaxChance / Unarmed.deflectMaxBonusLevel) * skillLevel);
+        float chance = (float) ((Unarmed.deflectMaxChance / Unarmed.deflectMaxBonusLevel) * getSkillLevel());
         if (chance > Unarmed.deflectMaxChance) chance = (float) Unarmed.deflectMaxChance;
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {

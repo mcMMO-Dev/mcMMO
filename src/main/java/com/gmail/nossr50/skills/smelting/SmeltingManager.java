@@ -60,7 +60,7 @@ public class SmeltingManager extends SkillManager {
     }
 
     public void vanillaXPBoost(FurnaceExtractEvent event) {
-        if (skillLevel < Smelting.vanillaXPBoostRank1Level || !Permissions.vanillaXpBoost(mcMMOPlayer.getPlayer(), skill)) {
+        if (getSkillLevel() < Smelting.vanillaXPBoostRank1Level || !Permissions.vanillaXpBoost(mcMMOPlayer.getPlayer(), skill)) {
             return;
         }
 

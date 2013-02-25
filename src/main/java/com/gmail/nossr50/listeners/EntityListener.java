@@ -32,15 +32,14 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.acrobatics.Acrobatics;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.BlastMining;
-import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.taming.Taming;
-import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.utilities.CombatTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -328,8 +327,7 @@ public class EntityListener implements Listener {
                 Player player = plugin.getTNTPlayer(id);
 
                 if (Permissions.biggerBombs(player)) {
-                    MiningManager miningManager = new MiningManager(Users.getPlayer(player));
-                    miningManager.biggerBombs(event);
+                    SkillManagerStore.getInstance().getMiningManager(player.getName()).biggerBombs(event);
                 }
             }
         }
@@ -350,8 +348,7 @@ public class EntityListener implements Listener {
             if (plugin.tntIsTracked(id)) {
                 Player player = plugin.getTNTPlayer(id);
 
-                MiningManager miningManager = new MiningManager(Users.getPlayer(player));
-                miningManager.blastMiningDropProcessing(event);
+                SkillManagerStore.getInstance().getMiningManager(player.getName()).blastMiningDropProcessing(event);
 
                 plugin.removeFromTNTTracker(id);
             }
@@ -430,8 +427,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        TamingManager tamingManager = new TamingManager(Users.getPlayer(player));
-        tamingManager.awardTamingXP(event);
+        SkillManagerStore.getInstance().getTamingManager(player.getName()).awardTamingXP(event);
     }
 
     @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)

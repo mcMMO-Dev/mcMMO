@@ -34,14 +34,13 @@ import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.ShareHandler;
+import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.BlastMining;
-import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
-import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.utilities.AbilityType;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
@@ -296,8 +295,7 @@ public class PlayerListener implements Listener {
             }
             /* BLAST MINING CHECK */
             else if (player.isSneaking() && Permissions.remoteDetonation(player) && heldItem.getTypeId() == BlastMining.detonatorID) {
-                MiningManager miningManager = new MiningManager(Users.getPlayer(player));
-                miningManager.detonate(event);
+                SkillManagerStore.getInstance().getMiningManager(player.getName()).detonate(event);
             }
 
             break;
@@ -305,8 +303,7 @@ public class PlayerListener implements Listener {
         case RIGHT_CLICK_AIR:
             /* BLAST MINING CHECK */
             if (player.isSneaking() && Permissions.remoteDetonation(player) && heldItem.getTypeId() == BlastMining.detonatorID) {
-                MiningManager miningManager = new MiningManager(Users.getPlayer(player));
-                miningManager.detonate(event);
+                SkillManagerStore.getInstance().getMiningManager(player.getName()).detonate(event);
             }
 
             break;
@@ -397,12 +394,10 @@ public class PlayerListener implements Listener {
                 Material type = heldItem.getType();
 
                 if (type == Material.RAW_FISH) {
-                    TamingManager tamingManager = new TamingManager(Users.getPlayer(player));
-                    tamingManager.summonOcelot();
+                    SkillManagerStore.getInstance().getTamingManager(player.getName()).summonOcelot();
                 }
                 else if (type == Material.BONE) {
-                    TamingManager tamingManager = new TamingManager(Users.getPlayer(player));
-                    tamingManager.summonWolf();
+                    SkillManagerStore.getInstance().getTamingManager(player.getName()).summonWolf();
                 }
             }
 

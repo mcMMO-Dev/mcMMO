@@ -22,7 +22,7 @@ public class MiningManager extends SkillManager{
      * @param event The PlayerInteractEvent
      */
     public void detonate(PlayerInteractEvent event) {
-        if (skillLevel < BlastMining.rank1) {
+        if (getSkillLevel() < BlastMining.rank1) {
             return;
         }
 
@@ -57,7 +57,7 @@ public class MiningManager extends SkillManager{
             return;
         }
 
-        if (skillLevel < BlastMining.rank1) {
+        if (getSkillLevel() < BlastMining.rank1) {
             return;
         }
 

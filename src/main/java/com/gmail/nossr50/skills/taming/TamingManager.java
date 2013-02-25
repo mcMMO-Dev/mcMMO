@@ -79,7 +79,7 @@ public class TamingManager extends SkillManager {
     public void gore(EntityDamageEvent event) {
         GoreEventHandler eventHandler = new GoreEventHandler(this, event);
 
-        float chance = (float) ((Taming.goreMaxChance / Taming.goreMaxBonusLevel) * skillLevel);
+        float chance = (float) ((Taming.goreMaxChance / Taming.goreMaxBonusLevel) * getSkillLevel());
         if (chance > Taming.goreMaxChance) chance = (float) Taming.goreMaxChance;
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
