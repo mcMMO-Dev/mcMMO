@@ -237,14 +237,14 @@ public class BlockListener implements Listener {
 
         if (Permissions.hylianLuck(player) && ItemChecks.isSword(heldItem)) {
             if (Herbalism.processHylianLuck(blockState, player)) {
+                blockState.update(true);
                 event.setCancelled(true);
-                blockState.update();
             }
         }
         else if (BlockChecks.affectedByFluxMining(blockState) && ItemChecks.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH) && Permissions.fluxMining(player) && !mcMMO.placeStore.isTrue(blockState)) {
             if (Smelting.processFluxMining(blockState, player)) {
+                blockState.update(true);
                 event.setCancelled(true);
-                blockState.update();
             }
         }
     }
