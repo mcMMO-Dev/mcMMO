@@ -1,5 +1,7 @@
 package com.gmail.nossr50.skills.smelting;
 
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
@@ -7,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Permissions;
@@ -37,12 +40,11 @@ public class SmeltResourceEventHandler {
         McMMOPlayer mcMMOPlayer = manager.getMcMMOPlayer();
         Player player = mcMMOPlayer.getPlayer();
 
-        if (Permissions.skillEnabled(player, SkillType.MINING)) {
-            mcMMOPlayer.beginXpGain(SkillType.MINING, xp / 2);
-        }
-
-        if (Permissions.skillEnabled(player, SkillType.REPAIR)) {
-            mcMMOPlayer.beginXpGain(SkillType.REPAIR, xp / 2);
+        Set<SkillType> parentSkills = FamilyTree.getParents(SkillType.SMELTING);
+        for (SkillType parentSkill : parentSkills) {
+            if (Permissions.skillEnabled(player, parentSkill)) {
+                mcMMOPlayer.beginXpGain(parentSkill, xp / parentSkills.size());
+            }
         }
     }
 

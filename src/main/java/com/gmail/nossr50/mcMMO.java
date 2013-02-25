@@ -44,6 +44,7 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.runnables.PartiesLoader;
 import com.gmail.nossr50.party.runnables.PartyAutoKick;
 import com.gmail.nossr50.runnables.SaveTimer;
+import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.RepairManagerFactory;
 import com.gmail.nossr50.skills.repair.Repairable;
@@ -266,8 +267,7 @@ public class mcMMO extends JavaPlugin {
         TreasuresConfig.getInstance();
         HiddenConfig.getInstance();
         AdvancedConfig.getInstance();
-
-        
+        new ChildConfig();
 
         List<Repairable> repairables = new ArrayList<Repairable>();
 

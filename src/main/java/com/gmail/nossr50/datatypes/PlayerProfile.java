@@ -6,10 +6,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
+import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.skills.utilities.AbilityType;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.skills.utilities.ToolType;
@@ -902,13 +904,12 @@ public class PlayerProfile {
     }
 
     public int getChildSkillLevel(SkillType skillType) {
-        switch (skillType) {
-        case SMELTING:
-            return ((getSkillLevel(SkillType.MINING) / 4) + (getSkillLevel(SkillType.REPAIR) / 4)); //TODO: Make this cleaner somehow
-
-        default:
-            return 0;
+        Set<SkillType> parents = FamilyTree.getParents(skillType);
+        int sum = 0;
+        for (SkillType parent : parents) {
+            sum += Math.min(getSkillLevel(parent), 1000);
         }
+        return sum / parents.size();
     }
 
     public int getSkillXpLevel(SkillType skillType) {
