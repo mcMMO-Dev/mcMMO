@@ -33,6 +33,9 @@ public enum PartySubcommandType {
         else if (commandName.equalsIgnoreCase("q") || commandName.equalsIgnoreCase("leave")) {
             return QUIT;
         }
+        else if (commandName.equalsIgnoreCase("leader")) {
+            return OWNER;
+        }
         else if (commandName.equalsIgnoreCase("xpshare") || commandName.equalsIgnoreCase("shareexp") || commandName.equalsIgnoreCase("sharexp")) {
             return EXPSHARE;
         }
