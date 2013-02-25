@@ -223,7 +223,7 @@ public final class TreeFeller {
 
             blockState.setRawData((byte) 0x0);
             blockState.setType(Material.AIR);
-            blockState.update();
+            blockState.update(true);
         }
 
         Users.getPlayer(player).beginXpGain(SkillType.WOODCUTTING, xp);

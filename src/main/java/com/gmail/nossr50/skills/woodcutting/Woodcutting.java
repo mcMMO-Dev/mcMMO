@@ -146,7 +146,8 @@ public final class Woodcutting {
         }
         else {
             Location location = blockState.getLocation();
-            ItemStack item = blockState.getData().toItemStack();
+            Tree tree = (Tree) blockState.getData();
+            ItemStack item = new ItemStack(Material.LOG, 1, tree.getSpecies().getData());
 
             switch (((Tree) blockState.getData()).getSpecies()) {
             case GENERIC:
