@@ -17,7 +17,7 @@ public class PartyHelpCommand implements CommandExecutor {
             sender.sendMessage(LocaleLoader.getString("Party.Help.4", "/party <lock|unlock>"));
             sender.sendMessage(LocaleLoader.getString("Party.Help.5", "/party password"));
             sender.sendMessage(LocaleLoader.getString("Party.Help.6", "/party kick"));
-            sender.sendMessage(LocaleLoader.getString("Party.Help.7", "/party owner"));
+            sender.sendMessage(LocaleLoader.getString("Party.Help.7", "/party leader"));
             sender.sendMessage(LocaleLoader.getString("Party.Help.8", "/party disband"));
             return true;
 
