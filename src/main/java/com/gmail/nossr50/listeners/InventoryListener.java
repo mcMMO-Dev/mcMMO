@@ -14,7 +14,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -134,8 +133,6 @@ public class InventoryListener implements Listener{
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClickEvent(InventoryClickEvent event) {
-        if (event.getInventory() instanceof AnvilInventory) {
-            SkillTools.removeAbilityBuff(event.getCurrentItem());
-        }
+        SkillTools.removeAbilityBuff(event.getCurrentItem());
     }
 }

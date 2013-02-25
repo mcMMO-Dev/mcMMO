@@ -146,7 +146,10 @@ public class PlayerListener implements Listener {
 
         if (playerProfile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) || playerProfile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
             event.setCancelled(true);
+            return;
         }
+
+        SkillTools.removeAbilityBuff(event.getItemDrop().getItemStack());
     }
 
     /**

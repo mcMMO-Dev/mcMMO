@@ -30,6 +30,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.spout.SpoutConfig;
 import com.gmail.nossr50.spout.SpoutTools;
+import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ParticleEffectUtils;
 import com.gmail.nossr50.util.Permissions;
@@ -541,6 +542,10 @@ public class SkillTools {
 
     public static ItemStack removeAbilityBuff(ItemStack item) {
         if (item == null || item.getType() == Material.AIR ) {
+            return item;
+        }
+
+        if (!ItemChecks.isPickaxe(item) && !ItemChecks.isShovel(item)) {
             return item;
         }
 
