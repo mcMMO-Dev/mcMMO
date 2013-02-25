@@ -81,7 +81,7 @@ public enum SkillType {
             }
         }
 
-        mcMMO.p.getLogger().warning("[DEBUG] Invalid mcMMO skill (" + skillName + ")");
+        mcMMO.p.getLogger().warning("[Debug] Invalid mcMMO skill (" + skillName + ")");
         return null;
     }
 
