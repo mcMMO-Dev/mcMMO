@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.TreeType;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
@@ -29,12 +28,6 @@ public class WorldListener implements Listener {
      */
     @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
-        TreeType species = event.getSpecies();
-
-        if (species == TreeType.BROWN_MUSHROOM || species == TreeType.RED_MUSHROOM) {
-            return;
-        }
-
         Location location = event.getLocation();
 
         if (mcMMO.placeStore.isTrue(location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld())) {
