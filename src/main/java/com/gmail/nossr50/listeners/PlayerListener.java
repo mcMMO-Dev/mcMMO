@@ -365,7 +365,7 @@ public class PlayerListener implements Listener {
 
             /* SHROOM THUMB CHECK */
             else if (BlockChecks.canMakeShroomy(blockState)) {
-                if (Herbalism.processGreenThumbBlocks(blockState, player) && SkillTools.blockBreakSimulate(block, player, false)) {
+                if (Herbalism.processShroomThumb(blockState, player) && SkillTools.blockBreakSimulate(block, player, false)) {
                     blockState.update(true);
                 }
             }
