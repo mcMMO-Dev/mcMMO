@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.utilities;
 
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
@@ -30,6 +29,7 @@ import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.acrobatics.Acrobatics;
+import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.runnables.CombatXpGiver;
 import com.gmail.nossr50.skills.swords.Swords;
@@ -282,26 +282,26 @@ public final class CombatTools {
         }
 
         if (Permissions.skillEnabled(shooter, SkillType.ARCHERY)) {
-            McMMOPlayer mcMMOPlayer = Users.getPlayer(shooter);
-            SkillManagerStore.getInstance().getArcheryManager(shooter.getName()).skillShot(event);
+            String playerName = shooter.getName();
 
-            if (target instanceof Player) {
-                if (SkillType.UNARMED.getPVPEnabled() && ((Player) target).getItemInHand().getType() == Material.AIR && Permissions.arrowDeflect((Player) target)) {
-                    SkillManagerStore.getInstance().getUnarmedManager(((Player) target).getName()).deflectCheck(event);
-                }
-
-
-                if (Permissions.daze(shooter)) {
-                    SkillManagerStore.getInstance().getArcheryManager(shooter.getName()).dazeCheck((Player) target, event);
-                }
+            if (Archery.canSkillShot(shooter)) {
+                event.setDamage(SkillManagerStore.getInstance().getArcheryManager(playerName).skillShotCheck(event.getDamage()));
             }
 
-            if (!(shooter.getItemInHand().containsEnchantment(Enchantment.ARROW_INFINITE)) && Permissions.arrowRetrieval(shooter)) {
-                SkillManagerStore.getInstance().getArcheryManager(shooter.getName()).trackArrows(target);
+            if (target instanceof Player && SkillType.UNARMED.getPVPEnabled() && ((Player) target).getItemInHand().getType() == Material.AIR && Permissions.arrowDeflect((Player) target)) {
+                SkillManagerStore.getInstance().getUnarmedManager(((Player) target).getName()).deflectCheck(event);
             }
 
-            SkillManagerStore.getInstance().getArcheryManager(shooter.getName()).distanceXpBonus(target);
-            startGainXp(mcMMOPlayer, target, SkillType.ARCHERY);
+            if (Archery.canDaze(shooter, target)) {
+                event.setDamage(SkillManagerStore.getInstance().getArcheryManager(playerName).dazeCheck((Player) target, event.getDamage()));
+            }
+
+            if (Archery.canTrackArrows(shooter)) {
+                SkillManagerStore.getInstance().getArcheryManager(playerName).trackArrows(target);
+            }
+
+            SkillManagerStore.getInstance().getArcheryManager(playerName).distanceXpBonus(target);
+            startGainXp(Users.getPlayer(shooter), target, SkillType.ARCHERY);
         }
     }
 
