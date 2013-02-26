@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
