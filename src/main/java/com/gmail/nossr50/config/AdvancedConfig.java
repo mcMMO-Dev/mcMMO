@@ -5,7 +5,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     private AdvancedConfig() {
         super("advanced.yml");
-        loadKeys();
     }
 
     public static AdvancedConfig getInstance() {

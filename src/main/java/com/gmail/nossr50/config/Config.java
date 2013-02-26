@@ -15,7 +15,6 @@ public class Config extends AutoUpdateConfigLoader {
 
     private Config() {
         super("config.yml");
-        loadKeys();
     }
 
     public static Config getInstance() {
