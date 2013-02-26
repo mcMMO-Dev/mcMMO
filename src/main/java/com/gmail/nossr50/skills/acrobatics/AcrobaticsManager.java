@@ -53,11 +53,11 @@ public class AcrobaticsManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the roll was successful, the original event damage otherwise
      */
-    public int processRoll(int damage) {
+    public int rollCheck(int damage) {
         Player player = getPlayer();
 
         if (player.isSneaking() && Permissions.gracefulRoll(player)) {
-            return processGracefulRoll(player, damage);
+            return gracefulRollCheck(player, damage);
         }
 
         int modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.rollThreshold);
@@ -75,7 +75,7 @@ public class AcrobaticsManager extends SkillManager {
         return damage;
     }
 
-    private int processGracefulRoll(Player player, int damage) {
+    private int gracefulRollCheck(Player player, int damage) {
         int modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
 
         if (!Acrobatics.isFatal(player, modifiedDamage) && Acrobatics.isSuccessfulRoll(player, Acrobatics.gracefulRollMaxChance, Acrobatics.gracefulRollMaxBonusLevel, Acrobatics.gracefulRollSuccessModifier)) {

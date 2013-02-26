@@ -180,7 +180,7 @@ public class EntityListener implements Listener {
             switch (cause) {
             case FALL:
                 if (Acrobatics.canRoll(player)) {
-                    event.setDamage(SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).processRoll(event.getDamage()));
+                    event.setDamage(SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).rollCheck(event.getDamage()));
 
                     if (event.getDamage() == 0) {
                         event.setCancelled(true);
