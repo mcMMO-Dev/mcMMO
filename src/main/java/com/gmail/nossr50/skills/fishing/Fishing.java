@@ -78,11 +78,6 @@ public final class Fishing {
      * @param event Event to process
      */
     public static int beginFishermansDiet(Player player, int rankChange, int eventFoodLevel) {
-        // TODO: The permission should probably not be checked here
-        if (!Permissions.fishermansDiet(player)) {
-            return eventFoodLevel;
-        }
-
         return SkillTools.handleFoodSkills(player, SkillType.FISHING, eventFoodLevel, fishermansDietRankLevel1, fishermansDietMaxLevel, rankChange);
     }
 

@@ -57,10 +57,6 @@ public class Herbalism {
      * @param event The actual FoodLevelChange event
      */
     public static int farmersDiet(Player player, int rankChange, int eventFoodLevel) {
-        if (!Permissions.farmersDiet(player)) {
-            return eventFoodLevel;
-        }
-
         return SkillTools.handleFoodSkills(player, SkillType.HERBALISM, eventFoodLevel, farmersDietRankLevel1, farmersDietMaxLevel, rankChange);
     }
 
