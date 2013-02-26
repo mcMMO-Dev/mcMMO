@@ -75,7 +75,7 @@ public class Archery {
         for (Iterator<TrackedEntity> entityIterator = trackedEntities.iterator(); entityIterator.hasNext(); ) {
             TrackedEntity trackedEntity = entityIterator.next();
 
-            if (trackedEntity.getLivingEntity().getEntityId() == livingEntity.getEntityId()) {
+            if (trackedEntity.getID() == livingEntity.getUniqueId()) {
                 Misc.dropItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount());
                 entityIterator.remove();
                 return;
