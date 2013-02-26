@@ -10,6 +10,7 @@ import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ParticleEffectUtils;
+import com.gmail.nossr50.util.Permissions;
 
 public class AcrobaticsManager extends SkillManager {
     public AcrobaticsManager (McMMOPlayer mcMMOPlayer) {
@@ -17,9 +18,10 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     /**
-     * Check for dodge damage reduction.
+     * Handle the damage reduction and XP gain from the Dodge ability
      *
-     * @param event The event to check
+     * @param damage The amount of damage initially dealt by the event
+     * @return the modified event damage if the dodge was successful, the original event damage otherwise
      */
     public int dodgeCheck(int damage) {
         int modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
@@ -40,6 +42,50 @@ public class AcrobaticsManager extends SkillManager {
             }
 
             return modifiedDamage;
+        }
+
+        return damage;
+    }
+
+    /**
+     * Handle the damage reduction and XP gain from the Roll ability
+     *
+     * @param damage The amount of damage initially dealt by the event
+     * @return the modified event damage if the roll was successful, the original event damage otherwise
+     */
+    public int processRoll(int damage) {
+        Player player = getPlayer();
+
+        if (player.isSneaking() && Permissions.gracefulRoll(player)) {
+            return processGracefulRoll(player, damage);
+        }
+
+        int modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.rollThreshold);
+
+        if (!Acrobatics.isFatal(player, modifiedDamage) && Acrobatics.isSuccessfulRoll(player, Acrobatics.rollMaxChance, Acrobatics.rollMaxBonusLevel, 1)) {
+            player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
+            applyXpGain(damage * Acrobatics.rollXpModifier);
+
+            return modifiedDamage;
+        }
+        else if (!Acrobatics.isFatal(player, damage)) {
+            applyXpGain(damage * Acrobatics.fallXpModifier);
+        }
+
+        return damage;
+    }
+
+    private int processGracefulRoll(Player player, int damage) {
+        int modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
+
+        if (!Acrobatics.isFatal(player, modifiedDamage) && Acrobatics.isSuccessfulRoll(player, Acrobatics.gracefulRollMaxChance, Acrobatics.gracefulRollMaxBonusLevel, Acrobatics.gracefulRollSuccessModifier)) {
+            player.sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
+            applyXpGain(damage * Acrobatics.rollXpModifier);
+
+            return modifiedDamage;
+        }
+        else if (!Acrobatics.isFatal(player, damage)) {
+            applyXpGain(damage * Acrobatics.fallXpModifier);
         }
 
         return damage;

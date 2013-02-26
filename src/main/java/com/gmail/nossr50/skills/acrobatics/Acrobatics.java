@@ -54,42 +54,6 @@ public final class Acrobatics {
         return false;
     }
 
-    public static int processRoll(Player player, int damage) {
-        if (player.isSneaking() && Permissions.gracefulRoll(player)) {
-            return processGracefulRoll(player, damage);
-        }
-
-        int modifiedDamage = calculateModifiedRollDamage(damage, rollThreshold);
-
-        if (!isFatal(player, modifiedDamage) && isSuccessfulRoll(player, rollMaxChance, rollMaxBonusLevel, 1)) {
-            player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
-            applyXpGain(player, damage, rollXpModifier);
-
-            return modifiedDamage;
-        }
-        else if (!isFatal(player, damage)) {
-            applyXpGain(player, damage, fallXpModifier);
-        }
-
-        return damage;
-    }
-
-    private static int processGracefulRoll(Player player, int damage) {
-        int modifiedDamage = calculateModifiedRollDamage(damage, gracefulRollThreshold);
-
-        if (!isFatal(player, modifiedDamage) && isSuccessfulRoll(player, gracefulRollMaxChance, gracefulRollMaxBonusLevel, gracefulRollSuccessModifier)) {
-            player.sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
-            applyXpGain(player, damage, rollXpModifier);
-
-            return modifiedDamage;
-        }
-        else if (!isFatal(player, damage)) {
-            applyXpGain(player, damage, fallXpModifier);
-        }
-
-        return damage;
-    }
-
     protected static boolean isFatal(Player player, int damage) {
         return player.getHealth() - damage < 1;
     }
