@@ -42,6 +42,8 @@ public class SpoutConfig extends ConfigLoader {
 
     /* XP Bar */
     public boolean getXPBarEnabled() { return config.getBoolean("XP.Bar.Enabled", true); }
+    public void setXPBarEnabled(boolean enabled) { config.set("XP.Bar.Enabled", enabled); }
+
     public boolean getXPBarIconEnabled() { return config.getBoolean("XP.Icon.Enabled", true); }
     public int getXPBarXPosition() { return config.getInt("XP.Bar.X_POS", 95); }
     public int getXPBarYPosition() { return config.getInt("XP.Bar.Y_POS", 6); }
