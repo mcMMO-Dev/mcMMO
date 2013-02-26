@@ -9,7 +9,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -57,12 +56,12 @@ public class Herbalism {
      * @param rankChange The # of levels to change rank for the food
      * @param event The actual FoodLevelChange event
      */
-    public static void farmersDiet(Player player, int rankChange, FoodLevelChangeEvent event) {
+    public static int farmersDiet(Player player, int rankChange, int eventFoodLevel) {
         if (!Permissions.farmersDiet(player)) {
-            return;
+            return eventFoodLevel;
         }
 
-        SkillTools.handleFoodSkills(player, SkillType.HERBALISM, event, farmersDietRankLevel1, farmersDietMaxLevel, rankChange);
+        return SkillTools.handleFoodSkills(player, SkillType.HERBALISM, eventFoodLevel, farmersDietRankLevel1, farmersDietMaxLevel, rankChange);
     }
 
     /**

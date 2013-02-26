@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -38,12 +37,11 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.Users;
 
 public class SkillTools {
-    public static void handleFoodSkills(Player player, SkillType skill, FoodLevelChangeEvent event, int baseLevel, int maxLevel, int rankChange) {
+    public static int handleFoodSkills(Player player, SkillType skill, int eventFoodLevel, int baseLevel, int maxLevel, int rankChange) {
         int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(skill);
 
         int currentFoodLevel = player.getFoodLevel();
-        int newFoodLevel = event.getFoodLevel();
-        int foodChange = newFoodLevel - currentFoodLevel;
+        int foodChange = eventFoodLevel - currentFoodLevel;
 
         for (int i = baseLevel; i <= maxLevel; i+= rankChange) {
             if (skillLevel >= i) {
@@ -51,7 +49,7 @@ public class SkillTools {
             }
         }
 
-        event.setFoodLevel(currentFoodLevel + foodChange);
+        return currentFoodLevel + foodChange;
     }
 
     /**
