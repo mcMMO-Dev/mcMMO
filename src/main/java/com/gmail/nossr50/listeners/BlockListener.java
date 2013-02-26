@@ -29,7 +29,8 @@ import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.runnables.StickyPistonTracker;
-import com.gmail.nossr50.skills.excavation.Excavation;
+import com.gmail.nossr50.skills.SkillManagerStore;
+import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.repair.Repair;
@@ -202,10 +203,11 @@ public class BlockListener implements Listener {
 
         /* EXCAVATION */
         else if (BlockChecks.affectedByGigaDrillBreaker(blockState) && ItemChecks.isShovel(heldItem) && Permissions.skillEnabled(player, SkillType.EXCAVATION) && !mcMMO.placeStore.isTrue(blockState)) {
-            Excavation.excavationBlockCheck(blockState, player);
+            ExcavationManager excavationManager = SkillManagerStore.getInstance().getExcavationManager(player.getName());
+            excavationManager.excavationBlockCheck(blockState);
 
             if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
-                Excavation.gigaDrillBreaker(blockState, player);
+                excavationManager.gigaDrillBreaker(blockState);
             }
         }
 

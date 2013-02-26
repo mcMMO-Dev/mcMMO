@@ -97,12 +97,7 @@ public final class CombatTools {
                 }
             }
             else if (ItemChecks.isAxe(heldItem)) {
-                if (targetIsPlayer || targetIsTamedPet) {
-                    if (!SkillType.AXES.getPVPEnabled()) {
-                        return;
-                    }
-                }
-                else if (!SkillType.AXES.getPVEEnabled()) {
+                if (((targetIsPlayer || targetIsTamedPet) && !SkillType.AXES.getPVPEnabled()) || (!targetIsPlayer && !targetIsTamedPet && !SkillType.AXES.getPVEEnabled())) {
                     return;
                 }
 
