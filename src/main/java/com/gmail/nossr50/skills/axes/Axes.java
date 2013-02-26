@@ -1,6 +1,10 @@
 package com.gmail.nossr50.skills.axes;
 
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.ItemStack;
+
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.util.ItemChecks;
 
 public class Axes {
     public static int bonusDamageMaxBonus = AdvancedConfig.getInstance().getBonusDamageAxesBonusMax();
@@ -12,6 +16,7 @@ public class Axes {
     public static double criticalHitPVEModifier = AdvancedConfig.getInstance().getAxesCriticalPVEModifier();
 
     public static int impactIncreaseLevel = AdvancedConfig.getInstance().getArmorImpactIncreaseLevel();
+    public static double impactChance = AdvancedConfig.getInstance().getImpactChance();
     public static double impactMaxDurabilityDamageModifier = AdvancedConfig.getInstance().getArmorImpactMaxDurabilityDamage() / 100D;
 
     public static double greaterImpactChance = AdvancedConfig.getInstance().getGreaterImpactChance();
@@ -19,4 +24,14 @@ public class Axes {
     public static int greaterImpactBonusDamage = AdvancedConfig.getInstance().getGreaterImpactBonusDamage();
 
     public static int skullSplitterModifier = AdvancedConfig.getInstance().getSkullSplitterModifier();
+
+    protected static boolean hasArmor(LivingEntity target) {
+        for (ItemStack itemStack : target.getEquipment().getArmorContents()) {
+            if (ItemChecks.isArmor(itemStack)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

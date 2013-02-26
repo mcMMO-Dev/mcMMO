@@ -1,67 +1,148 @@
 package com.gmail.nossr50.skills.axes;
 
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.skills.utilities.AbilityType;
+import com.gmail.nossr50.skills.utilities.CombatTools;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.skills.utilities.ToolType;
+import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.ParticleEffectUtils;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.Users;
 
 public class AxeManager extends SkillManager {
     public AxeManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.AXES);
     }
 
-    /**
-     * Apply bonus to damage done by axes.
-     *
-     * @param event The event to modify
-     */
-    public void bonusDamage(EntityDamageByEntityEvent event) {
-        AxeBonusDamageEventHandler eventHandler = new AxeBonusDamageEventHandler(this, event);
+    public boolean canUseAxeMastery() {
+        return Permissions.bonusDamage(getPlayer(), skill);
+    }
 
-        eventHandler.calculateDamageBonus();
-        eventHandler.modifyEventDamage();
+    public boolean canCriticalHit(LivingEntity target) {
+        return target.isValid() && Permissions.criticalStrikes(getPlayer());
+    }
+
+    public boolean canImpact(LivingEntity target) {
+        return target.isValid() && Permissions.armorImpact(getPlayer()) && Axes.hasArmor(target);
+    }
+
+    public boolean canGreaterImpact(LivingEntity target) {
+        return target.isValid() && Permissions.greaterImpact(getPlayer()) && !Axes.hasArmor(target);
+    }
+
+    public boolean canUseSkullSplitter(LivingEntity target) {
+        return target.isValid() && getProfile().getAbilityMode(AbilityType.SKULL_SPLITTER) && Permissions.skullSplitter(getPlayer());
+    }
+
+    public boolean canActivateAbility() {
+        return getProfile().getToolPreparationMode(ToolType.AXE) && Permissions.skullSplitter(getPlayer());
     }
 
     /**
-     * Check for critical chances on axe damage.
+     * Handle the effects of the Axe Mastery ability
      *
-     * @param event The event to modify
+     * @param damage The amount of damage initially dealt by the event
+     * @return the modified event damage
      */
-    public void criticalHitCheck(EntityDamageByEntityEvent event, LivingEntity target) {
-        CriticalHitEventHandler eventHandler = new CriticalHitEventHandler(this, event, target);
+    public int axeMasteryCheck(int damage) {
+        int axeBonus = Math.min(getSkillLevel() / (Axes.bonusDamageMaxBonusLevel / Axes.bonusDamageMaxBonus), Axes.bonusDamageMaxBonus);
 
-        double chance = (Axes.criticalHitMaxChance / Axes.criticalHitMaxBonusLevel) * eventHandler.skillModifier;
+        return damage + axeBonus;
+    }
 
-        if (chance > Misc.getRandom().nextInt(activationChance)) {
-            eventHandler.modifyEventDamage();
-            eventHandler.sendAbilityMessages();
+    /**
+     * Handle the effects of the Critical Hit ability
+     *
+     * @param target The {@link LivingEntity} being affected by the ability
+     * @param damage The amount of damage initially dealt by the event
+     * @return the modified event damage if the ability was successful, the original event damage otherwise
+     */
+    public int criticalHitCheck(LivingEntity target, int damage) {
+        Player player = getPlayer();
+
+        if (SkillTools.activationSuccessful(player, skill, Axes.criticalHitMaxChance, Axes.criticalHitMaxBonusLevel)) {
+            player.sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
+
+            if (target instanceof Player) {
+                ((Player) target).sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
+
+                return (int) (damage * Axes.criticalHitPVPModifier);
+            }
+
+            return (int) (damage * Axes.criticalHitPVEModifier);
+        }
+
+        return damage;
+    }
+
+    /**
+     * Handle the effects of the Impact ability
+     *
+     * @param target The {@link LivingEntity} being affected by Impact
+     */
+    public void impactCheck(LivingEntity target) {
+        int durabilityDamage = 1 + (getSkillLevel() / Axes.impactIncreaseLevel);
+
+        for (ItemStack armor : target.getEquipment().getArmorContents()) {
+            if (ItemChecks.isArmor(armor) && SkillTools.activationSuccessful(getPlayer(), skill, Axes.impactChance)) {
+                double durabilityModifier = 1 / (armor.getEnchantmentLevel(Enchantment.DURABILITY) + 1); // Modifier to simulate the durability enchantment behavior
+                double modifiedDurabilityDamage = durabilityDamage * durabilityModifier;
+                double maxDurabilityDamage = (ModChecks.isCustomArmor(armor) ? ModChecks.getArmorFromItemStack(armor).getDurability() : armor.getType().getMaxDurability()) * Axes.impactMaxDurabilityDamageModifier;
+
+                armor.setDurability((short) (Math.min(modifiedDurabilityDamage, maxDurabilityDamage) + armor.getDurability()));
+            }
         }
     }
 
     /**
-     * Check for Impact ability.
+     * Handle the effects of the Greater Impact ability
      *
-     * @param event The event to modify
+     * @param target The {@link LivingEntity} being affected by the ability
+     * @param damage The amount of damage initially dealt by the event
+     * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    public void impact(EntityDamageByEntityEvent event, LivingEntity target) {
-        ImpactEventHandler eventHandler = new ImpactEventHandler(this, event, target);
+    public int greaterImpactCheck(LivingEntity target, int damage) {
+        Player player = getPlayer();
 
-        if (!eventHandler.applyImpact()) {
-            eventHandler.applyGreaterImpact();
+        if (SkillTools.activationSuccessful(player, skill, Axes.greaterImpactChance)) {
+            ParticleEffectUtils.playGreaterImpactEffect(target);
+            target.setVelocity(player.getLocation().getDirection().normalize().multiply(Axes.greaterImpactKnockbackMultiplier));
+
+            if (getProfile().useChatNotifications()) {
+                player.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));
+            }
+
+            if (target instanceof Player) {
+                Player defender = (Player) target;
+
+                if (Users.getPlayer(defender).getProfile().useChatNotifications()) {
+                    defender.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Struck"));
+                }
+            }
+
+            return damage + Axes.greaterImpactBonusDamage;
         }
+
+        return damage;
     }
 
     /**
-     * Check for Skull Splitter ability.
+     * Handle the effects of the Skull Splitter ability
      *
-     * @param target The entity hit by Skull Splitter
-     * @param damage The base damage to deal
+     * @param target The {@link LivingEntity} being affected by the ability
+     * @param damage The amount of damage initially dealt by the event
      */
-    public void skullSplitter(LivingEntity target, int damage) {
-        SkullSplitterEventHandler eventHandler = new SkullSplitterEventHandler(mcMMOPlayer.getPlayer(), damage, target);
-        eventHandler.applyAbilityEffects();
+    public void skullSplitterCheck(LivingEntity target, int damage) {
+        CombatTools.applyAbilityAoE(getPlayer(), target, damage / Axes.skullSplitterModifier, skill);
     }
 }

@@ -95,8 +95,10 @@ Skills:
         GreaterImpact_BonusDamage: 2
 
         # ArmorImpact_IncreaseLevel: Every "IncreaseLevel" the durability damage goes up with 1
+        # ArmorImpact_Chance: Chance of hitting with ArmorImpact
         # ArmorImpact_MaxPercentageDurabilityDamage: Durability damage cap for ArmorImpact, 20% means that you can never destroy a piece of armor in less than 5 hits
         ArmorImpact_IncreaseLevel: 50
+        ArmorImpact_Chance: 25.0
         ArmorImpact_MaxPercentageDurabilityDamage: 20.0
 
         # SkullSplitter_DamageModifier: Damage will get divided by this modifier

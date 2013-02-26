@@ -28,6 +28,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.SkillManagerStore;
+import com.gmail.nossr50.skills.axes.AxeManager;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.runnables.CombatXpGiver;
 import com.gmail.nossr50.skills.swords.Swords;
@@ -106,32 +107,32 @@ public final class CombatTools {
                 }
 
                 if (Permissions.skillEnabled(player, SkillType.AXES)) {
-                    McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
-                    PlayerProfile profile = mcMMOPlayer.getProfile();
-                    String playerName = player.getName();
+                    AxeManager axeManager = SkillManagerStore.getInstance().getAxeManager(player.getName());
 
-                    boolean canSkullSplit = Permissions.skullSplitter(player); //So we don't have to check the same permission twice
-                    if (profile.getToolPreparationMode(ToolType.AXE) && canSkullSplit) {
+                    if (axeManager.canActivateAbility()) {
                         SkillTools.abilityCheck(player, SkillType.AXES);
                     }
 
-                    if (Permissions.bonusDamage(player, SkillType.AXES)) {
-                        SkillManagerStore.getInstance().getAxeManager(playerName).bonusDamage(event);
+                    if (axeManager.canUseAxeMastery()) {
+                        event.setDamage(axeManager.axeMasteryCheck(event.getDamage()));
                     }
 
-                    if (!target.isDead() && Permissions.criticalStrikes(player)) {
-                        SkillManagerStore.getInstance().getAxeManager(playerName).criticalHitCheck(event, target);
+                    if (axeManager.canCriticalHit(target)) {
+                        event.setDamage(axeManager.criticalHitCheck(target, event.getDamage()));
                     }
 
-                    if (!target.isDead() && Permissions.armorImpact(player)) {
-                        SkillManagerStore.getInstance().getAxeManager(playerName).impact(event, target);
+                    if (axeManager.canImpact(target)) {
+                        axeManager.impactCheck(target);
+                    }
+                    else if (axeManager.canGreaterImpact(target)){
+                        event.setDamage(axeManager.greaterImpactCheck(target, event.getDamage()));
                     }
 
-                    if (!target.isDead() && profile.getAbilityMode(AbilityType.SKULL_SPLITTER) && canSkullSplit) {
-                        SkillManagerStore.getInstance().getAxeManager(playerName).skullSplitter(target, event.getDamage());
+                    if (axeManager.canUseSkullSplitter(target)) {
+                        axeManager.skullSplitterCheck(target, event.getDamage());
                     }
 
-                    startGainXp(mcMMOPlayer, target, SkillType.AXES);
+                    startGainXp(axeManager.getMcMMOPlayer(), target, SkillType.AXES);
                 }
             }
             else if (heldItemType == Material.AIR) {

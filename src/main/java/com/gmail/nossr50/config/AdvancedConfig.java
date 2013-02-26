@@ -65,6 +65,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getGreaterImpactBonusDamage() { return config.getInt("Skills.Axes.GreaterImpact_BonusDamage", 2); }
 
     public int getArmorImpactIncreaseLevel() { return config.getInt("Skills.Axes.ArmorImpact_IncreaseLevel", 50); }
+    public double getImpactChance() { return config.getDouble("Skills.Axes.ArmorImpact_Chance", 25.0D); }
     public double getArmorImpactMaxDurabilityDamage() { return config.getDouble("Skills.Axes.ArmorImpact_MaxPercentageDurabilityDamage", 20.0D); }
 
     public int getSkullSplitterModifier() { return config.getInt("Skills.Axes.SkullSplitter_DamagerModifier", 2); }
