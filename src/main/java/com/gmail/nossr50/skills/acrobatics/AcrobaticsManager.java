@@ -43,7 +43,7 @@ public class AcrobaticsManager extends SkillManager {
      * Handle the damage reduction and XP gain from the Dodge ability
      *
      * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage if the dodge was successful, the original event damage otherwise
+     * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public int dodgeCheck(int damage) {
         int modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
@@ -73,13 +73,13 @@ public class AcrobaticsManager extends SkillManager {
      * Handle the damage reduction and XP gain from the Roll ability
      *
      * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage if the roll was successful, the original event damage otherwise
+     * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public int rollCheck(int damage) {
         Player player = getPlayer();
 
         if (player.isSneaking() && Permissions.gracefulRoll(player)) {
-            return gracefulRollCheck(player, damage);
+            return gracefulRollCheck(damage);
         }
 
         int modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.rollThreshold);
@@ -101,13 +101,13 @@ public class AcrobaticsManager extends SkillManager {
      * Handle the damage reduction and XP gain from the Graceful Roll ability
      *
      * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage if the roll was successful, the original event damage otherwise
+     * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    private int gracefulRollCheck(Player player, int damage) {
+    private int gracefulRollCheck(int damage) {
         int modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
 
         if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.gracefulRollMaxChance, Acrobatics.gracefulRollMaxBonusLevel, Acrobatics.gracefulRollSuccessModifier)) {
-            player.sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
+            getPlayer().sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
             applyXpGain(damage * Acrobatics.rollXpModifier);
 
             return modifiedDamage;
