@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
@@ -70,9 +69,5 @@ public final class Acrobatics {
         double successChance = (maxChance / maxLevel) * Math.min(Users.getPlayer(player).getProfile().getSkillLevel(SkillType.ACROBATICS), maxLevel) * successModifier;
 
         return successChance > Misc.getRandom().nextInt(PerksUtils.handleLuckyPerks(player, SkillType.ACROBATICS));
-    }
-
-    private static void applyXpGain(Player player, int baseXp, int multiplier) {
-        Users.getPlayer(player).beginXpGain(SkillType.ACROBATICS, baseXp * multiplier);
     }
 }
