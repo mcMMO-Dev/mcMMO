@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.archery;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -14,7 +13,7 @@ public class TrackedEntity implements Runnable {
 
     protected TrackedEntity(LivingEntity livingEntity) {
         this.livingEntity = livingEntity;
-        this.scheduler = Bukkit.getScheduler();
+        this.scheduler = mcMMO.p.getServer().getScheduler();
         this.taskId = scheduler.scheduleSyncRepeatingTask(mcMMO.p, this, 12000, 12000);
     }
 
