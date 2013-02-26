@@ -30,22 +30,50 @@ public class PartyItemShareCommand implements CommandExecutor {
             if (args[1].equalsIgnoreCase("none") || args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
                 handleChangingShareMode(ShareMode.NONE);
             }
-//            else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even")) {
-//                handleChangingShareMode(ShareMode.EQUAL);
-//            }
+            else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even")) {
+                handleChangingShareMode(ShareMode.EQUAL);
+            }
             else if (args[1].equalsIgnoreCase("random")) {
                 handleChangingShareMode(ShareMode.RANDOM);
             }
             else {
-//                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | EQUAL | RANDOM>"));
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | RANDOM>"));
+                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | EQUAL | RANDOM>"));
             }
 
             return true;
+            
+        case 3:
+            playerParty = Users.getPlayer((Player) sender).getParty();
+            boolean toggle = false;
+
+            if (args[2].equalsIgnoreCase("true")  || args[2].equalsIgnoreCase("on")|| args[2].equalsIgnoreCase("enabled")) {
+                toggle = true;
+            }
+            else if (args[2].equalsIgnoreCase("false")  || args[2].equalsIgnoreCase("off")|| args[2].equalsIgnoreCase("disabled")) {
+                toggle = false;
+            }
+
+            if (args[1].equalsIgnoreCase("loot")) {
+                playerParty.setSharingLootDrops(toggle);
+            }
+            else if (args[1].equalsIgnoreCase("mining")) {
+                playerParty.setSharingMiningDrops(toggle);
+            }
+            else if (args[1].equalsIgnoreCase("herbalism")) {
+                playerParty.setSharingHerbalismDrops(toggle);
+            }
+            else if (args[1].equalsIgnoreCase("woodcutting")) {
+                playerParty.setSharingWoodcuttingDrops(toggle);
+            }
+            else {
+                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting> <true | false>"));
+            }
+            notifyToggleItemShareCategory((Player) sender, args, toggle);
+            return true;
 
         default:
-//          sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | EQUAL | RANDOM>"));
-          sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | RANDOM>"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | EQUAL | RANDOM>"));
+            sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting> <true | false>"));
             return true;
         }
     }
@@ -55,6 +83,17 @@ public class PartyItemShareCommand implements CommandExecutor {
 
         for (Player member : playerParty.getOnlineMembers()) {
             member.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Item"), LocaleLoader.getString("Party.ShareMode." + StringUtils.getCapitalized(mode.toString()))));
+        }
+    }
+
+    private void notifyToggleItemShareCategory(Player sender, String[] args, boolean toggle) {
+        String state = "disabled";
+        if (toggle) {
+            state = "enabled";
+        }
+
+        for (Player member : playerParty.getOnlineMembers()) {
+            member.sendMessage(LocaleLoader.getString("Commands.Party.ToggleShareCategory", StringUtils.getCapitalized(args[1]), state));
         }
     }
 }

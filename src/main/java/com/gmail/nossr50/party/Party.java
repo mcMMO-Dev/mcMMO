@@ -14,6 +14,10 @@ public class Party {
     private boolean locked;
     private ShareHandler.ShareMode xpShareMode = ShareHandler.ShareMode.NONE;
     private ShareHandler.ShareMode itemShareMode = ShareHandler.ShareMode.NONE;
+    private boolean shareLootDrops = true;
+    private boolean shareMiningDrops = true;
+    private boolean shareHerbalismDrops = true;
+    private boolean shareWoodcuttingDrops = true;
 
     public List<OfflinePlayer> getMembers() {
         return members;
@@ -47,6 +51,39 @@ public class Party {
         return locked;
     }
 
+    public boolean sharingLootDrops() {
+        return shareLootDrops;
+    }
+
+    public boolean sharingMiningDrops() {
+        return shareMiningDrops;
+    }
+
+    public boolean sharingHerbalismDrops() {
+        return shareHerbalismDrops;
+    }
+
+    public boolean sharingWoodcuttingDrops() {
+        return shareWoodcuttingDrops;
+    }
+
+    public List<String> getItemShareCategories() { //TODO Locale the category names!
+        List<String> shareCategories = new ArrayList<String>();
+        if (sharingLootDrops()) {
+            shareCategories.add("Loot");
+        }
+        if (sharingMiningDrops()) {
+            shareCategories.add("Mining");
+        }
+        if (sharingHerbalismDrops()) {
+            shareCategories.add("Herbalism");
+        }
+        if (sharingWoodcuttingDrops()) {
+            shareCategories.add("Woodcutting");
+        }
+        return shareCategories;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -77,5 +114,21 @@ public class Party {
 
     public ShareHandler.ShareMode getItemShareMode() {
         return itemShareMode;
+    }
+
+    public void setSharingLootDrops(boolean enabled) {
+        this.shareLootDrops = enabled;
+    }
+
+    public void setSharingMiningDrops(boolean enabled) {
+        this.shareMiningDrops = enabled;
+    }
+
+    public void setSharingHerbalismDrops(boolean enabled) {
+        this.shareHerbalismDrops = enabled;
+    }
+
+    public void setSharingWoodcuttingDrops(boolean enabled) {
+        this.shareWoodcuttingDrops = enabled;
     }
 }

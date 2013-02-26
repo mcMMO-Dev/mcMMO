@@ -8,8 +8,10 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.ItemWeightsConfig;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Users;
 
@@ -34,6 +36,9 @@ public final class ShareHandler {
 
     private ShareHandler() {}
 
+    private static List<Player> nearMembers;
+    private static int partySize;
+
     /**
      * Distribute Xp amongst party members.
      *
@@ -48,7 +53,7 @@ public final class ShareHandler {
         switch (party.getXpShareMode()) {
         case EQUAL:
             Player player = mcMMOPlayer.getPlayer();
-            List<Player> nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
+            nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
 
             if (nearMembers.isEmpty()) {
                 return false;
@@ -86,38 +91,95 @@ public final class ShareHandler {
         Item item = event.getItem();
         ItemStack itemStack = item.getItemStack();
         Party party = mcMMOPlayer.getParty();
+        Player player = mcMMOPlayer.getPlayer();
+        Player winningPlayer = null;
+
+        ItemStack newStack = itemStack.clone();
+        newStack.setAmount(1);
+
+        if (ItemChecks.isMobDrop(itemStack) && !party.sharingLootDrops()) {
+            return false;
+        }
+        else if (ItemChecks.isMiningDrop(itemStack) && !party.sharingMiningDrops()) {
+            return false;
+        }
+        else if (ItemChecks.isHerbalismDrop(itemStack) && !party.sharingHerbalismDrops()) {
+            return false;
+        }
+        else if (ItemChecks.isWoodcuttingDrop(itemStack) && !party.sharingWoodcuttingDrops()) {
+            return false;
+        }
 
         switch (party.getItemShareMode()) {
         case EQUAL:
-
-            return false;
-        case RANDOM:
-            Player player = mcMMOPlayer.getPlayer();
-            List<Player> nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
+            McMMOPlayer mcMMOTarget;
+            nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
 
             if (nearMembers.isEmpty()) {
                 return false;
             }
-            int partySize = nearMembers.size() + 1;
+            nearMembers.add(player);
+            partySize = nearMembers.size();
+
+            event.setCancelled(true);
+            item.remove();
+            int itemWeight = ItemWeightsConfig.getInstance().getItemWeight(itemStack.getType());
+
+            for (int i = 0; i < itemStack.getAmount(); i++) {
+                int highestRoll = 0;
+
+                for (Player member : nearMembers) {
+                    McMMOPlayer mcMMOMember = Users.getPlayer(member);
+                    int itemShareModifier = mcMMOMember.getItemShareModifier();
+                    int diceRoll = Misc.getRandom().nextInt(itemShareModifier);
+
+                    if (diceRoll > highestRoll) {
+                        highestRoll = diceRoll;
+
+                        if (winningPlayer != null) {
+                            McMMOPlayer mcMMOWinning = Users.getPlayer(winningPlayer);
+                            mcMMOWinning.setItemShareModifier(mcMMOWinning.getItemShareModifier() + itemWeight);
+                        }
+
+                        winningPlayer = member;
+                    }
+                    else {
+                        mcMMOMember.setItemShareModifier(itemShareModifier + itemWeight);
+                    }
+                }
+
+                mcMMOTarget = Users.getPlayer(winningPlayer);
+                mcMMOTarget.setItemShareModifier(mcMMOTarget.getItemShareModifier() - itemWeight);
+
+                if (winningPlayer.getInventory().addItem(newStack).size() != 0) {
+                    winningPlayer.getWorld().dropItemNaturally(winningPlayer.getLocation(), newStack);
+                }
+                winningPlayer.updateInventory();
+            }
+            return true;
+        case RANDOM:
+            nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
+
+            if (nearMembers.isEmpty()) {
+                return false;
+            }
+            partySize = nearMembers.size() + 1;
 
             event.setCancelled(true);
             item.remove();
 
-            Player targetPlayer;
-
-            ItemStack newStack = itemStack.clone();
-            newStack.setAmount(1);
-
-            //TODO Improve this, if possible make this faster.
             for (int i = 0; i < itemStack.getAmount(); i++) {
                 int randomMember = Misc.getRandom().nextInt(partySize);
                 if (randomMember >= nearMembers.size()) {
-                    targetPlayer = player;
+                    winningPlayer = player;
                 } else {
-                    targetPlayer = nearMembers.get(randomMember);
+                    winningPlayer = nearMembers.get(randomMember);
                 }
-                targetPlayer.getInventory().addItem(newStack);
-                targetPlayer.updateInventory();
+
+                if (winningPlayer.getInventory().addItem(newStack).size() != 0) {
+                    winningPlayer.getWorld().dropItemNaturally(winningPlayer.getLocation(), newStack);
+                }
+                winningPlayer.updateInventory();
             }
             return true;
         case NONE:
@@ -126,4 +188,3 @@ public final class ShareHandler {
         }
     }
 }
-

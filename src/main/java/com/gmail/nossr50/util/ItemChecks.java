@@ -579,15 +579,22 @@ public class ItemChecks {
         case POTATO:
         case COCOA:
         case NETHER_WARTS:
-        case APPLE:
         case BROWN_MUSHROOM:
         case RED_MUSHROOM:
         case RED_ROSE:
         case YELLOW_FLOWER:
         case CACTUS:
         case SUGAR_CANE:
-            //TODO Add the rest
+        case MELON:
+        case PUMPKIN:
+        case WATER_LILY:
+        case VINE:
             return true;
+
+        case INK_SACK:
+            if (is.getData().getData() == DyeColor.BROWN.getDyeData()) {
+                return true;
+            }
 
         default:
             return false;
@@ -635,6 +642,7 @@ public class ItemChecks {
         case LOG:
         case LEAVES:
         case SAPLING:
+        case APPLE:
             return true;
 
         default:

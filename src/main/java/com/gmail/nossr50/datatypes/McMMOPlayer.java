@@ -28,6 +28,7 @@ public class McMMOPlayer {
     private boolean ptpEnabled = true;
     private boolean ptpConfirmRequired = Config.getInstance().getPTPCommandConfirmRequired();
     private long ptpTimeout;
+    private int itemShareModifier;
     private boolean partyChatMode;
     private boolean adminChatMode;
 
@@ -240,6 +241,20 @@ public class McMMOPlayer {
 
     public void actualizePtpTimeout() {
         ptpTimeout = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+    }
+
+    public int getItemShareModifier() {
+        if (itemShareModifier < 10) {
+            setItemShareModifier(10);
+        }
+        return itemShareModifier;
+    }
+
+    public void setItemShareModifier(int modifier) {
+        if (modifier < 10) {
+            modifier = 10;
+        }
+        itemShareModifier = modifier;
     }
 
     public boolean getAdminChatMode() {

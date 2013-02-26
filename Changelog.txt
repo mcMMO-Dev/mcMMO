@@ -41,6 +41,9 @@ Version 1.4.00-dev
  + Added "Holy Hound" ability to Taming
  + Added "Shroom Thumb" ability to Herbalism
  + Added child.yml config file to choose parents for child skills
+ + Added '/party itemshare <NONE | EQUAL | RANDOM>' command to choose party item share mode
+ + Added '/party itemshare <loot | mining | herbalism | woodcutting> <true | false>' command to control items that are shared
+ + Added itemweights.yml file to determine which items are more valuable for party itemshare
  = Fixed Green Thumb on wheat not working properly at rank 4
  = Fixed Green Thumb and Green Terra consuming twice the amount of seed needed
  = Fixed Green Terra not also checking Green Thumb permissions

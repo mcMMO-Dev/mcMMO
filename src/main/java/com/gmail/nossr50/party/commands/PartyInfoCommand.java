@@ -12,6 +12,7 @@ import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.util.Users;
 
 public class PartyInfoCommand implements CommandExecutor {
@@ -51,6 +52,7 @@ public class PartyInfoCommand implements CommandExecutor {
     private void displayShareModeInfo() {
         boolean xpShareEnabled = Config.getInstance().getExpShareEnabled();
         boolean itemShareEnabled = Config.getInstance().getItemShareEnabled();
+        boolean itemSharingActive = playerParty.getItemShareMode() != ShareHandler.ShareMode.NONE;
 
         if (!xpShareEnabled && !itemShareEnabled) {
             return;
@@ -73,6 +75,9 @@ public class PartyInfoCommand implements CommandExecutor {
         }
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.ShareMode") + expShareInfo + separator + itemShareInfo);
+        if (itemSharingActive) {
+            player.sendMessage(LocaleLoader.getString("Commands.Party.ItemShareCategories", playerParty.getItemShareCategories()));
+        }
     }
 
     private void displayPartyHeader() {
