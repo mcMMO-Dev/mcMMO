@@ -72,9 +72,9 @@ public class ArcheryManager extends SkillManager {
     /**
      * Handle the effects of the Daze ability
      *
-     * @param defender The player being affected by Daze
+     * @param defender The player being affected by the ability
      * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage if the dodge was successful, the original event damage otherwise
+     * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public int dazeCheck(Player defender, int damage) {
         Player attacker = getPlayer();
