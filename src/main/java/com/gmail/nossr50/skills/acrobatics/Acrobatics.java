@@ -1,17 +1,7 @@
 package com.gmail.nossr50.skills.acrobatics;
 
-import org.bukkit.Material;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LightningStrike;
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.skills.utilities.PerksUtils;
-import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
 public final class Acrobatics {
     public static double dodgeMaxChance = AdvancedConfig.getInstance().getDodgeChanceMax();
@@ -36,38 +26,11 @@ public final class Acrobatics {
 
     private Acrobatics() {};
 
-    public static boolean canRoll(Player player) {
-        return (player.getItemInHand().getType() != Material.ENDER_PEARL) && !(afkLevelingDisabled && player.isInsideVehicle()) && Permissions.roll(player);
-    }
-
-    public static boolean canDodge(Player player, Entity damager) {
-        if (Permissions.dodge(player)) {
-            if (damager instanceof Player && SkillType.ACROBATICS.getPVPEnabled()) {
-                return true;
-            }
-            else if (!(damager instanceof Player) && SkillType.ACROBATICS.getPVEEnabled() && !(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    protected static boolean isFatal(Player player, int damage) {
-        return player.getHealth() - damage < 1;
-    }
-
     protected static int calculateModifiedDodgeDamage(int damage, int damageModifier) {
         return Math.max(damage / damageModifier, 1);
     }
 
     protected static int calculateModifiedRollDamage(int damage, int damageThreshold) {
         return Math.max(damage - damageThreshold, 0);
-    }
-
-    protected static boolean isSuccessfulRoll(Player player, double maxChance, int maxLevel, int successModifier) {
-        double successChance = (maxChance / maxLevel) * Math.min(Users.getPlayer(player).getProfile().getSkillLevel(SkillType.ACROBATICS), maxLevel) * successModifier;
-
-        return successChance > Misc.getRandom().nextInt(PerksUtils.handleLuckyPerks(player, SkillType.ACROBATICS));
     }
 }

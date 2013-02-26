@@ -1,5 +1,8 @@
 package com.gmail.nossr50.skills.acrobatics;
 
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
@@ -17,6 +20,25 @@ public class AcrobaticsManager extends SkillManager {
         super(mcMMOPlayer, SkillType.ACROBATICS);
     }
 
+    public boolean canRoll() {
+        Player player = getPlayer();
+
+        return (player.getItemInHand().getType() != Material.ENDER_PEARL) && !(Acrobatics.afkLevelingDisabled && player.isInsideVehicle()) && Permissions.roll(player);
+    }
+
+    public boolean canDodge(Entity damager) {
+        if (Permissions.dodge(getPlayer())) {
+            if (damager instanceof Player && SkillType.ACROBATICS.getPVPEnabled()) {
+                return true;
+            }
+            else if (!(damager instanceof Player) && SkillType.ACROBATICS.getPVEEnabled() && !(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Handle the damage reduction and XP gain from the Dodge ability
      *
@@ -27,7 +49,7 @@ public class AcrobaticsManager extends SkillManager {
         int modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
         Player player = getPlayer();
 
-        if (!Acrobatics.isFatal(player, modifiedDamage) && SkillTools.activationSuccessful(player, skill, Acrobatics.dodgeMaxChance, Acrobatics.dodgeMaxBonusLevel)) {
+        if (!isFatal(modifiedDamage) && SkillTools.activationSuccessful(player, skill, Acrobatics.dodgeMaxChance, Acrobatics.dodgeMaxBonusLevel)) {
             ParticleEffectUtils.playDodgeEffect(player);
 
             PlayerProfile playerProfile = getProfile();
@@ -62,32 +84,46 @@ public class AcrobaticsManager extends SkillManager {
 
         int modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.rollThreshold);
 
-        if (!Acrobatics.isFatal(player, modifiedDamage) && Acrobatics.isSuccessfulRoll(player, Acrobatics.rollMaxChance, Acrobatics.rollMaxBonusLevel, 1)) {
+        if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.rollMaxChance, Acrobatics.rollMaxBonusLevel, 1)) {
             player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
             applyXpGain(damage * Acrobatics.rollXpModifier);
 
             return modifiedDamage;
         }
-        else if (!Acrobatics.isFatal(player, damage)) {
+        else if (!isFatal(damage)) {
             applyXpGain(damage * Acrobatics.fallXpModifier);
         }
 
         return damage;
     }
 
+    /**
+     * Handle the damage reduction and XP gain from the Graceful Roll ability
+     *
+     * @param damage The amount of damage initially dealt by the event
+     * @return the modified event damage if the roll was successful, the original event damage otherwise
+     */
     private int gracefulRollCheck(Player player, int damage) {
         int modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
 
-        if (!Acrobatics.isFatal(player, modifiedDamage) && Acrobatics.isSuccessfulRoll(player, Acrobatics.gracefulRollMaxChance, Acrobatics.gracefulRollMaxBonusLevel, Acrobatics.gracefulRollSuccessModifier)) {
+        if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.gracefulRollMaxChance, Acrobatics.gracefulRollMaxBonusLevel, Acrobatics.gracefulRollSuccessModifier)) {
             player.sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
             applyXpGain(damage * Acrobatics.rollXpModifier);
 
             return modifiedDamage;
         }
-        else if (!Acrobatics.isFatal(player, damage)) {
+        else if (!isFatal(damage)) {
             applyXpGain(damage * Acrobatics.fallXpModifier);
         }
 
         return damage;
+    }
+
+    private boolean isSuccessfulRoll(double maxChance, int maxLevel, int successModifier) {
+        return ((maxChance / maxLevel) * Math.min(getSkillLevel(), maxLevel) * successModifier) > Misc.getRandom().nextInt(activationChance);
+    }
+
+    private boolean isFatal(int damage) {
+        return getPlayer().getHealth() - damage < 1;
     }
 }

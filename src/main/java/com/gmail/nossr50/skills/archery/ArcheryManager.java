@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.archery;
 
 import org.bukkit.Location;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -12,11 +13,28 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class ArcheryManager extends SkillManager {
     public ArcheryManager (McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.ARCHERY);
+    }
+
+    public boolean canDaze(LivingEntity target) {
+        return target instanceof Player && Permissions.daze(getPlayer());
+    }
+
+    public boolean canSkillShot() {
+        Player player = getPlayer();
+
+        return SkillTools.unlockLevelReached(player, skill, Archery.skillShotIncreaseLevel) && Permissions.bonusDamage(player, skill);
+    }
+
+    public boolean canTrackArrows() {
+        Player player = getPlayer();
+
+        return !(player.getItemInHand().containsEnchantment(Enchantment.ARROW_INFINITE)) && Permissions.arrowRetrieval(player);
     }
 
     /**

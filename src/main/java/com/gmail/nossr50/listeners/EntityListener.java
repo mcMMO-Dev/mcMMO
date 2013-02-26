@@ -33,7 +33,6 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.SkillManagerStore;
-import com.gmail.nossr50.skills.acrobatics.Acrobatics;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
@@ -179,7 +178,7 @@ public class EntityListener implements Listener {
 
             switch (cause) {
             case FALL:
-                if (Acrobatics.canRoll(player)) {
+                if (SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).canRoll()) {
                     event.setDamage(SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).rollCheck(event.getDamage()));
 
                     if (event.getDamage() == 0) {

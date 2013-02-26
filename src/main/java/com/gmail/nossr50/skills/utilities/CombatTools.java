@@ -28,8 +28,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.skills.SkillManagerStore;
-import com.gmail.nossr50.skills.acrobatics.Acrobatics;
-import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.runnables.CombatXpGiver;
 import com.gmail.nossr50.skills.swords.Swords;
@@ -252,7 +250,7 @@ public final class CombatTools {
 
             ItemStack heldItem = player.getItemInHand();
 
-            if (Acrobatics.canDodge(player, damager)) {
+            if (SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).canDodge(damager)) {
                 event.setDamage(SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).dodgeCheck(event.getDamage()));
             }
 
@@ -284,7 +282,7 @@ public final class CombatTools {
         if (Permissions.skillEnabled(shooter, SkillType.ARCHERY)) {
             String playerName = shooter.getName();
 
-            if (Archery.canSkillShot(shooter)) {
+            if (SkillManagerStore.getInstance().getArcheryManager(playerName).canSkillShot()) {
                 event.setDamage(SkillManagerStore.getInstance().getArcheryManager(playerName).skillShotCheck(event.getDamage()));
             }
 
@@ -292,11 +290,11 @@ public final class CombatTools {
                 SkillManagerStore.getInstance().getUnarmedManager(((Player) target).getName()).deflectCheck(event);
             }
 
-            if (Archery.canDaze(shooter, target)) {
+            if (SkillManagerStore.getInstance().getArcheryManager(playerName).canDaze(target)) {
                 event.setDamage(SkillManagerStore.getInstance().getArcheryManager(playerName).dazeCheck((Player) target, event.getDamage()));
             }
 
-            if (Archery.canTrackArrows(shooter)) {
+            if (SkillManagerStore.getInstance().getArcheryManager(playerName).canTrackArrows()) {
                 SkillManagerStore.getInstance().getArcheryManager(playerName).trackArrows(target);
             }
 

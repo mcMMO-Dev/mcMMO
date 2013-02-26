@@ -5,16 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 
 public class Archery {
     private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
@@ -31,18 +26,6 @@ public class Archery {
     public static int dazeModifier = AdvancedConfig.getInstance().getDazeModifier();
 
     public static double distanceXpModifer = 0.025;
-
-    public static boolean canDaze(Player player, LivingEntity target) {
-        return target instanceof Player && Permissions.daze(player);
-    }
-
-    public static boolean canSkillShot(Player player) {
-        return SkillTools.unlockLevelReached(player, SkillType.ARCHERY, skillShotIncreaseLevel) && Permissions.bonusDamage(player, SkillType.ARCHERY);
-    }
-
-    public static boolean canTrackArrows(Player player) {
-        return !(player.getItemInHand().containsEnchantment(Enchantment.ARROW_INFINITE)) && Permissions.arrowRetrieval(player);
-    }
 
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
         for (TrackedEntity trackedEntity : trackedEntities) {
