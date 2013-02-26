@@ -22,7 +22,6 @@ public class ExcavationManager extends SkillManager {
      * Process treasure drops & XP gain for Excavation.
      *
      * @param blockState The {@link BlockState} to check ability activation for
-     * @param player The {@link Player} using this ability
      */
     public void excavationBlockCheck(BlockState blockState) {
         int xp = Excavation.getBlockXP(blockState);
@@ -50,7 +49,6 @@ public class ExcavationManager extends SkillManager {
      * Process the Giga Drill Breaker ability.
      *
      * @param blockState The {@link BlockState} to check ability activation for
-     * @param player The {@link Player} using this ability
      */
     public void gigaDrillBreaker(BlockState blockState) {
         excavationBlockCheck(blockState);
