@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.Effect;
-import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -35,7 +33,7 @@ public class BleedTimer implements Runnable {
         for (Entry<LivingEntity, Integer> entry : bleedList.entrySet()) {
             LivingEntity entity = entry.getKey();
 
-            if (entry.getValue() <= 0 || entity.isDead()) {
+            if (entry.getValue() <= 0 || !entity.isValid()) {
                 remove(entity);
                 break;
             }
@@ -64,7 +62,7 @@ public class BleedTimer implements Runnable {
             else {
                 CombatTools.dealDamage(entity, 2);
                 entry.setValue(entry.getValue() - 1);
-                entity.getWorld().playEffect(entity.getEyeLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+                ParticleEffectUtils.playBleedEffect(entity);
             }
         }
 
@@ -127,44 +125,27 @@ public class BleedTimer implements Runnable {
         if (lock) {
             if (bleedAddList.containsKey(entity)) {
                 newTicks += bleedAddList.get(entity);
-
-                if (newTicks > MAX_BLEED_TICKS) {
-                    newTicks = MAX_BLEED_TICKS;
-                }
-
-                bleedAddList.put(entity, newTicks);
+                bleedAddList.put(entity, Math.min(newTicks, MAX_BLEED_TICKS));
             }
             else {
-                if (newTicks > MAX_BLEED_TICKS) {
-                    newTicks = MAX_BLEED_TICKS;
-                }
-
-                bleedAddList.put(entity, newTicks);
+                bleedAddList.put(entity, Math.min(newTicks, MAX_BLEED_TICKS));
             }
         }
         else {
             if (bleedList.containsKey(entity)) {
                 newTicks += bleedList.get(entity);
-
-                if (newTicks > MAX_BLEED_TICKS) {
-                    newTicks = MAX_BLEED_TICKS;
-                }
-
-                bleedList.put(entity, newTicks);
+                bleedList.put(entity, Math.min(newTicks, MAX_BLEED_TICKS));
 
                 // Need to find a better way to ensure that the entity stays in bleedList
                 // when some ticks are added but already marked for removal.
                 // Suggestion: Why not use Iterator.remove() and drop the lock boolean?
+                // TODO: Actually implement this suggestion?
                 if (bleedRemoveList.contains(entity)) {
                     bleedRemoveList.remove(entity);
                 }
             }
             else {
-                if (newTicks > MAX_BLEED_TICKS) {
-                    newTicks = MAX_BLEED_TICKS;
-                }
-
-                bleedList.put(entity, newTicks);
+                bleedList.put(entity, Math.min(newTicks, MAX_BLEED_TICKS));
             }
         }
     }

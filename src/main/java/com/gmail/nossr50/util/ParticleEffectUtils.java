@@ -20,12 +20,12 @@ public final class ParticleEffectUtils {
 
     private ParticleEffectUtils() {};
 
-    public static void playBleedEffect(Player player) {
+    public static void playBleedEffect(LivingEntity livingEntity) {
         if (!Config.getInstance().getBleedEffectEnabled()) {
             return;
         }
 
-        player.getWorld().playEffect(player.getEyeLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
+        livingEntity.getWorld().playEffect(livingEntity.getEyeLocation(), Effect.STEP_SOUND, Material.REDSTONE_WIRE);
     }
 
     public static void playDodgeEffect(Player player) {
