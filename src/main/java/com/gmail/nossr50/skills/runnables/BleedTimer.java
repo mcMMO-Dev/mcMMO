@@ -27,7 +27,10 @@ public class BleedTimer implements Runnable {
                 continue;
             }
 
+            int damage = 0;
+
             if (entity instanceof Player) {
+                damage = 1;
                 Player player = (Player) entity;
 
                 if (!player.isOnline()) {
@@ -35,21 +38,30 @@ public class BleedTimer implements Runnable {
                 }
 
                 // Never kill with Bleeding
-                if (player.getHealth() - 1 > 0) {
-                    CombatTools.dealDamage(player, 1);
+                if (player.getHealth() - damage > 0) {
+                    CombatTools.dealDamage(player, damage);
                     ParticleEffectUtils.playBleedEffect(entity);
                 }
 
-                entry.setValue(entry.getValue() - 1);
+                entry.setValue(entry.getValue() - damage);
 
                 if (entry.getValue() <= 0) {
                     player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding.Stopped"));
                 }
             }
             else {
-                CombatTools.dealDamage(entity, 2);
+                damage = 2;
+
+                // Anticipate the entity's death to prevent CME because of our EntityDeathEvent listener
+                if (entity.getHealth() - damage > 0) {
+                    entry.setValue(entry.getValue() - 1);
+                }
+                else {
+                    bleedIterator.remove();
+                }
+
+                CombatTools.dealDamage(entity, damage);
                 ParticleEffectUtils.playBleedEffect(entity);
-                entry.setValue(entry.getValue() - 1);
             }
         }
     }
