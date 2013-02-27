@@ -389,7 +389,7 @@ public class EntityListener implements Listener {
                 case MUSHROOM_SOUP: /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
                 case PUMPKIN_PIE:   /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
                     if (Permissions.farmersDiet(player)) {
-                        event.setFoodLevel(Herbalism.farmersDiet(player, Herbalism.farmersDietRankLevel1, newFoodLevel));
+                        event.setFoodLevel(SkillManagerStore.getInstance().getHerbalismManager(player.getName()).farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
                     }
                     return;
 
@@ -398,7 +398,7 @@ public class EntityListener implements Listener {
                 case POISONOUS_POTATO:  /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                 case POTATO_ITEM:       /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                     if (Permissions.farmersDiet(player)) {
-                        event.setFoodLevel(Herbalism.farmersDiet(player, Herbalism.farmersDietRankLevel2, newFoodLevel));
+                        event.setFoodLevel(SkillManagerStore.getInstance().getHerbalismManager(player.getName()).farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
                     }
                     return;
 

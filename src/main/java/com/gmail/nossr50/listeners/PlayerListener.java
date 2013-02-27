@@ -35,7 +35,7 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.fishing.FishingManager;
-import com.gmail.nossr50.skills.herbalism.Herbalism;
+import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
@@ -354,17 +354,19 @@ public class PlayerListener implements Listener {
             }
 
             /* GREEN THUMB CHECK */
-            if (heldItem.getType() == Material.SEEDS && BlockChecks.canMakeMossy(blockState)) {
+            HerbalismManager herbalismManager = SkillManagerStore.getInstance().getHerbalismManager(player.getName());
+
+            if (herbalismManager.canGreenThumbBlock(blockState)) {
                 player.setItemInHand(new ItemStack(Material.SEEDS, heldItem.getAmount() - 1));
 
-                if (Herbalism.processGreenThumbBlocks(blockState, player) && SkillTools.blockBreakSimulate(block, player, false)) {
+                if (herbalismManager.processGreenThumbBlocks(blockState) && SkillTools.blockBreakSimulate(block, player, false)) {
                     blockState.update(true);
                 }
             }
 
             /* SHROOM THUMB CHECK */
-            else if ((heldItem.getType() == Material.RED_MUSHROOM || heldItem.getType() == Material.BROWN_MUSHROOM) && BlockChecks.canMakeShroomy(blockState)) {
-                if (Herbalism.processShroomThumb(blockState, player) && SkillTools.blockBreakSimulate(block, player, false)) {
+            else if (herbalismManager.canUseShroomThumb(blockState)) {
+                if (herbalismManager.processShroomThumb(blockState) && SkillTools.blockBreakSimulate(block, player, false)) {
                     blockState.update(true);
                 }
             }

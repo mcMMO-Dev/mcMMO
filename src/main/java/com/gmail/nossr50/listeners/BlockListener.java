@@ -31,7 +31,7 @@ import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.runnables.StickyPistonTracker;
 import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
-import com.gmail.nossr50.skills.herbalism.Herbalism;
+import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
@@ -154,8 +154,10 @@ public class BlockListener implements Listener {
 
         /* HERBALISM */
         if (BlockChecks.affectedByGreenTerra(blockState)) {
+            HerbalismManager herbalismManager = SkillManagerStore.getInstance().getHerbalismManager(player.getName());
+
             /* Green Terra */
-            if (profile.getToolPreparationMode(ToolType.HOE) && Permissions.greenTerra(player)) {
+            if (herbalismManager.canActivateAbility()) {
                 SkillTools.abilityCheck(player, SkillType.HERBALISM);
             }
 
@@ -166,11 +168,11 @@ public class BlockListener implements Listener {
             if (Permissions.skillEnabled(player, SkillType.HERBALISM)) {
 
                 //Double drops
-                Herbalism.herbalismBlockCheck(blockState, player);
+                herbalismManager.herbalismBlockCheck(blockState);
 
                 //Triple drops
-                if (profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
-                    Herbalism.herbalismBlockCheck(blockState, player);
+                if (herbalismManager.canGreenTerraPlant()) {
+                    herbalismManager.herbalismBlockCheck(blockState);
                 }
             }
         }
@@ -234,11 +236,12 @@ public class BlockListener implements Listener {
             return;
         }
 
+        String playerName = player.getName();
         BlockState blockState = event.getBlock().getState();
         ItemStack heldItem = player.getItemInHand();
 
-        if (Permissions.hylianLuck(player) && ItemChecks.isSword(heldItem)) {
-            if (Herbalism.processHylianLuck(blockState, player)) {
+        if (SkillManagerStore.getInstance().getHerbalismManager(playerName).canUseHylianLuck()) {
+            if (SkillManagerStore.getInstance().getHerbalismManager(playerName).processHylianLuck(blockState)) {
                 blockState.update(true);
                 event.setCancelled(true);
             }
@@ -334,6 +337,7 @@ public class BlockListener implements Listener {
             return;
         }
 
+        String playerName = player.getName();
         McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
         PlayerProfile profile = mcMMOPlayer.getProfile();
         ItemStack heldItem = player.getItemInHand();
@@ -345,9 +349,9 @@ public class BlockListener implements Listener {
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        if (profile.getAbilityMode(AbilityType.GREEN_TERRA) && BlockChecks.canMakeMossy(blockState)) {
-            if (Herbalism.processGreenTerra(blockState, player)) {
-                blockState.update();
+        if (SkillManagerStore.getInstance().getHerbalismManager(playerName).canGreenTerraBlock(blockState)) {
+            if (SkillManagerStore.getInstance().getHerbalismManager(playerName).processGreenTerra(blockState)) {
+                blockState.update(true);
             }
         }
         else if (profile.getAbilityMode(AbilityType.BERSERK)) {

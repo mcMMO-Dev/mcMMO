@@ -7,6 +7,7 @@ import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxeManager;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
+import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
@@ -22,6 +23,7 @@ public class SkillManagerStore {
     private HashMap<String, AxeManager> axeManagers = new HashMap<String, AxeManager>();
     private HashMap<String, ExcavationManager> excavationManagers = new HashMap<String, ExcavationManager>();
     private HashMap<String, FishingManager> fishingManagers = new HashMap<String, FishingManager>();
+    private HashMap<String, HerbalismManager> herbalismManagers = new HashMap<String, HerbalismManager>();
     private HashMap<String, MiningManager> miningManagers = new HashMap<String, MiningManager>();
     private HashMap<String, SmeltingManager> smeltingManagers = new HashMap<String, SmeltingManager>();
     private HashMap<String, SwordsManager> swordsManagers = new HashMap<String, SwordsManager>();
@@ -74,6 +76,14 @@ public class SkillManagerStore {
         }
  
         return fishingManagers.get(playerName);
+    }
+
+    public HerbalismManager getHerbalismManager(String playerName) {
+        if (!herbalismManagers.containsKey(playerName)) {
+            herbalismManagers.put(playerName, new HerbalismManager(Users.getPlayer(playerName)));
+        }
+ 
+        return herbalismManagers.get(playerName);
     }
 
     public MiningManager getMiningManager(String playerName) {
