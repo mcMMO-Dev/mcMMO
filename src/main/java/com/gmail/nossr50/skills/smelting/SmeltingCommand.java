@@ -1,7 +1,9 @@
 package com.gmail.nossr50.skills.smelting;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillCommand;
+import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Permissions;
 
@@ -11,7 +13,7 @@ public class SmeltingCommand extends SkillCommand {
     private String secondSmeltChanceLucky;
     private String fluxMiningChance;
     private String fluxMiningChanceLucky;
-    private String vanillaXPModifier;
+    private int vanillaXPModifier;
 
     private boolean canFuelEfficiency;
     private boolean canSecondSmelt;
@@ -38,21 +40,7 @@ public class SmeltingCommand extends SkillCommand {
         fluxMiningChanceLucky = fluxMiningStrings[1];
 
         //VANILLA XP BOOST
-        if (skillValue >= Smelting.vanillaXPBoostRank5Level) {
-            vanillaXPModifier = String.valueOf(Smelting.vanillaXPBoostRank5Multiplier);
-        }
-        else if (skillValue >= Smelting.vanillaXPBoostRank4Level) {
-            vanillaXPModifier = String.valueOf(Smelting.vanillaXPBoostRank4Multiplier);
-        }
-        else if (skillValue >= Smelting.vanillaXPBoostRank3Level) {
-            vanillaXPModifier = String.valueOf(Smelting.vanillaXPBoostRank3Multiplier);
-        }
-        else if (skillValue >= Smelting.vanillaXPBoostRank2Level) {
-            vanillaXPModifier = String.valueOf(Smelting.vanillaXPBoostRank2Multiplier);
-        }
-        else {
-            vanillaXPModifier = String.valueOf(Smelting.vanillaXPBoostRank1Multiplier);
-        }
+        vanillaXPModifier = SkillManagerStore.getInstance().getSmeltingManager(player.getName()).getVanillaXpMultiplier();
     }
 
     @Override
@@ -110,8 +98,8 @@ public class SmeltingCommand extends SkillCommand {
         }
 
         if (canVanillaXPBoost) {
-            if (skillValue < Smelting.vanillaXPBoostRank1Level) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Smelting.Ability.Locked.0", Smelting.vanillaXPBoostRank1Level)));
+            if (skillValue < AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank1Level()) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Smelting.Ability.Locked.0", AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank1Level())));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Smelting.Ability.VanillaXPBoost", vanillaXPModifier));

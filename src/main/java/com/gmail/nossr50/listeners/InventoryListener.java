@@ -1,8 +1,8 @@
 package com.gmail.nossr50.listeners;
 
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -13,15 +13,18 @@ import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.FurnaceInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.Users;
 
 public class InventoryListener implements Listener{
@@ -33,37 +36,47 @@ public class InventoryListener implements Listener{
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onInventoryOpen(InventoryOpenEvent event) {
-        InventoryType inventoryType = event.getInventory().getType();
+        HumanEntity player = event.getPlayer();
 
-        if (inventoryType == InventoryType.FURNACE) {
-            FurnaceInventory inventory = (FurnaceInventory) event.getInventory();
-            Furnace furnace = inventory.getHolder();
+        if (Misc.isNPCEntity(player)) {
+            return;
+        }
+
+        Inventory inventory = event.getInventory();
+
+        if (inventory instanceof FurnaceInventory) {
+            Furnace furnace = (Furnace) inventory.getHolder();
 
             if (furnace == null) {
                 return;
             }
 
-            Block furnaceBlock = furnace.getBlock();
+            BlockState furnaceBlock = furnace.getBlock().getState();
 
             if (furnace.getBurnTime() == 0 && !plugin.furnaceIsTracked(furnaceBlock)) {
-                plugin.addToOpenFurnaceTracker(furnaceBlock, event.getPlayer().getName());
+                plugin.addToOpenFurnaceTracker(furnaceBlock, player.getName());
             }
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onInventoryClose(InventoryCloseEvent event) {
-        InventoryType inventoryType = event.getInventory().getType();
+        HumanEntity player = event.getPlayer();
 
-        if (inventoryType == InventoryType.FURNACE) {
-            FurnaceInventory inventory = (FurnaceInventory) event.getInventory();
-            Furnace furnace = inventory.getHolder();
+        if (Misc.isNPCEntity(player)) {
+            return;
+        }
+
+        Inventory inventory = event.getInventory();
+
+        if (inventory instanceof FurnaceInventory) {
+            Furnace furnace = (Furnace) inventory.getHolder();
 
             if (furnace == null) {
                 return;
             }
 
-            Block furnaceBlock = furnace.getBlock();
+            BlockState furnaceBlock = furnace.getBlock().getState();
 
             if (furnace.getBurnTime() == 0 && plugin.furnaceIsTracked(furnaceBlock)) {
                 plugin.removeFromFurnaceTracker(furnaceBlock);
@@ -73,18 +86,20 @@ public class InventoryListener implements Listener{
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceBurnEvent(FurnaceBurnEvent event) {
-        Block furnaceBlock = event.getBlock();
-        BlockState blockState = furnaceBlock.getState();
+        BlockState furnaceBlock = event.getBlock().getState();
 
-        if (blockState instanceof Furnace) {
-            FurnaceInventory inventory = ((Furnace) blockState).getInventory();
-            ItemStack smelting = inventory.getSmelting();
-    
+        if (furnaceBlock instanceof Furnace) {
+            ItemStack smelting = ((Furnace) furnaceBlock).getInventory().getSmelting();
+
             if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemChecks.isSmeltable(smelting)) {
                 Player player = plugin.getFurnacePlayer(furnaceBlock);
-    
-                if (player != null) {
-                    SkillManagerStore.getInstance().getSmeltingManager(player.getName()).fuelEfficiency(event);
+
+                if (!Misc.isNPCEntity(player)) {
+                    return;
+                }
+
+                if (Permissions.fuelEfficiency(player)) {
+                    event.setBurnTime(SkillManagerStore.getInstance().getSmeltingManager(player.getName()).fuelEfficiency(event.getBurnTime()));
                 }
             }
         }
@@ -92,18 +107,20 @@ public class InventoryListener implements Listener{
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceSmeltEvent(FurnaceSmeltEvent event) {
-        Block furnaceBlock = event.getBlock();
-        BlockState blockState = furnaceBlock.getState();
+        BlockState furnaceBlock = event.getBlock().getState();
 
-        if (blockState instanceof Furnace) {
-            FurnaceInventory inventory = ((Furnace) blockState).getInventory();
-            ItemStack smelting = inventory.getSmelting();
+        if (furnaceBlock instanceof Furnace) {
+            ItemStack smelting = ((Furnace) furnaceBlock).getInventory().getSmelting();
     
             if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemChecks.isSmeltable(smelting)) {
                 Player player = plugin.getFurnacePlayer(furnaceBlock);
     
-                if (player != null) {
-                    SkillManagerStore.getInstance().getSmeltingManager(player.getName()).smeltProcessing(event);
+                if (!Misc.isNPCEntity(player)) {
+                    return;
+                }
+
+                if (Permissions.skillEnabled(player, SkillType.SMELTING)) {
+                    SkillManagerStore.getInstance().getSmeltingManager(player.getName()).smeltProcessing(event.getSource().getType(), event.getResult());
                 }
             }
         }
@@ -111,18 +128,16 @@ public class InventoryListener implements Listener{
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
-        Block furnaceBlock = event.getBlock();
-        BlockState blockState = furnaceBlock.getState();
+        BlockState furnaceBlock = event.getBlock().getState();
 
-        if (blockState instanceof Furnace) {
-            FurnaceInventory inventory = ((Furnace) blockState).getInventory();
-            ItemStack result = inventory.getResult();
+        if (furnaceBlock instanceof Furnace) {
+            ItemStack result = ((Furnace) furnaceBlock).getInventory().getResult();
     
             if (plugin.furnaceIsTracked(furnaceBlock) && result != null && ItemChecks.isSmelted(result)) {
                 McMMOPlayer mcMMOPlayer = Users.getPlayer(event.getPlayer());
 
                 if (mcMMOPlayer.getPlayer().equals(plugin.getFurnacePlayer(furnaceBlock))) {
-                    SkillManagerStore.getInstance().getSmeltingManager(event.getPlayer().getName()).vanillaXPBoost(event);
+                    SkillManagerStore.getInstance().getSmeltingManager(event.getPlayer().getName()).vanillaXPBoost(event.getExpToDrop());
                 }
             }
         }

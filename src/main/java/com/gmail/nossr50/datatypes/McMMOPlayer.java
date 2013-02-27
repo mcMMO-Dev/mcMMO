@@ -1,5 +1,7 @@
 package com.gmail.nossr50.datatypes;
 
+import java.util.Set;
+
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +14,7 @@ import com.gmail.nossr50.mods.datatypes.CustomTool;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
+import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.skills.utilities.PerksUtils;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
@@ -67,10 +70,22 @@ public class McMMOPlayer {
      * @param xp Experience amount to process
      */
     public void beginXpGain(SkillType skillType, int xp) {
-    	if (xp == 0) {
+        if (xp == 0) {
             return;
         }
-    	
+
+        if (skillType.isChildSkill()) {
+            Set<SkillType> parentSkills = FamilyTree.getParents(skillType);
+
+            for (SkillType parentSkill : parentSkills) {
+                if (Permissions.skillEnabled(player, parentSkill)) {
+                    beginXpGain(parentSkill, xp / parentSkills.size());
+                }
+            }
+
+            return;
+        }
+
         // Return if the experience has been shared
         if (party != null && ShareHandler.handleXpShare(xp, this, skillType)) {
             return;

@@ -10,7 +10,7 @@ import net.shatteredlands.shatt.backup.ZipLibrary;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -66,7 +66,7 @@ public class mcMMO extends JavaPlugin {
     private final WorldListener worldListener = new WorldListener();
 
     private HashMap<Integer, String> tntTracker = new HashMap<Integer, String>();
-    private HashMap<Block, String> furnaceTracker = new HashMap<Block, String>();
+    private HashMap<BlockState, String> furnaceTracker = new HashMap<BlockState, String>();
 
     public static mcMMO p;
 
@@ -442,19 +442,19 @@ public class mcMMO extends JavaPlugin {
         tntTracker.remove(tntID);
     }
 
-    public void addToOpenFurnaceTracker(Block furnace, String playerName) {
+    public void addToOpenFurnaceTracker(BlockState furnace, String playerName) {
         furnaceTracker.put(furnace, playerName);
     }
 
-    public boolean furnaceIsTracked(Block furnace) {
+    public boolean furnaceIsTracked(BlockState furnace) {
         return furnaceTracker.containsKey(furnace);
     }
 
-    public void removeFromFurnaceTracker(Block furnace) {
+    public void removeFromFurnaceTracker(BlockState furnace) {
         furnaceTracker.remove(furnace);
     }
 
-    public Player getFurnacePlayer(Block furnace) {
+    public Player getFurnacePlayer(BlockState furnace) {
         return getServer().getPlayer(furnaceTracker.get(furnace));
     }
 

@@ -7,7 +7,6 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -35,7 +34,6 @@ import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
-import com.gmail.nossr50.skills.smelting.Smelting;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.skills.utilities.AbilityType;
 import com.gmail.nossr50.skills.utilities.SkillTools;
@@ -239,7 +237,6 @@ public class BlockListener implements Listener {
 
         String playerName = player.getName();
         BlockState blockState = event.getBlock().getState();
-        ItemStack heldItem = player.getItemInHand();
 
         if (SkillManagerStore.getInstance().getHerbalismManager(playerName).canUseHylianLuck()) {
             if (SkillManagerStore.getInstance().getHerbalismManager(playerName).processHylianLuck(blockState)) {
@@ -247,8 +244,8 @@ public class BlockListener implements Listener {
                 event.setCancelled(true);
             }
         }
-        else if (BlockChecks.affectedByFluxMining(blockState) && ItemChecks.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH) && Permissions.fluxMining(player) && !mcMMO.placeStore.isTrue(blockState)) {
-            if (Smelting.processFluxMining(blockState, player)) {
+        else if (SkillManagerStore.getInstance().getSmeltingManager(playerName).canUseFluxMining(blockState)) {
+            if (SkillManagerStore.getInstance().getSmeltingManager(playerName).processFluxMining(blockState)) {
                 blockState.update(true);
                 event.setCancelled(true);
             }

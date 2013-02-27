@@ -1,71 +1,129 @@
 package com.gmail.nossr50.skills.smelting;
 
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.BlockState;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
-import org.bukkit.event.inventory.FurnaceExtractEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
+import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.skills.mining.Mining;
+import com.gmail.nossr50.skills.smelting.Smelting.Tier;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.BlockChecks;
+import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
 public class SmeltingManager extends SkillManager {
-
     public SmeltingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.SMELTING);
+    }
+
+    public boolean canUseFluxMining(BlockState blockState) {
+        Player player = getPlayer();
+        ItemStack heldItem = player.getItemInHand();
+
+        return BlockChecks.affectedByFluxMining(blockState) && ItemChecks.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH) && Permissions.fluxMining(player) && !mcMMO.placeStore.isTrue(blockState);
+    }
+
+    public boolean canUseVanillaXpBoost() {
+        Player player = getPlayer();
+
+        return SkillTools.unlockLevelReached(player, skill, Smelting.Tier.ONE.getLevel()) && Permissions.vanillaXpBoost(player, skill);
+    }
+
+    /**
+     * Process the Flux Mining ability.
+     *
+     * @param blockState The {@link BlockState} to check ability activation for
+     * @return true if the ability was successful, false otherwise
+     */
+    public boolean processFluxMining(BlockState blockState) {
+        Player player = getPlayer();
+
+        if (SkillTools.unlockLevelReached(player, skill, Smelting.fluxMiningUnlockLevel) && SkillTools.activationSuccessful(player, skill, Smelting.fluxMiningChance)) {
+            ItemStack item = null;
+
+            switch (blockState.getType()) {
+            case IRON_ORE:
+                item = new ItemStack(Material.IRON_INGOT);
+                break;
+
+            case GOLD_ORE:
+                item = new ItemStack(Material.GOLD_INGOT);
+                break;
+
+            default:
+                break;
+            }
+
+            if (item == null) {
+                return false;
+            }
+
+            Location location = blockState.getLocation();
+
+            Misc.dropItem(location, item);
+
+            if (Permissions.doubleDrops(player, skill) && SkillTools.activationSuccessful(player, skill, Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
+                Misc.dropItem(location, item);
+            }
+
+            blockState.setRawData((byte) 0x0);
+            blockState.setType(Material.AIR);
+            player.sendMessage(LocaleLoader.getString("Smelting.FluxMining.Success"));
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Increases burn time for furnace fuel.
      *
-     * @param event The {@link FurnaceBurnEvent} to modify.
+     * @param burnTime The initial burn time from the {@link FurnaceBurnEvent}
      */
-    public void fuelEfficiency(FurnaceBurnEvent event) {
-        Player player = mcMMOPlayer.getPlayer();
+    public int fuelEfficiency(int burnTime) {
+        double burnModifier = 1 + (((double) getSkillLevel() / Smelting.burnModifierMaxLevel) * Smelting.burnTimeMultiplier);
 
-        if (Misc.isNPCEntity(player) || !Permissions.fuelEfficiency(player)) {
-            return;
-        }
-
-        FuelEfficiencyEventHandler eventHandler = new FuelEfficiencyEventHandler(this, event);
-        eventHandler.calculateBurnModifier();
-        eventHandler.modifyBurnTime();
+        return (int) (burnTime * burnModifier);
     }
 
-    public void smeltProcessing(FurnaceSmeltEvent event) {
-        Player player = mcMMOPlayer.getPlayer();
+    public void smeltProcessing(Material resourceType, ItemStack result) {
+        Player player = getPlayer();
 
-        if (Misc.isNPCEntity(player)) {
-            return;
-        }
+        applyXpGain(Smelting.getResourceXp(resourceType));
 
-        SmeltResourceEventHandler eventHandler = new SmeltResourceEventHandler(this, event);
-
-        if (Permissions.skillEnabled(player, skill)) {
-            eventHandler.handleXPGain();
-        }
-
-        if (!Permissions.doubleDrops(player, skill)) {
-            return;
-        }
-
-        eventHandler.calculateSkillModifier();
-
-        double chance = (Smelting.secondSmeltMaxChance / Smelting.secondSmeltMaxLevel) * eventHandler.skillModifier;
-        if (chance > Misc.getRandom().nextInt(activationChance)) {
-            eventHandler.handleBonusSmelts();
+        if (Permissions.doubleDrops(player, skill) && SkillTools.activationSuccessful(player, skill, Smelting.secondSmeltMaxChance, Smelting.secondSmeltMaxLevel)) {
+            result.setAmount(result.getAmount() + 1);
         }
     }
 
-    public void vanillaXPBoost(FurnaceExtractEvent event) {
-        if (getSkillLevel() < Smelting.vanillaXPBoostRank1Level || !Permissions.vanillaXpBoost(mcMMOPlayer.getPlayer(), skill)) {
-            return;
+    public int vanillaXPBoost(int experience) {
+        return experience * getVanillaXpMultiplier();
+    }
+
+    /**
+     * Gets the vanilla XP multiplier
+     *
+     * @return the vanilla XP multiplier
+     */
+    protected int getVanillaXpMultiplier() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getVanillaXPBoostModifier();
+            }
         }
 
-        SmeltingVanillaXPEventHandler eventHandler = new SmeltingVanillaXPEventHandler(this, event);
-        eventHandler.calculateModifier();
-        eventHandler.modifyVanillaXP();
+        return 0;
     }
 }
