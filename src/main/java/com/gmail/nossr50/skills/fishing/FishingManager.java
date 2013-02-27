@@ -42,6 +42,7 @@ public class FishingManager extends SkillManager {
 
         return target instanceof LivingEntity && SkillTools.unlockLevelReached(player, skill, AdvancedConfig.getInstance().getShakeUnlockLevel()) && Permissions.shake(player);
     }
+
     /**
      * Handle the Fisherman's Diet ability
      *
