@@ -68,7 +68,7 @@ public class PartyItemShareCommand implements CommandExecutor {
             else {
                 sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting> <true | false>"));
             }
-            notifyToggleItemShareCategory((Player) sender, args, toggle);
+            notifyToggleItemShareCategory(args, toggle);
             return true;
 
         default:
@@ -86,8 +86,9 @@ public class PartyItemShareCommand implements CommandExecutor {
         }
     }
 
-    private void notifyToggleItemShareCategory(Player sender, String[] args, boolean toggle) {
+    private void notifyToggleItemShareCategory(String[] args, boolean toggle) {
         String state = "disabled";
+
         if (toggle) {
             state = "enabled";
         }
