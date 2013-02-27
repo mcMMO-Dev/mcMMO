@@ -38,7 +38,7 @@ public final class Woodcutting {
      * @param block Block being broken
      */
     public static void beginTreeFeller(BlockState blockState, Player player) {
-        TreeFeller.process(blockState, player);
+        TreeFeller.processTreeFeller(blockState, player);
     }
 
     /**

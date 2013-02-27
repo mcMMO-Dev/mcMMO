@@ -36,10 +36,13 @@ public final class TreeFeller {
      * @param mcMMOPlayer Player using Tree Feller
      * @param blockState Block being broken
      */
-    protected static void process(BlockState blockState, Player player) {
+    protected static void processTreeFeller(BlockState blockState, Player player) {
         List<BlockState> treeFellerBlocks = new ArrayList<BlockState>();
-
-        processRecursively(blockState, treeFellerBlocks);
+        
+        if(blockState.getTypeId() == 17 || blockState.getTypeId() == 99)
+        	processRegularTrees(blockState, treeFellerBlocks);
+        else
+        	processRedMushroomTrees(blockState, treeFellerBlocks);
 
         // If the player is trying to break too many blocks
         if (treeFellerReachedThreshold) {
@@ -66,12 +69,12 @@ public final class TreeFeller {
     }
 
     /**
-     * Processes Tree Feller
+     * Processes Tree Feller for generic Trees
      *
      * @param blockState Block being checked
      * @param treeFellerBlocks List of blocks to be removed
      */
-    private static void processRecursively(BlockState blockState, List<BlockState> treeFellerBlocks) {
+    private static void processRegularTrees(BlockState blockState, List<BlockState> treeFellerBlocks) {
         if (!BlockChecks.isLog(blockState)) {
             return;
         }
@@ -100,7 +103,48 @@ public final class TreeFeller {
                 return;
             }
 
-            processRecursively(futureCenterBlock, treeFellerBlocks);
+            processRegularTrees(futureCenterBlock, treeFellerBlocks);
+        }
+    }
+    
+    /**
+     * Processes Tree Feller for Red Mushrooms (Dome Shaped)
+     *
+     * @param blockState Block being checked
+     * @param treeFellerBlocks List of blocks to be removed
+     */
+    private static void processRedMushroomTrees(BlockState blockState, List<BlockState> treeFellerBlocks) {
+        if (!BlockChecks.isLog(blockState)) {
+            return;
+        }
+
+        List<BlockState> futureCenterBlocks = new ArrayList<BlockState>();
+        World world = blockState.getWorld();
+
+        // Handle the blocks around 'block'
+        for (int y = 0; y <= 1; y++) {
+            for (int x = -1; x <= 1; x++) {
+                for (int z = -1; z <= 1; z++) {
+                    BlockState nextBlock = world.getBlockAt(blockState.getLocation().add(x, y, z)).getState();
+                    BlockState otherNextBlock = world.getBlockAt(blockState.getLocation().add(x, y-(y*2), z)).getState();
+
+                    handleBlock(nextBlock, futureCenterBlocks, treeFellerBlocks);
+                    handleBlock(otherNextBlock, futureCenterBlocks, treeFellerBlocks);
+
+                    if (treeFellerReachedThreshold) {
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Recursive call for each log found
+        for (BlockState futureCenterBlock : futureCenterBlocks) {
+            if (treeFellerReachedThreshold) {
+                return;
+            }
+
+            processRedMushroomTrees(futureCenterBlock, treeFellerBlocks);
         }
     }
 
