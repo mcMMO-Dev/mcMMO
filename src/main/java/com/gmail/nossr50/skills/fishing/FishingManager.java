@@ -2,11 +2,19 @@ package com.gmail.nossr50.skills.fishing;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Sheep;
+import org.bukkit.entity.Skeleton;
+import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -17,6 +25,7 @@ import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
+import com.gmail.nossr50.skills.utilities.CombatTools;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.ItemChecks;
@@ -24,11 +33,15 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
 public class FishingManager extends SkillManager {
-
     public FishingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.FISHING);
     }
 
+    public boolean canShake(Entity target) {
+        Player player = getPlayer();
+
+        return target instanceof LivingEntity && SkillTools.unlockLevelReached(player, skill, AdvancedConfig.getInstance().getShakeUnlockLevel()) && Permissions.shake(player);
+    }
     /**
      * Handle the Fisherman's Diet ability
      *
@@ -80,6 +93,71 @@ public class FishingManager extends SkillManager {
      */
     public int handleVanillaXpBoost(int experience) {
         return experience * getVanillaXpMultiplier();
+    }
+
+    /**
+     * Handle the Shake ability
+     *
+     * @param mob The {@link LivingEntity} affected by the ability
+     */
+    public void shakeCheck(LivingEntity target) {
+        if (SkillTools.activationSuccessful(getPlayer(), skill, getShakeProbability())) {
+            Map<ItemStack, Integer> possibleDrops = new HashMap<ItemStack, Integer>();
+
+            Fishing.findPossibleDrops(target, possibleDrops);
+
+            if (possibleDrops.isEmpty()) {
+                return;
+            }
+
+            ItemStack drop = Fishing.chooseDrop(possibleDrops);
+
+            // It's possible that chooseDrop returns null if the sum of probability in possibleDrops is inferior than 100
+            if (drop == null) {
+                return;
+            }
+
+            // Extra processing depending on the mob and drop type
+            switch (target.getType()) {
+            case SHEEP:
+                Sheep sheep = (Sheep) target;
+
+                if (drop.getType() == Material.WOOL) {
+                    if (sheep.isSheared()) {
+                        return;
+                    }
+
+                    drop.setDurability(sheep.getColor().getWoolData());
+                    sheep.setSheared(true);
+                }
+                break;
+
+            case SKELETON:
+                Skeleton skeleton = (Skeleton) target;
+
+                if (skeleton.getSkeletonType() == SkeletonType.WITHER) {
+                    switch (drop.getType()) {
+                    case SKULL_ITEM:
+                        drop.setDurability((short) 1);
+                        break;
+
+                    case ARROW:
+                        drop.setType(Material.COAL);
+                        break;
+
+                    default:
+                        break;
+                    }
+                }
+                break;
+
+            default:
+                break;
+            }
+
+            Misc.dropItem(target.getLocation(), drop);
+            CombatTools.dealDamage(target, target.getMaxHealth() / 4); // Make it so you can shake a mob no more than 4 times.
+        }
     }
 
     /**
@@ -190,6 +268,22 @@ public class FishingManager extends SkillManager {
         return 0;
     }
 
+    /**
+     * Gets the Shake Mob probability
+     *
+     * @return Shake Mob probability
+     */
+    public int getShakeProbability() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getShakeChance();
+            }
+        }
+
+        return 0;
+    }
 
     /**
      * Gets the vanilla XP multiplier

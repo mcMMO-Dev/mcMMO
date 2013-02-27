@@ -27,7 +27,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.datatypes.PlayerProfile;
@@ -35,7 +34,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.skills.SkillManagerStore;
-import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.BlastMining;
@@ -166,8 +164,6 @@ public class PlayerListener implements Listener {
         }
 
         FishingManager fishingManager = SkillManagerStore.getInstance().getFishingManager(player.getName());
-        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
-        int skillLevel = mcMMOPlayer.getProfile().getSkillLevel(SkillType.FISHING);
 
         switch (event.getState()) {
         case CAUGHT_FISH:
@@ -181,8 +177,8 @@ public class PlayerListener implements Listener {
         case CAUGHT_ENTITY:
             Entity entity = event.getCaught();
 
-            if (entity instanceof LivingEntity && skillLevel >= AdvancedConfig.getInstance().getShakeUnlockLevel() && Permissions.shake(player)) {
-                Fishing.beginShakeMob(player, (LivingEntity) entity, skillLevel);
+            if (fishingManager.canShake(entity)) {
+                fishingManager.shakeCheck((LivingEntity) entity);
             }
 
             break;
