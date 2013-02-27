@@ -36,7 +36,6 @@ import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
-import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
@@ -296,16 +295,21 @@ public class PlayerListener implements Listener {
                 player.updateInventory();
             }
             /* BLAST MINING CHECK */
-            else if (player.isSneaking() && Permissions.remoteDetonation(player) && heldItem.getTypeId() == BlastMining.detonatorID) {
-                SkillManagerStore.getInstance().getMiningManager(player.getName()).detonate(event);
+            else if (SkillManagerStore.getInstance().getMiningManager(player.getName()).canDetonate()) {
+                if (blockID == Material.TNT.getId()) {
+                    event.setCancelled(true); // Don't detonate the TNT if they're too close
+                }
+                else {
+                    SkillManagerStore.getInstance().getMiningManager(player.getName()).remoteDetonation();
+                }
             }
 
             break;
 
         case RIGHT_CLICK_AIR:
             /* BLAST MINING CHECK */
-            if (player.isSneaking() && Permissions.remoteDetonation(player) && heldItem.getTypeId() == BlastMining.detonatorID) {
-                SkillManagerStore.getInstance().getMiningManager(player.getName()).detonate(event);
+            if (SkillManagerStore.getInstance().getMiningManager(player.getName()).canDetonate()) {
+                SkillManagerStore.getInstance().getMiningManager(player.getName()).remoteDetonation();
             }
 
             break;

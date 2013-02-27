@@ -36,7 +36,7 @@ import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
-import com.gmail.nossr50.skills.mining.BlastMining;
+import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.utilities.CombatTools;
@@ -189,8 +189,10 @@ public class EntityListener implements Listener {
                 break;
 
             case BLOCK_EXPLOSION:
-                if (Permissions.demolitionsExpertise(player)) {
-                    event.setDamage(BlastMining.processDemolitionsExpertise(player, event.getDamage()));
+                MiningManager miningManager = SkillManagerStore.getInstance().getMiningManager(player.getName());
+
+                if (miningManager.canUseDemolitionsExpertise()) {
+                    event.setDamage(miningManager.processDemolitionsExpertise(event.getDamage()));
 
                     if (event.getDamage() == 0) {
                         event.setCancelled(true);
@@ -323,10 +325,10 @@ public class EntityListener implements Listener {
             int id = entity.getEntityId();
 
             if (plugin.tntIsTracked(id)) {
-                Player player = plugin.getTNTPlayer(id);
+                MiningManager miningManager = SkillManagerStore.getInstance().getMiningManager(plugin.getTNTPlayer(id).getName());
 
-                if (Permissions.biggerBombs(player)) {
-                    SkillManagerStore.getInstance().getMiningManager(player.getName()).biggerBombs(event);
+                if (miningManager.canUseBiggerBombs()) {
+                    event.setRadius(miningManager.biggerBombs(event.getRadius()));
                 }
             }
         }
@@ -345,9 +347,12 @@ public class EntityListener implements Listener {
             int id = entity.getEntityId();
 
             if (plugin.tntIsTracked(id)) {
-                Player player = plugin.getTNTPlayer(id);
+                MiningManager miningManager = SkillManagerStore.getInstance().getMiningManager(plugin.getTNTPlayer(id).getName());
 
-                SkillManagerStore.getInstance().getMiningManager(player.getName()).blastMiningDropProcessing(event);
+                if (miningManager.canUseBlastMining()) {
+                    miningManager.blastMiningDropProcessing(event.getYield(), event.blockList());
+                    event.setYield(0);
+                }
 
                 plugin.removeFromTNTTracker(id);
             }

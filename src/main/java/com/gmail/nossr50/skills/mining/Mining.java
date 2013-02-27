@@ -3,19 +3,14 @@ package com.gmail.nossr50.skills.mining;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.mods.datatypes.CustomBlock;
-import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
 
 public class Mining {
     private static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
@@ -24,31 +19,11 @@ public class Mining {
     public static double doubleDropsMaxChance = advancedConfig.getMiningDoubleDropChance();
 
     /**
-     * Process double drops & XP gain for Mining.
+     * Calculate XP gain for Mining.
      *
      * @param blockState The {@link BlockState} to check ability activation for
-     * @param player The {@link Player} using this ability
      */
-    public static void miningBlockCheck(BlockState blockState, Player player) {
-        awardMiningXp(blockState, player);
-
-        if (Permissions.doubleDrops(player, SkillType.MINING) && SkillTools.activationSuccessful(player, SkillType.MINING, doubleDropsMaxChance, doubleDropsMaxLevel)) {
-            if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
-                handleSilkTouchDrops(blockState);
-            }
-            else {
-                handleMiningDrops(blockState);
-            }
-        }
-    }
-
-    /**
-     * Award XP gain for Mining.
-     *
-     * @param blockState The {@link BlockState} to check ability activation for
-     * @param player The {@link Player} using this ability
-     */
-    protected static void awardMiningXp(BlockState blockState, Player player) {
+    protected static int getBlockXp(BlockState blockState) {
         Material blockType = blockState.getType();
         int xp = Config.getInstance().getXp(SkillType.MINING, blockType);
 
@@ -59,7 +34,7 @@ public class Mining {
             xp = ModChecks.getCustomBlock(blockState).getXpGain();
         }
 
-        Users.getPlayer(player).beginXpGain(SkillType.MINING, xp);
+        return xp;
     }
 
     /**

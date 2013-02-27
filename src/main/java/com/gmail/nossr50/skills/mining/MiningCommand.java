@@ -1,7 +1,9 @@
 package com.gmail.nossr50.skills.mining;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillCommand;
+import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Permissions;
 
@@ -10,8 +12,12 @@ public class MiningCommand extends SkillCommand {
     private String doubleDropChanceLucky;
     private String superBreakerLength;
     private String superBreakerLengthEndurance;
-    private String blastMiningRank;
-    private String blastRadiusIncrease;
+
+    private int blastMiningRank;
+    private int bonusTNTDrops;
+    private double blastRadiusIncrease;
+    private String oreBonus;
+    private String debrisReduction;
     private String blastDamageDecrease;
 
     private boolean canSuperBreaker;
@@ -38,51 +44,13 @@ public class MiningCommand extends SkillCommand {
         doubleDropChanceLucky = doubleDropStrings[1];
 
         //BLAST MINING
-        if (skillValue >= BlastMining.rank8) {
-            blastMiningRank = "8";
-            blastDamageDecrease = "100.00%";
-            blastRadiusIncrease = "4";
-        }
-        else if (skillValue >= BlastMining.rank7) {
-            blastMiningRank = "7";
-            blastDamageDecrease = "50.00%";
-            blastRadiusIncrease = "3";
-        }
-        else if (skillValue >= BlastMining.rank6) {
-            blastMiningRank = "6";
-            blastDamageDecrease = "50.00%";
-            blastRadiusIncrease = "3";
-        }
-        else if (skillValue >= BlastMining.rank5) {
-            blastMiningRank = "5";
-            blastDamageDecrease = "25.00%";
-            blastRadiusIncrease = "2";
-        }
-        else if (skillValue >= BlastMining.rank4) {
-            blastMiningRank = "4";
-            blastDamageDecrease = "25.00%";
-            blastRadiusIncrease = "2";
-        }
-        else if (skillValue >= BlastMining.rank3) {
-            blastMiningRank = "3";
-            blastDamageDecrease = "0.00%";
-            blastRadiusIncrease = "1";
-        }
-        else if (skillValue >= BlastMining.rank2) {
-            blastMiningRank = "2";
-            blastDamageDecrease = "0.00%";
-            blastRadiusIncrease = "1";
-        }
-        else if (skillValue >= BlastMining.rank1) {
-            blastMiningRank = "1";
-            blastDamageDecrease = "0.00%";
-            blastRadiusIncrease = "0";
-        }
-        else {
-            blastMiningRank = "0";
-            blastDamageDecrease = "0.00%";
-            blastRadiusIncrease = "0";
-        }
+        MiningManager miningManager = SkillManagerStore.getInstance().getMiningManager(player.getName());
+        blastMiningRank = miningManager.getBlastMiningTier();
+        bonusTNTDrops = miningManager.getDropMultiplier();
+        oreBonus = percent.format(miningManager.getOreBonus() / 30.0D); // Base received in TNT is 30%
+        debrisReduction = percent.format(miningManager.getDebrisReduction() / 30.0D); // Base received in TNT is 30%
+        blastDamageDecrease = percent.format(miningManager.getBlastDamageModifier() / 100.0D);
+        blastRadiusIncrease = miningManager.getBlastRadiusModifier();
     }
 
     @Override
@@ -151,17 +119,17 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canBlast) {
-            if (skillValue < BlastMining.rank1) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.0", BlastMining.rank1)));
+            if (skillValue < AdvancedConfig.getInstance().getBlastMiningRank1()) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.0", AdvancedConfig.getInstance().getBlastMiningRank1())));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, LocaleLoader.getString("Mining.Blast.Effect." + (Integer.parseInt(blastMiningRank) - 1))));
+                player.sendMessage(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
             }
         }
 
         if (canBiggerBombs) {
-            if (skillValue < BlastMining.rank2) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.1", BlastMining.rank2)));
+            if (skillValue < AdvancedConfig.getInstance().getBlastMiningRank2()) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.1", AdvancedConfig.getInstance().getBlastMiningRank2())));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Mining.Blast.Radius.Increase", blastRadiusIncrease));
@@ -169,8 +137,8 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canDemoExpert) {
-            if (skillValue < BlastMining.rank4) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.2", BlastMining.rank4)));
+            if (skillValue < AdvancedConfig.getInstance().getBlastMiningRank4()) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.2", AdvancedConfig.getInstance().getBlastMiningRank4())));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Mining.Effect.Decrease", blastDamageDecrease));

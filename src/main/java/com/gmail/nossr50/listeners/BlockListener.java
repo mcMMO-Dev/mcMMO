@@ -32,7 +32,7 @@ import com.gmail.nossr50.runnables.StickyPistonTracker;
 import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
-import com.gmail.nossr50.skills.mining.Mining;
+import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.smelting.Smelting;
@@ -179,10 +179,11 @@ public class BlockListener implements Listener {
 
         /* MINING */
         else if (BlockChecks.affectedBySuperBreaker(blockState) && ItemChecks.isPickaxe(heldItem) && Permissions.skillEnabled(player, SkillType.MINING) && !mcMMO.placeStore.isTrue(blockState)) {
-            Mining.miningBlockCheck(blockState, player);
+            MiningManager miningManager = SkillManagerStore.getInstance().getMiningManager(player.getName());
+            miningManager.miningBlockCheck(blockState);
 
             if (profile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
-                Mining.miningBlockCheck(blockState, player);
+                miningManager.miningBlockCheck(blockState);
             }
         }
 

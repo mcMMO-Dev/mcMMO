@@ -1,50 +1,104 @@
 package com.gmail.nossr50.skills.mining;
 
-import org.bukkit.Material;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.ExplosionPrimeEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
+
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.skills.mining.BlastMining.Tier;
+import com.gmail.nossr50.skills.utilities.AbilityType;
 import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.BlockChecks;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 
 public class MiningManager extends SkillManager{
     public MiningManager (McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.MINING);
     }
 
+    public boolean canUseDemolitionsExpertise() {
+        Player player = getPlayer();
+
+        return SkillTools.unlockLevelReached(player, skill, BlastMining.Tier.FOUR.getLevel()) && Permissions.demolitionsExpertise(player);
+    }
+
+    public boolean canDetonate() {
+        Player player = getPlayer();
+
+        return player.isSneaking() && player.getItemInHand().getTypeId() == BlastMining.detonatorID && Permissions.remoteDetonation(player) && SkillTools.unlockLevelReached(player, skill, BlastMining.Tier.ONE.getLevel());
+    }
+
+    public boolean canUseBlastMining() {
+        return SkillTools.unlockLevelReached(getPlayer(), skill, BlastMining.Tier.ONE.getLevel());
+    }
+
+    public boolean canUseBiggerBombs() {
+        Player player = getPlayer();
+
+        return Permissions.biggerBombs(player) && SkillTools.unlockLevelReached(getPlayer(), skill, BlastMining.Tier.TWO.getLevel());
+    }
+
+    /**
+     * Process double drops & XP gain for Mining.
+     *
+     * @param blockState The {@link BlockState} to check ability activation for
+     * @param player The {@link Player} using this ability
+     */
+    public void miningBlockCheck(BlockState blockState) {
+        Player player = getPlayer();
+        int xp = Mining.getBlockXp(blockState);
+
+        if (Permissions.doubleDrops(player, skill) && SkillTools.activationSuccessful(player, skill, Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
+            if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
+                Mining.handleSilkTouchDrops(blockState);
+            }
+            else {
+                Mining.handleMiningDrops(blockState);
+            }
+        }
+
+        applyXpGain(xp);
+    }
+
     /**
      * Detonate TNT for Blast Mining
-     *
-     * @param event The PlayerInteractEvent
      */
-    public void detonate(PlayerInteractEvent event) {
-        if (getSkillLevel() < BlastMining.rank1) {
+    public void remoteDetonation() {
+        Player player = getPlayer();
+
+        HashSet<Byte> transparentBlocks = BlastMining.generateTransparentBlockList();
+        Block targetBlock = player.getTargetBlock(transparentBlocks, BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
+
+        if (targetBlock.getType() != Material.TNT || !SkillTools.blockBreakSimulate(targetBlock, player, true) || !blastMiningCooldownOver()) {
             return;
         }
 
-        RemoteDetonationEventHandler eventHandler = new RemoteDetonationEventHandler(this, event);
+        PlayerProfile profile = getProfile();
+        TNTPrimed tnt = player.getWorld().spawn(targetBlock.getLocation(), TNTPrimed.class);
 
-        eventHandler.targetTNT();
+        SkillTools.sendSkillMessage(player, AbilityType.BLAST_MINING.getAbilityPlayer(player));
+        player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
-        if (eventHandler.getBlock().getType() != Material.TNT) {
-            return;
-        }
+        mcMMO.p.addToTNTTracker(tnt.getEntityId(), player.getName());
+        tnt.setFuseTicks(0);
+        targetBlock.setData((byte) 0x0);
+        targetBlock.setType(Material.AIR);
 
-        if (!SkillTools.blockBreakSimulate(eventHandler.getBlock(), mcMMOPlayer.getPlayer(), true)) {
-            return;
-        }
-
-        if (!eventHandler.cooldownOver()) {
-            return;
-        }
-
-        eventHandler.sendMessages();
-        eventHandler.handleDetonation();
-        eventHandler.setProfileData();
+        profile.setSkillDATS(AbilityType.BLAST_MINING, System.currentTimeMillis());
+        profile.setAbilityInformed(AbilityType.BLAST_MINING, false);
     }
 
     /**
@@ -52,24 +106,54 @@ public class MiningManager extends SkillManager{
      *
      * @param event Event whose explosion is being processed
      */
-    public void blastMiningDropProcessing(EntityExplodeEvent event) {
-        if (Misc.isNPCEntity(mcMMOPlayer.getPlayer())) {
-            return;
+    public void blastMiningDropProcessing(float yield, List<Block> blockList) {
+        List<BlockState> ores = new ArrayList<BlockState>();
+        List<BlockState> debris = new ArrayList<BlockState>();
+        int xp = 0;
+
+        float oreBonus = (float) (getOreBonus() / 100);
+        float debrisReduction = (float) (getDebrisReduction() / 100);
+        int dropMultiplier = getDropMultiplier();
+
+        float debrisYield  = yield - debrisReduction;
+
+        for (Block block : blockList) {
+            BlockState blockState = block.getState();
+
+            if (BlockChecks.isOre(blockState)) {
+                ores.add(blockState);
+            }
+            else {
+                debris.add(blockState);
+            }
         }
 
-        if (getSkillLevel() < BlastMining.rank1) {
-            return;
+        for (BlockState blockState : ores) {
+            if (Misc.getRandom().nextFloat() < (yield + oreBonus)) {
+                if (!mcMMO.placeStore.isTrue(blockState)) {
+                    xp += Mining.getBlockXp(blockState);
+                }
+
+                Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack()); // Initial block that would have been dropped
+
+                if (!mcMMO.placeStore.isTrue(blockState)) {
+                    for (int i = 1 ; i < dropMultiplier ; i++) {
+                        xp += Mining.getBlockXp(blockState);
+                        Mining.handleSilkTouchDrops(blockState); // Bonus drops - should drop the block & not the items
+                    }
+                }
+            }
         }
 
-        BlastMiningDropEventHandler eventHandler = new BlastMiningDropEventHandler(this, event);
+        if (debrisYield > 0) {
+            for (BlockState blockState : debris) {
+                if (Misc.getRandom().nextFloat() < debrisYield) {
+                    Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack());
+                }
+            }
+        }
 
-        eventHandler.sortExplosionBlocks();
-        eventHandler.modifyEventYield();
-
-        eventHandler.calcuateDropModifiers();
-        eventHandler.processDroppedBlocks();
-
-        eventHandler.processXPGain();
+        applyXpGain(xp);
     }
 
     /**
@@ -77,14 +161,128 @@ public class MiningManager extends SkillManager{
      *
      * @param event Event whose explosion radius is being changed
      */
-    public void biggerBombs(ExplosionPrimeEvent event) {
-        if (Misc.isNPCEntity(mcMMOPlayer.getPlayer())) {
-            return;
+    public float biggerBombs(float radius) {
+        return (float) (radius + getBlastRadiusModifier());
+    }
+
+    public int processDemolitionsExpertise(int damage) {
+        return (int) (damage * (100.0 - getBlastDamageModifier()));
+    }
+
+    private boolean blastMiningCooldownOver() {
+        Player player = getPlayer();
+        PlayerProfile profile = getProfile();
+
+        long oldTime = profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR;
+        int cooldown = AbilityType.BLAST_MINING.getCooldown();
+
+        if (!SkillTools.cooldownOver(oldTime, cooldown, player)) {
+            player.sendMessage(LocaleLoader.getString("Skills.TooTired", SkillTools.calculateTimeLeft(oldTime, cooldown, player)));
+            return false;
         }
 
-        BiggerBombsEventHandler eventHandler = new BiggerBombsEventHandler(this, event);
+        return true;
+    }
 
-        eventHandler.calculateRadiusIncrease();
-        eventHandler.modifyBlastRadius();
+    /**
+     * Gets the Blast Mining tier
+     *
+     * @return the Blast Mining tier
+     */
+    public int getBlastMiningTier() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.toNumerical();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Gets the Blast Mining tier
+     *
+     * @return the Blast Mining tier
+     */
+    public double getOreBonus() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getOreBonus();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Gets the Blast Mining tier
+     *
+     * @return the Blast Mining tier
+     */
+    public double getDebrisReduction() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getDebrisReduction();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Gets the Blast Mining tier
+     *
+     * @return the Blast Mining tier
+     */
+    public int getDropMultiplier() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getDropMultiplier();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Gets the Blast Mining tier
+     *
+     * @return the Blast Mining tier
+     */
+    public double getBlastRadiusModifier() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getBlastRadiusModifier();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Gets the Blast Mining tier
+     *
+     * @return the Blast Mining tier
+     */
+    public double getBlastDamageModifier() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getBlastDamageDecrease();
+            }
+        }
+
+        return 0;
     }
 }

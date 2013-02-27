@@ -183,6 +183,56 @@ Skills:
         BlastMining_Rank6: 750
         BlastMining_Rank7: 875
         BlastMining_Rank8: 1000
+
+        # BlastDamageDecrease_Rank: % of damage reduced from TNT explosions
+        BlastDamageDecrease_Rank1: 0.0
+        BlastDamageDecrease_Rank2: 0.0
+        BlastDamageDecrease_Rank3: 0.0
+        BlastDamageDecrease_Rank4: 25.0
+        BlastDamageDecrease_Rank5: 25.0
+        BlastDamageDecrease_Rank6: 50.0
+        BlastDamageDecrease_Rank7: 50.0
+        BlastDamageDecrease_Rank8: 100.0
+
+        # OreBonus_Rank: % of extra ores received when Blast Mining
+        OreBonus_Rank1: 35.0
+        OreBonus_Rank2: 40.0
+        OreBonus_Rank3: 45.0
+        OreBonus_Rank4: 50.0
+        OreBonus_Rank5: 55.0
+        OreBonus_Rank6: 60.0
+        OreBonus_Rank7: 65.0
+        OreBonus_Rank8: 70.0
+
+        # DebrisReduction_Rank: % of fewer non-ores received when Blast Mining
+        DebrisReduction_Rank1: 10.0
+        DebrisReduction_Rank2: 20.0
+        DebrisReduction_Rank3: 30.0
+        DebrisReduction_Rank4: 30.0
+        DebrisReduction_Rank5: 30.0
+        DebrisReduction_Rank6: 30.0
+        DebrisReduction_Rank7: 30.0
+        DebrisReduction_Rank8: 30.0
+
+        # DropMultiplier_Rank: # of times each ore will drop
+        DropMultiplier_Rank1: 1
+        DropMultiplier_Rank2: 1
+        DropMultiplier_Rank3: 1
+        DropMultiplier_Rank4: 1
+        DropMultiplier_Rank5: 2
+        DropMultiplier_Rank6: 2
+        DropMultiplier_Rank7: 3
+        DropMultiplier_Rank8: 3
+
+        # BlastRadiusModifier_Rank: Increases the blast radius by this amount
+        BlastRadiusModifier_Rank1: 1.0
+        BlastRadiusModifier_Rank2: 1.0
+        BlastRadiusModifier_Rank3: 2.0
+        BlastRadiusModifier_Rank4: 2.0
+        BlastRadiusModifier_Rank5: 3.0
+        BlastRadiusModifier_Rank6: 3.0
+        BlastRadiusModifier_Rank7: 4.0
+        BlastRadiusModifier_Rank8: 4.0
     #
     #  Settings for Repair
     ###

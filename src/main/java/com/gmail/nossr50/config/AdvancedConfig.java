@@ -128,6 +128,51 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getBlastMiningRank7() { return config.getInt("Skills.Mining.BlastMining_Rank7", 875); }
     public int getBlastMiningRank8() { return config.getInt("Skills.Mining.BlastMining_Rank8", 1000); }
 
+    public double getBlastDamageDecreaseRank1() { return config.getDouble("Skills.Mining.BlastDamageDecrease_Rank1", 0.0D); }
+    public double getBlastDamageDecreaseRank2() { return config.getDouble("Skills.Mining.BlastDamageDecrease_Rank2", 0.0D); }
+    public double getBlastDamageDecreaseRank3() { return config.getDouble("Skills.Mining.BlastDamageDecrease_Rank3", 0.0D); }
+    public double getBlastDamageDecreaseRank4() { return config.getDouble("Skills.Mining.BlastDamageDecrease_Rank4", 25.0D); }
+    public double getBlastDamageDecreaseRank5() { return config.getDouble("Skills.Mining.BlastDamageDecrease_Rank5", 25.0D); }
+    public double getBlastDamageDecreaseRank6() { return config.getDouble("Skills.Mining.BlastDamageDecrease_Rank6", 50.0D); }
+    public double getBlastDamageDecreaseRank7() { return config.getDouble("Skills.Mining.BlastDamageDecrease_Rank7", 50.0D); }
+    public double getBlastDamageDecreaseRank8() { return config.getDouble("Skills.Mining.BlastDamageDecrease_Rank8", 100.0D); }
+
+    public double getOreBonusRank1() { return config.getDouble("Skills.Mining.OreBonus_Rank1", 35.0D); }
+    public double getOreBonusRank2() { return config.getDouble("Skills.Mining.OreBonus_Rank2", 40.0D); }
+    public double getOreBonusRank3() { return config.getDouble("Skills.Mining.OreBonus_Rank3", 45.0D); }
+    public double getOreBonusRank4() { return config.getDouble("Skills.Mining.OreBonus_Rank4", 50.0D); }
+    public double getOreBonusRank5() { return config.getDouble("Skills.Mining.OreBonus_Rank5", 55.0D); }
+    public double getOreBonusRank6() { return config.getDouble("Skills.Mining.OreBonus_Rank6", 60.0D); }
+    public double getOreBonusRank7() { return config.getDouble("Skills.Mining.OreBonus_Rank7", 65.0D); }
+    public double getOreBonusRank8() { return config.getDouble("Skills.Mining.OreBonus_Rank8", 70.0D); }
+
+    public double getDebrisReductionRank1() { return config.getDouble("Skills.Mining.DebrisReduction_Rank1", 10.0D); }
+    public double getDebrisReductionRank2() { return config.getDouble("Skills.Mining.DebrisReduction_Rank2", 20.0D); }
+    public double getDebrisReductionRank3() { return config.getDouble("Skills.Mining.DebrisReduction_Rank3", 30.0D); }
+    public double getDebrisReductionRank4() { return config.getDouble("Skills.Mining.DebrisReduction_Rank4", 30.0D); }
+    public double getDebrisReductionRank5() { return config.getDouble("Skills.Mining.DebrisReduction_Rank5", 30.0D); }
+    public double getDebrisReductionRank6() { return config.getDouble("Skills.Mining.DebrisReduction_Rank6", 30.0D); }
+    public double getDebrisReductionRank7() { return config.getDouble("Skills.Mining.DebrisReduction_Rank7", 30.0D); }
+    public double getDebrisReductionRank8() { return config.getDouble("Skills.Mining.DebrisReduction_Rank8", 30.0D); }
+
+    public int getDropMultiplierRank1() { return config.getInt("Skills.Mining.DropMultiplier_Rank1", 1); }
+    public int getDropMultiplierRank2() { return config.getInt("Skills.Mining.DropMultiplier_Rank2", 1); }
+    public int getDropMultiplierRank3() { return config.getInt("Skills.Mining.DropMultiplier_Rank3", 1); }
+    public int getDropMultiplierRank4() { return config.getInt("Skills.Mining.DropMultiplier_Rank4", 1); }
+    public int getDropMultiplierRank5() { return config.getInt("Skills.Mining.DropMultiplier_Rank5", 2); }
+    public int getDropMultiplierRank6() { return config.getInt("Skills.Mining.DropMultiplier_Rank6", 2); }
+    public int getDropMultiplierRank7() { return config.getInt("Skills.Mining.DropMultiplier_Rank7", 3); }
+    public int getDropMultiplierRank8() { return config.getInt("Skills.Mining.DropMultiplier_Rank8", 3); }
+
+    public double getBlastRadiusModifierRank1() { return config.getDouble("Skills.Mining.BlastRadiusModifier_Rank1", 1.0); }
+    public double getBlastRadiusModifierRank2() { return config.getDouble("Skills.Mining.BlastRadiusModifier_Rank2", 1.0); }
+    public double getBlastRadiusModifierRank3() { return config.getDouble("Skills.Mining.BlastRadiusModifier_Rank3", 2.0); }
+    public double getBlastRadiusModifierRank4() { return config.getDouble("Skills.Mining.BlastRadiusModifier_Rank4", 2.0); }
+    public double getBlastRadiusModifierRank5() { return config.getDouble("Skills.Mining.BlastRadiusModifier_Rank5", 3.0); }
+    public double getBlastRadiusModifierRank6() { return config.getDouble("Skills.Mining.BlastRadiusModifier_Rank6", 3.0); }
+    public double getBlastRadiusModifierRank7() { return config.getDouble("Skills.Mining.BlastRadiusModifier_Rank7", 4.0); }
+    public double getBlastRadiusModifierRank8() { return config.getDouble("Skills.Mining.BlastRadiusModifier_Rank8", 4.0); }
+
     /* REPAIR */
     public double getRepairMasteryMaxBonus() { return config.getDouble("Skills.Repair.RepairMastery_MaxBonusPercentage", 200.0D); }
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery_MaxBonusLevel", 1000); }
