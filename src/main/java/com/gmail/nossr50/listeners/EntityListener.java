@@ -404,13 +404,13 @@ public class EntityListener implements Listener {
 
                 case COOKED_FISH:   /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
                     if (Permissions.fishermansDiet(player)) {
-                        event.setFoodLevel(Fishing.beginFishermansDiet(player, Fishing.fishermansDietRankLevel1, newFoodLevel));
+                        event.setFoodLevel(SkillManagerStore.getInstance().getFishingManager(player.getName()).handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
                     }
                     return;
 
                 case RAW_FISH:      /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                     if (Permissions.fishermansDiet(player)) {
-                        event.setFoodLevel(Fishing.beginFishermansDiet(player, Fishing.fishermansDietRankLevel2, newFoodLevel));
+                        event.setFoodLevel(SkillManagerStore.getInstance().getFishingManager(player.getName()).handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
                     }
                     return;
 

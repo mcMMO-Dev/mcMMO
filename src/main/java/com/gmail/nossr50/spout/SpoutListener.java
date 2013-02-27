@@ -29,7 +29,7 @@ public class SpoutListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onSpoutCraftEnable(SpoutCraftEnableEvent event) {
         SpoutPlayer spoutPlayer = event.getPlayer();
-        McMMOPlayer mcMMOPlayer = Users.getPlayer(event.getPlayer().getPlayer());
+        McMMOPlayer mcMMOPlayer = Users.getPlayer(spoutPlayer);
         PlayerProfile profile = mcMMOPlayer.getProfile();
 
         //TODO: Add custom titles based on skills

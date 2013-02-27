@@ -36,6 +36,7 @@ import com.gmail.nossr50.party.Party;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.fishing.Fishing;
+import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.repair.Repair;
@@ -164,12 +165,17 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        FishingManager fishingManager = SkillManagerStore.getInstance().getFishingManager(player.getName());
         McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
         int skillLevel = mcMMOPlayer.getProfile().getSkillLevel(SkillType.FISHING);
 
         switch (event.getState()) {
         case CAUGHT_FISH:
-            Fishing.beginFishing(mcMMOPlayer, skillLevel, event);
+            fishingManager.handleFishing((Item) event.getCaught());
+
+            if (Permissions.vanillaXpBoost(player, SkillType.FISHING)) {
+                event.setExpToDrop(fishingManager.handleVanillaXpBoost(event.getExpToDrop()));
+            }
             break;
 
         case CAUGHT_ENTITY:

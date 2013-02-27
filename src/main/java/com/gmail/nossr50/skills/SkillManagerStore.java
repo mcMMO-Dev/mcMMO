@@ -6,6 +6,7 @@ import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxeManager;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
+import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
@@ -20,6 +21,7 @@ public class SkillManagerStore {
     private HashMap<String, ArcheryManager> archeryManagers = new HashMap<String, ArcheryManager>();
     private HashMap<String, AxeManager> axeManagers = new HashMap<String, AxeManager>();
     private HashMap<String, ExcavationManager> excavationManagers = new HashMap<String, ExcavationManager>();
+    private HashMap<String, FishingManager> fishingManagers = new HashMap<String, FishingManager>();
     private HashMap<String, MiningManager> miningManagers = new HashMap<String, MiningManager>();
     private HashMap<String, SmeltingManager> smeltingManagers = new HashMap<String, SmeltingManager>();
     private HashMap<String, SwordsManager> swordsManagers = new HashMap<String, SwordsManager>();
@@ -64,6 +66,14 @@ public class SkillManagerStore {
         }
  
         return excavationManagers.get(playerName);
+    }
+
+    public FishingManager getFishingManager(String playerName) {
+        if (!fishingManagers.containsKey(playerName)) {
+            fishingManagers.put(playerName, new FishingManager(Users.getPlayer(playerName)));
+        }
+ 
+        return fishingManagers.get(playerName);
     }
 
     public MiningManager getMiningManager(String playerName) {

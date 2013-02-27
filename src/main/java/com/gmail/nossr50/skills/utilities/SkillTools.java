@@ -616,4 +616,8 @@ public class SkillTools {
     public static boolean unlockLevelReached(Player player, SkillType skill, int unlockLevel) {
         return Users.getPlayer(player).getProfile().getSkillLevel(skill) > unlockLevel;
     }
+
+    public static boolean treasureDropSuccessful(double dropChance, int activationChance) {
+        return dropChance > Misc.getRandom().nextDouble() * activationChance;
+    }
 }

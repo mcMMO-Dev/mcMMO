@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.fishing;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillCommand;
+import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Permissions;
 
@@ -26,7 +27,7 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        lootTier = Fishing.getLootTier((int) skillValue);
+        lootTier = SkillManagerStore.getInstance().getFishingManager(player.getName()).getLootTier();
 
         //TREASURE HUNTER
         double enchantChance = lootTier * AdvancedConfig.getInstance().getFishingMagicMultiplier();
