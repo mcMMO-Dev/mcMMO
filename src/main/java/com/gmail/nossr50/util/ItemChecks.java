@@ -592,9 +592,7 @@ public class ItemChecks {
             return true;
 
         case INK_SACK:
-            if (is.getData().getData() == DyeColor.BROWN.getDyeData()) {
-                return true;
-            }
+            return is.getData().getData() == DyeColor.BROWN.getDyeData();
 
         default:
             return false;
