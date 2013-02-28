@@ -439,7 +439,11 @@ public class EntityListener implements Listener {
             return;
         }
 
-        SkillManagerStore.getInstance().getTamingManager(player.getName()).awardTamingXP(event);
+        LivingEntity entity = event.getEntity();
+
+        if (entity != null && !entity.hasMetadata(mcMMO.entityMetadataKey)) {
+            SkillManagerStore.getInstance().getTamingManager(player.getName()).awardTamingXP(entity);
+        }
     }
 
     @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)

@@ -11,6 +11,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.McMMOPlayer;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -25,25 +26,18 @@ public class TamingManager extends SkillManager {
      *
      * @param event The event to award XP for
      */
-    public void awardTamingXP(EntityTameEvent event) {
-        if (event.getEntity() == null) {
-            return;
-        }
-        else if (event.getEntity().hasMetadata(mcMMO.entityMetadataKey)) {
-            return;
-        }
-
-        switch (event.getEntityType()) {
+    public void awardTamingXP(LivingEntity entity) {
+        switch (entity.getType()) {
         case WOLF:
-            mcMMOPlayer.beginXpGain(SkillType.TAMING, Taming.wolfXp);
-            break;
+            applyXpGain(Taming.wolfXp);
+            return;
 
         case OCELOT:
-            mcMMOPlayer.beginXpGain(SkillType.TAMING, Taming.ocelotXp);
-            break;
+            applyXpGain(Taming.ocelotXp);
+            return;
 
         default:
-            break;
+            return;
         }
     }
 
@@ -54,10 +48,15 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, int damage) {
-        if (Misc.getRandom().nextInt(activationChance) < Taming.fastFoodServiceActivationChance) {
-            FastFoodServiceEventHandler eventHandler = new FastFoodServiceEventHandler(wolf);
+        if (SkillTools.activationSuccessful(getPlayer(), skill, Taming.fastFoodServiceActivationChance)) {
 
-            eventHandler.modifyHealth(damage);
+            int health = wolf.getHealth();
+            int maxHealth = wolf.getMaxHealth();
+
+            if (health < maxHealth) {
+                int newHealth = health + damage;
+                wolf.setHealth(Math.min(newHealth, maxHealth));
+            }
         }
     }
 
