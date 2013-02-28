@@ -152,15 +152,19 @@ public final class CombatTools {
                     }
 
                     if (Permissions.bonusDamage(player, SkillType.UNARMED)) {
-                        SkillManagerStore.getInstance().getUnarmedManager(playerName).bonusDamage(event);
+                        event.setDamage(SkillManagerStore.getInstance().getUnarmedManager(playerName).ironArmCheck(event.getDamage()));
                     }
 
                     if (profile.getAbilityMode(AbilityType.BERSERK) && canBerserk) {
-                        SkillManagerStore.getInstance().getUnarmedManager(playerName).berserkDamage(event);
+                        event.setDamage(SkillManagerStore.getInstance().getUnarmedManager(playerName).berserkDamage(event.getDamage()));
                     }
 
                     if (target instanceof Player && Permissions.disarm(player)) {
-                        SkillManagerStore.getInstance().getUnarmedManager(playerName).disarmCheck(target);
+                        Player defender = (Player) target;
+
+                        if (defender.getItemInHand().getType() != Material.AIR) {
+                            SkillManagerStore.getInstance().getUnarmedManager(playerName).disarmCheck((Player) target);
+                        }
                     }
 
                     startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
@@ -283,7 +287,11 @@ public final class CombatTools {
             }
 
             if (target instanceof Player && SkillType.UNARMED.getPVPEnabled() && ((Player) target).getItemInHand().getType() == Material.AIR && Permissions.arrowDeflect((Player) target)) {
-                SkillManagerStore.getInstance().getUnarmedManager(((Player) target).getName()).deflectCheck(event);
+                event.setCancelled(SkillManagerStore.getInstance().getUnarmedManager(((Player) target).getName()).deflectCheck());
+
+                if (event.isCancelled()) {
+                    return;
+                }
             }
 
             if (SkillManagerStore.getInstance().getArcheryManager(playerName).canDaze(target)) {
