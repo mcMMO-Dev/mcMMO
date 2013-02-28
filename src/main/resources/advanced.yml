@@ -380,9 +380,9 @@ Skills:
         IronGrip_ChanceMax: 100.0
         IronGrip_MaxBonusLevel: 1000
 
-        # IronArmBonusMax: Maximum bonus damage for unarmed
+        # IronArm_BonusMax: Maximum bonus damage for unarmed
         # IronArm_IncreaseLevel: Bonus damage increases every increase level
-        IronArmBonusMax: 8
+        IronArm_BonusMax: 8
         IronArm_IncreaseLevel: 50
     #
     #  Settings for Woodcutting
