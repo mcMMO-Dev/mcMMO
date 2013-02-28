@@ -1,11 +1,16 @@
 package com.gmail.nossr50.skills.swords;
 
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.skills.runnables.BleedTimer;
+import com.gmail.nossr50.skills.utilities.CombatTools;
+import com.gmail.nossr50.skills.utilities.SkillTools;
 import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Users;
 
 public class SwordsManager extends SkillManager {
     public SwordsManager(McMMOPlayer mcMMOPlayer) {
@@ -15,35 +20,48 @@ public class SwordsManager extends SkillManager {
     /**
      * Check for Bleed effect.
      *
-     * @param defender The defending entity
+     * @param target The defending entity
      */
-    public void bleedCheck(LivingEntity defender) {
-        BleedEventHandler eventHandler = new BleedEventHandler(this, defender);
+    public void bleedCheck(LivingEntity target) {
+        Player player = getPlayer();
 
-        float chance = (float) ((Swords.bleedMaxChance / Swords.bleedMaxBonusLevel) * getSkillLevel());
-        if (chance > Swords.bleedMaxChance) chance = (float) Swords.bleedMaxChance;
+        if (SkillTools.activationSuccessful(player, skill, Swords.bleedMaxChance, Swords.bleedMaxBonusLevel)) {
 
-        if (chance > Misc.getRandom().nextInt(activationChance)) {
-            eventHandler.addBleedTicks();
-            eventHandler.sendAbilityMessages();
+            if (getSkillLevel() >= Swords.bleedMaxBonusLevel) {
+                BleedTimer.add(target, Swords.bleedMaxTicks);
+            }
+            else {
+                BleedTimer.add(target, Swords.bleedBaseTicks);
+            }
+
+            if (getProfile().useChatNotifications()) {
+                player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
+            }
+
+            if (target instanceof Player) {
+                Player defender = (Player) target;
+
+                if (Users.getPlayer(defender).getProfile().useChatNotifications()) {
+                    defender.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding.Started"));
+                }
+            }
         }
     }
 
     public void counterAttackChecks(LivingEntity attacker, int damage) {
-        CounterAttackEventHandler eventHandler = new CounterAttackEventHandler(this, attacker, damage);
-        eventHandler.calculateSkillModifier();
+        if (SkillTools.activationSuccessful(getPlayer(), skill, Swords.counterAttackMaxChance, Swords.counterAttackMaxBonusLevel)) {
+            CombatTools.dealDamage(attacker, damage / Swords.counterAttackModifier);
 
-        float chance = (float) ((Swords.counterAttackMaxChance / Swords.counterAttackMaxBonusLevel) * getSkillLevel());
-        if (chance > Swords.counterAttackMaxChance) chance = (float) Swords.counterAttackMaxChance;
+            getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));
 
-        if (chance > Misc.getRandom().nextInt(activationChance)) {
-            eventHandler.dealDamage();
-            eventHandler.sendAbilityMessages();
+            if (attacker instanceof Player) {
+                ((Player) attacker).sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Hit"));
+            }
         }
     }
 
     public void serratedStrikes(LivingEntity target, int damage) {
-        SerratedStrikesEventHandler eventHandler = new SerratedStrikesEventHandler(this, target, damage);
-        eventHandler.applyAbilityEffects();
+        CombatTools.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, skill);
+        BleedTimer.add(target, Swords.serratedStrikesBleedTicks);
     }
 }
