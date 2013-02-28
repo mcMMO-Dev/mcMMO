@@ -120,7 +120,7 @@ public class InventoryListener implements Listener{
                 }
 
                 if (Permissions.skillEnabled(player, SkillType.SMELTING)) {
-                    SkillManagerStore.getInstance().getSmeltingManager(player.getName()).smeltProcessing(event.getSource().getType(), event.getResult());
+                    event.setResult(SkillManagerStore.getInstance().getSmeltingManager(player.getName()).smeltProcessing(event.getSource().getType(), event.getResult()));
                 }
             }
         }
@@ -137,7 +137,7 @@ public class InventoryListener implements Listener{
                 McMMOPlayer mcMMOPlayer = Users.getPlayer(event.getPlayer());
 
                 if (mcMMOPlayer.getPlayer().equals(plugin.getFurnacePlayer(furnaceBlock))) {
-                    SkillManagerStore.getInstance().getSmeltingManager(event.getPlayer().getName()).vanillaXPBoost(event.getExpToDrop());
+                    event.setExpToDrop(SkillManagerStore.getInstance().getSmeltingManager(event.getPlayer().getName()).vanillaXPBoost(event.getExpToDrop()));
                 }
             }
         }

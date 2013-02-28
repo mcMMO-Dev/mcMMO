@@ -96,14 +96,17 @@ public class SmeltingManager extends SkillManager {
         return (int) (burnTime * burnModifier);
     }
 
-    public void smeltProcessing(Material resourceType, ItemStack result) {
+    public ItemStack smeltProcessing(Material resourceType, ItemStack result) {
         Player player = getPlayer();
 
         applyXpGain(Smelting.getResourceXp(resourceType));
 
         if (Permissions.doubleDrops(player, skill) && SkillTools.activationSuccessful(player, skill, Smelting.secondSmeltMaxChance, Smelting.secondSmeltMaxLevel)) {
-            result.setAmount(result.getAmount() + 1);
+            ItemStack newResult = new ItemStack(result.getType(), result.getAmount() + 1);
+            return newResult;
         }
+
+        return result;
     }
 
     public int vanillaXPBoost(int experience) {
