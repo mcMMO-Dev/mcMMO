@@ -12,7 +12,6 @@ import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.spout.buttons.McmmoButton;
 import com.gmail.nossr50.spout.huds.SpoutHud;
@@ -30,14 +29,13 @@ public class SpoutListener implements Listener {
     public void onSpoutCraftEnable(SpoutCraftEnableEvent event) {
         SpoutPlayer spoutPlayer = event.getPlayer();
         McMMOPlayer mcMMOPlayer = Users.getPlayer(spoutPlayer);
-        PlayerProfile profile = mcMMOPlayer.getProfile();
 
         //TODO: Add custom titles based on skills
         if (SpoutTools.showPowerLevel) {
             spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", spoutPlayer.getName(), mcMMOPlayer.getPowerLevel()));
         }
 
-        profile.setSpoutHud(new SpoutHud(mcMMOPlayer)); //Setup Party HUD stuff
+        mcMMOPlayer.getProfile().setSpoutHud(new SpoutHud(mcMMOPlayer)); //Setup Party HUD stuff
     }
 
     /**

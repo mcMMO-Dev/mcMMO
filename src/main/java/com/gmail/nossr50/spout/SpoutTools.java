@@ -30,7 +30,6 @@ import com.gmail.nossr50.util.Users;
 
 public class SpoutTools {
     private static mcMMO plugin = mcMMO.p;
-    static AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
 
     public final static String spoutDirectory = mcMMO.getMainDirectory() + "Resources" + File.separator;
     public final static String hudDirectory = spoutDirectory + "HUD" + File.separator;
@@ -146,12 +145,10 @@ public class SpoutTools {
                 continue;
             }
 
-            String skillTypeString = skillType.toString();
-            String standardFileName = StringUtils.getCapitalized(skillTypeString)+".png";
-            String retroFileName = StringUtils.getCapitalized(skillTypeString)+"_r.png";
+            String skillTypeString = StringUtils.getCapitalized(skillType.toString());
 
-            writeFile(standardFileName, hudStandardDirectory);
-            writeFile(retroFileName, hudRetroDirectory);
+            writeFile(skillTypeString + ".png", hudStandardDirectory);
+            writeFile(skillTypeString + "_r.png", hudRetroDirectory);
         }
 
         // Blank icons
@@ -208,10 +205,10 @@ public class SpoutTools {
                 continue;
             }
 
-            String skillTypeString = skillType.toString();
+            String skillTypeString = StringUtils.getCapitalized(skillType.toString());
 
-            files.add(new File(hudStandardDirectory + StringUtils.getCapitalized(skillTypeString) + ".png"));
-            files.add(new File(hudRetroDirectory + StringUtils.getCapitalized(skillTypeString) + "_r.png"));
+            files.add(new File(hudStandardDirectory + skillTypeString + ".png"));
+            files.add(new File(hudRetroDirectory + skillTypeString + "_r.png"));
         }
 
         // Blank icons
@@ -280,11 +277,11 @@ public class SpoutTools {
                 break;
 
             case 4:
-                mat = Material.LAPIS_ORE;
+                mat = Material.DIAMOND_ORE;
                 break;
 
             case 5:
-                mat = Material.DIAMOND_ORE;
+                mat = Material.EMERALD_ORE;
                 break;
 
             default:
@@ -296,6 +293,9 @@ public class SpoutTools {
         case WOODCUTTING:
             switch (notificationTier) {
             case 1:
+                mat = Material.STICK;
+                break;
+
             case 2:
             case 3:
                 mat = Material.WOOD;
@@ -313,31 +313,7 @@ public class SpoutTools {
             break;
 
         case REPAIR:
-            switch (notificationTier) {
-            case 1:
-                mat = Material.COBBLESTONE;
-                break;
-
-            case 2:
-                mat = Material.IRON_BLOCK;
-                break;
-
-            case 3:
-                mat = Material.GOLD_BLOCK;
-                break;
-
-            case 4:
-                mat = Material.LAPIS_BLOCK;
-                break;
-
-            case 5:
-                mat = Material.DIAMOND_BLOCK;
-                break;
-
-            default:
-                break;
-            }
-
+            mat = Material.ANVIL;
             break;
 
         case HERBALISM:
@@ -564,17 +540,17 @@ public class SpoutTools {
      * @param level The level of the skill
      * @return the notification tier of the skill
      */
-    private static Integer getNotificationTier(Integer level) {
-        if (level >= advancedConfig.getSpoutNotificationTier4()) {
+    private static int getNotificationTier(int level) {
+        if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier4()) {
             return 5;
         }
-        else if (level >= advancedConfig.getSpoutNotificationTier3()) {
+        else if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier3()) {
             return 4;
         }
-        else if (level >= advancedConfig.getSpoutNotificationTier2()) {
+        else if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier2()) {
             return 3;
         }
-        else if (level >= advancedConfig.getSpoutNotificationTier1()) {
+        else if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier1()) {
             return 2;
         }
         else {
@@ -587,8 +563,7 @@ public class SpoutTools {
      */
     public static void reloadSpoutPlayers() {
         for (SpoutPlayer spoutPlayer : SpoutManager.getPlayerChunkMap().getOnlinePlayers()) {
-            SpoutCraftEnableEvent spoutCraftEnableEvent = new SpoutCraftEnableEvent(spoutPlayer);
-            mcMMO.p.getServer().getPluginManager().callEvent(spoutCraftEnableEvent);
+            mcMMO.p.getServer().getPluginManager().callEvent(new SpoutCraftEnableEvent(spoutPlayer));
         }
     }
 
@@ -596,8 +571,7 @@ public class SpoutTools {
         SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
         if (spoutPlayer != null) {
-            SpoutCraftEnableEvent spoutCraftEnableEvent = new SpoutCraftEnableEvent(spoutPlayer);
-            mcMMO.p.getServer().getPluginManager().callEvent(spoutCraftEnableEvent);
+            mcMMO.p.getServer().getPluginManager().callEvent(new SpoutCraftEnableEvent(spoutPlayer));
         }
     }
 
