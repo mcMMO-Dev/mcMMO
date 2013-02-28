@@ -253,7 +253,6 @@ public final class CommandRegistrationHelper {
     public static void registerMcpurgeCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcpurge");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcpurge", Config.getInstance().getOldUsersCutoff()));
-        command.setPermission("mcmmo.commands.mcpurge");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcpurge"));
         command.setExecutor(new McpurgeCommand());
@@ -262,7 +261,6 @@ public final class CommandRegistrationHelper {
     public static void registerMcremoveCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcremove");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcremove"));
-        command.setPermission("mcmmo.commands.mcremove");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcremove", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
         command.setExecutor(new McremoveCommand());
@@ -271,7 +269,6 @@ public final class CommandRegistrationHelper {
     public static void registerMmoupdateCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmoupdate");
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoupdate"));
-        command.setPermission("mcmmo.commands.mmoupdate");
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mmoupdate"));
         command.setExecutor(new MmoupdateCommand());

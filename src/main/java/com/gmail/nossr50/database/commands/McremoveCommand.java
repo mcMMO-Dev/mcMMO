@@ -8,10 +8,16 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.database.Leaderboard;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 
 public class McremoveCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!Permissions.mcremove(sender)) {
+            sender.sendMessage(command.getPermissionMessage());
+            return true;
+        }
+
         switch (args.length) {
         case 1:
             /* MySQL */

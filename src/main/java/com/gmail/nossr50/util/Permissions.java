@@ -83,6 +83,10 @@ public final class Permissions {
     public static boolean vampirismModify(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.vampirism.modify"); }
     public static boolean vampirismToggle(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.vampirism.toggle"); }
 
+    public static boolean mcpurge(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mcpurge"); }
+    public static boolean mcremove(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mcremove"); }
+    public static boolean mmoupdate(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mmoupdate"); }
+
     /*
      * PERKS
      */

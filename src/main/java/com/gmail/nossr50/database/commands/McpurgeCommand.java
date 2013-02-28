@@ -8,10 +8,16 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.Database;
 import com.gmail.nossr50.database.Leaderboard;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 
 public class McpurgeCommand implements CommandExecutor{
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (!Permissions.mcpurge(sender)) {
+            sender.sendMessage(command.getPermissionMessage());
+            return true;
+        }
+
         switch (args.length) {
         case 0:
             if (Config.getInstance().getUseMySQL()) {
