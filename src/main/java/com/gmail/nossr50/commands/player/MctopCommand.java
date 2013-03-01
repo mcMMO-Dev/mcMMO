@@ -31,7 +31,14 @@ public class MctopCommand implements CommandExecutor {
                     display(Integer.parseInt(args[0]), "ALL", sender, useMySQL, command);
                 }
                 else if (SkillUtils.isSkill(args[0])) {
-                    display(1, SkillType.getSkill(args[0]).toString(), sender, useMySQL, command);
+                    SkillType skill = SkillType.getSkill(args[0]);
+
+                    if (skill.isChildSkill()) {
+                        sender.sendMessage("Child skills are not yet supported by this command."); // TODO: Localize this
+                        return true;
+                    }
+
+                    display(1, skill.toString(), sender, useMySQL, command);
                 }
                 else {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
@@ -45,7 +52,14 @@ public class MctopCommand implements CommandExecutor {
                 }
 
                 if (SkillUtils.isSkill(args[0])) {
-                    display(Integer.parseInt(args[1]), SkillType.getSkill(args[0]).toString(), sender, useMySQL, command);
+                    SkillType skill = SkillType.getSkill(args[0]);
+
+                    if (skill.isChildSkill()) {
+                        sender.sendMessage("Child skills are not yet supported by this command."); // TODO: Localize this
+                        return true;
+                    }
+
+                    display(Integer.parseInt(args[1]), skill.toString(), sender, useMySQL, command);
                 }
                 else {
                     sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));

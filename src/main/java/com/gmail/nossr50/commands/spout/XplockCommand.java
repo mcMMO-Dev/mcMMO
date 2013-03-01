@@ -39,6 +39,11 @@ public class XplockCommand extends SpoutCommand {
 
         SkillType skill = SkillType.getSkill(args[0]);
 
+        if (skill.isChildSkill()) {
+            sender.sendMessage("Child skills are not yet supported by this command."); // TODO: Localize this
+            return true;
+        }
+
         if (!Permissions.xplock(sender, skill)) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
