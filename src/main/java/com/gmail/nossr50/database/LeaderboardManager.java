@@ -36,6 +36,7 @@ public final class LeaderboardManager {
         }
 
         lastUpdate = System.currentTimeMillis(); // Log when the last update was run
+        powerLevels.clear(); // Clear old values from the power levels
 
         // Initialize lists
         List<PlayerStat> mining      = new ArrayList<PlayerStat>();
@@ -50,7 +51,6 @@ public final class LeaderboardManager {
         List<PlayerStat> unarmed     = new ArrayList<PlayerStat>();
         List<PlayerStat> taming      = new ArrayList<PlayerStat>();
         List<PlayerStat> fishing     = new ArrayList<PlayerStat>();
-        List<PlayerStat> powerLevels = new ArrayList<PlayerStat>();
 
         // Read from the FlatFile database and fill our arrays with information
         try {
