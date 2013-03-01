@@ -79,12 +79,7 @@ public final class CombatUtils {
             }
 
             if (ItemUtils.isSword(heldItem)) {
-                if (targetIsPlayer || targetIsTamedPet) {
-                    if (!SkillType.SWORDS.getPVPEnabled()) {
-                        return;
-                    }
-                }
-                else if (!SkillType.SWORDS.getPVEEnabled()) {
+                if (((targetIsPlayer || targetIsTamedPet) && !SkillType.SWORDS.getPVPEnabled()) || (!targetIsPlayer && !targetIsTamedPet && !SkillType.SWORDS.getPVEEnabled())) {
                     return;
                 }
 
@@ -212,11 +207,11 @@ public final class CombatUtils {
                         }
 
                         if (skillLevel >= Taming.sharpenedClawsUnlockLevel && Permissions.sharpenedClaws(master)) {
-                            tamingManager.sharpenedClaws(event);
+                            event.setDamage(Taming.sharpenedClaws(event.getDamage()));
                         }
 
                         if (Permissions.gore(master)) {
-                            tamingManager.gore(event);
+                            event.setDamage(tamingManager.gore(target, event.getDamage()));
                         }
 
                         startGainXp(mcMMOPlayer, target, SkillType.TAMING);

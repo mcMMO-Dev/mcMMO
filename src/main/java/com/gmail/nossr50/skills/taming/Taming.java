@@ -1,29 +1,28 @@
 package com.gmail.nossr50.skills.taming;
 
 import org.bukkit.EntityEffect;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.AnimalTamer;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class Taming {
     public static int environmentallyAwareUnlockLevel = AdvancedConfig.getInstance().getEnviromentallyAwareUnlock();
     public static int holyHoundUnlockLevel            = AdvancedConfig.getInstance().getHolyHoundUnlock();
 
-    public static int fastFoodServiceUnlockLevel         = AdvancedConfig.getInstance().getFastFoodUnlock();
+    public static int    fastFoodServiceUnlockLevel      = AdvancedConfig.getInstance().getFastFoodUnlock();
     public static double fastFoodServiceActivationChance = AdvancedConfig.getInstance().getFastFoodChance();
 
-    public static int    goreBleedTicks = AdvancedConfig.getInstance().getGoreBleedTicks();
+    public static int    goreBleedTicks    = AdvancedConfig.getInstance().getGoreBleedTicks();
     public static int    goreMaxBonusLevel = AdvancedConfig.getInstance().getGoreMaxBonusLevel();
-    public static int    goreModifier = AdvancedConfig.getInstance().getGoreModifier();
-    public static double goreMaxChance = AdvancedConfig.getInstance().getGoreChanceMax();
+    public static int    goreModifier      = AdvancedConfig.getInstance().getGoreModifier();
+    public static double goreMaxChance     = AdvancedConfig.getInstance().getGoreChanceMax();
 
     public static int sharpenedClawsUnlockLevel = AdvancedConfig.getInstance().getSharpenedClawsUnlock();
     public static int sharpenedClawsBonusDamage = AdvancedConfig.getInstance().getSharpenedClawsBonus();
@@ -41,22 +40,6 @@ public class Taming {
         return pet.isTamed() && owner instanceof Player && pet instanceof Wolf;
     }
 
-    public static boolean canUseThickFur(Player player) {
-        return SkillUtils.unlockLevelReached(player, SkillType.TAMING, thickFurUnlockLevel) && Permissions.thickFur(player);
-    }
-
-    public static boolean canUseEnvironmentallyAware(Player player) {
-        return SkillUtils.unlockLevelReached(player, SkillType.TAMING, environmentallyAwareUnlockLevel) && Permissions.environmentallyAware(player);
-    }
-
-    public static boolean canUseShockProof(Player player) {
-        return SkillUtils.unlockLevelReached(player, SkillType.TAMING, shockProofUnlockLevel) && Permissions.shockProof(player);
-    }
-
-    public static boolean canUseHolyHound(Player player) {
-        return SkillUtils.unlockLevelReached(player, SkillType.TAMING, holyHoundUnlockLevel) && Permissions.holyHound(player);
-    }
-
     public static int processThickFur(Wolf wolf, int damage) {
         wolf.playEffect(EntityEffect.WOLF_SHAKE);
         return damage / thickFurModifier;
@@ -67,18 +50,18 @@ public class Taming {
         wolf.setFireTicks(0);
     }
 
-    public static void processEnvironmentallyAware(Player player, Wolf wolf, int damage) {
-        if (damage > wolf.getHealth()) {
-            return;
-        }
-
-        wolf.teleport(player);
-        player.sendMessage(LocaleLoader.getString("Taming.Listener.Wolf"));
-    }
-
     public static int processShockProof(Wolf wolf, int damage) {
         wolf.playEffect(EntityEffect.WOLF_SHAKE);
         return damage / shockProofModifier;
+    }
+
+    /**
+     * Apply the Sharpened Claws ability.
+     *
+     * @param event The event to modify
+     */
+    public static int sharpenedClaws(int damage) {
+        return damage + Taming.sharpenedClawsBonusDamage;
     }
 
     public static void processHolyHound(Wolf wolf, int damage) {
@@ -86,5 +69,36 @@ public class Taming {
 
         wolf.setHealth(modifiedHealth);
         wolf.playEffect(EntityEffect.WOLF_HEARTS);
+    }
+
+    /**
+     * Get the name of a tameable animal's owner.
+     *
+     * @return the name of the animal's owner
+     */
+    protected static String getOwnerName(Tameable beast) {
+        AnimalTamer tamer = beast.getOwner();
+
+        if (tamer instanceof Player) {
+            return ((Player) tamer).getName();
+        }
+        else if (tamer instanceof OfflinePlayer) {
+            return ((OfflinePlayer) tamer).getName();
+        }
+
+        return "Unknown Master";
+    }
+
+    protected static String getCallOfTheWildFailureMessage(EntityType type) {
+        switch (type) {
+            case OCELOT:
+                return LocaleLoader.getString("Taming.Summon.Fail.Ocelot");
+
+            case WOLF:
+                return LocaleLoader.getString("Taming.Summon.Fail.Wolf");
+
+            default:
+                return "";
+        }
     }
 }
