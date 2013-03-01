@@ -7,6 +7,8 @@ Key:
   ! Change
   - Removal
 
+Version 1.4.01-dev
+
 Version 1.4.00
  + Added new Child Skill - Smelting!
  + Added a version check, admins will get notified when a new version is available!
