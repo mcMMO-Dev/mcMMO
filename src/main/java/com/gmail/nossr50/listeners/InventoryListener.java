@@ -94,7 +94,7 @@ public class InventoryListener implements Listener {
             if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemUtils.isSmeltable(smelting)) {
                 Player player = plugin.getFurnacePlayer(furnaceBlock);
 
-                if (!Misc.isNPCEntity(player)) {
+                if (Misc.isNPCEntity(player)) {
                     return;
                 }
 
@@ -115,7 +115,7 @@ public class InventoryListener implements Listener {
             if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemUtils.isSmeltable(smelting)) {
                 Player player = plugin.getFurnacePlayer(furnaceBlock);
 
-                if (!Misc.isNPCEntity(player)) {
+                if (Misc.isNPCEntity(player)) {
                     return;
                 }
 
