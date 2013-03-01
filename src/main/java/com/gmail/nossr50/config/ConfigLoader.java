@@ -54,7 +54,8 @@ public abstract class ConfigLoader {
         if (inputStream != null) {
             try {
                 copyStreamToFile(inputStream, configFile);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }

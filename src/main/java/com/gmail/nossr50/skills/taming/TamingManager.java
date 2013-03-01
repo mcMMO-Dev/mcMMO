@@ -4,17 +4,15 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class TamingManager extends SkillManager {
     public TamingManager(McMMOPlayer mcMMOPlayer) {
@@ -28,16 +26,16 @@ public class TamingManager extends SkillManager {
      */
     public void awardTamingXP(LivingEntity entity) {
         switch (entity.getType()) {
-        case WOLF:
-            applyXpGain(Taming.wolfXp);
-            return;
+            case WOLF:
+                applyXpGain(Taming.wolfXp);
+                return;
 
-        case OCELOT:
-            applyXpGain(Taming.ocelotXp);
-            return;
+            case OCELOT:
+                applyXpGain(Taming.ocelotXp);
+                return;
 
-        default:
-            return;
+            default:
+                return;
         }
     }
 
@@ -48,7 +46,7 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, int damage) {
-        if (SkillTools.activationSuccessful(getPlayer(), skill, Taming.fastFoodServiceActivationChance)) {
+        if (SkillUtils.activationSuccessful(getPlayer(), skill, Taming.fastFoodServiceActivationChance)) {
 
             int health = wolf.getHealth();
             int maxHealth = wolf.getMaxHealth();
@@ -79,7 +77,9 @@ public class TamingManager extends SkillManager {
         GoreEventHandler eventHandler = new GoreEventHandler(this, event);
 
         float chance = (float) ((Taming.goreMaxChance / Taming.goreMaxBonusLevel) * getSkillLevel());
-        if (chance > Taming.goreMaxChance) chance = (float) Taming.goreMaxChance;
+        if (chance > Taming.goreMaxChance) {
+            chance = (float) Taming.goreMaxChance;
+        }
 
         if (chance > Misc.getRandom().nextInt(activationChance)) {
             eventHandler.modifyEventDamage();

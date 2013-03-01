@@ -7,17 +7,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ArcheryManager extends SkillManager {
-    public ArcheryManager (McMMOPlayer mcMMOPlayer) {
+    public ArcheryManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.ARCHERY);
     }
 
@@ -28,7 +28,7 @@ public class ArcheryManager extends SkillManager {
     public boolean canSkillShot() {
         Player player = getPlayer();
 
-        return SkillTools.unlockLevelReached(player, skill, Archery.skillShotIncreaseLevel) && Permissions.bonusDamage(player, skill);
+        return SkillUtils.unlockLevelReached(player, skill, Archery.skillShotIncreaseLevel) && Permissions.bonusDamage(player, skill);
     }
 
     public boolean canTrackArrows() {
@@ -55,7 +55,7 @@ public class ArcheryManager extends SkillManager {
         // TODO: Better way to handle this would be great...
         double squaredDistance = Math.min(shooterLocation.distanceSquared(targetLocation), 10000);
 
-        applyXpGain((int) (squaredDistance * Archery.distanceXpModifer));
+        applyXpGain((int) (squaredDistance * Archery.DISTANCE_XP_MULTIPLIER));
     }
 
     /**
@@ -64,7 +64,7 @@ public class ArcheryManager extends SkillManager {
      * @param target The {@link LivingEntity} damaged by the arrow
      */
     public void trackArrows(LivingEntity target) {
-        if (SkillTools.activationSuccessful(getPlayer(), skill, Archery.retrieveMaxChance, Archery.retrieveMaxBonusLevel)) {
+        if (SkillUtils.activationSuccessful(getPlayer(), skill, Archery.retrieveMaxChance, Archery.retrieveMaxBonusLevel)) {
             Archery.incrementTrackerValue(target);
         }
     }
@@ -79,14 +79,14 @@ public class ArcheryManager extends SkillManager {
     public int dazeCheck(Player defender, int damage) {
         Player attacker = getPlayer();
 
-        if (SkillTools.activationSuccessful(attacker, skill, Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel)) {
+        if (SkillUtils.activationSuccessful(attacker, skill, Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel)) {
             Location dazedLocation = defender.getLocation();
             dazedLocation.setPitch(90 - Misc.getRandom().nextInt(181));
 
             defender.teleport(dazedLocation);
             defender.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 10));
 
-            if (Users.getPlayer(defender).getProfile().useChatNotifications()) {
+            if (UserManager.getPlayer(defender).getProfile().useChatNotifications()) {
                 defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
             }
 

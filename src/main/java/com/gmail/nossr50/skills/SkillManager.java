@@ -2,10 +2,10 @@ package com.gmail.nossr50.skills;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.PlayerProfile;
-import com.gmail.nossr50.skills.utilities.PerksUtils;
-import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.util.skills.PerksUtils;
 
 public abstract class SkillManager {
     protected McMMOPlayer mcMMOPlayer;

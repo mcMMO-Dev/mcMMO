@@ -19,18 +19,18 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.TreasuresConfig;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.config.treasure.TreasureConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
-import com.gmail.nossr50.skills.utilities.CombatTools;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class FishingManager extends SkillManager {
     public FishingManager(McMMOPlayer mcMMOPlayer) {
@@ -40,7 +40,41 @@ public class FishingManager extends SkillManager {
     public boolean canShake(Entity target) {
         Player player = getPlayer();
 
-        return target instanceof LivingEntity && SkillTools.unlockLevelReached(player, skill, AdvancedConfig.getInstance().getShakeUnlockLevel()) && Permissions.shake(player);
+        return target instanceof LivingEntity && SkillUtils.unlockLevelReached(player, skill, AdvancedConfig.getInstance().getShakeUnlockLevel()) && Permissions.shake(player);
+    }
+
+    /**
+     * Gets the loot tier
+     *
+     * @return the loot tier
+     */
+    public int getLootTier() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.toNumerical();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Gets the Shake Mob probability
+     *
+     * @return Shake Mob probability
+     */
+    public int getShakeProbability() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getShakeChance();
+            }
+        }
+
+        return 0;
     }
 
     /**
@@ -51,7 +85,7 @@ public class FishingManager extends SkillManager {
      * @return the modified change in hunger for the event
      */
     public int handleFishermanDiet(int rankChange, int eventFoodLevel) {
-        return SkillTools.handleFoodSkills(getPlayer(), skill, eventFoodLevel, Fishing.fishermansDietRankLevel1, Fishing.fishermansDietMaxLevel, rankChange);
+        return SkillUtils.handleFoodSkills(getPlayer(), skill, eventFoodLevel, Fishing.fishermansDietRankLevel1, Fishing.fishermansDietMaxLevel, rankChange);
     }
 
     /**
@@ -74,7 +108,7 @@ public class FishingManager extends SkillManager {
             treasureXp = treasure.getXp();
             ItemStack treasureDrop = treasure.getDrop();
 
-            if (Permissions.magicHunter(player) && ItemChecks.isEnchantable(treasureDrop) && handleMagicHunter(treasureDrop)) {
+            if (Permissions.magicHunter(player) && ItemUtils.isEnchantable(treasureDrop) && handleMagicHunter(treasureDrop)) {
                 player.sendMessage(LocaleLoader.getString("Fishing.MagicFound"));
             }
 
@@ -102,7 +136,7 @@ public class FishingManager extends SkillManager {
      * @param mob The {@link LivingEntity} affected by the ability
      */
     public void shakeCheck(LivingEntity target) {
-        if (SkillTools.activationSuccessful(getPlayer(), skill, getShakeProbability())) {
+        if (SkillUtils.activationSuccessful(getPlayer(), skill, getShakeProbability())) {
             Map<ItemStack, Integer> possibleDrops = new HashMap<ItemStack, Integer>();
 
             Fishing.findPossibleDrops(target, possibleDrops);
@@ -120,44 +154,44 @@ public class FishingManager extends SkillManager {
 
             // Extra processing depending on the mob and drop type
             switch (target.getType()) {
-            case SHEEP:
-                Sheep sheep = (Sheep) target;
+                case SHEEP:
+                    Sheep sheep = (Sheep) target;
 
-                if (drop.getType() == Material.WOOL) {
-                    if (sheep.isSheared()) {
-                        return;
+                    if (drop.getType() == Material.WOOL) {
+                        if (sheep.isSheared()) {
+                            return;
+                        }
+
+                        drop.setDurability(sheep.getColor().getWoolData());
+                        sheep.setSheared(true);
                     }
+                    break;
 
-                    drop.setDurability(sheep.getColor().getWoolData());
-                    sheep.setSheared(true);
-                }
-                break;
+                case SKELETON:
+                    Skeleton skeleton = (Skeleton) target;
 
-            case SKELETON:
-                Skeleton skeleton = (Skeleton) target;
+                    if (skeleton.getSkeletonType() == SkeletonType.WITHER) {
+                        switch (drop.getType()) {
+                            case SKULL_ITEM:
+                                drop.setDurability((short) 1);
+                                break;
 
-                if (skeleton.getSkeletonType() == SkeletonType.WITHER) {
-                    switch (drop.getType()) {
-                    case SKULL_ITEM:
-                        drop.setDurability((short) 1);
-                        break;
+                            case ARROW:
+                                drop.setType(Material.COAL);
+                                break;
 
-                    case ARROW:
-                        drop.setType(Material.COAL);
-                        break;
-
-                    default:
-                        break;
+                            default:
+                                break;
+                        }
                     }
-                }
-                break;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
 
             Misc.dropItem(target.getLocation(), drop);
-            CombatTools.dealDamage(target, target.getMaxHealth() / 4); // Make it so you can shake a mob no more than 4 times.
+            CombatUtils.dealDamage(target, target.getMaxHealth() / 4); // Make it so you can shake a mob no more than 4 times.
         }
     }
 
@@ -170,7 +204,7 @@ public class FishingManager extends SkillManager {
         List<FishingTreasure> rewards = new ArrayList<FishingTreasure>();
         int skillLevel = getSkillLevel();
 
-        for (FishingTreasure treasure : TreasuresConfig.getInstance().fishingRewards) {
+        for (FishingTreasure treasure : TreasureConfig.getInstance().fishingRewards) {
             int maxLevel = treasure.getMaxLevel();
 
             if (treasure.getDropLevel() <= skillLevel && (maxLevel >= skillLevel || maxLevel <= 0)) {
@@ -185,7 +219,7 @@ public class FishingManager extends SkillManager {
         FishingTreasure treasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
         ItemStack treasureDrop = treasure.getDrop();
 
-        if (!SkillTools.treasureDropSuccessful(treasure.getDropChance(), skillLevel)) {
+        if (!SkillUtils.treasureDropSuccessful(treasure.getDropChance(), skillLevel)) {
             return null;
         }
 
@@ -250,40 +284,6 @@ public class FishingManager extends SkillManager {
         }
 
         return enchanted;
-    }
-
-    /**
-     * Gets the loot tier
-     *
-     * @return the loot tier
-     */
-    public int getLootTier() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.toNumerical();
-            }
-        }
-
-        return 0;
-    }
-
-    /**
-     * Gets the Shake Mob probability
-     *
-     * @return Shake Mob probability
-     */
-    public int getShakeProbability() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getShakeChance();
-            }
-        }
-
-        return 0;
     }
 
     /**

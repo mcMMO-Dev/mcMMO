@@ -12,7 +12,7 @@ import java.util.Set;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.gmail.nossr50.util.metrics.MetricsManager;
+import com.gmail.nossr50.metrics.MetricsManager;
 
 public abstract class AutoUpdateConfigLoader extends ConfigLoader {
     public AutoUpdateConfigLoader(String relativePath, String fileName) {
@@ -64,7 +64,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 
             // Rip out Bukkit's attempt to save comments at the top of the file
             while (output.indexOf('#') != -1) {
-                output = output.substring(output.indexOf('\n', output.indexOf('#'))+1);
+                output = output.substring(output.indexOf('\n', output.indexOf('#')) + 1);
             }
 
             // Read the internal config to get comments, then put them in the new one
@@ -81,7 +81,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
                     }
                     else if (line.contains(":")) {
                         line = line.substring(0, line.indexOf(":") + 1);
-                        if(!temp.isEmpty()) {
+                        if (!temp.isEmpty()) {
                             comments.put(line, temp);
                             temp = "";
                         }

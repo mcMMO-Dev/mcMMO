@@ -5,8 +5,8 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.util.player.UserManager;
 
 /**
  * Generic event for mcMMO experience events.
@@ -19,7 +19,7 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
     protected McMMOPlayerExperienceEvent(Player player, SkillType skill) {
         super(player);
         this.skill = skill;
-        this.skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(skill);
+        this.skillLevel = UserManager.getPlayer(player).getProfile().getSkillLevel(skill);
     }
 
     /**
@@ -36,6 +36,17 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
         return skillLevel;
     }
 
+    /** Following are required for Cancellable **/
+    @Override
+    public boolean isCancelled() {
+        return cancelled;
+    }
+
+    @Override
+    public void setCancelled(boolean cancelled) {
+        this.cancelled = cancelled;
+    }
+
     /** Rest of file is required boilerplate for custom events **/
     private static final HandlerList handlers = new HandlerList();
 
@@ -46,16 +57,5 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
 
     public static HandlerList getHandlerList() {
         return handlers;
-    }
-
-    /** Following are required for Cancellable **/
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
-    }
-
-    @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
     }
 }

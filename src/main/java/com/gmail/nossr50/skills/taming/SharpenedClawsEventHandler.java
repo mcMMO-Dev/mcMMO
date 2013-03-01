@@ -5,7 +5,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 public class SharpenedClawsEventHandler {
     private EntityDamageEvent event;
 
-    public SharpenedClawsEventHandler (EntityDamageEvent event) {
+    public SharpenedClawsEventHandler(EntityDamageEvent event) {
         this.event = event;
     }
 

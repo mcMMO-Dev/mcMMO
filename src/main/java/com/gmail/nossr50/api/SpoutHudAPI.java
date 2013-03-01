@@ -2,11 +2,12 @@ package com.gmail.nossr50.api;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.spout.SpoutConfig;
-import com.gmail.nossr50.spout.huds.HudType;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.config.spout.SpoutConfig;
+import com.gmail.nossr50.datatypes.spout.huds.HudType;
+import com.gmail.nossr50.util.player.UserManager;
 
 public class SpoutHudAPI {
+    private SpoutHudAPI() {}
 
     /**
      * Disable the mcMMO XP bar for a player.
@@ -14,7 +15,7 @@ public class SpoutHudAPI {
      * This function is designed for API usage.
      */
     public static void disableXpBar(Player player) {
-        Users.getPlayer(player).getProfile().setHudType(HudType.DISABLED);
+        UserManager.getPlayer(player).getProfile().setHudType(HudType.DISABLED);
     }
 
     /**

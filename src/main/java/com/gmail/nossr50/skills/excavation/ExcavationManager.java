@@ -5,13 +5,13 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 
-import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ExcavationManager extends SkillManager {
     public ExcavationManager(McMMOPlayer mcMMOPlayer) {
@@ -34,7 +34,7 @@ public class ExcavationManager extends SkillManager {
                 Location location = blockState.getLocation();
 
                 for (ExcavationTreasure treasure : treasures) {
-                    if (skillLevel >= treasure.getDropLevel() && SkillTools.treasureDropSuccessful(treasure.getDropChance(), activationChance)) {
+                    if (skillLevel >= treasure.getDropLevel() && SkillUtils.treasureDropSuccessful(treasure.getDropChance(), activationChance)) {
                         xp += treasure.getXp();
                         Misc.dropItem(location, treasure.getDrop());
                     }
@@ -53,5 +53,5 @@ public class ExcavationManager extends SkillManager {
     public void gigaDrillBreaker(BlockState blockState) {
         excavationBlockCheck(blockState);
         excavationBlockCheck(blockState);
-   }
+    }
 }

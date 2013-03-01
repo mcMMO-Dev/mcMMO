@@ -6,7 +6,7 @@ import org.bukkit.block.Block;
 public interface ChunkletManager {
     /**
      * Loads a specific chunklet
-     * 
+     *
      * @param cx Chunklet X coordinate that needs to be loaded
      * @param cy Chunklet Y coordinate that needs to be loaded
      * @param cz Chunklet Z coordinate that needs to be loaded

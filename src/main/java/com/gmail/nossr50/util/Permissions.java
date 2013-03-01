@@ -9,8 +9,8 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.commands.PartySubcommandType;
-import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.commands.party.PartySubcommandType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public final class Permissions {
     private Permissions() {}

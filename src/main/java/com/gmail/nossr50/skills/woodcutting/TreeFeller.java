@@ -14,16 +14,16 @@ import org.bukkit.material.Tree;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.mods.CustomBlock;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mods.ModChecks;
-import com.gmail.nossr50.mods.datatypes.CustomBlock;
-import com.gmail.nossr50.skills.utilities.CombatTools;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.skills.woodcutting.Woodcutting.ExperienceGainMethod;
-import com.gmail.nossr50.util.BlockChecks;
+import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.ModUtils;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public final class TreeFeller {
     private static boolean treeFellerReachedThreshold = false;
@@ -38,11 +38,13 @@ public final class TreeFeller {
      */
     protected static void processTreeFeller(BlockState blockState, Player player) {
         List<BlockState> treeFellerBlocks = new ArrayList<BlockState>();
-        
-        if(blockState.getTypeId() == 17 || blockState.getTypeId() == 99)
-        	processRegularTrees(blockState, treeFellerBlocks);
-        else
-        	processRedMushroomTrees(blockState, treeFellerBlocks);
+
+        if (blockState.getTypeId() == 17 || blockState.getTypeId() == 99) {
+            processRegularTrees(blockState, treeFellerBlocks);
+        }
+        else {
+            processRedMushroomTrees(blockState, treeFellerBlocks);
+        }
 
         // If the player is trying to break too many blocks
         if (treeFellerReachedThreshold) {
@@ -59,7 +61,7 @@ public final class TreeFeller {
             int health = player.getHealth();
 
             if (health > 1) {
-                CombatTools.dealDamage(player, Misc.getRandom().nextInt(health - 1));
+                CombatUtils.dealDamage(player, Misc.getRandom().nextInt(health - 1));
             }
 
             return;
@@ -75,7 +77,7 @@ public final class TreeFeller {
      * @param treeFellerBlocks List of blocks to be removed
      */
     private static void processRegularTrees(BlockState blockState, List<BlockState> treeFellerBlocks) {
-        if (!BlockChecks.isLog(blockState)) {
+        if (!BlockUtils.isLog(blockState)) {
             return;
         }
 
@@ -106,7 +108,7 @@ public final class TreeFeller {
             processRegularTrees(futureCenterBlock, treeFellerBlocks);
         }
     }
-    
+
     /**
      * Processes Tree Feller for Red Mushrooms (Dome Shaped)
      *
@@ -114,7 +116,7 @@ public final class TreeFeller {
      * @param treeFellerBlocks List of blocks to be removed
      */
     private static void processRedMushroomTrees(BlockState blockState, List<BlockState> treeFellerBlocks) {
-        if (!BlockChecks.isLog(blockState)) {
+        if (!BlockUtils.isLog(blockState)) {
             return;
         }
 
@@ -126,7 +128,7 @@ public final class TreeFeller {
             for (int x = -1; x <= 1; x++) {
                 for (int z = -1; z <= 1; z++) {
                     BlockState nextBlock = world.getBlockAt(blockState.getLocation().add(x, y, z)).getState();
-                    BlockState otherNextBlock = world.getBlockAt(blockState.getLocation().add(x, y-(y*2), z)).getState();
+                    BlockState otherNextBlock = world.getBlockAt(blockState.getLocation().add(x, y - (y * 2), z)).getState();
 
                     handleBlock(nextBlock, futureCenterBlocks, treeFellerBlocks);
                     handleBlock(otherNextBlock, futureCenterBlocks, treeFellerBlocks);
@@ -149,15 +151,14 @@ public final class TreeFeller {
     }
 
     /**
-     * Handle a block addition to the list of blocks to be removed
-     * and to the list of blocks used for future recursive calls of 'processRecursively()'
+     * Handle a block addition to the list of blocks to be removed and to the list of blocks used for future recursive calls of 'processRecursively()'
      *
      * @param blockState Block to be added
      * @param futureCenterBlocks List of blocks that will be used to call 'processRecursively()'
      * @param treeFellerBlocks List of blocks to be removed
      */
     private static void handleBlock(BlockState blockState, List<BlockState> futureCenterBlocks, List<BlockState> treeFellerBlocks) {
-        if (!BlockChecks.affectedByTreeFeller(blockState) || mcMMO.placeStore.isTrue(blockState) || treeFellerBlocks.contains(blockState)) {
+        if (!BlockUtils.affectedByTreeFeller(blockState) || mcMMO.placeStore.isTrue(blockState) || treeFellerBlocks.contains(blockState)) {
             return;
         }
 
@@ -186,19 +187,19 @@ public final class TreeFeller {
             int unbreakingLevel = inHand.getEnchantmentLevel(Enchantment.DURABILITY);
 
             for (BlockState blockState : treeFellerBlocks) {
-                if (BlockChecks.isLog(blockState) && Misc.getRandom().nextInt(unbreakingLevel + 1) == 0) {
-                     durabilityLoss += Config.getInstance().getAbilityToolDamage();
+                if (BlockUtils.isLog(blockState) && Misc.getRandom().nextInt(unbreakingLevel + 1) == 0) {
+                    durabilityLoss += Config.getInstance().getAbilityToolDamage();
                 }
             }
 
             short finalDurability = (short) (inHand.getDurability() + durabilityLoss);
-            short maxDurability = ModChecks.isCustomTool(inHand) ? ModChecks.getToolFromItemStack(inHand).getDurability() : inHandMaterial.getMaxDurability();
+            short maxDurability = ModUtils.isCustomTool(inHand) ? ModUtils.getToolFromItemStack(inHand).getDurability() : inHandMaterial.getMaxDurability();
 
             if (finalDurability >= maxDurability) {
                 inHand.setDurability(maxDurability);
                 return false;
             }
-    
+
             inHand.setDurability(finalDurability);
         }
 
@@ -215,7 +216,7 @@ public final class TreeFeller {
         int xp = 0;
 
         for (BlockState blockState : treeFellerBlocks) {
-            if (!SkillTools.blockBreakSimulate(blockState.getBlock(), player, true)) {
+            if (!SkillUtils.blockBreakSimulate(blockState.getBlock(), player, true)) {
                 break; // TODO: Shouldn't we use continue instead?
             }
 
@@ -228,10 +229,10 @@ public final class TreeFeller {
                     Misc.dropItem(blockState.getLocation(), drop);
                 }
             }
-            else if (ModChecks.isCustomLogBlock(blockState)) {
+            else if (ModUtils.isCustomLogBlock(blockState)) {
                 Woodcutting.checkForDoubleDrop(player, blockState);
 
-                CustomBlock customBlock = ModChecks.getCustomBlock(blockState);
+                CustomBlock customBlock = ModUtils.getCustomBlock(blockState);
                 xp = customBlock.getXpGain();
                 int minimumDropAmount = customBlock.getMinimumDropAmount();
                 int maximumDropAmount = customBlock.getMaximumDropAmount();
@@ -244,24 +245,24 @@ public final class TreeFeller {
                     Misc.randomDropItems(location, item, maximumDropAmount - minimumDropAmount);
                 }
             }
-            else if (ModChecks.isCustomLeafBlock(blockState)) {
-                Misc.randomDropItem(blockState.getLocation(), ModChecks.getCustomBlock(blockState).getItemDrop(), 10);
+            else if (ModUtils.isCustomLeafBlock(blockState)) {
+                Misc.randomDropItem(blockState.getLocation(), ModUtils.getCustomBlock(blockState).getItemDrop(), 10);
             }
             else {
                 Tree tree = (Tree) blockState.getData();
                 switch (material) {
-                case LOG:
-                    Woodcutting.checkForDoubleDrop(player, blockState);
-                    xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
-                    Misc.dropItem(blockState.getLocation(), new ItemStack(Material.LOG, 1, tree.getSpecies().getData()));
-                    break;
+                    case LOG:
+                        Woodcutting.checkForDoubleDrop(player, blockState);
+                        xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
+                        Misc.dropItem(blockState.getLocation(), new ItemStack(Material.LOG, 1, tree.getSpecies().getData()));
+                        break;
 
-                case LEAVES:
-                    Misc.randomDropItem(blockState.getLocation(), new ItemStack(Material.SAPLING, 1, tree.getSpecies().getData()), 10);
-                    break;
+                    case LEAVES:
+                        Misc.randomDropItem(blockState.getLocation(), new ItemStack(Material.SAPLING, 1, tree.getSpecies().getData()), 10);
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
                 }
             }
 
@@ -270,6 +271,6 @@ public final class TreeFeller {
             blockState.update(true);
         }
 
-        Users.getPlayer(player).beginXpGain(SkillType.WOODCUTTING, xp);
+        UserManager.getPlayer(player).beginXpGain(SkillType.WOODCUTTING, xp);
     }
 }

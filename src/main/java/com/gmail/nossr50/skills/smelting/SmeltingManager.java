@@ -9,17 +9,17 @@ import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.smelting.Smelting.Tier;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.BlockChecks;
-import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SmeltingManager extends SkillManager {
     public SmeltingManager(McMMOPlayer mcMMOPlayer) {
@@ -30,13 +30,13 @@ public class SmeltingManager extends SkillManager {
         Player player = getPlayer();
         ItemStack heldItem = player.getItemInHand();
 
-        return BlockChecks.affectedByFluxMining(blockState) && ItemChecks.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH) && Permissions.fluxMining(player) && !mcMMO.placeStore.isTrue(blockState);
+        return BlockUtils.affectedByFluxMining(blockState) && ItemUtils.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH) && Permissions.fluxMining(player) && !mcMMO.placeStore.isTrue(blockState);
     }
 
     public boolean canUseVanillaXpBoost() {
         Player player = getPlayer();
 
-        return SkillTools.unlockLevelReached(player, skill, Smelting.Tier.ONE.getLevel()) && Permissions.vanillaXpBoost(player, skill);
+        return SkillUtils.unlockLevelReached(player, skill, Smelting.Tier.ONE.getLevel()) && Permissions.vanillaXpBoost(player, skill);
     }
 
     /**
@@ -48,20 +48,20 @@ public class SmeltingManager extends SkillManager {
     public boolean processFluxMining(BlockState blockState) {
         Player player = getPlayer();
 
-        if (SkillTools.unlockLevelReached(player, skill, Smelting.fluxMiningUnlockLevel) && SkillTools.activationSuccessful(player, skill, Smelting.fluxMiningChance)) {
+        if (SkillUtils.unlockLevelReached(player, skill, Smelting.fluxMiningUnlockLevel) && SkillUtils.activationSuccessful(player, skill, Smelting.fluxMiningChance)) {
             ItemStack item = null;
 
             switch (blockState.getType()) {
-            case IRON_ORE:
-                item = new ItemStack(Material.IRON_INGOT);
-                break;
+                case IRON_ORE:
+                    item = new ItemStack(Material.IRON_INGOT);
+                    break;
 
-            case GOLD_ORE:
-                item = new ItemStack(Material.GOLD_INGOT);
-                break;
+                case GOLD_ORE:
+                    item = new ItemStack(Material.GOLD_INGOT);
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
 
             if (item == null) {
@@ -72,7 +72,7 @@ public class SmeltingManager extends SkillManager {
 
             Misc.dropItem(location, item);
 
-            if (Permissions.doubleDrops(player, skill) && SkillTools.activationSuccessful(player, skill, Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
+            if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(player, skill, Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
                 Misc.dropItem(location, item);
             }
 
@@ -101,7 +101,7 @@ public class SmeltingManager extends SkillManager {
 
         applyXpGain(Smelting.getResourceXp(resourceType));
 
-        if (Permissions.doubleDrops(player, skill) && SkillTools.activationSuccessful(player, skill, Smelting.secondSmeltMaxChance, Smelting.secondSmeltMaxLevel)) {
+        if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(player, skill, Smelting.secondSmeltMaxChance, Smelting.secondSmeltMaxLevel)) {
             ItemStack newResult = new ItemStack(result.getType(), result.getAmount() + 1);
             return newResult;
         }
@@ -118,7 +118,7 @@ public class SmeltingManager extends SkillManager {
      *
      * @return the vanilla XP multiplier
      */
-    protected int getVanillaXpMultiplier() {
+    public int getVanillaXpMultiplier() {
         int skillLevel = getSkillLevel();
 
         for (Tier tier : Tier.values()) {

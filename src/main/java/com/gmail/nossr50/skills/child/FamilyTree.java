@@ -5,7 +5,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public class FamilyTree {
     private static HashMap<SkillType, Set<SkillType>> tree = new HashMap<SkillType, Set<SkillType>>();

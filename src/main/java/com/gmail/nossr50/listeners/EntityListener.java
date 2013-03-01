@@ -27,22 +27,22 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.MiningManager;
-import com.gmail.nossr50.skills.runnables.BleedTimer;
 import com.gmail.nossr50.skills.taming.Taming;
-import com.gmail.nossr50.skills.utilities.CombatTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.CombatUtils;
 
 public class EntityListener implements Listener {
     private final mcMMO plugin;
@@ -80,8 +80,9 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event instanceof FakeEntityDamageByEntityEvent || event.getDamage() <= 0)
+        if (event instanceof FakeEntityDamageByEntityEvent || event.getDamage() <= 0) {
             return;
+        }
 
         Entity defender = event.getEntity();
 
@@ -129,8 +130,8 @@ public class EntityListener implements Listener {
         if (defender instanceof LivingEntity) {
             LivingEntity livingDefender = (LivingEntity) defender;
 
-            if (!CombatTools.isInvincible(livingDefender, event.getDamage())) {
-                CombatTools.combatChecks(event, attacker, livingDefender);
+            if (!CombatUtils.isInvincible(livingDefender, event.getDamage())) {
+                CombatUtils.combatChecks(event, attacker, livingDefender);
             }
         }
     }
@@ -155,7 +156,7 @@ public class EntityListener implements Listener {
         DamageCause cause = event.getCause();
         LivingEntity livingEntity = (LivingEntity) entity;
 
-        if (CombatTools.isInvincible(livingEntity, event.getDamage())) {
+        if (CombatUtils.isInvincible(livingEntity, event.getDamage())) {
             return;
         }
 
@@ -167,7 +168,7 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             PlayerProfile profile = mcMMOPlayer.getProfile();
 
             /* Check for invincibility */
@@ -177,32 +178,32 @@ public class EntityListener implements Listener {
             }
 
             switch (cause) {
-            case FALL:
-                if (SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).canRoll()) {
-                    event.setDamage(SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).rollCheck(event.getDamage()));
+                case FALL:
+                    if (SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).canRoll()) {
+                        event.setDamage(SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).rollCheck(event.getDamage()));
 
-                    if (event.getDamage() == 0) {
-                        event.setCancelled(true);
-                        return;
+                        if (event.getDamage() == 0) {
+                            event.setCancelled(true);
+                            return;
+                        }
                     }
-                }
-                break;
+                    break;
 
-            case BLOCK_EXPLOSION:
-                MiningManager miningManager = SkillManagerStore.getInstance().getMiningManager(player.getName());
+                case BLOCK_EXPLOSION:
+                    MiningManager miningManager = SkillManagerStore.getInstance().getMiningManager(player.getName());
 
-                if (miningManager.canUseDemolitionsExpertise()) {
-                    event.setDamage(miningManager.processDemolitionsExpertise(event.getDamage()));
+                    if (miningManager.canUseDemolitionsExpertise()) {
+                        event.setDamage(miningManager.processDemolitionsExpertise(event.getDamage()));
 
-                    if (event.getDamage() == 0) {
-                        event.setCancelled(true);
-                        return;
+                        if (event.getDamage() == 0) {
+                            event.setCancelled(true);
+                            return;
+                        }
                     }
-                }
-                break;
+                    break;
 
-            default:
-                break;
+                default:
+                    break;
             }
 
             if (event.getDamage() >= 1) {
@@ -218,59 +219,59 @@ public class EntityListener implements Listener {
                 Wolf wolf = (Wolf) pet;
 
                 switch (cause) {
-                case CONTACT:
-                case FIRE:
-                case LAVA:
-                    if (Taming.canUseEnvironmentallyAware(player)) {
-                        Taming.processEnvironmentallyAware(player, wolf, event.getDamage());
-                    }
-                    return;
+                    case CONTACT:
+                    case FIRE:
+                    case LAVA:
+                        if (Taming.canUseEnvironmentallyAware(player)) {
+                            Taming.processEnvironmentallyAware(player, wolf, event.getDamage());
+                        }
+                        return;
 
-                case FALL:
-                    if (Taming.canUseEnvironmentallyAware(player)) {
-                        event.setCancelled(true);
-                    }
-                    return;
-
-                case ENTITY_ATTACK:
-                case PROJECTILE:
-                    if (Taming.canUseThickFur(player)) {
-                        event.setDamage(Taming.processThickFur(wolf, event.getDamage()));
-
-                        if (event.getDamage() == 0) {
+                    case FALL:
+                        if (Taming.canUseEnvironmentallyAware(player)) {
                             event.setCancelled(true);
                         }
-                    }
-                    return;
+                        return;
 
-                case FIRE_TICK:
-                    if (Taming.canUseThickFur(player)) {
-                        Taming.processThickFurFire(wolf);
-                    }
-                    return;
+                    case ENTITY_ATTACK:
+                    case PROJECTILE:
+                        if (Taming.canUseThickFur(player)) {
+                            event.setDamage(Taming.processThickFur(wolf, event.getDamage()));
 
-                case MAGIC:
-                case POISON:
-                case WITHER:
-                    if (Taming.canUseHolyHound(player)) {
-                        Taming.processHolyHound(wolf, event.getDamage());
-                    }
-                    return;
-
-                case BLOCK_EXPLOSION:
-                case ENTITY_EXPLOSION:
-                case LIGHTNING:
-                    if (Taming.canUseShockProof(player)) {
-                        event.setDamage(Taming.processShockProof(wolf, event.getDamage()));
-
-                        if (event.getDamage() == 0) {
-                            event.setCancelled(true);
+                            if (event.getDamage() == 0) {
+                                event.setCancelled(true);
+                            }
                         }
-                    }
-                    return;
+                        return;
 
-                default:
-                    return;
+                    case FIRE_TICK:
+                        if (Taming.canUseThickFur(player)) {
+                            Taming.processThickFurFire(wolf);
+                        }
+                        return;
+
+                    case MAGIC:
+                    case POISON:
+                    case WITHER:
+                        if (Taming.canUseHolyHound(player)) {
+                            Taming.processHolyHound(wolf, event.getDamage());
+                        }
+                        return;
+
+                    case BLOCK_EXPLOSION:
+                    case ENTITY_EXPLOSION:
+                    case LIGHTNING:
+                        if (Taming.canUseShockProof(player)) {
+                            event.setDamage(Taming.processShockProof(wolf, event.getDamage()));
+
+                            if (event.getDamage() == 0) {
+                                event.setCancelled(true);
+                            }
+                        }
+                        return;
+
+                    default:
+                        return;
                 }
             }
         }
@@ -281,7 +282,7 @@ public class EntityListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
 
@@ -290,7 +291,7 @@ public class EntityListener implements Listener {
         }
 
         entity.setFireTicks(0);
-        BleedTimer.remove(entity);
+        BleedTimerTask.remove(entity);
         Archery.arrowRetrievalCheck(entity);
     }
 
@@ -299,7 +300,7 @@ public class EntityListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         if (Misc.isSpawnerXPEnabled || event.getEntity() == null) {
             return;
@@ -317,7 +318,7 @@ public class EntityListener implements Listener {
      *
      * @param event The event to modify
      */
-    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         Entity entity = event.getEntity();
 
@@ -339,7 +340,7 @@ public class EntityListener implements Listener {
      *
      * @param event The event to modify
      */
-    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEnitityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
 
@@ -364,7 +365,7 @@ public class EntityListener implements Listener {
      *
      * @param event The event to modify
      */
-    @EventHandler (priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         Entity entity = event.getEntity();
 
@@ -387,40 +388,40 @@ public class EntityListener implements Listener {
              */
             if (foodChange > 0) {
                 switch (player.getItemInHand().getType()) {
-                case BAKED_POTATO:  /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
-                case BREAD:         /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                case CARROT_ITEM:   /* RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
-                case GOLDEN_CARROT: /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
-                case MUSHROOM_SOUP: /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
-                case PUMPKIN_PIE:   /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
-                    if (Permissions.farmersDiet(player)) {
-                        event.setFoodLevel(SkillManagerStore.getInstance().getHerbalismManager(player.getName()).farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
-                    }
-                    return;
+                    case BAKED_POTATO:  /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
+                    case BREAD:         /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+                    case CARROT_ITEM:   /* RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
+                    case GOLDEN_CARROT: /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
+                    case MUSHROOM_SOUP: /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
+                    case PUMPKIN_PIE:   /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
+                        if (Permissions.farmersDiet(player)) {
+                            event.setFoodLevel(SkillManagerStore.getInstance().getHerbalismManager(player.getName()).farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
+                        }
+                        return;
 
-                case COOKIE:            /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                case MELON:             /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                case POISONOUS_POTATO:  /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                case POTATO_ITEM:       /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                    if (Permissions.farmersDiet(player)) {
-                        event.setFoodLevel(SkillManagerStore.getInstance().getHerbalismManager(player.getName()).farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
-                    }
-                    return;
+                    case COOKIE:           /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+                    case MELON:            /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                    case POISONOUS_POTATO: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                    case POTATO_ITEM:      /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+                        if (Permissions.farmersDiet(player)) {
+                            event.setFoodLevel(SkillManagerStore.getInstance().getHerbalismManager(player.getName()).farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
+                        }
+                        return;
 
-                case COOKED_FISH:   /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                    if (Permissions.fishermansDiet(player)) {
-                        event.setFoodLevel(SkillManagerStore.getInstance().getFishingManager(player.getName()).handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
-                    }
-                    return;
+                    case COOKED_FISH: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+                        if (Permissions.fishermansDiet(player)) {
+                            event.setFoodLevel(SkillManagerStore.getInstance().getFishingManager(player.getName()).handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
+                        }
+                        return;
 
-                case RAW_FISH:      /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                    if (Permissions.fishermansDiet(player)) {
-                        event.setFoodLevel(SkillManagerStore.getInstance().getFishingManager(player.getName()).handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
-                    }
-                    return;
+                    case RAW_FISH:    /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                        if (Permissions.fishermansDiet(player)) {
+                            event.setFoodLevel(SkillManagerStore.getInstance().getFishingManager(player.getName()).handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
+                        }
+                        return;
 
-                default:
-                    return;
+                    default:
+                        return;
                 }
             }
         }
@@ -431,7 +432,7 @@ public class EntityListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityTame(EntityTameEvent event) {
         Player player = (Player) event.getOwner();
 
@@ -446,13 +447,13 @@ public class EntityListener implements Listener {
         }
     }
 
-    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
         if (event.getEntity() instanceof Tameable && event.getTarget() instanceof Player) {
             Player player = (Player) event.getTarget();
             Tameable tameable = (Tameable) event.getEntity();
 
-            if (CombatTools.isFriendlyPet(player, tameable)) {
+            if (CombatUtils.isFriendlyPet(player, tameable)) {
                 // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
                 // So we can make some assumptions here, about our casting and our check
                 Player owner = (Player) tameable.getOwner();

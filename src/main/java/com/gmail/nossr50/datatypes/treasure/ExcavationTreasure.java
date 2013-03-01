@@ -13,7 +13,7 @@ public class ExcavationTreasure extends Treasure {
     // 01000000 - soulsand  64
     private byte dropsFrom = 0x0;
 
-    public ExcavationTreasure(ItemStack drop, int xp, Double dropChance, int dropLevel) {
+    public ExcavationTreasure(ItemStack drop, int xp, double dropChance, int dropLevel) {
         super(drop, xp, dropChance, dropLevel);
     }
 

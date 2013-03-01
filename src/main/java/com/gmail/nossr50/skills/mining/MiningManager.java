@@ -12,43 +12,43 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.mining.BlastMining.Tier;
-import com.gmail.nossr50.skills.utilities.AbilityType;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.BlockChecks;
+import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class MiningManager extends SkillManager{
-    public MiningManager (McMMOPlayer mcMMOPlayer) {
+    public MiningManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.MINING);
     }
 
     public boolean canUseDemolitionsExpertise() {
         Player player = getPlayer();
 
-        return SkillTools.unlockLevelReached(player, skill, BlastMining.Tier.FOUR.getLevel()) && Permissions.demolitionsExpertise(player);
+        return SkillUtils.unlockLevelReached(player, skill, BlastMining.Tier.FOUR.getLevel()) && Permissions.demolitionsExpertise(player);
     }
 
     public boolean canDetonate() {
         Player player = getPlayer();
 
-        return player.isSneaking() && player.getItemInHand().getTypeId() == BlastMining.detonatorID && Permissions.remoteDetonation(player) && SkillTools.unlockLevelReached(player, skill, BlastMining.Tier.ONE.getLevel());
+        return player.isSneaking() && player.getItemInHand().getTypeId() == BlastMining.detonatorID && Permissions.remoteDetonation(player) && SkillUtils.unlockLevelReached(player, skill, BlastMining.Tier.ONE.getLevel());
     }
 
     public boolean canUseBlastMining() {
-        return SkillTools.unlockLevelReached(getPlayer(), skill, BlastMining.Tier.ONE.getLevel());
+        return SkillUtils.unlockLevelReached(getPlayer(), skill, BlastMining.Tier.ONE.getLevel());
     }
 
     public boolean canUseBiggerBombs() {
         Player player = getPlayer();
 
-        return Permissions.biggerBombs(player) && SkillTools.unlockLevelReached(getPlayer(), skill, BlastMining.Tier.TWO.getLevel());
+        return Permissions.biggerBombs(player) && SkillUtils.unlockLevelReached(getPlayer(), skill, BlastMining.Tier.TWO.getLevel());
     }
 
     /**
@@ -61,7 +61,7 @@ public class MiningManager extends SkillManager{
         Player player = getPlayer();
         int xp = Mining.getBlockXp(blockState);
 
-        if (Permissions.doubleDrops(player, skill) && SkillTools.activationSuccessful(player, skill, Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
+        if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(player, skill, Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
             if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
                 Mining.handleSilkTouchDrops(blockState);
             }
@@ -82,14 +82,14 @@ public class MiningManager extends SkillManager{
         HashSet<Byte> transparentBlocks = BlastMining.generateTransparentBlockList();
         Block targetBlock = player.getTargetBlock(transparentBlocks, BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
 
-        if (targetBlock.getType() != Material.TNT || !SkillTools.blockBreakSimulate(targetBlock, player, true) || !blastMiningCooldownOver()) {
+        if (targetBlock.getType() != Material.TNT || !SkillUtils.blockBreakSimulate(targetBlock, player, true) || !blastMiningCooldownOver()) {
             return;
         }
 
         PlayerProfile profile = getProfile();
         TNTPrimed tnt = player.getWorld().spawn(targetBlock.getLocation(), TNTPrimed.class);
 
-        SkillTools.sendSkillMessage(player, AbilityType.BLAST_MINING.getAbilityPlayer(player));
+        SkillUtils.sendSkillMessage(player, AbilityType.BLAST_MINING.getAbilityPlayer(player));
         player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
         mcMMO.p.addToTNTTracker(tnt.getEntityId(), player.getName());
@@ -115,12 +115,12 @@ public class MiningManager extends SkillManager{
         float debrisReduction = (float) (getDebrisReduction() / 100);
         int dropMultiplier = getDropMultiplier();
 
-        float debrisYield  = yield - debrisReduction;
+        float debrisYield = yield - debrisReduction;
 
         for (Block block : blockList) {
             BlockState blockState = block.getState();
 
-            if (BlockChecks.isOre(blockState)) {
+            if (BlockUtils.isOre(blockState)) {
                 ores.add(blockState);
             }
             else {
@@ -137,7 +137,7 @@ public class MiningManager extends SkillManager{
                 Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack()); // Initial block that would have been dropped
 
                 if (!mcMMO.placeStore.isTrue(blockState)) {
-                    for (int i = 1 ; i < dropMultiplier ; i++) {
+                    for (int i = 1; i < dropMultiplier; i++) {
                         xp += Mining.getBlockXp(blockState);
                         Mining.handleSilkTouchDrops(blockState); // Bonus drops - should drop the block & not the items
                     }
@@ -167,21 +167,6 @@ public class MiningManager extends SkillManager{
 
     public int processDemolitionsExpertise(int damage) {
         return (int) (damage * (100.0 - getBlastDamageModifier()));
-    }
-
-    private boolean blastMiningCooldownOver() {
-        Player player = getPlayer();
-        PlayerProfile profile = getProfile();
-
-        long oldTime = profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR;
-        int cooldown = AbilityType.BLAST_MINING.getCooldown();
-
-        if (!SkillTools.cooldownOver(oldTime, cooldown, player)) {
-            player.sendMessage(LocaleLoader.getString("Skills.TooTired", SkillTools.calculateTimeLeft(oldTime, cooldown, player)));
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -284,5 +269,20 @@ public class MiningManager extends SkillManager{
         }
 
         return 0;
+    }
+
+    private boolean blastMiningCooldownOver() {
+        Player player = getPlayer();
+        PlayerProfile profile = getProfile();
+
+        long oldTime = profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR;
+        int cooldown = AbilityType.BLAST_MINING.getCooldown();
+
+        if (!SkillUtils.cooldownOver(oldTime, cooldown, player)) {
+            player.sendMessage(LocaleLoader.getString("Skills.TooTired", SkillUtils.calculateTimeLeft(oldTime, cooldown, player)));
+            return false;
+        }
+
+        return true;
     }
 }

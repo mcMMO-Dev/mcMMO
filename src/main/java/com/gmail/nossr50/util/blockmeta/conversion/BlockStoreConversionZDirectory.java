@@ -5,12 +5,12 @@ import java.io.File;
 import org.bukkit.scheduler.BukkitScheduler;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.blockmeta.chunkmeta.HashChunkManager;
-import com.gmail.nossr50.util.blockmeta.chunkmeta.PrimitiveChunkStore;
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 import com.gmail.nossr50.util.blockmeta.HashChunkletManager;
 import com.gmail.nossr50.util.blockmeta.PrimitiveChunkletStore;
 import com.gmail.nossr50.util.blockmeta.PrimitiveExChunkletStore;
+import com.gmail.nossr50.util.blockmeta.chunkmeta.HashChunkManager;
+import com.gmail.nossr50.util.blockmeta.chunkmeta.PrimitiveChunkStore;
 
 public class BlockStoreConversionZDirectory implements Runnable {
     public int taskID, cx, cz, x, y, z, y2, xPos, zPos, cxPos, czPos;
@@ -74,7 +74,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
             this.cx = Integer.parseInt(this.cxs);
             this.cz = Integer.parseInt(this.czs);
         }
-        catch(Exception e) {
+        catch (Exception e) {
             this.dataDir.delete();
             stop();
             return;
@@ -117,7 +117,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
                                 this.newManager.setTrue(this.cxPos, this.y2, this.czPos, this.world);
                             }
-                            catch(Exception e) {}
+                            catch (Exception e) {}
                         }
                     }
                 }
@@ -171,8 +171,9 @@ public class BlockStoreConversionZDirectory implements Runnable {
     }
 
     public void stop() {
-        if (this.taskID < 0)
+        if (this.taskID < 0) {
             return;
+        }
 
         this.scheduler.cancelTask(taskID);
         this.taskID = -1;

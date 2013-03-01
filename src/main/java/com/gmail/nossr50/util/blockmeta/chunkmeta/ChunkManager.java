@@ -9,13 +9,16 @@ import org.bukkit.entity.Entity;
 
 public interface ChunkManager {
     public void closeAll();
+
     public ChunkStore readChunkStore(World world, int x, int z) throws IOException;
+
     public void writeChunkStore(World world, int x, int z, ChunkStore data);
+
     public void closeChunkStore(World world, int x, int z);
 
     /**
      * Loads a specific chunklet
-     * 
+     *
      * @param cx Chunklet X coordinate that needs to be loaded
      * @param cy Chunklet Y coordinate that needs to be loaded
      * @param cz Chunklet Z coordinate that needs to be loaded

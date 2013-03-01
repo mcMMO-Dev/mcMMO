@@ -7,9 +7,9 @@ import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.utilities.PerksUtils;
-import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.util.skills.PerksUtils;
 
 public final class Motd {
     private static final String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
@@ -29,6 +29,7 @@ public final class Motd {
 
     /**
      * Display version info.
+     *
      * @param player Target player
      * @param version Plugin version
      */
@@ -38,6 +39,7 @@ public final class Motd {
 
     /**
      * Display Hardcore Mode settings.
+     *
      * @param player Target player
      */
     public static void displayHardcoreSettings(Player player) {
@@ -56,6 +58,7 @@ public final class Motd {
 
     /**
      * Display XP perks.
+     *
      * @param player Target player
      */
     public static void displayXpPerks(Player player) {
@@ -68,6 +71,7 @@ public final class Motd {
 
     /**
      * Display cooldown perks.
+     *
      * @param player Target player
      */
     public static void displayCooldownPerks(Player player) {
@@ -81,6 +85,7 @@ public final class Motd {
 
     /**
      * Display activiation perks.
+     *
      * @param player Target player
      */
     public static void displayActivationPerks(Player player) {
@@ -93,6 +98,7 @@ public final class Motd {
 
     /**
      * Display "lucky" perks.
+     *
      * @param player Target player
      */
     public static void displayLuckyPerks(Player player) {
@@ -106,6 +112,7 @@ public final class Motd {
 
     /**
      * Display website info.
+     *
      * @param player Target player
      * @param website Plugin website
      */

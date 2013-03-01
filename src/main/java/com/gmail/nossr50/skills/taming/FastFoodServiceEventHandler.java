@@ -5,7 +5,7 @@ import org.bukkit.entity.Wolf;
 public class FastFoodServiceEventHandler {
     private Wolf wolf;
 
-    public FastFoodServiceEventHandler (Wolf wolf) {
+    public FastFoodServiceEventHandler(Wolf wolf) {
         this.wolf = wolf;
     }
 

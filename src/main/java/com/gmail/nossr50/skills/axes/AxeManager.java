@@ -5,19 +5,19 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mods.ModChecks;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.AbilityType;
-import com.gmail.nossr50.skills.utilities.CombatTools;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.skills.utilities.ToolType;
-import com.gmail.nossr50.util.ItemChecks;
-import com.gmail.nossr50.util.ParticleEffectUtils;
+import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class AxeManager extends SkillManager {
     public AxeManager(McMMOPlayer mcMMOPlayer) {
@@ -70,7 +70,7 @@ public class AxeManager extends SkillManager {
     public int criticalHitCheck(LivingEntity target, int damage) {
         Player player = getPlayer();
 
-        if (SkillTools.activationSuccessful(player, skill, Axes.criticalHitMaxChance, Axes.criticalHitMaxBonusLevel)) {
+        if (SkillUtils.activationSuccessful(player, skill, Axes.criticalHitMaxChance, Axes.criticalHitMaxBonusLevel)) {
             player.sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
 
             if (target instanceof Player) {
@@ -94,10 +94,10 @@ public class AxeManager extends SkillManager {
         int durabilityDamage = 1 + (getSkillLevel() / Axes.impactIncreaseLevel);
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
-            if (ItemChecks.isArmor(armor) && SkillTools.activationSuccessful(getPlayer(), skill, Axes.impactChance)) {
+            if (ItemUtils.isArmor(armor) && SkillUtils.activationSuccessful(getPlayer(), skill, Axes.impactChance)) {
                 double durabilityModifier = 1 / (armor.getEnchantmentLevel(Enchantment.DURABILITY) + 1); // Modifier to simulate the durability enchantment behavior
                 double modifiedDurabilityDamage = durabilityDamage * durabilityModifier;
-                double maxDurabilityDamage = (ModChecks.isCustomArmor(armor) ? ModChecks.getArmorFromItemStack(armor).getDurability() : armor.getType().getMaxDurability()) * Axes.impactMaxDurabilityDamageModifier;
+                double maxDurabilityDamage = (ModUtils.isCustomArmor(armor) ? ModUtils.getArmorFromItemStack(armor).getDurability() : armor.getType().getMaxDurability()) * Axes.impactMaxDurabilityModifier;
 
                 armor.setDurability((short) (Math.min(modifiedDurabilityDamage, maxDurabilityDamage) + armor.getDurability()));
             }
@@ -114,7 +114,7 @@ public class AxeManager extends SkillManager {
     public int greaterImpactCheck(LivingEntity target, int damage) {
         Player player = getPlayer();
 
-        if (SkillTools.activationSuccessful(player, skill, Axes.greaterImpactChance)) {
+        if (SkillUtils.activationSuccessful(player, skill, Axes.greaterImpactChance)) {
             ParticleEffectUtils.playGreaterImpactEffect(target);
             target.setVelocity(player.getLocation().getDirection().normalize().multiply(Axes.greaterImpactKnockbackMultiplier));
 
@@ -125,7 +125,7 @@ public class AxeManager extends SkillManager {
             if (target instanceof Player) {
                 Player defender = (Player) target;
 
-                if (Users.getPlayer(defender).getProfile().useChatNotifications()) {
+                if (UserManager.getPlayer(defender).getProfile().useChatNotifications()) {
                     defender.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Struck"));
                 }
             }
@@ -143,6 +143,6 @@ public class AxeManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public void skullSplitterCheck(LivingEntity target, int damage) {
-        CombatTools.applyAbilityAoE(getPlayer(), target, damage / Axes.skullSplitterModifier, skill);
+        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Axes.skullSplitterModifier, skill);
     }
 }

@@ -12,24 +12,26 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.TreasuresConfig;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.config.treasure.TreasureConfig;
+import com.gmail.nossr50.datatypes.mods.CustomBlock;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mods.ModChecks;
-import com.gmail.nossr50.mods.datatypes.CustomBlock;
+import com.gmail.nossr50.runnables.skills.herbalism.GreenTerraTimerTask;
+import com.gmail.nossr50.runnables.skills.herbalism.GreenThumbTimerTask;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.AbilityType;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.skills.utilities.ToolType;
-import com.gmail.nossr50.util.BlockChecks;
-import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class HerbalismManager extends SkillManager {
     public HerbalismManager(McMMOPlayer mcMMOPlayer) {
@@ -43,24 +45,24 @@ public class HerbalismManager extends SkillManager {
     public boolean canGreenThumbBlock(BlockState blockState) {
         Player player = getPlayer();
 
-        return player.getItemInHand().getType() == Material.SEEDS && BlockChecks.canMakeMossy(blockState) && Permissions.greenThumbBlock(player, blockState.getType());
+        return player.getItemInHand().getType() == Material.SEEDS && BlockUtils.canMakeMossy(blockState) && Permissions.greenThumbBlock(player, blockState.getType());
     }
 
     public boolean canUseShroomThumb(BlockState blockState) {
         Player player = getPlayer();
         Material itemType = player.getItemInHand().getType();
 
-        return (itemType == Material.RED_MUSHROOM || itemType == Material.BROWN_MUSHROOM) && BlockChecks.canMakeShroomy(blockState) && Permissions.shroomThumb(player);
+        return (itemType == Material.RED_MUSHROOM || itemType == Material.BROWN_MUSHROOM) && BlockUtils.canMakeShroomy(blockState) && Permissions.shroomThumb(player);
     }
 
     public boolean canUseHylianLuck() {
         Player player = getPlayer();
 
-        return ItemChecks.isSword(player.getItemInHand()) && Permissions.hylianLuck(player);
+        return ItemUtils.isSword(player.getItemInHand()) && Permissions.hylianLuck(player);
     }
 
     public boolean canGreenTerraBlock(BlockState blockState) {
-        return getProfile().getAbilityMode(AbilityType.GREEN_TERRA) && BlockChecks.canMakeMossy(blockState);
+        return getProfile().getAbilityMode(AbilityType.GREEN_TERRA) && BlockUtils.canMakeMossy(blockState);
     }
 
     public boolean canActivateAbility() {
@@ -79,7 +81,7 @@ public class HerbalismManager extends SkillManager {
      * @return the modified change in hunger for the event
      */
     public int farmersDiet(int rankChange, int eventFoodLevel) {
-        return SkillTools.handleFoodSkills(getPlayer(), SkillType.HERBALISM, eventFoodLevel, Herbalism.farmersDietRankLevel1, Herbalism.farmersDietMaxLevel, rankChange);
+        return SkillUtils.handleFoodSkills(getPlayer(), SkillType.HERBALISM, eventFoodLevel, Herbalism.farmersDietRankLevel1, Herbalism.farmersDietMaxLevel, rankChange);
     }
 
     /**
@@ -132,7 +134,7 @@ public class HerbalismManager extends SkillManager {
                 dropAmount = Herbalism.calculateCatciAndSugarDrops(blockState);
                 xp = herbalismBlock.getXpGain() * dropAmount;
             }
-            else if (herbalismBlock.hasGreenThumbPermission(player)){
+            else if (herbalismBlock.hasGreenThumbPermission(player)) {
                 dropItem = herbalismBlock.getDropItem();
                 xp = herbalismBlock.getXpGain();
                 processGreenThumbPlants(blockState);
@@ -145,18 +147,18 @@ public class HerbalismManager extends SkillManager {
             }
         }
         else {
-            customBlock = ModChecks.getCustomBlock(blockState);
+            customBlock = ModUtils.getCustomBlock(blockState);
             dropItem = customBlock.getItemDrop();
             xp = customBlock.getXpGain();
         }
 
-        if (Permissions.doubleDrops(player, skill) && SkillTools.activationSuccessful(player, skill, Herbalism.doubleDropsMaxChance, Herbalism.doubleDropsMaxLevel)) {
+        if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(player, skill, Herbalism.doubleDropsMaxChance, Herbalism.doubleDropsMaxLevel)) {
             Location location = blockState.getLocation();
 
             if (dropItem != null && herbalismBlock != null && herbalismBlock.canDoubleDrop()) {
                 Misc.dropItems(location, dropItem, dropAmount);
             }
-            else if (customBlock != null){
+            else if (customBlock != null) {
                 int minimumDropAmount = customBlock.getMinimumDropAmount();
                 int maximumDropAmount = customBlock.getMaximumDropAmount();
 
@@ -180,7 +182,7 @@ public class HerbalismManager extends SkillManager {
     public boolean processGreenThumbBlocks(BlockState blockState) {
         Player player = getPlayer();
 
-        if (!SkillTools.activationSuccessful(player, skill, Herbalism.greenThumbMaxChance, Herbalism.greenThumbMaxLevel)) {
+        if (!SkillUtils.activationSuccessful(player, skill, Herbalism.greenThumbMaxChance, Herbalism.greenThumbMaxLevel)) {
             player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Fail"));
             return false;
         }
@@ -197,35 +199,35 @@ public class HerbalismManager extends SkillManager {
     public boolean processHylianLuck(BlockState blockState) {
         Player player = getPlayer();
 
-        if (!SkillTools.activationSuccessful(player, skill, Herbalism.hylianLuckMaxChance, Herbalism.hylianLuckMaxLevel)) {
+        if (!SkillUtils.activationSuccessful(player, skill, Herbalism.hylianLuckMaxChance, Herbalism.hylianLuckMaxLevel)) {
             return false;
         }
 
         List<HylianTreasure> treasures = new ArrayList<HylianTreasure>();
 
         switch (blockState.getType()) {
-        case DEAD_BUSH:
-        case LONG_GRASS:
-        case SAPLING:
-            treasures = TreasuresConfig.getInstance().hylianFromBushes;
-            break;
+            case DEAD_BUSH:
+            case LONG_GRASS:
+            case SAPLING:
+                treasures = TreasureConfig.getInstance().hylianFromBushes;
+                break;
 
-        case RED_ROSE:
-        case YELLOW_FLOWER:
-            if (mcMMO.placeStore.isTrue(blockState)) {
-                mcMMO.placeStore.setFalse(blockState);
+            case RED_ROSE:
+            case YELLOW_FLOWER:
+                if (mcMMO.placeStore.isTrue(blockState)) {
+                    mcMMO.placeStore.setFalse(blockState);
+                    return false;
+                }
+
+                treasures = TreasureConfig.getInstance().hylianFromFlowers;
+                break;
+
+            case FLOWER_POT:
+                treasures = TreasureConfig.getInstance().hylianFromPots;
+                break;
+
+            default:
                 return false;
-            }
-
-            treasures = TreasuresConfig.getInstance().hylianFromFlowers;
-            break;
-
-        case FLOWER_POT:
-            treasures = TreasuresConfig.getInstance().hylianFromPots;
-            break;
-
-        default:
-            return false;
         }
 
         if (treasures.isEmpty()) {
@@ -264,7 +266,7 @@ public class HerbalismManager extends SkillManager {
         playerInventory.removeItem(new ItemStack(Material.RED_MUSHROOM));
         player.updateInventory();
 
-        if (!SkillTools.activationSuccessful(player, skill, Herbalism.shroomThumbMaxChance, Herbalism.shroomThumbMaxLevel)) {
+        if (!SkillUtils.activationSuccessful(player, skill, Herbalism.shroomThumbMaxChance, Herbalism.shroomThumbMaxLevel)) {
             player.sendMessage(LocaleLoader.getString("Herbalism.Ability.ShroomThumb.Fail"));
             return false;
         }
@@ -286,20 +288,20 @@ public class HerbalismManager extends SkillManager {
             return;
         }
 
-        PlayerProfile playerProfile = Users.getPlayer(player).getProfile();
+        PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
 
         if (playerProfile.getAbilityMode(AbilityType.GREEN_TERRA)) {
             playerInventory.removeItem(seed);
             player.updateInventory(); // Needed until replacement available
 
-            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new GreenTerraTimer(blockState), 0);
+            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new GreenTerraTimerTask(blockState), 0);
             return;
         }
-        else if (SkillTools.activationSuccessful(player, skill, Herbalism.greenThumbMaxChance, Herbalism.greenThumbMaxLevel)) {
+        else if (SkillUtils.activationSuccessful(player, skill, Herbalism.greenThumbMaxChance, Herbalism.greenThumbMaxLevel)) {
             playerInventory.removeItem(seed);
             player.updateInventory(); // Needed until replacement available
 
-            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new GreenThumbTimer(blockState, getSkillLevel()), 0);
+            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new GreenThumbTimerTask(blockState, getSkillLevel()), 0);
             return;
         }
     }

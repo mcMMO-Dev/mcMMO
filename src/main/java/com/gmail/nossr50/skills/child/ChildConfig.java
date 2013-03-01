@@ -6,7 +6,7 @@ import java.util.List;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gmail.nossr50.config.AutoUpdateConfigLoader;
-import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.StringUtils;
 
 public class ChildConfig extends AutoUpdateConfigLoader {
@@ -22,15 +22,18 @@ public class ChildConfig extends AutoUpdateConfigLoader {
         for (SkillType skill : SkillType.values()) {
             if (skill.isChildSkill()) {
                 plugin.debug("Finding parents of " + skill.name());
+
                 List<String> parentNames = config.getStringList(StringUtils.getCapitalized(skill.name()));
                 EnumSet<SkillType> parentSkills = EnumSet.noneOf(SkillType.class);
                 boolean useDefaults = false; // If we had an error we back out and use defaults
+
                 for (String name : parentNames) {
                     try {
                         SkillType parentSkill = Enum.valueOf(SkillType.class, name.toUpperCase());
                         FamilyTree.enforceNotChildSkill(parentSkill);
                         parentSkills.add(parentSkill);
-                    } catch (IllegalArgumentException ex) {
+                    }
+                    catch (IllegalArgumentException ex) {
                         plugin.getLogger().warning(name + " is not a valid skill type, or is a child skill!");
                         useDefaults = true;
                         break;
@@ -55,6 +58,7 @@ public class ChildConfig extends AutoUpdateConfigLoader {
                 }
             }
         }
+
         FamilyTree.closeRegistration();
     }
 }

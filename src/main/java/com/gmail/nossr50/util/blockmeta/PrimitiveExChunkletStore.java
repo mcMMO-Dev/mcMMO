@@ -31,7 +31,9 @@ public class PrimitiveExChunkletStore implements ChunkletStore, Externalizable {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 for (int y = 0; y < 64; y++) {
-                    if (store[x][z][y]) return false;
+                    if (store[x][z][y]) {
+                        return false;
+                    }
                 }
             }
         }

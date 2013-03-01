@@ -5,18 +5,18 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ParticleEffectUtils;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class AcrobaticsManager extends SkillManager {
-    public AcrobaticsManager (McMMOPlayer mcMMOPlayer) {
+    public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.ACROBATICS);
     }
 
@@ -49,7 +49,7 @@ public class AcrobaticsManager extends SkillManager {
         int modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
         Player player = getPlayer();
 
-        if (!isFatal(modifiedDamage) && SkillTools.activationSuccessful(player, skill, Acrobatics.dodgeMaxChance, Acrobatics.dodgeMaxBonusLevel)) {
+        if (!isFatal(modifiedDamage) && SkillUtils.activationSuccessful(player, skill, Acrobatics.dodgeMaxChance, Acrobatics.dodgeMaxBonusLevel)) {
             ParticleEffectUtils.playDodgeEffect(player);
 
             PlayerProfile playerProfile = getProfile();

@@ -18,59 +18,59 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 
-import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
-import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
-import com.gmail.nossr50.util.metrics.MetricsManager;
-import com.gmail.nossr50.commands.CommandRegistrationHelper;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
-import com.gmail.nossr50.config.TreasuresConfig;
-import com.gmail.nossr50.database.Database;
-import com.gmail.nossr50.database.Leaderboard;
-import com.gmail.nossr50.database.runnables.UserPurgeTask;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.config.mods.CustomArmorConfig;
+import com.gmail.nossr50.config.mods.CustomBlockConfig;
+import com.gmail.nossr50.config.mods.CustomEntityConfig;
+import com.gmail.nossr50.config.mods.CustomToolConfig;
+import com.gmail.nossr50.config.spout.SpoutConfig;
+import com.gmail.nossr50.config.treasure.TreasureConfig;
+import com.gmail.nossr50.database.DatabaseManager;
+import com.gmail.nossr50.database.LeaderboardManager;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.mods.config.CustomArmorConfig;
-import com.gmail.nossr50.mods.config.CustomBlocksConfig;
-import com.gmail.nossr50.mods.config.CustomEntityConfig;
-import com.gmail.nossr50.mods.config.CustomToolsConfig;
+import com.gmail.nossr50.metrics.MetricsManager;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.party.runnables.PartiesLoader;
-import com.gmail.nossr50.party.runnables.PartyAutoKick;
-import com.gmail.nossr50.runnables.SaveTimer;
+import com.gmail.nossr50.runnables.SaveTimerTask;
+import com.gmail.nossr50.runnables.database.UserPurgeTask;
+import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
+import com.gmail.nossr50.runnables.party.PartyLoaderTask;
+import com.gmail.nossr50.runnables.skills.BleedTimerTask;
+import com.gmail.nossr50.runnables.skills.SkillMonitorTask;
 import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.RepairManagerFactory;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.config.RepairConfigManager;
-import com.gmail.nossr50.skills.runnables.BleedTimer;
-import com.gmail.nossr50.skills.runnables.SkillMonitor;
-import com.gmail.nossr50.spout.SpoutConfig;
-import com.gmail.nossr50.spout.SpoutTools;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.LogFilter;
-import com.gmail.nossr50.util.UpdateCheck;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.UpdateChecker;
+import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
+import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
+import com.gmail.nossr50.util.commands.CommandRegistrationManager;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public class mcMMO extends JavaPlugin {
-    private final PlayerListener playerListener = new PlayerListener(this);
-    private final BlockListener blockListener = new BlockListener(this);
-    private final EntityListener entityListener = new EntityListener(this);
+    private final PlayerListener    playerListener    = new PlayerListener(this);
+    private final BlockListener     blockListener     = new BlockListener(this);
+    private final EntityListener    entityListener    = new EntityListener(this);
     private final InventoryListener inventoryListener = new InventoryListener(this);
-    private final WorldListener worldListener = new WorldListener();
+    private final WorldListener     worldListener     = new WorldListener();
 
-    private HashMap<Integer, String> tntTracker = new HashMap<Integer, String>();
+    private HashMap<Integer, String>    tntTracker     = new HashMap<Integer, String>();
     private HashMap<BlockState, String> furnaceTracker = new HashMap<BlockState, String>();
 
     public static mcMMO p;
 
-    public static ChunkManager placeStore;
+    public static ChunkManager  placeStore;
     public static RepairManager repairManager;
 
     // Jar Stuff
@@ -94,7 +94,7 @@ public class mcMMO extends JavaPlugin {
     // Metadata Values
     public static FixedMetadataValue metadataValue;
     public final static String entityMetadataKey = "mcMMO: Spawned Entity";
-    public final static String blockMetadataKey = "mcMMO: Piston Tracking";
+    public final static String blockMetadataKey  = "mcMMO: Piston Tracking";
 
     /**
      * Things to be run when the plugin is enabled.
@@ -111,23 +111,23 @@ public class mcMMO extends JavaPlugin {
             loadConfigFiles();
 
             if (!Config.getInstance().getUseMySQL()) {
-                Users.loadUsers();
+                UserManager.loadUsers();
             }
 
             registerEvents();
 
             // Setup the leader boards
             if (Config.getInstance().getUseMySQL()) {
-                // TODO: Why do we have to check for a connection that hasn't be made yet? 
-                Database.checkConnected();
-                Database.createStructure();
+                // TODO: Why do we have to check for a connection that hasn't be made yet?
+                DatabaseManager.checkConnected();
+                DatabaseManager.createStructure();
             }
             else {
-                Leaderboard.updateLeaderboards();
+                LeaderboardManager.updateLeaderboards();
             }
 
             for (Player player : getServer().getOnlinePlayers()) {
-                Users.addUser(player); // In case of reload add all users back into PlayerProfile
+                UserManager.addUser(player); // In case of reload add all users back into PlayerProfile
             }
 
             getLogger().info("Version " + getDescription().getVersion() + " is enabled!");
@@ -160,76 +160,12 @@ public class mcMMO extends JavaPlugin {
     }
 
     /**
-     * Setup the various storage file paths
-     */
-    private void setupFilePaths() {
-        mcmmo = getFile();
-        mainDirectory = getDataFolder().getPath() + File.separator;
-        flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
-        usersFile = flatFileDirectory + "mcmmo.users";
-        modDirectory = mainDirectory + "ModConfigs" + File.separator;
-    }
-
-    private void checkForUpdates() {
-        if (Config.getInstance().getUpdateCheckEnabled()) {
-            try {
-                updateAvailable = UpdateCheck.updateAvailable();
-            }
-            catch (Exception e) {
-                updateAvailable = false;
-            }
-
-            if (updateAvailable) {
-                getLogger().info(LocaleLoader.getString("UpdateChecker.outdated"));
-                getLogger().info(LocaleLoader.getString("UpdateChecker.newavailable"));
-            }
-        }
-    }
-
-    /**
-     * Get profile of the player by name.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param playerName Name of player whose profile to get
-     * @return the PlayerProfile object
-     */
-    public PlayerProfile getPlayerProfile(String playerName) {
-        return Users.getPlayer(playerName).getProfile();
-    }
-
-    /**
-     * Get profile of the player.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player player whose profile to get
-     * @return the PlayerProfile object
-     */
-    public PlayerProfile getPlayerProfile(OfflinePlayer player) {
-        return Users.getPlayer(player.getName()).getProfile();
-    }
-
-    /**
-     * Get profile of the player.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player player whose profile to get
-     * @return the PlayerProfile object
-     */
-    @Deprecated
-    public PlayerProfile getPlayerProfile(Player player) {
-        return Users.getProfile(player);
-    }
-
-    /**
      * Things to be run when the plugin is disabled.
      */
     @Override
     public void onDisable() {
         try {
-            Users.saveAll(); // Make sure to save player information if the server shuts down
+            UserManager.saveAll(); // Make sure to save player information if the server shuts down
             PartyManager.saveParties();
             placeStore.saveAll(); // Save our metadata
             placeStore.cleanUp(); // Cleanup empty metadata stores
@@ -258,149 +194,44 @@ public class mcMMO extends JavaPlugin {
             }
         }
 
-        getLogger().info("Was disabled."); //How informative!
-    }
-
-    private void loadConfigFiles() {
-        // Force the loading of config files
-        Config configInstance = Config.getInstance();
-        TreasuresConfig.getInstance();
-        HiddenConfig.getInstance();
-        AdvancedConfig.getInstance();
-        new ChildConfig();
-
-        List<Repairable> repairables = new ArrayList<Repairable>();
-
-        if (configInstance.getToolModsEnabled()) {
-            repairables.addAll(CustomToolsConfig.getInstance().getLoadedRepairables());
-        }
-
-        if (configInstance.getArmorModsEnabled()) {
-            repairables.addAll(CustomArmorConfig.getInstance().getLoadedRepairables());
-        }
-
-        if (configInstance.getBlockModsEnabled()) {
-            CustomBlocksConfig.getInstance();
-        }
-
-        if (configInstance.getEntityModsEnabled()) {
-            CustomEntityConfig.getInstance();
-        }
-
-        // Load repair configs, make manager, and register them at this time
-        RepairConfigManager rManager = new RepairConfigManager(this);
-        repairables.addAll(rManager.getLoadedRepairables());
-        repairManager = RepairManagerFactory.getRepairManager(repairables.size());
-        repairManager.registerRepairables(repairables);
-
-        // Check if Repair Anvil and Salvage Anvil have different itemID's
-        if (configInstance.getSalvageAnvilId() == configInstance.getRepairAnvilId()) {
-            getLogger().warning("Can't use the same itemID for Repair/Salvage Anvils!");
-        }
-    }
-
-    private void setupSpout() {
-        // Check for Spout
-        if (getServer().getPluginManager().isPluginEnabled("Spout")) {
-            spoutEnabled = true;
-
-            SpoutConfig.getInstance();
-            SpoutTools.setupSpoutConfigs();
-            SpoutTools.registerCustomEvent();
-            SpoutTools.preCacheFiles();
-            SpoutTools.reloadSpoutPlayers(); // Handle spout players after a /reload
-        }
-    }
-
-    private void registerEvents() {
-        PluginManager pluginManager = getServer().getPluginManager();
-
-        // Register events
-        pluginManager.registerEvents(playerListener, this);
-        pluginManager.registerEvents(blockListener, this);
-        pluginManager.registerEvents(entityListener, this);
-        pluginManager.registerEvents(inventoryListener, this);
-        pluginManager.registerEvents(worldListener, this);
+        getLogger().info("Was disabled."); // How informative!
     }
 
     /**
-     * Register the commands.
+     * Get profile of the player by name.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param playerName Name of player whose profile to get
+     * @return the PlayerProfile object
      */
-    private void registerCommands() {
-        CommandRegistrationHelper.registerSkillCommands();
-
-        // mc* commands
-        CommandRegistrationHelper.registerMcpurgeCommand();
-        CommandRegistrationHelper.registerMcremoveCommand();
-        CommandRegistrationHelper.registerMcabilityCommand();
-        CommandRegistrationHelper.registerMcgodCommand();
-        CommandRegistrationHelper.registerMcmmoCommand();
-        CommandRegistrationHelper.registerMcrefreshCommand();
-        CommandRegistrationHelper.registerMctopCommand();
-        CommandRegistrationHelper.registerMcrankCommand();
-        CommandRegistrationHelper.registerMcstatsCommand();
-
-        // Party commands
-        CommandRegistrationHelper.registerAdminChatCommand();
-        CommandRegistrationHelper.registerPartyCommand();
-        CommandRegistrationHelper.registerPartyChatCommand();
-        CommandRegistrationHelper.registerPtpCommand();
-
-        // Other commands
-        CommandRegistrationHelper.registerAddxpCommand();
-        CommandRegistrationHelper.registerAddlevelsCommand();
-        CommandRegistrationHelper.registerMmoeditCommand();
-        CommandRegistrationHelper.registerInspectCommand();
-        CommandRegistrationHelper.registerXprateCommand();
-        CommandRegistrationHelper.registerMmoupdateCommand();
-        CommandRegistrationHelper.registerSkillresetCommand();
-        CommandRegistrationHelper.registerHardcoreCommand();
-        CommandRegistrationHelper.registerVampirismCommand();
-        CommandRegistrationHelper.registerMcnotifyCommand();
-
-        // Spout commands
-        CommandRegistrationHelper.registerXplockCommand();
-        CommandRegistrationHelper.registerMchudCommand();
+    public PlayerProfile getPlayerProfile(String playerName) {
+        return UserManager.getPlayer(playerName).getProfile();
     }
 
-    private void scheduleTasks() {
-        BukkitScheduler scheduler = getServer().getScheduler();
+    /**
+     * Get profile of the player.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player player whose profile to get
+     * @return the PlayerProfile object
+     */
+    public PlayerProfile getPlayerProfile(OfflinePlayer player) {
+        return UserManager.getPlayer(player.getName()).getProfile();
+    }
 
-        // Parties are loaded at the end of first server tick otherwise Server.getOfflinePlayer throws an IndexOutOfBoundsException
-        scheduler.scheduleSyncDelayedTask(this, new PartiesLoader(), 0);
-
-        // Periodic save timer (Saves every 10 minutes by default)
-        long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
-
-        scheduler.scheduleSyncRepeatingTask(this, new SaveTimer(), saveIntervalTicks, saveIntervalTicks);
-        // Regen & Cooldown timer (Runs every second)
-        scheduler.scheduleSyncRepeatingTask(this, new SkillMonitor(), 20, 20);
-        // Bleed timer (Runs every two seconds)
-        scheduler.scheduleSyncRepeatingTask(this, new BleedTimer(), 40, 40);
-
-        // Old & Powerless User remover
-        int purgeInterval = Config.getInstance().getPurgeInterval();
-
-        if (purgeInterval == 0) {
-            scheduler.scheduleSyncDelayedTask(this, new UserPurgeTask(), 40); // Start 2 seconds after startup.
-        }
-        else if (purgeInterval > 0) {
-            long purgeIntervalTicks = purgeInterval * 60 * 60 * 20;
-
-            scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), purgeIntervalTicks, purgeIntervalTicks);
-        }
-
-        // Automatically remove old members from parties
-        long kickInterval = Config.getInstance().getAutoPartyKickInterval();
-
-        if (kickInterval == 0) {
-            scheduler.scheduleSyncDelayedTask(this, new PartyAutoKick(), 40); // Start 2 seconds after startup.
-        }
-        else if (kickInterval > 0) {
-            long kickIntervalTicks = kickInterval * 60 * 60 * 20;
-
-            scheduler.scheduleSyncRepeatingTask(this, new PartyAutoKick(), kickIntervalTicks, kickIntervalTicks);
-        }
+    /**
+     * Get profile of the player.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player player whose profile to get
+     * @return the PlayerProfile object
+     */
+    @Deprecated
+    public PlayerProfile getPlayerProfile(Player player) {
+        return UserManager.getProfile(player);
     }
 
     /**
@@ -488,5 +319,174 @@ public class mcMMO extends JavaPlugin {
 
     public void debug(String message) {
         getLogger().info("[Debug] " + message);
+    }
+
+    /**
+     * Setup the various storage file paths
+     */
+    private void setupFilePaths() {
+        mcmmo = getFile();
+        mainDirectory = getDataFolder().getPath() + File.separator;
+        flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
+        usersFile = flatFileDirectory + "mcmmo.users";
+        modDirectory = mainDirectory + "ModConfigs" + File.separator;
+    }
+
+    private void checkForUpdates() {
+        if (Config.getInstance().getUpdateCheckEnabled()) {
+            try {
+                updateAvailable = UpdateChecker.updateAvailable();
+            }
+            catch (Exception e) {
+                updateAvailable = false;
+            }
+
+            if (updateAvailable) {
+                getLogger().info(LocaleLoader.getString("UpdateChecker.outdated"));
+                getLogger().info(LocaleLoader.getString("UpdateChecker.newavailable"));
+            }
+        }
+    }
+
+    private void loadConfigFiles() {
+        // Force the loading of config files
+        Config configInstance = Config.getInstance();
+        TreasureConfig.getInstance();
+        HiddenConfig.getInstance();
+        AdvancedConfig.getInstance();
+        new ChildConfig();
+
+        List<Repairable> repairables = new ArrayList<Repairable>();
+
+        if (configInstance.getToolModsEnabled()) {
+            repairables.addAll(CustomToolConfig.getInstance().getLoadedRepairables());
+        }
+
+        if (configInstance.getArmorModsEnabled()) {
+            repairables.addAll(CustomArmorConfig.getInstance().getLoadedRepairables());
+        }
+
+        if (configInstance.getBlockModsEnabled()) {
+            CustomBlockConfig.getInstance();
+        }
+
+        if (configInstance.getEntityModsEnabled()) {
+            CustomEntityConfig.getInstance();
+        }
+
+        // Load repair configs, make manager, and register them at this time
+        RepairConfigManager rManager = new RepairConfigManager(this);
+        repairables.addAll(rManager.getLoadedRepairables());
+        repairManager = RepairManagerFactory.getRepairManager(repairables.size());
+        repairManager.registerRepairables(repairables);
+
+        // Check if Repair Anvil and Salvage Anvil have different itemID's
+        if (configInstance.getSalvageAnvilId() == configInstance.getRepairAnvilId()) {
+            getLogger().warning("Can't use the same itemID for Repair/Salvage Anvils!");
+        }
+    }
+
+    private void setupSpout() {
+        // Check for Spout
+        if (getServer().getPluginManager().isPluginEnabled("Spout")) {
+            spoutEnabled = true;
+
+            SpoutConfig.getInstance();
+            SpoutUtils.setupSpoutConfigs();
+            SpoutUtils.registerCustomEvent();
+            SpoutUtils.preCacheFiles();
+            SpoutUtils.reloadSpoutPlayers(); // Handle spout players after a /reload
+        }
+    }
+
+    private void registerEvents() {
+        PluginManager pluginManager = getServer().getPluginManager();
+
+        // Register events
+        pluginManager.registerEvents(playerListener, this);
+        pluginManager.registerEvents(blockListener, this);
+        pluginManager.registerEvents(entityListener, this);
+        pluginManager.registerEvents(inventoryListener, this);
+        pluginManager.registerEvents(worldListener, this);
+    }
+
+    /**
+     * Register the commands.
+     */
+    private void registerCommands() {
+        CommandRegistrationManager.registerSkillCommands();
+
+        // mc* commands
+        CommandRegistrationManager.registerMcpurgeCommand();
+        CommandRegistrationManager.registerMcremoveCommand();
+        CommandRegistrationManager.registerMcabilityCommand();
+        CommandRegistrationManager.registerMcgodCommand();
+        CommandRegistrationManager.registerMcmmoCommand();
+        CommandRegistrationManager.registerMcrefreshCommand();
+        CommandRegistrationManager.registerMctopCommand();
+        CommandRegistrationManager.registerMcrankCommand();
+        CommandRegistrationManager.registerMcstatsCommand();
+
+        // Party commands
+        CommandRegistrationManager.registerAdminChatCommand();
+        CommandRegistrationManager.registerPartyCommand();
+        CommandRegistrationManager.registerPartyChatCommand();
+        CommandRegistrationManager.registerPtpCommand();
+
+        // Other commands
+        CommandRegistrationManager.registerAddxpCommand();
+        CommandRegistrationManager.registerAddlevelsCommand();
+        CommandRegistrationManager.registerMmoeditCommand();
+        CommandRegistrationManager.registerInspectCommand();
+        CommandRegistrationManager.registerXprateCommand();
+        CommandRegistrationManager.registerMmoupdateCommand();
+        CommandRegistrationManager.registerSkillresetCommand();
+        CommandRegistrationManager.registerHardcoreCommand();
+        CommandRegistrationManager.registerVampirismCommand();
+        CommandRegistrationManager.registerMcnotifyCommand();
+
+        // Spout commands
+        CommandRegistrationManager.registerXplockCommand();
+        CommandRegistrationManager.registerMchudCommand();
+    }
+
+    private void scheduleTasks() {
+        BukkitScheduler scheduler = getServer().getScheduler();
+
+        // Parties are loaded at the end of first server tick otherwise Server.getOfflinePlayer throws an IndexOutOfBoundsException
+        scheduler.scheduleSyncDelayedTask(this, new PartyLoaderTask(), 0);
+
+        // Periodic save timer (Saves every 10 minutes by default)
+        long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
+
+        scheduler.scheduleSyncRepeatingTask(this, new SaveTimerTask(), saveIntervalTicks, saveIntervalTicks);
+        // Regen & Cooldown timer (Runs every second)
+        scheduler.scheduleSyncRepeatingTask(this, new SkillMonitorTask(), 20, 20);
+        // Bleed timer (Runs every two seconds)
+        scheduler.scheduleSyncRepeatingTask(this, new BleedTimerTask(), 40, 40);
+
+        // Old & Powerless User remover
+        int purgeInterval = Config.getInstance().getPurgeInterval();
+
+        if (purgeInterval == 0) {
+            scheduler.scheduleSyncDelayedTask(this, new UserPurgeTask(), 40); // Start 2 seconds after startup.
+        }
+        else if (purgeInterval > 0) {
+            long purgeIntervalTicks = purgeInterval * 60 * 60 * 20;
+
+            scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), purgeIntervalTicks, purgeIntervalTicks);
+        }
+
+        // Automatically remove old members from parties
+        long kickInterval = Config.getInstance().getAutoPartyKickInterval();
+
+        if (kickInterval == 0) {
+            scheduler.scheduleSyncDelayedTask(this, new PartyAutoKickTask(), 40); // Start 2 seconds after startup.
+        }
+        else if (kickInterval > 0) {
+            long kickIntervalTicks = kickInterval * 60 * 60 * 20;
+
+            scheduler.scheduleSyncRepeatingTask(this, new PartyAutoKickTask(), kickIntervalTicks, kickIntervalTicks);
+        }
     }
 }

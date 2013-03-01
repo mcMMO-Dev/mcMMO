@@ -5,14 +5,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.events.skills.McMMOPlayerDisarmEvent;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class UnarmedManager extends SkillManager {
     public UnarmedManager(McMMOPlayer mcMMOPlayer) {
@@ -25,7 +25,7 @@ public class UnarmedManager extends SkillManager {
      * @param defender The defending player
      */
     public void disarmCheck(Player defender) {
-        if (SkillTools.activationSuccessful(getPlayer(), skill, Unarmed.disarmMaxChance, Unarmed.disarmMaxBonusLevel) && !hasIronGrip(defender)) {
+        if (SkillUtils.activationSuccessful(getPlayer(), skill, Unarmed.disarmMaxChance, Unarmed.disarmMaxBonusLevel) && !hasIronGrip(defender)) {
             McMMOPlayerDisarmEvent disarmEvent = new McMMOPlayerDisarmEvent(defender);
             mcMMO.p.getServer().getPluginManager().callEvent(disarmEvent);
 
@@ -44,7 +44,7 @@ public class UnarmedManager extends SkillManager {
     public boolean deflectCheck() {
         Player player = getPlayer();
 
-        if (SkillTools.activationSuccessful(player, skill, Unarmed.deflectMaxChance, Unarmed.deflectMaxBonusLevel)) {
+        if (SkillUtils.activationSuccessful(player, skill, Unarmed.deflectMaxChance, Unarmed.deflectMaxBonusLevel)) {
             player.sendMessage(LocaleLoader.getString("Combat.ArrowDeflect"));
             return true;
         }
@@ -75,7 +75,7 @@ public class UnarmedManager extends SkillManager {
      * @return true if the defender was not disarmed, false otherwise
      */
     private boolean hasIronGrip(Player defender) {
-        if (!Misc.isNPCEntity(defender) && Permissions.ironGrip(defender) && SkillTools.activationSuccessful(defender, skill, Unarmed.ironGripMaxChance, Unarmed.ironGripMaxBonusLevel)) {
+        if (!Misc.isNPCEntity(defender) && Permissions.ironGrip(defender) && SkillUtils.activationSuccessful(defender, skill, Unarmed.ironGripMaxChance, Unarmed.ironGripMaxBonusLevel)) {
             defender.sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Defender"));
             getPlayer().sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Attacker"));
 

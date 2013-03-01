@@ -18,16 +18,16 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.SkillManagerStore;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
-public class InventoryListener implements Listener{
+public class InventoryListener implements Listener {
     private final mcMMO plugin;
 
     public InventoryListener(final mcMMO plugin) {
@@ -91,7 +91,7 @@ public class InventoryListener implements Listener{
         if (furnaceBlock instanceof Furnace) {
             ItemStack smelting = ((Furnace) furnaceBlock).getInventory().getSmelting();
 
-            if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemChecks.isSmeltable(smelting)) {
+            if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemUtils.isSmeltable(smelting)) {
                 Player player = plugin.getFurnacePlayer(furnaceBlock);
 
                 if (!Misc.isNPCEntity(player)) {
@@ -111,10 +111,10 @@ public class InventoryListener implements Listener{
 
         if (furnaceBlock instanceof Furnace) {
             ItemStack smelting = ((Furnace) furnaceBlock).getInventory().getSmelting();
-    
-            if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemChecks.isSmeltable(smelting)) {
+
+            if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemUtils.isSmeltable(smelting)) {
                 Player player = plugin.getFurnacePlayer(furnaceBlock);
-    
+
                 if (!Misc.isNPCEntity(player)) {
                     return;
                 }
@@ -132,9 +132,9 @@ public class InventoryListener implements Listener{
 
         if (furnaceBlock instanceof Furnace) {
             ItemStack result = ((Furnace) furnaceBlock).getInventory().getResult();
-    
-            if (plugin.furnaceIsTracked(furnaceBlock) && result != null && ItemChecks.isSmelted(result)) {
-                McMMOPlayer mcMMOPlayer = Users.getPlayer(event.getPlayer());
+
+            if (plugin.furnaceIsTracked(furnaceBlock) && result != null && ItemUtils.isSmelted(result)) {
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(event.getPlayer());
 
                 if (mcMMOPlayer.getPlayer().equals(plugin.getFurnacePlayer(furnaceBlock))) {
                     event.setExpToDrop(SkillManagerStore.getInstance().getSmeltingManager(event.getPlayer().getName()).vanillaXPBoost(event.getExpToDrop()));
@@ -145,6 +145,6 @@ public class InventoryListener implements Listener{
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClickEvent(InventoryClickEvent event) {
-        SkillTools.removeAbilityBuff(event.getCurrentItem());
+        SkillUtils.removeAbilityBuff(event.getCurrentItem());
     }
 }

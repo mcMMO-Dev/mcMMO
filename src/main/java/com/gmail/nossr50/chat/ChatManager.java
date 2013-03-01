@@ -6,10 +6,10 @@ import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.Party;
 
 public final class ChatManager {
     public ChatManager () {}
@@ -22,10 +22,12 @@ public final class ChatManager {
             return;
         }
 
-        if(Config.getInstance().getAdminDisplayNames())
+        if (Config.getInstance().getAdminDisplayNames()) {
             displayName = chatEvent.getDisplayName();
-        else
+        }
+        else {
             displayName = chatEvent.getSender();
+        }
 
         String adminMessage = chatEvent.getMessage();
 
@@ -50,10 +52,12 @@ public final class ChatManager {
             return;
         }
 
-        if(Config.getInstance().getPartyDisplayNames())
+        if (Config.getInstance().getPartyDisplayNames()) {
             displayName = chatEvent.getDisplayName();
-        else
+        }
+        else {
             displayName = chatEvent.getSender();
+        }
 
         String partyMessage = chatEvent.getMessage();
 

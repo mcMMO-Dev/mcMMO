@@ -2,7 +2,7 @@ package com.gmail.nossr50.events.experience;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 
 /**
  * Called when a player gains XP in a skill

@@ -21,6 +21,14 @@ public class TrackedEntity implements Runnable {
         this.taskId = scheduler.scheduleSyncRepeatingTask(mcMMO.p, this, 12000, 12000);
     }
 
+    @Override
+    public void run() {
+        if (!livingEntity.isValid()) {
+            Archery.removeFromTracker(this);
+            scheduler.cancelTask(taskId);
+        }
+    }
+
     protected LivingEntity getLivingEntity() {
         return livingEntity;
     }
@@ -35,13 +43,5 @@ public class TrackedEntity implements Runnable {
 
     protected void incrementArrowCount() {
         arrowCount++;
-    }
-
-    @Override
-    public void run() {
-        if (!livingEntity.isValid()) {
-            Archery.removeFromTracker(this);
-            scheduler.cancelTask(taskId);
-        }
     }
 }

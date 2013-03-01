@@ -7,7 +7,7 @@ Key:
   ! Change
   - Removal
 
-Version 1.4.00-dev
+Version 1.4.00
  + Added new Child Skill - Smelting!
  + Added a version check, admins will get notified when a new version is available!
  + Added new cancellable McMMOPlayerDisarmEvent for Citizens compatibility - fires whenever a player is disarmed.
