@@ -28,7 +28,6 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
@@ -161,10 +160,9 @@ public class EntityListener implements Listener {
             }
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-            PlayerProfile profile = mcMMOPlayer.getProfile();
 
             /* Check for invincibility */
-            if (profile.getGodMode()) {
+            if (mcMMOPlayer.getGodMode()) {
                 event.setCancelled(true);
                 return;
             }
@@ -201,7 +199,7 @@ public class EntityListener implements Listener {
             }
 
             if (event.getDamage() >= 1) {
-                profile.actualizeRecentlyHurt();
+                mcMMOPlayer.actualizeRecentlyHurt();
             }
         }
         else if (livingEntity instanceof Tameable) {

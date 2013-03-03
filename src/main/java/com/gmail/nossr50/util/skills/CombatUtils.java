@@ -21,7 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
@@ -90,11 +89,10 @@ public final class CombatUtils {
                 }
 
                 if (Permissions.skillEnabled(player, SkillType.SWORDS)) {
-                    PlayerProfile profile = mcMMOPlayer.getProfile();
                     boolean canSerratedStrike = Permissions.serratedStrikes(player); // So we don't have to check the same permission twice
 
-                    if (profile.getToolPreparationMode(ToolType.SWORD) && canSerratedStrike) {
-                        SkillUtils.abilityCheck(player, SkillType.SWORDS);
+                    if (mcMMOPlayer.getToolPreparationMode(ToolType.SWORD) && canSerratedStrike) {
+                        SkillUtils.abilityCheck(mcMMOPlayer, SkillType.SWORDS);
                     }
 
                     SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
@@ -103,7 +101,7 @@ public final class CombatUtils {
                         swordsManager.bleedCheck(target);
                     }
 
-                    if (profile.getAbilityMode(AbilityType.SERRATED_STRIKES) && canSerratedStrike) {
+                    if (mcMMOPlayer.getAbilityMode(AbilityType.SERRATED_STRIKES) && canSerratedStrike) {
                         swordsManager.serratedStrikes(target, event.getDamage());
                     }
 
@@ -119,7 +117,7 @@ public final class CombatUtils {
                     AxesManager axesManager = mcMMOPlayer.getAxesManager();
 
                     if (axesManager.canActivateAbility()) {
-                        SkillUtils.abilityCheck(player, SkillType.AXES);
+                        SkillUtils.abilityCheck(mcMMOPlayer, SkillType.AXES);
                     }
 
                     if (axesManager.canUseAxeMastery()) {
@@ -155,12 +153,10 @@ public final class CombatUtils {
                 }
 
                 if (Permissions.skillEnabled(player, SkillType.UNARMED)) {
-                    PlayerProfile profile = mcMMOPlayer.getProfile();
-
                     boolean canBerserk = Permissions.berserk(player); // So we don't have to check the same permission twice
 
-                    if (profile.getToolPreparationMode(ToolType.FISTS) && canBerserk) {
-                        SkillUtils.abilityCheck(player, SkillType.UNARMED);
+                    if (mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && canBerserk) {
+                        SkillUtils.abilityCheck(mcMMOPlayer, SkillType.UNARMED);
                     }
 
                     UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
@@ -169,7 +165,7 @@ public final class CombatUtils {
                         event.setDamage(unarmedManager.ironArmCheck(event.getDamage()));
                     }
 
-                    if (profile.getAbilityMode(AbilityType.BERSERK) && canBerserk) {
+                    if (mcMMOPlayer.getAbilityMode(AbilityType.BERSERK) && canBerserk) {
                         event.setDamage(unarmedManager.berserkDamage(event.getDamage()));
                     }
 
@@ -450,7 +446,7 @@ public final class CombatUtils {
 
             Player defender = (Player) target;
 
-            if (System.currentTimeMillis() >= UserManager.getPlayer(defender).getProfile().getRespawnATS() + 5) {
+            if (System.currentTimeMillis() >= UserManager.getPlayer(defender).getRespawnATS() + 5) {
                 baseXP = 20 * Config.getInstance().getPlayerVersusPlayerXP();
             }
         }
@@ -538,7 +534,7 @@ public final class CombatUtils {
         if (entity instanceof Player) {
             Player defender = (Player) entity;
 
-            if (!defender.getWorld().getPVP() || defender == player || UserManager.getPlayer(defender).getProfile().getGodMode()) {
+            if (!defender.getWorld().getPVP() || defender == player || UserManager.getPlayer(defender).getGodMode()) {
                 return false;
             }
 

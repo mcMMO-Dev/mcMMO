@@ -41,11 +41,11 @@ public class AxesManager extends SkillManager {
     }
 
     public boolean canUseSkullSplitter(LivingEntity target) {
-        return target.isValid() && getProfile().getAbilityMode(AbilityType.SKULL_SPLITTER) && Permissions.skullSplitter(getPlayer());
+        return target.isValid() && mcMMOPlayer.getAbilityMode(AbilityType.SKULL_SPLITTER) && Permissions.skullSplitter(getPlayer());
     }
 
     public boolean canActivateAbility() {
-        return getProfile().getToolPreparationMode(ToolType.AXE) && Permissions.skullSplitter(getPlayer());
+        return mcMMOPlayer.getToolPreparationMode(ToolType.AXE) && Permissions.skullSplitter(getPlayer());
     }
 
     /**
@@ -118,14 +118,14 @@ public class AxesManager extends SkillManager {
             ParticleEffectUtils.playGreaterImpactEffect(target);
             target.setVelocity(player.getLocation().getDirection().normalize().multiply(Axes.greaterImpactKnockbackMultiplier));
 
-            if (getProfile().useChatNotifications()) {
+            if (mcMMOPlayer.useChatNotifications()) {
                 player.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));
             }
 
             if (target instanceof Player) {
                 Player defender = (Player) target;
 
-                if (UserManager.getPlayer(defender).getProfile().useChatNotifications()) {
+                if (UserManager.getPlayer(defender).useChatNotifications()) {
                     defender.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Struck"));
                 }
             }

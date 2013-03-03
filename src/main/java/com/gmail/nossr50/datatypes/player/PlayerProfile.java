@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import com.gmail.nossr50.mcMMO;
@@ -14,7 +15,6 @@ import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
 import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.skills.child.FamilyTree;
@@ -28,51 +28,14 @@ public class PlayerProfile {
     private McMMOHud spoutHud;
     private HudType  hudType;
 
-    // Toggles
-    private boolean loaded;
-    private boolean godMode;
-
-    private boolean placedAnvil;
-    private boolean placedSalvageAnvil;
-
-    private boolean hoePreparationMode;
-    private boolean shovelPreparationMode;
-    private boolean swordsPreparationMode;
-    private boolean fistsPreparationMode;
-    private boolean pickaxePreparationMode;
-    private boolean axePreparationMode;
-
-    private boolean greenTerraMode;
-    private boolean treeFellerMode;
-    private boolean superBreakerMode;
-    private boolean gigaDrillBreakerMode;
-    private boolean serratedStrikesMode;
-    private boolean skullSplitterMode;
-    private boolean berserkMode;
-
-    private boolean greenTerraInformed       = true;
-    private boolean berserkInformed          = true;
-    private boolean skullSplitterInformed    = true;
-    private boolean gigaDrillBreakerInformed = true;
-    private boolean superBreakerInformed     = true;
-    private boolean blastMiningInformed      = true;
-    private boolean serratedStrikesInformed  = true;
-    private boolean treeFellerInformed       = true;
-
-    private boolean abilityUse = true;
-    private boolean displaySkillNotifications = true;
-
-    // Timestamps
-    private int recentlyHurt;
-    private int respawnATS;
-
     // mySQL Stuff
     private int userId;
 
-    private HashMap<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>(); // Skills and Levels
-    private HashMap<SkillType, Integer>   skillsXp   = new HashMap<SkillType, Integer>(); // Skills and Xp
-    private HashMap<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>();
-    private HashMap<ToolType, Integer>    toolATS    = new HashMap<ToolType, Integer>();
+    private boolean loaded;
+
+    private Map<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>(); // Skills and Levels
+    private Map<SkillType, Integer>   skillsXp   = new HashMap<SkillType, Integer>(); // Skills and Xp
+    private Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>();
 
     private final static String location = mcMMO.getUsersFilePath();
 
@@ -566,42 +529,6 @@ public class PlayerProfile {
     }
 
     /*
-     * God Mode
-     */
-
-    public boolean getGodMode() {
-        return godMode;
-    }
-
-    public void toggleGodMode() {
-        godMode = !godMode;
-    }
-
-    /*
-     * Repair Anvil Placement
-     */
-
-    public void togglePlacedAnvil() {
-        placedAnvil = !placedAnvil;
-    }
-
-    public Boolean getPlacedAnvil() {
-        return placedAnvil;
-    }
-
-    /*
-     * Salvage Anvil Placement
-     */
-
-    public void togglePlacedSalvageAnvil() {
-        placedSalvageAnvil = !placedSalvageAnvil;
-    }
-
-    public Boolean getPlacedSalvageAnvil() {
-        return placedSalvageAnvil;
-    }
-
-    /*
      * HUD Stuff
      */
 
@@ -619,315 +546,6 @@ public class PlayerProfile {
 
     public void setHudType(HudType hudType) {
         this.hudType = hudType;
-    }
-
-    /*
-     * Tools
-     */
-
-    /**
-     * Reset the prep modes of all tools.
-     */
-    public void resetToolPrepMode() {
-        for (ToolType tool : ToolType.values()) {
-            setToolPreparationMode(tool, false);
-        }
-    }
-
-    /**
-     * Get the current prep mode of a tool.
-     *
-     * @param tool Tool to get the mode for
-     * @return true if the tool is prepped, false otherwise
-     */
-    public boolean getToolPreparationMode(ToolType tool) {
-        switch (tool) {
-            case AXE:
-                return axePreparationMode;
-
-            case FISTS:
-                return fistsPreparationMode;
-
-            case HOE:
-                return hoePreparationMode;
-
-            case PICKAXE:
-                return pickaxePreparationMode;
-
-            case SHOVEL:
-                return shovelPreparationMode;
-
-            case SWORD:
-                return swordsPreparationMode;
-
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * Set the current prep mode of a tool.
-     *
-     * @param tool Tool to set the mode for
-     * @param bool true if the tool should be prepped, false otherwise
-     */
-    public void setToolPreparationMode(ToolType tool, boolean bool) {
-        switch (tool) {
-            case AXE:
-                axePreparationMode = bool;
-                break;
-
-            case FISTS:
-                fistsPreparationMode = bool;
-                break;
-
-            case HOE:
-                hoePreparationMode = bool;
-                break;
-
-            case PICKAXE:
-                pickaxePreparationMode = bool;
-                break;
-
-            case SHOVEL:
-                shovelPreparationMode = bool;
-                break;
-
-            case SWORD:
-                swordsPreparationMode = bool;
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    /**
-     * Get the current prep ATS of a tool.
-     *
-     * @param tool Tool to get the ATS for
-     * @return the ATS for the tool
-     */
-    public long getToolPreparationATS(ToolType tool) {
-        return toolATS.get(tool);
-    }
-
-    /**
-     * Set the current prep ATS of a tool.
-     *
-     * @param tool Tool to set the ATS for
-     * @param ATS the ATS of the tool
-     */
-    public void setToolPreparationATS(ToolType tool, long ATS) {
-        int startTime = (int) (ATS / Misc.TIME_CONVERSION_FACTOR);
-
-        toolATS.put(tool, startTime);
-    }
-
-    /*
-     * Abilities
-     */
-
-    /**
-     * Reset the prep modes of all tools.
-     */
-    public void resetAbilityMode() {
-        for (AbilityType ability : AbilityType.values()) {
-            setAbilityMode(ability, false);
-        }
-    }
-
-    /**
-     * Get the mode of an ability.
-     *
-     * @param ability The ability to check
-     * @return true if the ability is enabled, false otherwise
-     */
-    public boolean getAbilityMode(AbilityType ability) {
-        switch (ability) {
-            case BERSERK:
-                return berserkMode;
-
-            case SUPER_BREAKER:
-                return superBreakerMode;
-
-            case GIGA_DRILL_BREAKER:
-                return gigaDrillBreakerMode;
-
-            case GREEN_TERRA:
-                return greenTerraMode;
-
-            case SKULL_SPLITTER:
-                return skullSplitterMode;
-
-            case TREE_FELLER:
-                return treeFellerMode;
-
-            case SERRATED_STRIKES:
-                return serratedStrikesMode;
-
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * Set the mode of an ability.
-     *
-     * @param ability The ability to check
-     * @param bool True if the ability is active, false otherwise
-     */
-    public void setAbilityMode(AbilityType ability, boolean bool) {
-        switch (ability) {
-            case BERSERK:
-                berserkMode = bool;
-                break;
-
-            case SUPER_BREAKER:
-                superBreakerMode = bool;
-                break;
-
-            case GIGA_DRILL_BREAKER:
-                gigaDrillBreakerMode = bool;
-                break;
-
-            case GREEN_TERRA:
-                greenTerraMode = bool;
-                break;
-
-            case SKULL_SPLITTER:
-                skullSplitterMode = bool;
-                break;
-
-            case TREE_FELLER:
-                treeFellerMode = bool;
-                break;
-
-            case SERRATED_STRIKES:
-                serratedStrikesMode = bool;
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    /**
-     * Get the informed state of an ability
-     *
-     * @param ability The ability to check
-     * @return true if the ability is informed, false otherwise
-     */
-    public boolean getAbilityInformed(AbilityType ability) {
-        switch (ability) {
-            case BERSERK:
-                return berserkInformed;
-
-            case BLAST_MINING:
-                return blastMiningInformed;
-
-            case SUPER_BREAKER:
-                return superBreakerInformed;
-
-            case GIGA_DRILL_BREAKER:
-                return gigaDrillBreakerInformed;
-
-            case GREEN_TERRA:
-                return greenTerraInformed;
-
-            case SKULL_SPLITTER:
-                return skullSplitterInformed;
-
-            case TREE_FELLER:
-                return treeFellerInformed;
-
-            case SERRATED_STRIKES:
-                return serratedStrikesInformed;
-
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * Set the informed state of an ability.
-     *
-     * @param ability The ability to check
-     * @param bool True if the ability is informed, false otherwise
-     */
-    public void setAbilityInformed(AbilityType ability, boolean bool) {
-        switch (ability) {
-            case BERSERK:
-                berserkInformed = bool;
-                break;
-
-            case BLAST_MINING:
-                blastMiningInformed = bool;
-                break;
-
-            case SUPER_BREAKER:
-                superBreakerInformed = bool;
-                break;
-
-            case GIGA_DRILL_BREAKER:
-                gigaDrillBreakerInformed = bool;
-                break;
-
-            case GREEN_TERRA:
-                greenTerraInformed = bool;
-                break;
-
-            case SKULL_SPLITTER:
-                skullSplitterInformed = bool;
-                break;
-
-            case TREE_FELLER:
-                treeFellerInformed = bool;
-                break;
-
-            case SERRATED_STRIKES:
-                serratedStrikesInformed = bool;
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    public boolean getAbilityUse() {
-        return abilityUse;
-    }
-
-    public void toggleAbilityUse() {
-        abilityUse = !abilityUse;
-    }
-
-    /*
-     * Recently Hurt
-     */
-
-    public int getRecentlyHurt() {
-        return recentlyHurt;
-    }
-
-    public void setRecentlyHurt(int value) {
-        recentlyHurt = value;
-    }
-
-    public void actualizeRecentlyHurt() {
-        recentlyHurt = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-    }
-
-    /*
-     * Ability Notifications
-     */
-
-    public boolean useChatNotifications() {
-        return displaySkillNotifications;
-    }
-
-    public void toggleChatNotifications() {
-        displaySkillNotifications = !displaySkillNotifications;
     }
 
     /*
@@ -963,18 +581,6 @@ public class PlayerProfile {
         for (AbilityType x : skillsDATS.keySet()) {
             skillsDATS.put(x, 0);
         }
-    }
-
-    /*
-     * Exploit Prevention
-     */
-
-    public int getRespawnATS() {
-        return respawnATS;
-    }
-
-    public void actualizeRespawnATS() {
-        respawnATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /*

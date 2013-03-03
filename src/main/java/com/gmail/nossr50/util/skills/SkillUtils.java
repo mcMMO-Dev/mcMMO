@@ -21,6 +21,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.spout.SpoutConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -87,17 +88,18 @@ public class SkillUtils {
     /**
      * Sends a message to the player when the cooldown expires.
      *
-     * @param player The player to send a message to
-     * @param profile The profile of the player
+     * @param mcMMOPlayer The player to send a message to
      * @param ability The ability to watch cooldowns for
      */
-    public static void watchCooldown(Player player, PlayerProfile profile, AbilityType ability) {
-        if (player == null || profile == null || ability == null) {
+    public static void watchCooldown(McMMOPlayer mcMMOPlayer, AbilityType ability) {
+        if (mcMMOPlayer == null || ability == null) {
             return;
         }
 
-        if (!profile.getAbilityInformed(ability) && cooldownOver(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-            profile.setAbilityInformed(ability, true);
+        Player player = mcMMOPlayer.getPlayer();
+
+        if (!mcMMOPlayer.getAbilityInformed(ability) && cooldownOver(mcMMOPlayer.getProfile().getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+            mcMMOPlayer.setAbilityInformed(ability, true);
             player.sendMessage(ability.getAbilityRefresh());
         }
     }
@@ -113,7 +115,7 @@ public class SkillUtils {
             return;
         }
 
-        PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         AbilityType ability = skill.getAbility();
         ToolType tool = skill.getTool();
         ItemStack inHand = player.getItemInHand();
@@ -122,29 +124,26 @@ public class SkillUtils {
             return;
         }
 
-        /* Check if any abilities are active */
-        if (profile == null) {
+        if (!mcMMOPlayer.getAbilityUse()) {
             return;
         }
 
-        if (!profile.getAbilityUse()) {
-            return;
-        }
-
-        for (AbilityType x : AbilityType.values()) {
-            if (profile.getAbilityMode(x)) {
+        for (AbilityType abilityType : AbilityType.values()) {
+            if (mcMMOPlayer.getAbilityMode(abilityType)) {
                 return;
             }
         }
+
+        PlayerProfile playerProfile = mcMMOPlayer.getProfile();
 
         /*
          * Woodcutting & Axes need to be treated differently.
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
-        if (ability.getPermissions(player) && tool.inHand(inHand) && !profile.getToolPreparationMode(tool)) {
+        if (ability.getPermissions(player) && tool.inHand(inHand) && !mcMMOPlayer.getToolPreparationMode(tool)) {
             if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
-                if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                    player.sendMessage(LocaleLoader.getString("Skills.TooTired", calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)));
+                if (!mcMMOPlayer.getAbilityMode(ability) && !cooldownOver(playerProfile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+                    player.sendMessage(LocaleLoader.getString("Skills.TooTired", calculateTimeLeft(playerProfile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)));
                     return;
                 }
             }
@@ -153,39 +152,36 @@ public class SkillUtils {
                 player.sendMessage(tool.getRaiseTool());
             }
 
-            profile.setToolPreparationATS(tool, System.currentTimeMillis());
-            profile.setToolPreparationMode(tool, true);
+            mcMMOPlayer.setToolPreparationATS(tool, System.currentTimeMillis());
+            mcMMOPlayer.setToolPreparationMode(tool, true);
         }
     }
 
     /**
      * Monitors various things relating to skill abilities.
      *
-     * @param player The player using the skill
+     * @param mcMMOPlayer The player using the skill
      * @param profile The profile of the player
      * @param curTime The current system time
      * @param skill The skill being monitored
      */
-    public static void monitorSkill(Player player, PlayerProfile profile, long curTime, SkillType skill) {
+    public static void monitorSkill(McMMOPlayer mcMMOPlayer, long curTime, SkillType skill) {
         final int FOUR_SECONDS = 4000;
-
         ToolType tool = skill.getTool();
-        AbilityType ability = skill.getAbility();
 
-        if (profile == null) {
-            return;
-        }
-
-        if (profile.getToolPreparationMode(tool) && curTime - (profile.getToolPreparationATS(tool) * Misc.TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
-            profile.setToolPreparationMode(tool, false);
+        if (mcMMOPlayer.getToolPreparationMode(tool) && curTime - (mcMMOPlayer.getToolPreparationATS(tool) * Misc.TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
+            mcMMOPlayer.setToolPreparationMode(tool, false);
 
             if (Config.getInstance().getAbilityMessagesEnabled()) {
-                player.sendMessage(tool.getLowerTool());
+                mcMMOPlayer.getPlayer().sendMessage(tool.getLowerTool());
             }
         }
 
+        AbilityType ability = skill.getAbility();
+        Player player = mcMMOPlayer.getPlayer();
+
         if (ability.getPermissions(player)) {
-            if (profile.getAbilityMode(ability) && (profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR) <= curTime) {
+            if (mcMMOPlayer.getAbilityMode(ability) && (mcMMOPlayer.getProfile().getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR) <= curTime) {
                 if (ability == AbilityType.BERSERK) {
                     player.setCanPickupItems(true);
                 }
@@ -193,12 +189,12 @@ public class SkillUtils {
                     handleAbilitySpeedDecrease(player);
                 }
 
-                profile.setAbilityMode(ability, false);
-                profile.setAbilityInformed(ability, false);
+                mcMMOPlayer.setAbilityMode(ability, false);
+                mcMMOPlayer.setAbilityInformed(ability, false);
 
                 ParticleEffectUtils.playAbilityDisabledEffect(player);
 
-                if (profile.useChatNotifications()) {
+                if (mcMMOPlayer.useChatNotifications()) {
                     player.sendMessage(ability.getAbilityOff());
                 }
 
@@ -368,40 +364,42 @@ public class SkillUtils {
     /**
      * Check to see if an ability can be activated.
      *
-     * @param player The player activating the ability
+     * @param mcMMOPlayer The player activating the ability
      * @param type The skill the ability is based on
      */
-    public static void abilityCheck(Player player, SkillType type) {
-        PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+    public static void abilityCheck(McMMOPlayer mcMMOPlayer, SkillType type) {
         ToolType tool = type.getTool();
         AbilityType ability = type.getAbility();
 
-        profile.setToolPreparationMode(tool, false);
+        mcMMOPlayer.setToolPreparationMode(tool, false);
+
+        Player player = mcMMOPlayer.getPlayer();
+        PlayerProfile playerProfile = mcMMOPlayer.getProfile();
 
         /*
          * Axes and Woodcutting are odd because they share the same tool.
          * We show them the too tired message when they take action.
          */
         if (type == SkillType.WOODCUTTING || type == SkillType.AXES) {
-            if (!profile.getAbilityMode(ability) && !cooldownOver(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                player.sendMessage(LocaleLoader.getString("Skills.TooTired", calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)));
+            if (!mcMMOPlayer.getAbilityMode(ability) && !cooldownOver(playerProfile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
+                player.sendMessage(LocaleLoader.getString("Skills.TooTired", calculateTimeLeft(playerProfile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)));
                 return;
             }
         }
 
-        if (!profile.getAbilityMode(ability) && cooldownOver(profile.getSkillDATS(ability), ability.getCooldown(), player)) {
-            int ticks = PerksUtils.handleActivationPerks(player, 2 + (profile.getSkillLevel(type) / AdvancedConfig.getInstance().getAbilityLength()), ability.getMaxTicks());
+        if (!mcMMOPlayer.getAbilityMode(ability) && cooldownOver(playerProfile.getSkillDATS(ability), ability.getCooldown(), player)) {
+            int ticks = PerksUtils.handleActivationPerks(player, 2 + (playerProfile.getSkillLevel(type) / AdvancedConfig.getInstance().getAbilityLength()), ability.getMaxTicks());
 
             ParticleEffectUtils.playAbilityEnabledEffect(player);
 
-            if (profile.useChatNotifications()) {
+            if (mcMMOPlayer.useChatNotifications()) {
                 player.sendMessage(ability.getAbilityOn());
             }
 
             SkillUtils.sendSkillMessage(player, ability.getAbilityPlayer(player));
 
-            profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
-            profile.setAbilityMode(ability, true);
+            playerProfile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
+            mcMMOPlayer.setAbilityMode(ability, true);
 
             if (ability == AbilityType.BERSERK) {
                 player.setCanPickupItems(false);
@@ -514,14 +512,14 @@ public class SkillUtils {
                 }
             }
 
-            PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             int ticks = 0;
 
-            if (profile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
-                ticks = ((int) (profile.getSkillDATS(AbilityType.SUPER_BREAKER) - System.currentTimeMillis())) / Misc.TIME_CONVERSION_FACTOR;
+            if (mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER)) {
+                ticks = ((int) (mcMMOPlayer.getProfile().getSkillDATS(AbilityType.SUPER_BREAKER) - System.currentTimeMillis())) / Misc.TIME_CONVERSION_FACTOR;
             }
-            else if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
-                ticks = ((int) (profile.getSkillDATS(AbilityType.GIGA_DRILL_BREAKER) - System.currentTimeMillis())) / Misc.TIME_CONVERSION_FACTOR;
+            else if (mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
+                ticks = ((int) (mcMMOPlayer.getProfile().getSkillDATS(AbilityType.GIGA_DRILL_BREAKER) - System.currentTimeMillis())) / Misc.TIME_CONVERSION_FACTOR;
             }
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);

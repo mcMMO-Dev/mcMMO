@@ -108,7 +108,7 @@ public class TamingManager extends SkillManager {
      * @param livingEntity The entity to examine
      */
     public void beastLore(LivingEntity livingEntity) {
-        BeastLoreEventHandler eventHandler = new BeastLoreEventHandler(mcMMOPlayer.getPlayer(), livingEntity);
+        BeastLoreEventHandler eventHandler = new BeastLoreEventHandler(getPlayer(), livingEntity);
         eventHandler.sendInspectMessage();
     }
 
@@ -119,11 +119,11 @@ public class TamingManager extends SkillManager {
      * @param summonAmount The amount of material needed to summon the entity
      */
     private void callOfTheWild(EntityType type, int summonAmount) {
-        if (!Permissions.callOfTheWild(mcMMOPlayer.getPlayer())) {
+        if (!Permissions.callOfTheWild(getPlayer())) {
             return;
         }
 
-        CallOfTheWildEventHandler eventHandler = new CallOfTheWildEventHandler(mcMMOPlayer.getPlayer(), type, summonAmount);
+        CallOfTheWildEventHandler eventHandler = new CallOfTheWildEventHandler(getPlayer(), type, summonAmount);
 
         ItemStack inHand = eventHandler.inHand;
         int inHandAmount = inHand.getAmount();

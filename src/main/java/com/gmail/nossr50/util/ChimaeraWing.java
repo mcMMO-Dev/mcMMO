@@ -6,7 +6,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.metrics.MetricsManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -27,10 +26,9 @@ public final class ChimaeraWing {
             return;
         }
 
-        PlayerProfile profile = UserManager.getPlayer(player).getProfile();
         Block block = player.getLocation().getBlock();
         int amount = inHand.getAmount();
-        long recentlyHurt = profile.getRecentlyHurt() * Misc.TIME_CONVERSION_FACTOR;
+        long recentlyHurt = UserManager.getPlayer(player).getRecentlyHurt() * Misc.TIME_CONVERSION_FACTOR;
 
         if (Permissions.chimaeraWing(player) && inHand.getTypeId() == Config.getInstance().getChimaeraItemId()) {
             if (SkillUtils.cooldownOver(recentlyHurt, 60, player) && amount >= Config.getInstance().getChimaeraCost()) {

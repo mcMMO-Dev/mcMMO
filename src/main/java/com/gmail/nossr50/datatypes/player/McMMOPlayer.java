@@ -12,7 +12,9 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.party.PartyManager;
@@ -49,8 +51,9 @@ public class McMMOPlayer {
      */
     private Map<SkillType, SkillManager> skillManagers = new HashMap<SkillType, SkillManager>();
 
-    private Party party;
-    private Party invite;
+    private Party   party;
+    private Party   invite;
+    private int     itemShareModifier;
 
     private Player  ptpRequest;
     private boolean ptpEnabled = true;
@@ -59,8 +62,20 @@ public class McMMOPlayer {
 
     private boolean partyChatMode;
     private boolean adminChatMode;
+    private boolean displaySkillNotifications = true;
 
-    private int itemShareModifier;
+    private boolean abilityUse = true;
+    private boolean placedAnvil;
+    private boolean placedSalvageAnvil;
+    private boolean godMode;
+
+    private Map<AbilityType, Boolean> abilityMode = new HashMap<AbilityType, Boolean>();
+    private Map<AbilityType, Boolean> abilityInformed = new HashMap<AbilityType, Boolean>();
+    private Map<ToolType, Boolean> toolPreparationMode = new HashMap<ToolType, Boolean>();
+    private Map<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
+
+    private int recentlyHurt;
+    private int respawnATS;
 
     public McMMOPlayer(Player player) {
         String playerName = player.getName();
@@ -87,6 +102,16 @@ public class McMMOPlayer {
         catch (Exception e) {
             e.printStackTrace();
             mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
+        }
+
+        for (AbilityType abilityType : AbilityType.values()) {
+            abilityMode.put(abilityType, false);
+            abilityInformed.put(abilityType, true); // This is intended
+        }
+
+        for (ToolType toolType : ToolType.values()) {
+            toolPreparationMode.put(toolType, false);
+            toolATS.put(toolType, 0);
         }
     }
 
@@ -132,6 +157,198 @@ public class McMMOPlayer {
 
     public UnarmedManager getUnarmedManager() {
         return (UnarmedManager) skillManagers.get(SkillType.UNARMED);
+    }
+
+    /*
+     * Abilities
+     */
+
+    /**
+     * Reset the mode of all abilities.
+     */
+    public void resetAbilityMode() {
+        for (AbilityType ability : AbilityType.values()) {
+            setAbilityMode(ability, false);
+        }
+    }
+
+    /**
+     * Get the mode of an ability.
+     *
+     * @param ability The ability to check
+     * @return true if the ability is enabled, false otherwise
+     */
+    public boolean getAbilityMode(AbilityType ability) {
+        return abilityMode.get(ability);
+    }
+
+    /**
+     * Set the mode of an ability.
+     *
+     * @param ability The ability to check
+     * @param bool True if the ability is active, false otherwise
+     */
+    public void setAbilityMode(AbilityType ability, boolean bool) {
+        abilityMode.put(ability, bool);
+    }
+
+    /**
+     * Get the informed state of an ability
+     *
+     * @param ability The ability to check
+     * @return true if the ability is informed, false otherwise
+     */
+    public boolean getAbilityInformed(AbilityType ability) {
+        return abilityInformed.get(ability);
+    }
+
+    /**
+     * Set the informed state of an ability.
+     *
+     * @param ability The ability to check
+     * @param bool True if the ability is informed, false otherwise
+     */
+    public void setAbilityInformed(AbilityType ability, boolean bool) {
+        abilityInformed.put(ability, bool);
+    }
+
+    /**
+     * Get the current prep mode of a tool.
+     *
+     * @param tool Tool to get the mode for
+     * @return true if the tool is prepped, false otherwise
+     */
+    public boolean getToolPreparationMode(ToolType tool) {
+        return toolPreparationMode.get(tool);
+    }
+
+    public boolean getAbilityUse() {
+        return abilityUse;
+    }
+
+    public void toggleAbilityUse() {
+        abilityUse = !abilityUse;
+    }
+
+    /*
+     * Tools
+     */
+
+    /**
+     * Reset the prep modes of all tools.
+     */
+    public void resetToolPrepMode() {
+        for (ToolType tool : ToolType.values()) {
+            setToolPreparationMode(tool, false);
+        }
+    }
+
+    /**
+     * Set the current prep mode of a tool.
+     *
+     * @param tool Tool to set the mode for
+     * @param bool true if the tool should be prepped, false otherwise
+     */
+    public void setToolPreparationMode(ToolType tool, boolean bool) {
+        toolPreparationMode.put(tool, bool);
+    }
+
+    /**
+     * Get the current prep ATS of a tool.
+     *
+     * @param tool Tool to get the ATS for
+     * @return the ATS for the tool
+     */
+    public long getToolPreparationATS(ToolType tool) {
+        return toolATS.get(tool);
+    }
+
+    /**
+     * Set the current prep ATS of a tool.
+     *
+     * @param tool Tool to set the ATS for
+     * @param ATS the ATS of the tool
+     */
+    public void setToolPreparationATS(ToolType tool, long ATS) {
+        int startTime = (int) (ATS / Misc.TIME_CONVERSION_FACTOR);
+
+        toolATS.put(tool, startTime);
+    }
+
+    /*
+     * Recently Hurt
+     */
+
+    public int getRecentlyHurt() {
+        return recentlyHurt;
+    }
+
+    public void setRecentlyHurt(int value) {
+        recentlyHurt = value;
+    }
+
+    public void actualizeRecentlyHurt() {
+        recentlyHurt = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+    }
+
+    /*
+     * Exploit Prevention
+     */
+
+    public int getRespawnATS() {
+        return respawnATS;
+    }
+
+    public void actualizeRespawnATS() {
+        respawnATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+    }
+
+    /*
+     * Repair Anvil Placement
+     */
+
+    public void togglePlacedAnvil() {
+        placedAnvil = !placedAnvil;
+    }
+
+    public Boolean getPlacedAnvil() {
+        return placedAnvil;
+    }
+
+    /*
+     * Salvage Anvil Placement
+     */
+
+    public void togglePlacedSalvageAnvil() {
+        placedSalvageAnvil = !placedSalvageAnvil;
+    }
+
+    public Boolean getPlacedSalvageAnvil() {
+        return placedSalvageAnvil;
+    }
+
+    /*
+     * God Mode
+     */
+
+    public boolean getGodMode() {
+        return godMode;
+    }
+
+    public void toggleGodMode() {
+        godMode = !godMode;
+    }
+
+    /*
+     * Skill notifications
+     */
+
+    public boolean useChatNotifications() {
+        return displaySkillNotifications;
+    }
+
+    public void toggleChatNotifications() {
+        displaySkillNotifications = !displaySkillNotifications;
     }
 
     /**
@@ -223,7 +440,9 @@ public class McMMOPlayer {
         SkillUtils.xpCheckSkill(skillType, player, profile);
     }
 
-    // Players & Profiles
+    /*
+     * Players & Profiles
+     */
 
     public Player getPlayer() {
         return player;
@@ -237,7 +456,9 @@ public class McMMOPlayer {
         return profile;
     }
 
-    // Party Stuff
+    /*
+     * Party Stuff
+     */
 
     public void setPartyInvite(Party invite) {
         this.invite = invite;
@@ -338,6 +559,10 @@ public class McMMOPlayer {
 
         itemShareModifier = modifier;
     }
+
+    /*
+     * Chat modes
+     */
 
     public boolean getAdminChatMode() {
         return adminChatMode;

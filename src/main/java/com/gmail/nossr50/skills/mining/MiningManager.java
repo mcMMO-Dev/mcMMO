@@ -86,7 +86,6 @@ public class MiningManager extends SkillManager{
             return;
         }
 
-        PlayerProfile profile = getProfile();
         TNTPrimed tnt = player.getWorld().spawn(targetBlock.getLocation(), TNTPrimed.class);
 
         SkillUtils.sendSkillMessage(player, AbilityType.BLAST_MINING.getAbilityPlayer(player));
@@ -97,8 +96,8 @@ public class MiningManager extends SkillManager{
         targetBlock.setData((byte) 0x0);
         targetBlock.setType(Material.AIR);
 
-        profile.setSkillDATS(AbilityType.BLAST_MINING, System.currentTimeMillis());
-        profile.setAbilityInformed(AbilityType.BLAST_MINING, false);
+        getProfile().setSkillDATS(AbilityType.BLAST_MINING, System.currentTimeMillis());
+        mcMMOPlayer.setAbilityInformed(AbilityType.BLAST_MINING, false);
     }
 
     /**

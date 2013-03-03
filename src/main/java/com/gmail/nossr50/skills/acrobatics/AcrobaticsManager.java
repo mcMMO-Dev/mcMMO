@@ -6,7 +6,6 @@ import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
@@ -52,14 +51,12 @@ public class AcrobaticsManager extends SkillManager {
         if (!isFatal(modifiedDamage) && SkillUtils.activationSuccessful(player, skill, Acrobatics.dodgeMaxChance, Acrobatics.dodgeMaxBonusLevel)) {
             ParticleEffectUtils.playDodgeEffect(player);
 
-            PlayerProfile playerProfile = getProfile();
-
-            if (playerProfile.useChatNotifications()) {
+            if (mcMMOPlayer.useChatNotifications()) {
                 player.sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));
             }
 
             // Why do we check respawn cooldown here?
-            if (System.currentTimeMillis() >= playerProfile.getRespawnATS() + Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS) {
+            if (System.currentTimeMillis() >= mcMMOPlayer.getRespawnATS() + Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS) {
                 applyXpGain(damage * Acrobatics.dodgeXpModifier);
             }
 

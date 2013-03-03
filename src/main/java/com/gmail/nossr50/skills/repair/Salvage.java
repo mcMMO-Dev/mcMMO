@@ -11,7 +11,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.ItemUtils;
@@ -59,9 +59,9 @@ public class Salvage {
      * @param anvilID The item ID of the anvil block
      */
     public static void placedAnvilCheck(final Player player, final int anvilID) {
-        final PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (!profile.getPlacedSalvageAnvil()) {
+        if (!mcMMOPlayer.getPlacedSalvageAnvil()) {
             if (mcMMO.spoutEnabled) {
                 final SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
@@ -74,7 +74,7 @@ public class Salvage {
             }
 
             player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-            profile.togglePlacedSalvageAnvil();
+            mcMMOPlayer.togglePlacedSalvageAnvil();
         }
     }
 

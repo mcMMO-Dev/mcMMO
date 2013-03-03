@@ -3,7 +3,7 @@ package com.gmail.nossr50.runnables.skills;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
@@ -20,14 +20,14 @@ public class SkillMonitorTask implements Runnable {
                 continue;
             }
 
-            PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             /*
              * MONITOR SKILLS
              */
             for (SkillType skill : SkillType.values()) {
                 if (skill.getTool() != null && skill.getAbility() != null) {
-                    SkillUtils.monitorSkill(player, profile, curTime, skill);
+                    SkillUtils.monitorSkill(mcMMOPlayer, curTime, skill);
                 }
             }
 
@@ -36,7 +36,7 @@ public class SkillMonitorTask implements Runnable {
              */
             for (AbilityType ability : AbilityType.values()) {
                 if (ability.getCooldown() > 0) {
-                    SkillUtils.watchCooldown(player, profile, ability);
+                    SkillUtils.watchCooldown(mcMMOPlayer, ability);
                 }
             }
         }

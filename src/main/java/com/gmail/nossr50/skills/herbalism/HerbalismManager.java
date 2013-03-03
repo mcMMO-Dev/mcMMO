@@ -15,7 +15,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
@@ -30,7 +29,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class HerbalismManager extends SkillManager {
@@ -62,15 +60,15 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenTerraBlock(BlockState blockState) {
-        return getProfile().getAbilityMode(AbilityType.GREEN_TERRA) && BlockUtils.canMakeMossy(blockState);
+        return mcMMOPlayer.getAbilityMode(AbilityType.GREEN_TERRA) && BlockUtils.canMakeMossy(blockState);
     }
 
     public boolean canActivateAbility() {
-        return getProfile().getToolPreparationMode(ToolType.HOE) && Permissions.greenTerra(getPlayer());
+        return mcMMOPlayer.getToolPreparationMode(ToolType.HOE) && Permissions.greenTerra(getPlayer());
     }
 
     public boolean canGreenTerraPlant() {
-        return getProfile().getAbilityMode(AbilityType.GREEN_TERRA);
+        return mcMMOPlayer.getAbilityMode(AbilityType.GREEN_TERRA);
     }
 
     /**
@@ -288,9 +286,7 @@ public class HerbalismManager extends SkillManager {
             return;
         }
 
-        PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
-
-        if (playerProfile.getAbilityMode(AbilityType.GREEN_TERRA)) {
+        if (mcMMOPlayer.getAbilityMode(AbilityType.GREEN_TERRA)) {
             playerInventory.removeItem(seed);
             player.updateInventory(); // Needed until replacement available
 

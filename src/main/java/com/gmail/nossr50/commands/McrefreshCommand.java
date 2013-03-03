@@ -14,7 +14,7 @@ import com.gmail.nossr50.util.player.UserManager;
 public class McrefreshCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        PlayerProfile profile;
+        McMMOPlayer mcMMOPlayer;
 
         switch (args.length) {
             case 0:
@@ -27,12 +27,12 @@ public class McrefreshCommand implements CommandExecutor {
                     return false;
                 }
 
-                profile = UserManager.getPlayer(sender.getName()).getProfile();
+                mcMMOPlayer = UserManager.getPlayer(sender.getName());
 
-                profile.setRecentlyHurt(0);
-                profile.resetCooldowns();
-                profile.resetToolPrepMode();
-                profile.resetAbilityMode();
+                mcMMOPlayer.setRecentlyHurt(0);
+                mcMMOPlayer.getProfile().resetCooldowns();
+                mcMMOPlayer.resetToolPrepMode();
+                mcMMOPlayer.resetAbilityMode();
 
                 sender.sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
                 return true;
@@ -43,12 +43,12 @@ public class McrefreshCommand implements CommandExecutor {
                     return true;
                 }
 
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(args[0]);
+                mcMMOPlayer = UserManager.getPlayer(args[0]);
 
                 if (mcMMOPlayer == null) {
-                    profile = new PlayerProfile(args[0], false);
+                    PlayerProfile playerProfile = new PlayerProfile(args[0], false);
 
-                    if (!profile.isLoaded()) {
+                    if (!playerProfile.isLoaded()) {
                         sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                         return true;
                     }
@@ -56,7 +56,7 @@ public class McrefreshCommand implements CommandExecutor {
                     sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
                     return true;
                 }
-                profile = mcMMOPlayer.getProfile();
+
                 Player player = mcMMOPlayer.getPlayer();
 
                 if (!player.isOnline()) {
@@ -64,10 +64,10 @@ public class McrefreshCommand implements CommandExecutor {
                     return true;
                 }
 
-                profile.setRecentlyHurt(0);
-                profile.resetCooldowns();
-                profile.resetToolPrepMode();
-                profile.resetAbilityMode();
+                mcMMOPlayer.setRecentlyHurt(0);
+                mcMMOPlayer.getProfile().resetCooldowns();
+                mcMMOPlayer.resetToolPrepMode();
+                mcMMOPlayer.resetAbilityMode();
 
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrefresh.Success", args[0]));

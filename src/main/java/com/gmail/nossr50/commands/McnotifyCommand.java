@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -14,16 +14,16 @@ public class McnotifyCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 0:
-                PlayerProfile profile = UserManager.getPlayer((Player) sender).getProfile();
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
 
-                if (profile.useChatNotifications()) {
+                if (mcMMOPlayer.useChatNotifications()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Notifications.Off"));
                 }
                 else {
                     sender.sendMessage(LocaleLoader.getString("Commands.Notifications.On"));
                 }
 
-                profile.toggleChatNotifications();
+                mcMMOPlayer.toggleChatNotifications();
                 return true;
 
             default:

@@ -86,11 +86,11 @@ public class ArcheryManager extends SkillManager {
             defender.teleport(dazedLocation);
             defender.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 10));
 
-            if (UserManager.getPlayer(defender).getProfile().useChatNotifications()) {
+            if (UserManager.getPlayer(defender).useChatNotifications()) {
                 defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
             }
 
-            if (getProfile().useChatNotifications()) {
+            if (mcMMOPlayer.useChatNotifications()) {
                 attacker.sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
             }
 

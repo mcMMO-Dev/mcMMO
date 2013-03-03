@@ -30,7 +30,6 @@ import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -101,10 +100,9 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        PlayerProfile profile = mcMMOPlayer.getProfile();
 
-        if (profile.getGodMode() && !Permissions.mcgod(player)) {
-            profile.toggleGodMode();
+        if (mcMMOPlayer.getGodMode() && !Permissions.mcgod(player)) {
+            mcMMOPlayer.toggleGodMode();
             player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));
         }
 
@@ -128,7 +126,7 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            UserManager.addUser(player).getProfile().actualizeRespawnATS();
+            UserManager.addUser(player).actualizeRespawnATS();
         }
     }
 
@@ -140,9 +138,9 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
-        PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (playerProfile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) || playerProfile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
+        if (mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) || mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER)) {
             event.setCancelled(true);
             return;
         }
@@ -261,7 +259,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        UserManager.getPlayer(player).getProfile().actualizeRespawnATS();
+        UserManager.getPlayer(player).actualizeRespawnATS();
     }
 
     /**

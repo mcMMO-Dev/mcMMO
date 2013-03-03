@@ -9,7 +9,6 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
@@ -21,7 +20,6 @@ import com.gmail.nossr50.util.player.UserManager;
 public class PtpCommand implements CommandExecutor {
     private Player player;
     private McMMOPlayer mcMMOPlayer;
-    private PlayerProfile playerProfile;
 
     private Player target;
     private McMMOPlayer mcMMOTarget;
@@ -34,10 +32,6 @@ public class PtpCommand implements CommandExecutor {
 
         switch (args.length) {
             case 1:
-                player = (Player) sender;
-                mcMMOPlayer = UserManager.getPlayer(player);
-                playerProfile = mcMMOPlayer.getProfile();
-
                 if (args[0].equalsIgnoreCase("toggle")) {
                     if (!Permissions.partyTeleportToggle(sender)) {
                         sender.sendMessage(command.getPermissionMessage());
@@ -56,8 +50,9 @@ public class PtpCommand implements CommandExecutor {
                     return acceptAnyTeleportRequest();
                 }
 
+                player = (Player) sender;
                 int ptpCooldown = Config.getInstance().getPTPCommandCooldown();
-                long recentlyHurt = playerProfile.getRecentlyHurt() * Misc.TIME_CONVERSION_FACTOR;
+                long recentlyHurt = UserManager.getPlayer(player).getRecentlyHurt() * Misc.TIME_CONVERSION_FACTOR;
 
                 if (System.currentTimeMillis() - recentlyHurt >= (ptpCooldown * Misc.TIME_CONVERSION_FACTOR)) {
                     player.sendMessage(LocaleLoader.getString("Party.Teleport.Hurt", ptpCooldown));
@@ -94,6 +89,7 @@ public class PtpCommand implements CommandExecutor {
         player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
 
         int ptpRequestExpire = Config.getInstance().getPTPCommandTimeout();
+
         target.sendMessage(LocaleLoader.getString("Commands.ptp.Request1", player.getName()));
         target.sendMessage(LocaleLoader.getString("Commands.ptp.Request2", ptpRequestExpire));
         return true;
@@ -203,8 +199,8 @@ public class PtpCommand implements CommandExecutor {
 
     private boolean handlePartyTeleportEvent(Player player, Player target) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
         McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(player, target, mcMMOPlayer.getParty().getName());
+
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
@@ -214,7 +210,7 @@ public class PtpCommand implements CommandExecutor {
         player.teleport(target);
         player.sendMessage(LocaleLoader.getString("Party.Teleport.Player", target.getName()));
         target.sendMessage(LocaleLoader.getString("Party.Teleport.Target", player.getName()));
-        mcMMOPlayer.getProfile().actualizeRecentlyHurt();
+        mcMMOPlayer.actualizeRecentlyHurt();
         return true;
     }
 }

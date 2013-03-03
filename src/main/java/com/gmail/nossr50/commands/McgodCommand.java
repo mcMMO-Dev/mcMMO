@@ -14,7 +14,7 @@ import com.gmail.nossr50.util.player.UserManager;
 public class McgodCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        PlayerProfile profile;
+        McMMOPlayer mcMMOPlayer;
 
         switch (args.length) {
             case 0:
@@ -27,21 +27,21 @@ public class McgodCommand implements CommandExecutor {
                     return false;
                 }
 
-                profile = UserManager.getPlayer((Player) sender).getProfile();
+                mcMMOPlayer = UserManager.getPlayer((Player) sender);
 
-                if (profile == null) {
+                if (mcMMOPlayer == null) {
                     sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                     return true;
                 }
 
-                if (profile.getGodMode()) {
+                if (mcMMOPlayer.getGodMode()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.GodMode.Disabled"));
                 }
                 else {
                     sender.sendMessage(LocaleLoader.getString("Commands.GodMode.Enabled"));
                 }
 
-                profile.toggleGodMode();
+                mcMMOPlayer.toggleGodMode();
                 return true;
 
             case 1:
@@ -50,12 +50,12 @@ public class McgodCommand implements CommandExecutor {
                     return true;
                 }
 
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(args[0]);
+                mcMMOPlayer = UserManager.getPlayer(args[0]);
 
                 if (mcMMOPlayer == null) {
-                    profile = new PlayerProfile(args[0], false);
+                    PlayerProfile playerProfile = new PlayerProfile(args[0], false);
 
-                    if (!profile.isLoaded()) {
+                    if (!playerProfile.isLoaded()) {
                         sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                         return true;
                     }
@@ -64,7 +64,6 @@ public class McgodCommand implements CommandExecutor {
                     return true;
                 }
 
-                profile = mcMMOPlayer.getProfile();
                 Player player = mcMMOPlayer.getPlayer();
 
                 if (!player.isOnline()) {
@@ -72,14 +71,14 @@ public class McgodCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (profile.getGodMode()) {
+                if (mcMMOPlayer.getGodMode()) {
                     player.sendMessage(LocaleLoader.getString("Commands.GodMode.Disabled"));
                 }
                 else {
                     player.sendMessage(LocaleLoader.getString("Commands.GodMode.Enabled"));
                 }
 
-                profile.toggleGodMode();
+                mcMMOPlayer.toggleGodMode();
                 return true;
 
             default:

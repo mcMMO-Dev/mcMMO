@@ -14,7 +14,7 @@ import com.gmail.nossr50.util.player.UserManager;
 public class McabilityCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        PlayerProfile profile;
+        McMMOPlayer mcMMOPlayer;
 
         switch (args.length) {
             case 0:
@@ -23,16 +23,16 @@ public class McabilityCommand implements CommandExecutor {
                     return true;
                 }
 
-                profile = UserManager.getPlayer((Player) sender).getProfile();
+                mcMMOPlayer = UserManager.getPlayer((Player) sender);
 
-                if (profile.getAbilityUse()) {
+                if (mcMMOPlayer.getAbilityUse()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
                 }
                 else {
                     sender.sendMessage(LocaleLoader.getString("Commands.Ability.On"));
                 }
 
-                profile.toggleAbilityUse();
+                mcMMOPlayer.toggleAbilityUse();
                 return true;
 
             case 1:
@@ -41,12 +41,12 @@ public class McabilityCommand implements CommandExecutor {
                     return true;
                 }
 
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(args[0]);
+                mcMMOPlayer = UserManager.getPlayer(args[0]);
 
                 if (mcMMOPlayer == null) {
-                    profile = new PlayerProfile(args[0], false);
+                    PlayerProfile playerProfile = new PlayerProfile(args[0], false);
 
-                    if (!profile.isLoaded()) {
+                    if (!playerProfile.isLoaded()) {
                         sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
                         return true;
                     }
@@ -56,21 +56,20 @@ public class McabilityCommand implements CommandExecutor {
                 }
 
                 Player player = mcMMOPlayer.getPlayer();
-                profile = mcMMOPlayer.getProfile();
 
                 if (!player.isOnline()) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
                     return true;
                 }
 
-                if (profile.getAbilityUse()) {
+                if (mcMMOPlayer.getAbilityUse()) {
                     player.sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
                 }
                 else {
                     player.sendMessage(LocaleLoader.getString("Commands.Ability.On"));
                 }
 
-                profile.toggleAbilityUse();
+                mcMMOPlayer.toggleAbilityUse();
                 return true;
 
             default:

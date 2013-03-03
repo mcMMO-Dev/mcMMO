@@ -204,9 +204,9 @@ public class Repair {
      * @param anvilID The item ID of the anvil block
      */
     public static void placedAnvilCheck(Player player, int anvilID) {
-        PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (!profile.getPlacedAnvil()) {
+        if (!mcMMOPlayer.getPlacedAnvil()) {
             if (mcMMO.spoutEnabled) {
                 SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
@@ -219,7 +219,7 @@ public class Repair {
             }
 
             player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-            profile.togglePlacedAnvil();
+            mcMMOPlayer.togglePlacedAnvil();
         }
     }
 

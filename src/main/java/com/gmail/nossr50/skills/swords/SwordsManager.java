@@ -34,14 +34,14 @@ public class SwordsManager extends SkillManager {
                 BleedTimerTask.add(target, Swords.bleedBaseTicks);
             }
 
-            if (getProfile().useChatNotifications()) {
+            if (mcMMOPlayer.useChatNotifications()) {
                 player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
             }
 
             if (target instanceof Player) {
                 Player defender = (Player) target;
 
-                if (UserManager.getPlayer(defender).getProfile().useChatNotifications()) {
+                if (UserManager.getPlayer(defender).useChatNotifications()) {
                     defender.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding.Started"));
                 }
             }
