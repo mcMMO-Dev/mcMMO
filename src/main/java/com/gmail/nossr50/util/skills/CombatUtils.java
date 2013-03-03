@@ -73,7 +73,8 @@ public final class CombatUtils {
                     return;
                 }
             }
-            else if (ItemUtils.isSword(heldItem)) {
+
+            if (ItemUtils.isSword(heldItem)) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!SkillType.SWORDS.getPVPEnabled()) {
                         return;
