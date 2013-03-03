@@ -33,27 +33,27 @@ public enum SkillType {
     WOODCUTTING(null, AbilityType.TREE_FELLER, ToolType.AXE); // TODO: Create a proper WoodcuttingManager class
 
     private Class<? extends SkillManager> managerClass;
-    private AbilityType ability;
+    private AbilityType abilityType;
     private ToolType toolType;
 
     private SkillType(Class<? extends SkillManager> managerClass) {
         this.managerClass = managerClass;
-        ability = null;
+        abilityType = null;
         toolType = null;
     }
 
-    private SkillType(Class<? extends SkillManager> managerClass, AbilityType ability, ToolType tool) {
+    private SkillType(Class<? extends SkillManager> managerClass, AbilityType abilityType, ToolType toolType) {
         this.managerClass = managerClass;
-        this.ability = ability;
-        this.toolType = tool;
+        this.abilityType = abilityType;
+        this.toolType = toolType;
     }
 
     public Class<? extends SkillManager> getManagerClass() {
         return managerClass;
     }
 
-    public AbilityType getAbility() {
-        return ability;
+    public AbilityType getAbilityType() {
+        return abilityType;
     }
 
     /**

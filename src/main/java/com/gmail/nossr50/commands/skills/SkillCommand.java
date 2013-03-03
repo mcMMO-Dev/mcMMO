@@ -125,7 +125,7 @@ public abstract class SkillCommand implements CommandExecutor {
     }
 
     protected String[] calculateLengthDisplayValues() {
-        int maxLength = skill.getAbility().getMaxTicks();
+        int maxLength = skill.getAbilityType().getMaxTicks();
         int length = 2 + (int) (skillValue / AdvancedConfig.getInstance().getAbilityLength());
         int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
 

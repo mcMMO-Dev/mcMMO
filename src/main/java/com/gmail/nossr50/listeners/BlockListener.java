@@ -178,14 +178,14 @@ public class BlockListener implements Listener {
 
             miningManager.miningBlockCheck(blockState);
 
-            if (miningManager.getAbilityMode()) {
+            if (miningManager.getAbility().getMode()) {
                 miningManager.miningBlockCheck(blockState);
             }
         }
 
         /* WOOD CUTTING */
         else if (BlockUtils.isLog(blockState) && Permissions.skillEnabled(player, SkillType.WOODCUTTING) && !mcMMO.placeStore.isTrue(blockState)) {
-            if (mcMMOPlayer.getSkillManager(SkillType.WOODCUTTING).getAbilityMode() && Permissions.treeFeller(player) && ItemUtils.isAxe(heldItem)) {
+            if (mcMMOPlayer.getSkillManager(SkillType.WOODCUTTING).getAbility().getMode() && Permissions.treeFeller(player) && ItemUtils.isAxe(heldItem)) {
                 Woodcutting.beginTreeFeller(blockState, player);
             }
             else {
@@ -206,7 +206,7 @@ public class BlockListener implements Listener {
 
             excavationManager.excavationBlockCheck(blockState);
 
-            if (excavationManager.getAbilityMode()) {
+            if (excavationManager.getAbility().getMode()) {
                 excavationManager.gigaDrillBreaker(blockState);
             }
         }
@@ -282,12 +282,12 @@ public class BlockListener implements Listener {
             ItemStack heldItem = player.getItemInHand();
 
             if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
-                if ((ItemUtils.isPickaxe(heldItem) && !mcMMOPlayer.getSkillManager(SkillType.MINING).getAbilityMode()) || (ItemUtils.isShovel(heldItem) && !mcMMOPlayer.getSkillManager(SkillType.EXCAVATION).getAbilityMode())) {
+                if ((ItemUtils.isPickaxe(heldItem) && !mcMMOPlayer.getSkillManager(SkillType.MINING).getAbility().getMode()) || (ItemUtils.isShovel(heldItem) && !mcMMOPlayer.getSkillManager(SkillType.EXCAVATION).getAbility().getMode())) {
                     SkillUtils.removeAbilityBuff(heldItem);
                 }
             }
             else {
-                if ((mcMMOPlayer.getSkillManager(SkillType.MINING).getAbilityMode() && !BlockUtils.affectedBySuperBreaker(blockState)) || (mcMMOPlayer.getSkillManager(SkillType.EXCAVATION).getAbilityMode() && !BlockUtils.affectedByGigaDrillBreaker(blockState))) {
+                if ((mcMMOPlayer.getSkillManager(SkillType.MINING).getAbility().getMode() && !BlockUtils.affectedBySuperBreaker(blockState)) || (mcMMOPlayer.getSkillManager(SkillType.EXCAVATION).getAbility().getMode() && !BlockUtils.affectedByGigaDrillBreaker(blockState))) {
                     SkillUtils.handleAbilitySpeedDecrease(player);
                 }
             }

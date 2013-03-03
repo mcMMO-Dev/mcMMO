@@ -29,7 +29,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseBerserk() {
-        return abilityMode && Permissions.berserk(getPlayer());
+        return getAbility().getMode() && Permissions.berserk(getPlayer());
     }
 
     public boolean canDisarm(LivingEntity target) {

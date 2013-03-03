@@ -105,7 +105,7 @@ public class McMMOPlayer {
                 if (skillManagerClass != null) {
                     SkillManager skillManager = skillManagerClass.getConstructor(McMMOPlayer.class).newInstance(this);
 
-                    skillManager.setTool(tools.get(skillType));
+                    skillManager.setTool(tools.get(skillType.getToolType()));
                     skillManagers.put(skillType, skillManagerClass.getConstructor(McMMOPlayer.class).newInstance(this));
                 }
             }
@@ -177,7 +177,7 @@ public class McMMOPlayer {
      */
     public void resetAbilityMode() {
         for (SkillManager skillManager : skillManagers.values()) {
-            skillManager.setAbilityMode(false);
+            skillManager.getAbility().setMode(false);
         }
     }
 

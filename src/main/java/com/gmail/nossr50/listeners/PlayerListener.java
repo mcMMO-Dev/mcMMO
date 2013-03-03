@@ -139,7 +139,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (mcMMOPlayer.getSkillManager(SkillType.EXCAVATION).getAbilityMode() || mcMMOPlayer.getSkillManager(SkillType.MINING).getAbilityMode()) {
+        if (mcMMOPlayer.getSkillManager(SkillType.EXCAVATION).getAbility().getMode() || mcMMOPlayer.getSkillManager(SkillType.MINING).getAbility().getMode()) {
             event.setCancelled(true);
             return;
         }

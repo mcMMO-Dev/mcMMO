@@ -4,6 +4,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.Ability;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.Tool;
 import com.gmail.nossr50.util.skills.PerksUtils;
@@ -12,9 +13,8 @@ public abstract class SkillManager {
     protected McMMOPlayer mcMMOPlayer;
     protected int activationChance;
     protected SkillType skill;
-    protected boolean abilityMode;
-    protected boolean abilityInformed = true;
-    protected Tool tool;
+    protected Ability ability = new Ability();
+    protected Tool tool; // Because tool can be shared, it's instanced in McMMOPlayer 
 
     public SkillManager(McMMOPlayer mcMMOPlayer, SkillType skill) {
         this.mcMMOPlayer = mcMMOPlayer;
@@ -46,20 +46,8 @@ public abstract class SkillManager {
         mcMMOPlayer.beginXpGain(skill, xp);
     }
 
-    public boolean getAbilityMode() {
-        return abilityMode;
-    }
-
-    public void setAbilityMode(boolean abilityMode) {
-        this.abilityMode = abilityMode;
-    }
-
-    public boolean getAbilityInformed() {
-        return abilityInformed;
-    }
-
-    public void setAbilityInformed(boolean abilityInformed) {
-        this.abilityInformed = abilityInformed;
+    public Ability getAbility() {
+        return ability;
     }
 
     public Tool getTool() {

@@ -25,7 +25,7 @@ public class SkillMonitorTask implements Runnable {
              * MONITOR SKILLS & COOLDOWN
              */
             for (SkillType skill : SkillType.values()) {
-                if (skill.getAbility() == null) {
+                if (skill.getAbilityType() == null) {
                     continue;
                 }
 
@@ -33,7 +33,7 @@ public class SkillMonitorTask implements Runnable {
                     SkillUtils.monitorSkill(mcMMOPlayer, curTime, skill);
                 }
 
-                if (skill.getAbility().getCooldown() > 0) {
+                if (skill.getAbilityType().getCooldown() > 0) {
                     SkillUtils.watchCooldown(mcMMOPlayer, skill);
                 }
             }

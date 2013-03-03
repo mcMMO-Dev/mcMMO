@@ -58,7 +58,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenTerraBlock(BlockState blockState) {
-        return abilityMode && BlockUtils.canMakeMossy(blockState);
+        return getAbility().getMode() && BlockUtils.canMakeMossy(blockState);
     }
 
     public boolean canActivateAbility() {
@@ -66,7 +66,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenTerraPlant() {
-        return abilityMode;
+        return getAbility().getMode();
     }
 
     /**
@@ -284,7 +284,7 @@ public class HerbalismManager extends SkillManager {
             return;
         }
 
-        if (abilityMode) {
+        if (getAbility().getMode()) {
             playerInventory.removeItem(seed);
             player.updateInventory(); // Needed until replacement available
 

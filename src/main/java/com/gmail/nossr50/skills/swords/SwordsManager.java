@@ -27,7 +27,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseSerratedStrike() {
-        return abilityMode && Permissions.serratedStrikes(getPlayer());
+        return getAbility().getMode() && Permissions.serratedStrikes(getPlayer());
     }
 
     /**
