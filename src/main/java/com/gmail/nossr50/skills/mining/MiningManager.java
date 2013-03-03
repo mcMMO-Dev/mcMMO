@@ -97,7 +97,7 @@ public class MiningManager extends SkillManager{
         targetBlock.setType(Material.AIR);
 
         getProfile().setSkillDATS(AbilityType.BLAST_MINING, System.currentTimeMillis());
-        mcMMOPlayer.setAbilityInformed(AbilityType.BLAST_MINING, false);
+        abilityInformed = false;
     }
 
     /**

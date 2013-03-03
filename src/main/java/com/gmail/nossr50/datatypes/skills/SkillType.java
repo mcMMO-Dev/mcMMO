@@ -34,18 +34,18 @@ public enum SkillType {
 
     private Class<? extends SkillManager> managerClass;
     private AbilityType ability;
-    private ToolType tool;
+    private ToolType toolType;
 
     private SkillType(Class<? extends SkillManager> managerClass) {
         this.managerClass = managerClass;
         ability = null;
-        tool = null;
+        toolType = null;
     }
 
     private SkillType(Class<? extends SkillManager> managerClass, AbilityType ability, ToolType tool) {
         this.managerClass = managerClass;
         this.ability = ability;
-        this.tool = tool;
+        this.toolType = tool;
     }
 
     public Class<? extends SkillManager> getManagerClass() {
@@ -77,8 +77,8 @@ public enum SkillType {
         return Config.getInstance().getDoubleDropsDisabled(this);
     }
 
-    public ToolType getTool() {
-        return tool;
+    public ToolType getToolType() {
+        return toolType;
     }
 
     public double getXpModifier() {

@@ -12,9 +12,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.party.PartyManager;
@@ -69,11 +67,6 @@ public class McMMOPlayer {
     private boolean placedSalvageAnvil;
     private boolean godMode;
 
-    private Map<AbilityType, Boolean> abilityMode = new HashMap<AbilityType, Boolean>();
-    private Map<AbilityType, Boolean> abilityInformed = new HashMap<AbilityType, Boolean>();
-    private Map<ToolType, Boolean> toolPreparationMode = new HashMap<ToolType, Boolean>();
-    private Map<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
-
     private int recentlyHurt;
     private int respawnATS;
 
@@ -102,16 +95,6 @@ public class McMMOPlayer {
         catch (Exception e) {
             e.printStackTrace();
             mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
-        }
-
-        for (AbilityType abilityType : AbilityType.values()) {
-            abilityMode.put(abilityType, false);
-            abilityInformed.put(abilityType, true); // This is intended
-        }
-
-        for (ToolType toolType : ToolType.values()) {
-            toolPreparationMode.put(toolType, false);
-            toolATS.put(toolType, 0);
         }
     }
 
@@ -159,6 +142,14 @@ public class McMMOPlayer {
         return (UnarmedManager) skillManagers.get(SkillType.UNARMED);
     }
 
+    public SkillManager getSkillManager(SkillType skillType) {
+        return skillManagers.get(skillType);
+    }
+
+    public Map<SkillType, SkillManager> getSkillManagers() {
+        return skillManagers;
+    }
+
     /*
      * Abilities
      */
@@ -167,59 +158,9 @@ public class McMMOPlayer {
      * Reset the mode of all abilities.
      */
     public void resetAbilityMode() {
-        for (AbilityType ability : AbilityType.values()) {
-            setAbilityMode(ability, false);
+        for (SkillManager skillManager : skillManagers.values()) {
+            skillManager.setAbilityMode(false);
         }
-    }
-
-    /**
-     * Get the mode of an ability.
-     *
-     * @param ability The ability to check
-     * @return true if the ability is enabled, false otherwise
-     */
-    public boolean getAbilityMode(AbilityType ability) {
-        return abilityMode.get(ability);
-    }
-
-    /**
-     * Set the mode of an ability.
-     *
-     * @param ability The ability to check
-     * @param bool True if the ability is active, false otherwise
-     */
-    public void setAbilityMode(AbilityType ability, boolean bool) {
-        abilityMode.put(ability, bool);
-    }
-
-    /**
-     * Get the informed state of an ability
-     *
-     * @param ability The ability to check
-     * @return true if the ability is informed, false otherwise
-     */
-    public boolean getAbilityInformed(AbilityType ability) {
-        return abilityInformed.get(ability);
-    }
-
-    /**
-     * Set the informed state of an ability.
-     *
-     * @param ability The ability to check
-     * @param bool True if the ability is informed, false otherwise
-     */
-    public void setAbilityInformed(AbilityType ability, boolean bool) {
-        abilityInformed.put(ability, bool);
-    }
-
-    /**
-     * Get the current prep mode of a tool.
-     *
-     * @param tool Tool to get the mode for
-     * @return true if the tool is prepped, false otherwise
-     */
-    public boolean getToolPreparationMode(ToolType tool) {
-        return toolPreparationMode.get(tool);
     }
 
     public boolean getAbilityUse() {
@@ -238,41 +179,9 @@ public class McMMOPlayer {
      * Reset the prep modes of all tools.
      */
     public void resetToolPrepMode() {
-        for (ToolType tool : ToolType.values()) {
-            setToolPreparationMode(tool, false);
+        for (SkillManager skillManager : skillManagers.values()) {
+            skillManager.getTool().setPreparationMode(false);
         }
-    }
-
-    /**
-     * Set the current prep mode of a tool.
-     *
-     * @param tool Tool to set the mode for
-     * @param bool true if the tool should be prepped, false otherwise
-     */
-    public void setToolPreparationMode(ToolType tool, boolean bool) {
-        toolPreparationMode.put(tool, bool);
-    }
-
-    /**
-     * Get the current prep ATS of a tool.
-     *
-     * @param tool Tool to get the ATS for
-     * @return the ATS for the tool
-     */
-    public long getToolPreparationATS(ToolType tool) {
-        return toolATS.get(tool);
-    }
-
-    /**
-     * Set the current prep ATS of a tool.
-     *
-     * @param tool Tool to set the ATS for
-     * @param ATS the ATS of the tool
-     */
-    public void setToolPreparationATS(ToolType tool, long ATS) {
-        int startTime = (int) (ATS / Misc.TIME_CONVERSION_FACTOR);
-
-        toolATS.put(tool, startTime);
     }
 
     /*

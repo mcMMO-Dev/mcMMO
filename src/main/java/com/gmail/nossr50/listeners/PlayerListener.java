@@ -30,7 +30,6 @@ import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.ShareHandler;
@@ -140,7 +139,7 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) || mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER)) {
+        if (mcMMOPlayer.getSkillManager(SkillType.EXCAVATION).getAbilityMode() || mcMMOPlayer.getSkillManager(SkillType.MINING).getAbilityMode()) {
             event.setCancelled(true);
             return;
         }

@@ -4,7 +4,6 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
@@ -23,20 +22,19 @@ public class SkillMonitorTask implements Runnable {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             /*
-             * MONITOR SKILLS
+             * MONITOR SKILLS & COOLDOWN
              */
             for (SkillType skill : SkillType.values()) {
-                if (skill.getTool() != null && skill.getAbility() != null) {
+                if (skill.getAbility() == null) {
+                    continue;
+                }
+
+                if (skill.getToolType() != null) {
                     SkillUtils.monitorSkill(mcMMOPlayer, curTime, skill);
                 }
-            }
 
-            /*
-             * COOLDOWN MONITORING
-             */
-            for (AbilityType ability : AbilityType.values()) {
-                if (ability.getCooldown() > 0) {
-                    SkillUtils.watchCooldown(mcMMOPlayer, ability);
+                if (skill.getAbility().getCooldown() > 0) {
+                    SkillUtils.watchCooldown(mcMMOPlayer, skill);
                 }
             }
         }

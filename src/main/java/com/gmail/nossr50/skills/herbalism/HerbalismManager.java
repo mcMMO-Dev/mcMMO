@@ -15,9 +15,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.skills.herbalism.GreenTerraTimerTask;
@@ -60,15 +58,15 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenTerraBlock(BlockState blockState) {
-        return mcMMOPlayer.getAbilityMode(AbilityType.GREEN_TERRA) && BlockUtils.canMakeMossy(blockState);
+        return abilityMode && BlockUtils.canMakeMossy(blockState);
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.HOE) && Permissions.greenTerra(getPlayer());
+        return tool.getPreparationMode() && Permissions.greenTerra(getPlayer());
     }
 
     public boolean canGreenTerraPlant() {
-        return mcMMOPlayer.getAbilityMode(AbilityType.GREEN_TERRA);
+        return abilityMode;
     }
 
     /**
@@ -286,7 +284,7 @@ public class HerbalismManager extends SkillManager {
             return;
         }
 
-        if (mcMMOPlayer.getAbilityMode(AbilityType.GREEN_TERRA)) {
+        if (abilityMode) {
             playerInventory.removeItem(seed);
             player.updateInventory(); // Needed until replacement available
 
