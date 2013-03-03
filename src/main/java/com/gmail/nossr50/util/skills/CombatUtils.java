@@ -51,8 +51,6 @@ public final class CombatUtils {
      * @param event The event to run the combat checks on.
      */
     public static void combatChecks(EntityDamageByEntityEvent event, Entity attacker, LivingEntity target) {
-        boolean targetIsPlayer = (target.getType() == EntityType.PLAYER);
-        boolean targetIsTamedPet = (target instanceof Tameable) ? ((Tameable) target).isTamed() : false;
         Entity damager = event.getDamager();
 
         if (attacker instanceof Player && damager.getType() == EntityType.PLAYER) {
@@ -77,7 +75,7 @@ public final class CombatUtils {
             }
 
             if (ItemUtils.isSword(heldItem)) {
-                if (((targetIsPlayer || targetIsTamedPet) && !SkillType.SWORDS.getPVPEnabled()) || (!targetIsPlayer && !targetIsTamedPet && !SkillType.SWORDS.getPVEEnabled())) {
+                if (!shouldProcessSkill(target, SkillType.SWORDS)) {
                     return;
                 }
 
@@ -100,7 +98,7 @@ public final class CombatUtils {
                 }
             }
             else if (ItemUtils.isAxe(heldItem)) {
-                if (((targetIsPlayer || targetIsTamedPet) && !SkillType.AXES.getPVPEnabled()) || (!targetIsPlayer && !targetIsTamedPet && !SkillType.AXES.getPVEEnabled())) {
+                if (!shouldProcessSkill(target, SkillType.AXES)) {
                     return;
                 }
 
@@ -134,7 +132,7 @@ public final class CombatUtils {
                 }
             }
             else if (heldItem.getType() == Material.AIR) {
-                if (((targetIsPlayer || targetIsTamedPet) && !SkillType.UNARMED.getPVPEnabled()) || (!targetIsPlayer && !targetIsTamedPet && !SkillType.UNARMED.getPVEEnabled())) {
+                if (!shouldProcessSkill(target, SkillType.UNARMED)) {
                     return;
                 }
 
@@ -180,12 +178,7 @@ public final class CombatUtils {
                         return;
                     }
 
-                    if (targetIsPlayer || targetIsTamedPet) {
-                        if (!SkillType.TAMING.getPVPEnabled()) {
-                            return;
-                        }
-                    }
-                    else if (!SkillType.TAMING.getPVEEnabled()) {
+                    if (!shouldProcessSkill(target, SkillType.TAMING)) {
                         return;
                     }
 
@@ -220,12 +213,7 @@ public final class CombatUtils {
                     break;
                 }
 
-                if (targetIsPlayer || targetIsTamedPet) {
-                    if (!SkillType.ARCHERY.getPVPEnabled()) {
-                        return;
-                    }
-                }
-                else if (!SkillType.ARCHERY.getPVEEnabled()) {
+                if (!shouldProcessSkill(target, SkillType.ARCHERY)) {
                     return;
                 }
 
@@ -236,7 +224,7 @@ public final class CombatUtils {
                 break;
         }
 
-        if (targetIsPlayer) {
+        if (target instanceof Player) {
             Player player = (Player) target;
 
             if (Misc.isNPCEntity(player)) {
@@ -592,5 +580,18 @@ public final class CombatUtils {
         }
 
         return false;
+    }
+
+    private static boolean shouldProcessSkill(LivingEntity target, SkillType skill) {
+        boolean process;
+
+        if (target instanceof Player || (target instanceof Tameable && ((Tameable) target).isTamed())) {
+            process = skill.getPVPEnabled();
+        }
+        else {
+            process = skill.getPVEEnabled();
+        }
+
+        return process;
     }
 }

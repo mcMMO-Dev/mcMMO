@@ -96,6 +96,10 @@ public class EntityListener implements Listener {
         Entity attacker = event.getDamager();
         LivingEntity target = (LivingEntity) defender;
 
+        if (CombatUtils.isInvincible(target, event.getDamage())) {
+            return;
+        }
+
         if (attacker instanceof Projectile) {
             attacker = ((Projectile) attacker).getShooter();
         }
@@ -105,10 +109,6 @@ public class EntityListener implements Listener {
             if (animalTamer != null) {
                 attacker = (Entity) animalTamer;
             }
-        }
-
-        if (CombatUtils.isInvincible(target, event.getDamage())) {
-            return;
         }
 
         if (defender instanceof Player && attacker instanceof Player) {
