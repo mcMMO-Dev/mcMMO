@@ -18,8 +18,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -93,13 +93,11 @@ public class InventoryListener implements Listener {
             if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemUtils.isSmeltable(smelting)) {
                 Player player = plugin.getFurnacePlayer(furnaceBlock);
 
-                if (Misc.isNPCEntity(player)) {
+                if (Misc.isNPCEntity(player) || !Permissions.fuelEfficiency(player)) {
                     return;
                 }
 
-                if (Permissions.fuelEfficiency(player)) {
-                    event.setBurnTime(UserManager.getPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
-                }
+                event.setBurnTime(UserManager.getPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
             }
         }
     }
@@ -114,13 +112,11 @@ public class InventoryListener implements Listener {
             if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemUtils.isSmeltable(smelting)) {
                 Player player = plugin.getFurnacePlayer(furnaceBlock);
 
-                if (Misc.isNPCEntity(player)) {
+                if (Misc.isNPCEntity(player) || !Permissions.skillEnabled(player, SkillType.SMELTING)) {
                     return;
                 }
 
-                if (Permissions.skillEnabled(player, SkillType.SMELTING)) {
-                    event.setResult(UserManager.getPlayer(player).getSmeltingManager().smeltProcessing(event.getSource().getType(), event.getResult()));
-                }
+                event.setResult(UserManager.getPlayer(player).getSmeltingManager().smeltProcessing(event.getSource().getType(), event.getResult()));
             }
         }
     }
@@ -133,10 +129,12 @@ public class InventoryListener implements Listener {
             ItemStack result = ((Furnace) furnaceBlock).getInventory().getResult();
 
             if (plugin.furnaceIsTracked(furnaceBlock) && result != null && ItemUtils.isSmelted(result)) {
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(event.getPlayer());
+                Player player = event.getPlayer();
 
-                if (mcMMOPlayer.getPlayer().equals(plugin.getFurnacePlayer(furnaceBlock))) {
-                    event.setExpToDrop(mcMMOPlayer.getSmeltingManager().vanillaXPBoost(event.getExpToDrop()));
+                SmeltingManager smeltingManager = UserManager.getPlayer(player).getSmeltingManager();
+
+                if (smeltingManager.canUseVanillaXpBoost()) {
+                    event.setExpToDrop(smeltingManager.vanillaXPBoost(event.getExpToDrop()));
                 }
             }
         }

@@ -42,6 +42,10 @@ public class TamingManager extends SkillManager {
         return getSkillLevel() > Taming.holyHoundUnlockLevel && Permissions.holyHound(getPlayer());
     }
 
+    public boolean canUseBeastLore(LivingEntity target) {
+        return target instanceof Tameable && Permissions.beastLore(getPlayer());
+    }
+
     /**
      * Award XP for taming.
      *

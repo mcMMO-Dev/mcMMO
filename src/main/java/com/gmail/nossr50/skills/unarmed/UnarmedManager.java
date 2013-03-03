@@ -1,12 +1,15 @@
 package com.gmail.nossr50.skills.unarmed;
 
 import org.bukkit.Material;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
@@ -17,6 +20,22 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 public class UnarmedManager extends SkillManager {
     public UnarmedManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.UNARMED);
+    }
+
+    public boolean canActivateAbility() {
+        return mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
+    }
+
+    public boolean canUseIronArm() {
+        return Permissions.bonusDamage(getPlayer(), skill);
+    }
+
+    public boolean canUseBerserk() {
+        return mcMMOPlayer.getAbilityMode(AbilityType.BERSERK) && Permissions.berserk(getPlayer());
+    }
+
+    public boolean canDisarm(LivingEntity target) {
+        return target instanceof Player && ((Player) target).getItemInHand().getType() != Material.AIR && Permissions.disarm(getPlayer());
     }
 
     /**

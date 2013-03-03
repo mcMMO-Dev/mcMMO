@@ -21,9 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -84,23 +82,21 @@ public final class CombatUtils {
                 }
 
                 if (Permissions.skillEnabled(player, SkillType.SWORDS)) {
-                    boolean canSerratedStrike = Permissions.serratedStrikes(player); // So we don't have to check the same permission twice
+                    SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
 
-                    if (mcMMOPlayer.getToolPreparationMode(ToolType.SWORD) && canSerratedStrike) {
+                    if (swordsManager.canActivateAbility()) {
                         SkillUtils.abilityCheck(mcMMOPlayer, SkillType.SWORDS);
                     }
 
-                    SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
-
-                    if (Permissions.bleed(player)) {
+                    if (swordsManager.canUseBleed()) {
                         swordsManager.bleedCheck(target);
                     }
 
-                    if (mcMMOPlayer.getAbilityMode(AbilityType.SERRATED_STRIKES) && canSerratedStrike) {
+                    if (swordsManager.canUseSerratedStrike()) {
                         swordsManager.serratedStrikes(target, event.getDamage());
                     }
 
-                    startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
+                    startGainXp(swordsManager.getMcMMOPlayer(), target, SkillType.SWORDS);
                 }
             }
             else if (ItemUtils.isAxe(heldItem)) {
@@ -138,41 +134,37 @@ public final class CombatUtils {
                 }
             }
             else if (heldItem.getType() == Material.AIR) {
-                if (targetIsPlayer || targetIsTamedPet) {
-                    if (!SkillType.UNARMED.getPVPEnabled()) {
-                        return;
-                    }
-                }
-                else if (!SkillType.UNARMED.getPVEEnabled()) {
+                if (((targetIsPlayer || targetIsTamedPet) && !SkillType.UNARMED.getPVPEnabled()) || (!targetIsPlayer && !targetIsTamedPet && !SkillType.UNARMED.getPVEEnabled())) {
                     return;
                 }
 
                 if (Permissions.skillEnabled(player, SkillType.UNARMED)) {
-                    boolean canBerserk = Permissions.berserk(player); // So we don't have to check the same permission twice
+                    UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
-                    if (mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && canBerserk) {
+                    if (unarmedManager.canActivateAbility()) {
                         SkillUtils.abilityCheck(mcMMOPlayer, SkillType.UNARMED);
                     }
 
-                    UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
-
-                    if (Permissions.bonusDamage(player, SkillType.UNARMED)) {
+                    if (unarmedManager.canUseIronArm()) {
                         event.setDamage(unarmedManager.ironArmCheck(event.getDamage()));
                     }
 
-                    if (mcMMOPlayer.getAbilityMode(AbilityType.BERSERK) && canBerserk) {
+                    if (unarmedManager.canUseBerserk()) {
                         event.setDamage(unarmedManager.berserkDamage(event.getDamage()));
                     }
 
-                    if (target instanceof Player && Permissions.disarm(player)) {
-                        Player defender = (Player) target;
-
-                        if (defender.getItemInHand().getType() != Material.AIR) {
-                            unarmedManager.disarmCheck((Player) target);
-                        }
+                    if (unarmedManager.canDisarm(target)) {
+                        unarmedManager.disarmCheck((Player) target);
                     }
 
-                    startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
+                    startGainXp(unarmedManager.getMcMMOPlayer(), target, SkillType.UNARMED);
+                }
+            }
+            else if (heldItem.getType() == Material.BONE) {
+                TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+
+                if (tamingManager.canUseBeastLore(target)) {
+                    tamingManager.beastLore(target);
                 }
             }
         }
