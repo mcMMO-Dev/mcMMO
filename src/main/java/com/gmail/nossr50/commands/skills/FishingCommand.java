@@ -3,9 +3,9 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 
 public class FishingCommand extends SkillCommand {
     private int lootTier;
@@ -27,7 +27,7 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        lootTier = SkillManagerStore.getInstance().getFishingManager(player.getName()).getLootTier();
+        lootTier = UserManager.getPlayer(player).getFishingManager().getLootTier();
 
         // TREASURE HUNTER
         double enchantChance = lootTier * AdvancedConfig.getInstance().getFishingMagicMultiplier();
@@ -42,7 +42,7 @@ public class FishingCommand extends SkillCommand {
         magicChanceLucky = treasureHunterStrings[1];
 
         // SHAKE
-        String[] shakeStrings = calculateAbilityDisplayValues(SkillManagerStore.getInstance().getFishingManager(player.getName()).getShakeProbability());
+        String[] shakeStrings = calculateAbilityDisplayValues(UserManager.getPlayer(player).getFishingManager().getShakeProbability());
         shakeChance = shakeStrings[0];
         shakeChanceLucky = shakeStrings[1];
 

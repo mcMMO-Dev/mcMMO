@@ -3,10 +3,10 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 
 public class MiningCommand extends SkillCommand {
     private String doubleDropChance;
@@ -45,7 +45,7 @@ public class MiningCommand extends SkillCommand {
         doubleDropChanceLucky = doubleDropStrings[1];
 
         // BLAST MINING
-        MiningManager miningManager = SkillManagerStore.getInstance().getMiningManager(player.getName());
+        MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
         blastMiningRank = miningManager.getBlastMiningTier();
         bonusTNTDrops = miningManager.getDropMultiplier();
         oreBonus = percent.format(miningManager.getOreBonus() / 30.0D); // Base received in TNT is 30%

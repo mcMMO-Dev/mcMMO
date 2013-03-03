@@ -3,9 +3,9 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.smelting.Smelting;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 
 public class SmeltingCommand extends SkillCommand {
     private String burnTimeModifier;
@@ -41,7 +41,7 @@ public class SmeltingCommand extends SkillCommand {
         fluxMiningChanceLucky = fluxMiningStrings[1];
 
         // VANILLA XP BOOST
-        vanillaXPModifier = SkillManagerStore.getInstance().getSmeltingManager(player.getName()).getVanillaXpMultiplier();
+        vanillaXPModifier = UserManager.getPlayer(player).getSmeltingManager().getVanillaXpMultiplier();
     }
 
     @Override

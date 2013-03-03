@@ -19,8 +19,8 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
-public class AxeManager extends SkillManager {
-    public AxeManager(McMMOPlayer mcMMOPlayer) {
+public class AxesManager extends SkillManager {
+    public AxesManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.AXES);
     }
 

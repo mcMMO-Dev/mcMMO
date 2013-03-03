@@ -33,7 +33,7 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
-import com.gmail.nossr50.skills.SkillManagerStore;
+import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
@@ -171,8 +171,10 @@ public class EntityListener implements Listener {
 
             switch (cause) {
                 case FALL:
-                    if (SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).canRoll()) {
-                        event.setDamage(SkillManagerStore.getInstance().getAcrobaticsManager(player.getName()).rollCheck(event.getDamage()));
+                    AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
+
+                    if (acrobaticsManager.canRoll()) {
+                        event.setDamage(acrobaticsManager.rollCheck(event.getDamage()));
 
                         if (event.getDamage() == 0) {
                             event.setCancelled(true);
@@ -182,7 +184,7 @@ public class EntityListener implements Listener {
                     break;
 
                 case BLOCK_EXPLOSION:
-                    MiningManager miningManager = SkillManagerStore.getInstance().getMiningManager(player.getName());
+                    MiningManager miningManager = mcMMOPlayer.getMiningManager();
 
                     if (miningManager.canUseDemolitionsExpertise()) {
                         event.setDamage(miningManager.processDemolitionsExpertise(event.getDamage()));
@@ -318,7 +320,8 @@ public class EntityListener implements Listener {
             int id = entity.getEntityId();
 
             if (plugin.tntIsTracked(id)) {
-                MiningManager miningManager = SkillManagerStore.getInstance().getMiningManager(plugin.getTNTPlayer(id).getName());
+                
+                MiningManager miningManager = UserManager.getPlayer(plugin.getTNTPlayer(id)).getMiningManager();
 
                 if (miningManager.canUseBiggerBombs()) {
                     event.setRadius(miningManager.biggerBombs(event.getRadius()));
@@ -340,7 +343,7 @@ public class EntityListener implements Listener {
             int id = entity.getEntityId();
 
             if (plugin.tntIsTracked(id)) {
-                MiningManager miningManager = SkillManagerStore.getInstance().getMiningManager(plugin.getTNTPlayer(id).getName());
+                MiningManager miningManager = UserManager.getPlayer(plugin.getTNTPlayer(id)).getMiningManager();
 
                 if (miningManager.canUseBlastMining()) {
                     miningManager.blastMiningDropProcessing(event.getYield(), event.blockList());
@@ -387,7 +390,7 @@ public class EntityListener implements Listener {
                     case MUSHROOM_SOUP: /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
                     case PUMPKIN_PIE:   /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
                         if (Permissions.farmersDiet(player)) {
-                            event.setFoodLevel(SkillManagerStore.getInstance().getHerbalismManager(player.getName()).farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
+                            event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
                         }
                         return;
 
@@ -396,19 +399,19 @@ public class EntityListener implements Listener {
                     case POISONOUS_POTATO: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                     case POTATO_ITEM:      /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                         if (Permissions.farmersDiet(player)) {
-                            event.setFoodLevel(SkillManagerStore.getInstance().getHerbalismManager(player.getName()).farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
+                            event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
                         }
                         return;
 
                     case COOKED_FISH: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
                         if (Permissions.fishermansDiet(player)) {
-                            event.setFoodLevel(SkillManagerStore.getInstance().getFishingManager(player.getName()).handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
+                            event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
                         }
                         return;
 
                     case RAW_FISH:    /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                         if (Permissions.fishermansDiet(player)) {
-                            event.setFoodLevel(SkillManagerStore.getInstance().getFishingManager(player.getName()).handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
+                            event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
                         }
                         return;
 
@@ -435,7 +438,7 @@ public class EntityListener implements Listener {
         LivingEntity entity = event.getEntity();
 
         if (entity != null && !entity.hasMetadata(mcMMO.entityMetadataKey)) {
-            SkillManagerStore.getInstance().getTamingManager(player.getName()).awardTamingXP(entity);
+            UserManager.getPlayer(player).getTamingManager().awardTamingXP(entity);
         }
     }
 
@@ -449,6 +452,7 @@ public class EntityListener implements Listener {
                 // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
                 // So we can make some assumptions here, about our casting and our check
                 Player owner = (Player) tameable.getOwner();
+
                 if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire(owner))) {
                     event.setCancelled(true);
                     return;

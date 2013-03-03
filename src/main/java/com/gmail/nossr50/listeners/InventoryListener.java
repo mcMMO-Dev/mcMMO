@@ -20,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -99,7 +98,7 @@ public class InventoryListener implements Listener {
                 }
 
                 if (Permissions.fuelEfficiency(player)) {
-                    event.setBurnTime(SkillManagerStore.getInstance().getSmeltingManager(player.getName()).fuelEfficiency(event.getBurnTime()));
+                    event.setBurnTime(UserManager.getPlayer(player).getSmeltingManager().fuelEfficiency(event.getBurnTime()));
                 }
             }
         }
@@ -120,7 +119,7 @@ public class InventoryListener implements Listener {
                 }
 
                 if (Permissions.skillEnabled(player, SkillType.SMELTING)) {
-                    event.setResult(SkillManagerStore.getInstance().getSmeltingManager(player.getName()).smeltProcessing(event.getSource().getType(), event.getResult()));
+                    event.setResult(UserManager.getPlayer(player).getSmeltingManager().smeltProcessing(event.getSource().getType(), event.getResult()));
                 }
             }
         }
@@ -137,7 +136,7 @@ public class InventoryListener implements Listener {
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(event.getPlayer());
 
                 if (mcMMOPlayer.getPlayer().equals(plugin.getFurnacePlayer(furnaceBlock))) {
-                    event.setExpToDrop(SkillManagerStore.getInstance().getSmeltingManager(event.getPlayer().getName()).vanillaXPBoost(event.getExpToDrop()));
+                    event.setExpToDrop(mcMMOPlayer.getSmeltingManager().vanillaXPBoost(event.getExpToDrop()));
                 }
             }
         }

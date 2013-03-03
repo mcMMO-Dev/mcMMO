@@ -1,5 +1,7 @@
 package com.gmail.nossr50.datatypes.player;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.GameMode;
@@ -15,7 +17,19 @@ import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
+import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
+import com.gmail.nossr50.skills.archery.ArcheryManager;
+import com.gmail.nossr50.skills.axes.AxesManager;
 import com.gmail.nossr50.skills.child.FamilyTree;
+import com.gmail.nossr50.skills.excavation.ExcavationManager;
+import com.gmail.nossr50.skills.fishing.FishingManager;
+import com.gmail.nossr50.skills.herbalism.HerbalismManager;
+import com.gmail.nossr50.skills.mining.MiningManager;
+import com.gmail.nossr50.skills.smelting.SmeltingManager;
+import com.gmail.nossr50.skills.swords.SwordsManager;
+import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
@@ -25,6 +39,15 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 public class McMMOPlayer {
     private Player        player;
     private PlayerProfile profile;
+
+    /*
+     * Since SkillManager isn't a "polymorphic type" we may prefer to have one field for each of our
+     * class inheriting from SkillManager. This would also prevent the need for casting.
+     * However, by using the map and the loop in the constructor
+     * we make sure that all class inheriting from SkillManager are instanced.
+     * Which solution is better, I let you decide. - bm01
+     */
+    private Map<SkillType, SkillManager> skillManagers = new HashMap<SkillType, SkillManager>();
 
     private Party party;
     private Party invite;
@@ -43,8 +66,72 @@ public class McMMOPlayer {
         String playerName = player.getName();
 
         this.player = player;
-        this.profile = new PlayerProfile(playerName, true);
-        this.party = PartyManager.getPlayerParty(playerName);
+        profile = new PlayerProfile(playerName, true);
+        party = PartyManager.getPlayerParty(playerName);
+
+        /* 
+         * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
+         * but I actually have no idea about the performance impact, if there is any.
+         * If in the future someone wants to remove this, don't forget to also remove what is in the SkillType enum. - bm01
+         */
+        try {
+            for (SkillType skillType : SkillType.values()) {
+                Class<? extends SkillManager> skillManagerClass = skillType.getManagerClass();
+
+                // TODO: The null check is needed only because currently some SkillType doesn't have a valid skillManagerClass 
+                if (skillManagerClass != null) {
+                    skillManagers.put(skillType, skillManagerClass.getConstructor(McMMOPlayer.class).newInstance(this));
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
+        }
+    }
+
+    public AcrobaticsManager getAcrobaticsManager() {
+        return (AcrobaticsManager) skillManagers.get(SkillType.ACROBATICS);
+    }
+
+    public ArcheryManager getArcheryManager() {
+        return (ArcheryManager) skillManagers.get(SkillType.ARCHERY);
+    }
+
+    public AxesManager getAxesManager() {
+        return (AxesManager) skillManagers.get(SkillType.AXES);
+    }
+
+    public ExcavationManager getExcavationManager() {
+        return (ExcavationManager) skillManagers.get(SkillType.EXCAVATION);
+    }
+
+    public FishingManager getFishingManager() {
+        return (FishingManager) skillManagers.get(SkillType.FISHING);
+    }
+
+    public HerbalismManager getHerbalismManager() {
+        return (HerbalismManager) skillManagers.get(SkillType.HERBALISM);
+    }
+
+    public MiningManager getMiningManager() {
+        return (MiningManager) skillManagers.get(SkillType.MINING);
+    }
+
+    public SmeltingManager getSmeltingManager() {
+        return (SmeltingManager) skillManagers.get(SkillType.SMELTING);
+    }
+
+    public SwordsManager getSwordsManager() {
+        return (SwordsManager) skillManagers.get(SkillType.SWORDS);
+    }
+
+    public TamingManager getTamingManager() {
+        return (TamingManager) skillManagers.get(SkillType.TAMING);
+    }
+
+    public UnarmedManager getUnarmedManager() {
+        return (UnarmedManager) skillManagers.get(SkillType.UNARMED);
     }
 
     /**

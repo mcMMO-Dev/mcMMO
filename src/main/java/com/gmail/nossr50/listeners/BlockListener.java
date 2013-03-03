@@ -31,12 +31,12 @@ import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.runnables.StickyPistonTrackerTask;
-import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
+import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.skills.woodcutting.Woodcutting;
 import com.gmail.nossr50.util.BlockUtils;
@@ -152,7 +152,7 @@ public class BlockListener implements Listener {
 
         /* HERBALISM */
         if (BlockUtils.affectedByGreenTerra(blockState)) {
-            HerbalismManager herbalismManager = SkillManagerStore.getInstance().getHerbalismManager(player.getName());
+            HerbalismManager herbalismManager = UserManager.getPlayer(player).getHerbalismManager();
 
             /* Green Terra */
             if (herbalismManager.canActivateAbility()) {
@@ -177,7 +177,7 @@ public class BlockListener implements Listener {
 
         /* MINING */
         else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && Permissions.skillEnabled(player, SkillType.MINING) && !mcMMO.placeStore.isTrue(blockState)) {
-            MiningManager miningManager = SkillManagerStore.getInstance().getMiningManager(player.getName());
+            MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
             miningManager.miningBlockCheck(blockState);
 
             if (profile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
@@ -204,7 +204,7 @@ public class BlockListener implements Listener {
 
         /* EXCAVATION */
         else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && Permissions.skillEnabled(player, SkillType.EXCAVATION) && !mcMMO.placeStore.isTrue(blockState)) {
-            ExcavationManager excavationManager = SkillManagerStore.getInstance().getExcavationManager(player.getName());
+            ExcavationManager excavationManager = UserManager.getPlayer(player).getExcavationManager();
             excavationManager.excavationBlockCheck(blockState);
 
             if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
@@ -235,17 +235,19 @@ public class BlockListener implements Listener {
             return;
         }
 
-        String playerName = player.getName();
         BlockState blockState = event.getBlock().getState();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
+        SmeltingManager smeltingManager = mcMMOPlayer.getSmeltingManager();
 
-        if (SkillManagerStore.getInstance().getHerbalismManager(playerName).canUseHylianLuck()) {
-            if (SkillManagerStore.getInstance().getHerbalismManager(playerName).processHylianLuck(blockState)) {
+        if (herbalismManager.canUseHylianLuck()) {
+            if (herbalismManager.processHylianLuck(blockState)) {
                 blockState.update(true);
                 event.setCancelled(true);
             }
         }
-        else if (SkillManagerStore.getInstance().getSmeltingManager(playerName).canUseFluxMining(blockState)) {
-            if (SkillManagerStore.getInstance().getSmeltingManager(playerName).processFluxMining(blockState)) {
+        else if (smeltingManager.canUseFluxMining(blockState)) {
+            if (smeltingManager.processFluxMining(blockState)) {
                 blockState.update(true);
                 event.setCancelled(true);
             }
@@ -335,20 +337,20 @@ public class BlockListener implements Listener {
             return;
         }
 
-        String playerName = player.getName();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         PlayerProfile profile = mcMMOPlayer.getProfile();
         ItemStack heldItem = player.getItemInHand();
         Block block = event.getBlock();
         BlockState blockState = block.getState();
+        HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
         /*
          * ABILITY TRIGGER CHECKS
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        if (SkillManagerStore.getInstance().getHerbalismManager(playerName).canGreenTerraBlock(blockState)) {
-            if (SkillManagerStore.getInstance().getHerbalismManager(playerName).processGreenTerra(blockState)) {
+        if (herbalismManager.canGreenTerraBlock(blockState)) {
+            if (herbalismManager.processGreenTerra(blockState)) {
                 blockState.update(true);
             }
         }

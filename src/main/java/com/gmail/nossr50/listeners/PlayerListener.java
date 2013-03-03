@@ -36,11 +36,12 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
-import com.gmail.nossr50.skills.SkillManagerStore;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
+import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
+import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.HardcoreManager;
@@ -162,7 +163,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        FishingManager fishingManager = SkillManagerStore.getInstance().getFishingManager(player.getName());
+        FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
 
         switch (event.getState()) {
             case CAUGHT_FISH:
@@ -278,6 +279,8 @@ public class PlayerListener implements Listener {
 
         Block block = event.getClickedBlock();
         ItemStack heldItem = player.getItemInHand();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        MiningManager miningManager = mcMMOPlayer.getMiningManager();
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
@@ -285,7 +288,7 @@ public class PlayerListener implements Listener {
 
                 /* REPAIR CHECKS */
                 if (blockID == Repair.anvilID && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.repairManager.isRepairable(heldItem)) {
-                    mcMMO.repairManager.handleRepair(UserManager.getPlayer(player), heldItem);
+                    mcMMO.repairManager.handleRepair(mcMMOPlayer, heldItem);
                     event.setCancelled(true);
                     player.updateInventory();
                 }
@@ -296,12 +299,12 @@ public class PlayerListener implements Listener {
                     player.updateInventory();
                 }
                 /* BLAST MINING CHECK */
-                else if (SkillManagerStore.getInstance().getMiningManager(player.getName()).canDetonate()) {
+                else if (miningManager.canDetonate()) {
                     if (blockID == Material.TNT.getId()) {
                         event.setCancelled(true); // Don't detonate the TNT if they're too close
                     }
                     else {
-                        SkillManagerStore.getInstance().getMiningManager(player.getName()).remoteDetonation();
+                        miningManager.remoteDetonation();
                     }
                 }
 
@@ -309,8 +312,8 @@ public class PlayerListener implements Listener {
 
             case RIGHT_CLICK_AIR:
                 /* BLAST MINING CHECK */
-                if (SkillManagerStore.getInstance().getMiningManager(player.getName()).canDetonate()) {
-                    SkillManagerStore.getInstance().getMiningManager(player.getName()).remoteDetonation();
+                if (miningManager.canDetonate()) {
+                    miningManager.remoteDetonation();
                 }
 
                 break;
@@ -334,6 +337,7 @@ public class PlayerListener implements Listener {
         }
 
         ItemStack heldItem = player.getItemInHand();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
@@ -359,7 +363,7 @@ public class PlayerListener implements Listener {
                 }
 
                 /* GREEN THUMB CHECK */
-                HerbalismManager herbalismManager = SkillManagerStore.getInstance().getHerbalismManager(player.getName());
+                HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
                 if (herbalismManager.canGreenThumbBlock(blockState)) {
                     player.setItemInHand(new ItemStack(Material.SEEDS, heldItem.getAmount() - 1));
@@ -401,12 +405,13 @@ public class PlayerListener implements Listener {
                 /* CALL OF THE WILD CHECKS */
                 if (player.isSneaking()) {
                     Material type = heldItem.getType();
+                    TamingManager tamingManager = mcMMOPlayer.getTamingManager();
 
                     if (type == Material.RAW_FISH) {
-                        SkillManagerStore.getInstance().getTamingManager(player.getName()).summonOcelot();
+                        tamingManager.summonOcelot();
                     }
                     else if (type == Material.BONE) {
-                        SkillManagerStore.getInstance().getTamingManager(player.getName()).summonWolf();
+                        tamingManager.summonWolf();
                     }
                 }
 
