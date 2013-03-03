@@ -915,7 +915,7 @@ public class PlayerProfile {
     }
 
     public void actualizeRecentlyHurt() {
-        respawnATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+        recentlyHurt = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /*
