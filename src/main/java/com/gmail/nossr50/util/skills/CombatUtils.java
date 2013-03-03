@@ -61,14 +61,19 @@ public final class CombatUtils {
                 return;
             }
 
-            if (target instanceof Tameable && isFriendlyPet(player, (Tameable) target)) {
-                return;
-            }
-
             ItemStack heldItem = player.getItemInHand();
-            Material heldItemType = heldItem.getType();
 
-            if (ItemUtils.isSword(heldItem)) {
+            if (target instanceof Tameable) {
+                if (heldItem.getType() == Material.BONE && Permissions.beastLore(player)) {
+                    SkillManagerStore.getInstance().getTamingManager(player.getName()).beastLore(target);
+                    event.setCancelled(true);
+                    return;
+                }
+                else if (isFriendlyPet(player, (Tameable) target)) {
+                    return;
+                }
+            }
+            else if (ItemUtils.isSword(heldItem)) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!SkillType.SWORDS.getPVPEnabled()) {
                         return;
@@ -133,7 +138,7 @@ public final class CombatUtils {
                     startGainXp(axeManager.getMcMMOPlayer(), target, SkillType.AXES);
                 }
             }
-            else if (heldItemType == Material.AIR) {
+            else if (heldItem.getType() == Material.AIR) {
                 if (targetIsPlayer || targetIsTamedPet) {
                     if (!SkillType.UNARMED.getPVPEnabled()) {
                         return;
@@ -172,9 +177,6 @@ public final class CombatUtils {
 
                     startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
                 }
-            }
-            else if (heldItemType == Material.BONE && target instanceof Tameable && Permissions.beastLore(player)) {
-                SkillManagerStore.getInstance().getTamingManager(player.getName()).beastLore(target);
             }
         }
 

@@ -16,6 +16,7 @@ Version 1.4.01-dev
  = Fixed bug where the wrong flag was being set when taking damage
  = Fixed bug where the PTP cooldown was set improperly
  = Fixed bug where ptp permissions weren't being handled properly
+ = Fixed bug where Beast Lore wouldn't work
 
 Version 1.4.00
  + Added new Child Skill - Smelting!
