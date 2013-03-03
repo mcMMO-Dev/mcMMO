@@ -15,6 +15,7 @@ import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SimpleRepairManager implements RepairManager {
     private HashMap<Integer, Repairable> repairables;
@@ -107,6 +108,9 @@ public class SimpleRepairManager implements RepairManager {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.StackedItems"));
             return;
         }
+
+        // Clear ability buffs before trying to repair.
+        SkillUtils.removeAbilityBuff(item);
 
         // Lets get down to business,
         // To defeat, the huns.
