@@ -13,6 +13,8 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.Tool;
+import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.party.PartyManager;
@@ -77,6 +79,19 @@ public class McMMOPlayer {
         profile = new PlayerProfile(playerName, true);
         party = PartyManager.getPlayerParty(playerName);
 
+        Map<ToolType, Tool> tools = new HashMap<ToolType, Tool>();
+
+        // Build Tool objects for the current player, a tool can be used by multiple skills
+        for (SkillType skillType : SkillType.values()) {
+            ToolType toolType = skillType.getToolType();
+
+            if (tools.containsKey(toolType)) {
+                continue;
+            }
+
+            tools.put(toolType, new Tool());
+        }
+
         /* 
          * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
          * but I actually have no idea about the performance impact, if there is any.
@@ -88,6 +103,9 @@ public class McMMOPlayer {
 
                 // TODO: The null check is needed only because currently some SkillType doesn't have a valid skillManagerClass 
                 if (skillManagerClass != null) {
+                    SkillManager skillManager = skillManagerClass.getConstructor(McMMOPlayer.class).newInstance(this);
+
+                    skillManager.setTool(tools.get(skillType));
                     skillManagers.put(skillType, skillManagerClass.getConstructor(McMMOPlayer.class).newInstance(this));
                 }
             }

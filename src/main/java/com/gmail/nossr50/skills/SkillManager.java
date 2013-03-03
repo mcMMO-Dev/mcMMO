@@ -20,7 +20,6 @@ public abstract class SkillManager {
         this.mcMMOPlayer = mcMMOPlayer;
         this.activationChance = PerksUtils.handleLuckyPerks(mcMMOPlayer.getPlayer(), skill);
         this.skill = skill;
-        this.tool = Tool.getTool(skill.getToolType());
     }
 
     public McMMOPlayer getMcMMOPlayer() {
@@ -65,5 +64,9 @@ public abstract class SkillManager {
 
     public Tool getTool() {
         return tool;
+    }
+
+    public void setTool(Tool tool) {
+        this.tool = tool;
     }
 }
