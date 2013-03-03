@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.taming;
 
 import org.bukkit.EntityEffect;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -69,24 +68,6 @@ public class Taming {
 
         wolf.setHealth(modifiedHealth);
         wolf.playEffect(EntityEffect.WOLF_HEARTS);
-    }
-
-    /**
-     * Get the name of a tameable animal's owner.
-     *
-     * @return the name of the animal's owner
-     */
-    protected static String getOwnerName(Tameable beast) {
-        AnimalTamer tamer = beast.getOwner();
-
-        if (tamer instanceof Player) {
-            return ((Player) tamer).getName();
-        }
-        else if (tamer instanceof OfflinePlayer) {
-            return ((OfflinePlayer) tamer).getName();
-        }
-
-        return "Unknown Master";
     }
 
     protected static String getCallOfTheWildFailureMessage(EntityType type) {
