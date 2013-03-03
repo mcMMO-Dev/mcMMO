@@ -30,7 +30,7 @@ public final class ChimaeraWing {
         PlayerProfile profile = UserManager.getPlayer(player).getProfile();
         Block block = player.getLocation().getBlock();
         int amount = inHand.getAmount();
-        long recentlyHurt = profile.getRecentlyHurt();
+        long recentlyHurt = profile.getRecentlyHurt() * Misc.TIME_CONVERSION_FACTOR;
 
         if (Permissions.chimaeraWing(player) && inHand.getTypeId() == Config.getInstance().getChimaeraItemId()) {
             if (SkillUtils.cooldownOver(recentlyHurt, 60, player) && amount >= Config.getInstance().getChimaeraCost()) {

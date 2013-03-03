@@ -57,8 +57,9 @@ public class PtpCommand implements CommandExecutor {
                 }
 
                 int ptpCooldown = Config.getInstance().getPTPCommandCooldown();
+                long recentlyHurt = playerProfile.getRecentlyHurt() * Misc.TIME_CONVERSION_FACTOR;
 
-                if (playerProfile.getRecentlyHurt() + (ptpCooldown * Misc.TIME_CONVERSION_FACTOR) > System.currentTimeMillis()) {
+                if (System.currentTimeMillis() - recentlyHurt >= (ptpCooldown * Misc.TIME_CONVERSION_FACTOR)) {
                     player.sendMessage(LocaleLoader.getString("Party.Teleport.Hurt", ptpCooldown));
                     return true;
                 }
