@@ -103,25 +103,18 @@ public class EntityListener implements Listener {
             }
         }
 
-        if (defender instanceof Player) {
+        if (defender instanceof Player && attacker instanceof Player) {
             Player defendingPlayer = (Player) defender;
+            Player attackingPlayer = (Player) attacker;
 
-            // TODO: Is this even possible?
-            if (!defendingPlayer.isOnline()) {
+            // TODO: Why?
+            if (defendingPlayer == attackingPlayer) {
                 return;
             }
-
-            if (attacker instanceof Player) {
-                Player attackingPlayer = (Player) attacker;
-
-                if (defendingPlayer == attackingPlayer) {
+            else if (PartyManager.inSameParty(defendingPlayer, attackingPlayer)) {
+                if (!(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
+                    event.setCancelled(true);
                     return;
-                }
-                else if (PartyManager.inSameParty(defendingPlayer, attackingPlayer)) {
-                    if (!(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
-                        event.setCancelled(true);
-                        return;
-                    }
                 }
             }
         }
@@ -163,8 +156,7 @@ public class EntityListener implements Listener {
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
 
-            // TODO: Is it even possible for the player to be off-line here?
-            if (!player.isOnline() || Misc.isNPCEntity(player)) {
+            if (Misc.isNPCEntity(player)) {
                 return;
             }
 
