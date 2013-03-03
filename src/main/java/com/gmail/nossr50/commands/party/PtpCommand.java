@@ -213,7 +213,7 @@ public class PtpCommand implements CommandExecutor {
         player.teleport(target);
         player.sendMessage(LocaleLoader.getString("Party.Teleport.Player", target.getName()));
         target.sendMessage(LocaleLoader.getString("Party.Teleport.Target", player.getName()));
-        mcMMOPlayer.getProfile().setRecentlyHurt(System.currentTimeMillis());
+        mcMMOPlayer.getProfile().actualizeRecentlyHurt();
         return true;
     }
 }

@@ -14,6 +14,7 @@ Version 1.4.01-dev
  = Fixed bug where repairing an mcMMO ability-buffed item with mcMMO repair could take the enchant but leave the lore tag
  = Fixed bug where using '/party chat message...' would result in the first word of the message being printed repeatedly
  = Fixed bug where the wrong flag was being set when taking damage
+ = Fixed bug where the PTP cooldown was set improperly
 
 Version 1.4.00
  + Added new Child Skill - Smelting!

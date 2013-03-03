@@ -63,7 +63,7 @@ public class PlayerProfile {
     private boolean displaySkillNotifications = true;
 
     // Timestamps
-    private long recentlyHurt;
+    private int recentlyHurt;
     private int respawnATS;
 
     // mySQL Stuff
@@ -906,11 +906,11 @@ public class PlayerProfile {
      * Recently Hurt
      */
 
-    public long getRecentlyHurt() {
+    public int getRecentlyHurt() {
         return recentlyHurt;
     }
 
-    public void setRecentlyHurt(long value) {
+    public void setRecentlyHurt(int value) {
         recentlyHurt = value;
     }
 
