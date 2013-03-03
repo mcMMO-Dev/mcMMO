@@ -17,6 +17,7 @@ Version 1.4.01-dev
  = Fixed bug where the PTP cooldown was set improperly
  = Fixed bug where ptp permissions weren't being handled properly
  = Fixed bug where Beast Lore wouldn't work
+ = Fixed bug where Chimaera Wing would always teleport to spawn, even when the player had a valid bed spawn location
 
 Version 1.4.00
  + Added new Child Skill - Smelting!

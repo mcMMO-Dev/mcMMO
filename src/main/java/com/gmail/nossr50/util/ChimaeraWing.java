@@ -44,7 +44,7 @@ public final class ChimaeraWing {
                     }
                 }
 
-                if (player.getBedSpawnLocation() != null && player.getBedSpawnLocation().getBlock().getType() == Material.BED_BLOCK) {
+                if (player.getBedSpawnLocation() != null) {
                     player.teleport(player.getBedSpawnLocation());
                 }
                 else {
