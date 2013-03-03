@@ -12,6 +12,7 @@ Version 1.4.01-dev
  = Fixed bug where /mctop and /mcrank wouldn't show overall power levels for servers using Flatfile
  = Fixed bug where Smelting would throw consistent errors due to offline players
  = Fixed bug where repairing an mcMMO ability-buffed item with mcMMO repair could take the enchant but leave the lore tag
+ = Fixed bug where using '/party chat message...' would result in the first word of the message being printed repeatedly
 
 Version 1.4.00
  + Added new Child Skill - Smelting!

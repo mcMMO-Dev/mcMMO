@@ -146,7 +146,7 @@ public class PartyCommand implements CommandExecutor {
         String[] newArgs = new String[args.length - 1];
 
         for (int i = 1; i < args.length; i++) {
-            newArgs[i - 1] = args[1];
+            newArgs[i - 1] = args[i];
         }
 
         return newArgs;
