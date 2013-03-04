@@ -7,6 +7,8 @@ Key:
   ! Change
   - Removal
 
+Version 1.4.02-dev
+
 Version 1.4.01
  = Fixed bug where trying to use /mctop or /xplock with the Smelting child skill caused NPEs
  = Fixed bug where /mctop and /mcrank wouldn't show overall power levels for servers using Flatfile
