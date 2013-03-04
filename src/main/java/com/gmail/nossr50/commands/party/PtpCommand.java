@@ -112,9 +112,9 @@ public class PtpCommand implements CommandExecutor {
         }
 
         target = mcMMOPlayer.getPtpRequest();
+        mcMMOPlayer.removePtpRequest();
 
         if (!canTeleport(target.getName())) {
-            mcMMOPlayer.removePtpRequest();
             return true;
         }
 
