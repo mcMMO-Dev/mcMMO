@@ -52,6 +52,11 @@ public class TreasureConfig extends ConfigLoader {
     protected void loadKeys() {
         Map<String, Treasure> treasures = new HashMap<String, Treasure>();
         ConfigurationSection treasureSection = config.getConfigurationSection("Treasures");
+
+        if (treasureSection == null) {
+            return;
+        }
+
         Set<String> treasureConfigSet = treasureSection.getKeys(false);
 
         for (String treasureName : treasureConfigSet) {
@@ -211,14 +216,14 @@ public class TreasureConfig extends ConfigLoader {
             Treasure treasure = nextEntry.getValue();
 
             if (treasure instanceof FishingTreasure) {
-                if (!fishingTreasures.contains(treasureKey)) {
+                if (fishingTreasures == null || !fishingTreasures.contains(treasureKey)) {
                     continue;
                 }
 
                 fishingRewards.add((FishingTreasure) treasure);
             }
             else if (treasure instanceof HylianTreasure) {
-                if (!hylianTreasures.contains(treasureKey)) {
+                if (hylianTreasures == null || !hylianTreasures.contains(treasureKey)) {
                     continue;
                 }
 
@@ -237,7 +242,7 @@ public class TreasureConfig extends ConfigLoader {
                 }
             }
             else if (treasure instanceof ExcavationTreasure) {
-                if (!excavationTreasures.contains(treasureKey)) {
+                if (excavationTreasures == null || !excavationTreasures.contains(treasureKey)) {
                     continue;
                 }
 
