@@ -32,6 +32,9 @@ public class PtpCommand implements CommandExecutor {
 
         switch (args.length) {
             case 1:
+                player = (Player) sender;
+                mcMMOPlayer = UserManager.getPlayer(player);
+
                 if (args[0].equalsIgnoreCase("toggle")) {
                     if (!Permissions.partyTeleportToggle(sender)) {
                         sender.sendMessage(command.getPermissionMessage());
@@ -50,7 +53,6 @@ public class PtpCommand implements CommandExecutor {
                     return acceptAnyTeleportRequest();
                 }
 
-                player = (Player) sender;
                 int ptpCooldown = Config.getInstance().getPTPCommandCooldown();
                 long recentlyHurt = UserManager.getPlayer(player).getRecentlyHurt() * Misc.TIME_CONVERSION_FACTOR;
 
