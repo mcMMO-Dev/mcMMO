@@ -7,6 +7,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -234,20 +235,26 @@ public class BlockListener implements Listener {
         }
 
         BlockState blockState = event.getBlock().getState();
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
-        SmeltingManager smeltingManager = mcMMOPlayer.getSmeltingManager();
+        ItemStack heldItem = player.getItemInHand();
 
-        if (herbalismManager.canUseHylianLuck()) {
-            if (herbalismManager.processHylianLuck(blockState)) {
-                blockState.update(true);
-                event.setCancelled(true);
+        if (ItemUtils.isSword(heldItem)) {
+            HerbalismManager herbalismManager = UserManager.getPlayer(player).getHerbalismManager();
+
+            if (herbalismManager.canUseHylianLuck()) {
+                if (herbalismManager.processHylianLuck(blockState)) {
+                    blockState.update(true);
+                    event.setCancelled(true);
+                }
             }
         }
-        else if (smeltingManager.canUseFluxMining(blockState)) {
-            if (smeltingManager.processFluxMining(blockState)) {
-                blockState.update(true);
-                event.setCancelled(true);
+        else if (ItemUtils.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
+            SmeltingManager smeltingManager = UserManager.getPlayer(player).getSmeltingManager();
+
+            if (smeltingManager.canUseFluxMining(blockState)) {
+                if (smeltingManager.processFluxMining(blockState)) {
+                    blockState.update(true);
+                    event.setCancelled(true);
+                }
             }
         }
     }

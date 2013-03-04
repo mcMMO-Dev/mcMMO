@@ -30,38 +30,33 @@ public class MiningManager extends SkillManager{
     }
 
     public boolean canUseDemolitionsExpertise() {
-        Player player = getPlayer();
-
-        return SkillUtils.unlockLevelReached(player, skill, BlastMining.Tier.FOUR.getLevel()) && Permissions.demolitionsExpertise(player);
+        return getSkillLevel() >= BlastMining.Tier.FOUR.getLevel() && Permissions.demolitionsExpertise(getPlayer());
     }
 
     public boolean canDetonate() {
         Player player = getPlayer();
 
-        return player.isSneaking() && player.getItemInHand().getTypeId() == BlastMining.detonatorID && Permissions.remoteDetonation(player) && SkillUtils.unlockLevelReached(player, skill, BlastMining.Tier.ONE.getLevel());
+        return canUseBlastMining() && player.isSneaking() && player.getItemInHand().getTypeId() == BlastMining.detonatorID && Permissions.remoteDetonation(player);
     }
 
     public boolean canUseBlastMining() {
-        return SkillUtils.unlockLevelReached(getPlayer(), skill, BlastMining.Tier.ONE.getLevel());
+        return getSkillLevel() >= BlastMining.Tier.ONE.getLevel();
     }
 
     public boolean canUseBiggerBombs() {
-        Player player = getPlayer();
-
-        return Permissions.biggerBombs(player) && SkillUtils.unlockLevelReached(getPlayer(), skill, BlastMining.Tier.TWO.getLevel());
+        return getSkillLevel() >= BlastMining.Tier.TWO.getLevel() && Permissions.biggerBombs(getPlayer());
     }
 
     /**
      * Process double drops & XP gain for Mining.
      *
      * @param blockState The {@link BlockState} to check ability activation for
-     * @param player The {@link Player} using this ability
      */
     public void miningBlockCheck(BlockState blockState) {
         Player player = getPlayer();
         int xp = Mining.getBlockXp(blockState);
 
-        if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(player, skill, Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
+        if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
             if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
                 Mining.handleSilkTouchDrops(blockState);
             }

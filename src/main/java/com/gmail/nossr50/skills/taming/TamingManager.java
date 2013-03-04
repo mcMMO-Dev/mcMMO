@@ -27,23 +27,35 @@ public class TamingManager extends SkillManager {
     }
 
     public boolean canUseThickFur() {
-        return getSkillLevel() > Taming.thickFurUnlockLevel && Permissions.thickFur(getPlayer());
+        return getSkillLevel() >= Taming.thickFurUnlockLevel && Permissions.thickFur(getPlayer());
     }
 
     public boolean canUseEnvironmentallyAware() {
-        return getSkillLevel() > Taming.environmentallyAwareUnlockLevel && Permissions.environmentallyAware(getPlayer());
+        return getSkillLevel() >= Taming.environmentallyAwareUnlockLevel && Permissions.environmentallyAware(getPlayer());
     }
 
     public boolean canUseShockProof() {
-        return getSkillLevel() > Taming.shockProofUnlockLevel && Permissions.shockProof(getPlayer());
+        return getSkillLevel() >= Taming.shockProofUnlockLevel && Permissions.shockProof(getPlayer());
     }
 
     public boolean canUseHolyHound() {
-        return getSkillLevel() > Taming.holyHoundUnlockLevel && Permissions.holyHound(getPlayer());
+        return getSkillLevel() >= Taming.holyHoundUnlockLevel && Permissions.holyHound(getPlayer());
     }
 
-    public boolean canUseBeastLore(LivingEntity target) {
-        return target instanceof Tameable && Permissions.beastLore(getPlayer());
+    public boolean canUseFastFoodService() {
+        return getSkillLevel() >= Taming.fastFoodServiceUnlockLevel && Permissions.fastFoodService(getPlayer());
+    }
+
+    public boolean canUseSharpenedClaws() {
+        return getSkillLevel() >= Taming.sharpenedClawsUnlockLevel && Permissions.sharpenedClaws(getPlayer());
+    }
+
+    public boolean canUseGore() {
+        return Permissions.gore(getPlayer());
+    }
+
+    public boolean canUseBeastLore() {
+        return Permissions.beastLore(getPlayer());
     }
 
     /**
@@ -73,7 +85,7 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, int damage) {
-        if (SkillUtils.activationSuccessful(getPlayer(), skill, Taming.fastFoodServiceActivationChance)) {
+        if (getActivationChance() > Taming.fastFoodServiceActivationChance) {
 
             int health = wolf.getHealth();
             int maxHealth = wolf.getMaxHealth();
@@ -91,16 +103,14 @@ public class TamingManager extends SkillManager {
      * @param event The event to modify
      */
     public int gore(LivingEntity target, int damage) {
-        Player owner = getPlayer();
-
-        if (SkillUtils.activationSuccessful(owner, skill, Taming.goreMaxChance, Taming.goreMaxBonusLevel)) {
+        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Taming.goreMaxChance, Taming.goreMaxBonusLevel)) {
             BleedTimerTask.add(target, Taming.goreBleedTicks);
 
             if (target instanceof Player) {
                 ((Player) target).sendMessage(LocaleLoader.getString("Combat.StruckByGore"));
             }
 
-            owner.sendMessage(LocaleLoader.getString("Combat.Gore"));
+            getPlayer().sendMessage(LocaleLoader.getString("Combat.Gore"));
             return damage * Taming.goreModifier;
         }
 

@@ -612,12 +612,8 @@ public class SkillUtils {
         return chance > Misc.getRandom().nextInt(activationChance);
     }
 
-    public static boolean activationSuccessful(Player player, SkillType skill, double chance) {
-        return chance > Misc.getRandom().nextInt(PerksUtils.handleLuckyPerks(player, skill));
-    }
-
-    public static boolean unlockLevelReached(Player player, SkillType skill, int unlockLevel) {
-        return UserManager.getPlayer(player).getProfile().getSkillLevel(skill) > unlockLevel;
+    public static boolean activationSuccessful(int skillLevel, int activationChance, double maxChance, int maxLevel) {
+        return ((maxChance / maxLevel) * Math.min(skillLevel, maxLevel)) > Misc.getRandom().nextInt(activationChance);
     }
 
     public static boolean treasureDropSuccessful(double dropChance, int activationChance) {

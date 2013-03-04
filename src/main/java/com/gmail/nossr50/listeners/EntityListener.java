@@ -115,8 +115,8 @@ public class EntityListener implements Listener {
             Player defendingPlayer = (Player) defender;
             Player attackingPlayer = (Player) attacker;
 
-            // TODO: Why?
-            if (defendingPlayer == attackingPlayer) {
+            // We want to make sure we're not gaining XP or applying abilities when we hit ourselves
+            if (defendingPlayer.equals(attackingPlayer)) {
                 return;
             }
 

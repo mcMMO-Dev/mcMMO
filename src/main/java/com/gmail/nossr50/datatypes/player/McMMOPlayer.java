@@ -69,10 +69,11 @@ public class McMMOPlayer {
     private boolean placedSalvageAnvil;
     private boolean godMode;
 
-    private Map<AbilityType, Boolean> abilityMode = new HashMap<AbilityType, Boolean>();
+    private Map<AbilityType, Boolean> abilityMode     = new HashMap<AbilityType, Boolean>();
     private Map<AbilityType, Boolean> abilityInformed = new HashMap<AbilityType, Boolean>();
-    private Map<ToolType, Boolean> toolPreparationMode = new HashMap<ToolType, Boolean>();
-    private Map<ToolType, Integer> toolATS = new HashMap<ToolType, Integer>();
+
+    private Map<ToolType, Boolean> toolMode = new HashMap<ToolType, Boolean>();
+    private Map<ToolType, Integer> toolATS  = new HashMap<ToolType, Integer>();
 
     private int recentlyHurt;
     private int respawnATS;
@@ -110,7 +111,7 @@ public class McMMOPlayer {
         }
 
         for (ToolType toolType : ToolType.values()) {
-            toolPreparationMode.put(toolType, false);
+            toolMode.put(toolType, false);
             toolATS.put(toolType, 0);
         }
     }
@@ -219,7 +220,7 @@ public class McMMOPlayer {
      * @return true if the tool is prepped, false otherwise
      */
     public boolean getToolPreparationMode(ToolType tool) {
-        return toolPreparationMode.get(tool);
+        return toolMode.get(tool);
     }
 
     public boolean getAbilityUse() {
@@ -250,7 +251,7 @@ public class McMMOPlayer {
      * @param bool true if the tool should be prepped, false otherwise
      */
     public void setToolPreparationMode(ToolType tool, boolean bool) {
-        toolPreparationMode.put(tool, bool);
+        toolMode.put(tool, bool);
     }
 
     /**

@@ -68,10 +68,8 @@ public class AxesManager extends SkillManager {
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public int criticalHitCheck(LivingEntity target, int damage) {
-        Player player = getPlayer();
-
-        if (SkillUtils.activationSuccessful(player, skill, Axes.criticalHitMaxChance, Axes.criticalHitMaxBonusLevel)) {
-            player.sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
+        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Axes.criticalHitMaxChance, Axes.criticalHitMaxBonusLevel)) {
+            getPlayer().sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
 
             if (target instanceof Player) {
                 ((Player) target).sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
@@ -94,10 +92,11 @@ public class AxesManager extends SkillManager {
         int durabilityDamage = 1 + (getSkillLevel() / Axes.impactIncreaseLevel);
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
-            if (ItemUtils.isArmor(armor) && SkillUtils.activationSuccessful(getPlayer(), skill, Axes.impactChance)) {
+            if (ItemUtils.isArmor(armor) && Axes.impactChance > getActivationChance()) {
                 double durabilityModifier = 1 / (armor.getEnchantmentLevel(Enchantment.DURABILITY) + 1); // Modifier to simulate the durability enchantment behavior
                 double modifiedDurabilityDamage = durabilityDamage * durabilityModifier;
-                double maxDurabilityDamage = (ModUtils.isCustomArmor(armor) ? ModUtils.getArmorFromItemStack(armor).getDurability() : armor.getType().getMaxDurability()) * Axes.impactMaxDurabilityModifier;
+                short maxDurability = ModUtils.isCustomArmor(armor) ? ModUtils.getArmorFromItemStack(armor).getDurability() : armor.getType().getMaxDurability();
+                double maxDurabilityDamage = maxDurability * Axes.impactMaxDurabilityModifier;
 
                 armor.setDurability((short) (Math.min(modifiedDurabilityDamage, maxDurabilityDamage) + armor.getDurability()));
             }
@@ -112,9 +111,9 @@ public class AxesManager extends SkillManager {
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public int greaterImpactCheck(LivingEntity target, int damage) {
-        Player player = getPlayer();
+        if (Axes.greaterImpactChance > getActivationChance()) {
+            Player player = getPlayer();
 
-        if (SkillUtils.activationSuccessful(player, skill, Axes.greaterImpactChance)) {
             ParticleEffectUtils.playGreaterImpactEffect(target);
             target.setVelocity(player.getLocation().getDirection().normalize().multiply(Axes.greaterImpactKnockbackMultiplier));
 

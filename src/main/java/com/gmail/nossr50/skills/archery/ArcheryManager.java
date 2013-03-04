@@ -26,9 +26,7 @@ public class ArcheryManager extends SkillManager {
     }
 
     public boolean canSkillShot() {
-        Player player = getPlayer();
-
-        return SkillUtils.unlockLevelReached(player, skill, Archery.skillShotIncreaseLevel) && Permissions.bonusDamage(player, skill);
+        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.bonusDamage(getPlayer(), skill);
     }
 
     public boolean canTrackArrows() {
@@ -64,7 +62,7 @@ public class ArcheryManager extends SkillManager {
      * @param target The {@link LivingEntity} damaged by the arrow
      */
     public void trackArrows(LivingEntity target) {
-        if (SkillUtils.activationSuccessful(getPlayer(), skill, Archery.retrieveMaxChance, Archery.retrieveMaxBonusLevel)) {
+        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.retrieveMaxChance, Archery.retrieveMaxBonusLevel)) {
             Archery.incrementTrackerValue(target);
         }
     }
@@ -72,14 +70,12 @@ public class ArcheryManager extends SkillManager {
     /**
      * Handle the effects of the Daze ability
      *
-     * @param defender The player being affected by the ability
+     * @param defender The {@link Player} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public int dazeCheck(Player defender, int damage) {
-        Player attacker = getPlayer();
-
-        if (SkillUtils.activationSuccessful(attacker, skill, Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel)) {
+        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel)) {
             Location dazedLocation = defender.getLocation();
             dazedLocation.setPitch(90 - Misc.getRandom().nextInt(181));
 
@@ -91,7 +87,7 @@ public class ArcheryManager extends SkillManager {
             }
 
             if (mcMMOPlayer.useChatNotifications()) {
-                attacker.sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
+                getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
             }
 
             return damage + Archery.dazeModifier;

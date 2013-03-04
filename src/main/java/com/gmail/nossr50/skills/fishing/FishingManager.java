@@ -38,9 +38,7 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean canShake(Entity target) {
-        Player player = getPlayer();
-
-        return target instanceof LivingEntity && SkillUtils.unlockLevelReached(player, skill, AdvancedConfig.getInstance().getShakeUnlockLevel()) && Permissions.shake(player);
+        return target instanceof LivingEntity && getSkillLevel() >= AdvancedConfig.getInstance().getShakeUnlockLevel() && Permissions.shake(getPlayer());
     }
 
     /**
@@ -136,7 +134,7 @@ public class FishingManager extends SkillManager {
      * @param mob The {@link LivingEntity} affected by the ability
      */
     public void shakeCheck(LivingEntity target) {
-        if (SkillUtils.activationSuccessful(getPlayer(), skill, getShakeProbability())) {
+        if (getActivationChance() > getShakeProbability()) {
             Map<ItemStack, Integer> possibleDrops = new HashMap<ItemStack, Integer>();
 
             Fishing.findPossibleDrops(target, possibleDrops);

@@ -11,6 +11,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
@@ -27,12 +28,11 @@ public class AcrobaticsManager extends SkillManager {
 
     public boolean canDodge(Entity damager) {
         if (Permissions.dodge(getPlayer())) {
-            if (damager instanceof Player && SkillType.ACROBATICS.getPVPEnabled()) {
-                return true;
+            if (damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) {
+                return false;
             }
-            else if (!(damager instanceof Player) && SkillType.ACROBATICS.getPVEEnabled() && !(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled)) {
-                return true;
-            }
+
+            return CombatUtils.shouldProcessSkill(damager, skill);
         }
 
         return false;
@@ -48,7 +48,7 @@ public class AcrobaticsManager extends SkillManager {
         int modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
         Player player = getPlayer();
 
-        if (!isFatal(modifiedDamage) && SkillUtils.activationSuccessful(player, skill, Acrobatics.dodgeMaxChance, Acrobatics.dodgeMaxBonusLevel)) {
+        if (!isFatal(modifiedDamage) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Acrobatics.dodgeMaxChance, Acrobatics.dodgeMaxBonusLevel)) {
             ParticleEffectUtils.playDodgeEffect(player);
 
             if (mcMMOPlayer.useChatNotifications()) {

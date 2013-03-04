@@ -28,6 +28,10 @@ public class SwordsManager extends SkillManager {
         return Permissions.bleed(getPlayer());
     }
 
+    public boolean canUseCounterAttack() {
+        return Permissions.counterAttack(getPlayer());
+    }
+
     public boolean canUseSerratedStrike() {
         return mcMMOPlayer.getAbilityMode(AbilityType.SERRATED_STRIKES) && Permissions.serratedStrikes(getPlayer());
     }
@@ -38,9 +42,7 @@ public class SwordsManager extends SkillManager {
      * @param target The defending entity
      */
     public void bleedCheck(LivingEntity target) {
-        Player player = getPlayer();
-
-        if (SkillUtils.activationSuccessful(player, skill, Swords.bleedMaxChance, Swords.bleedMaxBonusLevel)) {
+        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Swords.bleedMaxChance, Swords.bleedMaxBonusLevel)) {
 
             if (getSkillLevel() >= Swords.bleedMaxBonusLevel) {
                 BleedTimerTask.add(target, Swords.bleedMaxTicks);
@@ -50,7 +52,7 @@ public class SwordsManager extends SkillManager {
             }
 
             if (mcMMOPlayer.useChatNotifications()) {
-                player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
+                getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Bleeding"));
             }
 
             if (target instanceof Player) {
@@ -64,7 +66,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public void counterAttackChecks(LivingEntity attacker, int damage) {
-        if (SkillUtils.activationSuccessful(getPlayer(), skill, Swords.counterAttackMaxChance, Swords.counterAttackMaxBonusLevel)) {
+        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Swords.counterAttackMaxChance, Swords.counterAttackMaxBonusLevel)) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier);
 
             getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));
