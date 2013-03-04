@@ -238,6 +238,29 @@ public final class ExperienceAPI {
     }
 
     /**
+     * Get the level cap of a specific skill.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param skillType The skill to get the level cap for
+     * @return the level cap of a given skill
+     */
+    public static int getLevelCap(String skillType) {
+        return Config.getInstance().getLevelCap(SkillType.getSkill(skillType));
+    }
+
+    /**
+     * Get the power level cap.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @return the power level cap of a given skill
+     */
+    public static int getPowerLevelCap() {
+        return Config.getInstance().getPowerLevelCap();
+    }
+
+    /**
      * Sets the level of a player in a specific skill type.
      * </br>
      * This function is designed for API usage.
