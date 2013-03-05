@@ -24,6 +24,8 @@ General:
     Power_Level_Cap: 0
     #Should mcMMO print out debug messages?
     Verbose_Logging: false
+    #Should mcMMO over-write configs to update, or make new ones ending in .new?
+    Config_Update_Overwrite: true
 
 Database_Purging:
     #Amount of time (in hours) to wait between database purging
@@ -334,7 +336,7 @@ Experience:
             Wither: 7.0
             Witch: 4.0
             Iron_Golem: 2.0
-            Wither_Skeleton: 4.0;
+            Wither_Skeleton: 4.0
 #
 #  Settings for commands
 ###
@@ -354,3 +356,12 @@ Commands:
     a:
         #Allow mcMMO to use player display names in chat instead of their usernames
         Use_Display_Names: true
+#
+#  Settings for particles
+###
+Particles:
+    Ability_Activation: true
+    Ability_Deactivation: true
+    Dodge: true
+    Bleed: true
+    Greater_Impact: true

@@ -14,18 +14,18 @@ import com.gmail.nossr50.util.Misc;
 public class Archery {
     private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
-    public static int retrieveMaxBonusLevel = AdvancedConfig.getInstance().getRetrieveMaxBonusLevel();
-    public static double retrieveMaxChance = AdvancedConfig.getInstance().getRetrieveChanceMax();
+    public static int    retrieveMaxBonusLevel = AdvancedConfig.getInstance().getRetrieveMaxBonusLevel();
+    public static double retrieveMaxChance     = AdvancedConfig.getInstance().getRetrieveChanceMax();
 
-    public static int skillShotIncreaseLevel = AdvancedConfig.getInstance().getSkillShotIncreaseLevel();
+    public static int    skillShotIncreaseLevel      = AdvancedConfig.getInstance().getSkillShotIncreaseLevel();
     public static double skillShotIncreasePercentage = AdvancedConfig.getInstance().getSkillShotIncreasePercentage();
     public static double skillShotMaxBonusPercentage = AdvancedConfig.getInstance().getSkillShotBonusMax();
 
-    public static int dazeMaxBonusLevel = AdvancedConfig.getInstance().getDazeMaxBonusLevel();
-    public static double dazeMaxBonus = AdvancedConfig.getInstance().getDazeBonusMax();
-    public static int dazeModifier = AdvancedConfig.getInstance().getDazeModifier();
+    public static int    dazeMaxBonusLevel = AdvancedConfig.getInstance().getDazeMaxBonusLevel();
+    public static int    dazeModifier      = AdvancedConfig.getInstance().getDazeModifier();
+    public static double dazeMaxBonus      = AdvancedConfig.getInstance().getDazeBonusMax();
 
-    public static double distanceXpModifer = 0.025;
+    public static final double DISTANCE_XP_MULTIPLIER = 0.025;
 
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
         for (TrackedEntity trackedEntity : trackedEntities) {
@@ -35,7 +35,7 @@ public class Archery {
             }
         }
 
-        addToTracker(livingEntity); //If the entity isn't tracked yet
+        addToTracker(livingEntity); // If the entity isn't tracked yet
     }
 
     protected static void addToTracker(LivingEntity livingEntity) {
@@ -55,10 +55,10 @@ public class Archery {
      * @param livingEntity The entity hit by the arrows
      */
     public static void arrowRetrievalCheck(LivingEntity livingEntity) {
-        for (Iterator<TrackedEntity> entityIterator = trackedEntities.iterator(); entityIterator.hasNext(); ) {
+        for (Iterator<TrackedEntity> entityIterator = trackedEntities.iterator(); entityIterator.hasNext();) {
             TrackedEntity trackedEntity = entityIterator.next();
 
-            if (trackedEntity.getLivingEntity().getEntityId() == livingEntity.getEntityId()) {
+            if (trackedEntity.getID() == livingEntity.getUniqueId()) {
                 Misc.dropItems(livingEntity.getLocation(), new ItemStack(Material.ARROW), trackedEntity.getArrowCount());
                 entityIterator.remove();
                 return;

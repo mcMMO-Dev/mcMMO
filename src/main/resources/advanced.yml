@@ -22,18 +22,26 @@ Skills:
     Acrobatics:
         # Dodge_ChanceMax: Maximum chance of dodging when on Dodge_MaxBonusLevel or higher
         # Dodge_MaxBonusLevel: On this level or higher, the dodge chance will not go higher than Dodge_ChanceMax
+        # Dodge_DamageModifer: Dodge damage will be divided by this modifier
         Dodge_ChanceMax: 20.0
         Dodge_MaxBonusLevel: 800
+        Dodge_DamageModifier: 2
 
         # Roll_ChanceMax: Maximum chance of rolling when on Roll_MaxBonusLevel or higher
         # Roll_MaxBonusLevel: On this level or higher, the roll chance will not go higher than Roll_ChanceMax
+        # Roll_DamageThreshold: The max damage a player can negate with a roll
         Roll_ChanceMax: 100.0
         Roll_MaxBonusLevel: 1000
+        Roll_DamageThreshold: 7
 
         # GracefulRoll_ChanceMax: Maximum chance of graceful rolling when on GracefulRoll_MaxBonusLevel or higher
         # GracefulRoll_MaxBonusLevel: On this level or higher, the graceful roll chance will not go higher than GracefulRoll_ChanceMax
+        # GracefulRoll_DamageThreshold: The max damage a player can negate with a graceful roll
+        # GracefulRoll_SuccessModifier: Graceful rolls will be this many times more likely to succeed than regular rolls
         GracefulRoll_ChanceMax: 100.0
         GracefulRoll_MaxBonusLevel: 500
+        GracefulRoll_DamageThreshold: 14
+        GracefulRoll_SuccessModifier: 2
 
         # Amount of experience for performing a dodge, roll or fall
         Dodge_XP_Modifier: 120
@@ -87,8 +95,10 @@ Skills:
         GreaterImpact_BonusDamage: 2
 
         # ArmorImpact_IncreaseLevel: Every "IncreaseLevel" the durability damage goes up with 1
+        # ArmorImpact_Chance: Chance of hitting with ArmorImpact
         # ArmorImpact_MaxPercentageDurabilityDamage: Durability damage cap for ArmorImpact, 20% means that you can never destroy a piece of armor in less than 5 hits
         ArmorImpact_IncreaseLevel: 50
+        ArmorImpact_Chance: 25.0
         ArmorImpact_MaxPercentageDurabilityDamage: 20.0
 
         # SkullSplitter_DamageModifier: Damage will get divided by this modifier
@@ -150,6 +160,11 @@ Skills:
         # HylianLuck_MaxBonusLevel: On this level, Hylian Luck chance will be HylianLuck_ChanceMax
         HylianLuck_ChanceMax: 10.0
         HylianLuck_MaxBonusLevel: 1000
+
+        # ShroomThumb_ChanceMax: Maximum chance of ShroomThumb
+        # ShroomThumb_MaxBonusLevel: On this level, ShroomThumb chance will be ShroomThumb_ChanceMax
+        ShroomThumb_ChanceMax: 50.0
+        ShroomThumb_MaxBonusLevel: 1500
     #
     #  Settings for Mining
     ###
@@ -168,6 +183,56 @@ Skills:
         BlastMining_Rank6: 750
         BlastMining_Rank7: 875
         BlastMining_Rank8: 1000
+
+        # BlastDamageDecrease_Rank: % of damage reduced from TNT explosions
+        BlastDamageDecrease_Rank1: 0.0
+        BlastDamageDecrease_Rank2: 0.0
+        BlastDamageDecrease_Rank3: 0.0
+        BlastDamageDecrease_Rank4: 25.0
+        BlastDamageDecrease_Rank5: 25.0
+        BlastDamageDecrease_Rank6: 50.0
+        BlastDamageDecrease_Rank7: 50.0
+        BlastDamageDecrease_Rank8: 100.0
+
+        # OreBonus_Rank: % of extra ores received when Blast Mining
+        OreBonus_Rank1: 35.0
+        OreBonus_Rank2: 40.0
+        OreBonus_Rank3: 45.0
+        OreBonus_Rank4: 50.0
+        OreBonus_Rank5: 55.0
+        OreBonus_Rank6: 60.0
+        OreBonus_Rank7: 65.0
+        OreBonus_Rank8: 70.0
+
+        # DebrisReduction_Rank: % of fewer non-ores received when Blast Mining
+        DebrisReduction_Rank1: 10.0
+        DebrisReduction_Rank2: 20.0
+        DebrisReduction_Rank3: 30.0
+        DebrisReduction_Rank4: 30.0
+        DebrisReduction_Rank5: 30.0
+        DebrisReduction_Rank6: 30.0
+        DebrisReduction_Rank7: 30.0
+        DebrisReduction_Rank8: 30.0
+
+        # DropMultiplier_Rank: # of times each ore will drop
+        DropMultiplier_Rank1: 1
+        DropMultiplier_Rank2: 1
+        DropMultiplier_Rank3: 1
+        DropMultiplier_Rank4: 1
+        DropMultiplier_Rank5: 2
+        DropMultiplier_Rank6: 2
+        DropMultiplier_Rank7: 3
+        DropMultiplier_Rank8: 3
+
+        # BlastRadiusModifier_Rank: Increases the blast radius by this amount
+        BlastRadiusModifier_Rank1: 1.0
+        BlastRadiusModifier_Rank2: 1.0
+        BlastRadiusModifier_Rank3: 2.0
+        BlastRadiusModifier_Rank4: 2.0
+        BlastRadiusModifier_Rank5: 3.0
+        BlastRadiusModifier_Rank6: 3.0
+        BlastRadiusModifier_Rank7: 4.0
+        BlastRadiusModifier_Rank8: 4.0
     #
     #  Settings for Repair
     ###
@@ -284,6 +349,9 @@ Skills:
         ThickFur_UnlockLevel: 250
         ThickFur_Modifier: 2
 
+        # HolyHound_UnlockLevel: Level when HolyHound unlocks
+        HolyHound_UnlockLevel: 375
+
         # ShockProof_UnlockLevel: Level when ShockProof unlocks
         # ShockProof_Modifier: Damage will get divided by this modifier
         ShockProof_UnlockLevel: 500
@@ -312,9 +380,9 @@ Skills:
         IronGrip_ChanceMax: 100.0
         IronGrip_MaxBonusLevel: 1000
 
-        # IronArmBonusMax: Maximum bonus damage for unarmed
+        # IronArm_BonusMax: Maximum bonus damage for unarmed
         # IronArm_IncreaseLevel: Bonus damage increases every increase level
-        IronArmBonusMax: 8
+        IronArm_BonusMax: 8
         IronArm_IncreaseLevel: 50
     #
     #  Settings for Woodcutting

@@ -3,27 +3,26 @@ package com.gmail.nossr50.skills.woodcutting;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
-import org.bukkit.TreeSpecies;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Tree;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.mods.CustomBlock;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
-import com.gmail.nossr50.mods.ModChecks;
-import com.gmail.nossr50.mods.datatypes.CustomBlock;
-import com.gmail.nossr50.skills.utilities.PerksUtils;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public final class Woodcutting {
-    static final AdvancedConfig ADVANCED_CONFIG = AdvancedConfig.getInstance();
-    static final Config CONFIG = Config.getInstance();
+    public static int    doubleDropsMaxLevel  = AdvancedConfig.getInstance().getWoodcuttingDoubleDropMaxLevel();
+    public static double doubleDropsMaxChance = AdvancedConfig.getInstance().getWoodcuttingDoubleDropChance();
 
     protected enum ExperienceGainMethod {
         DEFAULT,
@@ -38,8 +37,8 @@ public final class Woodcutting {
      * @param mcMMOPlayer Player using the ability
      * @param block Block being broken
      */
-    public static void beginTreeFeller(McMMOPlayer mcMMOPlayer, Block block) {
-        TreeFeller.process(mcMMOPlayer, block);
+    public static void beginTreeFeller(BlockState blockState, Player player) {
+        TreeFeller.processTreeFeller(blockState, player);
     }
 
     /**
@@ -48,10 +47,9 @@ public final class Woodcutting {
      * @param player Player using the ability
      * @param block Block being broken
      */
-    public static void beginLeafBlower(Player player, Block block) {
+    public static void beginLeafBlower(Player player, BlockState blockState) {
         mcMMO.p.getServer().getPluginManager().callEvent(new FakePlayerAnimationEvent(player));
-
-        player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
+        player.playSound(blockState.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
     }
 
     /**
@@ -60,75 +58,65 @@ public final class Woodcutting {
      * @param mcMMOPlayer Player breaking the block
      * @param block Block being broken
      */
-    public static void beginWoodcutting(McMMOPlayer mcMMOPlayer, Block block) {
-        int xp = 0;
-
-        if (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(block)) {
-            xp = ModChecks.getCustomBlock(block).getXpGain();
-        }
-        else {
-            try {
-                xp = getExperienceFromLog(block, ExperienceGainMethod.DEFAULT);
-            }
-            catch (IllegalArgumentException exception) {
-                return;
-            }
-        }
-
-        Player player = mcMMOPlayer.getPlayer();
+    public static void beginWoodcutting(Player player, BlockState blockState) {
+        int xp = getExperienceFromLog(blockState, ExperienceGainMethod.DEFAULT);
 
         if (Permissions.doubleDrops(player, SkillType.WOODCUTTING)) {
-            checkForDoubleDrop(mcMMOPlayer, block);
+            Material blockType = blockState.getType();
+
+            if (blockType != Material.HUGE_MUSHROOM_1 && blockType != Material.HUGE_MUSHROOM_2) {
+                checkForDoubleDrop(player, blockState);
+            }
         }
 
-        mcMMOPlayer.beginXpGain(SkillType.WOODCUTTING, xp);
+        UserManager.getPlayer(player).beginXpGain(SkillType.WOODCUTTING, xp);
     }
 
     /**
      * Retrieves the experience reward from a log
      *
-     * @param log Log being broken
+     * @param blockState Log being broken
      * @param experienceGainMethod How the log is being broken
      * @return Amount of experience
-     * @throws IllegalArgumentException if 'log' is invalid
      */
-    protected static int getExperienceFromLog(Block log, ExperienceGainMethod experienceGainMethod) {
+    protected static int getExperienceFromLog(BlockState blockState, ExperienceGainMethod experienceGainMethod) {
         // Mushrooms aren't trees so we could never get species data from them
-        switch (log.getType()) {
-        case HUGE_MUSHROOM_1:
-            return Config.getInstance().getWoodcuttingXPHugeBrownMushroom();
-        case HUGE_MUSHROOM_2:
-            return Config.getInstance().getWoodcuttingXPHugeRedMushroom();
-        default:
-            break;
-        }
+        switch (blockState.getType()) {
+            case HUGE_MUSHROOM_1:
+                return Config.getInstance().getWoodcuttingXPHugeBrownMushroom();
 
-        TreeSpecies logType = TreeSpecies.getByData(extractLogItemData(log.getData()));
+            case HUGE_MUSHROOM_2:
+                return Config.getInstance().getWoodcuttingXPHugeRedMushroom();
 
-        // Apparently species can be null in certain cases (custom server mods?)
-        // https://github.com/mcMMO-Dev/mcMMO/issues/229
-        if (logType == null) {
-            throw new IllegalArgumentException();
-        }
-
-        switch (logType) {
-        case GENERIC:
-            return Config.getInstance().getWoodcuttingXPOak();
-        case REDWOOD:
-            return Config.getInstance().getWoodcuttingXPSpruce();
-        case BIRCH:
-            return Config.getInstance().getWoodcuttingXPBirch();
-        case JUNGLE:
-            int xp = Config.getInstance().getWoodcuttingXPJungle();
-
-            switch (experienceGainMethod) {
-            case TREE_FELLER:
-                return (int) (xp * 0.5);
             default:
+                break;
+        }
+
+        if (ModUtils.isCustomLogBlock(blockState)) {
+            return ModUtils.getCustomBlock(blockState).getXpGain();
+        }
+
+        switch (((Tree) blockState.getData()).getSpecies()) {
+            case GENERIC:
+                return Config.getInstance().getWoodcuttingXPOak();
+
+            case REDWOOD:
+                return Config.getInstance().getWoodcuttingXPSpruce();
+
+            case BIRCH:
+                return Config.getInstance().getWoodcuttingXPBirch();
+
+            case JUNGLE:
+                int xp = Config.getInstance().getWoodcuttingXPJungle();
+
+                if (experienceGainMethod == ExperienceGainMethod.TREE_FELLER) {
+                    xp *= 0.5;
+                }
+
                 return xp;
-            }
-        default:
-            throw new IllegalArgumentException();
+
+            default:
+                return 0;
         }
     }
 
@@ -136,28 +124,18 @@ public final class Woodcutting {
      * Checks for double drops
      *
      * @param mcMMOPlayer Player breaking the block
-     * @param block Block being broken
+     * @param blockState Block being broken
      */
-    protected static void checkForDoubleDrop(McMMOPlayer mcMMOPlayer, Block block) {
-        Player player = mcMMOPlayer.getPlayer();
-        double configDoubleDropChance = ADVANCED_CONFIG.getWoodcuttingDoubleDropChance();
-        int configDoubleDropMaxLevel = ADVANCED_CONFIG.getWoodcuttingDoubleDropMaxLevel();
-        int probability = (int) ((configDoubleDropChance / configDoubleDropMaxLevel) * Users.getPlayer(player).getProfile().getSkillLevel(SkillType.WOODCUTTING));
-        int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.WOODCUTTING);
-
-        if (probability > configDoubleDropChance) {
-            probability = (int) configDoubleDropChance;
-        }
-
-        if (probability <= Misc.getRandom().nextInt(activationChance)) {
+    protected static void checkForDoubleDrop(Player player, BlockState blockState) {
+        if (!SkillUtils.activationSuccessful(player, SkillType.WOODCUTTING, doubleDropsMaxChance, doubleDropsMaxLevel)) {
             return;
         }
 
-        if (Config.getInstance().getBlockModsEnabled() && ModChecks.isCustomLogBlock(block)) {
-            CustomBlock customBlock = ModChecks.getCustomBlock(block);
+        if (ModUtils.isCustomLogBlock(blockState)) {
+            CustomBlock customBlock = ModUtils.getCustomBlock(blockState);
             int minimumDropAmount = customBlock.getMinimumDropAmount();
             int maximumDropAmount = customBlock.getMaximumDropAmount();
-            Location location = block.getLocation();
+            Location location = blockState.getLocation();
             ItemStack item = customBlock.getItemDrop();
 
             Misc.dropItems(location, item, minimumDropAmount);
@@ -167,44 +145,38 @@ public final class Woodcutting {
             }
         }
         else {
-            byte itemData = extractLogItemData(block.getData());
-            Location location = block.getLocation();
-            ItemStack item = new ItemStack(Material.LOG, 1, itemData);
+            Location location = blockState.getLocation();
+            Tree tree = (Tree) blockState.getData();
+            ItemStack item = new ItemStack(Material.LOG, 1, tree.getSpecies().getData());
 
-            switch (TreeSpecies.getByData(itemData)) {
-            case GENERIC:
-                if (Config.getInstance().getOakDoubleDropsEnabled()) {
-                    Misc.dropItem(location, item);
-                }
-                break;
-            case REDWOOD:
-                if (Config.getInstance().getSpruceDoubleDropsEnabled()) {
-                    Misc.dropItem(location, item);
-                }
-                break;
-            case BIRCH:
-                if (Config.getInstance().getBirchDoubleDropsEnabled()) {
-                    Misc.dropItem(location, item);
-                }
-                break;
-            case JUNGLE:
-                if (Config.getInstance().getJungleDoubleDropsEnabled()) {
-                    Misc.dropItem(location, item);
-                }
-                break;
-            default:
-                break;
+            switch (((Tree) blockState.getData()).getSpecies()) {
+                case GENERIC:
+                    if (Config.getInstance().getOakDoubleDropsEnabled()) {
+                        Misc.dropItem(location, item);
+                    }
+                    return;
+
+                case REDWOOD:
+                    if (Config.getInstance().getSpruceDoubleDropsEnabled()) {
+                        Misc.dropItem(location, item);
+                    }
+                    return;
+
+                case BIRCH:
+                    if (Config.getInstance().getBirchDoubleDropsEnabled()) {
+                        Misc.dropItem(location, item);
+                    }
+                    return;
+
+                case JUNGLE:
+                    if (Config.getInstance().getJungleDoubleDropsEnabled()) {
+                        Misc.dropItem(location, item);
+                    }
+                    return;
+
+                default:
+                    return;
             }
         }
-    }
-
-    /**
-     * Extracts the log type from the block data (i.e. removes rotation)
-     *
-     * @param data Original block data
-     * @return Extracted log type
-     */
-    protected static byte extractLogItemData(byte data) {
-        return (byte) (data & 0x3);
     }
 }

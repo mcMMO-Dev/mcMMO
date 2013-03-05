@@ -6,9 +6,9 @@ import java.util.List;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.party.Party;
+import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
 
 public final class PartyAPI {
     private PartyAPI() {}
@@ -22,7 +22,7 @@ public final class PartyAPI {
      * @return the name of the player's party
      */
     public static String getPartyName(Player player) {
-        return Users.getPlayer(player).getParty().getName();
+        return UserManager.getPlayer(player).getParty().getName();
     }
 
     /**
@@ -34,7 +34,7 @@ public final class PartyAPI {
      * @return true if the player is in a party, false otherwise
      */
     public static boolean inParty(Player player) {
-        return Users.getPlayer(player).inParty();
+        return UserManager.getPlayer(player).inParty();
     }
 
     /**
@@ -78,7 +78,7 @@ public final class PartyAPI {
             party.setLeader(player.getName());
         }
 
-        PartyManager.addToParty(player, Users.getPlayer(player), party);
+        PartyManager.addToParty(player, UserManager.getPlayer(player), party);
     }
 
     /**
@@ -89,7 +89,7 @@ public final class PartyAPI {
      * @param player The player to remove
      */
     public static void removeFromParty(Player player) {
-        PartyManager.removeFromParty(player, Users.getPlayer(player).getParty());
+        PartyManager.removeFromParty(player, UserManager.getPlayer(player).getParty());
     }
 
     /**

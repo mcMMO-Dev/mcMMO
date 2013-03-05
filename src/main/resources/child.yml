@@ -1,0 +1,11 @@
+#
+#  mcMMO child skill configuration
+#  You do not need to modify this file except to change parents of child skills
+#
+#  If you wish a child skill to be the parent of another child skill, you must also make your changes to the child.yml within the jar
+#  WARNING: THIS IS NOT SUPPORTED, IF YOU DO SO YOU ARE RESPONSIBLE FOR THE ISSUES THAT MAY ARISE.  That said, watch out for circular dependencies, those are bad.
+#
+#####
+Smelting:
+    - Mining
+    - Repair

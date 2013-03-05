@@ -7,7 +7,32 @@ Key:
   ! Change
   - Removal
 
-Version 1.4.00-dev
+Version 1.4.03-dev
+ = Fixed bug where players were unable to salvage leather armor
+
+Version 1.4.02
+ + Added API to get the skill and power level caps.
+ = Fixed bug where Deflect was calculated based on the attacker, not the defender
+ = Fixed bug where some skills weren't registering as unlocked until one level later
+ = Fixed bug where the PTP cooldown was being read improperly
+ = Fixed bug where /ptp <accept|toggle|acceptall> where broken
+ = Fixed ClassCastException relating to counter-attack with Swords
+ = Fixed issue with some skill activations not activating enough or activating too much
+
+Version 1.4.01
+ = Fixed bug where trying to use /mctop or /xplock with the Smelting child skill caused NPEs
+ = Fixed bug where /mctop and /mcrank wouldn't show overall power levels for servers using Flatfile
+ = Fixed bug where Smelting would throw consistent errors due to offline players
+ = Fixed bug where repairing an mcMMO ability-buffed item with mcMMO repair could take the enchant but leave the lore tag
+ = Fixed bug where using '/party chat message...' would result in the first word of the message being printed repeatedly
+ = Fixed bug where the wrong flag was being set when taking damage
+ = Fixed bug where the PTP cooldown was set improperly
+ = Fixed bug where ptp permissions weren't being handled properly
+ = Fixed bug where Beast Lore wouldn't work
+ = Fixed bug where Chimaera Wing would always teleport to spawn, even when the player had a valid bed spawn location
+ = Updated locale files
+
+Version 1.4.00
  + Added new Child Skill - Smelting!
  + Added a version check, admins will get notified when a new version is available!
  + Added new cancellable McMMOPlayerDisarmEvent for Citizens compatibility - fires whenever a player is disarmed.
@@ -36,6 +61,14 @@ Version 1.4.00-dev
  + Added config option to disable automatic zip backups.
  + Added particle effects for many abilities.
  + Added '/mcnotify' command to toggle ability notifications on/off
+ + Added ability for config files to automatically update with new keys, and prune out old ones
+ + Added config option to make .new config files instead over writing over old ones when updating
+ + Added "Holy Hound" ability to Taming
+ + Added "Shroom Thumb" ability to Herbalism
+ + Added child.yml config file to choose parents for child skills
+ + Added '/party itemshare <NONE | EQUAL | RANDOM>' command to choose party item share mode
+ + Added '/party itemshare <loot | mining | herbalism | woodcutting> <true | false>' command to control items that are shared
+ + Added itemweights.yml file to determine which items are more valuable for party itemshare
  = Fixed Green Thumb on wheat not working properly at rank 4
  = Fixed Green Thumb and Green Terra consuming twice the amount of seed needed
  = Fixed Green Terra not also checking Green Thumb permissions
@@ -70,6 +103,8 @@ Version 1.4.00-dev
  = Fixed a bug where a new party leader wasn't appointed, after the previous party leader left
  = Fixed a bug where Disarm and Deflect had wrong values
  = Fixed Magic Hunter (Fishing ability) favoring certain enchants
+ ! Changed our custom chat events to be async
+ ! Changed some config value key names regarding double drops and XP - make sure you copy any custom values to your new config after updating.
  ! Changed Green Terra blocks to be determined via permissions instead of the config file
  ! Config files are now backed up even when running in SQL mode
  ! Changed /p and /a to use /partychat and /adminchat as the default command name. The use of /p, /pc, /a, and /ac is still supported.

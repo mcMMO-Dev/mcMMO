@@ -5,8 +5,6 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.gmail.nossr50.util.blockmeta.PrimitiveExChunkletStore;
-
 public class PrimitiveExChunkletStoreTest {
     byte addresses[][] = new byte[16][16];
 

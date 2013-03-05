@@ -9,7 +9,7 @@ public class HylianTreasure extends Treasure {
     // 00000100 - pots      4
     private byte dropsFrom = 0x0;
 
-    public HylianTreasure(ItemStack drop, int xp, Double dropChance, int dropLevel) {
+    public HylianTreasure(ItemStack drop, int xp, double dropChance, int dropLevel) {
         super(drop, xp, dropChance, dropLevel);
     }
 
@@ -72,5 +72,4 @@ public class HylianTreasure extends Treasure {
     private void unsetDropFromMask(int mask) {
         dropsFrom &= ~mask;
     }
-
 }

@@ -1,24 +1,61 @@
 package com.gmail.nossr50.skills.taming;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Ocelot;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class TamingManager extends SkillManager {
     public TamingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.TAMING);
+    }
+
+    public boolean canUseThickFur() {
+        return getSkillLevel() >= Taming.thickFurUnlockLevel && Permissions.thickFur(getPlayer());
+    }
+
+    public boolean canUseEnvironmentallyAware() {
+        return getSkillLevel() >= Taming.environmentallyAwareUnlockLevel && Permissions.environmentallyAware(getPlayer());
+    }
+
+    public boolean canUseShockProof() {
+        return getSkillLevel() >= Taming.shockProofUnlockLevel && Permissions.shockProof(getPlayer());
+    }
+
+    public boolean canUseHolyHound() {
+        return getSkillLevel() >= Taming.holyHoundUnlockLevel && Permissions.holyHound(getPlayer());
+    }
+
+    public boolean canUseFastFoodService() {
+        return getSkillLevel() >= Taming.fastFoodServiceUnlockLevel && Permissions.fastFoodService(getPlayer());
+    }
+
+    public boolean canUseSharpenedClaws() {
+        return getSkillLevel() >= Taming.sharpenedClawsUnlockLevel && Permissions.sharpenedClaws(getPlayer());
+    }
+
+    public boolean canUseGore() {
+        return Permissions.gore(getPlayer());
+    }
+
+    public boolean canUseBeastLore() {
+        return Permissions.beastLore(getPlayer());
     }
 
     /**
@@ -26,25 +63,18 @@ public class TamingManager extends SkillManager {
      *
      * @param event The event to award XP for
      */
-    public void awardTamingXP(EntityTameEvent event) {
-        if (event.getEntity() == null) {
-            return;
-        }
-        else if (event.getEntity().hasMetadata(mcMMO.entityMetadataKey)) {
-            return;
-        }
+    public void awardTamingXP(LivingEntity entity) {
+        switch (entity.getType()) {
+            case WOLF:
+                applyXpGain(Taming.wolfXp);
+                return;
 
-        switch (event.getEntityType()) {
-        case WOLF:
-            mcMMOPlayer.beginXpGain(SkillType.TAMING, Taming.wolfXp);
-            break;
+            case OCELOT:
+                applyXpGain(Taming.ocelotXp);
+                return;
 
-        case OCELOT:
-            mcMMOPlayer.beginXpGain(SkillType.TAMING, Taming.ocelotXp);
-            break;
-
-        default:
-            break;
+            default:
+                return;
         }
     }
 
@@ -55,21 +85,16 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, int damage) {
-        if (Misc.getRandom().nextInt(activationChance) < Taming.fastFoodServiceActivationChance) {
-            FastFoodServiceEventHandler eventHandler = new FastFoodServiceEventHandler(wolf);
+        if (Taming.fastFoodServiceActivationChance > Misc.getRandom().nextInt(getActivationChance())) {
 
-            eventHandler.modifyHealth(damage);
+            int health = wolf.getHealth();
+            int maxHealth = wolf.getMaxHealth();
+
+            if (health < maxHealth) {
+                int newHealth = health + damage;
+                wolf.setHealth(Math.min(newHealth, maxHealth));
+            }
         }
-    }
-
-    /**
-     * Apply the Sharpened Claws ability.
-     *
-     * @param event The event to modify
-     */
-    public void sharpenedClaws(EntityDamageEvent event) {
-        SharpenedClawsEventHandler eventHandler = new SharpenedClawsEventHandler(event);
-        eventHandler.modifyEventDamage();
     }
 
     /**
@@ -77,50 +102,19 @@ public class TamingManager extends SkillManager {
      *
      * @param event The event to modify
      */
-    public void gore(EntityDamageEvent event) {
-        GoreEventHandler eventHandler = new GoreEventHandler(this, event);
+    public int gore(LivingEntity target, int damage) {
+        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Taming.goreMaxChance, Taming.goreMaxBonusLevel)) {
+            BleedTimerTask.add(target, Taming.goreBleedTicks);
 
-        float chance = (float) ((Taming.goreMaxChance / Taming.goreMaxBonusLevel) * skillLevel);
-        if (chance > Taming.goreMaxChance) chance = (float) Taming.goreMaxChance;
+            if (target instanceof Player) {
+                ((Player) target).sendMessage(LocaleLoader.getString("Combat.StruckByGore"));
+            }
 
-        if (chance > Misc.getRandom().nextInt(activationChance)) {
-            eventHandler.modifyEventDamage();
-            eventHandler.applyBleed();
-            eventHandler.sendAbilityMessage();
+            getPlayer().sendMessage(LocaleLoader.getString("Combat.Gore"));
+            return damage * Taming.goreModifier;
         }
-    }
 
-    /**
-     * Prevent damage to wolves based on various skills.
-     *
-     * @param event The event to modify
-     */
-    public void preventDamage(EntityDamageEvent event) {
-        DamageCause cause = event.getCause();
-
-        switch (cause) {
-        case CONTACT:
-        case LAVA:
-        case FIRE:
-        case FALL:
-            environmentallyAware(event, cause);
-            break;
-
-        case ENTITY_ATTACK:
-        case FIRE_TICK:
-        case PROJECTILE:
-            thickFur(event, cause);
-            break;
-
-        case BLOCK_EXPLOSION:
-        case ENTITY_EXPLOSION:
-        case LIGHTNING:
-            shockProof(event);
-            break;
-
-        default:
-            break;
-        }
+        return damage;
     }
 
     /**
@@ -140,11 +134,31 @@ public class TamingManager extends SkillManager {
     /**
      * Handle the Beast Lore ability.
      *
-     * @param livingEntity The entity to examine
+     * @param target The entity to examine
      */
-    public void beastLore(LivingEntity livingEntity) {
-        BeastLoreEventHandler eventHandler = new BeastLoreEventHandler(mcMMOPlayer.getPlayer(), livingEntity);
-        eventHandler.sendInspectMessage();
+    public void beastLore(LivingEntity target) {
+        Player player = getPlayer();
+        Tameable beast = (Tameable) target;
+
+        String message = LocaleLoader.getString("Combat.BeastLore") + " ";
+
+        if (beast.isTamed()) {
+            message = message.concat(LocaleLoader.getString("Combat.BeastLoreOwner", beast.getOwner().getName()) + " ");
+        }
+
+        message = message.concat(LocaleLoader.getString("Combat.BeastLoreHealth", target.getHealth(), target.getMaxHealth()));
+        player.sendMessage(message);
+    }
+
+    public void processEnvironmentallyAware(Wolf wolf, int damage) {
+        if (damage > wolf.getHealth()) {
+            return;
+        }
+
+        Player owner = getPlayer();
+
+        wolf.teleport(owner);
+        owner.sendMessage(LocaleLoader.getString("Taming.Listener.Wolf"));
     }
 
     /**
@@ -154,80 +168,36 @@ public class TamingManager extends SkillManager {
      * @param summonAmount The amount of material needed to summon the entity
      */
     private void callOfTheWild(EntityType type, int summonAmount) {
-        if (!Permissions.callOfTheWild(mcMMOPlayer.getPlayer())) {
+        Player player = getPlayer();
+
+        ItemStack heldItem = player.getItemInHand();
+        int heldItemAmount = heldItem.getAmount();
+
+        if (heldItemAmount < summonAmount) {
+            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(heldItem.getTypeId())));
             return;
         }
 
-        CallOfTheWildEventHandler eventHandler = new CallOfTheWildEventHandler(mcMMOPlayer.getPlayer(), type, summonAmount);
-
-        ItemStack inHand = eventHandler.inHand;
-        int inHandAmount = inHand.getAmount();
-
-        if (inHandAmount < summonAmount) {
-            eventHandler.sendInsufficientAmountMessage();
-            return;
-        }
-
-        if (eventHandler.nearbyEntityExists()) {
-            eventHandler.sendFailureMessage();
-        }
-        else {
-            eventHandler.spawnCreature();
-            eventHandler.processResourceCost();
-            eventHandler.sendSuccessMessage();
-        }
-    }
-
-    /**
-     * Handle the Environmentally Aware ability.
-     *
-     * @param event The event to modify
-     * @param cause The damage cause of the event
-     */
-    private void environmentallyAware(EntityDamageEvent event, DamageCause cause) {
-        if (skillLevel >= Taming.environmentallyAwareUnlockLevel && Permissions.environmentallyAware(mcMMOPlayer.getPlayer())) {
-            EnvironmentallyAwareEventHandler eventHandler = new EnvironmentallyAwareEventHandler(this, event);
-
-            switch (cause) {
-            case CONTACT:
-            case FIRE:
-            case LAVA:
-                eventHandler.teleportWolf();
-                eventHandler.sendAbilityMessage();
-                break;
-
-            case FALL:
-                eventHandler.cancelEvent();
-                break;
-
-            default:
-                break;
+        for (Entity entity : player.getNearbyEntities(40, 40, 40)) {
+            if (entity.getType() == type) {
+                player.sendMessage(Taming.getCallOfTheWildFailureMessage(type));
+                return;
             }
         }
-    }
 
-    /**
-     * Handle the Thick Fur ability.
-     *
-     * @param event The event to modify
-     * @param cause The damage cause of the event
-     */
-    private void thickFur(EntityDamageEvent event, DamageCause cause) {
-        if (skillLevel >= Taming.thickFurUnlockLevel && Permissions.thickFur(mcMMOPlayer.getPlayer())) {
-            ThickFurEventHandler eventHandler = new ThickFurEventHandler(event, cause);
-            eventHandler.modifyEventDamage();
-        }
-    }
+        LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), type);
 
-    /**
-     * Handle the Shock Proof ability.
-     *
-     * @param event The event to modify
-     */
-    private void shockProof(EntityDamageEvent event) {
-        if (skillLevel >= Taming.shockProofUnlockLevel && Permissions.shockProof(mcMMOPlayer.getPlayer())) {
-            ShockProofEventHandler eventHandler = new ShockProofEventHandler(event);
-            eventHandler.modifyEventDamage();
+        entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+        ((Tameable) entity).setOwner(player);
+
+        if (type == EntityType.OCELOT) {
+            ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + Misc.getRandom().nextInt(3)));
         }
+        else {
+            entity.setHealth(entity.getMaxHealth());
+        }
+
+        player.setItemInHand(new ItemStack(heldItem.getType(), heldItemAmount - summonAmount));
+        player.sendMessage(LocaleLoader.getString("Taming.Summon.Complete"));
     }
 }

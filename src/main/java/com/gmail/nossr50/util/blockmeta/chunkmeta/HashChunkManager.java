@@ -14,13 +14,13 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
-import org.getspout.spoutapi.chunkstore.mcMMOSimpleRegionFile;
 
 import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionZDirectory;
 
 public class HashChunkManager implements ChunkManager {
-    private HashMap<UUID, HashMap<Long, mcMMOSimpleRegionFile>> regionFiles = new HashMap<UUID, HashMap<Long, mcMMOSimpleRegionFile>>();
+    private HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>> regionFiles = new HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>>();
     public HashMap<String, ChunkStore> store = new HashMap<String, ChunkStore>();
     public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<BlockStoreConversionZDirectory>();
     private HashMap<UUID, Boolean> oldData = new HashMap<UUID, Boolean>();
@@ -28,9 +28,9 @@ public class HashChunkManager implements ChunkManager {
     @Override
     public synchronized void closeAll() {
         for (UUID uid : regionFiles.keySet()) {
-            HashMap<Long, mcMMOSimpleRegionFile> worldRegions = regionFiles.get(uid);
-            for (Iterator<mcMMOSimpleRegionFile> worldRegionIterator = worldRegions.values().iterator(); worldRegionIterator.hasNext();) {
-                mcMMOSimpleRegionFile rf = worldRegionIterator.next();
+            HashMap<Long, McMMOSimpleRegionFile> worldRegions = regionFiles.get(uid);
+            for (Iterator<McMMOSimpleRegionFile> worldRegionIterator = worldRegions.values().iterator(); worldRegionIterator.hasNext();) {
+                McMMOSimpleRegionFile rf = worldRegionIterator.next();
                 if (rf != null) {
                     rf.close();
                     worldRegionIterator.remove();
@@ -42,7 +42,7 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized ChunkStore readChunkStore(World world, int x, int z) throws IOException {
-        mcMMOSimpleRegionFile rf = getSimpleRegionFile(world, x, z);
+        McMMOSimpleRegionFile rf = getSimpleRegionFile(world, x, z);
         InputStream in = rf.getInputStream(x, z);
         if (in == null) {
             return null;
@@ -55,11 +55,13 @@ public class HashChunkManager implements ChunkManager {
             }
 
             throw new RuntimeException("Wrong class type read for chunk meta data for " + x + ", " + z);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // Assume the format changed
             return null;
             //throw new RuntimeException("Unable to process chunk meta data for " + x + ", " + z, e);
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             // Assume the format changed
             //System.out.println("[SpoutPlugin] is Unable to find serialized class for " + x + ", " + z + ", " + e.getMessage());
             return null;
@@ -76,36 +78,37 @@ public class HashChunkManager implements ChunkManager {
             return;
         }
         try {
-            mcMMOSimpleRegionFile rf = getSimpleRegionFile(world, x, z);
+            McMMOSimpleRegionFile rf = getSimpleRegionFile(world, x, z);
             ObjectOutputStream objectStream = new ObjectOutputStream(rf.getOutputStream(x, z));
             objectStream.writeObject(data);
             objectStream.flush();
             objectStream.close();
             data.setDirty(false);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new RuntimeException("Unable to write chunk meta data for " + x + ", " + z, e);
         }
     }
 
     @Override
     public synchronized void closeChunkStore(World world, int x, int z) {
-        mcMMOSimpleRegionFile rf = getSimpleRegionFile(world, x, z);
+        McMMOSimpleRegionFile rf = getSimpleRegionFile(world, x, z);
         if (rf != null) {
             rf.close();
         }
     }
 
-    private synchronized mcMMOSimpleRegionFile getSimpleRegionFile(World world, int x, int z) {
+    private synchronized McMMOSimpleRegionFile getSimpleRegionFile(World world, int x, int z) {
         File directory = new File(world.getWorldFolder(), "mcmmo_regions");
 
         directory.mkdirs();
 
         UUID key = world.getUID();
 
-        HashMap<Long, mcMMOSimpleRegionFile> worldRegions = regionFiles.get(key);
+        HashMap<Long, McMMOSimpleRegionFile> worldRegions = regionFiles.get(key);
 
         if (worldRegions == null) {
-            worldRegions = new HashMap<Long, mcMMOSimpleRegionFile>();
+            worldRegions = new HashMap<Long, McMMOSimpleRegionFile>();
             regionFiles.put(key, worldRegions);
         }
 
@@ -114,11 +117,11 @@ public class HashChunkManager implements ChunkManager {
 
         long key2 = (((long) rx) << 32) | ((rz) & 0xFFFFFFFFL);
 
-        mcMMOSimpleRegionFile regionFile = worldRegions.get(key2);
+        McMMOSimpleRegionFile regionFile = worldRegions.get(key2);
 
         if (regionFile == null) {
             File file = new File(directory, "mcmmo_" + rx + "_" + rz + "_.mcm");
-            regionFile = new mcMMOSimpleRegionFile(file, rx, rz);
+            regionFile = new McMMOSimpleRegionFile(file, rx, rz);
             worldRegions.put(key2, regionFile);
         }
 
@@ -137,8 +140,9 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void loadChunk(int cx, int cz, World world, Entity[] entities) {
-        if (world == null || store.containsKey(world.getName() + "," + cx + "," + cz))
+        if (world == null || store.containsKey(world.getName() + "," + cx + "," + cz)) {
             return;
+        }
 
         UUID key = world.getUID();
 
@@ -146,8 +150,9 @@ public class HashChunkManager implements ChunkManager {
             oldData.put(key, (new File(world.getWorldFolder(), "mcmmo_data")).exists());
         }
         else if (oldData.get(key)) {
-            if (convertChunk(new File(world.getWorldFolder(), "mcmmo_data"), cx, cz, world, true))
+            if (convertChunk(new File(world.getWorldFolder(), "mcmmo_data"), cx, cz, world, true)) {
                 return;
+            }
         }
 
         ChunkStore chunkStore = null;
@@ -157,8 +162,9 @@ public class HashChunkManager implements ChunkManager {
         }
         catch (Exception e) {}
 
-        if (chunkStore == null)
+        if (chunkStore == null) {
             return;
+        }
 
         store.put(world.getName() + "," + cx + "," + cz, chunkStore);
     }
@@ -170,22 +176,24 @@ public class HashChunkManager implements ChunkManager {
         if (store.containsKey(world.getName() + "," + cx + "," + cz)) {
             store.remove(world.getName() + "," + cx + "," + cz);
 
-            // closeChunkStore(world, cx, cz);
+            //closeChunkStore(world, cx, cz);
         }
     }
 
     @Override
     public synchronized void saveChunk(int cx, int cz, World world) {
-        if (world == null)
+        if (world == null) {
             return;
+        }
 
         String key = world.getName() + "," + cx + "," + cz;
 
         if (store.containsKey(key)) {
             ChunkStore out = store.get(world.getName() + "," + cx + "," + cz);
 
-            if (!out.isDirty())
+            if (!out.isDirty()) {
                 return;
+            }
 
             writeChunkStore(world, cx, cz, out);
         }
@@ -193,8 +201,9 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized boolean isChunkLoaded(int cx, int cz, World world) {
-        if (world == null)
+        if (world == null) {
             return false;
+        }
 
         return store.containsKey(world.getName() + "," + cx + "," + cz);
     }
@@ -204,16 +213,18 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void chunkUnloaded(int cx, int cz, World world) {
-        if (world == null)
+        if (world == null) {
             return;
+        }
 
         unloadChunk(cx, cz, world);
     }
 
     @Override
     public synchronized void saveWorld(World world) {
-        if (world == null)
+        if (world == null) {
             return;
+        }
 
         closeAll();
         String worldName = world.getName();
@@ -229,7 +240,7 @@ public class HashChunkManager implements ChunkManager {
                     cx = Integer.parseInt(info[1]);
                     cz = Integer.parseInt(info[2]);
                 }
-                catch(Exception e) {
+                catch (Exception e) {
                     continue;
                 }
                 saveChunk(cx, cz, world);
@@ -239,8 +250,9 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void unloadWorld(World world) {
-        if (world == null)
+        if (world == null) {
             return;
+        }
 
         closeAll();
         String worldName = world.getName();
@@ -256,7 +268,7 @@ public class HashChunkManager implements ChunkManager {
                     cx = Integer.parseInt(info[1]);
                     cz = Integer.parseInt(info[2]);
                 }
-                catch(Exception e) {
+                catch (Exception e) {
                     continue;
                 }
                 unloadChunk(cx, cz, world);
@@ -287,8 +299,9 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized boolean isTrue(int x, int y, int z, World world) {
-        if (world == null)
+        if (world == null) {
             return false;
+        }
 
         int cx = x / 16;
         int cz = z / 16;
@@ -311,16 +324,27 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized boolean isTrue(Block block) {
-        if (block == null)
+        if (block == null) {
             return false;
+        }
 
         return isTrue(block.getX(), block.getY(), block.getZ(), block.getWorld());
     }
 
     @Override
+    public synchronized boolean isTrue(BlockState blockState) {
+        if (blockState == null) {
+            return false;
+        }
+
+        return isTrue(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
+    }
+
+    @Override
     public synchronized void setTrue(int x, int y, int z, World world) {
-        if (world == null)
+        if (world == null) {
             return;
+        }
 
         int cx = x / 16;
         int cz = z / 16;
@@ -346,16 +370,27 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void setTrue(Block block) {
-        if (block == null)
+        if (block == null) {
             return;
+        }
 
         setTrue(block.getX(), block.getY(), block.getZ(), block.getWorld());
     }
 
     @Override
-    public synchronized void setFalse(int x, int y, int z, World world) {
-        if (world == null)
+    public void setTrue(BlockState blockState) {
+        if (blockState == null) {
             return;
+        }
+
+        setTrue(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
+    }
+
+    @Override
+    public synchronized void setFalse(int x, int y, int z, World world) {
+        if (world == null) {
+            return;
+        }
 
         int cx = x / 16;
         int cz = z / 16;
@@ -372,7 +407,7 @@ public class HashChunkManager implements ChunkManager {
         ChunkStore cStore = store.get(key);
 
         if (cStore == null) {
-            return; //No need to make a store for something we will be setting to false
+            return; // No need to make a store for something we will be setting to false
         }
 
         cStore.setFalse(ix, y, iz);
@@ -380,10 +415,20 @@ public class HashChunkManager implements ChunkManager {
 
     @Override
     public synchronized void setFalse(Block block) {
-        if (block == null)
+        if (block == null) {
             return;
+        }
 
         setFalse(block.getX(), block.getY(), block.getZ(), block.getWorld());
+    }
+
+    @Override
+    public synchronized void setFalse(BlockState blockState) {
+        if (blockState == null) {
+            return;
+        }
+
+        setFalse(blockState.getX(), blockState.getY(), blockState.getZ(), blockState.getWorld());
     }
 
     @Override
@@ -394,22 +439,30 @@ public class HashChunkManager implements ChunkManager {
     }
 
     public synchronized boolean convertChunk(File dataDir, int cx, int cz, World world, boolean actually) {
-        if (!actually)
+        if (!actually || !dataDir.exists()) {
             return false;
-        if (!dataDir.exists()) return false;
+        }
+
         File cxDir = new File(dataDir, "" + cx);
-        if (!cxDir.exists()) return false;
+        if (!cxDir.exists()) {
+            return false;
+        }
+
         File czDir = new File(cxDir, "" + cz);
-        if (!czDir.exists()) return false;
+        if (!czDir.exists()) {
+            return false;
+        }
 
         boolean conversionSet = false;
 
         for (BlockStoreConversionZDirectory converter : this.converters) {
-            if (converter == null)
+            if (converter == null) {
                 continue;
+            }
 
-            if (converter.taskID >= 0)
+            if (converter.taskID >= 0) {
                 continue;
+            }
 
             converter.start(world, cxDir, czDir);
             conversionSet = true;

@@ -8,13 +8,13 @@ import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.database.Leaderboard;
+import com.gmail.nossr50.database.LeaderboardManager;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.McTopAsync;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class MctopCommand implements CommandExecutor {
     @Override
@@ -22,39 +22,53 @@ public class MctopCommand implements CommandExecutor {
         boolean useMySQL = Config.getInstance().getUseMySQL();
 
         switch (args.length) {
-        case 0:
-            display(1, "ALL", sender, useMySQL, command);
-            return true;
+            case 0:
+                display(1, "ALL", sender, useMySQL, command);
+                return true;
 
-        case 1:
-            if (StringUtils.isInt(args[0])) {
-                display(Integer.parseInt(args[0]), "ALL", sender, useMySQL, command);
-            }
-            else if (SkillTools.isSkill(args[0])) {
-                display(1, SkillType.getSkill(args[0]).toString(), sender, useMySQL, command);
-            }
-            else {
-                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
-            }
+            case 1:
+                if (StringUtils.isInt(args[0])) {
+                    display(Integer.parseInt(args[0]), "ALL", sender, useMySQL, command);
+                }
+                else if (SkillUtils.isSkill(args[0])) {
+                    SkillType skill = SkillType.getSkill(args[0]);
 
-            return true;
+                    if (skill.isChildSkill()) {
+                        sender.sendMessage("Child skills are not yet supported by this command."); // TODO: Localize this
+                        return true;
+                    }
 
-        case 2:
-            if (!StringUtils.isInt(args[1])) {
+                    display(1, skill.toString(), sender, useMySQL, command);
+                }
+                else {
+                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
+                }
+
+                return true;
+
+            case 2:
+                if (!StringUtils.isInt(args[1])) {
+                    return false;
+                }
+
+                if (SkillUtils.isSkill(args[0])) {
+                    SkillType skill = SkillType.getSkill(args[0]);
+
+                    if (skill.isChildSkill()) {
+                        sender.sendMessage("Child skills are not yet supported by this command."); // TODO: Localize this
+                        return true;
+                    }
+
+                    display(Integer.parseInt(args[1]), skill.toString(), sender, useMySQL, command);
+                }
+                else {
+                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
+                }
+
+                return true;
+
+            default:
                 return false;
-            }
-
-            if (SkillTools.isSkill(args[0])) {
-                display(Integer.parseInt(args[1]), SkillType.getSkill(args[0]).toString(), sender, useMySQL, command);
-            }
-            else {
-                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
-            }
-
-            return true;
-
-        default:
-            return false;
         }
     }
 
@@ -78,9 +92,9 @@ public class MctopCommand implements CommandExecutor {
             return;
         }
 
-        Leaderboard.updateLeaderboards(); //Make sure we have the latest information
+        LeaderboardManager.updateLeaderboards(); // Make sure we have the latest information
 
-        String[] info = Leaderboard.retrieveInfo(skill, page);
+        String[] info = LeaderboardManager.retrieveInfo(skill, page);
 
         if (skill.equalsIgnoreCase("all")) {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
@@ -110,6 +124,6 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(int page, String query, CommandSender sender, Command command) {
-        Bukkit.getScheduler().runTaskAsynchronously(mcMMO.p, new McTopAsync(page, query, sender, command));
+        Bukkit.getScheduler().runTaskAsynchronously(mcMMO.p, new MctopCommandAsyncTask(page, query, sender, command));
     }
 }

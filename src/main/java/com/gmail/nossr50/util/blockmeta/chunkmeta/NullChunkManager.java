@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 
 public class NullChunkManager implements ChunkManager {
@@ -74,16 +75,27 @@ public class NullChunkManager implements ChunkManager {
     }
 
     @Override
+    public boolean isTrue(BlockState blockState) {
+        return false;
+    }
+
+    @Override
     public void setTrue(int x, int y, int z, World world) {}
 
     @Override
     public void setTrue(Block block) {}
 
     @Override
+    public void setTrue(BlockState blockState) {}
+
+    @Override
     public void setFalse(int x, int y, int z, World world) {}
 
     @Override
     public void setFalse(Block block) {}
+
+    @Override
+    public void setFalse(BlockState blockState) {}
 
     @Override
     public void cleanUp() {}

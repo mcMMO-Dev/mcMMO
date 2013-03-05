@@ -22,32 +22,32 @@ public enum RepairMaterialType {
      */
     public boolean getPermissions(Player player) {
         switch (this) {
-        case STRING:
-            return Permissions.repairString(player);
+            case STRING:
+                return Permissions.repairString(player);
 
-        case LEATHER:
-            return Permissions.repairLeather(player);
+            case LEATHER:
+                return Permissions.repairLeather(player);
 
-        case WOOD:
-            return Permissions.repairWood(player);
+            case WOOD:
+                return Permissions.repairWood(player);
 
-        case STONE:
-            return Permissions.repairStone(player);
+            case STONE:
+                return Permissions.repairStone(player);
 
-        case IRON:
-            return Permissions.repairIron(player);
+            case IRON:
+                return Permissions.repairIron(player);
 
-        case GOLD:
-            return Permissions.repairGold(player);
+            case GOLD:
+                return Permissions.repairGold(player);
 
-        case DIAMOND:
-            return Permissions.repairDiamond(player);
+            case DIAMOND:
+                return Permissions.repairDiamond(player);
 
-        case OTHER:
-            return Permissions.repairOtherMaterials(player);
+            case OTHER:
+                return Permissions.repairOtherMaterials(player);
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 }

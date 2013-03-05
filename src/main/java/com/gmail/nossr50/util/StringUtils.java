@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
 public class StringUtils {
-
     /**
      * Gets a capitalized version of the target string.
      *
@@ -12,7 +11,7 @@ public class StringUtils {
      * @return the capitalized string
      */
     public static String getCapitalized(String target) {
-        String firstLetter = target.substring(0,1);
+        String firstLetter = target.substring(0, 1);
         String remainder = target.substring(1);
         String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
 

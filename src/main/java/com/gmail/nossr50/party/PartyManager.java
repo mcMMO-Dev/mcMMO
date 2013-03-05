@@ -10,12 +10,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
 
 public final class PartyManager {
     private static String partiesFilePath = mcMMO.p.getDataFolder().getPath() + File.separator + "FlatFileStuff" + File.separator + "parties.yml";
@@ -46,8 +47,8 @@ public final class PartyManager {
      * @return true if they are in the same party, false otherwise
      */
     public static boolean inSameParty(Player firstPlayer, Player secondPlayer) {
-        McMMOPlayer firstMcMMOPlayer = Users.getPlayer(firstPlayer);
-        McMMOPlayer secondMcMMOPlayer = Users.getPlayer(secondPlayer);
+        McMMOPlayer firstMcMMOPlayer = UserManager.getPlayer(firstPlayer);
+        McMMOPlayer secondMcMMOPlayer = UserManager.getPlayer(secondPlayer);
 
         if (firstMcMMOPlayer == null || secondMcMMOPlayer == null) {
             return false;
@@ -74,40 +75,12 @@ public final class PartyManager {
         List<Player> nearMembers = new ArrayList<Player>();
         if (party != null) {
             for (Player member : party.getOnlineMembers()) {
-                if (player != member && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
+                if (!player.getName().equals(member.getName()) && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
                     nearMembers.add(member);
                 }
             }
         }
         return nearMembers;
-    }
-
-    /**
-     * Notify party members when a player joins
-     * 
-     * @param player The player that joins
-     * @param party The concerned party
-     */
-    private static void informPartyMembersJoin(OfflinePlayer player, Party party) {
-        for (Player member : party.getOnlineMembers()) {
-            if (!member.equals(player)) {
-                member.sendMessage(LocaleLoader.getString("Party.InformedOnJoin", player.getName()));
-            }
-        }
-    }
-
-    /**
-     * Notify party members when a party member quits.
-     *
-     * @param player The player that quits
-     * @param party The concerned party
-     */
-    private static void informPartyMembersQuit(OfflinePlayer player, Party party) {
-        for (Player member : party.getOnlineMembers()) {
-            if (!member.equals(player)) {
-                member.sendMessage(LocaleLoader.getString("Party.InformedOnQuit", player.getName()));
-            }
-        }
     }
 
     /**
@@ -117,7 +90,7 @@ public final class PartyManager {
      * @return all the players in the player's party
      */
     public static List<OfflinePlayer> getAllMembers(Player player) {
-        Party party = Users.getPlayer(player).getParty();
+        Party party = UserManager.getPlayer(player).getParty();
 
         if (party == null) {
             return null;
@@ -154,7 +127,7 @@ public final class PartyManager {
 
     /**
      * Retrieve a party by its name
-     * 
+     *
      * @param partyName The party name
      * @return the existing party, null otherwise
      */
@@ -170,7 +143,7 @@ public final class PartyManager {
 
     /**
      * Retrieve a party by a member name
-     * 
+     *
      * @param playerName The member name
      * @return the existing party, null otherwise
      */
@@ -210,7 +183,7 @@ public final class PartyManager {
             parties.remove(party);
         }
         else {
-            //If the leaving player was the party leader, appoint a new leader from the party members
+            // If the leaving player was the party leader, appoint a new leader from the party members
             if (party.getLeader().equals(player.getName())) {
                 String newLeader = members.get(0).getName();
                 party.setLeader(newLeader);
@@ -219,10 +192,11 @@ public final class PartyManager {
             informPartyMembersQuit(player, party);
         }
 
-        McMMOPlayer mcMMOPlayer = Users.getPlayer(player.getName());
- 
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player.getName());
+
         if (mcMMOPlayer != null) {
             mcMMOPlayer.removeParty();
+            mcMMOPlayer.setItemShareModifier(10);
         }
     }
 
@@ -235,10 +209,11 @@ public final class PartyManager {
         List<OfflinePlayer> members = party.getMembers();
 
         for (OfflinePlayer member : members) {
-            McMMOPlayer mcMMOPlayer = Users.getPlayer(member.getName());
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(member.getName());
 
             if (mcMMOPlayer != null) {
                 mcMMOPlayer.removeParty();
+                mcMMOPlayer.setItemShareModifier(10);
             }
         }
 
@@ -294,6 +269,10 @@ public final class PartyManager {
             return;
         }
 
+        if (mcMMOPlayer.getParty() == party) {
+            return;
+        }
+
         player.sendMessage(LocaleLoader.getString("Commands.Party.Join", party.getName()));
         addToParty(player, mcMMOPlayer, party);
     }
@@ -332,12 +311,16 @@ public final class PartyManager {
 
     /**
      * Accept a party invitation
-     * 
+     *
      * @param Player The plaer to add to the party
      * @param mcMMOPlayer The player to add to the party
      */
     public static void joinInvitedParty(Player player, McMMOPlayer mcMMOPlayer) {
         Party invite = mcMMOPlayer.getPartyInvite();
+
+        if (mcMMOPlayer.getParty() == invite) {
+            return;
+        }
 
         if (!parties.contains(invite)) {
             parties.add(invite);
@@ -350,12 +333,16 @@ public final class PartyManager {
 
     /**
      * Add a player to a party
-     * 
+     *
      * @param player The player to add to a party
      * @param mcMMOPlayer The player to add to the party
      * @param party The party
      */
     public static void addToParty(OfflinePlayer player, McMMOPlayer mcMMOPlayer, Party party) {
+        if (mcMMOPlayer.getParty() == party) {
+            return;
+        }
+
         informPartyMembersJoin(player, party);
         mcMMOPlayer.setParty(party);
         party.getMembers().add(player);
@@ -446,7 +433,8 @@ public final class PartyManager {
 
         try {
             partiesFile.load(file);
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -503,7 +491,8 @@ public final class PartyManager {
 
             try {
                 partiesFile.save(new File(partiesFilePath));
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -523,5 +512,33 @@ public final class PartyManager {
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return !event.isCancelled();
+    }
+
+    /**
+     * Notify party members when a player joins
+     *
+     * @param player The player that joins
+     * @param party The concerned party
+     */
+    private static void informPartyMembersJoin(OfflinePlayer player, Party party) {
+        for (Player member : party.getOnlineMembers()) {
+            if (!member.equals(player)) {
+                member.sendMessage(LocaleLoader.getString("Party.InformedOnJoin", player.getName()));
+            }
+        }
+    }
+
+    /**
+     * Notify party members when a party member quits.
+     *
+     * @param player The player that quits
+     * @param party The concerned party
+     */
+    private static void informPartyMembersQuit(OfflinePlayer player, Party party) {
+        for (Player member : party.getOnlineMembers()) {
+            if (!member.equals(player)) {
+                member.sendMessage(LocaleLoader.getString("Party.InformedOnQuit", player.getName()));
+            }
+        }
     }
 }

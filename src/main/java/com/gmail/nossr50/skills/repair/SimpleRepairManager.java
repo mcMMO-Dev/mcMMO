@@ -9,12 +9,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.events.skills.McMMOPlayerRepairCheckEvent;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SimpleRepairManager implements RepairManager {
     private HashMap<Integer, Repairable> repairables;
@@ -108,6 +109,9 @@ public class SimpleRepairManager implements RepairManager {
             return;
         }
 
+        // Clear ability buffs before trying to repair.
+        SkillUtils.removeAbilityBuff(item);
+
         // Lets get down to business,
         // To defeat, the huns.
         int baseRepairAmount = repairable.getBaseRepairDurability(); // Did they send me daughters?
@@ -194,11 +198,8 @@ public class SimpleRepairManager implements RepairManager {
      */
     private int findInInventory(PlayerInventory inventory, int itemId, byte metadata) {
         int location = -1;
-        ItemStack[] contents = inventory.getContents();
 
-        for (int i = 0; i < contents.length; i++) {
-            ItemStack item = contents[i];
-
+        for (ItemStack item : inventory.getContents()) {
             if (item == null) {
                 continue;
             }

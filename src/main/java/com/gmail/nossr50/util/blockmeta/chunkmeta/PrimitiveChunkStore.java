@@ -72,7 +72,9 @@ public class PrimitiveChunkStore implements ChunkStore {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
                 for (int y = 0; y < this.worldHeight; y++) {
-                    if (store[x][z][y]) return false;
+                    if (store[x][z][y]) {
+                        return false;
+                    }
                 }
             }
         }
@@ -108,7 +110,7 @@ public class PrimitiveChunkStore implements ChunkStore {
         int magic = in.readInt();
         // Can be used to determine the format of the file
         int fileVersionNumber = in.readInt();
-        
+
         if (magic != MAGIC_NUMBER) {
             fileVersionNumber = 0;
         }
@@ -141,7 +143,7 @@ public class PrimitiveChunkStore implements ChunkStore {
                     try {
                         store[x][z][y] = temp[x][y][z];
                     }
-                    catch(Exception e) {}
+                    catch (Exception e) {}
                 }
             }
         }

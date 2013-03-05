@@ -4,17 +4,21 @@ import java.io.IOException;
 
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 
 public interface ChunkManager {
     public void closeAll();
+
     public ChunkStore readChunkStore(World world, int x, int z) throws IOException;
+
     public void writeChunkStore(World world, int x, int z, ChunkStore data);
+
     public void closeChunkStore(World world, int x, int z);
 
     /**
      * Loads a specific chunklet
-     * 
+     *
      * @param cx Chunklet X coordinate that needs to be loaded
      * @param cy Chunklet Y coordinate that needs to be loaded
      * @param cz Chunklet Z coordinate that needs to be loaded
@@ -60,6 +64,7 @@ public interface ChunkManager {
     public void saveChunk(int cx, int cz, World world);
 
     public boolean isChunkLoaded(int cx, int cz, World world);
+
     /**
      * Informs the ChunkletManager a chunk is loaded
      *
@@ -129,6 +134,14 @@ public interface ChunkManager {
     public boolean isTrue(Block block);
 
     /**
+     * Check to see if a given BlockState location is set to true
+     *
+     * @param location BlockState location to check
+     * @return true if the given BlockState location is set to true, false if otherwise
+     */
+    public boolean isTrue(BlockState blockState);
+
+    /**
      * Set a given location to true, should create stores as necessary if the location does not exist
      *
      * @param x X coordinate to set
@@ -146,6 +159,13 @@ public interface ChunkManager {
     public void setTrue(Block block);
 
     /**
+     * Set a given BlockState location to true, should create stores as necessary if the location does not exist
+     *
+     * @param block BlockState location to set
+     */
+    public void setTrue(BlockState blockState);
+
+    /**
      * Set a given location to false, should not create stores if one does not exist for the given location
      *
      * @param x X coordinate to set
@@ -161,6 +181,13 @@ public interface ChunkManager {
      * @param block Block location to set
      */
     public void setFalse(Block block);
+
+    /**
+     * Set a given BlockState location to false, should not create stores if one does not exist for the given location
+     *
+     * @param block BlockState location to set
+     */
+    public void setFalse(BlockState blockState);
 
     /**
      * Delete any ChunkletStores that are empty

@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
-import com.gmail.nossr50.mods.ModChecks;
 
 public final class Misc {
     private static Random random = new Random();
@@ -19,13 +18,14 @@ public final class Misc {
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
-    //Sound Pitches & Volumes from CB
-    public static final float ANVIL_USE_PITCH = 0.3F; // Not in CB directly, I went off the place sound values
+
+    // Sound Pitches & Volumes from CB
+    public static final float ANVIL_USE_PITCH  = 0.3F; // Not in CB directly, I went off the place sound values
     public static final float ANVIL_USE_VOLUME = 1.0F; // Not in CB directly, I went off the place sound values
-    public static final float FIZZ_PITCH = 2.6F + (Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.8F;
-    public static final float FIZZ_VOLUME = 0.5F;
-    public static final float POP_PITCH = ((getRandom().nextFloat() - getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
-    public static final float POP_VOLUME = 0.2F;
+    public static final float FIZZ_PITCH       = 2.6F + (Misc.getRandom().nextFloat() - Misc.getRandom().nextFloat()) * 0.8F;
+    public static final float FIZZ_VOLUME      = 0.5F;
+    public static final float POP_PITCH        = ((getRandom().nextFloat() - getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
+    public static final float POP_VOLUME       = 0.2F;
 
     private Misc() {};
 
@@ -46,23 +46,23 @@ public final class Misc {
     public static int getTier(ItemStack inHand) {
         int tier = 0;
 
-        if (ItemChecks.isWoodTool(inHand)) {
+        if (ItemUtils.isWoodTool(inHand)) {
             tier = 1;
         }
-        else if (ItemChecks.isStoneTool(inHand)) {
+        else if (ItemUtils.isStoneTool(inHand)) {
             tier = 2;
         }
-        else if (ItemChecks.isIronTool(inHand)) {
+        else if (ItemUtils.isIronTool(inHand)) {
             tier = 3;
         }
-        else if (ItemChecks.isGoldTool(inHand)) {
+        else if (ItemUtils.isGoldTool(inHand)) {
             tier = 1;
         }
-        else if (ItemChecks.isDiamondTool(inHand)) {
+        else if (ItemUtils.isDiamondTool(inHand)) {
             tier = 4;
         }
-        else if (ModChecks.isCustomTool(inHand)) {
-            tier = ModChecks.getToolFromItemStack(inHand).getTier();
+        else if (ModUtils.isCustomTool(inHand)) {
+            tier = ModUtils.getToolFromItemStack(inHand).getTier();
         }
 
         return tier;
@@ -147,8 +147,9 @@ public final class Misc {
         McMMOItemSpawnEvent event = new McMMOItemSpawnEvent(location, itemStack);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-        if (event.isCancelled())
+        if (event.isCancelled()) {
             return;
+        }
 
         Item newItem = location.getWorld().dropItemNaturally(location, itemStack);
 

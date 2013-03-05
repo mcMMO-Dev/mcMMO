@@ -41,12 +41,12 @@ public class ZipLibrary {
             mcMMO.p.getLogger().severe(e.toString());
         }
 
-        //Generate the proper date for the backup filename
+        // Generate the proper date for the backup filename
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
         File fileZip = new File(BackupDirectory + File.separator + dateFormat.format(date) + ".zip");
 
-        //Create the Source List, and add directories/etc to the file.
+        // Create the Source List, and add directories/etc to the file.
         List<File> sources = new ArrayList<File>();
         if (!Config.getInstance().getUseMySQL()) {
             sources.add(FlatFileDirectory);
@@ -65,7 +65,7 @@ public class ZipLibrary {
             sources.add(SpoutFile);
         }
 
-        //Actually do something
+        // Actually do something
         mcMMO.p.getLogger().info("Backing up your mcMMO Configuration... ");
 
         packZip(fileZip, sources);

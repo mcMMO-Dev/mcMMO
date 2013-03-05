@@ -8,7 +8,7 @@ public abstract class Treasure {
     private int dropLevel;
     private ItemStack drop;
 
-    public Treasure(ItemStack drop, int xp, Double dropChance, int dropLevel) {
+    public Treasure(ItemStack drop, int xp, double dropChance, int dropLevel) {
         this.drop = drop;
         this.xp = xp;
         this.dropChance = dropChance;

@@ -6,16 +6,15 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 
-import com.gmail.nossr50.skills.utilities.AbilityType;
-import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.StringUtils;
 
-public class Config extends ConfigLoader {
+public class Config extends AutoUpdateConfigLoader {
     private static Config instance;
 
     private Config() {
         super("config.yml");
-        loadKeys();
     }
 
     public static Config getInstance() {
@@ -44,6 +43,8 @@ public class Config extends ConfigLoader {
     public boolean getEventCallbackEnabled() { return config.getBoolean("General.Event_Callback", true); }
     public boolean getBackupsEnabled() { return config.getBoolean("General.Generate_Backups", true); }
     public boolean getVerboseLoggingEnabled() { return config.getBoolean("General.Verbose_Logging", false); }
+    public boolean getConfigOverwriteEnabled() { return config.getBoolean("General.Config_Update_Overwrite", true); }
+
     public boolean getPartyDisplayNames() { return config.getBoolean("Commands.p.Use_Display_Names", true); }
     public boolean getAdminDisplayNames() { return config.getBoolean("Commands.a.Use_Display_Names", true); }
 
@@ -103,6 +104,13 @@ public class Config extends ConfigLoader {
     public int getChimaeraCost() { return config.getInt("Items.Chimaera_Wing.Feather_Cost", 10); }
     public int getChimaeraItemId() { return config.getInt("Items.Chimaera_Wing.Item_ID", 288); }
     public boolean getChimaeraEnabled() { return config.getBoolean("Items.Chimaera_Wing.Enabled", true); }
+
+    /* Particles */
+    public boolean getAbilityActivationEffectEnabled() { return config.getBoolean("Particles.Ability_Activation", true); }
+    public boolean getAbilityDeactivationEffectEnabled() { return config.getBoolean("Particles.Ability_Deactivation", true); }
+    public boolean getDodgeEffectEnabled() { return config.getBoolean("Particles.Dodge", true); }
+    public boolean getBleedEffectEnabled() { return config.getBoolean("Particles.Bleed", true); }
+    public boolean getGreaterImpactEffectEnabled() { return config.getBoolean("Particles.Greater_Impact", true); }
 
     /* PARTY SETTINGS */
     public int getAutoPartyKickInterval() { return config.getInt("Party.AutoKick_Interval", 12); }

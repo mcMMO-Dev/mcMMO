@@ -1,0 +1,16 @@
+Item_Weights:
+    Default: 5
+    Emerald: 150
+    Emerald_Ore: 150
+    Diamond: 100
+    Diamond_Ore: 100
+    Gold_Ingot: 50
+    Gold_Ore: 50
+    Iron_Ingot: 40
+    Iron_Ore: 40
+    Lapis_Ore: 30
+    Redstone: 30
+    Redstone_Ore: 30
+    Glowstone_Dust: 20
+    Coal: 10
+    Coal_Ore: 10

@@ -9,8 +9,8 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.commands.PartySubcommandType;
-import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.commands.party.PartySubcommandType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public final class Permissions {
     private Permissions() {}
@@ -83,6 +83,10 @@ public final class Permissions {
     public static boolean vampirismModify(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.vampirism.modify"); }
     public static boolean vampirismToggle(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.vampirism.toggle"); }
 
+    public static boolean mcpurge(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mcpurge"); }
+    public static boolean mcremove(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mcremove"); }
+    public static boolean mmoupdate(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mmoupdate"); }
+
     /*
      * PERKS
      */
@@ -146,6 +150,7 @@ public final class Permissions {
     public static boolean greenThumbBlock(Permissible permissible, Material material) { return permissible.hasPermission("mcmmo.ability.herbalism.greenthumb.blocks." + material.toString().replace("_", "").toLowerCase()); }
     public static boolean greenThumbPlant(Permissible permissible, Material material) { return permissible.hasPermission("mcmmo.ability.herbalism.greenthumb.plants." + material.toString().replace("_", "").toLowerCase()); }
     public static boolean hylianLuck(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.herbalism.hylianluck"); }
+    public static boolean shroomThumb(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.herbalism.shroomthumb"); }
 
     /* MINING */
     public static boolean biggerBombs(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.mining.blastmining.biggerbombs"); }
@@ -187,6 +192,7 @@ public final class Permissions {
     public static boolean environmentallyAware(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.environmentallyaware"); }
     public static boolean fastFoodService(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.fastfoodservice"); }
     public static boolean gore(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.gore"); }
+    public static boolean holyHound(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.holyhound"); }
     public static boolean thickFur(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.thickfur"); }
     public static boolean sharpenedClaws(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.sharpenedclaws"); }
     public static boolean shockProof(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.shockproof"); }

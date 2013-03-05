@@ -1,44 +1,46 @@
 package com.gmail.nossr50.skills.unarmed;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.skills.utilities.SkillTools;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class Unarmed {
     public static int ironArmMaxBonusDamage = AdvancedConfig.getInstance().getIronArmMaxBonus();
-    public static int ironArmIncreaseLevel = AdvancedConfig.getInstance().getIronArmIncreaseLevel();
+    public static int ironArmIncreaseLevel  = AdvancedConfig.getInstance().getIronArmIncreaseLevel();
 
-    public static double disarmMaxChance = AdvancedConfig.getInstance().getDisarmChanceMax() ;
-    public static int disarmMaxBonusLevel = AdvancedConfig.getInstance().getDisarmMaxBonusLevel();
+    public static int    disarmMaxBonusLevel = AdvancedConfig.getInstance().getDisarmMaxBonusLevel();
+    public static double disarmMaxChance     = AdvancedConfig.getInstance().getDisarmChanceMax();
 
-    public static double deflectMaxChance = AdvancedConfig.getInstance().getDeflectChanceMax();
-    public static int deflectMaxBonusLevel = AdvancedConfig.getInstance().getDeflectMaxBonusLevel();
+    public static int    deflectMaxBonusLevel = AdvancedConfig.getInstance().getDeflectMaxBonusLevel();
+    public static double deflectMaxChance     = AdvancedConfig.getInstance().getDeflectChanceMax();
 
-    public static double ironGripMaxChance = AdvancedConfig.getInstance().getIronGripChanceMax();
-    public static int ironGripMaxBonusLevel = AdvancedConfig.getInstance().getIronGripMaxBonusLevel();
+    public static int    ironGripMaxBonusLevel = AdvancedConfig.getInstance().getIronGripMaxBonusLevel();
+    public static double ironGripMaxChance     = AdvancedConfig.getInstance().getIronGripChanceMax();
 
     public static boolean blockCrackerSmoothBrick = Config.getInstance().getUnarmedBlockCrackerSmoothbrickToCracked();
 
     public static double berserkDamageModifier = 1.5;
 
-    public static void blockCracker(Player player, Block block) {
-        if (SkillTools.blockBreakSimulate(block, player, false)) {
-            Material type = block.getType();
+    public static boolean blockCracker(Player player, BlockState blockState) {
+        if (SkillUtils.blockBreakSimulate(blockState.getBlock(), player, false)) {
+            Material type = blockState.getType();
 
             switch (type) {
                 case SMOOTH_BRICK:
-                    if (blockCrackerSmoothBrick && block.getData() == 0x0) {
-                        block.setData((byte) 0x2);
+                    if (blockCrackerSmoothBrick && blockState.getRawData() == (byte) 0x0) {
+                        blockState.setRawData((byte) 0x2);
                     }
-                    return;
+                    return true;
 
                 default:
-                    return;
+                    return false;
             }
         }
+
+        return false;
     }
 }

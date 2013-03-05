@@ -17,17 +17,17 @@ public enum RepairItemType {
      */
     public boolean getPermissions(Player player) {
         switch (this) {
-        case ARMOR:
-            return Permissions.repairArmor(player);
+            case ARMOR:
+                return Permissions.repairArmor(player);
 
-        case TOOL:
-            return Permissions.repairTools(player);
+            case TOOL:
+                return Permissions.repairTools(player);
 
-        case OTHER:
-            return Permissions.repairOtherItems(player);
+            case OTHER:
+                return Permissions.repairOtherItems(player);
 
-        default:
-            return false;
+            default:
+                return false;
         }
     }
 }

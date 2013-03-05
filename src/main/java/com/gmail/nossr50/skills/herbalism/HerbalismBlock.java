@@ -8,9 +8,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.skills.utilities.SkillType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Permissions;
-
 import com.google.common.collect.Maps;
 
 public enum HerbalismBlock {
@@ -30,8 +29,9 @@ public enum HerbalismBlock {
     WATER_LILY(Material.WATER_LILY),
     YELLOW_FLOWER(Material.YELLOW_FLOWER);
 
-    private Material blockType;
+    private Material  blockType;
     private ItemStack dropItem;
+
     private final static Map<Material, HerbalismBlock> BY_MATERIAL = Maps.newHashMap();
 
     private HerbalismBlock(Material blockType) {

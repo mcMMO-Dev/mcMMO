@@ -1,19 +1,47 @@
 package com.gmail.nossr50.skills.unarmed;
 
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.ToolType;
+import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.PerksUtils;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class UnarmedManager extends SkillManager {
     public UnarmedManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.UNARMED);
+    }
+
+    public boolean canActivateAbility() {
+        return mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
+    }
+
+    public boolean canUseIronArm() {
+        return Permissions.bonusDamage(getPlayer(), skill);
+    }
+
+    public boolean canUseBerserk() {
+        return mcMMOPlayer.getAbilityMode(AbilityType.BERSERK) && Permissions.berserk(getPlayer());
+    }
+
+    public boolean canDisarm(LivingEntity target) {
+        return target instanceof Player && ((Player) target).getItemInHand().getType() != Material.AIR && Permissions.disarm(getPlayer());
+    }
+
+    public boolean canDeflect() {
+        Player player = getPlayer();
+
+        return player.getItemInHand().getType() == Material.AIR && Permissions.arrowDeflect(player);
     }
 
     /**
@@ -21,55 +49,46 @@ public class UnarmedManager extends SkillManager {
      *
      * @param defender The defending player
      */
-    public void disarmCheck(LivingEntity defender) {
-        Player defendingPlayer = (Player) defender;
-        DisarmEventHandler eventHandler = new DisarmEventHandler(this, defendingPlayer);
+    public void disarmCheck(Player defender) {
+        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Unarmed.disarmMaxChance, Unarmed.disarmMaxBonusLevel) && !hasIronGrip(defender)) {
+            McMMOPlayerDisarmEvent disarmEvent = new McMMOPlayerDisarmEvent(defender);
+            mcMMO.p.getServer().getPluginManager().callEvent(disarmEvent);
 
-        if (eventHandler.isHoldingItem()) {
-            eventHandler.calculateSkillModifier();
+            if (!disarmEvent.isCancelled()) {
+                Misc.dropItem(defender.getLocation(), defender.getItemInHand());
 
-            float chance = (float) ((Unarmed.disarmMaxChance / Unarmed.disarmMaxBonusLevel) * skillLevel);
-            if (chance > Unarmed.disarmMaxChance) chance = (float) Unarmed.disarmMaxChance;
-
-            if (chance > Misc.getRandom().nextInt(activationChance)) {
-                if (!hasIronGrip(defendingPlayer)) {
-                    eventHandler.handleDisarm();
-                }
+                defender.setItemInHand(new ItemStack(Material.AIR));
+                defender.sendMessage(LocaleLoader.getString("Skills.Disarmed"));
             }
         }
     }
 
     /**
      * Check for arrow deflection.
-     *
-     * @param event The event to modify
      */
-    public void deflectCheck(EntityDamageEvent event) {
-        DeflectEventHandler eventHandler = new DeflectEventHandler(this, event);
-
-        float chance = (float) ((Unarmed.deflectMaxChance / Unarmed.deflectMaxBonusLevel) * skillLevel);
-        if (chance > Unarmed.deflectMaxChance) chance = (float) Unarmed.deflectMaxChance;
-
-        if (chance > Misc.getRandom().nextInt(activationChance)) {
-            eventHandler.cancelEvent();
-            eventHandler.sendAbilityMessage();
+    public boolean deflectCheck() {
+        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Unarmed.deflectMaxChance, Unarmed.deflectMaxBonusLevel)) {
+            getPlayer().sendMessage(LocaleLoader.getString("Combat.ArrowDeflect"));
+            return true;
         }
+
+        return false;
     }
 
-    public void berserkDamage(EntityDamageEvent event) {
-        event.setDamage((int) (event.getDamage() * Unarmed.berserkDamageModifier));
+    public int berserkDamage(int damage) {
+        return (int) (damage * Unarmed.berserkDamageModifier);
     }
 
     /**
-     * Handle Unarmed bonus damage.
+     * Handle the effects of the Iron Arm ability
      *
-     * @param event The event to modify.
+     * @param damage The amount of damage initially dealt by the event
+     * @return the modified event damage
      */
-    public void bonusDamage(EntityDamageEvent event) {
-        UnarmedBonusDamageEventHandler eventHandler = new UnarmedBonusDamageEventHandler(this, event);
+    public int ironArmCheck(int damage) {
+        int unarmedBonus = Math.min(3 + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
 
-        eventHandler.calculateDamageBonus();
-        eventHandler.modifyEventDamage();
+        return damage + unarmedBonus;
     }
 
     /**
@@ -79,16 +98,10 @@ public class UnarmedManager extends SkillManager {
      * @return true if the defender was not disarmed, false otherwise
      */
     private boolean hasIronGrip(Player defender) {
-        if (Misc.isNPCEntity(defender) || !Permissions.ironGrip(defender)) {
-            return false;
-        }
+        if (!Misc.isNPCEntity(defender) && Permissions.ironGrip(defender) && SkillUtils.activationSuccessful(defender, skill, Unarmed.ironGripMaxChance, Unarmed.ironGripMaxBonusLevel)) {
+            defender.sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Defender"));
+            getPlayer().sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Attacker"));
 
-        IronGripEventHandler eventHandler = new IronGripEventHandler(this, defender);
-
-        double chance = (Unarmed.ironGripMaxChance / Unarmed.ironGripMaxBonusLevel) * eventHandler.skillModifier;
-
-        if (chance > Misc.getRandom().nextInt(PerksUtils.handleLuckyPerks(defender, skill))) {
-            eventHandler.sendAbilityMessages();
             return true;
         }
 

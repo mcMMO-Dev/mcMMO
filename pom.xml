@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gmail.nossr50.mcMMO</groupId>
     <artifactId>mcMMO</artifactId>
-    <version>1.4.00-dev4</version>
+    <version>1.4.03-dev1</version>
     <name>mcMMO</name>
     <url>https://github.com/mcMMO-Dev/mcMMO</url>
     <issueManagement>
@@ -105,7 +105,7 @@
                     <relocations>
                         <relocation>
                             <pattern>com.turt2live.metrics</pattern>
-                            <shadedPattern>com.gmail.nossr50.util.mcstats</shadedPattern>
+                            <shadedPattern>com.gmail.nossr50.metrics.mcstats</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -129,29 +129,14 @@
     </build>
     <repositories>
         <repository>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </snapshots>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
         <repository>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </snapshots>
             <id>spout-repo</id>
             <url>http://nexus.spout.org/content/groups/public/</url>
         </repository>
         <repository>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>fail</checksumPolicy>
-            </snapshots>
             <id>Plugin MetricsExtension</id>
             <url>http://repo.turt2live.com</url>
         </repository>

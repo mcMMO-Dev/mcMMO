@@ -1,55 +1,41 @@
 package com.gmail.nossr50.skills.fishing;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Item;
+import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.TreasuresConfig;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.utilities.PerksUtils;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.ItemChecks;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 
 public final class Fishing {
-    static final AdvancedConfig ADVANCED_CONFIG = AdvancedConfig.getInstance();
-
     // The order of the values is extremely important, a few methods depend on it to work properly
     protected enum Tier {
         FIVE(5) {
-            @Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier5();}
-            @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank5();}
-            @Override public int getVanillaXPBoostModifier() {return ADVANCED_CONFIG.getFishingVanillaXPModifierRank5();}},
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier5(); }
+            @Override public int getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank5(); }
+            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank5(); }},
         FOUR(4) {
-            @Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier4();}
-            @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank4();}
-            @Override public int getVanillaXPBoostModifier() {return ADVANCED_CONFIG.getFishingVanillaXPModifierRank4();}},
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier4(); }
+            @Override public int getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank4(); }
+            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank4(); }},
         THREE(3) {
-            @Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier3();}
-            @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank3();}
-            @Override public int getVanillaXPBoostModifier() {return ADVANCED_CONFIG.getFishingVanillaXPModifierRank3();}},
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier3(); }
+            @Override public int getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank3(); }
+            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank3(); }},
         TWO(2) {
-            @Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier2();}
-            @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank2();}
-            @Override public int getVanillaXPBoostModifier() {return ADVANCED_CONFIG.getFishingVanillaXPModifierRank2();}},
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier2(); }
+            @Override public int getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank2(); }
+            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank2(); }},
         ONE(1) {
-            @Override public int getLevel() {return ADVANCED_CONFIG.getFishingTierLevelsTier1();}
-            @Override public int getShakeChance() {return ADVANCED_CONFIG.getShakeChanceRank1();}
-            @Override public int getVanillaXPBoostModifier() {return ADVANCED_CONFIG.getFishingVanillaXPModifierRank1();}};
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier1(); }
+            @Override public int getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank1(); }
+            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank1(); }};
 
         int numerical;
 
@@ -66,207 +52,150 @@ public final class Fishing {
         abstract protected int getVanillaXPBoostModifier();
     }
 
-    // TODO: Get rid of that
-    public static int fishermansDietRankLevel1 = ADVANCED_CONFIG.getFishermanDietRankChange();
+    public static int fishermansDietRankLevel1 = AdvancedConfig.getInstance().getFishermanDietRankChange();
     public static int fishermansDietRankLevel2 = fishermansDietRankLevel1 * 2;
-    public static int fishermansDietMaxLevel = fishermansDietRankLevel1 * 5;
+    public static int fishermansDietMaxLevel   = fishermansDietRankLevel1 * 5;
+
+    public static final double STORM_MODIFIER = 0.909;
 
     private Fishing() {}
 
     /**
-     * Begins Fisherman's Diet ability
+     * Finds the possible drops of an entity
      *
-     * @param player Player using the ability
-     * @param rankChange ???
-     * @param event Event to process
+     * @param target Targeted entity
+     * @param possibleDrops List of ItemStack that can be dropped
      */
-    public static void beginFishermansDiet(Player player, int rankChange, FoodLevelChangeEvent event) {
-        // TODO: The permission should probably not be checked here
-        // TODO: Also I don't like the idea of moving event around
-        if (!Permissions.fishermansDiet(player)) {
-            return;
-        }
+    protected static void findPossibleDrops(LivingEntity target, Map<ItemStack, Integer> possibleDrops) {
+        switch (target.getType()) {
+            case BLAZE:
+                possibleDrops.put(new ItemStack(Material.BLAZE_ROD), 100);
+                break;
 
-        SkillTools.handleFoodSkills(player, SkillType.FISHING, event, fishermansDietRankLevel1, fishermansDietMaxLevel, rankChange);
+            case CAVE_SPIDER:
+            case SPIDER:
+                possibleDrops.put(new ItemStack(Material.SPIDER_EYE), 50);
+                possibleDrops.put(new ItemStack(Material.STRING), 50);
+                break;
+
+            case CHICKEN:
+                possibleDrops.put(new ItemStack(Material.FEATHER), 34);
+                possibleDrops.put(new ItemStack(Material.RAW_CHICKEN), 33);
+                possibleDrops.put(new ItemStack(Material.EGG), 33);
+                break;
+
+            case COW:
+                possibleDrops.put(new ItemStack(Material.MILK_BUCKET), 2);
+                possibleDrops.put(new ItemStack(Material.LEATHER), 49);
+                possibleDrops.put(new ItemStack(Material.RAW_BEEF), 49);
+                break;
+
+            case CREEPER:
+                possibleDrops.put(new ItemStack(Material.SKULL_ITEM, 1, (short) 4), 1);
+                possibleDrops.put(new ItemStack(Material.SULPHUR), 99);
+                break;
+
+            case ENDERMAN:
+                possibleDrops.put(new ItemStack(Material.ENDER_PEARL), 100);
+                break;
+
+            case GHAST:
+                possibleDrops.put(new ItemStack(Material.SULPHUR), 50);
+                possibleDrops.put(new ItemStack(Material.GHAST_TEAR), 50);
+                break;
+
+            case IRON_GOLEM:
+                possibleDrops.put(new ItemStack(Material.PUMPKIN), 3);
+                possibleDrops.put(new ItemStack(Material.IRON_INGOT), 12);
+                possibleDrops.put(new ItemStack(Material.RED_ROSE), 85);
+                break;
+
+            case MAGMA_CUBE:
+                possibleDrops.put(new ItemStack(Material.MAGMA_CREAM), 100);
+                break;
+
+            case MUSHROOM_COW:
+                possibleDrops.put(new ItemStack(Material.MILK_BUCKET), 5);
+                possibleDrops.put(new ItemStack(Material.MUSHROOM_SOUP), 5);
+                possibleDrops.put(new ItemStack(Material.LEATHER), 30);
+                possibleDrops.put(new ItemStack(Material.RAW_BEEF), 30);
+                possibleDrops.put(new ItemStack(Material.RED_MUSHROOM, Misc.getRandom().nextInt(3) + 1), 30);
+                break;
+
+            case PIG:
+                possibleDrops.put(new ItemStack(Material.PORK), 100);
+                break;
+
+            case PIG_ZOMBIE:
+                possibleDrops.put(new ItemStack(Material.ROTTEN_FLESH), 50);
+                possibleDrops.put(new ItemStack(Material.GOLD_NUGGET), 50);
+                break;
+
+            case SHEEP:
+                possibleDrops.put(new ItemStack(Material.WOOL, Misc.getRandom().nextInt(6) + 1), 100);
+                break;
+
+            case SKELETON:
+                possibleDrops.put(new ItemStack(Material.SKULL_ITEM, 1, (short) 0), 2);
+                possibleDrops.put(new ItemStack(Material.BONE), 49);
+                possibleDrops.put(new ItemStack(Material.ARROW, Misc.getRandom().nextInt(3) + 1), 49);
+                break;
+
+            case SLIME:
+                possibleDrops.put(new ItemStack(Material.SLIME_BALL), 100);
+                break;
+
+            case SNOWMAN:
+                possibleDrops.put(new ItemStack(Material.PUMPKIN), 3);
+                possibleDrops.put(new ItemStack(Material.SNOW_BALL, Misc.getRandom().nextInt(4) + 1), 97);
+                break;
+
+            case SQUID:
+                possibleDrops.put(new ItemStack(Material.INK_SACK, 1, DyeColor.BLACK.getDyeData()), 100);
+                break;
+
+            case WITCH:
+                possibleDrops.put(new Potion(PotionType.INSTANT_HEAL).toItemStack(1), 1);
+                possibleDrops.put(new Potion(PotionType.FIRE_RESISTANCE).toItemStack(1), 1);
+                possibleDrops.put(new Potion(PotionType.SPEED).toItemStack(1), 1);
+                possibleDrops.put(new ItemStack(Material.GLASS_BOTTLE), 9);
+                possibleDrops.put(new ItemStack(Material.GLOWSTONE_DUST), 13);
+                possibleDrops.put(new ItemStack(Material.SULPHUR), 12);
+                possibleDrops.put(new ItemStack(Material.REDSTONE), 13);
+                possibleDrops.put(new ItemStack(Material.SPIDER_EYE), 12);
+                possibleDrops.put(new ItemStack(Material.STICK), 13);
+                possibleDrops.put(new ItemStack(Material.SUGAR), 12);
+                possibleDrops.put(new ItemStack(Material.POTION), 13);
+                break;
+
+            case ZOMBIE:
+                possibleDrops.put(new ItemStack(Material.SKULL_ITEM, 1, (short) 2), 2);
+                possibleDrops.put(new ItemStack(Material.ROTTEN_FLESH), 98);
+                break;
+
+            default:
+                return;
+        }
     }
 
     /**
-     * Begins Shake Mob ability
+     * Randomly chooses a drop among the list
      *
-     * @param player Player using the ability
-     * @param mob Targeted mob
-     * @param skillLevel Fishing level of the player
+     * @param possibleDrops List of ItemStack that can be dropped
+     * @return Chosen ItemStack
      */
-    public static void beginShakeMob(Player player, LivingEntity mob, int skillLevel) {
-        ShakeMob.process(player, mob, skillLevel);
+    protected static ItemStack chooseDrop(Map<ItemStack, Integer> possibleDrops) {
+        int dropProbability = Misc.getRandom().nextInt(100);
+        int cumulatedProbability = 0;
+
+        for (Entry<ItemStack, Integer> entry : possibleDrops.entrySet()) {
+            cumulatedProbability += entry.getValue();
+
+            if (dropProbability < cumulatedProbability) {
+                return entry.getKey();
+            }
+        }
+
+        return null;
     }
-
-    /**
-     * Begins Fishing
-     *
-     * @param mcMMOPlayer Player fishing
-     * @param skillLevel Fishing level of the player
-     * @param event Event to process
-     */
-    public static void beginFishing(McMMOPlayer mcMMOPlayer, int skillLevel, PlayerFishEvent event) {
-        int treasureXp = 0;
-        Player player = mcMMOPlayer.getPlayer();
-        FishingTreasure treasure = checkForTreasure(player, skillLevel);
-
-        if (treasure != null) {
-            player.sendMessage(LocaleLoader.getString("Fishing.ItemFound"));
-
-            treasureXp = treasure.getXp();
-            ItemStack treasureDrop = treasure.getDrop();
-
-            if (Permissions.magicHunter(player) && beginMagicHunter(player, skillLevel, treasureDrop, player.getWorld().hasStorm())) {
-                player.sendMessage(LocaleLoader.getString("Fishing.MagicFound"));
-            }
-
-            // Drop the original catch at the feet of the player and set the treasure as the real catch
-            Item caught = (Item) event.getCaught();
-            Misc.dropItem(player.getEyeLocation(), caught.getItemStack());
-            caught.setItemStack(treasureDrop);
-        }
-
-        mcMMOPlayer.beginXpGain(SkillType.FISHING, Config.getInstance().getFishingBaseXP() + treasureXp);
-        if (Permissions.vanillaXpBoost(player, SkillType.FISHING)) {
-            event.setExpToDrop(event.getExpToDrop() * getVanillaXpMultiplier(skillLevel));
-        }
-    }
-
-    /**
-     * Checks for treasure
-     *
-     * @param player Player fishing
-     * @param skillLevel Fishing level of the player
-     * @return Chosen treasure
-     */
-    private static FishingTreasure checkForTreasure(Player player, int skillLevel) {
-        if (!Config.getInstance().getFishingDropsEnabled() || !Permissions.fishingTreasureHunter(player)) {
-            return null;
-        }
-
-        List<FishingTreasure> rewards = new ArrayList<FishingTreasure>();
-
-        for (FishingTreasure treasure : TreasuresConfig.getInstance().fishingRewards) {
-            int maxLevel = treasure.getMaxLevel();
-
-            if (treasure.getDropLevel() <= skillLevel && (maxLevel >= skillLevel || maxLevel <= 0)) {
-                rewards.add(treasure);
-            }
-        }
-
-        if (rewards.isEmpty()) {
-            return null;
-        }
-
-        FishingTreasure treasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
-        ItemStack treasureDrop = treasure.getDrop();
-        int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.FISHING);
-
-        if (Misc.getRandom().nextDouble() * activationChance > treasure.getDropChance()) {
-            return null;
-        }
-
-        short maxDurability = treasureDrop.getType().getMaxDurability();
-
-        if (maxDurability > 0) {
-            treasureDrop.setDurability((short) (Misc.getRandom().nextInt(maxDurability)));
-        }
-
-        return treasure;
-    }
-
-    /**
-     * Processes for treasure
-     *
-     * @param player Player fishing
-     * @param skillLevel Fishing level of the player
-     * @param itemStack ItemStack to enchant
-     * @param storm World's weather
-     * @return True if the ItemStack has been enchanted
-     */
-    private static boolean beginMagicHunter(Player player, int skillLevel, ItemStack itemStack, boolean storm) {
-        if (!ItemChecks.isEnchantable(itemStack)) {
-            return false;
-        }
-
-        int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.FISHING);
-
-        if (storm) {
-            activationChance = (int) (activationChance * 0.909);
-        }
-
-        if (Misc.getRandom().nextInt(activationChance) > getLootTier(skillLevel) * ADVANCED_CONFIG.getFishingMagicMultiplier()) {
-            return false;
-        }
-
-        List<Enchantment> possibleEnchantments = new ArrayList<Enchantment>();
-
-        for (Enchantment enchantment : Enchantment.values()) {
-            if (enchantment.canEnchantItem(itemStack)) {
-                possibleEnchantments.add(enchantment);
-            }
-        }
-
-        // This make sure that the order isn't always the same, for example previously Unbreaking had a lot more chance to be used than any other enchant
-        Collections.shuffle(possibleEnchantments, Misc.getRandom());
-
-        boolean enchanted = false;
-        int specificChance = 1;
-
-        for (Enchantment possibleEnchantment : possibleEnchantments) {
-            boolean conflicts = false;
-
-            for (Enchantment currentEnchantment : itemStack.getEnchantments().keySet()) {
-                conflicts = currentEnchantment.conflictsWith(possibleEnchantment);
-
-                if (conflicts) {
-                    break;
-                }
-            }
-
-            if (!conflicts && Misc.getRandom().nextInt(specificChance) == 0) {
-                itemStack.addEnchantment(possibleEnchantment, Misc.getRandom().nextInt(possibleEnchantment.getMaxLevel()) + 1);
-
-                specificChance++;
-                enchanted = true;
-            }
-        }
-
-        return enchanted;
-    }
-
-    /**
-     * Gets the loot tier for a given skill level
-     *
-     * @param skillLevel Fishing skill level
-     * @return Loot tier
-     */
-   public static int getLootTier(int skillLevel) {
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.toNumerical();
-            }
-        }
-
-        return 0;
-    }
-
-   /**
-    * Gets the vanilla xp multiplier for a given skill level
-    *
-    * @param skillLevel Fishing skill level
-    * @return Shake Mob probability
-    */
-   public static int getVanillaXpMultiplier(int skillLevel) {
-       for (Tier tier : Tier.values()) {
-           if (skillLevel >= tier.getLevel()) {
-               return tier.getVanillaXPBoostModifier();
-           }
-       }
-
-       return 0;
-   }
 }

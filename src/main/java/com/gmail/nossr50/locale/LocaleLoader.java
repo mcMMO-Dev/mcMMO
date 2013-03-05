@@ -27,7 +27,7 @@ public final class LocaleLoader {
      * @param messageArguments Any arguments to be added to the string
      * @return The properly formatted locale string
      */
-    public static String getString(String key, Object ... messageArguments) {
+    public static String getString(String key, Object... messageArguments) {
         if (bundle == null) {
             initialize();
         }
@@ -45,7 +45,7 @@ public final class LocaleLoader {
         }
     }
 
-    private static String getString(String key, ResourceBundle bundle, Object ... messageArguments) throws MissingResourceException {
+    private static String getString(String key, ResourceBundle bundle, Object... messageArguments) throws MissingResourceException {
         String output = bundle.getString(key);
 
         if (messageArguments != null) {

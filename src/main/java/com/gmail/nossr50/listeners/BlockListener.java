@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,35 +18,33 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
-import com.gmail.nossr50.runnables.StickyPistonTracker;
-import com.gmail.nossr50.skills.excavation.Excavation;
-import com.gmail.nossr50.skills.herbalism.Herbalism;
+import com.gmail.nossr50.runnables.StickyPistonTrackerTask;
+import com.gmail.nossr50.skills.excavation.ExcavationManager;
+import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
-import com.gmail.nossr50.skills.utilities.AbilityType;
-import com.gmail.nossr50.skills.utilities.SkillTools;
-import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.skills.utilities.ToolType;
 import com.gmail.nossr50.skills.woodcutting.Woodcutting;
-import com.gmail.nossr50.util.BlockChecks;
-import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class BlockListener implements Listener {
     private final mcMMO plugin;
@@ -61,13 +60,14 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+
         List<Block> blocks = event.getBlocks();
         BlockFace direction = event.getDirection();
         Block futureEmptyBlock = event.getBlock().getRelative(direction); // Block that would be air after piston is finished
 
         for (Block b : blocks) {
             if (mcMMO.placeStore.isTrue(b)) {
-                b.getRelative(direction).setMetadata("pistonTrack", new FixedMetadataValue(plugin, true));
+                b.getRelative(direction).setMetadata(mcMMO.blockMetadataKey, mcMMO.metadataValue);
                 if (b.equals(futureEmptyBlock)) {
                     mcMMO.placeStore.setFalse(b);
                 }
@@ -75,9 +75,9 @@ public class BlockListener implements Listener {
         }
 
         for (Block b : blocks) {
-            if (b.getRelative(direction).hasMetadata("pistonTrack")) {
+            if (b.getRelative(direction).hasMetadata(mcMMO.blockMetadataKey)) {
                 mcMMO.placeStore.setTrue(b.getRelative(direction));
-                b.getRelative(direction).removeMetadata("pistonTrack", plugin);
+                b.getRelative(direction).removeMetadata(mcMMO.blockMetadataKey, plugin);
             }
         }
     }
@@ -90,8 +90,8 @@ public class BlockListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         if (event.isSticky()) {
-            //Needed only because under some circumstances Minecraft doesn't move the block
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new StickyPistonTracker(event), 2);
+            // Needed only because under some circumstances Minecraft doesn't move the block
+            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new StickyPistonTrackerTask(event), 2);
         }
     }
 
@@ -108,15 +108,15 @@ public class BlockListener implements Listener {
             return;
         }
 
-        Block block = event.getBlock();
+        BlockState blockState = event.getBlock().getState();
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
-        if (BlockChecks.shouldBeWatched(block)) {
-            mcMMO.placeStore.setTrue(block);
+        if (BlockUtils.shouldBeWatched(blockState)) {
+            mcMMO.placeStore.setTrue(blockState);
         }
 
         if (Repair.anvilMessagesEnabled) {
-            int blockID = block.getTypeId();
+            int blockID = blockState.getTypeId();
 
             if (blockID == Repair.anvilID) {
                 Repair.placedAnvilCheck(player, blockID);
@@ -144,16 +144,18 @@ public class BlockListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
-        PlayerProfile profile = mcMMOPlayer.getProfile();
-        Block block = event.getBlock();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        BlockState blockState = event.getBlock().getState();
+
         ItemStack heldItem = player.getItemInHand();
 
         /* HERBALISM */
-        if (BlockChecks.canBeGreenTerra(block)) {
+        if (BlockUtils.affectedByGreenTerra(blockState)) {
+            HerbalismManager herbalismManager = UserManager.getPlayer(player).getHerbalismManager();
+
             /* Green Terra */
-            if (profile.getToolPreparationMode(ToolType.HOE) && Permissions.greenTerra(player)) {
-                SkillTools.abilityCheck(player, SkillType.HERBALISM);
+            if (herbalismManager.canActivateAbility()) {
+                SkillUtils.abilityCheck(mcMMOPlayer, SkillType.HERBALISM);
             }
 
             /*
@@ -161,53 +163,57 @@ public class BlockListener implements Listener {
              * Instead, we check it inside the drops handler.
              */
             if (Permissions.skillEnabled(player, SkillType.HERBALISM)) {
-                Herbalism.herbalismProcCheck(block, mcMMOPlayer, plugin); //Double drops
 
-                if (profile.getAbilityMode(AbilityType.GREEN_TERRA)) {
-                    Herbalism.herbalismProcCheck(block, mcMMOPlayer, plugin); //Triple drops
+                // Double drops
+                herbalismManager.herbalismBlockCheck(blockState);
+
+                // Triple drops
+                if (herbalismManager.canGreenTerraPlant()) {
+                    herbalismManager.herbalismBlockCheck(blockState);
                 }
             }
         }
 
         /* MINING */
-        else if (BlockChecks.canBeSuperBroken(block) && ItemChecks.isPickaxe(heldItem) && Permissions.skillEnabled(player, SkillType.MINING) && !mcMMO.placeStore.isTrue(block)) {
-            MiningManager miningManager = new MiningManager(mcMMOPlayer);
-            miningManager.miningBlockCheck(block);
+        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && Permissions.skillEnabled(player, SkillType.MINING) && !mcMMO.placeStore.isTrue(blockState)) {
+            MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+            miningManager.miningBlockCheck(blockState);
 
-            if (profile.getAbilityMode(AbilityType.SUPER_BREAKER)) {
-                miningManager.miningBlockCheck(block);
+            if (mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER)) {
+                miningManager.miningBlockCheck(blockState);
             }
         }
 
         /* WOOD CUTTING */
-        else if (BlockChecks.isLog(block) && Permissions.skillEnabled(player, SkillType.WOODCUTTING) && !mcMMO.placeStore.isTrue(block)) {
-            if (profile.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemChecks.isAxe(heldItem)) {
-                Woodcutting.beginTreeFeller(mcMMOPlayer, block);
+        else if (BlockUtils.isLog(blockState) && Permissions.skillEnabled(player, SkillType.WOODCUTTING) && !mcMMO.placeStore.isTrue(blockState)) {
+            if (mcMMOPlayer.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemUtils.isAxe(heldItem)) {
+                Woodcutting.beginTreeFeller(blockState, player);
             }
             else {
                 if (Config.getInstance().getWoodcuttingRequiresTool()) {
-                    if (ItemChecks.isAxe(heldItem)) {
-                        Woodcutting.beginWoodcutting(mcMMOPlayer, block);
+                    if (ItemUtils.isAxe(heldItem)) {
+                        Woodcutting.beginWoodcutting(player, blockState);
                     }
                 }
                 else {
-                    Woodcutting.beginWoodcutting(mcMMOPlayer, block);
+                    Woodcutting.beginWoodcutting(player, blockState);
                 }
             }
         }
 
         /* EXCAVATION */
-        else if (BlockChecks.canBeGigaDrillBroken(block) && ItemChecks.isShovel(heldItem) && Permissions.skillEnabled(player, SkillType.EXCAVATION) && !mcMMO.placeStore.isTrue(block)) {
-            Excavation.excavationProcCheck(block, mcMMOPlayer);
+        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && Permissions.skillEnabled(player, SkillType.EXCAVATION) && !mcMMO.placeStore.isTrue(blockState)) {
+            ExcavationManager excavationManager = UserManager.getPlayer(player).getExcavationManager();
+            excavationManager.excavationBlockCheck(blockState);
 
-            if (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
-                Excavation.gigaDrillBreaker(mcMMOPlayer, block);
+            if (mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
+                excavationManager.gigaDrillBreaker(blockState);
             }
         }
 
         /* Remove metadata from placed watched blocks */
-        if (BlockChecks.shouldBeWatched(block) && mcMMO.placeStore.isTrue(block)) {
-            mcMMO.placeStore.setFalse(block);
+        if (BlockUtils.shouldBeWatched(blockState) && mcMMO.placeStore.isTrue(blockState)) {
+            mcMMO.placeStore.setFalse(blockState);
         }
     }
 
@@ -228,15 +234,28 @@ public class BlockListener implements Listener {
             return;
         }
 
-        Block block = event.getBlock();
+        BlockState blockState = event.getBlock().getState();
         ItemStack heldItem = player.getItemInHand();
 
-        if (Permissions.hylianLuck(player) && ItemChecks.isSword(heldItem)) {
-            Herbalism.hylianLuck(block, player, event);
+        if (ItemUtils.isSword(heldItem)) {
+            HerbalismManager herbalismManager = UserManager.getPlayer(player).getHerbalismManager();
+
+            if (herbalismManager.canUseHylianLuck()) {
+                if (herbalismManager.processHylianLuck(blockState)) {
+                    blockState.update(true);
+                    event.setCancelled(true);
+                }
+            }
         }
-        else if (BlockChecks.canBeFluxMined(block) && ItemChecks.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH) && Permissions.fluxMining(player) && !mcMMO.placeStore.isTrue(block)) {
-            SmeltingManager smeltingManager = new SmeltingManager(Users.getPlayer(player));
-            smeltingManager.fluxMining(event);
+        else if (ItemUtils.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
+            SmeltingManager smeltingManager = UserManager.getPlayer(player).getSmeltingManager();
+
+            if (smeltingManager.canUseFluxMining(blockState)) {
+                if (smeltingManager.processFluxMining(blockState)) {
+                    blockState.update(true);
+                    event.setCancelled(true);
+                }
+            }
         }
     }
 
@@ -257,42 +276,42 @@ public class BlockListener implements Listener {
             return;
         }
 
-        PlayerProfile profile = Users.getPlayer(player).getProfile();
-        Block block = event.getBlock();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        BlockState blockState = event.getBlock().getState();
 
         /*
          * ABILITY PREPARATION CHECKS
          *
          * We check permissions here before processing activation.
          */
-        if (BlockChecks.canActivateAbilities(block)) {
+        if (BlockUtils.canActivateAbilities(blockState)) {
             ItemStack heldItem = player.getItemInHand();
 
             if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
-                if ((ItemChecks.isPickaxe(heldItem) && !profile.getAbilityMode(AbilityType.SUPER_BREAKER)) || (ItemChecks.isShovel(heldItem) && !profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER))) {
-                    SkillTools.removeAbilityBuff(heldItem);
+                if ((ItemUtils.isPickaxe(heldItem) && !mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER)) || (ItemUtils.isShovel(heldItem) && !mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER))) {
+                    SkillUtils.removeAbilityBuff(heldItem);
                 }
             }
             else {
-                if ((profile.getAbilityMode(AbilityType.SUPER_BREAKER) && !BlockChecks.canBeSuperBroken(block)) || (profile.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && !BlockChecks.canBeGigaDrillBroken(block))) {
-                    SkillTools.handleAbilitySpeedDecrease(player);
+                if ((mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER) && !BlockUtils.affectedBySuperBreaker(blockState)) || (mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) && !BlockUtils.affectedByGigaDrillBreaker(blockState))) {
+                    SkillUtils.handleAbilitySpeedDecrease(player);
                 }
             }
 
-            if (profile.getToolPreparationMode(ToolType.HOE) && ItemChecks.isHoe(heldItem) && (BlockChecks.canBeGreenTerra(block) || BlockChecks.canMakeMossy(block)) && Permissions.greenTerra(player)) {
-                SkillTools.abilityCheck(player, SkillType.HERBALISM);
+            if (mcMMOPlayer.getToolPreparationMode(ToolType.HOE) && ItemUtils.isHoe(heldItem) && (BlockUtils.affectedByGreenTerra(blockState) || BlockUtils.canMakeMossy(blockState)) && Permissions.greenTerra(player)) {
+                SkillUtils.abilityCheck(mcMMOPlayer, SkillType.HERBALISM);
             }
-            else if (profile.getToolPreparationMode(ToolType.AXE) && ItemChecks.isAxe(heldItem) && BlockChecks.isLog(block) && Permissions.treeFeller(player)) {
-                SkillTools.abilityCheck(player, SkillType.WOODCUTTING);
+            else if (mcMMOPlayer.getToolPreparationMode(ToolType.AXE) && ItemUtils.isAxe(heldItem) && BlockUtils.isLog(blockState) && Permissions.treeFeller(player)) {
+                SkillUtils.abilityCheck(mcMMOPlayer, SkillType.WOODCUTTING);
             }
-            else if (profile.getToolPreparationMode(ToolType.PICKAXE) && ItemChecks.isPickaxe(heldItem) && BlockChecks.canBeSuperBroken(block) && Permissions.superBreaker(player)) {
-                SkillTools.abilityCheck(player, SkillType.MINING);
+            else if (mcMMOPlayer.getToolPreparationMode(ToolType.PICKAXE) && ItemUtils.isPickaxe(heldItem) && BlockUtils.affectedBySuperBreaker(blockState) && Permissions.superBreaker(player)) {
+                SkillUtils.abilityCheck(mcMMOPlayer, SkillType.MINING);
             }
-            else if (profile.getToolPreparationMode(ToolType.SHOVEL) && ItemChecks.isShovel(heldItem) && BlockChecks.canBeGigaDrillBroken(block) && Permissions.gigaDrillBreaker(player)) {
-                SkillTools.abilityCheck(player, SkillType.EXCAVATION);
+            else if (mcMMOPlayer.getToolPreparationMode(ToolType.SHOVEL) && ItemUtils.isShovel(heldItem) && BlockUtils.affectedByGigaDrillBreaker(blockState) && Permissions.gigaDrillBreaker(player)) {
+                SkillUtils.abilityCheck(mcMMOPlayer, SkillType.EXCAVATION);
             }
-            else if (profile.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockChecks.canBeGigaDrillBroken(block) || block.getType() == Material.SNOW || (block.getType() == Material.SMOOTH_BRICK && block.getData() == 0x0)) && Permissions.berserk(player)) {
-                SkillTools.abilityCheck(player, SkillType.UNARMED);
+            else if (mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW || BlockUtils.affectedByBlockCracker(blockState) && Permissions.berserk(player))) {
+                SkillUtils.abilityCheck(mcMMOPlayer, SkillType.UNARMED);
             }
         }
 
@@ -301,8 +320,8 @@ public class BlockListener implements Listener {
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        if (profile.getAbilityMode(AbilityType.TREE_FELLER) && BlockChecks.isLog(block)) {
-            player.playSound(block.getLocation(), Sound.FIZZ, Misc.FIZZ_VOLUME, Misc.FIZZ_PITCH);
+        if (mcMMOPlayer.getAbilityMode(AbilityType.TREE_FELLER) && BlockUtils.isLog(blockState)) {
+            player.playSound(blockState.getLocation(), Sound.FIZZ, Misc.FIZZ_VOLUME, Misc.FIZZ_PITCH);
         }
     }
 
@@ -323,45 +342,49 @@ public class BlockListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
-        PlayerProfile profile = mcMMOPlayer.getProfile();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         ItemStack heldItem = player.getItemInHand();
         Block block = event.getBlock();
+        BlockState blockState = block.getState();
+        HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
         /*
          * ABILITY TRIGGER CHECKS
          *
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
-        if (profile.getAbilityMode(AbilityType.GREEN_TERRA) && BlockChecks.canMakeMossy(block)) {
-            Herbalism.greenTerra(player, block);
+        if (herbalismManager.canGreenTerraBlock(blockState)) {
+            if (herbalismManager.processGreenTerra(blockState)) {
+                blockState.update(true);
+            }
         }
-        else if (profile.getAbilityMode(AbilityType.BERSERK)) {
-            if (SkillTools.triggerCheck(player, block, AbilityType.BERSERK)) {
+        else if (mcMMOPlayer.getAbilityMode(AbilityType.BERSERK)) {
+            if (SkillUtils.triggerCheck(player, block, AbilityType.BERSERK)) {
                 if (heldItem.getType() == Material.AIR) {
-                    FakePlayerAnimationEvent armswing = new FakePlayerAnimationEvent(player);
-                    plugin.getServer().getPluginManager().callEvent(armswing);
+                    plugin.getServer().getPluginManager().callEvent(new FakePlayerAnimationEvent(player));
 
                     event.setInstaBreak(true);
                     player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
                 }
             }
             // Another perm check for the cracked blocks activation
-            else if (BlockChecks.canBeCracked(block) && Permissions.blockCracker(player)) {
-                Unarmed.blockCracker(player, block);
+            else if (BlockUtils.affectedByBlockCracker(blockState) && Permissions.blockCracker(player)) {
+                if (Unarmed.blockCracker(player, blockState)) {
+                    blockState.update();
+                }
             }
         }
-        else if ((profile.getSkillLevel(SkillType.WOODCUTTING) >= AdvancedConfig.getInstance().getLeafBlowUnlockLevel()) && BlockChecks.isLeaves(block)) {
-            if (SkillTools.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
+        else if ((mcMMOPlayer.getProfile().getSkillLevel(SkillType.WOODCUTTING) >= AdvancedConfig.getInstance().getLeafBlowUnlockLevel()) && BlockUtils.isLeaves(blockState)) {
+            if (SkillUtils.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
                 if (Config.getInstance().getWoodcuttingRequiresTool()) {
-                    if (ItemChecks.isAxe(heldItem)) {
+                    if (ItemUtils.isAxe(heldItem)) {
                         event.setInstaBreak(true);
-                        Woodcutting.beginLeafBlower(player, block);
+                        Woodcutting.beginLeafBlower(player, blockState);
                     }
                 }
                 else if (!(heldItem.getType() == Material.SHEARS)) {
                     event.setInstaBreak(true);
-                    Woodcutting.beginLeafBlower(player, block);
+                    Woodcutting.beginLeafBlower(player, blockState);
                 }
             }
         }

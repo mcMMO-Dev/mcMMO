@@ -24,8 +24,9 @@ public class BlockStoreConversionMain implements Runnable {
     }
 
     public void start() {
-        if (this.taskID >= 0)
+        if (this.taskID >= 0) {
             return;
+        }
 
         this.taskID = this.scheduler.scheduleSyncDelayedTask(mcMMO.p, this, 1);
         return;

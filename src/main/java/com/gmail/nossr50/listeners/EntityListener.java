@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
@@ -28,23 +27,22 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.skills.acrobatics.Acrobatics;
+import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.MiningManager;
-import com.gmail.nossr50.skills.runnables.BleedTimer;
+import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
-import com.gmail.nossr50.skills.utilities.CombatTools;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.CombatUtils;
 
 public class EntityListener implements Listener {
     private final mcMMO plugin;
@@ -62,16 +60,19 @@ public class EntityListener implements Listener {
     public void onEntityChangeBlockEvent(EntityChangeBlockEvent event) {
         Entity entity = event.getEntity();
 
-        if (entity instanceof FallingBlock) {
-            Block block = event.getBlock();
+        if (!(entity instanceof FallingBlock)) {
+            return;
+        }
 
-            if (mcMMO.placeStore.isTrue(block) && !entity.hasMetadata(mcMMO.entityMetadataKey)) {
-                mcMMO.placeStore.setFalse(block);
-                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.entityMetadata);
-            }
-            else if (entity.hasMetadata(mcMMO.entityMetadataKey)) {
-                mcMMO.placeStore.setTrue(block);
-            }
+        Block block = event.getBlock();
+        boolean isTracked = entity.hasMetadata(mcMMO.entityMetadataKey);
+
+        if (mcMMO.placeStore.isTrue(block) && !isTracked) {
+            mcMMO.placeStore.setFalse(block);
+            entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+        }
+        else if (isTracked) {
+            mcMMO.placeStore.setTrue(block);
         }
     }
 
@@ -82,16 +83,22 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event instanceof FakeEntityDamageByEntityEvent || event.getDamage() <= 0)
+        if (event instanceof FakeEntityDamageByEntityEvent || event.getDamage() <= 0) {
             return;
+        }
 
         Entity defender = event.getEntity();
 
-        if (Misc.isNPCEntity(defender) || defender.isDead()) {
+        if (Misc.isNPCEntity(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
             return;
         }
 
         Entity attacker = event.getDamager();
+        LivingEntity target = (LivingEntity) defender;
+
+        if (CombatUtils.isInvincible(target, event.getDamage())) {
+            return;
+        }
 
         if (attacker instanceof Projectile) {
             attacker = ((Projectile) attacker).getShooter();
@@ -104,37 +111,22 @@ public class EntityListener implements Listener {
             }
         }
 
-        if (defender instanceof Player) {
+        if (defender instanceof Player && attacker instanceof Player) {
             Player defendingPlayer = (Player) defender;
+            Player attackingPlayer = (Player) attacker;
 
-            // TODO: Is this even possible?
-            if (!defendingPlayer.isOnline()) {
+            // We want to make sure we're not gaining XP or applying abilities when we hit ourselves
+            if (defendingPlayer.equals(attackingPlayer)) {
                 return;
             }
 
-            if (attacker instanceof Player) {
-                Player attackingPlayer = (Player) attacker;
-
-                if (defendingPlayer == attackingPlayer) {
-                    return;
-                }
-                else if (PartyManager.inSameParty(defendingPlayer, attackingPlayer)) {
-                    if (!(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
-                        event.setCancelled(true);
-                        return;
-                    }
-                }
+            if (PartyManager.inSameParty(defendingPlayer, attackingPlayer) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
+                event.setCancelled(true);
+                return;
             }
         }
 
-        /* Check for invincibility */
-        if (defender instanceof LivingEntity) {
-            LivingEntity livingDefender = (LivingEntity) defender;
-
-            if (!CombatTools.isInvincible(livingDefender, event)) {
-                CombatTools.combatChecks(event, attacker, livingDefender);
-            }
-        }
+        CombatUtils.combatChecks(event, attacker, target);
     }
 
     /**
@@ -157,44 +149,125 @@ public class EntityListener implements Listener {
         DamageCause cause = event.getCause();
         LivingEntity livingEntity = (LivingEntity) entity;
 
+        if (CombatUtils.isInvincible(livingEntity, event.getDamage())) {
+            return;
+        }
+
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
 
-            if (!player.isOnline() || Misc.isNPCEntity(player)) {
+            if (Misc.isNPCEntity(player)) {
                 return;
             }
 
-            McMMOPlayer mcMMOPlayer = Users.getPlayer(player);
-            PlayerProfile profile = mcMMOPlayer.getProfile();
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             /* Check for invincibility */
-            if (profile.getGodMode()) {
+            if (mcMMOPlayer.getGodMode()) {
                 event.setCancelled(true);
                 return;
             }
 
-            if (!CombatTools.isInvincible(player, event)) {
-                if (cause == DamageCause.FALL && player.getItemInHand().getType() != Material.ENDER_PEARL && !(Acrobatics.afkLevelingDisabled && player.isInsideVehicle()) && Permissions.roll(player)) {
-                    AcrobaticsManager acrobaticsManager = new AcrobaticsManager(mcMMOPlayer);
-                    acrobaticsManager.rollCheck(event);
-                }
-                else if (cause == DamageCause.BLOCK_EXPLOSION && Permissions.demolitionsExpertise(player)) {
-                    MiningManager miningManager = new MiningManager(mcMMOPlayer);
-                    miningManager.demolitionsExpertise(event);
-                }
+            switch (cause) {
+                case FALL:
+                    AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
-                if (event.getDamage() >= 1) {
-                    profile.actualizeRecentlyHurt();
-                }
+                    if (acrobaticsManager.canRoll()) {
+                        event.setDamage(acrobaticsManager.rollCheck(event.getDamage()));
+
+                        if (event.getDamage() == 0) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
+                    break;
+
+                case BLOCK_EXPLOSION:
+                    MiningManager miningManager = mcMMOPlayer.getMiningManager();
+
+                    if (miningManager.canUseDemolitionsExpertise()) {
+                        event.setDamage(miningManager.processDemolitionsExpertise(event.getDamage()));
+
+                        if (event.getDamage() == 0) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+
+            if (event.getDamage() >= 1) {
+                mcMMOPlayer.actualizeRecentlyHurt();
             }
         }
         else if (livingEntity instanceof Tameable) {
             Tameable pet = (Tameable) livingEntity;
             AnimalTamer owner = pet.getOwner();
 
-            if ((!CombatTools.isInvincible(livingEntity, event)) && pet.isTamed() && owner instanceof Player && pet instanceof Wolf) {
-                TamingManager tamingManager = new TamingManager(Users.getPlayer((Player) owner));
-                tamingManager.preventDamage(event);
+            if (Taming.canPreventDamage(pet, owner)) {
+                Player player = (Player) owner;
+                Wolf wolf = (Wolf) pet;
+
+                TamingManager tamingManager = UserManager.getPlayer(player).getTamingManager();
+
+                switch (cause) {
+                    case CONTACT:
+                    case FIRE:
+                    case LAVA:
+                        if (tamingManager.canUseEnvironmentallyAware()) {
+                            tamingManager.processEnvironmentallyAware(wolf, event.getDamage());
+                        }
+                        return;
+
+                    case FALL:
+                        if (tamingManager.canUseEnvironmentallyAware()) {
+                            event.setCancelled(true);
+                        }
+                        return;
+
+                    case ENTITY_ATTACK:
+                    case PROJECTILE:
+                        if (tamingManager.canUseThickFur()) {
+                            event.setDamage(Taming.processThickFur(wolf, event.getDamage()));
+
+                            if (event.getDamage() == 0) {
+                                event.setCancelled(true);
+                            }
+                        }
+                        return;
+
+                    case FIRE_TICK:
+                        if (tamingManager.canUseThickFur()) {
+                            Taming.processThickFurFire(wolf);
+                        }
+                        return;
+
+                    case MAGIC:
+                    case POISON:
+                    case WITHER:
+                        if (tamingManager.canUseHolyHound()) {
+                            Taming.processHolyHound(wolf, event.getDamage());
+                        }
+                        return;
+
+                    case BLOCK_EXPLOSION:
+                    case ENTITY_EXPLOSION:
+                    case LIGHTNING:
+                        if (tamingManager.canUseShockProof()) {
+                            event.setDamage(Taming.processShockProof(wolf, event.getDamage()));
+
+                            if (event.getDamage() == 0) {
+                                event.setCancelled(true);
+                            }
+                        }
+                        return;
+
+                    default:
+                        return;
+                }
             }
         }
     }
@@ -204,7 +277,7 @@ public class EntityListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler (priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
 
@@ -213,7 +286,7 @@ public class EntityListener implements Listener {
         }
 
         entity.setFireTicks(0);
-        BleedTimer.remove(entity);
+        BleedTimerTask.remove(entity);
         Archery.arrowRetrievalCheck(entity);
     }
 
@@ -222,19 +295,16 @@ public class EntityListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
         if (Misc.isSpawnerXPEnabled) {
-            return;
-        }
-        else if (event.getEntity() == null) {
             return;
         }
 
         SpawnReason reason = event.getSpawnReason();
 
         if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) {
-            event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.entityMetadata);
+            event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
         }
     }
 
@@ -243,20 +313,21 @@ public class EntityListener implements Listener {
      *
      * @param event The event to modify
      */
-    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         Entity entity = event.getEntity();
 
         if (entity instanceof TNTPrimed) {
             int id = entity.getEntityId();
 
-            if (plugin.tntIsTracked(id)) {
-                Player player = plugin.getTNTPlayer(id);
+            if (!plugin.tntIsTracked(id)) {
+                return;
+            }
 
-                if (Permissions.biggerBombs(player)) {
-                    MiningManager miningManager = new MiningManager(Users.getPlayer(player));
-                    miningManager.biggerBombs(event);
-                }
+            MiningManager miningManager = UserManager.getPlayer(plugin.getTNTPlayer(id)).getMiningManager();
+
+            if (miningManager.canUseBiggerBombs()) {
+                event.setRadius(miningManager.biggerBombs(event.getRadius()));
             }
         }
     }
@@ -266,21 +337,25 @@ public class EntityListener implements Listener {
      *
      * @param event The event to modify
      */
-    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEnitityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
 
         if (entity instanceof TNTPrimed) {
             int id = entity.getEntityId();
 
-            if (plugin.tntIsTracked(id)) {
-                Player player = plugin.getTNTPlayer(id);
-
-                MiningManager miningManager = new MiningManager(Users.getPlayer(player));
-                miningManager.blastMiningDropProcessing(event);
-
-                plugin.removeFromTNTTracker(id);
+            if (!plugin.tntIsTracked(id)) {
+                return;
             }
+
+            MiningManager miningManager = UserManager.getPlayer(plugin.getTNTPlayer(id)).getMiningManager();
+
+            if (miningManager.canUseBlastMining()) {
+                miningManager.blastMiningDropProcessing(event.getYield(), event.blockList());
+                event.setYield(0);
+            }
+
+            plugin.removeFromTNTTracker(id);
         }
     }
 
@@ -289,7 +364,7 @@ public class EntityListener implements Listener {
      *
      * @param event The event to modify
      */
-    @EventHandler (priority = EventPriority.LOW, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         Entity entity = event.getEntity();
 
@@ -304,41 +379,51 @@ public class EntityListener implements Listener {
             int newFoodLevel = event.getFoodLevel();
             int foodChange = newFoodLevel - currentFoodLevel;
 
+            if (foodChange <= 0) {
+                return;
+            }
+
             /*
              * Some foods have 3 ranks
              * Some foods have 5 ranks
              * The number of ranks is based on how 'common' the item is
              * We can adjust this quite easily if we find something is giving too much of a bonus
              */
-            if (foodChange > 0) {
-                switch (player.getItemInHand().getType()) {
+            switch (player.getItemInHand().getType()) {
                 case BAKED_POTATO:  /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
                 case BREAD:         /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
                 case CARROT_ITEM:   /* RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
                 case GOLDEN_CARROT: /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
                 case MUSHROOM_SOUP: /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
                 case PUMPKIN_PIE:   /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
-                    Herbalism.farmersDiet(player, Herbalism.farmersDietRankLevel1, event);
-                    break;
+                    if (Permissions.farmersDiet(player)) {
+                        event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
+                    }
+                    return;
 
-                case COOKIE:            /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                case MELON:             /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                case POISONOUS_POTATO:  /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                case POTATO_ITEM:       /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                    Herbalism.farmersDiet(player, Herbalism.farmersDietRankLevel2, event);
-                    break;
+                case COOKIE:           /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+                case MELON:            /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                case POISONOUS_POTATO: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                case POTATO_ITEM:      /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+                    if (Permissions.farmersDiet(player)) {
+                        event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
+                    }
+                    return;
 
-                case COOKED_FISH:   /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                    Fishing.beginFishermansDiet(player, Fishing.fishermansDietRankLevel1, event);
-                    break;
+                case COOKED_FISH: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+                    if (Permissions.fishermansDiet(player)) {
+                        event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
+                    }
+                    return;
 
-                case RAW_FISH:      /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                    Fishing.beginFishermansDiet(player, Fishing.fishermansDietRankLevel2, event);
-                    break;
+                case RAW_FISH:    /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                    if (Permissions.fishermansDiet(player)) {
+                        event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
+                    }
+                    return;
 
                 default:
                     return;
-                }
             }
         }
     }
@@ -348,32 +433,41 @@ public class EntityListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityTame(EntityTameEvent event) {
         Player player = (Player) event.getOwner();
+        LivingEntity entity = event.getEntity();
 
-        if (Misc.isNPCEntity(player)) {
+        if (Misc.isNPCEntity(player) || Misc.isNPCEntity(entity) || entity.hasMetadata(mcMMO.entityMetadataKey)) {
             return;
         }
 
-        TamingManager tamingManager = new TamingManager(Users.getPlayer(player));
-        tamingManager.awardTamingXP(event);
+        UserManager.getPlayer(player).getTamingManager().awardTamingXP(entity);
     }
 
-    @EventHandler (priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    /**
+     * Handle EntityTarget events.
+     *
+     * @param event The event to process
+     */
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
-        if (event.getEntity() instanceof Tameable && event.getTarget() instanceof Player) {
-            Player player = (Player) event.getTarget();
-            Tameable tameable = (Tameable) event.getEntity();
+        Entity entity = event.getEntity();
+        Entity target = event.getTarget();
 
-            if (CombatTools.isFriendlyPet(player, tameable)) {
-                // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
-                // So we can make some assumptions here, about our casting and our check
-                Player owner = (Player) tameable.getOwner();
-                if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire(owner))) {
-                    event.setCancelled(true);
-                    return;
-                }
+        if (entity instanceof Tameable && target instanceof Player) {
+            Player player = (Player) target;
+            Tameable tameable = (Tameable) entity;
+
+            if (!CombatUtils.isFriendlyPet(player, tameable)) {
+                return;
+            }
+
+            // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
+            // So we can make some assumptions here, about our casting and our check
+            if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire((Player) tameable.getOwner()))) {
+                event.setCancelled(true);
+                return;
             }
         }
     }

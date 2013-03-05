@@ -11,28 +11,26 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.utilities.SkillType;
-import com.gmail.nossr50.util.ItemChecks;
+import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
 
 public class Salvage {
-    private static Config configInstance = Config.getInstance();
     public static int salvageUnlockLevel = Config.getInstance().getSalvageUnlockLevel();
     public static int anvilID = Config.getInstance().getSalvageAnvilId();
 
     public static void handleSalvage(final Player player, final Location location, final ItemStack item) {
-        if (!configInstance.getSalvageEnabled()) {
+        if (!Config.getInstance().getSalvageEnabled()) {
             return;
         }
 
         if (player.getGameMode() == GameMode.SURVIVAL) {
-            final int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(SkillType.REPAIR);
-            final int unlockLevel = configInstance.getSalvageUnlockLevel();
+            final int skillLevel = UserManager.getPlayer(player).getProfile().getSkillLevel(SkillType.REPAIR);
 
-            if (skillLevel < unlockLevel) {
+            if (skillLevel < salvageUnlockLevel) {
                 player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptSalvage"));
                 return;
             }
@@ -52,19 +50,18 @@ public class Salvage {
                 player.sendMessage(LocaleLoader.getString("Repair.Skills.NotFullDurability"));
             }
         }
-        
     }
 
     /**
      * Handles notifications for placing an anvil.
-     * 
+     *
      * @param player The player placing the anvil
      * @param anvilID The item ID of the anvil block
      */
     public static void placedAnvilCheck(final Player player, final int anvilID) {
-        final PlayerProfile profile = Users.getPlayer(player).getProfile();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (!profile.getPlacedSalvageAnvil()) {
+        if (!mcMMOPlayer.getPlacedSalvageAnvil()) {
             if (mcMMO.spoutEnabled) {
                 final SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
@@ -77,30 +74,48 @@ public class Salvage {
             }
 
             player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-            profile.togglePlacedSalvageAnvil();
+            mcMMOPlayer.togglePlacedSalvageAnvil();
         }
     }
 
+    /**
+     * Checks if the item is salvageable.
+     *
+     * @param is Item to check
+     * @return true if the item is salvageable, false otherwise
+     */
+    public static boolean isSalvageable(final ItemStack is) {
+        if (Config.getInstance().getSalvageTools() && (ItemUtils.isMinecraftTool(is) || ItemUtils.isStringTool(is) || is.getType() == Material.BUCKET)) {
+            return true;
+        }
+
+        if (Config.getInstance().getSalvageArmor() && ItemUtils.isMinecraftArmor(is)) {
+            return true;
+        }
+
+        return false;
+    }
+
     private static Material getSalvagedItem(final ItemStack inHand) {
-        if (ItemChecks.isDiamondTool(inHand) || ItemChecks.isDiamondArmor(inHand)) {
+        if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
         }
-        else if (ItemChecks.isGoldTool(inHand) || ItemChecks.isGoldArmor(inHand)) {
+        else if (ItemUtils.isGoldTool(inHand) || ItemUtils.isGoldArmor(inHand)) {
             return Material.GOLD_INGOT;
         }
-        else if (ItemChecks.isIronTool(inHand) || ItemChecks.isIronArmor(inHand)) {
+        else if (ItemUtils.isIronTool(inHand) || ItemUtils.isIronArmor(inHand)) {
             return Material.IRON_INGOT;
         }
-        else if (ItemChecks.isStoneTool(inHand)) {
+        else if (ItemUtils.isStoneTool(inHand)) {
             return Material.COBBLESTONE;
         }
-        else if (ItemChecks.isWoodTool(inHand)) {
+        else if (ItemUtils.isWoodTool(inHand)) {
             return Material.WOOD;
         }
-        else if (ItemChecks.isLeatherArmor(inHand)) {
+        else if (ItemUtils.isLeatherArmor(inHand)) {
             return Material.LEATHER;
         }
-        else if (ItemChecks.isStringTool(inHand)) {
+        else if (ItemUtils.isStringTool(inHand)) {
             return Material.STRING;
         }
         else {
@@ -109,44 +124,29 @@ public class Salvage {
     }
 
     private static int getSalvagedAmount(final ItemStack inHand) {
-        if (ItemChecks.isPickaxe(inHand) || ItemChecks.isAxe(inHand) || inHand.getType() == Material.BOW || inHand.getType() == Material.BUCKET) {
+        if (ItemUtils.isPickaxe(inHand) || ItemUtils.isAxe(inHand) || inHand.getType() == Material.BOW || inHand.getType() == Material.BUCKET) {
             return 3;
         }
-        else if (ItemChecks.isShovel(inHand) || inHand.getType() == Material.FLINT_AND_STEEL) {
+        else if (ItemUtils.isShovel(inHand) || inHand.getType() == Material.FLINT_AND_STEEL) {
             return 1;
         }
-        else if (ItemChecks.isSword(inHand) || ItemChecks.isHoe(inHand) || inHand.getType() == Material.CARROT_STICK || inHand.getType() == Material.FISHING_ROD || inHand.getType() == Material.SHEARS) {
+        else if (ItemUtils.isSword(inHand) || ItemUtils.isHoe(inHand) || inHand.getType() == Material.CARROT_STICK || inHand.getType() == Material.FISHING_ROD || inHand.getType() == Material.SHEARS) {
             return 2;
         }
-        else if (ItemChecks.isHelmet(inHand)) {
+        else if (ItemUtils.isHelmet(inHand)) {
             return 5;
         }
-        else if (ItemChecks.isChestplate(inHand)) {
+        else if (ItemUtils.isChestplate(inHand)) {
             return 8;
         }
-        else if (ItemChecks.isLeggings(inHand)) {
+        else if (ItemUtils.isLeggings(inHand)) {
             return 7;
         }
-        else if (ItemChecks.isBoots(inHand)) {
+        else if (ItemUtils.isBoots(inHand)) {
             return 4;
         }
         else {
             return 0;
         }
-    }
-    /**
-     * Checks if the item is salvageable.
-     * 
-     * @param is Item to check
-     * @return true if the item is salvageable, false otherwise
-     */
-    public static boolean isSalvageable(final ItemStack is) {
-        if (configInstance.getSalvageTools() && (ItemChecks.isMinecraftTool(is) || ItemChecks.isStringTool(is) || is.getType() == Material.BUCKET)) {
-            return true;
-        }
-        if (configInstance.getSalvageArmor() && ItemChecks.isMinecraftArmor(is)) {
-            return true;
-        }
-        return false;
     }
 }

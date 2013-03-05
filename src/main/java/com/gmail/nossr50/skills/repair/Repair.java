@@ -14,43 +14,27 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.McMMOPlayer;
-import com.gmail.nossr50.datatypes.PlayerProfile;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.utilities.PerksUtils;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.PerksUtils;
 
 public class Repair {
-    private static final AdvancedConfig advancedConfig = AdvancedConfig.getInstance();
+    public static int    repairMasteryMaxBonusLevel = AdvancedConfig.getInstance().getRepairMasteryMaxLevel();
+    public static double repairMasteryMaxBonus      = AdvancedConfig.getInstance().getRepairMasteryMaxBonus();
 
-    public static final double REPAIR_MASTERY_CHANCE_MAX = advancedConfig.getRepairMasteryMaxBonus();
-    public static final int REPAIR_MASTERY_MAX_BONUS_LEVEL = advancedConfig.getRepairMasteryMaxLevel();
-    public static final double SUPER_REPAIR_CHANCE_MAX = advancedConfig.getSuperRepairChanceMax();
-    public static final int SUPER_REPAIR_MAX_BONUS_LEVEL = advancedConfig.getSuperRepairMaxLevel();
+    public static int    superRepairMaxBonusLevel = AdvancedConfig.getInstance().getSuperRepairMaxLevel();
+    public static double superRepairMaxChance     = AdvancedConfig.getInstance().getSuperRepairChanceMax();
 
-    public static boolean arcaneForgingDowngrades = advancedConfig.getArcaneForgingDowngradeEnabled();
-    public static boolean arcaneForgingEnchantLoss = advancedConfig.getArcaneForgingEnchantLossEnabled();
+    public static boolean arcaneForgingDowngrades  = AdvancedConfig.getInstance().getArcaneForgingDowngradeEnabled();
+    public static boolean arcaneForgingEnchantLoss = AdvancedConfig.getInstance().getArcaneForgingEnchantLossEnabled();
 
-    public static boolean anvilMessagesEnabled = Config.getInstance().getRepairAnvilMessagesEnabled();
     public static int anvilID = Config.getInstance().getRepairAnvilId();
-
-    /**
-     * Handle the Xp gain for repair events.
-     *
-     * @param mcMMOPlayer Player repairing the item
-     * @param durabilityBefore Durability of the item before repair
-     * @param modify Amount to modify the durability by
-     */
-    protected static void xpHandler(McMMOPlayer mcMMOPlayer, short durabilityBefore, short durabilityAfter, double modify) {
-        short dif = (short) ((durabilityBefore - durabilityAfter) * modify);
-        Player player = mcMMOPlayer.getPlayer();
-
-        player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-        mcMMOPlayer.beginXpGain(SkillType.REPAIR, dif * 10);
-    }
+    public static boolean anvilMessagesEnabled = Config.getInstance().getRepairAnvilMessagesEnabled();
 
     /**
      * Get current Arcane Forging rank.
@@ -61,16 +45,16 @@ public class Repair {
     public static int getArcaneForgingRank(PlayerProfile profile) {
         int skillLevel = profile.getSkillLevel(SkillType.REPAIR);
 
-        if (skillLevel >= advancedConfig.getArcaneForgingRankLevels4()) {
+        if (skillLevel >= AdvancedConfig.getInstance().getArcaneForgingRankLevels4()) {
             return 4;
         }
-        else if (skillLevel >= advancedConfig.getArcaneForgingRankLevels3()) {
+        else if (skillLevel >= AdvancedConfig.getInstance().getArcaneForgingRankLevels3()) {
             return 3;
         }
-        else if (skillLevel >= advancedConfig.getArcaneForgingRankLevels2()) {
+        else if (skillLevel >= AdvancedConfig.getInstance().getArcaneForgingRankLevels2()) {
             return 2;
         }
-        else if (skillLevel >= advancedConfig.getArcaneForgingRankLevels1()) {
+        else if (skillLevel >= AdvancedConfig.getInstance().getArcaneForgingRankLevels1()) {
             return 1;
         }
         else {
@@ -95,7 +79,7 @@ public class Repair {
             return;
         }
 
-        int rank = getArcaneForgingRank(Users.getPlayer(player).getProfile());
+        int rank = getArcaneForgingRank(UserManager.getPlayer(player).getProfile());
 
         if (rank == 0 || !Permissions.arcaneForging(player)) {
             for (Enchantment x : enchants.keySet()) {
@@ -115,7 +99,7 @@ public class Repair {
             if (Misc.getRandom().nextInt(activationChance) <= getEnchantChance(rank)) {
                 int enchantLevel = enchant.getValue();
 
-                if (advancedConfig.getArcaneForgingDowngradeEnabled() && enchantLevel > 1) {
+                if (arcaneForgingDowngrades && enchantLevel > 1) {
                     if (Misc.getRandom().nextInt(activationChance) < getDowngradeChance(rank)) {
                         is.addEnchantment(enchantment, --enchantLevel);
                         downgraded = true;
@@ -148,20 +132,20 @@ public class Repair {
      */
     public static int getEnchantChance(int rank) {
         switch (rank) {
-        case 4:
-            return advancedConfig.getArcaneForgingKeepEnchantsChanceRank4();
+            case 4:
+                return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChanceRank4();
 
-        case 3:
-            return advancedConfig.getArcaneForgingKeepEnchantsChanceRank3();
+            case 3:
+                return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChanceRank3();
 
-        case 2:
-            return advancedConfig.getArcaneForgingKeepEnchantsChanceRank2();
+            case 2:
+                return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChanceRank2();
 
-        case 1:
-            return advancedConfig.getArcaneForgingKeepEnchantsChanceRank1();
+            case 1:
+                return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChanceRank1();
 
-        default:
-            return 0;
+            default:
+                return 0;
         }
     }
 
@@ -173,56 +157,21 @@ public class Repair {
      */
     public static int getDowngradeChance(int rank) {
         switch (rank) {
-        case 4:
-            return advancedConfig.getArcaneForgingDowngradeChanceRank4();
+            case 4:
+                return AdvancedConfig.getInstance().getArcaneForgingDowngradeChanceRank4();
 
-        case 3:
-            return advancedConfig.getArcaneForgingDowngradeChanceRank3();
+            case 3:
+                return AdvancedConfig.getInstance().getArcaneForgingDowngradeChanceRank3();
 
-        case 2:
-            return advancedConfig.getArcaneForgingDowngradeChanceRank2();
+            case 2:
+                return AdvancedConfig.getInstance().getArcaneForgingDowngradeChanceRank2();
 
-        case 1:
-            return advancedConfig.getArcaneForgingDowngradeChanceRank1();
+            case 1:
+                return AdvancedConfig.getInstance().getArcaneForgingDowngradeChanceRank1();
 
-        default:
-            return 100;
+            default:
+                return 100;
         }
-    }
-
-    /**
-     * Computes repair bonuses.
-     *
-     * @param player The player repairing an item
-     * @param skillLevel the skillLevel of the player in Repair
-     * @param durability The durability of the item being repaired
-     * @param repairAmount The base amount of durability repaired to the item
-     * @return The final amount of durability repaired to the item
-     */
-    protected static short repairCalculate(Player player, int skillLevel, short durability, int repairAmount) {
-        float  bonus;
-        if (skillLevel >= REPAIR_MASTERY_MAX_BONUS_LEVEL) bonus = (float) (REPAIR_MASTERY_CHANCE_MAX / 100F);
-        else bonus = (((float) skillLevel) / ((float) REPAIR_MASTERY_MAX_BONUS_LEVEL)) * (float) ((REPAIR_MASTERY_CHANCE_MAX) / 100F);
-
-        if (Permissions.repairMastery(player)) {
-            bonus = repairAmount * bonus;
-            repairAmount += (int) bonus;
-        }
-
-        if (checkPlayerProcRepair(player)) {
-            repairAmount = (int) (repairAmount * 2D);
-        }
-
-        if (repairAmount <= 0 || repairAmount > 32767)
-            repairAmount = 32767;
-
-        durability -= repairAmount;
-
-        if (durability < 0) {
-            durability = 0;
-        }
-
-        return durability;
     }
 
     /**
@@ -232,10 +181,12 @@ public class Repair {
      * @return true if bonus granted, false otherwise
      */
     public static boolean checkPlayerProcRepair(Player player) {
-        int skillLevel = Users.getPlayer(player).getProfile().getSkillLevel(SkillType.REPAIR);
+        int skillLevel = UserManager.getPlayer(player).getProfile().getSkillLevel(SkillType.REPAIR);
 
-        int chance = (int) ((SUPER_REPAIR_CHANCE_MAX / SUPER_REPAIR_MAX_BONUS_LEVEL) * skillLevel);
-        if (skillLevel >= SUPER_REPAIR_MAX_BONUS_LEVEL) chance = (int) SUPER_REPAIR_CHANCE_MAX;
+        int chance = (int) ((superRepairMaxChance / superRepairMaxBonusLevel) * skillLevel);
+        if (skillLevel >= superRepairMaxBonusLevel) {
+            chance = (int) superRepairMaxChance;
+        }
 
         int activationChance = PerksUtils.handleLuckyPerks(player, SkillType.REPAIR);
 
@@ -253,9 +204,9 @@ public class Repair {
      * @param anvilID The item ID of the anvil block
      */
     public static void placedAnvilCheck(Player player, int anvilID) {
-        PlayerProfile profile = Users.getPlayer(player).getProfile();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (!profile.getPlacedAnvil()) {
+        if (!mcMMOPlayer.getPlacedAnvil()) {
             if (mcMMO.spoutEnabled) {
                 SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
@@ -268,7 +219,62 @@ public class Repair {
             }
 
             player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-            profile.togglePlacedAnvil();
+            mcMMOPlayer.togglePlacedAnvil();
         }
+    }
+
+    /**
+     * Handle the Xp gain for repair events.
+     *
+     * @param mcMMOPlayer Player repairing the item
+     * @param durabilityBefore Durability of the item before repair
+     * @param modify Amount to modify the durability by
+     */
+    protected static void xpHandler(McMMOPlayer mcMMOPlayer, short durabilityBefore, short durabilityAfter, double modify) {
+        short dif = (short) ((durabilityBefore - durabilityAfter) * modify);
+        Player player = mcMMOPlayer.getPlayer();
+
+        player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+        mcMMOPlayer.beginXpGain(SkillType.REPAIR, dif * 10);
+    }
+
+    /**
+     * Computes repair bonuses.
+     *
+     * @param player The player repairing an item
+     * @param skillLevel the skillLevel of the player in Repair
+     * @param durability The durability of the item being repaired
+     * @param repairAmount The base amount of durability repaired to the item
+     * @return The final amount of durability repaired to the item
+     */
+    protected static short repairCalculate(Player player, int skillLevel, short durability, int repairAmount) {
+        float bonus;
+        if (skillLevel >= repairMasteryMaxBonusLevel) {
+            bonus = (float) (repairMasteryMaxBonus / 100F);
+        }
+        else {
+            bonus = (((float) skillLevel) / ((float) repairMasteryMaxBonusLevel)) * (float) ((repairMasteryMaxBonus) / 100F);
+        }
+
+        if (Permissions.repairMastery(player)) {
+            bonus = repairAmount * bonus;
+            repairAmount += (int) bonus;
+        }
+
+        if (checkPlayerProcRepair(player)) {
+            repairAmount = (int) (repairAmount * 2D);
+        }
+
+        if (repairAmount <= 0 || repairAmount > 32767) {
+            repairAmount = 32767;
+        }
+
+        durability -= repairAmount;
+
+        if (durability < 0) {
+            durability = 0;
+        }
+
+        return durability;
     }
 }

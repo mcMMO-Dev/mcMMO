@@ -277,6 +277,7 @@ permissions:
             mcmmo.ability.herbalism.greenterra: true
             mcmmo.ability.herbalism.greenthumb.all: true
             mcmmo.ability.herbalism.hylianluck: true
+            mcmmo.ability.herbalism.shroomthumb: true
     mcmmo.ability.herbalism.doubledrops:
         description: Allows double drop chance from Herbalism
     mcmmo.ability.herbalism.farmersdiet:
@@ -368,6 +369,8 @@ permissions:
             mcmmo.ability.herbalism.greenthumb.plants.crops: true
     mcmmo.ability.herbalism.hylianluck:
         description: Allows access to the Hylian Luck ability
+    mcmmo.ability.herbalism.shroomthumb:
+        description: Allows access to the Shroom Thumb ability
     mcmmo.ability.mining.*:
         default: false
         description: Allows access to all Mining abilities
@@ -508,6 +511,7 @@ permissions:
             mcmmo.ability.taming.environmentallyaware: true
             mcmmo.ability.taming.fastfoodservice: true
             mcmmo.ability.taming.gore: true
+            mcmmo.ability.taming.holyhound: true
             mcmmo.ability.taming.sharpenedclaws: true
             mcmmo.ability.taming.shockproof: true
             mcmmo.ability.taming.thickfur: true
@@ -521,6 +525,8 @@ permissions:
         description: Allows access to the Fast Food Service ability
     mcmmo.ability.taming.gore:
         description: Allows access to the Gore ability
+    mcmmo.ability.taming.holyhound:
+        description: Allows access to the Holy Hound ability
     mcmmo.ability.taming.sharpenedclaws:
         description: Allows access to the Sharpened Claws ability
     mcmmo.ability.taming.shockproof:

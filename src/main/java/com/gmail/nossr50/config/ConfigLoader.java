@@ -1,16 +1,9 @@
 package com.gmail.nossr50.config;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -45,90 +38,6 @@ public abstract class ConfigLoader {
         }
 
         config = YamlConfiguration.loadConfiguration(configFile);
-        FileConfiguration internalConfig = YamlConfiguration.loadConfiguration(plugin.getResource(fileName));
-
-        Set<String> configKeys = config.getKeys(true);
-        Set<String> internalConfigKeys = internalConfig.getKeys(true);
-
-        boolean needSave = false;
-
-        Set<String> oldKeys = new HashSet<String>(configKeys);
-        oldKeys.removeAll(internalConfigKeys);
-
-        Set<String> newKeys = new HashSet<String>(internalConfigKeys);
-        newKeys.removeAll(configKeys);
-
-        // Don't need a re-save if we have old keys sticking around?
-        // Would be less saving, but less... correct?
-        if (!newKeys.isEmpty() || !oldKeys.isEmpty()) {
-            needSave = true;
-        }
-
-        for (String key : oldKeys) {
-            plugin.debug("Removing unused key: " + key);
-            config.set(key, null);
-        }
-
-        for (String key : newKeys) {
-            plugin.debug("Adding new key: " + key + " = " + internalConfig.get(key));
-            config.set(key, internalConfig.get(key));
-        }
-
-        if (needSave) {
-            // Get Bukkit's version of an acceptable config with new keys, and no old keys
-            String output = config.saveToString();
-
-            // Convert to the superior 4 space indentation
-            output = output.replace("  ", "    ");
-
-            // Rip out Bukkit's attempt to save comments at the top of the file
-            while (output.indexOf('#') != -1) {
-                output = output.substring(output.indexOf('\n', output.indexOf('#'))+1);
-            }
-
-            // Read the internal config to get comments, then put them in the new one
-            try {
-                // Read internal
-                BufferedReader reader = new BufferedReader(new InputStreamReader(plugin.getResource(fileName)));
-                HashMap<String, String> comments = new HashMap<String, String>();
-                String temp = "";
-
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    if (line.contains("#")) {
-                        temp += line + "\n";
-                    }
-                    else if (line.contains(":")) {
-                        line = line.substring(0, line.indexOf(":") + 1);
-                        if(!temp.isEmpty()) {
-                            comments.put(line, temp);
-                            temp = "";
-                        }
-                    }
-                }
-
-                // Dump to the new one
-                for (String key : comments.keySet()) {
-                    if (output.indexOf(key) != -1) {
-                        output = output.substring(0, output.indexOf(key)) + comments.get(key) + output.substring(output.indexOf(key));
-                    }
-                }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            // Save it
-            try {
-                BufferedWriter writer = new BufferedWriter(new FileWriter(new File(plugin.getDataFolder(), fileName)));
-                writer.write(output);
-                writer.flush();
-                writer.close();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     protected abstract void loadKeys();
@@ -145,7 +54,8 @@ public abstract class ConfigLoader {
         if (inputStream != null) {
             try {
                 copyStreamToFile(inputStream, configFile);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }

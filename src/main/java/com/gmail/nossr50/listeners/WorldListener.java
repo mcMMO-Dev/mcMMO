@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.bukkit.Chunk;
-import org.bukkit.TreeType;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
@@ -26,17 +26,13 @@ public class WorldListener implements Listener {
      *
      * @param event The event to watch
      */
-    @EventHandler (priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
-        TreeType species = event.getSpecies();
+        Location location = event.getLocation();
 
-        if (species == TreeType.BROWN_MUSHROOM || species == TreeType.RED_MUSHROOM) {
-            return;
-        }
-
-        if (mcMMO.placeStore.isTrue(event.getLocation().getBlock())) {
-            for (BlockState block : event.getBlocks()) {
-                mcMMO.placeStore.setFalse(block.getBlock());
+        if (mcMMO.placeStore.isTrue(location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld())) {
+            for (BlockState blockState : event.getBlocks()) {
+                mcMMO.placeStore.setFalse(blockState);
             }
         }
     }

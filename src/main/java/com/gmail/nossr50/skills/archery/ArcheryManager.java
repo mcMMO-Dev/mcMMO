@@ -1,23 +1,47 @@
 package com.gmail.nossr50.skills.archery;
 
 import org.bukkit.Location;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
-import com.gmail.nossr50.datatypes.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.utilities.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ArcheryManager extends SkillManager {
-    public ArcheryManager (McMMOPlayer mcMMOPlayer) {
+    public ArcheryManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.ARCHERY);
     }
 
+    public boolean canDaze(LivingEntity target) {
+        return target instanceof Player && Permissions.daze(getPlayer());
+    }
+
+    public boolean canSkillShot() {
+        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.bonusDamage(getPlayer(), skill);
+    }
+
+    public boolean canTrackArrows() {
+        Player player = getPlayer();
+
+        return !(player.getItemInHand().containsEnchantment(Enchantment.ARROW_INFINITE)) && Permissions.arrowRetrieval(player);
+    }
+
+    /**
+     * Calculate bonus XP awarded for Archery when hitting a far-away target.
+     *
+     * @param target The {@link LivingEntity} damaged by the arrow
+     */
     public void distanceXpBonus(LivingEntity target) {
-        Player player = mcMMOPlayer.getPlayer();
+        Player player = getPlayer();
         Location shooterLocation = player.getLocation();
         Location targetLocation = target.getLocation();
 
@@ -25,61 +49,63 @@ public class ArcheryManager extends SkillManager {
             return;
         }
 
-        double squaredDistance = shooterLocation.distanceSquared(targetLocation);
-
         // Cap distance at 100^2 to prevent teleport exploit.
         // TODO: Better way to handle this would be great...
-        if (squaredDistance > 10000) {
-            squaredDistance = 10000;
-        }
+        double squaredDistance = Math.min(shooterLocation.distanceSquared(targetLocation), 10000);
 
-        int bonusXp = (int) (squaredDistance * Archery.distanceXpModifer);
-        mcMMOPlayer.beginXpGain(SkillType.ARCHERY, bonusXp);
+        applyXpGain((int) (squaredDistance * Archery.DISTANCE_XP_MULTIPLIER));
     }
 
     /**
      * Track arrows fired for later retrieval.
      *
-     * @param livingEntity Entity damaged by the arrow
+     * @param target The {@link LivingEntity} damaged by the arrow
      */
-    public void trackArrows(LivingEntity livingEntity) {
-        ArrowTrackingEventHandler eventHandler = new ArrowTrackingEventHandler(this, livingEntity);
-
-        double chance = (Archery.retrieveMaxChance / Archery.retrieveMaxBonusLevel) * eventHandler.skillModifier;
-
-        if (chance > Misc.getRandom().nextInt(activationChance)) {
-            eventHandler.addToTracker();
+    public void trackArrows(LivingEntity target) {
+        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.retrieveMaxChance, Archery.retrieveMaxBonusLevel)) {
+            Archery.incrementTrackerValue(target);
         }
     }
 
     /**
-     * Check for Daze.
+     * Handle the effects of the Daze ability
      *
-     * @param defender Defending player
-     * @param event The event to modify
+     * @param defender The {@link Player} being affected by the ability
+     * @param damage The amount of damage initially dealt by the event
+     * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    public void dazeCheck(Player defender, EntityDamageEvent event) {
-        DazeEventHandler eventHandler = new DazeEventHandler(this, event, defender);
+    public int dazeCheck(Player defender, int damage) {
+        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel)) {
+            Location dazedLocation = defender.getLocation();
+            dazedLocation.setPitch(90 - Misc.getRandom().nextInt(181));
 
-        double chance = (Archery.dazeMaxBonus / Archery.dazeMaxBonusLevel) * eventHandler.skillModifier;
+            defender.teleport(dazedLocation);
+            defender.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 10));
 
-        if (chance > Misc.getRandom().nextInt(activationChance)) {
-            eventHandler.handleDazeEffect();
-            eventHandler.sendAbilityMessages();
+            if (UserManager.getPlayer(defender).useChatNotifications()) {
+                defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
+            }
+
+            if (mcMMOPlayer.useChatNotifications()) {
+                getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
+            }
+
+            return damage + Archery.dazeModifier;
         }
+
+        return damage;
     }
 
     /**
-     * Handle archery bonus damage.
+     * Handle the effects of the Skill Shot ability
      *
-     * @param event The event to modify.
+     * @param damage The amount of damage initially dealt by the event
+     * @return the modified event damage
      */
-    public void skillShot(EntityDamageEvent event) {
-        if (skillLevel >= Archery.skillShotIncreaseLevel && Permissions.bonusDamage(mcMMOPlayer.getPlayer(), skill)) {
-            SkillShotEventHandler eventHandler = new SkillShotEventHandler(this, event);
+    public int skillShotCheck(int damage) {
+        double damageBonusPercent = Math.min(((getSkillLevel() / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage);
+        int archeryBonus = (int) (damage * damageBonusPercent);
 
-            eventHandler.calculateDamageBonus();
-            eventHandler.modifyEventDamage();
-        }
+        return damage + archeryBonus;
     }
 }

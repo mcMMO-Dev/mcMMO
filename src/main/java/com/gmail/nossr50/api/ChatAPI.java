@@ -5,7 +5,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.Users;
+import com.gmail.nossr50.util.player.UserManager;
 
 public final class ChatAPI {
     private ChatAPI() {}
@@ -104,7 +104,7 @@ public final class ChatAPI {
      * @return true if the player is using party chat, false otherwise
      */
     public static boolean isUsingPartyChat(Player player) {
-        return Users.getPlayer(player).getPartyChatMode();
+        return UserManager.getPlayer(player).getPartyChatMode();
     }
 
     /**
@@ -114,7 +114,7 @@ public final class ChatAPI {
      * @return true if the player is using party chat, false otherwise
      */
     public static boolean isUsingPartyChat(String playerName) {
-        return Users.getPlayer(playerName).getPartyChatMode();
+        return UserManager.getPlayer(playerName).getPartyChatMode();
     }
 
     /**
@@ -124,7 +124,7 @@ public final class ChatAPI {
      * @return true if the player is using admin chat, false otherwise
      */
     public static boolean isUsingAdminChat(Player player) {
-        return Users.getPlayer(player).getAdminChatMode();
+        return UserManager.getPlayer(player).getAdminChatMode();
     }
 
     /**
@@ -134,6 +134,6 @@ public final class ChatAPI {
      * @return true if the player is using admin chat, false otherwise
      */
     public static boolean isUsingAdminChat(String playerName) {
-        return Users.getPlayer(playerName).getAdminChatMode();
+        return UserManager.getPlayer(playerName).getAdminChatMode();
     }
 }
