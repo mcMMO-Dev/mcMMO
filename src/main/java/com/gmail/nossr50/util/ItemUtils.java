@@ -264,7 +264,7 @@ public class ItemUtils {
      * @return true if the item is armor, false otherwise
      */
     public static boolean isMinecraftArmor(ItemStack is) {
-        return isDiamondArmor(is) || isGoldArmor(is) || isIronArmor(is) || isDiamondArmor(is);
+        return isLeatherArmor(is) || isGoldArmor(is) || isIronArmor(is) || isDiamondArmor(is);
     }
 
     /**

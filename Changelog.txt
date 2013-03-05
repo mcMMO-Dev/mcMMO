@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.4.03-dev
+ = Fixed bug where players were unable to salvage leather armor
 
 Version 1.4.02
  + Added API to get the skill and power level caps.
