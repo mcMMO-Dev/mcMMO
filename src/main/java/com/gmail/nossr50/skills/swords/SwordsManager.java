@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.swords;
 
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -28,8 +29,8 @@ public class SwordsManager extends SkillManager {
         return Permissions.bleed(getPlayer());
     }
 
-    public boolean canUseCounterAttack() {
-        return Permissions.counterAttack(getPlayer());
+    public boolean canUseCounterAttack(Entity target) {
+        return target instanceof LivingEntity && Permissions.counterAttack(getPlayer());
     }
 
     public boolean canUseSerratedStrike() {

@@ -279,7 +279,7 @@ public final class CombatUtils {
 
                 SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
 
-                if (swordsManager.canUseCounterAttack()) {
+                if (swordsManager.canUseCounterAttack(damager)) {
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
             }
