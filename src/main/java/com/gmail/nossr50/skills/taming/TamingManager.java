@@ -85,7 +85,7 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, int damage) {
-        if (getActivationChance() > Taming.fastFoodServiceActivationChance) {
+        if (Taming.fastFoodServiceActivationChance > Misc.getRandom().nextInt(getActivationChance())) {
 
             int health = wolf.getHealth();
             int maxHealth = wolf.getMaxHealth();

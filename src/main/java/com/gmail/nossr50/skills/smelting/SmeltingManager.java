@@ -41,7 +41,7 @@ public class SmeltingManager extends SkillManager {
     public boolean processFluxMining(BlockState blockState) {
         Player player = getPlayer();
 
-        if (getActivationChance() > Smelting.fluxMiningChance) {
+        if (Smelting.fluxMiningChance > Misc.getRandom().nextInt(getActivationChance())) {
             ItemStack item = null;
 
             switch (blockState.getType()) {

@@ -12,6 +12,7 @@ import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
@@ -92,7 +93,7 @@ public class AxesManager extends SkillManager {
         int durabilityDamage = 1 + (getSkillLevel() / Axes.impactIncreaseLevel);
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
-            if (ItemUtils.isArmor(armor) && Axes.impactChance > getActivationChance()) {
+            if (ItemUtils.isArmor(armor) && Axes.impactChance > Misc.getRandom().nextInt(getActivationChance())) {
                 double durabilityModifier = 1 / (armor.getEnchantmentLevel(Enchantment.DURABILITY) + 1); // Modifier to simulate the durability enchantment behavior
                 double modifiedDurabilityDamage = durabilityDamage * durabilityModifier;
                 short maxDurability = ModUtils.isCustomArmor(armor) ? ModUtils.getArmorFromItemStack(armor).getDurability() : armor.getType().getMaxDurability();
@@ -111,7 +112,7 @@ public class AxesManager extends SkillManager {
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public int greaterImpactCheck(LivingEntity target, int damage) {
-        if (Axes.greaterImpactChance > getActivationChance()) {
+        if (Axes.greaterImpactChance > Misc.getRandom().nextInt(getActivationChance())) {
             Player player = getPlayer();
 
             ParticleEffectUtils.playGreaterImpactEffect(target);

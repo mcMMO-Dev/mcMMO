@@ -14,6 +14,7 @@ Version 1.4.02-dev
  = Fixed bug where the PTP cooldown was being read improperly
  = Fixed bug where /ptp <accept|toggle|acceptall> where broken
  = Fixed ClassCastException relating to counter-attack with Swords
+ = Fixed issue with some skill activations not activating enough or activating too much
 
 Version 1.4.01
  = Fixed bug where trying to use /mctop or /xplock with the Smelting child skill caused NPEs
