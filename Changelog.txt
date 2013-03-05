@@ -7,6 +7,8 @@ Key:
   ! Change
   - Removal
 
+Version 1.4.03-dev
+
 Version 1.4.02
  + Added API to get the skill and power level caps.
  = Fixed bug where Deflect was calculated based on the attacker, not the defender
