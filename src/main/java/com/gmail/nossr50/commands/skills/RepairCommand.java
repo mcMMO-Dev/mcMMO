@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Repairable;
-import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -123,8 +122,8 @@ public class RepairCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.6", diamondLevel), LocaleLoader.getString("Repair.Effect.7")));
         }
 
-        if (canSalvage && Salvage.salvageUnlockLevel > 0) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.16", Salvage.salvageUnlockLevel), LocaleLoader.getString("Repair.Effect.17")));
+        if (canSalvage && Repair.salvageUnlockLevel > 0) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.16", Repair.salvageUnlockLevel), LocaleLoader.getString("Repair.Effect.17")));
         }
 
         if (canArcaneForge) {

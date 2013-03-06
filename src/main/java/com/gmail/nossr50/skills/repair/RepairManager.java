@@ -179,7 +179,7 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (getSkillLevel() < Salvage.salvageUnlockLevel) {
+        if (getSkillLevel() < Repair.salvageUnlockLevel) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptSalvage"));
             return;
         }
@@ -188,7 +188,7 @@ public class RepairManager extends SkillManager {
             player.setItemInHand(new ItemStack(Material.AIR));
             location.setY(location.getY() + 1);
 
-            Misc.dropItems(location, new ItemStack(Salvage.getSalvagedItem(item)), Salvage.getSalvagedAmount(item));
+            Misc.dropItems(location, new ItemStack(Repair.getSalvagedItem(item)), Repair.getSalvagedAmount(item));
 
             player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
             player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
