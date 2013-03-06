@@ -82,13 +82,17 @@ public class Repair {
     protected static int findInInventory(PlayerInventory inventory, int itemId, byte metadata) {
         int location = -1;
 
-        for (ItemStack item : inventory.getContents()) {
+        ItemStack[] contents = inventory.getContents();
+
+        for (int i = 0; i < contents.length; i++) {
+            ItemStack item = contents[i];
+
             if (item == null) {
                 continue;
             }
 
             if (item.getTypeId() == itemId && item.getData().getData() == metadata) {
-                return location;
+                return i;
             }
         }
 
