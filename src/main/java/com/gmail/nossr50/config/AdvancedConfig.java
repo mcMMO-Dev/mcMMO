@@ -178,6 +178,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery_MaxBonusLevel", 1000); }
     public double getSuperRepairChanceMax() { return config.getDouble("Skills.Repair.SuperRepair_ChanceMax", 100.0D); }
     public int getSuperRepairMaxLevel() { return config.getInt("Skills.Repair.SuperRepair_MaxBonusLevel", 1000); }
+    public int getSalvageUnlockLevel() { return config.getInt("Skills.Repair.Salvage_UnlockLevel", 600); }
 
     /* Arcane Forging */
     public boolean getArcaneForgingDowngradeEnabled() { return config.getBoolean("Skills.Repair.Arcane_Forging.Downgrades.Enabled", true); }

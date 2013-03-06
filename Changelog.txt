@@ -10,6 +10,7 @@ Key:
 Version 1.4.03-dev
  = Fixed bug where players were unable to salvage leather armor
  = Fixed bug with repairing using materials with byte metadata
+ ! Moved the Salvage unlock level from config.yml to advanced.yml
  - Removed option to disable Salvage via the config file. This should be handled via permissions instead.
 
 Version 1.4.02

@@ -161,7 +161,6 @@ Skills:
         Anvil_Messages: true
         Anvil_ID: 42
         Salvage_Anvil_ID: 41
-        Salvage_UnlockLevel: 600
         Salvage_tools: true
         Salvage_armor: true
     Smelting:

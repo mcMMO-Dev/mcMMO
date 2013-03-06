@@ -3,11 +3,12 @@ package com.gmail.nossr50.skills.repair;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.util.ItemUtils;
 
 public class Salvage {
-    public static int salvageUnlockLevel = Config.getInstance().getSalvageUnlockLevel();
+    public static int salvageUnlockLevel = AdvancedConfig.getInstance().getSalvageUnlockLevel();
     public static int anvilID = Config.getInstance().getSalvageAnvilId();
 
     /**
