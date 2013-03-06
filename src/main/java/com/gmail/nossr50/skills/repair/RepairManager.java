@@ -32,24 +32,15 @@ public class RepairManager extends SkillManager {
         super(mcMMOPlayer, SkillType.REPAIR);
     }
 
-    public void placedAnvilCheck(int anvilId) {
-        if (anvilId == Repair.anvilID) {
-            repairAnvilCheck(anvilId);
-        }
-        else if (anvilId == Salvage.anvilID) {
-            salvageAnvilCheck(anvilId);
-        }
-    }
-
     /**
      * Handles notifications for placing an anvil.
      *
      * @param anvilID The item ID of the anvil block
      */
-    public void repairAnvilCheck(int anvilID) {
+    public void placedAnvilCheck(int anvilId) {
         Player player = getPlayer();
 
-        if (mcMMOPlayer.getPlacedAnvil()) {
+        if (mcMMOPlayer.getPlacedAnvil(anvilId)) {
             return;
         }
 
@@ -57,41 +48,19 @@ public class RepairManager extends SkillManager {
             SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
             if (spoutPlayer.isSpoutCraftEnabled()) {
-                spoutPlayer.sendNotification(LocaleLoader.getString("Repair.AnvilPlaced.Spout1"), LocaleLoader.getString("Repair.AnvilPlaced.Spout2"), Material.getMaterial(anvilID));
+                String[] spoutMessages = Repair.getSpoutAnvilMessages(anvilId);
+                spoutPlayer.sendNotification(spoutMessages[0], spoutMessages[1], Material.getMaterial(anvilId));
+            }
+            else {
+                player.sendMessage(Repair.getAnvilMessage(anvilId));
             }
         }
         else {
-            player.sendMessage(LocaleLoader.getString("Repair.Listener.Anvil"));
+            player.sendMessage(Repair.getAnvilMessage(anvilId));
         }
 
         player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-        mcMMOPlayer.togglePlacedAnvil();
-    }
-
-    /**
-     * Handles notifications for placing an anvil.
-     *
-     * @param player The player placing the anvil
-     * @param anvilID The item ID of the anvil block
-     */
-    public void salvageAnvilCheck(int anvilID) {
-        Player player = getPlayer();
-
-        if (!mcMMOPlayer.getPlacedSalvageAnvil()) {
-            if (mcMMO.spoutEnabled) {
-                final SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
-
-                if (spoutPlayer.isSpoutCraftEnabled()) {
-                    spoutPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to salvage!", Material.getMaterial(anvilID));
-                }
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Repair.Listener.Anvil2"));
-            }
-
-            player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-            mcMMOPlayer.togglePlacedSalvageAnvil();
-        }
+        mcMMOPlayer.togglePlacedAnvil(anvilId);
     }
 
     public void handleRepair(ItemStack item) {

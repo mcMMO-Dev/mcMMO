@@ -5,6 +5,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.locale.LocaleLoader;
 
 public class Repair {
     // The order of the values is extremely important, a few methods depend on it to work properly
@@ -110,5 +111,29 @@ public class Repair {
         item.setAmount(1);
 
         inventory.removeItem(item);
+    }
+
+    protected static String[] getSpoutAnvilMessages(int blockId) {
+        if (blockId == Repair.anvilID) {
+            return new String[] {LocaleLoader.getString("Repair.AnvilPlaced.Spout1"), LocaleLoader.getString("Repair.AnvilPlaced.Spout2")};
+        }
+
+        if (blockId == Salvage.anvilID) {
+            return new String[] {"[mcMMO] Anvil Placed", "Right click to salvage!"};
+        }
+
+        return new String[] {"", ""};
+    }
+
+    protected static String getAnvilMessage(int blockId) {
+        if (blockId == Repair.anvilID) {
+            return LocaleLoader.getString("Repair.Listener.Anvil");
+        }
+
+        if (blockId == Salvage.anvilID) {
+            return LocaleLoader.getString("Repair.Listener.Anvil2");
+        }
+
+        return "";
     }
 }

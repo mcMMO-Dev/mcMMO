@@ -28,7 +28,9 @@ import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
+import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
+import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
@@ -66,7 +68,7 @@ public class McMMOPlayer {
     private boolean displaySkillNotifications = true;
 
     private boolean abilityUse = true;
-    private boolean placedAnvil;
+    private boolean placedRepairAnvil;
     private boolean placedSalvageAnvil;
     private boolean godMode;
 
@@ -313,24 +315,26 @@ public class McMMOPlayer {
      * Repair Anvil Placement
      */
 
-    public void togglePlacedAnvil() {
-        placedAnvil = !placedAnvil;
+    public boolean getPlacedAnvil(int anvilId) {
+        if (anvilId == Repair.anvilID) {
+            return placedRepairAnvil;
+        }
+
+        if (anvilId == Salvage.anvilID) {
+            return placedSalvageAnvil;
+        }
+
+        return true;
     }
 
-    public Boolean getPlacedAnvil() {
-        return placedAnvil;
-    }
+    public void togglePlacedAnvil(int anvilId) {
+        if (anvilId == Repair.anvilID) {
+            placedRepairAnvil = !placedRepairAnvil;
+        }
 
-    /*
-     * Salvage Anvil Placement
-     */
-
-    public void togglePlacedSalvageAnvil() {
-        placedSalvageAnvil = !placedSalvageAnvil;
-    }
-
-    public Boolean getPlacedSalvageAnvil() {
-        return placedSalvageAnvil;
+        if (anvilId == Salvage.anvilID) {
+            placedSalvageAnvil = !placedSalvageAnvil;
+        }
     }
 
     /*
