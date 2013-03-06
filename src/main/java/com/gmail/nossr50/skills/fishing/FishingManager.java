@@ -217,7 +217,7 @@ public class FishingManager extends SkillManager {
         FishingTreasure treasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
         ItemStack treasureDrop = treasure.getDrop();
 
-        if (!SkillUtils.treasureDropSuccessful(treasure.getDropChance(), skillLevel)) {
+        if (!SkillUtils.treasureDropSuccessful(treasure.getDropChance(), activationChance)) {
             return null;
         }
 
