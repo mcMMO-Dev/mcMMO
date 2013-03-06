@@ -460,22 +460,6 @@ public class SkillUtils {
         }
     }
 
-    /**
-     * Check if a skill level is higher than the max bonus level of the ability.
-     *
-     * @param skillLevel Skill level to check
-     * @param maxLevel Max level of the ability
-     * @return whichever value is lower
-     */
-    public static int skillCheck(int skillLevel, int maxLevel) {
-        // TODO: Could we just use Math.min(skillLevel, maxLevel) here?
-        if (skillLevel > maxLevel) {
-            return maxLevel;
-        }
-
-        return skillLevel;
-    }
-
     public static void handleAbilitySpeedIncrease(Player player) {
         if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
             ItemStack heldItem = player.getItemInHand();
