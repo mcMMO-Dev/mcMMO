@@ -12,6 +12,7 @@ Version 1.4.03-dev
  = Fixed bug with repairing using materials with byte metadata
  ! Moved the Salvage unlock level from config.yml to advanced.yml
  - Removed option to disable Salvage via the config file. This should be handled via permissions instead.
+ - Removed the option to use Woodcutting without an axe from the config file.
 
 Version 1.4.02
  + Added API to get the skill and power level caps.

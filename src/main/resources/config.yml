@@ -184,7 +184,6 @@ Skills:
             SmoothBrick_To_CrackedBrick: true
     Woodcutting:
         Level_Cap: 0
-        Requires_Axe: true
 
 #
 #  Settings for Double Drops

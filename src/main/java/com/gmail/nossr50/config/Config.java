@@ -197,8 +197,6 @@ public class Config extends AutoUpdateConfigLoader {
     public int getTamingCOTWOcelotCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Fish_Required", 10); }
 
     /* Woodcutting */
-    public boolean getWoodcuttingRequiresTool() { return config.getBoolean("Skills.Woodcutting.Requires_Axe", true); }
-
     public int getWoodcuttingXPOak() { return config.getInt("Experience.Woodcutting.Oak", 70); }
     public int getWoodcuttingXPBirch() { return config.getInt("Experience.Woodcutting.Birch", 90); }
     public int getWoodcuttingXPSpruce() { return config.getInt("Experience.Woodcutting.Spruce", 80); }
