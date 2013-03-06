@@ -20,8 +20,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -37,7 +35,7 @@ import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
-import com.gmail.nossr50.skills.woodcutting.Woodcutting;
+import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
@@ -179,18 +177,13 @@ public class BlockListener implements Listener {
 
         /* WOOD CUTTING */
         else if (BlockUtils.isLog(blockState) && Permissions.skillEnabled(player, SkillType.WOODCUTTING) && !mcMMO.placeStore.isTrue(blockState)) {
-            if (mcMMOPlayer.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(player) && ItemUtils.isAxe(heldItem)) {
-                Woodcutting.beginTreeFeller(blockState, player);
+            WoodcuttingManager woodcuttingManager = mcMMOPlayer.getWoodcuttingManager();
+
+            if (woodcuttingManager.canUseTreeFeller(heldItem)) {
+                woodcuttingManager.processTreeFeller(blockState);
             }
             else {
-                if (Config.getInstance().getWoodcuttingRequiresTool()) {
-                    if (ItemUtils.isAxe(heldItem)) {
-                        Woodcutting.beginWoodcutting(player, blockState);
-                    }
-                }
-                else {
-                    Woodcutting.beginWoodcutting(player, blockState);
-                }
+                woodcuttingManager.woodcuttingBlockCheck(blockState);
             }
         }
 
@@ -367,18 +360,10 @@ public class BlockListener implements Listener {
                 }
             }
         }
-        else if ((mcMMOPlayer.getProfile().getSkillLevel(SkillType.WOODCUTTING) >= AdvancedConfig.getInstance().getLeafBlowUnlockLevel()) && BlockUtils.isLeaves(blockState)) {
-            if (SkillUtils.triggerCheck(player, block, AbilityType.LEAF_BLOWER)) {
-                if (Config.getInstance().getWoodcuttingRequiresTool()) {
-                    if (ItemUtils.isAxe(heldItem)) {
-                        event.setInstaBreak(true);
-                        Woodcutting.beginLeafBlower(player, blockState);
-                    }
-                }
-                else if (!(heldItem.getType() == Material.SHEARS)) {
-                    event.setInstaBreak(true);
-                    Woodcutting.beginLeafBlower(player, blockState);
-                }
+        else if (BlockUtils.isLeaves(blockState)) {
+            if (UserManager.getPlayer(player).getWoodcuttingManager().canUseLeafBlower(heldItem) && SkillUtils.blockBreakSimulate(block, player, true)) {
+                event.setInstaBreak(true);
+                player.playSound(blockState.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
             }
         }
     }

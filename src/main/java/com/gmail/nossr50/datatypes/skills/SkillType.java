@@ -16,6 +16,7 @@ import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
+import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.StringUtils;
 
 public enum SkillType {
@@ -31,7 +32,7 @@ public enum SkillType {
     SWORDS(SwordsManager.class, AbilityType.SERRATED_STRIKES, ToolType.SWORD),
     TAMING(TamingManager.class),
     UNARMED(UnarmedManager.class, AbilityType.BERSERK, ToolType.FISTS),
-    WOODCUTTING(null, AbilityType.TREE_FELLER, ToolType.AXE); // TODO: Create a proper WoodcuttingManager class
+    WOODCUTTING(WoodcuttingManager.class, AbilityType.TREE_FELLER, ToolType.AXE);
 
     private Class<? extends SkillManager> managerClass;
     private AbilityType ability;

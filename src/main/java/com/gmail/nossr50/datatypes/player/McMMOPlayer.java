@@ -34,6 +34,7 @@ import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
+import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
@@ -94,12 +95,7 @@ public class McMMOPlayer {
          */
         try {
             for (SkillType skillType : SkillType.values()) {
-                Class<? extends SkillManager> skillManagerClass = skillType.getManagerClass();
-
-                // TODO: The null check is needed only because currently some SkillType doesn't have a valid skillManagerClass 
-                if (skillManagerClass != null) {
-                    skillManagers.put(skillType, skillManagerClass.getConstructor(McMMOPlayer.class).newInstance(this));
-                }
+                skillManagers.put(skillType, skillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(this));
             }
         }
         catch (Exception e) {
@@ -164,6 +160,10 @@ public class McMMOPlayer {
 
     public UnarmedManager getUnarmedManager() {
         return (UnarmedManager) skillManagers.get(SkillType.UNARMED);
+    }
+
+    public WoodcuttingManager getWoodcuttingManager() {
+        return (WoodcuttingManager) skillManagers.get(SkillType.WOODCUTTING);
     }
 
     /*
