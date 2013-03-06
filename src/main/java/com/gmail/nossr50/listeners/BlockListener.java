@@ -142,7 +142,7 @@ public class BlockListener implements Listener {
 
         /* HERBALISM */
         if (BlockUtils.affectedByGreenTerra(blockState)) {
-            HerbalismManager herbalismManager = UserManager.getPlayer(player).getHerbalismManager();
+            HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
             /* Green Terra */
             if (herbalismManager.canActivateAbility()) {
@@ -167,7 +167,7 @@ public class BlockListener implements Listener {
 
         /* MINING */
         else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && Permissions.skillEnabled(player, SkillType.MINING) && !mcMMO.placeStore.isTrue(blockState)) {
-            MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+            MiningManager miningManager = mcMMOPlayer.getMiningManager();
             miningManager.miningBlockCheck(blockState);
 
             if (mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER)) {
@@ -189,7 +189,7 @@ public class BlockListener implements Listener {
 
         /* EXCAVATION */
         else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && Permissions.skillEnabled(player, SkillType.EXCAVATION) && !mcMMO.placeStore.isTrue(blockState)) {
-            ExcavationManager excavationManager = UserManager.getPlayer(player).getExcavationManager();
+            ExcavationManager excavationManager = mcMMOPlayer.getExcavationManager();
             excavationManager.excavationBlockCheck(blockState);
 
             if (mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
@@ -361,7 +361,7 @@ public class BlockListener implements Listener {
             }
         }
         else if (BlockUtils.isLeaves(blockState)) {
-            if (UserManager.getPlayer(player).getWoodcuttingManager().canUseLeafBlower(heldItem) && SkillUtils.blockBreakSimulate(block, player, true)) {
+            if (mcMMOPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem) && SkillUtils.blockBreakSimulate(block, player, true)) {
                 event.setInstaBreak(true);
                 player.playSound(blockState.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
             }
