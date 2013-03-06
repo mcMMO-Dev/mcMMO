@@ -176,7 +176,7 @@ public class RepairManager extends SkillManager {
     public void handleSalvage(Location location, ItemStack item) {
         Player player = getPlayer();
 
-        if (!Config.getInstance().getSalvageEnabled() || player.getGameMode() != GameMode.SURVIVAL) {
+        if (player.getGameMode() != GameMode.SURVIVAL) {
             return;
         }
 

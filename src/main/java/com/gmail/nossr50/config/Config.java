@@ -183,7 +183,6 @@ public class Config extends AutoUpdateConfigLoader {
     /* Repair */
     public boolean getRepairAnvilMessagesEnabled() { return config.getBoolean("Skills.Repair.Anvil_Messages", true); }
     public int getRepairAnvilId() { return config.getInt("Skills.Repair.Anvil_ID", 42); }
-    public boolean getSalvageEnabled() { return config.getBoolean("Skills.Repair.Salvage_enabled", true); }
     public int getSalvageAnvilId() { return config.getInt("Skills.Repair.Salvage_Anvil_ID", 41); }
     public int getSalvageUnlockLevel() { return config.getInt("Skills.Repair.Salvage_UnlockLevel", 600); }
     public boolean getSalvageTools() { return config.getBoolean("Skills.Repair.Salvage_tools", true); }
