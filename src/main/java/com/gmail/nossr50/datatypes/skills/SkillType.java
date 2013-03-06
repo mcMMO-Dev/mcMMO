@@ -11,6 +11,7 @@ import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
+import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
@@ -25,7 +26,7 @@ public enum SkillType {
     FISHING(FishingManager.class),
     HERBALISM(HerbalismManager.class, AbilityType.GREEN_TERRA, ToolType.HOE),
     MINING(MiningManager.class, AbilityType.SUPER_BREAKER, ToolType.PICKAXE),
-    REPAIR(null), // TODO: Create a proper RepairManager class
+    REPAIR(RepairManager.class),
     SMELTING(SmeltingManager.class),
     SWORDS(SwordsManager.class, AbilityType.SERRATED_STRIKES, ToolType.SWORD),
     TAMING(TamingManager.class),
