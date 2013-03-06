@@ -23,6 +23,7 @@ import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.RepairManager;
+import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
@@ -43,7 +44,8 @@ public enum SkillType {
     FISHING(FishingManager.class, Color.NAVY, ImmutableList.of(SecondaryAbility.FISHERMANS_DIET, SecondaryAbility.FISHING_TREASURE_HUNTER, SecondaryAbility.ICE_FISHING, SecondaryAbility.MAGIC_HUNTER, SecondaryAbility.MASTER_ANGLER, SecondaryAbility.SHAKE)),
     HERBALISM(HerbalismManager.class, Color.GREEN, AbilityType.GREEN_TERRA, ToolType.HOE, ImmutableList.of(SecondaryAbility.FARMERS_DIET, SecondaryAbility.GREEN_THUMB_PLANT, SecondaryAbility.GREEN_THUMB_BLOCK, SecondaryAbility.HERBALISM_DOUBLE_DROPS, SecondaryAbility.HYLIAN_LUCK, SecondaryAbility.SHROOM_THUMB)),
     MINING(MiningManager.class, Color.GRAY, AbilityType.SUPER_BREAKER, ToolType.PICKAXE, ImmutableList.of(SecondaryAbility.MINING_DOUBLE_DROPS)),
-    REPAIR(RepairManager.class, Color.SILVER, ImmutableList.of(SecondaryAbility.ARCANE_FORGING, SecondaryAbility.REPAIR_MASTERY, SecondaryAbility.SALVAGE, SecondaryAbility.SUPER_REPAIR)),
+    REPAIR(RepairManager.class, Color.SILVER, ImmutableList.of(SecondaryAbility.ARCANE_FORGING, SecondaryAbility.REPAIR_MASTERY, SecondaryAbility.SUPER_REPAIR)),
+    SALVAGE(SalvageManager.class, Color.ORANGE, ImmutableList.of(SecondaryAbility.ADVANCED_SALVAGE, SecondaryAbility.ARCANE_SALVAGE)),
     SMELTING(SmeltingManager.class, Color.YELLOW, ImmutableList.of(SecondaryAbility.FLUX_MINING, SecondaryAbility.FUEL_EFFICIENCY, SecondaryAbility.SECOND_SMELT)),
     SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), AbilityType.SERRATED_STRIKES, ToolType.SWORD, ImmutableList.of(SecondaryAbility.BLEED, SecondaryAbility.COUNTER)),
     TAMING(TamingManager.class, Color.PURPLE, ImmutableList.of(SecondaryAbility.BEAST_LORE, SecondaryAbility.CALL_OF_THE_WILD, SecondaryAbility.ENVIROMENTALLY_AWARE, SecondaryAbility.FAST_FOOD, SecondaryAbility.GORE, SecondaryAbility.HOLY_HOUND, SecondaryAbility.SHARPENED_CLAWS, SecondaryAbility.SHOCK_PROOF, SecondaryAbility.THICK_FUR)),
@@ -182,6 +184,7 @@ public enum SkillType {
     // TODO: This is a little "hacky", we probably need to add something to distinguish child skills in the enum, or to use another enum for them
     public boolean isChildSkill() {
         switch (this) {
+            case SALVAGE:
             case SMELTING:
                 return true;
 

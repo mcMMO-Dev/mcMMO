@@ -26,7 +26,6 @@ public class RepairCommand extends SkillCommand {
     private boolean canSuperRepair;
     private boolean canMasterRepair;
     private boolean canArcaneForge;
-    private boolean canSalvage;
     private boolean canRepairStone;
     private boolean canRepairIron;
     private boolean canRepairGold;
@@ -77,7 +76,6 @@ public class RepairCommand extends SkillCommand {
         canSuperRepair = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SUPER_REPAIR);
         canMasterRepair = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.REPAIR_MASTERY);
         canArcaneForge = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ARCANE_FORGING);
-        canSalvage = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SALVAGE);
         canRepairDiamond = Permissions.repairDiamond(player);
         canRepairGold = Permissions.repairGold(player);
         canRepairIron = Permissions.repairIron(player);
@@ -120,10 +118,6 @@ public class RepairCommand extends SkillCommand {
 
         if (canRepairDiamond && diamondLevel > 0) {
             messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.6", diamondLevel), LocaleLoader.getString("Repair.Effect.7")));
-        }
-
-        if (canSalvage && Repair.salvageUnlockLevel > 0) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Repair.Effect.16", Repair.salvageUnlockLevel), LocaleLoader.getString("Repair.Effect.17")));
         }
 
         if (canArcaneForge) {
