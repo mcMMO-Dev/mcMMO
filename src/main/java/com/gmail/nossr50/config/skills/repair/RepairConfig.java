@@ -15,6 +15,7 @@ import com.gmail.nossr50.skills.repair.repairables.RepairMaterialType;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class RepairConfig extends ConfigLoader {
     private List<Repairable> repairables;
@@ -136,7 +137,7 @@ public class RepairConfig extends ConfigLoader {
             }
 
             // Minimum Quantity
-            int minimumQuantity = (itemMaterial != null ? Repair.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), repairMaterial, repairMetadata) : config.getInt("Repairables." + key + ".MinimumQuantity", 2));
+            int minimumQuantity = (itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), repairMaterial, repairMetadata) : config.getInt("Repairables." + key + ".MinimumQuantity", 2));
 
             if (minimumQuantity <= 0 && itemMaterial != null) {
                 minimumQuantity = config.getInt("Repairables." + key + ".MinimumQuantity", 2);

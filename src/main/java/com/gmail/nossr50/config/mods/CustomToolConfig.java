@@ -11,11 +11,11 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
-import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.repairables.RepairItemType;
 import com.gmail.nossr50.skills.repair.repairables.RepairMaterialType;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class CustomToolConfig extends ConfigLoader {
     private boolean needsUpdate = false;
@@ -87,7 +87,7 @@ public class CustomToolConfig extends ConfigLoader {
 
             if (repairable) {
                 byte repairData = (byte) config.getInt(toolType + "." + toolName + ".Repair_Material_Data_Value", -1);
-                int repairQuantity = Repair.getRepairAndSalvageQuantities(new ItemStack(toolMaterial), repairMaterial, repairData);
+                int repairQuantity = SkillUtils.getRepairAndSalvageQuantities(new ItemStack(toolMaterial), repairMaterial, repairData);
 
                 if (repairQuantity == 0) {
                     repairQuantity = config.getInt(toolType + "." + toolName + ".Repair_Material_Data_Quantity", 2);

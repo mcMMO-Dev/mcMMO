@@ -9,11 +9,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.repairables.RepairItemType;
 import com.gmail.nossr50.skills.repair.repairables.RepairMaterialType;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class CustomArmorConfig extends ConfigLoader {
     private boolean needsUpdate = false;
@@ -79,7 +79,7 @@ public class CustomArmorConfig extends ConfigLoader {
 
             if (repairable) {
                 byte repairData = (byte) config.getInt(armorType + "." + armorName + ".Repair_Material_Data_Value", -1);
-                int repairQuantity = Repair.getRepairAndSalvageQuantities(new ItemStack(armorMaterial), repairMaterial, repairData);
+                int repairQuantity = SkillUtils.getRepairAndSalvageQuantities(new ItemStack(armorMaterial), repairMaterial, repairData);
 
                 if (repairQuantity == 0) {
                     repairQuantity = config.getInt(armorType + "." + armorName + ".Repair_Material_Data_Quantity", 2);

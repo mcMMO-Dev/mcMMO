@@ -10,6 +10,7 @@ import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.repair.ArcaneForging;
+import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.smelting.Smelting;
 import com.gmail.nossr50.util.StringUtils;
 
@@ -378,10 +379,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Repair.SuperRepair.MaxBonusLevel should be at least 1!");
         }
 
-        if (getSalvageUnlockLevel() < 0) {
-            reason.add("Skills.Repair.Salvage.UnlockLevel should be at least 0!");
-        }
-
         List<ArcaneForging.Tier> arcaneForgingTierList = Arrays.asList(ArcaneForging.Tier.values());
 
         for (ArcaneForging.Tier tier : arcaneForgingTierList) {
@@ -410,6 +407,51 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
                 if (getArcaneForgingKeepEnchantsChance(tier) > getArcaneForgingKeepEnchantsChance(nextTier)) {
                     reason.add("Skills.Repair.ArcaneForging.Keep_Enchants.Chance.Rank_" + tier.toNumerical() + " should be less than or equal to Skills.Repair.ArcaneForging.Keep_Enchants.Chance.Rank_" + nextTier.toNumerical() + "!");
+                }
+            }
+        }
+
+        /* SALVAGE */
+        if (getSalvageMaxPercentage() < 1) {
+            reason.add("Skills.Salvage.MaxPercentage should be at least 1!");
+        }
+
+        if (getSalvageMaxPercentageLevel() < 1) {
+            reason.add("Skills.Salvage.MaxPercentageLevel should be at least 1!");
+        }
+
+        if (getAdvancedSalvageUnlockLevel() < 1) {
+            reason.add("Skills.Salvage.AdvancedSalvage.UnlockLevel should be at least 1!");
+        }
+
+        List<Salvage.Tier> salvageTierList = Arrays.asList(Salvage.Tier.values());
+
+        for (Salvage.Tier tier : salvageTierList) {
+            if (getArcaneSalvageRankLevel(tier) < 0) {
+                reason.add("Skills.Salvage.ArcaneSalvage.Rank_Levels.Rank_" + tier.toNumerical() + " should be at least 0!");
+            }
+
+            if (getArcaneSalvageExtractFullEnchantsChance(tier) < 0 || getArcaneSalvageExtractFullEnchantsChance(tier) > 100) {
+                reason.add("Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + tier.toNumerical() + " only accepts values from 0 to 100!");
+            }
+
+            if (getArcaneSalvageExtractPartialEnchantsChance(tier) < 0 || getArcaneSalvageExtractPartialEnchantsChance(tier) > 100) {
+                reason.add("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + tier.toNumerical() + " only accepts values from 0 to 100!");
+            }
+
+            if (tier != Salvage.Tier.EIGHT) {
+                Salvage.Tier nextTier = salvageTierList.get(salvageTierList.indexOf(tier) - 1);
+
+                if (getArcaneSalvageRankLevel(tier) >= getArcaneSalvageRankLevel(nextTier)) {
+                    reason.add("Skills.Salvage.ArcaneSalvage.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than Skills.Salvage.ArcaneSalvage.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
+                }
+
+                if (getArcaneSalvageExtractFullEnchantsChance(tier) > getArcaneSalvageExtractFullEnchantsChance(nextTier)) {
+                    reason.add("Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + tier.toNumerical() + " should be less than or equal to Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + nextTier.toNumerical() + "!");
+                }
+
+                if (getArcaneSalvageExtractPartialEnchantsChance(tier) > getArcaneSalvageExtractPartialEnchantsChance(nextTier)) {
+                    reason.add("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + tier.toNumerical() + " should be less than or equal to Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + nextTier.toNumerical() + "!");
                 }
             }
         }
@@ -725,7 +767,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /* REPAIR */
     public double getRepairMasteryMaxBonus() { return config.getDouble("Skills.Repair.RepairMastery.MaxBonusPercentage", 200.0D); }
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery.MaxBonusLevel", 1000); }
-    public int getSalvageUnlockLevel() { return config.getInt("Skills.Repair.Salvage.UnlockLevel", 600); }
+    public double getSuperRepairChanceMax() { return config.getDouble("Skills.Repair.SuperRepair.ChanceMax", 100.0D); }
+    public int getSuperRepairMaxLevel() { return config.getInt("Skills.Repair.SuperRepair.MaxBonusLevel", 1000); }
 
     /* Arcane Forging */
     public int getArcaneForgingRankLevel(ArcaneForging.Tier tier) { return config.getInt("Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + tier.toNumerical()); }
@@ -735,6 +778,19 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     public boolean getArcaneForgingDowngradeEnabled() { return config.getBoolean("Skills.Repair.ArcaneForging.Downgrades_Enabled", true); }
     public double getArcaneForgingDowngradeChance(ArcaneForging.Tier tier) { return config.getDouble("Skills.Repair.ArcaneForging.Downgrades_Chance.Rank_" + tier.toNumerical()); }
+
+    /* SALVAGE */
+    public double getSalvageMaxPercentage() { return config.getDouble("Skills.Salvage.MaxPercentage", 100.0D); }
+    public int getSalvageMaxPercentageLevel() { return config.getInt("Skills.Salvage.MaxPercentageLevel", 1000); }
+
+    public int getAdvancedSalvageUnlockLevel() { return config.getInt("Skills.Salvage.AdvancedSalvage.UnlockLevel", 350); }
+
+    public boolean getArcaneSalvageEnchantDowngradeEnabled() { return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantDowngradeEnabled", true); }
+    public boolean getArcaneSalvageEnchantLossEnabled() { return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantLossEnabled", true); }
+
+    public int getArcaneSalvageRankLevel(Salvage.Tier tier) { return config.getInt("Skills.Salvage.ArcaneSalvage.Rank_Levels.Rank_" + tier.toNumerical()); }
+    public int getArcaneSalvageExtractFullEnchantsChance(Salvage.Tier tier) { return config.getInt("Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + tier.toNumerical()); }
+    public int getArcaneSalvageExtractPartialEnchantsChance(Salvage.Tier tier) { return config.getInt("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + tier.toNumerical()); }
 
     /* SMELTING */
     public int getBurnModifierMaxLevel() { return config.getInt("Skills.Smelting.FuelEfficiency.MaxBonusLevel", 1000); }
