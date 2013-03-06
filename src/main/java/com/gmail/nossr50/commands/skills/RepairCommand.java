@@ -9,6 +9,7 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 
 public class RepairCommand extends SkillCommand {
     private int arcaneForgingRank;
@@ -41,10 +42,10 @@ public class RepairCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         // We're using pickaxes here, not the best but it works
-        Repairable diamondRepairable = mcMMO.repairManager.getRepairable(Material.DIAMOND_PICKAXE.getId());
-        Repairable goldRepairable = mcMMO.repairManager.getRepairable(Material.GOLD_PICKAXE.getId());
-        Repairable ironRepairable = mcMMO.repairManager.getRepairable(Material.IRON_PICKAXE.getId());
-        Repairable stoneRepairable = mcMMO.repairManager.getRepairable(Material.STONE_PICKAXE.getId());
+        Repairable diamondRepairable = mcMMO.repairableManager.getRepairable(Material.DIAMOND_PICKAXE.getId());
+        Repairable goldRepairable = mcMMO.repairableManager.getRepairable(Material.GOLD_PICKAXE.getId());
+        Repairable ironRepairable = mcMMO.repairableManager.getRepairable(Material.IRON_PICKAXE.getId());
+        Repairable stoneRepairable = mcMMO.repairableManager.getRepairable(Material.STONE_PICKAXE.getId());
 
         // TODO: This isn't really accurate - if they don't have pickaxes loaded it doesn't always mean the repair level is 0
         diamondLevel = (diamondRepairable == null) ? 0 : diamondRepairable.getMinimumLevel();
@@ -66,7 +67,7 @@ public class RepairCommand extends SkillCommand {
         superRepairChanceLucky = superRepairStrings[1];
 
         // ARCANE FORGING
-        arcaneForgingRank = Repair.getArcaneForgingRank(profile);
+        arcaneForgingRank = UserManager.getPlayer(player).getRepairManager().getArcaneForgingRank();
     }
 
     @Override
@@ -155,11 +156,11 @@ public class RepairCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Rank", arcaneForgingRank));
 
             if (Repair.arcaneForgingEnchantLoss) {
-                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Success", (arcaneBypass ? 100 : Repair.getEnchantChance(arcaneForgingRank))));
+                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Success", (arcaneBypass ? 100 : UserManager.getPlayer(player).getRepairManager().getKeepEnchantChance())));
             }
 
             if (Repair.arcaneForgingDowngrades) {
-                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", (arcaneBypass ? 0 : Repair.getDowngradeChance(arcaneForgingRank))));
+                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", (arcaneBypass ? 0 : UserManager.getPlayer(player).getRepairManager().getDowngradeEnchantChance())));
             }
         }
     }

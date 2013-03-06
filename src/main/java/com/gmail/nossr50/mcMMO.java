@@ -45,8 +45,8 @@ import com.gmail.nossr50.runnables.party.PartyLoaderTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.runnables.skills.SkillMonitorTask;
 import com.gmail.nossr50.skills.child.ChildConfig;
-import com.gmail.nossr50.skills.repair.RepairManager;
-import com.gmail.nossr50.skills.repair.RepairManagerFactory;
+import com.gmail.nossr50.skills.repair.RepairableManager;
+import com.gmail.nossr50.skills.repair.RepairableManagerFactory;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.config.RepairConfigManager;
 import com.gmail.nossr50.util.LogFilter;
@@ -71,7 +71,7 @@ public class mcMMO extends JavaPlugin {
     public static mcMMO p;
 
     public static ChunkManager  placeStore;
-    public static RepairManager repairManager;
+    public static RepairableManager repairableManager;
 
     // Jar Stuff
     public static File mcmmo;
@@ -377,8 +377,8 @@ public class mcMMO extends JavaPlugin {
         // Load repair configs, make manager, and register them at this time
         RepairConfigManager rManager = new RepairConfigManager(this);
         repairables.addAll(rManager.getLoadedRepairables());
-        repairManager = RepairManagerFactory.getRepairManager(repairables.size());
-        repairManager.registerRepairables(repairables);
+        repairableManager = RepairableManagerFactory.getRepairManager(repairables.size());
+        repairableManager.registerRepairables(repairables);
 
         // Check if Repair Anvil and Salvage Anvil have different itemID's
         if (configInstance.getSalvageAnvilId() == configInstance.getRepairAnvilId()) {

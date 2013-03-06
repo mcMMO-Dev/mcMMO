@@ -28,6 +28,7 @@ import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
+import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
@@ -142,6 +143,10 @@ public class McMMOPlayer {
 
     public MiningManager getMiningManager() {
         return (MiningManager) skillManagers.get(SkillType.MINING);
+    }
+
+    public RepairManager getRepairManager() {
+        return (RepairManager) skillManagers.get(SkillType.REPAIR);
     }
 
     public SmeltingManager getSmeltingManager() {

@@ -285,8 +285,8 @@ public class PlayerListener implements Listener {
                 int blockID = block.getTypeId();
 
                 /* REPAIR CHECKS */
-                if (blockID == Repair.anvilID && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.repairManager.isRepairable(heldItem)) {
-                    mcMMO.repairManager.handleRepair(mcMMOPlayer, heldItem);
+                if (blockID == Repair.anvilID && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.repairableManager.isRepairable(heldItem)) {
+                    UserManager.getPlayer(player).getRepairManager().handleRepair(heldItem);
                     event.setCancelled(true);
                     player.updateInventory();
                 }
