@@ -3,6 +3,8 @@ package com.gmail.nossr50.skills.repair;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -13,6 +15,7 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
@@ -29,12 +32,21 @@ public class RepairManager extends SkillManager {
         super(mcMMOPlayer, SkillType.REPAIR);
     }
 
+    public void placedAnvilCheck(int anvilId) {
+        if (anvilId == Repair.anvilID) {
+            repairAnvilCheck(anvilId);
+        }
+        else if (anvilId == Salvage.anvilID) {
+            salvageAnvilCheck(anvilId);
+        }
+    }
+
     /**
      * Handles notifications for placing an anvil.
      *
      * @param anvilID The item ID of the anvil block
      */
-    public void placedAnvilCheck(int anvilID) {
+    public void repairAnvilCheck(int anvilID) {
         Player player = getPlayer();
 
         if (mcMMOPlayer.getPlacedAnvil()) {
@@ -54,6 +66,32 @@ public class RepairManager extends SkillManager {
 
         player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
         mcMMOPlayer.togglePlacedAnvil();
+    }
+
+    /**
+     * Handles notifications for placing an anvil.
+     *
+     * @param player The player placing the anvil
+     * @param anvilID The item ID of the anvil block
+     */
+    public void salvageAnvilCheck(int anvilID) {
+        Player player = getPlayer();
+
+        if (!mcMMOPlayer.getPlacedSalvageAnvil()) {
+            if (mcMMO.spoutEnabled) {
+                final SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
+
+                if (spoutPlayer.isSpoutCraftEnabled()) {
+                    spoutPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to salvage!", Material.getMaterial(anvilID));
+                }
+            }
+            else {
+                player.sendMessage(LocaleLoader.getString("Repair.Listener.Anvil2"));
+            }
+
+            player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+            mcMMOPlayer.togglePlacedSalvageAnvil();
+        }
     }
 
     public void handleRepair(ItemStack item) {
@@ -164,6 +202,32 @@ public class RepairManager extends SkillManager {
 
         // Repair the item!
         item.setDurability(newDurability);
+    }
+
+    public void handleSalvage(Location location, ItemStack item) {
+        Player player = getPlayer();
+
+        if (!Config.getInstance().getSalvageEnabled() || player.getGameMode() != GameMode.SURVIVAL) {
+            return;
+        }
+
+        if (getSkillLevel() < Salvage.salvageUnlockLevel) {
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptSalvage"));
+            return;
+        }
+
+        if (item.getDurability() == 0) {
+            player.setItemInHand(new ItemStack(Material.AIR));
+            location.setY(location.getY() + 1);
+
+            Misc.dropItems(location, new ItemStack(Salvage.getSalvagedItem(item)), Salvage.getSalvagedAmount(item));
+
+            player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
+        }
+        else {
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.NotFullDurability"));
+        }
     }
 
     /**

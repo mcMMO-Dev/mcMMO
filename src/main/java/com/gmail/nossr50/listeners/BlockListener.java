@@ -35,8 +35,6 @@ import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
-import com.gmail.nossr50.skills.repair.RepairManager;
-import com.gmail.nossr50.skills.repair.Salvage;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.skills.woodcutting.Woodcutting;
@@ -117,15 +115,7 @@ public class BlockListener implements Listener {
         }
 
         if (Repair.anvilMessagesEnabled) {
-            RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
-            int blockID = blockState.getTypeId();
-
-            if (blockID == Repair.anvilID) {
-                repairManager.placedAnvilCheck(blockID);
-            }
-            else if (blockID == Salvage.anvilID) {
-                Salvage.placedAnvilCheck(player, blockID);
-            }
+            UserManager.getPlayer(player).getRepairManager().placedAnvilCheck(blockState.getTypeId());
         }
     }
 

@@ -1,82 +1,14 @@
 package com.gmail.nossr50.skills.repair;
 
-import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.player.UserManager;
 
 public class Salvage {
     public static int salvageUnlockLevel = Config.getInstance().getSalvageUnlockLevel();
     public static int anvilID = Config.getInstance().getSalvageAnvilId();
-
-    public static void handleSalvage(final Player player, final Location location, final ItemStack item) {
-        if (!Config.getInstance().getSalvageEnabled()) {
-            return;
-        }
-
-        if (player.getGameMode() == GameMode.SURVIVAL) {
-            final int skillLevel = UserManager.getPlayer(player).getProfile().getSkillLevel(SkillType.REPAIR);
-
-            if (skillLevel < salvageUnlockLevel) {
-                player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptSalvage"));
-                return;
-            }
-
-            final float currentDurability = item.getDurability();
-
-            if (currentDurability == 0) {
-                player.setItemInHand(new ItemStack(Material.AIR));
-                location.setY(location.getY() + 1);
-
-                Misc.dropItems(location, new ItemStack(getSalvagedItem(item)), getSalvagedAmount(item));
-
-                player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-                player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Repair.Skills.NotFullDurability"));
-            }
-        }
-    }
-
-    /**
-     * Handles notifications for placing an anvil.
-     *
-     * @param player The player placing the anvil
-     * @param anvilID The item ID of the anvil block
-     */
-    public static void placedAnvilCheck(final Player player, final int anvilID) {
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-        if (!mcMMOPlayer.getPlacedSalvageAnvil()) {
-            if (mcMMO.spoutEnabled) {
-                final SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
-
-                if (spoutPlayer.isSpoutCraftEnabled()) {
-                    spoutPlayer.sendNotification("[mcMMO] Anvil Placed", "Right click to salvage!", Material.getMaterial(anvilID));
-                }
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Repair.Listener.Anvil2"));
-            }
-
-            player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-            mcMMOPlayer.togglePlacedSalvageAnvil();
-        }
-    }
 
     /**
      * Checks if the item is salvageable.
@@ -96,7 +28,7 @@ public class Salvage {
         return false;
     }
 
-    private static Material getSalvagedItem(final ItemStack inHand) {
+    protected static Material getSalvagedItem(final ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
         }
@@ -123,7 +55,7 @@ public class Salvage {
         }
     }
 
-    private static int getSalvagedAmount(final ItemStack inHand) {
+    protected static int getSalvagedAmount(final ItemStack inHand) {
         if (ItemUtils.isPickaxe(inHand) || ItemUtils.isAxe(inHand) || inHand.getType() == Material.BOW || inHand.getType() == Material.BUCKET) {
             return 3;
         }

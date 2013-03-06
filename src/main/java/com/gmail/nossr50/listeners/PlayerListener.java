@@ -292,7 +292,7 @@ public class PlayerListener implements Listener {
                 }
                 /* SALVAGE CHECKS */
                 else if (blockID == Salvage.anvilID && Permissions.salvage(player) && Salvage.isSalvageable(heldItem)) {
-                    Salvage.handleSalvage(player, block.getLocation(), heldItem);
+                    UserManager.getPlayer(player).getRepairManager().handleSalvage(block.getLocation(), heldItem);
                     event.setCancelled(true);
                     player.updateInventory();
                 }
