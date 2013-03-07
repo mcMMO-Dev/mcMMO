@@ -64,10 +64,6 @@ public final class CombatUtils {
             ItemStack heldItem = player.getItemInHand();
 
             if (target instanceof Tameable) {
-                if (isFriendlyPet(player, (Tameable) target)) {
-                    return;
-                }
-
                 if (heldItem.getType() == Material.BONE) {
                     TamingManager tamingManager = mcMMOPlayer.getTamingManager();
 
@@ -76,6 +72,10 @@ public final class CombatUtils {
                         event.setCancelled(true);
                         return;
                     }
+                }
+
+                if (isFriendlyPet(player, (Tameable) target)) {
+                    return;
                 }
             }
 
