@@ -304,7 +304,7 @@ public class RepairManager extends SkillManager {
 
         Map<Enchantment, Integer> enchants = item.getEnchantments();
 
-        if (enchants.size() == 0) {
+        if (enchants.isEmpty()) {
             return;
         }
 
