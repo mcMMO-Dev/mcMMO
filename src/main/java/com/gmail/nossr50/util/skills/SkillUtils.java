@@ -217,9 +217,10 @@ public class SkillUtils {
         int xpRemoved = 0;
 
         if (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             while (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
-                if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Config.getInstance().getPowerLevelCap() >= UserManager.getPlayer(player).getPowerLevel() + 1)) {
+                if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Config.getInstance().getPowerLevelCap() >= mcMMOPlayer.getPowerLevel() + 1)) {
                     int xp = profile.getXpToLevel(skillType);
                     xpRemoved += xp;
 
