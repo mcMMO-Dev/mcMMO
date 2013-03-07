@@ -188,7 +188,7 @@ public class RepairManager extends SkillManager {
             player.setItemInHand(new ItemStack(Material.AIR));
             location.setY(location.getY() + 1);
 
-            Misc.dropItems(location, new ItemStack(Repair.getSalvagedItem(item)), Repair.getSalvagedAmount(item));
+            Misc.dropItems(location, new ItemStack(Repair.getSalvagedItem(item)), Repair.getSalvagedAmount(item) * item.getAmount());
 
             player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
             player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
