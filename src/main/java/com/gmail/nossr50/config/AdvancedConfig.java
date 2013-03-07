@@ -20,6 +20,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* GENERAL */
     public int getAbilityLength() { return config.getInt("Skills.General.Ability_IncreaseLevel", 50); }
+    public int getEnchantBuff() { return config.getInt("Skills.General.Ability_EnchantBuff", 5); }
 
     /* ACROBATICS */
     public double getDodgeChanceMax() { return config.getDouble("Skills.Acrobatics.Dodge_ChanceMax", 20.0D); }

@@ -40,6 +40,8 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public class SkillUtils {
+    private static int enchantBuff = AdvancedConfig.getInstance().getEnchantBuff();
+
     public static int handleFoodSkills(Player player, SkillType skill, int eventFoodLevel, int baseLevel, int maxLevel, int rankChange) {
         int skillLevel = UserManager.getPlayer(player).getProfile().getSkillLevel(skill);
 
@@ -477,7 +479,7 @@ public class SkillUtils {
             }
 
             itemLore.add("mcMMO Ability Tool");
-            itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + 5, true);
+            itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + enchantBuff, true);
 
             itemMeta.setLore(itemLore);
             heldItem.setItemMeta(itemMeta);
@@ -543,11 +545,11 @@ public class SkillUtils {
                 if (itemLore.remove("mcMMO Ability Tool")) {
                     int efficiencyLevel = item.getEnchantmentLevel(Enchantment.DIG_SPEED);
 
-                    if (efficiencyLevel <= 5) {
+                    if (efficiencyLevel <= enchantBuff) {
                         itemMeta.removeEnchant(Enchantment.DIG_SPEED);
                     }
                     else {
-                        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - 5, true);
+                        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - enchantBuff, true);
                     }
 
                     itemMeta.setLore(itemLore);
