@@ -34,7 +34,7 @@ import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
-import com.gmail.nossr50.skills.unarmed.Unarmed;
+import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ItemUtils;
@@ -354,8 +354,10 @@ public class BlockListener implements Listener {
                 }
             }
             // Another perm check for the cracked blocks activation
-            else if (BlockUtils.affectedByBlockCracker(blockState) && Permissions.blockCracker(player)) {
-                if (Unarmed.blockCracker(player, blockState)) {
+            else if (BlockUtils.affectedByBlockCracker(blockState)) {
+                UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
+
+                if (unarmedManager.canUseBlockCracker() && SkillUtils.blockBreakSimulate(block, player, false) && unarmedManager.blockCrackerCheck(blockState)) {
                     blockState.update();
                 }
             }
