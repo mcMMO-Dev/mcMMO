@@ -13,6 +13,7 @@ Version 1.4.03-dev
  = Fixed bug with repairing using materials with byte metadata
  = Fixed bug where Fishing was becoming less successful at higher levels
  = Fixed bug with using Salvage on stacked items.
+ = Fixed bug where the 'mcmmo.commands.ptp.world.all' was registered twice
  ! Moved the Salvage unlock level from config.yml to advanced.yml
  - Removed option to disable Salvage via the config file. This should be handled via permissions instead.
  - Removed the option to use Woodcutting without an axe from the config file.

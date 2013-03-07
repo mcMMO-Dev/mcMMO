@@ -231,8 +231,6 @@ public final class Permissions {
         for (World world : server.getWorlds()) {
             addDynamicPermission("mcmmo.commands.ptp.world." + world.getName(), PermissionDefault.OP, pluginManager);
         }
-
-        addDynamicPermission("mcmmo.commands.ptp.world.all", PermissionDefault.OP, pluginManager);
     }
 
     private static void addDynamicPermission(String permissionName, PermissionDefault permissionDefault, PluginManager pluginManager) {
