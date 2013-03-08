@@ -94,7 +94,7 @@ public class InventoryListener implements Listener {
         BlockState furnaceState = furnaceBlock.getState();
 
         if (furnaceState instanceof Furnace) {
-            ItemStack smelting = ((Furnace) furnaceBlock).getInventory().getSmelting();
+            ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
 
             if (furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && smelting != null && ItemUtils.isSmeltable(smelting)) {
                 // We can make this assumption because we (should) be the only ones using this exact metadata
@@ -115,7 +115,7 @@ public class InventoryListener implements Listener {
         BlockState furnaceState = furnaceBlock.getState();
 
         if (furnaceState instanceof Furnace) {
-            ItemStack smelting = ((Furnace) furnaceBlock).getInventory().getSmelting();
+            ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
 
             if (furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && smelting != null && ItemUtils.isSmeltable(smelting)) {
                 // We can make this assumption because we (should) be the only ones using this exact metadata
@@ -135,7 +135,7 @@ public class InventoryListener implements Listener {
         BlockState furnaceBlock = event.getBlock().getState();
 
         if (furnaceBlock instanceof Furnace) {
-            ItemStack result = ((Furnace) furnaceBlock).getInventory().getResult();
+            ItemStack result = ((Furnace) furnaceState).getInventory().getResult();
 
             if (furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && result != null && ItemUtils.isSmelted(result)) {
                 // We can make this assumption because we (should) be the only ones using this exact metadata
