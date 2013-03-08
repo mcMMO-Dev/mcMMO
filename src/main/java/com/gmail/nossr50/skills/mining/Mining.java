@@ -72,7 +72,7 @@ public class Mining {
 
             default:
                 if (ModUtils.isCustomMiningBlock(blockState)) {
-                    Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack());
+                    Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack(1));
                 }
                 return;
         }

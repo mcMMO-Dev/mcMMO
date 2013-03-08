@@ -52,7 +52,7 @@ public final class ModUtils {
      */
     public static CustomBlock getCustomBlock(BlockState blockState) {
         if (customBlocksEnabled) {
-            ItemStack item = blockState.getData().toItemStack();
+            ItemStack item = blockState.getData().toItemStack(1);
 
             if (CustomBlockConfig.getInstance().customItems.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
@@ -88,7 +88,7 @@ public final class ModUtils {
      */
     public static boolean isCustomWoodcuttingBlock(BlockState blockState) {
         if (customBlocksEnabled) {
-            ItemStack item = blockState.getData().toItemStack();
+            ItemStack item = blockState.getData().toItemStack(1);
 
             if (CustomBlockConfig.getInstance().customWoodcuttingBlocks.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
@@ -110,7 +110,7 @@ public final class ModUtils {
      */
     public static boolean isCustomAbilityBlock(BlockState blockState) {
         if (customBlocksEnabled) {
-            ItemStack item = blockState.getData().toItemStack();
+            ItemStack item = blockState.getData().toItemStack(1);
 
             if (CustomBlockConfig.getInstance().customAbilityBlocks.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
@@ -132,7 +132,7 @@ public final class ModUtils {
      */
     public static boolean isCustomMiningBlock(BlockState blockState) {
         if (customBlocksEnabled) {
-            ItemStack item = blockState.getData().toItemStack();
+            ItemStack item = blockState.getData().toItemStack(1);
 
             if (CustomBlockConfig.getInstance().customMiningBlocks.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
@@ -154,7 +154,7 @@ public final class ModUtils {
      */
     public static boolean isCustomExcavationBlock(BlockState blockState) {
         if (customBlocksEnabled) {
-            ItemStack item = blockState.getData().toItemStack();
+            ItemStack item = blockState.getData().toItemStack(1);
 
             if (CustomBlockConfig.getInstance().customExcavationBlocks.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
@@ -176,7 +176,7 @@ public final class ModUtils {
      */
     public static boolean isCustomHerbalismBlock(BlockState blockState) {
         if (customBlocksEnabled) {
-            ItemStack item = blockState.getData().toItemStack();
+            ItemStack item = blockState.getData().toItemStack(1);
 
             if (CustomBlockConfig.getInstance().customHerbalismBlocks.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
@@ -198,7 +198,7 @@ public final class ModUtils {
      */
     public static boolean isCustomLeafBlock(BlockState blockState) {
         if (customBlocksEnabled) {
-            ItemStack item = blockState.getData().toItemStack();
+            ItemStack item = blockState.getData().toItemStack(1);
 
             if (CustomBlockConfig.getInstance().customLeaves.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
@@ -220,7 +220,7 @@ public final class ModUtils {
      */
     public static boolean isCustomLogBlock(BlockState blockState) {
         if (customBlocksEnabled) {
-            ItemStack item = blockState.getData().toItemStack();
+            ItemStack item = blockState.getData().toItemStack(1);
 
             if (CustomBlockConfig.getInstance().customLogs.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
@@ -242,7 +242,7 @@ public final class ModUtils {
      */
     public static boolean isCustomOreBlock(BlockState blockState) {
         if (customBlocksEnabled) {
-            ItemStack item = blockState.getData().toItemStack();
+            ItemStack item = blockState.getData().toItemStack(1);
 
             if (CustomBlockConfig.getInstance().customOres.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
