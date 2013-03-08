@@ -8,9 +8,9 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.LeaderboardManager;
+import com.gmail.nossr50.database.queuemanager.McTopAsync;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -123,6 +123,8 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(int page, String query, CommandSender sender, Command command) {
-        mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new MctopCommandAsyncTask(page, query, sender, command));
+        if (mcMMO.queueManager.contains(sender.getName()) || !mcMMO.queueManager.queue(new McTopAsync(page, query, sender, command))) {
+            //Warn that queue is unable to accept
+        }
     }
 }

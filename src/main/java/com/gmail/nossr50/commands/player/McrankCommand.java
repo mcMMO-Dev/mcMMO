@@ -8,11 +8,11 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.LeaderboardManager;
+import com.gmail.nossr50.database.queuemanager.McRankAsync;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
@@ -122,6 +122,8 @@ public class McrankCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(CommandSender sender, String playerName) {
-        mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new McrankCommandAsyncTask(playerName, sender));
+        if (mcMMO.queueManager.contains(sender.getName()) || !mcMMO.queueManager.queue(new McRankAsync(playerName, sender))) {
+            //Warn that queue is unable to accept
+        }
     }
 }

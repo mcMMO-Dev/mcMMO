@@ -27,6 +27,7 @@ import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.LeaderboardManager;
+import com.gmail.nossr50.database.queuemanager.AsyncQueueManager;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
@@ -70,6 +71,7 @@ public class mcMMO extends JavaPlugin {
 
     public static ChunkManager  placeStore;
     public static RepairableManager repairableManager;
+    public static AsyncQueueManager queueManager;
 
     // Jar Stuff
     public static File mcmmo;
@@ -88,6 +90,7 @@ public class mcMMO extends JavaPlugin {
 
     // XP Event Check
     private boolean xpEventEnabled = false;
+
 
     // Metadata Values
     public static FixedMetadataValue metadataValue;
@@ -455,6 +458,11 @@ public class mcMMO extends JavaPlugin {
         // Bleed timer (Runs every two seconds)
         scheduler.scheduleSyncRepeatingTask(this, new BleedTimerTask(), 40, 40);
 
+        if (Config.getInstance().getUseMySQL()) {
+            queueManager = new AsyncQueueManager(Config.getInstance().getQueueThrottle());
+            scheduler.runTaskAsynchronously(this, queueManager);
+        }
+        
         // Old & Powerless User remover
         int purgeInterval = Config.getInstance().getPurgeInterval();
 

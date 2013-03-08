@@ -59,6 +59,7 @@ public class Config extends AutoUpdateConfigLoader {
     public String getMySQLUserName() { return getStringIncludingInts(config, "MySQL.Database.User_Name"); }
     public int getMySQLServerPort() { return config.getInt("MySQL.Server.Port", 3306); }
     public String getMySQLServerName() { return config.getString("MySQL.Server.Address", "localhost"); }
+    public long getQueueThrottle() { return config.getLong("MySQL.QueueThrottle", 100L); }
 
     public String getMySQLUserPassword() {
         if (getStringIncludingInts(config, "MySQL.Database.User_Password") != null) {
@@ -253,4 +254,5 @@ public class Config extends AutoUpdateConfigLoader {
     /* XP Formula Multiplier */
     public int getFormulaMultiplierCurve() { return config.getInt("Experience.Formula.Curve_Modifier", 20); }
     public double getForumulaMultiplier(SkillType skill) { return config.getDouble("Experience.Formula.Multiplier." + StringUtils.getCapitalized(skill.toString())); }
+
 }
