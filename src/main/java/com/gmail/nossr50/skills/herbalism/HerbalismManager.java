@@ -77,7 +77,7 @@ public class HerbalismManager extends SkillManager {
      * @return the modified change in hunger for the event
      */
     public int farmersDiet(int rankChange, int eventFoodLevel) {
-        return SkillUtils.handleFoodSkills(getPlayer(), SkillType.HERBALISM, eventFoodLevel, Herbalism.farmersDietRankLevel1, Herbalism.farmersDietMaxLevel, rankChange);
+        return SkillUtils.handleFoodSkills(getPlayer(), skill, eventFoodLevel, Herbalism.farmersDietRankLevel1, Herbalism.farmersDietMaxLevel, rankChange);
     }
 
     /**
@@ -342,6 +342,6 @@ public class HerbalismManager extends SkillManager {
     }
 
     private byte getGreenThumbStage() {
-        return (byte) Math.min(Math.min(getProfile().getSkillLevel(SkillType.HERBALISM), Herbalism.greenThumbStageMaxLevel) / Herbalism.greenThumbStageChangeLevel, 4);
+        return (byte) Math.min(Math.min(getProfile().getSkillLevel(skill), Herbalism.greenThumbStageMaxLevel) / Herbalism.greenThumbStageChangeLevel, 4);
     }
 }
