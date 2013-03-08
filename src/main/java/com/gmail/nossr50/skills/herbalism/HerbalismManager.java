@@ -114,8 +114,9 @@ public class HerbalismManager extends SkillManager {
      */
     public void herbalismBlockCheck(BlockState blockState) {
         Material material = blockState.getType();
+        boolean oneBlockPlant = (material == Material.CACTUS || material == Material.SUGAR_CANE_BLOCK) ? false : true;
 
-        if (mcMMO.placeStore.isTrue(blockState) && (material != Material.CACTUS || material != Material.SUGAR_CANE_BLOCK)) {
+        if (oneBlockPlant && mcMMO.placeStore.isTrue(blockState)) {
             return;
         }
 
@@ -136,7 +137,7 @@ public class HerbalismManager extends SkillManager {
                 drop = herbalismBlock.getDropItem();
             }
 
-            if (material == Material.CACTUS || material == Material.SUGAR_CANE_BLOCK) {
+            if (!oneBlockPlant) {
                 amount = Herbalism.calculateCatciAndSugarDrops(blockState);
                 xp *= amount;
             }
