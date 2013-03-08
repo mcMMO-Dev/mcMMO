@@ -10,8 +10,13 @@ public class AsyncQueueManager implements Runnable {
     private long throttle;
     
     public AsyncQueueManager(long throttle) {
+<<<<<<< HEAD
         this.queue = new LinkedBlockingQueue<Queueable>();
         this.running = true;
+=======
+        queue = new LinkedBlockingQueue<Queueable>();
+        running = true;
+>>>>>>> Throttle
         this.throttle = throttle;
     }
     

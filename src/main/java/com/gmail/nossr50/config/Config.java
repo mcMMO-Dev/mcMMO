@@ -255,4 +255,22 @@ public class Config extends AutoUpdateConfigLoader {
     public int getFormulaMultiplierCurve() { return config.getInt("Experience.Formula.Curve_Modifier", 20); }
     public double getForumulaMultiplier(SkillType skill) { return config.getDouble("Experience.Formula.Multiplier." + StringUtils.getCapitalized(skill.toString())); }
 
+<<<<<<< HEAD
+=======
+        for (String key : keys) {
+            if (config.getBoolean("Double_Drops." + skillName + "." + key)) {
+                disabled = false;
+                break;
+            }
+        }
+
+        return disabled;
+    }
+
+    private int getLevelCap(String configString) {
+        int cap = config.getInt(configString, 0);
+        return ((cap <= 0) ? Integer.MAX_VALUE : cap);
+    }
+
+>>>>>>> Throttle
 }
