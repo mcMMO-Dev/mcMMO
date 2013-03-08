@@ -94,10 +94,6 @@ public class SkillUtils {
      * @param ability The ability to watch cooldowns for
      */
     public static void watchCooldown(McMMOPlayer mcMMOPlayer, AbilityType ability) {
-        if (mcMMOPlayer == null || ability == null) {
-            return;
-        }
-
         Player player = mcMMOPlayer.getPlayer();
 
         if (!mcMMOPlayer.getAbilityInformed(ability) && cooldownOver(mcMMOPlayer.getProfile().getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
