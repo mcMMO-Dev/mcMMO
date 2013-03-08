@@ -22,6 +22,7 @@ public class McRankAsync implements Queueable {
         this.player = sender.getName();
     }
 
+    @Override
     public void run() {
         final Map<String, Integer> skills = DatabaseManager.readSQLRank(playerName);
 
@@ -54,9 +55,19 @@ public class McRankAsync implements Queueable {
 
         }, 1L);
     }
+<<<<<<< HEAD
 
     @Override
     public String getPlayer() {
         return player;
+=======
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof String) {
+            return ((String)obj).equalsIgnoreCase(player);
+        }
+        return false;
+>>>>>>> One per player
     }
 }

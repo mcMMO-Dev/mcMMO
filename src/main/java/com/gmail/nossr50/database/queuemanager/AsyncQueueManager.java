@@ -36,6 +36,7 @@ public class AsyncQueueManager implements Runnable {
     }
     
     public boolean contains(String player) {
+<<<<<<< HEAD
         return queue.contains(new EqualString(player));
     }
     
@@ -51,6 +52,9 @@ public class AsyncQueueManager implements Runnable {
             }
             return false;
         }
+=======
+        return queue.contains(player);
+>>>>>>> One per player
     }
 
 }

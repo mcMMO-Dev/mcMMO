@@ -32,6 +32,7 @@ public class McTopAsync implements Queueable {
         this.player = sender.getName();
     }
 
+    @Override
     public void run() {
         if (!query.equalsIgnoreCase("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
             if (!Permissions.mctop(sender, SkillType.getSkill(query))) {
@@ -67,8 +68,17 @@ public class McTopAsync implements Queueable {
     }
 
     @Override
+<<<<<<< HEAD
     public String getPlayer() {
         return player;
     }
 
+=======
+    public boolean equals(Object obj) {
+        if (obj instanceof String) {
+            return ((String)obj).equalsIgnoreCase(player);
+        }
+        return false;
+    }
+>>>>>>> One per player
 }
