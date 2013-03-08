@@ -63,24 +63,17 @@ public class Herbalism {
     protected static int calculateCatciAndSugarDrops(BlockState blockState) {
         Block block = blockState.getBlock();
         Material blockType = blockState.getType();
-        int dropAmount = 0;
-
-        // Handle the original block
-        if (!mcMMO.placeStore.isTrue(blockState)) {
-            dropAmount++;
-        }
+        int dropAmount = 1;
 
         // Handle the two blocks above it - cacti & sugar cane can only grow 3 high naturally
         for (int y = 1; y < 3; y++) {
             Block relativeBlock = block.getRelative(BlockFace.UP, y);
-            Material relativeBlockType = relativeBlock.getType();
 
-            // If the first one is air, so is the next one
-            if (relativeBlockType == Material.AIR) {
+            if (relativeBlock.getType() != blockType) {
                 break;
             }
 
-            if (relativeBlockType == blockType && !mcMMO.placeStore.isTrue(relativeBlock)) {
+            if (!mcMMO.placeStore.isTrue(relativeBlock)) {
                 dropAmount++;
             }
         }

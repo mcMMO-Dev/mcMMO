@@ -154,14 +154,7 @@ public class BlockListener implements Listener {
              * Instead, we check it inside the drops handler.
              */
             if (Permissions.skillEnabled(player, SkillType.HERBALISM)) {
-
-                // Double drops
                 herbalismManager.herbalismBlockCheck(blockState);
-
-                // Triple drops
-                if (herbalismManager.canGreenTerraPlant()) {
-                    herbalismManager.herbalismBlockCheck(blockState);
-                }
             }
         }
 
