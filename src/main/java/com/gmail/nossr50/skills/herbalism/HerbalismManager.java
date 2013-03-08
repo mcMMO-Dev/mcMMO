@@ -113,11 +113,12 @@ public class HerbalismManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public void herbalismBlockCheck(BlockState blockState) {
-        if (mcMMO.placeStore.isTrue(blockState)) {
+        Material material = blockState.getType();
+
+        if (mcMMO.placeStore.isTrue(blockState) && (material != Material.CACTUS || material != Material.SUGAR_CANE_BLOCK)) {
             return;
         }
 
-        Material material = blockState.getType();
         HerbalismBlock herbalismBlock = HerbalismBlock.getHerbalismBlock(material);
         ItemStack drop = null;
         int amount = 1;
