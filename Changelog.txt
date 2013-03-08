@@ -9,6 +9,7 @@ Key:
 
 Version 1.4.03-dev
  + Added option to advanced.yml to determine the # of enchant levels used when buffing Super Breaker & Giga Drill Breaker
+ + Improved stats display for child skills
  = Fixed bug with Blast Mining not dropping blocks correctly
  = Fixed bug with custom blocks not working
  = Fixed bug where triple drops would award twice the amount of experience in Herbalism and Mining

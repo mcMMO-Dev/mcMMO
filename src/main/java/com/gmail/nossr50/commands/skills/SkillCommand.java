@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
 import java.text.DecimalFormat;
+import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,6 +12,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -57,11 +59,22 @@ public abstract class SkillCommand implements CommandExecutor {
         dataCalculations();
         permissionsCheck();
 
-        player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString(skillString + ".SkillName")));
-
         if (!skill.isChildSkill()) {
+            player.sendMessage(LocaleLoader.getString("Skills.Header", SkillUtils.getSkillName(skill)));
             player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + skillString)));
             player.sendMessage(LocaleLoader.getString("Effects.Level", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill)));
+        }
+        else {
+            player.sendMessage(LocaleLoader.getString("Skills.Header", SkillUtils.getSkillName(skill) + " " + LocaleLoader.getString("Skills.Child")));
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain.Child")));
+            player.sendMessage(LocaleLoader.getString("Effects.Child", profile.getSkillLevel(skill)));
+
+            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Skills.Parents")));
+            Set<SkillType> parents = FamilyTree.getParents(skill);
+
+            for (SkillType parent : parents) {
+                player.sendMessage(SkillUtils.getSkillName(parent) + " - " + LocaleLoader.getString("Effects.Level", profile.getSkillLevel(parent), profile.getSkillXpLevel(parent), profile.getXpToLevel(parent)));
+            }
         }
 
         if (effectsHeaderPermissions()) {
