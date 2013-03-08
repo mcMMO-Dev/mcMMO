@@ -79,6 +79,7 @@ public class McMMOPlayer {
     private Map<ToolType, Integer> toolATS  = new HashMap<ToolType, Integer>();
 
     private int recentlyHurt;
+    private int chimaeraWing;
     private int respawnATS;
 
     public McMMOPlayer(Player player) {
@@ -297,6 +298,23 @@ public class McMMOPlayer {
     public void actualizeRecentlyHurt() {
         recentlyHurt = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
+
+    /*
+     * Chimaera Wing
+     */
+
+    public int getLastChimaeraTeleport() {
+        return chimaeraWing;
+    }
+
+    public void setLastChimaeraTeleport(int value) {
+        chimaeraWing = value;
+    }
+
+    public void actualizeLastChimaeraTeleport() {
+        chimaeraWing = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+    }
+
 
     /*
      * Exploit Prevention

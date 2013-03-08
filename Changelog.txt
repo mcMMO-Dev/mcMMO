@@ -10,6 +10,7 @@ Key:
 Version 1.4.03-dev
  + Added option to advanced.yml to determine the # of enchant levels used when buffing Super Breaker & Giga Drill Breaker
  + Improved stats display for child skills
+ + Added cooldown between using Chimaera Wings
  = Fixed bug with Smelting not properly tracking furnaces
  = Fixed bug with Blast Mining not dropping blocks correctly
  = Fixed bug with custom blocks not working
@@ -25,6 +26,7 @@ Version 1.4.03-dev
  = Fixed bug where the 'mcmmo.commands.ptp.world.all' was registered twice
  = Fixed bug where Beast Lore wouldn't work on friendly pets
  ! Moved the Salvage unlock level from config.yml to advanced.yml
+ ! Changed how Chimaera Wings are acquired, you need to craft them now. (By default, use 5 feathers in a shapeless recipe)
  - Removed option to disable Salvage via the config file. This should be handled via permissions instead.
  - Removed the option to use Woodcutting without an axe from the config file.
 

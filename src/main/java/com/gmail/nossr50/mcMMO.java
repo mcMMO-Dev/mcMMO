@@ -48,6 +48,7 @@ import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.RepairableManager;
 import com.gmail.nossr50.skills.repair.RepairableManagerFactory;
 import com.gmail.nossr50.skills.repair.config.RepairConfigManager;
+import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.LogFilter;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.UpdateChecker;
@@ -114,6 +115,7 @@ public class mcMMO extends JavaPlugin {
             }
 
             registerEvents();
+            registerCustomRecipes();
 
             // Setup the leader boards
             if (Config.getInstance().getUseMySQL()) {
@@ -431,6 +433,12 @@ public class mcMMO extends JavaPlugin {
         // Spout commands
         CommandRegistrationManager.registerXplockCommand();
         CommandRegistrationManager.registerMchudCommand();
+    }
+
+    private void registerCustomRecipes() {
+        if (Config.getInstance().getChimaeraEnabled()) {
+            getServer().addRecipe(ChimaeraWing.getChimaeraWingRecipe());
+        }
     }
 
     private void scheduleTasks() {
