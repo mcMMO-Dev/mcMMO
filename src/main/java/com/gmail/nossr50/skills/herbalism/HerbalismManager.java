@@ -122,7 +122,7 @@ public class HerbalismManager extends SkillManager {
         ItemStack drop = null;
         int amount = 1;
         int xp = 0;
-        boolean greenTerra = mcMMOPlayer.getAbilityMode(AbilityType.GREEN_TERRA);
+        boolean greenTerra = mcMMOPlayer.getAbilityMode(skill.getAbility());
 
         if (herbalismBlock != null) {
             if (herbalismBlock.hasGreenThumbPermission(getPlayer())) {
