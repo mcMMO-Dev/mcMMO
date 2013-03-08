@@ -146,7 +146,6 @@ public class MiningManager extends SkillManager{
 
                 if (!mcMMO.placeStore.isTrue(blockState)) {
                     for (int i = 1; i < dropMultiplier; i++) {
-                        xp += Mining.getBlockXp(blockState);
                         Mining.handleSilkTouchDrops(blockState); // Bonus drops - should drop the block & not the items
                     }
                 }
