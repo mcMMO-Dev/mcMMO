@@ -137,7 +137,6 @@ public class BlockListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         BlockState blockState = event.getBlock().getState();
-
         ItemStack heldItem = player.getItemInHand();
 
         /* HERBALISM */
@@ -162,10 +161,6 @@ public class BlockListener implements Listener {
         else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && Permissions.skillEnabled(player, SkillType.MINING) && !mcMMO.placeStore.isTrue(blockState)) {
             MiningManager miningManager = mcMMOPlayer.getMiningManager();
             miningManager.miningBlockCheck(blockState);
-
-            if (mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER)) {
-                miningManager.miningBlockCheck(blockState);
-            }
         }
 
         /* WOOD CUTTING */

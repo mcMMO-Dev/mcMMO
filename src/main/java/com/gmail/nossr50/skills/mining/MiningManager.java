@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -54,18 +55,29 @@ public class MiningManager extends SkillManager{
      */
     public void miningBlockCheck(BlockState blockState) {
         Player player = getPlayer();
-        int xp = Mining.getBlockXp(blockState);
 
-        if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
-            if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
-                Mining.handleSilkTouchDrops(blockState);
-            }
-            else {
-                Mining.handleMiningDrops(blockState);
+        if (!Permissions.doubleDrops(player, skill)) {
+            return;
+        }
+
+        Material material = blockState.getType();
+
+        if (material != Material.GLOWING_REDSTONE_ORE && !Config.getInstance().getDoubleDropsEnabled(skill, material)) {
+            return;
+        }
+
+        for (int i = mcMMOPlayer.getAbilityMode(skill.getAbility()) ? 2 : 1; i != 0; i--) {
+            if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
+                if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
+                    Mining.handleSilkTouchDrops(blockState);
+                }
+                else {
+                    Mining.handleMiningDrops(blockState);
+                }
             }
         }
 
-        applyXpGain(xp);
+        applyXpGain(Mining.getBlockXp(blockState));
     }
 
     /**
