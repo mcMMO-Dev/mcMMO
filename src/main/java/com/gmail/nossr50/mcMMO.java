@@ -10,7 +10,6 @@ import net.shatteredlands.shatt.backup.ZipLibrary;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -66,7 +65,6 @@ public class mcMMO extends JavaPlugin {
     private final WorldListener     worldListener     = new WorldListener();
 
     private HashMap<Integer, String>    tntTracker     = new HashMap<Integer, String>();
-    private HashMap<BlockState, String> furnaceTracker = new HashMap<BlockState, String>();
 
     public static mcMMO p;
 
@@ -95,6 +93,7 @@ public class mcMMO extends JavaPlugin {
     public static FixedMetadataValue metadataValue;
     public final static String entityMetadataKey = "mcMMO: Spawned Entity";
     public final static String blockMetadataKey  = "mcMMO: Piston Tracking";
+    public final static String furnaceMetadataKey  = "mcMMO: Tracked Furnace";
 
     /**
      * Things to be run when the plugin is enabled.
@@ -271,22 +270,6 @@ public class mcMMO extends JavaPlugin {
      */
     public void removeFromTNTTracker(int tntID) {
         tntTracker.remove(tntID);
-    }
-
-    public void addToOpenFurnaceTracker(BlockState furnace, String playerName) {
-        furnaceTracker.put(furnace, playerName);
-    }
-
-    public boolean furnaceIsTracked(BlockState furnace) {
-        return furnaceTracker.containsKey(furnace);
-    }
-
-    public void removeFromFurnaceTracker(BlockState furnace) {
-        furnaceTracker.remove(furnace);
-    }
-
-    public Player getFurnacePlayer(BlockState furnace) {
-        return getServer().getPlayer(furnaceTracker.get(furnace));
     }
 
     public static String getMainDirectory() {
