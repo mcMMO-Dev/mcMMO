@@ -56,7 +56,9 @@ public class MiningManager extends SkillManager{
     public void miningBlockCheck(BlockState blockState) {
         Player player = getPlayer();
 
-        if (!Permissions.doubleDrops(player, skill)) {
+        applyXpGain(Mining.getBlockXp(blockState));
+
+        if (Permissions.doubleDrops(player, skill)) {
             return;
         }
 
@@ -78,8 +80,6 @@ public class MiningManager extends SkillManager{
                 }
             }
         }
-
-        applyXpGain(Mining.getBlockXp(blockState));
     }
 
     /**
