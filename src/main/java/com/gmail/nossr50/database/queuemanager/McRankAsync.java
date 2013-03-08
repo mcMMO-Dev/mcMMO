@@ -63,11 +63,16 @@ public class McRankAsync implements Queueable {
 =======
     
     @Override
+<<<<<<< HEAD
     public boolean equals(Object obj) {
         if (obj instanceof String) {
             return ((String)obj).equalsIgnoreCase(player);
         }
         return false;
 >>>>>>> One per player
+=======
+    public String getPlayer() {
+        return player;
+>>>>>>> String wrapper
     }
 }

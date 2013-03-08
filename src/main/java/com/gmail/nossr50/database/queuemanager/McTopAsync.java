@@ -69,6 +69,7 @@ public class McTopAsync implements Queueable {
 
     @Override
 <<<<<<< HEAD
+<<<<<<< HEAD
     public String getPlayer() {
         return player;
     }
@@ -81,4 +82,10 @@ public class McTopAsync implements Queueable {
         return false;
     }
 >>>>>>> One per player
+=======
+    public String getPlayer() {
+        return player;
+    }
+
+>>>>>>> String wrapper
 }
