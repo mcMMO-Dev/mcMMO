@@ -132,14 +132,14 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
-        BlockState furnaceBlock = event.getBlock().getState();
+        BlockState furnaceState = event.getBlock().getState();
 
-        if (furnaceBlock instanceof Furnace) {
+        if (furnaceState instanceof Furnace) {
             ItemStack result = ((Furnace) furnaceState).getInventory().getResult();
 
-            if (furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && result != null && ItemUtils.isSmelted(result)) {
+            if (furnaceState.hasMetadata(mcMMO.furnaceMetadataKey) && result != null && ItemUtils.isSmelted(result)) {
                 // We can make this assumption because we (should) be the only ones using this exact metadata
-                Player player = plugin.getServer().getPlayer(furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).get(0).asString());
+                Player player = plugin.getServer().getPlayer(furnaceState.getMetadata(mcMMO.furnaceMetadataKey).get(0).asString());
 
                 SmeltingManager smeltingManager = UserManager.getPlayer(player).getSmeltingManager();
 
