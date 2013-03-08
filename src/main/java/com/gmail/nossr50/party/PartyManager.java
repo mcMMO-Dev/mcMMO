@@ -488,13 +488,13 @@ public final class PartyManager {
             }
 
             partiesFile.set(partyName + ".Members", memberNames);
+        }
 
-            try {
-                partiesFile.save(new File(partiesFilePath));
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            partiesFile.save(new File(partiesFilePath));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
