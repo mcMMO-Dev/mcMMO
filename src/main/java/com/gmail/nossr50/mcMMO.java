@@ -176,6 +176,10 @@ public class mcMMO extends JavaPlugin {
         catch (NullPointerException e) {}
 
         getServer().getScheduler().cancelTasks(this); // This removes our tasks
+        if (Config.getInstance().getUseMySQL()) {
+            queueManager.disable();
+            queueManager = null;
+        }
         HandlerList.unregisterAll(this); // Cancel event registrations
 
         if (Config.getInstance().getBackupsEnabled()) {

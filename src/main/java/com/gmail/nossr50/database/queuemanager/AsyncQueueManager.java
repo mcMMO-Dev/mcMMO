@@ -2,7 +2,6 @@ package com.gmail.nossr50.database.queuemanager;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-
 public class AsyncQueueManager implements Runnable {
 
     private LinkedBlockingQueue<Queueable> queue;
@@ -13,6 +12,7 @@ public class AsyncQueueManager implements Runnable {
         this.running = true;
     }
     
+
     @Override
     public void run() {
         while(running) {
@@ -23,19 +23,15 @@ public class AsyncQueueManager implements Runnable {
             }
         }
     }
-    
-    public void disable() {
-        running = false;
-    }
 
     public boolean queue(Queueable task) {
         return queue.offer(task);
     }
-    
+
     public boolean contains(String player) {
         return queue.contains(new EqualString(player));
     }
-    
+
     private class EqualString {
         private String player;
         public EqualString(String player) {
@@ -50,4 +46,16 @@ public class AsyncQueueManager implements Runnable {
         }
     }
 
+    public void disable() {
+        running = false;
+        // Throw one more Queueable into queue to unblock take()
+        queue.add(new EndThread());
+    }
+
+    private class EndThread implements Queueable {
+        @Override
+        public void run() { }
+        @Override
+        public String getPlayer() { return null; }     
+    }
 }
