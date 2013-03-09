@@ -123,11 +123,7 @@ public class McrankCommand implements CommandExecutor {
 
     private void sqlDisplay(CommandSender sender, String playerName) {
         if (mcMMO.queueManager.contains(sender.getName()) || !mcMMO.queueManager.queue(new McRankAsync(playerName, sender))) {
-<<<<<<< HEAD
             //Warn that queue is unable to accept
-=======
-            //Tell user to wait until their first command goes through
->>>>>>> One per player
         }
     }
 }
