@@ -5,40 +5,29 @@ import java.util.HashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public class McTopAsync implements Queueable {
 
     private CommandSender sender;
     private String query;
     private int page;
-    private Command command;
     private String player;
 
-    public McTopAsync(int page, String query, CommandSender sender, Command command) {
+    public McTopAsync(int page, String query, CommandSender sender) {
         this.page = page;
         this.query = query;
         this.sender = sender;
-        this.command = command;
         this.player = sender.getName();
     }
 
     public void run() {
-        if (!query.equalsIgnoreCase("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
-            if (!Permissions.mctop(sender, SkillType.getSkill(query))) {
-                sender.sendMessage(command.getPermissionMessage());
-                return;
-            }
-        }
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
         final HashMap<Integer, ArrayList<String>> userslist = DatabaseManager.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT " + ((page * 10) - 10) + ",10");
         Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
