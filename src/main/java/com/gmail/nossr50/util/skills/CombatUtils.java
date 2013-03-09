@@ -232,7 +232,7 @@ public final class CombatUtils {
                         UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
 
                         if (unarmedManager.canDeflect()) {
-                            event.setCancelled(mcMMOPlayer.getUnarmedManager().deflectCheck());
+                            event.setCancelled(unarmedManager.deflectCheck());
 
                             if (event.isCancelled()) {
                                 return;
