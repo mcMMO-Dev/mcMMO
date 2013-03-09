@@ -8,7 +8,6 @@ Key:
   - Removal
 
 Version 1.4.03-dev
- ! Queue mctop and mcrank commands when using mySQL
  + Added option to advanced.yml to determine the # of enchant levels used when buffing Super Breaker & Giga Drill Breaker
  + Improved stats display for child skills
  + Added cooldown between using Chimaera Wings
@@ -31,6 +30,7 @@ Version 1.4.03-dev
  = Fixed bug where Deflect was calculated based on the attacker, not the defender. (We really did this time!)
  ! Moved the Salvage unlock level from config.yml to advanced.yml
  ! Changed how Chimaera Wings are acquired, you need to craft them now. (By default, use 5 feathers in a shapeless recipe)
+ ! Queue mctop and mcrank commands when using mySQL
  - Removed option to disable Salvage via the config file. This should be handled via permissions instead.
  - Removed the option to use Woodcutting without an axe from the config file.
 
