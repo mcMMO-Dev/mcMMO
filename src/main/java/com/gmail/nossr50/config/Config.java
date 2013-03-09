@@ -59,7 +59,6 @@ public class Config extends AutoUpdateConfigLoader {
     public String getMySQLUserName() { return getStringIncludingInts(config, "MySQL.Database.User_Name"); }
     public int getMySQLServerPort() { return config.getInt("MySQL.Server.Port", 3306); }
     public String getMySQLServerName() { return config.getString("MySQL.Server.Address", "localhost"); }
-    public long getQueueThrottle() { return config.getLong("MySQL.QueueThrottle", 100L); }
 
     public String getMySQLUserPassword() {
         if (getStringIncludingInts(config, "MySQL.Database.User_Password") != null) {

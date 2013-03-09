@@ -48,7 +48,6 @@ MySQL:
     Server:
         Port: 3306
         Address: localhost
-    QueueThrottle: 100L
 #
 #  Settings for Hardcore mode
 ###

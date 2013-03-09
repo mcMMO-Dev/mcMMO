@@ -7,12 +7,10 @@ public class AsyncQueueManager implements Runnable {
 
     private LinkedBlockingQueue<Queueable> queue;
     private boolean running;
-    private long throttle;
     
-    public AsyncQueueManager(long throttle) {
+    public AsyncQueueManager() {
         this.queue = new LinkedBlockingQueue<Queueable>();
         this.running = true;
-        this.throttle = throttle;
     }
     
     @Override
@@ -20,7 +18,6 @@ public class AsyncQueueManager implements Runnable {
         while(running) {
             try {
                 queue.take().run();
-                Thread.sleep(throttle);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
