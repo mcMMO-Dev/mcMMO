@@ -650,6 +650,10 @@ public class ItemUtils {
     }
 
     public static boolean isMcMMOItem(ItemStack is) {
+        if (!is.hasItemMeta()) {
+            return false;
+        }
+
         ItemMeta itemMeta = is.getItemMeta();
         if (itemMeta.hasLore()) {
             List<String> itemLore = itemMeta.getLore();
