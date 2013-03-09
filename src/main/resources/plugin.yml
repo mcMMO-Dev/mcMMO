@@ -1190,11 +1190,11 @@ permissions:
         default: false
         description: Implies all mcmmo.item permissions
         children:
-            mcmmo.item.all: true 
+            mcmmo.item.all: true
     mcmmo.item.all:
         description: Implies all mcmmo.item permissions
         children:
-            mcmmo.item.chimaerawing: true 
+            mcmmo.item.chimaerawing: true
     mcmmo.item.chimaerawing:
         description: Allows use of Chimaera Wing item
     mcmmo.motd:
