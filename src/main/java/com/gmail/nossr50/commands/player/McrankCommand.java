@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.player;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -122,8 +123,13 @@ public class McrankCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(CommandSender sender, String playerName) {
-        if (mcMMO.queueManager.contains(sender.getName()) || !mcMMO.queueManager.queue(new McRankAsync(playerName, sender))) {
-            //Warn that queue is unable to accept
+        //TODO: Localize messages
+        if (mcMMO.queueManager.contains(sender.getName())) {
+            sender.sendMessage(ChatColor.RED + "Please wait for your previous command to process");
+        }
+        if (!mcMMO.queueManager.queue(new McRankAsync(playerName, sender))) {
+            // This will only run if for some reason it is unable to add to the queue
+            sender.sendMessage(ChatColor.RED + "Unable to add to queue.");
         }
     }
 }

@@ -123,8 +123,13 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(int page, String query, CommandSender sender) {
-        if (mcMMO.queueManager.contains(sender.getName()) || !mcMMO.queueManager.queue(new McTopAsync(page, query, sender))) {
-            //Warn that queue is unable to accept
+        //TODO: Localize messages
+        if (mcMMO.queueManager.contains(sender.getName())) {
+            sender.sendMessage(ChatColor.RED + "Please wait for your previous command to process");
+        } 
+        if (!mcMMO.queueManager.queue(new McTopAsync(page, query, sender))) {
+            // This will only run if for some reason it is unable to add to the queue
+            sender.sendMessage(ChatColor.RED + "Unable to add to queue.");
         }
     }
 }
