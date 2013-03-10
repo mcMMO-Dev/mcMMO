@@ -3,11 +3,13 @@ package com.gmail.nossr50.runnables.commands;
 import java.util.Map;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class McrankCommandAsyncTask implements Runnable {
@@ -31,6 +33,10 @@ public class McrankCommandAsyncTask implements Runnable {
 
                 for (SkillType skillType : SkillType.values()) {
                     if (skillType.isChildSkill()) {
+                        continue;
+                    }
+
+                    if ((sender instanceof Player) && !Permissions.skillEnabled((Player) sender, skillType)) {
                         continue;
                     }
 

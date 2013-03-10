@@ -98,6 +98,10 @@ public class McrankCommand implements CommandExecutor {
                 continue;
             }
 
+            if ((sender instanceof Player) && !Permissions.skillEnabled((Player) sender, skillType)) {
+                continue;
+            }
+
             if (rankInts[1] == 0) {
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillUtils.getSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked"))); // Don't bother showing ranking for players without skills
             }
