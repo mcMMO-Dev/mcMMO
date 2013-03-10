@@ -126,10 +126,14 @@ public class MctopCommand implements CommandExecutor {
         //TODO: Localize messages
         if (mcMMO.queueManager.contains(sender.getName())) {
             sender.sendMessage(ChatColor.RED + "Please wait for your previous command to process");
-        } 
+            return;
+        }
+
         if (!mcMMO.queueManager.queue(new McTopAsync(page, query, sender))) {
             // This will only run if for some reason it is unable to add to the queue
             sender.sendMessage(ChatColor.RED + "Unable to add to queue.");
         }
+
+        sender.sendMessage(ChatColor.YELLOW + "Calculating mcMMO rankings...");
     }
 }
