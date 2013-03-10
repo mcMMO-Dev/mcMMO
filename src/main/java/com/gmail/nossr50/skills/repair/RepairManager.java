@@ -326,7 +326,7 @@ public class RepairManager extends SkillManager {
                 int enchantLevel = enchant.getValue();
 
                 if (Repair.arcaneForgingDowngrades && enchantLevel > 1 && getDowngradeEnchantChance() > Misc.getRandom().nextInt(activationChance)) {
-                    item.addEnchantment(enchantment, enchantLevel--);
+                    item.addEnchantment(enchantment, enchantLevel - 1);
                     downgraded = true;
                 }
             }
