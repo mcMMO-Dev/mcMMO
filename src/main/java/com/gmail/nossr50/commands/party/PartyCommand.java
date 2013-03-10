@@ -104,7 +104,7 @@ public class PartyCommand implements CommandExecutor {
         }
 
         // Party leader commands
-        if (!mcMMOPlayer.getParty().getLeader().equals(player.getName())) {
+        if (!mcMMOPlayer.getParty().getLeader().equalsIgnoreCase(player.getName())) {
             sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
             return true;
         }

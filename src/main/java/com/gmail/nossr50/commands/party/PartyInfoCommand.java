@@ -35,7 +35,7 @@ public class PartyInfoCommand implements CommandExecutor {
         StringBuilder memberList = new StringBuilder();
 
         for (OfflinePlayer member : playerParty.getMembers()) {
-            if (playerParty.getLeader().equals(member.getName())) {
+            if (playerParty.getLeader().equalsIgnoreCase(member.getName())) {
                 memberList.append(ChatColor.GOLD).append(member.getName()).append(" ");
             }
             else if (member.isOnline()) {

@@ -55,7 +55,7 @@ public class SQLConversionTask implements Runnable {
                 playerName = character[0];
 
                 // Check for things we don't want put in the DB
-                if (playerName == null || playerName.equals("null") || playerName.equals("#Storage place for user information")) {
+                if (playerName == null || playerName.equalsIgnoreCase("null") || playerName.equalsIgnoreCase("#Storage place for user information")) {
                     continue;
                 }
 

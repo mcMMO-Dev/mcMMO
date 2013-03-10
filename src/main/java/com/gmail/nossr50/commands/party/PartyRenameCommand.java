@@ -40,7 +40,7 @@ public class PartyRenameCommand implements CommandExecutor {
                         return true;
                     }
 
-                    if (!member.getName().equals(leaderName)) {
+                    if (!member.getName().equalsIgnoreCase(leaderName)) {
                         member.sendMessage(LocaleLoader.getString("Party.InformedOnNameChange", leaderName, newPartyName));
                     }
                 }

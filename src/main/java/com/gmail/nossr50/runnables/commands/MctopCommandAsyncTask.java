@@ -42,7 +42,7 @@ public class MctopCommandAsyncTask implements Runnable {
         mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
             @Override
             public void run() {
-                if (query.equals("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
+                if (query.equalsIgnoreCase("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {
                     sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
                 }
                 else {

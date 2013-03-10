@@ -77,7 +77,7 @@ public final class Misc {
      * @return true if the distance between <code>first</code> and <code>second</code> is less than <code>maxDistance</code>, false otherwise
      */
     public static boolean isNear(Location first, Location second, double maxDistance) {
-        if (!first.getWorld().equals(second.getWorld())) {
+        if (first.getWorld() != second.getWorld()) {
             return false;
         }
 
