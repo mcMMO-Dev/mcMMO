@@ -8,7 +8,6 @@ import java.util.List;
 
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
@@ -156,7 +155,7 @@ public class mcMMO extends JavaPlugin {
                 getLogger().info("Please do not replace the mcMMO jar while the server is running.");
             }
 
-            Bukkit.getPluginManager().disablePlugin(this);
+            getServer().getPluginManager().disablePlugin(this);
         }
     }
 

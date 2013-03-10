@@ -3,7 +3,6 @@ package com.gmail.nossr50.runnables.commands;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -40,7 +39,7 @@ public class MctopCommandAsyncTask implements Runnable {
         }
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
         final HashMap<Integer, ArrayList<String>> userslist = DatabaseManager.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT " + ((page * 10) - 10) + ",10");
-        Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
+        mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
             @Override
             public void run() {
                 if (query.equals("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {

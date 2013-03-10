@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.player;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -119,6 +118,6 @@ public class McrankCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(CommandSender sender, String playerName) {
-        Bukkit.getScheduler().runTaskAsynchronously(mcMMO.p, new McrankCommandAsyncTask(playerName, sender));
+        mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new McrankCommandAsyncTask(playerName, sender));
     }
 }

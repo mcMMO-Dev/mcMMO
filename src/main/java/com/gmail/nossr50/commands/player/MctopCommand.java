@@ -1,6 +1,5 @@
 package com.gmail.nossr50.commands.player;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -124,6 +123,6 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(int page, String query, CommandSender sender, Command command) {
-        Bukkit.getScheduler().runTaskAsynchronously(mcMMO.p, new MctopCommandAsyncTask(page, query, sender, command));
+        mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new MctopCommandAsyncTask(page, query, sender, command));
     }
 }

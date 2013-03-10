@@ -2,7 +2,6 @@ package com.gmail.nossr50.runnables.commands;
 
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.mcMMO;
@@ -24,7 +23,7 @@ public class McrankCommandAsyncTask implements Runnable {
     public void run() {
         final Map<String, Integer> skills = DatabaseManager.readSQLRank(playerName);
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
+        mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
             @Override
             public void run() {
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
