@@ -297,14 +297,14 @@ public class RepairManager extends SkillManager {
     private void addEnchants(ItemStack item) {
         Player player = getPlayer();
 
-        if (Permissions.arcaneBypass(player)) {
-            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Perfect"));
-            return;
-        }
-
         Map<Enchantment, Integer> enchants = item.getEnchantments();
 
         if (enchants.isEmpty()) {
+            return;
+        }
+
+        if (Permissions.arcaneBypass(player)) {
+            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Perfect"));
             return;
         }
 
