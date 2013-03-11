@@ -173,7 +173,7 @@ public class MiningManager extends SkillManager{
     }
 
     public int processDemolitionsExpertise(int damage) {
-        return (int) (damage * (100.0 - getBlastDamageModifier()));
+        return (int) (damage * ((100.0D - getBlastDamageModifier()) / 100.0D));
     }
 
     /**

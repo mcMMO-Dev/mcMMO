@@ -15,6 +15,7 @@ Version 1.4.03-dev
  = Fixed bug with Smelting not properly tracking furnaces
  = Fixed bug with Blast Mining not dropping blocks correctly
  = Fixed bug with custom blocks not working
+ = Fixed bug with Blast Mining increasing TNT damage.
  = Fixed bug where Blast Mining was awarding too much XP
  = Fixed bug where triple drops would award twice the amount of experience in Herbalism and Mining
  = Fixed bug where Green Thumb would consume wheat instead of seeds
