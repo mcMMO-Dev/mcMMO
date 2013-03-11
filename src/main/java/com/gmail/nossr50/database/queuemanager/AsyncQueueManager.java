@@ -1,25 +1,28 @@
 package com.gmail.nossr50.database.queuemanager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class AsyncQueueManager implements Runnable {
-    private LinkedBlockingQueue<Queueable> queue;
-    private boolean running;
-    
-    public AsyncQueueManager() {
-        this.queue = new LinkedBlockingQueue<Queueable>();
-        this.running = true;
-    }
+import org.bukkit.scheduler.BukkitScheduler;
 
-    @Override
-    public void run() {
-        while(running) {
-            try {
-                queue.take().run();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+import com.gmail.nossr50.mcMMO;
+
+public class AsyncQueueManager {
+
+    private List<Queue> queues;
+    protected LinkedBlockingQueue<Queueable> queue;;
+
+    public AsyncQueueManager(BukkitScheduler scheduler, int number) {
+        this.queues = new ArrayList<Queue>();
+
+        for (int i = 1; i <= number; i++) {
+            Queue queue = new Queue();
+            scheduler.runTaskAsynchronously(mcMMO.p, queue);
+            this.queues.add(queue);
         }
+
+        this.queue = new LinkedBlockingQueue<Queueable>();
     }
 
     public boolean queue(Queueable task) {
@@ -28,12 +31,6 @@ public class AsyncQueueManager implements Runnable {
 
     public boolean contains(String player) {
         return queue.contains(new EqualString(player));
-    }
-
-    public void disable() {
-        running = false;
-        // Throw one more Queueable into queue to unblock take()
-        queue.add(new EndThread());
     }
 
     private class EqualString {
@@ -46,18 +43,30 @@ public class AsyncQueueManager implements Runnable {
         @Override
         public boolean equals(Object obj) {
             if (obj instanceof Queueable) {
-                return ((Queueable)obj).getPlayer().equalsIgnoreCase(player);
+                return ((Queueable) obj).getPlayer().equalsIgnoreCase(player);
             }
-
             return false;
         }
     }
 
-    private class EndThread implements Queueable {
+    public void disable() {
+        for (Queue queueThread : queues) {
+            queueThread.kill();
+        }
+
+        for (int i = 0; i < queues.size(); i++) {
+            queue.offer(new KillQueue());
+        }
+    }
+
+    public class KillQueue implements Queueable {
         @Override
-        public void run() { }
+        public void run() {
+        }
 
         @Override
-        public String getPlayer() { return null; }     
+        public String getPlayer() {
+            return null;
+        }
     }
 }

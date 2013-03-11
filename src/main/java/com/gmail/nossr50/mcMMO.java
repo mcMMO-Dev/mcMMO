@@ -464,8 +464,7 @@ public class mcMMO extends JavaPlugin {
         scheduler.scheduleSyncRepeatingTask(this, new BleedTimerTask(), 40, 40);
 
         if (Config.getInstance().getUseMySQL()) {
-            queueManager = new AsyncQueueManager();
-            scheduler.runTaskAsynchronously(this, queueManager);
+            queueManager = new AsyncQueueManager(scheduler, Config.getInstance().getQueueNumber());
         }
         
         // Old & Powerless User remover
