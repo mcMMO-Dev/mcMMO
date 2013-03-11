@@ -72,14 +72,11 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void display(int page, String skill, CommandSender sender, boolean sql, Command command) {
-
-
-
-
         if (!skill.equalsIgnoreCase("all") && !Permissions.mctop(sender, SkillType.getSkill(skill))) {
             sender.sendMessage(command.getPermissionMessage());
             return;
         }
+
         if (sql) {
             if (skill.equalsIgnoreCase("all")) {
                 sqlDisplay(page, "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing", sender);
@@ -131,4 +128,3 @@ public class MctopCommand implements CommandExecutor {
         }
     }
 }
-
