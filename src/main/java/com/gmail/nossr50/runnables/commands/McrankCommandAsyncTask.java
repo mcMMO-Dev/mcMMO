@@ -32,11 +32,7 @@ public class McrankCommandAsyncTask implements Runnable {
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
 
                 for (SkillType skillType : SkillType.values()) {
-                    if (skillType.isChildSkill()) {
-                        continue;
-                    }
-
-                    if ((sender instanceof Player) && !Permissions.skillEnabled((Player) sender, skillType)) {
+                    if ((sender instanceof Player && !Permissions.skillEnabled(sender, skillType)) || skillType.isChildSkill()) {
                         continue;
                     }
 

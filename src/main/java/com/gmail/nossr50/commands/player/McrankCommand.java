@@ -23,13 +23,13 @@ public class McrankCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 0:
+                if (!(sender instanceof Player)) {
+                    return false;
+                }
+
                 if (!Permissions.mcrank(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
-                }
-
-                if (!(sender instanceof Player)) {
-                    return false;
                 }
 
                 if (Config.getInstance().getUseMySQL()) {
@@ -94,11 +94,7 @@ public class McrankCommand implements CommandExecutor {
         for (SkillType skillType : SkillType.values()) {
             int[] rankInts = LeaderboardManager.getPlayerRank(playerName, skillType);
 
-            if (skillType.isChildSkill()) {
-                continue;
-            }
-
-            if ((sender instanceof Player) && !Permissions.skillEnabled((Player) sender, skillType)) {
+            if ((sender instanceof Player && !Permissions.skillEnabled(sender, skillType)) || skillType.isChildSkill()) {
                 continue;
             }
 

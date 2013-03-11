@@ -79,18 +79,18 @@ public class MctopCommand implements CommandExecutor {
 
         if (sql) {
             if (skill.equalsIgnoreCase("all")) {
-                sqlDisplay(page, "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing", sender, command);
+                sqlDisplay(page, "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing", sender);
             }
             else {
-                sqlDisplay(page, skill, sender, command);
+                sqlDisplay(page, skill, sender);
             }
         }
         else {
-            flatfileDisplay(page, skill, sender, command);
+            flatfileDisplay(page, skill, sender);
         }
     }
 
-    private void flatfileDisplay(int page, String skill, CommandSender sender, Command command) {
+    private void flatfileDisplay(int page, String skill, CommandSender sender) {
         LeaderboardManager.updateLeaderboards(); // Make sure we have the latest information
 
         String[] info = LeaderboardManager.retrieveInfo(skill, page);
@@ -122,7 +122,7 @@ public class MctopCommand implements CommandExecutor {
         sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
     }
 
-    private void sqlDisplay(int page, String query, CommandSender sender, Command command) {
-        mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new MctopCommandAsyncTask(page, query, sender, command));
+    private void sqlDisplay(int page, String query, CommandSender sender) {
+        mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new MctopCommandAsyncTask(page, query, sender));
     }
 }
