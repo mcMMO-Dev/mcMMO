@@ -42,6 +42,8 @@ public abstract class ChatCommand implements CommandExecutor {
                         return false;
                     }
 
+                    mcMMOPlayer = UserManager.getPlayer((Player) sender);
+
                     enableChatMode(sender);
                     return true;
                 }
@@ -50,6 +52,8 @@ public abstract class ChatCommand implements CommandExecutor {
                     if (!(sender instanceof Player)) {
                         return false;
                     }
+
+                    mcMMOPlayer = UserManager.getPlayer((Player) sender);
 
                     disableChatMode(sender);
                     return true;

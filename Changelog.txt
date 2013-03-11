@@ -28,6 +28,7 @@ Version 1.4.03-dev
  = Fixed bug where the 'mcmmo.commands.ptp.world.all' was registered twice
  = Fixed bug where Beast Lore wouldn't work on friendly pets
  = Fixed bug where Deflect was calculated based on the attacker, not the defender. (We really did this time!)
+ = Fixed bug where /party chat (on|off) would not work
  ! Moved the Salvage unlock level from config.yml to advanced.yml
  ! Changed how Chimaera Wings are acquired, you need to craft them now. (By default, use 5 feathers in a shapeless recipe)
  - Removed option to disable Salvage via the config file. This should be handled via permissions instead.
