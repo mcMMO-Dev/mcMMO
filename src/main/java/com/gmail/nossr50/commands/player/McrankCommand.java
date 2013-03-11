@@ -126,12 +126,14 @@ public class McrankCommand implements CommandExecutor {
         // TODO: Localize messages
         if (mcMMO.queueManager.contains(sender.getName())) {
             sender.sendMessage(ChatColor.RED + "Please wait for your previous command to process");
+            return;
         }
 
         if (!mcMMO.queueManager.queue(new McRankAsync(playerName, sender))) {
-            sender.sendMessage(ChatColor.RED + "Queue is full");
+            sender.sendMessage(ChatColor.RED + "Unable to add to queue");
+            return;
         }
 
-        sender.sendMessage(ChatColor.YELLOW + "Calculating rankings...");
+        sender.sendMessage(ChatColor.YELLOW + "Calculating mcMMO rankings...");
     }
 }
