@@ -82,11 +82,9 @@ public class MctopCommand implements CommandExecutor {
         }
         if (sql) {
             if (skill.equalsIgnoreCase("all")) {
-                sqlDisplay(page, "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing", sender, command);
                 sqlDisplay(page, "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing", sender);
             }
             else {
-                sqlDisplay(page, skill, sender, command);
                 sqlDisplay(page, skill, sender);
             }
         }
@@ -127,8 +125,6 @@ public class MctopCommand implements CommandExecutor {
         sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
     }
 
-    private void sqlDisplay(int page, String query, CommandSender sender, Command command) {
-        if (mcMMO.queueManager.contains(sender.getName()) || !mcMMO.queueManager.queue(new McTopAsync(page, query, sender, command))) {
     private void sqlDisplay(int page, String query, CommandSender sender) {
         if (mcMMO.queueManager.contains(sender.getName()) || !mcMMO.queueManager.queue(new McTopAsync(page, query, sender))) {
             //Warn that queue is unable to accept
