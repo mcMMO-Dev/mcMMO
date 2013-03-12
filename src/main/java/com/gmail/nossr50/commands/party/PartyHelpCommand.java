@@ -26,5 +26,4 @@ public class PartyHelpCommand implements CommandExecutor {
                 return true;
         }
     }
-
 }

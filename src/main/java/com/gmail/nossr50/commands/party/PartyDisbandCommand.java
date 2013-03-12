@@ -16,10 +16,11 @@ public class PartyDisbandCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 1:
-                Party playerParty = UserManager.getPlayer((Player) sender).getParty();
+                Party playerParty = UserManager.getPlayer(sender.getName()).getParty();
+                String partyName = playerParty.getName();
 
                 for (Player member : playerParty.getOnlineMembers()) {
-                    if (!PartyManager.handlePartyChangeEvent(member, playerParty.getName(), null, EventReason.KICKED_FROM_PARTY)) {
+                    if (!PartyManager.handlePartyChangeEvent(member, partyName, null, EventReason.KICKED_FROM_PARTY)) {
                         return true;
                     }
 

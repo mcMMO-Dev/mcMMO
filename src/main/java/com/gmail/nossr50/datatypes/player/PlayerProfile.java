@@ -611,6 +611,10 @@ public class PlayerProfile {
     }
 
     public void setSkillXpLevel(SkillType skillType, int newValue) {
+        if (skillType.isChildSkill()) {
+            return;
+        }
+
         skillsXp.put(skillType, newValue);
     }
 

@@ -12,25 +12,20 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyCreateCommand implements CommandExecutor {
-    private McMMOPlayer mcMMOPlayer;
-    private Player player;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
-                // Fallthrough
             case 3:
                 Party newParty = PartyManager.getParty(args[1]);
 
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                Player player = mcMMOPlayer.getPlayer();
+
                 // Check to see if the party exists, and if it does cancel creating a new party
-                if (newParty != null) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", args[1]));
+                if (PartyManager.checkPartyExistence(player, newParty, args[1])) {
                     return true;
                 }
-
-                player = (Player) sender;
-                mcMMOPlayer = UserManager.getPlayer(player);
 
                 // Changing parties
                 if (!PartyManager.changeOrJoinParty(mcMMOPlayer, player, mcMMOPlayer.getParty(), args[1])) {

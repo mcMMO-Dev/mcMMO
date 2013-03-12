@@ -11,15 +11,12 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyAcceptCommand implements CommandExecutor {
-    private McMMOPlayer mcMMOPlayer;
-    private Player player;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 1:
-                player = (Player) sender;
-                mcMMOPlayer = UserManager.getPlayer(player);
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                Player player = mcMMOPlayer.getPlayer();
 
                 if (!mcMMOPlayer.hasPartyInvite()) {
                     sender.sendMessage(LocaleLoader.getString("mcMMO.NoInvites"));

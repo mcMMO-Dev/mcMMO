@@ -6,12 +6,11 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.repair.Repair;
+import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 
 public class RepairCommand extends SkillCommand {
-    private int arcaneForgingRank;
     private String repairMasteryBonus;
     private String superRepairChance;
     private String superRepairChanceLucky;
@@ -53,20 +52,16 @@ public class RepairCommand extends SkillCommand {
         stoneLevel = (stoneRepairable == null) ? 0 : stoneRepairable.getMinimumLevel();
 
         // REPAIR MASTERY
-        if (skillValue >= Repair.repairMasteryMaxBonusLevel) {
-            repairMasteryBonus = percent.format(Repair.repairMasteryMaxBonus / 100D);
-        }
-        else {
-            repairMasteryBonus = percent.format(((Repair.repairMasteryMaxBonus / Repair.repairMasteryMaxBonusLevel) * skillValue) / 100D);
+        if (canMasterRepair) {
+            repairMasteryBonus = percent.format(Math.min(((Repair.repairMasteryMaxBonus / Repair.repairMasteryMaxBonusLevel) * skillValue), Repair.repairMasteryMaxBonus) / 100D);
         }
 
         // SUPER REPAIR
-        String[] superRepairStrings = calculateAbilityDisplayValues(Repair.superRepairMaxBonusLevel, Repair.superRepairMaxChance);
-        superRepairChance = superRepairStrings[0];
-        superRepairChanceLucky = superRepairStrings[1];
-
-        // ARCANE FORGING
-        arcaneForgingRank = UserManager.getPlayer(player).getRepairManager().getArcaneForgingRank();
+        if (canSuperRepair) {
+            String[] superRepairStrings = calculateAbilityDisplayValues(Repair.superRepairMaxBonusLevel, Repair.superRepairMaxChance);
+            superRepairChance = superRepairStrings[0];
+            superRepairChanceLucky = superRepairStrings[1];
+        }
     }
 
     @Override
@@ -143,23 +138,20 @@ public class RepairCommand extends SkillCommand {
         }
 
         if (canSuperRepair) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", superRepairChance) + LocaleLoader.getString("Perks.lucky.bonus", superRepairChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", superRepairChance));
-            }
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", superRepairChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", superRepairChanceLucky) : ""));
         }
 
         if (canArcaneForge) {
-            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Rank", arcaneForgingRank));
+            RepairManager repairManager = mcMMOPlayer.getRepairManager();
+
+            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Rank", repairManager.getArcaneForgingRank()));
 
             if (Repair.arcaneForgingEnchantLoss) {
-                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Success", (arcaneBypass ? 100 : UserManager.getPlayer(player).getRepairManager().getKeepEnchantChance())));
+                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Success", (arcaneBypass ? 100 : repairManager.getKeepEnchantChance())));
             }
 
             if (Repair.arcaneForgingDowngrades) {
-                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", (arcaneBypass ? 0 : UserManager.getPlayer(player).getRepairManager().getDowngradeEnchantChance())));
+                player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", (arcaneBypass ? 0 : repairManager.getDowngradeEnchantChance())));
             }
         }
     }

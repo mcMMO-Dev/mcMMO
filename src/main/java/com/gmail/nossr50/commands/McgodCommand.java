@@ -6,42 +6,32 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class McgodCommand implements CommandExecutor {
+    private McMMOPlayer mcMMOPlayer;
+    private Player player;
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        McMMOPlayer mcMMOPlayer;
-
         switch (args.length) {
             case 0:
+                if (CommandUtils.noConsoleUsage(sender)) {
+                    return true;
+                }
+
                 if (!Permissions.mcgod(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
 
-                if (!(sender instanceof Player)) {
-                    return false;
-                }
+                mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                player = mcMMOPlayer.getPlayer();
 
-                mcMMOPlayer = UserManager.getPlayer((Player) sender);
-
-                if (mcMMOPlayer == null) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-                    return true;
-                }
-
-                if (mcMMOPlayer.getGodMode()) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.GodMode.Disabled"));
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.GodMode.Enabled"));
-                }
-
-                mcMMOPlayer.toggleGodMode();
+                toggleGodMode();
                 return true;
 
             case 1:
@@ -52,37 +42,33 @@ public class McgodCommand implements CommandExecutor {
 
                 mcMMOPlayer = UserManager.getPlayer(args[0]);
 
-                if (mcMMOPlayer == null) {
-                    PlayerProfile playerProfile = new PlayerProfile(args[0], false);
-
-                    if (!playerProfile.isLoaded()) {
-                        sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-                        return true;
-                    }
-
-                    sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+                if (CommandUtils.checkPlayerExistence(sender, args[0], mcMMOPlayer)) {
                     return true;
                 }
 
-                Player player = mcMMOPlayer.getPlayer();
+                player = mcMMOPlayer.getPlayer();
 
-                if (!player.isOnline()) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+                if (CommandUtils.isOffline(sender, player)) {
                     return true;
                 }
 
-                if (mcMMOPlayer.getGodMode()) {
-                    player.sendMessage(LocaleLoader.getString("Commands.GodMode.Disabled"));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Commands.GodMode.Enabled"));
-                }
-
-                mcMMOPlayer.toggleGodMode();
+                toggleGodMode();
+                sender.sendMessage("God mode has been toggled for" + args[0]); // TODO: Localize
                 return true;
 
             default:
                 return false;
         }
+    }
+
+    private void toggleGodMode() {
+        if (mcMMOPlayer.getGodMode()) {
+            player.sendMessage(LocaleLoader.getString("Commands.GodMode.Disabled"));
+        }
+        else {
+            player.sendMessage(LocaleLoader.getString("Commands.GodMode.Enabled"));
+        }
+
+        mcMMOPlayer.toggleGodMode();
     }
 }

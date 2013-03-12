@@ -23,24 +23,24 @@ public class ArcheryCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         // SKILL SHOT
-        double bonus = (skillValue / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage;
-
-        if (bonus > Archery.skillShotMaxBonusPercentage) {
-            skillShotBonus = percent.format(Archery.skillShotMaxBonusPercentage);
-        }
-        else {
-            skillShotBonus = percent.format(bonus);
+        if (canSkillShot) {
+            double bonus = (skillValue / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage;
+            skillShotBonus = percent.format(Math.min(bonus, Archery.skillShotMaxBonusPercentage));
         }
 
         // DAZE
-        String[] dazeStrings = calculateAbilityDisplayValues(Archery.dazeMaxBonusLevel, Archery.dazeMaxBonus);
-        dazeChance = dazeStrings[0];
-        dazeChanceLucky = dazeStrings[1];
+        if (canDaze) {
+            String[] dazeStrings = calculateAbilityDisplayValues(Archery.dazeMaxBonusLevel, Archery.dazeMaxBonus);
+            dazeChance = dazeStrings[0];
+            dazeChanceLucky = dazeStrings[1];
+        }
 
         // RETRIEVE
-        String[] retrieveStrings = calculateAbilityDisplayValues(Archery.retrieveMaxBonusLevel, Archery.retrieveMaxChance);
-        retrieveChance = retrieveStrings[0];
-        retrieveChanceLucky = retrieveStrings[1];
+        if (canRetrieve) {
+            String[] retrieveStrings = calculateAbilityDisplayValues(Archery.retrieveMaxBonusLevel, Archery.retrieveMaxChance);
+            retrieveChance = retrieveStrings[0];
+            retrieveChanceLucky = retrieveStrings[1];
+        }
     }
 
     @Override
@@ -84,21 +84,11 @@ public class ArcheryCommand extends SkillCommand {
         }
 
         if (canDaze) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", dazeChance) + LocaleLoader.getString("Perks.lucky.bonus", dazeChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", dazeChance));
-            }
+            player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", dazeChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", dazeChanceLucky) : ""));
         }
 
         if (canRetrieve) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", retrieveChance) + LocaleLoader.getString("Perks.lucky.bonus", retrieveChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", retrieveChance));
-            }
+            player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", retrieveChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", retrieveChanceLucky) : ""));
         }
     }
 }

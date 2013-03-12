@@ -24,6 +24,15 @@ public final class PartyManager {
 
     private PartyManager() {}
 
+    public static boolean checkPartyExistence(Player player, Party party, String partyName) {
+        if (party == null) {
+            return false;
+        }
+
+        player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", partyName));
+        return true;
+    }
+
     public static boolean changeOrJoinParty(McMMOPlayer mcMMOPlayer, Player player, Party oldParty, String newPartyName) {
         if (mcMMOPlayer.inParty()) {
             if (!handlePartyChangeEvent(player, oldParty.getName(), newPartyName, EventReason.CHANGED_PARTIES)) {

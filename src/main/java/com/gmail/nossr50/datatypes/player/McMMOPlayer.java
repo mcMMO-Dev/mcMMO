@@ -449,6 +449,10 @@ public class McMMOPlayer {
      * @param xp Experience amount to add
      */
     public void applyXpGain(SkillType skillType, int xp) {
+        if (skillType.isChildSkill()) {
+            return;
+        }
+
         McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skillType, xp);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 

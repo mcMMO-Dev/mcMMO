@@ -26,9 +26,11 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        String[] goreStrings = calculateAbilityDisplayValues(Taming.goreMaxBonusLevel, Taming.goreMaxChance);
-        goreChance = goreStrings[0];
-        goreChanceLucky = goreStrings[1];
+        if (canGore) {
+            String[] goreStrings = calculateAbilityDisplayValues(Taming.goreMaxBonusLevel, Taming.goreMaxChance);
+            goreChance = goreStrings[0];
+            goreChanceLucky = goreStrings[1];
+        }
     }
 
     @Override
@@ -154,12 +156,7 @@ public class TamingCommand extends SkillCommand {
         }
 
         if (canGore) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", goreChance) + LocaleLoader.getString("Perks.lucky.bonus", goreChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", goreChance));
-            }
+            player.sendMessage(LocaleLoader.getString("Taming.Combat.Chance.Gore", goreChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", goreChanceLucky) : ""));
         }
     }
 }

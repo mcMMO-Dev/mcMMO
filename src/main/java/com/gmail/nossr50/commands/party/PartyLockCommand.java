@@ -3,11 +3,11 @@ package com.gmail.nossr50.commands.party;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyLockCommand implements CommandExecutor {
@@ -15,15 +15,15 @@ public class PartyLockCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        playerParty = UserManager.getPlayer((Player) sender).getParty();
+        playerParty = UserManager.getPlayer(sender.getName()).getParty();
 
         switch (args.length) {
             case 1:
                 if (args[0].equalsIgnoreCase("lock")) {
-                    lockParty(sender, command);
+                    lockParty(sender, command.getPermissionMessage());
                 }
                 else if (args[0].equalsIgnoreCase("unlock")) {
-                    unlockParty(sender, command);
+                    unlockParty(sender, command.getPermissionMessage());
                 }
 
                 return true;
@@ -34,11 +34,11 @@ public class PartyLockCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true")) {
-                    lockParty(sender, command);
+                if (CommandUtils.shouldEnableToggle(args[1])) {
+                    lockParty(sender, command.getPermissionMessage());
                 }
-                else if (args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
-                    unlockParty(sender, command);
+                else if (CommandUtils.shouldDisableToggle(args[1])) {
+                    unlockParty(sender, command.getPermissionMessage());
                 }
                 else {
                     sendUsageStrings(sender);
@@ -55,9 +55,9 @@ public class PartyLockCommand implements CommandExecutor {
     /**
      * Handle locking a party.
      */
-    private void lockParty(CommandSender sender, Command command) {
+    private void lockParty(CommandSender sender, String permissionMessage) {
         if (!Permissions.partySubcommand(sender, PartySubcommandType.LOCK)) {
-            sender.sendMessage(command.getPermissionMessage());
+            sender.sendMessage(permissionMessage);
             return;
         }
 
@@ -75,9 +75,9 @@ public class PartyLockCommand implements CommandExecutor {
      *
      * @return true if party is successfully unlocked, false otherwise.
      */
-    private void unlockParty(CommandSender sender, Command command) {
+    private void unlockParty(CommandSender sender, String permissionMessage) {
         if (!Permissions.partySubcommand(sender, PartySubcommandType.UNLOCK)) {
-            sender.sendMessage(command.getPermissionMessage());
+            sender.sendMessage(permissionMessage);
             return;
         }
 

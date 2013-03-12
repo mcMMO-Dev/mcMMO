@@ -24,19 +24,25 @@ public class AcrobaticsCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         // DODGE
-        String[] dodgeStrings = calculateAbilityDisplayValues(Acrobatics.dodgeMaxBonusLevel, Acrobatics.dodgeMaxChance);
-        dodgeChance = dodgeStrings[0];
-        dodgeChanceLucky = dodgeStrings[1];
+        if (canDodge) {
+            String[] dodgeStrings = calculateAbilityDisplayValues(Acrobatics.dodgeMaxBonusLevel, Acrobatics.dodgeMaxChance);
+            dodgeChance = dodgeStrings[0];
+            dodgeChanceLucky = dodgeStrings[1];
+        }
 
         // ROLL
-        String[] rollStrings = calculateAbilityDisplayValues(Acrobatics.rollMaxBonusLevel, Acrobatics.rollMaxChance);
-        rollChance = rollStrings[0];
-        rollChanceLucky = rollStrings[1];
+        if (canRoll) {
+            String[] rollStrings = calculateAbilityDisplayValues(Acrobatics.rollMaxBonusLevel, Acrobatics.rollMaxChance);
+            rollChance = rollStrings[0];
+            rollChanceLucky = rollStrings[1];
+        }
 
         // GRACEFUL ROLL
-        String[] gracefulRollStrings = calculateAbilityDisplayValues(Acrobatics.gracefulRollMaxBonusLevel, Acrobatics.gracefulRollMaxChance);
-        gracefulRollChance = gracefulRollStrings[0];
-        gracefulRollChanceLucky = gracefulRollStrings[1];
+        if (canGracefulRoll) {
+            String[] gracefulRollStrings = calculateAbilityDisplayValues(Acrobatics.gracefulRollMaxBonusLevel, Acrobatics.gracefulRollMaxChance);
+            gracefulRollChance = gracefulRollStrings[0];
+            gracefulRollChanceLucky = gracefulRollStrings[1];
+        }
     }
 
     @Override
@@ -76,30 +82,15 @@ public class AcrobaticsCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canRoll) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { rollChanceLucky }));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", new Object[] { rollChance }));
-            }
+            player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", rollChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", rollChanceLucky) : ""));
         }
 
         if (canGracefulRoll) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { gracefulRollChanceLucky }));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", new Object[] { gracefulRollChance }));
-            }
+            player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", gracefulRollChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", gracefulRollChanceLucky) : ""));
         }
 
         if (canDodge) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }) + LocaleLoader.getString("Perks.lucky.bonus", new Object[] { dodgeChanceLucky }));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", new Object[] { dodgeChance }));
-            }
+            player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", dodgeChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", dodgeChanceLucky) : ""));
         }
     }
 }

@@ -8,7 +8,7 @@ import com.gmail.nossr50.util.Permissions;
 public class SwordsCommand extends SkillCommand {
     private String counterAttackChance;
     private String counterAttackChanceLucky;
-    private String bleedLength;
+    private int bleedLength;
     private String bleedChance;
     private String bleedChanceLucky;
     private String serratedStrikesLength;
@@ -25,26 +25,27 @@ public class SwordsCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         // SERRATED STRIKES
-        String[] serratedStrikesStrings = calculateLengthDisplayValues();
-        serratedStrikesLength = serratedStrikesStrings[0];
-        serratedStrikesLengthEndurance = serratedStrikesStrings[1];
+        if (canSerratedStrike) {
+            String[] serratedStrikesStrings = calculateLengthDisplayValues();
+            serratedStrikesLength = serratedStrikesStrings[0];
+            serratedStrikesLengthEndurance = serratedStrikesStrings[1];
+        }
 
         // BLEED
-        if (skillValue >= Swords.bleedMaxBonusLevel) {
-            bleedLength = String.valueOf(Swords.bleedMaxTicks);
-        }
-        else {
-            bleedLength = String.valueOf(Swords.bleedBaseTicks);
-        }
+        if (canBleed) {
+            bleedLength = (skillValue >= Swords.bleedMaxBonusLevel) ? Swords.bleedMaxTicks : Swords.bleedBaseTicks;
 
-        String[] bleedStrings = calculateAbilityDisplayValues(Swords.bleedMaxBonusLevel, Swords.bleedMaxChance);
-        bleedChance = bleedStrings[0];
-        bleedChanceLucky = bleedStrings[1];
+            String[] bleedStrings = calculateAbilityDisplayValues(Swords.bleedMaxBonusLevel, Swords.bleedMaxChance);
+            bleedChance = bleedStrings[0];
+            bleedChanceLucky = bleedStrings[1];
+        }
 
         // COUNTER ATTACK
-        String[] counterAttackStrings = calculateAbilityDisplayValues(Swords.counterAttackMaxBonusLevel, Swords.counterAttackMaxChance);
-        counterAttackChance = counterAttackStrings[0];
-        counterAttackChanceLucky = counterAttackStrings[1];
+        if (canCounter) {
+            String[] counterAttackStrings = calculateAbilityDisplayValues(Swords.counterAttackMaxBonusLevel, Swords.counterAttackMaxChance);
+            counterAttackChance = counterAttackStrings[0];
+            counterAttackChanceLucky = counterAttackStrings[1];
+        }
     }
 
     @Override
@@ -85,33 +86,17 @@ public class SwordsCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canCounter) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", counterAttackChance) + LocaleLoader.getString("Perks.lucky.bonus", counterAttackChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", counterAttackChance));
-            }
+            player.sendMessage(LocaleLoader.getString("Swords.Combat.Counter.Chance", counterAttackChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", counterAttackChanceLucky) : ""));
         }
 
         if (canBleed) {
             player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Length", bleedLength));
             player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Note"));
-
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", bleedChance) + LocaleLoader.getString("Perks.lucky.bonus", bleedChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", bleedChance));
-            }
+            player.sendMessage(LocaleLoader.getString("Swords.Combat.Bleed.Chance", bleedChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", bleedChanceLucky) : ""));
         }
 
         if (canSerratedStrike) {
-            if (hasEndurance) {
-                player.sendMessage(LocaleLoader.getString("Swords.SS.Length", serratedStrikesLength) + LocaleLoader.getString("Perks.activationtime.bonus", serratedStrikesLengthEndurance));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Swords.SS.Length", serratedStrikesLength));
-            }
+            player.sendMessage(LocaleLoader.getString("Swords.SS.Length", serratedStrikesLength) + (hasEndurance ? LocaleLoader.getString("Perks.activationtime.bonus", serratedStrikesLengthEndurance) : ""));
         }
     }
 }

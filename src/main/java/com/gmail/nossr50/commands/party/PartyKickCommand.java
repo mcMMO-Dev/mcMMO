@@ -18,8 +18,7 @@ public class PartyKickCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
-                Party playerParty = UserManager.getPlayer((Player) sender).getParty();
-
+                Party playerParty = UserManager.getPlayer(sender.getName()).getParty();
                 OfflinePlayer target = mcMMO.p.getServer().getOfflinePlayer(args[1]);
 
                 if (!playerParty.getMembers().contains(target)) {

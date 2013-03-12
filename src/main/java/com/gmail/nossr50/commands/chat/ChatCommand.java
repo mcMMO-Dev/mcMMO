@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.chat;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.chat.ChatMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -12,8 +11,8 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public abstract class ChatCommand implements CommandExecutor {
-    protected McMMOPlayer mcMMOPlayer;
     protected ChatMode chatMode;
+    private McMMOPlayer mcMMOPlayer;
 
     public ChatCommand(ChatMode chatMode) {
         this.chatMode = chatMode;
@@ -27,7 +26,7 @@ public abstract class ChatCommand implements CommandExecutor {
                     return true;
                 }
 
-                mcMMOPlayer = UserManager.getPlayer((Player) sender);
+                mcMMOPlayer = UserManager.getPlayer(sender.getName());
 
                 if (chatMode.isEnabled(mcMMOPlayer)) {
                     disableChatMode(sender);
@@ -39,23 +38,23 @@ public abstract class ChatCommand implements CommandExecutor {
                 return true;
 
             case 1:
-                if (args[0].equalsIgnoreCase("on")) {
+                if (CommandUtils.shouldEnableToggle(args[0])) {
                     if (CommandUtils.noConsoleUsage(sender)) {
                         return true;
                     }
 
-                    mcMMOPlayer = UserManager.getPlayer((Player) sender);
+                    mcMMOPlayer = UserManager.getPlayer(sender.getName());
 
                     enableChatMode(sender);
                     return true;
                 }
 
-                if (args[0].equalsIgnoreCase("off")) {
+                if (CommandUtils.shouldDisableToggle(args[0])) {
                     if (CommandUtils.noConsoleUsage(sender)) {
                         return true;
                     }
 
-                    mcMMOPlayer = UserManager.getPlayer((Player) sender);
+                    mcMMOPlayer = UserManager.getPlayer(sender.getName());
 
                     disableChatMode(sender);
                     return true;

@@ -11,6 +11,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.party.ShareHandler.ShareMode;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyItemShareCommand implements CommandExecutor {
@@ -25,9 +26,9 @@ public class PartyItemShareCommand implements CommandExecutor {
 
         switch (args.length) {
             case 2:
-                playerParty = UserManager.getPlayer((Player) sender).getParty();
+                playerParty = UserManager.getPlayer(sender.getName()).getParty();
 
-                if (args[1].equalsIgnoreCase("none") || args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
+                if (args[1].equalsIgnoreCase("none") || CommandUtils.shouldDisableToggle(args[1])) {
                     handleChangingShareMode(ShareMode.NONE);
                 }
                 else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even")) {
@@ -43,14 +44,18 @@ public class PartyItemShareCommand implements CommandExecutor {
                 return true;
 
             case 3:
-                playerParty = UserManager.getPlayer((Player) sender).getParty();
+                playerParty = UserManager.getPlayer(sender.getName()).getParty();
                 boolean toggle = false;
 
-                if (args[2].equalsIgnoreCase("true") || args[2].equalsIgnoreCase("on") || args[2].equalsIgnoreCase("enabled")) {
+                if (CommandUtils.shouldEnableToggle(args[2])) {
                     toggle = true;
                 }
-                else if (args[2].equalsIgnoreCase("false") || args[2].equalsIgnoreCase("off") || args[2].equalsIgnoreCase("disabled")) {
+                else if (CommandUtils.shouldDisableToggle(args[2])) {
                     toggle = false;
+                }
+                else {
+                    sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting> <true | false>"));
+                    return true;
                 }
 
                 if (args[1].equalsIgnoreCase("loot")) {
@@ -69,7 +74,7 @@ public class PartyItemShareCommand implements CommandExecutor {
                     sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting> <true | false>"));
                 }
 
-                notifyToggleItemShareCategory(args, toggle);
+                notifyToggleItemShareCategory(args[1], toggle);
                 return true;
 
             default:
@@ -82,20 +87,20 @@ public class PartyItemShareCommand implements CommandExecutor {
     private void handleChangingShareMode(ShareHandler.ShareMode mode) {
         playerParty.setItemShareMode(mode);
 
+        String changeModeMessage = LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Item"), LocaleLoader.getString("Party.ShareMode." + StringUtils.getCapitalized(mode.toString())));
+
         for (Player member : playerParty.getOnlineMembers()) {
-            member.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Item"), LocaleLoader.getString("Party.ShareMode." + StringUtils.getCapitalized(mode.toString()))));
+            member.sendMessage(changeModeMessage);
         }
     }
 
-    private void notifyToggleItemShareCategory(String[] args, boolean toggle) {
-        String state = "disabled";
+    private void notifyToggleItemShareCategory(String category, boolean toggle) {
+        String state = toggle ? "enabled" : "disabled";
 
-        if (toggle) {
-            state = "enabled";
-        }
+        String toggleMessage = LocaleLoader.getString("Commands.Party.ToggleShareCategory", StringUtils.getCapitalized(category), state);
 
         for (Player member : playerParty.getOnlineMembers()) {
-            member.sendMessage(LocaleLoader.getString("Commands.Party.ToggleShareCategory", StringUtils.getCapitalized(args[1]), state));
+            member.sendMessage(toggleMessage);
         }
     }
 }

@@ -5,11 +5,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyJoinCommand implements CommandExecutor {
@@ -25,7 +25,6 @@ public class PartyJoinCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
-                // Fallthrough
             case 3:
                 // Verify target exists and is in a different party than the player
                 if (!canJoinParty(sender, args[1])) {
@@ -62,16 +61,10 @@ public class PartyJoinCommand implements CommandExecutor {
     }
 
     private boolean canJoinParty(CommandSender sender, String targetName) {
-        if (!mcMMO.p.getServer().getOfflinePlayer(targetName).isOnline()) {
-            sender.sendMessage(LocaleLoader.getString("Party.NotOnline", targetName));
-            return false;
-        }
-
         mcMMOTarget = UserManager.getPlayer(targetName);
 
-        if (mcMMOTarget == null) {
-            sender.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
-            return false;
+        if (CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
+            return true;
         }
 
         target = mcMMOTarget.getPlayer();
@@ -81,8 +74,9 @@ public class PartyJoinCommand implements CommandExecutor {
             return false;
         }
 
-        player = (Player) sender;
-        mcMMOPlayer = UserManager.getPlayer(player);
+        mcMMOPlayer = UserManager.getPlayer(sender.getName());
+        player = mcMMOPlayer.getPlayer();
+
         playerParty = mcMMOPlayer.getParty();
         targetParty = mcMMOTarget.getParty();
 

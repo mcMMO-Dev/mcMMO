@@ -5,40 +5,27 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyInviteCommand implements CommandExecutor {
-    private McMMOPlayer mcMMOTarget;
-    private Player target;
-
-    private McMMOPlayer mcMMOPlayer;
-    private Player player;
-    private Party playerParty;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
-                if (!mcMMO.p.getServer().getOfflinePlayer(args[1]).isOnline()) {
-                    sender.sendMessage(LocaleLoader.getString("Party.NotOnline", args[1]));
+                McMMOPlayer mcMMOTarget = UserManager.getPlayer(args[1]);
+
+                if (CommandUtils.checkPlayerExistence(sender, args[1], mcMMOTarget)) {
                     return true;
                 }
 
-                mcMMOTarget = UserManager.getPlayer(args[1]);
-
-                if (mcMMOTarget == null) {
-                    sender.sendMessage(LocaleLoader.getString("Party.Player.Invalid"));
-                    return true;
-                }
-
-                target = mcMMOTarget.getPlayer();
-                mcMMOPlayer = UserManager.getPlayer((Player) sender);
-                player = mcMMOPlayer.getPlayer();
+                Player target = mcMMOTarget.getPlayer();
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                Player player = mcMMOPlayer.getPlayer();
 
                 if (player.equals(target)) {
                     sender.sendMessage(LocaleLoader.getString("Party.Invite.Self"));
@@ -50,7 +37,7 @@ public class PartyInviteCommand implements CommandExecutor {
                     return true;
                 }
 
-                playerParty = mcMMOPlayer.getParty();
+                Party playerParty = mcMMOPlayer.getParty();
 
                 if (!PartyManager.canInvite(player, playerParty)) {
                     player.sendMessage(LocaleLoader.getString("Party.Locked"));

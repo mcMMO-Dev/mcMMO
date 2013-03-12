@@ -45,8 +45,8 @@ public class PartyCommand implements CommandExecutor {
             return true;
         }
 
-        player = (Player) sender;
-        mcMMOPlayer = UserManager.getPlayer(player);
+        mcMMOPlayer = UserManager.getPlayer(sender.getName());
+        player = mcMMOPlayer.getPlayer();
 
         if (args.length < 1) {
             if (!mcMMOPlayer.inParty()) {
@@ -121,7 +121,6 @@ public class PartyCommand implements CommandExecutor {
             case OWNER:
                 return partyChangeOwnerCommand.onCommand(sender, command, label, args);
             case LOCK:
-                // Fallthrough
             case UNLOCK:
                 return partyLockCommand.onCommand(sender, command, label, args);
             case PASSWORD:

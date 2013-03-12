@@ -11,6 +11,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.party.ShareHandler.ShareMode;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyExpShareCommand implements CommandExecutor {
@@ -25,12 +26,12 @@ public class PartyExpShareCommand implements CommandExecutor {
 
         switch (args.length) {
             case 2:
-                playerParty = UserManager.getPlayer((Player) sender).getParty();
+                playerParty = UserManager.getPlayer(sender.getName()).getParty();
 
-                if (args[1].equalsIgnoreCase("none") || args[1].equalsIgnoreCase("off") || args[1].equalsIgnoreCase("false")) {
+                if (args[1].equalsIgnoreCase("none") || CommandUtils.shouldDisableToggle(args[1])) {
                     handleChangingShareMode(ShareMode.NONE);
                 }
-                else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even") || args[1].equalsIgnoreCase("on") || args[1].equalsIgnoreCase("true")) {
+                else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even") || CommandUtils.shouldEnableToggle(args[1])) {
                     handleChangingShareMode(ShareMode.EQUAL);
                 }
                 else {
@@ -48,8 +49,10 @@ public class PartyExpShareCommand implements CommandExecutor {
     private void handleChangingShareMode(ShareHandler.ShareMode mode) {
         playerParty.setXpShareMode(mode);
 
+        String changeModeMessage = LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode." + StringUtils.getCapitalized(mode.toString())));
+
         for (Player member : playerParty.getOnlineMembers()) {
-            member.sendMessage(LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode." + StringUtils.getCapitalized(mode.toString()))));
+            member.sendMessage(changeModeMessage);
         }
     }
 }

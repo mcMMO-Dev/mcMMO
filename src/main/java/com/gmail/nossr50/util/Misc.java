@@ -6,11 +6,16 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public final class Misc {
     private static Random random = new Random();
@@ -159,6 +164,29 @@ public final class Misc {
         cloned.setAmount(newItem.getItemStack().getAmount());
 
         newItem.setItemStack(cloned);
+    }
+
+    public static void profileCleanup(String playerName) {
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
+
+        if (mcMMOPlayer != null) {
+            Player player = mcMMOPlayer.getPlayer();
+            McMMOHud spoutHud = mcMMOPlayer.getProfile().getSpoutHud();
+
+            if (spoutHud != null) {
+                spoutHud.removeWidgets();
+            }
+
+            UserManager.remove(playerName);
+
+            if (player.isOnline()) {
+                UserManager.addUser(player);
+
+                if (mcMMO.spoutEnabled) {
+                    SpoutUtils.reloadSpoutPlayer(player);
+                }
+            }
+        }
     }
 
     public static Random getRandom() {

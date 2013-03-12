@@ -8,6 +8,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.LeaderboardManager;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 
 public class McremoveCommand implements CommandExecutor {
@@ -25,7 +26,7 @@ public class McremoveCommand implements CommandExecutor {
                     String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
                     if (DatabaseManager.update("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.user = '" + args[0] + "'") != 0) {
-                        DatabaseManager.profileCleanup(args[0]);
+                        Misc.profileCleanup(args[0]);
                         sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", args[0]));
                     }
                     else {
@@ -34,7 +35,7 @@ public class McremoveCommand implements CommandExecutor {
                 }
                 else {
                     if (LeaderboardManager.removeFlatFileUser(args[0])) {
-                        DatabaseManager.profileCleanup(args[0]);
+                        Misc.profileCleanup(args[0]);
                         sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", args[0]));
                     }
                     else {
