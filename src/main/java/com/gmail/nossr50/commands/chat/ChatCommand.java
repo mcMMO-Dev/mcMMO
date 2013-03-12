@@ -7,6 +7,8 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.chat.ChatMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public abstract class ChatCommand implements CommandExecutor {
@@ -21,8 +23,8 @@ public abstract class ChatCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 0:
-                if (!(sender instanceof Player)) {
-                    return false;
+                if (CommandUtils.noConsoleUsage(sender)) {
+                    return true;
                 }
 
                 mcMMOPlayer = UserManager.getPlayer((Player) sender);
@@ -38,18 +40,22 @@ public abstract class ChatCommand implements CommandExecutor {
 
             case 1:
                 if (args[0].equalsIgnoreCase("on")) {
-                    if (!(sender instanceof Player)) {
-                        return false;
+                    if (CommandUtils.noConsoleUsage(sender)) {
+                        return true;
                     }
+
+                    mcMMOPlayer = UserManager.getPlayer((Player) sender);
 
                     enableChatMode(sender);
                     return true;
                 }
 
                 if (args[0].equalsIgnoreCase("off")) {
-                    if (!(sender instanceof Player)) {
-                        return false;
+                    if (CommandUtils.noConsoleUsage(sender)) {
+                        return true;
                     }
+
+                    mcMMOPlayer = UserManager.getPlayer((Player) sender);
 
                     disableChatMode(sender);
                     return true;
@@ -78,11 +84,21 @@ public abstract class ChatCommand implements CommandExecutor {
     protected abstract void handleChatSending(CommandSender sender, String[] args);
 
     private void enableChatMode(CommandSender sender) {
+        if (chatMode == ChatMode.PARTY && mcMMOPlayer.getParty() == null) {
+            sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+            return;
+        }
+
         chatMode.enable(mcMMOPlayer);
         sender.sendMessage(chatMode.getEnabledMessage());
     }
 
     private void disableChatMode(CommandSender sender) {
+        if (chatMode == ChatMode.PARTY && mcMMOPlayer.getParty() == null) {
+            sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+            return;
+        }
+
         chatMode.disable(mcMMOPlayer);
         sender.sendMessage(chatMode.getDisabledMessage());
     }
