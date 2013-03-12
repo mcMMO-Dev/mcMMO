@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.commands.chat.PartyChatCommand;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
@@ -31,8 +31,8 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyRenameCommand         = new PartyRenameCommand();
     private CommandExecutor partyInfoCommand           = new PartyInfoCommand();
     private CommandExecutor partyHelpCommand           = new PartyHelpCommand();
-    private CommandExecutor partyTeleportCommand       = new PtpCommand();
-    private CommandExecutor partyChatCommand           = new PartyChatCommand();
+    private CommandExecutor partyTeleportCommand       = mcMMO.p.getCommand("ptp").getExecutor();
+    private CommandExecutor partyChatCommand           = mcMMO.p.getCommand("partychat").getExecutor();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
