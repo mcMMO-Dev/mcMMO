@@ -153,6 +153,8 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClickEvent(InventoryClickEvent event) {
-        SkillUtils.removeAbilityBuff(event.getCurrentItem());
+        if (event.getSlot() >= 0) {
+            SkillUtils.removeAbilityBuff(event.getCurrentItem());
+        }
     }
 }
