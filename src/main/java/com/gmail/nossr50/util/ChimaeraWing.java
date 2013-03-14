@@ -45,42 +45,44 @@ public final class ChimaeraWing {
                 return;
             }
 
-            if (SkillUtils.cooldownOver(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, 60, player) && amount >= Config.getInstance().getChimaeraUseCost()) {
-                player.setItemInHand(new ItemStack(getChimaeraWing(amount - Config.getInstance().getChimaeraUseCost())));
+            if (!SkillUtils.cooldownOver(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, 60, player)) {
+                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, 60, player)));
+                return;
+            }
 
-                if (Config.getInstance().getChimaeraPreventUseUnderground()) {
+            if (amount <= Config.getInstance().getChimaeraUseCost()) {
+                player.sendMessage(LocaleLoader.getString("Skills.NeedMore", "Chimaera Wings")); //TODO Locale!
+                return;
+            }
 
-                    if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
-                        player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
-                        player.setVelocity(new Vector(0, 1, 0));
-                        UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
-                        return;
-                    }
+            player.setItemInHand(new ItemStack(getChimaeraWing(amount - Config.getInstance().getChimaeraUseCost())));
+
+            if (Config.getInstance().getChimaeraPreventUseUnderground()) {
+
+                if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
+                    player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
+                    player.setVelocity(new Vector(0, 0.5D, 0));
+                    UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
+                    return;
                 }
+            }
 
-                if (player.getBedSpawnLocation() != null) {
-                    player.teleport(player.getBedSpawnLocation());
+            if (player.getBedSpawnLocation() != null) {
+                player.teleport(player.getBedSpawnLocation());
+            }
+            else {
+                Location spawnLocation = player.getWorld().getSpawnLocation();
+                if (spawnLocation.getBlock().getType() == Material.AIR) {
+                    player.teleport(spawnLocation);
                 }
                 else {
-                    Location spawnLocation = player.getWorld().getSpawnLocation();
-                    if (spawnLocation.getBlock().getType() == Material.AIR) {
-                        player.teleport(spawnLocation);
-                    }
-                    else {
-                        player.teleport(player.getWorld().getHighestBlockAt(spawnLocation).getLocation());
-                    }
+                    player.teleport(player.getWorld().getHighestBlockAt(spawnLocation).getLocation());
                 }
+            }
 
-                UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
-                MetricsManager.chimeraWingUsed();
-                player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
-            }
-            else if (!SkillUtils.cooldownOver(recentlyHurt, 60 * Misc.TIME_CONVERSION_FACTOR, player) && amount >= Config.getInstance().getChimaeraUseCost()) {
-                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", SkillUtils.calculateTimeLeft(recentlyHurt, 60, player)));
-            }
-            else if (amount <= Config.getInstance().getChimaeraUseCost()) {
-                player.sendMessage(LocaleLoader.getString("Skills.NeedMore", "Chimaera Wings")); //TODO Locale!
-            }
+            UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
+            MetricsManager.chimeraWingUsed();
+            player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
         }
     }
 
