@@ -17,6 +17,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.metrics.MetricsManager;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public final class ChimaeraWing {
@@ -62,6 +63,7 @@ public final class ChimaeraWing {
                 if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
                     player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
                     player.setVelocity(new Vector(0, 0.5D, 0));
+                    CombatUtils.dealDamage(player, Misc.getRandom().nextInt(player.getHealth() - 10));
                     UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
                     return;
                 }
