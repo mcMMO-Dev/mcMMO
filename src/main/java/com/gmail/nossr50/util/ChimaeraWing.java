@@ -82,6 +82,7 @@ public final class ChimaeraWing {
 
             UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
             MetricsManager.chimeraWingUsed();
+            player.playSound(location, Sound.BAT_TAKEOFF, Misc.BAT_VOLUME, Misc.BAT_PITCH);
             player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
         }
     }

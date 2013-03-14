@@ -26,6 +26,8 @@ public final class Misc {
     public static final float FIZZ_VOLUME      = 0.5F;
     public static final float POP_PITCH        = ((getRandom().nextFloat() - getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
     public static final float POP_VOLUME       = 0.2F;
+    public static final float BAT_VOLUME       = 1.0F;
+    public static final float BAT_PITCH        = 0.6F;
 
     private Misc() {};
 
