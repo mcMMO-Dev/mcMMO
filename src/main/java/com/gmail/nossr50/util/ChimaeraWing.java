@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.util.Vector;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -32,7 +34,7 @@ public final class ChimaeraWing {
             return;
         }
 
-        Block block = player.getLocation().getBlock();
+        Location location = player.getLocation();
         int amount = inHand.getAmount();
         long recentlyHurt = UserManager.getPlayer(player).getRecentlyHurt();
         long lastChimaeraWing = (UserManager.getPlayer(player).getLastChimaeraTeleport());
@@ -47,12 +49,12 @@ public final class ChimaeraWing {
                 player.setItemInHand(new ItemStack(getChimaeraWing(amount - Config.getInstance().getChimaeraUseCost())));
 
                 if (Config.getInstance().getChimaeraPreventUseUnderground()) {
-                    for (int y = 1; block.getY() + y < player.getWorld().getMaxHeight(); y++) {
-                        if (!(block.getRelative(0, y, 0).getType() == Material.AIR)) {
-                            player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
-                            player.teleport(block.getRelative(0, y - 1, 0).getLocation());
-                            return;
-                        }
+
+                    if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
+                        player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
+                        player.setVelocity(new Vector(0, 1, 0));
+                        UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
+                        return;
                     }
                 }
 
@@ -60,7 +62,13 @@ public final class ChimaeraWing {
                     player.teleport(player.getBedSpawnLocation());
                 }
                 else {
-                    player.teleport(player.getWorld().getSpawnLocation());
+                    Location spawnLocation = player.getWorld().getSpawnLocation();
+                    if (spawnLocation.getBlock().getType() == Material.AIR) {
+                        player.teleport(spawnLocation);
+                    }
+                    else {
+                        player.teleport(player.getWorld().getHighestBlockAt(spawnLocation).getLocation());
+                    }
                 }
 
                 UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
