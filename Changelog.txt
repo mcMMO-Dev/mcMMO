@@ -7,7 +7,7 @@ Key:
   ! Change
   - Removal
 
-Version 1.4.03-dev
+Version 1.4.03
  + Added option to advanced.yml to determine the # of enchant levels used when buffing Super Breaker & Giga Drill Breaker
  + Improved stats display for child skills
  + Added cooldown between using Chimaera Wings
@@ -32,7 +32,7 @@ Version 1.4.03-dev
  = Fixed bug where Treefeller would not deal durability damage when the axe "splinters into dozens of pieces"
  ! Moved the Salvage unlock level from config.yml to advanced.yml
  ! Changed how Chimaera Wings are acquired, you need to craft them now. (By default, use 5 feathers in a shapeless recipe)
- ! Changed how Chimaera Wings teleport players to the spawnpoint, will now check if the location is save
+ ! Changed how Chimaera Wings teleport players to the spawnpoint, will now check if the location is safe
  - Removed option to disable Salvage via the config file. This should be handled via permissions instead.
  - Removed the option to use Woodcutting without an axe from the config file.
 
