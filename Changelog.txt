@@ -7,6 +7,8 @@ Key:
   ! Change
   - Removal
 
+Version 1.4.04-dev
+
 Version 1.4.03
  + Added option to advanced.yml to determine the # of enchant levels used when buffing Super Breaker & Giga Drill Breaker
  + Improved stats display for child skills
