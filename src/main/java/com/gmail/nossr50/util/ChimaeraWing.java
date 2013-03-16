@@ -51,7 +51,7 @@ public final class ChimaeraWing {
                 return;
             }
 
-            if (amount <= Config.getInstance().getChimaeraUseCost()) {
+            if (amount < Config.getInstance().getChimaeraUseCost()) {
                 player.sendMessage(LocaleLoader.getString("Skills.NeedMore", "Chimaera Wings")); //TODO Locale!
                 return;
             }

@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.4.04-dev
+ = Fixed bug where trying to activate a Chimaera Wing would require one item too much
 
 Version 1.4.03
  + Added option to advanced.yml to determine the # of enchant levels used when buffing Super Breaker & Giga Drill Breaker
