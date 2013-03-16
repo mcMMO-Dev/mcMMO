@@ -33,6 +33,7 @@ Version 1.4.03
  = Fixed bug where Beast Lore wouldn't work on friendly pets
  = Fixed bug where Deflect was calculated based on the attacker, not the defender. (We really did this time!)
  = Fixed bug where Treefeller would not deal durability damage when the axe "splinters into dozens of pieces"
+ = Fixed bug where Treefeller would try to cut too many leaves and reach the threshold when it shouldn't
  ! Moved the Salvage unlock level from config.yml to advanced.yml
  ! Changed how Chimaera Wings are acquired, you need to craft them now. (By default, use 5 feathers in a shapeless recipe)
  ! Changed how Chimaera Wings teleport players to the spawnpoint, will now check if the location is safe

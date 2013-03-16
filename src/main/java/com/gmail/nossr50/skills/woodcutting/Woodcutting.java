@@ -259,6 +259,9 @@ public final class Woodcutting {
             return;
         }
 
-        futureCenterBlocks.add(blockState);
+        // Without this check Tree Feller propagates through leaves until the threshold is hit
+        if (BlockUtils.isLog(blockState)) {
+            futureCenterBlocks.add(blockState);
+        }
     }
 }
