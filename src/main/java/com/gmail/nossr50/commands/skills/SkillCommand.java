@@ -116,7 +116,7 @@ public abstract class SkillCommand implements CommandExecutor {
     }
 
     protected String[] calculateAbilityDisplayValues(int maxBonusLevel, double maxChance) {
-        return calculateAbilityDisplayValues((maxChance / Math.min(skillValue, maxBonusLevel)) * skillValue);
+        return calculateAbilityDisplayValues((maxChance / maxBonusLevel) * Math.min(skillValue, maxBonusLevel));
     }
 
     protected String[] calculateLengthDisplayValues() {
