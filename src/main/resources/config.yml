@@ -220,6 +220,7 @@ Double_Drops:
         Mossy_Cobblestone: true
         Netherrack: true
         Obsidian: true
+        Quartz_Ore: true
         Redstone_Ore: true
         Sandstone: true
         Stone: true
@@ -301,6 +302,7 @@ Experience:
         Mossy_Cobblestone: 30
         Netherrack: 30
         Obsidian: 150
+        Quartz_Ore: 250
         Redstone_Ore: 150
         Sandstone: 30
         Stone: 30
@@ -311,6 +313,7 @@ Experience:
         Gold_Ore: 35
         Iron_Ore: 25
         Lapis_Ore: 40
+        Quartz_Ore: 25
         Redstone_Ore: 15
     Taming:
         Animal_Taming:
