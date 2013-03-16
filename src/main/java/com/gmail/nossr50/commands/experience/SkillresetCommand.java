@@ -14,9 +14,14 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 public class SkillresetCommand extends ExperienceCommand {
     private CommandSender sender;
     private Command command;
+    private int argsLength;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        this.command = command;
+        this.sender = sender;
+        argsLength = args.length;
+
         switch (args.length) {
             case 1:
                 if (CommandUtils.noConsoleUsage(sender)) {
@@ -35,9 +40,6 @@ public class SkillresetCommand extends ExperienceCommand {
                 mcMMOPlayer = UserManager.getPlayer(sender.getName());
                 player = mcMMOPlayer.getPlayer();
                 profile = mcMMOPlayer.getProfile();
-
-                this.command = command;
-                this.sender = sender;
 
                 editValues();
                 return true;
@@ -62,14 +64,13 @@ public class SkillresetCommand extends ExperienceCommand {
                         return true;
                     }
 
-                    this.command = command;
-                    this.sender = sender;
-
                     editValues();
                     profile.save(); // Since this is a temporary profile, we save it here.
                 }
                 else {
                     profile = mcMMOPlayer.getProfile();
+                    player = mcMMOPlayer.getPlayer();
+
                     editValues();
                 }
 
@@ -95,7 +96,7 @@ public class SkillresetCommand extends ExperienceCommand {
 
     @Override
     protected void handleCommand(SkillType skill) {
-        if ((player.equals(sender) && !Permissions.skillreset(sender, skill)) || (!player.equals(sender) && !Permissions.skillresetOthers(sender, skill))) {
+        if (argsLength == 1 && !Permissions.skillreset(sender, skill) || (argsLength == 2 && !Permissions.skillresetOthers(sender, skill))) {
             sender.sendMessage(command.getPermissionMessage());
             return;
         }
