@@ -93,6 +93,9 @@ public final class BlockUtils {
             case WORKBENCH:
             case BEACON:
             case ANVIL:
+            case DROPPER:
+            case HOPPER:
+            case TRAPPED_CHEST:
                 return false;
 
             default:
