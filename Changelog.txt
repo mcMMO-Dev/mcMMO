@@ -11,6 +11,7 @@ Version 1.4.04-dev
  = Fixed bug where trying to activate a Chimaera Wing would require one item too much
  = Fixed bug where Treefeller would try to cut too many leaves and reach the threshold when it shouldn't
  = Fixed bug where Mining wasn't awarding double drops
+ = Fixed bug where Shake wouldn't damage mobs whose max health was less than 4
 
 Version 1.4.03
  + Added option to advanced.yml to determine the # of enchant levels used when buffing Super Breaker & Giga Drill Breaker
