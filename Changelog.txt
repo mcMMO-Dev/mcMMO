@@ -14,7 +14,7 @@ Version 1.4.04-dev
  = Fixed bug where Mining wasn't awarding double drops
  = Fixed bug where Shake wouldn't damage mobs whose max health was less than 4
  = Fixed bug where the API would fail if the name of a player's current party is requested when the player isn't in one (Thanks @dualspiral!)
- - Removed deprecated functions from ExperienceAPI
+ - Removed deprecated functions from API classes.
 
 Version 1.4.03
  + Added option to advanced.yml to determine the # of enchant levels used when buffing Super Breaker & Giga Drill Breaker
