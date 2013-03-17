@@ -19,9 +19,13 @@ public final class PartyAPI {
      * This function is designed for API usage.
      *
      * @param player The player to check the party name of
-     * @return the name of the player's party
+     * @return the name of the player's party, or null if not in a party
      */
     public static String getPartyName(Player player) {
+        if (!inParty(player)) {
+            return null;
+        }
+
         return UserManager.getPlayer(player).getParty().getName();
     }
 
