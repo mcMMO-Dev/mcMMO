@@ -127,26 +127,6 @@ public final class PartyAPI {
      *
      * @param player The player to check
      * @return all the players in the player's party
-     * @deprecated
-     */
-    @Deprecated
-    public static List<String> getAllMembers(Player player) {
-        List<String> memberNames = new ArrayList<String>();
-
-        for (OfflinePlayer member : PartyManager.getAllMembers(player)) {
-            memberNames.add(member.getName());
-        }
-
-        return memberNames;
-    }
-
-    /**
-     * Get a list of all players in this player's party.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player The player to check
-     * @return all the players in the player's party
      */
     public static List<OfflinePlayer> getOnlineAndOfflineMembers(Player player) {
         return PartyManager.getAllMembers(player);
