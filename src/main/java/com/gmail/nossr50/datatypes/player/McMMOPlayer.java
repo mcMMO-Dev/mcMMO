@@ -450,8 +450,17 @@ public class McMMOPlayer {
      */
     public void applyXpGain(SkillType skillType, int xp) {
         if (skillType.isChildSkill()) {
+            Set<SkillType> parentSkills = FamilyTree.getParents(skillType);
+
+            for (SkillType parentSkill : parentSkills) {
+                if (Permissions.skillEnabled(player, parentSkill)) {
+                    applyXpGain(parentSkill, xp / parentSkills.size());
+                }
+            }
+
             return;
         }
+
 
         McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skillType, xp);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
