@@ -1,6 +1,5 @@
 package com.gmail.nossr50.api;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.OfflinePlayer;
