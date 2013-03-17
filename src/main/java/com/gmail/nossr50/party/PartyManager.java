@@ -131,7 +131,13 @@ public final class PartyManager {
      * @return all online players in this party
      */
     public static List<Player> getOnlineMembers(Player player) {
-        return getOnlineMembers(player.getName());
+        Party party = getPlayerParty(player.getName());
+
+        if (party == null) {
+            return null;
+        }
+
+        return getOnlineMembers(party.getName());
     }
 
     /**
