@@ -9,6 +9,8 @@ Key:
 
 Version 1.4.04-dev
  + Added functions to ExperienceAPI for use with offline players
+ + Added Nether Quartz Ore to Mining
+ + Added Dropper, Hopper, and Trapped Chest to blocks that shouldn't activate abilities
  = Fixed bug where trying to activate a Chimaera Wing would require one item too much
  = Fixed bug where Treefeller would try to cut too many leaves and reach the threshold when it shouldn't
  = Fixed bug where Mining wasn't awarding double drops
