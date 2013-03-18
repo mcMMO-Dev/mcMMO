@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 
 public final class UserManager {
     private static Map<String, McMMOPlayer> players = new HashMap<String, McMMOPlayer>();
@@ -79,30 +78,6 @@ public final class UserManager {
 
     public static Map<String, McMMOPlayer> getPlayers() {
         return players;
-    }
-
-    /**
-     * Get the profile of a player.
-     *
-     * @param player The player whose profile to retrieve
-     * @return the player's profile
-     */
-    @Deprecated
-    public static PlayerProfile getProfile(OfflinePlayer player) {
-        return getProfile(player.getName());
-    }
-
-    /**
-     * Get the profile of a player by name.
-     *
-     * @param playerName The name of the player whose profile to retrieve
-     * @return the player's profile
-     */
-    @Deprecated
-    public static PlayerProfile getProfile(String playerName) {
-        McMMOPlayer mcmmoPlayer = players.get(playerName);
-
-        return (mcmmoPlayer != null) ? mcmmoPlayer.getProfile() : null;
     }
 
     /**

@@ -8,7 +8,6 @@ import java.util.List;
 
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -27,7 +26,6 @@ import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.LeaderboardManager;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
@@ -195,43 +193,6 @@ public class mcMMO extends JavaPlugin {
         }
 
         getLogger().info("Was disabled."); // How informative!
-    }
-
-    /**
-     * Get profile of the player by name.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param playerName Name of player whose profile to get
-     * @return the PlayerProfile object
-     */
-    public PlayerProfile getPlayerProfile(String playerName) {
-        return UserManager.getPlayer(playerName).getProfile();
-    }
-
-    /**
-     * Get profile of the player.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player player whose profile to get
-     * @return the PlayerProfile object
-     */
-    public PlayerProfile getPlayerProfile(OfflinePlayer player) {
-        return UserManager.getPlayer(player.getName()).getProfile();
-    }
-
-    /**
-     * Get profile of the player.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player player whose profile to get
-     * @return the PlayerProfile object
-     */
-    @Deprecated
-    public PlayerProfile getPlayerProfile(Player player) {
-        return UserManager.getProfile(player);
     }
 
     /**
