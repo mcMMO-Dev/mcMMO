@@ -142,6 +142,10 @@ public class InventoryListener implements Listener {
                 // We can make this assumption because we (should) be the only ones using this exact metadata
                 Player player = plugin.getServer().getPlayer(furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).get(0).asString());
 
+                if (Misc.isNPCEntity(player)) {
+                    return;
+                }
+
                 SmeltingManager smeltingManager = UserManager.getPlayer(player).getSmeltingManager();
 
                 if (smeltingManager.canUseVanillaXpBoost()) {
