@@ -20,7 +20,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.repair.Repair.Tier;
+import com.gmail.nossr50.skills.repair.ArcaneForging.Tier;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
@@ -155,7 +155,7 @@ public class RepairManager extends SkillManager {
         }
 
         // Handle the enchants
-        if (Repair.arcaneForgingEnchantLoss) {
+        if (ArcaneForging.arcaneForgingEnchantLoss) {
             addEnchants(item);
         }
 
@@ -325,7 +325,7 @@ public class RepairManager extends SkillManager {
             if (getKeepEnchantChance() > Misc.getRandom().nextInt(activationChance)) {
                 int enchantLevel = enchant.getValue();
 
-                if (Repair.arcaneForgingDowngrades && enchantLevel > 1 && getDowngradeEnchantChance() > Misc.getRandom().nextInt(activationChance)) {
+                if (ArcaneForging.arcaneForgingDowngrades && enchantLevel > 1 && getDowngradeEnchantChance() > Misc.getRandom().nextInt(activationChance)) {
                     item.addEnchantment(enchantment, enchantLevel - 1);
                     downgraded = true;
                 }

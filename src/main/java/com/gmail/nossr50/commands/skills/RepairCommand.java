@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.repair.ArcaneForging;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.Repairable;
@@ -146,11 +147,11 @@ public class RepairCommand extends SkillCommand {
 
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Rank", repairManager.getArcaneForgingRank()));
 
-            if (Repair.arcaneForgingEnchantLoss) {
+            if (ArcaneForging.arcaneForgingEnchantLoss) {
                 player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Success", (arcaneBypass ? 100 : repairManager.getKeepEnchantChance())));
             }
 
-            if (Repair.arcaneForgingDowngrades) {
+            if (ArcaneForging.arcaneForgingDowngrades) {
                 player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Downgrade", (arcaneBypass ? 0 : repairManager.getDowngradeEnchantChance())));
             }
         }
