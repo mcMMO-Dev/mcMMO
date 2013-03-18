@@ -17,6 +17,7 @@ Version 1.4.04-dev
  = Fixed bug where Shake wouldn't damage mobs whose max health was less than 4
  = Fixed bug where the API would fail if the name of a player's current party is requested when the player isn't in one (Thanks @dualspiral!)
  = Fixed bug with retrieving a player's party members
+ ! Updated localization files
  - Removed deprecated functions from API classes.
  - Removed functions for getting the PlayerProfile - using API classes is preferred, but if not the McMMOPlayer should be used instead
 
