@@ -16,7 +16,7 @@ public class SaveTimerTask implements Runnable {
         BukkitScheduler bukkitScheduler = mcMMO.p.getServer().getScheduler();
 
         for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers().values()) {
-            bukkitScheduler.scheduleSyncDelayedTask(mcMMO.p, new PlayerProfileSaveTask(mcMMOPlayer), count);
+            bukkitScheduler.runTaskLater(mcMMO.p, new PlayerProfileSaveTask(mcMMOPlayer), count);
             count++;
         }
 

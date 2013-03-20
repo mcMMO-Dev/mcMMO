@@ -28,7 +28,7 @@ public class MctopCommandAsyncTask implements Runnable {
     public void run() {
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
         final HashMap<Integer, ArrayList<String>> userslist = DatabaseManager.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT " + ((page * 10) - 10) + ",10");
-        mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
+        mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new Runnable() {
             @Override
             public void run() {
                 if (query.equalsIgnoreCase("taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing")) {

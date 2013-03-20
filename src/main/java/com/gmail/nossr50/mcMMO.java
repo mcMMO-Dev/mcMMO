@@ -405,39 +405,39 @@ public class mcMMO extends JavaPlugin {
         BukkitScheduler scheduler = getServer().getScheduler();
 
         // Parties are loaded at the end of first server tick otherwise Server.getOfflinePlayer throws an IndexOutOfBoundsException
-        scheduler.scheduleSyncDelayedTask(this, new PartyLoaderTask(), 0);
+        scheduler.runTaskLater(this, new PartyLoaderTask(), 0);
 
         // Periodic save timer (Saves every 10 minutes by default)
         long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
 
-        scheduler.scheduleSyncRepeatingTask(this, new SaveTimerTask(), saveIntervalTicks, saveIntervalTicks);
+        scheduler.runTaskTimer(this, new SaveTimerTask(), saveIntervalTicks, saveIntervalTicks);
         // Regen & Cooldown timer (Runs every second)
-        scheduler.scheduleSyncRepeatingTask(this, new SkillMonitorTask(), 20, 20);
+        scheduler.runTaskTimer(this, new SkillMonitorTask(), 20, 20);
         // Bleed timer (Runs every two seconds)
-        scheduler.scheduleSyncRepeatingTask(this, new BleedTimerTask(), 40, 40);
+        scheduler.runTaskTimer(this, new BleedTimerTask(), 40, 40);
 
         // Old & Powerless User remover
         int purgeInterval = Config.getInstance().getPurgeInterval();
 
         if (purgeInterval == 0) {
-            scheduler.scheduleSyncDelayedTask(this, new UserPurgeTask(), 40); // Start 2 seconds after startup.
+            scheduler.runTaskLater(this, new UserPurgeTask(), 40); // Start 2 seconds after startup.
         }
         else if (purgeInterval > 0) {
             long purgeIntervalTicks = purgeInterval * 60 * 60 * 20;
 
-            scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), purgeIntervalTicks, purgeIntervalTicks);
+            scheduler.runTaskTimer(this, new UserPurgeTask(), purgeIntervalTicks, purgeIntervalTicks);
         }
 
         // Automatically remove old members from parties
         long kickInterval = Config.getInstance().getAutoPartyKickInterval();
 
         if (kickInterval == 0) {
-            scheduler.scheduleSyncDelayedTask(this, new PartyAutoKickTask(), 40); // Start 2 seconds after startup.
+            scheduler.runTaskLater(this, new PartyAutoKickTask(), 40); // Start 2 seconds after startup.
         }
         else if (kickInterval > 0) {
             long kickIntervalTicks = kickInterval * 60 * 60 * 20;
 
-            scheduler.scheduleSyncRepeatingTask(this, new PartyAutoKickTask(), kickIntervalTicks, kickIntervalTicks);
+            scheduler.runTaskTimer(this, new PartyAutoKickTask(), kickIntervalTicks, kickIntervalTicks);
         }
     }
 }

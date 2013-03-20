@@ -25,7 +25,7 @@ public class McrankCommandAsyncTask implements Runnable {
     public void run() {
         final Map<String, Integer> skills = DatabaseManager.readSQLRank(playerName);
 
-        mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
+        mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new Runnable() {
             @Override
             public void run() {
                 sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));

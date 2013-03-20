@@ -97,7 +97,7 @@ public final class HolidayManager {
                 final int firework_amount = 10;
                 for (int i = 0; i < firework_amount; i++) {
                     int delay = (int) (Math.random() * 3) + 4;
-                    mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
+                    mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new Runnable() {
                         @Override
                         public void run() {
                             spawnFireworks((Player) sender);

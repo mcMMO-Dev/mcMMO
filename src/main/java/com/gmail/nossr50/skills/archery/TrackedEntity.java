@@ -18,7 +18,7 @@ public class TrackedEntity implements Runnable {
         this.livingEntity = livingEntity;
         this.id = livingEntity.getUniqueId();
         this.scheduler = mcMMO.p.getServer().getScheduler();
-        this.taskId = scheduler.scheduleSyncRepeatingTask(mcMMO.p, this, 12000, 12000);
+        this.taskId = scheduler.runTaskTimer(mcMMO.p, this, 12000, 12000).getTaskId();
     }
 
     @Override

@@ -42,7 +42,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
             return;
         }
 
-        this.taskID = this.scheduler.scheduleSyncDelayedTask(mcMMO.p, this, 1);
+        this.taskID = this.scheduler.runTaskLater(mcMMO.p, this, 1).getTaskId();
         return;
     }
 
