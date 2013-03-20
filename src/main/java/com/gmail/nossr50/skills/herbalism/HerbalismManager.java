@@ -289,7 +289,7 @@ public class HerbalismManager extends SkillManager {
 
         playerInventory.removeItem(seed);
         player.updateInventory(); // Needed until replacement available
-        mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new HerbalismBlockUpdaterTask(blockState), 0);
+        new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
     }
 
     private boolean handleBlockState(BlockState blockState, boolean greenTerra) {

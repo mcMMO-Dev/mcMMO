@@ -7,12 +7,13 @@ import java.util.Map.Entry;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 
-public class BleedTimerTask implements Runnable {
+public class BleedTimerTask extends BukkitRunnable {
     private final static int MAX_BLEED_TICKS = 10;
     private static Map<LivingEntity, Integer> bleedList = new HashMap<LivingEntity, Integer>();
 

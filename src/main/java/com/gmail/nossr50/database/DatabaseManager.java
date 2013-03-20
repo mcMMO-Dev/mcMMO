@@ -336,7 +336,7 @@ public final class DatabaseManager {
             if (connection != null && !connection.isClosed()) {
                 // Schedule a database save if we really had an outage
                 if (reconnectAttempt > 1) {
-                    mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new SQLReconnectTask(), 5);
+                    new SQLReconnectTask().runTaskLater(mcMMO.p, 5);
                 }
                 nextReconnectTimestamp = 0;
                 reconnectAttempt = 0;

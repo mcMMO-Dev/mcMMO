@@ -13,7 +13,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
@@ -402,42 +401,44 @@ public class mcMMO extends JavaPlugin {
     }
 
     private void scheduleTasks() {
-        BukkitScheduler scheduler = getServer().getScheduler();
-
         // Parties are loaded at the end of first server tick otherwise Server.getOfflinePlayer throws an IndexOutOfBoundsException
-        scheduler.runTaskLater(this, new PartyLoaderTask(), 0);
+        new PartyLoaderTask().runTaskLater(this, 0);
 
         // Periodic save timer (Saves every 10 minutes by default)
         long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
 
-        scheduler.runTaskTimer(this, new SaveTimerTask(), saveIntervalTicks, saveIntervalTicks);
+        new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
+
         // Regen & Cooldown timer (Runs every second)
-        scheduler.runTaskTimer(this, new SkillMonitorTask(), 20, 20);
+        new SkillMonitorTask().runTaskTimer(this, 20, 20);
+
         // Bleed timer (Runs every two seconds)
-        scheduler.runTaskTimer(this, new BleedTimerTask(), 40, 40);
+        new BleedTimerTask().runTaskTimer(this, 40, 40);
 
         // Old & Powerless User remover
         int purgeInterval = Config.getInstance().getPurgeInterval();
+        UserPurgeTask userPurgeTask = new UserPurgeTask();
 
         if (purgeInterval == 0) {
-            scheduler.runTaskLater(this, new UserPurgeTask(), 40); // Start 2 seconds after startup.
+            userPurgeTask.runTaskLater(this, 40);
         }
         else if (purgeInterval > 0) {
             long purgeIntervalTicks = purgeInterval * 60 * 60 * 20;
 
-            scheduler.runTaskTimer(this, new UserPurgeTask(), purgeIntervalTicks, purgeIntervalTicks);
+            userPurgeTask.runTaskTimer(this, purgeIntervalTicks, purgeIntervalTicks);
         }
 
         // Automatically remove old members from parties
         long kickInterval = Config.getInstance().getAutoPartyKickInterval();
+        PartyAutoKickTask partyAutoKickTask = new PartyAutoKickTask();
 
         if (kickInterval == 0) {
-            scheduler.runTaskLater(this, new PartyAutoKickTask(), 40); // Start 2 seconds after startup.
+            partyAutoKickTask.runTaskLater(this, 40); // Start 2 seconds after startup.
         }
         else if (kickInterval > 0) {
             long kickIntervalTicks = kickInterval * 60 * 60 * 20;
 
-            scheduler.runTaskTimer(this, new PartyAutoKickTask(), kickIntervalTicks, kickIntervalTicks);
+            partyAutoKickTask.runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
         }
     }
 }

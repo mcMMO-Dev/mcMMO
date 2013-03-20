@@ -3,13 +3,15 @@ package com.gmail.nossr50.runnables.database;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 
-public class SQLConversionTask implements Runnable {
+public class SQLConversionTask extends BukkitRunnable {
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
     @Override

@@ -111,7 +111,7 @@ public class MctopCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(int page, String query, CommandSender sender) {
-        mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new MctopCommandAsyncTask(page, query, sender));
+        new MctopCommandAsyncTask(page, query, sender).runTaskAsynchronously(mcMMO.p);
     }
 
     private boolean extractSkill(CommandSender sender, String skillName) {

@@ -486,7 +486,7 @@ public final class CombatUtils {
         }
 
         if (baseXP != 0) {
-            mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new AwardCombatXpTask(mcMMOPlayer, skillType, baseXP, target), 0);
+            new AwardCombatXpTask(mcMMOPlayer, skillType, baseXP, target).runTaskLater(mcMMO.p, 0);
         }
     }
 

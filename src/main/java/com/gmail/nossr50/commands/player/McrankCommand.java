@@ -104,6 +104,6 @@ public class McrankCommand implements CommandExecutor {
     }
 
     private void sqlDisplay(CommandSender sender, String playerName) {
-        mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new McrankCommandAsyncTask(playerName, sender));
+        new McrankCommandAsyncTask(playerName, sender).runTaskAsynchronously(mcMMO.p);
     }
 }
