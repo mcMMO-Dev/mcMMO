@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.player;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.OfflinePlayer;
@@ -81,12 +82,16 @@ public final class UserManager {
     }
 
     /**
-     * Get the McMMOPlayer of a player by name.
+     * Get the McMMOPlayer of a player by a partial name.
      *
-     * @param playerName The name of the player whose McMMOPlayer to retrieve
+     * @param playerName The partial name of the player whose McMMOPlayer to retrieve
      * @return the player's McMMOPlayer object
      */
     public static McMMOPlayer getPlayer(String playerName) {
+        List<Player> matches = mcMMO.p.getServer().matchPlayer(playerName);
+        if (matches.size() == 1) {
+            playerName = matches.get(0).getName();
+        }
         return players.get(playerName);
     }
 
