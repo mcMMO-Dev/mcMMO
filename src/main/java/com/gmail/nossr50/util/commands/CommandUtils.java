@@ -67,17 +67,17 @@ public final class CommandUtils {
 
     public static boolean checkPlayerExistence(CommandSender sender, String playerName, McMMOPlayer mcMMOPlayer) {
         if (mcMMOPlayer != null) {
-            return false;
+            return true;
         }
 
         PlayerProfile playerProfile = new PlayerProfile(playerName, false);
 
         if (unloadedProfile(sender, playerProfile)) {
-            return true;
+            return false;
         }
 
         sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
-        return true;
+        return false;
     }
 
     public static boolean unloadedProfile(CommandSender sender, PlayerProfile profile) {

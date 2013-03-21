@@ -31,6 +31,9 @@ public class PartyJoinCommand implements CommandExecutor {
                     return true;
                 }
 
+                mcMMOPlayer = UserManager.getPlayer(args[1]);
+                player = mcMMOPlayer.getPlayer();
+
                 String password = getPassword(args);
 
                 // Make sure party passwords match
@@ -63,8 +66,8 @@ public class PartyJoinCommand implements CommandExecutor {
     private boolean canJoinParty(CommandSender sender, String targetName) {
         mcMMOTarget = UserManager.getPlayer(targetName);
 
-        if (CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
-            return true;
+        if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
+            return false;
         }
 
         target = mcMMOTarget.getPlayer();
