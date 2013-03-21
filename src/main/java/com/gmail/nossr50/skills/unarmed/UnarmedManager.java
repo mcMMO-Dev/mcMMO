@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.unarmed;
 
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -42,6 +43,25 @@ public class UnarmedManager extends SkillManager {
         Player player = getPlayer();
 
         return player.getItemInHand().getType() == Material.AIR && Permissions.arrowDeflect(player);
+    }
+
+    public boolean canUseBlockCracker() {
+        return Permissions.blockCracker(getPlayer());
+    }
+
+    public boolean blockCrackerCheck(BlockState blockState) {
+        Material type = blockState.getType();
+
+        switch (type) {
+            case SMOOTH_BRICK:
+                if (Unarmed.blockCrackerSmoothBrick && blockState.getRawData() == (byte) 0x0) {
+                    blockState.setRawData((byte) 0x2);
+                }
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     /**

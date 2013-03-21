@@ -1,29 +1,17 @@
 package com.gmail.nossr50.api;
 
+import java.util.Set;
+
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public final class ExperienceAPI {
     private ExperienceAPI() {}
-
-    /**
-     * Adds raw XP to the player.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player The player to add XP to
-     * @param skillType The skill to add XP to
-     * @param XP The amount of XP to add
-     * @deprecated Use {@link #addRawXP(Player, String, int)} instead
-     */
-    @Deprecated
-    public static void addRawXP(Player player, SkillType skillType, int XP) {
-        UserManager.getPlayer(player).applyXpGain(skillType, XP);
-    }
 
     /**
      * Adds raw XP to the player.
@@ -39,18 +27,18 @@ public final class ExperienceAPI {
     }
 
     /**
-     * Adds XP to the player, calculates for XP Rate only.
+     * Adds raw XP to an offline player.
      * </br>
      * This function is designed for API usage.
      *
-     * @param player The player to add XP to
+     * @param playerName The player to add XP to
      * @param skillType The skill to add XP to
      * @param XP The amount of XP to add
-     * @deprecated Use {@link #addMultipliedXP(Player, String, int)} instead
+     *
+     * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    @Deprecated
-    public static void addMultipliedXP(Player player, SkillType skillType, int XP) {
-        UserManager.getPlayer(player).applyXpGain(skillType, (int) (XP * Config.getInstance().getExperienceGainsGlobalMultiplier()));
+    public static void addRawXPOffline(String playerName, String skillType, int XP) {
+        addOfflineXP(playerName, skillType, XP);
     }
 
     /**
@@ -67,18 +55,48 @@ public final class ExperienceAPI {
     }
 
     /**
-     * Adds XP to the player, calculates for XP Rate, skill modifiers and perks. May be shared with the party.
+     * Adds XP to an offline player, calculates for XP Rate only.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param playerName The player to add XP to
+     * @param skillType The skill to add XP to
+     * @param XP The amount of XP to add
+     *
+     * @throws InvalidPlayerException if the given player does not exist in the database
+     */
+    public static void addMultipliedXPOffline(String playerName, String skillType, int XP) {
+        addOfflineXP(playerName, skillType, (int) (XP * Config.getInstance().getExperienceGainsGlobalMultiplier()));
+    }
+
+    /**
+     * Adds XP to the player, calculates for XP Rate and skill modifier.
      * </br>
      * This function is designed for API usage.
      *
      * @param player The player to add XP to
      * @param skillType The skill to add XP to
      * @param XP The amount of XP to add
-     * @deprecated Use {@link #addXP(Player, String, int)} instead
      */
-    @Deprecated
-    public static void addXP(Player player, SkillType skillType, int XP) {
-        UserManager.getPlayer(player).beginXpGain(skillType, XP);
+    public static void addModifiedXP(Player player, String skillType, int XP) {
+        SkillType skill = SkillType.getSkill(skillType);
+
+        UserManager.getPlayer(player).applyXpGain(skill, (int) (XP  / skill.getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier()));
+    }
+
+    /**
+     * Adds XP to an offline player, calculates for XP Rate and skill modifier.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param playerName The player to add XP to
+     * @param skillType The skill to add XP to
+     * @param XP The amount of XP to add
+     *
+     * @throws InvalidPlayerException if the given player does not exist in the database
+     */
+    public static void addModifiedXPOffline(String playerName, String skillType, int XP) {
+        addOfflineXP(playerName, skillType, (int) (XP / SkillType.getSkill(skillType).getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier()));
     }
 
     /**
@@ -102,39 +120,23 @@ public final class ExperienceAPI {
      * @param player The player to get XP for
      * @param skillType The skill to get XP for
      * @return the amount of XP in a given skill
-     * @deprecated Use {@link #getXP(Player, String)} instead
-     */
-    @Deprecated
-    public static int getXP(Player player, SkillType skillType) {
-        return UserManager.getPlayer(player).getProfile().getSkillXpLevel(skillType);
-    }
-
-    /**
-     * Get the amount of XP a player has in a specific skill.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player The player to get XP for
-     * @param skillType The skill to get XP for
-     * @return the amount of XP in a given skill
      */
     public static int getXP(Player player, String skillType) {
         return UserManager.getPlayer(player).getProfile().getSkillXpLevel(SkillType.getSkill(skillType));
     }
 
     /**
-     * Get the amount of XP left before leveling up.
+     * Get the amount of XP an offline player has in a specific skill.
      * </br>
      * This function is designed for API usage.
      *
-     * @param player The player to get the XP amount for
-     * @param skillType The skill to get the XP amount for
-     * @return the amount of XP left before leveling up a specifc skill
-     * @deprecated Use {@link #getXPToNextLevel(Player, String)} instead
+     * @param playerName The player to get XP for
+     * @param skillType The skill to get XP for
+     * @return the amount of XP in a given skill
+     * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    @Deprecated
-    public static int getXPToNextLevel(Player player, SkillType skillType) {
-        return UserManager.getPlayer(player).getProfile().getXpToLevel(skillType);
+    public static int getOfflineXP(String playerName, String skillType) {
+        return getOfflineProfile(playerName).getSkillXpLevel(SkillType.getSkill(skillType));
     }
 
     /**
@@ -151,37 +153,17 @@ public final class ExperienceAPI {
     }
 
     /**
-     * Add levels to a skill.
+     * Get the amount of XP an offline player has left before leveling up.
      * </br>
      * This function is designed for API usage.
      *
-     * @param player The player to add levels to
-     * @param skillType Type of skill to add levels to
-     * @param levels Number of levels to add
-     * @param notify Unused argument
-     * @deprecated Use addLevel(Player, SKillType, int) instead
+     * @param playerName The player to get XP for
+     * @param skillType The skill to get XP for
+     * @return the amount of XP in a given skill
+     * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static void addLevel(Player player, SkillType skillType, int levels, boolean notify) {
-        UserManager.getProfile(player).addLevels(skillType, levels);
-
-        if (notify) {
-            checkXP(player, skillType);
-        }
-    }
-
-    /**
-     * Add levels to a skill.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player The player to add levels to
-     * @param skillType Type of skill to add levels to
-     * @param levels Number of levels to add
-     * @deprecated Use {@link #addLevel(Player, String, int)} instead
-     */
-    @Deprecated
-    public static void addLevel(Player player, SkillType skillType, int levels) {
-        UserManager.getPlayer(player).getProfile().addLevels(skillType, levels);
+    public static int getOfflineXPToNextLevel(String playerName, String skillType) {
+        return getOfflineProfile(playerName).getXpToLevel(SkillType.getSkill(skillType));
     }
 
     /**
@@ -198,18 +180,34 @@ public final class ExperienceAPI {
     }
 
     /**
-     * Get the level a player has in a specific skill.
+     * Add levels to a skill for an offline player.
      * </br>
      * This function is designed for API usage.
      *
-     * @param player The player to get the level for
-     * @param skillType The skill to get the level for
-     * @return the level of a given skill
-     * @deprecated Use {@link #getLevel(Player, String)} instead
+     * @param playerName The player to add levels to
+     * @param skillType Type of skill to add levels to
+     * @param levels Number of levels to add
+     *
+     * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    @Deprecated
-    public static int getLevel(Player player, SkillType skillType) {
-        return UserManager.getPlayer(player).getProfile().getSkillLevel(skillType);
+    public static void addLevelOffline(String playerName, String skillType, int levels) {
+        PlayerProfile profile = getOfflineProfile(playerName);
+
+        SkillType skill = SkillType.getSkill(skillType);
+
+        if (skill.isChildSkill()) {
+            Set<SkillType> parentSkills = FamilyTree.getParents(skill);
+
+            for (SkillType parentSkill : parentSkills) {
+                profile.addLevels(parentSkill, (levels / parentSkills.size()));
+            }
+
+            profile.save();
+            return;
+        }
+
+        profile.addLevels(skill, levels);
+        profile.save();
     }
 
     /**
@@ -226,6 +224,20 @@ public final class ExperienceAPI {
     }
 
     /**
+     * Get the level an offline player has in a specific skill.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param playerName The player to get the level for
+     * @param skillType The skill to get the level for
+     * @return the level of a given skill
+     * @throws InvalidPlayerException if the given player does not exist in the database
+     */
+    public static int getLevelOffline(String playerName, String skillType) {
+        return getOfflineProfile(playerName).getSkillLevel(SkillType.getSkill(skillType));
+    }
+
+    /**
      * Gets the power level of a player.
      * </br>
      * This function is designed for API usage.
@@ -235,6 +247,30 @@ public final class ExperienceAPI {
      */
     public static int getPowerLevel(Player player) {
         return UserManager.getPlayer(player).getPowerLevel();
+    }
+
+    /**
+     * Gets the power level of an offline player.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param playerName The player to get the power level for
+     * @return the power level of the player
+     * @throws InvalidPlayerException if the given player does not exist in the database
+     */
+    public static int getPowerLevelOffline(String playerName) {
+        int powerLevel = 0;
+        PlayerProfile profile = getOfflineProfile(playerName);
+
+        for (SkillType type : SkillType.values()) {
+            if (type.isChildSkill()) {
+                continue;
+            }
+
+            powerLevel += profile.getSkillLevel(type);
+        }
+
+        return powerLevel;
     }
 
     /**
@@ -268,39 +304,24 @@ public final class ExperienceAPI {
      * @param player The player to set the level of
      * @param skillType The skill to set the level for
      * @param skillLevel The value to set the level to
-     * @deprecated Use {@link #setLevel(Player, String, int)} instead
-     */
-    @Deprecated
-    public static void setLevel(Player player, SkillType skillType, int skillLevel) {
-        UserManager.getPlayer(player).getProfile().modifySkill(skillType, skillLevel);
-    }
-
-    /**
-     * Sets the level of a player in a specific skill type.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player The player to set the level of
-     * @param skillType The skill to set the level for
-     * @param skillLevel The value to set the level to
      */
     public static void setLevel(Player player, String skillType, int skillLevel) {
         UserManager.getPlayer(player).getProfile().modifySkill(SkillType.getSkill(skillType), skillLevel);
     }
 
     /**
-     * Sets the XP of a player in a specific skill type.
+     * Sets the level of an offline player in a specific skill type.
      * </br>
      * This function is designed for API usage.
      *
-     * @param player The player to set the XP of
-     * @param skillType The skill to set the XP for
-     * @param newValue The value to set the XP to
-     * @deprecated Use {@link #setXP(Player, String, int)} instead
+     * @param playerName The player to set the level of
+     * @param skillType The skill to set the level for
+     * @param skillLevel The value to set the level to
+     *
+     * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    @Deprecated
-    public static void setXP(Player player, SkillType skillType, int newValue) {
-        UserManager.getPlayer(player).getProfile().setSkillXpLevel(skillType, newValue);
+    public static void setLevelOffline(String playerName, String skillType, int skillLevel) {
+        getOfflineProfile(playerName).modifySkill(SkillType.getSkill(skillType), skillLevel);
     }
 
     /**
@@ -317,18 +338,18 @@ public final class ExperienceAPI {
     }
 
     /**
-     * Removes XP from a player in a specific skill type.
+     * Sets the XP of an offline player in a specific skill type.
      * </br>
      * This function is designed for API usage.
      *
-     * @param player The player to change the XP of
-     * @param skillType The skill to change the XP for
-     * @param xp The amount of XP to remove
-     * @deprecated Use {@link #removeXP(Player, String, int)} instead
+     * @param playerName The player to set the XP of
+     * @param skillType The skill to set the XP for
+     * @param newValue The value to set the XP to
+     *
+     * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    @Deprecated
-    public static void removeXP(Player player, SkillType skillType, int xp) {
-        UserManager.getPlayer(player).getProfile().removeXp(skillType, xp);
+    public static void setXPOffline(String playerName, String skillType, int newValue) {
+        getOfflineProfile(playerName).setSkillXpLevel(SkillType.getSkill(skillType), newValue);
     }
 
     /**
@@ -345,14 +366,54 @@ public final class ExperienceAPI {
     }
 
     /**
-     * Check the XP of a player. This should be called after giving XP to process level-ups.
+     * Removes XP from an offline player in a specific skill type.
+     * </br>
+     * This function is designed for API usage.
      *
-     * @param player The player to check
-     * @param skillType The skill to check
-     * @deprecated Calling this function is no longer needed and should be avoided
+     * @param playerName The player to change the XP of
+     * @param skillType The skill to change the XP for
+     * @param xp The amount of XP to remove
+     *
+     * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    @Deprecated
-    private static void checkXP(Player player, SkillType skillType) {
-        SkillUtils.xpCheckSkill(skillType, player, UserManager.getProfile(player));
+    public static void removeXPOffline(String playerName, String skillType, int xp) {
+        getOfflineProfile(playerName).removeXp(SkillType.getSkill(skillType), xp);
+    }
+
+    /**
+     * Add XP to an offline player.
+     *
+     * @param playerName The player to check
+     * @param skillType The skill to check
+     * @param XP The amount of XP to award.
+     */
+    private static void addOfflineXP(String playerName, String skillType, int XP) {
+        PlayerProfile profile = getOfflineProfile(playerName);
+
+        SkillType skill = SkillType.getSkill(skillType);
+
+        if (skill.isChildSkill()) {
+            Set<SkillType> parentSkills = FamilyTree.getParents(skill);
+
+            for (SkillType parentSkill : parentSkills) {
+                profile.setSkillXpLevel(parentSkill, profile.getSkillLevel(parentSkill) + (XP / parentSkills.size()));
+            }
+
+            profile.save();
+            return;
+        }
+
+        profile.setSkillXpLevel(skill, profile.getSkillXpLevel(skill) + XP);
+        profile.save();
+    }
+
+    private static PlayerProfile getOfflineProfile(String playerName) {
+        PlayerProfile profile = new PlayerProfile(playerName, false);
+
+        if (!profile.isLoaded()) {
+            throw new InvalidPlayerException();
+        }
+
+        return profile;
     }
 }

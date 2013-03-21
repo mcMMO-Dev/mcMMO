@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
 import java.text.DecimalFormat;
+import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -8,9 +9,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -20,10 +23,12 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public abstract class SkillCommand implements CommandExecutor {
     protected SkillType skill;
-    private String skillString;
+    protected String skillName;
 
     protected Player player;
     protected PlayerProfile profile;
+    protected McMMOPlayer mcMMOPlayer;
+
     protected float skillValue;
     protected boolean isLucky;
     protected boolean hasEndurance;
@@ -31,9 +36,12 @@ public abstract class SkillCommand implements CommandExecutor {
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
     protected DecimalFormat decimal = new DecimalFormat("##0.00");
 
+    private CommandExecutor skillGuideCommand;
+
     public SkillCommand(SkillType skill) {
         this.skill = skill;
-        this.skillString = StringUtils.getCapitalized(skill.toString());
+        skillName = SkillUtils.getSkillName(skill);
+        skillGuideCommand = new SkillGuideCommand(skill);
     }
 
     @Override
@@ -42,86 +50,73 @@ public abstract class SkillCommand implements CommandExecutor {
             return true;
         }
 
-        player = (Player) sender;
-        profile = UserManager.getPlayer(player).getProfile();
+        mcMMOPlayer = UserManager.getPlayer(sender.getName());
+        player = mcMMOPlayer.getPlayer();
 
-        if (profile == null) {
-            sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-            return true;
+        switch (args.length) {
+            case 0:
+                profile = mcMMOPlayer.getProfile();
+
+                skillValue = profile.getSkillLevel(skill);
+                isLucky = Permissions.lucky(sender, skill);
+                hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
+
+                permissionsCheck();
+                dataCalculations();
+
+                if (!skill.isChildSkill()) {
+                    player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
+                    player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
+                    player.sendMessage(LocaleLoader.getString("Effects.Level", (int) skillValue, profile.getSkillXpLevel(skill), profile.getXpToLevel(skill)));
+                }
+                else {
+                    player.sendMessage(LocaleLoader.getString("Skills.Header", skillName + " " + LocaleLoader.getString("Skills.Child")));
+                    player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain.Child")));
+                    player.sendMessage(LocaleLoader.getString("Effects.Child", (int) skillValue));
+
+                    player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Skills.Parents")));
+                    Set<SkillType> parents = FamilyTree.getParents(skill);
+
+                    for (SkillType parent : parents) {
+                        player.sendMessage(SkillUtils.getSkillName(parent) + " - " + LocaleLoader.getString("Effects.Level", profile.getSkillLevel(parent), profile.getSkillXpLevel(parent), profile.getXpToLevel(parent)));
+                    }
+                }
+
+                if (effectsHeaderPermissions()) {
+                    player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.Effects")));
+                }
+
+                effectsDisplay();
+
+                if (statsHeaderPermissions()) {
+                    player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Commands.Stats.Self")));
+                }
+
+                statsDisplay();
+
+                player.sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase()));
+                return true;
+
+            default:
+                return skillGuideCommand.onCommand(sender, command, label, args);
         }
-
-        skillValue = profile.getSkillLevel(skill);
-        isLucky = Permissions.lucky(sender, skill);
-        hasEndurance = (Permissions.twelveSecondActivationBoost(sender) || Permissions.eightSecondActivationBoost(sender) || Permissions.fourSecondActivationBoost(sender));
-
-        dataCalculations();
-        permissionsCheck();
-
-        player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString(skillString + ".SkillName")));
-
-        if (!skill.isChildSkill()) {
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + skillString)));
-            player.sendMessage(LocaleLoader.getString("Effects.Level", profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill)));
-        }
-
-        if (effectsHeaderPermissions()) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.Effects")));
-        }
-
-        effectsDisplay();
-
-        if (statsHeaderPermissions()) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Commands.Stats.Self")));
-        }
-
-        statsDisplay();
-
-        return SkillGuideCommand.grabGuidePageForSkill(skill, player, args);
     }
 
-    protected String calculateRank(int maxLevel, int rankChangeLevel) {
-        if (skillValue >= maxLevel) {
-            return String.valueOf(maxLevel / rankChangeLevel);
-        }
-
-        return String.valueOf((int) (skillValue / rankChangeLevel));
+    protected int calculateRank(int maxLevel, int rankChangeLevel) {
+        return Math.min((int) skillValue, maxLevel) / rankChangeLevel;
     }
 
     protected String[] calculateAbilityDisplayValues(double chance) {
-        if (isLucky) {
-            double luckyChance = chance * 1.3333D;
+        String[] displayValues = new String[2];
 
-            if (luckyChance >= 100D) {
-                return new String[] { percent.format(chance / 100.0D), percent.format(1.0D) };
-            }
+        displayValues[0] = percent.format(Math.min(chance, 100.0D) / 100.0D);
+        displayValues[1] = isLucky ? percent.format(Math.min(chance * 1.3333D, 100.0D) / 100.0D) : null;
 
-            return new String[] { percent.format(chance / 100.0D), percent.format(luckyChance / 100.0D) };
-        }
-
-        return new String[] { percent.format(chance / 100.0D), null };
+        return displayValues;
     }
 
     protected String[] calculateAbilityDisplayValues(int maxBonusLevel, double maxChance) {
-        double abilityChance;
-
-        if (skillValue >= maxBonusLevel) {
-            abilityChance = maxChance;
-        }
-        else {
-            abilityChance = (maxChance / maxBonusLevel) * skillValue;
-        }
-
-        if (isLucky) {
-            double luckyChance = abilityChance * 1.3333D;
-
-            if (luckyChance >= 100D) {
-                return new String[] { percent.format(abilityChance / 100.0D), percent.format(1.0D) };
-            }
-
-            return new String[] { percent.format(abilityChance / 100.0D), percent.format(luckyChance / 100.0D) };
-        }
-
-        return new String[] { percent.format(abilityChance / 100.0D), null };
+        return calculateAbilityDisplayValues((maxChance / maxBonusLevel) * Math.min(skillValue, maxBonusLevel));
     }
 
     protected String[] calculateLengthDisplayValues() {
@@ -130,9 +125,7 @@ public abstract class SkillCommand implements CommandExecutor {
         int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
 
         if (maxLength != 0) {
-            if (length > maxLength) {
-                length = maxLength;
-            }
+            length = Math.min(length, maxLength);
         }
 
         return new String[] { String.valueOf(length), String.valueOf(enduranceLength) };
@@ -141,7 +134,7 @@ public abstract class SkillCommand implements CommandExecutor {
     protected void luckyEffectsDisplay() {
         if (isLucky) {
             String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", SkillUtils.getSkillName(skill))));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", skillName)));
         }
     }
 

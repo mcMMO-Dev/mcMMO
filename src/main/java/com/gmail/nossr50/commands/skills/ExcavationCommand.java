@@ -18,9 +18,11 @@ public class ExcavationCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         // GIGA DRILL BREAKER
-        String gigaDrillStrings[] = calculateLengthDisplayValues();
-        gigaDrillBreakerLength = gigaDrillStrings[0];
-        gigaDrillBreakerLengthEndurance = gigaDrillStrings[1];
+        if (canGigaDrill) {
+            String gigaDrillStrings[] = calculateLengthDisplayValues();
+            gigaDrillBreakerLength = gigaDrillStrings[0];
+            gigaDrillBreakerLengthEndurance = gigaDrillStrings[1];
+        }
     }
 
     @Override
@@ -55,12 +57,7 @@ public class ExcavationCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canGigaDrill) {
-            if (hasEndurance) {
-                player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength) + LocaleLoader.getString("Perks.activationtime.bonus", gigaDrillBreakerLengthEndurance));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength));
-            }
+            player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.activationtime.bonus", gigaDrillBreakerLengthEndurance) : ""));
         }
     }
 }

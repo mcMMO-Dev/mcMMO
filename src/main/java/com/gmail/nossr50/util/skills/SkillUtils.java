@@ -40,6 +40,8 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public class SkillUtils {
+    private static int enchantBuff = AdvancedConfig.getInstance().getEnchantBuff();
+
     public static int handleFoodSkills(Player player, SkillType skill, int eventFoodLevel, int baseLevel, int maxLevel, int rankChange) {
         int skillLevel = UserManager.getPlayer(player).getProfile().getSkillLevel(skill);
 
@@ -92,10 +94,6 @@ public class SkillUtils {
      * @param ability The ability to watch cooldowns for
      */
     public static void watchCooldown(McMMOPlayer mcMMOPlayer, AbilityType ability) {
-        if (mcMMOPlayer == null || ability == null) {
-            return;
-        }
-
         Player player = mcMMOPlayer.getPlayer();
 
         if (!mcMMOPlayer.getAbilityInformed(ability) && cooldownOver(mcMMOPlayer.getProfile().getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
@@ -215,9 +213,10 @@ public class SkillUtils {
         int xpRemoved = 0;
 
         if (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             while (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
-                if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Config.getInstance().getPowerLevelCap() >= UserManager.getPlayer(player).getPowerLevel() + 1)) {
+                if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Config.getInstance().getPowerLevelCap() >= mcMMOPlayer.getPowerLevel() + 1)) {
                     int xp = profile.getXpToLevel(skillType);
                     xpRemoved += xp;
 
@@ -460,22 +459,6 @@ public class SkillUtils {
         }
     }
 
-    /**
-     * Check if a skill level is higher than the max bonus level of the ability.
-     *
-     * @param skillLevel Skill level to check
-     * @param maxLevel Max level of the ability
-     * @return whichever value is lower
-     */
-    public static int skillCheck(int skillLevel, int maxLevel) {
-        // TODO: Could we just use Math.min(skillLevel, maxLevel) here?
-        if (skillLevel > maxLevel) {
-            return maxLevel;
-        }
-
-        return skillLevel;
-    }
-
     public static void handleAbilitySpeedIncrease(Player player) {
         if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
             ItemStack heldItem = player.getItemInHand();
@@ -493,7 +476,7 @@ public class SkillUtils {
             }
 
             itemLore.add("mcMMO Ability Tool");
-            itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + 5, true);
+            itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel + enchantBuff, true);
 
             itemMeta.setLore(itemLore);
             heldItem.setItemMeta(itemMeta);
@@ -559,11 +542,11 @@ public class SkillUtils {
                 if (itemLore.remove("mcMMO Ability Tool")) {
                     int efficiencyLevel = item.getEnchantmentLevel(Enchantment.DIG_SPEED);
 
-                    if (efficiencyLevel <= 5) {
+                    if (efficiencyLevel <= enchantBuff) {
                         itemMeta.removeEnchant(Enchantment.DIG_SPEED);
                     }
                     else {
-                        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - 5, true);
+                        itemMeta.addEnchant(Enchantment.DIG_SPEED, efficiencyLevel - enchantBuff, true);
                     }
 
                     itemMeta.setLore(itemLore);

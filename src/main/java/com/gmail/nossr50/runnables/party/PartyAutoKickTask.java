@@ -3,12 +3,13 @@ package com.gmail.nossr50.runnables.party;
 import java.util.Iterator;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 
-public class PartyAutoKickTask implements Runnable {
+public class PartyAutoKickTask extends BukkitRunnable {
     @Override
     public void run() {
         updatePartyMembers();

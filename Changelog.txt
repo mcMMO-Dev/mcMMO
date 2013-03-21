@@ -7,8 +7,48 @@ Key:
   ! Change
   - Removal
 
-Version 1.4.03-dev
+Version 1.4.04-dev
+ + Added functions to ExperienceAPI for use with offline players
+ + Added Nether Quartz Ore to Mining
+ + Added Dropper, Hopper, and Trapped Chest to blocks that shouldn't activate abilities
+ = Fixed bug where trying to activate a Chimaera Wing would require one item too much
+ = Fixed bug where Treefeller would try to cut too many leaves and reach the threshold when it shouldn't
+ = Fixed bug where Mining wasn't awarding double drops
+ = Fixed bug where Shake wouldn't damage mobs whose max health was less than 4
+ = Fixed bug where the API would fail if the name of a player's current party is requested when the player isn't in one (Thanks @dualspiral!)
+ = Fixed bug with retrieving a player's party members
+ ! Updated localization files
+ - Removed deprecated functions from API classes.
+ - Removed functions for getting the PlayerProfile - using API classes is preferred, but if not the McMMOPlayer should be used instead
+
+Version 1.4.03
+ + Added option to advanced.yml to determine the # of enchant levels used when buffing Super Breaker & Giga Drill Breaker
+ + Improved stats display for child skills
+ + Added cooldown between using Chimaera Wings
+ = Fixed bug with '/party chat (on|off)' and '/partychat (on|off)' not working
+ = Fixed bug with Repair not decreasing enchanting levels properly
+ = Fixed bug with Smelting not properly tracking furnaces
+ = Fixed bug with Blast Mining not dropping blocks correctly
+ = Fixed bug with custom blocks not working
+ = Fixed bug with Blast Mining increasing TNT damage.
+ = Fixed bug where Blast Mining was awarding too much XP
+ = Fixed bug where triple drops would award twice the amount of experience in Herbalism and Mining
+ = Fixed bug where Green Thumb would consume wheat instead of seeds
+ = Fixed bug where Green Terra would consume twice the amount of seed when used on crops
+ = Fixed bug where experience would be awarded in Herbalism for some player-placed blocks
  = Fixed bug where players were unable to salvage leather armor
+ = Fixed bug with repairing using materials with byte metadata
+ = Fixed bug where Fishing was becoming less successful at higher levels
+ = Fixed bug with using Salvage on stacked items.
+ = Fixed bug where the 'mcmmo.commands.ptp.world.all' was registered twice
+ = Fixed bug where Beast Lore wouldn't work on friendly pets
+ = Fixed bug where Deflect was calculated based on the attacker, not the defender. (We really did this time!)
+ = Fixed bug where Treefeller would not deal durability damage when the axe "splinters into dozens of pieces"
+ ! Moved the Salvage unlock level from config.yml to advanced.yml
+ ! Changed how Chimaera Wings are acquired, you need to craft them now. (By default, use 5 feathers in a shapeless recipe)
+ ! Changed how Chimaera Wings teleport players to the spawnpoint, will now check if the location is safe
+ - Removed option to disable Salvage via the config file. This should be handled via permissions instead.
+ - Removed the option to use Woodcutting without an axe from the config file.
 
 Version 1.4.02
  + Added API to get the skill and power level caps.

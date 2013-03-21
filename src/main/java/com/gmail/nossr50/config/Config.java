@@ -101,9 +101,12 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getEntityModsEnabled() { return config.getBoolean("Mods.Entity_Mods_Enabled", false); }
 
     /* Items */
-    public int getChimaeraCost() { return config.getInt("Items.Chimaera_Wing.Feather_Cost", 10); }
+    public int getChimaeraUseCost() { return config.getInt("Items.Chimaera_Wing.Use_Cost", 1); }
+    public int getChimaeraRecipeCost() { return config.getInt("Items.Chimaera_Wing.Recipe_Cost", 5); }
     public int getChimaeraItemId() { return config.getInt("Items.Chimaera_Wing.Item_ID", 288); }
     public boolean getChimaeraEnabled() { return config.getBoolean("Items.Chimaera_Wing.Enabled", true); }
+    public boolean getChimaeraPreventUseUnderground() { return config.getBoolean("Items.Chimaera_Wing.Prevent_Use_Underground", true); }
+    public int getChimaeraCooldown() { return config.getInt("Items.Chimaera_Wing.Cooldown", 240); }
 
     /* Particles */
     public boolean getAbilityActivationEffectEnabled() { return config.getBoolean("Particles.Ability_Activation", true); }
@@ -183,9 +186,7 @@ public class Config extends AutoUpdateConfigLoader {
     /* Repair */
     public boolean getRepairAnvilMessagesEnabled() { return config.getBoolean("Skills.Repair.Anvil_Messages", true); }
     public int getRepairAnvilId() { return config.getInt("Skills.Repair.Anvil_ID", 42); }
-    public boolean getSalvageEnabled() { return config.getBoolean("Skills.Repair.Salvage_enabled", true); }
     public int getSalvageAnvilId() { return config.getInt("Skills.Repair.Salvage_Anvil_ID", 41); }
-    public int getSalvageUnlockLevel() { return config.getInt("Skills.Repair.Salvage_UnlockLevel", 600); }
     public boolean getSalvageTools() { return config.getBoolean("Skills.Repair.Salvage_tools", true); }
     public boolean getSalvageArmor() { return config.getBoolean("Skills.Repair.Salvage_armor", true); }
 
@@ -199,8 +200,6 @@ public class Config extends AutoUpdateConfigLoader {
     public int getTamingCOTWOcelotCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Fish_Required", 10); }
 
     /* Woodcutting */
-    public boolean getWoodcuttingRequiresTool() { return config.getBoolean("Skills.Woodcutting.Requires_Axe", true); }
-
     public int getWoodcuttingXPOak() { return config.getInt("Experience.Woodcutting.Oak", 70); }
     public int getWoodcuttingXPBirch() { return config.getInt("Experience.Woodcutting.Birch", 90); }
     public int getWoodcuttingXPSpruce() { return config.getInt("Experience.Woodcutting.Spruce", 80); }

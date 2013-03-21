@@ -14,7 +14,7 @@ public class UnarmedCommand extends SkillCommand {
     private String disarmChanceLucky;
     private String ironGripChance;
     private String ironGripChanceLucky;
-    private String ironArmBonus;
+    private int ironArmBonus;
 
     private boolean canBerserk;
     private boolean canDisarm;
@@ -29,32 +29,37 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         // BERSERK
-        String[] berserkStrings = calculateLengthDisplayValues();
-        berserkLength = berserkStrings[0];
-        berserkLengthEndurance = berserkStrings[1];
+        if (canBerserk) {
+            String[] berserkStrings = calculateLengthDisplayValues();
+            berserkLength = berserkStrings[0];
+            berserkLengthEndurance = berserkStrings[1];
+        }
 
         // DISARM
-        String[] disarmStrings = calculateAbilityDisplayValues(Unarmed.disarmMaxBonusLevel, Unarmed.disarmMaxChance);
-        disarmChance = disarmStrings[0];
-        disarmChanceLucky = disarmStrings[1];
+        if (canDisarm) {
+            String[] disarmStrings = calculateAbilityDisplayValues(Unarmed.disarmMaxBonusLevel, Unarmed.disarmMaxChance);
+            disarmChance = disarmStrings[0];
+            disarmChanceLucky = disarmStrings[1];
+        }
 
         // DEFLECT
-        String[] deflectStrings = calculateAbilityDisplayValues(Unarmed.deflectMaxBonusLevel, Unarmed.deflectMaxChance);
-        deflectChance = deflectStrings[0];
-        deflectChanceLucky = deflectStrings[1];
+        if (canDeflect) {
+            String[] deflectStrings = calculateAbilityDisplayValues(Unarmed.deflectMaxBonusLevel, Unarmed.deflectMaxChance);
+            deflectChance = deflectStrings[0];
+            deflectChanceLucky = deflectStrings[1];
+        }
 
         // IRON ARM
-        if (skillValue >= ((Unarmed.ironArmMaxBonusDamage - 3) * Unarmed.ironArmIncreaseLevel)) {
-            ironArmBonus = String.valueOf(Unarmed.ironArmMaxBonusDamage);
-        }
-        else {
-            ironArmBonus = String.valueOf(3 + (skillValue / Unarmed.ironArmIncreaseLevel));
+        if (canBonusDamage) {
+            ironArmBonus = Math.min(3 + ((int) skillValue / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
         }
 
         // IRON GRIP
-        String[] ironGripStrings = calculateAbilityDisplayValues(Unarmed.ironGripMaxBonusLevel, Unarmed.ironGripMaxChance);
-        ironGripChance = ironGripStrings[0];
-        ironGripChanceLucky = ironGripStrings[1];
+        if (canIronGrip) {
+            String[] ironGripStrings = calculateAbilityDisplayValues(Unarmed.ironGripMaxBonusLevel, Unarmed.ironGripMaxChance);
+            ironGripChance = ironGripStrings[0];
+            ironGripChanceLucky = ironGripStrings[1];
+        }
     }
 
     @Override
@@ -108,39 +113,19 @@ public class UnarmedCommand extends SkillCommand {
         }
 
         if (canDeflect) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", deflectChance) + LocaleLoader.getString("Perks.lucky.bonus", deflectChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", deflectChance));
-            }
+            player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", deflectChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", deflectChanceLucky) : ""));
         }
 
         if (canDisarm) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", disarmChance) + LocaleLoader.getString("Perks.lucky.bonus", disarmChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", disarmChance));
-            }
+            player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", disarmChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", disarmChanceLucky) : ""));
         }
 
         if (canIronGrip) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + LocaleLoader.getString("Perks.lucky.bonus", ironGripChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance));
-            }
+            player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", ironGripChanceLucky) : ""));
         }
 
         if (canBerserk) {
-            if (hasEndurance) {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", berserkLength) + LocaleLoader.getString("Perks.activationtime.bonus", berserkLengthEndurance));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", berserkLength));
-            }
+            player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", berserkLength) + (hasEndurance ? LocaleLoader.getString("Perks.activationtime.bonus", berserkLengthEndurance) : ""));
         }
     }
 }

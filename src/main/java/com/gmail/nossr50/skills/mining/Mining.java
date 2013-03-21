@@ -43,10 +43,6 @@ public class Mining {
     protected static void handleSilkTouchDrops(BlockState blockState) {
         Material blockType = blockState.getType();
 
-        if (blockType != Material.GLOWING_REDSTONE_ORE && !Config.getInstance().getDoubleDropsEnabled(SkillType.MINING, blockType)) {
-            return;
-        }
-
         switch (blockType) {
             case ENDER_STONE:
             case GOLD_ORE:
@@ -76,7 +72,7 @@ public class Mining {
 
             default:
                 if (ModUtils.isCustomMiningBlock(blockState)) {
-                    Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack());
+                    Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack(1));
                 }
                 return;
         }
@@ -89,13 +85,7 @@ public class Mining {
      */
     protected static void handleMiningDrops(BlockState blockState) {
         Material blockType = blockState.getType();
-
-        if (blockType != Material.GLOWING_REDSTONE_ORE && !Config.getInstance().getDoubleDropsEnabled(SkillType.MINING, blockType)) {
-            return;
-        }
-
         Location location = blockState.getLocation();
-        ItemStack dropItem;
 
         switch (blockType) {
             case COAL_ORE:
@@ -130,7 +120,7 @@ public class Mining {
                     int minimumDropAmount = customBlock.getMinimumDropAmount();
                     int maximumDropAmount = customBlock.getMaximumDropAmount();
 
-                    dropItem = customBlock.getItemDrop();
+                    ItemStack dropItem = customBlock.getItemDrop();
 
                     if (minimumDropAmount != maximumDropAmount) {
                         Misc.dropItems(location, dropItem, minimumDropAmount);

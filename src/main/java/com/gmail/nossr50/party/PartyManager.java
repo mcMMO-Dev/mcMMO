@@ -24,6 +24,15 @@ public final class PartyManager {
 
     private PartyManager() {}
 
+    public static boolean checkPartyExistence(Player player, Party party, String partyName) {
+        if (party == null) {
+            return false;
+        }
+
+        player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", partyName));
+        return true;
+    }
+
     public static boolean changeOrJoinParty(McMMOPlayer mcMMOPlayer, Player player, Party oldParty, String newPartyName) {
         if (mcMMOPlayer.inParty()) {
             if (!handlePartyChangeEvent(player, oldParty.getName(), newPartyName, EventReason.CHANGED_PARTIES)) {
@@ -75,7 +84,7 @@ public final class PartyManager {
         List<Player> nearMembers = new ArrayList<Player>();
         if (party != null) {
             for (Player member : party.getOnlineMembers()) {
-                if (!player.getName().equals(member.getName()) && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
+                if (!player.getName().equalsIgnoreCase(member.getName()) && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
                     nearMembers.add(member);
                 }
             }
@@ -122,7 +131,13 @@ public final class PartyManager {
      * @return all online players in this party
      */
     public static List<Player> getOnlineMembers(Player player) {
-        return getOnlineMembers(player.getName());
+        Party party = getPlayerParty(player.getName());
+
+        if (party == null) {
+            return null;
+        }
+
+        return getOnlineMembers(party.getName());
     }
 
     /**
@@ -150,7 +165,7 @@ public final class PartyManager {
     public static Party getPlayerParty(String playerName) {
         for (Party party : parties) {
             for (OfflinePlayer member : party.getMembers()) {
-                if (member.getName().equals(playerName)) {
+                if (member.getName().equalsIgnoreCase(playerName)) {
                     return party;
                 }
             }
@@ -184,7 +199,7 @@ public final class PartyManager {
         }
         else {
             // If the leaving player was the party leader, appoint a new leader from the party members
-            if (party.getLeader().equals(player.getName())) {
+            if (party.getLeader().equalsIgnoreCase(player.getName())) {
                 String newLeader = members.get(0).getName();
                 party.setLeader(newLeader);
             }
@@ -374,10 +389,10 @@ public final class PartyManager {
         String leaderName = party.getLeader();
 
         for (Player member : party.getOnlineMembers()) {
-            if (member.getName().equals(playerName)) {
+            if (member.getName().equalsIgnoreCase(playerName)) {
                 member.sendMessage(LocaleLoader.getString("Party.Owner.Player"));
             }
-            else if (member.getName().equals(leaderName)) {
+            else if (member.getName().equalsIgnoreCase(leaderName)) {
                 member.sendMessage(LocaleLoader.getString("Party.Owner.NotLeader"));
             }
             else {
@@ -396,7 +411,7 @@ public final class PartyManager {
      * @return true if the player can invite
      */
     public static boolean canInvite(Player player, Party party) {
-        if (party.isLocked() && !party.getLeader().equals(player.getName())) {
+        if (party.isLocked() && !party.getLeader().equalsIgnoreCase(player.getName())) {
             return false;
         }
 
@@ -488,13 +503,13 @@ public final class PartyManager {
             }
 
             partiesFile.set(partyName + ".Members", memberNames);
+        }
 
-            try {
-                partiesFile.save(new File(partiesFilePath));
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
+        try {
+            partiesFile.save(new File(partiesFilePath));
+        }
+        catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

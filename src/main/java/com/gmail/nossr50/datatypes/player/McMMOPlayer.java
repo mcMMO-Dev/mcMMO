@@ -28,10 +28,13 @@ import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
+import com.gmail.nossr50.skills.repair.Repair;
+import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
+import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
@@ -65,7 +68,7 @@ public class McMMOPlayer {
     private boolean displaySkillNotifications = true;
 
     private boolean abilityUse = true;
-    private boolean placedAnvil;
+    private boolean placedRepairAnvil;
     private boolean placedSalvageAnvil;
     private boolean godMode;
 
@@ -76,6 +79,7 @@ public class McMMOPlayer {
     private Map<ToolType, Integer> toolATS  = new HashMap<ToolType, Integer>();
 
     private int recentlyHurt;
+    private int chimaeraWing;
     private int respawnATS;
 
     public McMMOPlayer(Player player) {
@@ -92,12 +96,7 @@ public class McMMOPlayer {
          */
         try {
             for (SkillType skillType : SkillType.values()) {
-                Class<? extends SkillManager> skillManagerClass = skillType.getManagerClass();
-
-                // TODO: The null check is needed only because currently some SkillType doesn't have a valid skillManagerClass 
-                if (skillManagerClass != null) {
-                    skillManagers.put(skillType, skillManagerClass.getConstructor(McMMOPlayer.class).newInstance(this));
-                }
+                skillManagers.put(skillType, skillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(this));
             }
         }
         catch (Exception e) {
@@ -144,6 +143,10 @@ public class McMMOPlayer {
         return (MiningManager) skillManagers.get(SkillType.MINING);
     }
 
+    public RepairManager getRepairManager() {
+        return (RepairManager) skillManagers.get(SkillType.REPAIR);
+    }
+
     public SmeltingManager getSmeltingManager() {
         return (SmeltingManager) skillManagers.get(SkillType.SMELTING);
     }
@@ -158,6 +161,10 @@ public class McMMOPlayer {
 
     public UnarmedManager getUnarmedManager() {
         return (UnarmedManager) skillManagers.get(SkillType.UNARMED);
+    }
+
+    public WoodcuttingManager getWoodcuttingManager() {
+        return (WoodcuttingManager) skillManagers.get(SkillType.WOODCUTTING);
     }
 
     /*
@@ -293,6 +300,23 @@ public class McMMOPlayer {
     }
 
     /*
+     * Chimaera Wing
+     */
+
+    public int getLastChimaeraTeleport() {
+        return chimaeraWing;
+    }
+
+    public void setLastChimaeraTeleport(int value) {
+        chimaeraWing = value;
+    }
+
+    public void actualizeLastChimaeraTeleport() {
+        chimaeraWing = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+    }
+
+
+    /*
      * Exploit Prevention
      */
 
@@ -308,24 +332,26 @@ public class McMMOPlayer {
      * Repair Anvil Placement
      */
 
-    public void togglePlacedAnvil() {
-        placedAnvil = !placedAnvil;
+    public boolean getPlacedAnvil(int anvilId) {
+        if (anvilId == Repair.repairAnvilId) {
+            return placedRepairAnvil;
+        }
+
+        if (anvilId == Repair.salvageAnvilId) {
+            return placedSalvageAnvil;
+        }
+
+        return true;
     }
 
-    public Boolean getPlacedAnvil() {
-        return placedAnvil;
-    }
+    public void togglePlacedAnvil(int anvilId) {
+        if (anvilId == Repair.repairAnvilId) {
+            placedRepairAnvil = !placedRepairAnvil;
+        }
 
-    /*
-     * Salvage Anvil Placement
-     */
-
-    public void togglePlacedSalvageAnvil() {
-        placedSalvageAnvil = !placedSalvageAnvil;
-    }
-
-    public Boolean getPlacedSalvageAnvil() {
-        return placedSalvageAnvil;
+        if (anvilId == Repair.salvageAnvilId) {
+            placedSalvageAnvil = !placedSalvageAnvil;
+        }
     }
 
     /*
@@ -423,6 +449,19 @@ public class McMMOPlayer {
      * @param xp Experience amount to add
      */
     public void applyXpGain(SkillType skillType, int xp) {
+        if (skillType.isChildSkill()) {
+            Set<SkillType> parentSkills = FamilyTree.getParents(skillType);
+
+            for (SkillType parentSkill : parentSkills) {
+                if (Permissions.skillEnabled(player, parentSkill)) {
+                    applyXpGain(parentSkill, xp / parentSkills.size());
+                }
+            }
+
+            return;
+        }
+
+
         McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skillType, xp);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 

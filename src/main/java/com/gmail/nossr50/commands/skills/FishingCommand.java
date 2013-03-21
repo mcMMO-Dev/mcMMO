@@ -14,7 +14,7 @@ public class FishingCommand extends SkillCommand {
     private String chanceRaining = "";
     private String shakeChance;
     private String shakeChanceLucky;
-    private String fishermansDietRank;
+    private int fishermansDietRank;
 
     private boolean canTreasureHunt;
     private boolean canMagicHunt;
@@ -27,27 +27,32 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations() {
-        lootTier = UserManager.getPlayer(player).getFishingManager().getLootTier();
-
         // TREASURE HUNTER
-        double enchantChance = lootTier * AdvancedConfig.getInstance().getFishingMagicMultiplier();
+        if (canTreasureHunt) {
+            lootTier = mcMMOPlayer.getFishingManager().getLootTier();
+            double enchantChance = lootTier * AdvancedConfig.getInstance().getFishingMagicMultiplier();
 
-        if (player.getWorld().hasStorm()) {
-            chanceRaining = LocaleLoader.getString("Fishing.Chance.Raining");
-            enchantChance = enchantChance * 1.1D;
+            if (player.getWorld().hasStorm()) {
+                chanceRaining = LocaleLoader.getString("Fishing.Chance.Raining");
+                enchantChance *= 1.1D;
+            }
+
+            String[] treasureHunterStrings = calculateAbilityDisplayValues(enchantChance);
+            magicChance = treasureHunterStrings[0];
+            magicChanceLucky = treasureHunterStrings[1];
         }
 
-        String[] treasureHunterStrings = calculateAbilityDisplayValues(enchantChance);
-        magicChance = treasureHunterStrings[0];
-        magicChanceLucky = treasureHunterStrings[1];
-
         // SHAKE
-        String[] shakeStrings = calculateAbilityDisplayValues(UserManager.getPlayer(player).getFishingManager().getShakeProbability());
-        shakeChance = shakeStrings[0];
-        shakeChanceLucky = shakeStrings[1];
+        if (canShake) {
+            String[] shakeStrings = calculateAbilityDisplayValues(UserManager.getPlayer(player).getFishingManager().getShakeProbability());
+            shakeChance = shakeStrings[0];
+            shakeChanceLucky = shakeStrings[1];
+        }
 
         // FISHERMAN'S DIET
-        fishermansDietRank = calculateRank(Fishing.fishermansDietMaxLevel, Fishing.fishermansDietRankLevel1);
+        if (canFishermansDiet) {
+            fishermansDietRank = calculateRank(Fishing.fishermansDietMaxLevel, Fishing.fishermansDietRankLevel1);
+        }
     }
 
     @Override
@@ -96,25 +101,17 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canMagicHunt) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", magicChance) + chanceRaining + LocaleLoader.getString("Perks.lucky.bonus", magicChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", magicChance) + chanceRaining);
-            }
+            player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", magicChance) + chanceRaining + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", magicChanceLucky) : ""));
         }
 
         if (canShake) {
-            if (skillValue < AdvancedConfig.getInstance().getShakeUnlockLevel()) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.0", AdvancedConfig.getInstance().getShakeUnlockLevel())));
+            int unlockLevel = AdvancedConfig.getInstance().getShakeUnlockLevel();
+
+            if (skillValue < unlockLevel) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.0", unlockLevel)));
             }
             else {
-                if (isLucky) {
-                    player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", shakeChance) + LocaleLoader.getString("Perks.lucky.bonus", shakeChanceLucky));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", shakeChance));
-                }
+                player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", shakeChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", shakeChanceLucky) : ""));
             }
         }
 

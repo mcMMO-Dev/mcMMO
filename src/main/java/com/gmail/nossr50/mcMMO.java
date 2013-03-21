@@ -8,15 +8,11 @@ import java.util.List;
 
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
-import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitScheduler;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
@@ -29,7 +25,6 @@ import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.LeaderboardManager;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
@@ -45,10 +40,11 @@ import com.gmail.nossr50.runnables.party.PartyLoaderTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.runnables.skills.SkillMonitorTask;
 import com.gmail.nossr50.skills.child.ChildConfig;
-import com.gmail.nossr50.skills.repair.RepairManager;
-import com.gmail.nossr50.skills.repair.RepairManagerFactory;
 import com.gmail.nossr50.skills.repair.Repairable;
+import com.gmail.nossr50.skills.repair.RepairableManager;
+import com.gmail.nossr50.skills.repair.RepairableManagerFactory;
 import com.gmail.nossr50.skills.repair.config.RepairConfigManager;
+import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.LogFilter;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.UpdateChecker;
@@ -66,12 +62,11 @@ public class mcMMO extends JavaPlugin {
     private final WorldListener     worldListener     = new WorldListener();
 
     private HashMap<Integer, String>    tntTracker     = new HashMap<Integer, String>();
-    private HashMap<BlockState, String> furnaceTracker = new HashMap<BlockState, String>();
 
     public static mcMMO p;
 
     public static ChunkManager  placeStore;
-    public static RepairManager repairManager;
+    public static RepairableManager repairableManager;
 
     // Jar Stuff
     public static File mcmmo;
@@ -95,6 +90,7 @@ public class mcMMO extends JavaPlugin {
     public static FixedMetadataValue metadataValue;
     public final static String entityMetadataKey = "mcMMO: Spawned Entity";
     public final static String blockMetadataKey  = "mcMMO: Piston Tracking";
+    public final static String furnaceMetadataKey  = "mcMMO: Tracked Furnace";
 
     /**
      * Things to be run when the plugin is enabled.
@@ -115,6 +111,7 @@ public class mcMMO extends JavaPlugin {
             }
 
             registerEvents();
+            registerCustomRecipes();
 
             // Setup the leader boards
             if (Config.getInstance().getUseMySQL()) {
@@ -155,7 +152,7 @@ public class mcMMO extends JavaPlugin {
                 getLogger().info("Please do not replace the mcMMO jar while the server is running.");
             }
 
-            Bukkit.getPluginManager().disablePlugin(this);
+            getServer().getPluginManager().disablePlugin(this);
         }
     }
 
@@ -198,43 +195,6 @@ public class mcMMO extends JavaPlugin {
     }
 
     /**
-     * Get profile of the player by name.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param playerName Name of player whose profile to get
-     * @return the PlayerProfile object
-     */
-    public PlayerProfile getPlayerProfile(String playerName) {
-        return UserManager.getPlayer(playerName).getProfile();
-    }
-
-    /**
-     * Get profile of the player.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player player whose profile to get
-     * @return the PlayerProfile object
-     */
-    public PlayerProfile getPlayerProfile(OfflinePlayer player) {
-        return UserManager.getPlayer(player.getName()).getProfile();
-    }
-
-    /**
-     * Get profile of the player.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player player whose profile to get
-     * @return the PlayerProfile object
-     */
-    @Deprecated
-    public PlayerProfile getPlayerProfile(Player player) {
-        return UserManager.getProfile(player);
-    }
-
-    /**
      * Add a set of values to the TNT tracker.
      *
      * @param tntID The EntityID of the TNT
@@ -271,22 +231,6 @@ public class mcMMO extends JavaPlugin {
      */
     public void removeFromTNTTracker(int tntID) {
         tntTracker.remove(tntID);
-    }
-
-    public void addToOpenFurnaceTracker(BlockState furnace, String playerName) {
-        furnaceTracker.put(furnace, playerName);
-    }
-
-    public boolean furnaceIsTracked(BlockState furnace) {
-        return furnaceTracker.containsKey(furnace);
-    }
-
-    public void removeFromFurnaceTracker(BlockState furnace) {
-        furnaceTracker.remove(furnace);
-    }
-
-    public Player getFurnacePlayer(BlockState furnace) {
-        return getServer().getPlayer(furnaceTracker.get(furnace));
     }
 
     public static String getMainDirectory() {
@@ -377,8 +321,8 @@ public class mcMMO extends JavaPlugin {
         // Load repair configs, make manager, and register them at this time
         RepairConfigManager rManager = new RepairConfigManager(this);
         repairables.addAll(rManager.getLoadedRepairables());
-        repairManager = RepairManagerFactory.getRepairManager(repairables.size());
-        repairManager.registerRepairables(repairables);
+        repairableManager = RepairableManagerFactory.getRepairManager(repairables.size());
+        repairableManager.registerRepairables(repairables);
 
         // Check if Repair Anvil and Salvage Anvil have different itemID's
         if (configInstance.getSalvageAnvilId() == configInstance.getRepairAnvilId()) {
@@ -450,43 +394,51 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationManager.registerMchudCommand();
     }
 
-    private void scheduleTasks() {
-        BukkitScheduler scheduler = getServer().getScheduler();
+    private void registerCustomRecipes() {
+        if (Config.getInstance().getChimaeraEnabled()) {
+            getServer().addRecipe(ChimaeraWing.getChimaeraWingRecipe());
+        }
+    }
 
+    private void scheduleTasks() {
         // Parties are loaded at the end of first server tick otherwise Server.getOfflinePlayer throws an IndexOutOfBoundsException
-        scheduler.scheduleSyncDelayedTask(this, new PartyLoaderTask(), 0);
+        new PartyLoaderTask().runTaskLater(this, 0);
 
         // Periodic save timer (Saves every 10 minutes by default)
         long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
 
-        scheduler.scheduleSyncRepeatingTask(this, new SaveTimerTask(), saveIntervalTicks, saveIntervalTicks);
+        new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
+
         // Regen & Cooldown timer (Runs every second)
-        scheduler.scheduleSyncRepeatingTask(this, new SkillMonitorTask(), 20, 20);
+        new SkillMonitorTask().runTaskTimer(this, 20, 20);
+
         // Bleed timer (Runs every two seconds)
-        scheduler.scheduleSyncRepeatingTask(this, new BleedTimerTask(), 40, 40);
+        new BleedTimerTask().runTaskTimer(this, 40, 40);
 
         // Old & Powerless User remover
         int purgeInterval = Config.getInstance().getPurgeInterval();
+        UserPurgeTask userPurgeTask = new UserPurgeTask();
 
         if (purgeInterval == 0) {
-            scheduler.scheduleSyncDelayedTask(this, new UserPurgeTask(), 40); // Start 2 seconds after startup.
+            userPurgeTask.runTaskLater(this, 40);
         }
         else if (purgeInterval > 0) {
             long purgeIntervalTicks = purgeInterval * 60 * 60 * 20;
 
-            scheduler.scheduleSyncRepeatingTask(this, new UserPurgeTask(), purgeIntervalTicks, purgeIntervalTicks);
+            userPurgeTask.runTaskTimer(this, purgeIntervalTicks, purgeIntervalTicks);
         }
 
         // Automatically remove old members from parties
         long kickInterval = Config.getInstance().getAutoPartyKickInterval();
+        PartyAutoKickTask partyAutoKickTask = new PartyAutoKickTask();
 
         if (kickInterval == 0) {
-            scheduler.scheduleSyncDelayedTask(this, new PartyAutoKickTask(), 40); // Start 2 seconds after startup.
+            partyAutoKickTask.runTaskLater(this, 40); // Start 2 seconds after startup.
         }
         else if (kickInterval > 0) {
             long kickIntervalTicks = kickInterval * 60 * 60 * 20;
 
-            scheduler.scheduleSyncRepeatingTask(this, new PartyAutoKickTask(), kickIntervalTicks, kickIntervalTicks);
+            partyAutoKickTask.runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
 import org.bukkit.entity.HumanEntity;
@@ -16,6 +17,7 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -49,11 +51,12 @@ public class InventoryListener implements Listener {
             if (furnace == null) {
                 return;
             }
+            if (furnace.getBurnTime() == 0) {
+                Block furnaceBlock = furnace.getBlock();
 
-            BlockState furnaceBlock = furnace.getBlock().getState();
-
-            if (furnace.getBurnTime() == 0 && !plugin.furnaceIsTracked(furnaceBlock)) {
-                plugin.addToOpenFurnaceTracker(furnaceBlock, player.getName());
+                if (!furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
+                    furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, new FixedMetadataValue(plugin, player.getName()));
+                }
             }
         }
     }
@@ -75,23 +78,27 @@ public class InventoryListener implements Listener {
                 return;
             }
 
-            BlockState furnaceBlock = furnace.getBlock().getState();
+            if (furnace.getBurnTime() == 0) {
+                Block furnaceBlock = furnace.getBlock();
 
-            if (furnace.getBurnTime() == 0 && plugin.furnaceIsTracked(furnaceBlock)) {
-                plugin.removeFromFurnaceTracker(furnaceBlock);
+                if (furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
+                    furnaceBlock.removeMetadata(mcMMO.furnaceMetadataKey, plugin);
+                }
             }
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceBurnEvent(FurnaceBurnEvent event) {
-        BlockState furnaceBlock = event.getBlock().getState();
+        Block furnaceBlock = event.getBlock();
+        BlockState furnaceState = furnaceBlock.getState();
 
-        if (furnaceBlock instanceof Furnace) {
-            ItemStack smelting = ((Furnace) furnaceBlock).getInventory().getSmelting();
+        if (furnaceState instanceof Furnace) {
+            ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
 
-            if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemUtils.isSmeltable(smelting)) {
-                Player player = plugin.getFurnacePlayer(furnaceBlock);
+            if (furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && smelting != null && ItemUtils.isSmeltable(smelting)) {
+                // We can make this assumption because we (should) be the only ones using this exact metadata
+                Player player = plugin.getServer().getPlayer(furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).get(0).asString());
 
                 if (Misc.isNPCEntity(player) || !Permissions.fuelEfficiency(player)) {
                     return;
@@ -104,13 +111,15 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceSmeltEvent(FurnaceSmeltEvent event) {
-        BlockState furnaceBlock = event.getBlock().getState();
+        Block furnaceBlock = event.getBlock();
+        BlockState furnaceState = furnaceBlock.getState();
 
-        if (furnaceBlock instanceof Furnace) {
-            ItemStack smelting = ((Furnace) furnaceBlock).getInventory().getSmelting();
+        if (furnaceState instanceof Furnace) {
+            ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
 
-            if (plugin.furnaceIsTracked(furnaceBlock) && smelting != null && ItemUtils.isSmeltable(smelting)) {
-                Player player = plugin.getFurnacePlayer(furnaceBlock);
+            if (furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && smelting != null && ItemUtils.isSmeltable(smelting)) {
+                // We can make this assumption because we (should) be the only ones using this exact metadata
+                Player player = plugin.getServer().getPlayer(furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).get(0).asString());
 
                 if (Misc.isNPCEntity(player) || !Permissions.skillEnabled(player, SkillType.SMELTING)) {
                     return;
@@ -123,13 +132,19 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
-        BlockState furnaceBlock = event.getBlock().getState();
+        Block furnaceBlock = event.getBlock();
+        BlockState furnaceState = furnaceBlock.getState();
 
-        if (furnaceBlock instanceof Furnace) {
-            ItemStack result = ((Furnace) furnaceBlock).getInventory().getResult();
+        if (furnaceState instanceof Furnace) {
+            ItemStack result = ((Furnace) furnaceState).getInventory().getResult();
 
-            if (plugin.furnaceIsTracked(furnaceBlock) && result != null && ItemUtils.isSmelted(result)) {
-                Player player = event.getPlayer();
+            if (furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && result != null && ItemUtils.isSmelted(result)) {
+                // We can make this assumption because we (should) be the only ones using this exact metadata
+                Player player = plugin.getServer().getPlayer(furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).get(0).asString());
+
+                if (Misc.isNPCEntity(player)) {
+                    return;
+                }
 
                 SmeltingManager smeltingManager = UserManager.getPlayer(player).getSmeltingManager();
 

@@ -10,17 +10,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseUpdateType;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.runnables.database.SQLReconnectTask;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.spout.SpoutUtils;
+import com.gmail.nossr50.util.Misc;
 
 public final class DatabaseManager {
     private static String connectionString;
@@ -340,7 +336,7 @@ public final class DatabaseManager {
             if (connection != null && !connection.isClosed()) {
                 // Schedule a database save if we really had an outage
                 if (reconnectAttempt > 1) {
-                    mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new SQLReconnectTask(), 5);
+                    new SQLReconnectTask().runTaskLater(mcMMO.p, 5);
                 }
                 nextReconnectTimestamp = 0;
                 reconnectAttempt = 0;
@@ -502,7 +498,7 @@ public final class DatabaseManager {
                 continue;
             }
 
-            profileCleanup(playerName);
+            Misc.profileCleanup(playerName);
             purgedUsers++;
         }
 
@@ -524,34 +520,11 @@ public final class DatabaseManager {
                 continue;
             }
 
-            profileCleanup(playerName);
+            Misc.profileCleanup(playerName);
             purgedUsers++;
         }
 
         mcMMO.p.getLogger().info("Purged " + purgedUsers + " users from the database.");
-    }
-
-    public static void profileCleanup(String playerName) {
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
-
-        if (mcMMOPlayer != null) {
-            Player player = mcMMOPlayer.getPlayer();
-            McMMOHud spoutHud = mcMMOPlayer.getProfile().getSpoutHud();
-
-            if (spoutHud != null) {
-                spoutHud.removeWidgets();
-            }
-
-            UserManager.remove(playerName);
-
-            if (player.isOnline()) {
-                UserManager.addUser(player);
-
-                if (mcMMO.spoutEnabled) {
-                    SpoutUtils.reloadSpoutPlayer(player);
-                }
-            }
-        }
     }
 
     /**

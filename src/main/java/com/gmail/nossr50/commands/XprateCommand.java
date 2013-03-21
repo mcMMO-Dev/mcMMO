@@ -8,10 +8,14 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.commands.CommandUtils;
 
 public class XprateCommand implements CommandExecutor {
-    private static double originalRate = Config.getInstance().getExperienceGainsGlobalMultiplier();
+    private double originalRate;
+
+    public XprateCommand() {
+        originalRate = Config.getInstance().getExperienceGainsGlobalMultiplier();
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -35,8 +39,8 @@ public class XprateCommand implements CommandExecutor {
                 return true;
 
             case 2:
-                if (!StringUtils.isInt(args[0])) {
-                    return false;
+                if (CommandUtils.isInvalidInteger(sender, args[0])) {
+                    return true;
                 }
 
                 if (!Permissions.xprateSet(sender)) {
@@ -44,11 +48,16 @@ public class XprateCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (!args[1].equalsIgnoreCase("true") && !args[1].equalsIgnoreCase("false")) {
+                if (CommandUtils.shouldDisableToggle(args[1])) {
+                    mcMMO.p.setXPEventEnabled(false);
+                }
+                else if (CommandUtils.shouldEnableToggle(args[1])) {
+                    mcMMO.p.setXPEventEnabled(true);
+                }
+                else {
                     return false;
                 }
 
-                mcMMO.p.setXPEventEnabled(Boolean.valueOf(args[1]));
                 int newXpRate = Integer.parseInt(args[0]);
                 Config.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
 

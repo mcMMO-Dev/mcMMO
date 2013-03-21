@@ -16,6 +16,8 @@ Skills:
     General:
         # This setting will determine when the length of every ability gets longer with 1 second
         Ability_IncreaseLevel: 50
+        # This setting determines how many enchant levels to use when buffing Super Breaker & Giga Drill Breaker
+        Ability_EnchantBuff: 5
     #
     #  Settings for Acrobatics
     ###
@@ -246,6 +248,9 @@ Skills:
         # SuperRepair_MaxBonusLevel: On this level, Super Repair chance will be SuperRepair_ChanceMax
         SuperRepair_ChanceMax: 100.0
         SuperRepair_MaxBonusLevel: 1000
+
+        # Salvage_UnlockLevel: Level when Salvage become available
+        Salvage_UnlockLevel: 600
 
         Arcane_Forging:
             May_Lose_Enchants: true

@@ -8,9 +8,8 @@ import com.gmail.nossr50.util.Permissions;
 public class AxesCommand extends SkillCommand {
     private String critChance;
     private String critChanceLucky;
-    private String bonusDamage;
-    private String impactDamage;
-    private String greaterImpactDamage;
+    private float bonusDamage;
+    private float impactDamage;
     private String skullSplitterLength;
     private String skullSplitterLengthEndurance;
 
@@ -27,25 +26,27 @@ public class AxesCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         // IMPACT
-        impactDamage = String.valueOf(1 + (skillValue / Axes.impactIncreaseLevel));
-        greaterImpactDamage = String.valueOf(Axes.greaterImpactBonusDamage);
+        if (canImpact) {
+            impactDamage = 1 + (skillValue / Axes.impactIncreaseLevel);
+        }
 
         // SKULL SPLITTER
-        String[] skullSplitterStrings = calculateLengthDisplayValues();
-        skullSplitterLength = skullSplitterStrings[0];
-        skullSplitterLengthEndurance = skullSplitterStrings[1];
+        if (canSkullSplitter) {
+            String[] skullSplitterStrings = calculateLengthDisplayValues();
+            skullSplitterLength = skullSplitterStrings[0];
+            skullSplitterLengthEndurance = skullSplitterStrings[1];
+        }
 
         // CRITICAL STRIKES
-        String[] criticalStrikeStrings = calculateAbilityDisplayValues(Axes.criticalHitMaxBonusLevel, Axes.criticalHitMaxChance);
-        critChance = criticalStrikeStrings[0];
-        critChanceLucky = criticalStrikeStrings[1];
+        if (canCritical) {
+            String[] criticalStrikeStrings = calculateAbilityDisplayValues(Axes.criticalHitMaxBonusLevel, Axes.criticalHitMaxChance);
+            critChance = criticalStrikeStrings[0];
+            critChanceLucky = criticalStrikeStrings[1];
+        }
 
         // AXE MASTERY
-        if (skillValue >= Axes.bonusDamageMaxBonusLevel) {
-            bonusDamage = String.valueOf(Axes.bonusDamageMaxBonus);
-        }
-        else {
-            bonusDamage = String.valueOf(skillValue / (Axes.bonusDamageMaxBonusLevel / Axes.bonusDamageMaxBonus));
+        if (canBonusDamage) {
+            bonusDamage = Math.min(skillValue / (Axes.bonusDamageMaxBonusLevel / Axes.bonusDamageMaxBonus), Axes.bonusDamageMaxBonus);
         }
     }
 
@@ -104,25 +105,15 @@ public class AxesCommand extends SkillCommand {
         }
 
         if (canGreaterImpact) {
-            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.4"), LocaleLoader.getString("Axes.Ability.Bonus.5", greaterImpactDamage)));
+            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.4"), LocaleLoader.getString("Axes.Ability.Bonus.5", Axes.greaterImpactBonusDamage)));
         }
 
         if (canCritical) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", critChance) + LocaleLoader.getString("Perks.lucky.bonus", critChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", critChance));
-            }
+            player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", critChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", critChanceLucky) : ""));
         }
 
         if (canSkullSplitter) {
-            if (hasEndurance) {
-                player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", skullSplitterLength) + LocaleLoader.getString("Perks.activationtime.bonus", skullSplitterLengthEndurance));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", skullSplitterLength));
-            }
+            player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", skullSplitterLength) + (hasEndurance ? LocaleLoader.getString("Perks.activationtime.bonus", skullSplitterLengthEndurance) : ""));
         }
     }
 }

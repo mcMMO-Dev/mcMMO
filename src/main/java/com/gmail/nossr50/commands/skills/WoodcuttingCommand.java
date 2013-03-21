@@ -15,7 +15,6 @@ public class WoodcuttingCommand extends SkillCommand {
     private boolean canTreeFell;
     private boolean canLeafBlow;
     private boolean canDoubleDrop;
-    private boolean doubleDropsDisabled;
 
     public WoodcuttingCommand() {
         super(SkillType.WOODCUTTING);
@@ -24,27 +23,30 @@ public class WoodcuttingCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         // TREE FELLER
-        String[] treeFellerStrings = calculateLengthDisplayValues();
-        treeFellerLength = treeFellerStrings[0];
-        treeFellerLengthEndurance = treeFellerStrings[1];
+        if (canTreeFell) {
+            String[] treeFellerStrings = calculateLengthDisplayValues();
+            treeFellerLength = treeFellerStrings[0];
+            treeFellerLengthEndurance = treeFellerStrings[1];
+        }
 
         // DOUBLE DROPS
-        String[] doubleDropStrings = calculateAbilityDisplayValues(Woodcutting.doubleDropsMaxLevel, Woodcutting.doubleDropsMaxChance);
-        doubleDropChance = doubleDropStrings[0];
-        doubleDropChanceLucky = doubleDropStrings[1];
+        if (canDoubleDrop) {
+            String[] doubleDropStrings = calculateAbilityDisplayValues(Woodcutting.doubleDropsMaxLevel, Woodcutting.doubleDropsMaxChance);
+            doubleDropChance = doubleDropStrings[0];
+            doubleDropChanceLucky = doubleDropStrings[1];
+        }
     }
 
     @Override
     protected void permissionsCheck() {
         canTreeFell = Permissions.treeFeller(player);
-        canDoubleDrop = Permissions.doubleDrops(player, skill);
+        canDoubleDrop = Permissions.doubleDrops(player, skill) && !skill.getDoubleDropsDisabled();
         canLeafBlow = Permissions.leafBlower(player);
-        doubleDropsDisabled = skill.getDoubleDropsDisabled();
     }
 
     @Override
     protected boolean effectsHeaderPermissions() {
-        return (canDoubleDrop && !doubleDropsDisabled) || canLeafBlow || canTreeFell;
+        return canDoubleDrop || canLeafBlow || canTreeFell;
     }
 
     @Override
@@ -59,14 +61,14 @@ public class WoodcuttingCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.2"), LocaleLoader.getString("Woodcutting.Effect.3")));
         }
 
-        if (canDoubleDrop && !doubleDropsDisabled) {
+        if (canDoubleDrop) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Woodcutting.Effect.4"), LocaleLoader.getString("Woodcutting.Effect.5")));
         }
     }
 
     @Override
     protected boolean statsHeaderPermissions() {
-        return (canDoubleDrop && !doubleDropsDisabled) || canLeafBlow || canTreeFell;
+        return canDoubleDrop || canLeafBlow || canTreeFell;
     }
 
     @Override
@@ -82,22 +84,12 @@ public class WoodcuttingCommand extends SkillCommand {
             }
         }
 
-        if (canDoubleDrop && !doubleDropsDisabled) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", doubleDropChance) + LocaleLoader.getString("Perks.lucky.bonus", doubleDropChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", doubleDropChance));
-            }
+        if (canDoubleDrop) {
+            player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", doubleDropChanceLucky) : ""));
         }
 
         if (canTreeFell) {
-            if (hasEndurance) {
-                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", treeFellerLength) + LocaleLoader.getString("Perks.activationtime.bonus", treeFellerLengthEndurance));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", treeFellerLength));
-            }
+            player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", treeFellerLength) + (hasEndurance ? LocaleLoader.getString("Perks.activationtime.bonus", treeFellerLengthEndurance) : ""));
         }
     }
 }

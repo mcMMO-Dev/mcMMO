@@ -12,15 +12,12 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyQuitCommand implements CommandExecutor {
-    private Player player;
-    private Party playerParty;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 1:
-                player = (Player) sender;
-                playerParty = UserManager.getPlayer(player).getParty();
+                Player player = (Player) sender;
+                Party playerParty = UserManager.getPlayer(player).getParty();
 
                 if (!PartyManager.handlePartyChangeEvent(player, playerParty.getName(), null, EventReason.LEFT_PARTY)) {
                     return true;
@@ -31,7 +28,7 @@ public class PartyQuitCommand implements CommandExecutor {
                 return true;
 
             default:
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "[quit|q|leave]"));
+                sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "quit"));
                 return true;
         }
     }

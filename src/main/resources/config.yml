@@ -72,7 +72,10 @@ Mods:
 Items:
     Chimaera_Wing:
         Enabled: true
-        Feather_Cost: 10
+        Cooldown: 240
+        Prevent_Use_Underground: true
+        Use_Cost: 1
+        Recipe_Cost: 5
         Item_ID: 288
 
 #
@@ -160,9 +163,7 @@ Skills:
         Level_Cap: 0
         Anvil_Messages: true
         Anvil_ID: 42
-        Salvage_enabled: true
         Salvage_Anvil_ID: 41
-        Salvage_UnlockLevel: 600
         Salvage_tools: true
         Salvage_armor: true
     Smelting:
@@ -186,7 +187,6 @@ Skills:
             SmoothBrick_To_CrackedBrick: true
     Woodcutting:
         Level_Cap: 0
-        Requires_Axe: true
 
 #
 #  Settings for Double Drops
@@ -220,6 +220,7 @@ Double_Drops:
         Mossy_Cobblestone: true
         Netherrack: true
         Obsidian: true
+        Quartz_Ore: true
         Redstone_Ore: true
         Sandstone: true
         Stone: true
@@ -301,6 +302,7 @@ Experience:
         Mossy_Cobblestone: 30
         Netherrack: 30
         Obsidian: 150
+        Quartz_Ore: 250
         Redstone_Ore: 150
         Sandstone: 30
         Stone: 30
@@ -311,6 +313,7 @@ Experience:
         Gold_Ore: 35
         Iron_Ore: 25
         Lapis_Ore: 40
+        Quartz_Ore: 25
         Redstone_Ore: 15
     Taming:
         Animal_Taming:
@@ -360,8 +363,11 @@ Commands:
 #  Settings for particles
 ###
 Particles:
+    # These settings determine if fireworks should get launched when a player activates/deactivates an ability
     Ability_Activation: true
     Ability_Deactivation: true
+    
+    # Use particle effect when these abilities trigger
     Dodge: true
     Bleed: true
     Greater_Impact: true

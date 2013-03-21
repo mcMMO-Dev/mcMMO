@@ -11,12 +11,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionZDirectory;
 
 public class HashChunkManager implements ChunkManager {
@@ -283,7 +283,7 @@ public class HashChunkManager implements ChunkManager {
     public synchronized void saveAll() {
         closeAll();
 
-        for (World world : Bukkit.getWorlds()) {
+        for (World world : mcMMO.p.getServer().getWorlds()) {
             saveWorld(world);
         }
     }
@@ -292,7 +292,7 @@ public class HashChunkManager implements ChunkManager {
     public synchronized void unloadAll() {
         closeAll();
 
-        for (World world : Bukkit.getWorlds()) {
+        for (World world : mcMMO.p.getServer().getWorlds()) {
             unloadWorld(world);
         }
     }

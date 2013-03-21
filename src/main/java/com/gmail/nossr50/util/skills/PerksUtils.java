@@ -36,8 +36,8 @@ public final class PerksUtils {
             ticks += 4;
         }
 
-        if (maxTicks != 0 && ticks > maxTicks) {
-            ticks = maxTicks;
+        if (maxTicks != 0) {
+            ticks = Math.min(ticks, maxTicks);
         }
 
         return ticks;

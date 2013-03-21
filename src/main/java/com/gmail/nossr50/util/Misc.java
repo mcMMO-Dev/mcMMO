@@ -6,11 +6,16 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public final class Misc {
     private static Random random = new Random();
@@ -26,6 +31,8 @@ public final class Misc {
     public static final float FIZZ_VOLUME      = 0.5F;
     public static final float POP_PITCH        = ((getRandom().nextFloat() - getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
     public static final float POP_VOLUME       = 0.2F;
+    public static final float BAT_VOLUME       = 1.0F;
+    public static final float BAT_PITCH        = 0.6F;
 
     private Misc() {};
 
@@ -77,7 +84,7 @@ public final class Misc {
      * @return true if the distance between <code>first</code> and <code>second</code> is less than <code>maxDistance</code>, false otherwise
      */
     public static boolean isNear(Location first, Location second, double maxDistance) {
-        if (!first.getWorld().equals(second.getWorld())) {
+        if (first.getWorld() != second.getWorld()) {
             return false;
         }
 
@@ -157,6 +164,29 @@ public final class Misc {
         cloned.setAmount(newItem.getItemStack().getAmount());
 
         newItem.setItemStack(cloned);
+    }
+
+    public static void profileCleanup(String playerName) {
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
+
+        if (mcMMOPlayer != null) {
+            Player player = mcMMOPlayer.getPlayer();
+            McMMOHud spoutHud = mcMMOPlayer.getProfile().getSpoutHud();
+
+            if (spoutHud != null) {
+                spoutHud.removeWidgets();
+            }
+
+            UserManager.remove(playerName);
+
+            if (player.isOnline()) {
+                UserManager.addUser(player);
+
+                if (mcMMO.spoutEnabled) {
+                    SpoutUtils.reloadSpoutPlayer(player);
+                }
+            }
+        }
     }
 
     public static Random getRandom() {

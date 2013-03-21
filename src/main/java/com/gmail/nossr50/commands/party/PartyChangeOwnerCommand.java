@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.party;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
@@ -16,7 +15,7 @@ public class PartyChangeOwnerCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
-                Party playerParty = UserManager.getPlayer((Player) sender).getParty();
+                Party playerParty = UserManager.getPlayer(sender.getName()).getParty();
 
                 if (!playerParty.getMembers().contains(mcMMO.p.getServer().getOfflinePlayer(args[1]))) {
                     sender.sendMessage(LocaleLoader.getString("Party.NotInYourParty", args[1]));

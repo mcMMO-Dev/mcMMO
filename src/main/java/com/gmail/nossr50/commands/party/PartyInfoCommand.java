@@ -21,8 +21,8 @@ public class PartyInfoCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        player = (Player) sender;
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+        player = mcMMOPlayer.getPlayer();
         playerParty = mcMMOPlayer.getParty();
 
         displayPartyHeader();
@@ -35,15 +35,19 @@ public class PartyInfoCommand implements CommandExecutor {
         StringBuilder memberList = new StringBuilder();
 
         for (OfflinePlayer member : playerParty.getMembers()) {
-            if (playerParty.getLeader().equals(member.getName())) {
-                memberList.append(ChatColor.GOLD).append(member.getName()).append(" ");
+            String memberName = member.getName();
+
+            if (playerParty.getLeader().equalsIgnoreCase(memberName)) {
+                memberList.append(ChatColor.GOLD);
             }
             else if (member.isOnline()) {
-                memberList.append(ChatColor.WHITE).append(member.getName()).append(" ");
+                memberList.append(ChatColor.WHITE);
             }
             else {
-                memberList.append(ChatColor.GRAY).append(member.getName()).append(" ");
+                memberList.append(ChatColor.GRAY);
             }
+
+            memberList.append(memberName).append(" ");
         }
 
         return memberList.toString();
@@ -52,7 +56,7 @@ public class PartyInfoCommand implements CommandExecutor {
     private void displayShareModeInfo() {
         boolean xpShareEnabled = Config.getInstance().getExpShareEnabled();
         boolean itemShareEnabled = Config.getInstance().getItemShareEnabled();
-        boolean itemSharingActive = playerParty.getItemShareMode() != ShareHandler.ShareMode.NONE;
+        boolean itemSharingActive = (playerParty.getItemShareMode() != ShareHandler.ShareMode.NONE);
 
         if (!xpShareEnabled && !itemShareEnabled) {
             return;
@@ -97,6 +101,6 @@ public class PartyInfoCommand implements CommandExecutor {
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.Members.Header"));
         player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", membersNear, membersOnline));
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Members", createMembersList()));
+        player.sendMessage(createMembersList());
     }
 }

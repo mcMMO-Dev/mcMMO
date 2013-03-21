@@ -3,13 +3,15 @@ package com.gmail.nossr50.runnables.database;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 
-public class SQLConversionTask implements Runnable {
+public class SQLConversionTask extends BukkitRunnable {
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
     @Override
@@ -55,7 +57,7 @@ public class SQLConversionTask implements Runnable {
                 playerName = character[0];
 
                 // Check for things we don't want put in the DB
-                if (playerName == null || playerName.equals("null") || playerName.equals("#Storage place for user information")) {
+                if (playerName == null || playerName.equalsIgnoreCase("null") || playerName.equalsIgnoreCase("#Storage place for user information")) {
                     continue;
                 }
 

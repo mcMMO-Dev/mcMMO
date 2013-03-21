@@ -3,12 +3,14 @@ package com.gmail.nossr50.skills.herbalism;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Location;
+import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.CocoaPlant;
+import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -20,8 +22,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.skills.herbalism.GreenTerraTimerTask;
-import com.gmail.nossr50.runnables.skills.herbalism.GreenThumbTimerTask;
+import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
@@ -76,7 +77,7 @@ public class HerbalismManager extends SkillManager {
      * @return the modified change in hunger for the event
      */
     public int farmersDiet(int rankChange, int eventFoodLevel) {
-        return SkillUtils.handleFoodSkills(getPlayer(), SkillType.HERBALISM, eventFoodLevel, Herbalism.farmersDietRankLevel1, Herbalism.farmersDietMaxLevel, rankChange);
+        return SkillUtils.handleFoodSkills(getPlayer(), skill, eventFoodLevel, Herbalism.farmersDietRankLevel1, Herbalism.farmersDietMaxLevel, rankChange);
     }
 
     /**
@@ -107,65 +108,63 @@ public class HerbalismManager extends SkillManager {
     }
 
     /**
-     * Process double drops & XP gain for Herbalism.
+     * 
      *
      * @param blockState The {@link BlockState} to check ability activation for
-     * @return true if the ability was successful, false otherwise
      */
     public void herbalismBlockCheck(BlockState blockState) {
-        Player player = getPlayer();
-        Material blockType = blockState.getType();
+        Material material = blockState.getType();
+        boolean oneBlockPlant = (material == Material.CACTUS || material == Material.SUGAR_CANE_BLOCK) ? false : true;
 
-        HerbalismBlock herbalismBlock = HerbalismBlock.getHerbalismBlock(blockType);
-        CustomBlock customBlock = null;
+        if (oneBlockPlant && mcMMO.placeStore.isTrue(blockState)) {
+            return;
+        }
 
+        HerbalismBlock herbalismBlock = HerbalismBlock.getHerbalismBlock(material);
+        ItemStack drop = null;
+        int amount = 1;
         int xp = 0;
-        int dropAmount = 1;
-        ItemStack dropItem = null;
+        boolean greenTerra = mcMMOPlayer.getAbilityMode(skill.getAbility());
 
         if (herbalismBlock != null) {
-            if (blockType == Material.CACTUS || blockType == Material.SUGAR_CANE_BLOCK) {
-                dropItem = herbalismBlock.getDropItem();
-                dropAmount = Herbalism.calculateCatciAndSugarDrops(blockState);
-                xp = herbalismBlock.getXpGain() * dropAmount;
+            if (herbalismBlock.hasGreenThumbPermission(getPlayer())) {
+                processGreenThumbPlants(blockState, greenTerra);
             }
-            else if (herbalismBlock.hasGreenThumbPermission(player)) {
-                dropItem = herbalismBlock.getDropItem();
-                xp = herbalismBlock.getXpGain();
-                processGreenThumbPlants(blockState);
+
+            xp = herbalismBlock.getXpGain();
+
+            if (herbalismBlock.canDoubleDrop() && Permissions.doubleDrops(getPlayer(), skill)) {
+                drop = herbalismBlock.getDropItem();
             }
-            else {
-                if (!mcMMO.placeStore.isTrue(blockState)) {
-                    dropItem = herbalismBlock.getDropItem();
-                    xp = herbalismBlock.getXpGain();
-                }
+
+            if (!oneBlockPlant) {
+                amount = Herbalism.calculateCatciAndSugarDrops(blockState);
+                xp *= amount;
             }
         }
         else {
-            customBlock = ModUtils.getCustomBlock(blockState);
-            dropItem = customBlock.getItemDrop();
+            CustomBlock customBlock = ModUtils.getCustomBlock(blockState);
             xp = customBlock.getXpGain();
-        }
 
-        if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Herbalism.doubleDropsMaxChance, Herbalism.doubleDropsMaxLevel)) {
-            Location location = blockState.getLocation();
-
-            if (dropItem != null && herbalismBlock != null && herbalismBlock.canDoubleDrop()) {
-                Misc.dropItems(location, dropItem, dropAmount);
-            }
-            else if (customBlock != null) {
+            if (Permissions.doubleDrops(getPlayer(), skill)) {
                 int minimumDropAmount = customBlock.getMinimumDropAmount();
                 int maximumDropAmount = customBlock.getMaximumDropAmount();
-
-                if (minimumDropAmount != maximumDropAmount) {
-                    Misc.randomDropItems(location, dropItem, maximumDropAmount - minimumDropAmount);
-                }
-
-                Misc.dropItems(location, dropItem, minimumDropAmount);
+                drop = customBlock.getItemDrop();
+                amount = Misc.getRandom().nextInt(maximumDropAmount - minimumDropAmount + 1) + minimumDropAmount;
             }
         }
 
         applyXpGain(xp);
+
+        if (drop == null) {
+            return;
+        }
+
+        for (int i = greenTerra ? 2 : 1; i != 0; i--) {
+            if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Herbalism.doubleDropsMaxChance, Herbalism.doubleDropsMaxLevel)) {
+                Misc.dropItems(blockState.getLocation(), drop, amount);
+            }
+        }
     }
 
     /**
@@ -269,29 +268,82 @@ public class HerbalismManager extends SkillManager {
      * Process the Green Thumb ability for plants.
      *
      * @param blockState The {@link BlockState} to check ability activation for
+     * @param greenTerra
      */
-    private void processGreenThumbPlants(BlockState blockState) {
+    private void processGreenThumbPlants(BlockState blockState, boolean greenTerra) {
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
-        ItemStack seed = HerbalismBlock.getHerbalismBlock(blockState.getType()).getDropItem();
+        ItemStack seed = (blockState.getType() == Material.CROPS) ? new ItemStack(Material.SEEDS) : HerbalismBlock.getHerbalismBlock(blockState.getType()).getDropItem();
 
         if (!playerInventory.containsAtLeast(seed, 1)) {
             return;
         }
 
-        if (mcMMOPlayer.getAbilityMode(AbilityType.GREEN_TERRA)) {
-            playerInventory.removeItem(seed);
-            player.updateInventory(); // Needed until replacement available
-
-            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new GreenTerraTimerTask(blockState), 0);
+        if (!greenTerra && !SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Herbalism.greenThumbMaxChance, Herbalism.greenThumbMaxLevel)) {
             return;
         }
-        else if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Herbalism.greenThumbMaxChance, Herbalism.greenThumbMaxLevel)) {
-            playerInventory.removeItem(seed);
-            player.updateInventory(); // Needed until replacement available
 
-            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new GreenThumbTimerTask(blockState, getSkillLevel()), 0);
+        if (!handleBlockState(blockState, greenTerra)) {
             return;
         }
+
+        playerInventory.removeItem(seed);
+        player.updateInventory(); // Needed until replacement available
+        new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
+    }
+
+    private boolean handleBlockState(BlockState blockState, boolean greenTerra) {
+        switch (blockState.getType()) {
+            case CROPS:
+            case CARROT:
+            case POTATO:
+                if (greenTerra) {
+                    blockState.setRawData(CropState.MEDIUM.getData()); // 2
+                }
+                else {
+                    blockState.setRawData(getGreenThumbStage());
+                }
+
+                return true;
+
+            case NETHER_WARTS:
+                if (greenTerra) {
+                    blockState.setRawData((byte) 2);
+                }
+                else {
+                    int greenThumbStage = getGreenThumbStage();
+
+                    if (greenThumbStage > 2) {
+                        blockState.setRawData((byte) 2);
+                    }
+                    else if (greenThumbStage == 2) {
+                        blockState.setRawData((byte) 1);
+                    }
+                    else {
+                        blockState.setRawData((byte) 0);
+                    }
+                }
+
+                return true;
+
+            case COCOA:
+                CocoaPlant plant = (CocoaPlant) blockState.getData();
+
+                if (greenTerra || getGreenThumbStage() > 1) {
+                    plant.setSize(CocoaPlantSize.MEDIUM);
+                }
+                else {
+                    plant.setSize(CocoaPlantSize.SMALL);
+                }
+
+                return true;
+
+            default:
+                return false;
+        }
+    }
+
+    private byte getGreenThumbStage() {
+        return (byte) Math.min(Math.min(getProfile().getSkillLevel(skill), Herbalism.greenThumbStageMaxLevel) / Herbalism.greenThumbStageChangeLevel, 4);
     }
 }

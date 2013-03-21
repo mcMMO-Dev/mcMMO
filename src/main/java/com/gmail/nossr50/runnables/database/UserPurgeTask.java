@@ -1,10 +1,12 @@
 package com.gmail.nossr50.runnables.database;
 
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.LeaderboardManager;
 
-public class UserPurgeTask implements Runnable {
+public class UserPurgeTask extends BukkitRunnable {
     @Override
     public void run() {
         if (Config.getInstance().getUseMySQL()) {

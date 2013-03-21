@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.commands.chat.PartyChatCommand;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
@@ -31,8 +31,8 @@ public class PartyCommand implements CommandExecutor {
     private CommandExecutor partyRenameCommand         = new PartyRenameCommand();
     private CommandExecutor partyInfoCommand           = new PartyInfoCommand();
     private CommandExecutor partyHelpCommand           = new PartyHelpCommand();
-    private CommandExecutor partyTeleportCommand       = new PtpCommand();
-    private CommandExecutor partyChatCommand           = new PartyChatCommand();
+    private CommandExecutor partyTeleportCommand       = mcMMO.p.getCommand("ptp").getExecutor();
+    private CommandExecutor partyChatCommand           = mcMMO.p.getCommand("partychat").getExecutor();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -45,8 +45,8 @@ public class PartyCommand implements CommandExecutor {
             return true;
         }
 
-        player = (Player) sender;
-        mcMMOPlayer = UserManager.getPlayer(player);
+        mcMMOPlayer = UserManager.getPlayer(sender.getName());
+        player = mcMMOPlayer.getPlayer();
 
         if (args.length < 1) {
             if (!mcMMOPlayer.inParty()) {
@@ -104,7 +104,7 @@ public class PartyCommand implements CommandExecutor {
         }
 
         // Party leader commands
-        if (!mcMMOPlayer.getParty().getLeader().equals(player.getName())) {
+        if (!mcMMOPlayer.getParty().getLeader().equalsIgnoreCase(player.getName())) {
             sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
             return true;
         }
@@ -121,7 +121,6 @@ public class PartyCommand implements CommandExecutor {
             case OWNER:
                 return partyChangeOwnerCommand.onCommand(sender, command, label, args);
             case LOCK:
-                // Fallthrough
             case UNLOCK:
                 return partyLockCommand.onCommand(sender, command, label, args);
             case PASSWORD:

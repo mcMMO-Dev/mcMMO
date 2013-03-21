@@ -64,10 +64,6 @@ public final class CombatUtils {
             ItemStack heldItem = player.getItemInHand();
 
             if (target instanceof Tameable) {
-                if (isFriendlyPet(player, (Tameable) target)) {
-                    return;
-                }
-
                 if (heldItem.getType() == Material.BONE) {
                     TamingManager tamingManager = mcMMOPlayer.getTamingManager();
 
@@ -76,6 +72,10 @@ public final class CombatUtils {
                         event.setCancelled(true);
                         return;
                     }
+                }
+
+                if (isFriendlyPet(player, (Tameable) target)) {
+                    return;
                 }
             }
 
@@ -232,7 +232,7 @@ public final class CombatUtils {
                         UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
 
                         if (unarmedManager.canDeflect()) {
-                            event.setCancelled(mcMMOPlayer.getUnarmedManager().deflectCheck());
+                            event.setCancelled(unarmedManager.deflectCheck());
 
                             if (event.isCancelled()) {
                                 return;
@@ -486,7 +486,7 @@ public final class CombatUtils {
         }
 
         if (baseXP != 0) {
-            mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new AwardCombatXpTask(mcMMOPlayer, skillType, baseXP, target), 0);
+            new AwardCombatXpTask(mcMMOPlayer, skillType, baseXP, target).runTaskLater(mcMMO.p, 0);
         }
     }
 

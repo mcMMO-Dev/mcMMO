@@ -3,10 +3,11 @@ package com.gmail.nossr50.runnables;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
 
-public class StickyPistonTrackerTask implements Runnable {
+public class StickyPistonTrackerTask extends BukkitRunnable {
     BlockPistonRetractEvent event;
 
     public StickyPistonTrackerTask(BlockPistonRetractEvent event) {

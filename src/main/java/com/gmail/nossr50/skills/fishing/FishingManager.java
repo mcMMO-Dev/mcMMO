@@ -189,7 +189,7 @@ public class FishingManager extends SkillManager {
             }
 
             Misc.dropItem(target.getLocation(), drop);
-            CombatUtils.dealDamage(target, target.getMaxHealth() / 4); // Make it so you can shake a mob no more than 4 times.
+            CombatUtils.dealDamage(target, Math.max(target.getMaxHealth() / 4, 1)); // Make it so you can shake a mob no more than 4 times.
         }
     }
 
@@ -217,7 +217,7 @@ public class FishingManager extends SkillManager {
         FishingTreasure treasure = rewards.get(Misc.getRandom().nextInt(rewards.size()));
         ItemStack treasureDrop = treasure.getDrop();
 
-        if (!SkillUtils.treasureDropSuccessful(treasure.getDropChance(), skillLevel)) {
+        if (!SkillUtils.treasureDropSuccessful(treasure.getDropChance(), activationChance)) {
             return null;
         }
 

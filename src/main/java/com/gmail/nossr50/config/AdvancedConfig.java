@@ -20,6 +20,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* GENERAL */
     public int getAbilityLength() { return config.getInt("Skills.General.Ability_IncreaseLevel", 50); }
+    public int getEnchantBuff() { return config.getInt("Skills.General.Ability_EnchantBuff", 5); }
 
     /* ACROBATICS */
     public double getDodgeChanceMax() { return config.getDouble("Skills.Acrobatics.Dodge_ChanceMax", 20.0D); }
@@ -178,6 +179,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery_MaxBonusLevel", 1000); }
     public double getSuperRepairChanceMax() { return config.getDouble("Skills.Repair.SuperRepair_ChanceMax", 100.0D); }
     public int getSuperRepairMaxLevel() { return config.getInt("Skills.Repair.SuperRepair_MaxBonusLevel", 1000); }
+    public int getSalvageUnlockLevel() { return config.getInt("Skills.Repair.Salvage_UnlockLevel", 600); }
 
     /* Arcane Forging */
     public boolean getArcaneForgingDowngradeEnabled() { return config.getBoolean("Skills.Repair.Arcane_Forging.Downgrades.Enabled", true); }

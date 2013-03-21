@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class XplockCommand extends SpoutCommand {
@@ -22,25 +23,23 @@ public class XplockCommand extends SpoutCommand {
 
     @Override
     protected boolean oneArgument(Command command, CommandSender sender, String[] args) {
-        if (args[0].equalsIgnoreCase("on")) {
+        if (CommandUtils.shouldEnableToggle(args[0])) {
             lockXpBar(sender, spoutHud.getLastGained());
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("off")) {
+        if (CommandUtils.shouldDisableToggle(args[0])) {
             unlockXpBar(sender);
             return true;
         }
 
-        if (!SkillUtils.isSkill(args[0])) {
-            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
+        if (CommandUtils.isInvalidSkill(sender, args[0])) {
             return true;
         }
 
         SkillType skill = SkillType.getSkill(args[0]);
 
-        if (skill.isChildSkill()) {
-            sender.sendMessage("Child skills are not yet supported by this command."); // TODO: Localize this
+        if (CommandUtils.isChildSkill(sender, skill)) {
             return true;
         }
 

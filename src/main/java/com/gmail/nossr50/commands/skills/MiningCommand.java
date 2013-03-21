@@ -6,7 +6,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.player.UserManager;
 
 public class MiningCommand extends SkillCommand {
     private String doubleDropChance;
@@ -26,7 +25,6 @@ public class MiningCommand extends SkillCommand {
     private boolean canBlast;
     private boolean canBiggerBombs;
     private boolean canDemoExpert;
-    private boolean doubleDropsDisabled;
 
     public MiningCommand() {
         super(SkillType.MINING);
@@ -35,23 +33,30 @@ public class MiningCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         // SUPER BREAKER
-        String[] superBreakerStrings = calculateLengthDisplayValues();
-        superBreakerLength = superBreakerStrings[0];
-        superBreakerLengthEndurance = superBreakerStrings[1];
+        if (canSuperBreaker) {
+            String[] superBreakerStrings = calculateLengthDisplayValues();
+            superBreakerLength = superBreakerStrings[0];
+            superBreakerLengthEndurance = superBreakerStrings[1];
+        }
 
         // DOUBLE DROPS
-        String[] doubleDropStrings = calculateAbilityDisplayValues(Mining.doubleDropsMaxLevel, Mining.doubleDropsMaxChance);
-        doubleDropChance = doubleDropStrings[0];
-        doubleDropChanceLucky = doubleDropStrings[1];
+        if (canDoubleDrop) {
+            String[] doubleDropStrings = calculateAbilityDisplayValues(Mining.doubleDropsMaxLevel, Mining.doubleDropsMaxChance);
+            doubleDropChance = doubleDropStrings[0];
+            doubleDropChanceLucky = doubleDropStrings[1];
+        }
 
         // BLAST MINING
-        MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
-        blastMiningRank = miningManager.getBlastMiningTier();
-        bonusTNTDrops = miningManager.getDropMultiplier();
-        oreBonus = percent.format(miningManager.getOreBonus() / 30.0D); // Base received in TNT is 30%
-        debrisReduction = percent.format(miningManager.getDebrisReduction() / 30.0D); // Base received in TNT is 30%
-        blastDamageDecrease = percent.format(miningManager.getBlastDamageModifier() / 100.0D);
-        blastRadiusIncrease = miningManager.getBlastRadiusModifier();
+        if (canBlast || canDemoExpert || canBiggerBombs) {
+            MiningManager miningManager = mcMMOPlayer.getMiningManager();
+
+            blastMiningRank = miningManager.getBlastMiningTier();
+            bonusTNTDrops = miningManager.getDropMultiplier();
+            oreBonus = percent.format(miningManager.getOreBonus() / 30.0D); // Base received in TNT is 30%
+            debrisReduction = percent.format(miningManager.getDebrisReduction() / 30.0D); // Base received in TNT is 30%
+            blastDamageDecrease = percent.format(miningManager.getBlastDamageModifier() / 100.0D);
+            blastRadiusIncrease = miningManager.getBlastRadiusModifier();
+        }
     }
 
     @Override
@@ -59,14 +64,13 @@ public class MiningCommand extends SkillCommand {
         canBiggerBombs = Permissions.biggerBombs(player);
         canBlast = Permissions.remoteDetonation(player);
         canDemoExpert = Permissions.demolitionsExpertise(player);
-        canDoubleDrop = Permissions.doubleDrops(player, skill);
+        canDoubleDrop = Permissions.doubleDrops(player, skill) && !skill.getDoubleDropsDisabled();
         canSuperBreaker = Permissions.superBreaker(player);
-        doubleDropsDisabled = skill.getDoubleDropsDisabled();
     }
 
     @Override
     protected boolean effectsHeaderPermissions() {
-        return canBiggerBombs || canBlast || canDemoExpert || (canDoubleDrop && !doubleDropsDisabled) || canSuperBreaker;
+        return canBiggerBombs || canBlast || canDemoExpert || canDoubleDrop || canSuperBreaker;
     }
 
     @Override
@@ -77,7 +81,7 @@ public class MiningCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Mining.Effect.0"), LocaleLoader.getString("Mining.Effect.1")));
         }
 
-        if (canDoubleDrop && !doubleDropsDisabled) {
+        if (canDoubleDrop) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Mining.Effect.2"), LocaleLoader.getString("Mining.Effect.3")));
         }
 
@@ -96,32 +100,24 @@ public class MiningCommand extends SkillCommand {
 
     @Override
     protected boolean statsHeaderPermissions() {
-        return canBiggerBombs || canBlast || canDemoExpert || (canDoubleDrop && !doubleDropsDisabled) || canSuperBreaker;
+        return canBiggerBombs || canBlast || canDemoExpert || canDoubleDrop || canSuperBreaker;
     }
 
     @Override
     protected void statsDisplay() {
-        if (canDoubleDrop && !doubleDropsDisabled) {
-            if (isLucky) {
-                player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + LocaleLoader.getString("Perks.lucky.bonus", doubleDropChanceLucky));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance));
-            }
+        if (canDoubleDrop) {
+            player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", doubleDropChanceLucky) : ""));
         }
 
         if (canSuperBreaker) {
-            if (hasEndurance) {
-                player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", superBreakerLength) + LocaleLoader.getString("Perks.activationtime.bonus", superBreakerLengthEndurance));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", superBreakerLength));
-            }
+            player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", superBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.activationtime.bonus", superBreakerLengthEndurance) : ""));
         }
 
         if (canBlast) {
-            if (skillValue < AdvancedConfig.getInstance().getBlastMiningRank1()) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.0", AdvancedConfig.getInstance().getBlastMiningRank1())));
+            int unlockLevel = AdvancedConfig.getInstance().getBlastMiningRank1();
+
+            if (skillValue < unlockLevel) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.0", unlockLevel)));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
@@ -129,8 +125,10 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canBiggerBombs) {
-            if (skillValue < AdvancedConfig.getInstance().getBlastMiningRank2()) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.1", AdvancedConfig.getInstance().getBlastMiningRank2())));
+            int unlockLevel = AdvancedConfig.getInstance().getBlastMiningRank2();
+
+            if (skillValue < unlockLevel) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.1", unlockLevel)));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Mining.Blast.Radius.Increase", blastRadiusIncrease));
@@ -138,8 +136,10 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canDemoExpert) {
-            if (skillValue < AdvancedConfig.getInstance().getBlastMiningRank4()) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.2", AdvancedConfig.getInstance().getBlastMiningRank4())));
+            int unlockLevel = AdvancedConfig.getInstance().getBlastMiningRank4();
+
+            if (skillValue < unlockLevel) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.2", unlockLevel)));
             }
             else {
                 player.sendMessage(LocaleLoader.getString("Mining.Effect.Decrease", blastDamageDecrease));

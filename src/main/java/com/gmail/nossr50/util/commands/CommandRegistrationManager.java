@@ -24,7 +24,7 @@ import com.gmail.nossr50.commands.experience.SkillresetCommand;
 import com.gmail.nossr50.commands.hardcore.HardcoreCommand;
 import com.gmail.nossr50.commands.hardcore.VampirismCommand;
 import com.gmail.nossr50.commands.party.PartyCommand;
-import com.gmail.nossr50.commands.party.PtpCommand;
+import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.commands.player.InspectCommand;
 import com.gmail.nossr50.commands.player.McrankCommand;
 import com.gmail.nossr50.commands.player.McstatsCommand;
@@ -58,7 +58,7 @@ public final class CommandRegistrationManager {
     public static void registerSkillCommands() {
         for (SkillType skill : SkillType.values()) {
             String commandName = skill.toString().toLowerCase();
-            String localizedName = SkillUtils.getSkillName(skill);
+            String localizedName = SkillUtils.getSkillName(skill).toLowerCase();
 
             PluginCommand command;
 

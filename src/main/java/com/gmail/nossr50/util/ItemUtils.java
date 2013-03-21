@@ -1,8 +1,12 @@
 package com.gmail.nossr50.util;
 
+import java.util.List;
+
+import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.api.SpoutToolsAPI;
@@ -643,5 +647,33 @@ public class ItemUtils {
             default:
                 return false;
         }
+    }
+
+    public static boolean isMcMMOItem(ItemStack is) {
+        if (!is.hasItemMeta()) {
+            return false;
+        }
+
+        ItemMeta itemMeta = is.getItemMeta();
+        if (itemMeta.hasLore()) {
+            List<String> itemLore = itemMeta.getLore();
+            if (itemLore.contains("mcMMO Item")) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isChimaeraWing(ItemStack is) {
+        if (!isMcMMOItem(is)) {
+            return false;
+        }
+
+        ItemMeta itemMeta = is.getItemMeta();
+        if (itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + "Chimaera Wing")) { //TODO Get localized name
+            return true;
+        }
+
+        return false;
     }
 }

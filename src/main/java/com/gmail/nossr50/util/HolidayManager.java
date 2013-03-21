@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -98,7 +97,7 @@ public final class HolidayManager {
                 final int firework_amount = 10;
                 for (int i = 0; i < firework_amount; i++) {
                     int delay = (int) (Math.random() * 3) + 4;
-                    Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
+                    mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new Runnable() {
                         @Override
                         public void run() {
                             spawnFireworks((Player) sender);

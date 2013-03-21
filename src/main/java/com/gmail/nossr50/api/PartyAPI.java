@@ -1,6 +1,5 @@
 package com.gmail.nossr50.api;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.OfflinePlayer;
@@ -19,9 +18,13 @@ public final class PartyAPI {
      * This function is designed for API usage.
      *
      * @param player The player to check the party name of
-     * @return the name of the player's party
+     * @return the name of the player's party, or null if not in a party
      */
     public static String getPartyName(Player player) {
+        if (!inParty(player)) {
+            return null;
+        }
+
         return UserManager.getPlayer(player).getParty().getName();
     }
 
@@ -114,26 +117,6 @@ public final class PartyAPI {
      */
     public static void setPartyLeader(String partyName, String player) {
         PartyManager.setPartyLeader(player, PartyManager.getParty(partyName));
-    }
-
-    /**
-     * Get a list of all players in this player's party.
-     * </br>
-     * This function is designed for API usage.
-     *
-     * @param player The player to check
-     * @return all the players in the player's party
-     * @deprecated
-     */
-    @Deprecated
-    public static List<String> getAllMembers(Player player) {
-        List<String> memberNames = new ArrayList<String>();
-
-        for (OfflinePlayer member : PartyManager.getAllMembers(player)) {
-            memberNames.add(member.getName());
-        }
-
-        return memberNames;
     }
 
     /**

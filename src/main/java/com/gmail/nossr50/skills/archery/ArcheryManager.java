@@ -45,7 +45,7 @@ public class ArcheryManager extends SkillManager {
         Location shooterLocation = player.getLocation();
         Location targetLocation = target.getLocation();
 
-        if (!shooterLocation.getWorld().equals(targetLocation.getWorld())) {
+        if (shooterLocation.getWorld() != targetLocation.getWorld()) {
             return;
         }
 

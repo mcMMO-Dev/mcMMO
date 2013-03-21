@@ -6,33 +6,32 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class McabilityCommand implements CommandExecutor {
+    private McMMOPlayer mcMMOPlayer;
+    private Player player;
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        McMMOPlayer mcMMOPlayer;
-
         switch (args.length) {
             case 0:
+                if (CommandUtils.noConsoleUsage(sender)) {
+                    return true;
+                }
+
                 if (!Permissions.mcability(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
 
-                mcMMOPlayer = UserManager.getPlayer((Player) sender);
+                mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                player = mcMMOPlayer.getPlayer();
 
-                if (mcMMOPlayer.getAbilityUse()) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Ability.On"));
-                }
-
-                mcMMOPlayer.toggleAbilityUse();
+                toggleAbilityUse();
                 return true;
 
             case 1:
@@ -43,37 +42,33 @@ public class McabilityCommand implements CommandExecutor {
 
                 mcMMOPlayer = UserManager.getPlayer(args[0]);
 
-                if (mcMMOPlayer == null) {
-                    PlayerProfile playerProfile = new PlayerProfile(args[0], false);
-
-                    if (!playerProfile.isLoaded()) {
-                        sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
-                        return true;
-                    }
-
-                    sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+                if (CommandUtils.checkPlayerExistence(sender, args[0], mcMMOPlayer)) {
                     return true;
                 }
 
-                Player player = mcMMOPlayer.getPlayer();
+                player = mcMMOPlayer.getPlayer();
 
-                if (!player.isOnline()) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+                if (CommandUtils.isOffline(sender, player)) {
                     return true;
                 }
 
-                if (mcMMOPlayer.getAbilityUse()) {
-                    player.sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Commands.Ability.On"));
-                }
-
-                mcMMOPlayer.toggleAbilityUse();
+                toggleAbilityUse();
+                sender.sendMessage("Ability use has been toggled for" + args[0]); // TODO: Localize
                 return true;
 
             default:
                 return false;
         }
+    }
+
+    private void toggleAbilityUse() {
+        if (mcMMOPlayer.getAbilityUse()) {
+            player.sendMessage(LocaleLoader.getString("Commands.Ability.Off"));
+        }
+        else {
+            player.sendMessage(LocaleLoader.getString("Commands.Ability.On"));
+        }
+
+        mcMMOPlayer.toggleAbilityUse();
     }
 }

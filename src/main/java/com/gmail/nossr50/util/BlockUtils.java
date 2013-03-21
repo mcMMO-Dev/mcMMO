@@ -39,6 +39,7 @@ public final class BlockUtils {
             case NETHERRACK:
             case OBSIDIAN:
             case PUMPKIN:
+            case QUARTZ_ORE:
             case RED_MUSHROOM:
             case RED_ROSE:
             case REDSTONE_ORE:
@@ -92,6 +93,9 @@ public final class BlockUtils {
             case WORKBENCH:
             case BEACON:
             case ANVIL:
+            case DROPPER:
+            case HOPPER:
+            case TRAPPED_CHEST:
                 return false;
 
             default:
@@ -123,6 +127,7 @@ public final class BlockUtils {
             case GOLD_ORE:
             case IRON_ORE:
             case LAPIS_ORE:
+            case QUARTZ_ORE:
             case REDSTONE_ORE:
             case EMERALD_ORE:
                 return true;
@@ -208,6 +213,7 @@ public final class BlockUtils {
             case MOSSY_COBBLESTONE:
             case NETHERRACK:
             case OBSIDIAN:
+            case QUARTZ_ORE:
             case REDSTONE_ORE:
             case SANDSTONE:
             case STONE:

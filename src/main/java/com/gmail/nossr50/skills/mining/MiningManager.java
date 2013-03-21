@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -54,18 +55,31 @@ public class MiningManager extends SkillManager{
      */
     public void miningBlockCheck(BlockState blockState) {
         Player player = getPlayer();
-        int xp = Mining.getBlockXp(blockState);
 
-        if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
-            if (player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH)) {
-                Mining.handleSilkTouchDrops(blockState);
-            }
-            else {
-                Mining.handleMiningDrops(blockState);
-            }
+        applyXpGain(Mining.getBlockXp(blockState));
+
+        if (!Permissions.doubleDrops(player, skill)) {
+            return;
         }
 
-        applyXpGain(xp);
+        Material material = blockState.getType();
+
+        if (material != Material.GLOWING_REDSTONE_ORE && !Config.getInstance().getDoubleDropsEnabled(skill, material)) {
+            return;
+        }
+
+        boolean silkTouch = player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH);
+
+        for (int i = mcMMOPlayer.getAbilityMode(skill.getAbility()) ? 2 : 1; i != 0; i--) {
+            if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
+                if (silkTouch) {
+                    Mining.handleSilkTouchDrops(blockState);
+                }
+                else {
+                    Mining.handleMiningDrops(blockState);
+                }
+            }
+        }
     }
 
     /**
@@ -128,11 +142,10 @@ public class MiningManager extends SkillManager{
                     xp += Mining.getBlockXp(blockState);
                 }
 
-                Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack()); // Initial block that would have been dropped
+                Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack(1)); // Initial block that would have been dropped
 
                 if (!mcMMO.placeStore.isTrue(blockState)) {
                     for (int i = 1; i < dropMultiplier; i++) {
-                        xp += Mining.getBlockXp(blockState);
                         Mining.handleSilkTouchDrops(blockState); // Bonus drops - should drop the block & not the items
                     }
                 }
@@ -142,7 +155,7 @@ public class MiningManager extends SkillManager{
         if (debrisYield > 0) {
             for (BlockState blockState : debris) {
                 if (Misc.getRandom().nextFloat() < debrisYield) {
-                    Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack());
+                    Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack(1));
                 }
             }
         }
@@ -160,7 +173,7 @@ public class MiningManager extends SkillManager{
     }
 
     public int processDemolitionsExpertise(int damage) {
-        return (int) (damage * (100.0 - getBlastDamageModifier()));
+        return (int) (damage * ((100.0D - getBlastDamageModifier()) / 100.0D));
     }
 
     /**

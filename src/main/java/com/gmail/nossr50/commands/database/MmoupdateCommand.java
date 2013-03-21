@@ -46,6 +46,6 @@ public class MmoupdateCommand implements CommandExecutor {
             return;
         }
 
-        mcMMO.p.getServer().getScheduler().runTaskLaterAsynchronously(mcMMO.p, new SQLConversionTask(), 1);
+        new SQLConversionTask().runTaskLaterAsynchronously(mcMMO.p, 1);
     }
 }

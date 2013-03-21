@@ -1,76 +1,47 @@
 package com.gmail.nossr50.commands.experience;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
-public class SkillresetCommand implements CommandExecutor {
+public class SkillresetCommand extends ExperienceCommand {
+    private CommandSender sender;
+    private Command command;
+    private int argsLength;
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        PlayerProfile profile;
-        boolean allSkills = false;
-        SkillType skill = null;
-        String skillName = "";
+        this.command = command;
+        this.sender = sender;
+        argsLength = args.length;
 
         switch (args.length) {
             case 1:
+                if (CommandUtils.noConsoleUsage(sender)) {
+                    return true;
+                }
+
                 if (!Permissions.skillreset(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
 
-                if (!(sender instanceof Player)) {
-                    return false;
-                }
-
-                if (args[0].equalsIgnoreCase("all")) {
-                    allSkills = true;
-                }
-                else if (!SkillUtils.isSkill(args[0])) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
+                if (isInvalidSkill(sender, args[0])) {
                     return true;
                 }
 
-                profile = UserManager.getPlayer((Player) sender).getProfile();
+                mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                player = mcMMOPlayer.getPlayer();
+                profile = mcMMOPlayer.getProfile();
 
-                if (allSkills) {
-                    for (SkillType skillType : SkillType.values()) {
-                        if (skillType.isChildSkill()) {
-                            continue;
-                        }
-
-                        if (!Permissions.skillreset(sender, skillType)) {
-                            sender.sendMessage(command.getPermissionMessage());
-                            continue;
-                        }
-
-                        profile.modifySkill(skillType, 0);
-                    }
-
-                    sender.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
-                }
-                else {
-                    skill = SkillType.getSkill(args[0]);
-                    skillName = SkillUtils.getSkillName(skill);
-
-                    if (!Permissions.skillreset(sender, skill)) {
-                        sender.sendMessage(command.getPermissionMessage());
-                        return true;
-                    }
-
-                    profile.modifySkill(skill, 0);
-                    sender.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skillName));
-                }
-
+                editValues();
                 return true;
 
             case 2:
@@ -79,91 +50,67 @@ public class SkillresetCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (args[1].equalsIgnoreCase("all")) {
-                    allSkills = true;
-                }
-                else if (!SkillUtils.isSkill(args[1])) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.Invalid"));
+                if (isInvalidSkill(sender, args[1])) {
                     return true;
                 }
 
-                if (!allSkills) {
-                    skill = SkillType.getSkill(args[1]);
-                    skillName = SkillUtils.getSkillName(skill);
-
-                    if (!Permissions.skillresetOthers(sender, skill)) {
-                        sender.sendMessage(command.getPermissionMessage());
-                        return true;
-                    }
-                }
-
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(args[0]);
+                mcMMOPlayer = UserManager.getPlayer(args[0]);
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
                     profile = new PlayerProfile(args[0], false);
 
-                    if (!profile.isLoaded()) {
-                        sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+                    if (CommandUtils.unloadedProfile(sender, profile)) {
                         return true;
                     }
 
-                    if (allSkills) {
-                        for (SkillType skillType : SkillType.values()) {
-                            if (skillType.isChildSkill()) {
-                                continue;
-                            }
-
-                            if (!Permissions.skillresetOthers(sender, skill)) {
-                                sender.sendMessage(command.getPermissionMessage());
-                                continue;
-                            }
-
-                            profile.modifySkill(skillType, 0);
-                        }
-                    }
-                    else {
-                        profile.modifySkill(skill, 0);
-                    }
-
+                    editValues();
                     profile.save(); // Since this is a temporary profile, we save it here.
                 }
                 else {
                     profile = mcMMOPlayer.getProfile();
+                    player = mcMMOPlayer.getPlayer();
 
-                    if (allSkills) {
-                        for (SkillType skillType : SkillType.values()) {
-                            if (skillType.isChildSkill()) {
-                                continue;
-                            }
-
-                            if (!Permissions.skillresetOthers(sender, skillType)) {
-                                sender.sendMessage(command.getPermissionMessage());
-                                continue;
-                            }
-
-                            profile.modifySkill(skillType, 0);
-                        }
-
-                        mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Reset.All"));
-                    }
-                    else {
-                        profile.modifySkill(skill, 0);
-                        mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Reset.Single", skillName));
-                    }
+                    editValues();
                 }
 
-                if (allSkills) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", args[0]));
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.2", skillName, args[0]));
-                }
-
+                handleSenderMessage(sender, args[0]);
                 return true;
 
             default:
                 return false;
         }
+    }
+
+    @Override
+    protected boolean permissionsCheckSelf(CommandSender sender) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    protected boolean permissionsCheckOthers(CommandSender sender) {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    protected void handleCommand(SkillType skill) {
+        if (argsLength == 1 && !Permissions.skillreset(sender, skill) || (argsLength == 2 && !Permissions.skillresetOthers(sender, skill))) {
+            sender.sendMessage(command.getPermissionMessage());
+            return;
+        }
+
+        profile.modifySkill(skill, 0);
+    }
+
+    @Override
+    protected void handlePlayerMessageAll() {
+        player.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
+    }
+
+    @Override
+    protected void handlePlayerMessageSkill() {
+        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", SkillUtils.getSkillName(skill)));
     }
 }

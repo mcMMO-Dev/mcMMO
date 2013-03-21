@@ -92,7 +92,7 @@ public class PlayerProfile {
         }
         else {
             for (HudType type : HudType.values()) {
-                if (type.toString().equals(huds.get(1).get(0))) {
+                if (type.toString().equalsIgnoreCase(huds.get(1).get(0))) {
                     hudType = type;
                 }
             }
@@ -186,7 +186,7 @@ public class PlayerProfile {
                 // Find if the line contains the player we want.
                 String[] character = line.split(":");
 
-                if (!character[0].equals(playerName)) {
+                if (!character[0].equalsIgnoreCase(playerName)) {
                     continue;
                 }
 
@@ -400,7 +400,7 @@ public class PlayerProfile {
                 // While not at the end of the file
                 while ((line = in.readLine()) != null) {
                     // Read the line in and copy it to the output it's not the player we want to edit
-                    if (!line.split(":")[0].equals(playerName)) {
+                    if (!line.split(":")[0].equalsIgnoreCase(playerName)) {
                         writer.append(line).append("\r\n");
                     }
                     else {
@@ -611,6 +611,10 @@ public class PlayerProfile {
     }
 
     public void setSkillXpLevel(SkillType skillType, int newValue) {
+        if (skillType.isChildSkill()) {
+            return;
+        }
+
         skillsXp.put(skillType, newValue);
     }
 
