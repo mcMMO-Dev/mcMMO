@@ -84,7 +84,7 @@ public class PtpCommand implements CommandExecutor {
     protected static boolean canTeleport(CommandSender sender, Player player, String targetName) {
         mcMMOTarget = UserManager.getPlayer(targetName);
 
-        if (CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
+        if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
             return false;
         }
 
