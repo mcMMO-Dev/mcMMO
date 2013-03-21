@@ -13,14 +13,20 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.metrics.MetricsManager;
+import com.gmail.nossr50.runnables.items.ChimaeraWingWarmup;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public final class ChimaeraWing {
+    private static McMMOPlayer mcMMOPlayer;
+    private static Location location;
+
     private ChimaeraWing() {}
 
     /**
@@ -35,12 +41,18 @@ public final class ChimaeraWing {
             return;
         }
 
-        Location location = player.getLocation();
+        mcMMOPlayer = UserManager.getPlayer(player);
+
+        location = player.getLocation();
         int amount = inHand.getAmount();
-        long recentlyHurt = UserManager.getPlayer(player).getRecentlyHurt();
-        long lastChimaeraWing = (UserManager.getPlayer(player).getLastChimaeraTeleport());
+        long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
+        long lastChimaeraWing = mcMMOPlayer.getLastChimaeraTeleport();
 
         if (Permissions.chimaeraWing(player) && ItemUtils.isChimaeraWing(inHand)) {
+            if (mcMMOPlayer.getChimaeraCommenceLocation() != null) {
+                return;
+            }
+
             if (!SkillUtils.cooldownOver(lastChimaeraWing * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player)) {
                 player.sendMessage(ChatColor.RED + "You need to wait before you can use this again! " + ChatColor.YELLOW + "(" + SkillUtils.calculateTimeLeft(lastChimaeraWing * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player) + ")"); //TODO Locale!
                 return;
@@ -56,37 +68,46 @@ public final class ChimaeraWing {
                 return;
             }
 
-            player.setItemInHand(new ItemStack(getChimaeraWing(amount - Config.getInstance().getChimaeraUseCost())));
-
             if (Config.getInstance().getChimaeraPreventUseUnderground()) {
 
                 if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
+                    player.setItemInHand(new ItemStack(getChimaeraWing(amount - Config.getInstance().getChimaeraUseCost())));
                     player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
                     player.setVelocity(new Vector(0, 0.5D, 0));
                     CombatUtils.dealDamage(player, Misc.getRandom().nextInt(player.getHealth() - 10));
-                    UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
+                    mcMMOPlayer.actualizeLastChimaeraTeleport();
                     return;
                 }
             }
+            mcMMOPlayer.actualizeChimaeraCommenceLocation(player);
 
-            if (player.getBedSpawnLocation() != null) {
-                player.teleport(player.getBedSpawnLocation());
+            long warmup = Config.getInstance().getChimaeraWarmup();
+            player.sendMessage(ChatColor.GRAY + "Commencing teleport in " + ChatColor.GOLD + "(" + warmup + ")" + ChatColor.GRAY + " seconds, please stand still..."); //TODO Locale!
+            new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(mcMMO.p, 20 * warmup);
+        }
+    }
+
+    public static void chimaeraExecuteTeleport() {
+        Player player = mcMMOPlayer.getPlayer();
+
+        if (player.getBedSpawnLocation() != null) {
+            player.teleport(player.getBedSpawnLocation());
+        }
+        else {
+            Location spawnLocation = player.getWorld().getSpawnLocation();
+            if (spawnLocation.getBlock().getType() == Material.AIR) {
+                player.teleport(spawnLocation);
             }
             else {
-                Location spawnLocation = player.getWorld().getSpawnLocation();
-                if (spawnLocation.getBlock().getType() == Material.AIR) {
-                    player.teleport(spawnLocation);
-                }
-                else {
-                    player.teleport(player.getWorld().getHighestBlockAt(spawnLocation).getLocation());
-                }
+                player.teleport(player.getWorld().getHighestBlockAt(spawnLocation).getLocation());
             }
-
-            UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
-            MetricsManager.chimeraWingUsed();
-            player.playSound(location, Sound.BAT_TAKEOFF, Misc.BAT_VOLUME, Misc.BAT_PITCH);
-            player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
         }
+
+        player.setItemInHand(new ItemStack(getChimaeraWing(player.getItemInHand().getAmount() - Config.getInstance().getChimaeraUseCost())));
+        UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
+        MetricsManager.chimeraWingUsed();
+        player.playSound(location, Sound.BAT_TAKEOFF, Misc.BAT_VOLUME, Misc.BAT_PITCH);
+        player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
     }
 
     public static ItemStack getChimaeraWing(int amount) {

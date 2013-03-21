@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -78,8 +79,10 @@ public class McMMOPlayer {
     private Map<ToolType, Boolean> toolMode = new HashMap<ToolType, Boolean>();
     private Map<ToolType, Integer> toolATS  = new HashMap<ToolType, Integer>();
 
-    private int recentlyHurt;
     private int chimaeraWing;
+    private Location chimaeraWingCommence;
+
+    private int recentlyHurt;
     private int respawnATS;
 
     public McMMOPlayer(Player player) {
@@ -315,6 +318,17 @@ public class McMMOPlayer {
         chimaeraWing = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
+    public Location getChimaeraCommenceLocation() {
+        return chimaeraWingCommence;
+    }
+
+    public void setChimaeraCommenceLocation(Location location) {
+        chimaeraWingCommence = location;
+    }
+
+    public void actualizeChimaeraCommenceLocation(Player player) {
+        setChimaeraCommenceLocation(player.getLocation());
+    }
 
     /*
      * Exploit Prevention

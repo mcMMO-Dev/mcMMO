@@ -73,6 +73,7 @@ Items:
     Chimaera_Wing:
         Enabled: true
         Cooldown: 240
+        Warmup: 5
         Prevent_Use_Underground: true
         Use_Cost: 1
         Recipe_Cost: 5
