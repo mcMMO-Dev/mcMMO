@@ -67,6 +67,7 @@ public class Mining {
             case LAPIS_ORE:
             case STONE:
             case EMERALD_ORE:
+            case QUARTZ_ORE:
                 Misc.dropItem(blockState.getLocation(), new ItemStack(blockType));
                 return;
 
@@ -101,6 +102,7 @@ public class Mining {
             case NETHERRACK:
             case OBSIDIAN:
             case SANDSTONE:
+            case QUARTZ_ORE:
                 for (ItemStack drop : blockState.getBlock().getDrops()) {
                     Misc.dropItem(location, drop);
                 }
