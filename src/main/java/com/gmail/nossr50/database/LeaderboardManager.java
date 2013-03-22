@@ -188,11 +188,16 @@ public final class LeaderboardManager {
             statsList = playerStatHash.get(SkillType.getSkill(skillType));
         }
 
+        if (pageNumber < 1) {
+            pageNumber = 1;
+        }
         int destination = (pageNumber - 1) * 10;
 
         for (int i = 0; i < 10; i++) {
-            PlayerStat ps = statsList.get(destination + i);
-            info[i] = ps.name + ":" + ps.statVal;
+            if (destination + i < statsList.size()) {
+                PlayerStat ps = statsList.get(destination + i);
+                info[i] = ps.name + ":" + ps.statVal;
+            }
         }
 
         return info;
