@@ -42,7 +42,7 @@ public class McabilityCommand implements CommandExecutor {
 
                 mcMMOPlayer = UserManager.getPlayer(args[0]);
 
-                if (CommandUtils.checkPlayerExistence(sender, args[0], mcMMOPlayer)) {
+                if (!CommandUtils.checkPlayerExistence(sender, args[0], mcMMOPlayer)) {
                     return true;
                 }
 
