@@ -166,7 +166,7 @@ public class InventoryListener implements Listener {
         if (event.getRecipe().getResult() == null) {
             return;
         }
-        else if (!ItemUtils.isChimaeraWing(event.getRecipe().getResult())) {
+        else if (!ItemUtils.isMcMMOItem(event.getRecipe().getResult())) {
             return;
         }
         else if (event.getWhoClicked() == null) {
