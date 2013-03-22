@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
@@ -158,5 +159,30 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClickEvent(InventoryClickEvent event) {
         SkillUtils.removeAbilityBuff(event.getCurrentItem());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onCraftItem(CraftItemEvent event) {
+        if (event.getRecipe().getResult() == null) {
+            return;
+        }
+        else if (!ItemUtils.isChimaeraWing(event.getRecipe().getResult())) {
+            return;
+        }
+        else if (event.getWhoClicked() == null) {
+            return;
+        }
+        else if (!(event.getWhoClicked() instanceof Player)) {
+            return;
+        }
+
+        final Player player = (Player) event.getWhoClicked();
+
+        mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
+            @Override
+            public void run() {
+                player.updateInventory();
+            }
+        });
     }
 }
