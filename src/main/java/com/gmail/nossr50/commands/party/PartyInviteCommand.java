@@ -19,8 +19,8 @@ public class PartyInviteCommand implements CommandExecutor {
             case 2:
                 McMMOPlayer mcMMOTarget = UserManager.getPlayer(args[1]);
 
-                if (CommandUtils.checkPlayerExistence(sender, args[1], mcMMOTarget)) {
-                    return true;
+                if (!CommandUtils.checkPlayerExistence(sender, args[1], mcMMOTarget)) {
+                    return false;
                 }
 
                 Player target = mcMMOTarget.getPlayer();
