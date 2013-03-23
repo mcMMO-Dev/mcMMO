@@ -238,6 +238,8 @@ Experience:
     Gains:
         Mobspawners:
             Enabled: false
+
+        # Experience gained in every skill will get multiplied by this value. 1.0 by default, 2.0 means two times as much
         Multiplier:
             PVP: 1.0
             Global: 1.0
@@ -245,7 +247,9 @@ Experience:
         Rewards: true
     Formula:
         Curve_Modifier: 20
-        Multiplier:
+
+        # Experience gained will get divided by these values. 1.0 by default, 2.0 means two times lower
+        Modifier:
             Swords: 1.0
             Taming: 1.0
             Acrobatics: 1.0
