@@ -10,30 +10,30 @@
 General:
     Locale: en_US
     MOTD_Enabled: true
-    #Amount of time (in minutes) to wait between saves of player information
+    # Amount of time (in minutes) to wait between saves of player information
     Save_Interval: 10
-    #Allow mcMMO to report on basic anonymous usage
+    # Allow mcMMO to report on basic anonymous usage
     Stats_Tracking: true
-    #Allow mcMMO to check if a new version is available
+    # Allow mcMMO to check if a new version is available
     Update_Check: true
     Prefer_Beta: false
-    #Allow mcMMO to inform other plugins of damage being dealt
+    # Allow mcMMO to inform other plugins of damage being dealt
     Event_Callback: true
-    #Allow mcMMO to create zip backups for flatfile data on shutdown.
+    # Allow mcMMO to create zip backups for flatfile data on shutdown.
     Generate_Backups: true
     Power_Level_Cap: 0
-    #Should mcMMO print out debug messages?
+    # Should mcMMO print out debug messages?
     Verbose_Logging: false
-    #Should mcMMO over-write configs to update, or make new ones ending in .new?
+    # Should mcMMO over-write configs to update, or make new ones ending in .new?
     Config_Update_Overwrite: true
 
 Database_Purging:
-    #Amount of time (in hours) to wait between database purging
-    #To only run at server start, set to 0
-    #To never run, set to -1
+    # Amount of time (in hours) to wait between database purging
+    # To only run at server start, set to 0
+    # To never run, set to -1
     Purge_Interval: -1
-    #Any user who hasn't connected in this many months will be purged from the database
-    #To never purge old users, set to -1
+    # Any user who hasn't connected in this many months will be purged from the database
+    # To never purge old users, set to -1
     Old_User_Cutoff: 6
 #
 #  Settings for using a mySQL database
@@ -83,13 +83,13 @@ Items:
 #  Settings for Parties
 ###
 Party:
-    #Amount of time (in hours) to wait between automatically kicking old party members
-    #To only run at server start, set to 0
-    #To never kick old users, set to -1
+    # Amount of time (in hours) to wait between automatically kicking old party members
+    # To only run at server start, set to 0
+    # To never kick old users, set to -1
     AutoKick_Interval: 12
-    #Any user who hasn't connected in this many days will get kicked from their party
+    # Any user who hasn't connected in this many days will get kicked from their party
     Old_Party_Member_Cutoff: 7
-    #Settings for party share modes
+    # Settings for party share modes
     Sharing:
         ExpShare_enabled: true
         ExpShare_bonus_base: 1.1
@@ -355,14 +355,14 @@ Commands:
         Cooldown: 30
         Confirm_Required: true
         Request_Timeout: 300
-        #If true, require players to have a mcmmo.commands.ptp.world.[WorldName] permission
-        #to teleport to, from, or within any given world.
+        # If true, require players to have a mcmmo.commands.ptp.world.[WorldName] permission
+        # to teleport to, from, or within any given world.
         World_Based_Permissions: false
     p:
-        #Allow mcMMO to use player display names in chat instead of their usernames
+        # Allow mcMMO to use player display names in chat instead of their usernames
         Use_Display_Names: true
     a:
-        #Allow mcMMO to use player display names in chat instead of their usernames
+        # Allow mcMMO to use player display names in chat instead of their usernames
         Use_Display_Names: true
 #
 #  Settings for particles
