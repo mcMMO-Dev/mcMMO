@@ -58,10 +58,10 @@ public class McrankCommand implements CommandExecutor {
                 }
 
                 if (Config.getInstance().getUseMySQL()) {
-                    sqlDisplay(sender, mcMMOPlayer.getPlayer().getName());
+                    sqlDisplay(sender, args[0]);
                 }
                 else {
-                    flatfileDisplay(sender, mcMMOPlayer.getPlayer().getName());
+                    flatfileDisplay(sender, args[0]);
                 }
 
                 return true;
