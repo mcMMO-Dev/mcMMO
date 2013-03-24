@@ -46,22 +46,25 @@ public class McrankCommand implements CommandExecutor {
                     return true;
                 }
 
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(args[0]);
+                String playerName = args[0];
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
 
-                if (mcMMOPlayer == null) {
-                    if (CommandUtils.inspectOffline(sender, new PlayerProfile(args[0], false), Permissions.mcrankOffline(sender))) {
+                if (mcMMOPlayer != null) {
+                    playerName = mcMMOPlayer.getPlayer().getName();
+
+                    if (CommandUtils.tooFar(sender, mcMMOPlayer.getPlayer(), Permissions.mcrankFar(sender))) {
                         return true;
                     }
-                }
-                else if (CommandUtils.tooFar(sender, mcMMOPlayer.getPlayer(), Permissions.mcrankFar(sender))) {
+
+                } else if (CommandUtils.inspectOffline(sender, new PlayerProfile(playerName, false), Permissions.mcrankOffline(sender))) {
                     return true;
                 }
 
                 if (Config.getInstance().getUseMySQL()) {
-                    sqlDisplay(sender, args[0]);
+                    sqlDisplay(sender, playerName);
                 }
                 else {
-                    flatfileDisplay(sender, args[0]);
+                    flatfileDisplay(sender, playerName);
                 }
 
                 return true;
