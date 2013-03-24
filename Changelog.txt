@@ -23,6 +23,7 @@ Version 1.4.04-dev
  ! Updated localization files
  - Removed deprecated functions from API classes.
  - Removed functions for getting the PlayerProfile - using API classes is preferred, but if not the McMMOPlayer should be used instead
+ - Removed Ender Dragon, Wither, and Witch from granting combat experience and related configuration options
 
 Version 1.4.03
  + Added option to advanced.yml to determine the # of enchant levels used when buffing Super Breaker & Giga Drill Breaker
