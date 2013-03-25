@@ -2,6 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import java.util.List;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -135,6 +136,10 @@ public class BlockListener implements Listener {
             return;
         }
 
+        if (player.getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         BlockState blockState = event.getBlock().getState();
         ItemStack heldItem = player.getItemInHand();
@@ -205,6 +210,10 @@ public class BlockListener implements Listener {
         Player player = event.getPlayer();
 
         if (Misc.isNPCEntity(player)) {
+            return;
+        }
+
+        if (player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 

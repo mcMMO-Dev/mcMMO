@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills.repair;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -174,10 +173,6 @@ public class RepairManager extends SkillManager {
 
     public void handleSalvage(Location location, ItemStack item) {
         Player player = getPlayer();
-
-        if (player.getGameMode() != GameMode.SURVIVAL) {
-            return;
-        }
 
         if (getSkillLevel() < Repair.salvageUnlockLevel) {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.AdeptSalvage"));
