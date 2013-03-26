@@ -22,6 +22,7 @@ Version 1.4.04-dev
  ! Changed config node name for the skill experience modifiers from "Experience.Formula.Multiplier.[Skill]" to "Experience.Formula.Modifier.[Skill]"
  ! Updated localization files
  ! mcMMO abilities can no longer be activated while in Creative mode
+ ! Expanded ChatAPI to allow toggling of chat states for users
  - Removed deprecated functions from API classes.
  - Removed functions for getting the PlayerProfile - using API classes is preferred, but if not the McMMOPlayer should be used instead
  - Removed Ender Dragon, Wither, and Witch from granting combat experience and related configuration options
