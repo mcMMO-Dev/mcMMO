@@ -73,7 +73,7 @@ public final class ChatAPI {
      * @return true if the player is using party chat, false otherwise
      */
     public static boolean isUsingPartyChat(Player player) {
-        return UserManager.getPlayer(player).getPartyChatMode();
+        return isUsingPartyChat(player.getName());
     }
 
     /**
@@ -93,7 +93,7 @@ public final class ChatAPI {
      * @return true if the player is using admin chat, false otherwise
      */
     public static boolean isUsingAdminChat(Player player) {
-        return UserManager.getPlayer(player).getAdminChatMode();
+        return isUsingAdminChat(player.getName());
     }
 
     /**
