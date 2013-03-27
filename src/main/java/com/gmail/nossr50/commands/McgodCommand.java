@@ -53,7 +53,7 @@ public class McgodCommand implements CommandExecutor {
                 }
 
                 toggleGodMode();
-                sender.sendMessage("God mode has been toggled for" + args[0]); // TODO: Localize
+                sender.sendMessage("God mode has been toggled for " + player.getName()); // TODO: Localize
                 return true;
 
             default:

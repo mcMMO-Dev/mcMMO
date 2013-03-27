@@ -53,7 +53,7 @@ public class McabilityCommand implements CommandExecutor {
                 }
 
                 toggleAbilityUse();
-                sender.sendMessage("Ability use has been toggled for" + args[0]); // TODO: Localize
+                sender.sendMessage("Ability use has been toggled for " + player.getName()); // TODO: Localize
                 return true;
 
             default:
