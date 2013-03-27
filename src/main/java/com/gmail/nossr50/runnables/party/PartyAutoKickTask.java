@@ -1,7 +1,9 @@
 package com.gmail.nossr50.runnables.party;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -17,6 +19,8 @@ public class PartyAutoKickTask extends BukkitRunnable {
     }
 
     private void updatePartyMembers() {
+        HashMap<OfflinePlayer, Party> toRemove = new HashMap<OfflinePlayer, Party>();
+
         long currentTime = System.currentTimeMillis();
         long kickTime = 24L * 60L * 60L * 1000L * Config.getInstance().getAutoPartyKickTime();
 
@@ -24,11 +28,14 @@ public class PartyAutoKickTask extends BukkitRunnable {
             Party party = partyIterator.next();
 
             for (OfflinePlayer member : new ArrayList<OfflinePlayer>(party.getMembers())) {
-
                 if (currentTime - member.getLastPlayed() > kickTime) {
-                    PartyManager.removeFromParty(member, party);
+                    toRemove.put(member, party);
                 }
             }
+        }
+
+        for (Entry<OfflinePlayer, Party> entry : toRemove.entrySet()) {
+            PartyManager.removeFromParty(entry.getKey(), entry.getValue());
         }
     }
 }
