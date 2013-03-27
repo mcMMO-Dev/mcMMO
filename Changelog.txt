@@ -18,7 +18,8 @@ Version 1.4.04-dev
  = Fixed bug where Shake wouldn't damage mobs whose max health was less than 4
  = Fixed bug where the API would fail if the name of a player's current party is requested when the player isn't in one (Thanks @dualspiral!)
  = Fixed bug with retrieving a player's party members
- = Fixed bug which caused an NPE when trying to join the party of a non-existing player or when ptp to a non-existing player
+ = Fixed bug which caused a NPE when trying to join the party of a non-existing player or when ptp to a non-existing player
+ = Fixed bug which causes a NPE when trying to use /mcrefresh from the console
  ! Changed config node name for the skill experience modifiers from "Experience.Formula.Multiplier.[Skill]" to "Experience.Formula.Modifier.[Skill]"
  ! Updated localization files
  ! mcMMO abilities can no longer be activated while in Creative mode

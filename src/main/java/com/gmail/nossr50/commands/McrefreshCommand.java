@@ -53,7 +53,7 @@ public class McrefreshCommand implements CommandExecutor {
                 }
 
                 refreshPlayer();
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrefresh.Success", args[0]));
+                sender.sendMessage(LocaleLoader.getString("Commands.mcrefresh.Success", player.getName()));
                 return true;
 
             default:
@@ -67,6 +67,7 @@ public class McrefreshCommand implements CommandExecutor {
         mcMMOPlayer.resetToolPrepMode();
         mcMMOPlayer.resetAbilityMode();
 
+        player = mcMMOPlayer.getPlayer();
         player.sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
     }
 }
