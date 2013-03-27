@@ -23,6 +23,7 @@ Version 1.4.04-dev
  ! Updated localization files
  ! mcMMO abilities can no longer be activated while in Creative mode
  ! Expanded ChatAPI to allow toggling of chat states for users
+ ! Updated to EMetrics 0.0.4-SNAPSHOT
  - Removed deprecated functions from API classes.
  - Removed functions for getting the PlayerProfile - using API classes is preferred, but if not the McMMOPlayer should be used instead
  - Removed Ender Dragon, Wither, and Witch from granting combat experience and related configuration options
