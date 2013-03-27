@@ -26,8 +26,7 @@ public class PartyAutoKickTask extends BukkitRunnable {
         for (Iterator<Party> partyIterator = PartyManager.getParties().iterator(); partyIterator.hasNext();) {
             Party party = partyIterator.next();
 
-            for (Iterator<OfflinePlayer> memberIterator = party.getMembers().iterator(); memberIterator.hasNext();) {
-                OfflinePlayer member = memberIterator.next();
+            for (OfflinePlayer member : party.getMembers()) {
                 if (currentTime - member.getLastPlayed() > kickTime) {
                     toRemove.put(member, party);
                 }
