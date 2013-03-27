@@ -30,7 +30,7 @@ public class MctopCommand implements CommandExecutor {
 
             case 1:
                 if (StringUtils.isInt(args[0])) {
-                    display(Integer.parseInt(args[0]), "ALL", sender, useMySQL, command);
+                    display(Math.abs(Integer.parseInt(args[0])), "ALL", sender, useMySQL, command);
                     return true;
                 }
 
@@ -50,7 +50,7 @@ public class MctopCommand implements CommandExecutor {
                     return true;
                 }
 
-                display(Integer.parseInt(args[1]), skill.toString(), sender, useMySQL, command);
+                display(Math.abs(Integer.parseInt(args[1])), skill.toString(), sender, useMySQL, command);
                 return true;
 
             default:
