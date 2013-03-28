@@ -53,8 +53,6 @@ public final class BlockUtils {
             case YELLOW_FLOWER:
             case COCOA:
             case EMERALD_ORE:
-            case CARROT:
-            case POTATO:
                 return true;
 
             default:
