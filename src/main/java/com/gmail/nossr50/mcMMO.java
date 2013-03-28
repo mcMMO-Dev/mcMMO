@@ -29,6 +29,7 @@ import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
+import com.gmail.nossr50.listeners.SelfListener;
 import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.metrics.MetricsManager;
@@ -59,6 +60,7 @@ public class mcMMO extends JavaPlugin {
     private final BlockListener     blockListener     = new BlockListener(this);
     private final EntityListener    entityListener    = new EntityListener(this);
     private final InventoryListener inventoryListener = new InventoryListener(this);
+    private final SelfListener      selfListener      = new SelfListener();
     private final WorldListener     worldListener     = new WorldListener();
 
     private HashMap<Integer, String>    tntTracker     = new HashMap<Integer, String>();
@@ -351,6 +353,7 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(blockListener, this);
         pluginManager.registerEvents(entityListener, this);
         pluginManager.registerEvents(inventoryListener, this);
+        pluginManager.registerEvents(selfListener, this);
         pluginManager.registerEvents(worldListener, this);
     }
 

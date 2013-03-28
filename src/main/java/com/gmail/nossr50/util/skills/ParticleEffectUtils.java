@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public final class ParticleEffectUtils {
 
@@ -71,6 +72,10 @@ public final class ParticleEffectUtils {
         }
 
         fireworkParticleShower(player, Color.RED);
+    }
+
+    public static void runescapeModeCelebration(Player player, SkillType skill) {
+        fireworkParticleShower(player, skill.getRunescapeModeColor());
     }
 
     private static void fireworkParticleShower(Player player, Color color) {

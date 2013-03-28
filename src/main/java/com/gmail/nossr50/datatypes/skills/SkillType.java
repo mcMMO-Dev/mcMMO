@@ -1,5 +1,7 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import org.bukkit.Color;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -20,32 +22,35 @@ import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.StringUtils;
 
 public enum SkillType {
-    ACROBATICS(AcrobaticsManager.class),
-    ARCHERY(ArcheryManager.class),
-    AXES(AxesManager.class, AbilityType.SKULL_SPLITTER, ToolType.AXE),
-    EXCAVATION(ExcavationManager.class, AbilityType.GIGA_DRILL_BREAKER, ToolType.SHOVEL),
-    FISHING(FishingManager.class),
-    HERBALISM(HerbalismManager.class, AbilityType.GREEN_TERRA, ToolType.HOE),
-    MINING(MiningManager.class, AbilityType.SUPER_BREAKER, ToolType.PICKAXE),
-    REPAIR(RepairManager.class),
-    SMELTING(SmeltingManager.class),
-    SWORDS(SwordsManager.class, AbilityType.SERRATED_STRIKES, ToolType.SWORD),
-    TAMING(TamingManager.class),
-    UNARMED(UnarmedManager.class, AbilityType.BERSERK, ToolType.FISTS),
-    WOODCUTTING(WoodcuttingManager.class, AbilityType.TREE_FELLER, ToolType.AXE);
+    ACROBATICS(AcrobaticsManager.class, Color.WHITE),
+    ARCHERY(ArcheryManager.class, Color.MAROON),
+    AXES(AxesManager.class, Color.AQUA, AbilityType.SKULL_SPLITTER, ToolType.AXE),
+    EXCAVATION(ExcavationManager.class, Color.fromRGB(139, 69, 19), AbilityType.GIGA_DRILL_BREAKER, ToolType.SHOVEL),
+    FISHING(FishingManager.class, Color.NAVY),
+    HERBALISM(HerbalismManager.class, Color.GREEN, AbilityType.GREEN_TERRA, ToolType.HOE),
+    MINING(MiningManager.class, Color.GRAY, AbilityType.SUPER_BREAKER, ToolType.PICKAXE),
+    REPAIR(RepairManager.class, Color.SILVER),
+    SMELTING(SmeltingManager.class, Color.YELLOW),
+    SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), AbilityType.SERRATED_STRIKES, ToolType.SWORD),
+    TAMING(TamingManager.class, Color.PURPLE),
+    UNARMED(UnarmedManager.class, Color.BLACK, AbilityType.BERSERK, ToolType.FISTS),
+    WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, AbilityType.TREE_FELLER, ToolType.AXE);
 
     private Class<? extends SkillManager> managerClass;
+    private Color runescapeColor;
     private AbilityType ability;
     private ToolType tool;
 
-    private SkillType(Class<? extends SkillManager> managerClass) {
+    private SkillType(Class<? extends SkillManager> managerClass, Color runescapeColor) {
         this.managerClass = managerClass;
+        this.runescapeColor = runescapeColor;
         ability = null;
         tool = null;
     }
 
-    private SkillType(Class<? extends SkillManager> managerClass, AbilityType ability, ToolType tool) {
+    private SkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, AbilityType ability, ToolType tool) {
         this.managerClass = managerClass;
+        this.runescapeColor = runescapeColor;
         this.ability = ability;
         this.tool = tool;
     }
@@ -115,5 +120,9 @@ public enum SkillType {
         default:
             return false;
         }
+    }
+
+    public Color getRunescapeModeColor() {
+        return runescapeColor;
     }
 }
