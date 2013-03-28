@@ -2,28 +2,26 @@ package com.gmail.nossr50.runnables;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.event.block.BlockPistonRetractEvent;
+import org.bukkit.block.BlockFace;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
 
 public class StickyPistonTrackerTask extends BukkitRunnable {
-    BlockPistonRetractEvent event;
+    private BlockFace direction;
+    private Block block;
 
-    public StickyPistonTrackerTask(BlockPistonRetractEvent event) {
-        this.event = event;
+    public StickyPistonTrackerTask(BlockFace direction, Block block) {
+        this.direction = direction;
+        this.block = block;
     }
 
     @Override
     public void run() {
-        Block newBlock = event.getBlock().getRelative(event.getDirection());
-        Block originalBlock = newBlock.getRelative(event.getDirection());
+        Block newBlock = block.getRelative(direction);
+        Block originalBlock = newBlock.getRelative(direction);
 
-        if (originalBlock.getType() != Material.AIR) {
-            return;
-        }
-
-        if (!mcMMO.placeStore.isTrue(originalBlock)) {
+        if (originalBlock.getType() != Material.AIR || !mcMMO.placeStore.isTrue(originalBlock)) {
             return;
         }
 

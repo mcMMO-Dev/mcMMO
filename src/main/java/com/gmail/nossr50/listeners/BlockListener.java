@@ -58,7 +58,6 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-
         List<Block> blocks = event.getBlocks();
         BlockFace direction = event.getDirection();
         Block futureEmptyBlock = event.getBlock().getRelative(direction); // Block that would be air after piston is finished
@@ -89,7 +88,7 @@ public class BlockListener implements Listener {
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         if (event.isSticky()) {
             // Needed only because under some circumstances Minecraft doesn't move the block
-            new StickyPistonTrackerTask(event).runTaskLater(plugin, 2);
+            new StickyPistonTrackerTask(event.getDirection(), event.getBlock()).runTaskLater(plugin, 2);
         }
     }
 
