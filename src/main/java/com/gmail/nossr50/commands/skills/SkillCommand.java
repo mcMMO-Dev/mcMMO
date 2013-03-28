@@ -1,11 +1,13 @@
 package com.gmail.nossr50.commands.skills;
 
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -21,7 +23,9 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
-public abstract class SkillCommand implements CommandExecutor {
+import com.google.common.collect.ImmutableList;
+
+public abstract class SkillCommand implements TabExecutor {
     protected SkillType skill;
     protected String skillName;
 
@@ -99,6 +103,16 @@ public abstract class SkillCommand implements CommandExecutor {
 
             default:
                 return skillGuideCommand.onCommand(sender, command, label, args);
+        }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        switch (args.length) {
+            case 1:
+                return ImmutableList.of("?");
+            default:
+                return ImmutableList.of();
         }
     }
 

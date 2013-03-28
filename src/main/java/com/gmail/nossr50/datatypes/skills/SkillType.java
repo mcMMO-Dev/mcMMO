@@ -1,5 +1,9 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.bukkit.Color;
 
 import com.gmail.nossr50.mcMMO;
@@ -20,6 +24,8 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
+import com.google.common.collect.ImmutableList;
 
 public enum SkillType {
     ACROBATICS(AcrobaticsManager.class, Color.WHITE),
@@ -40,6 +46,19 @@ public enum SkillType {
     private Color runescapeColor;
     private AbilityType ability;
     private ToolType tool;
+
+    public static final List<String> SKILL_NAMES;
+
+    static {
+        ArrayList<String> names = new ArrayList<String>();
+
+        for (SkillType skill : values()) {
+            names.add(SkillUtils.getSkillName(skill));
+        }
+
+        Collections.sort(names);
+        SKILL_NAMES = ImmutableList.copyOf(names);
+    }
 
     private SkillType(Class<? extends SkillManager> managerClass, Color runescapeColor) {
         this.managerClass = managerClass;

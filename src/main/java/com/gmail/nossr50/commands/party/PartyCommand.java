@@ -1,21 +1,45 @@
 package com.gmail.nossr50.commands.party;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
+import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.google.common.collect.ImmutableList;
 
-public class PartyCommand implements CommandExecutor {
+public class PartyCommand implements TabExecutor {
     private McMMOPlayer mcMMOPlayer;
     private Player player;
+
+    private static final List<String> PARTY_SUBCOMMANDS;
+    private static final List<String> EXPSHARE_COMPLETIONS = ImmutableList.of("none", "equal");
+    private static final List<String> ITEMSHARE_COMPLETIONS = ImmutableList.of("none", "equal", "random", "loot", "mining", "herbalism", "woodcutting");
+
+    static {
+        ArrayList<String> subcommands = new ArrayList<String>();
+
+        for (PartySubcommandType subcommand : PartySubcommandType.values()) {
+            subcommands.add(subcommand.toString());
+        }
+
+        Collections.sort(subcommands);
+        PARTY_SUBCOMMANDS = ImmutableList.copyOf(subcommands);
+    }
 
     private CommandExecutor partyJoinCommand           = new PartyJoinCommand();
     private CommandExecutor partyAcceptCommand         = new PartyAcceptCommand();
@@ -135,6 +159,57 @@ public class PartyCommand implements CommandExecutor {
         return true;
     }
 
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        switch (args.length) {
+            case 1:
+                return StringUtil.copyPartialMatches(args[0], PARTY_SUBCOMMANDS, new ArrayList<String>(PARTY_SUBCOMMANDS.size()));
+            case 2:
+                PartySubcommandType subcommand = PartySubcommandType.getSubcommand(args[0]);
+
+                if (subcommand == null) {
+                    return ImmutableList.of();
+                }
+
+                switch (PartySubcommandType.valueOf(args[0].toUpperCase())) {
+                    case JOIN:
+                    case INVITE:
+                    case KICK:
+                    case OWNER:
+                        Set<String> playerNames = UserManager.getPlayers().keySet();
+                        return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<String>(playerNames.size()));
+                    case EXPSHARE:
+                        return StringUtil.copyPartialMatches(args[1], EXPSHARE_COMPLETIONS, new ArrayList<String>(EXPSHARE_COMPLETIONS.size()));
+                    case ITEMSHARE:
+                        return StringUtil.copyPartialMatches(args[1], ITEMSHARE_COMPLETIONS, new ArrayList<String>(ITEMSHARE_COMPLETIONS.size()));
+                    case LOCK:
+                    case CHAT:
+                        return StringUtil.copyPartialMatches(args[1], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+                    case PASSWORD:
+                        return StringUtil.copyPartialMatches(args[1], CommandUtils.RESET_OPTIONS, new ArrayList<String>(CommandUtils.RESET_OPTIONS.size()));
+                    case TELEPORT:
+                        List<String> matches = StringUtil.copyPartialMatches(args[1], PtpCommand.TELEPORT_SUBCOMMANDS, new ArrayList<String>(PtpCommand.TELEPORT_SUBCOMMANDS.size()));
+
+                        if (matches.size() == 0) {
+                            playerNames = UserManager.getPlayers().keySet();
+                            return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<String>(playerNames.size()));
+                        }
+
+                        return matches;
+                    default:
+                        return ImmutableList.of();
+                }
+            case 3:
+                if (PartySubcommandType.getSubcommand(args[0]) == PartySubcommandType.ITEMSHARE && isItemShareCategory(args[1])) {
+                    return StringUtil.copyPartialMatches(args[2], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+                }
+
+                return ImmutableList.of();
+            default:
+                return ImmutableList.of();
+        }
+    }
+
     private boolean printUsage() {
         player.sendMessage(LocaleLoader.getString("Party.Help.0", "/party join"));
         player.sendMessage(LocaleLoader.getString("Party.Help.1", "/party create"));
@@ -151,4 +226,9 @@ public class PartyCommand implements CommandExecutor {
 
         return newArgs;
     }
+
+    private boolean isItemShareCategory(String category) {
+        return category.equalsIgnoreCase("loot") || category.equalsIgnoreCase("mining") || category.equalsIgnoreCase("herbalism") || category.equalsIgnoreCase("woodcutting");
+    }
 }
+

@@ -1,15 +1,36 @@
 package com.gmail.nossr50.commands.spout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.google.common.collect.ImmutableList;
 
 public class XplockCommand extends SpoutCommand {
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        switch (args.length) {
+            case 1:
+                List<String> matches = StringUtil.copyPartialMatches(args[0], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+
+                if (matches.size() == 0) {
+                    return StringUtil.copyPartialMatches(args[0], SkillType.SKILL_NAMES, new ArrayList<String>(SkillType.SKILL_NAMES.size()));
+                }
+
+                return matches;
+            default:
+                return ImmutableList.of();
+        }
+    }
+
     @Override
     protected boolean noArguments(Command command, CommandSender sender, String[] args) {
         if (spoutHud.getXpBarLocked()) {

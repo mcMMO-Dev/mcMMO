@@ -35,7 +35,7 @@ public class PartyExpShareCommand implements CommandExecutor {
                     handleChangingShareMode(ShareMode.EQUAL);
                 }
                 else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "expshare", "[NONE | EQUAL]"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "expshare", "<NONE | EQUAL>"));
                 }
 
                 return true;

@@ -21,14 +21,21 @@ public class PartyInfoCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-        player = mcMMOPlayer.getPlayer();
-        playerParty = mcMMOPlayer.getParty();
+        switch (args.length) {
+            case 0:
+            case 1:
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                player = mcMMOPlayer.getPlayer();
+                playerParty = mcMMOPlayer.getParty();
 
-        displayPartyHeader();
-        displayShareModeInfo();
-        displayMemberInfo();
-        return true;
+                displayPartyHeader();
+                displayShareModeInfo();
+                displayMemberInfo();
+                return true;
+            default:
+                sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "info"));
+                return true;
+        }
     }
 
     private String createMembersList() {

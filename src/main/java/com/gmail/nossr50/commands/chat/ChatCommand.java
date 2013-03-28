@@ -1,8 +1,12 @@
 package com.gmail.nossr50.commands.chat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.chat.ChatMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -10,7 +14,9 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
-public abstract class ChatCommand implements CommandExecutor {
+import com.google.common.collect.ImmutableList;
+
+public abstract class ChatCommand implements TabExecutor {
     protected ChatMode chatMode;
     private McMMOPlayer mcMMOPlayer;
 
@@ -65,6 +71,16 @@ public abstract class ChatCommand implements CommandExecutor {
             default:
                 handleChatSending(sender, args);
                 return true;
+        }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        switch (args.length) {
+            case 1:
+                return StringUtil.copyPartialMatches(args[0], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+            default:
+                return ImmutableList.of();
         }
     }
 

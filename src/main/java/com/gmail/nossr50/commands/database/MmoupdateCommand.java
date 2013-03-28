@@ -1,8 +1,10 @@
 package com.gmail.nossr50.commands.database;
 
+import java.util.List;
+
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
@@ -12,11 +14,18 @@ import com.gmail.nossr50.runnables.database.SQLConversionTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 
-public class MmoupdateCommand implements CommandExecutor {
+import com.google.common.collect.ImmutableList;
+
+public class MmoupdateCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!Permissions.mmoupdate(sender)) {
             sender.sendMessage(command.getPermissionMessage());
+            return true;
+        }
+
+        if (!Config.getInstance().getUseMySQL()) {
+            sender.sendMessage("SQL Mode is not enabled."); // TODO: Localize
             return true;
         }
 
@@ -25,7 +34,7 @@ public class MmoupdateCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.mmoupdate.Start"));
                 UserManager.saveAll();
                 UserManager.clearAll();
-                convertToMySQL();
+                new SQLConversionTask().runTaskLaterAsynchronously(mcMMO.p, 1);
 
                 for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
                     UserManager.addUser(player);
@@ -39,14 +48,8 @@ public class MmoupdateCommand implements CommandExecutor {
         }
     }
 
-    /**
-     * Convert FlatFile data to MySQL data.
-     */
-    private void convertToMySQL() {
-        if (!Config.getInstance().getUseMySQL()) {
-            return;
-        }
-
-        new SQLConversionTask().runTaskLaterAsynchronously(mcMMO.p, 1);
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        return ImmutableList.of();
     }
 }

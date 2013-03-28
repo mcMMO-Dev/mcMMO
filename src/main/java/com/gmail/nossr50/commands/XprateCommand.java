@@ -1,16 +1,23 @@
 package com.gmail.nossr50.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 
-public class XprateCommand implements CommandExecutor {
+import com.google.common.collect.ImmutableList;
+
+public class XprateCommand implements TabExecutor {
     private double originalRate;
 
     public XprateCommand() {
@@ -73,6 +80,22 @@ public class XprateCommand implements CommandExecutor {
 
             default:
                 return false;
+        }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        switch (args.length) {
+            case 1:
+                if (StringUtils.isInt(args[0])) {
+                    return ImmutableList.of();
+                }
+
+                return StringUtil.copyPartialMatches(args[0], CommandUtils.RESET_OPTIONS, new ArrayList<String>(CommandUtils.RESET_OPTIONS.size()));
+            case 2:
+                return StringUtil.copyPartialMatches(args[1], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+            default:
+                return ImmutableList.of();
         }
     }
 }

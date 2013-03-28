@@ -1,9 +1,13 @@
 package com.gmail.nossr50.commands.player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -15,7 +19,9 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 
-public class MctopCommand implements CommandExecutor {
+import com.google.common.collect.ImmutableList;
+
+public class MctopCommand implements TabExecutor {
     private SkillType skill;
 
     @Override
@@ -55,6 +61,16 @@ public class MctopCommand implements CommandExecutor {
 
             default:
                 return false;
+        }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        switch (args.length) {
+            case 1:
+                return StringUtil.copyPartialMatches(args[1], SkillType.SKILL_NAMES, new ArrayList<String>(SkillType.SKILL_NAMES.size()));
+            default:
+                return ImmutableList.of();
         }
     }
 

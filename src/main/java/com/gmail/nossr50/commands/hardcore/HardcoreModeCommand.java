@@ -1,15 +1,21 @@
 package com.gmail.nossr50.commands.hardcore;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 
-public abstract class HardcoreModeCommand implements CommandExecutor {
+import com.google.common.collect.ImmutableList;
+
+public abstract class HardcoreModeCommand implements TabExecutor {
     protected CommandSender sender;
     protected double newPercent;
     protected DecimalFormat percent;
@@ -73,6 +79,20 @@ public abstract class HardcoreModeCommand implements CommandExecutor {
 
             default:
                 return false;
+        }
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        switch (args.length) {
+            case 1:
+                if (StringUtils.isDouble(args[0])) {
+                    return ImmutableList.of();
+                }
+
+                return StringUtil.copyPartialMatches(args[0], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
+            default:
+                return ImmutableList.of();
         }
     }
 

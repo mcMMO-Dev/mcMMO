@@ -1,5 +1,7 @@
 package com.gmail.nossr50.util.commands;
 
+import java.util.List;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -13,7 +15,12 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
+import com.google.common.collect.ImmutableList;
+
 public final class CommandUtils {
+    public static final List<String> TRUE_FALSE_OPTIONS = ImmutableList.of("on", "off", "true", "false", "enabled", "disabled");
+    public static final List<String> RESET_OPTIONS = ImmutableList.of("clear", "reset");
+
     private CommandUtils() {}
 
     public static boolean isChildSkill(CommandSender sender, SkillType skill) {
