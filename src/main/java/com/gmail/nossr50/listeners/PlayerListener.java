@@ -219,6 +219,10 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        if (UserManager.getPlayer(player).getAbilityMode(AbilityType.BERSERK)) {
+            player.setCanPickupItems(true);
+        }
+
         /* GARBAGE COLLECTION */
         BleedTimerTask.bleedOut(player); // Bleed it out
     }
@@ -231,6 +235,10 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
+        if (UserManager.getPlayer(player).getAbilityMode(AbilityType.BERSERK)) {
+            player.setCanPickupItems(false);
+        }
 
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
             Motd.displayAll(player);
