@@ -114,7 +114,7 @@ public class HerbalismManager extends SkillManager {
      */
     public void herbalismBlockCheck(BlockState blockState) {
         Material material = blockState.getType();
-        boolean oneBlockPlant = (material == Material.CACTUS || material == Material.SUGAR_CANE_BLOCK) ? false : true;
+        boolean oneBlockPlant = !(material == Material.CACTUS || material == Material.SUGAR_CANE_BLOCK);
 
         if (oneBlockPlant && mcMMO.placeStore.isTrue(blockState)) {
             return;
