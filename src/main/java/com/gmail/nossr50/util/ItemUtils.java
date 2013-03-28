@@ -576,9 +576,8 @@ public class ItemUtils {
         switch (is.getType()) {
             case WHEAT:
             case SEEDS:
-            case CARROT:
-            case POTATO:
-            case COCOA:
+            case CARROT_ITEM:
+            case POTATO_ITEM:
             case NETHER_WARTS:
             case BROWN_MUSHROOM:
             case RED_MUSHROOM:
