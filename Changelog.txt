@@ -7,6 +7,8 @@ Key:
   ! Change
   - Removal
 
+Version 1.4.05-dev
+
 Version 1.4.04
  + Added functions to ExperienceAPI for use with offline players
  + Added Nether Quartz Ore to Mining
