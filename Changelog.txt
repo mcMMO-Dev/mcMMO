@@ -20,6 +20,9 @@ Version 1.4.04-dev
  = Fixed bug with retrieving a player's party members
  = Fixed bug which caused a NPE when trying to join the party of a non-existing player or when ptp to a non-existing player
  = Fixed bug which causes a NPE when trying to use /mcrefresh from the console
+ = Fixed bug where Carrots and Potatoes weren't awarding Herbalism XP.
+ = Fixed bug where some herbalism drops weren't properly shared within parties.
+ = Fixed bug where players wouldn't be able to pick up items if they logged our while Berserk was still active.
  ! Changed config node name for the skill experience modifiers from "Experience.Formula.Multiplier.[Skill]" to "Experience.Formula.Modifier.[Skill]"
  ! Updated localization files
  ! mcMMO abilities can no longer be activated while in Creative mode
