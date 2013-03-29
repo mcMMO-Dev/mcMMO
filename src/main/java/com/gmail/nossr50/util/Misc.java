@@ -189,6 +189,14 @@ public final class Misc {
         }
     }
 
+    public static void resendChunkRadiusAt(Player player, int radius) {
+        for (int x = player.getLocation().getChunk().getX() - radius; x < player.getLocation().getChunk().getX() + radius; x++) {
+            for (int z = player.getLocation().getChunk().getZ() - radius; z < player.getLocation().getChunk().getZ() + radius; z++) {
+                player.getWorld().refreshChunk(x, z);
+            }
+        }
+    }
+
     public static Random getRandom() {
         return random;
     }

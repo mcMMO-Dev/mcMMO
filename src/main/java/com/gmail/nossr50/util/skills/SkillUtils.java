@@ -187,6 +187,10 @@ public class SkillUtils {
                     handleAbilitySpeedDecrease(player);
                 }
 
+                if (HiddenConfig.getInstance().resendChunksAfterBlockAbility() && (ability == AbilityType.BERSERK || ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER)) {
+                    Misc.resendChunkRadiusAt(player, 1);
+                }
+
                 mcMMOPlayer.setAbilityMode(ability, false);
                 mcMMOPlayer.setAbilityInformed(ability, false);
 

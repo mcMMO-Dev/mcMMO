@@ -11,6 +11,7 @@ public class HiddenConfig {
     private static boolean chunkletsEnabled;
     private static int conversionRate;
     private static boolean useEnchantmentBuffs;
+    private static boolean resendChunksAfterBlockAbility;
 
     public HiddenConfig(String fileName) {
         HiddenConfig.fileName = fileName;
@@ -31,6 +32,7 @@ public class HiddenConfig {
             chunkletsEnabled = config.getBoolean("Options.Chunklets", true);
             conversionRate = config.getInt("Options.ConversionRate", 1);
             useEnchantmentBuffs = config.getBoolean("Options.EnchantmentBuffs", true);
+            resendChunksAfterBlockAbility = config.getBoolean("Options.RefreshChunks", false);
         }
     }
 
@@ -44,5 +46,9 @@ public class HiddenConfig {
 
     public boolean useEnchantmentBuffs() {
         return useEnchantmentBuffs;
+    }
+
+    public boolean resendChunksAfterBlockAbility() {
+        return resendChunksAfterBlockAbility;
     }
 }

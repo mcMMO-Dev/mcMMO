@@ -9,3 +9,5 @@ Options:
     ConversionRate: 1
     # true to use enchantment buffs for Super Breaker & Giga Drill Breaker, false to use potion buffs
     EnchantmentBuffs: true
+    # true to enable refreshing of chunks around a player at the end of Super Breaker, Giga Drill Breaker, and Berserk.  This should fix blocks being broken client side, but not server-side
+    RefreshChunks: false

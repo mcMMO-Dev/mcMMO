@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.4.05-dev
+ + Added option to allow refreshing of chunks after block-breaking abilities.
 
 Version 1.4.04
  + Added functions to ExperienceAPI for use with offline players
