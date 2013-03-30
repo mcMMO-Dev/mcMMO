@@ -413,9 +413,10 @@ public final class DatabaseManager {
                     String skillName = skillType.name().toLowerCase();
                     String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
                                  "AND " + skillName + " > (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
-                                 "WHERE user = '" + playerName + "')";
+                                 "WHERE user = ?)";
 
                     PreparedStatement statement = connection.prepareStatement(sql);
+                    statement.setString(1, playerName);
                     resultSet = statement.executeQuery();
 
                     resultSet.next();
@@ -443,9 +444,10 @@ public final class DatabaseManager {
                              "WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > 0 " +
                              "AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > " +
                              "(SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing " +
-                             "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "')";
+                             "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = ?)";
 
                 PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setString(1, playerName);
                 resultSet = statement.executeQuery();
 
                 resultSet.next();
@@ -457,9 +459,10 @@ public final class DatabaseManager {
                       "WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > 0 " +
                       "AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing = " +
                       "(SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing " +
-                      "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = '" + playerName + "') ORDER BY user";
+                      "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = ?) ORDER BY user";
 
                 statement = connection.prepareStatement(sql);
+                statement.setString(1, playerName);
                 resultSet = statement.executeQuery();
 
                 while (resultSet.next()) {
