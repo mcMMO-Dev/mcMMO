@@ -667,6 +667,20 @@ public class PlayerProfile {
     }
 
     /**
+     * Add Experience to a skill.
+     *
+     * @param skillType Type of skill to add experience to
+     * @param experience Number of experience to add
+     */
+    public void addExperience(SkillType skillType, int experience) {
+        if (skillType.isChildSkill()) {
+            return;
+        }
+
+        skillsXp.put(skillType, skillsXp.get(skillType) + experience);
+    }
+
+    /**
      * Get the amount of Xp remaining before the next level.
      *
      * @param skillType Type of skill to check

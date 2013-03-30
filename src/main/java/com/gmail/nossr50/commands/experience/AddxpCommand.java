@@ -24,7 +24,7 @@ public class AddxpCommand extends ExperienceCommand {
             mcMMOPlayer.applyXpGain(skill, value);
         }
         else {
-            profile.setSkillXpLevel(skill, value);
+            profile.addExperience(skill, value);
         }
     }
 
