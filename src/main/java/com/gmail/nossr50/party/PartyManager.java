@@ -84,7 +84,7 @@ public final class PartyManager {
         List<Player> nearMembers = new ArrayList<Player>();
         if (party != null) {
             for (Player member : party.getOnlineMembers()) {
-                if (!player.getName().equalsIgnoreCase(member.getName()) && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
+                if (!player.getName().equalsIgnoreCase(member.getName()) && !member.isDead() && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
                     nearMembers.add(member);
                 }
             }
