@@ -452,6 +452,7 @@ public class PlayerProfile {
                 // Write the new file
                 FileWriter out = new FileWriter(location);
                 out.write(writer.toString());
+                out.flush();
                 out.close();
             }
             catch (Exception e) {
