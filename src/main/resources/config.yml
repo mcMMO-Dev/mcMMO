@@ -368,8 +368,10 @@ Particles:
     # These settings determine if fireworks should get launched when a player activates/deactivates an ability
     Ability_Activation: true
     Ability_Deactivation: true
-    
+
     # Use particle effect when these abilities trigger
     Dodge: true
     Bleed: true
     Greater_Impact: true
+
+    LevelUp: true

@@ -115,6 +115,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getDodgeEffectEnabled() { return config.getBoolean("Particles.Dodge", true); }
     public boolean getBleedEffectEnabled() { return config.getBoolean("Particles.Bleed", true); }
     public boolean getGreaterImpactEffectEnabled() { return config.getBoolean("Particles.Greater_Impact", true); }
+    public boolean getLevelUpEffectsEnabled() { return config.getBoolean("Particles.LevelUp", true); }
 
     /* PARTY SETTINGS */
     public int getAutoPartyKickInterval() { return config.getInt("Party.AutoKick_Interval", 12); }
