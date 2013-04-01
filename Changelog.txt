@@ -11,6 +11,7 @@ Version 1.4.05-dev
  + Added option to allow refreshing of chunks after block-breaking abilities. (Disabled by default)
  = Fixed bug where /addxp was setting instead of adding experience
  = Fixed bug which allowed players to share experience with nearby dead players
+ = Fixed bug with ChimaeraWings not taking Wings from a players inventory properly
 
 Version 1.4.04
  + Added functions to ExperienceAPI for use with offline players
