@@ -58,6 +58,7 @@ public abstract class ExperienceCommand implements CommandExecutor {
                 }
 
                 mcMMOPlayer = UserManager.getPlayer(args[0]);
+                player = mcMMOPlayer.getPlayer();
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
