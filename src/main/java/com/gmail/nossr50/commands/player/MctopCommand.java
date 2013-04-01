@@ -122,7 +122,7 @@ public class MctopCommand implements CommandExecutor {
         skill = SkillType.getSkill(skillName);
 
         if (CommandUtils.isChildSkill(sender, skill)) {
-            return true;
+            return false;
         }
 
         return true;
