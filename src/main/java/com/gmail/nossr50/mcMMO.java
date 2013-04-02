@@ -25,6 +25,8 @@ import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.LeaderboardManager;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
@@ -126,7 +128,7 @@ public class mcMMO extends JavaPlugin {
             }
 
             for (Player player : getServer().getOnlinePlayers()) {
-                UserManager.addUser(player); // In case of reload add all users back into PlayerProfile
+                UserManager.addUser(player); // In case of reload add all users back into UserManager
             }
 
             getLogger().info("Version " + getDescription().getVersion() + " is enabled!");
@@ -164,6 +166,7 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
+            reloadDisableHelper(); // Prevent Berserk from getting "stuck"
             UserManager.saveAll(); // Make sure to save player information if the server shuts down
             PartyManager.saveParties();
             placeStore.saveAll(); // Save our metadata
@@ -442,6 +445,19 @@ public class mcMMO extends JavaPlugin {
             long kickIntervalTicks = kickInterval * 60 * 60 * 20;
 
             partyAutoKickTask.runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
+        }
+    }
+
+    /**
+     * Because /reload is the biggest piece of garbage in existence,
+     * we have to do some special checks to keep it from breaking everything.
+     */
+    private void reloadDisableHelper() {
+        for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers().values()) {
+            if (mcMMOPlayer.getAbilityMode(AbilityType.BERSERK)) {
+                mcMMOPlayer.setAbilityMode(AbilityType.BERSERK, false);
+                mcMMOPlayer.getPlayer().setCanPickupItems(true);
+            }
         }
     }
 }
