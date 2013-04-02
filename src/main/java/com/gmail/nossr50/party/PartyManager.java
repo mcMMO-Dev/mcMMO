@@ -15,6 +15,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.runnables.party.PartyLoaderTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -438,6 +439,14 @@ public final class PartyManager {
      * Load party file.
      */
     public static void loadParties() {
+        try {
+            mcMMO.p.getServer().getOfflinePlayer("nossr50"); // TODO: Find a less-hacky way to manage reloading.
+        }
+        catch (IndexOutOfBoundsException ex){
+            new PartyLoaderTask().runTaskLater(mcMMO.p, 0);
+            return;
+        }
+
         File file = new File(partiesFilePath);
 
         if (!file.exists()) {

@@ -38,7 +38,6 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
-import com.gmail.nossr50.runnables.party.PartyLoaderTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.runnables.skills.SkillMonitorTask;
 import com.gmail.nossr50.skills.child.ChildConfig;
@@ -115,6 +114,8 @@ public class mcMMO extends JavaPlugin {
 
             registerEvents();
             registerCustomRecipes();
+
+            PartyManager.loadParties();
 
             // Setup the leader boards
             if (Config.getInstance().getUseMySQL()) {
@@ -367,9 +368,6 @@ public class mcMMO extends JavaPlugin {
     }
 
     private void scheduleTasks() {
-        // Parties are loaded at the end of first server tick otherwise Server.getOfflinePlayer throws an IndexOutOfBoundsException
-        new PartyLoaderTask().runTaskLater(this, 0);
-
         // Periodic save timer (Saves every 10 minutes by default)
         long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
 
