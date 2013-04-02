@@ -1,7 +1,6 @@
 package com.gmail.nossr50.listeners;
 
-import java.util.Calendar;
-
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -11,15 +10,27 @@ import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 
 public class SelfListener implements Listener {
+    protected Player player;
+
+    protected float skillValue;
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLevelUp(McMMOPlayerLevelUpEvent event) {
         if (!Config.getInstance().getLevelUpEffectsEnabled()) {
             return;
         }
 
-        Calendar today = Calendar.getInstance();
-        if (today.get(Calendar.MONTH) == Calendar.APRIL && today.get(Calendar.DAY_OF_MONTH) == 1) {
-            ParticleEffectUtils.runescapeModeCelebration(event.getPlayer(), event.getSkill());
+        int tier = Config.getInstance().getLevelUpEffectsTier();
+
+        if (tier <= 0) {
+            return;
+        }
+
+        player = event.getPlayer();
+        skillValue = event.getSkillLevel();
+
+        if ((skillValue % tier) == 0) {
+            ParticleEffectUtils.runescapeModeCelebration(player, event.getSkill());
         }
     }
 }

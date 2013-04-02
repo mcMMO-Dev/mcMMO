@@ -9,6 +9,7 @@ Key:
 
 Version 1.4.05-dev
  + Added option to allow refreshing of chunks after block-breaking abilities. (Disabled by default)
+ + Added fireworks effects when a player levels-up, for every 50 levels (configurable)
  = Fixed bug where /addxp was setting instead of adding experience
  = Fixed bug where /addxp was not processessing level-ups for online players
  = Fixed bug which allowed players to share experience with nearby dead players
