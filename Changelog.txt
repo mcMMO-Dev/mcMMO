@@ -17,6 +17,7 @@ Version 1.4.05-dev
  = Fixed bug which caused a NPE when trying to use /mctop smelting
  = Fixed Berserk misbehaving when /reload was used
  = Fixed parties misbehaving when /reload was used
+ = Fixed Berserk getting "stuck" when /mcrefresh was used
 
 Version 1.4.04
  + Added functions to ExperienceAPI for use with offline players

@@ -67,6 +67,7 @@ public class McrefreshCommand implements CommandExecutor {
         mcMMOPlayer.resetToolPrepMode();
         mcMMOPlayer.resetAbilityMode();
 
+        player.setCanPickupItems(true);
         player = mcMMOPlayer.getPlayer();
         player.sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
     }
