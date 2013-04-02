@@ -13,7 +13,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 
 public final class UserManager {
-    private static Map<String, McMMOPlayer> players = new HashMap<String, McMMOPlayer>();
+    private final static Map<String, McMMOPlayer> players = new HashMap<String, McMMOPlayer>();
 
     private UserManager() {};
 
