@@ -317,14 +317,15 @@ public class EntityListener implements Listener {
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         Entity entity = event.getEntity();
 
-        if (entity instanceof TNTPrimed) {
-            int id = entity.getEntityId();
+        if (entity instanceof TNTPrimed && entity.hasMetadata(mcMMO.tntMetadataKey)) {
+            // We can make this assumption because we (should) be the only ones using this exact metadata
+            Player player = plugin.getServer().getPlayer(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
-            if (!plugin.tntIsTracked(id)) {
+            if (Misc.isNPCEntity(player)) {
                 return;
             }
 
-            MiningManager miningManager = UserManager.getPlayer(plugin.getTNTPlayer(id)).getMiningManager();
+            MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
 
             if (miningManager.canUseBiggerBombs()) {
                 event.setRadius(miningManager.biggerBombs(event.getRadius()));
@@ -341,21 +342,20 @@ public class EntityListener implements Listener {
     public void onEnitityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
 
-        if (entity instanceof TNTPrimed) {
-            int id = entity.getEntityId();
+        if (entity instanceof TNTPrimed && entity.hasMetadata(mcMMO.tntMetadataKey)) {
+            // We can make this assumption because we (should) be the only ones using this exact metadata
+            Player player = plugin.getServer().getPlayer(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
-            if (!plugin.tntIsTracked(id)) {
+            if (Misc.isNPCEntity(player)) {
                 return;
             }
 
-            MiningManager miningManager = UserManager.getPlayer(plugin.getTNTPlayer(id)).getMiningManager();
+            MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
 
             if (miningManager.canUseBlastMining()) {
                 miningManager.blastMiningDropProcessing(event.getYield(), event.blockList());
                 event.setYield(0);
             }
-
-            plugin.removeFromTNTTracker(id);
         }
     }
 

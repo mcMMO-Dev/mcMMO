@@ -3,7 +3,6 @@ package com.gmail.nossr50;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import net.shatteredlands.shatt.backup.ZipLibrary;
@@ -65,8 +64,6 @@ public class mcMMO extends JavaPlugin {
     private final SelfListener      selfListener      = new SelfListener();
     private final WorldListener     worldListener     = new WorldListener();
 
-    private HashMap<Integer, String>    tntTracker     = new HashMap<Integer, String>();
-
     public static mcMMO p;
 
     public static ChunkManager  placeStore;
@@ -91,10 +88,12 @@ public class mcMMO extends JavaPlugin {
     private boolean xpEventEnabled = false;
 
     // Metadata Values
-    public static FixedMetadataValue metadataValue;
-    public final static String entityMetadataKey = "mcMMO: Spawned Entity";
-    public final static String blockMetadataKey  = "mcMMO: Piston Tracking";
+    public final static String entityMetadataKey   = "mcMMO: Spawned Entity";
+    public final static String blockMetadataKey    = "mcMMO: Piston Tracking";
     public final static String furnaceMetadataKey  = "mcMMO: Tracked Furnace";
+    public final static String tntMetadataKey      = "mcMMO: Tracked TNT";
+
+    public static FixedMetadataValue metadataValue;
 
     /**
      * Things to be run when the plugin is enabled.
@@ -198,45 +197,6 @@ public class mcMMO extends JavaPlugin {
         }
 
         getLogger().info("Was disabled."); // How informative!
-    }
-
-    /**
-     * Add a set of values to the TNT tracker.
-     *
-     * @param tntID The EntityID of the TNT
-     * @param playerName The name of the detonating player
-     */
-    public void addToTNTTracker(int tntID, String playerName) {
-        tntTracker.put(tntID, playerName);
-    }
-
-    /**
-     * Check to see if a given TNT Entity is tracked.
-     *
-     * @param tntID The EntityID of the TNT
-     * @return true if the TNT is being tracked, false otherwise
-     */
-    public boolean tntIsTracked(int tntID) {
-        return tntTracker.containsKey(tntID);
-    }
-
-    /**
-     * Get the player who detonated the TNT.
-     *
-     * @param tntID The EntityID of the TNT
-     * @return the Player who detonated it
-     */
-    public Player getTNTPlayer(int tntID) {
-        return getServer().getPlayer(tntTracker.get(tntID));
-    }
-
-    /**
-     * Remove TNT from the tracker after it explodes.
-     *
-     * @param tntID The EntityID of the TNT
-     */
-    public void removeFromTNTTracker(int tntID) {
-        tntTracker.remove(tntID);
     }
 
     public static String getMainDirectory() {
