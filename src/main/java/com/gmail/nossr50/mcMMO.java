@@ -166,11 +166,12 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
-            reloadDisableHelper(); // Prevent Berserk from getting "stuck"
-            UserManager.saveAll(); // Make sure to save player information if the server shuts down
-            PartyManager.saveParties();
-            placeStore.saveAll(); // Save our metadata
-            placeStore.cleanUp(); // Cleanup empty metadata stores
+            reloadDisableHelper();      // Prevent Berserk from getting "stuck"
+            UserManager.saveAll();      // Make sure to save player information if the server shuts down
+            UserManager.clearAll();     // Should always clear after saving
+            PartyManager.saveParties(); // Save our parties
+            placeStore.saveAll();       // Save our metadata
+            placeStore.cleanUp();       // Cleanup empty metadata stores
         }
         catch (NullPointerException e) {}
 

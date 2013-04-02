@@ -23,6 +23,7 @@ public class MmoupdateCommand implements CommandExecutor {
         switch (args.length) {
             case 0:
                 sender.sendMessage(LocaleLoader.getString("Commands.mmoupdate.Start"));
+                UserManager.saveAll();
                 UserManager.clearAll();
                 convertToMySQL();
 
