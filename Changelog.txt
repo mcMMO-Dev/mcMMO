@@ -18,7 +18,8 @@ Version 1.4.05-dev
  = Fixed Berserk misbehaving when /reload was used
  = Fixed parties misbehaving when /reload was used
  = Fixed Berserk getting "stuck" when /mcrefresh was used
- = Fix ClassCastException with Taming
+ = Fixed ClassCastException with Taming
+ = Fixed huge mushroom blocks not being properly tracked
 
 Version 1.4.04
  + Added functions to ExperienceAPI for use with offline players

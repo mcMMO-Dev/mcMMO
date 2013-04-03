@@ -30,6 +30,8 @@ public final class BlockUtils {
             case GOLD_ORE:
             case GRASS:
             case GRAVEL:
+            case HUGE_MUSHROOM_1:
+            case HUGE_MUSHROOM_2:
             case IRON_ORE:
             case LAPIS_ORE:
             case LOG:
