@@ -51,7 +51,6 @@ public final class BlockUtils {
             case VINE:
             case WATER_LILY:
             case YELLOW_FLOWER:
-            case COCOA:
             case EMERALD_ORE:
                 return true;
 
