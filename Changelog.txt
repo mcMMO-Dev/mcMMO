@@ -20,6 +20,7 @@ Version 1.4.05-dev
  = Fixed Berserk getting "stuck" when /mcrefresh was used
  = Fixed ClassCastException with Taming
  = Fixed huge mushroom blocks not being properly tracked
+ = Fixed potion buff option not using the appropriate # of ticks
 
 Version 1.4.04
  + Added functions to ExperienceAPI for use with offline players
