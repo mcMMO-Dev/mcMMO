@@ -375,6 +375,6 @@ Particles:
     Greater_Impact: true
 
     # These settings determine if fireworks should get launched when a player levels-up,
-    # this will happen by default for every 50 levels.
+    # this will happen by default for every 100 levels.
     LevelUp_Enabled: true
     LevelUp_Tier: 100
