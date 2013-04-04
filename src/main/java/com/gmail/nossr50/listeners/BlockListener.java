@@ -191,9 +191,7 @@ public class BlockListener implements Listener {
         }
 
         /* Remove metadata from placed watched blocks */
-        if (mcMMO.placeStore.isTrue(blockState)) {
-            mcMMO.placeStore.setFalse(blockState);
-        }
+        mcMMO.placeStore.setFalse(blockState);
     }
 
     /**
