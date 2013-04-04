@@ -954,12 +954,15 @@ permissions:
         description: Implies access to all mcmmo.commands.ptp permissions.
         children:
             mcmmo.commands.ptp: true
+            mcmmo.commands.ptp.send: true
             mcmmo.commands.ptp.accept: true
             mcmmo.commands.ptp.acceptall: true
             mcmmo.commands.ptp.toggle: true
             mcmmo.commands.ptp.world.all: true
     mcmmo.commands.ptp:
         description: Allows access to the ptp command
+    mcmmo.commands.ptp.send:
+        description: Allows access to the ptp <player> command
     mcmmo.commands.ptp.accept:
         description: Allows access to the ptp accept command
     mcmmo.commands.ptp.acceptall:

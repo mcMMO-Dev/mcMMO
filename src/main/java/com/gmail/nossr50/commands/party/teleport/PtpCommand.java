@@ -12,6 +12,7 @@ import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -52,6 +53,11 @@ public class PtpCommand implements CommandExecutor {
 
                 if (args[0].equalsIgnoreCase("accept")) {
                     return ptpAcceptCommand.onCommand(sender, command, label, args);
+                }
+
+                if (!Permissions.partyTeleportSend(sender)) {
+                    sender.sendMessage(command.getPermissionMessage());
+                    return true;
                 }
 
                 sendTeleportRequest(sender, player, args[0]);

@@ -217,6 +217,7 @@ public final class Permissions {
     public static boolean friendlyFire(Permissible permissible) { return permissible.hasPermission("mcmmo.party.friendlyfire"); }
 
     /* TELEPORT */
+    public static boolean partyTeleportSend(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.ptp.send"); }
     public static boolean partyTeleportAccept(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.ptp.accept"); }
     public static boolean partyTeleportAcceptAll(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.ptp.acceptall"); }
     public static boolean partyTeleportToggle(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.ptp.toggle"); }
