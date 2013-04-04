@@ -95,6 +95,7 @@ public class PtpCommand implements CommandExecutor {
         }
 
         target = mcMMOTarget.getPlayer();
+        targetName = target.getName();
 
         if (player.equals(target)) {
             player.sendMessage(LocaleLoader.getString("Party.Teleport.Self"));
