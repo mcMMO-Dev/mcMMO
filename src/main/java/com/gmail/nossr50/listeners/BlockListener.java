@@ -129,6 +129,12 @@ public class BlockListener implements Listener {
             return;
         }
 
+        BlockState blockState = event.getBlock().getState();
+
+        if (!BlockUtils.shouldBeWatched(blockState)) {
+            return;
+        }
+
         Player player = event.getPlayer();
 
         if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
@@ -136,7 +142,6 @@ public class BlockListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        BlockState blockState = event.getBlock().getState();
         ItemStack heldItem = player.getItemInHand();
 
         /* HERBALISM */
@@ -186,7 +191,7 @@ public class BlockListener implements Listener {
         }
 
         /* Remove metadata from placed watched blocks */
-        if (BlockUtils.shouldBeWatched(blockState) && mcMMO.placeStore.isTrue(blockState)) {
+        if (mcMMO.placeStore.isTrue(blockState)) {
             mcMMO.placeStore.setFalse(blockState);
         }
     }
