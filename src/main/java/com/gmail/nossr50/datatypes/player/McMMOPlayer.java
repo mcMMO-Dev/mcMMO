@@ -650,11 +650,7 @@ public class McMMOPlayer {
      * @return Modified experience
      */
     private int modifyXpGain(SkillType skillType, int xp) {
-        if (player.getGameMode() == GameMode.CREATIVE) {
-            return 0;
-        }
-
-        if ((skillType.getMaxLevel() < profile.getSkillLevel(skillType) + 1) || (Config.getInstance().getPowerLevelCap() < getPowerLevel() + 1)) {
+        if (player.getGameMode() == GameMode.CREATIVE || (skillType.getMaxLevel() < profile.getSkillLevel(skillType) + 1) || (Config.getInstance().getPowerLevelCap() < getPowerLevel() + 1)) {
             return 0;
         }
 

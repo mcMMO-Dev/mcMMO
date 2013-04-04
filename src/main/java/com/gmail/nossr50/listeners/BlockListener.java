@@ -131,11 +131,7 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player)) {
-            return;
-        }
-
-        if (player.getGameMode() == GameMode.CREATIVE) {
+        if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
@@ -208,11 +204,7 @@ public class BlockListener implements Listener {
 
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player)) {
-            return;
-        }
-
-        if (player.getGameMode() == GameMode.CREATIVE) {
+        if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 

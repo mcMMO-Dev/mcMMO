@@ -279,11 +279,7 @@ public class PlayerListener implements Listener {
     public void onPlayerInteractLowest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player)) {
-            return;
-        }
-
-        if (player.getGameMode() == GameMode.CREATIVE) {
+        if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
@@ -342,11 +338,7 @@ public class PlayerListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player)) {
-            return;
-        }
-
-        if (player.getGameMode() == GameMode.CREATIVE) {
+        if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
