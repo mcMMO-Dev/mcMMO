@@ -6,6 +6,8 @@ Key:
   = Fix
   ! Change
   - Removal
+  
+Version 1.4.06-dev
 
 Version 1.4.05
  + Added option to allow refreshing of chunks after block-breaking abilities. (Disabled by default)
