@@ -56,6 +56,17 @@ public final class BlockUtils {
             case EMERALD_ORE:
                 return true;
 
+            case CARROT:
+            case CROPS:
+            case POTATO:
+                return blockState.getRawData() == CropState.RIPE.getData();
+
+            case NETHER_WARTS:
+                return blockState.getRawData() == (byte) 0x3;
+
+            case COCOA:
+                return ((CocoaPlant) blockState.getData()).getSize() == CocoaPlantSize.LARGE;
+
             default:
                 return ModUtils.getCustomBlock(blockState) != null;
         }
