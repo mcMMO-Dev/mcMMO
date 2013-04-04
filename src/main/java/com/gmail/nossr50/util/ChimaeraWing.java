@@ -105,7 +105,9 @@ public final class ChimaeraWing {
 
         player.setItemInHand(new ItemStack(getChimaeraWing(player.getItemInHand().getAmount() - Config.getInstance().getChimaeraUseCost())));
         UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
-        MetricsManager.chimeraWingUsed();
+        if (Config.getInstance().getStatsTrackingEnabled()) {
+            MetricsManager.chimeraWingUsed();
+        }
         player.playSound(location, Sound.BAT_TAKEOFF, Misc.BAT_VOLUME, Misc.BAT_PITCH);
         player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
     }
