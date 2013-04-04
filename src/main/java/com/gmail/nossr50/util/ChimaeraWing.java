@@ -53,7 +53,7 @@ public final class ChimaeraWing {
                 return;
             }
 
-            if (!SkillUtils.cooldownOver(lastChimaeraWing * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player)) {
+            if (Config.getInstance().getChimaeraCooldown() > 0 && !SkillUtils.cooldownOver(lastChimaeraWing * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player)) {
                 player.sendMessage(ChatColor.RED + "You need to wait before you can use this again! " + ChatColor.YELLOW + "(" + SkillUtils.calculateTimeLeft(lastChimaeraWing * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player) + ")"); //TODO Locale!
                 return;
             }
@@ -69,7 +69,6 @@ public final class ChimaeraWing {
             }
 
             if (Config.getInstance().getChimaeraPreventUseUnderground()) {
-
                 if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
                     player.setItemInHand(new ItemStack(getChimaeraWing(amount - Config.getInstance().getChimaeraUseCost())));
                     player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
@@ -79,11 +78,18 @@ public final class ChimaeraWing {
                     return;
                 }
             }
+
             mcMMOPlayer.actualizeChimaeraCommenceLocation(player);
 
             long warmup = Config.getInstance().getChimaeraWarmup();
-            player.sendMessage(ChatColor.GRAY + "Commencing teleport in " + ChatColor.GOLD + "(" + warmup + ")" + ChatColor.GRAY + " seconds, please stand still..."); //TODO Locale!
-            new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(mcMMO.p, 20 * warmup);
+
+            if (warmup > 0) {
+                player.sendMessage(ChatColor.GRAY + "Commencing teleport in " + ChatColor.GOLD + "(" + warmup + ")" + ChatColor.GRAY + " seconds, please stand still..."); //TODO Locale!
+                new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(mcMMO.p, 20 * warmup);
+            }
+            else {
+                chimaeraExecuteTeleport();
+            }
         }
     }
 

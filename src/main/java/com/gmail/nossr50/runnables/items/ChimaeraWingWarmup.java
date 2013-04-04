@@ -41,7 +41,7 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
         }
 
         if (!ItemUtils.isChimaeraWing(inHand) || inHand.getAmount() < Config.getInstance().getChimaeraUseCost()) {
-            player.sendMessage(ChatColor.DARK_RED + "Not holding enough " + ChatColor.GRAY + "ChimaeraWings"); //TODO Locale!
+            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", "Chimaera Wings")); //TODO Locale!
             return;
         }
 

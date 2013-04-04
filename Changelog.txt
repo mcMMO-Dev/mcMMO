@@ -22,6 +22,7 @@ Version 1.4.05-dev
  = Fixed huge mushroom blocks not being properly tracked
  = Fixed potion buff option not using the appropriate # of ticks
  = Fixed Chimera Wing spamming console if Metrics was disabled
+ = Fixed Chimera Wing displaying warmup message if warmup was set to 0
 
 Version 1.4.04
  + Added functions to ExperienceAPI for use with offline players
