@@ -63,7 +63,7 @@ public class BlockListener implements Listener {
         Block futureEmptyBlock = event.getBlock().getRelative(direction); // Block that would be air after piston is finished
 
         for (Block b : blocks) {
-            if (mcMMO.placeStore.isTrue(b)) {
+            if (BlockUtils.shouldBeWatched(b.getState()) && mcMMO.placeStore.isTrue(b)) {
                 b.getRelative(direction).setMetadata(mcMMO.blockMetadataKey, mcMMO.metadataValue);
                 if (b.equals(futureEmptyBlock)) {
                     mcMMO.placeStore.setFalse(b);
