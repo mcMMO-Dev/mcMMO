@@ -213,7 +213,7 @@ public final class Permissions {
      */
 
     public static boolean party(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.party"); }
-    public static boolean partySubcommand(Permissible permissible, PartySubcommandType subcommand) {return permissible.hasPermission("mcmmo.commands.party." + subcommand.toString().toLowerCase()); }
+    public static boolean partySubcommand(Permissible permissible, PartySubcommandType subcommand) { return permissible.hasPermission("mcmmo.commands.party." + subcommand.toString().toLowerCase()); }
     public static boolean friendlyFire(Permissible permissible) { return permissible.hasPermission("mcmmo.party.friendlyfire"); }
 
     /* TELEPORT */
