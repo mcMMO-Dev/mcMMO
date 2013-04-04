@@ -441,6 +441,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        boolean isAsync = event.isAsynchronous();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         if (mcMMOPlayer.getPartyChatMode()) {
@@ -451,11 +452,11 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            ChatManager.handlePartyChat(plugin, party, player.getName(), player.getDisplayName(), event.getMessage(), true);
+            ChatManager.handlePartyChat(plugin, party, player.getName(), player.getDisplayName(), event.getMessage(), isAsync);
             event.setCancelled(true);
         }
         else if (mcMMOPlayer.getAdminChatMode()) {
-            ChatManager.handleAdminChat(plugin, player.getName(), player.getDisplayName(), event.getMessage(), true);
+            ChatManager.handleAdminChat(plugin, player.getName(), player.getDisplayName(), event.getMessage(), isAsync);
             event.setCancelled(true);
         }
     }
