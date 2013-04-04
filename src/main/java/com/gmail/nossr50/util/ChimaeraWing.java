@@ -119,13 +119,17 @@ public final class ChimaeraWing {
     }
 
     public static ItemStack getChimaeraWing(int amount) {
-        ItemStack itemStack = new ItemStack(Material.FEATHER, amount);
+        Material ingredient = Material.getMaterial(Config.getInstance().getChimaeraItemId());
+        ItemStack itemStack = new ItemStack(ingredient, amount);
+
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.GOLD + "Chimaera Wing"); //TODO Locale!
+
         List<String> itemLore = new ArrayList<String>();
         itemLore.add("mcMMO Item");
         itemLore.add(ChatColor.GRAY + "Teleports you to your bed."); //TODO Locale!
         itemMeta.setLore(itemLore);
+
         itemStack.setItemMeta(itemMeta);
         return itemStack;
     }

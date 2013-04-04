@@ -8,6 +8,7 @@ Key:
   - Removal
   
 Version 1.4.06-dev
+ ! Changed Chimaera Wing's recipe result to use the ingredient Material
 
 Version 1.4.05
  + Added option to allow refreshing of chunks after block-breaking abilities. (Disabled by default)
