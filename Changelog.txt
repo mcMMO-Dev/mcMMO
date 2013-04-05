@@ -8,6 +8,7 @@ Key:
   - Removal
   
 Version 1.4.06-dev
+ + Added health display for mobs during combat.
  + Added new API method to McMMOPlayerLevelUpEvent to set levels gained
  + Added new permission node for /ptp; mcmmo.commands.ptp.send (enabled by default)
  = Fixed displaying partial names when trying to use /ptp

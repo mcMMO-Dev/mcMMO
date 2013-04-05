@@ -91,6 +91,8 @@ public class mcMMO extends JavaPlugin {
     public final static String blockMetadataKey    = "mcMMO: Piston Tracking";
     public final static String furnaceMetadataKey  = "mcMMO: Tracked Furnace";
     public final static String tntMetadataKey      = "mcMMO: Tracked TNT";
+    public final static String customNameKey       = "mcMMO: Custom Name";
+    public final static String customVisibleKey    = "mcMMO: Name Visibility";
 
     public static FixedMetadataValue metadataValue;
 
@@ -355,6 +357,7 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationManager.registerHardcoreCommand();
         CommandRegistrationManager.registerVampirismCommand();
         CommandRegistrationManager.registerMcnotifyCommand();
+        CommandRegistrationManager.registerMobhealthCommand();
 
         // Spout commands
         CommandRegistrationManager.registerXplockCommand();

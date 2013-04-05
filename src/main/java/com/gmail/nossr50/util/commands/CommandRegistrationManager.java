@@ -11,6 +11,7 @@ import com.gmail.nossr50.commands.McgodCommand;
 import com.gmail.nossr50.commands.McmmoCommand;
 import com.gmail.nossr50.commands.McnotifyCommand;
 import com.gmail.nossr50.commands.McrefreshCommand;
+import com.gmail.nossr50.commands.MobhealthCommand;
 import com.gmail.nossr50.commands.XprateCommand;
 import com.gmail.nossr50.commands.chat.AdminChatCommand;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
@@ -365,5 +366,14 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcnotify"));
         command.setExecutor(new McnotifyCommand());
+    }
+
+    public static void registerMobhealthCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mobhealth");
+        command.setDescription("Change the style of the mob healthbar"); //TODO: Localize
+        command.setPermission("mcmmo.commands.mobhealth");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mobhealth", "<DISABLED | HEARTS | BAR>"));
+        command.setExecutor(new MobhealthCommand());
     }
 }

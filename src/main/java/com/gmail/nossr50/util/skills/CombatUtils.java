@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
@@ -17,15 +18,19 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
@@ -281,6 +286,34 @@ public final class CombatUtils {
 
                 if (swordsManager.canUseCounterAttack(damager)) {
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
+                }
+            }
+        }
+        else if (attacker instanceof Player) {
+            Player player = (Player) attacker;
+            PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+
+            if (Permissions.mobHealthDisplay(player) && profile.getMobHealthbarType() != MobHealthbarType.DISABLED) {
+                String oldName = target.getCustomName();
+                boolean oldNameVisible = target.isCustomNameVisible();
+                String newName = createHealthDisplay(profile, target, event.getDamage());
+
+                target.setCustomName(newName);
+                target.setCustomNameVisible(true);
+
+                int displayTime = Config.getInstance().getMobHealthbarTime();
+
+                if (displayTime != -1) {
+                    if (oldName == null) {
+                        oldName = "";
+                    }
+
+                    if (!ChatColor.stripColor(oldName).equalsIgnoreCase(ChatColor.stripColor(newName))) {
+                        target.setMetadata(mcMMO.customNameKey, new FixedMetadataValue(mcMMO.p, oldName));
+                        target.setMetadata(mcMMO.customVisibleKey, new FixedMetadataValue(mcMMO.p, oldNameVisible));
+                    }
+
+                    new MobHealthDisplayUpdaterTask(target).runTaskLater(mcMMO.p, displayTime * 20); // Clear health display after 3 seconds
                 }
             }
         }
@@ -582,5 +615,68 @@ public final class CombatUtils {
         }
 
         return process;
+    }
+
+    private static String createHealthDisplay(PlayerProfile profile, LivingEntity entity, int damage) {
+        int maxHealth = entity.getMaxHealth();
+        int currentHealth = Math.max(entity.getHealth() - damage, 0);
+        double healthPercentage = (currentHealth / (double) maxHealth) * 100.0D;
+
+        int fullDisplay = 0;
+        ChatColor color = ChatColor.BLACK;
+        String symbol = "";
+
+        switch (profile.getMobHealthbarType()) {
+            case HEARTS:
+                fullDisplay = Math.min(maxHealth / 2, 10);
+                color = ChatColor.DARK_RED;
+                symbol = "❤";
+                break;
+
+            case BAR:
+                fullDisplay = 10;
+
+                if (healthPercentage >= 85) {
+                    color = ChatColor.DARK_GREEN;
+                }
+                else if (healthPercentage >= 70) {
+                    color = ChatColor.GREEN;
+                }
+                else if (healthPercentage >= 55) {
+                    color = ChatColor.GOLD;
+                }
+                else if (healthPercentage >= 40) {
+                    color = ChatColor.YELLOW;
+                }
+                else if (healthPercentage >= 25) {
+                    color = ChatColor.RED;
+                }
+                else if (healthPercentage >= 0) {
+                    color = ChatColor.DARK_RED;
+                }
+
+                symbol = "■";
+                break;
+
+            default:
+                return null;
+        }
+
+        int coloredDisplay = (int) (fullDisplay * (healthPercentage / 100.0D));
+        int grayDisplay = fullDisplay - coloredDisplay;
+
+        String healthbar = color + "";
+
+        for (int i = 0; i < coloredDisplay; i++) {
+            healthbar += symbol;
+        }
+
+        healthbar += ChatColor.GRAY;
+
+        for (int i = 0; i < grayDisplay; i++) {
+            healthbar += symbol;
+        }
+
+        return healthbar;
     }
 }

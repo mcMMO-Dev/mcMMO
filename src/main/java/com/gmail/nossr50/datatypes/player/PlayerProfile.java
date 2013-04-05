@@ -13,6 +13,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.database.DatabaseManager;
+import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
@@ -27,6 +28,7 @@ public class PlayerProfile {
     // HUD
     private McMMOHud spoutHud;
     private HudType  hudType;
+    private MobHealthbarType mobHealthbarType;
 
     // mySQL Stuff
     private int userId;
@@ -41,6 +43,7 @@ public class PlayerProfile {
 
     public PlayerProfile(String playerName, boolean addNew) {
         this.playerName = playerName;
+        mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
 
         if (mcMMO.spoutEnabled) {
             hudType = SpoutConfig.getInstance().defaultHudType;
@@ -97,6 +100,8 @@ public class PlayerProfile {
                 }
             }
         }
+
+        mobHealthbarType = MobHealthbarType.valueOf(DatabaseManager.read("SELECT mobhealthbar FROM " + tablePrefix + "huds WHERE user_id = " + userId).get(1).get(0));
 
         HashMap<Integer, ArrayList<String>> cooldowns = DatabaseManager.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM " + tablePrefix + "cooldowns WHERE user_id = " + userId);
         ArrayList<String> cooldownValues = cooldowns.get(1);
@@ -326,6 +331,10 @@ public class PlayerProfile {
                     skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(character[36]));
                 }
 
+                if (character.length > 38) {
+                    mobHealthbarType = MobHealthbarType.valueOf(character[38]);
+                }
+
                 loaded = true;
 
                 in.close();
@@ -348,6 +357,7 @@ public class PlayerProfile {
             String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
             DatabaseManager.write("UPDATE " + tablePrefix + "huds SET hudtype = '" + hudType.toString() + "' WHERE user_id = " + userId);
+            DatabaseManager.write("UPDATE " + tablePrefix + "huds SET mobhealthbar = '" + mobHealthbarType.toString() + "' WHERE user_id = " + userId);
             DatabaseManager.write("UPDATE " + tablePrefix + "users SET lastlogin = " + ((int) (timestamp / Misc.TIME_CONVERSION_FACTOR)) + " WHERE id = " + userId);
             DatabaseManager.write("UPDATE " + tablePrefix + "cooldowns SET "
                     + " mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
@@ -443,6 +453,7 @@ public class PlayerProfile {
                         writer.append(skillsXp.get(SkillType.FISHING)).append(":");
                         writer.append(skillsDATS.get(AbilityType.BLAST_MINING)).append(":");
                         writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
+                        writer.append(mobHealthbarType.toString()).append(":");
                         writer.append("\r\n");
                     }
                 }
@@ -506,6 +517,7 @@ public class PlayerProfile {
             out.append("0:"); // FishingXp
             out.append("0:"); // Blast Mining
             out.append(String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)).append(":"); // LastLogin
+            out.append(mobHealthbarType.toString()).append(":"); // Mob Healthbar HUD
 
             // Add more in the same format as the line above
 
@@ -547,6 +559,18 @@ public class PlayerProfile {
 
     public void setHudType(HudType hudType) {
         this.hudType = hudType;
+    }
+
+    /*
+     * Mob Healthbars
+     */
+
+    public MobHealthbarType getMobHealthbarType() {
+        return mobHealthbarType;
+    }
+
+    public void setMobHealthbarType(MobHealthbarType mobHealthbarType) {
+        this.mobHealthbarType = mobHealthbarType;
     }
 
     /*

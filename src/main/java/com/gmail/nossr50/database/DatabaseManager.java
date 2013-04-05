@@ -96,6 +96,7 @@ public final class DatabaseManager {
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD',"
+                + "`mobhealthbar` varchar(50) NOT NULL DEFAULT 'HEARTS',"
                 + "PRIMARY KEY (`user_id`),"
                 + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
@@ -153,6 +154,7 @@ public final class DatabaseManager {
         checkDatabaseStructure(DatabaseUpdateType.BLAST_MINING);
         checkDatabaseStructure(DatabaseUpdateType.CASCADE_DELETE);
         checkDatabaseStructure(DatabaseUpdateType.INDEX);
+        checkDatabaseStructure(DatabaseUpdateType.MOB_HEALTHBARS);
     }
 
     /**
@@ -574,6 +576,10 @@ public final class DatabaseManager {
                 }
                 break;
 
+            case MOB_HEALTHBARS:
+                sql = "SELECT * FROM  `" + tablePrefix + "huds` ORDER BY  `" + tablePrefix + "huds`.`mobhealthbar` ASC LIMIT 0 , 30";
+                break;
+
             default:
                 break;
         }
@@ -608,6 +614,11 @@ public final class DatabaseManager {
                     mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
                     write("ALTER TABLE `"+tablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
                     write("ALTER TABLE `"+tablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
+                    break;
+
+                case MOB_HEALTHBARS:
+                    mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for mob healthbars...");
+                    write("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT 'HEARTS' ;");
                     break;
 
                 default:

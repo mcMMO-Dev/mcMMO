@@ -20,6 +20,7 @@ public final class Permissions {
      */
 
     public static boolean motd(Permissible permissible) { return permissible.hasPermission("mcmmo.motd"); }
+    public static boolean mobHealthDisplay(Permissible permissible) { return permissible.hasPermission("mcmmo.mobhealthdisplay"); }
     public static boolean updateNotifications(Permissible permissible) {return permissible.hasPermission("mcmmo.tools.updatecheck"); }
     public static boolean chimaeraWing(Permissible permissible) { return permissible.hasPermission("mcmmo.item.chimaerawing"); }
 

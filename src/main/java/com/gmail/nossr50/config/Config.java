@@ -6,6 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 
+import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.StringUtils;
@@ -47,6 +48,18 @@ public class Config extends AutoUpdateConfigLoader {
 
     public boolean getPartyDisplayNames() { return config.getBoolean("Commands.p.Use_Display_Names", true); }
     public boolean getAdminDisplayNames() { return config.getBoolean("Commands.a.Use_Display_Names", true); }
+
+    /* Mob Healthbar */
+    public MobHealthbarType getMobHealthbarDefault() {
+        try {
+            return MobHealthbarType.valueOf(config.getString("Mob_Healthbar.Display_Type", "HEARTS").toUpperCase().trim());
+        }
+        catch (IllegalArgumentException ex) {
+            return MobHealthbarType.HEARTS;
+        }
+    }
+
+    public int getMobHealthbarTime() { return config.getInt("Mob_Healthbar.Display_Time", 3); }
 
     /* Database Purging */
     public int getPurgeInterval() { return config.getInt("Database_Purging.Purge_Interval", -1); }
