@@ -27,7 +27,7 @@ General:
     # Should mcMMO over-write configs to update, or make new ones ending in .new?
     Config_Update_Overwrite: true
 
-Mob_Healthbar
+Mob_Healthbar:
     # Default display for mob health bars - HEARTS, BAR, or DISABLED
     Display_Type: HEARTS
     # Amount of time (in seconds) to display. To display permanently, set to -1
