@@ -194,6 +194,7 @@ public class TamingManager extends SkillManager {
             ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + Misc.getRandom().nextInt(3)));
         }
         else {
+            entity.setMaxHealth(20);
             entity.setHealth(entity.getMaxHealth());
         }
 
