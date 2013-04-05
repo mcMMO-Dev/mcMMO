@@ -1,9 +1,11 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.CropState;
+import org.bukkit.NetherWartsState;
 import org.bukkit.block.BlockState;
 import org.bukkit.material.CocoaPlant;
 import org.bukkit.material.CocoaPlant.CocoaPlantSize;
+import org.bukkit.material.NetherWarts;
 
 import com.gmail.nossr50.config.Config;
 
@@ -62,7 +64,7 @@ public final class BlockUtils {
                 return blockState.getRawData() == CropState.RIPE.getData();
 
             case NETHER_WARTS:
-                return blockState.getRawData() == (byte) 0x3;
+                return ((NetherWarts) blockState.getData()).getState() == NetherWartsState.RIPE;
 
             case COCOA:
                 return ((CocoaPlant) blockState.getData()).getSize() == CocoaPlantSize.LARGE;
@@ -194,7 +196,7 @@ public final class BlockUtils {
                 return blockState.getRawData() == CropState.RIPE.getData();
 
             case NETHER_WARTS:
-                return blockState.getRawData() == (byte) 0x3;
+                return ((NetherWarts) blockState.getData()).getState() == NetherWartsState.RIPE;
 
             case COCOA:
                 return ((CocoaPlant) blockState.getData()).getSize() == CocoaPlantSize.LARGE;
