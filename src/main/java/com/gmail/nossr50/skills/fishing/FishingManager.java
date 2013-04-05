@@ -263,17 +263,7 @@ public class FishingManager extends SkillManager {
         int specificChance = 1;
 
         for (Enchantment possibleEnchantment : possibleEnchantments) {
-            boolean conflicts = false;
-
-            for (Enchantment currentEnchantment : treasureDrop.getEnchantments().keySet()) {
-                conflicts = currentEnchantment.conflictsWith(possibleEnchantment);
-
-                if (conflicts) {
-                    break;
-                }
-            }
-
-            if (!conflicts && Misc.getRandom().nextInt(specificChance) == 0) {
+            if (!treasureDrop.getItemMeta().hasConflictingEnchant(possibleEnchantment) && Misc.getRandom().nextInt(specificChance) == 0) {
                 treasureDrop.addEnchantment(possibleEnchantment, Misc.getRandom().nextInt(possibleEnchantment.getMaxLevel()) + 1);
 
                 specificChance++;
