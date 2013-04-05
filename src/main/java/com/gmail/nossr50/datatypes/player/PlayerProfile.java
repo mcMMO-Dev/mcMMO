@@ -46,7 +46,7 @@ public class PlayerProfile {
         mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
 
         if (mcMMO.spoutEnabled) {
-            hudType = SpoutConfig.getInstance().defaultHudType;
+            hudType = SpoutConfig.getInstance().getDefaultHudType();
         }
         else {
             hudType = HudType.DISABLED;
@@ -94,11 +94,7 @@ public class PlayerProfile {
             DatabaseManager.write("INSERT INTO " + tablePrefix + "huds (user_id) VALUES (" + userId + ")");
         }
         else {
-            for (HudType type : HudType.values()) {
-                if (type.toString().equalsIgnoreCase(huds.get(1).get(0))) {
-                    hudType = type;
-                }
-            }
+            hudType = HudType.valueOf(huds.get(1).get(0));
         }
 
         mobHealthbarType = MobHealthbarType.valueOf(DatabaseManager.read("SELECT mobhealthbar FROM " + tablePrefix + "huds WHERE user_id = " + userId).get(1).get(0));
@@ -312,11 +308,7 @@ public class PlayerProfile {
                 }
 
                 if (character.length > 33) {
-                    for (HudType type : HudType.values()) {
-                        if (type.toString().equalsIgnoreCase(character[33])) {
-                            hudType = type;
-                        }
-                    }
+                    hudType = HudType.valueOf(character[33]);
                 }
 
                 if (character.length > 34) {

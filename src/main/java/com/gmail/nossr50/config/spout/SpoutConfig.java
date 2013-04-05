@@ -6,11 +6,9 @@ import com.gmail.nossr50.datatypes.spout.huds.HudType;
 
 public class SpoutConfig extends ConfigLoader {
     private static SpoutConfig instance;
-    public HudType defaultHudType;
 
     private SpoutConfig() {
         super("spout.yml");
-        loadKeys();
     }
 
     public static SpoutConfig getInstance() {
@@ -24,17 +22,14 @@ public class SpoutConfig extends ConfigLoader {
     @Override
     protected void loadKeys() {
         // Setup default HUD
-        String temp = config.getString("Spout.HUD.Default", "STANDARD");
+    }
 
-        for (HudType hudType : HudType.values()) {
-            if (hudType.toString().equalsIgnoreCase(temp)) {
-                defaultHudType = hudType;
-                break;
-            }
+    public HudType getDefaultHudType() {
+        try {
+            return HudType.valueOf(config.getString("Spout.HUD.Default", "STANDARD").toUpperCase().trim());
         }
-
-        if (defaultHudType == null) {
-            defaultHudType = HudType.STANDARD;
+        catch (IllegalArgumentException ex) {
+            return HudType.STANDARD;
         }
     }
 
