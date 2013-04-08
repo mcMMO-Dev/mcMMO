@@ -66,11 +66,11 @@ public class PlayerListener implements Listener {
         String deathMessage = event.getDeathMessage();
         PlayerProfile profile = UserManager.getPlayer(event.getEntity()).getProfile();
 
-        if (profile.getMobHealthbarType() == MobHealthbarType.HEARTS && deathMessage.contains("❤❤")) {
-            deathMessage.replaceFirst("❤+", ChatColor.RESET + "a mob");
+        if (profile.getMobHealthbarType() == MobHealthbarType.HEARTS && deathMessage.contains("❤")) {
+            deathMessage.replaceFirst("(?:\\u00A7(?:[1-9a-fklmnor]){1}(?:❤{1,10})){1,2}", ChatColor.RESET + "a mob");
         }
-        else if (profile.getMobHealthbarType() == MobHealthbarType.BAR && deathMessage.contains("■■■■■■■■■■")) {
-            deathMessage.replace("■■■■■■■■■■", ChatColor.RESET + "a mob");
+        else if (profile.getMobHealthbarType() == MobHealthbarType.BAR && deathMessage.contains("■")) {
+            deathMessage.replaceFirst("(?:\\u00A7(?:[1-9a-fklmnor]){1}(?:■{1,10})){1,2}", ChatColor.RESET + "a mob");
         }
 
         event.setDeathMessage(deathMessage);
