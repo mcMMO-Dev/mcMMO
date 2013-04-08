@@ -313,9 +313,7 @@ public final class CombatUtils {
                         target.setMetadata(mcMMO.customVisibleKey, new FixedMetadataValue(mcMMO.p, oldNameVisible));
                     }
 
-                    if (target.isValid()) {
-                        new MobHealthDisplayUpdaterTask(target).runTaskLater(mcMMO.p, displayTime * 20); // Clear health display after 3 seconds
-                    }
+                    new MobHealthDisplayUpdaterTask(target).runTaskLater(mcMMO.p, displayTime * 20); // Clear health display after 3 seconds
                 }
             }
         }
