@@ -30,10 +30,8 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -64,15 +62,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDeathHighest(PlayerDeathEvent event) {
         String deathMessage = event.getDeathMessage();
-        PlayerProfile profile = UserManager.getPlayer(event.getEntity()).getProfile();
-
-        if (profile.getMobHealthbarType() == MobHealthbarType.HEARTS && deathMessage.contains("❤")) {
-            deathMessage.replaceFirst("(?:\\u00A7(?:[1-9a-fklmnor]){1}(?:❤{1,10})){1,2}", ChatColor.RESET + "a mob");
-        }
-        else if (profile.getMobHealthbarType() == MobHealthbarType.BAR && deathMessage.contains("■")) {
-            deathMessage.replaceFirst("(?:\\u00A7(?:[1-9a-fklmnor]){1}(?:■{1,10})){1,2}", ChatColor.RESET + "a mob");
-        }
-
+        deathMessage.replaceAll("(?:\\u00A7(?:[1-9a-fklmnor]){1}(?:[❤■]{1,10})){1,2}", ChatColor.RESET + "a mob");
         event.setDeathMessage(deathMessage);
     }
 
