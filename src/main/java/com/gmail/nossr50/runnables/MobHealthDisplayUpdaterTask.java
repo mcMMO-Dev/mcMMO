@@ -11,9 +11,8 @@ public class MobHealthDisplayUpdaterTask extends BukkitRunnable {
     private boolean oldNameVisible;
 
     public MobHealthDisplayUpdaterTask(LivingEntity target) {
-        this.target = target;
-
         if (target.isValid()) {
+            this.target = target;
             this.oldName = target.getMetadata(mcMMO.customNameKey).get(0).asString();
             this.oldNameVisible = target.getMetadata(mcMMO.customVisibleKey).get(0).asBoolean();
         }
