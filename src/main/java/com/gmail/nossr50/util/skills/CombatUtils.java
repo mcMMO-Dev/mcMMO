@@ -308,9 +308,15 @@ public final class CombatUtils {
                         oldName = "";
                     }
 
-                    if (!ChatColor.stripColor(oldName).equalsIgnoreCase(ChatColor.stripColor(newName))) {
+                    boolean updateName = !ChatColor.stripColor(oldName).equalsIgnoreCase(ChatColor.stripColor(newName));
+
+                    if (updateName) {
                         target.setMetadata(mcMMO.customNameKey, new FixedMetadataValue(mcMMO.p, oldName));
                         target.setMetadata(mcMMO.customVisibleKey, new FixedMetadataValue(mcMMO.p, oldNameVisible));
+                    }
+                    else if (!target.hasMetadata(mcMMO.customNameKey)) {
+                        target.setMetadata(mcMMO.customNameKey, new FixedMetadataValue(mcMMO.p, ""));
+                        target.setMetadata(mcMMO.customVisibleKey, new FixedMetadataValue(mcMMO.p, false));
                     }
 
                     new MobHealthDisplayUpdaterTask(target).runTaskLater(mcMMO.p, displayTime * 20); // Clear health display after 3 seconds
