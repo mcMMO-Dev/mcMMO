@@ -223,7 +223,7 @@ public class PlayerListener implements Listener {
         PlayerInventory inventory = player.getInventory();
         int firstEmpty = inventory.firstEmpty();
 
-        if (mcMMOPlayer.getLastGained() == SkillType.UNARMED && ItemUtils.isShareable(dropStack) && firstEmpty == inventory.getHeldItemSlot()) {
+        if (mcMMOPlayer.isUsingUnarmed() && ItemUtils.isShareable(dropStack) && firstEmpty == inventory.getHeldItemSlot()) {
             int nextSlot = firstEmpty + 1;
 
             for (Iterator<ItemStack> iterator = inventory.iterator(nextSlot); iterator.hasNext();) {

@@ -85,7 +85,7 @@ public class McMMOPlayer {
     private int recentlyHurt;
     private int respawnATS;
 
-    private SkillType lastGained;
+    private boolean isUsingUnarmed;
 
     public McMMOPlayer(Player player) {
         String playerName = player.getName();
@@ -493,7 +493,7 @@ public class McMMOPlayer {
             spoutHud.setLastGained(skillType);
         }
 
-        lastGained = skillType;
+        isUsingUnarmed = skillType == SkillType.UNARMED;
         SkillUtils.xpCheckSkill(skillType, player, profile);
     }
 
@@ -645,12 +645,8 @@ public class McMMOPlayer {
         partyChatMode = !partyChatMode;
     }
 
-    public SkillType getLastGained() {
-        return lastGained;
-    }
-
-    public void setLastGained(SkillType type) {
-        this.lastGained = type;
+    public boolean isUsingUnarmed() {
+        return isUsingUnarmed;
     }
 
     /**
