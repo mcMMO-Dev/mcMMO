@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
