@@ -254,6 +254,7 @@ permissions:
         children:
             mcmmo.ability.fishing.fishermansdiet: true
             mcmmo.ability.fishing.magic: true
+            mcmmo.ability.fishing.masterangler: true
             mcmmo.ability.fishing.shakemob: true
             mcmmo.ability.fishing.treasures: true
             mcmmo.ability.fishing.vanillaxpboost: true
@@ -261,6 +262,8 @@ permissions:
         description: Allows access to the Fishermans's Diet ability
     mcmmo.ability.fishing.magic:
         description: Allows enchanted drops from Fishing
+    mcmmo.ability.fishing.masterangler:
+        description: Allows access to the Master Angler ability
     mcmmo.ability.fishing.shakemob:
         description: Allows access to the Shake Mob ability
     mcmmo.ability.fishing.treasures:

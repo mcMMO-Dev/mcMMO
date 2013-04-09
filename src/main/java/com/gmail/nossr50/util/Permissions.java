@@ -143,6 +143,7 @@ public final class Permissions {
     public static boolean fishermansDiet(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.fishing.fishermansdiet"); }
     public static boolean fishingTreasureHunter(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.fishing.treasures"); }
     public static boolean magicHunter(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.fishing.magic"); }
+    public static boolean masterAngler(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.fishing.masterangler"); }
     public static boolean shake(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.fishing.shakemob"); }
 
     /* HERBALISM */

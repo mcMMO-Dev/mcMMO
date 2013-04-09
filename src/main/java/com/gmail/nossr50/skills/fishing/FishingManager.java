@@ -9,6 +9,7 @@ import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Fish;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -39,6 +40,10 @@ public class FishingManager extends SkillManager {
 
     public boolean canShake(Entity target) {
         return target instanceof LivingEntity && getSkillLevel() >= AdvancedConfig.getInstance().getShakeUnlockLevel() && Permissions.shake(getPlayer());
+    }
+
+    public boolean canMasterAngler() {
+        return Permissions.masterAngler(getPlayer());
     }
 
     /**
@@ -84,6 +89,10 @@ public class FishingManager extends SkillManager {
      */
     public int handleFishermanDiet(int rankChange, int eventFoodLevel) {
         return SkillUtils.handleFoodSkills(getPlayer(), skill, eventFoodLevel, Fishing.fishermansDietRankLevel1, Fishing.fishermansDietMaxLevel, rankChange);
+    }
+
+    public void masterAngler(Fish hook) {
+        hook.setBiteChance(Math.min(hook.getBiteChance() * (getSkillLevel() / 4.0), 1.0));
     }
 
     /**

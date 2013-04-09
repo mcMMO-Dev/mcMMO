@@ -174,6 +174,12 @@ public class PlayerListener implements Listener {
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
 
         switch (event.getState()) {
+            case FISHING:
+                if (fishingManager.canMasterAngler()) {
+                    fishingManager.masterAngler(event.getHook());
+                }
+                break;
+
             case CAUGHT_FISH:
                 fishingManager.handleFishing((Item) event.getCaught());
 
