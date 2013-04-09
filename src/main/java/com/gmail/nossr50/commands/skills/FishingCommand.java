@@ -75,7 +75,7 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected boolean effectsHeaderPermissions() {
-        return canTreasureHunt || canMagicHunt || canShake || canMasterAngler;
+        return canTreasureHunt || canMagicHunt || canShake || canMasterAngler || canFishermansDiet;
     }
 
     @Override
@@ -105,7 +105,7 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected boolean statsHeaderPermissions() {
-        return canTreasureHunt || canMagicHunt || canShake || canMasterAngler;
+        return canTreasureHunt || canMagicHunt || canShake || canMasterAngler || canFishermansDiet;
     }
 
     @Override
