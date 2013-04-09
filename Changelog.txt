@@ -15,6 +15,7 @@ Version 1.4.06-dev
  = Fixed wolves from Call of the Wild only having 8 health
  = Fixed bug where /party chat was not working
  ! Changed Chimaera Wing's recipe result to use the ingredient Material
+ ! Players will no longer pickup items to their hotbar while using Unarmed
 
 Version 1.4.05
  + Added option to allow refreshing of chunks after block-breaking abilities. (Disabled by default)

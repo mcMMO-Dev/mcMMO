@@ -1,5 +1,7 @@
 package com.gmail.nossr50.listeners;
 
+import java.util.Iterator;
+
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -25,6 +27,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
@@ -200,7 +203,8 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
         Player player = event.getPlayer();
-        Item item = event.getItem();
+        Item drop = event.getItem();
+        ItemStack dropStack = drop.getItemStack();
 
         if (Misc.isNPCEntity(player)) {
             return;
@@ -208,8 +212,32 @@ public class PlayerListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (mcMMOPlayer.inParty() && ItemUtils.isShareable(item.getItemStack())) {
-            ShareHandler.handleItemShare(event, mcMMOPlayer);
+        if (mcMMOPlayer.inParty() && ItemUtils.isShareable(dropStack)) {
+            event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
+        }
+
+        if (event.isCancelled()) {
+            return;
+        }
+
+        PlayerInventory inventory = player.getInventory();
+        int firstEmpty = inventory.firstEmpty();
+
+        if (mcMMOPlayer.getLastGained() == SkillType.UNARMED && ItemUtils.isShareable(dropStack) && firstEmpty == inventory.getHeldItemSlot()) {
+            int nextSlot = firstEmpty + 1;
+
+            for (Iterator<ItemStack> iterator = inventory.iterator(nextSlot); iterator.hasNext();) {
+                ItemStack itemstack = iterator.next();
+
+                if (itemstack == null) {
+                    inventory.setItem(nextSlot, dropStack);
+                    player.updateInventory();
+                    event.setCancelled(true);
+                    return;
+                }
+
+                nextSlot++;
+            }
         }
     }
 

@@ -91,9 +91,8 @@ public final class ShareHandler {
      * @param mcMMOPlayer Player who picked up the item
      * @return True if the item has been shared
      */
-    public static boolean handleItemShare(PlayerPickupItemEvent event, McMMOPlayer mcMMOPlayer) {
-        Item item = event.getItem();
-        ItemStack itemStack = item.getItemStack();
+    public static boolean handleItemShare(Item drop, McMMOPlayer mcMMOPlayer) {
+        ItemStack itemStack = drop.getItemStack();
         Party party = mcMMOPlayer.getParty();
         Player player = mcMMOPlayer.getPlayer();
         Player winningPlayer = null;
@@ -126,8 +125,7 @@ public final class ShareHandler {
                 nearMembers.add(player);
                 partySize = nearMembers.size();
 
-                event.setCancelled(true);
-                item.remove();
+                drop.remove();
                 int itemWeight = ItemWeightConfig.getInstance().getItemWeight(itemStack.getType());
 
                 for (int i = 0; i < itemStack.getAmount(); i++) {
@@ -172,8 +170,7 @@ public final class ShareHandler {
 
                 partySize = nearMembers.size() + 1;
 
-                event.setCancelled(true);
-                item.remove();
+                drop.remove();
 
                 for (int i = 0; i < itemStack.getAmount(); i++) {
                     int randomMember = Misc.getRandom().nextInt(partySize);
