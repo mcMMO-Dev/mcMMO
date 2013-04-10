@@ -64,7 +64,7 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDeathHighest(PlayerDeathEvent event) {
         String deathMessage = event.getDeathMessage();
-        deathMessage.replaceAll("(?:\\u00A7(?:[0-9A-FK-ORa-fk-or]){1}(?:[\\u2764\\u25A0]{1,10})){1,2}", "a mob");
+        deathMessage.replaceAll("(?:\u00A7(?:[0-9A-FK-ORa-fk-or]){1}(?:[\u2764\u25A0]{1,10})){1,2}", "a mob");
         event.setDeathMessage(deathMessage);
     }
 
