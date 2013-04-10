@@ -142,7 +142,8 @@ public class Config extends AutoUpdateConfigLoader {
     public double getPartyShareRange() { return config.getDouble("Party.Sharing.Range", 75.0); }
 
     /* Party Teleport Settings */
-    public int getPTPCommandCooldown() { return config.getInt("Commands.ptp.Cooldown", 30); }
+    public int getPTPCommandCooldown() { return config.getInt("Commands.ptp.Cooldown", 120); }
+    public int getPTPCommandWarmup() { return config.getInt("Commands.ptp.Warmup", 5); }
     public int getPTPCommandTimeout() { return config.getInt("Commands.ptp.Request_Timeout", 300); }
     public boolean getPTPCommandConfirmRequired() { return config.getBoolean("Commands.ptp.Confirm_Required", true); }
     public boolean getPTPCommandWorldPermissions() { return config.getBoolean("Commands.ptp.World_Based_Permissions", false); }

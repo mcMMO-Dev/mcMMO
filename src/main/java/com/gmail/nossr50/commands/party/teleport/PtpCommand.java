@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,6 +18,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.runnables.items.TeleportationWarmup;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -100,7 +102,7 @@ public class PtpCommand implements TabExecutor {
         }
 
         if (!mcMMOTarget.getPtpConfirmRequired()) {
-            handlePartyTeleportEvent(player, target);
+            handleTeleportWarmup(player, target);
             return;
         }
 
@@ -146,7 +148,24 @@ public class PtpCommand implements TabExecutor {
         return true;
     }
 
-    protected static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
+    protected static void handleTeleportWarmup(Player teleportingPlayer, Player targetPlayer) {
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
+        mcMMOTarget = UserManager.getPlayer(targetPlayer);
+
+        long warmup = Config.getInstance().getPTPCommandWarmup();
+
+        mcMMOPlayer.actualizeTeleportCommenceLocation(teleportingPlayer);
+
+        if (warmup > 0) {
+            teleportingPlayer.sendMessage(ChatColor.GRAY + "Commencing teleport in " + ChatColor.GOLD + "(" + warmup + ")" + ChatColor.GRAY + " seconds, please stand still..."); //TODO Locale!
+            new TeleportationWarmup(mcMMOPlayer, mcMMOTarget).runTaskLater(mcMMO.p, 20 * warmup);
+        }
+        else {
+            handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
+        }
+    }
+
+    public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
         McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(teleportingPlayer, targetPlayer, mcMMOPlayer.getParty().getName());
 

@@ -58,7 +58,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             }
         }
 
-        PtpCommand.handlePartyTeleportEvent(target, player);
+        PtpCommand.handleTeleportWarmup(target, player);
         return true;
     }
 }

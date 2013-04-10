@@ -355,7 +355,8 @@ Commands:
     mcmmo:
         Donate_Message: true
     ptp:
-        Cooldown: 30
+        Cooldown: 120
+        Warmup: 5
         Confirm_Required: true
         Request_Timeout: 300
         # If true, require players to have a mcmmo.commands.ptp.world.[WorldName] permission
