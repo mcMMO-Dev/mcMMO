@@ -236,6 +236,7 @@ public class PlayerListener implements Listener {
                 ItemStack itemstack = iterator.next();
 
                 if (itemstack == null) {
+                    drop.remove();
                     inventory.setItem(nextSlot, dropStack);
                     player.updateInventory();
                     event.setCancelled(true);
