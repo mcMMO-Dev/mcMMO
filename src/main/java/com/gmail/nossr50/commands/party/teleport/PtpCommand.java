@@ -23,6 +23,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import com.google.common.collect.ImmutableList;
 
 public class PtpCommand implements TabExecutor {
@@ -54,11 +55,11 @@ public class PtpCommand implements TabExecutor {
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
                 Player player = mcMMOPlayer.getPlayer();
 
-                int ptpCooldown = Config.getInstance().getPTPCommandCooldown();
                 long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
+                int recentlyhurt_cooldown = Config.getInstance().getPTPCommandRecentlyHurtCooldown();
 
-                if (((recentlyHurt * Misc.TIME_CONVERSION_FACTOR) + (ptpCooldown * Misc.TIME_CONVERSION_FACTOR)) > System.currentTimeMillis()) {
-                    player.sendMessage(LocaleLoader.getString("Party.Teleport.Hurt", ptpCooldown));
+                if (!SkillUtils.cooldownOver(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)) {
+                    player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)));
                     return true;
                 }
 
@@ -68,6 +69,14 @@ public class PtpCommand implements TabExecutor {
 
                 if (!Permissions.partyTeleportSend(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
+                    return true;
+                }
+
+                int ptpCooldown = Config.getInstance().getPTPCommandCooldown();
+                long lastTeleport = mcMMOPlayer.getLastTeleport();
+
+                if (!SkillUtils.cooldownOver(lastTeleport * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player)) {
+                    player.sendMessage(ChatColor.RED + "You need to wait before you can use this again! " + ChatColor.YELLOW + "(" + SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player) + ")"); //TODO Locale!
                     return true;
                 }
 

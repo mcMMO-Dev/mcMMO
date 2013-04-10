@@ -80,6 +80,7 @@ Items:
         Enabled: true
         Cooldown: 240
         Warmup: 5
+        RecentlyHurt_Cooldown: 60
         Prevent_Use_Underground: true
         Use_Cost: 1
         Recipe_Cost: 5
@@ -357,6 +358,7 @@ Commands:
     ptp:
         Cooldown: 120
         Warmup: 5
+        RecentlyHurt_Cooldown: 60
         Confirm_Required: true
         Request_Timeout: 300
         # If true, require players to have a mcmmo.commands.ptp.world.[WorldName] permission

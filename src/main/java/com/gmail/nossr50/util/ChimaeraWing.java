@@ -46,20 +46,22 @@ public final class ChimaeraWing {
         location = player.getLocation();
         int amount = inHand.getAmount();
         long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
-        long lastChimaeraWing = mcMMOPlayer.getLastTeleport();
+        long lastTeleport = mcMMOPlayer.getLastTeleport();
 
         if (Permissions.chimaeraWing(player) && ItemUtils.isChimaeraWing(inHand)) {
             if (mcMMOPlayer.getTeleportCommenceLocation() != null) {
                 return;
             }
 
-            if (Config.getInstance().getChimaeraCooldown() > 0 && !SkillUtils.cooldownOver(lastChimaeraWing * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player)) {
-                player.sendMessage(ChatColor.RED + "You need to wait before you can use this again! " + ChatColor.YELLOW + "(" + SkillUtils.calculateTimeLeft(lastChimaeraWing * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player) + ")"); //TODO Locale!
+            if (Config.getInstance().getChimaeraCooldown() > 0 && !SkillUtils.cooldownOver(lastTeleport * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player)) {
+                player.sendMessage(ChatColor.RED + "You need to wait before you can use this again! " + ChatColor.YELLOW + "(" + SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player) + ")"); //TODO Locale!
                 return;
             }
 
-            if (!SkillUtils.cooldownOver(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, 60, player)) {
-                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, 60, player)));
+            int recentlyhurt_cooldown = Config.getInstance().getChimaeraRecentlyHurtCooldown();
+
+            if (!SkillUtils.cooldownOver(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)) {
+                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)));
                 return;
             }
 

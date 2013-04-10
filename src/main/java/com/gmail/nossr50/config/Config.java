@@ -121,6 +121,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getChimaeraPreventUseUnderground() { return config.getBoolean("Items.Chimaera_Wing.Prevent_Use_Underground", true); }
     public int getChimaeraCooldown() { return config.getInt("Items.Chimaera_Wing.Cooldown", 240); }
     public int getChimaeraWarmup() { return config.getInt("Items.Chimaera_Wing.Warmup", 5); }
+    public int getChimaeraRecentlyHurtCooldown() { return config.getInt("Items.Chimaera_Wing.RecentlyHurt_Cooldown", 60); }
 
     /* Particles */
     public boolean getAbilityActivationEffectEnabled() { return config.getBoolean("Particles.Ability_Activation", true); }
@@ -144,6 +145,7 @@ public class Config extends AutoUpdateConfigLoader {
     /* Party Teleport Settings */
     public int getPTPCommandCooldown() { return config.getInt("Commands.ptp.Cooldown", 120); }
     public int getPTPCommandWarmup() { return config.getInt("Commands.ptp.Warmup", 5); }
+    public int getPTPCommandRecentlyHurtCooldown() { return config.getInt("Commands.ptp.RecentlyHurt_Cooldown", 60); }
     public int getPTPCommandTimeout() { return config.getInt("Commands.ptp.Request_Timeout", 300); }
     public boolean getPTPCommandConfirmRequired() { return config.getBoolean("Commands.ptp.Confirm_Required", true); }
     public boolean getPTPCommandWorldPermissions() { return config.getBoolean("Commands.ptp.World_Based_Permissions", false); }
