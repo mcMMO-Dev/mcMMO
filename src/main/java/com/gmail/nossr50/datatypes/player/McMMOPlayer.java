@@ -79,11 +79,10 @@ public class McMMOPlayer {
     private Map<ToolType, Boolean> toolMode = new HashMap<ToolType, Boolean>();
     private Map<ToolType, Integer> toolATS  = new HashMap<ToolType, Integer>();
 
-    private int chimaeraWing;
-    private Location chimaeraWingCommence;
-
     private int recentlyHurt;
     private int respawnATS;
+    private int teleportLastUse;
+    private Location teleportCommence;
 
     private boolean isUsingUnarmed;
 
@@ -305,31 +304,31 @@ public class McMMOPlayer {
     }
 
     /*
-     * Chimaera Wing
+     * Teleportation cooldown & warmup
      */
 
-    public int getLastChimaeraTeleport() {
-        return chimaeraWing;
+    public int getLastTeleport() {
+        return teleportLastUse;
     }
 
-    public void setLastChimaeraTeleport(int value) {
-        chimaeraWing = value;
+    public void setLastTeleport(int value) {
+        teleportLastUse = value;
     }
 
-    public void actualizeLastChimaeraTeleport() {
-        chimaeraWing = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+    public void actualizeLastTeleport() {
+        teleportLastUse = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
-    public Location getChimaeraCommenceLocation() {
-        return chimaeraWingCommence;
+    public Location getTeleportCommenceLocation() {
+        return teleportCommence;
     }
 
-    public void setChimaeraCommenceLocation(Location location) {
-        chimaeraWingCommence = location;
+    public void setTeleportCommenceLocation(Location location) {
+        teleportCommence = location;
     }
 
-    public void actualizeChimaeraCommenceLocation(Player player) {
-        setChimaeraCommenceLocation(player.getLocation());
+    public void actualizeTeleportCommenceLocation(Player player) {
+        setTeleportCommenceLocation(player.getLocation());
     }
 
     /*

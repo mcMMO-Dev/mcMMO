@@ -46,10 +46,10 @@ public final class ChimaeraWing {
         location = player.getLocation();
         int amount = inHand.getAmount();
         long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
-        long lastChimaeraWing = mcMMOPlayer.getLastChimaeraTeleport();
+        long lastChimaeraWing = mcMMOPlayer.getLastTeleport();
 
         if (Permissions.chimaeraWing(player) && ItemUtils.isChimaeraWing(inHand)) {
-            if (mcMMOPlayer.getChimaeraCommenceLocation() != null) {
+            if (mcMMOPlayer.getTeleportCommenceLocation() != null) {
                 return;
             }
 
@@ -74,12 +74,12 @@ public final class ChimaeraWing {
                     player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
                     player.setVelocity(new Vector(0, 0.5D, 0));
                     CombatUtils.dealDamage(player, Misc.getRandom().nextInt(player.getHealth() - 10));
-                    mcMMOPlayer.actualizeLastChimaeraTeleport();
+                    mcMMOPlayer.actualizeLastTeleport();
                     return;
                 }
             }
 
-            mcMMOPlayer.actualizeChimaeraCommenceLocation(player);
+            mcMMOPlayer.actualizeTeleportCommenceLocation(player);
 
             long warmup = Config.getInstance().getChimaeraWarmup();
 
@@ -110,7 +110,7 @@ public final class ChimaeraWing {
         }
 
         player.setItemInHand(new ItemStack(getChimaeraWing(player.getItemInHand().getAmount() - Config.getInstance().getChimaeraUseCost())));
-        UserManager.getPlayer(player).actualizeLastChimaeraTeleport();
+        UserManager.getPlayer(player).actualizeLastTeleport();
         if (Config.getInstance().getStatsTrackingEnabled()) {
             MetricsManager.chimeraWingUsed();
         }
