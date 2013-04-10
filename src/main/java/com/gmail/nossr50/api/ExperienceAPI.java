@@ -24,7 +24,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static void addRawXP(Player player, String skillType, int XP) throws InvalidSkillException {
+    public static void addRawXP(Player player, String skillType, int XP) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -46,7 +46,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static void addRawXPOffline(String playerName, String skillType, int XP) throws InvalidSkillException {
+    public static void addRawXPOffline(String playerName, String skillType, int XP) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -67,7 +67,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static void addMultipliedXP(Player player, String skillType, int XP) throws InvalidSkillException {
+    public static void addMultipliedXP(Player player, String skillType, int XP) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -89,7 +89,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static void addMultipliedXPOffline(String playerName, String skillType, int XP) throws InvalidSkillException {
+    public static void addMultipliedXPOffline(String playerName, String skillType, int XP) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -110,7 +110,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static void addModifiedXP(Player player, String skillType, int XP) throws InvalidSkillException {
+    public static void addModifiedXP(Player player, String skillType, int XP) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -132,7 +132,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static void addModifiedXPOffline(String playerName, String skillType, int XP) throws InvalidSkillException {
+    public static void addModifiedXPOffline(String playerName, String skillType, int XP) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -153,7 +153,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static void addXP(Player player, String skillType, int XP) throws InvalidSkillException {
+    public static void addXP(Player player, String skillType, int XP) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -174,7 +174,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static int getXP(Player player, String skillType) throws InvalidSkillException {
+    public static int getXP(Player player, String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -196,7 +196,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static int getOfflineXP(String playerName, String skillType) throws InvalidSkillException {
+    public static int getOfflineXP(String playerName, String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -217,7 +217,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static int getXPToNextLevel(Player player, String skillType) throws InvalidSkillException {
+    public static int getXPToNextLevel(Player player, String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -239,7 +239,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static int getOfflineXPToNextLevel(String playerName, String skillType) throws InvalidSkillException {
+    public static int getOfflineXPToNextLevel(String playerName, String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -260,7 +260,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static void addLevel(Player player, String skillType, int levels) throws InvalidSkillException {
+    public static void addLevel(Player player, String skillType, int levels) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -282,7 +282,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static void addLevelOffline(String playerName, String skillType, int levels) throws InvalidSkillException {
+    public static void addLevelOffline(String playerName, String skillType, int levels) {
         PlayerProfile profile = getOfflineProfile(playerName);
         SkillType skill = SkillType.getSkill(skillType);
 
@@ -316,7 +316,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static int getLevel(Player player, String skillType) throws InvalidSkillException {
+    public static int getLevel(Player player, String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -338,7 +338,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static int getLevelOffline(String playerName, String skillType) throws InvalidSkillException {
+    public static int getLevelOffline(String playerName, String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -395,7 +395,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static int getLevelCap(String skillType) throws InvalidSkillException {
+    public static int getLevelCap(String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -427,7 +427,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static void setLevel(Player player, String skillType, int skillLevel) throws InvalidSkillException {
+    public static void setLevel(Player player, String skillType, int skillLevel) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -449,7 +449,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static void setLevelOffline(String playerName, String skillType, int skillLevel) throws InvalidSkillException {
+    public static void setLevelOffline(String playerName, String skillType, int skillLevel) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -470,7 +470,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static void setXP(Player player, String skillType, int newValue) throws InvalidSkillException {
+    public static void setXP(Player player, String skillType, int newValue) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -492,7 +492,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static void setXPOffline(String playerName, String skillType, int newValue) throws InvalidSkillException {
+    public static void setXPOffline(String playerName, String skillType, int newValue) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -513,7 +513,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static void removeXP(Player player, String skillType, int xp) throws InvalidSkillException {
+    public static void removeXP(Player player, String skillType, int xp) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
@@ -535,7 +535,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static void removeXPOffline(String playerName, String skillType, int xp) throws InvalidSkillException {
+    public static void removeXPOffline(String playerName, String skillType, int xp) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
