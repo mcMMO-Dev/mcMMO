@@ -1,7 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import java.util.Iterator;
-
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,7 +25,6 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
@@ -44,6 +41,7 @@ import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.taming.TamingManager;
+import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.HardcoreManager;
@@ -220,30 +218,18 @@ public class PlayerListener implements Listener {
 
         if (mcMMOPlayer.inParty() && ItemUtils.isShareable(dropStack)) {
             event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
+
+            if (event.isCancelled()) {
+                return;
+            }
         }
 
-        if (event.isCancelled()) {
-            return;
-        }
+        if (mcMMOPlayer.isUsingUnarmed() && ItemUtils.isShareable(dropStack)) {
+            event.setCancelled(Unarmed.handleItemPickup(player.getInventory(), drop));
 
-        PlayerInventory inventory = player.getInventory();
-        int firstEmpty = inventory.firstEmpty();
-
-        if (mcMMOPlayer.isUsingUnarmed() && ItemUtils.isShareable(dropStack) && firstEmpty == inventory.getHeldItemSlot()) {
-            int nextSlot = firstEmpty + 1;
-
-            for (Iterator<ItemStack> iterator = inventory.iterator(nextSlot); iterator.hasNext();) {
-                ItemStack itemstack = iterator.next();
-
-                if (itemstack == null) {
-                    drop.remove();
-                    inventory.setItem(nextSlot, dropStack);
-                    player.updateInventory();
-                    event.setCancelled(true);
-                    return;
-                }
-
-                nextSlot++;
+            if (event.isCancelled()) {
+                player.updateInventory();
+                return;
             }
         }
     }
