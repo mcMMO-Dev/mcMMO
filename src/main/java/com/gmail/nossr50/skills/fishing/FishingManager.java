@@ -92,9 +92,7 @@ public class FishingManager extends SkillManager {
     }
 
     public void masterAngler(Fish hook) {
-        System.out.println("BEFORE: " + hook.getBiteChance());
         hook.setBiteChance(Math.min(hook.getBiteChance() * Math.max((getSkillLevel() / 10.0), 1.0), 1.0));
-        System.out.println("AFTER: " + hook.getBiteChance());
     }
 
     /**
