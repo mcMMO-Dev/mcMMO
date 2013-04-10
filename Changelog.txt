@@ -12,12 +12,14 @@ Version 1.4.06-dev
  + Added health display for mobs during combat.
  + Added new API method to McMMOPlayerLevelUpEvent to set levels gained
  + Added new permission node for /ptp; mcmmo.commands.ptp.send (enabled by default)
+ + Added configurable cooldown and warmup times when using /ptp
  = Fixed displaying partial names when trying to use /ptp
  = Fixed wolves from Call of the Wild only having 8 health
  = Fixed bug where /party chat was not working
  ! Changed Chimaera Wing's recipe result to use the ingredient Material
  ! Players will no longer pickup items to their hotbar while using Unarmed
  ! ExperienceAPI methods will now throw InvalidSkillException if the skill name passed in is invalid.
+ ! Changed default value for recently-hurt cooldown between teleports, this is also fully configurable now
 
 Version 1.4.05
  + Added option to allow refreshing of chunks after block-breaking abilities. (Disabled by default)
