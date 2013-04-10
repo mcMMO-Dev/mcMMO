@@ -60,7 +60,7 @@ public class FishingCommand extends SkillCommand {
 
         // MASTER ANGLER
         if (canMasterAngler) {
-            biteChance = calculateAbilityDisplayValues((skillValue / 4) / (isStorming ? 300 : 500))[0];
+            biteChance = calculateAbilityDisplayValues((skillValue / 10) / (isStorming ? 300 : 500))[0];
         }
     }
 
