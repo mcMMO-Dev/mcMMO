@@ -37,7 +37,7 @@ public class Unarmed {
             for (Iterator<ItemStack> iterator = inventory.iterator(); iterator.hasNext();) {
                 ItemStack itemstack = iterator.next();
 
-                if (itemstack.isSimilar(dropStack)) {
+                if (dropStack.isSimilar(itemstack)) {
                     int itemAmount = itemstack.getAmount();
                     int itemMax = itemstack.getMaxStackSize();
 
