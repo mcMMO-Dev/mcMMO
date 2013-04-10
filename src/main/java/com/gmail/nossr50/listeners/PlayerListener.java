@@ -59,9 +59,15 @@ public class PlayerListener implements Listener {
         this.plugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerDeathHighest(PlayerDeathEvent event) {
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onPlayerDeathLowest(PlayerDeathEvent event) {
         String deathMessage = event.getDeathMessage();
+
+        if (deathMessage == null) {
+            mcMMO.p.getLogger().severe("You have another plugin causing null death messages. mcMMO cannot process this death message.");
+            return;
+        }
+
         deathMessage.replaceAll("(?:\u00A7(?:[0-9A-FK-ORa-fk-or]){1}(?:[\u2764\u25A0]{1,10})){1,2}", "a mob");
         event.setDeathMessage(deathMessage);
     }
