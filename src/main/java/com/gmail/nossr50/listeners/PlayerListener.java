@@ -68,8 +68,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        deathMessage = deathMessage.replaceAll("(?:\u00A7(?:[0-9A-FK-ORa-fk-or]){1}(?:[\u2764\u25A0]{1,10})){1,2}", "a mob");
-        event.setDeathMessage(deathMessage);
+        event.setDeathMessage(deathMessage.replaceAll("(?:\u00A7(?:[0-9A-FK-ORa-fk-or]){1}(?:[\u2764\u25A0]{1,10})){1,2}", "a mob"));
     }
 
     /**
