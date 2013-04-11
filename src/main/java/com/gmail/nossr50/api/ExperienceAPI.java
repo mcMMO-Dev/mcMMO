@@ -4,6 +4,8 @@ import java.util.Set;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.api.exceptions.InvalidPlayerException;
+import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
