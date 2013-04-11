@@ -51,6 +51,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                 profile = mcMMOPlayer.getProfile();
 
                 editValues();
+                allSkills = false;
                 return true;
 
             case 3:
@@ -83,6 +84,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                 }
 
                 handleSenderMessage(sender, args[0]);
+                allSkills = false;
                 return true;
 
             default:

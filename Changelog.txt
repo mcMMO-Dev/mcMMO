@@ -16,6 +16,7 @@ Version 1.4.06-dev
  = Fixed displaying partial names when trying to use /ptp
  = Fixed wolves from Call of the Wild only having 8 health
  = Fixed bug where /party chat was not working
+ = Fixed bug where experience commands were adding levels to all skills when they shouldn't
  ! Changed Chimaera Wing's recipe result to use the ingredient Material
  ! Players will no longer pickup items to their hotbar while using Unarmed
  ! ExperienceAPI methods will now throw InvalidSkillException if the skill name passed in is invalid.
