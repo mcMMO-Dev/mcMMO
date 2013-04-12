@@ -191,8 +191,9 @@ public final class PartyManager {
     public static void removeFromParty(OfflinePlayer player, Party party) {
         List<String> members = party.getMembers();
 
-        while (members.remove(player.getName())) {
+        while (members.contains(player.getName())) {
             // Remove all the duplicates as well
+            members.remove(player.getName());
         }
 
         if (members.isEmpty()) {
