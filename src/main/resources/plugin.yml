@@ -667,10 +667,7 @@ permissions:
             mcmmo.commands.mining: true
             mcmmo.commands.mobhealth: true
             mcmmo.commands.party.all: true
-            mcmmo.commands.ptp: true
-            mcmmo.commands.ptp.accept: true
-            mcmmo.commands.ptp.acceptall: true
-            mcmmo.commands.ptp.toggle: true
+            mcmmo.commands.ptp.all: true
             mcmmo.commands.repair: true
             mcmmo.commands.smelting: true
             mcmmo.commands.swords: true
