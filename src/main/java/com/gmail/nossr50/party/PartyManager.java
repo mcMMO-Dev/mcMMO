@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.OfflinePlayer;
-import org.bukkit.Server;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -15,7 +14,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.party.PartyLoaderTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -99,7 +97,7 @@ public final class PartyManager {
      * @param player The player to check
      * @return all the players in the player's party
      */
-    public static List<OfflinePlayer> getAllMembers(Player player) {
+    public static List<String> getAllMembers(Player player) {
         Party party = UserManager.getPlayer(player).getParty();
 
         if (party == null) {
@@ -165,8 +163,8 @@ public final class PartyManager {
      */
     public static Party getPlayerParty(String playerName) {
         for (Party party : parties) {
-            for (OfflinePlayer member : party.getMembers()) {
-                if (member.getName().equalsIgnoreCase(playerName)) {
+            for (String memberName : party.getMembers()) {
+                if (memberName.equalsIgnoreCase(playerName)) {
                     return party;
                 }
             }
@@ -191,9 +189,11 @@ public final class PartyManager {
      * @param party The party
      */
     public static void removeFromParty(OfflinePlayer player, Party party) {
-        List<OfflinePlayer> members = party.getMembers();
+        List<String> members = party.getMembers();
 
-        members.remove(player);
+        while (members.remove(player.getName())) {
+            // Remove all the duplicates as well
+        }
 
         if (members.isEmpty()) {
             parties.remove(party);
@@ -201,7 +201,7 @@ public final class PartyManager {
         else {
             // If the leaving player was the party leader, appoint a new leader from the party members
             if (party.getLeader().equalsIgnoreCase(player.getName())) {
-                String newLeader = members.get(0).getName();
+                String newLeader = members.get(0);
                 party.setLeader(newLeader);
             }
 
@@ -222,10 +222,10 @@ public final class PartyManager {
      * @param party The party to remove
      */
     public static void disbandParty(Party party) {
-        List<OfflinePlayer> members = party.getMembers();
+        List<String> members = party.getMembers();
 
-        for (OfflinePlayer member : members) {
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(member.getName());
+        for (String memberName : members) {
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(memberName);
 
             if (mcMMOPlayer != null) {
                 mcMMOPlayer.removeParty();
@@ -361,7 +361,10 @@ public final class PartyManager {
 
         informPartyMembersJoin(player, party);
         mcMMOPlayer.setParty(party);
-        party.getMembers().add(player);
+
+        if (!party.getMembers().contains(player.getName())) {
+            party.getMembers().add(player.getName());
+        }
     }
 
     /**
@@ -439,14 +442,6 @@ public final class PartyManager {
      * Load party file.
      */
     public static void loadParties() {
-        try {
-            mcMMO.p.getServer().getOfflinePlayer("nossr50"); // TODO: Find a less-hacky way to manage reloading.
-        }
-        catch (IndexOutOfBoundsException ex){
-            new PartyLoaderTask().runTaskLater(mcMMO.p, 0);
-            return;
-        }
-
         File file = new File(partiesFilePath);
 
         if (!file.exists()) {
@@ -473,11 +468,12 @@ public final class PartyManager {
             party.setItemShareMode(ShareHandler.ShareMode.getFromString(partiesFile.getString(partyName + ".ItemShareMode")));
 
             List<String> memberNames = partiesFile.getStringList(partyName + ".Members");
-            List<OfflinePlayer> members = party.getMembers();
-            Server server = mcMMO.p.getServer();
+            List<String> members = party.getMembers();
 
             for (String memberName : memberNames) {
-                members.add(server.getOfflinePlayer(memberName));
+                if (!members.contains(memberName)) {
+                    members.add(memberName);
+                }
             }
 
             parties.add(party);
@@ -507,8 +503,10 @@ public final class PartyManager {
 
             List<String> memberNames = new ArrayList<String>();
 
-            for (OfflinePlayer member : party.getMembers()) {
-                memberNames.add(member.getName());
+            for (String member : party.getMembers()) {
+                if (!memberNames.contains(member)) {
+                    memberNames.add(member);
+                }
             }
 
             partiesFile.set(partyName + ".Members", memberNames);

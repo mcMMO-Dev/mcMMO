@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -41,8 +42,8 @@ public class PartyInfoCommand implements CommandExecutor {
     private String createMembersList() {
         StringBuilder memberList = new StringBuilder();
 
-        for (OfflinePlayer member : playerParty.getMembers()) {
-            String memberName = member.getName();
+        for (String memberName : playerParty.getMembers()) {
+            OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberName);
 
             if (playerParty.getLeader().equalsIgnoreCase(memberName)) {
                 memberList.append(ChatColor.GOLD);

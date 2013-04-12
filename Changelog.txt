@@ -14,6 +14,7 @@ Version 1.4.06-dev
  + Added new API method to McMMOPlayerLevelUpEvent to set levels gained
  + Added new permission node for /ptp; mcmmo.commands.ptp.send (enabled by default)
  + Added configurable cooldown and warmup times when using /ptp
+ = Fixed bug where players were able to join the same party multiple times
  = Fixed displaying partial names when trying to use /ptp
  = Fixed wolves from Call of the Wild only having 8 health
  = Fixed bug where /party chat was not working

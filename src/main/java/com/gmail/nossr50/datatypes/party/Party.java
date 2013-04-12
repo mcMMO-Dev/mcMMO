@@ -6,10 +6,11 @@ import java.util.List;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
 
 public class Party {
-    private List<OfflinePlayer> members = new ArrayList<OfflinePlayer>();
+    private List<String> members = new ArrayList<String>();
     private String leader;
     private String name;
     private String password;
@@ -23,14 +24,15 @@ public class Party {
     private boolean shareHerbalismDrops   = true;
     private boolean shareWoodcuttingDrops = true;
 
-    public List<OfflinePlayer> getMembers() {
+    public List<String> getMembers() {
         return members;
     }
 
     public List<Player> getOnlineMembers() {
         List<Player> onlineMembers = new ArrayList<Player>();
 
-        for (OfflinePlayer member : members) {
+        for (String memberName : members) {
+            OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberName);
             if (member.isOnline()) {
                 onlineMembers.add(member.getPlayer());
             }

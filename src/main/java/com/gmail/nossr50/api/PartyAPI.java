@@ -1,10 +1,12 @@
 package com.gmail.nossr50.api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -127,7 +129,26 @@ public final class PartyAPI {
      * @param player The player to check
      * @return all the players in the player's party
      */
+    @Deprecated
     public static List<OfflinePlayer> getOnlineAndOfflineMembers(Player player) {
+        List<OfflinePlayer> members = new ArrayList<OfflinePlayer>();
+
+        for (String memberName : PartyManager.getAllMembers(player)) {
+            OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberName);
+            members.add(member);
+        }
+        return members;
+    }
+
+    /**
+     * Get a list of all player names in this player's party.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to check
+     * @return all the player names in the player's party
+     */
+    public static List<String> getMembers(Player player) {
         return PartyManager.getAllMembers(player);
     }
 
