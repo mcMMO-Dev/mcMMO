@@ -2,9 +2,7 @@ package com.gmail.nossr50.skills.fishing;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -24,6 +22,7 @@ import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
+import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
@@ -144,11 +143,9 @@ public class FishingManager extends SkillManager {
      */
     public void shakeCheck(LivingEntity target) {
         if (getShakeProbability() > Misc.getRandom().nextInt(getActivationChance())) {
-            Map<ItemStack, Integer> possibleDrops = new HashMap<ItemStack, Integer>();
+            List<ShakeTreasure> possibleDrops = Fishing.findPossibleDrops(target);
 
-            Fishing.findPossibleDrops(target, possibleDrops);
-
-            if (possibleDrops.isEmpty()) {
+            if (possibleDrops == null || possibleDrops.isEmpty()) {
                 return;
             }
 

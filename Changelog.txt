@@ -8,6 +8,7 @@ Key:
   - Removal
   
 Version 1.4.06-dev
+ + Added ability to configure drops from Shake in treasures.yml
  + Added "Master Angler" ability to Fishing.
  + Added health display for mobs during combat.
  + Added new API method to McMMOPlayerLevelUpEvent to set levels gained

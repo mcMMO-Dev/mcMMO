@@ -100,6 +100,62 @@ Hylian_Luck:
         - Diamond_Gem
         - Gold_Nuggets
 #
+#	Settings for Shake
+###
+Shake:
+    Treasure:
+        - Blaze_Blaze_Rod
+        - Cave_Spider_Cobweb
+        - Cave_Spider_Potion
+        - Cave_Spider_Spider_Eye
+        - Cave_Spider_String
+        - Spider_Spider_Eye
+        - Spider_String
+        - Chicken_Feather
+        - Chicken_Raw_Chicken
+        - Chicken_Egg
+        - Cow_Milk_Bucket
+        - Cow_Leather
+        - Cow_Raw_Beef
+        - Creeper_Skull
+        - Creeper_Sulphur
+        - Enderman_Ender_Pearl
+        - Ghast_Sulphur
+        - Ghast_Ghast_Tear
+        - Iron_Golem_Pumpkin
+        - Iron_Golem_Iron_Ingot
+        - Iron_Golem_Red_Rose
+        - Magma_Cube_Magma_Cream
+        - Mushroom_Cow_Milk_Bucket
+        - Mushroom_Cow_Mushroom_Soup
+        - Mushroom_Cow_Leather
+        - Mushroom_Cow_Raw_Beef
+        - Mushroom_Cow_Red_Mushroom
+        - Pig_Pork
+        - Pig_Zombie_Rotten_Flesh
+        - Pig_Zombie_Gold_Nugget
+        - Sheep_Wool
+        - Skeleton_Skull
+        - Skeleton_Bone
+        - Skeleton_Arrow
+        - Slime_Slime_Ball
+        - Snowman_Pumpkin
+        - Snowman_Snowball
+        - Squid_Ink_Sack
+        - Witch_Heal_Potion
+        - Witch_Fire_Potion
+        - Witch_Speed_Potion
+        - Witch_Glass_Bottle
+        - Witch_Glowstone_Dust
+        - Witch_Sulphur
+        - Witch_Redstone
+        - Witch_Spider_Eye
+        - Witch_Stick
+        - Witch_Sugar
+        - Witch_Potion
+        - Zombie_Skull
+        - Zombie_Rotten_Flesh
+#
 #  Configuration to define Treasures
 ###
 Treasures:
@@ -969,3 +1025,517 @@ Treasures:
         Drop_Level: 0
         Drops_From:
             Pots: true
+    Blaze_Blaze_Rod:
+        ID: 369
+        Mob: BLAZE
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Cave_Spider_Spider_Eye:
+        ID: 375
+        Mob: CAVE_SPIDER
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 49.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Cave_Spider_String:
+        ID: 287
+        Mob: CAVE_SPIDER
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 49.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Cave_Spider_Cobweb:
+        ID: 30
+        Mob: CAVE_SPIDER
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 1.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Cave_Spider_Potion:
+        ID: 373
+        Mob: CAVE_SPIDER
+        Potion_Type: POISON
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 1.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Spider_Spider_Eye:
+        ID: 375
+        Mob: SPIDER
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 50.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Spider_String:
+        ID: 287
+        Mob: SPIDER
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 50.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Chicken_Feather:
+        ID: 288
+        Mob: CHICKEN
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 33.3
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Chicken_Raw_Chicken:
+        ID: 365
+        Mob: CHICKEN
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 33.3
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Chicken_Egg:
+        ID: 344
+        Mob: CHICKEN
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 33.3
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Cow_Milk_Bucket:
+        ID: 335
+        Mob: COW
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 2.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Cow_Leather:
+        ID: 334
+        Mob: COW
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 49.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Cow_Raw_Beef:
+        ID: 363
+        Mob: COW
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 49.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Creeper_Skull:
+        ID: 397
+        Mob: CREEPER
+        Data: 4
+        Amount: 1
+        XP: 0
+        Drop_Chance: 1.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Creeper_Sulphur:
+        ID: 289
+        Mob: CREEPER
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 99.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Enderman_Ender_Pearl:
+        ID: 368
+        Mob: ENDERMAN
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Ghast_Sulphur:
+        ID: 289
+        Mob: GHAST
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 50.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Ghast_Ghast_Tear:
+        ID: 370
+        Mob: GHAST
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 50.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Iron_Golem_Pumpkin:
+        ID: 86
+        Mob: IRON_GOLEM
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 3.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Iron_Golem_Iron_Ingot:
+        ID: 265
+        Mob: IRON_GOLEM
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 12.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Iron_Golem_Red_Rose:
+        ID: 38
+        Mob: IRON_GOLEM
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 85.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Magma_Cube_Magma_Cream:
+        ID: 378
+        Mob: MAGMA_CUBE
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Mushroom_Cow_Milk_Bucket:
+        ID: 335
+        Mob: MUSHROOM_COW
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 5.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Mushroom_Cow_Mushroom_Soup:
+        ID: 282
+        Mob: MUSHROOM_COW
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 5.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Mushroom_Cow_Leather:
+        ID: 334
+        Mob: MUSHROOM_COW
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 30.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Mushroom_Cow_Raw_Beef:
+        ID: 363
+        Mob: MUSHROOM_COW
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 30.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Mushroom_Cow_Red_Mushroom:
+        ID: 40
+        Mob: MUSHROOM_COW
+        Data: 0
+        Amount: 2
+        XP: 0
+        Drop_Chance: 30.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Pig_Pork:
+        ID: 319
+        Mob: PIG
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Pig_Zombie_Rotten_Flesh:
+        ID: 367
+        Mob: PIG_ZOMBIE
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 50.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Pig_Zombie_Gold_Nugget:
+        ID: 371
+        Mob: PIG_ZOMBIE
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 50.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Sheep_Wool:
+        ID: 35
+        Mob: SHEEP
+        Data: 0
+        Amount: 3
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Skeleton_Skull:
+        ID: 397
+        Mob: SKELETON
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 2.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Skeleton_Bone:
+        ID: 352
+        Mob: SKELETON
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 49.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Skeleton_Arrow:
+        ID: 262
+        Mob: SKELETON
+        Data: 0
+        Amount: 2
+        XP: 0
+        Drop_Chance: 49.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Slime_Slime_Ball:
+        ID: 341
+        Mob: SLIME
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Snowman_Pumpkin:
+        ID: 86
+        Mob: SNOWMAN
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 3.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Snowman_Snowball:
+        ID: 341
+        Mob: SNOWMAN
+        Data: 0
+        Amount: 2
+        XP: 0
+        Drop_Chance: 97.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Squid_Ink_Sack:
+        ID: 351
+        Mob: SQUID
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Witch_Heal_Potion:
+        ID: 373
+        Mob: WITCH
+        Potion_Type: INSTANT_HEAL
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 1.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Witch_Fire_Potion:
+        ID: 373
+        Mob: WITCH
+        Potion_Type: FIRE_RESISTANCE
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 1.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Witch_Speed_Potion:
+        ID: 373
+        Mob: WITCH
+        Potion_Type: SPEED
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 1.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Witch_Glass_Bottle:
+        ID: 374
+        Mob: WITCH
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 9.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Witch_Glowstone_Dust:
+        ID: 348
+        Mob: WITCH
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 13.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Witch_Sulphur:
+        ID: 289
+        Mob: WITCH
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 12.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Witch_Redstone:
+        ID: 331
+        Mob: WITCH
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 13.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Witch_Spider_Eye:
+        ID: 375
+        Mob: WITCH
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 12.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Witch_Stick:
+        ID: 380
+        Mob: WITCH
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 13.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Witch_Sugar:
+        ID: 353
+        Mob: WITCH
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 12.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Witch_Potion:
+        ID: 373
+        Mob: WITCH
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 13.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Zombie_Skull:
+        ID: 397
+        Mob: ZOMBIE
+        Data: 2
+        Amount: 1
+        XP: 0
+        Drop_Chance: 2.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
+    Zombie_Rotten_Flesh:
+        ID: 367
+        Mob: ZOMBIE
+        Data: 0
+        Amount: 1
+        XP: 0
+        Drop_Chance: 98.0
+        Drop_Level: 0
+        Drops_From:
+            Shake: true
