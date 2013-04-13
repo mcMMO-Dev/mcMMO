@@ -28,13 +28,13 @@ public class ZipLibrary {
 
     public static void mcMMObackup() throws IOException {
         if (Config.getInstance().getUseMySQL()) {
-            mcMMO.p.getLogger().info("This server is running in SQL Mode.");
-            mcMMO.p.getLogger().info("Only config files will be backed up.");
+            mcMMO.p.debug("This server is running in SQL Mode.");
+            mcMMO.p.debug("Only config files will be backed up.");
         }
 
         try {
             if (BackupDir.mkdir()) {
-                mcMMO.p.getLogger().info("Created Backup Directory.");
+                mcMMO.p.debug("Created Backup Directory.");
             }
         }
         catch (Exception e) {
@@ -66,7 +66,7 @@ public class ZipLibrary {
         }
 
         // Actually do something
-        mcMMO.p.getLogger().info("Backing up your mcMMO Configuration... ");
+        mcMMO.p.debug("Backing up your mcMMO Configuration... ");
 
         packZip(fileZip, sources);
     }
@@ -86,7 +86,7 @@ public class ZipLibrary {
 
         zipOut.flush();
         zipOut.close();
-        mcMMO.p.getLogger().info("Backup Completed.");
+        mcMMO.p.debug("Backup Completed.");
     }
 
     private static String buildPath(String path, String file) {

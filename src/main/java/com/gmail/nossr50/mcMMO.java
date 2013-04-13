@@ -133,7 +133,7 @@ public class mcMMO extends JavaPlugin {
                 UserManager.addUser(player); // In case of reload add all users back into UserManager
             }
 
-            getLogger().info("Version " + getDescription().getVersion() + " is enabled!");
+            debug("Version " + getDescription().getVersion() + " is enabled!");
 
             scheduleTasks();
             registerCommands();
@@ -198,7 +198,7 @@ public class mcMMO extends JavaPlugin {
             }
         }
 
-        getLogger().info("Was disabled."); // How informative!
+        debug("Was disabled."); // How informative!
     }
 
     public static String getMainDirectory() {

@@ -30,11 +30,11 @@ public abstract class ConfigLoader {
 
     protected void loadFile() {
         if (!configFile.exists()) {
-            plugin.getLogger().info("Creating mcMMO " + fileName + " File...");
+            plugin.debug("Creating mcMMO " + fileName + " File...");
             createFile();
         }
         else {
-            plugin.getLogger().info("Loading mcMMO " + fileName + " File...");
+            plugin.debug("Loading mcMMO " + fileName + " File...");
         }
 
         config = YamlConfiguration.loadConfiguration(configFile);
