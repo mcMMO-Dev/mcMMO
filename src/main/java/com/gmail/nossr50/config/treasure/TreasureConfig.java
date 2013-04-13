@@ -192,7 +192,7 @@ public class TreasureConfig extends ConfigLoader {
                     treasures.put(treasureName, fTreasure);
                 }
             }
-            else if (config.getBoolean("Treasures." + treasureName + "Drops_From.Shake", false)) {
+            else if (config.getBoolean("Treasures." + treasureName + ".Drops_From.Shake", false)) {
                 if (config.getConfigurationSection("Treasures." + treasureName + ".Drops_From").getKeys(false).size() != 1) {
                     reason.add("This can only be a shake drop.");
                 }
