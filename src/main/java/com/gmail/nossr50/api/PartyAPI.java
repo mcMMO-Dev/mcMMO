@@ -1,6 +1,7 @@
 package com.gmail.nossr50.api;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.bukkit.OfflinePlayer;
@@ -148,7 +149,7 @@ public final class PartyAPI {
      * @param player The player to check
      * @return all the player names in the player's party
      */
-    public static List<String> getMembers(Player player) {
+    public static LinkedHashSet<String> getMembers(Player player) {
         return PartyManager.getAllMembers(player);
     }
 

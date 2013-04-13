@@ -1,6 +1,7 @@
 package com.gmail.nossr50.datatypes.party;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.bukkit.OfflinePlayer;
@@ -10,7 +11,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
 
 public class Party {
-    private List<String> members = new ArrayList<String>();
+    private LinkedHashSet<String> members = new LinkedHashSet<String>();
     private String leader;
     private String name;
     private String password;
@@ -24,7 +25,7 @@ public class Party {
     private boolean shareHerbalismDrops   = true;
     private boolean shareWoodcuttingDrops = true;
 
-    public List<String> getMembers() {
+    public LinkedHashSet<String> getMembers() {
         return members;
     }
 
