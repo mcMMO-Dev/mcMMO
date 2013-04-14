@@ -61,6 +61,22 @@ public class Config extends AutoUpdateConfigLoader {
 
     public int getMobHealthbarTime() { return config.getInt("Mob_Healthbar.Display_Time", 3); }
 
+    /* Scoreboards */
+    public boolean getMcrankScoreboardEnabled() { return config.getBoolean("Scoreboards.Mcrank.Use", true); }
+    public int getMcrankScoreboardTime() { return config.getInt("Scoreboards.Mcrank.Display_Time", 10); }
+
+    public boolean getMcstatsScoreboardsEnabled() { return config.getBoolean("Scoreboards.Mcstats.Use", true); }
+    public int getMcstatsScoreboardTime() { return config.getInt("Scoreboards.Mctop.Display_Time", 10); }
+
+    public boolean getMctopScoreboardEnabled() { return config.getBoolean("Scoreboards.Mctop.Use", true); }
+    public int getMctopScoreboardTime() { return config.getInt("Scoreboards.Mctop.Display_Time", 10); }
+
+    public boolean getInspectScoreboardEnabled() { return config.getBoolean("Scoreboards.Inspect.Use", true); }
+    public int getInspectScoreboardTime() { return config.getInt("Scoreboards.Inspect.Display_Time", 10); }
+
+    public boolean getSkillScoreboardEnabled() { return config.getBoolean("Scoreboards.Skillname.Use", true); }
+    public int getSkillScoreboardTime() { return config.getInt("Scoreboards.Skillname.Display_Time", 10); }
+
     /* Database Purging */
     public int getPurgeInterval() { return config.getInt("Database_Purging.Purge_Interval", -1); }
     public int getOldUsersCutoff() { return config.getInt("Database_Purging.Old_User_Cutoff", 6); }

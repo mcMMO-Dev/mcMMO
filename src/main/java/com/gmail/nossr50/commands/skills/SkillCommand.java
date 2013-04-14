@@ -11,6 +11,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -20,6 +21,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
@@ -71,7 +73,14 @@ public abstract class SkillCommand implements TabExecutor {
                 if (!skill.isChildSkill()) {
                     player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
                     player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
-                    player.sendMessage(LocaleLoader.getString("Effects.Level", (int) skillValue, profile.getSkillXpLevel(skill), profile.getXpToLevel(skill)));
+
+                    if (Config.getInstance().getSkillScoreboardEnabled()) {
+                        ScoreboardManager.setupPlayerScoreboard(player.getName());
+                        ScoreboardManager.enablePlayerSkillScoreboard(mcMMOPlayer, skill);
+                    }
+                    else {
+                        player.sendMessage(LocaleLoader.getString("Effects.Level", (int) skillValue, profile.getSkillXpLevel(skill), profile.getXpToLevel(skill)));
+                    }
                 }
                 else {
                     player.sendMessage(LocaleLoader.getString("Skills.Header", skillName + " " + LocaleLoader.getString("Skills.Child")));

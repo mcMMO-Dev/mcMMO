@@ -27,6 +27,34 @@ General:
     # Should mcMMO over-write configs to update, or make new ones ending in .new?
     Config_Update_Overwrite: true
 
+Scoreboards:
+    Inspect:
+        # Should mcMMO use scoreboards for /inspect?
+        Use: true
+        # Amount of time (in seconds) to display. To display permanently, set to -1
+        Display_Time: 10
+    Mcrank:
+        # Should mcMMO use scoreboards for /mcrank?
+        Use: true
+        # Amount of time (in seconds) to display. To display permanently, set to -1
+        Display_Time: 10
+    Mcstats:
+        # Should mcMMO use scoreboards for /mcstats?
+        Use: true
+        # Amount of time (in seconds) to display. To display permanently, set to -1
+        Display_Time: 10
+    Mctop:
+        # Should mcMMO use scoreboards for /mctop?
+        Use: true
+        # Amount of time (in seconds) to display. To display permanently, set to -1
+        Display_Time: 10
+    Skillname:
+        # Should mcMMO use scoreboards for /skillname (/mining, /fishing, etc.)?
+        Use: true
+        # Amount of time (in seconds) to display. To display permanently, set to -1
+        Display_Time: 10
+
+
 Mob_Healthbar:
     # Default display for mob health bars - HEARTS, BAR, or DISABLED
     Display_Type: HEARTS

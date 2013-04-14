@@ -131,30 +131,11 @@ public final class FlatfileDatabaseManager {
      * @param pageNumber Which page in the leaderboards to retrieve
      * @return the requested leaderboard information
      */
-    public static String[] retrieveInfo(String skillType, int pageNumber) {
-        String[] info = new String[10];
-        List<PlayerStat> statsList;
+    public static List<PlayerStat> retrieveInfo(String skillType, int pageNumber, int statsPerPage) {
+        List<PlayerStat> statsList = skillType.equalsIgnoreCase("all") ? powerLevels : playerStatHash.get(SkillType.getSkill(skillType));
+        int fromIndex = (Math.max(pageNumber, 1) - 1) * statsPerPage;
 
-        if (skillType.equalsIgnoreCase("all")) {
-            statsList = powerLevels;
-        }
-        else {
-            statsList = playerStatHash.get(SkillType.getSkill(skillType));
-        }
-
-        if (pageNumber < 1) {
-            pageNumber = 1;
-        }
-        int destination = (pageNumber - 1) * 10;
-
-        for (int i = 0; i < 10; i++) {
-            if (destination + i < statsList.size()) {
-                PlayerStat ps = statsList.get(destination + i);
-                info[i] = ps.name + ":" + ps.statVal;
-            }
-        }
-
-        return info;
+        return statsList.subList(Math.min(fromIndex, statsList.size()), Math.min(fromIndex + statsPerPage, statsList.size()));
     }
 
     public static boolean removeFlatFileUser(String playerName) {
@@ -324,6 +305,10 @@ public final class FlatfileDatabaseManager {
         skills.put("ALL", getPlayerRank(playerName, powerLevels));
 
         return skills;
+    }
+
+    public static List<PlayerStat> getPlayerStats(String skillName) {
+        return (skillName.equalsIgnoreCase("all")) ? powerLevels : playerStatHash.get(SkillType.getSkill(skillName));
     }
 
     private static int loadStat(List<PlayerStat> statList, String playerName, String[] data, int dataIndex) {

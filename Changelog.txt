@@ -8,6 +8,8 @@ Key:
   - Removal
   
 Version 1.4.06-dev
+ + Added global scoreboards to track skill rankings (display using /mctop)
+ + Added per-player scoreboard displays for the /inspect, /mcrank, /mcstats, and /<skillname> commands
  + Added tab-complete support for all commands
  + Added ability to configure drops from Shake in treasures.yml
  + Added "Master Angler" ability to Fishing.

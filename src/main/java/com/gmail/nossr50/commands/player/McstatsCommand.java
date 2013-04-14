@@ -12,7 +12,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
-
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 
 public class McstatsCommand implements TabExecutor {
@@ -27,20 +27,26 @@ public class McstatsCommand implements TabExecutor {
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
                 Player player = mcMMOPlayer.getPlayer();
 
-                player.sendMessage(LocaleLoader.getString("Stats.Own.Stats"));
-                player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
-
-                CommandUtils.printGatheringSkills(player);
-                CommandUtils.printCombatSkills(player);
-                CommandUtils.printMiscSkills(player);
-
-                int powerLevelCap = Config.getInstance().getPowerLevelCap();
-
-                if (powerLevelCap != Integer.MAX_VALUE) {
-                    player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
+                if (Config.getInstance().getMcstatsScoreboardsEnabled()) {
+                    ScoreboardManager.setupPlayerScoreboard(player.getName());
+                    ScoreboardManager.enablePlayerStatsScoreboard(mcMMOPlayer);
                 }
                 else {
-                    player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", UserManager.getPlayer(player).getPowerLevel()));
+                    player.sendMessage(LocaleLoader.getString("Stats.Own.Stats"));
+                    player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
+
+                    CommandUtils.printGatheringSkills(player);
+                    CommandUtils.printCombatSkills(player);
+                    CommandUtils.printMiscSkills(player);
+
+                    int powerLevelCap = Config.getInstance().getPowerLevelCap();
+
+                    if (powerLevelCap != Integer.MAX_VALUE) {
+                        player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
+                    }
+                    else {
+                        player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", UserManager.getPlayer(player).getPowerLevel()));
+                    }
                 }
 
                 return true;

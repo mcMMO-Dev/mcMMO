@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.scoreboard.Scoreboard;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.spout.SpoutConfig;
@@ -30,6 +32,7 @@ public class PlayerProfile {
     private HudType hudType;
     private MobHealthbarType mobHealthbarType;
     private McMMOHud spoutHud;
+    private Scoreboard playerStatsScoreboard;
 
     /* Skill Data */
     private final Map<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>();   // Skill & Level
@@ -70,6 +73,10 @@ public class PlayerProfile {
         }
     }
 
+    public String getPlayerName() {
+        return playerName;
+    }
+
     public boolean isLoaded() {
         return loaded;
     }
@@ -104,6 +111,18 @@ public class PlayerProfile {
 
     public void setMobHealthbarType(MobHealthbarType mobHealthbarType) {
         this.mobHealthbarType = mobHealthbarType;
+    }
+
+    /*
+     * Scoreboards
+     */
+
+    public Scoreboard getPlayerStatsScoreboard() {
+        return playerStatsScoreboard;
+    }
+
+    public void setPlayerStatsScoreboard(Scoreboard statsScoreboard) {
+        this.playerStatsScoreboard = statsScoreboard;
     }
 
     /*

@@ -7,15 +7,18 @@ import java.util.Set;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 
 public class McrankCommand implements TabExecutor {
@@ -32,7 +35,14 @@ public class McrankCommand implements TabExecutor {
                     return true;
                 }
 
-                display(sender, sender.getName());
+                if (Config.getInstance().getMcrankScoreboardEnabled()) {
+                    ScoreboardManager.setupPlayerScoreboard(sender.getName());
+                    ScoreboardManager.enablePlayerRankScoreboard((Player) sender);
+                }
+                else {
+                    display(sender, sender.getName());
+                }
+
                 return true;
 
             case 1:
@@ -55,7 +65,13 @@ public class McrankCommand implements TabExecutor {
                     return true;
                 }
 
-                display(sender, playerName);
+                if (sender instanceof Player && Config.getInstance().getMcrankScoreboardEnabled()) {
+                    ScoreboardManager.setupPlayerScoreboard(sender.getName());
+                    ScoreboardManager.enablePlayerRankScoreboardOthers((Player) sender, playerName);
+                }
+                else {
+                    display(sender, playerName);
+                }
                 return true;
 
             default:

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.runnables.commands;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -11,7 +11,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.SQLDatabaseManager;
 
 public class MctopCommandAsyncTask extends BukkitRunnable {
-
     private CommandSender sender;
     private String query;
     private int page;
@@ -25,8 +24,8 @@ public class MctopCommandAsyncTask extends BukkitRunnable {
     @Override
     public void run() {
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-        final HashMap<Integer, ArrayList<String>> userslist = SQLDatabaseManager.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT " + ((page * 10) - 10) + ",10");
+        final Collection<ArrayList<String>> userStats = SQLDatabaseManager.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT " + ((page * 10) - 10) + ",10").values();
 
-        new MctopCommandDisplayTask(userslist, page, tablePrefix, sender).runTaskLater(mcMMO.p, 1);
+        new MctopCommandDisplayTask(userStats, page, tablePrefix, sender).runTaskLater(mcMMO.p, 1);
     }
 }
