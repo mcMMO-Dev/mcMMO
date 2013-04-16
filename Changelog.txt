@@ -8,6 +8,7 @@ Key:
   - Removal
   
 Version 1.4.06-dev
+ + Added tab-complete support for all commands
  + Added ability to configure drops from Shake in treasures.yml
  + Added "Master Angler" ability to Fishing.
  + Added health display for mobs during combat.
