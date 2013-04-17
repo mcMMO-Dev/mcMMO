@@ -1,5 +1,8 @@
 package com.gmail.nossr50.config.party;
 
+import java.util.HashSet;
+import java.util.List;
+
 import org.bukkit.Material;
 
 import com.gmail.nossr50.config.ConfigLoader;
@@ -28,6 +31,22 @@ public class ItemWeightConfig extends ConfigLoader {
             itemWeight = config.getInt("Item_Weights." + materialName);
         }
         return itemWeight;
+    }
+
+    public HashSet<Material> getMiscItems() {
+        HashSet<Material> miscItems = new HashSet<Material>();
+
+        List<String> itemList = config.getStringList("Party_Shareables.Misc_Items");
+
+        for (String item : itemList) {
+            String materialName = item.toUpperCase();
+            Material material = Material.getMaterial(materialName);
+
+            if (material != null) {
+                miscItems.add(material);
+            }
+        }
+        return miscItems;
     }
 
     @Override

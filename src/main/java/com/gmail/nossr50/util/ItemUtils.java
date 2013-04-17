@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util;
 
+import java.util.HashSet;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -13,6 +14,7 @@ import com.gmail.nossr50.api.SpoutToolsAPI;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomToolConfig;
+import com.gmail.nossr50.config.party.ItemWeightConfig;
 
 public class ItemUtils {
     private static Config configInstance = Config.getInstance();
@@ -535,7 +537,7 @@ public class ItemUtils {
      * @return True if the item can be shared.
      */
     public static boolean isShareable(ItemStack is) {
-        return isMiningDrop(is) || isWoodcuttingDrop(is) || isMobDrop(is) || isHerbalismDrop(is);
+        return isMiningDrop(is) || isWoodcuttingDrop(is) || isMobDrop(is) || isHerbalismDrop(is) || isMiscDrop(is);
     }
 
     /**
@@ -572,6 +574,12 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * Checks to see if an item is a herbalism drop.
+     *
+     * @param is Item to check
+     * @return true if the item is a herbalism drop, false otherwise
+     */
     public static boolean isHerbalismDrop(ItemStack is) {
         switch (is.getType()) {
             case WHEAT:
@@ -599,6 +607,12 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * Checks to see if an item is a mob drop.
+     *
+     * @param is Item to check
+     * @return true if the item is a mob drop, false otherwise
+     */
     public static boolean isMobDrop(ItemStack is) {
         switch (is.getType()) {
             case STRING:
@@ -635,6 +649,12 @@ public class ItemUtils {
         }
     }
 
+    /**
+     * Checks to see if an item is a woodcutting drop.
+     *
+     * @param is Item to check
+     * @return true if the item is a woodcutting drop, false otherwise
+     */
     public static boolean isWoodcuttingDrop(ItemStack is) {
         switch (is.getType()) {
             case LOG:
@@ -645,6 +665,22 @@ public class ItemUtils {
 
             default:
                 return false;
+        }
+    }
+
+    /**
+     * Checks to see if an item is a miscellaneous drop. These items are read from the config file
+     *
+     * @param is Item to check
+     * @return true if the item is a miscellaneous drop, false otherwise
+     */
+    public static boolean isMiscDrop(ItemStack is) {
+        HashSet<Material> miscItems = ItemWeightConfig.getInstance().getMiscItems();
+
+        if (miscItems.contains(is.getType())) {
+            return true;
+        } else {
+            return false;
         }
     }
 

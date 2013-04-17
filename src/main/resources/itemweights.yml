@@ -24,3 +24,44 @@ Item_Weights:
     Glowstone_Dust: 20
     Coal: 10
     Coal_Ore: 10
+
+# Items in this section will get added to the Misc share category.
+# Case insensitive, though the name must be exactly the same as set in the Bukkit Material enum.
+Party_Shareables:
+    Misc_Items:
+        - Diamond_Sword
+        - Diamond_Spade
+        - Diamond_Pickaxe
+        - Diamond_Axe
+        - Gold_Sword
+        - Gold_Spade
+        - Gold_Pickaxe
+        - Gold_Axe
+        - Iron_Sword
+        - Iron_Spade
+        - Iron_Pickaxe
+        - Iron_Axe
+        - Stone_Sword
+        - Stone_Spade
+        - Stone_Pickaxe
+        - Stone_Axe
+        - Wood_Sword
+        - Wood_Spade
+        - Wood_Pickaxe
+        - Wood_Axe
+        - Diamond_Helmet
+        - Diamond_Chestplate
+        - Diamond_Leggings
+        - Diamond_Boots
+        - Gold_Helmet
+        - Gold_Chestplate
+        - Gold_Leggings
+        - Gold_Boots
+        - Iron_Helmet
+        - Iron_Chestplate
+        - Iron_Leggings
+        - Iron_Boots
+        - Leather_Helmet
+        - Leather_Chestplate
+        - Leather_Leggings
+        - Leather_Boots

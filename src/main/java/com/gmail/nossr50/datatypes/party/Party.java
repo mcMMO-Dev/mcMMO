@@ -24,6 +24,7 @@ public class Party {
     private boolean shareMiningDrops      = true;
     private boolean shareHerbalismDrops   = true;
     private boolean shareWoodcuttingDrops = true;
+    private boolean shareMiscDrops        = true;
 
     public LinkedHashSet<String> getMembers() {
         return members;
@@ -74,6 +75,10 @@ public class Party {
         return shareWoodcuttingDrops;
     }
 
+    public boolean sharingMiscDrops() {
+        return shareMiscDrops;
+    }
+
     public List<String> getItemShareCategories() {
         List<String> shareCategories = new ArrayList<String>();
 
@@ -92,6 +97,10 @@ public class Party {
 
         if (sharingWoodcuttingDrops()) {
             shareCategories.add("Woodcutting");
+        }
+
+        if (sharingMiscDrops()) {
+            shareCategories.add("Misc");
         }
 
         return shareCategories;

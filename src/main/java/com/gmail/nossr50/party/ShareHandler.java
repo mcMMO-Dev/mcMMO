@@ -111,6 +111,9 @@ public final class ShareHandler {
         else if (ItemUtils.isWoodcuttingDrop(itemStack) && !party.sharingWoodcuttingDrops()) {
             return false;
         }
+        else if (ItemUtils.isMiscDrop(itemStack) && !party.sharingMiscDrops()) {
+            return false;
+        }
 
         switch (party.getItemShareMode()) {
             case EQUAL:
