@@ -180,10 +180,7 @@ public class SkillUtils {
 
         if (ability.getPermissions(player)) {
             if (mcMMOPlayer.getAbilityMode(ability) && (mcMMOPlayer.getProfile().getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR) <= curTime) {
-                if (ability == AbilityType.BERSERK) {
-                    player.setCanPickupItems(true);
-                }
-                else if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
+                if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
                     handleAbilitySpeedDecrease(player);
                 }
 
@@ -404,10 +401,7 @@ public class SkillUtils {
             playerProfile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
             mcMMOPlayer.setAbilityMode(ability, true);
 
-            if (ability == AbilityType.BERSERK) {
-                player.setCanPickupItems(false);
-            }
-            else if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
+            if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
                 handleAbilitySpeedIncrease(player);
             }
         }

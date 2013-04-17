@@ -22,6 +22,7 @@ Version 1.4.06-dev
  = Fixed bug where experience commands were adding levels to all skills when they shouldn't
  = Fixed mcmmo.commands.ptp.send not being set by default
  = Fixed NPE when trying to tab-complete /mctop
+ ! Changed Berserk to add items to inventory rather than denying pickup
  ! Changed Chimaera Wing's recipe result to use the ingredient Material
  ! Players will no longer pickup items to their hotbar while using Unarmed
  ! ExperienceAPI methods will now throw InvalidSkillException if the skill name passed in is invalid.

@@ -23,7 +23,6 @@ public class McrefreshCommand extends ToggleCommand {
         mcMMOPlayer.resetToolPrepMode();
         mcMMOPlayer.resetAbilityMode();
 
-        player.setCanPickupItems(true);
         player.sendMessage(LocaleLoader.getString("Ability.Generic.Refresh"));
     }
 
