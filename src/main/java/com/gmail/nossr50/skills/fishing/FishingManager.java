@@ -112,7 +112,7 @@ public class FishingManager extends SkillManager {
             player.sendMessage(LocaleLoader.getString("Fishing.ItemFound"));
 
             treasureXp = treasure.getXp();
-            ItemStack treasureDrop = treasure.getDrop();
+            ItemStack treasureDrop = treasure.getDrop().clone(); // Not cloning is bad, m'kay?
 
             if (Permissions.magicHunter(player) && ItemUtils.isEnchantable(treasureDrop) && handleMagicHunter(treasureDrop)) {
                 player.sendMessage(LocaleLoader.getString("Fishing.MagicFound"));
