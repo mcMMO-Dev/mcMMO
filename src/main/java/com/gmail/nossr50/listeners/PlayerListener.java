@@ -164,12 +164,15 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
+        Item drop = event.getItemDrop();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         if (mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) || mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER)) {
             event.setCancelled(true);
             return;
         }
+
+        drop.setMetadata(mcMMO.droppedItemKey, mcMMO.metadataValue);
 
         SkillUtils.removeAbilityBuff(event.getItemDrop().getItemStack());
     }
@@ -234,7 +237,7 @@ public class PlayerListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (mcMMOPlayer.inParty() && ItemUtils.isShareable(dropStack)) {
+        if (!drop.hasMetadata(mcMMO.droppedItemKey) && mcMMOPlayer.inParty() && ItemUtils.isShareable(dropStack)) {
             event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
 
             if (event.isCancelled()) {

@@ -29,6 +29,7 @@ Version 1.4.06-dev
  ! ExperienceAPI methods will now throw InvalidSkillException if the skill name passed in is invalid.
  ! Changed default value for recently-hurt cooldown between teleports, this is also fully configurable now
  ! Changed the amount of info messages in the console when enabling/disabling, enable Verbose_Logging to enable them again
+ ! Items dropped by players are now being tracked and are not being shared with party members
 
 Version 1.4.05
  + Added option to allow refreshing of chunks after block-breaking abilities. (Disabled by default)
