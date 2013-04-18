@@ -626,15 +626,6 @@ public final class DatabaseManager {
             }
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore the error, we're leaving
-                }
-            }
-
             if (statement != null) {
                 try {
                     statement.close();

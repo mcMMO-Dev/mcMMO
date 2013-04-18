@@ -6,9 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
 import org.bukkit.Material;
@@ -51,8 +49,7 @@ public class SpoutUtils {
      * @param theFilePath The name of the file path
      */
     private static void writeFile(String theFileName, String theFilePath) {
-        InputStream is = null;
-        OutputStream os = null;
+        BufferedOutputStream os = null;
         JarFile jar = null;
 
         try {
@@ -64,8 +61,9 @@ public class SpoutUtils {
             }
 
             jar = new JarFile(mcMMO.mcmmo);
-            JarEntry entry = jar.getJarEntry("resources/" + theFileName);
-            is = jar.getInputStream(entry);
+
+            @SuppressWarnings("resource")
+            InputStream is = jar.getInputStream(jar.getJarEntry("resources/" + theFileName));
 
             byte[] buf = new byte[2048];
             int nbRead;
@@ -75,8 +73,6 @@ public class SpoutUtils {
             while ((nbRead = is.read(buf)) != -1) {
                 os.write(buf, 0, nbRead);
             }
-
-            os.flush();
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -85,9 +81,9 @@ public class SpoutUtils {
             e.printStackTrace();
         }
         finally {
-            if (is != null) {
+            if (jar != null) {
                 try {
-                    is.close();
+                    jar.close();
                 }
                 catch (IOException ex) {
                     ex.printStackTrace();
@@ -96,15 +92,6 @@ public class SpoutUtils {
             if (os != null) {
                 try {
                     os.close();
-                }
-                catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-
-            if (jar != null) {
-                try {
-                    jar.close();
                 }
                 catch (IOException ex) {
                     ex.printStackTrace();

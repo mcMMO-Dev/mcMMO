@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-import java.util.HashSet;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -675,13 +674,7 @@ public class ItemUtils {
      * @return true if the item is a miscellaneous drop, false otherwise
      */
     public static boolean isMiscDrop(ItemStack is) {
-        HashSet<Material> miscItems = ItemWeightConfig.getInstance().getMiscItems();
-
-        if (miscItems.contains(is.getType())) {
-            return true;
-        } else {
-            return false;
-        }
+        return ItemWeightConfig.getInstance().getMiscItems().contains(is.getType());
     }
 
     public static boolean isMcMMOItem(ItemStack is) {
