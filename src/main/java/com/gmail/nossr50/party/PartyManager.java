@@ -461,8 +461,8 @@ public final class PartyManager {
             party.setLeader(partiesFile.getString(partyName + ".Leader"));
             party.setPassword(partiesFile.getString(partyName + ".Password"));
             party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
-            party.setXpShareMode(ShareHandler.ShareMode.getFromString(partiesFile.getString(partyName + ".ExpShareMode")));
-            party.setItemShareMode(ShareHandler.ShareMode.getFromString(partiesFile.getString(partyName + ".ItemShareMode")));
+            party.setXpShareMode(ShareHandler.ShareMode.getShareMode(partiesFile.getString(partyName + ".ExpShareMode", "NONE")));
+            party.setItemShareMode(ShareHandler.ShareMode.getShareMode(partiesFile.getString(partyName + ".ItemShareMode", "NONE")));
 
             List<String> memberNames = partiesFile.getStringList(partyName + ".Members");
             LinkedHashSet<String> members = party.getMembers();

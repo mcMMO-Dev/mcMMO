@@ -8,7 +8,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.ShareHandler;
+import com.gmail.nossr50.party.ShareHandler.ShareMode;
 
 public class Party {
     private LinkedHashSet<String> members = new LinkedHashSet<String>();
@@ -17,8 +17,8 @@ public class Party {
     private String password;
     private boolean locked;
 
-    private ShareHandler.ShareMode xpShareMode   = ShareHandler.ShareMode.NONE;
-    private ShareHandler.ShareMode itemShareMode = ShareHandler.ShareMode.NONE;
+    private ShareMode xpShareMode   = ShareMode.NONE;
+    private ShareMode itemShareMode = ShareMode.NONE;
 
     private boolean shareLootDrops        = true;
     private boolean shareMiningDrops      = true;
@@ -59,47 +59,27 @@ public class Party {
         return locked;
     }
 
-    public boolean sharingLootDrops() {
-        return shareLootDrops;
-    }
-
-    public boolean sharingMiningDrops() {
-        return shareMiningDrops;
-    }
-
-    public boolean sharingHerbalismDrops() {
-        return shareHerbalismDrops;
-    }
-
-    public boolean sharingWoodcuttingDrops() {
-        return shareWoodcuttingDrops;
-    }
-
-    public boolean sharingMiscDrops() {
-        return shareMiscDrops;
-    }
-
     public List<String> getItemShareCategories() {
         List<String> shareCategories = new ArrayList<String>();
 
         // TODO Locale the category names!
-        if (sharingLootDrops()) {
+        if (shareLootDrops) {
             shareCategories.add("Loot");
         }
 
-        if (sharingMiningDrops()) {
+        if (shareMiningDrops) {
             shareCategories.add("Mining");
         }
 
-        if (sharingHerbalismDrops()) {
+        if (shareHerbalismDrops) {
             shareCategories.add("Herbalism");
         }
 
-        if (sharingWoodcuttingDrops()) {
+        if (shareWoodcuttingDrops) {
             shareCategories.add("Woodcutting");
         }
 
-        if (sharingMiscDrops()) {
+        if (shareMiscDrops) {
             shareCategories.add("Misc");
         }
 
@@ -122,39 +102,68 @@ public class Party {
         this.locked = locked;
     }
 
-    public void setXpShareMode(ShareHandler.ShareMode xpShareMode) {
+    public void setXpShareMode(ShareMode xpShareMode) {
         this.xpShareMode = xpShareMode;
     }
 
-    public ShareHandler.ShareMode getXpShareMode() {
+    public ShareMode getXpShareMode() {
         return xpShareMode;
     }
 
-    public void setItemShareMode(ShareHandler.ShareMode itemShareMode) {
+    public void setItemShareMode(ShareMode itemShareMode) {
         this.itemShareMode = itemShareMode;
     }
 
-    public ShareHandler.ShareMode getItemShareMode() {
+    public ShareMode getItemShareMode() {
         return itemShareMode;
     }
 
-    public void setSharingLootDrops(boolean enabled) {
-        shareLootDrops = enabled;
+    public boolean sharingDrops(ItemShareType shareType) {
+        switch (shareType) {
+            case HERBALISM:
+                return shareHerbalismDrops;
+
+            case LOOT:
+                return shareLootDrops;
+
+            case MINING:
+                return shareMiningDrops;
+
+            case MISC:
+                return shareMiscDrops;
+
+            case WOODCUTTING:
+                return shareWoodcuttingDrops;
+
+            default:
+                return false;
+        }
     }
 
-    public void setSharingMiningDrops(boolean enabled) {
-        shareMiningDrops = enabled;
-    }
+    public void setSharingDrops(ItemShareType shareType, boolean enabled) {
+        switch (shareType) {
+            case HERBALISM:
+                shareHerbalismDrops = enabled;
+                break;
 
-    public void setSharingHerbalismDrops(boolean enabled) {
-        shareHerbalismDrops = enabled;
-    }
+            case LOOT:
+                shareLootDrops = enabled;
+                break;
 
-    public void setSharingWoodcuttingDrops(boolean enabled) {
-        shareWoodcuttingDrops = enabled;
-    }
+            case MINING:
+                shareMiningDrops = enabled;
+                break;
 
-    public void setSharingMiscDrops(boolean enabled) {
-        shareMiscDrops = enabled;
+            case MISC:
+                shareMiscDrops = enabled;
+                break;
+
+            case WOODCUTTING:
+                shareWoodcuttingDrops = enabled;
+                break;
+
+            default:
+                return;
+        }
     }
 }

@@ -6,9 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.party.ShareHandler.ShareMode;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -27,20 +27,14 @@ public class PartyItemShareCommand implements CommandExecutor {
         switch (args.length) {
             case 2:
                 playerParty = UserManager.getPlayer(sender.getName()).getParty();
+                ShareMode mode = ShareMode.getShareMode(args[1].toUpperCase());
 
-                if (args[1].equalsIgnoreCase("none") || CommandUtils.shouldDisableToggle(args[1])) {
-                    handleChangingShareMode(ShareMode.NONE);
-                }
-                else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even")) {
-                    handleChangingShareMode(ShareMode.EQUAL);
-                }
-                else if (args[1].equalsIgnoreCase("random")) {
-                    handleChangingShareMode(ShareMode.RANDOM);
-                }
-                else {
+                if (mode == null) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | EQUAL | RANDOM>"));
+                    return true;
                 }
 
+                handleChangingShareMode(mode);
                 return true;
 
             case 3:
@@ -58,26 +52,13 @@ public class PartyItemShareCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (args[1].equalsIgnoreCase("loot")) {
-                    playerParty.setSharingLootDrops(toggle);
+                try {
+                    handleToggleItemShareCategory(ItemShareType.valueOf(args[1].toUpperCase()), toggle);
                 }
-                else if (args[1].equalsIgnoreCase("mining")) {
-                    playerParty.setSharingMiningDrops(toggle);
-                }
-                else if (args[1].equalsIgnoreCase("herbalism")) {
-                    playerParty.setSharingHerbalismDrops(toggle);
-                }
-                else if (args[1].equalsIgnoreCase("woodcutting")) {
-                    playerParty.setSharingWoodcuttingDrops(toggle);
-                }
-                else if (args[1].equalsIgnoreCase("misc")) {
-                    playerParty.setSharingMiscDrops(toggle);
-                }
-                else {
+                catch (IllegalArgumentException ex) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting | misc> <true | false>"));
                 }
 
-                notifyToggleItemShareCategory(args[1], toggle);
                 return true;
 
             default:
@@ -87,7 +68,7 @@ public class PartyItemShareCommand implements CommandExecutor {
         }
     }
 
-    private void handleChangingShareMode(ShareHandler.ShareMode mode) {
+    private void handleChangingShareMode(ShareMode mode) {
         playerParty.setItemShareMode(mode);
 
         String changeModeMessage = LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Item"), LocaleLoader.getString("Party.ShareMode." + StringUtils.getCapitalized(mode.toString())));
@@ -97,10 +78,10 @@ public class PartyItemShareCommand implements CommandExecutor {
         }
     }
 
-    private void notifyToggleItemShareCategory(String category, boolean toggle) {
-        String state = toggle ? "enabled" : "disabled";
+    private void handleToggleItemShareCategory(ItemShareType type, boolean toggle) {
+        playerParty.setSharingDrops(type, toggle);
 
-        String toggleMessage = LocaleLoader.getString("Commands.Party.ToggleShareCategory", StringUtils.getCapitalized(category), state);
+        String toggleMessage = LocaleLoader.getString("Commands.Party.ToggleShareCategory", StringUtils.getCapitalized(type.toString()), toggle ? "enabled" : "disabled");
 
         for (Player member : playerParty.getOnlineMembers()) {
             member.sendMessage(toggleMessage);

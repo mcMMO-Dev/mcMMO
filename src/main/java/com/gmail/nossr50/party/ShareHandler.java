@@ -8,11 +8,12 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
+import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public final class ShareHandler {
@@ -21,15 +22,19 @@ public final class ShareHandler {
         EQUAL,
         RANDOM;
 
-        public static ShareMode getFromString(String string) {
+        public static ShareMode getShareMode(String string) {
             try {
                 return valueOf(string);
             }
-            catch (IllegalArgumentException exception) {
-                return NONE;
-            }
-            catch (NullPointerException exception) {
-                return NONE;
+            catch (IllegalArgumentException ex) {
+                if (string.equalsIgnoreCase("even")) {
+                    return EQUAL;
+                }
+                else if (CommandUtils.shouldDisableToggle(string)) {
+                    return NONE;
+                }
+
+                return null;
             }
         }
     };
@@ -76,8 +81,8 @@ public final class ShareHandler {
                 mcMMOPlayer.beginUnsharedXpGain(skillType, roundedXp);
 
                 return true;
+
             case NONE:
-                // Fallthrough
             default:
                 return false;
         }
@@ -99,19 +104,9 @@ public final class ShareHandler {
         ItemStack newStack = itemStack.clone();
         newStack.setAmount(1);
 
-        if (ItemUtils.isMobDrop(itemStack) && !party.sharingLootDrops()) {
-            return false;
-        }
-        else if (ItemUtils.isMiningDrop(itemStack) && !party.sharingMiningDrops()) {
-            return false;
-        }
-        else if (ItemUtils.isHerbalismDrop(itemStack) && !party.sharingHerbalismDrops()) {
-            return false;
-        }
-        else if (ItemUtils.isWoodcuttingDrop(itemStack) && !party.sharingWoodcuttingDrops()) {
-            return false;
-        }
-        else if (ItemUtils.isMiscDrop(itemStack) && !party.sharingMiscDrops()) {
+        ItemShareType dropType = ItemShareType.getShareType(itemStack);
+
+        if (dropType == null || !party.sharingDrops(dropType)) {
             return false;
         }
 
@@ -163,6 +158,7 @@ public final class ShareHandler {
                     winningPlayer.updateInventory();
                 }
                 return true;
+
             case RANDOM:
                 nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
 
@@ -191,8 +187,8 @@ public final class ShareHandler {
                     winningPlayer.updateInventory();
                 }
                 return true;
+
             case NONE:
-                // Fallthrough
             default:
                 return false;
         }
