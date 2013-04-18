@@ -533,7 +533,7 @@ public class SpoutUtils {
         }
 
         spoutPlayer.sendNotification(LocaleLoader.getString("Spout.LevelUp.1"), LocaleLoader.getString("Spout.LevelUp.2", SkillUtils.getSkillName(skillType), profile.getSkillLevel(skillType)), mat);
-        SpoutSoundUtils.playLevelUpNoise(spoutPlayer, plugin);
+        SpoutManager.getSoundManager().playCustomSoundEffect(plugin, spoutPlayer, "level.wav", false);
     }
 
     /**
