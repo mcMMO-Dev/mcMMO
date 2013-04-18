@@ -185,7 +185,6 @@ public final class DatabaseManager {
                 }
                 catch (SQLException e) {
                     printErrors(e);
-                    return false;
                 }
             }
         }
