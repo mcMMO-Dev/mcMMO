@@ -163,26 +163,18 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCraftItem(CraftItemEvent event) {
-        if (event.getRecipe().getResult() == null) {
-            return;
-        }
-        else if (!ItemUtils.isMcMMOItem(event.getRecipe().getResult())) {
-            return;
-        }
-        else if (event.getWhoClicked() == null) {
-            return;
-        }
-        else if (!(event.getWhoClicked() instanceof Player)) {
+        ItemStack result = event.getRecipe().getResult();
+        final HumanEntity whoClicked = event.getWhoClicked();
+
+        if (!ItemUtils.isMcMMOItem(result) || Misc.isNPCEntity(whoClicked) || !(whoClicked instanceof Player)) {
             return;
         }
 
-        final Player player = (Player) event.getWhoClicked();
-
-        mcMMO.p.getServer().getScheduler().scheduleSyncDelayedTask(mcMMO.p, new Runnable() {
+        mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new Runnable() {
             @Override
             public void run() {
-                player.updateInventory();
+                ((Player) whoClicked).updateInventory();
             }
-        });
+        }, 0);
     }
 }
