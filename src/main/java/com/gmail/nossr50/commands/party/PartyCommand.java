@@ -28,7 +28,7 @@ public class PartyCommand implements TabExecutor {
 
     private static final List<String> PARTY_SUBCOMMANDS;
     private static final List<String> EXPSHARE_COMPLETIONS = ImmutableList.of("none", "equal");
-    private static final List<String> ITEMSHARE_COMPLETIONS = ImmutableList.of("none", "equal", "random", "loot", "mining", "herbalism", "woodcutting");
+    private static final List<String> ITEMSHARE_COMPLETIONS = ImmutableList.of("none", "equal", "random", "loot", "mining", "herbalism", "woodcutting", "misc");
 
     static {
         ArrayList<String> subcommands = new ArrayList<String>();
@@ -228,7 +228,7 @@ public class PartyCommand implements TabExecutor {
     }
 
     private boolean isItemShareCategory(String category) {
-        return category.equalsIgnoreCase("loot") || category.equalsIgnoreCase("mining") || category.equalsIgnoreCase("herbalism") || category.equalsIgnoreCase("woodcutting");
+        return category.equalsIgnoreCase("loot") || category.equalsIgnoreCase("mining") || category.equalsIgnoreCase("herbalism") || category.equalsIgnoreCase("woodcutting") || category.equalsIgnoreCase("misc");
     }
 }
 

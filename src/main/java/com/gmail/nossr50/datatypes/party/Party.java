@@ -153,4 +153,8 @@ public class Party {
     public void setSharingWoodcuttingDrops(boolean enabled) {
         shareWoodcuttingDrops = enabled;
     }
+
+    public void setSharingMiscDrops(boolean enabled) {
+        shareMiscDrops = enabled;
+    }
 }

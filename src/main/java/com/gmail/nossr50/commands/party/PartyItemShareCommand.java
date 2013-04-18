@@ -54,7 +54,7 @@ public class PartyItemShareCommand implements CommandExecutor {
                     toggle = false;
                 }
                 else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting> <true | false>"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting | misc> <true | false>"));
                     return true;
                 }
 
@@ -70,8 +70,11 @@ public class PartyItemShareCommand implements CommandExecutor {
                 else if (args[1].equalsIgnoreCase("woodcutting")) {
                     playerParty.setSharingWoodcuttingDrops(toggle);
                 }
+                else if (args[1].equalsIgnoreCase("misc")) {
+                    playerParty.setSharingMiscDrops(toggle);
+                }
                 else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting> <true | false>"));
+                    sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting | misc> <true | false>"));
                 }
 
                 notifyToggleItemShareCategory(args[1], toggle);
@@ -79,7 +82,7 @@ public class PartyItemShareCommand implements CommandExecutor {
 
             default:
                 sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<NONE | EQUAL | RANDOM>"));
-                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting> <true | false>"));
+                sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting | misc> <true | false>"));
                 return true;
         }
     }
