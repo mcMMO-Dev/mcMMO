@@ -48,10 +48,8 @@ public class ZipLibrary {
 
         // Create the Source List, and add directories/etc to the file.
         List<File> sources = new ArrayList<File>();
-        if (!Config.getInstance().getUseMySQL()) {
-            sources.add(FlatFileDirectory);
-        }
 
+        sources.add(FlatFileDirectory);
         sources.add(ConfigFile);
         sources.add(TreasuresFile);
         sources.add(AdvancedConfigFile);

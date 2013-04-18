@@ -6,6 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
@@ -24,27 +25,22 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
 
     @Override
     public void run() {
+        Player player = mcMMO.p.getServer().getPlayer(playerName);
+        Integer rank;
+
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
 
-        for (SkillType skillType : SkillType.values()) {
-            if ((sender instanceof Player && !Permissions.skillEnabled(sender, skillType)) || skillType.isChildSkill()) {
+        for (SkillType skill : SkillType.values()) {
+            if (skill.isChildSkill() || !Permissions.skillEnabled(player, skill)) {
                 continue;
             }
 
-            if (skills.get(skillType.name()) == null) {
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillUtils.getSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked")));
-            }
-            else {
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillUtils.getSkillName(skillType), skills.get(skillType.name())));
-            }
+            rank = skills.get(skill.name());
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillUtils.getSkillName(skill), (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
         }
 
-        if (skills.get("ALL") == null) {
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", LocaleLoader.getString("Commands.mcrank.Unranked")));
-        }
-        else {
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", skills.get("ALL")));
-        }
+        rank = skills.get("ALL");
+        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
     }
 }

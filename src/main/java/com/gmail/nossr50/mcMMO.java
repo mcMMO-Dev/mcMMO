@@ -23,7 +23,6 @@ import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
-import com.gmail.nossr50.database.LeaderboardManager;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.listeners.BlockListener;
@@ -65,8 +64,9 @@ public class mcMMO extends JavaPlugin {
 
     public static mcMMO p;
 
-    public static ChunkManager  placeStore;
+    public static ChunkManager placeStore;
     public static RepairableManager repairableManager;
+    public static DatabaseManager databaseManager;
 
     // Jar Stuff
     public static File mcmmo;
@@ -111,24 +111,12 @@ public class mcMMO extends JavaPlugin {
             setupSpout();
             loadConfigFiles();
 
-            if (!Config.getInstance().getUseMySQL()) {
-                UserManager.loadUsers();
-            }
+            databaseManager = new DatabaseManager(this, Config.getInstance().getUseMySQL());
 
             registerEvents();
             registerCustomRecipes();
 
             PartyManager.loadParties();
-
-            // Setup the leader boards
-            if (Config.getInstance().getUseMySQL()) {
-                // TODO: Why do we have to check for a connection that hasn't be made yet?
-                DatabaseManager.checkConnected();
-                DatabaseManager.createStructure();
-            }
-            else {
-                LeaderboardManager.updateLeaderboards();
-            }
 
             for (Player player : getServer().getOnlinePlayers()) {
                 UserManager.addUser(player); // In case of reload add all users back into UserManager

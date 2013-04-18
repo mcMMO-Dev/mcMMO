@@ -1,7 +1,5 @@
 package com.gmail.nossr50.util.player;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,20 +14,6 @@ public final class UserManager {
     private final static Map<String, McMMOPlayer> players = new HashMap<String, McMMOPlayer>();
 
     private UserManager() {};
-
-    /**
-     * Load users.
-     */
-    public static void loadUsers() {
-        new File(mcMMO.getFlatFileDirectory()).mkdir();
-
-        try {
-            new File(mcMMO.getUsersFilePath()).createNewFile();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Add a new user.

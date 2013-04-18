@@ -9,12 +9,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.database.DatabaseManager;
-import com.gmail.nossr50.database.LeaderboardManager;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -35,20 +32,11 @@ public class McremoveCommand implements TabExecutor {
                     return true;
                 }
 
-                /* MySQL */
-                if (Config.getInstance().getUseMySQL()) {
-                    String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-
-                    if (DatabaseManager.update("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.user = '" + args[0] + "'") != 0) {
-                        Misc.profileCleanup(args[0]);
-                        sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", args[0]));
-                    }
+                if (mcMMO.databaseManager.removeUser(args[0])) {
+                    sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", args[0]));
                 }
                 else {
-                    if (LeaderboardManager.removeFlatFileUser(args[0])) {
-                        Misc.profileCleanup(args[0]);
-                        sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", args[0]));
-                    }
+                    sender.sendMessage(args[0] + " could not be removed from the database."); // Pretty sure this should NEVER happen.
                 }
 
                 return true;

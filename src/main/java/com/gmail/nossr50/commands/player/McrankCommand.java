@@ -10,18 +10,12 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.database.LeaderboardManager;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.SkillUtils;
-
 import com.google.common.collect.ImmutableList;
 
 public class McrankCommand implements TabExecutor {
@@ -38,13 +32,7 @@ public class McrankCommand implements TabExecutor {
                     return true;
                 }
 
-                if (Config.getInstance().getUseMySQL()) {
-                    sqlDisplay(sender, sender.getName());
-                }
-                else {
-                    flatfileDisplay(sender, sender.getName());
-                }
-
+                display(sender, sender.getName());
                 return true;
 
             case 1:
@@ -62,18 +50,12 @@ public class McrankCommand implements TabExecutor {
                     if (CommandUtils.tooFar(sender, mcMMOPlayer.getPlayer(), Permissions.mcrankFar(sender))) {
                         return true;
                     }
-
-                } else if (CommandUtils.inspectOffline(sender, new PlayerProfile(playerName, false), Permissions.mcrankOffline(sender))) {
+                }
+                else if (CommandUtils.inspectOffline(sender, new PlayerProfile(playerName, false), Permissions.mcrankOffline(sender))) {
                     return true;
                 }
 
-                if (Config.getInstance().getUseMySQL()) {
-                    sqlDisplay(sender, playerName);
-                }
-                else {
-                    flatfileDisplay(sender, playerName);
-                }
-
+                display(sender, playerName);
                 return true;
 
             default:
@@ -92,39 +74,7 @@ public class McrankCommand implements TabExecutor {
         }
     }
 
-    private void flatfileDisplay(CommandSender sender, String playerName) {
-        LeaderboardManager.updateLeaderboards(); // Make sure the information is up to date
-
-        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
-        sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
-
-        for (SkillType skillType : SkillType.values()) {
-            int[] rankInts = LeaderboardManager.getPlayerRank(playerName, skillType);
-
-            if (!Permissions.skillEnabled(sender, skillType) || skillType.isChildSkill()) {
-                continue;
-            }
-
-            if (rankInts[1] == 0) {
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillUtils.getSkillName(skillType), LocaleLoader.getString("Commands.mcrank.Unranked"))); // Don't bother showing ranking for players without skills
-            }
-            else {
-                sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillUtils.getSkillName(skillType), rankInts[0]));
-            }
-        }
-
-        // Show the powerlevel ranking
-        int[] rankInts = LeaderboardManager.getPlayerRank(playerName);
-
-        if (rankInts[1] == 0) {
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", LocaleLoader.getString("Commands.mcrank.Unranked"))); // Don't bother showing ranking for players without skills
-        }
-        else {
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", rankInts[0]));
-        }
-    }
-
-    private void sqlDisplay(CommandSender sender, String playerName) {
+    private void display(CommandSender sender, String playerName) {
         new McrankCommandAsyncTask(playerName, sender).runTaskAsynchronously(mcMMO.p);
     }
 }

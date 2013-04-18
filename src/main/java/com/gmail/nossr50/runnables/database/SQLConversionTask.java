@@ -7,7 +7,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.database.DatabaseManager;
+import com.gmail.nossr50.database.SQLDatabaseManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 
@@ -158,7 +158,7 @@ public class SQLConversionTask extends BukkitRunnable {
                 }
 
                 // Check to see if the user is in the DB
-                id = DatabaseManager.getInt("SELECT id FROM "
+                id = SQLDatabaseManager.getInt("SELECT id FROM "
                         + tablePrefix
                         + "users WHERE user = '" + playerName + "'");
 
@@ -166,11 +166,11 @@ public class SQLConversionTask extends BukkitRunnable {
                     theCount++;
 
                     // Update the skill values
-                    DatabaseManager.write("UPDATE "
+                    SQLDatabaseManager.write("UPDATE "
                             + tablePrefix
                             + "users SET lastlogin = " + 0
                             + " WHERE id = " + id);
-                    DatabaseManager.write("UPDATE "
+                    SQLDatabaseManager.write("UPDATE "
                             + tablePrefix
                             + "skills SET "
                             + "  taming = taming+" + StringUtils.getInt(taming)
@@ -186,7 +186,7 @@ public class SQLConversionTask extends BukkitRunnable {
                             + ", acrobatics = acrobatics+" + StringUtils.getInt(acrobatics)
                             + ", fishing = fishing+" + StringUtils.getInt(fishing)
                             + " WHERE user_id = " + id);
-                    DatabaseManager.write("UPDATE "
+                    SQLDatabaseManager.write("UPDATE "
                             + tablePrefix
                             + "experience SET "
                             + "  taming = " + StringUtils.getInt(tamingXP)
@@ -207,24 +207,24 @@ public class SQLConversionTask extends BukkitRunnable {
                     theCount++;
 
                     // Create the user in the DB
-                    DatabaseManager.write("INSERT INTO "
+                    SQLDatabaseManager.write("INSERT INTO "
                             + tablePrefix
                             + "users (user, lastlogin) VALUES ('"
                             + playerName + "',"
                             + System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR + ")");
-                    id = DatabaseManager.getInt("SELECT id FROM "
+                    id = SQLDatabaseManager.getInt("SELECT id FROM "
                             + tablePrefix
                             + "users WHERE user = '"
                             + playerName + "'");
-                    DatabaseManager.write("INSERT INTO "
+                    SQLDatabaseManager.write("INSERT INTO "
                             + tablePrefix
                             + "skills (user_id) VALUES (" + id + ")");
-                    DatabaseManager.write("INSERT INTO "
+                    SQLDatabaseManager.write("INSERT INTO "
                             + tablePrefix
                             + "experience (user_id) VALUES (" + id
                             + ")");
                     // Update the skill values
-                    DatabaseManager.write("UPDATE "
+                    SQLDatabaseManager.write("UPDATE "
                             + tablePrefix
                             + "users SET lastlogin = " + 0
                             + " WHERE id = " + id);
@@ -234,7 +234,7 @@ public class SQLConversionTask extends BukkitRunnable {
                             + "users SET party = '" + party
                             + "' WHERE id = " + id);
                     */
-                    DatabaseManager.write("UPDATE "
+                    SQLDatabaseManager.write("UPDATE "
                             + tablePrefix
                             + "skills SET "
                             + "  taming = taming+" + StringUtils.getInt(taming)
@@ -250,7 +250,7 @@ public class SQLConversionTask extends BukkitRunnable {
                             + ", acrobatics = acrobatics+" + StringUtils.getInt(acrobatics)
                             + ", fishing = fishing+" + StringUtils.getInt(fishing)
                             + " WHERE user_id = " + id);
-                    DatabaseManager.write("UPDATE "
+                    SQLDatabaseManager.write("UPDATE "
                             + tablePrefix
                             + "experience SET "
                             + "  taming = " + StringUtils.getInt(tamingXP)

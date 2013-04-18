@@ -6,9 +6,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.database.DatabaseManager;
-import com.gmail.nossr50.database.LeaderboardManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 
@@ -24,19 +23,10 @@ public class McpurgeCommand implements TabExecutor {
 
         switch (args.length) {
             case 0:
-                if (Config.getInstance().getUseMySQL()) {
-                    DatabaseManager.purgePowerlessSQL();
+                mcMMO.databaseManager.purgePowerlessUsers();
 
-                    if (Config.getInstance().getOldUsersCutoff() != -1) {
-                        DatabaseManager.purgeOldSQL();
-                    }
-                }
-                else {
-                    LeaderboardManager.purgePowerlessFlatfile();
-
-                    if (Config.getInstance().getOldUsersCutoff() != -1) {
-                        LeaderboardManager.purgeOldFlatfile();
-                    }
+                if (Config.getInstance().getOldUsersCutoff() != -1) {
+                    mcMMO.databaseManager.purgeOldUsers();
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Commands.mcpurge.Success"));

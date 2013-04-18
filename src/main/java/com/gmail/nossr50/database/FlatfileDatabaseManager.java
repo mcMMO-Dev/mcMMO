@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -16,7 +17,7 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.StringUtils;
 
-public final class LeaderboardManager {
+public final class FlatfileDatabaseManager {
     private static HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
     private static List<PlayerStat> powerLevels = new ArrayList<PlayerStat>();
     private static long lastUpdate = 0;
@@ -24,7 +25,7 @@ public final class LeaderboardManager {
     private static final long UPDATE_WAIT_TIME = 600000L; // 10 minutes
     private static final long ONE_MONTH = 2630000000L;
 
-    private LeaderboardManager() {}
+    private FlatfileDatabaseManager() {}
 
     /**
      * Update the leader boards.
@@ -35,6 +36,7 @@ public final class LeaderboardManager {
             return;
         }
 
+        String usersFilePath = mcMMO.getUsersFilePath();
         lastUpdate = System.currentTimeMillis(); // Log when the last update was run
         powerLevels.clear(); // Clear old values from the power levels
 
@@ -54,8 +56,7 @@ public final class LeaderboardManager {
 
         // Read from the FlatFile database and fill our arrays with information
         try {
-            FileReader file = new FileReader(mcMMO.getUsersFilePath());
-            BufferedReader in = new BufferedReader(file);
+            BufferedReader in = new BufferedReader(new FileReader(usersFilePath));
             String line = "";
             ArrayList<String> players = new ArrayList<String>();
 
@@ -72,72 +73,25 @@ public final class LeaderboardManager {
 
                 players.add(playerName);
 
-                if (data.length > 1 && StringUtils.isInt(data[1])) {
-                    mining.add(new PlayerStat(playerName, Integer.parseInt(data[1])));
-                    powerLevel += Integer.parseInt(data[1]);
-                }
-
-                if (data.length > 5 && StringUtils.isInt(data[5])) {
-                    woodcutting.add(new PlayerStat(playerName, Integer.parseInt(data[5])));
-                    powerLevel += Integer.parseInt(data[5]);
-                }
-
-                if (data.length > 7 && StringUtils.isInt(data[7])) {
-                    repair.add(new PlayerStat(playerName, Integer.parseInt(data[7])));
-                    powerLevel += Integer.parseInt(data[7]);
-                }
-
-                if (data.length > 8 && StringUtils.isInt(data[8])) {
-                    unarmed.add(new PlayerStat(playerName, Integer.parseInt(data[8])));
-                    powerLevel += Integer.parseInt(data[8]);
-                }
-
-                if (data.length > 9 && StringUtils.isInt(data[9])) {
-                    herbalism.add(new PlayerStat(playerName, Integer.parseInt(data[9])));
-                    powerLevel += Integer.parseInt(data[9]);
-                }
-
-                if (data.length > 10 && StringUtils.isInt(data[10])) {
-                    excavation.add(new PlayerStat(playerName, Integer.parseInt(data[10])));
-                    powerLevel += Integer.parseInt(data[10]);
-                }
-
-                if (data.length > 11 && StringUtils.isInt(data[11])) {
-                    archery.add(new PlayerStat(playerName, Integer.parseInt(data[11])));
-                    powerLevel += Integer.parseInt(data[11]);
-                }
-
-                if (data.length > 12 && StringUtils.isInt(data[12])) {
-                    swords.add(new PlayerStat(playerName, Integer.parseInt(data[12])));
-                    powerLevel += Integer.parseInt(data[12]);
-                }
-
-                if (data.length > 13 && StringUtils.isInt(data[13])) {
-                    axes.add(new PlayerStat(playerName, Integer.parseInt(data[13])));
-                    powerLevel += Integer.parseInt(data[13]);
-                }
-
-                if (data.length > 14 && StringUtils.isInt(data[14])) {
-                    acrobatics.add(new PlayerStat(playerName, Integer.parseInt(data[14])));
-                    powerLevel += Integer.parseInt(data[14]);
-                }
-
-                if (data.length > 24 && StringUtils.isInt(data[24])) {
-                    taming.add(new PlayerStat(playerName, Integer.parseInt(data[24])));
-                    powerLevel += Integer.parseInt(data[24]);
-                }
-
-                if (data.length > 34 && StringUtils.isInt(data[34])) {
-                    fishing.add(new PlayerStat(playerName, Integer.parseInt(data[34])));
-                    powerLevel += Integer.parseInt(data[34]);
-                }
+                powerLevel += loadStat(mining, playerName, data, 1);
+                powerLevel += loadStat(woodcutting, playerName, data, 5);
+                powerLevel += loadStat(repair, playerName, data, 7);
+                powerLevel += loadStat(unarmed, playerName, data, 8);
+                powerLevel += loadStat(herbalism, playerName, data, 9);
+                powerLevel += loadStat(excavation, playerName, data, 10);
+                powerLevel += loadStat(archery, playerName, data, 11);
+                powerLevel += loadStat(swords, playerName, data, 12);
+                powerLevel += loadStat(axes, playerName, data, 13);
+                powerLevel += loadStat(acrobatics, playerName, data, 14);
+                powerLevel += loadStat(taming, playerName, data, 24);
+                powerLevel += loadStat(fishing, playerName, data, 34);
 
                 powerLevels.add(new PlayerStat(playerName, powerLevel));
             }
             in.close();
         }
         catch (Exception e) {
-            mcMMO.p.getLogger().severe("Exception while reading " + mcMMO.getUsersFilePath() + " (Are you sure you formatted it correctly?)" + e.toString());
+            mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
         }
 
         SkillComparator c = new SkillComparator();
@@ -203,14 +157,6 @@ public final class LeaderboardManager {
         return info;
     }
 
-    public static int[] getPlayerRank(String playerName) {
-        return getPlayerRank(playerName, powerLevels);
-    }
-
-    public static int[] getPlayerRank(String playerName, SkillType skillType) {
-        return getPlayerRank(playerName, playerStatHash.get(skillType));
-    }
-
     public static boolean removeFlatFileUser(String playerName) {
         boolean worked = false;
 
@@ -266,7 +212,7 @@ public final class LeaderboardManager {
         return worked;
     }
 
-    public static void purgePowerlessFlatfile() {
+    public static int purgePowerlessFlatfile() {
         mcMMO.p.getLogger().info("Purging powerless users...");
 
         int purgedUsers = 0;
@@ -277,16 +223,10 @@ public final class LeaderboardManager {
             }
         }
 
-        mcMMO.p.getLogger().info("Purged " + purgedUsers + " users from the database.");
+        return purgedUsers;
     }
 
-    public static void purgeOldFlatfile() {
-        mcMMO.p.getLogger().info("Purging old users...");
-        int purgedUsers = removeOldFlatfileUsers();
-        mcMMO.p.getLogger().info("Purged " + purgedUsers + " users from the database.");
-    }
-
-    private static int removeOldFlatfileUsers() {
+    public static int removeOldFlatfileUsers() {
         int removedPlayers = 0;
         long currentTime = System.currentTimeMillis();
         long purgeTime = ONE_MONTH * Config.getInstance().getOldUsersCutoff();
@@ -350,22 +290,47 @@ public final class LeaderboardManager {
         return removedPlayers;
     }
 
-    private static int[] getPlayerRank(String playerName, List<PlayerStat> statsList) {
+    private static Integer getPlayerRank(String playerName, List<PlayerStat> statsList) {
         int currentPos = 1;
 
         if (statsList == null) {
-            return new int[] {0, 0};
+            return null;
         }
 
         for (PlayerStat stat : statsList) {
             if (stat.name.equalsIgnoreCase(playerName)) {
-                return new int[] {currentPos, stat.statVal};
+                return currentPos;
             }
 
             currentPos++;
         }
 
-        return new int[] {0, 0};
+        return null;
+    }
+
+    public static Map<String, Integer> getPlayerRanks(String playerName) {
+        updateLeaderboards();
+
+        Map<String, Integer> skills = new HashMap<String, Integer>();
+
+        for (SkillType skill : SkillType.values()) {
+            skills.put(playerName, getPlayerRank(playerName, playerStatHash.get(skill)));
+        }
+
+        skills.put("ALL", getPlayerRank(playerName, powerLevels));
+
+        return skills;
+    }
+
+    private static int loadStat(List<PlayerStat> statList, String playerName, String[] data, int dataIndex) {
+        if (data.length > dataIndex) {
+            int statValue = Integer.parseInt(data[dataIndex]);
+
+            statList.add(new PlayerStat(playerName, statValue));
+            return statValue;
+        }
+
+        return 0;
     }
 
     private static class SkillComparator implements Comparator<PlayerStat> {
