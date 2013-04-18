@@ -196,30 +196,32 @@ public final class DatabaseManager {
      * @return the number of rows affected
      */
     public static int update(String sql) {
-        int ret = 0;
+        if (!checkConnected()) {
+            return 0;
+        }
 
-        if (checkConnected()) {
-            PreparedStatement statement = null;
-            try {
-                statement = connection.prepareStatement(sql);
-                ret = statement.executeUpdate();
-            }
-            catch (SQLException ex) {
-                printErrors(ex);
-            }
-            finally {
-                if (statement != null) {
-                    try {
-                        statement.close();
-                    }
-                    catch (SQLException e) {
-                        printErrors(e);
-                    }
+        int rows = 0;
+
+        PreparedStatement statement = null;
+        try {
+            statement = connection.prepareStatement(sql);
+            rows = statement.executeUpdate();
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                }
+                catch (SQLException e) {
+                    printErrors(e);
                 }
             }
         }
 
-        return ret;
+        return rows;
     }
 
     /**
@@ -229,34 +231,32 @@ public final class DatabaseManager {
      * @return the value in the first row / first field
      */
     public static int getInt(String sql) {
-        ResultSet resultSet = null;
+        if (!checkConnected()) {
+            return 0;
+        }
+
         int result = 0;
 
-        if (checkConnected()) {
-            PreparedStatement statement = null;
+        PreparedStatement statement = null;
 
-            try {
-                statement = connection.prepareStatement(sql);
-                resultSet = statement.executeQuery();
+        try {
+            statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
 
-                if (resultSet.next()) {
-                    result = resultSet.getInt(1);
-                }
-                else {
-                    result = 0;
-                }
+            if (resultSet.next()) {
+                result = resultSet.getInt(1);
             }
-            catch (SQLException ex) {
-                printErrors(ex);
-            }
-            finally {
-                if (statement != null) {
-                    try {
-                        statement.close();
-                    }
-                    catch (SQLException e) {
-                        printErrors(e);
-                    }
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                }
+                catch (SQLException e) {
+                    printErrors(e);
                 }
             }
         }
