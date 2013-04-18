@@ -514,6 +514,7 @@ permissions:
         children:
             mcmmo.ability.taming.beastlore: true
             mcmmo.ability.taming.callofthewild: true
+            mcmmo.ability.taming.callofthewild_renamepets: true
             mcmmo.ability.taming.environmentallyaware: true
             mcmmo.ability.taming.fastfoodservice: true
             mcmmo.ability.taming.gore: true
@@ -525,6 +526,8 @@ permissions:
         description: Allows access to the Beast Lore ability
     mcmmo.ability.taming.callofthewild:
         description: Allows access to the Call of the Wild ability
+    mcmmo.ability.taming.callofthewild_renamepets:
+        description: Pets spawned with Call of the Wild will have custom names
     mcmmo.ability.taming.environmentallyaware:
         description: Allows access to the Environmentally Aware ability
     mcmmo.ability.taming.fastfoodservice:

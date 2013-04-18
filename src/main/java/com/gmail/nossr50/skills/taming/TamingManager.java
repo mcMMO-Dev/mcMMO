@@ -198,6 +198,11 @@ public class TamingManager extends SkillManager {
             entity.setHealth(entity.getMaxHealth());
         }
 
+        if (Permissions.renamePets(player)) {
+            entity.setCustomName(player.getName() + "\'s " + StringUtils.getPrettyEntityTypeString(entity.getType())); //TODO Localize, perhaps in a different language it makes more sense to switch this around
+            entity.setCustomNameVisible(true);
+        }
+
         player.setItemInHand(new ItemStack(heldItem.getType(), heldItemAmount - summonAmount));
         player.sendMessage(LocaleLoader.getString("Taming.Summon.Complete"));
     }
