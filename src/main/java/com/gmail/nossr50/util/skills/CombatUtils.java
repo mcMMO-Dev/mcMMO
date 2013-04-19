@@ -452,7 +452,7 @@ public final class CombatUtils {
 
             Player defender = (Player) target;
 
-            if (System.currentTimeMillis() >= UserManager.getPlayer(defender).getRespawnATS() + 5) {
+            if (defender.isOnline() && System.currentTimeMillis() >= UserManager.getPlayer(defender).getRespawnATS() + 5) {
                 baseXP = 20 * Config.getInstance().getPlayerVersusPlayerXP();
             }
         }
