@@ -593,7 +593,9 @@ public class ItemUtils {
             case CACTUS:
             case SUGAR_CANE:
             case MELON:
+            case MELON_SEEDS:
             case PUMPKIN:
+            case PUMPKIN_SEEDS:
             case WATER_LILY:
             case VINE:
                 return true;
