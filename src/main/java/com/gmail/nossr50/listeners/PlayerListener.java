@@ -2,6 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
@@ -241,6 +242,7 @@ public class PlayerListener implements Listener {
             event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
 
             if (event.isCancelled()) {
+                player.playSound(player.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
                 return;
             }
         }
@@ -249,6 +251,7 @@ public class PlayerListener implements Listener {
             event.setCancelled(Unarmed.handleItemPickup(player.getInventory(), drop));
 
             if (event.isCancelled()) {
+                player.playSound(player.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
                 player.updateInventory();
                 return;
             }
