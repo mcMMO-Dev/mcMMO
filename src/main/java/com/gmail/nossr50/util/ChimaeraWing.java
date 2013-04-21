@@ -53,50 +53,48 @@ public final class ChimaeraWing {
         long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
         long lastTeleport = mcMMOPlayer.getLastTeleport();
 
-        if (ItemUtils.isChimaeraWing(inHand)) {
-            if (mcMMOPlayer.getTeleportCommenceLocation() != null) {
+        if (mcMMOPlayer.getTeleportCommenceLocation() != null) {
+            return;
+        }
+
+        if (Config.getInstance().getChimaeraCooldown() > 0 && !SkillUtils.cooldownOver(lastTeleport * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player)) {
+            player.sendMessage(ChatColor.RED + "You need to wait before you can use this again! " + ChatColor.YELLOW + "(" + SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player) + ")"); //TODO Locale!
+            return;
+        }
+
+        int recentlyhurt_cooldown = Config.getInstance().getChimaeraRecentlyHurtCooldown();
+
+        if (!SkillUtils.cooldownOver(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)) {
+            player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)));
+            return;
+        }
+
+        if (amount < Config.getInstance().getChimaeraUseCost()) {
+            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", "Chimaera Wings")); //TODO Locale!
+            return;
+        }
+
+        if (Config.getInstance().getChimaeraPreventUseUnderground()) {
+            if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
+                player.setItemInHand(new ItemStack(getChimaeraWing(amount - Config.getInstance().getChimaeraUseCost())));
+                player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
+                player.setVelocity(new Vector(0, 0.5D, 0));
+                CombatUtils.dealDamage(player, Misc.getRandom().nextInt(player.getHealth() - 10));
+                mcMMOPlayer.actualizeLastTeleport();
                 return;
             }
+        }
 
-            if (Config.getInstance().getChimaeraCooldown() > 0 && !SkillUtils.cooldownOver(lastTeleport * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player)) {
-                player.sendMessage(ChatColor.RED + "You need to wait before you can use this again! " + ChatColor.YELLOW + "(" + SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player) + ")"); //TODO Locale!
-                return;
-            }
+        mcMMOPlayer.actualizeTeleportCommenceLocation(player);
 
-            int recentlyhurt_cooldown = Config.getInstance().getChimaeraRecentlyHurtCooldown();
+        long warmup = Config.getInstance().getChimaeraWarmup();
 
-            if (!SkillUtils.cooldownOver(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)) {
-                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)));
-                return;
-            }
-
-            if (amount < Config.getInstance().getChimaeraUseCost()) {
-                player.sendMessage(LocaleLoader.getString("Skills.NeedMore", "Chimaera Wings")); //TODO Locale!
-                return;
-            }
-
-            if (Config.getInstance().getChimaeraPreventUseUnderground()) {
-                if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
-                    player.setItemInHand(new ItemStack(getChimaeraWing(amount - Config.getInstance().getChimaeraUseCost())));
-                    player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
-                    player.setVelocity(new Vector(0, 0.5D, 0));
-                    CombatUtils.dealDamage(player, Misc.getRandom().nextInt(player.getHealth() - 10));
-                    mcMMOPlayer.actualizeLastTeleport();
-                    return;
-                }
-            }
-
-            mcMMOPlayer.actualizeTeleportCommenceLocation(player);
-
-            long warmup = Config.getInstance().getChimaeraWarmup();
-
-            if (warmup > 0) {
-                player.sendMessage(ChatColor.GRAY + "Commencing teleport in " + ChatColor.GOLD + "(" + warmup + ")" + ChatColor.GRAY + " seconds, please stand still..."); //TODO Locale!
-                new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(mcMMO.p, 20 * warmup);
-            }
-            else {
-                chimaeraExecuteTeleport();
-            }
+        if (warmup > 0) {
+            player.sendMessage(ChatColor.GRAY + "Commencing teleport in " + ChatColor.GOLD + "(" + warmup + ")" + ChatColor.GRAY + " seconds, please stand still..."); //TODO Locale!
+            new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(mcMMO.p, 20 * warmup);
+        }
+        else {
+            chimaeraExecuteTeleport();
         }
     }
 
