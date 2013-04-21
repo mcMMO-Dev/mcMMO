@@ -41,6 +41,11 @@ public final class ChimaeraWing {
             return;
         }
 
+        if (!Permissions.chimaeraWing(player)) {
+            player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
+            return;
+        }
+
         mcMMOPlayer = UserManager.getPlayer(player);
 
         location = player.getLocation();
@@ -48,7 +53,7 @@ public final class ChimaeraWing {
         long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
         long lastTeleport = mcMMOPlayer.getLastTeleport();
 
-        if (Permissions.chimaeraWing(player) && ItemUtils.isChimaeraWing(inHand)) {
+        if (ItemUtils.isChimaeraWing(inHand)) {
             if (mcMMOPlayer.getTeleportCommenceLocation() != null) {
                 return;
             }
