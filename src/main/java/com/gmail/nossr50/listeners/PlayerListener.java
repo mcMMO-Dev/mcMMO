@@ -128,6 +128,10 @@ public class PlayerListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
+        if (mcMMOPlayer == null) {
+            return;
+        }
+
         if (mcMMOPlayer.getGodMode() && !Permissions.mcgod(player)) {
             mcMMOPlayer.toggleGodMode();
             player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));

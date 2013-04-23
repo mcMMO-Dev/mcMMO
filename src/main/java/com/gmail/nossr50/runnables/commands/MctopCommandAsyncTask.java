@@ -29,5 +29,4 @@ public class MctopCommandAsyncTask extends BukkitRunnable {
 
         new MctopCommandDisplayTask(userslist, page, tablePrefix, sender).runTaskLater(mcMMO.p, 1);
     }
-
 }

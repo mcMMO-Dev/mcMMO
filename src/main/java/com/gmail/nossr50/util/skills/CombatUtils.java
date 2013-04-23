@@ -266,7 +266,7 @@ public final class CombatUtils {
         if (target instanceof Player) {
             Player player = (Player) target;
 
-            if (Misc.isNPCEntity(player)) {
+            if (Misc.isNPCEntity(player) || !player.isOnline()) {
                 return;
             }
 
@@ -291,6 +291,11 @@ public final class CombatUtils {
         }
         else if (attacker instanceof Player) {
             Player player = (Player) attacker;
+
+            if (Misc.isNPCEntity(player)) {
+                return;
+            }
+
             PlayerProfile profile = UserManager.getPlayer(player).getProfile();
 
             if (Permissions.mobHealthDisplay(player) && profile.getMobHealthbarType() != MobHealthbarType.DISABLED) {
