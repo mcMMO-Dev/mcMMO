@@ -21,6 +21,7 @@ import com.gmail.nossr50.util.player.UserManager;
 public final class PartyManager {
     private static String partiesFilePath = mcMMO.getFlatFileDirectory() + "parties.yml";
     private static List<Party> parties = new ArrayList<Party>();
+    private static File partyFile = new File(partiesFilePath);
 
     private PartyManager() {}
 
@@ -439,13 +440,11 @@ public final class PartyManager {
      * Load party file.
      */
     public static void loadParties() {
-        File file = new File(partiesFilePath);
-
-        if (!file.exists()) {
+        if (!partyFile.exists()) {
             return;
         }
 
-        YamlConfiguration partiesFile = YamlConfiguration.loadConfiguration(file);
+        YamlConfiguration partiesFile = YamlConfiguration.loadConfiguration(partyFile);
 
         for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
             Party party = new Party();
@@ -472,10 +471,8 @@ public final class PartyManager {
      * Save party file.
      */
     public static void saveParties() {
-        File file = new File(partiesFilePath);
-
-        if (file.exists()) {
-            file.delete();
+        if (partyFile.exists()) {
+            partyFile.delete();
         }
 
         YamlConfiguration partiesFile = new YamlConfiguration();
@@ -501,7 +498,7 @@ public final class PartyManager {
         }
 
         try {
-            partiesFile.save(new File(partiesFilePath));
+            partiesFile.save(partyFile);
         }
         catch (Exception e) {
             e.printStackTrace();
