@@ -45,10 +45,6 @@ public abstract class ConfigLoader {
     protected abstract void loadKeys();
 
     protected void createFile() {
-        if (configFile.exists()) {
-            return;
-        }
-
         configFile.getParentFile().mkdirs();
 
         InputStream inputStream = plugin.getResource(fileName);
