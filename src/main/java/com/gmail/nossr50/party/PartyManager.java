@@ -445,14 +445,7 @@ public final class PartyManager {
             return;
         }
 
-        YamlConfiguration partiesFile = new YamlConfiguration();
-
-        try {
-            partiesFile.load(file);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+        YamlConfiguration partiesFile = YamlConfiguration.loadConfiguration(file);
 
         for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
             Party party = new Party();
