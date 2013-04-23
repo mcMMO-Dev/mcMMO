@@ -19,7 +19,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 
 public final class PartyManager {
-    private static String partiesFilePath = mcMMO.p.getDataFolder().getPath() + File.separator + "FlatFileStuff" + File.separator + "parties.yml";
+    private static String partiesFilePath = mcMMO.getFlatFileDirectory() + "parties.yml";
     private static List<Party> parties = new ArrayList<Party>();
 
     private PartyManager() {}
