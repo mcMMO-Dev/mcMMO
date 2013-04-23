@@ -92,12 +92,12 @@ public class PlayerProfile {
 
         if (huds.get(1) == null) {
             DatabaseManager.write("INSERT INTO " + tablePrefix + "huds (user_id) VALUES (" + userId + ")");
+            mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
         }
         else {
             hudType = HudType.valueOf(huds.get(1).get(0));
+            mobHealthbarType = MobHealthbarType.valueOf(DatabaseManager.read("SELECT mobhealthbar FROM " + tablePrefix + "huds WHERE user_id = " + userId).get(1).get(0));
         }
-
-        mobHealthbarType = MobHealthbarType.valueOf(DatabaseManager.read("SELECT mobhealthbar FROM " + tablePrefix + "huds WHERE user_id = " + userId).get(1).get(0));
 
         HashMap<Integer, ArrayList<String>> cooldowns = DatabaseManager.read("SELECT mining, woodcutting, unarmed, herbalism, excavation, swords, axes, blast_mining FROM " + tablePrefix + "cooldowns WHERE user_id = " + userId);
         ArrayList<String> cooldownValues = cooldowns.get(1);
