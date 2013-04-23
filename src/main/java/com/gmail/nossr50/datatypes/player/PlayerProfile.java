@@ -92,7 +92,6 @@ public class PlayerProfile {
 
         if (huds.get(1) == null) {
             DatabaseManager.write("INSERT INTO " + tablePrefix + "huds (user_id) VALUES (" + userId + ")");
-            mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
         }
         else {
             hudType = HudType.valueOf(huds.get(1).get(0));
