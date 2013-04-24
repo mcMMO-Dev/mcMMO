@@ -209,6 +209,49 @@ public final class ExperienceAPI {
     }
 
     /**
+     * Get the raw amount of XP a player has in a specific skill.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to get XP for
+     * @param skillType The skill to get XP for
+     * @return the amount of XP in a given skill
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     */
+    public static float getXPRaw(Player player, String skillType) {
+        SkillType skill = SkillType.getSkill(skillType);
+
+        if (skill == null) {
+            throw new InvalidSkillException();
+        }
+
+        return UserManager.getPlayer(player).getProfile().getSkillXpLevelRaw(skill);
+    }
+
+    /**
+     * Get the raw amount of XP an offline player has in a specific skill.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param playerName The player to get XP for
+     * @param skillType The skill to get XP for
+     * @return the amount of XP in a given skill
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     * @throws InvalidPlayerException if the given player does not exist in the database
+     */
+    public static float getOfflineXPRaw(String playerName, String skillType) {
+        SkillType skill = SkillType.getSkill(skillType);
+
+        if (skill == null) {
+            throw new InvalidSkillException();
+        }
+
+        return getOfflineProfile(playerName).getSkillXpLevelRaw(skill);
+    }
+
+    /**
      * Get the amount of XP left before leveling up.
      * </br>
      * This function is designed for API usage.

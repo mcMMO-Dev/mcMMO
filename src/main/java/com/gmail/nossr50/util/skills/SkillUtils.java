@@ -211,12 +211,12 @@ public class SkillUtils {
      */
     public static void xpCheckSkill(SkillType skillType, Player player, PlayerProfile profile) {
         int skillups = 0;
-        int xpRemoved = 0;
+        float xpRemoved = 0;
 
-        if (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
+        if (profile.getSkillXpLevelRaw(skillType) >= profile.getXpToLevel(skillType)) {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-            while (profile.getSkillXpLevel(skillType) >= profile.getXpToLevel(skillType)) {
+            while (profile.getSkillXpLevelRaw(skillType) >= profile.getXpToLevel(skillType)) {
                 if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Config.getInstance().getPowerLevelCap() >= mcMMOPlayer.getPowerLevel() + 1)) {
                     int xp = profile.getXpToLevel(skillType);
                     xpRemoved += xp;
@@ -235,7 +235,7 @@ public class SkillUtils {
 
             if (eventToFire.isCancelled()) {
                 profile.modifySkill(skillType, profile.getSkillLevel(skillType) - skillups);
-                profile.setSkillXpLevel(skillType, profile.getSkillXpLevel(skillType) + xpRemoved);
+                profile.setSkillXpLevel(skillType, profile.getSkillXpLevelRaw(skillType) + xpRemoved);
                 return;
             }
 

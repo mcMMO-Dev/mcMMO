@@ -33,7 +33,7 @@ public class PlayerProfile {
 
     /* Skill Data */
     private final Map<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>();   // Skill & Level
-    private final Map<SkillType, Integer>   skillsXp   = new HashMap<SkillType, Integer>();   // Skill & XP
+    private final Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();   // Skill & XP
     private final Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
 
     public PlayerProfile(String playerName, boolean addNew) {
@@ -52,7 +52,7 @@ public class PlayerProfile {
             }
 
             skills.put(skillType, 0);
-            skillsXp.put(skillType, 0);
+            skillsXp.put(skillType, 0F);
         }
 
         if (!loadPlayer() && addNew) {
@@ -153,11 +153,15 @@ public class PlayerProfile {
         return skills.get(skillType);
     }
 
-    public int getSkillXpLevel(SkillType skillType) {
+    public float getSkillXpLevelRaw(SkillType skillType) {
         return skillsXp.get(skillType);
     }
 
-    public void setSkillXpLevel(SkillType skillType, int newValue) {
+    public int getSkillXpLevel(SkillType skillType) {
+        return (int) Math.floor(getSkillXpLevelRaw(skillType));
+    }
+
+    public void setSkillXpLevel(SkillType skillType, float newValue) {
         if (skillType.isChildSkill()) {
             return;
         }
@@ -195,7 +199,7 @@ public class PlayerProfile {
         }
 
         skills.put(skillType, newValue);
-        skillsXp.put(skillType, 0);
+        skillsXp.put(skillType, 0F);
     }
 
     /**
@@ -210,7 +214,7 @@ public class PlayerProfile {
         }
 
         skills.put(skillType, skills.get(skillType) + levels);
-        skillsXp.put(skillType, 0);
+        skillsXp.put(skillType, 0F);
     }
 
     /**
@@ -326,18 +330,18 @@ public class PlayerProfile {
             mcMMO.p.getLogger().warning(playerName + "does not exist in the experience table. Their experience will be reset.");
         }
         else {
-            skillsXp.put(SkillType.TAMING, Integer.valueOf(experienceValues.get(0)));
-            skillsXp.put(SkillType.MINING, Integer.valueOf(experienceValues.get(1)));
-            skillsXp.put(SkillType.REPAIR, Integer.valueOf(experienceValues.get(2)));
-            skillsXp.put(SkillType.WOODCUTTING, Integer.valueOf(experienceValues.get(3)));
-            skillsXp.put(SkillType.UNARMED, Integer.valueOf(experienceValues.get(4)));
-            skillsXp.put(SkillType.HERBALISM, Integer.valueOf(experienceValues.get(5)));
-            skillsXp.put(SkillType.EXCAVATION, Integer.valueOf(experienceValues.get(6)));
-            skillsXp.put(SkillType.ARCHERY, Integer.valueOf(experienceValues.get(7)));
-            skillsXp.put(SkillType.SWORDS, Integer.valueOf(experienceValues.get(8)));
-            skillsXp.put(SkillType.AXES, Integer.valueOf(experienceValues.get(9)));
-            skillsXp.put(SkillType.ACROBATICS, Integer.valueOf(experienceValues.get(10)));
-            skillsXp.put(SkillType.FISHING, Integer.valueOf(experienceValues.get(11)));
+            skillsXp.put(SkillType.TAMING, (float) Integer.valueOf(experienceValues.get(0)));
+            skillsXp.put(SkillType.MINING, (float) Integer.valueOf(experienceValues.get(1)));
+            skillsXp.put(SkillType.REPAIR, (float) Integer.valueOf(experienceValues.get(2)));
+            skillsXp.put(SkillType.WOODCUTTING, (float) Integer.valueOf(experienceValues.get(3)));
+            skillsXp.put(SkillType.UNARMED, (float) Integer.valueOf(experienceValues.get(4)));
+            skillsXp.put(SkillType.HERBALISM, (float) Integer.valueOf(experienceValues.get(5)));
+            skillsXp.put(SkillType.EXCAVATION, (float) Integer.valueOf(experienceValues.get(6)));
+            skillsXp.put(SkillType.ARCHERY, (float) Integer.valueOf(experienceValues.get(7)));
+            skillsXp.put(SkillType.SWORDS, (float) Integer.valueOf(experienceValues.get(8)));
+            skillsXp.put(SkillType.AXES, (float) Integer.valueOf(experienceValues.get(9)));
+            skillsXp.put(SkillType.ACROBATICS, (float) Integer.valueOf(experienceValues.get(10)));
+            skillsXp.put(SkillType.FISHING, (float) Integer.valueOf(experienceValues.get(11)));
         }
 
         loaded = true;
@@ -512,18 +516,18 @@ public class PlayerProfile {
                     + ", fishing = " + skills.get(SkillType.FISHING)
                     + "  WHERE user_id = " + userId);
             SQLDatabaseManager.write("UPDATE " + tablePrefix + "experience SET "
-                    + "  taming = " + skillsXp.get(SkillType.TAMING)
-                    + ", mining = " + skillsXp.get(SkillType.MINING)
-                    + ", repair = " + skillsXp.get(SkillType.REPAIR)
-                    + ", woodcutting = " + skillsXp.get(SkillType.WOODCUTTING)
-                    + ", unarmed = " + skillsXp.get(SkillType.UNARMED)
-                    + ", herbalism = " + skillsXp.get(SkillType.HERBALISM)
-                    + ", excavation = " + skillsXp.get(SkillType.EXCAVATION)
-                    + ", archery = " + skillsXp.get(SkillType.ARCHERY)
-                    + ", swords = " + skillsXp.get(SkillType.SWORDS)
-                    + ", axes = " + skillsXp.get(SkillType.AXES)
-                    + ", acrobatics = " + skillsXp.get(SkillType.ACROBATICS)
-                    + ", fishing = " + skillsXp.get(SkillType.FISHING)
+                    + "  taming = " + getSkillXpLevel(SkillType.TAMING)
+                    + ", mining = " + getSkillXpLevel(SkillType.MINING)
+                    + ", repair = " + getSkillXpLevel(SkillType.REPAIR)
+                    + ", woodcutting = " + getSkillXpLevel(SkillType.WOODCUTTING)
+                    + ", unarmed = " + getSkillXpLevel(SkillType.UNARMED)
+                    + ", herbalism = " + getSkillXpLevel(SkillType.HERBALISM)
+                    + ", excavation = " + getSkillXpLevel(SkillType.EXCAVATION)
+                    + ", archery = " + getSkillXpLevel(SkillType.ARCHERY)
+                    + ", swords = " + getSkillXpLevel(SkillType.SWORDS)
+                    + ", axes = " + getSkillXpLevel(SkillType.AXES)
+                    + ", acrobatics = " + getSkillXpLevel(SkillType.ACROBATICS)
+                    + ", fishing = " + getSkillXpLevel(SkillType.FISHING)
                     + "  WHERE user_id = " + userId);
         }
     }
@@ -547,9 +551,9 @@ public class PlayerProfile {
                     writer.append(skills.get(SkillType.MINING)).append(":");
                     writer.append(":");
                     writer.append(":");
-                    writer.append(skillsXp.get(SkillType.MINING)).append(":");
+                    writer.append(getSkillXpLevel(SkillType.MINING)).append(":");
                     writer.append(skills.get(SkillType.WOODCUTTING)).append(":");
-                    writer.append(skillsXp.get(SkillType.WOODCUTTING)).append(":");
+                    writer.append(getSkillXpLevel(SkillType.WOODCUTTING)).append(":");
                     writer.append(skills.get(SkillType.REPAIR)).append(":");
                     writer.append(skills.get(SkillType.UNARMED)).append(":");
                     writer.append(skills.get(SkillType.HERBALISM)).append(":");
@@ -558,17 +562,17 @@ public class PlayerProfile {
                     writer.append(skills.get(SkillType.SWORDS)).append(":");
                     writer.append(skills.get(SkillType.AXES)).append(":");
                     writer.append(skills.get(SkillType.ACROBATICS)).append(":");
-                    writer.append(skillsXp.get(SkillType.REPAIR)).append(":");
-                    writer.append(skillsXp.get(SkillType.UNARMED)).append(":");
-                    writer.append(skillsXp.get(SkillType.HERBALISM)).append(":");
-                    writer.append(skillsXp.get(SkillType.EXCAVATION)).append(":");
-                    writer.append(skillsXp.get(SkillType.ARCHERY)).append(":");
-                    writer.append(skillsXp.get(SkillType.SWORDS)).append(":");
-                    writer.append(skillsXp.get(SkillType.AXES)).append(":");
-                    writer.append(skillsXp.get(SkillType.ACROBATICS)).append(":");
+                    writer.append(getSkillXpLevel(SkillType.REPAIR)).append(":");
+                    writer.append(getSkillXpLevel(SkillType.UNARMED)).append(":");
+                    writer.append(getSkillXpLevel(SkillType.HERBALISM)).append(":");
+                    writer.append(getSkillXpLevel(SkillType.EXCAVATION)).append(":");
+                    writer.append(getSkillXpLevel(SkillType.ARCHERY)).append(":");
+                    writer.append(getSkillXpLevel(SkillType.SWORDS)).append(":");
+                    writer.append(getSkillXpLevel(SkillType.AXES)).append(":");
+                    writer.append(getSkillXpLevel(SkillType.ACROBATICS)).append(":");
                     writer.append(":");
                     writer.append(skills.get(SkillType.TAMING)).append(":");
-                    writer.append(skillsXp.get(SkillType.TAMING)).append(":");
+                    writer.append(getSkillXpLevel(SkillType.TAMING)).append(":");
                     writer.append(skillsDATS.get(AbilityType.BERSERK)).append(":");
                     writer.append(skillsDATS.get(AbilityType.GIGA_DRILL_BREAKER)).append(":");
                     writer.append(skillsDATS.get(AbilityType.TREE_FELLER)).append(":");
@@ -578,7 +582,7 @@ public class PlayerProfile {
                     writer.append(skillsDATS.get(AbilityType.SUPER_BREAKER)).append(":");
                     writer.append(hudType.toString()).append(":");
                     writer.append(skills.get(SkillType.FISHING)).append(":");
-                    writer.append(skillsXp.get(SkillType.FISHING)).append(":");
+                    writer.append(getSkillXpLevel(SkillType.FISHING)).append(":");
                     writer.append(skillsDATS.get(AbilityType.BLAST_MINING)).append(":");
                     writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
                     writer.append(mobHealthbarType.toString()).append(":");
@@ -601,7 +605,7 @@ public class PlayerProfile {
 
     private void loadSkillXpData(SkillType skill, String[] data, int dataIndex) {
         if (data.length > dataIndex) {
-            skillsXp.put(skill, Integer.valueOf(data[dataIndex]));
+            skillsXp.put(skill, (float) Integer.valueOf(data[dataIndex]));
         }
     }
 

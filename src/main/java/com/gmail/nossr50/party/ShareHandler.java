@@ -52,7 +52,7 @@ public final class ShareHandler {
      * @param skillType Skill being used
      * @return True is the xp has been shared
      */
-    public static boolean handleXpShare(int xp, McMMOPlayer mcMMOPlayer, SkillType skillType) {
+    public static boolean handleXpShare(float xp, McMMOPlayer mcMMOPlayer, SkillType skillType) {
         Party party = mcMMOPlayer.getParty();
 
         switch (party.getXpShareMode()) {
@@ -71,14 +71,13 @@ public final class ShareHandler {
                     shareBonus = Config.getInstance().getPartyShareBonusCap();
                 }
 
-                double splitXp = xp / partySize * shareBonus;
-                int roundedXp = (int) Math.ceil(splitXp);
+                float splitXp = (float) (xp / partySize * shareBonus);
 
                 for (Player member : nearMembers) {
-                    UserManager.getPlayer(member).beginUnsharedXpGain(skillType, roundedXp);
+                    UserManager.getPlayer(member).beginUnsharedXpGain(skillType, splitXp);
                 }
 
-                mcMMOPlayer.beginUnsharedXpGain(skillType, roundedXp);
+                mcMMOPlayer.beginUnsharedXpGain(skillType, splitXp);
 
                 return true;
 

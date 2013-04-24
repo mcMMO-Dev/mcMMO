@@ -43,7 +43,7 @@ public final class PerksUtils {
         return ticks;
     }
 
-    public static int handleXpPerks(Player player, int xp) {
+    public static float handleXpPerks(Player player, float xp) {
         if (Permissions.quadrupleXp(player)) {
             xp *= 4;
         }

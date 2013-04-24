@@ -62,7 +62,7 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayXpPerks(Player player) {
-        int perkAmount = PerksUtils.handleXpPerks(player, 1);
+        float perkAmount = PerksUtils.handleXpPerks(player, 1);
 
         if (perkAmount > 1) {
             player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.xp.name"), LocaleLoader.getString("Perks.xp.desc", perkAmount)));

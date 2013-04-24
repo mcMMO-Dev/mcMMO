@@ -420,7 +420,7 @@ public class McMMOPlayer {
      * @param skillType Skill being used
      * @param xp Experience amount to process
      */
-    public void beginXpGain(SkillType skillType, int xp) {
+    public void beginXpGain(SkillType skillType, float xp) {
         if (xp == 0) {
             return;
         }
@@ -451,7 +451,7 @@ public class McMMOPlayer {
      * @param skillType Skill being used
      * @param xp Experience amount to process
      */
-    public void beginUnsharedXpGain(SkillType skillType, int xp) {
+    public void beginUnsharedXpGain(SkillType skillType, float xp) {
         xp = modifyXpGain(skillType, xp);
 
         applyXpGain(skillType, xp);
@@ -463,7 +463,7 @@ public class McMMOPlayer {
      * @param skillType Skill being used
      * @param xp Experience amount to add
      */
-    public void applyXpGain(SkillType skillType, int xp) {
+    public void applyXpGain(SkillType skillType, float xp) {
         if (skillType.isChildSkill()) {
             Set<SkillType> parentSkills = FamilyTree.getParents(skillType);
 
@@ -484,7 +484,7 @@ public class McMMOPlayer {
             return;
         }
 
-        profile.setSkillXpLevel(skillType, profile.getSkillXpLevel(skillType) + event.getXpGained());
+        profile.setSkillXpLevel(skillType, profile.getSkillXpLevelRaw(skillType) + event.getXpGained());
 
         McMMOHud spoutHud = profile.getSpoutHud();
 
@@ -655,12 +655,12 @@ public class McMMOPlayer {
      * @param xp Experience amount to process
      * @return Modified experience
      */
-    private int modifyXpGain(SkillType skillType, int xp) {
+    private float modifyXpGain(SkillType skillType, float xp) {
         if (player.getGameMode() == GameMode.CREATIVE || (skillType.getMaxLevel() < profile.getSkillLevel(skillType) + 1) || (Config.getInstance().getPowerLevelCap() < getPowerLevel() + 1)) {
             return 0;
         }
 
-        xp = (int) (xp / skillType.getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier());
+        xp = (float) (xp / skillType.getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier());
 
         if (Config.getInstance().getToolModsEnabled()) {
             ItemStack item = player.getItemInHand();
