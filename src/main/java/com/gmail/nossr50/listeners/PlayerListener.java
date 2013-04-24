@@ -246,7 +246,7 @@ public class PlayerListener implements Listener {
             event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
 
             if (event.isCancelled()) {
-                player.playSound(player.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
+                player.playSound(player.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
                 return;
             }
         }
@@ -255,7 +255,7 @@ public class PlayerListener implements Listener {
             event.setCancelled(Unarmed.handleItemPickup(player.getInventory(), drop));
 
             if (event.isCancelled()) {
-                player.playSound(player.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
+                player.playSound(player.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
                 player.updateInventory();
                 return;
             }

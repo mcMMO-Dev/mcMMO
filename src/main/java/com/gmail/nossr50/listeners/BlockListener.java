@@ -298,7 +298,7 @@ public class BlockListener implements Listener {
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
         if (mcMMOPlayer.getAbilityMode(AbilityType.TREE_FELLER) && BlockUtils.isLog(blockState)) {
-            player.playSound(blockState.getLocation(), Sound.FIZZ, Misc.FIZZ_VOLUME, Misc.FIZZ_PITCH);
+            player.playSound(blockState.getLocation(), Sound.FIZZ, Misc.FIZZ_VOLUME, Misc.getFizzPitch());
         }
     }
 
@@ -341,7 +341,7 @@ public class BlockListener implements Listener {
                     plugin.getServer().getPluginManager().callEvent(new FakePlayerAnimationEvent(player));
 
                     event.setInstaBreak(true);
-                    player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
+                    player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
                 }
             }
             // Another perm check for the cracked blocks activation
@@ -356,7 +356,7 @@ public class BlockListener implements Listener {
         else if (BlockUtils.isLeaves(blockState)) {
             if (mcMMOPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem) && SkillUtils.blockBreakSimulate(block, player, true)) {
                 event.setInstaBreak(true);
-                player.playSound(blockState.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.POP_PITCH);
+                player.playSound(blockState.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
             }
         }
     }
