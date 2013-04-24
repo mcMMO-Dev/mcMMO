@@ -95,7 +95,9 @@ public class SmeltingManager extends SkillManager {
         applyXpGain(Smelting.getResourceXp(resourceType));
 
         if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Smelting.secondSmeltMaxChance, Smelting.secondSmeltMaxLevel)) {
-            ItemStack newResult = new ItemStack(result.getType(), result.getAmount() + 1);
+            ItemStack newResult = result.clone();
+
+            newResult.setAmount(result.getAmount() + 1);
             return newResult;
         }
 
