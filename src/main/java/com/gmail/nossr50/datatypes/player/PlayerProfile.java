@@ -400,12 +400,12 @@ public class PlayerProfile {
             out.append("0:"); // DATS
             out.append("0:"); // DATS
             out.append("0:"); // DATS
-            out.append(hudType.toString()).append(":"); // HUD
+            out.append(hudType == null ? "STANDARD" : hudType.toString()).append(":"); // HUD
             out.append("0:"); // Fishing
             out.append("0:"); // FishingXp
             out.append("0:"); // Blast Mining
             out.append(String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)).append(":"); // LastLogin
-            out.append(mobHealthbarType.toString()).append(":"); // Mob Healthbar HUD
+            out.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":"); // Mob Healthbar HUD
 
             // Add more in the same format as the line above
 
@@ -488,8 +488,8 @@ public class PlayerProfile {
 
             SQLDatabaseManager.write("UPDATE " + tablePrefix + "users SET lastlogin = " + ((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)) + " WHERE id = " + userId);
             SQLDatabaseManager.write("UPDATE " + tablePrefix + "huds SET "
-                    + "  hudtype = " + hudType.toString()
-                    + ", mobhealthbar = " + mobHealthbarType.toString()
+                    + "  hudtype = " + (hudType == null ? "STANDARD" : hudType.toString())
+                    + ", mobhealthbar = " + (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString())
                     + "  WHERE user_id = " + userId);
             SQLDatabaseManager.write("UPDATE " + tablePrefix + "cooldowns SET "
                     + "  mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
@@ -580,12 +580,12 @@ public class PlayerProfile {
                     writer.append(skillsDATS.get(AbilityType.SERRATED_STRIKES)).append(":");
                     writer.append(skillsDATS.get(AbilityType.SKULL_SPLITTER)).append(":");
                     writer.append(skillsDATS.get(AbilityType.SUPER_BREAKER)).append(":");
-                    writer.append(hudType.toString()).append(":");
+                    writer.append(hudType == null ? "STANDARD" : hudType.toString()).append(":");
                     writer.append(skills.get(SkillType.FISHING)).append(":");
                     writer.append(getSkillXpLevel(SkillType.FISHING)).append(":");
                     writer.append(skillsDATS.get(AbilityType.BLAST_MINING)).append(":");
                     writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
-                    writer.append(mobHealthbarType.toString()).append(":");
+                    writer.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
                     writer.append("\r\n");
                 }
             }
