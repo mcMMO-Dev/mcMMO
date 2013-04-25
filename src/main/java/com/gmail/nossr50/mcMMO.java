@@ -55,36 +55,38 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public class mcMMO extends JavaPlugin {
+    /* Listeners */
     private final PlayerListener    playerListener    = new PlayerListener(this);
     private final BlockListener     blockListener     = new BlockListener(this);
     private final EntityListener    entityListener    = new EntityListener(this);
     private final InventoryListener inventoryListener = new InventoryListener(this);
+    private final WorldListener     worldListener     = new WorldListener(this);
     private final SelfListener      selfListener      = new SelfListener();
-    private final WorldListener     worldListener     = new WorldListener();
 
-    public static mcMMO p;
-
+    /* Managers */
     private static ChunkManager placeStore;
     private static RepairableManager repairableManager;
     private static DatabaseManager databaseManager;
 
-    // Jar Stuff
-    public static File mcmmo;
-
-    // File Paths
+    /* File Paths */
     private static String mainDirectory;
     private static String flatFileDirectory;
     private static String usersFile;
     private static String modDirectory;
 
+    public static mcMMO p;
+
+    // Jar Stuff
+    public static File mcmmo;
+
     // Update Check
-    public boolean updateAvailable;
+    private boolean updateAvailable;
 
     // Spout Check
-    public static boolean spoutEnabled = false;
+    public static boolean spoutEnabled;
 
     // XP Event Check
-    private boolean xpEventEnabled = false;
+    private boolean xpEventEnabled;
 
     // Metadata Values
     public final static String entityMetadataKey   = "mcMMO: Spawned Entity";
@@ -204,6 +206,10 @@ public class mcMMO extends JavaPlugin {
 
     public static String getModDirectory() {
         return modDirectory;
+    }
+
+    public boolean isUpdateAvailable() {
+        return updateAvailable;
     }
 
     public boolean isXPEventEnabled() {

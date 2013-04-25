@@ -21,6 +21,12 @@ import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionMain;
 public class WorldListener implements Listener {
     private ArrayList<BlockStoreConversionMain> converters = new ArrayList<BlockStoreConversionMain>();
 
+    private final mcMMO plugin;
+
+    public WorldListener(final mcMMO plugin) {
+        this.plugin = plugin;
+    }
+
     /**
      * Monitor StructureGrow events.
      *
@@ -47,11 +53,11 @@ public class WorldListener implements Listener {
         World world = event.getWorld();
         File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
 
-        if (!dataDir.exists() || mcMMO.p == null) {
+        if (!dataDir.exists() || plugin == null) {
             return;
         }
 
-        mcMMO.p.getLogger().info("Converting block storage for " + world.getName() + " to a new format.");
+        plugin.getLogger().info("Converting block storage for " + world.getName() + " to a new format.");
 
         BlockStoreConversionMain converter = new BlockStoreConversionMain(world);
         converter.run();
