@@ -309,7 +309,6 @@ public class PlayerListener implements Listener {
     public void onPlayerInteractLowest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
-        int blockID = block.getTypeId();
         ItemStack heldItem = player.getItemInHand();
 
         if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
@@ -320,6 +319,8 @@ public class PlayerListener implements Listener {
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
+                int blockID = block.getTypeId();
+
                 /* REPAIR CHECKS */
                 if (blockID == Repair.repairAnvilId && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                     RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
@@ -355,6 +356,8 @@ public class PlayerListener implements Listener {
                 break;
 
             case LEFT_CLICK_BLOCK:
+                blockID = block.getTypeId();
+
                 /* REPAIR CHECKS */
                 if (blockID == Repair.repairAnvilId && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                     RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
