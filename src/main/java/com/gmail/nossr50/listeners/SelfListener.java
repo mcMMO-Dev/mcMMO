@@ -10,10 +10,6 @@ import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 
 public class SelfListener implements Listener {
-    protected Player player;
-
-    protected float skillValue;
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLevelUp(McMMOPlayerLevelUpEvent event) {
         if (!Config.getInstance().getLevelUpEffectsEnabled()) {
@@ -26,8 +22,8 @@ public class SelfListener implements Listener {
             return;
         }
 
-        player = event.getPlayer();
-        skillValue = event.getSkillLevel();
+        Player player = event.getPlayer();
+        float skillValue = event.getSkillLevel();
 
         if ((skillValue % tier) == 0) {
             ParticleEffectUtils.runescapeModeCelebration(player, event.getSkill());
