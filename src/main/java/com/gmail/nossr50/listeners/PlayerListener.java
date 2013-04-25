@@ -66,7 +66,6 @@ public class PlayerListener implements Listener {
         String deathMessage = event.getDeathMessage();
 
         if (deathMessage == null) {
-            mcMMO.p.getLogger().severe("You have another plugin causing null death messages. mcMMO cannot process this death message.");
             return;
         }
 
@@ -86,19 +85,17 @@ public class PlayerListener implements Listener {
 
         Player player = event.getEntity();
 
-        if (Misc.isNPCEntity(player)) {
+        if (Misc.isNPCEntity(player) || Permissions.hardcoreBypass(player)) {
             return;
         }
 
-        if (!Permissions.hardcoreBypass(player)) {
-            Player killer = player.getKiller();
+        Player killer = player.getKiller();
 
-            if (killer != null && Config.getInstance().getHardcoreVampirismEnabled()) {
-                HardcoreManager.invokeVampirism(killer, player);
-            }
-
-            HardcoreManager.invokeStatPenalty(player);
+        if (killer != null && Config.getInstance().getHardcoreVampirismEnabled()) {
+            HardcoreManager.invokeVampirism(killer, player);
         }
+
+        HardcoreManager.invokeStatPenalty(player);
     }
 
     /**
@@ -107,7 +104,7 @@ public class PlayerListener implements Listener {
      * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerWorldChangeEvent(PlayerChangedWorldEvent event) {
+    public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
 
         if (Misc.isNPCEntity(player)) {
@@ -137,16 +134,18 @@ public class PlayerListener implements Listener {
      * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerLoginEvent(PlayerLoginEvent event) {
-        if (event.getResult() == Result.ALLOWED) {
-            Player player = event.getPlayer();
-
-            if (Misc.isNPCEntity(player)) {
-                return;
-            }
-
-            UserManager.addUser(player).actualizeRespawnATS();
+    public void onPlayerLogin(PlayerLoginEvent event) {
+        if (event.getResult() != Result.ALLOWED) {
+            return;
         }
+
+        Player player = event.getPlayer();
+
+        if (Misc.isNPCEntity(player)) {
+            return;
+        }
+
+        UserManager.addUser(player).actualizeRespawnATS();
     }
 
     /**
@@ -155,19 +154,11 @@ public class PlayerListener implements Listener {
      * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerDropItemEvent(PlayerDropItemEvent event) {
-        Player player = event.getPlayer();
+    public void onPlayerDropItem(PlayerDropItemEvent event) {
         Item drop = event.getItemDrop();
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-        if (mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER) || mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER)) {
-            event.setCancelled(true);
-            return;
-        }
 
         drop.setMetadata(mcMMO.droppedItemKey, mcMMO.metadataValue);
-
-        SkillUtils.removeAbilityBuff(event.getItemDrop().getItemStack());
+        SkillUtils.removeAbilityBuff(drop.getItemStack());
     }
 
     /**
@@ -221,14 +212,14 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
         Player player = event.getPlayer();
-        Item drop = event.getItem();
-        ItemStack dropStack = drop.getItemStack();
 
         if (Misc.isNPCEntity(player)) {
             return;
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        Item drop = event.getItem();
+        ItemStack dropStack = drop.getItemStack();
 
         if (!drop.hasMetadata(mcMMO.droppedItemKey) && mcMMOPlayer.inParty() && ItemUtils.isShareable(dropStack)) {
             event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
@@ -319,14 +310,13 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        Block block = event.getClickedBlock();
-        ItemStack heldItem = player.getItemInHand();
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        MiningManager miningManager = mcMMOPlayer.getMiningManager();
+        MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
+                Block block = event.getClickedBlock();
                 int blockID = block.getTypeId();
+                ItemStack heldItem = player.getItemInHand();
 
                 /* REPAIR CHECKS */
                 if (blockID == Repair.repairAnvilId && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.repairableManager.isRepairable(heldItem)) {
@@ -477,7 +467,6 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        boolean isAsync = event.isAsynchronous();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         if (mcMMOPlayer.getPartyChatMode()) {
@@ -488,11 +477,11 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            ChatManager.handlePartyChat(plugin, party, player.getName(), player.getDisplayName(), event.getMessage(), isAsync);
+            ChatManager.handlePartyChat(plugin, party, player.getName(), player.getDisplayName(), event.getMessage(), event.isAsynchronous());
             event.setCancelled(true);
         }
         else if (mcMMOPlayer.getAdminChatMode()) {
-            ChatManager.handleAdminChat(plugin, player.getName(), player.getDisplayName(), event.getMessage(), isAsync);
+            ChatManager.handleAdminChat(plugin, player.getName(), player.getDisplayName(), event.getMessage(), event.isAsynchronous());
             event.setCancelled(true);
         }
     }
