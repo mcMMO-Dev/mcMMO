@@ -212,6 +212,7 @@ public final class PartyManager {
 
         if (mcMMOPlayer != null) {
             mcMMOPlayer.removeParty();
+            mcMMOPlayer.setPartyChat(false);
             mcMMOPlayer.setItemShareModifier(10);
         }
     }
@@ -229,6 +230,7 @@ public final class PartyManager {
 
             if (mcMMOPlayer != null) {
                 mcMMOPlayer.removeParty();
+                mcMMOPlayer.setPartyChat(false);
                 mcMMOPlayer.setItemShareModifier(10);
             }
         }
