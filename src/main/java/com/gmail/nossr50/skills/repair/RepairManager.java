@@ -65,7 +65,7 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
         int itemId = item.getTypeId();
 
-        Repairable repairable = mcMMO.repairableManager.getRepairable(itemId);
+        Repairable repairable = mcMMO.getRepairableManager().getRepairable(itemId);
 
         // Permissions checks on material and item types
         if (!repairable.getRepairItemType().getPermissions(player)) {

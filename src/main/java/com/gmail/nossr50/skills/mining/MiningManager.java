@@ -139,13 +139,13 @@ public class MiningManager extends SkillManager{
 
         for (BlockState blockState : ores) {
             if (Misc.getRandom().nextFloat() < (yield + oreBonus)) {
-                if (!mcMMO.placeStore.isTrue(blockState)) {
+                if (!mcMMO.getPlaceStore().isTrue(blockState)) {
                     xp += Mining.getBlockXp(blockState);
                 }
 
                 Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack(1)); // Initial block that would have been dropped
 
-                if (!mcMMO.placeStore.isTrue(blockState)) {
+                if (!mcMMO.getPlaceStore().isTrue(blockState)) {
                     for (int i = 1; i < dropMultiplier; i++) {
                         Mining.handleSilkTouchDrops(blockState); // Bonus drops - should drop the block & not the items
                     }

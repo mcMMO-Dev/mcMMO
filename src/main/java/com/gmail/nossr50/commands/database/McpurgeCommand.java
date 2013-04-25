@@ -23,10 +23,10 @@ public class McpurgeCommand implements TabExecutor {
 
         switch (args.length) {
             case 0:
-                mcMMO.databaseManager.purgePowerlessUsers();
+                mcMMO.getDatabaseManager().purgePowerlessUsers();
 
                 if (Config.getInstance().getOldUsersCutoff() != -1) {
-                    mcMMO.databaseManager.purgeOldUsers();
+                    mcMMO.getDatabaseManager().purgeOldUsers();
                 }
 
                 sender.sendMessage(LocaleLoader.getString("Commands.mcpurge.Success"));

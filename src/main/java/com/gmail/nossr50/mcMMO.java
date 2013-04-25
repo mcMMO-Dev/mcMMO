@@ -64,9 +64,9 @@ public class mcMMO extends JavaPlugin {
 
     public static mcMMO p;
 
-    public static ChunkManager placeStore;
-    public static RepairableManager repairableManager;
-    public static DatabaseManager databaseManager;
+    private static ChunkManager placeStore;
+    private static RepairableManager repairableManager;
+    private static DatabaseManager databaseManager;
 
     // Jar Stuff
     public static File mcmmo;
@@ -220,6 +220,18 @@ public class mcMMO extends JavaPlugin {
 
     public void debug(String message) {
         getLogger().info("[Debug] " + message);
+    }
+
+    public static ChunkManager getPlaceStore() {
+        return placeStore;
+    }
+
+    public static DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    public static RepairableManager getRepairableManager() {
+        return repairableManager;
     }
 
     /**

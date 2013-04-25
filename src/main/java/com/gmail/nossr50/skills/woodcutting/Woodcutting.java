@@ -248,7 +248,7 @@ public final class Woodcutting {
      * @param treeFellerBlocks List of blocks to be removed
      */
     private static void handleBlock(BlockState blockState, List<BlockState> futureCenterBlocks, List<BlockState> treeFellerBlocks) {
-        if (!BlockUtils.affectedByTreeFeller(blockState) || mcMMO.placeStore.isTrue(blockState) || treeFellerBlocks.contains(blockState)) {
+        if (!BlockUtils.affectedByTreeFeller(blockState) || mcMMO.getPlaceStore().isTrue(blockState) || treeFellerBlocks.contains(blockState)) {
             return;
         }
 

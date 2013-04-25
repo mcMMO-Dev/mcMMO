@@ -32,7 +32,7 @@ public class McremoveCommand implements TabExecutor {
                     return true;
                 }
 
-                if (mcMMO.databaseManager.removeUser(args[0])) {
+                if (mcMMO.getDatabaseManager().removeUser(args[0])) {
                     sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", args[0]));
                 }
                 else {

@@ -63,17 +63,17 @@ public class BlockListener implements Listener {
         Block futureEmptyBlock = event.getBlock().getRelative(direction); // Block that would be air after piston is finished
 
         for (Block b : blocks) {
-            if (BlockUtils.shouldBeWatched(b.getState()) && mcMMO.placeStore.isTrue(b)) {
+            if (BlockUtils.shouldBeWatched(b.getState()) && mcMMO.getPlaceStore().isTrue(b)) {
                 b.getRelative(direction).setMetadata(mcMMO.blockMetadataKey, mcMMO.metadataValue);
                 if (b.equals(futureEmptyBlock)) {
-                    mcMMO.placeStore.setFalse(b);
+                    mcMMO.getPlaceStore().setFalse(b);
                 }
             }
         }
 
         for (Block b : blocks) {
             if (b.getRelative(direction).hasMetadata(mcMMO.blockMetadataKey)) {
-                mcMMO.placeStore.setTrue(b.getRelative(direction));
+                mcMMO.getPlaceStore().setTrue(b.getRelative(direction));
                 b.getRelative(direction).removeMetadata(mcMMO.blockMetadataKey, plugin);
             }
         }
@@ -110,7 +110,7 @@ public class BlockListener implements Listener {
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockUtils.shouldBeWatched(blockState)) {
-            mcMMO.placeStore.setTrue(blockState);
+            mcMMO.getPlaceStore().setTrue(blockState);
         }
 
         if (Repair.anvilMessagesEnabled && (blockId == Repair.repairAnvilId || blockId == Repair.salvageAnvilId)) {
@@ -163,13 +163,13 @@ public class BlockListener implements Listener {
         }
 
         /* MINING */
-        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && Permissions.skillEnabled(player, SkillType.MINING) && !mcMMO.placeStore.isTrue(blockState)) {
+        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && Permissions.skillEnabled(player, SkillType.MINING) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             MiningManager miningManager = mcMMOPlayer.getMiningManager();
             miningManager.miningBlockCheck(blockState);
         }
 
         /* WOOD CUTTING */
-        else if (BlockUtils.isLog(blockState) && Permissions.skillEnabled(player, SkillType.WOODCUTTING) && !mcMMO.placeStore.isTrue(blockState)) {
+        else if (BlockUtils.isLog(blockState) && Permissions.skillEnabled(player, SkillType.WOODCUTTING) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             WoodcuttingManager woodcuttingManager = mcMMOPlayer.getWoodcuttingManager();
 
             if (woodcuttingManager.canUseTreeFeller(heldItem)) {
@@ -181,7 +181,7 @@ public class BlockListener implements Listener {
         }
 
         /* EXCAVATION */
-        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && Permissions.skillEnabled(player, SkillType.EXCAVATION) && !mcMMO.placeStore.isTrue(blockState)) {
+        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && Permissions.skillEnabled(player, SkillType.EXCAVATION) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             ExcavationManager excavationManager = mcMMOPlayer.getExcavationManager();
             excavationManager.excavationBlockCheck(blockState);
 
@@ -191,7 +191,7 @@ public class BlockListener implements Listener {
         }
 
         /* Remove metadata from placed watched blocks */
-        mcMMO.placeStore.setFalse(blockState);
+        mcMMO.getPlaceStore().setFalse(blockState);
     }
 
     /**

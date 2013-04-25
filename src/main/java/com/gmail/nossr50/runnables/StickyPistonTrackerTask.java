@@ -21,11 +21,11 @@ public class StickyPistonTrackerTask extends BukkitRunnable {
         Block newBlock = block.getRelative(direction);
         Block originalBlock = newBlock.getRelative(direction);
 
-        if (originalBlock.getType() != Material.AIR || !mcMMO.placeStore.isTrue(originalBlock)) {
+        if (originalBlock.getType() != Material.AIR || !mcMMO.getPlaceStore().isTrue(originalBlock)) {
             return;
         }
 
-        mcMMO.placeStore.setFalse(originalBlock);
-        mcMMO.placeStore.setTrue(newBlock);
+        mcMMO.getPlaceStore().setFalse(originalBlock);
+        mcMMO.getPlaceStore().setTrue(newBlock);
     }
 }

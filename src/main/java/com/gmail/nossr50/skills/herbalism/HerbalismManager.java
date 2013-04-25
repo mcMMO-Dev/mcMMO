@@ -118,7 +118,7 @@ public class HerbalismManager extends SkillManager {
         Material material = blockState.getType();
         boolean oneBlockPlant = !(material == Material.CACTUS || material == Material.SUGAR_CANE_BLOCK);
 
-        if (oneBlockPlant && mcMMO.placeStore.isTrue(blockState)) {
+        if (oneBlockPlant && mcMMO.getPlaceStore().isTrue(blockState)) {
             return;
         }
 
@@ -206,8 +206,8 @@ public class HerbalismManager extends SkillManager {
 
             case RED_ROSE:
             case YELLOW_FLOWER:
-                if (mcMMO.placeStore.isTrue(blockState)) {
-                    mcMMO.placeStore.setFalse(blockState);
+                if (mcMMO.getPlaceStore().isTrue(blockState)) {
+                    mcMMO.getPlaceStore().setFalse(blockState);
                     return false;
                 }
 

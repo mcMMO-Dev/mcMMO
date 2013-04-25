@@ -68,12 +68,12 @@ public class EntityListener implements Listener {
         Block block = event.getBlock();
         boolean isTracked = entity.hasMetadata(mcMMO.entityMetadataKey);
 
-        if (mcMMO.placeStore.isTrue(block) && !isTracked) {
-            mcMMO.placeStore.setFalse(block);
+        if (mcMMO.getPlaceStore().isTrue(block) && !isTracked) {
+            mcMMO.getPlaceStore().setFalse(block);
             entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
         }
         else if (isTracked) {
-            mcMMO.placeStore.setTrue(block);
+            mcMMO.getPlaceStore().setTrue(block);
         }
     }
 

@@ -41,10 +41,10 @@ public class RepairCommand extends SkillCommand {
     @Override
     protected void dataCalculations() {
         // We're using pickaxes here, not the best but it works
-        Repairable diamondRepairable = mcMMO.repairableManager.getRepairable(Material.DIAMOND_PICKAXE.getId());
-        Repairable goldRepairable = mcMMO.repairableManager.getRepairable(Material.GOLD_PICKAXE.getId());
-        Repairable ironRepairable = mcMMO.repairableManager.getRepairable(Material.IRON_PICKAXE.getId());
-        Repairable stoneRepairable = mcMMO.repairableManager.getRepairable(Material.STONE_PICKAXE.getId());
+        Repairable diamondRepairable = mcMMO.getRepairableManager().getRepairable(Material.DIAMOND_PICKAXE.getId());
+        Repairable goldRepairable = mcMMO.getRepairableManager().getRepairable(Material.GOLD_PICKAXE.getId());
+        Repairable ironRepairable = mcMMO.getRepairableManager().getRepairable(Material.IRON_PICKAXE.getId());
+        Repairable stoneRepairable = mcMMO.getRepairableManager().getRepairable(Material.STONE_PICKAXE.getId());
 
         // TODO: This isn't really accurate - if they don't have pickaxes loaded it doesn't always mean the repair level is 0
         diamondLevel = (diamondRepairable == null) ? 0 : diamondRepairable.getMinimumLevel();

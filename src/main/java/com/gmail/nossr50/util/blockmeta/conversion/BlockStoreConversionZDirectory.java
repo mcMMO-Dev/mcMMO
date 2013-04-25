@@ -34,7 +34,7 @@ public class BlockStoreConversionZDirectory implements Runnable {
         this.world = world;
         this.scheduler = mcMMO.p.getServer().getScheduler();
         this.manager = new HashChunkletManager();
-        this.newManager = (HashChunkManager) mcMMO.placeStore;
+        this.newManager = (HashChunkManager) mcMMO.getPlaceStore();
         this.dataDir = dataDir;
         this.xDir = xDir;
 

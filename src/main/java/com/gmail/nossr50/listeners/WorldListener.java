@@ -30,9 +30,9 @@ public class WorldListener implements Listener {
     public void onStructureGrow(StructureGrowEvent event) {
         Location location = event.getLocation();
 
-        if (mcMMO.placeStore.isTrue(location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld())) {
+        if (mcMMO.getPlaceStore().isTrue(location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld())) {
             for (BlockState blockState : event.getBlocks()) {
-                mcMMO.placeStore.setFalse(blockState);
+                mcMMO.getPlaceStore().setFalse(blockState);
             }
         }
     }
@@ -65,7 +65,7 @@ public class WorldListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldUnload(WorldUnloadEvent event) {
-        mcMMO.placeStore.unloadWorld(event.getWorld());
+        mcMMO.getPlaceStore().unloadWorld(event.getWorld());
     }
 
     /**
@@ -77,6 +77,6 @@ public class WorldListener implements Listener {
     public void onChunkUnload(ChunkUnloadEvent event) {
         Chunk chunk = event.getChunk();
 
-        mcMMO.placeStore.chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());
+        mcMMO.getPlaceStore().chunkUnloaded(chunk.getX(), chunk.getZ(), event.getWorld());
     }
 }

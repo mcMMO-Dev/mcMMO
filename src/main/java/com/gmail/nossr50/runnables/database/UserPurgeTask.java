@@ -8,10 +8,10 @@ import com.gmail.nossr50.config.Config;
 public class UserPurgeTask extends BukkitRunnable {
     @Override
     public void run() {
-        mcMMO.databaseManager.purgePowerlessUsers();
+        mcMMO.getDatabaseManager().purgePowerlessUsers();
 
         if (Config.getInstance().getOldUsersCutoff() != -1) {
-            mcMMO.databaseManager.purgeOldUsers();
+            mcMMO.getDatabaseManager().purgeOldUsers();
         }
     }
 }

@@ -193,7 +193,8 @@ public class PlayerListener implements Listener {
 
             case CAUGHT_ENTITY:
                 Entity entity = event.getCaught();
-
+                System.out.println(event.getState());
+                System.out.println(entity);
                 if (fishingManager.canShake(entity)) {
                     fishingManager.shakeCheck((LivingEntity) entity);
                 }
@@ -319,7 +320,7 @@ public class PlayerListener implements Listener {
                 ItemStack heldItem = player.getItemInHand();
 
                 /* REPAIR CHECKS */
-                if (blockID == Repair.repairAnvilId && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.repairableManager.isRepairable(heldItem)) {
+                if (blockID == Repair.repairAnvilId && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                     UserManager.getPlayer(player).getRepairManager().handleRepair(heldItem);
                     event.setCancelled(true);
                     player.updateInventory();
