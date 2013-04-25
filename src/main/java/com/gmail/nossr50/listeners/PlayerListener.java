@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -41,6 +42,7 @@ import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.repair.Repair;
+import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.util.BlockUtils;
@@ -306,6 +308,9 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerInteractLowest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
+        int blockID = block.getTypeId();
+        ItemStack heldItem = player.getItemInHand();
 
         if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
@@ -315,21 +320,27 @@ public class PlayerListener implements Listener {
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
-                Block block = event.getClickedBlock();
-                int blockID = block.getTypeId();
-                ItemStack heldItem = player.getItemInHand();
-
                 /* REPAIR CHECKS */
                 if (blockID == Repair.repairAnvilId && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
-                    UserManager.getPlayer(player).getRepairManager().handleRepair(heldItem);
+                    RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
                     event.setCancelled(true);
-                    player.updateInventory();
+
+                    // Make sure the player knows what he's doing when trying to repair an enchanted item
+                    if (!(heldItem.getEnchantments().size() > 0) || repairManager.checkConfirmation(blockID, true)) {
+                        repairManager.handleRepair(heldItem);
+                        player.updateInventory();
+                    }
                 }
                 /* SALVAGE CHECKS */
                 else if (blockID == Repair.salvageAnvilId && Permissions.salvage(player) && Repair.isSalvageable(heldItem)) {
-                    UserManager.getPlayer(player).getRepairManager().handleSalvage(block.getLocation(), heldItem);
+                    RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
                     event.setCancelled(true);
-                    player.updateInventory();
+
+                    // Make sure the player knows what he's doing when trying to salvage an enchanted item
+                    if (!(heldItem.getEnchantments().size() > 0) || repairManager.checkConfirmation(blockID, true)) {
+                        repairManager.handleSalvage(block.getLocation(), heldItem);
+                        player.updateInventory();
+                    }
                 }
                 /* BLAST MINING CHECK */
                 else if (miningManager.canDetonate()) {
@@ -338,6 +349,20 @@ public class PlayerListener implements Listener {
                     }
                     else {
                         miningManager.remoteDetonation();
+                    }
+                }
+
+                break;
+
+            case LEFT_CLICK_BLOCK:
+                /* REPAIR CHECKS */
+                if (blockID == Repair.repairAnvilId && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
+                    RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
+
+                    // Cancel repairing an enchanted item
+                    if (repairManager.checkConfirmation(blockID, false) && Config.getInstance().getRepairConfirmRequired()) {
+                        UserManager.getPlayer(player).setLastAnvilUse(Repair.repairAnvilId, 0);
+                        player.sendMessage(ChatColor.RED + "Repair cancelled!"); //TODO Locale!
                     }
                 }
 

@@ -28,6 +28,7 @@ Version 1.4.06-dev
  ! Changed Berserk to add items to inventory rather than denying pickup
  ! Changed Call of the Wild, newly summoned pet's will have a custom name. (added permission node to disable this)
  ! Changed Chimaera Wing's recipe result to use the ingredient Material
+ ! Changed Repair to ask a confirmation of the player when he tries to repair an enchanted item
  ! Players will no longer pickup items to their hotbar while using Unarmed
  ! ExperienceAPI methods will now throw InvalidSkillException if the skill name passed in is invalid.
  ! Changed default value for recently-hurt cooldown between teleports, this is also fully configurable now

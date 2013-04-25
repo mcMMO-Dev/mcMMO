@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.repair;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -14,6 +15,7 @@ import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
@@ -23,6 +25,7 @@ import com.gmail.nossr50.skills.repair.ArcaneForging.Tier;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class RepairManager extends SkillManager {
@@ -191,6 +194,38 @@ public class RepairManager extends SkillManager {
         else {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.NotFullDurability"));
         }
+    }
+
+    /**
+     * Check if the player has tried to use an Anvil before.
+     *
+     * @return true if the player has confirmed using an Anvil
+     */
+    public boolean checkConfirmation(int anvilId, boolean actualize) {
+        Player player = getPlayer();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        long LastUse =  mcMMOPlayer.getLastAnvilUse(anvilId);
+
+        // Don't use SkillUtils.cooldownOver() here since that also accounts for the cooldown perks
+        if ((((LastUse + 3) * Misc.TIME_CONVERSION_FACTOR) >= System.currentTimeMillis()) || !Config.getInstance().getRepairConfirmRequired()) {
+            return true;
+        }
+
+        if (!actualize) {
+            return false;
+        }
+
+        mcMMOPlayer.actualizeLastAnvilUse(anvilId);
+
+        if (anvilId == Repair.repairAnvilId) {
+            player.sendMessage(ChatColor.GREEN + "Right-click again to confirm " + ChatColor.GOLD + "Repair" + ChatColor.GREEN + ". Left-click to cancel."); //TODO Locale
+        }
+
+        if (anvilId == Repair.salvageAnvilId) {
+            player.sendMessage(ChatColor.GREEN + "Right-click again to confirm " + ChatColor.GOLD + "Salvage" + ChatColor.GREEN + ". Left-click to cancel."); //TODO Locale
+        }
+        return false;
     }
 
     /**

@@ -208,6 +208,7 @@ public class Config extends AutoUpdateConfigLoader {
     public int getSalvageAnvilId() { return config.getInt("Skills.Repair.Salvage_Anvil_ID", 41); }
     public boolean getSalvageTools() { return config.getBoolean("Skills.Repair.Salvage_tools", true); }
     public boolean getSalvageArmor() { return config.getBoolean("Skills.Repair.Salvage_armor", true); }
+    public boolean getRepairConfirmRequired() { return config.getBoolean("Skills.Repair.Confirm_Required", true); }
 
     /* Unarmed */
     public boolean getUnarmedBlockCrackerSmoothbrickToCracked() { return config.getBoolean("Skills.Unarmed.Block_Cracker.SmoothBrick_To_CrackedBrick", true); }

@@ -70,7 +70,9 @@ public class McMMOPlayer {
 
     private boolean abilityUse = true;
     private boolean placedRepairAnvil;
+    private int     lastRepairClick;
     private boolean placedSalvageAnvil;
+    private int     lastSalvageClick;
     private boolean godMode;
 
     private Map<AbilityType, Boolean> abilityMode     = new HashMap<AbilityType, Boolean>();
@@ -366,6 +368,42 @@ public class McMMOPlayer {
 
         if (anvilId == Repair.salvageAnvilId) {
             placedSalvageAnvil = !placedSalvageAnvil;
+        }
+    }
+
+    /*
+     * Repair Anvil Usage
+     */
+
+    public int getLastAnvilUse(int anvilId) {
+        if (anvilId == Repair.repairAnvilId) {
+            return lastRepairClick;
+        }
+
+        if (anvilId == Repair.salvageAnvilId) {
+            return lastSalvageClick;
+        }
+
+        return 0;
+    }
+
+    public void setLastAnvilUse(int anvilId, int value) {
+        if (anvilId == Repair.repairAnvilId) {
+            lastRepairClick = value;
+        }
+
+        if (anvilId == Repair.salvageAnvilId) {
+            lastSalvageClick = value;
+        }
+    }
+
+    public void actualizeLastAnvilUse(int anvilId) {
+        if (anvilId == Repair.repairAnvilId) {
+            lastRepairClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+        }
+
+        if (anvilId == Repair.salvageAnvilId) {
+            lastSalvageClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
         }
     }
 
