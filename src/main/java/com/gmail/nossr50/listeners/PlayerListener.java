@@ -365,6 +365,16 @@ public class PlayerListener implements Listener {
                         player.sendMessage(ChatColor.RED + "Repair cancelled!"); //TODO Locale!
                     }
                 }
+                /* SALVAGE CHECKS */
+                else if (blockID == Repair.salvageAnvilId && Permissions.salvage(player) && Repair.isSalvageable(heldItem)) {
+                    RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
+
+                    // Cancel salvaging an enchanted item
+                    if (repairManager.checkConfirmation(blockID, false) && Config.getInstance().getRepairConfirmRequired()) {
+                        UserManager.getPlayer(player).setLastAnvilUse(Repair.salvageAnvilId, 0);
+                        player.sendMessage(ChatColor.RED + "Salvage cancelled!"); //TODO Locale!
+                    }
+                }
 
                 break;
 
