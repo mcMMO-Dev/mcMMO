@@ -488,8 +488,8 @@ public class PlayerProfile {
 
             SQLDatabaseManager.write("UPDATE " + tablePrefix + "users SET lastlogin = " + ((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)) + " WHERE id = " + userId);
             SQLDatabaseManager.write("UPDATE " + tablePrefix + "huds SET "
-                    + "  hudtype = " + (hudType == null ? "STANDARD" : hudType.toString())
-                    + ", mobhealthbar = " + (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString())
+                    + "  hudtype = '" + (hudType == null ? "STANDARD" : hudType.toString() + "'")
+                    + ", mobhealthbar = '" + (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString() + "'")
                     + "  WHERE user_id = " + userId);
             SQLDatabaseManager.write("UPDATE " + tablePrefix + "cooldowns SET "
                     + "  mining = " + skillsDATS.get(AbilityType.SUPER_BREAKER)
