@@ -48,4 +48,36 @@ public final class AbilityAPI {
 
         return false;
     }
+
+    public static void resetCooldowns(Player player) {
+        UserManager.getPlayer(player).getProfile().resetCooldowns();
+    }
+
+    public static void setBerserkCooldown(Player player, long cooldown) {
+        UserManager.getPlayer(player).getProfile().setSkillDATS(AbilityType.BERSERK, cooldown);
+    }
+
+    public static void setGigaDrillBreakerCooldown(Player player, long cooldown) {
+        UserManager.getPlayer(player).getProfile().setSkillDATS(AbilityType.GIGA_DRILL_BREAKER, cooldown);
+    }
+
+    public static void setGreenTerraCooldown(Player player, long cooldown) {
+        UserManager.getPlayer(player).getProfile().setSkillDATS(AbilityType.GREEN_TERRA, cooldown);
+    }
+
+    public static void setSerratedStrikesCooldown(Player player, long cooldown) {
+        UserManager.getPlayer(player).getProfile().setSkillDATS(AbilityType.SERRATED_STRIKES, cooldown);
+    }
+
+    public static void setSkullSplitterCooldown(Player player, long cooldown) {
+        UserManager.getPlayer(player).getProfile().setSkillDATS(AbilityType.SKULL_SPLITTER, cooldown);
+    }
+
+    public static void setSuperBreakerCooldown(Player player, long cooldown) {
+        UserManager.getPlayer(player).getProfile().setSkillDATS(AbilityType.SUPER_BREAKER, cooldown);
+    }
+
+    public static void setTreeFellerCooldown(Player player, long cooldown) {
+        UserManager.getPlayer(player).getProfile().setSkillDATS(AbilityType.TREE_FELLER, cooldown);
+    }
 }
