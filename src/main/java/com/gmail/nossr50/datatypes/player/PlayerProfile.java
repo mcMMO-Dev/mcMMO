@@ -277,7 +277,7 @@ public class PlayerProfile {
         ArrayList<String> hudValues = SQLDatabaseManager.read("SELECT hudtype, mobhealthbar FROM " + tablePrefix + "huds WHERE user_id = " + userId).get(1);
 
         if (hudValues == null) {
-            SQLDatabaseManager.write("INSERT INTO " + tablePrefix + "huds (user_id, mobhealthbar) VALUES (" + userId + "," + mobHealthbarType.name() + ")");
+            SQLDatabaseManager.write("INSERT INTO " + tablePrefix + "huds (user_id, mobhealthbar) VALUES (" + userId + ",'" + mobHealthbarType.name() + "')");
             mcMMO.p.getLogger().warning(playerName + "does not exist in the HUD table. Their HUDs will be reset.");
         }
         else {
@@ -354,7 +354,7 @@ public class PlayerProfile {
         SQLDatabaseManager.write("INSERT INTO " + tablePrefix + "users (user, lastlogin) VALUES ('" + playerName + "'," + System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR + ")");
         userId = SQLDatabaseManager.getInt("SELECT id FROM " + tablePrefix + "users WHERE user = '" + playerName + "'");
 
-        SQLDatabaseManager.write("INSERT INTO " + tablePrefix + "huds (user_id, mobhealthbar) VALUES (" + userId + "," + mobHealthbarType.name() + ")");
+        SQLDatabaseManager.write("INSERT INTO " + tablePrefix + "huds (user_id, mobhealthbar) VALUES (" + userId + ", '" + mobHealthbarType.name() + "')");
         SQLDatabaseManager.write("INSERT INTO " + tablePrefix + "cooldowns (user_id) VALUES (" + userId + ")");
         SQLDatabaseManager.write("INSERT INTO " + tablePrefix + "skills (user_id) VALUES (" + userId + ")");
         SQLDatabaseManager.write("INSERT INTO " + tablePrefix + "experience (user_id) VALUES (" + userId + ")");
