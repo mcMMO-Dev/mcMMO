@@ -195,8 +195,6 @@ public class PlayerListener implements Listener {
 
             case CAUGHT_ENTITY:
                 Entity entity = event.getCaught();
-                System.out.println(event.getState());
-                System.out.println(entity);
                 if (fishingManager.canShake(entity)) {
                     fishingManager.shakeCheck((LivingEntity) entity);
                 }
