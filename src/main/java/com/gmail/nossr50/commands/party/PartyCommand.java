@@ -171,7 +171,7 @@ public class PartyCommand implements TabExecutor {
                     return ImmutableList.of();
                 }
 
-                switch (PartySubcommandType.valueOf(args[0].toUpperCase())) {
+                switch (subcommand) {
                     case JOIN:
                     case INVITE:
                     case KICK:
