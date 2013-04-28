@@ -5,6 +5,7 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -43,11 +44,7 @@ public final class Misc {
     }
 
     public static boolean isNPCEntity(Entity entity) {
-        if (entity == null || entity.hasMetadata("NPC")) {
-            return true;
-        }
-
-        return false;
+        return (entity == null || entity.hasMetadata("NPC") || (entity instanceof HumanEntity && ((HumanEntity) entity).getName().contains("PvpLogger")));
     }
 
     /**
