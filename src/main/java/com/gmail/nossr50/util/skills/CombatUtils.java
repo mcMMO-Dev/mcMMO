@@ -262,7 +262,7 @@ public final class CombatUtils {
         if (target instanceof Player) {
             Player player = (Player) target;
 
-            if (Misc.isNPCEntity(player) || !player.isOnline()) {
+            if (Misc.isNPCEntity(player)) {
                 return;
             }
 
