@@ -38,6 +38,7 @@ Version 1.4.06-dev
  ! Changed the amount of info messages in the console when enabling/disabling, enable Verbose_Logging to enable them again
  ! Items dropped by players are now being tracked and are not being shared with party members
  ! Optimized tracking of tool & ability cooldowns.
+ ! Updated the localization files
 
 Version 1.4.05
  + Added option to allow refreshing of chunks after block-breaking abilities. (Disabled by default)
