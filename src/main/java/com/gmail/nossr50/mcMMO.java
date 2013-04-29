@@ -82,8 +82,9 @@ public class mcMMO extends JavaPlugin {
     // Update Check
     private boolean updateAvailable;
 
-    // Spout Check
+    // Plugin Checks
     public static boolean spoutEnabled;
+    public static boolean combatTagEnabled;
 
     // XP Event Check
     private boolean xpEventEnabled;
@@ -112,6 +113,8 @@ public class mcMMO extends JavaPlugin {
             setupFilePaths();
             setupSpout();
             loadConfigFiles();
+
+            combatTagEnabled = getServer().getPluginManager().isPluginEnabled("CombatTag");
 
             databaseManager = new DatabaseManager(this, Config.getInstance().getUseMySQL());
 
