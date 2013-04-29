@@ -19,6 +19,7 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.mining.BlastMining.Tier;
 import com.gmail.nossr50.util.BlockUtils;
@@ -108,6 +109,7 @@ public class MiningManager extends SkillManager{
 
         getProfile().setSkillDATS(AbilityType.BLAST_MINING, System.currentTimeMillis());
         mcMMOPlayer.setAbilityInformed(AbilityType.BLAST_MINING, false);
+        new AbilityCooldownTask(mcMMOPlayer, AbilityType.BLAST_MINING).runTaskLaterAsynchronously(mcMMO.p, AbilityType.BLAST_MINING.getCooldown());
     }
 
     /**

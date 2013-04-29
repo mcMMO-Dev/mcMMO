@@ -38,7 +38,6 @@ import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
-import com.gmail.nossr50.runnables.skills.SkillMonitorTask;
 import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.RepairableManager;
@@ -385,9 +384,6 @@ public class mcMMO extends JavaPlugin {
         long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
 
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
-
-        // Regen & Cooldown timer (Runs every second)
-        new SkillMonitorTask().runTaskTimer(this, 20, 20);
 
         // Bleed timer (Runs every two seconds)
         new BleedTimerTask().runTaskTimer(this, 40, 40);

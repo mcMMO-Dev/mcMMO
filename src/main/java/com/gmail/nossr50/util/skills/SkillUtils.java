@@ -31,6 +31,8 @@ import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
+import com.gmail.nossr50.runnables.skills.ToolLowerTask;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
@@ -88,21 +90,6 @@ public class SkillUtils {
     }
 
     /**
-     * Sends a message to the player when the cooldown expires.
-     *
-     * @param mcMMOPlayer The player to send a message to
-     * @param ability The ability to watch cooldowns for
-     */
-    public static void watchCooldown(McMMOPlayer mcMMOPlayer, AbilityType ability) {
-        Player player = mcMMOPlayer.getPlayer();
-
-        if (!mcMMOPlayer.getAbilityInformed(ability) && cooldownOver(mcMMOPlayer.getProfile().getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-            mcMMOPlayer.setAbilityInformed(ability, true);
-            player.sendMessage(ability.getAbilityRefresh());
-        }
-    }
-
-    /**
      * Process activating abilities & readying the tool.
      *
      * @param player The player using the ability
@@ -152,53 +139,7 @@ public class SkillUtils {
 
             mcMMOPlayer.setToolPreparationATS(tool, System.currentTimeMillis());
             mcMMOPlayer.setToolPreparationMode(tool, true);
-        }
-    }
-
-    /**
-     * Monitors various things relating to skill abilities.
-     *
-     * @param mcMMOPlayer The player using the skill
-     * @param profile The profile of the player
-     * @param curTime The current system time
-     * @param skill The skill being monitored
-     */
-    public static void monitorSkill(McMMOPlayer mcMMOPlayer, long curTime, SkillType skill) {
-        final int FOUR_SECONDS = 4000;
-        ToolType tool = skill.getTool();
-
-        if (mcMMOPlayer.getToolPreparationMode(tool) && curTime - (mcMMOPlayer.getToolPreparationATS(tool) * Misc.TIME_CONVERSION_FACTOR) >= FOUR_SECONDS) {
-            mcMMOPlayer.setToolPreparationMode(tool, false);
-
-            if (Config.getInstance().getAbilityMessagesEnabled()) {
-                mcMMOPlayer.getPlayer().sendMessage(tool.getLowerTool());
-            }
-        }
-
-        AbilityType ability = skill.getAbility();
-        Player player = mcMMOPlayer.getPlayer();
-
-        if (ability.getPermissions(player)) {
-            if (mcMMOPlayer.getAbilityMode(ability) && (mcMMOPlayer.getProfile().getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR) <= curTime) {
-                if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
-                    handleAbilitySpeedDecrease(player);
-                }
-
-                if (HiddenConfig.getInstance().resendChunksAfterBlockAbility() && (ability == AbilityType.BERSERK || ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER)) {
-                    Misc.resendChunkRadiusAt(player, 1);
-                }
-
-                mcMMOPlayer.setAbilityMode(ability, false);
-                mcMMOPlayer.setAbilityInformed(ability, false);
-
-                ParticleEffectUtils.playAbilityDisabledEffect(player);
-
-                if (mcMMOPlayer.useChatNotifications()) {
-                    player.sendMessage(ability.getAbilityOff());
-                }
-
-                sendSkillMessage(player, ability.getAbilityPlayerOff(player));
-            }
+            new ToolLowerTask(mcMMOPlayer, tool).runTaskLaterAsynchronously(mcMMO.p, 4 * 20);
         }
     }
 
@@ -404,6 +345,8 @@ public class SkillUtils {
             if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
                 handleAbilitySpeedIncrease(player);
             }
+
+            new AbilityDisableTask(mcMMOPlayer, ability).runTaskLater(mcMMO.p, ticks * 20);
         }
     }
 
