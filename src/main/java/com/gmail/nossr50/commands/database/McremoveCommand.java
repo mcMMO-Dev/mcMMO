@@ -21,7 +21,7 @@ import com.google.common.collect.ImmutableList;
 public class McremoveCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Permissions.mcremove(sender)) {
+        if (!Permissions.mcremove(sender) && sender instanceof Player) {
             sender.sendMessage(command.getPermissionMessage());
             return true;
         }
