@@ -17,7 +17,10 @@ public class ScoreboardChangeTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        player.setScoreboard(oldScoreboard);
+        if (!player.isOnline()) {
+            player.setScoreboard(oldScoreboard);
+        }
+
         ScoreboardManager.clearPendingTask(player.getName());
     }
 }
