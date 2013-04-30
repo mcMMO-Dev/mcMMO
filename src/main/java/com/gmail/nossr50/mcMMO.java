@@ -23,8 +23,6 @@ import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
@@ -348,36 +346,29 @@ public class mcMMO extends JavaPlugin {
     private void scheduleTasks() {
         // Periodic save timer (Saves every 10 minutes by default)
         long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
-
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
 
         // Bleed timer (Runs every two seconds)
         new BleedTimerTask().runTaskTimer(this, 40, 40);
 
         // Old & Powerless User remover
-        int purgeInterval = Config.getInstance().getPurgeInterval();
-        UserPurgeTask userPurgeTask = new UserPurgeTask();
+        long purgeIntervalTicks = Config.getInstance().getPurgeInterval() * 60 * 60 * 20;
 
-        if (purgeInterval == 0) {
-            userPurgeTask.runTaskLater(this, 40);
+        if (purgeIntervalTicks == 0) {
+            new UserPurgeTask().runTaskLater(this, 40); // Start 2 seconds after startup.
         }
-        else if (purgeInterval > 0) {
-            long purgeIntervalTicks = purgeInterval * 60 * 60 * 20;
-
-            userPurgeTask.runTaskTimer(this, purgeIntervalTicks, purgeIntervalTicks);
+        else if (purgeIntervalTicks > 0) {
+            new UserPurgeTask().runTaskTimer(this, purgeIntervalTicks, purgeIntervalTicks);
         }
 
         // Automatically remove old members from parties
-        long kickInterval = Config.getInstance().getAutoPartyKickInterval();
-        PartyAutoKickTask partyAutoKickTask = new PartyAutoKickTask();
+        long kickIntervalTicks = Config.getInstance().getAutoPartyKickInterval() * 60 * 60 * 20;
 
-        if (kickInterval == 0) {
-            partyAutoKickTask.runTaskLater(this, 40); // Start 2 seconds after startup.
+        if (kickIntervalTicks == 0) {
+            new PartyAutoKickTask().runTaskLater(this, 40); // Start 2 seconds after startup.
         }
-        else if (kickInterval > 0) {
-            long kickIntervalTicks = kickInterval * 60 * 60 * 20;
-
-            partyAutoKickTask.runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
+        else if (kickIntervalTicks > 0) {
+            new PartyAutoKickTask().runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
         }
     }
 }
