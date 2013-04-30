@@ -45,7 +45,7 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (mcMMO.spoutEnabled) {
+        if (mcMMO.isSpoutEnabled()) {
             SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
             if (spoutPlayer.isSpoutCraftEnabled()) {

@@ -44,7 +44,7 @@ public final class Misc {
     }
 
     public static boolean isNPCEntity(Entity entity) {
-        return (entity == null || entity.hasMetadata("NPC") || (mcMMO.combatTagEnabled && entity instanceof HumanEntity && ((HumanEntity) entity).getName().contains("PvpLogger")));
+        return (entity == null || entity.hasMetadata("NPC") || (mcMMO.isCombatTagEnabled() && entity instanceof HumanEntity && ((HumanEntity) entity).getName().contains("PvpLogger")));
     }
 
     /**
@@ -185,7 +185,7 @@ public final class Misc {
             if (player.isOnline()) {
                 UserManager.addUser(player);
 
-                if (mcMMO.spoutEnabled) {
+                if (mcMMO.isSpoutEnabled()) {
                     SpoutUtils.reloadSpoutPlayer(player);
                 }
             }

@@ -42,7 +42,7 @@ public class PlayerProfile {
     public PlayerProfile(String playerName, boolean addNew) {
         this.playerName = playerName;
 
-        hudType = mcMMO.spoutEnabled ? SpoutConfig.getInstance().getDefaultHudType() : HudType.DISABLED;
+        hudType = mcMMO.isSpoutEnabled() ? SpoutConfig.getInstance().getDefaultHudType() : HudType.DISABLED;
         mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
 
         for (AbilityType abilityType : AbilityType.values()) {

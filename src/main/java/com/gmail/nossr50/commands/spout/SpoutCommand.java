@@ -22,7 +22,7 @@ public abstract class SpoutCommand implements TabExecutor {
             return true;
         }
 
-        if (!mcMMO.spoutEnabled || !SpoutConfig.getInstance().getXPBarEnabled()) {
+        if (!mcMMO.isSpoutEnabled() || !SpoutConfig.getInstance().getXPBarEnabled()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
             return true;
         }

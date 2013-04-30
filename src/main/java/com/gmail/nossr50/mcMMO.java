@@ -63,9 +63,9 @@ public class mcMMO extends JavaPlugin {
     private final SelfListener      selfListener      = new SelfListener();
 
     /* Managers */
-    private static ChunkManager placeStore;
+    private static ChunkManager      placeStore;
     private static RepairableManager repairableManager;
-    private static DatabaseManager databaseManager;
+    private static DatabaseManager   databaseManager;
 
     /* File Paths */
     private static String mainDirectory;
@@ -81,14 +81,14 @@ public class mcMMO extends JavaPlugin {
     // Update Check
     private boolean updateAvailable;
 
-    // Plugin Checks
-    public static boolean spoutEnabled;
-    public static boolean combatTagEnabled;
+    /* Plugin Checks */
+    private static boolean spoutEnabled;
+    private static boolean combatTagEnabled;
 
     // XP Event Check
     private boolean xpEventEnabled;
 
-    // Metadata Values
+    /* Metadata Values */
     public final static String entityMetadataKey   = "mcMMO: Spawned Entity";
     public final static String blockMetadataKey    = "mcMMO: Piston Tracking";
     public final static String furnaceMetadataKey  = "mcMMO: Tracked Furnace";
@@ -129,7 +129,7 @@ public class mcMMO extends JavaPlugin {
             debug("Version " + getDescription().getVersion() + " is enabled!");
 
             scheduleTasks();
-            registerCommands();
+            CommandRegistrationManager.registerCommands();
 
             MetricsManager.setup();
 
@@ -242,6 +242,14 @@ public class mcMMO extends JavaPlugin {
         return repairableManager;
     }
 
+    public static boolean isSpoutEnabled() {
+        return spoutEnabled;
+    }
+
+    public static boolean isCombatTagEnabled() {
+        return combatTagEnabled;
+    }
+
     /**
      * Setup the various storage file paths
      */
@@ -330,48 +338,6 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(inventoryListener, this);
         pluginManager.registerEvents(selfListener, this);
         pluginManager.registerEvents(worldListener, this);
-    }
-
-    /**
-     * Register the commands.
-     */
-    private void registerCommands() {
-        CommandRegistrationManager.registerSkillCommands();
-
-        // mc* commands
-        CommandRegistrationManager.registerMcpurgeCommand();
-        CommandRegistrationManager.registerMcremoveCommand();
-        CommandRegistrationManager.registerMcabilityCommand();
-        CommandRegistrationManager.registerMcgodCommand();
-        CommandRegistrationManager.registerMcmmoCommand();
-        CommandRegistrationManager.registerMcrefreshCommand();
-        CommandRegistrationManager.registerMctopCommand();
-        CommandRegistrationManager.registerMcrankCommand();
-        CommandRegistrationManager.registerMcstatsCommand();
-        CommandRegistrationManager.registerMcscoreboardCommand();
-
-        // Party commands
-        CommandRegistrationManager.registerAdminChatCommand();
-        CommandRegistrationManager.registerPartyCommand();
-        CommandRegistrationManager.registerPartyChatCommand();
-        CommandRegistrationManager.registerPtpCommand();
-
-        // Other commands
-        CommandRegistrationManager.registerAddxpCommand();
-        CommandRegistrationManager.registerAddlevelsCommand();
-        CommandRegistrationManager.registerMmoeditCommand();
-        CommandRegistrationManager.registerInspectCommand();
-        CommandRegistrationManager.registerXprateCommand();
-        CommandRegistrationManager.registerMmoupdateCommand();
-        CommandRegistrationManager.registerSkillresetCommand();
-        CommandRegistrationManager.registerHardcoreCommand();
-        CommandRegistrationManager.registerVampirismCommand();
-        CommandRegistrationManager.registerMcnotifyCommand();
-        CommandRegistrationManager.registerMobhealthCommand();
-
-        // Spout commands
-        CommandRegistrationManager.registerXplockCommand();
-        CommandRegistrationManager.registerMchudCommand();
     }
 
     private void registerCustomRecipes() {

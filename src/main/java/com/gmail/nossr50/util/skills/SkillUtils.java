@@ -183,7 +183,7 @@ public class SkillUtils {
             String capitalized = StringUtils.getCapitalized(skillType.toString());
 
             /* Spout Stuff */
-            if (mcMMO.spoutEnabled) {
+            if (mcMMO.isSpoutEnabled()) {
                 SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
                 if (spoutPlayer != null && spoutPlayer.isSpoutCraftEnabled()) {
@@ -203,7 +203,7 @@ public class SkillUtils {
             }
         }
 
-        if (mcMMO.spoutEnabled) {
+        if (mcMMO.isSpoutEnabled()) {
             SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
 
             if (spoutPlayer != null && spoutPlayer.isSpoutCraftEnabled()) {
