@@ -140,10 +140,11 @@ public class ScoreboardManager {
 
     private static void updatePlayerSkillScores(PlayerProfile profile, SkillType skill, Objective objective) {
         Server server = mcMMO.p.getServer();
+        int currentXP = profile.getSkillXpLevel(skill);
 
         objective.getScore(server.getOfflinePlayer("Level")).setScore(profile.getSkillLevel(skill));
-        objective.getScore(server.getOfflinePlayer("Current XP")).setScore(profile.getSkillXpLevel(skill));
-        objective.getScore(server.getOfflinePlayer("Remaining XP")).setScore(profile.getXpToLevel(skill));
+        objective.getScore(server.getOfflinePlayer("Current XP")).setScore(currentXP);
+        objective.getScore(server.getOfflinePlayer("Remaining XP")).setScore(profile.getXpToLevel(skill) - currentXP);
 
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
