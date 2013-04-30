@@ -66,7 +66,7 @@ public class Config extends AutoUpdateConfigLoader {
     public int getMcrankScoreboardTime() { return config.getInt("Scoreboards.Mcrank.Display_Time", 10); }
 
     public boolean getMcstatsScoreboardsEnabled() { return config.getBoolean("Scoreboards.Mcstats.Use", true); }
-    public int getMcstatsScoreboardTime() { return config.getInt("Scoreboards.Mctop.Display_Time", 10); }
+    public int getMcstatsScoreboardTime() { return config.getInt("Scoreboards.Mcstats.Display_Time", 10); }
 
     public boolean getMctopScoreboardEnabled() { return config.getBoolean("Scoreboards.Mctop.Use", true); }
     public int getMctopScoreboardTime() { return config.getInt("Scoreboards.Mctop.Display_Time", 10); }
