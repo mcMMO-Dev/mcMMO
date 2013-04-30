@@ -107,6 +107,8 @@ commands:
     mobhealth:
         aliases: [mcmobhealth]
         description: Change the style of the mob healthbar
+    mcscoreboard:
+        description: Change the current mcMMO scoreboard being displayed
 permissions:
     mcmmo.*:
         default: false
@@ -665,6 +667,7 @@ permissions:
             mcmmo.commands.mcmmo.all: true
             mcmmo.commands.mcnotify: true
             mcmmo.commands.mcrank: true
+            mcmmo.commands.mcscoreboard: true
             mcmmo.commands.mcstats: true
             mcmmo.commands.mctop.all: true
             mcmmo.commands.mining: true
@@ -821,6 +824,8 @@ permissions:
     mcmmo.commands.mcremove:
         default: false
         description: Allows access to the mcremove command
+    mcmmo.commands.mcscoreboard:
+        description: Allows access to the mcscoreboard command
     mcmmo.commands.mcstats:
         description: Allows access to the mcstats command
     mcmmo.commands.mctop.*:

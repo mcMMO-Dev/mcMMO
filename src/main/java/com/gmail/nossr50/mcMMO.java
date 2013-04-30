@@ -348,6 +348,7 @@ public class mcMMO extends JavaPlugin {
         CommandRegistrationManager.registerMctopCommand();
         CommandRegistrationManager.registerMcrankCommand();
         CommandRegistrationManager.registerMcstatsCommand();
+        CommandRegistrationManager.registerMcscoreboardCommand();
 
         // Party commands
         CommandRegistrationManager.registerAdminChatCommand();

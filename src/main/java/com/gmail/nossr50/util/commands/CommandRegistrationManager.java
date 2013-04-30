@@ -11,6 +11,7 @@ import com.gmail.nossr50.commands.McgodCommand;
 import com.gmail.nossr50.commands.McmmoCommand;
 import com.gmail.nossr50.commands.McnotifyCommand;
 import com.gmail.nossr50.commands.McrefreshCommand;
+import com.gmail.nossr50.commands.McscoreboardCommand;
 import com.gmail.nossr50.commands.MobhealthCommand;
 import com.gmail.nossr50.commands.XprateCommand;
 import com.gmail.nossr50.commands.chat.AdminChatCommand;
@@ -375,5 +376,15 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mobhealth", "<DISABLED | HEARTS | BAR>"));
         command.setExecutor(new MobhealthCommand());
+    }
+
+    public static void registerMcscoreboardCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mcscoreboard");
+        command.setDescription("Change the current mcMMO scoreboard being displayed"); //TODO: Localize
+        command.setPermission("mcmmo.commands.mcscoreboard");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcscoreboard", "<CLEAR | RANK | STATS | TOP>"));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.3", "mcscoreboard", "top", "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
+        command.setExecutor(new McscoreboardCommand());
     }
 }
