@@ -161,7 +161,6 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
-            reloadDisableHelper();      // Prevent Berserk from getting "stuck"
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
             PartyManager.saveParties(); // Save our parties
             placeStore.saveAll();       // Save our metadata
@@ -379,19 +378,6 @@ public class mcMMO extends JavaPlugin {
             long kickIntervalTicks = kickInterval * 60 * 60 * 20;
 
             partyAutoKickTask.runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
-        }
-    }
-
-    /**
-     * Because /reload is the biggest piece of garbage in existence,
-     * we have to do some special checks to keep it from breaking everything.
-     */
-    private void reloadDisableHelper() {
-        for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers().values()) {
-            if (mcMMOPlayer.getAbilityMode(AbilityType.BERSERK)) {
-                mcMMOPlayer.setAbilityMode(AbilityType.BERSERK, false);
-                mcMMOPlayer.getPlayer().setCanPickupItems(true);
-            }
         }
     }
 }
