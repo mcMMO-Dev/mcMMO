@@ -7,6 +7,7 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
@@ -63,7 +64,9 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        fireworkParticleShower(player, Color.GREEN);
+        if (hasHeadRoom(player)) {
+            fireworkParticleShower(player, Color.GREEN);
+        }
     }
 
     public static void playAbilityDisabledEffect(Player player) {
@@ -71,7 +74,9 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        fireworkParticleShower(player, Color.RED);
+        if (hasHeadRoom(player)) {
+            fireworkParticleShower(player, Color.RED);
+        }
     }
 
     public static void runescapeModeCelebration(Player player, SkillType skill) {
@@ -90,5 +95,19 @@ public final class ParticleEffectUtils {
         fireworkMeta.addEffect(effect);
         fireworkMeta.setPower(0);
         firework.setFireworkMeta(fireworkMeta);
+    }
+
+    private static boolean hasHeadRoom(Player player) {
+        boolean hasHeadRoom = true;
+        Block headBlock = player.getEyeLocation().getBlock();
+
+        for (int i = 0; i < 3; i++) {
+            if (!headBlock.getRelative(BlockFace.UP, i).isEmpty()) {
+                hasHeadRoom = false;
+                break;
+            }
+        }
+
+        return hasHeadRoom;
     }
 }
