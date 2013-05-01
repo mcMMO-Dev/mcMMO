@@ -22,6 +22,7 @@ public class FishingCommand extends SkillCommand {
     private boolean canShake;
     private boolean canFishermansDiet;
     private boolean canMasterAngler;
+    private boolean canIceFish;
 
     public FishingCommand() {
         super(SkillType.FISHING);
@@ -71,11 +72,12 @@ public class FishingCommand extends SkillCommand {
         canShake = Permissions.shake(player);
         canFishermansDiet = Permissions.fishermansDiet(player);
         canMasterAngler = Permissions.masterAngler(player);
+        canIceFish = Permissions.iceFishing(player);
     }
 
     @Override
     protected boolean effectsHeaderPermissions() {
-        return canTreasureHunt || canMagicHunt || canShake || canMasterAngler || canFishermansDiet;
+        return canTreasureHunt || canMagicHunt || canShake || canMasterAngler || canFishermansDiet || canIceFish;
     }
 
     @Override
@@ -101,11 +103,15 @@ public class FishingCommand extends SkillCommand {
         if (canMasterAngler) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.8"), LocaleLoader.getString("Fishing.Effect.9")));
         }
+
+        if (canIceFish) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.10"), LocaleLoader.getString("Fishing.Effect.11")));
+        }
     }
 
     @Override
     protected boolean statsHeaderPermissions() {
-        return canTreasureHunt || canMagicHunt || canShake || canMasterAngler || canFishermansDiet;
+        return canTreasureHunt || canMagicHunt || canShake || canMasterAngler || canFishermansDiet || canIceFish;
     }
 
     @Override
@@ -135,6 +141,17 @@ public class FishingCommand extends SkillCommand {
 
         if (canFishermansDiet) {
             player.sendMessage(LocaleLoader.getString("Fishing.Ability.FD", fishermansDietRank));
+        }
+
+        if (canIceFish) {
+            int unlockLevel = AdvancedConfig.getInstance().getIceFishingUnlockLevel();
+
+            if (skillValue < unlockLevel) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.1", unlockLevel)));
+            }
+            else {
+                player.sendMessage(LocaleLoader.getString("Fishing.Ability.IceFishing"));
+            }
         }
     }
 }

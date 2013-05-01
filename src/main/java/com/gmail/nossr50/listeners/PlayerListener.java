@@ -7,6 +7,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Fish;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -191,11 +192,22 @@ public class PlayerListener implements Listener {
 
             case CAUGHT_ENTITY:
                 Entity entity = event.getCaught();
+
                 if (fishingManager.canShake(entity)) {
                     fishingManager.shakeCheck((LivingEntity) entity);
                 }
-
                 break;
+
+            case IN_GROUND:
+                Fish hook = event.getHook();
+                Block block = hook.getLocation().getBlock();
+
+                if (fishingManager.canIceFish(block)) {
+                    event.setCancelled(true);
+                    fishingManager.iceFishing(hook, block);
+                }
+                break;
+
             default:
                 break;
         }

@@ -139,6 +139,9 @@ Skills:
 
         # This determines when Fisherman's Diet adds extra hunger recovery to food
         Fisherman_Diet_RankChange: 200
+
+        # Ice_Fishing_UnlockLevel: Fishing level when the Ice Fishing ability unlocks
+        Ice_Fishing_UnlockLevel: 50
     #
     #  Settings for Herbalism
     ###

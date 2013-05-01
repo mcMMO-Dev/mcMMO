@@ -255,6 +255,7 @@ permissions:
         description: Allows access to all Fishing abilities
         children:
             mcmmo.ability.fishing.fishermansdiet: true
+            mcmmo.ability.fishing.icefishing: true
             mcmmo.ability.fishing.magic: true
             mcmmo.ability.fishing.masterangler: true
             mcmmo.ability.fishing.shakemob: true
@@ -262,6 +263,8 @@ permissions:
             mcmmo.ability.fishing.vanillaxpboost: true
     mcmmo.ability.fishing.fishermansdiet:
         description: Allows access to the Fishermans's Diet ability
+    mcmmo.ability.fishing.icefishing:
+        description: Allows access to the Ice Fishing ability
     mcmmo.ability.fishing.magic:
         description: Allows enchanted drops from Fishing
     mcmmo.ability.fishing.masterangler:

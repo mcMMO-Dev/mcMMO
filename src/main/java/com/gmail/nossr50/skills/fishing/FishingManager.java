@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fish;
@@ -14,8 +17,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
@@ -23,6 +28,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
+import com.gmail.nossr50.events.fake.FakePlayerFishEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
@@ -43,6 +49,26 @@ public class FishingManager extends SkillManager {
 
     public boolean canMasterAngler() {
         return Permissions.masterAngler(getPlayer());
+    }
+
+    public boolean canIceFish(Block block) {
+        if (getSkillLevel() < AdvancedConfig.getInstance().getIceFishingUnlockLevel()) {
+            return false;
+        }
+
+        if (block.getType() != Material.ICE) {
+            return false;
+        }
+
+        // Make sure this is a body of water, not just a block of ice.
+        Biome biome = block.getBiome();
+        boolean isFrozenBiome = (biome == Biome.FROZEN_OCEAN || biome == Biome.FROZEN_RIVER);
+
+        if (!isFrozenBiome && block.getRelative(BlockFace.DOWN, 3).getType() == (Material.STATIONARY_WATER)) {
+            return false;
+        }
+
+        return Permissions.iceFishing(getPlayer());
     }
 
     /**
@@ -88,6 +114,24 @@ public class FishingManager extends SkillManager {
      */
     public int handleFishermanDiet(int rankChange, int eventFoodLevel) {
         return SkillUtils.handleFoodSkills(getPlayer(), skill, eventFoodLevel, Fishing.fishermansDietRankLevel1, Fishing.fishermansDietMaxLevel, rankChange);
+    }
+
+    public void iceFishing(Fish hook, Block block) {
+        // Make a hole
+        block.setType(Material.STATIONARY_WATER);
+
+        for (int x = -1; x <= 1; x++)  {
+            for (int z = -1; z <= 1; z++) {
+                Block relative = block.getRelative(x, 0, z);
+
+                if (relative.getType() == Material.ICE) {
+                    relative.setType(Material.STATIONARY_WATER);
+                }
+            }
+        }
+
+        // Recast in the new spot
+        mcMMO.p.getServer().getPluginManager().callEvent(new FakePlayerFishEvent(getPlayer(), null, hook, PlayerFishEvent.State.FISHING));
     }
 
     public void masterAngler(Fish hook) {

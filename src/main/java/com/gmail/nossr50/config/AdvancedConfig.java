@@ -85,6 +85,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     public int getFishermanDietRankChange() { return config.getInt("Skills.Fishing.Fisherman_Diet_RankChange", 200); }
 
+    public int getIceFishingUnlockLevel() { return config.getInt("Skills.Fishing.Ice_Fishing_UnlockLevel", 50); }
+
     /* Shake */
     public int getShakeUnlockLevel() { return config.getInt("Skills.Fishing.Shake_UnlockLevel", 150); }
     public int getShakeChanceRank1() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_1", 25); }
