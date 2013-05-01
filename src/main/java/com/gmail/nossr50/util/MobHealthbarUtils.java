@@ -140,5 +140,4 @@ public final class MobHealthbarUtils {
 
         return healthbar;
     }
-
 }

@@ -9,18 +9,12 @@ import org.bukkit.command.TabExecutor;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Permissions;
 
 import com.google.common.collect.ImmutableList;
 
 public class McpurgeCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Permissions.mcpurge(sender)) {
-            sender.sendMessage(command.getPermissionMessage());
-            return true;
-        }
-
         switch (args.length) {
             case 0:
                 mcMMO.getDatabaseManager().purgePowerlessUsers();

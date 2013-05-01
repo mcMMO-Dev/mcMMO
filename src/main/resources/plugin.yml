@@ -695,11 +695,14 @@ permissions:
             mcmmo.commands.mcability.others: true
             mcmmo.commands.mcgod: true
             mcmmo.commands.mcgod.others: true
+            mcmmo.commands.mcpurge: true
             mcmmo.commands.mcrank.others.all: true
             mcmmo.commands.mcrefresh: true
             mcmmo.commands.mcrefresh.others: true
+            mcmmo.commands.mcremove: true
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
+            mcmmo.commands.mmoupdate: true
             mcmmo.commands.ptp.world.all: true
             mcmmo.commands.skillreset.all: true
             mcmmo.commands.vampirism.all: true
@@ -796,7 +799,6 @@ permissions:
     mcmmo.commands.mcnotify:
         description: Allows access to the mcnotify command
     mcmmo.commands.mcpurge:
-        default: false
         description: Allows access to the mcpurge command
     mcmmo.commands.mcrank:
         description: Allows access to the mcrank command
@@ -822,7 +824,6 @@ permissions:
     mcmmo.commands.mcrefresh.others:
         description: Allows access to the mcrefresh command for other players
     mcmmo.commands.mcremove:
-        default: false
         description: Allows access to the mcremove command
     mcmmo.commands.mcscoreboard:
         description: Allows access to the mcscoreboard command
@@ -885,7 +886,6 @@ permissions:
     mcmmo.commands.mmoedit.others:
         description: Allows access to the mmoedit command for other players
     mcmmo.commands.mmoupdate:
-        default: false
         description: Allows access to the mmoupdate command
     mcmmo.commands.mobhealth:
          default: true

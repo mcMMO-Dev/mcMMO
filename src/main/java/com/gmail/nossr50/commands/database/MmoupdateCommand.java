@@ -11,7 +11,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.database.SQLConversionTask;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 
 import com.google.common.collect.ImmutableList;
@@ -19,11 +18,6 @@ import com.google.common.collect.ImmutableList;
 public class MmoupdateCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Permissions.mmoupdate(sender)) {
-            sender.sendMessage(command.getPermissionMessage());
-            return true;
-        }
-
         if (!Config.getInstance().getUseMySQL()) {
             sender.sendMessage("SQL Mode is not enabled."); // TODO: Localize
             return true;
