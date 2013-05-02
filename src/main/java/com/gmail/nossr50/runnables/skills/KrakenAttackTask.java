@@ -20,7 +20,11 @@ public class KrakenAttackTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!player.isDead()) {
+        if (!kraken.isValid()) {
+            this.cancel();
+        }
+
+        if (player.isValid()) {
             Location location = player.getLocation();
             World world = player.getWorld();
 
