@@ -56,14 +56,6 @@ public class FishingManager extends SkillManager {
         super(mcMMOPlayer, SkillType.FISHING);
     }
 
-    public void incrementTries() {
-        fishingTries++;
-    }
-
-    public void setTimestamp() {
-        fishingTimestamp = (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-    }
-
     public boolean canShake(Entity target) {
         return target instanceof LivingEntity && getSkillLevel() >= AdvancedConfig.getInstance().getShakeUnlockLevel() && Permissions.shake(getPlayer());
     }
