@@ -8,6 +8,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -54,7 +55,7 @@ public final class MobHealthbarUtils {
         if (oldName == null) {
             oldName = "";
         }
-        else if (oldName.equalsIgnoreCase("The Kraken")) {
+        else if (oldName.equalsIgnoreCase(AdvancedConfig.getInstance().getKrakenName())) {
             return;
         }
 

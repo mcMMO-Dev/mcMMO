@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Squid;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.util.Misc;
 
 public class KrakenAttackTask extends BukkitRunnable {
@@ -29,7 +30,7 @@ public class KrakenAttackTask extends BukkitRunnable {
             World world = player.getWorld();
 
             kraken.teleport(player);
-            player.damage(1, kraken);
+            player.damage(AdvancedConfig.getInstance().getKrakenAttackDamage(), kraken);
             world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
             world.strikeLightningEffect(location);
         }

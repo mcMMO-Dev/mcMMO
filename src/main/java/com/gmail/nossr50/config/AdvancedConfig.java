@@ -280,4 +280,14 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getSpoutNotificationTier2() { return config.getInt("Spout.Notifications.Tier2", 400); }
     public int getSpoutNotificationTier3() { return config.getInt("Spout.Notifications.Tier3", 600); }
     public int getSpoutNotificationTier4() { return config.getInt("Spout.Notifications.Tier4", 800); }
+
+    /* KRAKEN STUFF */
+    public boolean getKrakenEnabled() { return config.getBoolean("Kraken.Enabled", true); }
+    public int getKrakenTriesBeforeRelease() { return config.getInt("Kraken.Tries_Before_Release", 50); }
+    public int getKrakenHealth() { return config.getInt("Kraken.Health", 50); }
+    public String getKrakenName() { return config.getString("Kraken.Name", "The Kraken"); }
+    public String getServerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Server", "[PLAYER] has unleashed the kraken!"); }
+    public String getPlayerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Player", "THE KRAKEN HAS BEEN UNLEASHED!"); }
+    public int getKrakenAttackInterval() { return config.getInt("Kraken.Attack_Interval_Seconds", 1); }
+    public int getKrakenAttackDamage() { return config.getInt("Kraken.Attack_Damage", 1); }
 }

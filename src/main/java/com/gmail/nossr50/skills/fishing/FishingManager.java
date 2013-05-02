@@ -66,7 +66,7 @@ public class FishingManager extends SkillManager {
     }
 
     private boolean unleashTheKraken() {
-        if (fishingTries < 50 || fishingTries <= Misc.getRandom().nextInt(200)) {
+        if (fishingTries < AdvancedConfig.getInstance().getKrakenTriesBeforeRelease() || fishingTries <= Misc.getRandom().nextInt(200)) {
             return false;
         }
 
@@ -89,24 +89,28 @@ public class FishingManager extends SkillManager {
         world.strikeLightningEffect(location);
         world.strikeLightningEffect(location);
         world.strikeLightningEffect(location);
-        player.sendMessage("THE KRAKEN HAS BEEN UNLEASHED!");
+        player.sendMessage(AdvancedConfig.getInstance().getPlayerUnleashMessage());
         world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
-        mcMMO.p.getServer().broadcastMessage(player.getDisplayName() + ChatColor.RED + " has unleashed the kraken!");
+        mcMMO.p.getServer().broadcastMessage(AdvancedConfig.getInstance().getServerUnleashMessage().replace("[PLAYER]", player.getDisplayName() + ChatColor.RED));
 
         Squid kraken = (Squid) world.spawnEntity(player.getEyeLocation(), EntityType.SQUID);
-        kraken.setCustomName("The Kraken");
-        kraken.setMaxHealth(kraken.getMaxHealth() * 5);
+        kraken.setCustomName(AdvancedConfig.getInstance().getKrakenName());
+        kraken.setMaxHealth(AdvancedConfig.getInstance().getKrakenHealth());
         kraken.setHealth(kraken.getMaxHealth());
         player.setItemInHand(null);
 
+        int attackInterval = AdvancedConfig.getInstance().getKrakenAttackInterval() * 20;
+        new KrakenAttackTask(kraken, player).runTaskTimer(mcMMO.p, attackInterval, attackInterval);
 
-
-        new KrakenAttackTask(kraken, player).runTaskTimer(mcMMO.p, 20L, 20L);
         fishingTries = 1;
         return true;
     }
 
     public boolean exploitPrevention() {
+        if (!AdvancedConfig.getInstance().getKrakenEnabled()) {
+            return false;
+        }
+
         long currentTime = System.currentTimeMillis();
         boolean hasFished = currentTime < fishingTimestamp + FISHING_COOLDOWN_SECONDS;
 
