@@ -218,11 +218,11 @@ public class RepairManager extends SkillManager {
         mcMMOPlayer.actualizeLastAnvilUse(anvilId);
 
         if (anvilId == Repair.repairAnvilId) {
-            player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", "Repair"));
+            player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Repair.Pretty.Name")));
         }
 
         if (anvilId == Repair.salvageAnvilId) {
-            player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", "Salvage"));
+            player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Salvage.Pretty.Name")));
         }
         return false;
     }

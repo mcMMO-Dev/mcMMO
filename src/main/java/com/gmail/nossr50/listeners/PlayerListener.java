@@ -376,7 +376,7 @@ public class PlayerListener implements Listener {
                     // Cancel repairing an enchanted item
                     if (repairManager.checkConfirmation(blockID, false) && Config.getInstance().getRepairConfirmRequired()) {
                         UserManager.getPlayer(player).setLastAnvilUse(Repair.repairAnvilId, 0);
-                        player.sendMessage(LocaleLoader.getString("Skills.Cancelled", "Repair"));
+                        player.sendMessage(LocaleLoader.getString("Skills.Cancelled", LocaleLoader.getString("Repair.Pretty.Name")));
                     }
                 }
                 /* SALVAGE CHECKS */
@@ -386,7 +386,7 @@ public class PlayerListener implements Listener {
                     // Cancel salvaging an enchanted item
                     if (repairManager.checkConfirmation(blockID, false) && Config.getInstance().getRepairConfirmRequired()) {
                         UserManager.getPlayer(player).setLastAnvilUse(Repair.salvageAnvilId, 0);
-                        player.sendMessage(LocaleLoader.getString("Skills.Cancelled", "Salvage"));
+                        player.sendMessage(LocaleLoader.getString("Skills.Cancelled", LocaleLoader.getString("Salvage.Pretty.Name")));
                     }
                 }
 
