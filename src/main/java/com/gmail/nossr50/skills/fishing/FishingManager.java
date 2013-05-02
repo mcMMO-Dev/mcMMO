@@ -74,6 +74,14 @@ public class FishingManager extends SkillManager {
         World world = player.getWorld();
 
         player.setPlayerWeather(WeatherType.DOWNFALL);
+
+        Entity vehicle = player.getVehicle();
+
+        if (vehicle != null && vehicle.getType() == EntityType.BOAT) {
+            vehicle.eject();
+            vehicle.remove();
+        }
+
         player.teleport(player.getTargetBlock(null, 100).getLocation(), TeleportCause.PLUGIN);
 
         Location location = player.getLocation();
@@ -90,6 +98,8 @@ public class FishingManager extends SkillManager {
         kraken.setMaxHealth(kraken.getMaxHealth() * 5);
         kraken.setHealth(kraken.getMaxHealth());
         player.setItemInHand(null);
+
+
 
         new KrakenAttackTask(kraken, player).runTaskTimer(mcMMO.p, 20L, 20L);
         fishingTries = 1;
