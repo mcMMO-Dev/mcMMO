@@ -284,6 +284,24 @@ public final class CombatUtils {
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
                 }
             }
+
+            if (damager.getType() == EntityType.ARROW) {
+                LivingEntity shooter = ((Arrow) damager).getShooter();
+
+                if (shooter instanceof Player || !SkillType.UNARMED.getPVEEnabled()) {
+                    return;
+                }
+
+                UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
+
+                if (unarmedManager.canDeflect()) {
+                    event.setCancelled(unarmedManager.deflectCheck());
+
+                    if (event.isCancelled()) {
+                        return;
+                    }
+                }
+            }
         }
         else if (attacker instanceof Player) {
             Player player = (Player) attacker;

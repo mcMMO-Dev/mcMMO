@@ -31,6 +31,7 @@ Version 1.4.06-dev
  = Fixed Fishing treasures always having the same enchants
  = Fixed Smelting returning ink sacs instead of Lapis when double-dropping
  = Fixed bug where players could remain in party chat after leaving or being kicked from a party.
+ = Fixed bug where non-player arrows couldn't be deflected.
  ! Changed Berserk to add items to inventory rather than denying pickup
  ! Changed Call of the Wild, newly summoned pet's will have a custom name. (added permission node to disable this)
  ! Changed Chimaera Wing's recipe result to use the ingredient Material
