@@ -1,5 +1,8 @@
 package com.gmail.nossr50.commands.skills;
 
+import org.bukkit.block.Biome;
+import org.bukkit.entity.EntityType;
+
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -61,7 +64,18 @@ public class FishingCommand extends SkillCommand {
 
         // MASTER ANGLER
         if (canMasterAngler) {
-            biteChance = calculateAbilityDisplayValues(((Math.max((skillValue / 200.0), 1.0)) / (isStorming ? 300 : 500)) * 100.0)[0];
+            double rawBiteChance = ((Math.max((skillValue / 200.0), 1.0)) / (isStorming ? 300 : 500));
+            Biome biome = player.getLocation().getBlock().getBiome();
+
+            if (biome == Biome.RIVER || biome == Biome.OCEAN) {
+                rawBiteChance = rawBiteChance * 2.0;
+            }
+
+            if (player.isInsideVehicle() && player.getVehicle().getType() == EntityType.BOAT) {
+                rawBiteChance = rawBiteChance * 2.0;
+            }
+
+            biteChance = calculateAbilityDisplayValues(rawBiteChance * 100.0)[0];
         }
     }
 

@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.WeatherType;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -81,7 +82,8 @@ public class FishingManager extends SkillManager {
         world.strikeLightningEffect(location);
         world.strikeLightningEffect(location);
         player.sendMessage("THE KRAKEN HAS BEEN UNLEASHED!");
-        mcMMO.p.getServer().broadcastMessage(player.getDisplayName() + ChatColor.RED + "has unleashed the kraken!");
+        world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+        mcMMO.p.getServer().broadcastMessage(player.getDisplayName() + ChatColor.RED + " has unleashed the kraken!");
 
         Squid kraken = (Squid) world.spawnEntity(player.getEyeLocation(), EntityType.SQUID);
         kraken.setCustomName("The Kraken");
@@ -187,7 +189,19 @@ public class FishingManager extends SkillManager {
     }
 
     public void masterAngler(Fish hook) {
-        hook.setBiteChance(Math.min(hook.getBiteChance() * Math.max((getSkillLevel() / 200.0), 1.0), 1.0));
+        Player player = getPlayer();
+        Biome biome = player.getLocation().getBlock().getBiome();
+        double biteChance = Math.min(hook.getBiteChance() * Math.max((getSkillLevel() / 200.0), 1.0), 1.0);
+
+        if (biome == Biome.RIVER || biome == Biome.OCEAN) {
+            biteChance = biteChance * 2.0;
+        }
+
+        if (player.isInsideVehicle() && player.getVehicle().getType() == EntityType.BOAT) {
+            biteChance = biteChance * 2.0;
+        }
+
+        hook.setBiteChance(biteChance);
     }
 
     /**

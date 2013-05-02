@@ -1,8 +1,13 @@
 package com.gmail.nossr50.runnables.skills;
 
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Squid;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import com.gmail.nossr50.util.Misc;
 
 public class KrakenAttackTask extends BukkitRunnable {
     private Squid kraken;
@@ -16,9 +21,13 @@ public class KrakenAttackTask extends BukkitRunnable {
     @Override
     public void run() {
         if (!player.isDead()) {
+            Location location = player.getLocation();
+            World world = player.getWorld();
+
             kraken.teleport(player);
             player.damage(1, kraken);
-            player.getWorld().strikeLightningEffect(player.getLocation());
+            world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            world.strikeLightningEffect(location);
         }
         else {
             kraken.remove();

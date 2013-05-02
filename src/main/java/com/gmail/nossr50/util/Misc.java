@@ -32,6 +32,7 @@ public final class Misc {
     public static final float POP_VOLUME       = 0.2F;
     public static final float BAT_VOLUME       = 1.0F;
     public static final float BAT_PITCH        = 0.6F;
+    public static final float GHAST_VOLUME     = 1.0F;
 
     private Misc() {};
 
@@ -41,6 +42,10 @@ public final class Misc {
 
     public static float getPopPitch() {
         return ((getRandom().nextFloat() - getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
+    }
+
+    public static float getGhastPitch() {
+        return (getRandom().nextFloat() - getRandom().nextFloat()) * 0.2F + 1.0F;
     }
 
     public static boolean isNPCEntity(Entity entity) {
