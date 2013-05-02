@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.WeatherType;
+import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fish;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -17,7 +22,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
+import org.bukkit.entity.Squid;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
@@ -30,6 +37,7 @@ import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.events.fake.FakePlayerFishEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.runnables.skills.KrakenAttackTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
 import com.gmail.nossr50.util.ItemUtils;
@@ -39,8 +47,21 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class FishingManager extends SkillManager {
+    private final long FISHING_COOLDOWN_SECONDS = 5000L;
+
+    private int fishingTries = 1;
+    private long fishingTimestamp = 0L;
+
     public FishingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.FISHING);
+    }
+
+    public void incrementTries() {
+        fishingTries++;
+    }
+
+    public void setTimestamp() {
+        fishingTimestamp = (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
     public boolean canShake(Entity target) {
@@ -49,6 +70,45 @@ public class FishingManager extends SkillManager {
 
     public boolean canMasterAngler() {
         return Permissions.masterAngler(getPlayer());
+    }
+
+    private boolean unleashTheKraken() {
+        if (fishingTries < 50 || fishingTries <= Misc.getRandom().nextInt(200)) {
+            return false;
+        }
+
+        Player player = getPlayer();
+        World world = player.getWorld();
+
+        player.setPlayerWeather(WeatherType.DOWNFALL);
+        player.teleport(player.getTargetBlock(null, 100).getLocation(), TeleportCause.PLUGIN);
+
+        Location location = player.getLocation();
+
+        world.strikeLightningEffect(location);
+        world.strikeLightningEffect(location);
+        world.strikeLightningEffect(location);
+        player.sendMessage("THE KRAKEN HAS BEEN UNLEASHED!");
+        mcMMO.p.getServer().broadcastMessage(player.getDisplayName() + ChatColor.RED + "has unleashed the kraken!");
+
+        Squid kraken = (Squid) world.spawnEntity(player.getEyeLocation(), EntityType.SQUID);
+        kraken.setCustomName("The Kraken");
+        kraken.setMaxHealth(kraken.getMaxHealth() * 5);
+        kraken.setHealth(kraken.getMaxHealth());
+        player.setItemInHand(null);
+
+        new KrakenAttackTask(kraken, player).runTaskTimer(mcMMO.p, 20L, 20L);
+        fishingTries = 1;
+        return true;
+    }
+
+    public boolean exploitPrevention() {
+        long currentTime = System.currentTimeMillis();
+        boolean hasFished = currentTime < fishingTimestamp + FISHING_COOLDOWN_SECONDS;
+
+        fishingTries = hasFished ? fishingTries + 1 : fishingTries - 1;
+        fishingTimestamp = currentTime;
+        return unleashTheKraken();
     }
 
     public boolean canIceFish(Block block) {

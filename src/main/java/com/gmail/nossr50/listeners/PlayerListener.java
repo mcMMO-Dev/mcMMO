@@ -177,6 +177,12 @@ public class PlayerListener implements Listener {
 
         switch (event.getState()) {
             case FISHING:
+                event.setCancelled(fishingManager.exploitPrevention());
+
+                if (event.isCancelled()) {
+                    return;
+                }
+
                 if (fishingManager.canMasterAngler()) {
                     fishingManager.masterAngler(event.getHook());
                 }

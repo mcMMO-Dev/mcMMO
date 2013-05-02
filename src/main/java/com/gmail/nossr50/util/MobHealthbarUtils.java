@@ -50,6 +50,14 @@ public final class MobHealthbarUtils {
         }
 
         String oldName = target.getCustomName();
+
+        if (oldName == null) {
+            oldName = "";
+        }
+        else if (oldName.equalsIgnoreCase("The Kraken")) {
+            return;
+        }
+
         boolean oldNameVisible = target.isCustomNameVisible();
         String newName = createHealthDisplay(profile, target, damage);
 
@@ -59,10 +67,6 @@ public final class MobHealthbarUtils {
         int displayTime = Config.getInstance().getMobHealthbarTime();
 
         if (displayTime != -1) {
-            if (oldName == null) {
-                oldName = "";
-            }
-
             boolean updateName = !ChatColor.stripColor(oldName).equalsIgnoreCase(ChatColor.stripColor(newName));
 
             if (updateName) {
