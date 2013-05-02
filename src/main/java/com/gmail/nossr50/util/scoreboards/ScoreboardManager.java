@@ -278,6 +278,10 @@ public class ScoreboardManager {
                 String playerName = stat.get(1);
                 playerName = (playerName.equals(player.getName()) ? ChatColor.GOLD : "") + playerName;
 
+                if (playerName.length() > 16) {
+                    playerName = playerName.substring(0, 16);
+                }
+
                 objective.getScore(server.getOfflinePlayer(playerName)).setScore(Integer.valueOf(stat.get(0)));
             }
         }
@@ -285,6 +289,10 @@ public class ScoreboardManager {
             for (PlayerStat stat : FlatfileDatabaseManager.retrieveInfo(skillName, pageNumber, 15)) {
                 String playerName = stat.name;
                 playerName = (playerName.equals(player.getName()) ? ChatColor.GOLD : "") + playerName;
+
+                if (playerName.length() > 16) {
+                    playerName = playerName.substring(0, 16);
+                }
 
                 objective.getScore(server.getOfflinePlayer(playerName)).setScore(stat.statVal);
             }
