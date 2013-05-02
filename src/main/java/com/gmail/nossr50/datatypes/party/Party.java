@@ -8,6 +8,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.ShareHandler.ShareMode;
 
 public class Party {
@@ -62,25 +63,24 @@ public class Party {
     public List<String> getItemShareCategories() {
         List<String> shareCategories = new ArrayList<String>();
 
-        // TODO Locale the category names!
         if (shareLootDrops) {
-            shareCategories.add("Loot");
+            shareCategories.add(LocaleLoader.getString("Party.ItemShare.Category.Loot"));
         }
 
         if (shareMiningDrops) {
-            shareCategories.add("Mining");
+            shareCategories.add(LocaleLoader.getString("Party.ItemShare.Category.Mining"));
         }
 
         if (shareHerbalismDrops) {
-            shareCategories.add("Herbalism");
+            shareCategories.add(LocaleLoader.getString("Party.ItemShare.Category.Herbalism"));
         }
 
         if (shareWoodcuttingDrops) {
-            shareCategories.add("Woodcutting");
+            shareCategories.add(LocaleLoader.getString("Party.ItemShare.Category.Woodcutting"));
         }
 
         if (shareMiscDrops) {
-            shareCategories.add("Misc");
+            shareCategories.add(LocaleLoader.getString("Party.ItemShare.Category.Misc"));
         }
 
         return shareCategories;

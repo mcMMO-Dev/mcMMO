@@ -14,9 +14,9 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.FlatfileDatabaseManager;
 import com.gmail.nossr50.database.SQLDatabaseManager;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;

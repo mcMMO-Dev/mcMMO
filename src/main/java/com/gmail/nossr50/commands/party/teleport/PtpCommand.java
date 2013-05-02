@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -76,7 +75,7 @@ public class PtpCommand implements TabExecutor {
                 long lastTeleport = mcMMOPlayer.getLastTeleport();
 
                 if (!SkillUtils.cooldownOver(lastTeleport * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player)) {
-                    player.sendMessage(ChatColor.RED + "You need to wait before you can use this again! " + ChatColor.YELLOW + "(" + SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player) + ")"); //TODO Locale!
+                    player.sendMessage(LocaleLoader.getString("Item.Generic.Wait", SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player)));
                     return true;
                 }
 
@@ -166,7 +165,7 @@ public class PtpCommand implements TabExecutor {
         mcMMOPlayer.actualizeTeleportCommenceLocation(teleportingPlayer);
 
         if (warmup > 0) {
-            teleportingPlayer.sendMessage(ChatColor.GRAY + "Commencing teleport in " + ChatColor.GOLD + "(" + warmup + ")" + ChatColor.GRAY + " seconds, please stand still..."); //TODO Locale!
+            teleportingPlayer.sendMessage(LocaleLoader.getString("Teleport.Commencing", warmup));
             new TeleportationWarmup(mcMMOPlayer, mcMMOTarget).runTaskLater(mcMMO.p, 20 * warmup);
         }
         else {

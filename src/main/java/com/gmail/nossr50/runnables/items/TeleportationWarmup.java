@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables.items;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -44,7 +43,7 @@ public class TeleportationWarmup extends BukkitRunnable {
         }
 
         if (newLocation.distanceSquared(previousLocation) > 1.0) {
-            teleportingPlayer.sendMessage(ChatColor.DARK_RED + "Teleportation canceled!"); //TODO Locale!
+            teleportingPlayer.sendMessage(LocaleLoader.getString("Teleport.Cancelled"));
             return;
         }
 

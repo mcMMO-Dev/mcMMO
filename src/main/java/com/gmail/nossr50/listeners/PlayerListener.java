@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -377,7 +376,7 @@ public class PlayerListener implements Listener {
                     // Cancel repairing an enchanted item
                     if (repairManager.checkConfirmation(blockID, false) && Config.getInstance().getRepairConfirmRequired()) {
                         UserManager.getPlayer(player).setLastAnvilUse(Repair.repairAnvilId, 0);
-                        player.sendMessage(ChatColor.RED + "Repair cancelled!"); //TODO Locale!
+                        player.sendMessage(LocaleLoader.getString("Skills.Cancelled", "Repair"));
                     }
                 }
                 /* SALVAGE CHECKS */
@@ -387,7 +386,7 @@ public class PlayerListener implements Listener {
                     // Cancel salvaging an enchanted item
                     if (repairManager.checkConfirmation(blockID, false) && Config.getInstance().getRepairConfirmRequired()) {
                         UserManager.getPlayer(player).setLastAnvilUse(Repair.salvageAnvilId, 0);
-                        player.sendMessage(ChatColor.RED + "Salvage cancelled!"); //TODO Locale!
+                        player.sendMessage(LocaleLoader.getString("Skills.Cancelled", "Salvage"));
                     }
                 }
 

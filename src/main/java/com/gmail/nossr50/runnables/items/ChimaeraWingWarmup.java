@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables.items;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -36,12 +35,12 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
         mcMMOPlayer.setTeleportCommenceLocation(null);
 
         if (newLocation.distanceSquared(previousLocation) > 1.0 || !player.getInventory().containsAtLeast(ChimaeraWing.getChimaeraWing(0), 1)) {
-            player.sendMessage(ChatColor.DARK_RED + "Teleportation canceled!"); //TODO Locale!
+            player.sendMessage(LocaleLoader.getString("Teleport.Cancelled"));
             return;
         }
 
         if (!ItemUtils.isChimaeraWing(inHand) || inHand.getAmount() < Config.getInstance().getChimaeraUseCost()) {
-            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", "Chimaera Wings")); //TODO Locale!
+            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", LocaleLoader.getString("Item.ChimaeraWing.Name")));
             return;
         }
 

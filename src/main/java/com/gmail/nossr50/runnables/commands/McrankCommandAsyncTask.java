@@ -7,8 +7,8 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.database.SQLDatabaseManager;
 import com.gmail.nossr50.database.FlatfileDatabaseManager;
+import com.gmail.nossr50.database.SQLDatabaseManager;
 
 public class McrankCommandAsyncTask extends BukkitRunnable {
     private final String playerName;

@@ -58,7 +58,7 @@ public final class ChimaeraWing {
         }
 
         if (Config.getInstance().getChimaeraCooldown() > 0 && !SkillUtils.cooldownOver(lastTeleport * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player)) {
-            player.sendMessage(ChatColor.RED + "You need to wait before you can use this again! " + ChatColor.YELLOW + "(" + SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player) + ")"); //TODO Locale!
+            player.sendMessage(LocaleLoader.getString("Item.Generic.Wait", SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player)));
             return;
         }
 
@@ -70,7 +70,7 @@ public final class ChimaeraWing {
         }
 
         if (amount < Config.getInstance().getChimaeraUseCost()) {
-            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", "Chimaera Wings")); //TODO Locale!
+            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", LocaleLoader.getString("Item.ChimaeraWing.Name")));
             return;
         }
 
@@ -90,7 +90,7 @@ public final class ChimaeraWing {
         long warmup = Config.getInstance().getChimaeraWarmup();
 
         if (warmup > 0) {
-            player.sendMessage(ChatColor.GRAY + "Commencing teleport in " + ChatColor.GOLD + "(" + warmup + ")" + ChatColor.GRAY + " seconds, please stand still..."); //TODO Locale!
+            player.sendMessage(LocaleLoader.getString("Teleport.Commencing", warmup));
             new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(mcMMO.p, 20 * warmup);
         }
         else {
@@ -128,11 +128,11 @@ public final class ChimaeraWing {
         ItemStack itemStack = new ItemStack(ingredient, amount);
 
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.GOLD + "Chimaera Wing"); //TODO Locale!
+        itemMeta.setDisplayName(ChatColor.GOLD + LocaleLoader.getString("Item.ChimaeraWing.Name"));
 
         List<String> itemLore = new ArrayList<String>();
         itemLore.add("mcMMO Item");
-        itemLore.add(ChatColor.GRAY + "Teleports you to your bed."); //TODO Locale!
+        itemLore.add(LocaleLoader.getString("Item.ChimaeraWing.Lore"));
         itemMeta.setLore(itemLore);
 
         itemStack.setItemMeta(itemMeta);

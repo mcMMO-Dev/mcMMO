@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills.repair;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -219,11 +218,11 @@ public class RepairManager extends SkillManager {
         mcMMOPlayer.actualizeLastAnvilUse(anvilId);
 
         if (anvilId == Repair.repairAnvilId) {
-            player.sendMessage(ChatColor.GREEN + "Right-click again to confirm " + ChatColor.GOLD + "Repair" + ChatColor.GREEN + ". Left-click to cancel."); //TODO Locale
+            player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", "Repair"));
         }
 
         if (anvilId == Repair.salvageAnvilId) {
-            player.sendMessage(ChatColor.GREEN + "Right-click again to confirm " + ChatColor.GOLD + "Salvage" + ChatColor.GREEN + ". Left-click to cancel."); //TODO Locale
+            player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", "Salvage"));
         }
         return false;
     }

@@ -14,6 +14,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
+import com.gmail.nossr50.locale.LocaleLoader;
 
 public class ItemUtils {
     private static Config configInstance = Config.getInstance();
@@ -700,7 +701,7 @@ public class ItemUtils {
         }
 
         ItemMeta itemMeta = is.getItemMeta();
-        if (itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + "Chimaera Wing")) { //TODO Get localized name
+        if (itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD +  LocaleLoader.getString("Item.ChimaeraWing.Name"))) {
             return true;
         }
 

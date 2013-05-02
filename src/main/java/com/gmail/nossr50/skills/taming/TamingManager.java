@@ -199,7 +199,7 @@ public class TamingManager extends SkillManager {
         }
 
         if (Permissions.renamePets(player)) {
-            entity.setCustomName(player.getName() + "\'s " + StringUtils.getPrettyEntityTypeString(entity.getType())); //TODO Localize, perhaps in a different language it makes more sense to switch this around
+            entity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", player.getName(), StringUtils.getPrettyEntityTypeString(entity.getType())));
             entity.setCustomNameVisible(true);
         }
 
