@@ -423,5 +423,5 @@ Kraken:
     Attack_Interval_Seconds: 1
     Attack_Damage: 1
     Unleashed_Message:
-        Server: [PLAYER] has unleashed the kraken!
+        Server: (PLAYER) has unleashed the kraken!
         Player: THE KRAKEN HAS BEEN UNLEASHED!
