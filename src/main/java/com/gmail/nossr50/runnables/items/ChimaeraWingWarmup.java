@@ -28,13 +28,12 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
     private void checkChimaeraWingTeleport() {
         Player player = mcMMOPlayer.getPlayer();
         Location previousLocation = mcMMOPlayer.getTeleportCommenceLocation();
-        Location newLocation = mcMMOPlayer.getPlayer().getLocation();
         long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
         ItemStack inHand = player.getItemInHand();
 
         mcMMOPlayer.setTeleportCommenceLocation(null);
 
-        if (newLocation.distanceSquared(previousLocation) > 1.0 || !player.getInventory().containsAtLeast(ChimaeraWing.getChimaeraWing(0), 1)) {
+        if (player.getLocation().distanceSquared(previousLocation) > 1.0 || !player.getInventory().containsAtLeast(ChimaeraWing.getChimaeraWing(0), 1)) {
             player.sendMessage(LocaleLoader.getString("Teleport.Cancelled"));
             return;
         }
