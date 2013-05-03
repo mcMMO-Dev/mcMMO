@@ -109,6 +109,9 @@ commands:
         description: Change the style of the mob healthbar
     mcscoreboard:
         description: Change the current mcMMO scoreboard being displayed
+    kraken:
+        aliases: [mckraken]
+        description: Unleash the kraken!
 permissions:
     mcmmo.*:
         default: false
@@ -695,6 +698,8 @@ permissions:
             mcmmo.commands.hardcore.all: true
             mcmmo.commands.inspect.far: true
             mcmmo.commands.inspect.offline: true
+            mcmmo.commands.kraken: true
+            mcmmo.commands.kraken.others: true
             mcmmo.commands.mcability.others: true
             mcmmo.commands.mcgod: true
             mcmmo.commands.mcgod.others: true
@@ -770,6 +775,10 @@ permissions:
         description: Allows access to the inspect command for far players
     mcmmo.commands.inspect.offline:
         description: Allows access to the inspect command for offline players
+    mcmmo.commands.kraken:
+        description: Allows access to the kraken command
+    mcmmo.commands.kraken.others:
+        description: Allows access to the kraken command for other players
     mcmmo.commands.mcability:
         description: Allows access to the mcability command
     mcmmo.commands.mcability.others:

@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.command.PluginCommand;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.commands.KrakenCommand;
 import com.gmail.nossr50.commands.McabilityCommand;
 import com.gmail.nossr50.commands.McgodCommand;
 import com.gmail.nossr50.commands.McmmoCommand;
@@ -391,8 +392,18 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McscoreboardCommand());
     }
 
+    private static void registerKrakenCommand() {
+        PluginCommand command = mcMMO.p.getCommand("kraken");
+        command.setDescription("Unleash the kraken!"); //TODO: Localize
+        command.setPermission("mcmmo.commands.kraken;mcmmo.commands.kraken.others");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "kraken", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
+        command.setExecutor(new KrakenCommand());
+    }
+
     public static void registerCommands() {
         // Generic Commands
+        registerKrakenCommand();
         registerMcabilityCommand();
         registerMcgodCommand();
         registerMcmmoCommand();

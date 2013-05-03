@@ -50,7 +50,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 public class FishingManager extends SkillManager {
     private final long FISHING_COOLDOWN_SECONDS = 1000L;
 
-    private int fishingTries = 1;
+    private int fishingTries = 0;
     private long fishingTimestamp = 0L;
 
     public FishingManager(McMMOPlayer mcMMOPlayer) {
@@ -65,12 +65,12 @@ public class FishingManager extends SkillManager {
         return Permissions.masterAngler(getPlayer());
     }
 
-//    public boolean unleashTheKraken() {
-//        
-//    }
+    public boolean unleashTheKraken() {
+        return unleashTheKraken(true);
+    }
 
-    private boolean unleashTheKraken() {
-        if (fishingTries < AdvancedConfig.getInstance().getKrakenTriesBeforeRelease() || fishingTries <= Misc.getRandom().nextInt(200)) {
+    private boolean unleashTheKraken(boolean forceSpawn) {
+        if (!forceSpawn && (fishingTries < AdvancedConfig.getInstance().getKrakenTriesBeforeRelease() || fishingTries <= Misc.getRandom().nextInt(200))) {
             return false;
         }
 
@@ -118,7 +118,10 @@ public class FishingManager extends SkillManager {
             int attackInterval = AdvancedConfig.getInstance().getKrakenAttackInterval() * 20;
             new KrakenAttackTask(kraken, player, player.getLocation()).runTaskTimer(mcMMO.p, attackInterval, attackInterval);
 
-            fishingTries = 1;
+            if (!forceSpawn) {
+                fishingTries = 0;
+            }
+
             return true;
         }
 
@@ -128,7 +131,10 @@ public class FishingManager extends SkillManager {
         int attackInterval = AdvancedConfig.getInstance().getKrakenAttackInterval() * 20;
         new KrakenAttackTask(kraken, player).runTaskTimer(mcMMO.p, attackInterval, attackInterval);
 
-        fishingTries = 1;
+        if (!forceSpawn) {
+            fishingTries = 0;
+        }
+
         return true;
     }
 
@@ -140,9 +146,9 @@ public class FishingManager extends SkillManager {
         long currentTime = System.currentTimeMillis();
         boolean hasFished = currentTime < fishingTimestamp + FISHING_COOLDOWN_SECONDS;
 
-        fishingTries = hasFished ? fishingTries + 1 : fishingTries - 1;
+        fishingTries = hasFished ? fishingTries + 1 : Math.max(fishingTries - 1, 0);
         fishingTimestamp = currentTime;
-        return unleashTheKraken();
+        return unleashTheKraken(false);
     }
 
     public boolean canIceFish(Block block) {
