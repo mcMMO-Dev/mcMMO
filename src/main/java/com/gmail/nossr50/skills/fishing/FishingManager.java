@@ -272,6 +272,8 @@ public class FishingManager extends SkillManager {
      * @param mob The {@link LivingEntity} affected by the ability
      */
     public void shakeCheck(LivingEntity target) {
+        fishingTries--; // Because autoclicking to shake is OK.
+
         if (getShakeProbability() > Misc.getRandom().nextInt(getActivationChance())) {
             List<ShakeTreasure> possibleDrops = Fishing.findPossibleDrops(target);
 
