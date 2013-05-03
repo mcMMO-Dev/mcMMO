@@ -281,6 +281,9 @@ public class Config extends AutoUpdateConfigLoader {
      */
 
     /* General Settings */
+    public boolean getExperienceGainsMobspawnersEnabled() { return config.getBoolean("Experience.Gains.Mobspawners.Enabled", false); }
+    public int getExperienceDeminishedReturnsThreshold() { return config.getInt("Experience.Gains.Deminished_Returns.Threshold", 20000); }
+    public int getExperienceDeminishedReturnsTimeInterval() { return config.getInt("Experience.Gains.Deminished_Returns.Time_Interval", 10); }
     public boolean getExperienceGainsPlayerVersusPlayerEnabled() { return config.getBoolean("Experience.PVP.Rewards", true); }
 
     public double getExperienceGainsGlobalMultiplier() { return config.getDouble("Experience.Gains.Multiplier.Global", 1.0); }

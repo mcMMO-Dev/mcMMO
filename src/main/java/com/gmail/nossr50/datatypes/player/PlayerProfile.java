@@ -39,6 +39,9 @@ public class PlayerProfile {
     private final Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();   // Skill & XP
     private final Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
 
+    // Store previous XP gains for deminished returns
+    private Map<SkillType, Float> gainedSkillsXp = new HashMap<SkillType, Float>();
+
     public PlayerProfile(String playerName, boolean addNew) {
         this.playerName = playerName;
 
@@ -244,6 +247,47 @@ public class PlayerProfile {
         }
 
         skillsXp.put(skillType, skillsXp.get(skillType) + experience);
+    }
+
+    /**
+     * Get the registered amount of experience gained
+     * This is used for diminished XP returns
+     *
+     * @return xp Experience amount registered
+     */
+    public float getRegisteredXpGain(SkillType skillType) {
+        float xp;
+        
+        if (gainedSkillsXp.get(skillType) == null) {
+            xp = 0F;
+        }
+        else {
+             xp = gainedSkillsXp.get(skillType);
+        }
+
+        return xp;
+    }
+
+    /**
+     * Set registered experience gains
+     * This is used for diminished XP returns
+     *
+     * @param skillType Skill being used
+     * @param xp Experience amount to set
+     */
+    public void setRegisteredXpGain(SkillType skillType, float xp) {
+        gainedSkillsXp.put(skillType, xp);
+    }
+
+    /**
+     * Register an experience gain
+     * This is used for diminished XP returns
+     *
+     * @param skillType Skill being used
+     * @param xp Experience amount to add
+     */
+    public void registeredXpGain(SkillType skillType, float xp) {
+        gainedSkillsXp.put(skillType, getRegisteredXpGain(skillType) + xp);
     }
 
     /**

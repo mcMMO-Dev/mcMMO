@@ -36,6 +36,7 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
+import com.gmail.nossr50.runnables.player.ClearRegisteredXPGainTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.Repairable;
@@ -364,6 +365,13 @@ public class mcMMO extends JavaPlugin {
         }
         else if (kickIntervalTicks > 0) {
             new PartyAutoKickTask().runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
+        }
+
+        // Clear the registered XP data so players can earn XP again
+        long clearRegisteredXPGainInterval = Config.getInstance().getExperienceDeminishedReturnsTimeInterval() * 60 * 20;
+
+        if (kickIntervalTicks > 0 && Config.getInstance().getExperienceDeminishedReturnsThreshold() > 0) {
+            new ClearRegisteredXPGainTask().runTaskTimer(this, clearRegisteredXPGainInterval, clearRegisteredXPGainInterval);
         }
     }
 }
