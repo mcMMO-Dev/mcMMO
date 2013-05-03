@@ -112,7 +112,6 @@ public class FishingManager extends SkillManager {
 
         Squid kraken = (Squid) world.spawnEntity(player.getEyeLocation(), EntityType.SQUID);
         kraken.setCustomName(AdvancedConfig.getInstance().getKrakenName());
-        kraken.remove();
 
         if (!kraken.isValid()) {
             int attackInterval = AdvancedConfig.getInstance().getKrakenAttackInterval() * 20;
