@@ -23,6 +23,7 @@ public class KrakenAttackTask extends BukkitRunnable {
     @Override
     public void run() {
         if (!kraken.isValid()) {
+            player.resetPlayerWeather();
             this.cancel();
         }
 
