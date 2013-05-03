@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
@@ -21,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.util.ItemUtils;
@@ -117,6 +119,14 @@ public class InventoryListener implements Listener {
 
         if (furnaceState instanceof Furnace) {
             ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
+
+            if (Config.getInstance().getPotatoEnabled() && smelting.getType() == Material.POTATO_ITEM) {
+                if ((Config.getInstance().getPotatoChance() / 100.0) >= Misc.getRandom().nextDouble()) {
+                    event.setCancelled(true);
+                    furnaceState.getWorld().createExplosion(furnaceState.getLocation(), 4F, true);
+                    return;
+                }
+            }
 
             if (furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && smelting != null && ItemUtils.isSmeltable(smelting)) {
                 // We can make this assumption because we (should) be the only ones using this exact metadata
