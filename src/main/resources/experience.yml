@@ -60,6 +60,15 @@ Experience_Formula:
         Boost: 1.25
 
 #
+# Settings for Deminished Returns
+###
+Deminished_Returns:
+    # Limit the amount of experience a player can earn:
+    # Threshold (amount of experience) per Time_Interval (in minutes)
+    Threshold: 20000
+    Time_Interval: 10
+
+#
 #  Settings for XP conversion with '/mcconvert experience'
 ###
 Conversion:

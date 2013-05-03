@@ -32,6 +32,9 @@ public class PlayerProfile {
     private final Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
     private final Map<AbilityType, Integer> abilityDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
 
+    // Store previous XP gains for diminished returns
+    private Map<SkillType, Float> gainedSkillsXp = new HashMap<SkillType, Float>();
+
     @Deprecated
     public PlayerProfile(String playerName) {
         this(playerName, null);
@@ -274,7 +277,48 @@ public class PlayerProfile {
     }
 
     /**
-     * Get the total amount of Xp before the next level.
+     * Get the registered amount of experience gained
+     * This is used for diminished XP returns
+     *
+     * @return xp Experience amount registered
+     */
+    public float getRegisteredXpGain(SkillType skillType) {
+        float xp;
+        
+        if (gainedSkillsXp.get(skillType) == null) {
+            xp = 0F;
+        }
+        else {
+             xp = gainedSkillsXp.get(skillType);
+        }
+
+        return xp;
+    }
+
+    /**
+     * Set registered experience gains
+     * This is used for diminished XP returns
+     *
+     * @param skillType Skill being used
+     * @param xp Experience amount to set
+     */
+    public void setRegisteredXpGain(SkillType skillType, float xp) {
+        gainedSkillsXp.put(skillType, xp);
+    }
+
+    /**
+     * Register an experience gain
+     * This is used for diminished XP returns
+     *
+     * @param skillType Skill being used
+     * @param xp Experience amount to add
+     */
+    public void registeredXpGain(SkillType skillType, float xp) {
+        gainedSkillsXp.put(skillType, getRegisteredXpGain(skillType) + xp);
+    }
+
+    /**
+     * Get the amount of Xp remaining before the next level.
      *
      * @param skillType Type of skill to check
      * @return the total amount of Xp until next level

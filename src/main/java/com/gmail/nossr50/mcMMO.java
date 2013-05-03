@@ -14,6 +14,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.mods.ArmorConfigManager;
 import com.gmail.nossr50.config.mods.BlockConfigManager;
 import com.gmail.nossr50.config.mods.EntityConfigManager;
@@ -38,6 +39,7 @@ import com.gmail.nossr50.runnables.UpdaterResultAsyncTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
+import com.gmail.nossr50.runnables.player.ClearRegisteredXPGainTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
@@ -491,6 +493,13 @@ public class mcMMO extends JavaPlugin {
 
         if (getHolidayManager().nearingAprilFirst()) {
             new CheckDateTask().runTaskTimer(this, 10L * Misc.TICK_CONVERSION_FACTOR, 1L * 60L * 60L * Misc.TICK_CONVERSION_FACTOR);
+        }
+
+        // Clear the registered XP data so players can earn XP again
+        long clearRegisteredXPGainInterval = ExperienceConfig.getInstance().getDeminishedReturnsTimeInterval() * 60 * 20;
+
+        if (clearRegisteredXPGainInterval > 0 && ExperienceConfig.getInstance().getDeminishedReturnsThreshold() > 0) {
+            new ClearRegisteredXPGainTask().runTaskTimer(this, clearRegisteredXPGainInterval, clearRegisteredXPGainInterval);
         }
     }
 
