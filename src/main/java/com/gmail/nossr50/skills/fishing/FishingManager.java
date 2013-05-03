@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -66,6 +65,10 @@ public class FishingManager extends SkillManager {
         return Permissions.masterAngler(getPlayer());
     }
 
+//    public boolean unleashTheKraken() {
+//        
+//    }
+
     private boolean unleashTheKraken() {
         if (fishingTries < AdvancedConfig.getInstance().getKrakenTriesBeforeRelease() || fishingTries <= Misc.getRandom().nextInt(200)) {
             return false;
@@ -102,14 +105,25 @@ public class FishingManager extends SkillManager {
         String globalMessage = AdvancedConfig.getInstance().getServerUnleashMessage();
 
         if (!globalMessage.isEmpty()) {
-            mcMMO.p.getServer().broadcastMessage(AdvancedConfig.getInstance().getServerUnleashMessage().replace("(PLAYER)", player.getDisplayName() + ChatColor.RED));
+            mcMMO.p.getServer().broadcastMessage(ChatColor.RED + AdvancedConfig.getInstance().getServerUnleashMessage().replace("(PLAYER)", player.getDisplayName()));
         }
+
+        player.setItemInHand(null);
 
         Squid kraken = (Squid) world.spawnEntity(player.getEyeLocation(), EntityType.SQUID);
         kraken.setCustomName(AdvancedConfig.getInstance().getKrakenName());
+        kraken.remove();
+
+        if (!kraken.isValid()) {
+            int attackInterval = AdvancedConfig.getInstance().getKrakenAttackInterval() * 20;
+            new KrakenAttackTask(kraken, player, player.getLocation()).runTaskTimer(mcMMO.p, attackInterval, attackInterval);
+
+            fishingTries = 1;
+            return true;
+        }
+
         kraken.setMaxHealth(AdvancedConfig.getInstance().getKrakenHealth());
         kraken.setHealth(kraken.getMaxHealth());
-        player.setItemInHand(null);
 
         int attackInterval = AdvancedConfig.getInstance().getKrakenAttackInterval() * 20;
         new KrakenAttackTask(kraken, player).runTaskTimer(mcMMO.p, attackInterval, attackInterval);

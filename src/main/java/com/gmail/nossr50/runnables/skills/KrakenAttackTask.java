@@ -13,6 +13,7 @@ import com.gmail.nossr50.util.Misc;
 public class KrakenAttackTask extends BukkitRunnable {
     private Squid kraken;
     private Player player;
+    private Location location;
     private final boolean GLOBAL_SOUNDS = AdvancedConfig.getInstance().getKrakenGlobalSoundsEnabled();
 
     public KrakenAttackTask(Squid kraken, Player player) {
@@ -20,15 +21,57 @@ public class KrakenAttackTask extends BukkitRunnable {
         this.player = player;
     }
 
+    public KrakenAttackTask(Squid kraken, Player player, Location location) {
+        this.kraken = kraken;
+        this.player = player;
+        this.location = location;
+    }
+
     @Override
     public void run() {
+        if (location != null) {
+            Location playerLocation = player.getLocation();
+
+            if (player.isValid() && playerLocation.getBlock().isLiquid()) {
+                World world = player.getWorld();
+
+                player.damage(AdvancedConfig.getInstance().getKrakenAttackDamage(), kraken);
+
+                if (GLOBAL_SOUNDS) {
+                    world.playSound(playerLocation, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+                }
+                else {
+                    player.playSound(playerLocation, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+                }
+
+                world.strikeLightningEffect(playerLocation);
+            }
+            else {
+                player.sendMessage(AdvancedConfig.getInstance().getPlayerEscapeMessage());
+                player.resetPlayerWeather();
+                cancel();
+            }
+
+            return;
+        }
+
         if (!kraken.isValid()) {
+            player.sendMessage(AdvancedConfig.getInstance().getPlayerDefeatMessage());
             player.resetPlayerWeather();
-            this.cancel();
+            cancel();
         }
 
         if (player.isValid()) {
             Location location = player.getLocation();
+
+            if (!location.getBlock().isLiquid()) {
+                player.sendMessage(AdvancedConfig.getInstance().getPlayerEscapeMessage());
+                kraken.remove();
+                player.resetPlayerWeather();
+                cancel();
+                return;
+            }
+
             World world = player.getWorld();
 
             kraken.teleport(player);
@@ -41,12 +84,11 @@ public class KrakenAttackTask extends BukkitRunnable {
                 player.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
             }
 
-            world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
             world.strikeLightningEffect(location);
         }
         else {
             kraken.remove();
-            this.cancel();
+            cancel();
         }
     }
 }

@@ -289,6 +289,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public String getKrakenName() { return config.getString("Kraken.Name", "The Kraken"); }
     public String getServerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Server", "(PLAYER) has unleashed the kraken!"); }
     public String getPlayerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Player", "THE KRAKEN HAS BEEN UNLEASHED!"); }
+    public String getPlayerDefeatMessage() { return config.getString("Kraken.Defeated_Message.Killed", "You have slain the kraken!"); }
+    public String getPlayerEscapeMessage() { return config.getString("Kraken.Defeated_Message.Escape", "You have escaped from the kraken!"); }
     public int getKrakenAttackInterval() { return config.getInt("Kraken.Attack_Interval_Seconds", 1); }
     public int getKrakenAttackDamage() { return config.getInt("Kraken.Attack_Damage", 1); }
 }
