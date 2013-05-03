@@ -91,7 +91,13 @@ public class FishingManager extends SkillManager {
         world.strikeLightningEffect(location);
         world.strikeLightningEffect(location);
         player.sendMessage(AdvancedConfig.getInstance().getPlayerUnleashMessage());
-        world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+
+        if (AdvancedConfig.getInstance().getKrakenGlobalSoundsEnabled()) {
+            world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+        }
+        else {
+            player.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+        }
 
         String globalMessage = AdvancedConfig.getInstance().getServerUnleashMessage();
 

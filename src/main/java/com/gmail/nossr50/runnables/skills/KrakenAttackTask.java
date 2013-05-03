@@ -13,6 +13,7 @@ import com.gmail.nossr50.util.Misc;
 public class KrakenAttackTask extends BukkitRunnable {
     private Squid kraken;
     private Player player;
+    private final boolean GLOBAL_SOUNDS = AdvancedConfig.getInstance().getKrakenGlobalSoundsEnabled();
 
     public KrakenAttackTask(Squid kraken, Player player) {
         this.kraken = kraken;
@@ -31,6 +32,14 @@ public class KrakenAttackTask extends BukkitRunnable {
 
             kraken.teleport(player);
             player.damage(AdvancedConfig.getInstance().getKrakenAttackDamage(), kraken);
+
+            if (GLOBAL_SOUNDS) {
+                world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            }
+            else {
+                player.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            }
+
             world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
             world.strikeLightningEffect(location);
         }
