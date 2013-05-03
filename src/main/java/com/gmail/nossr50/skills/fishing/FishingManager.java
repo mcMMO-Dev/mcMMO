@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -91,7 +92,12 @@ public class FishingManager extends SkillManager {
         world.strikeLightningEffect(location);
         player.sendMessage(AdvancedConfig.getInstance().getPlayerUnleashMessage());
         world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
-        mcMMO.p.getServer().broadcastMessage(AdvancedConfig.getInstance().getServerUnleashMessage().replace("(PLAYER)", player.getDisplayName() + ChatColor.RED));
+
+        String globalMessage = AdvancedConfig.getInstance().getServerUnleashMessage();
+
+        if (!globalMessage.isEmpty()) {
+            mcMMO.p.getServer().broadcastMessage(AdvancedConfig.getInstance().getServerUnleashMessage().replace("(PLAYER)", player.getDisplayName() + ChatColor.RED));
+        }
 
         Squid kraken = (Squid) world.spawnEntity(player.getEyeLocation(), EntityType.SQUID);
         kraken.setCustomName(AdvancedConfig.getInstance().getKrakenName());
