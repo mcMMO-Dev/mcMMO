@@ -49,7 +49,7 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class FishingManager extends SkillManager {
-    private final long FISHING_COOLDOWN_SECONDS = 5000L;
+    private final long FISHING_COOLDOWN_SECONDS = 1000L;
 
     private int fishingTries = 1;
     private long fishingTimestamp = 0L;
