@@ -50,7 +50,8 @@ public class SelfListener implements Listener {
             return;
         }
 
-        float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(skillType) - threshold) / threshold;
+        float modifiedThreshold = (float) (threshold / skillType.getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier());
+        float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(skillType) - modifiedThreshold) / modifiedThreshold;
 
         if (difference > 0) {
 //            System.out.println("Total XP Earned: " + mcMMOPlayer.getProfile().getRegisteredXpGain(skillType) + " / Threshold value: " + threshold);
