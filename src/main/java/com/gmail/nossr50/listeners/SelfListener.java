@@ -47,7 +47,13 @@ public class SelfListener implements Listener {
         int threshold = ExperienceConfig.getInstance().getDeminishedReturnsThreshold();
 
         if (threshold <= 0) {
+            // Diminished returns is turned off
             return;
+        }
+
+        final float rawXp = event.getRawXpGained();
+        if (rawXp < 0) {
+            return; // Don't calculate for XP subtraction
         }
 
         Player player = event.getPlayer();
@@ -58,18 +64,22 @@ public class SelfListener implements Listener {
             return;
         }
 
-        float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(skillType) - threshold) / threshold;
+        float modifiedThreshold = (float) (threshold / skillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
+        float difference = (mcMMOPlayer.getProfile().getRegisteredXpGain(skillType) - modifiedThreshold) / modifiedThreshold;
 
         if (difference > 0) {
 //            System.out.println("Total XP Earned: " + mcMMOPlayer.getProfile().getRegisteredXpGain(skillType) + " / Threshold value: " + threshold);
 //            System.out.println(difference * 100 + "% over the threshold!");
 //            System.out.println("Previous: " + event.getRawXpGained());
 //            System.out.println("Adjusted XP " + (event.getRawXpGained() - (event.getRawXpGained() * difference)));
-            float newValue = event.getRawXpGained() - (event.getRawXpGained() * difference);
+            float newValue = rawXp - (rawXp * difference);
 
-            event.setRawXpGained(newValue);
+            if (newValue > 0) {
+                event.setRawXpGained(newValue);
+            }
+            else {
+                event.setCancelled(true);
+            }
         }
-
-        mcMMOPlayer.getProfile().registeredXpGain(skillType, event.getRawXpGained());
     }
 }
