@@ -297,7 +297,7 @@ public class PlayerProfile {
 
         if (hudValues == null) {
             SQLDatabaseManager.write("INSERT INTO " + tablePrefix + "huds (user_id, mobhealthbar) VALUES (" + userId + ",'" + mobHealthbarType.name() + "')");
-            mcMMO.p.getLogger().warning(playerName + "does not exist in the HUD table. Their HUDs will be reset.");
+            mcMMO.p.getLogger().warning(playerName + " does not exist in the HUD table. Their HUDs will be reset.");
         }
         else {
             hudType = HudType.valueOf(hudValues.get(0));
