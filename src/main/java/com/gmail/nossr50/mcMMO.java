@@ -368,10 +368,8 @@ public class mcMMO extends JavaPlugin {
         }
 
         // Clear the registered XP data so players can earn XP again
-        long clearRegisteredXPGainInterval = Config.getInstance().getExperienceDeminishedReturnsTimeInterval() * 60 * 20;
-
-        if (kickIntervalTicks > 0 && Config.getInstance().getExperienceDeminishedReturnsThreshold() > 0) {
-            new ClearRegisteredXPGainTask().runTaskTimer(this, clearRegisteredXPGainInterval, clearRegisteredXPGainInterval);
+        if (Config.getInstance().getExperienceDeminishedReturnsThreshold() > 0) {
+            new ClearRegisteredXPGainTask().runTaskTimer(this, 60 * 20, 60 * 20);
         }
     }
 }
