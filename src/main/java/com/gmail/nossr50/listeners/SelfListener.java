@@ -60,7 +60,12 @@ public class SelfListener implements Listener {
 //            System.out.println("Adjusted XP " + (event.getRawXpGained() - (event.getRawXpGained() * difference)));
             float newValue = event.getRawXpGained() - (event.getRawXpGained() * difference);
 
-            event.setRawXpGained(newValue);
+            if (newValue > 0) {
+                event.setRawXpGained(newValue);
+            }
+            else {
+                event.setCancelled(true);
+            }
         }
 
         mcMMOPlayer.getProfile().registeredXpGain(skillType, event.getRawXpGained());
