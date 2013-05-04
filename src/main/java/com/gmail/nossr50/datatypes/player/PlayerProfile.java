@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.bukkit.scoreboard.Scoreboard;
@@ -300,21 +301,25 @@ public class PlayerProfile {
     public void removeXpGainsOlderThan(long age) {
         long now = System.currentTimeMillis();
 
-        Iterator<LinkedList<SkillXpGain>> iterator = gainedSkillsXp.values().iterator();
+        Iterator<Entry<SkillType, LinkedList<SkillXpGain>>> iterator = gainedSkillsXp.entrySet().iterator();
         while(iterator.hasNext()) {
-            LinkedList<SkillXpGain> skillGains = iterator.next();
+            Entry<SkillType, LinkedList<SkillXpGain>> skillGains = iterator.next();
 
+            float xp = 0;
             // Because we are using a LinkedList and addLast ordering is guaranteed, so we loop through and remove things that are too old, and stop immediately once we find a young'n
-            Iterator<SkillXpGain> gainsIterator = skillGains.iterator();
+            Iterator<SkillXpGain> gainsIterator = skillGains.getValue().iterator();
             while(gainsIterator.hasNext()) {
                 SkillXpGain gain = gainsIterator.next();
 
                 if(now - gain.getTime() >= age) {
                     gainsIterator.remove();
+                    // Because gainedSkillsXp conatins this SkillType, we assume that rollingSkillsXp must also have this SkillType
+                    xp += rollingSkillsXp.get(skillGains.getKey());
                 } else {
                     break;
                 }
             }
+            rollingSkillsXp.put(skillGains.getKey(), rollingSkillsXp.get(skillGains.getKey()) - xp);
         }
     }
 
