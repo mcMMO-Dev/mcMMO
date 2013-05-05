@@ -412,10 +412,10 @@ Spout:
         Tier2: 400
         Tier3: 600
         Tier4: 800
+#
+#  Customize the kraken!
+###
 Kraken:
-    #
-    #  Customize the kraken!
-    ###
     Enabled: true
     Tries_Before_Release: 50
     Health: 50
