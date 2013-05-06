@@ -46,8 +46,8 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getVerboseLoggingEnabled() { return config.getBoolean("General.Verbose_Logging", false); }
     public boolean getConfigOverwriteEnabled() { return config.getBoolean("General.Config_Update_Overwrite", true); }
 
-    public boolean getPotatoEnabled() { return config.getBoolean("General.Config.Potato_Explosion_Enabled", true); }
-    public int getPotatoChance() { return config.getInt("General.Config.Potato_Explosion_Chance", 1); }
+    public boolean getPotatoEnabled() { return config.getBoolean("General.Potato_Explosion_Enabled", false); }
+    public int getPotatoChance() { return config.getInt("General.Potato_Explosion_Chance", 1); }
 
     public boolean getPartyDisplayNames() { return config.getBoolean("Commands.p.Use_Display_Names", true); }
     public boolean getAdminDisplayNames() { return config.getBoolean("Commands.a.Use_Display_Names", true); }
