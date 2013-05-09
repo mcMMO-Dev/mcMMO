@@ -3,25 +3,25 @@ package com.gmail.nossr50.runnables.skills;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
+import org.bukkit.entity.Creature;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Squid;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.util.Misc;
 
 public class KrakenAttackTask extends BukkitRunnable {
-    private Squid kraken;
+    private Creature kraken;
     private Player player;
     private Location location;
     private final boolean GLOBAL_SOUNDS = AdvancedConfig.getInstance().getKrakenGlobalSoundsEnabled();
 
-    public KrakenAttackTask(Squid kraken, Player player) {
+    public KrakenAttackTask(Creature kraken, Player player) {
         this.kraken = kraken;
         this.player = player;
     }
 
-    public KrakenAttackTask(Squid kraken, Player player, Location location) {
+    public KrakenAttackTask(Creature kraken, Player player, Location location) {
         this.kraken = kraken;
         this.player = player;
         this.location = location;
