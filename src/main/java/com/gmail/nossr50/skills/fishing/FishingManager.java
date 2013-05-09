@@ -24,7 +24,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
-import org.bukkit.entity.Squid;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
@@ -111,7 +110,12 @@ public class FishingManager extends SkillManager {
 
         player.setItemInHand(null);
 
-        Creature kraken = (Squid) world.spawnEntity(player.getEyeLocation(), EntityType.SQUID);
+        Creature kraken;
+        if (Misc.getRandom().nextInt(100) == 0) {
+            kraken = (Creature) world.spawnEntity(player.getEyeLocation(), EntityType.CHICKEN);
+        } else {
+            kraken = (Creature) world.spawnEntity(player.getEyeLocation(), EntityType.SQUID);
+        }
         kraken.setCustomName(AdvancedConfig.getInstance().getKrakenName());
 
         if (!kraken.isValid()) {
