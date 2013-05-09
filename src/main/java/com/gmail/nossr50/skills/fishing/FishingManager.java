@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.fishing;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -48,6 +49,7 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class FishingManager extends SkillManager {
+    private static HashMap<Material, List<Enchantment>> enchantableCache = new HashMap<Material, List<Enchantment>>();
     private final long FISHING_COOLDOWN_SECONDS = 1000L;
 
     private int fishingTries = 0;
@@ -416,12 +418,22 @@ public class FishingManager extends SkillManager {
             return false;
         }
 
-        List<Enchantment> possibleEnchantments = new ArrayList<Enchantment>();
+        // When calculating the possible enchantments, we should cache the possible enchantments to minimize
+        // looping every time someone fishes.
+        List<Enchantment> possibleEnchantments;
 
-        for (Enchantment enchantment : Enchantment.values()) {
-            if (enchantment.canEnchantItem(treasureDrop)) {
-                possibleEnchantments.add(enchantment);
+        if (enchantableCache.containsKey(treasureDrop.getType())) { // Check if possible enchantments is already cached for this item.
+            possibleEnchantments = enchantableCache.get(treasureDrop.getType());
+        } else { // If not, check which enchantments are possible
+            possibleEnchantments = new ArrayList<Enchantment>();
+
+            for (Enchantment enchantment : Enchantment.values()) {
+                if (enchantment.canEnchantItem(treasureDrop)) {
+                    possibleEnchantments.add(enchantment);
+                }
             }
+        	
+            enchantableCache.put(treasureDrop.getType(), possibleEnchantments); // Cache these enchantments.
         }
 
         // This make sure that the order isn't always the same, for example previously Unbreaking had a lot more chance to be used than any other enchant
@@ -432,7 +444,10 @@ public class FishingManager extends SkillManager {
 
         for (Enchantment possibleEnchantment : possibleEnchantments) {
             if (!treasureDrop.getItemMeta().hasConflictingEnchant(possibleEnchantment) && Misc.getRandom().nextInt(specificChance) == 0) {
-                treasureDrop.addEnchantment(possibleEnchantment, Misc.getRandom().nextInt(possibleEnchantment.getMaxLevel()) + 1);
+                // We need our random enchantment level to fall in the range between getStartLevel() and getMaxLevel()
+                // so we take a random number in the range of their difference, then add the start level.
+                final int levelDiff = possibleEnchantment.getMaxLevel() - possibleEnchantment.getStartLevel();
+                treasureDrop.addEnchantment(possibleEnchantment, Misc.getRandom().nextInt(levelDiff + 1) + possibleEnchantment.getStartLevel());
 
                 specificChance++;
                 enchanted = true;
