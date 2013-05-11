@@ -306,6 +306,9 @@ public class EntityListener implements Listener {
 
         if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) {
             event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+            if(event.getEntity().getPassenger() != null) {
+                event.getEntity().getPassenger().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+            }
         }
     }
 
