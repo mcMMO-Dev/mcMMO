@@ -171,6 +171,10 @@ public class EntityListener implements Listener {
 
             switch (cause) {
                 case FALL:
+                    if (!Permissions.skillEnabled(mcMMOPlayer.getPlayer(), SkillType.ACROBATICS)) {
+                        break;
+                    }
+                    
                     AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
                     if (acrobaticsManager.canRoll()) {
