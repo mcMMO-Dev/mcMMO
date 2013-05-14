@@ -519,7 +519,10 @@ public class PlayerListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (mcMMOPlayer.getPartyChatMode()) {
+        if (mcMMOPlayer == null) {
+            return;
+        }
+        else if (mcMMOPlayer.getPartyChatMode()) {
             Party party = mcMMOPlayer.getParty();
 
             if (party == null) {
