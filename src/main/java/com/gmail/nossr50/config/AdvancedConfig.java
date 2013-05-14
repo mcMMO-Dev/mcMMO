@@ -284,6 +284,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /* KRAKEN STUFF */
     public boolean getKrakenEnabled() { return config.getBoolean("Kraken.Enabled", true); }
     public boolean getKrakenGlobalSoundsEnabled() { return config.getBoolean("Kraken.Global_Sounds", true); }
+    public boolean getKrakenEscapeAllowed() { return config.getBoolean("Kraken.Allow_Escaping", false); }
     public int getKrakenTriesBeforeRelease() { return config.getInt("Kraken.Tries_Before_Release", 50); }
     public int getKrakenHealth() { return config.getInt("Kraken.Health", 50); }
     public String getKrakenName() { return config.getString("Kraken.Name", "The Kraken"); }

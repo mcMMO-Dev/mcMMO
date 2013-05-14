@@ -64,7 +64,7 @@ public class KrakenAttackTask extends BukkitRunnable {
         if (player.isValid()) {
             Location location = player.getLocation();
 
-            if (!location.getBlock().isLiquid()) {
+            if (!location.getBlock().isLiquid() && AdvancedConfig.getInstance().getKrakenEscapeAllowed()) {
                 player.sendMessage(AdvancedConfig.getInstance().getPlayerEscapeMessage());
                 kraken.remove();
                 player.resetPlayerWeather();
