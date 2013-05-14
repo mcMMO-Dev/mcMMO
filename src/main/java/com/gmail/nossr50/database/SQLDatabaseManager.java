@@ -96,7 +96,7 @@ public final class SQLDatabaseManager {
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD',"
-                + "`mobhealthbar` varchar(50) NOT NULL DEFAULT 'HEARTS',"
+                + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
                 + "PRIMARY KEY (`user_id`),"
                 + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
                 + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
@@ -601,7 +601,7 @@ public final class SQLDatabaseManager {
 
                 case MOB_HEALTHBARS:
                     mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for mob healthbars...");
-                    write("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT 'HEARTS' ;");
+                    write("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "' ;");
                     break;
 
                 default:
