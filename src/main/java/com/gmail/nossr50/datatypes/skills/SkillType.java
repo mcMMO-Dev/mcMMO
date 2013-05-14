@@ -144,4 +144,14 @@ public enum SkillType {
     public Color getRunescapeModeColor() {
         return runescapeColor;
     }
+
+    public static SkillType byAbility(AbilityType ability) {
+        for (SkillType type : values()) {
+            if (type.getAbility() == ability) {
+                return type;
+            }
+        }
+        
+        return null;
+    }
 }

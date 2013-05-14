@@ -7,6 +7,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -43,6 +45,9 @@ public class AbilityDisableTask extends BukkitRunnable {
             default:
                 break;
         }
+
+        McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, SkillType.byAbility(ability));
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         mcMMOPlayer.setAbilityMode(ability, false);
         mcMMOPlayer.setAbilityInformed(ability, false);
