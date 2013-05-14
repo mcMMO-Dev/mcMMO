@@ -904,6 +904,16 @@ Treasures:
         Max_Level: -1
         Drops_From:
             Fishing: true
+    Redstone:
+        ID: 331
+        Data: 0
+        Amount: 20
+        XP: 200
+        Drop_Chance: 40.0
+        Drop_Level: 800
+        Max_Level: -1
+        Drops_From:
+            Fishing: true
     Diamonds:
         ID: 264
         Data: 0
