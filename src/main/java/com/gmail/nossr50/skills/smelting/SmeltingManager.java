@@ -65,8 +65,17 @@ public class SmeltingManager extends SkillManager {
 
             Misc.dropItem(location, item);
 
-            if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
-                Misc.dropItem(location, item);
+            if (Permissions.doubleDrops(player, skill)) {
+                if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
+                    Misc.dropItem(location, item);
+                    if(SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Smelting.secondSmeltMaxChance, Smelting.secondSmeltMaxLevel)) {
+                        Misc.dropItem(location, item);
+                    }
+                }
+                
+                if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Smelting.secondSmeltMaxChance, Smelting.secondSmeltMaxLevel)) {
+                    Misc.dropItem(location, item);
+                }
             }
 
             blockState.setRawData((byte) 0x0);
