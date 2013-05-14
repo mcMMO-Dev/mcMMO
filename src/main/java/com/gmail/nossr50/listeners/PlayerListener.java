@@ -326,7 +326,13 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        if (mcMMOPlayer == null) {
+            return;
+        }
+
+        MiningManager miningManager = mcMMOPlayer.getMiningManager();
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
@@ -334,7 +340,7 @@ public class PlayerListener implements Listener {
 
                 /* REPAIR CHECKS */
                 if (blockID == Repair.repairAnvilId && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
-                    RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
+                    RepairManager repairManager = mcMMOPlayer.getRepairManager();
                     event.setCancelled(true);
 
                     // Make sure the player knows what he's doing when trying to repair an enchanted item
@@ -345,7 +351,7 @@ public class PlayerListener implements Listener {
                 }
                 /* SALVAGE CHECKS */
                 else if (blockID == Repair.salvageAnvilId && Permissions.salvage(player) && Repair.isSalvageable(heldItem)) {
-                    RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
+                    RepairManager repairManager = mcMMOPlayer.getRepairManager();
                     event.setCancelled(true);
 
                     // Make sure the player knows what he's doing when trying to salvage an enchanted item
@@ -371,21 +377,21 @@ public class PlayerListener implements Listener {
 
                 /* REPAIR CHECKS */
                 if (blockID == Repair.repairAnvilId && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
-                    RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
+                    RepairManager repairManager = mcMMOPlayer.getRepairManager();
 
                     // Cancel repairing an enchanted item
                     if (repairManager.checkConfirmation(blockID, false) && Config.getInstance().getRepairConfirmRequired()) {
-                        UserManager.getPlayer(player).setLastAnvilUse(Repair.repairAnvilId, 0);
+                        mcMMOPlayer.setLastAnvilUse(Repair.repairAnvilId, 0);
                         player.sendMessage(LocaleLoader.getString("Skills.Cancelled", LocaleLoader.getString("Repair.Pretty.Name")));
                     }
                 }
                 /* SALVAGE CHECKS */
                 else if (blockID == Repair.salvageAnvilId && Permissions.salvage(player) && Repair.isSalvageable(heldItem)) {
-                    RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
+                    RepairManager repairManager = mcMMOPlayer.getRepairManager();
 
                     // Cancel salvaging an enchanted item
                     if (repairManager.checkConfirmation(blockID, false) && Config.getInstance().getRepairConfirmRequired()) {
-                        UserManager.getPlayer(player).setLastAnvilUse(Repair.salvageAnvilId, 0);
+                        mcMMOPlayer.setLastAnvilUse(Repair.salvageAnvilId, 0);
                         player.sendMessage(LocaleLoader.getString("Skills.Cancelled", LocaleLoader.getString("Salvage.Pretty.Name")));
                     }
                 }
