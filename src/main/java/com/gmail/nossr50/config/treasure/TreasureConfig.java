@@ -117,7 +117,7 @@ public class TreasureConfig extends ConfigLoader {
                 reason.add("Invalid amount: " + amount);
             }
 
-            if (data > 127 || data < -128) {
+            if (id < 256 && (data > 127 || data < -128)) {
                 reason.add("Invalid data: " + data);
             }
 
