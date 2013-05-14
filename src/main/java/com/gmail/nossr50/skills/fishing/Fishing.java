@@ -1,7 +1,10 @@
 package com.gmail.nossr50.skills.fishing;
 
+import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
@@ -48,6 +51,8 @@ public final class Fishing {
         abstract protected int getShakeChance();
         abstract protected int getVanillaXPBoostModifier();
     }
+
+    protected static final HashMap<Material, List<Enchantment>> enchantableCache = new HashMap<Material, List<Enchantment>>();
 
     public static int fishermansDietRankLevel1 = AdvancedConfig.getInstance().getFishermanDietRankChange();
     public static int fishermansDietRankLevel2 = fishermansDietRankLevel1 * 2;

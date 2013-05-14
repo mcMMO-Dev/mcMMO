@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.fishing;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.ChatColor;
@@ -49,7 +48,6 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class FishingManager extends SkillManager {
-    private final HashMap<Material, List<Enchantment>> enchantableCache = new HashMap<Material, List<Enchantment>>();
     private final long FISHING_COOLDOWN_SECONDS = 1000L;
 
     private int fishingTries = 0;
@@ -438,8 +436,8 @@ public class FishingManager extends SkillManager {
     private List<Enchantment> getPossibleEnchantments(ItemStack treasureDrop) {
         Material dropType = treasureDrop.getType();
 
-        if (enchantableCache.containsKey(dropType)) {
-            return enchantableCache.get(dropType);
+        if (Fishing.enchantableCache.containsKey(dropType)) {
+            return Fishing.enchantableCache.get(dropType);
         }
 
         List<Enchantment> possibleEnchantments = new ArrayList<Enchantment>();
@@ -450,7 +448,7 @@ public class FishingManager extends SkillManager {
             }
         }
 
-        enchantableCache.put(dropType, possibleEnchantments);
+        Fishing.enchantableCache.put(dropType, possibleEnchantments);
         return possibleEnchantments;
     }
 
