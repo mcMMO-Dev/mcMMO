@@ -540,6 +540,7 @@ public class PlayerListener implements Listener {
             Party party = mcMMOPlayer.getParty();
 
             if (party == null) {
+                mcMMOPlayer.togglePartyChat();
                 player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                 return;
             }
