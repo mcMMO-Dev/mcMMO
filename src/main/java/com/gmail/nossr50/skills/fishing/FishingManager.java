@@ -49,7 +49,7 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class FishingManager extends SkillManager {
-    private static HashMap<Material, List<Enchantment>> enchantableCache = new HashMap<Material, List<Enchantment>>();
+    private final HashMap<Material, List<Enchantment>> enchantableCache = new HashMap<Material, List<Enchantment>>();
     private final long FISHING_COOLDOWN_SECONDS = 1000L;
 
     private int fishingTries = 0;
@@ -112,12 +112,7 @@ public class FishingManager extends SkillManager {
 
         player.setItemInHand(null);
 
-        Creature kraken;
-        if (Misc.getRandom().nextInt(100) == 0) {
-            kraken = (Creature) world.spawnEntity(player.getEyeLocation(), EntityType.CHICKEN);
-        } else {
-            kraken = (Creature) world.spawnEntity(player.getEyeLocation(), EntityType.SQUID);
-        }
+        Creature kraken = (Creature) world.spawnEntity(player.getEyeLocation(), (Misc.getRandom().nextInt(100) == 0 ? EntityType.CHICKEN : EntityType.SQUID));
         kraken.setCustomName(AdvancedConfig.getInstance().getKrakenName());
 
         if (!kraken.isValid()) {
@@ -418,23 +413,7 @@ public class FishingManager extends SkillManager {
             return false;
         }
 
-        // When calculating the possible enchantments, we should cache the possible enchantments to minimize
-        // looping every time someone fishes.
-        List<Enchantment> possibleEnchantments;
-
-        if (enchantableCache.containsKey(treasureDrop.getType())) { // Check if possible enchantments is already cached for this item.
-            possibleEnchantments = enchantableCache.get(treasureDrop.getType());
-        } else { // If not, check which enchantments are possible
-            possibleEnchantments = new ArrayList<Enchantment>();
-
-            for (Enchantment enchantment : Enchantment.values()) {
-                if (enchantment.canEnchantItem(treasureDrop)) {
-                    possibleEnchantments.add(enchantment);
-                }
-            }
-        	
-            enchantableCache.put(treasureDrop.getType(), possibleEnchantments); // Cache these enchantments.
-        }
+        List<Enchantment> possibleEnchantments = getPossibleEnchantments(treasureDrop);
 
         // This make sure that the order isn't always the same, for example previously Unbreaking had a lot more chance to be used than any other enchant
         Collections.shuffle(possibleEnchantments, Misc.getRandom());
@@ -443,18 +422,36 @@ public class FishingManager extends SkillManager {
         int specificChance = 1;
 
         for (Enchantment possibleEnchantment : possibleEnchantments) {
-            if (!treasureDrop.getItemMeta().hasConflictingEnchant(possibleEnchantment) && Misc.getRandom().nextInt(specificChance) == 0) {
-                // We need our random enchantment level to fall in the range between getStartLevel() and getMaxLevel()
-                // so we take a random number in the range of their difference, then add the start level.
-                final int levelDiff = possibleEnchantment.getMaxLevel() - possibleEnchantment.getStartLevel();
-                treasureDrop.addEnchantment(possibleEnchantment, Misc.getRandom().nextInt(levelDiff + 1) + possibleEnchantment.getStartLevel());
-
-                specificChance++;
-                enchanted = true;
+            if (treasureDrop.getItemMeta().hasConflictingEnchant(possibleEnchantment) || Misc.getRandom().nextInt(specificChance) != 0) {
+                continue;
             }
+
+            treasureDrop.addEnchantment(possibleEnchantment, Math.max(Misc.getRandom().nextInt(possibleEnchantment.getMaxLevel()) + 1, possibleEnchantment.getStartLevel()));
+
+            specificChance++;
+            enchanted = true;
         }
 
         return enchanted;
+    }
+
+    private List<Enchantment> getPossibleEnchantments(ItemStack treasureDrop) {
+        Material dropType = treasureDrop.getType();
+
+        if (enchantableCache.containsKey(dropType)) {
+            return enchantableCache.get(dropType);
+        }
+
+        List<Enchantment> possibleEnchantments = new ArrayList<Enchantment>();
+
+        for (Enchantment enchantment : Enchantment.values()) {
+            if (enchantment.canEnchantItem(treasureDrop)) {
+                possibleEnchantments.add(enchantment);
+            }
+        }
+
+        enchantableCache.put(dropType, possibleEnchantments);
+        return possibleEnchantments;
     }
 
     /**

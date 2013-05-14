@@ -15,7 +15,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -302,13 +301,21 @@ public class EntityListener implements Listener {
             return;
         }
 
-        SpawnReason reason = event.getSpawnReason();
+        switch (event.getSpawnReason()) {
+            case SPAWNER:
+            case SPAWNER_EGG:
+                LivingEntity entity = event.getEntity();
+                Entity passenger = entity.getPassenger();
 
-        if (reason == SpawnReason.SPAWNER || reason == SpawnReason.SPAWNER_EGG) {
-            event.getEntity().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-            if(event.getEntity().getPassenger() != null) {
-                event.getEntity().getPassenger().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-            }
+                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+
+                if (passenger != null) {
+                    passenger.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+                }
+                return;
+
+            default:
+                return;
         }
     }
 

@@ -332,11 +332,11 @@ public class SkillUtils {
         if (!mcMMOPlayer.getAbilityMode(ability) && cooldownOver(playerProfile.getSkillDATS(ability), ability.getCooldown(), player)) {
             McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, type);
             mcMMO.p.getServer().getPluginManager().callEvent(event);
-            
+
             if (event.isCancelled()) {
                 return;
             }
-            
+
             int ticks = PerksUtils.handleActivationPerks(player, 2 + (playerProfile.getSkillLevel(type) / AdvancedConfig.getInstance().getAbilityLength()), ability.getMaxTicks());
 
             ParticleEffectUtils.playAbilityEnabledEffect(player);

@@ -320,14 +320,15 @@ public class PlayerListener implements Listener {
     public void onPlayerInteractLowest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
-        ItemStack heldItem = player.getItemInHand();
 
         if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
+        ItemStack heldItem = player.getItemInHand();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
+        // This shouldn't be possible - this is probably a band-aid for a larger issue somewhere else.
         if (mcMMOPlayer == null) {
             return;
         }
@@ -427,6 +428,7 @@ public class PlayerListener implements Listener {
         ItemStack heldItem = player.getItemInHand();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
+        // This shouldn't be possible - this is probably a band-aid for a larger issue somewhere else.
         if (mcMMOPlayer == null) {
             return;
         }
@@ -532,7 +534,8 @@ public class PlayerListener implements Listener {
         if (mcMMOPlayer == null) {
             return;
         }
-        else if (mcMMOPlayer.getPartyChatMode()) {
+
+        if (mcMMOPlayer.getPartyChatMode()) {
             Party party = mcMMOPlayer.getParty();
 
             if (party == null) {
