@@ -150,6 +150,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getGreaterImpactEffectEnabled() { return config.getBoolean("Particles.Greater_Impact", true); }
     public boolean getLevelUpEffectsEnabled() { return config.getBoolean("Particles.LevelUp_Enabled", true); }
     public int getLevelUpEffectsTier() { return config.getInt("Particles.LevelUp_Tier", 100); }
+    public boolean getLargeFireworks() { return config.getBoolean("Particles.LargeFireworks", true); }
 
     /* PARTY SETTINGS */
     public int getAutoPartyKickInterval() { return config.getInt("Party.AutoKick_Interval", 12); }

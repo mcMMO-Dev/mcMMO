@@ -90,7 +90,7 @@ public final class ParticleEffectUtils {
 
         Firework firework = (Firework) player.getWorld().spawnEntity(location, EntityType.FIREWORK);
         FireworkMeta fireworkMeta = firework.getFireworkMeta();
-        FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(color).with(Type.BALL_LARGE).trail(true).build();
+        FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(color).with((Config.getInstance().getLargeFireworks() ? Type.BALL_LARGE : Type.BALL)).trail(true).build();
         fireworkMeta.addEffect(effect);
         fireworkMeta.addEffect(effect);
         fireworkMeta.setPower(0);

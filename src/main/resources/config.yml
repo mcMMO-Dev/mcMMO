@@ -411,6 +411,9 @@ Particles:
     Ability_Activation: true
     Ability_Deactivation: true
 
+    # Determines if the fireworks should be a large ball or a small one
+    LargeFireworks: true
+
     # Use particle effect when these abilities trigger
     Dodge: true
     Bleed: true
