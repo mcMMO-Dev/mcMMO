@@ -427,6 +427,10 @@ public class PlayerListener implements Listener {
         ItemStack heldItem = player.getItemInHand();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
+        if (mcMMOPlayer == null) {
+            return;
+        }
+
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
                 Block block = event.getClickedBlock();

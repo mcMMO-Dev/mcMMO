@@ -46,7 +46,10 @@ public final class MobHealthbarUtils {
 
         PlayerProfile profile = UserManager.getPlayer(player).getProfile();
 
-        if (profile.getMobHealthbarType() == MobHealthbarType.DISABLED) {
+        if (profile == null) {
+            return;
+        }
+        else if (profile.getMobHealthbarType() == MobHealthbarType.DISABLED) {
             return;
         }
 
