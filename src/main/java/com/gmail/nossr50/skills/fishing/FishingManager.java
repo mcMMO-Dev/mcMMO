@@ -436,8 +436,8 @@ public class FishingManager extends SkillManager {
     private List<Enchantment> getPossibleEnchantments(ItemStack treasureDrop) {
         Material dropType = treasureDrop.getType();
 
-        if (Fishing.enchantableCache.containsKey(dropType)) {
-            return Fishing.enchantableCache.get(dropType);
+        if (Fishing.ENCHANTABLE_CACHE.containsKey(dropType)) {
+            return Fishing.ENCHANTABLE_CACHE.get(dropType);
         }
 
         List<Enchantment> possibleEnchantments = new ArrayList<Enchantment>();
@@ -448,7 +448,7 @@ public class FishingManager extends SkillManager {
             }
         }
 
-        Fishing.enchantableCache.put(dropType, possibleEnchantments);
+        Fishing.ENCHANTABLE_CACHE.put(dropType, possibleEnchantments);
         return possibleEnchantments;
     }
 
