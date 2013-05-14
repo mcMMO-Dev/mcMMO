@@ -30,6 +30,7 @@ import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
+import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
@@ -329,6 +330,13 @@ public class SkillUtils {
         }
 
         if (!mcMMOPlayer.getAbilityMode(ability) && cooldownOver(playerProfile.getSkillDATS(ability), ability.getCooldown(), player)) {
+            McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, type);
+            mcMMO.p.getServer().getPluginManager().callEvent(event);
+            
+            if (event.isCancelled()) {
+                return;
+            }
+            
             int ticks = PerksUtils.handleActivationPerks(player, 2 + (playerProfile.getSkillLevel(type) / AdvancedConfig.getInstance().getAbilityLength()), ability.getMaxTicks());
 
             ParticleEffectUtils.playAbilityEnabledEffect(player);
