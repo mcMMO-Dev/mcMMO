@@ -461,7 +461,7 @@ Treasures:
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
-        Max_Level: 400
+        Max_Level: 200
         Drops_From:
             Fishing: true
     Stone_Shovel:
@@ -471,7 +471,7 @@ Treasures:
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
-        Max_Level: 400
+        Max_Level: 200
         Drops_From:
             Fishing: true
     Stone_Pickaxe:
@@ -481,7 +481,7 @@ Treasures:
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
-        Max_Level: 400
+        Max_Level: 200
         Drops_From:
             Fishing: true
     Stone_Axe:
@@ -491,7 +491,7 @@ Treasures:
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
-        Max_Level: 400
+        Max_Level: 200
         Drops_From:
             Fishing: true
     Stone_Hoe:
@@ -501,7 +501,7 @@ Treasures:
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
-        Max_Level: 400
+        Max_Level: 200
         Drops_From:
             Fishing: true
     Iron_Sword:
