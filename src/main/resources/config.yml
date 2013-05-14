@@ -31,32 +31,31 @@ General:
     Potato_Explosion_Chance: 1
 
 Scoreboards:
+    # Should mcMMO use scoreboards for /inspect?
+    # Amount of time (in seconds) to display. To display permanently, set to -1
     Inspect:
-        # Should mcMMO use scoreboards for /inspect?
         Use: true
-        # Amount of time (in seconds) to display. To display permanently, set to -1
         Display_Time: 10
+    # Should mcMMO use scoreboards for /mcrank?
+    # Amount of time (in seconds) to display. To display permanently, set to -1
     Mcrank:
-        # Should mcMMO use scoreboards for /mcrank?
         Use: true
-        # Amount of time (in seconds) to display. To display permanently, set to -1
         Display_Time: 10
+    # Should mcMMO use scoreboards for /mcstats?
+    # Amount of time (in seconds) to display. To display permanently, set to -1
     Mcstats:
-        # Should mcMMO use scoreboards for /mcstats?
         Use: true
-        # Amount of time (in seconds) to display. To display permanently, set to -1
         Display_Time: 10
+    # Should mcMMO use scoreboards for /mctop?
+    # Amount of time (in seconds) to display. To display permanently, set to -1
     Mctop:
-        # Should mcMMO use scoreboards for /mctop?
         Use: true
-        # Amount of time (in seconds) to display. To display permanently, set to -1
         Display_Time: 10
+    # Should mcMMO use scoreboards for /skillname (/mining, /fishing, etc.)?
+    # Amount of time (in seconds) to display. To display permanently, set to -1
     Skillname:
-        # Should mcMMO use scoreboards for /skillname (/mining, /fishing, etc.)?
         Use: true
-        # Amount of time (in seconds) to display. To display permanently, set to -1
         Display_Time: 10
-
 
 Mob_Healthbar:
     # Default display for mob health bars - HEARTS, BAR, or DISABLED
@@ -72,6 +71,7 @@ Database_Purging:
     # Any user who hasn't connected in this many months will be purged from the database
     # To never purge old users, set to -1
     Old_User_Cutoff: 6
+
 #
 #  Settings for using a mySQL database
 ###
@@ -85,6 +85,7 @@ MySQL:
     Server:
         Port: 3306
         Address: localhost
+
 #
 #  Settings for Hardcore mode
 ###
@@ -382,6 +383,7 @@ Experience:
             Magma_Cube: 2.0
             Iron_Golem: 2.0
             Wither_Skeleton: 4.0
+
 #
 #  Settings for commands
 ###
@@ -403,6 +405,7 @@ Commands:
     a:
         # Allow mcMMO to use player display names in chat instead of their usernames
         Use_Display_Names: true
+
 #
 #  Settings for particles
 ###
