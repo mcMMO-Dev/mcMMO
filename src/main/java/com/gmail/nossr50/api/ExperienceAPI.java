@@ -175,12 +175,17 @@ public final class ExperienceAPI {
      * @return the amount of XP in a given skill
      *
      * @throws InvalidSkillException if the given skill is not valid
+     * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getXP(Player player, String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();
+        }
+
+        if (skill.isChildSkill()) {
+            throw new UnsupportedOperationException("Child skills do not have XP");
         }
 
         return UserManager.getPlayer(player).getProfile().getSkillXpLevel(skill);
@@ -197,12 +202,17 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
+     * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getOfflineXP(String playerName, String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();
+        }
+
+        if (skill.isChildSkill()) {
+            throw new UnsupportedOperationException("Child skills do not have XP");
         }
 
         return getOfflineProfile(playerName).getSkillXpLevel(skill);
@@ -218,12 +228,17 @@ public final class ExperienceAPI {
      * @return the amount of XP in a given skill
      *
      * @throws InvalidSkillException if the given skill is not valid
+     * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static float getXPRaw(Player player, String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();
+        }
+
+        if (skill.isChildSkill()) {
+            throw new UnsupportedOperationException("Child skills do not have XP");
         }
 
         return UserManager.getPlayer(player).getProfile().getSkillXpLevelRaw(skill);
@@ -240,12 +255,17 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
+     * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static float getOfflineXPRaw(String playerName, String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();
+        }
+
+        if (skill.isChildSkill()) {
+            throw new UnsupportedOperationException("Child skills do not have XP");
         }
 
         return getOfflineProfile(playerName).getSkillXpLevelRaw(skill);
@@ -261,12 +281,17 @@ public final class ExperienceAPI {
      * @return the amount of XP left before leveling up a specifc skill
      *
      * @throws InvalidSkillException if the given skill is not valid
+     * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getXPToNextLevel(Player player, String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();
+        }
+
+        if (skill.isChildSkill()) {
+            throw new UnsupportedOperationException("Child skills do not have XP");
         }
 
         return UserManager.getPlayer(player).getProfile().getXpToLevel(skill);
@@ -283,12 +308,17 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
+     * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getOfflineXPToNextLevel(String playerName, String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();
+        }
+
+        if (skill.isChildSkill()) {
+            throw new UnsupportedOperationException("Child skills do not have XP");
         }
 
         return getOfflineProfile(playerName).getXpToLevel(skill);
@@ -514,12 +544,17 @@ public final class ExperienceAPI {
      * @param newValue The value to set the XP to
      *
      * @throws InvalidSkillException if the given skill is not valid
+     * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static void setXP(Player player, String skillType, int newValue) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();
+        }
+
+        if (skill.isChildSkill()) {
+            throw new UnsupportedOperationException("Child skills do not have XP");
         }
 
         UserManager.getPlayer(player).getProfile().setSkillXpLevel(skill, newValue);
@@ -536,12 +571,17 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
+     * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static void setXPOffline(String playerName, String skillType, int newValue) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();
+        }
+
+        if (skill.isChildSkill()) {
+            throw new UnsupportedOperationException("Child skills do not have XP");
         }
 
         getOfflineProfile(playerName).setSkillXpLevel(skill, newValue);
@@ -557,12 +597,17 @@ public final class ExperienceAPI {
      * @param xp The amount of XP to remove
      *
      * @throws InvalidSkillException if the given skill is not valid
+     * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static void removeXP(Player player, String skillType, int xp) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();
+        }
+
+        if (skill.isChildSkill()) {
+            throw new UnsupportedOperationException("Child skills do not have XP");
         }
 
         UserManager.getPlayer(player).getProfile().removeXp(skill, xp);
@@ -579,12 +624,17 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
+     * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static void removeXPOffline(String playerName, String skillType, int xp) {
         SkillType skill = SkillType.getSkill(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();
+        }
+
+        if (skill.isChildSkill()) {
+            throw new UnsupportedOperationException("Child skills do not have XP");
         }
 
         getOfflineProfile(playerName).removeXp(skill, xp);
