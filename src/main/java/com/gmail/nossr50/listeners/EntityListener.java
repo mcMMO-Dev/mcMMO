@@ -61,12 +61,16 @@ public class EntityListener implements Listener {
     public void onEntityShootBow(EntityShootBowEvent event) {
         ItemStack bow = event.getBow();
 
-        if (bow != null && bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
+        if (bow != null) {
             Entity projectile = event.getProjectile();
 
             if (projectile instanceof Arrow) {
-                projectile.setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
+                if (bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
+                    projectile.setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
+                }
+
                 projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
+                projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, Archery.locationToString(projectile.getLocation())));
             }
         }
     }

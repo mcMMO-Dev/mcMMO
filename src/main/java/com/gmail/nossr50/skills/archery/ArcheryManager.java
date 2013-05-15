@@ -1,11 +1,13 @@
 package com.gmail.nossr50.skills.archery;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -37,20 +39,15 @@ public class ArcheryManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} damaged by the arrow
      */
-    public void distanceXpBonus(LivingEntity target) {
-        Player player = getPlayer();
-        Location shooterLocation = player.getLocation();
+    public void distanceXpBonus(LivingEntity target, Entity damager) {
+        Location firedLocation = Archery.stringToLocation(damager.getMetadata(mcMMO.arrowDistanceKey).get(0).asString());
         Location targetLocation = target.getLocation();
 
-        if (shooterLocation.getWorld() != targetLocation.getWorld()) {
+        if (firedLocation.getWorld() != targetLocation.getWorld()) {
             return;
         }
 
-        // Cap distance at 100^2 to prevent teleport exploit.
-        // TODO: Better way to handle this would be great...
-        double squaredDistance = Math.min(shooterLocation.distanceSquared(targetLocation), 10000);
-
-        applyXpGain((int) (squaredDistance * Archery.DISTANCE_XP_MULTIPLIER));
+        applyXpGain((int) (firedLocation.distanceSquared(targetLocation) * Archery.DISTANCE_XP_MULTIPLIER));
     }
 
     /**

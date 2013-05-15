@@ -96,6 +96,7 @@ public class mcMMO extends JavaPlugin {
     public final static String droppedItemKey      = "mcMMO: Tracked Item";
     public final static String infiniteArrowKey    = "mcMMO: Infinite Arrow";
     public final static String bowForceKey         = "mcMMO: Bow Force";
+    public final static String arrowDistanceKey    = "mcMMO: Arrow Distance";
 
     public static FixedMetadataValue metadataValue;
 
