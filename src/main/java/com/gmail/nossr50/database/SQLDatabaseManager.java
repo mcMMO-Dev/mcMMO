@@ -92,13 +92,13 @@ public final class SQLDatabaseManager {
                 + "`user` varchar(40) NOT NULL,"
                 + "`lastlogin` int(32) unsigned NOT NULL,"
                 + "PRIMARY KEY (`id`),"
-                + "UNIQUE KEY `user` (`user`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+                + "UNIQUE KEY `user` (`user`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD',"
                 + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
                 + "PRIMARY KEY (`user_id`)) "
-                + "ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+                + "DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`taming` int(32) unsigned NOT NULL DEFAULT '0',"
@@ -114,7 +114,7 @@ public final class SQLDatabaseManager {
                 + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)) "
-                + "ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+                + "DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -129,7 +129,7 @@ public final class SQLDatabaseManager {
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)) "
-                + "ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+                + "DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -144,7 +144,7 @@ public final class SQLDatabaseManager {
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)) "
-                + "ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+                + "DEFAULT CHARSET=latin1;");
 
         checkDatabaseStructure(DatabaseUpdateType.FISHING);
         checkDatabaseStructure(DatabaseUpdateType.BLAST_MINING);
