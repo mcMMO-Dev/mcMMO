@@ -11,13 +11,13 @@ import org.getspout.spoutapi.gui.Button;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.spout.buttons.McMMOButton;
 import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.datatypes.spout.popups.McMMOMenu;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public class SpoutListener implements Listener {
 
@@ -32,7 +32,7 @@ public class SpoutListener implements Listener {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(spoutPlayer);
 
         // TODO: Add custom titles based on skills
-        if (SpoutUtils.showPowerLevel) {
+        if (SpoutConfig.getInstance().getShowPowerLevel()) {
             spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", spoutPlayer.getTitle(), mcMMOPlayer.getPowerLevel()));
         }
 
@@ -81,7 +81,7 @@ public class SpoutListener implements Listener {
             return;
         }
 
-        if (event.getKey() == SpoutUtils.menuKey) {
+        if (event.getKey() == SpoutConfig.getInstance().getMenuKey()) {
             McMMOHud spoutHud = UserManager.getPlayer(spoutPlayer).getProfile().getSpoutHud();
 
             if (!spoutHud.isMenuOpened()) {

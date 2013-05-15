@@ -13,13 +13,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
-import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.FileManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.listeners.SpoutListener;
@@ -37,10 +35,8 @@ public class SpoutUtils {
     public final static String hudRetroDirectory = hudDirectory + "Retro" + File.separator;
     public final static String soundDirectory = spoutDirectory + "Sound" + File.separator;
 
-    public static boolean showPowerLevel;
-
     private final static SpoutListener spoutListener = new SpoutListener();
-    public static Keyboard menuKey;
+//    public static Keyboard menuKey;
 
     /**
      * Write file to disk.
@@ -146,25 +142,6 @@ public class SpoutUtils {
 
         // Sound FX
         writeFile("level.wav", soundDirectory);
-    }
-
-    /**
-     * Setup Spout config options
-     */
-    public static void setupSpoutConfigs() {
-        showPowerLevel = SpoutConfig.getInstance().getShowPowerLevel();
-        String temp = SpoutConfig.getInstance().getMenuKey();
-
-        for (Keyboard x : Keyboard.values()) {
-            if (x.toString().equalsIgnoreCase(temp)) {
-                menuKey = x;
-            }
-        }
-
-        if (menuKey == null) {
-            mcMMO.p.getLogger().warning("Invalid KEY for Menu.Key, using KEY_M");
-            menuKey = Keyboard.KEY_M;
-        }
     }
 
     /**

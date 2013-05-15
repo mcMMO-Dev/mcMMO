@@ -321,7 +321,6 @@ public class mcMMO extends JavaPlugin {
             spoutEnabled = true;
 
             SpoutConfig.getInstance();
-            SpoutUtils.setupSpoutConfigs();
             SpoutUtils.registerCustomEvent();
             SpoutUtils.preCacheFiles();
             SpoutUtils.reloadSpoutPlayers(); // Handle spout players after a /reload

@@ -1,5 +1,7 @@
 package com.gmail.nossr50.config.spout;
 
+import org.getspout.spoutapi.keyboard.Keyboard;
+
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
@@ -34,7 +36,14 @@ public class SpoutConfig extends ConfigLoader {
     }
 
     public boolean getShowPowerLevel() { return config.getBoolean("HUD.Show_Power_Level", true); }
-    public String getMenuKey() { return config.getString("Menu.Key", "KEY_M"); }
+    public Keyboard getMenuKey() { 
+        try {
+            return Keyboard.valueOf(config.getString("Menu.Key", "KEY_M").toUpperCase().trim());
+        }
+        catch (IllegalArgumentException ex) {
+            return Keyboard.KEY_M;
+        }
+    }
 
     /* XP Bar */
     public boolean getXPBarEnabled() { return config.getBoolean("XP.Bar.Enabled", true); }
