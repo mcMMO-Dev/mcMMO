@@ -114,25 +114,24 @@ public class SpoutUtils {
     /**
      * Write file to disk.
      *
-     * @param theFileName The name of the file
-     * @param theFilePath The name of the file path
+     * @param fileName The name of the file
+     * @param filePath The name of the file path
      */
-    private static void writeFile(String theFileName, String theFilePath) {
+    private static File writeFile(String fileName, String filePath) {
+        File currentFile = new File(filePath + fileName);
         BufferedOutputStream os = null;
         JarFile jar = null;
 
+        // No point in writing the file again if it already exists.
+        if (currentFile.exists()) {
+            return currentFile;
+        }
+
         try {
-            File currentFile = new File(theFilePath + theFileName);
-
-            // No point in writing the file again if it already exists.
-            if (currentFile.exists()) {
-                return;
-            }
-
             jar = new JarFile(mcMMO.mcmmo);
 
             @SuppressWarnings("resource")
-            InputStream is = jar.getInputStream(jar.getJarEntry("resources/" + theFileName));
+            InputStream is = jar.getInputStream(jar.getJarEntry("resources/" + fileName));
 
             byte[] buf = new byte[2048];
             int nbRead;
@@ -167,12 +166,16 @@ public class SpoutUtils {
                 }
             }
         }
+
+        return currentFile;
     }
 
     /**
      * Extract Spout files to the Resources directory.
      */
-    public static void extractFiles() {
+    public static ArrayList<File> extractFiles() {
+        ArrayList<File> files = new ArrayList<File>();
+
         // Setup directories
         new File(spoutDirectory).mkdir();
         new File(hudDirectory).mkdir();
@@ -182,19 +185,19 @@ public class SpoutUtils {
 
         // XP Bar images
         for (int x = 0; x < 255; x++) {
-            String theFileName;
+            String fileName;
 
             if (x < 10) {
-                theFileName = "xpbar_inc00" + x + ".png";
+                fileName = "xpbar_inc00" + x + ".png";
             }
             else if (x < 100) {
-                theFileName = "xpbar_inc0" + x + ".png";
+                fileName = "xpbar_inc0" + x + ".png";
             }
             else {
-                theFileName = "xpbar_inc" + x + ".png";
+                fileName = "xpbar_inc" + x + ".png";
             }
 
-            writeFile(theFileName, hudStandardDirectory);
+            files.add(writeFile(fileName, hudStandardDirectory));
         }
 
         // Standard XP Icons
@@ -203,59 +206,18 @@ public class SpoutUtils {
                 continue;
             }
 
-            String skillTypeString = StringUtils.getCapitalized(skillType.toString());
+            String skillName = StringUtils.getCapitalized(skillType.toString());
 
-            writeFile(skillTypeString + ".png", hudStandardDirectory);
-            writeFile(skillTypeString + "_r.png", hudRetroDirectory);
+            files.add(writeFile(skillName + ".png", hudStandardDirectory));
+            files.add(writeFile(skillName + "_r.png", hudRetroDirectory));
         }
 
         // Blank icons
-        writeFile("Icon.png", hudStandardDirectory);
-        writeFile("Icon_r.png", hudRetroDirectory);
+        files.add(writeFile("Icon.png", hudStandardDirectory));
+        files.add(writeFile("Icon_r.png", hudRetroDirectory));
 
         // Sound FX
-        writeFile("level.wav", soundDirectory);
-    }
-
-    /**
-     * Get all the Spout files in the Resources folder.
-     *
-     * @return a list of all files is the Resources folder
-     */
-    public static ArrayList<File> getFiles() {
-        ArrayList<File> files = new ArrayList<File>();
-
-        // XP BAR
-        for (int x = 0; x < 255; x++) {
-            if (x < 10) {
-                files.add(new File(hudStandardDirectory + "xpbar_inc00" + x + ".png"));
-            }
-            else if (x < 100) {
-                files.add(new File(hudStandardDirectory + "xpbar_inc0" + x + ".png"));
-            }
-            else {
-                files.add(new File(hudStandardDirectory + "xpbar_inc" + x + ".png"));
-            }
-        }
-
-        // Standard XP Icons
-        for (SkillType skillType : SkillType.values()) {
-            if (skillType.isChildSkill()) {
-                continue;
-            }
-
-            String skillTypeString = StringUtils.getCapitalized(skillType.toString());
-
-            files.add(new File(hudStandardDirectory + skillTypeString + ".png"));
-            files.add(new File(hudRetroDirectory + skillTypeString + "_r.png"));
-        }
-
-        // Blank icons
-        files.add(new File(hudStandardDirectory + "Icon.png"));
-        files.add(new File(hudRetroDirectory + "Icon_r.png"));
-
-        // Level SFX
-        files.add(new File(soundDirectory + "level.wav"));
+        files.add(writeFile("level.wav", soundDirectory));
 
         return files;
     }
@@ -459,7 +421,6 @@ public class SpoutUtils {
     }
 
     public static void preCacheFiles() {
-        extractFiles();
-        SpoutManager.getFileManager().addToPreLoginCache(mcMMO.p, getFiles());
+        SpoutManager.getFileManager().addToPreLoginCache(mcMMO.p, extractFiles());
     }
 }
