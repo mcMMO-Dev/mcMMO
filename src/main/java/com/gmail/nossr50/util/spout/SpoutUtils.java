@@ -13,30 +13,23 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
-import org.getspout.spoutapi.player.FileManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.listeners.SpoutListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SpoutUtils {
-    private static mcMMO plugin = mcMMO.p;
-
     public final static String spoutDirectory = mcMMO.getMainDirectory() + "Resources" + File.separator;
     public final static String hudDirectory = spoutDirectory + "HUD" + File.separator;
     public final static String hudStandardDirectory = hudDirectory + "Standard" + File.separator;
     public final static String hudRetroDirectory = hudDirectory + "Retro" + File.separator;
     public final static String soundDirectory = spoutDirectory + "Sound" + File.separator;
-
-    private final static SpoutListener spoutListener = new SpoutListener();
-//    public static Keyboard menuKey;
 
     /**
      * Write file to disk.
@@ -185,13 +178,6 @@ public class SpoutUtils {
         files.add(new File(soundDirectory + "level.wav"));
 
         return files;
-    }
-
-    /**
-     * Register custom Spout events.
-     */
-    public static void registerCustomEvent() {
-        plugin.getServer().getPluginManager().registerEvents(spoutListener, plugin);
     }
 
     /**
@@ -497,7 +483,7 @@ public class SpoutUtils {
         }
 
         spoutPlayer.sendNotification(LocaleLoader.getString("Spout.LevelUp.1"), LocaleLoader.getString("Spout.LevelUp.2", SkillUtils.getSkillName(skillType), profile.getSkillLevel(skillType)), mat);
-        SpoutManager.getSoundManager().playCustomSoundEffect(plugin, spoutPlayer, "level.wav", false);
+        SpoutManager.getSoundManager().playCustomSoundEffect(mcMMO.p, spoutPlayer, "level.wav", false);
     }
 
     /**
@@ -542,9 +528,7 @@ public class SpoutUtils {
     }
 
     public static void preCacheFiles() {
-        extractFiles(); // Extract source materials
-
-        FileManager FM = SpoutManager.getFileManager();
-        FM.addToPreLoginCache(plugin, getFiles());
+        extractFiles();
+        SpoutManager.getFileManager().addToPreLoginCache(mcMMO.p, getFiles());
     }
 }

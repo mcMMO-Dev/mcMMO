@@ -28,6 +28,7 @@ import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.SelfListener;
+import com.gmail.nossr50.listeners.SpoutListener;
 import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.metrics.MetricsManager;
@@ -52,14 +53,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public class mcMMO extends JavaPlugin {
-    /* Listeners */
-    private final PlayerListener    playerListener    = new PlayerListener(this);
-    private final BlockListener     blockListener     = new BlockListener(this);
-    private final EntityListener    entityListener    = new EntityListener(this);
-    private final InventoryListener inventoryListener = new InventoryListener(this);
-    private final WorldListener     worldListener     = new WorldListener(this);
-    private final SelfListener      selfListener      = new SelfListener();
-
     /* Managers */
     private static ChunkManager      placeStore;
     private static RepairableManager repairableManager;
@@ -321,7 +314,7 @@ public class mcMMO extends JavaPlugin {
             spoutEnabled = true;
 
             SpoutConfig.getInstance();
-            SpoutUtils.registerCustomEvent();
+            getServer().getPluginManager().registerEvents(new SpoutListener(), this);
             SpoutUtils.preCacheFiles();
             SpoutUtils.reloadSpoutPlayers(); // Handle spout players after a /reload
         }
@@ -331,12 +324,12 @@ public class mcMMO extends JavaPlugin {
         PluginManager pluginManager = getServer().getPluginManager();
 
         // Register events
-        pluginManager.registerEvents(playerListener, this);
-        pluginManager.registerEvents(blockListener, this);
-        pluginManager.registerEvents(entityListener, this);
-        pluginManager.registerEvents(inventoryListener, this);
-        pluginManager.registerEvents(selfListener, this);
-        pluginManager.registerEvents(worldListener, this);
+        pluginManager.registerEvents(new PlayerListener(this), this);
+        pluginManager.registerEvents(new BlockListener(this), this);
+        pluginManager.registerEvents(new EntityListener(this), this);
+        pluginManager.registerEvents(new InventoryListener(this), this);
+        pluginManager.registerEvents(new SelfListener(), this);
+        pluginManager.registerEvents(new WorldListener(this), this);
     }
 
     private void registerCustomRecipes() {
