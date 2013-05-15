@@ -1,5 +1,7 @@
 package com.gmail.nossr50.listeners;
 
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -20,6 +22,7 @@ import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -98,10 +101,11 @@ public class InventoryListener implements Listener {
 
         if (furnaceState instanceof Furnace) {
             ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
+            List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
 
-            if (furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && smelting != null && ItemUtils.isSmeltable(smelting)) {
+            if (!metadata.isEmpty() && smelting != null && ItemUtils.isSmeltable(smelting)) {
                 // We can make this assumption because we (should) be the only ones using this exact metadata
-                Player player = plugin.getServer().getPlayer(furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).get(0).asString());
+                Player player = plugin.getServer().getPlayer(metadata.get(0).asString());
 
                 if (Misc.isNPCEntity(player) || !Permissions.fuelEfficiency(player)) {
                     return;
@@ -119,6 +123,7 @@ public class InventoryListener implements Listener {
 
         if (furnaceState instanceof Furnace) {
             ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
+            List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
 
             if (Config.getInstance().getPotatoEnabled() && smelting.getType() == Material.POTATO_ITEM) {
                 if ((Config.getInstance().getPotatoChance() / 100.0) >= Misc.getRandom().nextDouble()) {
@@ -128,9 +133,9 @@ public class InventoryListener implements Listener {
                 }
             }
 
-            if (furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && smelting != null && ItemUtils.isSmeltable(smelting)) {
+            if (!metadata.isEmpty() && smelting != null && ItemUtils.isSmeltable(smelting)) {
                 // We can make this assumption because we (should) be the only ones using this exact metadata
-                Player player = plugin.getServer().getPlayer(furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).get(0).asString());
+                Player player = plugin.getServer().getPlayer(metadata.get(0).asString());
 
                 if (Misc.isNPCEntity(player) || !Permissions.skillEnabled(player, SkillType.SMELTING)) {
                     return;
@@ -148,10 +153,11 @@ public class InventoryListener implements Listener {
 
         if (furnaceState instanceof Furnace) {
             ItemStack result = ((Furnace) furnaceState).getInventory().getResult();
+            List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
 
-            if (furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey) && result != null && ItemUtils.isSmelted(result)) {
+            if (!metadata.isEmpty() && result != null && ItemUtils.isSmelted(result)) {
                 // We can make this assumption because we (should) be the only ones using this exact metadata
-                Player player = plugin.getServer().getPlayer(furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey).get(0).asString());
+                Player player = plugin.getServer().getPlayer(metadata.get(0).asString());
 
                 if (Misc.isNPCEntity(player)) {
                     return;
