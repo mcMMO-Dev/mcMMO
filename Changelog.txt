@@ -24,6 +24,7 @@ Version 1.4.06-dev
  + Added McMMOAbilityActivateEvent and McMMOAbilityDeactivateEvent
  + Added config options to toggle the size of fireworks
  + Added config option to multiply xp gains from mob spawner mobs
+ + Added multiplier to Archery XP based on bow force
  = Fixed bug where players were able to join the same party multiple times
  = Fixed displaying partial names when trying to use /ptp
  = Fixed wolves from Call of the Wild only having 8 health

@@ -52,6 +52,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getRetrieveChanceMax() { return config.getDouble("Skills.Archery.Retrieve_MaxBonus", 100.0D); }
     public int getRetrieveMaxBonusLevel() { return config.getInt("Skills.Archery.Retrieve_MaxBonusLevel", 1000); }
 
+    public double getForceMultiplier() { return config.getDouble("Skills.Archery.Force_Multiplier", 2.0D); }
+
     /* AXES */
     public int getBonusDamageAxesBonusMax() { return config.getInt("Skills.Axes.DamageIncrease_MaxBonus", 4); }
     public int getBonusDamageAxesMaxBonusLevel() { return config.getInt("Skills.Axes.DamageIncrease_MaxBonusLevel", 200); }

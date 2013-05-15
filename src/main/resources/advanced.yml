@@ -71,6 +71,9 @@ Skills:
         # Retrieve_MaxBonusLevel: Maximum bonus level for Arrow retrieval, at this level the chance of retrieving arrows from mobs is Retrieve_MaxBonus
         Retrieve_MaxChance: 100.0
         Retrieve_MaxBonusLevel: 1000
+
+        #Force_Multiplier: Multiply the force of the bow by this for an XP boost.
+        Force_Multiplier: 2.0
     #
     #  Settings for Axes
     ###

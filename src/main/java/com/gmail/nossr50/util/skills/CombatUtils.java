@@ -250,7 +250,9 @@ public final class CombatUtils {
                     }
 
                     archeryManager.distanceXpBonus(target);
-                    startGainXp(mcMMOPlayer, target, SkillType.ARCHERY);
+
+                    double forceMultiplier = damager.hasMetadata(mcMMO.bowForceKey) ? damager.getMetadata(mcMMO.bowForceKey).get(0).asDouble() : 1.0;
+                    startGainXp(mcMMOPlayer, target, SkillType.ARCHERY, forceMultiplier);
                 }
 
                 break;
@@ -424,6 +426,10 @@ public final class CombatUtils {
         }
     }
 
+    public static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, SkillType skillType) {
+        startGainXp(mcMMOPlayer, target, skillType, 1.0);
+    }
+
     /**
      * Start the task that gives combat XP.
      *
@@ -431,7 +437,7 @@ public final class CombatUtils {
      * @param target The defending entity
      * @param skillType The skill being used
      */
-    public static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, SkillType skillType) {
+    public static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, SkillType skillType, double multiplier) {
         double baseXP = 0;
 
         if (target instanceof Player) {
@@ -513,6 +519,8 @@ public final class CombatUtils {
 
             baseXP *= 10;
         }
+
+        baseXP *= multiplier;
 
         if (baseXP != 0) {
             new AwardCombatXpTask(mcMMOPlayer, skillType, baseXP, target).runTaskLater(mcMMO.p, 0);

@@ -4,6 +4,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AnimalTamer;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.LivingEntity;
@@ -28,8 +29,10 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
@@ -59,7 +62,12 @@ public class EntityListener implements Listener {
         ItemStack bow = event.getBow();
 
         if (bow != null && bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
-            event.getProjectile().setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
+            Entity projectile = event.getProjectile();
+
+            if (projectile instanceof Arrow) {
+                projectile.setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
+                projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
+            }
         }
     }
 
