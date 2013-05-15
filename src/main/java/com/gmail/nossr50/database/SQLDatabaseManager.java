@@ -97,7 +97,7 @@ public final class SQLDatabaseManager {
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD',"
                 + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
-                + "PRIMARY KEY (`user_id`) "
+                + "PRIMARY KEY (`user_id`)) "
                 + "ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
@@ -113,7 +113,7 @@ public final class SQLDatabaseManager {
                 + "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`) "
+                + "PRIMARY KEY (`user_id`)) "
                 + "ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
@@ -128,7 +128,7 @@ public final class SQLDatabaseManager {
                 + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`) "
+                + "PRIMARY KEY (`user_id`)) "
                 + "ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
@@ -143,7 +143,7 @@ public final class SQLDatabaseManager {
                 + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`) "
+                + "PRIMARY KEY (`user_id`)) "
                 + "ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
         checkDatabaseStructure(DatabaseUpdateType.FISHING);
