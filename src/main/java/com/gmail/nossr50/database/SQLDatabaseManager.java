@@ -97,9 +97,8 @@ public final class SQLDatabaseManager {
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD',"
                 + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
-                + "PRIMARY KEY (`user_id`),"
-                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
-                + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+                + "PRIMARY KEY (`user_id`) "
+                + "ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`taming` int(32) unsigned NOT NULL DEFAULT '0',"
@@ -114,9 +113,8 @@ public final class SQLDatabaseManager {
                 + "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
                 + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`),"
-                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
-                + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+                + "PRIMARY KEY (`user_id`) "
+                + "ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -130,9 +128,8 @@ public final class SQLDatabaseManager {
                 + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`),"
-                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
-                + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+                + "PRIMARY KEY (`user_id`) "
+                + "ENGINE=MyISAM DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
                 + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
@@ -146,13 +143,11 @@ public final class SQLDatabaseManager {
                 + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`),"
-                + "FOREIGN KEY (`user_id`) REFERENCES `" + tablePrefix + "users` (`id`) "
-                + "ON DELETE CASCADE) ENGINE=MyISAM DEFAULT CHARSET=latin1;");
+                + "PRIMARY KEY (`user_id`) "
+                + "ENGINE=MyISAM DEFAULT CHARSET=latin1;");
 
         checkDatabaseStructure(DatabaseUpdateType.FISHING);
         checkDatabaseStructure(DatabaseUpdateType.BLAST_MINING);
-        checkDatabaseStructure(DatabaseUpdateType.CASCADE_DELETE);
         checkDatabaseStructure(DatabaseUpdateType.INDEX);
         checkDatabaseStructure(DatabaseUpdateType.MOB_HEALTHBARS);
     }
@@ -191,7 +186,13 @@ public final class SQLDatabaseManager {
     }
 
     public static boolean removeUserSQL(String playerName) {
-        return SQLDatabaseManager.update("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.user = '" + playerName + "'") != 0;
+        return SQLDatabaseManager.update("DELETE FROM u, e, h, s, c " +
+                "USING " + tablePrefix + "users u " +
+                "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
+                "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
+                "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
+                "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
+                "WHERE u.user = '" + playerName + "'") != 0;
     }
 
     /**
@@ -489,8 +490,12 @@ public final class SQLDatabaseManager {
 
     public static int purgePowerlessSQL() {
         HashMap<Integer, ArrayList<String>> usernames = read("SELECT u.user FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
-        write("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.id IN (SELECT * FROM (SELECT u.id FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0) AS p)");
-
+        write("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
+                "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
+                "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
+                "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
+                "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
+                "WHERE (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
         return processPurge(usernames.values());
     }
 
@@ -499,7 +504,12 @@ public final class SQLDatabaseManager {
         long purgeTime = ONE_MONTH * Config.getInstance().getOldUsersCutoff();
 
         HashMap<Integer, ArrayList<String>> usernames = read("SELECT user FROM " + tablePrefix + "users WHERE ((" + currentTime + " - lastlogin*1000) > " + purgeTime + ")");
-        write("DELETE FROM " + tablePrefix + "users WHERE " + tablePrefix + "users.id IN (SELECT * FROM (SELECT id FROM " + tablePrefix + "users WHERE ((" + currentTime + " - lastlogin*1000) > " + purgeTime + ")) AS p)");
+        write("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
+                "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
+                "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
+                "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
+                "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
+                "WHERE ((" + currentTime + " - lastlogin*1000) > " + purgeTime + ")");
 
         return processPurge(usernames.values());
     }
@@ -528,13 +538,6 @@ public final class SQLDatabaseManager {
         switch (update) {
             case BLAST_MINING:
                 sql = "SELECT * FROM  `" + tablePrefix + "cooldowns` ORDER BY  `" + tablePrefix + "cooldowns`.`blast_mining` ASC LIMIT 0 , 30";
-                break;
-
-            case CASCADE_DELETE:
-                write("ALTER TABLE `" + tablePrefix + "huds` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;");
-                write("ALTER TABLE `" + tablePrefix + "experience` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;");
-                write("ALTER TABLE `" + tablePrefix + "cooldowns` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;");
-                write("ALTER TABLE `" + tablePrefix + "skills` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE CASCADE;");
                 break;
 
             case FISHING:
