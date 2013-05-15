@@ -272,13 +272,13 @@ public final class ExperienceAPI {
     }
 
     /**
-     * Get the amount of XP left before leveling up.
+     * Get the total amount of XP needed to reach the next level.
      * </br>
      * This function is designed for API usage.
      *
      * @param player The player to get the XP amount for
      * @param skillType The skill to get the XP amount for
-     * @return the amount of XP left before leveling up a specifc skill
+     * @return the total amount of XP needed to reach the next level
      *
      * @throws InvalidSkillException if the given skill is not valid
      * @throws UnsupportedOperationException if the given skill is a child skill
@@ -298,13 +298,13 @@ public final class ExperienceAPI {
     }
 
     /**
-     * Get the amount of XP an offline player has left before leveling up.
+     * Get the total amount of XP an offline player needs to reach the next level.
      * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to get XP for
      * @param skillType The skill to get XP for
-     * @return the amount of XP in a given skill
+     * @return the total amount of XP needed to reach the next level
      *
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
@@ -322,6 +322,63 @@ public final class ExperienceAPI {
         }
 
         return getOfflineProfile(playerName).getXpToLevel(skill);
+    }
+
+    /**
+     * Get the amount of XP remaining until the next level.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to get the XP amount for
+     * @param skillType The skill to get the XP amount for
+     * @return the amount of XP remaining until the next level
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     * @throws UnsupportedOperationException if the given skill is a child skill
+     */
+    public static int getXPRemaining(Player player, String skillType) {
+        SkillType skill = SkillType.getSkill(skillType);
+
+        if (skill == null) {
+            throw new InvalidSkillException();
+        }
+
+        if (skill.isChildSkill()) {
+            throw new UnsupportedOperationException("Child skills do not have XP");
+        }
+
+        PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+
+        return profile.getXpToLevel(skill) - profile.getSkillXpLevel(skill);
+    }
+
+    /**
+     * Get the amount of XP an offline player has left before leveling up.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param playerName The player to get XP for
+     * @param skillType The skill to get XP for
+     * @return the amount of XP needed to reach the next level
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     * @throws InvalidPlayerException if the given player does not exist in the database
+     * @throws UnsupportedOperationException if the given skill is a child skill
+     */
+    public static int getOfflineXPRemaining(String playerName, String skillType) {
+        SkillType skill = SkillType.getSkill(skillType);
+
+        if (skill == null) {
+            throw new InvalidSkillException();
+        }
+
+        if (skill.isChildSkill()) {
+            throw new UnsupportedOperationException("Child skills do not have XP");
+        }
+
+        PlayerProfile profile = getOfflineProfile(playerName);
+
+        return profile.getXpToLevel(skill) - profile.getSkillXpLevel(skill);
     }
 
     /**
