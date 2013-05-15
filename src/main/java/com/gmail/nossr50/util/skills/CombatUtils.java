@@ -245,7 +245,7 @@ public final class CombatUtils {
                         event.setDamage(archeryManager.dazeCheck((Player) target, event.getDamage()));
                     }
 
-                    if (archeryManager.canTrackArrows()) {
+                    if (!damager.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canTrackArrows()) {
                         archeryManager.trackArrows(target);
                     }
 

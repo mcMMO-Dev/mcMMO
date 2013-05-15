@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.archery;
 
 import org.bukkit.Location;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -30,9 +29,7 @@ public class ArcheryManager extends SkillManager {
     }
 
     public boolean canTrackArrows() {
-        Player player = getPlayer();
-
-        return !(player.getItemInHand().containsEnchantment(Enchantment.ARROW_INFINITE)) && Permissions.arrowRetrieval(player);
+        return Permissions.arrowRetrieval(getPlayer());
     }
 
     /**

@@ -94,6 +94,7 @@ public class mcMMO extends JavaPlugin {
     public final static String customNameKey       = "mcMMO: Custom Name";
     public final static String customVisibleKey    = "mcMMO: Name Visibility";
     public final static String droppedItemKey      = "mcMMO: Tracked Item";
+    public final static String infiniteArrowKey    = "mcMMO: Infinite Arrow";
 
     public static FixedMetadataValue metadataValue;
 
