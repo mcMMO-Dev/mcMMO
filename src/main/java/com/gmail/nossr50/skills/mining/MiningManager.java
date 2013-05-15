@@ -10,6 +10,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
@@ -158,7 +159,7 @@ public class MiningManager extends SkillManager{
         if (debrisYield > 0) {
             for (BlockState blockState : debris) {
                 if (Misc.getRandom().nextFloat() < debrisYield) {
-                    Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack(1));
+                    Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
                 }
             }
         }

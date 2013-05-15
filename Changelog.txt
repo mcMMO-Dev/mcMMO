@@ -22,7 +22,7 @@ Version 1.4.06-dev
  + Added fishing exploit prevention
  + Added boosts to Fishing chance depending on conditions
  + Added McMMOAbilityActivateEvent and McMMOAbilityDeactivateEvent
- + Added config options to toggle the size of fireworks
+ + Added config option to toggle the size of fireworks
  + Added config option to multiply xp gains from mob spawner mobs
  + Added multiplier to Archery XP based on bow force
  + Added information about /party itemshare and /party expshare to the party help page
@@ -41,6 +41,7 @@ Version 1.4.06-dev
  = Fixed possible item duplication bug with infinity bows
  = Fixed bug with removing players from mySQL database
  = Fixed bug with empty metadata lists and Smelting
+ = Fixed bug where Blast Mining would drop wrong items
  ! Changed Berserk to add items to inventory rather than denying pickup
  ! Changed Call of the Wild, newly summoned pet's will have a custom name. (added permission node to disable this)
  ! Changed Chimaera Wing's recipe result to use the ingredient Material

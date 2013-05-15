@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util;
 
+import java.util.Collection;
 import java.util.Random;
 
 import org.bukkit.Location;
@@ -205,5 +206,11 @@ public final class Misc {
 
     public static Random getRandom() {
         return random;
+    }
+
+    public static void dropItems(Location location, Collection<ItemStack> drops) {
+        for (ItemStack drop : drops) {
+            dropItem(location, drop);
+        }
     }
 }
