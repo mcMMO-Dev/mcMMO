@@ -80,6 +80,8 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getSkillScoreboardEnabled() { return config.getBoolean("Scoreboards.Skillname.Use", true); }
     public int getSkillScoreboardTime() { return config.getInt("Scoreboards.Skillname.Display_Time", 10); }
 
+    public boolean getPowerLevelsEnabled() { return config.getBoolean("Scoreboards.Power_Level.Use", true); }
+
     /* Database Purging */
     public int getPurgeInterval() { return config.getInt("Database_Purging.Purge_Interval", -1); }
     public int getOldUsersCutoff() { return config.getInt("Database_Purging.Old_User_Cutoff", 6); }

@@ -23,6 +23,7 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.scoreboards.ScoreboardChangeTask;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ScoreboardManager {
@@ -32,6 +33,7 @@ public class ScoreboardManager {
     private final static String PLAYER_STATS_HEADER   = "mcMMO Stats";
     private final static String PLAYER_RANK_HEADER    = "mcMMO Rankings";
     private final static String PLAYER_INSPECT_HEADER = "mcMMO Stats: ";
+    private final static String POWER_LEVEL_HEADER    = "Power Level";
 
     private final static List<String> SCOREBOARD_TASKS = new ArrayList<String>();
 
@@ -41,6 +43,32 @@ public class ScoreboardManager {
         }
 
         PLAYER_SCOREBOARDS.put(playerName, mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
+    }
+
+    public static void enablePowerLevelDisplay(Player player) {
+        if (!Config.getInstance().getPowerLevelsEnabled()) {
+            return;
+        }
+
+        Scoreboard scoreboard = player.getScoreboard();
+        Objective objective;
+
+        if (scoreboard.getObjective(DisplaySlot.BELOW_NAME) == null) {
+            objective = scoreboard.registerNewObjective(POWER_LEVEL_HEADER, "dummy");
+
+            objective.getScore(player).setScore(UserManager.getPlayer(player).getPowerLevel());
+            objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        }
+        else {
+            objective = scoreboard.getObjective(POWER_LEVEL_HEADER);
+
+            if (scoreboard.getObjective(POWER_LEVEL_HEADER) != null) {
+                objective.getScore(player).setScore(UserManager.getPlayer(player).getPowerLevel());
+            }
+            else {
+                mcMMO.p.debug("Another plugin is using this scoreboard slot, so power levels cannot be enabled."); //TODO: Locale
+            }
+        }
     }
 
     public static void enablePlayerSkillScoreboard(McMMOPlayer mcMMOPlayer, SkillType skill) {
@@ -307,6 +335,7 @@ public class ScoreboardManager {
             String playerName = player.getName();
 
             player.setScoreboard(newScoreboard);
+            enablePowerLevelDisplay(player);
 
             if (displayTime != -1 && !SCOREBOARD_TASKS.contains(playerName)) {
                 new ScoreboardChangeTask(player, oldScoreboard).runTaskLater(mcMMO.p, displayTime * 20);

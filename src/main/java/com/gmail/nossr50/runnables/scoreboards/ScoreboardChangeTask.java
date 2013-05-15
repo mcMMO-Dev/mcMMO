@@ -19,6 +19,7 @@ public class ScoreboardChangeTask extends BukkitRunnable {
     public void run() {
         if (player.isOnline()) {
             player.setScoreboard(oldScoreboard);
+            ScoreboardManager.enablePowerLevelDisplay(player);
         }
 
         ScoreboardManager.clearPendingTask(player.getName());
