@@ -406,15 +406,6 @@ Skills:
         # DoubleDrops_MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
         DoubleDrops_ChanceMax: 100.0
         DoubleDrops_MaxBonusLevel: 1000
-Spout:
-    #
-    #  Settings for the Spout notifications, when a player reaches a higher tier, the image of the notification will change.
-    ###
-    Notifications:
-        Tier1: 200
-        Tier2: 400
-        Tier3: 600
-        Tier4: 800
 #
 #  Customize the kraken!
 ###

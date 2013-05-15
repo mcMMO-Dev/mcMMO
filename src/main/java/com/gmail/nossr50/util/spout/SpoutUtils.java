@@ -11,12 +11,13 @@ import java.util.jar.JarFile;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -25,11 +26,90 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SpoutUtils {
-    public final static String spoutDirectory = mcMMO.getMainDirectory() + "Resources" + File.separator;
-    public final static String hudDirectory = spoutDirectory + "HUD" + File.separator;
-    public final static String hudStandardDirectory = hudDirectory + "Standard" + File.separator;
-    public final static String hudRetroDirectory = hudDirectory + "Retro" + File.separator;
-    public final static String soundDirectory = spoutDirectory + "Sound" + File.separator;
+    // The order of the values is extremely important, a few methods depend on it to work properly
+    protected enum Tier {
+        FOUR(4) {
+            @Override public int getLevel() { return SpoutConfig.getInstance().getNotificationTier4(); }
+            @Override protected Material getAcrobaticsNotificationItem() { return Material.DIAMOND_BOOTS; }
+            @Override protected Material getArcheryNotificationItem() { return Material.BOW; }
+            @Override protected Material getAxesNotificationItem() { return Material.DIAMOND_AXE; }
+            @Override protected Material getExcavationNotificationItem() { return Material.CLAY; }
+            @Override protected Material getFishingNotificationItem() { return Material.FISHING_ROD; }
+            @Override protected Material getHerbalismNotificationItem() { return Material.WATER_LILY; }
+            @Override protected Material getMiningNotificationItem() { return Material.EMERALD_ORE; }
+            @Override protected Material getSwordsNotificationItem() { return Material.DIAMOND_SWORD; }
+            @Override protected Material getTamingNotificationItem() { return Material.BONE; }
+            @Override protected Material getUnarmedNotificationItem() { return Material.DIAMOND_HELMET; }
+            @Override protected Material getWoodcuttingNotificationItem() { return Material.LOG; }},
+        THREE(3) {
+            @Override public int getLevel() { return SpoutConfig.getInstance().getNotificationTier3(); }
+            @Override protected Material getAcrobaticsNotificationItem() { return Material.GOLD_BOOTS; }
+            @Override protected Material getArcheryNotificationItem() { return Material.ARROW; }
+            @Override protected Material getAxesNotificationItem() { return Material.GOLD_AXE; }
+            @Override protected Material getExcavationNotificationItem() { return Material.SAND; }
+            @Override protected Material getFishingNotificationItem() { return Material.COOKED_FISH; }
+            @Override protected Material getHerbalismNotificationItem() { return Material.RED_ROSE; }
+            @Override protected Material getMiningNotificationItem() { return Material.DIAMOND_ORE; }
+            @Override protected Material getSwordsNotificationItem() { return Material.GOLD_SWORD; }
+            @Override protected Material getTamingNotificationItem() { return Material.GRILLED_PORK; }
+            @Override protected Material getUnarmedNotificationItem() { return Material.GOLD_HELMET; }
+            @Override protected Material getWoodcuttingNotificationItem() { return Material.WOOD; }},
+        TWO(2) {
+            @Override public int getLevel() { return SpoutConfig.getInstance().getNotificationTier2(); }
+            @Override protected Material getAcrobaticsNotificationItem() { return Material.IRON_BOOTS; }
+            @Override protected Material getArcheryNotificationItem() { return Material.ARROW; }
+            @Override protected Material getAxesNotificationItem() { return Material.IRON_AXE; }
+            @Override protected Material getExcavationNotificationItem() { return Material.GRAVEL; }
+            @Override protected Material getFishingNotificationItem() { return Material.COOKED_FISH; }
+            @Override protected Material getHerbalismNotificationItem() { return Material.YELLOW_FLOWER; }
+            @Override protected Material getMiningNotificationItem() { return Material.GOLD_ORE; }
+            @Override protected Material getSwordsNotificationItem() { return Material.IRON_SWORD; }
+            @Override protected Material getTamingNotificationItem() { return Material.GRILLED_PORK; }
+            @Override protected Material getUnarmedNotificationItem() { return Material.IRON_HELMET; }
+            @Override protected Material getWoodcuttingNotificationItem() { return Material.LEAVES; }},
+        ONE(1) {
+            @Override public int getLevel() { return SpoutConfig.getInstance().getNotificationTier1(); }
+            @Override protected Material getAcrobaticsNotificationItem() { return Material.CHAINMAIL_BOOTS; }
+            @Override protected Material getArcheryNotificationItem() { return Material.FLINT; }
+            @Override protected Material getAxesNotificationItem() { return Material.STONE_AXE; }
+            @Override protected Material getExcavationNotificationItem() { return Material.GRASS; }
+            @Override protected Material getFishingNotificationItem() { return Material.RAW_FISH; }
+            @Override protected Material getHerbalismNotificationItem() { return Material.CACTUS; }
+            @Override protected Material getMiningNotificationItem() { return Material.IRON_ORE; }
+            @Override protected Material getSwordsNotificationItem() { return Material.STONE_SWORD; }
+            @Override protected Material getTamingNotificationItem() { return Material.PORK; }
+            @Override protected Material getUnarmedNotificationItem() { return Material.CHAINMAIL_HELMET; }
+            @Override protected Material getWoodcuttingNotificationItem() { return Material.SAPLING; }};
+
+        int numerical;
+
+        private Tier(int numerical) {
+            this.numerical = numerical;
+        }
+
+        public int toNumerical() {
+            return numerical;
+        }
+
+        abstract protected int getLevel();
+        abstract protected Material getAcrobaticsNotificationItem();
+        abstract protected Material getArcheryNotificationItem();
+        abstract protected Material getAxesNotificationItem();
+        abstract protected Material getExcavationNotificationItem();
+        abstract protected Material getFishingNotificationItem();
+        abstract protected Material getHerbalismNotificationItem();
+        abstract protected Material getMiningNotificationItem();
+        abstract protected Material getSwordsNotificationItem();
+        abstract protected Material getTamingNotificationItem();
+        abstract protected Material getUnarmedNotificationItem();
+        abstract protected Material getWoodcuttingNotificationItem();
+    }
+
+    private final static String spoutDirectory = mcMMO.getMainDirectory() + "Resources" + File.separator;
+    private final static String hudDirectory = spoutDirectory + "HUD" + File.separator;
+    private final static String hudStandardDirectory = hudDirectory + "Standard" + File.separator;
+    private final static String hudRetroDirectory = hudDirectory + "Retro" + File.separator;
+    private final static String soundDirectory = spoutDirectory + "Sound" + File.separator;
 
     /**
      * Write file to disk.
@@ -188,334 +268,185 @@ public class SpoutUtils {
      */
     public static void levelUpNotification(SkillType skillType, SpoutPlayer spoutPlayer) {
         PlayerProfile profile = UserManager.getPlayer(spoutPlayer).getProfile();
-        int notificationTier = getNotificationTier(profile.getSkillLevel(skillType));
-        Material mat = null;
+        int skillLevel = profile.getSkillLevel(skillType);
+        Material notificationItem;
 
         switch (skillType) {
-            case TAMING:
-                switch (notificationTier) {
-                    case 1:
-                    case 2:
-                        mat = Material.PORK;
-                        break;
-
-                    case 3:
-                    case 4:
-                        mat = Material.GRILLED_PORK;
-                        break;
-
-                    case 5:
-                        mat = Material.BONE;
-                        break;
-
-                    default:
-                        break;
-                }
-
-                break;
-
-            case MINING:
-                switch (notificationTier) {
-                    case 1:
-                        mat = Material.COAL_ORE;
-                        break;
-
-                    case 2:
-                        mat = Material.IRON_ORE;
-                        break;
-
-                    case 3:
-                        mat = Material.GOLD_ORE;
-                        break;
-
-                    case 4:
-                        mat = Material.DIAMOND_ORE;
-                        break;
-
-                    case 5:
-                        mat = Material.EMERALD_ORE;
-                        break;
-
-                    default:
-                        break;
-                }
-
-                break;
-
-            case WOODCUTTING:
-                switch (notificationTier) {
-                    case 1:
-                        mat = Material.STICK;
-                        break;
-
-                    case 2:
-                    case 3:
-                        mat = Material.WOOD;
-                        break;
-
-                    case 4:
-                    case 5:
-                        mat = Material.LOG;
-                        break;
-
-                    default:
-                        break;
-                }
-
-                break;
-
-            case REPAIR:
-                mat = Material.ANVIL;
-                break;
-
-            case HERBALISM:
-                switch (notificationTier) {
-                    case 1:
-                        mat = Material.YELLOW_FLOWER;
-                        break;
-
-                    case 2:
-                        mat = Material.RED_ROSE;
-                        break;
-
-                    case 3:
-                        mat = Material.BROWN_MUSHROOM;
-                        break;
-
-                    case 4:
-                        mat = Material.RED_MUSHROOM;
-                        break;
-
-                    case 5:
-                        mat = Material.PUMPKIN;
-                        break;
-
-                    default:
-                        break;
-                }
-
-                break;
-
             case ACROBATICS:
-                switch (notificationTier) {
-                    case 1:
-                        mat = Material.LEATHER_BOOTS;
-                        break;
-
-                    case 2:
-                        mat = Material.CHAINMAIL_BOOTS;
-                        break;
-
-                    case 3:
-                        mat = Material.IRON_BOOTS;
-                        break;
-
-                    case 4:
-                        mat = Material.GOLD_BOOTS;
-                        break;
-
-                    case 5:
-                        mat = Material.DIAMOND_BOOTS;
-                        break;
-
-                    default:
-                        break;
-                }
-
-                break;
-
-            case SWORDS:
-                switch (notificationTier) {
-                    case 1:
-                        mat = Material.WOOD_SWORD;
-                        break;
-
-                    case 2:
-                        mat = Material.STONE_SWORD;
-                        break;
-
-                    case 3:
-                        mat = Material.IRON_SWORD;
-                        break;
-
-                    case 4:
-                        mat = Material.GOLD_SWORD;
-                        break;
-
-                    case 5:
-                        mat = Material.DIAMOND_SWORD;
-                        break;
-
-                    default:
-                        break;
-                }
-
+                notificationItem = getAcrobaticsNotificationItem(skillLevel);
                 break;
 
             case ARCHERY:
-                switch (notificationTier) {
-                    case 1:
-                    case 2:
-                    case 3:
-                        mat = Material.ARROW;
-                        break;
-
-                    case 4:
-                    case 5:
-                        mat = Material.BOW;
-                        break;
-
-                    default:
-                        break;
-                }
-
-                break;
-
-            case UNARMED:
-                switch (notificationTier) {
-                    case 1:
-                        mat = Material.LEATHER_HELMET;
-                        break;
-
-                    case 2:
-                        mat = Material.CHAINMAIL_HELMET;
-                        break;
-
-                    case 3:
-                        mat = Material.IRON_HELMET;
-                        break;
-
-                    case 4:
-                        mat = Material.GOLD_HELMET;
-                        break;
-
-                    case 5:
-                        mat = Material.DIAMOND_HELMET;
-                        break;
-
-                    default:
-                        break;
-                }
-
-                break;
-
-            case EXCAVATION:
-                switch (notificationTier) {
-                    case 1:
-                        mat = Material.WOOD_SPADE;
-                        break;
-
-                    case 2:
-                        mat = Material.STONE_SPADE;
-                        break;
-
-                    case 3:
-                        mat = Material.IRON_SPADE;
-                        break;
-
-                    case 4:
-                        mat = Material.GOLD_SPADE;
-                        break;
-
-                    case 5:
-                        mat = Material.DIAMOND_SPADE;
-                        break;
-
-                    default:
-                        break;
-                }
-
+                notificationItem = getArcheryNotificationItem(skillLevel);
                 break;
 
             case AXES:
-                switch (notificationTier) {
-                    case 1:
-                        mat = Material.WOOD_AXE;
-                        break;
+                notificationItem = getAxesNotificationItem(skillLevel);
+                break;
 
-                    case 2:
-                        mat = Material.STONE_AXE;
-                        break;
-
-                    case 3:
-                        mat = Material.IRON_AXE;
-                        break;
-
-                    case 4:
-                        mat = Material.GOLD_AXE;
-                        break;
-
-                    case 5:
-                        mat = Material.DIAMOND_AXE;
-                        break;
-
-                    default:
-                        break;
-                }
-
+            case EXCAVATION:
+                notificationItem = getExcavationNotificationItem(skillLevel);
                 break;
 
             case FISHING:
-                switch (notificationTier) {
-                    case 1:
-                    case 2:
-                        mat = Material.RAW_FISH;
-                        break;
+                notificationItem = getFishingNotificationItem(skillLevel);
+                break;
 
-                    case 3:
-                    case 4:
-                        mat = Material.COOKED_FISH;
-                        break;
+            case HERBALISM:
+                notificationItem = getHerbalismNotificationItem(skillLevel);
+                break;
 
-                    case 5:
-                        mat = Material.FISHING_ROD;
-                        break;
+            case MINING:
+                notificationItem = getMiningNotificationItem(skillLevel);
+                break;
 
-                    default:
-                        break;
-                }
+            case REPAIR:
+                notificationItem = Material.ANVIL;
+                break;
 
+            case SWORDS:
+                notificationItem = getSwordsNotificationItem(skillLevel);
+                break;
+
+            case TAMING:
+                notificationItem = getTamingNotificationItem(skillLevel);
+                break;
+
+            case UNARMED:
+                notificationItem = getUnarmedNotificationItem(skillLevel);
+                break;
+
+            case WOODCUTTING:
+                notificationItem = getWoodcuttingNotificationItem(skillLevel);
                 break;
 
             default:
-                mat = Material.WATCH;
+                notificationItem = Material.MAP;
                 break;
         }
 
-        spoutPlayer.sendNotification(LocaleLoader.getString("Spout.LevelUp.1"), LocaleLoader.getString("Spout.LevelUp.2", SkillUtils.getSkillName(skillType), profile.getSkillLevel(skillType)), mat);
+        spoutPlayer.sendNotification(LocaleLoader.getString("Spout.LevelUp.1"), LocaleLoader.getString("Spout.LevelUp.2", SkillUtils.getSkillName(skillType), skillLevel), notificationItem);
         SpoutManager.getSoundManager().playCustomSoundEffect(mcMMO.p, spoutPlayer, "level.wav", false);
     }
 
-    /**
-     * Gets the notification tier of a skill.
-     *
-     * @param level The level of the skill
-     * @return the notification tier of the skill
-     */
-    private static int getNotificationTier(int level) {
-        if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier4()) {
-            return 5;
+    private static Material getAcrobaticsNotificationItem(int skillLevel) {
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getAcrobaticsNotificationItem();
+            }
         }
-        else if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier3()) {
-            return 4;
+
+        return Material.LEATHER_BOOTS;
+    }
+
+    private static Material getArcheryNotificationItem(int skillLevel) {
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getArcheryNotificationItem();
+            }
         }
-        else if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier2()) {
-            return 3;
+
+        return Material.FEATHER;
+    }
+
+    private static Material getAxesNotificationItem(int skillLevel) {
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getAxesNotificationItem();
+            }
         }
-        else if (level >= AdvancedConfig.getInstance().getSpoutNotificationTier1()) {
-            return 2;
+
+        return Material.WOOD_AXE;
+    }
+
+    private static Material getExcavationNotificationItem(int skillLevel) {
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getExcavationNotificationItem();
+            }
         }
-        else {
-            return 1;
+
+        return Material.DIRT;
+    }
+
+    private static Material getFishingNotificationItem(int skillLevel) {
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getFishingNotificationItem();
+            }
         }
+
+        return Material.RAW_FISH;
+    }
+
+    private static Material getHerbalismNotificationItem(int skillLevel) {
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getHerbalismNotificationItem();
+            }
+        }
+
+        return Material.VINE;
+    }
+
+    private static Material getMiningNotificationItem(int skillLevel) {
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getMiningNotificationItem();
+            }
+        }
+
+        return Material.COAL_ORE;
+    }
+
+    private static Material getSwordsNotificationItem(int skillLevel) {
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getSwordsNotificationItem();
+            }
+        }
+
+        return Material.WOOD_SWORD;
+    }
+
+    private static Material getTamingNotificationItem(int skillLevel) {
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getTamingNotificationItem();
+            }
+        }
+
+        return Material.PORK;
+    }
+
+    private static Material getUnarmedNotificationItem(int skillLevel) {
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getUnarmedNotificationItem();
+            }
+        }
+
+        return Material.LEATHER_HELMET;
+    }
+
+    private static Material getWoodcuttingNotificationItem(int skillLevel) {
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getWoodcuttingNotificationItem();
+            }
+        }
+
+        return Material.STICK;
     }
 
     /**
      * Re-enable SpoutCraft for players after a /reload
      */
     public static void reloadSpoutPlayers() {
+        PluginManager pluginManager = mcMMO.p.getServer().getPluginManager();
+
         for (SpoutPlayer spoutPlayer : SpoutManager.getPlayerChunkMap().getOnlinePlayers()) {
-            mcMMO.p.getServer().getPluginManager().callEvent(new SpoutCraftEnableEvent(spoutPlayer));
+            pluginManager.callEvent(new SpoutCraftEnableEvent(spoutPlayer));
         }
     }
 

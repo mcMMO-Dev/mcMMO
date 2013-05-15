@@ -66,4 +66,10 @@ public class SpoutConfig extends ConfigLoader {
     public double getRetroHUDRed(SkillType skill) { return config.getDouble("HUD.Retro.Colors." + skill.toString().toLowerCase() +".RED", 0.3); }
     public double getRetroHUDGreen(SkillType skill) { return config.getDouble("HUD.Retro.Colors." + skill.toString().toLowerCase() +".RED", 0.3); }
     public double getRetroHUDBlue(SkillType skill) { return config.getDouble("HUD.Retro.Colors." + skill.toString().toLowerCase() +".RED", 0.3); }
+
+    /* Notification Tiers */
+    public int getNotificationTier1() { return config.getInt("Notifications.Tier1", 200); }
+    public int getNotificationTier2() { return config.getInt("Notifications.Tier2", 400); }
+    public int getNotificationTier3() { return config.getInt("Notifications.Tier3", 600); }
+    public int getNotificationTier4() { return config.getInt("Notifications.Tier4", 800); }
 }

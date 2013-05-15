@@ -277,12 +277,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getWoodcuttingDoubleDropChance() { return config.getDouble("Skills.Woodcutting.DoubleDrops_ChanceMax", 100.0D); }
     public int getWoodcuttingDoubleDropMaxLevel() { return config.getInt("Skills.Woodcutting.DoubleDrops_MaxBonusLevel", 1000); }
 
-    /* SPOUT STUFF*/
-    public int getSpoutNotificationTier1() { return config.getInt("Spout.Notifications.Tier1", 200); }
-    public int getSpoutNotificationTier2() { return config.getInt("Spout.Notifications.Tier2", 400); }
-    public int getSpoutNotificationTier3() { return config.getInt("Spout.Notifications.Tier3", 600); }
-    public int getSpoutNotificationTier4() { return config.getInt("Spout.Notifications.Tier4", 800); }
-
     /* KRAKEN STUFF */
     public boolean getKrakenEnabled() { return config.getBoolean("Kraken.Enabled", true); }
     public boolean getKrakenGlobalSoundsEnabled() { return config.getBoolean("Kraken.Global_Sounds", true); }

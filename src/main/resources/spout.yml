@@ -70,3 +70,8 @@ HUD:
                 BLUE: 0.75
                 GREEN: 0.3
                 RED: 0.3
+Notifications:
+    Tier1: 200
+    Tier2: 400
+    Tier3: 600
+    Tier4: 800
