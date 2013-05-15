@@ -39,6 +39,7 @@ Version 1.4.06-dev
  = Fixed experience being applied even when the permission for a skill was denied
  = Fixed possible item duplication bug with infinity bows
  = Fixed bug with removing players from mySQL database
+ = Fixed bug with empty metadata lists and Smelting
  ! Changed Berserk to add items to inventory rather than denying pickup
  ! Changed Call of the Wild, newly summoned pet's will have a custom name. (added permission node to disable this)
  ! Changed Chimaera Wing's recipe result to use the ingredient Material
