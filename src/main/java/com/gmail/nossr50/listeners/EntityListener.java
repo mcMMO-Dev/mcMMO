@@ -309,10 +309,6 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
-        if (Misc.isSpawnerXPEnabled) {
-            return;
-        }
-
         switch (event.getSpawnReason()) {
             case SPAWNER:
             case SPAWNER_EGG:

@@ -276,7 +276,6 @@ public class Config extends AutoUpdateConfigLoader {
      */
 
     /* General Settings */
-    public boolean getExperienceGainsMobspawnersEnabled() { return config.getBoolean("Experience.Gains.Mobspawners.Enabled", false); }
     public boolean getExperienceGainsPlayerVersusPlayerEnabled() { return config.getBoolean("Experience.PVP.Rewards", true); }
 
     public double getExperienceGainsGlobalMultiplier() { return config.getDouble("Experience.Gains.Multiplier.Global", 1.0); }
@@ -288,6 +287,8 @@ public class Config extends AutoUpdateConfigLoader {
 
     public double getAnimalsXP() { return config.getDouble("Experience.Combat.Multiplier.Animals", 1.0); }
     public double getWitherSkeletonXP() { return config.getDouble("Experience.Combat.Multiplier.Wither_Skeleton", 4.0); }
+
+    public double getSpawnedMobXpMultiplier() { return config.getDouble("Experience.Gains.MobSpawners.Multiplier", 0.0); }
 
     /* XP Formula Multiplier */
     public int getFormulaMultiplierCurve() { return config.getInt("Experience.Formula.Curve_Modifier", 20); }

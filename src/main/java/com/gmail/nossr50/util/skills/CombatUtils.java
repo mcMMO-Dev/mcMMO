@@ -445,7 +445,7 @@ public final class CombatUtils {
                 baseXP = 20 * Config.getInstance().getPlayerVersusPlayerXP();
             }
         }
-        else if (!target.hasMetadata(mcMMO.entityMetadataKey)) {
+        else {
             if (target instanceof Animals) {
                 if (ModUtils.isCustomEntity(target)) {
                     baseXP = ModUtils.getCustomEntity(target).getXpMultiplier();
@@ -504,6 +504,10 @@ public final class CombatUtils {
                             baseXP = ModUtils.getCustomEntity(target).getXpMultiplier();
                         }
                         break;
+                }
+
+                if (target.hasMetadata(mcMMO.entityMetadataKey)) {
+                    baseXP *= Config.getInstance().getSpawnedMobXpMultiplier();
                 }
             }
 
