@@ -27,6 +27,7 @@ public final class Permissions {
     /* BYPASS */
     public static boolean hardcoreBypass(Permissible permissible) { return permissible.hasPermission("mcmmo.bypass.hardcoremode"); }
     public static boolean arcaneBypass(Permissible permissible) { return permissible.hasPermission("mcmmo.bypass.arcanebypass"); }
+    public static boolean krakenBypass(Permissible permissible) { return permissible.hasPermission("mcmmo.bypass.kraken"); }
 
     /* CHAT */
     public static boolean partyChat(Permissible permissible) { return permissible.hasPermission("mcmmo.chat.partychat"); }

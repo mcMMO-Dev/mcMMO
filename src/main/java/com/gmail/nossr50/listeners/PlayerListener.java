@@ -178,7 +178,9 @@ public class PlayerListener implements Listener {
 
         switch (event.getState()) {
             case FISHING:
-                event.setCancelled(fishingManager.exploitPrevention());
+                if (!Permissions.krakenBypass(player)) {
+                    event.setCancelled(fishingManager.exploitPrevention());
+                }
 
                 if (event.isCancelled()) {
                     return;
