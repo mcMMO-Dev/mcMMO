@@ -33,7 +33,9 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.WorldConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
@@ -59,6 +61,9 @@ public class EntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityShootBow(EntityShootBowEvent event) {
+        if (!WorldConfig.getInstance().isSkillEnabled(SkillType.ARCHERY, event.getEntity().getWorld().getName())) {
+            return;
+        }
         ItemStack bow = event.getBow();
 
         if (bow != null) {
@@ -194,6 +199,10 @@ public class EntityListener implements Listener {
 
             switch (cause) {
                 case FALL:
+                    if (!WorldConfig.getInstance().isSkillEnabled(SkillType.ACROBATICS, player.getWorld().getName())) {
+                        break;
+                    }
+
                     AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
                     if (acrobaticsManager.canRoll()) {
@@ -207,6 +216,10 @@ public class EntityListener implements Listener {
                     break;
 
                 case BLOCK_EXPLOSION:
+                    if (!WorldConfig.getInstance().isSkillEnabled(SkillType.MINING, player.getWorld().getName())) {
+                        break;
+                    }
+
                     MiningManager miningManager = mcMMOPlayer.getMiningManager();
 
                     if (miningManager.canUseDemolitionsExpertise()) {
@@ -230,6 +243,10 @@ public class EntityListener implements Listener {
         else if (livingEntity instanceof Tameable) {
             Tameable pet = (Tameable) livingEntity;
             AnimalTamer owner = pet.getOwner();
+
+            if (!WorldConfig.getInstance().isSkillEnabled(SkillType.TAMING, livingEntity.getWorld().getName())) {
+                return;
+            }
 
             if (Taming.canPreventDamage(pet, owner)) {
                 Player player = (Player) owner;
@@ -356,6 +373,10 @@ public class EntityListener implements Listener {
                 return;
             }
 
+            if (!WorldConfig.getInstance().isSkillEnabled(SkillType.MINING, entity.getWorld().getName())) {
+                return;
+            }
+
             MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
 
             if (miningManager.canUseBiggerBombs()) {
@@ -370,7 +391,7 @@ public class EntityListener implements Listener {
      * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onEnitityExplode(EntityExplodeEvent event) {
+    public void onEntityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
 
         if (entity instanceof TNTPrimed && entity.hasMetadata(mcMMO.tntMetadataKey)) {
@@ -378,6 +399,10 @@ public class EntityListener implements Listener {
             Player player = plugin.getServer().getPlayer(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
             if (Misc.isNPCEntity(player)) {
+                return;
+            }
+
+            if (!WorldConfig.getInstance().isSkillEnabled(SkillType.MINING, entity.getWorld().getName())) {
                 return;
             }
 
@@ -427,6 +452,10 @@ public class EntityListener implements Listener {
                 case GOLDEN_CARROT: /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
                 case MUSHROOM_SOUP: /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
                 case PUMPKIN_PIE:   /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
+                    if (!WorldConfig.getInstance().isSkillEnabled(SkillType.HERBALISM, player.getWorld().getName())) {
+                        return;
+                    }
+
                     if (Permissions.farmersDiet(player)) {
                         event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
                     }
@@ -436,18 +465,30 @@ public class EntityListener implements Listener {
                 case MELON:            /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                 case POISONOUS_POTATO: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                 case POTATO_ITEM:      /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+                    if (!WorldConfig.getInstance().isSkillEnabled(SkillType.HERBALISM, player.getWorld().getName())) {
+                        return;
+                    }
+
                     if (Permissions.farmersDiet(player)) {
                         event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
                     }
                     return;
 
                 case COOKED_FISH: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+                    if (!WorldConfig.getInstance().isSkillEnabled(SkillType.FISHING, player.getWorld().getName())) {
+                        return;
+                    }
+
                     if (Permissions.fishermansDiet(player)) {
                         event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
                     }
                     return;
 
                 case RAW_FISH:    /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                    if (!WorldConfig.getInstance().isSkillEnabled(SkillType.FISHING, player.getWorld().getName())) {
+                        return;
+                    }
+
                     if (Permissions.fishermansDiet(player)) {
                         event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
                     }
@@ -469,6 +510,10 @@ public class EntityListener implements Listener {
         Player player = (Player) event.getOwner();
         LivingEntity entity = event.getEntity();
 
+        if (!WorldConfig.getInstance().isSkillEnabled(SkillType.TAMING, player.getWorld().getName())) {
+            return;
+        }
+
         if (Misc.isNPCEntity(player) || Misc.isNPCEntity(entity) || entity.hasMetadata(mcMMO.entityMetadataKey)) {
             return;
         }
@@ -489,6 +534,10 @@ public class EntityListener implements Listener {
         if (entity instanceof Tameable && target instanceof Player) {
             Player player = (Player) target;
             Tameable tameable = (Tameable) entity;
+
+            if (!WorldConfig.getInstance().isSkillEnabled(SkillType.TAMING, player.getWorld().getName())) {
+                return;
+            }
 
             if (!CombatUtils.isFriendlyPet(player, tameable)) {
                 return;

@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.config.WorldConfig;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomBlockConfig;
 import com.gmail.nossr50.config.mods.CustomEntityConfig;
@@ -276,6 +277,7 @@ public class mcMMO extends JavaPlugin {
         TreasureConfig.getInstance();
         HiddenConfig.getInstance();
         AdvancedConfig.getInstance();
+        WorldConfig.getInstance();
         new ChildConfig();
 
         List<Repairable> repairables = new ArrayList<Repairable>();

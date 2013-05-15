@@ -31,12 +31,14 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.WorldConfig;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.ShareHandler;
+import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -125,6 +127,16 @@ public class PlayerListener implements Listener {
             mcMMOPlayer.removeParty();
             player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
         }
+        
+        for (AbilityType abilityType : AbilityType.values()) {
+            if (mcMMOPlayer.getAbilityMode(abilityType)) {
+                if (!WorldConfig.getInstance().isAbilityEnabled(SkillType.byAbility(abilityType), player.getWorld().getName())) {
+                    // Make sure to handle any important deactivation processes
+                    new AbilityDisableTask(mcMMOPlayer, abilityType).run();
+                }
+            }
+        }
+            
     }
 
     /**
@@ -169,6 +181,10 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
         Player player = event.getPlayer();
+
+        if (!WorldConfig.getInstance().isSkillEnabled(SkillType.FISHING, player.getWorld().getName())) {
+            return;
+        }
 
         if (Misc.isNPCEntity(player) || !Permissions.skillEnabled(player, SkillType.FISHING)) {
             return;
@@ -345,6 +361,10 @@ public class PlayerListener implements Listener {
 
                 /* REPAIR CHECKS */
                 if (blockID == Repair.repairAnvilId && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
+                    if (!WorldConfig.getInstance().isSkillEnabled(SkillType.REPAIR, player.getWorld().getName())) {
+                        break;
+                    }
+
                     RepairManager repairManager = mcMMOPlayer.getRepairManager();
                     event.setCancelled(true);
 
@@ -356,6 +376,10 @@ public class PlayerListener implements Listener {
                 }
                 /* SALVAGE CHECKS */
                 else if (blockID == Repair.salvageAnvilId && Permissions.salvage(player) && Repair.isSalvageable(heldItem) && !ItemUtils.isChainmailArmor(heldItem)) {
+                    if (!WorldConfig.getInstance().isSkillEnabled(SkillType.REPAIR, player.getWorld().getName())) {
+                        break;
+                    }
+
                     RepairManager repairManager = mcMMOPlayer.getRepairManager();
                     event.setCancelled(true);
 
@@ -367,6 +391,10 @@ public class PlayerListener implements Listener {
                 }
                 /* BLAST MINING CHECK */
                 else if (miningManager.canDetonate()) {
+                    if (!WorldConfig.getInstance().isSkillEnabled(SkillType.MINING, player.getWorld().getName())) {
+                        break;
+                    }
+
                     if (blockID == Material.TNT.getId()) {
                         event.setCancelled(true); // Don't detonate the TNT if they're too close
                     }
@@ -379,6 +407,10 @@ public class PlayerListener implements Listener {
 
             case LEFT_CLICK_BLOCK:
                 blockID = block.getTypeId();
+
+                if (!WorldConfig.getInstance().isSkillEnabled(SkillType.REPAIR, player.getWorld().getName())) {
+                    break;
+                }
 
                 /* REPAIR CHECKS */
                 if (blockID == Repair.repairAnvilId && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
@@ -404,6 +436,10 @@ public class PlayerListener implements Listener {
                 break;
 
             case RIGHT_CLICK_AIR:
+                if (!WorldConfig.getInstance().isSkillEnabled(SkillType.MINING, player.getWorld().getName())) {
+                    break;
+                }
+
                 /* BLAST MINING CHECK */
                 if (miningManager.canDetonate()) {
                     miningManager.remoteDetonation();
@@ -460,6 +496,10 @@ public class PlayerListener implements Listener {
                     ChimaeraWing.activationCheck(player);
                 }
 
+                if (!WorldConfig.getInstance().isSkillEnabled(SkillType.HERBALISM, player.getWorld().getName())) {
+                    break;
+                }
+
                 /* GREEN THUMB CHECK */
                 HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
@@ -499,6 +539,10 @@ public class PlayerListener implements Listener {
 
             case LEFT_CLICK_AIR:
             case LEFT_CLICK_BLOCK:
+
+                if (!WorldConfig.getInstance().isSkillEnabled(SkillType.TAMING, player.getWorld().getName())) {
+                    break;
+                }
 
                 /* CALL OF THE WILD CHECKS */
                 if (player.isSneaking() && Permissions.callOfTheWild(player)) {

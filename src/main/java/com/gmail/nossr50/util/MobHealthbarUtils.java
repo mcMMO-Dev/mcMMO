@@ -10,6 +10,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.WorldConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
@@ -41,6 +42,10 @@ public final class MobHealthbarUtils {
      */
     public static void handleMobHealthbars(Player player, LivingEntity target, int damage) {
         if (!Permissions.mobHealthDisplay(player)) {
+            return;
+        }
+
+        if (!WorldConfig.getInstance().isMobHealthEnabled(player.getWorld().getName())) {
             return;
         }
 

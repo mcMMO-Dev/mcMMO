@@ -18,6 +18,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.config.WorldConfig;
+import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -293,6 +295,10 @@ public class SkillUtils {
 
         Player player = mcMMOPlayer.getPlayer();
         PlayerProfile playerProfile = mcMMOPlayer.getProfile();
+        
+        if (!WorldConfig.getInstance().isAbilityEnabled(type, player.getWorld().getName())) {
+            return;
+        }
 
         /*
          * Axes and Woodcutting are odd because they share the same tool.

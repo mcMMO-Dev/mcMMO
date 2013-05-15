@@ -1,0 +1,39 @@
+Worlds:
+    ## Copy the default section and replace 'default' with the name of a world to enable world specific settings for that world
+    default:
+        Skills:
+            Acrobatics:
+                Enabled: true
+            Archery:
+                Enabled: true
+            Axes:
+                Enabled: true
+                AbilityEnabled: true
+            Excavation:
+                Enabled: true
+                AbilityEnabled: true
+            Fishing:
+                Enabled: true
+            Herbalism:
+                Enabled: true
+                AbilityEnabled: true
+            Mining:
+                Enabled: true
+                AbilityEnabled: true
+            Repair:
+                Enabled: true
+            Smelting:
+                Enabled: true
+            Swords:
+                Enabled: true
+                AbilityEnabled: true
+            Taming:
+                Enabled: true
+            Unarmed:
+                Enabled: true
+                AbilityEnabled: true
+            Woodcutting:
+                Enabled: true
+                AbilityEnabled: true
+        BlockStore: true
+        MobHealthBar: true

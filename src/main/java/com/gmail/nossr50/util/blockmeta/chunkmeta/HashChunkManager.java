@@ -17,6 +17,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.WorldConfig;
 import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionZDirectory;
 
 public class HashChunkManager implements ChunkManager {
@@ -303,6 +304,10 @@ public class HashChunkManager implements ChunkManager {
             return false;
         }
 
+        if (!WorldConfig.getInstance().isBlockStoreEnabled(world.getName())) {
+            return false;
+        }
+
         int cx = x / 16;
         int cz = z / 16;
         String key = world.getName() + "," + cx + "," + cz;
@@ -343,6 +348,10 @@ public class HashChunkManager implements ChunkManager {
     @Override
     public synchronized void setTrue(int x, int y, int z, World world) {
         if (world == null) {
+            return;
+        }
+
+        if (!WorldConfig.getInstance().isBlockStoreEnabled(world.getName())) {
             return;
         }
 
@@ -389,6 +398,10 @@ public class HashChunkManager implements ChunkManager {
     @Override
     public synchronized void setFalse(int x, int y, int z, World world) {
         if (world == null) {
+            return;
+        }
+
+        if (!WorldConfig.getInstance().isBlockStoreEnabled(world.getName())) {
             return;
         }
 

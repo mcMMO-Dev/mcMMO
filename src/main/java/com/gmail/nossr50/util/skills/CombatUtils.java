@@ -20,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.WorldConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
@@ -65,103 +66,111 @@ public final class CombatUtils {
             ItemStack heldItem = player.getItemInHand();
 
             if (target instanceof Tameable) {
-                if (heldItem.getType() == Material.BONE) {
-                    TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+                if (WorldConfig.getInstance().isSkillEnabled(SkillType.TAMING, player.getWorld().getName())) {
+                    if (heldItem.getType() == Material.BONE) {
+                        TamingManager tamingManager = mcMMOPlayer.getTamingManager();
 
-                    if (tamingManager.canUseBeastLore()) {
-                        tamingManager.beastLore(target);
-                        event.setCancelled(true);
+                        if (tamingManager.canUseBeastLore()) {
+                            tamingManager.beastLore(target);
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
+
+                    if (isFriendlyPet(player, (Tameable) target)) {
                         return;
                     }
-                }
-
-                if (isFriendlyPet(player, (Tameable) target)) {
-                    return;
                 }
             }
 
             if (ItemUtils.isSword(heldItem)) {
-                if (!shouldProcessSkill(target, SkillType.SWORDS)) {
-                    return;
-                }
-
-                if (Permissions.skillEnabled(player, SkillType.SWORDS)) {
-                    SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
-
-                    if (swordsManager.canActivateAbility()) {
-                        SkillUtils.abilityCheck(mcMMOPlayer, SkillType.SWORDS);
+                if (WorldConfig.getInstance().isSkillEnabled(SkillType.SWORDS, player.getWorld().getName())) {
+                    if (!shouldProcessSkill(target, SkillType.SWORDS)) {
+                        return;
                     }
 
-                    if (swordsManager.canUseBleed()) {
-                        swordsManager.bleedCheck(target);
-                    }
+                    if (Permissions.skillEnabled(player, SkillType.SWORDS)) {
+                        SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
 
-                    if (swordsManager.canUseSerratedStrike()) {
-                        swordsManager.serratedStrikes(target, event.getDamage());
-                    }
+                        if (swordsManager.canActivateAbility()) {
+                            SkillUtils.abilityCheck(mcMMOPlayer, SkillType.SWORDS);
+                        }
 
-                    startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
+                        if (swordsManager.canUseBleed()) {
+                            swordsManager.bleedCheck(target);
+                        }
+
+                        if (swordsManager.canUseSerratedStrike()) {
+                            swordsManager.serratedStrikes(target, event.getDamage());
+                        }
+
+                        startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
+                    }
                 }
             }
             else if (ItemUtils.isAxe(heldItem)) {
-                if (!shouldProcessSkill(target, SkillType.AXES)) {
-                    return;
-                }
-
-                if (Permissions.skillEnabled(player, SkillType.AXES)) {
-                    AxesManager axesManager = mcMMOPlayer.getAxesManager();
-
-                    if (axesManager.canActivateAbility()) {
-                        SkillUtils.abilityCheck(mcMMOPlayer, SkillType.AXES);
+                if (WorldConfig.getInstance().isSkillEnabled(SkillType.AXES, player.getWorld().getName())) {
+                    if (!shouldProcessSkill(target, SkillType.AXES)) {
+                        return;
                     }
 
-                    if (axesManager.canUseAxeMastery()) {
-                        event.setDamage(axesManager.axeMasteryCheck(event.getDamage()));
-                    }
+                    if (Permissions.skillEnabled(player, SkillType.AXES)) {
+                        AxesManager axesManager = mcMMOPlayer.getAxesManager();
 
-                    if (axesManager.canCriticalHit(target)) {
-                        event.setDamage(axesManager.criticalHitCheck(target, event.getDamage()));
-                    }
+                        if (axesManager.canActivateAbility()) {
+                            SkillUtils.abilityCheck(mcMMOPlayer, SkillType.AXES);
+                        }
 
-                    if (axesManager.canImpact(target)) {
-                        axesManager.impactCheck(target);
-                    }
-                    else if (axesManager.canGreaterImpact(target)) {
-                        event.setDamage(axesManager.greaterImpactCheck(target, event.getDamage()));
-                    }
+                        if (axesManager.canUseAxeMastery()) {
+                            event.setDamage(axesManager.axeMasteryCheck(event.getDamage()));
+                        }
 
-                    if (axesManager.canUseSkullSplitter(target)) {
-                        axesManager.skullSplitterCheck(target, event.getDamage());
-                    }
+                        if (axesManager.canCriticalHit(target)) {
+                            event.setDamage(axesManager.criticalHitCheck(target, event.getDamage()));
+                        }
 
-                    startGainXp(mcMMOPlayer, target, SkillType.AXES);
+                        if (axesManager.canImpact(target)) {
+                            axesManager.impactCheck(target);
+                        }
+                        else if (axesManager.canGreaterImpact(target)) {
+                            event.setDamage(axesManager.greaterImpactCheck(target, event.getDamage()));
+                        }
+
+                        if (axesManager.canUseSkullSplitter(target)) {
+                            axesManager.skullSplitterCheck(target, event.getDamage());
+                        }
+
+                        startGainXp(mcMMOPlayer, target, SkillType.AXES);
+                    }
                 }
             }
             else if (heldItem.getType() == Material.AIR) {
-                if (!shouldProcessSkill(target, SkillType.UNARMED)) {
-                    return;
-                }
-
-                if (Permissions.skillEnabled(player, SkillType.UNARMED)) {
-                    UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
-
-                    if (unarmedManager.canActivateAbility()) {
-                        SkillUtils.abilityCheck(mcMMOPlayer, SkillType.UNARMED);
+                if (WorldConfig.getInstance().isSkillEnabled(SkillType.UNARMED, player.getWorld().getName())) {
+                    if (!shouldProcessSkill(target, SkillType.UNARMED)) {
+                        return;
                     }
 
-                    if (unarmedManager.canUseIronArm()) {
-                        event.setDamage(unarmedManager.ironArmCheck(event.getDamage()));
-                    }
+                    if (Permissions.skillEnabled(player, SkillType.UNARMED)) {
+                        UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
-                    if (unarmedManager.canUseBerserk()) {
-                        event.setDamage(unarmedManager.berserkDamage(event.getDamage()));
-                    }
+                        if (unarmedManager.canActivateAbility()) {
+                            SkillUtils.abilityCheck(mcMMOPlayer, SkillType.UNARMED);
+                        }
 
-                    if (unarmedManager.canDisarm(target)) {
-                        unarmedManager.disarmCheck((Player) target);
-                    }
+                        if (unarmedManager.canUseIronArm()) {
+                            event.setDamage(unarmedManager.ironArmCheck(event.getDamage()));
+                        }
 
-                    startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
+                        if (unarmedManager.canUseBerserk()) {
+                            event.setDamage(unarmedManager.berserkDamage(event.getDamage()));
+                        }
+
+                        if (unarmedManager.canDisarm(target)) {
+                            unarmedManager.disarmCheck((Player) target);
+                        }
+
+                        startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
+                    }
                 }
             }
         }
@@ -169,6 +178,10 @@ public final class CombatUtils {
         switch (damager.getType()) {
             case WOLF:
                 Wolf wolf = (Wolf) damager;
+                
+                if (!WorldConfig.getInstance().isSkillEnabled(SkillType.TAMING, wolf.getWorld().getName())) {
+                    break;
+                }
 
                 if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
                     Player master = (Player) wolf.getOwner();
@@ -206,7 +219,11 @@ public final class CombatUtils {
             case ARROW:
                 LivingEntity shooter = ((Arrow) damager).getShooter();
 
-                /* Break instead of return due to Dodge/Counter/Deflect abilities */
+                if (!WorldConfig.getInstance().isSkillEnabled(SkillType.ARCHERY, shooter.getWorld().getName())) {
+                    break;
+                }
+
+                // Break instead of return due to Dodge/Counter/Deflect abilities
                 if (shooter == null || !(shooter instanceof Player)) {
                     break;
                 }
@@ -268,38 +285,44 @@ public final class CombatUtils {
             }
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-            AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
+            if (WorldConfig.getInstance().isSkillEnabled(SkillType.ACROBATICS, player.getWorld().getName())) {
+                AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
-            if (acrobaticsManager.canDodge(damager)) {
-                event.setDamage(acrobaticsManager.dodgeCheck(event.getDamage()));
-            }
-
-            if (ItemUtils.isSword(player.getItemInHand())) {
-                if (!shouldProcessSkill(target, SkillType.SWORDS)) {
-                    return;
-                }
-
-                SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
-
-                if (swordsManager.canUseCounterAttack(damager)) {
-                    swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
+                if (acrobaticsManager.canDodge(damager)) {
+                    event.setDamage(acrobaticsManager.dodgeCheck(event.getDamage()));
                 }
             }
 
-            if (damager.getType() == EntityType.ARROW) {
-                LivingEntity shooter = ((Arrow) damager).getShooter();
-
-                if (shooter instanceof Player || !SkillType.UNARMED.getPVEEnabled()) {
-                    return;
-                }
-
-                UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
-
-                if (unarmedManager.canDeflect()) {
-                    event.setCancelled(unarmedManager.deflectCheck());
-
-                    if (event.isCancelled()) {
+            if (WorldConfig.getInstance().isSkillEnabled(SkillType.SWORDS, player.getWorld().getName())) {
+                if (ItemUtils.isSword(player.getItemInHand())) {
+                    if (!shouldProcessSkill(target, SkillType.SWORDS)) {
                         return;
+                    }
+
+                    SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
+
+                    if (swordsManager.canUseCounterAttack(damager)) {
+                        swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
+                    }
+                }
+            }
+
+            if (WorldConfig.getInstance().isSkillEnabled(SkillType.UNARMED, player.getWorld().getName())) {
+                if (damager.getType() == EntityType.ARROW) {
+                    LivingEntity shooter = ((Arrow) damager).getShooter();
+
+                    if (shooter instanceof Player || !SkillType.UNARMED.getPVEEnabled()) {
+                        return;
+                    }
+
+                    UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
+
+                    if (unarmedManager.canDeflect()) {
+                        event.setCancelled(unarmedManager.deflectCheck());
+
+                        if (event.isCancelled()) {
+                            return;
+                        }
                     }
                 }
             }

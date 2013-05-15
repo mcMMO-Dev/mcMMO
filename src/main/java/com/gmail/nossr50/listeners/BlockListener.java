@@ -22,6 +22,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.config.WorldConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -58,6 +59,10 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+        if (!WorldConfig.getInstance().isBlockStoreEnabled(event.getBlock().getWorld().getName()) || !HiddenConfig.getInstance().getChunkletsEnabled()) {
+            return;
+        }
+
         List<Block> blocks = event.getBlocks();
         BlockFace direction = event.getDirection();
         Block futureEmptyBlock = event.getBlock().getRelative(direction); // Block that would be air after piston is finished
@@ -88,6 +93,10 @@ public class BlockListener implements Listener {
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
         if (event.isSticky()) {
             // Needed only because under some circumstances Minecraft doesn't move the block
+            if (!WorldConfig.getInstance().isBlockStoreEnabled(event.getBlock().getWorld().getName()) || !HiddenConfig.getInstance().getChunkletsEnabled()) {
+                return;
+            }
+
             new StickyPistonTrackerTask(event.getDirection(), event.getBlock()).runTaskLater(plugin, 2);
         }
     }
@@ -146,47 +155,61 @@ public class BlockListener implements Listener {
 
         /* HERBALISM */
         if (BlockUtils.affectedByGreenTerra(blockState)) {
-            HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
+            if (WorldConfig.getInstance().isSkillEnabled(SkillType.HERBALISM, blockState.getWorld().getName())) {
+                HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
-            /* Green Terra */
-            if (herbalismManager.canActivateAbility()) {
-                SkillUtils.abilityCheck(mcMMOPlayer, SkillType.HERBALISM);
-            }
+                /* Green Terra */
+                if (herbalismManager.canActivateAbility()) {
+                    SkillUtils.abilityCheck(mcMMOPlayer, SkillType.HERBALISM);
+                }
 
-            /*
-             * We don't check the block store here because herbalism has too many unusual edge cases.
-             * Instead, we check it inside the drops handler.
-             */
-            if (Permissions.skillEnabled(player, SkillType.HERBALISM)) {
-                herbalismManager.herbalismBlockCheck(blockState);
+                /*
+                 * We don't check the block store here because Herbalism has too many unusual edge cases.
+                 * Instead, we check it inside the drops handler.
+                 */
+                if (Permissions.skillEnabled(player, SkillType.HERBALISM)) {
+                    herbalismManager.herbalismBlockCheck(blockState);
+                }
             }
         }
 
         /* MINING */
-        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && Permissions.skillEnabled(player, SkillType.MINING) && !mcMMO.getPlaceStore().isTrue(blockState)) {
-            MiningManager miningManager = mcMMOPlayer.getMiningManager();
-            miningManager.miningBlockCheck(blockState);
+        else if (BlockUtils.affectedBySuperBreaker(blockState)) {
+            if (WorldConfig.getInstance().isSkillEnabled(SkillType.MINING, blockState.getWorld().getName())) {
+                if (ItemUtils.isPickaxe(heldItem) && Permissions.skillEnabled(player, SkillType.MINING) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+                    MiningManager miningManager = mcMMOPlayer.getMiningManager();
+                    miningManager.miningBlockCheck(blockState);
+                }
+            }
         }
 
         /* WOOD CUTTING */
-        else if (BlockUtils.isLog(blockState) && Permissions.skillEnabled(player, SkillType.WOODCUTTING) && !mcMMO.getPlaceStore().isTrue(blockState)) {
-            WoodcuttingManager woodcuttingManager = mcMMOPlayer.getWoodcuttingManager();
+        else if (BlockUtils.isLog(blockState)) {
+            if (WorldConfig.getInstance().isSkillEnabled(SkillType.WOODCUTTING, blockState.getWorld().getName())) {
+                if (Permissions.skillEnabled(player, SkillType.WOODCUTTING) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+                    WoodcuttingManager woodcuttingManager = mcMMOPlayer.getWoodcuttingManager();
 
-            if (woodcuttingManager.canUseTreeFeller(heldItem)) {
-                woodcuttingManager.processTreeFeller(blockState);
-            }
-            else {
-                woodcuttingManager.woodcuttingBlockCheck(blockState);
+                    if (woodcuttingManager.canUseTreeFeller(heldItem)) {
+                        woodcuttingManager.processTreeFeller(blockState);
+                    }
+                    else {
+                        woodcuttingManager.woodcuttingBlockCheck(blockState);
+                    }
+                }
             }
         }
 
         /* EXCAVATION */
-        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && Permissions.skillEnabled(player, SkillType.EXCAVATION) && !mcMMO.getPlaceStore().isTrue(blockState)) {
-            ExcavationManager excavationManager = mcMMOPlayer.getExcavationManager();
-            excavationManager.excavationBlockCheck(blockState);
+        else if (BlockUtils.affectedByGigaDrillBreaker(blockState)) {
+            if (WorldConfig.getInstance().isSkillEnabled(SkillType.EXCAVATION, blockState.getWorld().getName())) {
+                if (ItemUtils.isShovel(heldItem) && Permissions.skillEnabled(player, SkillType.EXCAVATION) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+                    ExcavationManager excavationManager = mcMMOPlayer.getExcavationManager();
+                    excavationManager.excavationBlockCheck(blockState);
 
-            if (mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
-                excavationManager.gigaDrillBreaker(blockState);
+                    if (mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
+                        excavationManager.gigaDrillBreaker(blockState);
+                    }
+                }
             }
         }
 
@@ -215,6 +238,10 @@ public class BlockListener implements Listener {
         ItemStack heldItem = player.getItemInHand();
 
         if (ItemUtils.isSword(heldItem)) {
+            if (!WorldConfig.getInstance().isSkillEnabled(SkillType.HERBALISM, blockState.getWorld().getName())) {
+                return;
+            }
+
             HerbalismManager herbalismManager = UserManager.getPlayer(player).getHerbalismManager();
 
             if (herbalismManager.canUseHylianLuck()) {
@@ -225,6 +252,10 @@ public class BlockListener implements Listener {
             }
         }
         else if (ItemUtils.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
+            if (!WorldConfig.getInstance().isSkillEnabled(SkillType.MINING, blockState.getWorld().getName())) {
+                return;
+            }
+
             SmeltingManager smeltingManager = UserManager.getPlayer(player).getSmeltingManager();
 
             if (smeltingManager.canUseFluxMining(blockState)) {

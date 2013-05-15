@@ -26,6 +26,7 @@ import org.bukkit.metadata.MetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.WorldConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.util.ItemUtils;
@@ -44,6 +45,10 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onInventoryOpen(InventoryOpenEvent event) {
         HumanEntity player = event.getPlayer();
+
+        if (!WorldConfig.getInstance().isSkillEnabled(SkillType.SMELTING, player.getWorld().getName())) {
+            return;
+        }
 
         if (Misc.isNPCEntity(player)) {
             return;
@@ -75,6 +80,10 @@ public class InventoryListener implements Listener {
             return;
         }
 
+        if (!WorldConfig.getInstance().isSkillEnabled(SkillType.SMELTING, player.getWorld().getName())) {
+            return;
+        }
+
         Inventory inventory = event.getInventory();
 
         if (inventory instanceof FurnaceInventory) {
@@ -99,6 +108,10 @@ public class InventoryListener implements Listener {
         Block furnaceBlock = event.getBlock();
         BlockState furnaceState = furnaceBlock.getState();
 
+        if (!WorldConfig.getInstance().isSkillEnabled(SkillType.SMELTING, furnaceState.getWorld().getName())) {
+            return;
+        }
+
         if (furnaceState instanceof Furnace) {
             ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
             List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
@@ -120,6 +133,10 @@ public class InventoryListener implements Listener {
     public void onFurnaceSmeltEvent(FurnaceSmeltEvent event) {
         Block furnaceBlock = event.getBlock();
         BlockState furnaceState = furnaceBlock.getState();
+
+        if (!WorldConfig.getInstance().isSkillEnabled(SkillType.SMELTING, furnaceState.getWorld().getName())) {
+            return;
+        }
 
         if (furnaceState instanceof Furnace) {
             ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
@@ -150,6 +167,10 @@ public class InventoryListener implements Listener {
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
         Block furnaceBlock = event.getBlock();
         BlockState furnaceState = furnaceBlock.getState();
+
+        if (!WorldConfig.getInstance().isSkillEnabled(SkillType.SMELTING, furnaceState.getWorld().getName())) {
+            return;
+        }
 
         if (furnaceState instanceof Furnace) {
             ItemStack result = ((Furnace) furnaceState).getInventory().getResult();
