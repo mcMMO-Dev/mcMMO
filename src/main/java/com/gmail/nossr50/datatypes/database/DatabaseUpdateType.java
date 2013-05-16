@@ -5,5 +5,7 @@ public enum DatabaseUpdateType {
     BLAST_MINING,
     INDEX,
     MOB_HEALTHBARS,
-    PARTY_NAMES,
+    PARTY_NAMES, 
+    KILL_ORPHANS,
+    ;
 }

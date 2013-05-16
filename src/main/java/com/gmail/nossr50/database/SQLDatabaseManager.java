@@ -151,6 +151,7 @@ public final class SQLDatabaseManager {
         checkDatabaseStructure(DatabaseUpdateType.INDEX);
         checkDatabaseStructure(DatabaseUpdateType.MOB_HEALTHBARS);
         checkDatabaseStructure(DatabaseUpdateType.PARTY_NAMES);
+        checkDatabaseStructure(DatabaseUpdateType.KILL_ORPHANS);
     }
 
     /**
@@ -571,6 +572,34 @@ public final class SQLDatabaseManager {
 
             case PARTY_NAMES:
                 write("ALTER TABLE `" + tablePrefix + "users` DROP COLUMN `party` ;");
+                break;
+
+            case KILL_ORPHANS:
+                mcMMO.p.getLogger().info("Killing orphans");
+                write(
+                        "DELETE FROM " + tablePrefix + "experience " +
+                         "WHERE NOT EXISTS (SELECT * FROM " +
+                         tablePrefix + "users u WHERE " + 
+                         tablePrefix + "experience.user_id = u.id);" 
+                         );
+                write(
+                        "DELETE FROM " + tablePrefix + "huds " +
+                         "WHERE NOT EXISTS (SELECT * FROM " +
+                         tablePrefix + "users u WHERE " + 
+                         tablePrefix + "huds.user_id = u.id);" 
+                         );
+                write(
+                        "DELETE FROM " + tablePrefix + "cooldowns " +
+                         "WHERE NOT EXISTS (SELECT * FROM " +
+                         tablePrefix + "users u WHERE " + 
+                         tablePrefix + "cooldowns.user_id = u.id);" 
+                         );
+                write(
+                        "DELETE FROM " + tablePrefix + "skills " +
+                         "WHERE NOT EXISTS (SELECT * FROM " +
+                         tablePrefix + "users u WHERE " + 
+                         tablePrefix + "skills.user_id = u.id);" 
+                         );
                 break;
 
             default:
