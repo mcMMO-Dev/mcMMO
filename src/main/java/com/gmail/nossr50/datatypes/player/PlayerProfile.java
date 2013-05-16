@@ -296,7 +296,7 @@ public class PlayerProfile {
                 "WHERE u.user = '" + playerName + "'"
                 ).get(1);
 
-        if (playerData.size() == 0) {
+        if (playerData == null || playerData.size() == 0) {
             userId = SQLDatabaseManager.getInt("SELECT id FROM " + tablePrefix + "users WHERE user = '" + playerName + "'");
 
             // Check if user doesn't exist
