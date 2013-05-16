@@ -183,7 +183,7 @@ public class McMMOPlayer {
      */
     public void resetAbilityMode() {
         for (AbilityType ability : AbilityType.values()) {
-            // Currently disable and handle any special deactivate code
+            // Correctly disable and handle any special deactivate code
             new AbilityDisableTask(this, ability).run();
         }
     }
