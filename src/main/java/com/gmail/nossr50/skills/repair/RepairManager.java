@@ -10,8 +10,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -26,6 +24,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public class RepairManager extends SkillManager {
     public RepairManager(McMMOPlayer mcMMOPlayer) {
@@ -45,15 +44,7 @@ public class RepairManager extends SkillManager {
         }
 
         if (mcMMO.isSpoutEnabled()) {
-            SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
-
-            if (spoutPlayer.isSpoutCraftEnabled()) {
-                String[] spoutMessages = Repair.getSpoutAnvilMessages(anvilId);
-                spoutPlayer.sendNotification(spoutMessages[0], spoutMessages[1], Material.getMaterial(anvilId));
-            }
-            else {
-                player.sendMessage(Repair.getAnvilMessage(anvilId));
-            }
+            SpoutUtils.sendRepairNotifications(player, anvilId);
         }
         else {
             player.sendMessage(Repair.getAnvilMessage(anvilId));

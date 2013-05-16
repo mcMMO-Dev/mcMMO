@@ -13,14 +13,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
-import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -43,7 +40,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public class SkillUtils {
-
     public static int handleFoodSkills(Player player, SkillType skill, int eventFoodLevel, int baseLevel, int maxLevel, int rankChange) {
         int skillLevel = UserManager.getPlayer(player).getProfile().getSkillLevel(skill);
 
@@ -151,7 +147,7 @@ public class SkillUtils {
      * @param profile The profile of the player whose skill to check
      */
     public static void xpCheckSkill(SkillType skillType, Player player, PlayerProfile profile) {
-        int skillups = 0;
+        int levelsGained = 0;
         float xpRemoved = 0;
 
         if (profile.getSkillXpLevelRaw(skillType) >= profile.getXpToLevel(skillType)) {
@@ -163,7 +159,7 @@ public class SkillUtils {
                     xpRemoved += xp;
 
                     profile.removeXp(skillType, xp);
-                    skillups++;
+                    levelsGained++;
                     profile.skillUp(skillType, 1);
                 }
                 else {
@@ -171,46 +167,27 @@ public class SkillUtils {
                 }
             }
 
-            McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType, skillups);
+            McMMOPlayerLevelUpEvent eventToFire = new McMMOPlayerLevelUpEvent(player, skillType, levelsGained);
             mcMMO.p.getServer().getPluginManager().callEvent(eventToFire);
 
             if (eventToFire.isCancelled()) {
-                profile.modifySkill(skillType, profile.getSkillLevel(skillType) - skillups);
+                profile.modifySkill(skillType, profile.getSkillLevel(skillType) - levelsGained);
                 profile.setSkillXpLevel(skillType, profile.getSkillXpLevelRaw(skillType) + xpRemoved);
                 return;
             }
 
             String capitalized = StringUtils.getCapitalized(skillType.toString());
 
-            /* Spout Stuff */
             if (mcMMO.isSpoutEnabled()) {
-                SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
-
-                if (spoutPlayer != null && spoutPlayer.isSpoutCraftEnabled()) {
-                    SpoutUtils.levelUpNotification(skillType, spoutPlayer);
-
-                    /* Update custom titles */
-                    if (SpoutConfig.getInstance().getShowPowerLevel()) {
-                        spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", spoutPlayer.getName(), UserManager.getPlayer(player).getPowerLevel()));
-                    }
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", skillups, profile.getSkillLevel(skillType)));
-                }
+                SpoutUtils.processLevelup(mcMMOPlayer, skillType, levelsGained);
             }
             else {
-                player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", skillups, profile.getSkillLevel(skillType)));
+                player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", levelsGained, profile.getSkillLevel(skillType)));
             }
         }
 
         if (mcMMO.isSpoutEnabled()) {
-            SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
-
-            if (spoutPlayer != null && spoutPlayer.isSpoutCraftEnabled()) {
-                if (SpoutConfig.getInstance().getXPBarEnabled()) {
-                    profile.getSpoutHud().updateXpBar();
-                }
-            }
+            SpoutUtils.processXpGain(player, profile);
         }
     }
 

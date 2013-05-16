@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.jar.JarFile;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -18,9 +19,11 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.spout.SpoutConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -422,5 +425,54 @@ public class SpoutUtils {
 
     public static void preCacheFiles() {
         SpoutManager.getFileManager().addToPreLoginCache(mcMMO.p, extractFiles());
+    }
+
+    public static void processLevelup(McMMOPlayer mcMMOPlayer, SkillType skillType, int levelsGained) {
+        Player player = mcMMOPlayer.getPlayer();
+        SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
+
+        if (spoutPlayer.isSpoutCraftEnabled()) {
+            levelUpNotification(skillType, spoutPlayer);
+
+            /* Update custom titles */
+            if (SpoutConfig.getInstance().getShowPowerLevel()) {
+                spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", spoutPlayer.getName(), mcMMOPlayer.getPowerLevel()));
+            }
+        }
+        else {
+            player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(skillType.toString()) + ".Skillup", levelsGained, mcMMOPlayer.getProfile().getSkillLevel(skillType)));
+        }
+    }
+
+    public static void processXpGain(Player player, PlayerProfile profile) {
+        SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
+
+        if (spoutPlayer.isSpoutCraftEnabled() && SpoutConfig.getInstance().getXPBarEnabled()) {
+            profile.getSpoutHud().updateXpBar();
+        }
+    }
+
+    public static void sendRepairNotifications(Player player, int anvilId) {
+        SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
+
+        if (spoutPlayer.isSpoutCraftEnabled()) {
+            String[] spoutMessages = Repair.getSpoutAnvilMessages(anvilId);
+            spoutPlayer.sendNotification(spoutMessages[0], spoutMessages[1], Material.getMaterial(anvilId));
+        }
+        else {
+            player.sendMessage(Repair.getAnvilMessage(anvilId));
+        }
+    }
+
+    public static void sendDonationNotification(Player player) {
+        SpoutPlayer spoutPlayer = SpoutManager.getPlayer(player);
+
+        if (spoutPlayer.isSpoutCraftEnabled()) {
+            spoutPlayer.sendNotification(LocaleLoader.getString("Spout.Donate"), ChatColor.GREEN + "gjmcferrin@gmail.com", Material.DIAMOND);
+        }
+        else {
+            player.sendMessage(LocaleLoader.getString("MOTD.Donate"));
+            player.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "gjmcferrin@gmail.com" + ChatColor.GOLD + " Paypal");
+        }
     }
 }

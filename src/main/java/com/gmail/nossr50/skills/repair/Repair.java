@@ -40,6 +40,30 @@ public class Repair {
         return false;
     }
 
+    public static String getAnvilMessage(int blockId) {
+        if (blockId == repairAnvilId) {
+            return LocaleLoader.getString("Repair.Listener.Anvil");
+        }
+
+        if (blockId == salvageAnvilId) {
+            return LocaleLoader.getString("Repair.Listener.Anvil2");
+        }
+
+        return "";
+    }
+
+    public static String[] getSpoutAnvilMessages(int blockId) {
+        if (blockId == repairAnvilId) {
+            return new String[] {LocaleLoader.getString("Repair.AnvilPlaced.Spout1"), LocaleLoader.getString("Repair.AnvilPlaced.Spout2")};
+        }
+
+        if (blockId == salvageAnvilId) {
+            return new String[] {"[mcMMO] Anvil Placed", "Right click to salvage!"};
+        }
+
+        return new String[] {"", ""};
+    }
+
     /**
      * Search the inventory for an item and return the index.
      *
@@ -97,30 +121,6 @@ public class Repair {
         item.setAmount(1);
 
         inventory.removeItem(item);
-    }
-
-    protected static String[] getSpoutAnvilMessages(int blockId) {
-        if (blockId == repairAnvilId) {
-            return new String[] {LocaleLoader.getString("Repair.AnvilPlaced.Spout1"), LocaleLoader.getString("Repair.AnvilPlaced.Spout2")};
-        }
-
-        if (blockId == salvageAnvilId) {
-            return new String[] {"[mcMMO] Anvil Placed", "Right click to salvage!"};
-        }
-
-        return new String[] {"", ""};
-    }
-
-    protected static String getAnvilMessage(int blockId) {
-        if (blockId == repairAnvilId) {
-            return LocaleLoader.getString("Repair.Listener.Anvil");
-        }
-
-        if (blockId == salvageAnvilId) {
-            return LocaleLoader.getString("Repair.Listener.Anvil2");
-        }
-
-        return "";
     }
 
     protected static Material getSalvagedItem(ItemStack inHand) {
