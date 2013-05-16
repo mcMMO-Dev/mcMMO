@@ -26,24 +26,24 @@ public class WorldConfig extends ConfigLoader {
     // World settings
     public boolean isSkillEnabled(SkillType skillType, String world) {
         String skill = StringUtils.getCapitalized(skillType.toString());
-        return config.getBoolean("Worlds." + StringUtils.getCapitalized(world) + ".Skills." + skill + ".Enabled", isSkillEnabled(skill));
+        return config.getBoolean("Worlds." + world + ".Skills." + skill + ".Enabled", isSkillEnabled(skill));
     }
 
     public boolean isAbilityEnabled(SkillType skillType, String world) {
         String skill = StringUtils.getCapitalized(skillType.toString());
-        return config.getBoolean("Worlds." + StringUtils.getCapitalized(world) + ".Skills." + skill + ".AbilityEnabled", isAbilityEnabled(skill));
+        return config.getBoolean("Worlds." + world + ".Skills." + skill + ".AbilityEnabled", isAbilityEnabled(skill));
     }
 
-    public boolean isBlockStoreEnabled(String world) { return config.getBoolean("Worlds." + StringUtils.getCapitalized(world) + ".BlockStore", isBlockStoreEnabled()); }
+    public boolean isBlockStoreEnabled(String world) { return config.getBoolean("Worlds." + world + ".BlockStore", isBlockStoreEnabled()); }
 
-    public boolean isMobHealthEnabled(String world) { return config.getBoolean("Worlds." + StringUtils.getCapitalized(world) + ".MobHealthBar", isMobHealthEnabled()); }
+    public boolean isMobHealthEnabled(String world) { return config.getBoolean("Worlds." + world + ".MobHealthBar", isMobHealthEnabled()); }
 
     // Default settings
-    private boolean isSkillEnabled(String skill) { return config.getBoolean("Worlds.default.Skills." + skill + ".Enabled", true); }
+    private boolean isSkillEnabled(String skill) { return config.getBoolean("Default.Skills." + skill + ".Enabled", true); }
 
-    private boolean isAbilityEnabled(String skill) { return config.getBoolean("Worlds.default.Skills." + skill + ".AbilityEnabled", true); }
+    private boolean isAbilityEnabled(String skill) { return config.getBoolean("Default.Skills." + skill + ".AbilityEnabled", true); }
 
-    private boolean isBlockStoreEnabled() { return config.getBoolean("Worlds.default.BlockStore", true); }
+    private boolean isBlockStoreEnabled() { return config.getBoolean("Default.BlockStore", true); }
 
-    private boolean isMobHealthEnabled() { return config.getBoolean("Worlds.default.MobHealthBar", true); }
+    private boolean isMobHealthEnabled() { return config.getBoolean("Default.MobHealthBar", true); }
 }
