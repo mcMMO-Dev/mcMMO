@@ -6,5 +6,4 @@ public enum DatabaseUpdateType {
     INDEX,
     MOB_HEALTHBARS,
     PARTY_NAMES,
-    USER_COLUMN;
 }

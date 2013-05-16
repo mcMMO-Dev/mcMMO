@@ -151,7 +151,6 @@ public final class SQLDatabaseManager {
         checkDatabaseStructure(DatabaseUpdateType.INDEX);
         checkDatabaseStructure(DatabaseUpdateType.MOB_HEALTHBARS);
         checkDatabaseStructure(DatabaseUpdateType.PARTY_NAMES);
-        checkDatabaseStructure(DatabaseUpdateType.USER_COLUMN);
     }
 
     /**
@@ -574,10 +573,6 @@ public final class SQLDatabaseManager {
                 write("ALTER TABLE `" + tablePrefix + "users` DROP COLUMN `party` ;");
                 break;
 
-            case USER_COLUMN:
-                sql = "SELECT * FROM  `" + tablePrefix + "users` ORDER BY  `" + tablePrefix + "users`.`user` ASC LIMIT 0 , 30";
-                break;
-
             default:
                 break;
         }
@@ -619,10 +614,6 @@ public final class SQLDatabaseManager {
                     write("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "' ;");
                     break;
 
-                case USER_COLUMN:
-                    mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for user column name...");
-                    write("ALTER TABLE `" + tablePrefix + "users` RENAME COLUMN `userr` to `user`;");
-                    break;
                 default:
                     break;
             }
