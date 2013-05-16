@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import java.util.Collection;
 import java.util.Random;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
@@ -193,8 +194,12 @@ public final class Misc {
     }
 
     public static void resendChunkRadiusAt(Player player, int radius) {
-        for (int x = player.getLocation().getChunk().getX() - radius; x < player.getLocation().getChunk().getX() + radius; x++) {
-            for (int z = player.getLocation().getChunk().getZ() - radius; z < player.getLocation().getChunk().getZ() + radius; z++) {
+        Chunk chunk = player.getLocation().getChunk();
+        int chunkX = chunk.getX();
+        int chunkZ = chunk.getZ();
+
+        for (int x = chunkX - radius; x < chunkX + radius; x++) {
+            for (int z = chunkZ - radius; z < chunkZ + radius; z++) {
                 player.getWorld().refreshChunk(x, z);
             }
         }
