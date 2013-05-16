@@ -10,6 +10,8 @@
 #####
 Item_Weights:
     Default: 5
+    Quartz: 200
+    Quartz_Ore: 200
     Emerald: 150
     Emerald_Ore: 150
     Diamond: 100

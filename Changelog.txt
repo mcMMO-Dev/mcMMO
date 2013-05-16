@@ -28,7 +28,8 @@ Version 1.4.06-dev
  + Added multiplier to Archery XP based on bow force
  + Added information about /party itemshare and /party expshare to the party help page
  + Added option to use scoreboards for power level display instead of Spout.
- + Fixed bug where custom Spout titles were overwritten by mcMMO.
+ = Fixed bug where custom Spout titles were overwritten by mcMMO.
+ = Fixed bug where Nether Quartz wasn't included in Smelting or item sharing
  = Fixed bug where players were able to join the same party multiple times
  = Fixed displaying partial names when trying to use /ptp
  = Fixed wolves from Call of the Wild only having 8 health
