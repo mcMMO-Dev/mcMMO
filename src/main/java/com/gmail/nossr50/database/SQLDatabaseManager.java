@@ -564,7 +564,7 @@ public final class SQLDatabaseManager {
                             + "ADD INDEX `idx_acrobatics` (`acrobatics`) USING BTREE, "
                             + "ADD INDEX `idx_fishing` (`fishing`) USING BTREE;");
                 }
-                break;
+                return;
 
             case MOB_HEALTHBARS:
                 sql = "SELECT * FROM  `" + tablePrefix + "huds` ORDER BY  `" + tablePrefix + "huds`.`mobhealthbar` ASC LIMIT 0 , 30";
@@ -572,7 +572,7 @@ public final class SQLDatabaseManager {
 
             case PARTY_NAMES:
                 write("ALTER TABLE `" + tablePrefix + "users` DROP COLUMN `party` ;");
-                break;
+                return;
 
             case KILL_ORPHANS:
                 mcMMO.p.getLogger().info("Killing orphans");
@@ -600,7 +600,7 @@ public final class SQLDatabaseManager {
                          tablePrefix + "users u WHERE " + 
                          tablePrefix + "skills.user_id = u.id);" 
                          );
-                break;
+                return;
 
             default:
                 break;
