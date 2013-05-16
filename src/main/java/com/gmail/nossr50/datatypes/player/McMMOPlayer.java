@@ -20,6 +20,7 @@ import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
+import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
@@ -182,7 +183,8 @@ public class McMMOPlayer {
      */
     public void resetAbilityMode() {
         for (AbilityType ability : AbilityType.values()) {
-            setAbilityMode(ability, false);
+            // Currently disable and handle any special deactivate code
+            new AbilityDisableTask(this, ability).run();
         }
     }
 
