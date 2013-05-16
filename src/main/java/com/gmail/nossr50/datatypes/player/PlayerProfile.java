@@ -288,7 +288,13 @@ public class PlayerProfile {
         String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
         ArrayList<String> playerData = SQLDatabaseManager.read(
-                "SELECT * FROM " + tablePrefix + "users u " +
+                "SELECT " +
+                "u.id, " +
+                "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, " +
+                "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, " +
+                "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, " +
+                "h.hudtype, h.mobhealthbar " +
+                "FROM " + tablePrefix + "users u " +
                 "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
                 "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
                 "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
@@ -312,8 +318,14 @@ public class PlayerProfile {
 
             // Re-read data
             playerData = SQLDatabaseManager.read(
-                    "SELECT * FROM " + tablePrefix + "users u " +
-                    "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
+                    "SELECT " +
+                    "u.id, " +
+                    "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, " +
+                    "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, " +
+                    "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, " +
+                    "h.hudtype, h.mobhealthbar " +
+                    "FROM " + tablePrefix + "users u " +
+                    "JOIN " + tablePrefix + "skills s ON (u.id = e.user_id) " +
                     "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
                     "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
                     "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
@@ -321,58 +333,49 @@ public class PlayerProfile {
                     ).get(1);
         }
 
-        // Remove from list the user_id's from various tables
-        playerData.remove(42);
-        playerData.remove(29);
-        playerData.remove(16);
-        playerData.remove(3);
-
         userId = Integer.valueOf(playerData.get(0));
 
-        // UserName 1 - Already loaded
-        // LastLogin 2 - Doesn't need to be loaded
+        skills.put(SkillType.TAMING, Integer.valueOf(playerData.get(1)));
+        skills.put(SkillType.MINING, Integer.valueOf(playerData.get(2)));
+        skills.put(SkillType.REPAIR, Integer.valueOf(playerData.get(3)));
+        skills.put(SkillType.WOODCUTTING, Integer.valueOf(playerData.get(4)));
+        skills.put(SkillType.UNARMED, Integer.valueOf(playerData.get(5)));
+        skills.put(SkillType.HERBALISM, Integer.valueOf(playerData.get(6)));
+        skills.put(SkillType.EXCAVATION, Integer.valueOf(playerData.get(7)));
+        skills.put(SkillType.ARCHERY, Integer.valueOf(playerData.get(8)));
+        skills.put(SkillType.SWORDS, Integer.valueOf(playerData.get(9)));
+        skills.put(SkillType.AXES, Integer.valueOf(playerData.get(10)));
+        skills.put(SkillType.ACROBATICS, Integer.valueOf(playerData.get(11)));
+        skills.put(SkillType.FISHING, Integer.valueOf(playerData.get(12)));
 
-        skills.put(SkillType.TAMING, Integer.valueOf(playerData.get(3)));
-        skills.put(SkillType.MINING, Integer.valueOf(playerData.get(4)));
-        skills.put(SkillType.REPAIR, Integer.valueOf(playerData.get(5)));
-        skills.put(SkillType.WOODCUTTING, Integer.valueOf(playerData.get(6)));
-        skills.put(SkillType.UNARMED, Integer.valueOf(playerData.get(7)));
-        skills.put(SkillType.HERBALISM, Integer.valueOf(playerData.get(8)));
-        skills.put(SkillType.EXCAVATION, Integer.valueOf(playerData.get(9)));
-        skills.put(SkillType.ARCHERY, Integer.valueOf(playerData.get(10)));
-        skills.put(SkillType.SWORDS, Integer.valueOf(playerData.get(11)));
-        skills.put(SkillType.AXES, Integer.valueOf(playerData.get(12)));
-        skills.put(SkillType.ACROBATICS, Integer.valueOf(playerData.get(13)));
-        skills.put(SkillType.FISHING, Integer.valueOf(playerData.get(14)));
+        skillsXp.put(SkillType.TAMING, (float) Integer.valueOf(playerData.get(13)));
+        skillsXp.put(SkillType.MINING, (float) Integer.valueOf(playerData.get(14)));
+        skillsXp.put(SkillType.REPAIR, (float) Integer.valueOf(playerData.get(15)));
+        skillsXp.put(SkillType.WOODCUTTING, (float) Integer.valueOf(playerData.get(16)));
+        skillsXp.put(SkillType.UNARMED, (float) Integer.valueOf(playerData.get(17)));
+        skillsXp.put(SkillType.HERBALISM, (float) Integer.valueOf(playerData.get(18)));
+        skillsXp.put(SkillType.EXCAVATION, (float) Integer.valueOf(playerData.get(19)));
+        skillsXp.put(SkillType.ARCHERY, (float) Integer.valueOf(playerData.get(20)));
+        skillsXp.put(SkillType.SWORDS, (float) Integer.valueOf(playerData.get(21)));
+        skillsXp.put(SkillType.AXES, (float) Integer.valueOf(playerData.get(22)));
+        skillsXp.put(SkillType.ACROBATICS, (float) Integer.valueOf(playerData.get(23)));
+        skillsXp.put(SkillType.FISHING, (float) Integer.valueOf(playerData.get(24)));
 
-        skillsXp.put(SkillType.TAMING, (float) Integer.valueOf(playerData.get(15)));
-        skillsXp.put(SkillType.MINING, (float) Integer.valueOf(playerData.get(16)));
-        skillsXp.put(SkillType.REPAIR, (float) Integer.valueOf(playerData.get(17)));
-        skillsXp.put(SkillType.WOODCUTTING, (float) Integer.valueOf(playerData.get(18)));
-        skillsXp.put(SkillType.UNARMED, (float) Integer.valueOf(playerData.get(19)));
-        skillsXp.put(SkillType.HERBALISM, (float) Integer.valueOf(playerData.get(20)));
-        skillsXp.put(SkillType.EXCAVATION, (float) Integer.valueOf(playerData.get(21)));
-        skillsXp.put(SkillType.ARCHERY, (float) Integer.valueOf(playerData.get(22)));
-        skillsXp.put(SkillType.SWORDS, (float) Integer.valueOf(playerData.get(23)));
-        skillsXp.put(SkillType.AXES, (float) Integer.valueOf(playerData.get(24)));
-        skillsXp.put(SkillType.ACROBATICS, (float) Integer.valueOf(playerData.get(25)));
-        skillsXp.put(SkillType.FISHING, (float) Integer.valueOf(playerData.get(26)));
+        // Taming 25 - Unused
+        skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(playerData.get(26)));
+        skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(playerData.get(27)));
+        // Repair 28 - Unused
+        skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(playerData.get(29)));
+        skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(playerData.get(30)));
+        skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(playerData.get(31)));
+        // Archery 32 - Unused
+        skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(playerData.get(33)));
+        skillsDATS.put(AbilityType.SKULL_SPLITTER, Integer.valueOf(playerData.get(34)));
+        // Acrobatics 35 - Unused
+        skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(playerData.get(36)));
 
-        // Taming 27 - Unused
-        skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(playerData.get(28)));
-        skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(playerData.get(29)));
-        // Repair 30 - Unused
-        skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(playerData.get(31)));
-        skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(playerData.get(32)));
-        skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(playerData.get(33)));
-        // Archery 34 - Unused
-        skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(playerData.get(35)));
-        skillsDATS.put(AbilityType.SKULL_SPLITTER, Integer.valueOf(playerData.get(36)));
-        // Acrobatics 37 - Unused
-        skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(playerData.get(38)));
-
-        hudType = HudType.valueOf(playerData.get(39));
-        mobHealthbarType = MobHealthbarType.valueOf(playerData.get(40));
+        hudType = HudType.valueOf(playerData.get(37));
+        mobHealthbarType = MobHealthbarType.valueOf(playerData.get(38));
 
         loaded = true;
         return true;
