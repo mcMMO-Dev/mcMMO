@@ -95,11 +95,13 @@ public final class Misc {
             return false;
         }
 
-        if (first.distanceSquared(second) < (maxDistance * maxDistance)) {
-            return true;
-        }
+        return first.distanceSquared(second) < (maxDistance * maxDistance);
+    }
 
-        return false;
+    public static void dropItems(Location location, Collection<ItemStack> drops) {
+        for (ItemStack drop : drops) {
+            dropItem(location, drop);
+        }
     }
 
     /**
@@ -152,7 +154,6 @@ public final class Misc {
      * @param itemStack The item to drop
      */
     public static void dropItem(Location location, ItemStack itemStack) {
-
         if (itemStack.getType() == Material.AIR) {
             return;
         }
@@ -165,12 +166,7 @@ public final class Misc {
             return;
         }
 
-        Item newItem = location.getWorld().dropItemNaturally(location, itemStack);
-
-        ItemStack cloned = itemStack.clone();
-        cloned.setAmount(newItem.getItemStack().getAmount());
-
-        newItem.setItemStack(cloned);
+        location.getWorld().dropItemNaturally(location, itemStack);
     }
 
     public static void profileCleanup(String playerName) {
@@ -206,11 +202,5 @@ public final class Misc {
 
     public static Random getRandom() {
         return random;
-    }
-
-    public static void dropItems(Location location, Collection<ItemStack> drops) {
-        for (ItemStack drop : drops) {
-            dropItem(location, drop);
-        }
     }
 }
