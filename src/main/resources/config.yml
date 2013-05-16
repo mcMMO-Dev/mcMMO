@@ -394,6 +394,8 @@ Experience:
 Commands:
     mcmmo:
         Donate_Message: true
+    inspect:
+        Max_Distance: 30
     ptp:
         Cooldown: 120
         Warmup: 5

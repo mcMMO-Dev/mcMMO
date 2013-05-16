@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -46,7 +47,7 @@ public final class CommandUtils {
     }
 
     public static boolean tooFar(CommandSender sender, Player target, boolean hasPermission) {
-        if (sender instanceof Player && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), 5.0) && !hasPermission) {
+        if (sender instanceof Player && !Misc.isNear(((Player) sender).getLocation(), target.getLocation(), Config.getInstance().getInspectDistance()) && !hasPermission) {
             sender.sendMessage(LocaleLoader.getString("Inspect.TooFar"));
             return true;
         }

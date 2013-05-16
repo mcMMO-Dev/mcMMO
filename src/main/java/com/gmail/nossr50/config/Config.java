@@ -172,6 +172,9 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getPTPCommandConfirmRequired() { return config.getBoolean("Commands.ptp.Confirm_Required", true); }
     public boolean getPTPCommandWorldPermissions() { return config.getBoolean("Commands.ptp.World_Based_Permissions", false); }
 
+    /* Inspect command distance */
+    public double getInspectDistance() { return config.getDouble("Commands.inspect.Max_Distance", 30); }
+
     /*
      * ABILITY SETTINGS
      */
