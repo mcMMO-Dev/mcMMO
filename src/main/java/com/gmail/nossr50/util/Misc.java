@@ -95,7 +95,7 @@ public final class Misc {
             return false;
         }
 
-        return first.distanceSquared(second) < (maxDistance * maxDistance);
+        return first.distanceSquared(second) < (maxDistance * maxDistance) || maxDistance == 0;
     }
 
     public static void dropItems(Location location, Collection<ItemStack> drops) {
