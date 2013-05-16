@@ -4,5 +4,7 @@ public enum DatabaseUpdateType {
     FISHING,
     BLAST_MINING,
     INDEX,
-    MOB_HEALTHBARS;
+    MOB_HEALTHBARS,
+    PARTY_NAMES,
+    USER_COLUMN;
 }
