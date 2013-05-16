@@ -363,12 +363,12 @@ public class PlayerProfile {
 
         // Taming 25 - Unused
         skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(playerData.get(26)));
-        skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(playerData.get(27)));
-        // Repair 28 - Unused
+        // Repair 27 - Unused
+        skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(playerData.get(28)));
         skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(playerData.get(29)));
         skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(playerData.get(30)));
-        skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(playerData.get(31)));
-        // Archery 32 - Unused
+        // Archery 31 - Unused
+        skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(playerData.get(32)));
         skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(playerData.get(33)));
         skillsDATS.put(AbilityType.SKULL_SPLITTER, Integer.valueOf(playerData.get(34)));
         // Acrobatics 35 - Unused
