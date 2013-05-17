@@ -141,7 +141,7 @@ public enum SkillType {
         }
     }
 
-    public SkillType[] nonChildSkills() {
+    public static SkillType[] nonChildSkills() {
         return new SkillType[] {SkillType.ACROBATICS,
                 SkillType.ARCHERY,
                 SkillType.AXES,
@@ -156,7 +156,7 @@ public enum SkillType {
                 SkillType.WOODCUTTING };
     }
 
-    public SkillType[] childSkills() {
+    public static SkillType[] childSkills() {
         return new SkillType[] { SkillType.SMELTING };
     }
 
