@@ -325,7 +325,7 @@ public class PlayerProfile {
                     "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, " +
                     "h.hudtype, h.mobhealthbar " +
                     "FROM " + tablePrefix + "users u " +
-                    "JOIN " + tablePrefix + "skills s ON (u.id = e.user_id) " +
+                    "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
                     "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
                     "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
                     "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
