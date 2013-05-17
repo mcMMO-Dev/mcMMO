@@ -6,7 +6,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-
 public class McMMOPlayerMagicHunterEvent extends McMMOPlayerFishingTreasureEvent {
 
     private Map<Enchantment, Integer> enchants;
@@ -15,7 +14,7 @@ public class McMMOPlayerMagicHunterEvent extends McMMOPlayerFishingTreasureEvent
         super(player, treasure, xp);
         this.enchants = enchants;
     }
-    
+
     public Map<Enchantment, Integer> getEnchantments() {
         return enchants;
     }

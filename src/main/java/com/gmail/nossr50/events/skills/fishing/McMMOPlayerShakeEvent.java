@@ -22,7 +22,7 @@ public class McMMOPlayerShakeEvent extends McMMOPlayerSkillEvent implements Canc
     }
 
     public void setCancelled(boolean newValue) {
-        this.cancelled  = newValue;
+        this.cancelled = newValue;
     }
 
     public ItemStack getDrop() {

@@ -18,11 +18,11 @@ public class McMMOPlayerFishingTreasureEvent extends McMMOPlayerSkillEvent imple
         this.treasure = treasure;
         this.xp = xp;
     }
-    
+
     public ItemStack getTreasure() {
         return treasure;
     }
-    
+
     public void setTreasure(ItemStack item) {
         this.treasure = item;
     }
