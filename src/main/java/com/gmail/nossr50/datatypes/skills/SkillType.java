@@ -141,6 +141,25 @@ public enum SkillType {
         }
     }
 
+    public SkillType[] nonChildSkills() {
+        return new SkillType[] {SkillType.ACROBATICS,
+                SkillType.ARCHERY,
+                SkillType.AXES,
+                SkillType.EXCAVATION,
+                SkillType.FISHING,
+                SkillType.HERBALISM,
+                SkillType.MINING,
+                SkillType.REPAIR,
+                SkillType.SWORDS,
+                SkillType.TAMING,
+                SkillType.UNARMED,
+                SkillType.WOODCUTTING };
+    }
+
+    public SkillType[] childSkills() {
+        return new SkillType[] { SkillType.SMELTING };
+    }
+
     public Color getRunescapeModeColor() {
         return runescapeColor;
     }
