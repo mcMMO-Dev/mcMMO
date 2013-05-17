@@ -35,9 +35,9 @@ public final class MobHealthbarUtils {
     /**
      * Handle the creation of mob healthbars.
      *
-     * @param profile The 
-     * @param target
-     * @param damage
+     * @param player the attacking player
+     * @param target the targetted entity
+     * @param damage damage done by the attack triggering this
      */
     public static void handleMobHealthbars(Player player, LivingEntity target, int damage) {
         if (!Permissions.mobHealthDisplay(player)) {
@@ -132,7 +132,7 @@ public final class MobHealthbarUtils {
                 return null;
         }
 
-        int coloredDisplay = (int) (fullDisplay * (healthPercentage / 100.0D));
+        int coloredDisplay = (int) Math.ceil(fullDisplay * (healthPercentage / 100.0D));
         int grayDisplay = fullDisplay - coloredDisplay;
 
         String healthbar = color + "";
