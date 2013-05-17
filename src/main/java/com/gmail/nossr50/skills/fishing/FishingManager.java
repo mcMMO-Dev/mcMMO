@@ -2,7 +2,9 @@ package com.gmail.nossr50.skills.fishing;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -37,6 +39,9 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.events.fake.FakePlayerFishEvent;
+import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
+import com.gmail.nossr50.events.skills.fishing.McMMOPlayerMagicHunterEvent;
+import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.skills.KrakenAttackTask;
 import com.gmail.nossr50.skills.SkillManager;
@@ -269,13 +274,43 @@ public class FishingManager extends SkillManager {
             treasureXp = treasure.getXp();
             ItemStack treasureDrop = treasure.getDrop().clone(); // Not cloning is bad, m'kay?
 
-            if (Permissions.magicHunter(player) && ItemUtils.isEnchantable(treasureDrop) && handleMagicHunter(treasureDrop)) {
-                player.sendMessage(LocaleLoader.getString("Fishing.MagicFound"));
+            McMMOPlayerFishingTreasureEvent event;
+            Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+
+            if (Permissions.magicHunter(player) && ItemUtils.isEnchantable(treasureDrop)) {
+                enchants = handleMagicHunter(treasureDrop);
+                event = new McMMOPlayerMagicHunterEvent(player, treasureDrop, treasureXp, enchants);
+            }
+            else {
+                event = new McMMOPlayerFishingTreasureEvent(player, treasureDrop, treasureXp);
+            }
+
+            mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+            treasureDrop = event.getTreasure();
+            treasureXp = event.getXp();
+
+            if (event.isCancelled()) {
+                treasureDrop = null;
+                treasureXp = 0;
             }
 
             // Drop the original catch at the feet of the player and set the treasure as the real catch
-            Misc.dropItem(player.getEyeLocation(), fishingCatch.getItemStack());
-            fishingCatch.setItemStack(treasureDrop);
+            if (treasureDrop != null) {
+                boolean enchanted = false;
+
+                if (!enchants.isEmpty()) {
+                    treasureDrop.addUnsafeEnchantments(enchants);
+                    enchanted = true;
+                }
+
+                if (enchanted) {
+                    player.sendMessage(LocaleLoader.getString("Fishing.MagicFound"));
+                }
+
+                Misc.dropItem(player.getEyeLocation(), fishingCatch.getItemStack());
+                fishingCatch.setItemStack(treasureDrop);
+            }
         }
 
         applyXpGain(Config.getInstance().getFishingBaseXP() + treasureXp);
@@ -351,6 +386,14 @@ public class FishingManager extends SkillManager {
                     break;
             }
 
+            McMMOPlayerShakeEvent event = new McMMOPlayerShakeEvent(getPlayer(), drop);
+
+            drop = event.getDrop();
+
+            if (event.isCancelled() || drop == null) {
+                return;
+            }
+
             Misc.dropItem(target.getLocation(), drop);
             CombatUtils.dealDamage(target, Math.max(target.getMaxHealth() / 4, 1)); // Make it so you can shake a mob no more than 4 times.
         }
@@ -399,7 +442,7 @@ public class FishingManager extends SkillManager {
      * @param treasureDrop The {@link ItemStack} to enchant
      * @return true if the item has been enchanted
      */
-    private boolean handleMagicHunter(ItemStack treasureDrop) {
+    private Map<Enchantment, Integer> handleMagicHunter(ItemStack treasureDrop) {
         Player player = getPlayer();
         int activationChance = this.activationChance;
 
@@ -407,8 +450,10 @@ public class FishingManager extends SkillManager {
             activationChance *= Fishing.STORM_MODIFIER;
         }
 
+        Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
+
         if (Misc.getRandom().nextInt(activationChance) > getLootTier() * AdvancedConfig.getInstance().getFishingMagicMultiplier()) {
-            return false;
+            return enchants;
         }
 
         List<Enchantment> possibleEnchantments = getPossibleEnchantments(treasureDrop);
@@ -416,7 +461,6 @@ public class FishingManager extends SkillManager {
         // This make sure that the order isn't always the same, for example previously Unbreaking had a lot more chance to be used than any other enchant
         Collections.shuffle(possibleEnchantments, Misc.getRandom());
 
-        boolean enchanted = false;
         int specificChance = 1;
 
         for (Enchantment possibleEnchantment : possibleEnchantments) {
@@ -424,13 +468,12 @@ public class FishingManager extends SkillManager {
                 continue;
             }
 
-            treasureDrop.addEnchantment(possibleEnchantment, Math.max(Misc.getRandom().nextInt(possibleEnchantment.getMaxLevel()) + 1, possibleEnchantment.getStartLevel()));
+            enchants.put(possibleEnchantment, Math.max(Misc.getRandom().nextInt(possibleEnchantment.getMaxLevel()) + 1, possibleEnchantment.getStartLevel()));
 
             specificChance++;
-            enchanted = true;
         }
 
-        return enchanted;
+        return enchants;
     }
 
     private List<Enchantment> getPossibleEnchantments(ItemStack treasureDrop) {
