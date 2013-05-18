@@ -180,6 +180,38 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getBlastRadiusModifierRank7() { return config.getDouble("Skills.Mining.BlastRadiusModifier_Rank7", 4.0); }
     public double getBlastRadiusModifierRank8() { return config.getDouble("Skills.Mining.BlastRadiusModifier_Rank8", 4.0); }
 
+    /* RANCHING */
+    public int getMultipleBirthIncreasekLevel() { return config.getInt("Skills.Ranching.MultipleBirth_IncreaseLevel", 50); }
+    public int getMultipleBirthMaxChance() { return config.getInt("Skills.Ranching.MultipleBirth_ChanceMax", 30); }
+    public int getMultipleBirthLitterModifier() { return config.getInt("Skills.Ranching.MultipleBirth_LitterModifier", 30); }
+
+    public int getMasterHerderIncreaseLevel() { return config.getInt("Skills.Ranching.MultipleBirth_IncreaseLevel", 50); }
+    public int getMasterHerderMaxLevel() { return config.getInt("Skills.Ranching.MultipleBirth_MaxBonusLevel", 500); }
+    public int getMasterHerderMinimumSeconds() { return config.getInt("Skills.Ranching.MultipleBirth_MinimumSeconds", 120); }
+
+    public int getShearsMasteryMaxLevel() { return config.getInt("Skills.Ranching.ShearsMastery_MaxBonusLevel", 500); }
+    public int getShearsMasteryMaxChance() { return config.getInt("Skills.Ranching.ShearsMastery_ChanceMax", 20); }
+    public int getShearsMasteryMaxBonus() { return config.getInt("Skills.Ranching.ShearsMastery_MaxBonus", 3); }
+
+    public int getArtisanButcherMaxLevel() { return config.getInt("Skills.Ranching.ArtisanButcher_MaxBonusLevel", 500); }
+    public int getArtisanButcherMaxChance() { return config.getInt("Skills.Ranching.ArtisanButcher_ChanceMax", 20); }
+    public int getArtisanButcherMaxBonus() { return config.getInt("Skills.Ranching.ArtisanButcher_MaxBonus", 3); }
+    
+    public int getCarnivoresDietRankChange() { return config.getInt("Skills.Ranching.Carnivores_Diet_RankChange", 200); }
+
+    public int getRanchingVanillaXPBoostRank1Level() { return config.getInt("Skills.Ranching.VanillaXPBoost_Rank1Level", 100); }
+    public int getRanchingVanillaXPBoostRank2Level() { return config.getInt("Skills.Ranching.VanillaXPBoost_Rank2Level", 300); }
+    public int getRanchingVanillaXPBoostRank3Level() { return config.getInt("Skills.Ranching.VanillaXPBoost_Rank3Level", 500); }
+    public int getRanchingVanillaXPBoostRank4Level() { return config.getInt("Skills.Ranching.VanillaXPBoost_Rank4Level", 700); }
+    public int getRanchingVanillaXPBoostRank5Level() { return config.getInt("Skills.Ranching.VanillaXPBoost_Rank5Level", 900); }
+    public int getRanchingVanillaXPBoostRank1Multiplier() { return config.getInt("Skills.Ranching.VanillaXPBoost_Rank1Multiplier", 2); }
+    public int getRanchingVanillaXPBoostRank2Multiplier() { return config.getInt("Skills.Ranching.VanillaXPBoost_Rank2Multiplier", 3); }
+    public int getRanchingVanillaXPBoostRank3Multiplier() { return config.getInt("Skills.Ranching.VanillaXPBoost_Rank3Multiplier", 4); }
+    public int getRanchingVanillaXPBoostRank4Multiplier() { return config.getInt("Skills.Ranching.VanillaXPBoost_Rank4Multiplier", 5); }
+    public int getRanchingVanillaXPBoostRank5Multiplier() { return config.getInt("Skills.Ranching.VanillaXPBoost_Rank5Multiplier", 6); }
+    
+    
+
     /* REPAIR */
     public double getRepairMasteryMaxBonus() { return config.getDouble("Skills.Repair.RepairMastery_MaxBonusPercentage", 200.0D); }
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery_MaxBonusLevel", 1000); }

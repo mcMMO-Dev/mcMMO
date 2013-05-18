@@ -244,6 +244,7 @@ public class SkillUtils {
     public static boolean hasMiscSkills(Player player) {
         return Permissions.skillEnabled(player, SkillType.ACROBATICS)
                 || Permissions.skillEnabled(player, SkillType.SMELTING)
+                || Permissions.skillEnabled(player, SkillType.RANCHING)
                 || Permissions.skillEnabled(player, SkillType.REPAIR);
     }
 

@@ -166,6 +166,13 @@ public final class Permissions {
     public static boolean remoteDetonation(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.mining.blastmining.detonate"); }
     public static boolean superBreaker(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.mining.superbreaker"); }
 
+    /* RANCHING */
+    public static boolean multipleBirth(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.ranching.multiplebirth"); }
+    public static boolean masterHerder(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.ranching.masterherder"); }
+    public static boolean shearsMastery(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.ranching.shearsmastery"); }
+    public static boolean artisanButcher(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.ranching.artisanbutcher"); }
+    public static boolean carnivoresDiet(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.ranching.carnivoresdiet"); }
+
     /* REPAIR */
     public static boolean arcaneForging(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.arcaneforging"); }
     public static boolean repairMastery(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.repairmastery"); }

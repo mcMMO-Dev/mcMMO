@@ -44,6 +44,8 @@ import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.mining.MiningManager;
+import com.gmail.nossr50.skills.ranching.Ranching;
+import com.gmail.nossr50.skills.ranching.RanchingManager;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.util.Misc;
@@ -355,13 +357,20 @@ public class EntityListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
+        Player player = event.getEntity().getKiller();
 
-        if (Misc.isNPCEntity(entity)) {
+        if (Misc.isNPCEntity(entity) || Misc.isNPCEntity(player)) {
             return;
         }
 
         BleedTimerTask.remove(entity);
         Archery.arrowRetrievalCheck(entity);
+
+        if (Permissions.carnivoresDiet(player)) {
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+            RanchingManager ranchingManager = mcMMOPlayer.getRanchingManager();
+            ranchingManager.handleArtisanButcher(entity);
+        }
     }
 
     /**
@@ -507,6 +516,22 @@ public class EntityListener implements Listener {
             case RAW_FISH:    /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                 if (Permissions.fishermansDiet(player)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
+                }
+                return;
+
+            case COOKED_CHICKEN: /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
+            case GRILLED_PORK:   /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
+            case COOKED_BEEF:    /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
+                if (Permissions.carnivoresDiet(player)) {
+                    event.setFoodLevel(UserManager.getPlayer(player).getRanchingManager().handleCarnivoresDiet(Ranching.carnivoresDietRankLevel1, newFoodLevel));
+                }
+                return;
+
+            case RAW_CHICKEN:   /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+            case PORK:          /* RESTORES 2 1/2 HUNGER - RESTORES 4 HUNGER @ 1000 */
+            case RAW_BEEF:      /* RESTORES 2 1/2 HUNGER - RESTORES 4 HUNGER @ 1000 */
+                if (Permissions.carnivoresDiet(player)) {
+                    event.setFoodLevel(UserManager.getPlayer(player).getRanchingManager().handleCarnivoresDiet(Ranching.carnivoresDietRankLevel2, newFoodLevel));
                 }
                 return;
 

@@ -5,7 +5,9 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fish;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
@@ -19,12 +21,15 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
@@ -43,6 +48,8 @@ import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
+import com.gmail.nossr50.skills.ranching.Ranching;
+import com.gmail.nossr50.skills.ranching.RanchingManager;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
@@ -516,6 +523,68 @@ public class PlayerListener implements Listener {
 
             default:
                 break;
+        }
+    }
+
+    /**
+     * Monitor PlayerInteractEntityEvent events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+        Entity entity = event.getRightClicked();
+
+        if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        ItemStack inHand = player.getItemInHand();
+
+        /* RANCHING */
+        if (entity instanceof Ageable) {
+            Ageable ageable = (Ageable) entity;
+            RanchingManager ranchingManager = mcMMOPlayer.getRanchingManager();
+
+            if (Permissions.skillEnabled(player, SkillType.RANCHING) && ageable.canBreed() && ranchingManager.isBreedFood(entity, inHand)) {
+                entity.setMetadata(mcMMO.animalBreedKey, new FixedMetadataValue(plugin, player.getName()));
+            }
+        }
+    }
+
+    /**
+     * Monitor PlayerShearEntityEvent events.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerShearEntity(PlayerShearEntityEvent event) {
+        Player player = event.getPlayer();
+        Entity entity = event.getEntity();
+
+        if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
+            return;
+        }
+
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        /* RANCHING */
+        RanchingManager ranchingManager = mcMMOPlayer.getRanchingManager();
+
+        /* Shears Mastery */
+        if (Permissions.shearsMastery(player)) {
+            if (entity.getType() == EntityType.SHEEP) {
+                ranchingManager.handleShearsMasterySheep(entity);
+            }
+            else if (entity.getType() == EntityType.MUSHROOM_COW) {
+                ranchingManager.handleShearsMasteryMooshroom(entity);
+            }
+        }
+
+        if (Permissions.skillEnabled(player, SkillType.RANCHING)) {
+            ranchingManager.applyXpGain(Ranching.shearExperience);
         }
     }
 

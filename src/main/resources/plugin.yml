@@ -86,6 +86,8 @@ commands:
         description: Detailed mcMMO skill info
     acrobatics:
         description: Detailed mcMMO skill info
+    ranching:
+        description: Detailed mcMMO skill info
     repair:
         description: Detailed mcMMO skill info
     fishing:
@@ -147,6 +149,7 @@ permissions:
             mcmmo.ability.fishing.all: true
             mcmmo.ability.herbalism.all: true
             mcmmo.ability.mining.all: true
+            mcmmo.ability.ranching.all: true
             mcmmo.ability.repair.all: true
             mcmmo.ability.smelting.all: true
             mcmmo.ability.swords.all: true
@@ -418,7 +421,30 @@ permissions:
     mcmmo.ability.mining.doubledrops:
         description: Allows double drop chance when mining
     mcmmo.ability.mining.superbreaker:
-        description: Allows access to the Super Breaker ability
+        description: Allows access to the Super Breaker ability   
+    mcmmo.ability.ranching.*:
+        default: false
+        description: Allows access to all Ranching abilities
+        children:
+            mcmmo.ability.ranching.all: true
+    mcmmo.ability.ranching.all:
+        description: Allows access to all Ranching abilities
+        children:
+            mcmmo.ability.ranching.multiplebirth: true
+            mcmmo.ability.ranching.masterherder: true
+            mcmmo.ability.ranching.shearsmastery: true
+            mcmmo.ability.ranching.artisanbutcher: true
+            mcmmo.ability.ranching.carnivoresdiet: true
+    mcmmo.ability.ranching.multiplebirth:
+        description: Allows access to the Multiple Birth ability
+    mcmmo.ability.ranching.masterherder:
+        description: Allows access to the Master Herder ability
+    mcmmo.ability.ranching.shearsmastery:
+        description: Allows access to the Shears Mastery ability
+    mcmmo.ability.ranching.artisanbutcher:
+        description: Allows access to the Artisan Butcher ability
+    mcmmo.ability.ranching.carnivoresdiet:
+        description: Allows access to the Carnivores Diet ability
     mcmmo.ability.repair.*:
         default: false
         description: Allows access to all Repair abilities
@@ -687,6 +713,7 @@ permissions:
             mcmmo.commands.mobhealth: true
             mcmmo.commands.party.all: true
             mcmmo.commands.ptp.all: true
+            mcmmo.commands.ranching: true
             mcmmo.commands.repair: true
             mcmmo.commands.smelting: true
             mcmmo.commands.swords: true
@@ -869,6 +896,7 @@ permissions:
             mcmmo.commands.mctop.fishing: true
             mcmmo.commands.mctop.herbalism: true
             mcmmo.commands.mctop.mining: true
+            mcmmo.commands.mctop.ranching: true
             mcmmo.commands.mctop.repair: true
             mcmmo.commands.mctop.smelting: true
             mcmmo.commands.mctop.swords: true
@@ -889,6 +917,8 @@ permissions:
         description: Allows access to the mctop command for fishing
     mcmmo.commands.mctop.herbalism:
         description: Allows access to the mctop command for herbalism
+    mcmmo.commands.mctop.ranching:
+        description: Allows access to the mctop command for ranching
     mcmmo.commands.mctop.mining:
         description: Allows access to the mctop command for mining
     mcmmo.commands.mctop.repair:
@@ -1017,6 +1047,8 @@ permissions:
             mcmmo.commands.ptp.world.all: true
     mcmmo.commands.ptp.world.all:
         description: Implies access to all mcmmo.commands.ptp.world permissions
+    mcmmo.commands.ranching:
+        description: Allows access to the ranching command
     mcmmo.commands.repair:
         description: Allows access to the repair command
     mcmmo.commands.skillreset.*:
@@ -1036,6 +1068,7 @@ permissions:
             mcmmo.commands.skillreset.herbalism: true
             mcmmo.commands.skillreset.mining: true
             mcmmo.commands.skillreset.others.all: true
+            mcmmo.commands.skillreset.ranching: true
             mcmmo.commands.skillreset.repair: true
             mcmmo.commands.skillreset.smelting: true
             mcmmo.commands.skillreset.swords: true
@@ -1074,6 +1107,7 @@ permissions:
             mcmmo.commands.skillreset.others.fishing: true
             mcmmo.commands.skillreset.others.herbalism: true
             mcmmo.commands.skillreset.others.mining: true
+            mcmmo.commands.skillreset.others.ranching: true
             mcmmo.commands.skillreset.others.repair: true
             mcmmo.commands.skillreset.others.smelting: true
             mcmmo.commands.skillreset.others.swords: true
@@ -1096,6 +1130,8 @@ permissions:
         description: Allows access to the skillreset command for herbalism for other players
     mcmmo.commands.skillreset.others.mining:
         description: Allows access to the skillreset command for mining for other players
+    mcmmo.commands.skillreset.others.ranching:
+        description: Allows access to the skillreset command for ranching for other players
     mcmmo.commands.skillreset.others.repair:
         description: Allows access to the skillreset command for repair for other players
     mcmmo.commands.skillreset.others.smelting:
@@ -1108,6 +1144,8 @@ permissions:
         description: Allows access to the skillreset command for unarmed for other players
     mcmmo.commands.skillreset.others.woodcutting:
         description: Allows access to the skillreset command for woodcutting for other players
+    mcmmo.commands.skillreset.ranching:
+        description: Allows access to the skillreset command for ranching
     mcmmo.commands.skillreset.repair:
         description: Allows access to the skillreset command for repair
     mcmmo.commands.skillreset.smelting:
@@ -1163,6 +1201,7 @@ permissions:
             mcmmo.commands.xplock.fishing: true
             mcmmo.commands.xplock.herbalism: true
             mcmmo.commands.xplock.mining: true
+            mcmmo.commands.xplock.ranching: true
             mcmmo.commands.xplock.repair: true
             mcmmo.commands.xplock.smelting: true
             mcmmo.commands.xplock.swords: true
@@ -1183,6 +1222,8 @@ permissions:
         description: Allows access to the xplock command for fishing
     mcmmo.commands.xplock.herbalism:
         description: Allows access to the xplock command for herbalism
+    mcmmo.commands.xplock.ranching:
+        description: Allows access to the xplock command for ranching
     mcmmo.commands.xplock.mining:
         description: Allows access to the xplock command for mining
     mcmmo.commands.xplock.repair:
@@ -1330,6 +1371,7 @@ permissions:
             mcmmo.perks.lucky.fishing: true
             mcmmo.perks.lucky.herbalism: true
             mcmmo.perks.lucky.mining: true
+            mcmmo.perks.lucky.ranching: true
             mcmmo.perks.lucky.repair: true
             mcmmo.perks.lucky.smelting: true
             mcmmo.perks.lucky.swords: true
@@ -1357,6 +1399,9 @@ permissions:
     mcmmo.perks.lucky.mining:
         default: false
         description: Gives Mining abilities & skills a 33.3% better chance to activate.
+    mcmmo.perks.lucky.ranching:
+        default: false
+        description: Gives Ranching abilities & skills a 33.3% better chance to activate.
     mcmmo.perks.lucky.repair:
         default: false
         description: Gives Repair abilities & skills a 33.3% better chance to activate.
@@ -1425,6 +1470,7 @@ permissions:
             mcmmo.skills.fishing: true
             mcmmo.skills.herbalism: true
             mcmmo.skills.mining: true
+            mcmmo.skills.ranching: true
             mcmmo.skills.repair: true
             mcmmo.skills.swords: true
             mcmmo.skills.smelting: true
@@ -1473,6 +1519,12 @@ permissions:
             mcmmo.ability.mining.all: true
             mcmmo.commands.mining: true
             mcmmo.commands.xplock.mining: true
+    mcmmo.skills.ranching:
+        description: Allows access to the Ranching skill
+        children:
+            mcmmo.ability.ranching.all: true
+            mcmmo.commands.ranching: true
+            mcmmo.commands.xplock.ranching: true
     mcmmo.skills.repair:
         description: Allows access to the Repair skill
         children:

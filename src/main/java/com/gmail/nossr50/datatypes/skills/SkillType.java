@@ -17,6 +17,7 @@ import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
+import com.gmail.nossr50.skills.ranching.RanchingManager;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
@@ -40,7 +41,8 @@ public enum SkillType {
     SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), AbilityType.SERRATED_STRIKES, ToolType.SWORD),
     TAMING(TamingManager.class, Color.PURPLE),
     UNARMED(UnarmedManager.class, Color.BLACK, AbilityType.BERSERK, ToolType.FISTS),
-    WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, AbilityType.TREE_FELLER, ToolType.AXE);
+    WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, AbilityType.TREE_FELLER, ToolType.AXE),
+    RANCHING(RanchingManager.class, Color.ORANGE);
 
     private Class<? extends SkillManager> managerClass;
     private Color runescapeColor;
@@ -134,6 +136,7 @@ public enum SkillType {
     public boolean isChildSkill() {
         switch (this) {
         case SMELTING:
+        case RANCHING:
             return true;
 
         default:
