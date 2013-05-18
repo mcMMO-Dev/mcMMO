@@ -46,6 +46,7 @@ Version 1.4.06-dev
  = Fixed bug with removing players from mySQL database
  = Fixed bug with empty metadata lists and Smelting
  = Fixed bug where Blast Mining would drop wrong items
+ = Fixed bug with Blast Mining where the Ability refreshed message was being send too early
  = Fixed bug where the chance of a successful Gracefull Roll was twice as high as displayed
  ! Changed Spout notification tiers to be stored in SpoutConfig instead of AdvancedConfig
  ! Changed Berserk to add items to inventory rather than denying pickup
