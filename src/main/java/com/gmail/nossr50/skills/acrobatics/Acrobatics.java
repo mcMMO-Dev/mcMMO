@@ -14,7 +14,6 @@ public final class Acrobatics {
 
     public static int    gracefulRollMaxBonusLevel   = AdvancedConfig.getInstance().getGracefulRollMaxBonusLevel();
     public static int    gracefulRollThreshold       = AdvancedConfig.getInstance().getGracefulRollDamageThreshold();
-    public static int    gracefulRollSuccessModifier = AdvancedConfig.getInstance().getGracefulRollSuccessModifer();
     public static double gracefulRollMaxChance       = AdvancedConfig.getInstance().getGracefulRollChanceMax();
 
     public static int dodgeXpModifier = AdvancedConfig.getInstance().getDodgeXPModifier();

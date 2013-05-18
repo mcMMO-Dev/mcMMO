@@ -81,7 +81,7 @@ public class AcrobaticsManager extends SkillManager {
 
         int modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.rollThreshold);
 
-        if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.rollMaxChance, Acrobatics.rollMaxBonusLevel, 1)) {
+        if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.rollMaxChance, Acrobatics.rollMaxBonusLevel)) {
             player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
             applyXpGain(damage * Acrobatics.rollXpModifier);
 
@@ -103,7 +103,7 @@ public class AcrobaticsManager extends SkillManager {
     private int gracefulRollCheck(int damage) {
         int modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
 
-        if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.gracefulRollMaxChance, Acrobatics.gracefulRollMaxBonusLevel, Acrobatics.gracefulRollSuccessModifier)) {
+        if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.gracefulRollMaxChance, Acrobatics.gracefulRollMaxBonusLevel)) {
             getPlayer().sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
             applyXpGain(damage * Acrobatics.rollXpModifier);
 
@@ -116,8 +116,8 @@ public class AcrobaticsManager extends SkillManager {
         return damage;
     }
 
-    private boolean isSuccessfulRoll(double maxChance, int maxLevel, int successModifier) {
-        return ((maxChance / maxLevel) * Math.min(getSkillLevel(), maxLevel) * successModifier) > Misc.getRandom().nextInt(activationChance);
+    private boolean isSuccessfulRoll(double maxChance, int maxLevel) {
+        return (maxChance / maxLevel) * Math.min(getSkillLevel(), maxLevel) > Misc.getRandom().nextInt(activationChance);
     }
 
     private boolean isFatal(int damage) {
