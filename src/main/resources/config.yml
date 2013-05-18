@@ -56,7 +56,7 @@ Scoreboards:
     Skillname:
         Use: true
         Display_Time: 10
-    # Should mcMMO display power levels on scoreboards?
+    # Should mcMMO display power levels on scoreboards? (below player name-tags)
     Power_Level:
         Use: false
 
