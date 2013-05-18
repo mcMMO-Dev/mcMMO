@@ -58,7 +58,7 @@ Scoreboards:
         Display_Time: 10
     # Should mcMMO display power levels on scoreboards?
     Power_Level:
-        Use: true
+        Use: false
 
 Mob_Healthbar:
     # Default display for mob health bars - HEARTS, BAR, or DISABLED
