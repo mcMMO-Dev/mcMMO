@@ -14,7 +14,7 @@ public class McMMOPlayerAbilityDeactivateEvent extends McMMOPlayerSkillEvent {
         super(player, skill);
         this.ability = skill.getAbility();
     }
-    
+
     public AbilityType getAbility() {
         return ability;
     }

@@ -43,7 +43,7 @@ public class Unarmed {
 
                     ItemStack addStack = itemstack.clone();
 
-                    if (dropAmount +  itemAmount <= itemMax) {
+                    if (dropAmount + itemAmount <= itemMax) {
                         drop.remove();
                         addStack.setAmount(dropAmount + itemAmount);
                         inventory.setItem(nextSlot, addStack);

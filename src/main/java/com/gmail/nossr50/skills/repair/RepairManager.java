@@ -195,7 +195,7 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        long LastUse =  mcMMOPlayer.getLastAnvilUse(anvilId);
+        long LastUse = mcMMOPlayer.getLastAnvilUse(anvilId);
 
         // Don't use SkillUtils.cooldownOver() here since that also accounts for the cooldown perks
         if ((((LastUse + 3) * Misc.TIME_CONVERSION_FACTOR) >= System.currentTimeMillis()) || !Config.getInstance().getRepairConfirmRequired()) {

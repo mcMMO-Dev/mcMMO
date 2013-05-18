@@ -257,7 +257,7 @@ public class PlayerProfile {
      * @return the Xp remaining until next level
      */
     public int getXpToLevel(SkillType skillType) {
-        return 1020 + (skills.get(skillType) *  Config.getInstance().getFormulaMultiplierCurve());
+        return 1020 + (skills.get(skillType) * Config.getInstance().getFormulaMultiplierCurve());
     }
 
     private int getChildSkillLevel(SkillType skillType) {

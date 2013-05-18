@@ -119,7 +119,7 @@ public final class ExperienceAPI {
             throw new InvalidSkillException();
         }
 
-        UserManager.getPlayer(player).applyXpGain(skill, (int) (XP  / skill.getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier()));
+        UserManager.getPlayer(player).applyXpGain(skill, (int) (XP / skill.getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier()));
     }
 
     /**

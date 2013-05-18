@@ -660,6 +660,6 @@ public class ItemUtils {
         }
 
         ItemMeta itemMeta = item.getItemMeta();
-        return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD +  LocaleLoader.getString("Item.ChimaeraWing.Name"));
+        return itemMeta.hasDisplayName() && itemMeta.getDisplayName().equals(ChatColor.GOLD + LocaleLoader.getString("Item.ChimaeraWing.Name"));
     }
 }

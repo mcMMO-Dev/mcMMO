@@ -12,7 +12,7 @@ import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public final class ChatManager {
-    public ChatManager () {}
+    public ChatManager() {}
 
     public static void handleAdminChat(Plugin plugin, String playerName, String displayName, String message, boolean isAsync) {
         McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(plugin, playerName, displayName, message, isAsync);

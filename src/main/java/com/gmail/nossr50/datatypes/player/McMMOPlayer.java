@@ -513,7 +513,7 @@ public class McMMOPlayer {
 
             return;
         }
-        
+
         if (!Permissions.skillEnabled(player, skillType)) {
             return;
         }

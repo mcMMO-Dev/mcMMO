@@ -57,7 +57,7 @@ public abstract class ConfigLoader {
         OutputStream outputStream = null;
 
         try {
-             outputStream = new FileOutputStream(configFile);
+            outputStream = new FileOutputStream(configFile);
 
             int read;
             byte[] bytes = new byte[1024];

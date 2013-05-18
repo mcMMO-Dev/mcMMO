@@ -219,7 +219,7 @@ public class FishingManager extends SkillManager {
         // Make a hole
         block.setType(Material.STATIONARY_WATER);
 
-        for (int x = -1; x <= 1; x++)  {
+        for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
                 Block relative = block.getRelative(x, 0, z);
 

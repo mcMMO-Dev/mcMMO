@@ -138,7 +138,7 @@ public final class ChatAPI {
      *
      * @param playerName The name of the player to toggle party chat on.
      */
-    public static void toggleAdminChat(String playerName){
+    public static void toggleAdminChat(String playerName) {
         UserManager.getPlayer(playerName).setAdminChat(!isUsingAdminChat(playerName));
     }
 }

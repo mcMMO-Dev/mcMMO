@@ -27,7 +27,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
-public class MiningManager extends SkillManager{
+public class MiningManager extends SkillManager {
     public MiningManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.MINING);
     }

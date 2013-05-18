@@ -170,7 +170,7 @@ public enum SkillType {
                 return type;
             }
         }
-        
+
         return null;
     }
 }
