@@ -43,7 +43,6 @@ Skills:
         GracefulRoll_ChanceMax: 100.0
         GracefulRoll_MaxBonusLevel: 500
         GracefulRoll_DamageThreshold: 14
-        GracefulRoll_SuccessModifier: 2
 
         # Amount of experience for performing a dodge, roll or fall
         Dodge_XP_Modifier: 120
