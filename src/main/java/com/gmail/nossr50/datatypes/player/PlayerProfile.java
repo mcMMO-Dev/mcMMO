@@ -331,6 +331,11 @@ public class PlayerProfile {
                     "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
                     "WHERE u.user = '" + playerName + "'"
                     ).get(1);
+
+            // Should never happen but just in case
+            if (playerData == null || playerData.size() == 0) {
+                return false;
+            }
         }
 
         userId = Integer.valueOf(playerData.get(0));
@@ -374,8 +379,20 @@ public class PlayerProfile {
         // Acrobatics 35 - Unused
         skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(playerData.get(36)));
 
-        hudType = HudType.valueOf(playerData.get(37));
-        mobHealthbarType = MobHealthbarType.valueOf(playerData.get(38));
+        try {
+            hudType = HudType.valueOf(playerData.get(37));
+        }
+        catch (Exception e) {
+            // Shouldn't happen unless database is being tampered with
+            hudType = HudType.STANDARD;
+        }
+
+        try {
+            mobHealthbarType = MobHealthbarType.valueOf(playerData.get(38));
+        }
+        catch (Exception e) {
+            mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
+        }
 
         loaded = true;
         return true;
