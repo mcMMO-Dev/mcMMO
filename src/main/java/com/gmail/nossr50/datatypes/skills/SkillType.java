@@ -108,7 +108,7 @@ public enum SkillType {
     }
 
     public double getXpModifier() {
-        return Config.getInstance().getForumulaMultiplier(this);
+        return Config.getInstance().getFormulaSkillModifier(this);
     }
 
     public static SkillType getSkill(String skillName) {
