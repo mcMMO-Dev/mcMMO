@@ -209,7 +209,7 @@ public class PlayerListener implements Listener {
 
             case IN_GROUND:
                 Fish hook = event.getHook();
-                Block block = hook.getLocation().getBlock();
+                Block block = event.getPlayer().getTargetBlock(null, 100);
 
                 if (fishingManager.canIceFish(block)) {
                     event.setCancelled(true);
