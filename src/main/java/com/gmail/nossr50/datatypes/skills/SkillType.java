@@ -8,6 +8,7 @@ import org.bukkit.Color;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
@@ -108,7 +109,7 @@ public enum SkillType {
     }
 
     public double getXpModifier() {
-        return Config.getInstance().getFormulaSkillModifier(this);
+        return ExperienceConfig.getInstance().getFormulaSkillModifier(this);
     }
 
     public static SkillType getSkill(String skillName) {

@@ -8,6 +8,8 @@ Key:
   - Removal
 
 Version 1.4.07-dev
+ + Added new experienceFormula config file! Has support for EXPONENTIAL formula curves.
+ + Added new /mcconvert command to convert players levels and experience from one formula curve to another.
  + Added snow to excavation
  + Added new experience curve option. Cumulative curve, calculates experience needed for next level using power level.
  + Added extra settings to config.yml for Call of the Wild (Taming)
@@ -26,6 +28,7 @@ Version 1.4.07-dev
  ! Changed Swords "Counter Attack" ability from passive to active. Blocking is required to activate.
  ! Admin and Party chat prefixes are now customizable
  ! Changed the color of party leader names in Party chat
+ ! Moved all experience formula related settings from config.yml to experienceFormula.yml (This includes skill modifiers and curve modifiers)
  ! Improved profile saving
  ! Improved partial name matcher
  ! Slightly improved update checker feedback

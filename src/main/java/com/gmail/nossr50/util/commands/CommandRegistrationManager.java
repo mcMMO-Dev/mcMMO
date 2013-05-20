@@ -21,6 +21,7 @@ import com.gmail.nossr50.commands.database.McpurgeCommand;
 import com.gmail.nossr50.commands.database.McremoveCommand;
 import com.gmail.nossr50.commands.database.MmoshowdbCommand;
 import com.gmail.nossr50.commands.database.MmoupdateCommand;
+import com.gmail.nossr50.commands.database.McconvertCommand;
 import com.gmail.nossr50.commands.experience.AddlevelsCommand;
 import com.gmail.nossr50.commands.experience.AddxpCommand;
 import com.gmail.nossr50.commands.experience.MmoeditCommand;
@@ -291,6 +292,15 @@ public final class CommandRegistrationManager {
         command.setExecutor(new MmoshowdbCommand());
     }
 
+    private static void registerMcconvertCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mcconvert");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcconvert"));
+        command.setPermission("mcmmo.commands.mcconvert");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcconvert"));
+        command.setExecutor(new McconvertCommand());
+    }
+
     private static void registerAdminChatCommand() {
         PluginCommand command = mcMMO.p.getCommand("adminchat");
         command.setDescription(LocaleLoader.getString("Commands.Description.adminchat"));
@@ -432,6 +442,7 @@ public final class CommandRegistrationManager {
         registerMcremoveCommand();
         registerMmoupdateCommand();
         registerMmoshowdbCommand();
+        registerMcconvertCommand();
 
         // Experience Commands
         registerAddlevelsCommand();

@@ -61,6 +61,8 @@ commands:
         description: Migrate mcMMO database from an old database type to the current
     mmoshowdb:
         description: Show the name of the current database type (for later use with /mmoupdate)
+    mcconvert:
+        description: Convert from linear to exponential formula
     partychat:
         aliases: [pc, p]
         description: Toggle Party chat or send party chat messages

@@ -8,6 +8,7 @@ import java.util.Locale;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.turt2live.metrics.EMetrics;
 import com.turt2live.metrics.Metrics;
@@ -176,6 +177,16 @@ public class MetricsManager {
                     }
                 });
 
+                // ExperienceFormulaShape Graph
+                Graph experienceFormulaShapeGraph = metrics.createGraph("Experience Formula Shape Graph");
+
+                experienceFormulaShapeGraph.addPlotter(new Metrics.Plotter(ExperienceConfig.getInstance().getFormulaType().toString()) {
+                    @Override
+                    public int getValue() {
+                        return 1;
+                    }
+                });
+
                 // GlobalMultiplier Graph
                 Graph globalMultiplierGraph = metrics.createGraph("Global Multiplier Graph");
 
@@ -189,7 +200,7 @@ public class MetricsManager {
                 // GlobalCurveModifier Graph
                 Graph globalCurveModifierGraph = metrics.createGraph("Global Curve Modifier Graph");
 
-                globalCurveModifierGraph.addPlotter(new Metrics.Plotter(Config.getInstance().getFormulaMultiplierCurve() + "") {
+                globalCurveModifierGraph.addPlotter(new Metrics.Plotter(ExperienceConfig.getInstance().getLinearMultiplier() + "") {
                     @Override
                     public int getValue() {
                         return 1;
@@ -227,7 +238,7 @@ public class MetricsManager {
                 // GlobalCurveModifier Fuzzy Logic Numbers
                 Graph globalCurveMultiplierGraphFuzzy = metrics.createGraph("Global Curve Multiplier Fuzz");
 
-                if (Config.getInstance().getFormulaMultiplierCurve() > 20.0) {
+                if (ExperienceConfig.getInstance().getLinearMultiplier() > 20.0) {
                     globalCurveMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Higher") {
                         @Override
                         public int getValue() {
@@ -235,7 +246,7 @@ public class MetricsManager {
                         }
                     });
                 }
-                else if (Config.getInstance().getFormulaMultiplierCurve() < 20.0) {
+                else if (ExperienceConfig.getInstance().getLinearMultiplier() < 20.0) {
                     globalCurveMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Lower") {
                         @Override
                         public int getValue() {

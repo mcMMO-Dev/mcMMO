@@ -8,8 +8,10 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
+import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
@@ -271,17 +273,16 @@ public class PlayerProfile {
     }
 
     /**
-     * Get the amount of Xp remaining before the next level.
+     * Get the total amount of Xp before the next level.
      *
      * @param skillType Type of skill to check
-     * @return the Xp remaining until next level
+     * @return the total amount of Xp until next level
      */
     public int getXpToLevel(SkillType skillType) {
-        if (Config.getInstance().getCumulativeCurveEnabled()) {
-            return 1020 + (UserManager.getPlayer(playerName).getPowerLevel() * Config.getInstance().getFormulaMultiplierCurve());
-        }
+        int level = (ExperienceConfig.getInstance().getCumulativeCurveEnabled()) ? UserManager.getPlayer(playerName).getPowerLevel() : skills.get(skillType);
+        FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
 
-        return 1020 + (skills.get(skillType) * Config.getInstance().getFormulaMultiplierCurve());
+        return mcMMO.getFormulaManager().getCachedXpToLevel(level, formulaType);
     }
 
     private int getChildSkillLevel(SkillType skillType) {
