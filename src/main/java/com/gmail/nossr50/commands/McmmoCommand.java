@@ -62,52 +62,52 @@ public class McmmoCommand implements CommandExecutor {
     private void displayPartyCommands(CommandSender sender) {
         if (Permissions.party(sender)) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.Commands"));
-            sender.sendMessage("/party create <" + LocaleLoader.getString("Commands.Usage.PartyName") + "> " + LocaleLoader.getString("Commands.Party1"));
-            sender.sendMessage("/party join <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party2"));
-            sender.sendMessage("/party quit " + LocaleLoader.getString("Commands.Party.Quit"));
+            sender.sendMessage(" /party create <" + LocaleLoader.getString("Commands.Usage.PartyName") + "> " + LocaleLoader.getString("Commands.Party1"));
+            sender.sendMessage(" /party join <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party2"));
+            sender.sendMessage(" /party quit " + LocaleLoader.getString("Commands.Party.Quit"));
 
             if (Permissions.partyChat(sender)) {
-                sender.sendMessage("/party chat " + LocaleLoader.getString("Commands.Party.Toggle"));
+                sender.sendMessage(" /party chat " + LocaleLoader.getString("Commands.Party.Toggle"));
             }
 
-            sender.sendMessage("/party invite <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party.Invite"));
-            sender.sendMessage("/party accept " + LocaleLoader.getString("Commands.Party.Accept"));
+            sender.sendMessage(" /party invite <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party.Invite"));
+            sender.sendMessage(" /party accept " + LocaleLoader.getString("Commands.Party.Accept"));
 
             if (Permissions.partySubcommand(sender, PartySubcommandType.TELEPORT)) {
-                sender.sendMessage("/party teleport " + LocaleLoader.getString("Commands.Party.Teleport"));
+                sender.sendMessage(" /party teleport " + LocaleLoader.getString("Commands.Party.Teleport"));
             }
         }
     }
 
     private void displayOtherCommands(CommandSender sender) {
         sender.sendMessage(LocaleLoader.getString("Commands.Other"));
-        sender.sendMessage("/mcstats " + LocaleLoader.getString("Commands.Stats"));
-        sender.sendMessage("/mctop " + LocaleLoader.getString("Commands.Leaderboards"));
+        sender.sendMessage(" /mcstats " + LocaleLoader.getString("Commands.Stats"));
+        sender.sendMessage(" /mctop " + LocaleLoader.getString("Commands.Leaderboards"));
 
         if (Permissions.skillreset(sender)) {
-            sender.sendMessage("/skillreset <skill|all> " + LocaleLoader.getString("Commands.Reset"));
+            sender.sendMessage(" /skillreset <skill|all> " + LocaleLoader.getString("Commands.Reset"));
         }
 
         if (Permissions.mcability(sender)) {
-            sender.sendMessage("/mcability " + LocaleLoader.getString("Commands.ToggleAbility"));
+            sender.sendMessage(" /mcability " + LocaleLoader.getString("Commands.ToggleAbility"));
         }
 
         if (Permissions.adminChat(sender)) {
-            sender.sendMessage("/adminchat " + LocaleLoader.getString("Commands.AdminToggle"));
+            sender.sendMessage(" /adminchat " + LocaleLoader.getString("Commands.AdminToggle"));
         }
 
         if (Permissions.inspect(sender)) {
-            sender.sendMessage("/inspect " + LocaleLoader.getString("Commands.Inspect"));
+            sender.sendMessage(" /inspect " + LocaleLoader.getString("Commands.Inspect"));
         }
 
         if (Permissions.mmoedit(sender)) {
-            sender.sendMessage("/mmoedit " + LocaleLoader.getString("Commands.mmoedit"));
+            sender.sendMessage(" /mmoedit " + LocaleLoader.getString("Commands.mmoedit"));
         }
 
         if (Permissions.mcgod(sender)) {
-            sender.sendMessage("/mcgod " + LocaleLoader.getString("Commands.mcgod"));
+            sender.sendMessage(" /mcgod " + LocaleLoader.getString("Commands.mcgod"));
         }
 
-        sender.sendMessage(LocaleLoader.getString("Commands.SkillInfo"));
+        sender.sendMessage(" /<skill>" + LocaleLoader.getString("Commands.SkillInfo"));
     }
 }
