@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 
 import org.bukkit.Chunk;
-import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.event.EventHandler;
@@ -19,8 +18,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionMain;
 
 public class WorldListener implements Listener {
-    private ArrayList<BlockStoreConversionMain> converters = new ArrayList<BlockStoreConversionMain>();
-
+    private final ArrayList<BlockStoreConversionMain> converters = new ArrayList<BlockStoreConversionMain>();
     private final mcMMO plugin;
 
     public WorldListener(final mcMMO plugin) {
@@ -34,12 +32,12 @@ public class WorldListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onStructureGrow(StructureGrowEvent event) {
-        Location location = event.getLocation();
+        if (!mcMMO.getPlaceStore().isTrue(event.getLocation().getBlock())) {
+            return;
+        }
 
-        if (mcMMO.getPlaceStore().isTrue(location.getBlockX(), location.getBlockY(), location.getBlockZ(), location.getWorld())) {
-            for (BlockState blockState : event.getBlocks()) {
-                mcMMO.getPlaceStore().setFalse(blockState);
-            }
+        for (BlockState blockState : event.getBlocks()) {
+            mcMMO.getPlaceStore().setFalse(blockState);
         }
     }
 
@@ -51,9 +49,8 @@ public class WorldListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldInit(WorldInitEvent event) {
         World world = event.getWorld();
-        File dataDir = new File(world.getWorldFolder(), "mcmmo_data");
 
-        if (!dataDir.exists() || plugin == null) {
+        if (!new File(world.getWorldFolder(), "mcmmo_data").exists() || plugin == null) {
             return;
         }
 
