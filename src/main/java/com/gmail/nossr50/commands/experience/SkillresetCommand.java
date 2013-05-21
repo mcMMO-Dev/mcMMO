@@ -3,8 +3,10 @@ package com.gmail.nossr50.commands.experience;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -84,13 +86,11 @@ public class SkillresetCommand extends ExperienceCommand {
 
     @Override
     protected boolean permissionsCheckSelf(CommandSender sender) {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     protected boolean permissionsCheckOthers(CommandSender sender) {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -102,6 +102,10 @@ public class SkillresetCommand extends ExperienceCommand {
         }
 
         profile.modifySkill(skill, 0);
+
+        if (player != null) {
+            mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerLevelUpEvent(player, skill, 0 - profile.getSkillLevel(skill)));
+        }
     }
 
     @Override
