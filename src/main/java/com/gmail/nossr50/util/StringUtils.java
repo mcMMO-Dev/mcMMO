@@ -11,11 +11,7 @@ public class StringUtils {
      * @return the capitalized string
      */
     public static String getCapitalized(String target) {
-        String firstLetter = target.substring(0, 1);
-        String remainder = target.substring(1);
-        String capitalized = firstLetter.toUpperCase() + remainder.toLowerCase();
-
-        return capitalized;
+        return target.substring(0, 1).toUpperCase() + target.substring(1).toLowerCase();
     }
 
     /**
@@ -101,22 +97,6 @@ public class StringUtils {
     }
 
     /**
-     * Determine if a string represents a Long
-     *
-     * @param string String to check
-     * @return true if the string is a Long, false otherwise
-     */
-    public static boolean isLong(String string) {
-        try {
-            Long.parseLong(string);
-            return true;
-        }
-        catch (NumberFormatException nFE) {
-            return false;
-        }
-    }
-
-    /**
      * Determine if a string represents a Double
      *
      * @param string String to check
@@ -131,5 +111,4 @@ public class StringUtils {
             return false;
         }
     }
-
 }
