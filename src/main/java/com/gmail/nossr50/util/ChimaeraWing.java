@@ -35,9 +35,13 @@ public final class ChimaeraWing {
      * @param player Player whose item usage to check
      */
     public static void activationCheck(Player player) {
+        if (!Config.getInstance().getChimaeraEnabled()) {
+            return;
+        }
+
         ItemStack inHand = player.getItemInHand();
 
-        if (!Config.getInstance().getChimaeraEnabled() || !ItemUtils.isChimaeraWing(inHand)) {
+        if (!ItemUtils.isChimaeraWing(inHand)) {
             return;
         }
 
@@ -48,31 +52,42 @@ public final class ChimaeraWing {
 
         mcMMOPlayer = UserManager.getPlayer(player);
 
-        location = player.getLocation();
-        int amount = inHand.getAmount();
-        long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
-        long lastTeleport = mcMMOPlayer.getLastTeleport();
-
         if (mcMMOPlayer.getTeleportCommenceLocation() != null) {
             return;
         }
 
-        if (Config.getInstance().getChimaeraCooldown() > 0 && !SkillUtils.cooldownOver(lastTeleport * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player)) {
-            player.sendMessage(LocaleLoader.getString("Item.Generic.Wait", SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, Config.getInstance().getChimaeraCooldown(), player)));
-            return;
-        }
-
-        int recentlyhurt_cooldown = Config.getInstance().getChimaeraRecentlyHurtCooldown();
-
-        if (!SkillUtils.cooldownOver(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)) {
-            player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)));
-            return;
-        }
+        int amount = inHand.getAmount();
 
         if (amount < Config.getInstance().getChimaeraUseCost()) {
             player.sendMessage(LocaleLoader.getString("Skills.NeedMore", LocaleLoader.getString("Item.ChimaeraWing.Name")));
             return;
         }
+
+        long lastTeleport = mcMMOPlayer.getLastTeleport();
+        int cooldown = Config.getInstance().getChimaeraCooldown();
+
+        if (cooldown > 0 ) {
+            int timeRemaining = SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, cooldown, player);
+
+            if (timeRemaining > 0) {
+                player.sendMessage(LocaleLoader.getString("Item.Generic.Wait", timeRemaining));
+                return;
+            }
+        }
+
+        long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
+        int hurtCooldown = Config.getInstance().getChimaeraRecentlyHurtCooldown();
+
+        if (hurtCooldown > 0) {
+            int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
+
+            if (timeRemaining > 0) {
+                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", timeRemaining));
+                return;
+            }
+        }
+
+        location = player.getLocation();
 
         if (Config.getInstance().getChimaeraPreventUseUnderground()) {
             if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {

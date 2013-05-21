@@ -56,25 +56,6 @@ public class SkillUtils {
     }
 
     /**
-     * Checks to see if the cooldown for an item or ability is expired.
-     *
-     * @param oldTime The time the ability or item was last used
-     * @param cooldown The amount of time that must pass between uses
-     * @param player The player whose cooldown is being checked
-     * @return true if the cooldown is over, false otherwise
-     */
-    public static boolean cooldownOver(long oldTime, int cooldown, Player player) {
-        long currentTime = System.currentTimeMillis();
-        int adjustedCooldown = PerksUtils.handleCooldownPerks(player, cooldown);
-
-        if (currentTime - oldTime >= (adjustedCooldown * Misc.TIME_CONVERSION_FACTOR)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Calculate the time remaining until the cooldown expires.
      *
      * @param deactivatedTimeStamp Time of deactivation
@@ -96,14 +77,13 @@ public class SkillUtils {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        AbilityType ability = skill.getAbility();
-        ToolType tool = skill.getTool();
         ItemStack inHand = player.getItemInHand();
 
         if (ModUtils.isCustomTool(inHand) && !ModUtils.getToolFromItemStack(inHand).isAbilityEnabled()) {
             return;
         }
+
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         if (!mcMMOPlayer.getAbilityUse()) {
             return;
@@ -116,6 +96,8 @@ public class SkillUtils {
         }
 
         PlayerProfile playerProfile = mcMMOPlayer.getProfile();
+        AbilityType ability = skill.getAbility();
+        ToolType tool = skill.getTool();
 
         /*
          * Woodcutting & Axes need to be treated differently.
@@ -123,8 +105,10 @@ public class SkillUtils {
          */
         if (ability.getPermissions(player) && tool.inHand(inHand) && !mcMMOPlayer.getToolPreparationMode(tool)) {
             if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
-                if (!mcMMOPlayer.getAbilityMode(ability) && !cooldownOver(playerProfile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                    player.sendMessage(LocaleLoader.getString("Skills.TooTired", calculateTimeLeft(playerProfile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)));
+                int timeRemaining = calculateTimeLeft(playerProfile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player);
+
+                if (!mcMMOPlayer.getAbilityMode(ability) && timeRemaining > 0) {
+                    player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
                     return;
                 }
             }
@@ -294,18 +278,20 @@ public class SkillUtils {
         Player player = mcMMOPlayer.getPlayer();
         PlayerProfile playerProfile = mcMMOPlayer.getProfile();
 
+        int timeRemaining = calculateTimeLeft(playerProfile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player);
+
         /*
          * Axes and Woodcutting are odd because they share the same tool.
          * We show them the too tired message when they take action.
          */
         if (type == SkillType.WOODCUTTING || type == SkillType.AXES) {
-            if (!mcMMOPlayer.getAbilityMode(ability) && !cooldownOver(playerProfile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)) {
-                player.sendMessage(LocaleLoader.getString("Skills.TooTired", calculateTimeLeft(playerProfile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player)));
+            if (!mcMMOPlayer.getAbilityMode(ability) && timeRemaining > 0) {
+                player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
                 return;
             }
         }
 
-        if (!mcMMOPlayer.getAbilityMode(ability) && cooldownOver(playerProfile.getSkillDATS(ability), ability.getCooldown(), player)) {
+        if (!mcMMOPlayer.getAbilityMode(ability) && timeRemaining <= 0) {
             McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, type);
             mcMMO.p.getServer().getPluginManager().callEvent(event);
 

@@ -55,11 +55,15 @@ public class PtpCommand implements TabExecutor {
                 Player player = mcMMOPlayer.getPlayer();
 
                 long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
-                int recentlyhurt_cooldown = Config.getInstance().getPTPCommandRecentlyHurtCooldown();
+                int hurtCooldown = Config.getInstance().getPTPCommandRecentlyHurtCooldown();
 
-                if (!SkillUtils.cooldownOver(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)) {
-                    player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)));
-                    return true;
+                if (hurtCooldown > 0) {
+                    int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
+
+                    if (timeRemaining > 0) {
+                        player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", timeRemaining));
+                        return true;
+                    }
                 }
 
                 if (args[0].equalsIgnoreCase("accept")) {
@@ -74,9 +78,13 @@ public class PtpCommand implements TabExecutor {
                 int ptpCooldown = Config.getInstance().getPTPCommandCooldown();
                 long lastTeleport = mcMMOPlayer.getLastTeleport();
 
-                if (!SkillUtils.cooldownOver(lastTeleport * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player)) {
-                    player.sendMessage(LocaleLoader.getString("Item.Generic.Wait", SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player)));
-                    return true;
+                if (ptpCooldown > 0) {
+                    int timeRemaining = SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player);
+
+                    if (timeRemaining > 0) {
+                        player.sendMessage(LocaleLoader.getString("Item.Generic.Wait", timeRemaining));
+                        return true;
+                    }
                 }
 
                 sendTeleportRequest(sender, player, args[0]);

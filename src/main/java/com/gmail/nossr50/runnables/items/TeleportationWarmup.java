@@ -47,11 +47,15 @@ public class TeleportationWarmup extends BukkitRunnable {
             return;
         }
 
-        int recentlyhurt_cooldown = Config.getInstance().getPTPCommandRecentlyHurtCooldown();
+        int hurtCooldown = Config.getInstance().getPTPCommandRecentlyHurtCooldown();
 
-        if (!SkillUtils.cooldownOver(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, teleportingPlayer)) {
-            teleportingPlayer.sendMessage(LocaleLoader.getString("Item.Injured.Wait", SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, teleportingPlayer)));
-            return;
+        if (hurtCooldown > 0) {
+            int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, teleportingPlayer);
+
+            if (timeRemaining > 0) {
+                teleportingPlayer.sendMessage(LocaleLoader.getString("Item.Injured.Wait", timeRemaining));
+                return;
+            }
         }
 
         PtpCommand.handlePartyTeleportEvent(teleportingPlayer, targetPlayer);

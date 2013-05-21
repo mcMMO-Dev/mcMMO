@@ -28,8 +28,6 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
     private void checkChimaeraWingTeleport() {
         Player player = mcMMOPlayer.getPlayer();
         Location previousLocation = mcMMOPlayer.getTeleportCommenceLocation();
-        long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
-        ItemStack inHand = player.getItemInHand();
 
         mcMMOPlayer.setTeleportCommenceLocation(null);
 
@@ -38,16 +36,23 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
             return;
         }
 
+        ItemStack inHand = player.getItemInHand();
+
         if (!ItemUtils.isChimaeraWing(inHand) || inHand.getAmount() < Config.getInstance().getChimaeraUseCost()) {
             player.sendMessage(LocaleLoader.getString("Skills.NeedMore", LocaleLoader.getString("Item.ChimaeraWing.Name")));
             return;
         }
 
-        int recentlyhurt_cooldown = Config.getInstance().getChimaeraRecentlyHurtCooldown();
+        long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
+        int hurtCooldown = Config.getInstance().getChimaeraRecentlyHurtCooldown();
 
-        if (!SkillUtils.cooldownOver(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)) {
-            player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, recentlyhurt_cooldown, player)));
-            return;
+        if (hurtCooldown > 0) {
+            int timeRemaining = SkillUtils.calculateTimeLeft(recentlyHurt * Misc.TIME_CONVERSION_FACTOR, hurtCooldown, player);
+
+            if (timeRemaining > 0) {
+                player.sendMessage(LocaleLoader.getString("Item.Injured.Wait", timeRemaining));
+                return;
+            }
         }
 
         ChimaeraWing.chimaeraExecuteTeleport();
