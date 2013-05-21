@@ -61,18 +61,22 @@ public class EntityListener implements Listener {
     public void onEntityShootBow(EntityShootBowEvent event) {
         ItemStack bow = event.getBow();
 
-        if (bow != null) {
-            Entity projectile = event.getProjectile();
-
-            if (projectile instanceof Arrow) {
-                if (bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
-                    projectile.setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
-                }
-
-                projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
-                projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, Archery.locationToString(projectile.getLocation())));
-            }
+        if (bow == null) {
+            return;
         }
+
+        Entity projectile = event.getProjectile();
+
+        if (!(projectile instanceof Arrow)) {
+            return;
+        }
+
+        if (bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
+            projectile.setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
+        }
+
+        projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
+        projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, Archery.locationToString(projectile.getLocation())));
     }
 
     /**
@@ -81,7 +85,7 @@ public class EntityListener implements Listener {
      * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onEntityChangeBlockEvent(EntityChangeBlockEvent event) {
+    public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         Entity entity = event.getEntity();
 
         if (!(entity instanceof FallingBlock)) {
@@ -107,7 +111,13 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
-        if (event instanceof FakeEntityDamageByEntityEvent || event.getDamage() <= 0) {
+        if (event instanceof FakeEntityDamageByEntityEvent) {
+            return;
+        }
+
+        int damage = event.getDamage();
+
+        if (damage <= 0) {
             return;
         }
 
@@ -117,12 +127,13 @@ public class EntityListener implements Listener {
             return;
         }
 
-        Entity attacker = event.getDamager();
         LivingEntity target = (LivingEntity) defender;
 
-        if (CombatUtils.isInvincible(target, event.getDamage())) {
+        if (CombatUtils.isInvincible(target, damage)) {
             return;
         }
+
+        Entity attacker = event.getDamager();
 
         if (attacker instanceof Projectile) {
             attacker = ((Projectile) attacker).getShooter();
@@ -160,7 +171,13 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
-        if (event instanceof FakeEntityDamageEvent || event.getDamage() <= 0) {
+        if (event instanceof FakeEntityDamageEvent) {
+            return;
+        }
+
+        int damage = event.getDamage();
+
+        if (damage <= 0) {
             return;
         }
 
@@ -170,12 +187,13 @@ public class EntityListener implements Listener {
             return;
         }
 
-        DamageCause cause = event.getCause();
         LivingEntity livingEntity = (LivingEntity) entity;
 
-        if (CombatUtils.isInvincible(livingEntity, event.getDamage())) {
+        if (CombatUtils.isInvincible(livingEntity, damage)) {
             return;
         }
+
+        DamageCause cause = event.getCause();
 
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
@@ -309,7 +327,6 @@ public class EntityListener implements Listener {
             return;
         }
 
-        entity.setFireTicks(0);
         BleedTimerTask.remove(entity);
         Archery.arrowRetrievalCheck(entity);
     }
@@ -348,19 +365,21 @@ public class EntityListener implements Listener {
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         Entity entity = event.getEntity();
 
-        if (entity instanceof TNTPrimed && entity.hasMetadata(mcMMO.tntMetadataKey)) {
-            // We can make this assumption because we (should) be the only ones using this exact metadata
-            Player player = plugin.getServer().getPlayer(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
+        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(mcMMO.tntMetadataKey)) {
+            return;
+        }
 
-            if (Misc.isNPCEntity(player)) {
-                return;
-            }
+        // We can make this assumption because we (should) be the only ones using this exact metadata
+        Player player = plugin.getServer().getPlayer(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
-            MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+        if (Misc.isNPCEntity(player)) {
+            return;
+        }
 
-            if (miningManager.canUseBiggerBombs()) {
-                event.setRadius(miningManager.biggerBombs(event.getRadius()));
-            }
+        MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+
+        if (miningManager.canUseBiggerBombs()) {
+            event.setRadius(miningManager.biggerBombs(event.getRadius()));
         }
     }
 
@@ -373,20 +392,22 @@ public class EntityListener implements Listener {
     public void onEnitityExplode(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
 
-        if (entity instanceof TNTPrimed && entity.hasMetadata(mcMMO.tntMetadataKey)) {
-            // We can make this assumption because we (should) be the only ones using this exact metadata
-            Player player = plugin.getServer().getPlayer(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
+        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(mcMMO.tntMetadataKey)) {
+            return;
+        }
 
-            if (Misc.isNPCEntity(player)) {
-                return;
-            }
+        // We can make this assumption because we (should) be the only ones using this exact metadata
+        Player player = plugin.getServer().getPlayer(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
-            MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+        if (Misc.isNPCEntity(player)) {
+            return;
+        }
 
-            if (miningManager.canUseBlastMining()) {
-                miningManager.blastMiningDropProcessing(event.getYield(), event.blockList());
-                event.setYield(0);
-            }
+        MiningManager miningManager = UserManager.getPlayer(player).getMiningManager();
+
+        if (miningManager.canUseBlastMining()) {
+            miningManager.blastMiningDropProcessing(event.getYield(), event.blockList());
+            event.setYield(0);
         }
     }
 
@@ -399,63 +420,65 @@ public class EntityListener implements Listener {
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         Entity entity = event.getEntity();
 
-        if (entity instanceof Player) {
-            Player player = (Player) entity;
+        if (!(entity instanceof Player)) {
+            return;
+        }
 
-            if (Misc.isNPCEntity(player)) {
+        Player player = (Player) entity;
+
+        if (Misc.isNPCEntity(player)) {
+            return;
+        }
+
+        int currentFoodLevel = player.getFoodLevel();
+        int newFoodLevel = event.getFoodLevel();
+        int foodChange = newFoodLevel - currentFoodLevel;
+
+        if (foodChange <= 0) {
+            return;
+        }
+
+        /*
+         * Some foods have 3 ranks
+         * Some foods have 5 ranks
+         * The number of ranks is based on how 'common' the item is
+         * We can adjust this quite easily if we find something is giving too much of a bonus
+         */
+        switch (player.getItemInHand().getType()) {
+            case BAKED_POTATO:  /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
+            case BREAD:         /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+            case CARROT_ITEM:   /* RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
+            case GOLDEN_CARROT: /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
+            case MUSHROOM_SOUP: /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
+            case PUMPKIN_PIE:   /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
+                if (Permissions.farmersDiet(player)) {
+                    event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
+                }
                 return;
-            }
 
-            int currentFoodLevel = player.getFoodLevel();
-            int newFoodLevel = event.getFoodLevel();
-            int foodChange = newFoodLevel - currentFoodLevel;
-
-            if (foodChange <= 0) {
+            case COOKIE:           /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+            case MELON:            /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+            case POISONOUS_POTATO: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+            case POTATO_ITEM:      /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+                if (Permissions.farmersDiet(player)) {
+                    event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
+                }
                 return;
-            }
 
-            /*
-             * Some foods have 3 ranks
-             * Some foods have 5 ranks
-             * The number of ranks is based on how 'common' the item is
-             * We can adjust this quite easily if we find something is giving too much of a bonus
-             */
-            switch (player.getItemInHand().getType()) {
-                case BAKED_POTATO:  /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
-                case BREAD:         /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                case CARROT_ITEM:   /* RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
-                case GOLDEN_CARROT: /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
-                case MUSHROOM_SOUP: /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
-                case PUMPKIN_PIE:   /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
-                    if (Permissions.farmersDiet(player)) {
-                        event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
-                    }
-                    return;
+            case COOKED_FISH: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+                if (Permissions.fishermansDiet(player)) {
+                    event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
+                }
+                return;
 
-                case COOKIE:           /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                case MELON:            /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                case POISONOUS_POTATO: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                case POTATO_ITEM:      /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                    if (Permissions.farmersDiet(player)) {
-                        event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
-                    }
-                    return;
+            case RAW_FISH:    /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+                if (Permissions.fishermansDiet(player)) {
+                    event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
+                }
+                return;
 
-                case COOKED_FISH: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                    if (Permissions.fishermansDiet(player)) {
-                        event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
-                    }
-                    return;
-
-                case RAW_FISH:    /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                    if (Permissions.fishermansDiet(player)) {
-                        event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
-                    }
-                    return;
-
-                default:
-                    return;
-            }
+            default:
+                return;
         }
     }
 

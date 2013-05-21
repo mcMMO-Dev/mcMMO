@@ -575,16 +575,11 @@ public final class CombatUtils {
      * @return true if the entity is invincible, false otherwise
      */
     public static boolean isInvincible(LivingEntity entity, int eventDamage) {
-
         /*
          * So apparently if you do more damage to a LivingEntity than its last damage int you bypass the invincibility.
          * So yeah, this is for that.
          */
-        if ((entity.getNoDamageTicks() > entity.getMaximumNoDamageTicks() / 2.0F) && (eventDamage <= entity.getLastDamage())) {
-            return true;
-        }
-
-        return false;
+        return (entity.getNoDamageTicks() > entity.getMaximumNoDamageTicks() / 2.0F) && (eventDamage <= entity.getLastDamage());
     }
 
     /**
