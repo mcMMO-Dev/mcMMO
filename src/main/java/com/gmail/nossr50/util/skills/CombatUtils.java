@@ -15,7 +15,6 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
@@ -24,6 +23,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
+import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
@@ -381,47 +381,40 @@ public final class CombatUtils {
      */
     public static void applyAbilityAoE(Player attacker, LivingEntity target, int damage, SkillType type) {
         int numberOfTargets = Misc.getTier(attacker.getItemInHand()); // The higher the weapon tier, the more targets you hit
-        int damageAmount = damage;
+        int damageAmount = Math.max(damage, 1);
 
-        if (damageAmount < 1) {
-            damageAmount = 1;
-        }
+        while (numberOfTargets > 0) {
+            for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
+                if (Misc.isNPCEntity(entity) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
+                    continue;
+                }
 
-        for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
-            if (Misc.isNPCEntity(entity) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
-                continue;
+                LivingEntity livingEntity = (LivingEntity) entity;
+                mcMMO.p.getServer().getPluginManager().callEvent(new FakePlayerAnimationEvent(attacker));
+
+                switch (type) {
+                    case SWORDS:
+                        if (entity instanceof Player) {
+                            ((Player) entity).sendMessage(LocaleLoader.getString("Swords.Combat.SS.Struck"));
+                        }
+
+                        BleedTimerTask.add(livingEntity, Swords.serratedStrikesBleedTicks);
+                        break;
+
+                    case AXES:
+                        if (entity instanceof Player) {
+                            ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.Cleave.Struck"));
+                        }
+
+                        break;
+
+                    default:
+                        break;
+                }
+
+                dealDamage(livingEntity, damageAmount, attacker);
+                numberOfTargets--;
             }
-
-            if (numberOfTargets <= 0) {
-                break;
-            }
-
-            PlayerAnimationEvent armswing = new PlayerAnimationEvent(attacker);
-            mcMMO.p.getServer().getPluginManager().callEvent(armswing);
-
-            switch (type) {
-                case SWORDS:
-                    if (entity instanceof Player) {
-                        ((Player) entity).sendMessage(LocaleLoader.getString("Swords.Combat.SS.Struck"));
-                    }
-
-                    BleedTimerTask.add((LivingEntity) entity, Swords.serratedStrikesBleedTicks);
-
-                    break;
-
-                case AXES:
-                    if (entity instanceof Player) {
-                        ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.Cleave.Struck"));
-                    }
-
-                    break;
-
-                default:
-                    break;
-            }
-
-            dealDamage((LivingEntity) entity, damageAmount, attacker);
-            numberOfTargets--;
         }
     }
 
@@ -606,15 +599,6 @@ public final class CombatUtils {
     }
 
     public static boolean shouldProcessSkill(Entity target, SkillType skill) {
-        boolean process;
-
-        if (target instanceof Player || (target instanceof Tameable && ((Tameable) target).isTamed())) {
-            process = skill.getPVPEnabled();
-        }
-        else {
-            process = skill.getPVEEnabled();
-        }
-
-        return process;
+        return (target instanceof Player || (target instanceof Tameable && ((Tameable) target).isTamed())) ? skill.getPVPEnabled() : skill.getPVEEnabled();
     }
 }
