@@ -72,6 +72,13 @@ public enum AbilityType {
             null,
             null,
             null,
+            null),
+
+    BLOCK_CRACKER(
+            null,
+            null,
+            null,
+            null,
             null);
 
     private String abilityOn;
@@ -144,13 +151,15 @@ public enum AbilityType {
      * @return true if the player has permissions, false otherwise
      */
     public boolean getPermissions(Player player) {
-
         switch (this) {
             case BERSERK:
                 return Permissions.berserk(player);
 
             case BLAST_MINING:
                 return Permissions.remoteDetonation(player);
+
+            case BLOCK_CRACKER:
+                return Permissions.blockCracker(player);
 
             case GIGA_DRILL_BREAKER:
                 return Permissions.gigaDrillBreaker(player);
@@ -188,6 +197,9 @@ public enum AbilityType {
         switch (this) {
             case BERSERK:
                 return (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW);
+
+            case BLOCK_CRACKER:
+                return BlockUtils.affectedByBlockCracker(blockState);
 
             case GIGA_DRILL_BREAKER:
                 return BlockUtils.affectedByGigaDrillBreaker(blockState);

@@ -7,7 +7,7 @@ import org.bukkit.material.CocoaPlant;
 import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 import org.bukkit.material.NetherWarts;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.skills.repair.Repair;
 
 public final class BlockUtils {
     private BlockUtils() {}
@@ -306,9 +306,9 @@ public final class BlockUtils {
      * @param blockState The {@link BlockState} of the block to check
      * @return true if the block is an mcMMO anvil, false otherwise
      */
-    private static boolean isMcMMOAnvil(BlockState blockState) {
+    public static boolean isMcMMOAnvil(BlockState blockState) {
         int blockId = blockState.getTypeId();
 
-        return blockId == Config.getInstance().getRepairAnvilId() || blockId == Config.getInstance().getSalvageAnvilId();
+        return blockId == Repair.repairAnvilId || blockId == Repair.salvageAnvilId;
     }
 }

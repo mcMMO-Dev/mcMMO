@@ -347,6 +347,7 @@ public class SkillUtils {
 
         switch (ability) {
             case BERSERK:
+            case BLOCK_CRACKER:
             case LEAF_BLOWER:
                 if (!ability.blockCheck(block.getState())) {
                     activate = false;
