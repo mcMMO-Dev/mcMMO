@@ -204,11 +204,7 @@ public class SpoutUtils {
         }
 
         // Standard XP Icons
-        for (SkillType skillType : SkillType.values()) {
-            if (skillType.isChildSkill()) {
-                continue;
-            }
-
+        for (SkillType skillType : SkillType.nonChildSkills()) {
             String skillName = StringUtils.getCapitalized(skillType.toString());
 
             files.add(writeFile(skillName + ".png", hudStandardDirectory));

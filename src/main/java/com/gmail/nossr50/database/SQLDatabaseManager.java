@@ -415,11 +415,7 @@ public final class SQLDatabaseManager {
 
         if (checkConnected()) {
             try {
-                for (SkillType skillType : SkillType.values()) {
-                    if (skillType.isChildSkill()) {
-                        continue;
-                    }
-
+                for (SkillType skillType : SkillType.nonChildSkills()) {
                     String skillName = skillType.name().toLowerCase();
                     String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
                                  "AND " + skillName + " > (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +

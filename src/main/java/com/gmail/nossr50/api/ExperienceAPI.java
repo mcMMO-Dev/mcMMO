@@ -506,11 +506,7 @@ public final class ExperienceAPI {
         int powerLevel = 0;
         PlayerProfile profile = getOfflineProfile(playerName);
 
-        for (SkillType type : SkillType.values()) {
-            if (type.isChildSkill()) {
-                continue;
-            }
-
+        for (SkillType type : SkillType.nonChildSkills()) {
             powerLevel += profile.getSkillLevel(type);
         }
 

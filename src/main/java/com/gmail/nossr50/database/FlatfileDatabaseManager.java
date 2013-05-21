@@ -294,11 +294,7 @@ public final class FlatfileDatabaseManager {
 
         Map<String, Integer> skills = new HashMap<String, Integer>();
 
-        for (SkillType skill : SkillType.values()) {
-            if (skill.isChildSkill()) {
-                continue;
-            }
-
+        for (SkillType skill : SkillType.nonChildSkills()) {
             skills.put(skill.name(), getPlayerRank(playerName, playerStatHash.get(skill)));
         }
 

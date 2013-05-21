@@ -182,8 +182,8 @@ public class ScoreboardManager {
         PlayerProfile profile = mcMMOPlayer.getProfile();
         Server server = mcMMO.p.getServer();
 
-        for (SkillType skill : SkillType.values()) {
-            if (skill.isChildSkill() || !Permissions.skillEnabled(player, skill)) {
+        for (SkillType skill : SkillType.nonChildSkills()) {
+            if (!Permissions.skillEnabled(player, skill)) {
                 continue;
             }
 
@@ -201,8 +201,8 @@ public class ScoreboardManager {
 
         Map<String, Integer> skills = Config.getInstance().getUseMySQL() ? SQLDatabaseManager.readSQLRank(playerName) : FlatfileDatabaseManager.getPlayerRanks(playerName);
 
-        for (SkillType skill : SkillType.values()) {
-            if (skill.isChildSkill() || !Permissions.skillEnabled(player, skill)) {
+        for (SkillType skill : SkillType.nonChildSkills()) {
+            if (!Permissions.skillEnabled(player, skill)) {
                 continue;
             }
 
@@ -228,11 +228,7 @@ public class ScoreboardManager {
 
         Map<String, Integer> skills = Config.getInstance().getUseMySQL() ? SQLDatabaseManager.readSQLRank(targetName) : FlatfileDatabaseManager.getPlayerRanks(targetName);
 
-        for (SkillType skill : SkillType.values()) {
-            if (skill.isChildSkill()) {
-                continue;
-            }
-
+        for (SkillType skill : SkillType.nonChildSkills()) {
             rank = skills.get(skill.name());
 
             if (rank != null) {
@@ -257,8 +253,8 @@ public class ScoreboardManager {
         int powerLevel = 0;
         int skillLevel;
 
-        for (SkillType skill : SkillType.values()) {
-            if (skill.isChildSkill() || !Permissions.skillEnabled(target, skill)) {
+        for (SkillType skill : SkillType.nonChildSkills()) {
+            if (!Permissions.skillEnabled(target, skill)) {
                 continue;
             }
 
@@ -277,11 +273,7 @@ public class ScoreboardManager {
         int powerLevel = 0;
         int skillLevel;
 
-        for (SkillType skill : SkillType.values()) {
-            if (skill.isChildSkill()) {
-                continue;
-            }
-
+        for (SkillType skill : SkillType.nonChildSkills()) {
             skillLevel = targetProfile.getSkillLevel(skill);
             objective.getScore(server.getOfflinePlayer(SkillUtils.getSkillName(skill))).setScore(skillLevel);
             powerLevel += skillLevel;

@@ -21,11 +21,7 @@ public final class HardcoreManager {
         PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
         int totalLost = 0;
 
-        for (SkillType skillType : SkillType.values()) {
-            if (skillType.isChildSkill()) {
-                continue;
-            }
-
+        for (SkillType skillType : SkillType.nonChildSkills()) {
             int playerSkillLevel = playerProfile.getSkillLevel(skillType);
 
             if (playerSkillLevel <= 0) {
@@ -52,11 +48,7 @@ public final class HardcoreManager {
         PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
         int totalStolen = 0;
 
-        for (SkillType skillType : SkillType.values()) {
-            if (skillType.isChildSkill()) {
-                continue;
-            }
-
+        for (SkillType skillType : SkillType.nonChildSkills()) {
             int killerSkillLevel = killerProfile.getSkillLevel(skillType);
             int victimSkillLevel = victimProfile.getSkillLevel(skillType);
 

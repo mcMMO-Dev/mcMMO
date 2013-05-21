@@ -31,8 +31,8 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
 
-        for (SkillType skill : SkillType.values()) {
-            if (skill.isChildSkill() || (player != null && !Permissions.skillEnabled(player, skill))) {
+        for (SkillType skill : SkillType.nonChildSkills()) {
+            if (player != null && !Permissions.skillEnabled(player, skill)) {
                 continue;
             }
 

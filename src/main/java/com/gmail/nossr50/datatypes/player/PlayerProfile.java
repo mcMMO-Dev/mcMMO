@@ -49,11 +49,7 @@ public class PlayerProfile {
             skillsDATS.put(abilityType, 0);
         }
 
-        for (SkillType skillType : SkillType.values()) {
-            if (skillType.isChildSkill()) {
-                continue;
-            }
-
+        for (SkillType skillType : SkillType.nonChildSkills()) {
             skills.put(skillType, 0);
             skillsXp.put(skillType, 0F);
         }
