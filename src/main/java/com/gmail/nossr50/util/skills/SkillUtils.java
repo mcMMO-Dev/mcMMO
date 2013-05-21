@@ -186,11 +186,7 @@ public class SkillUtils {
             return isLocalizedSkill(skillName);
         }
 
-        if (SkillType.getSkill(skillName) != null) {
-            return true;
-        }
-
-        return false;
+        return SkillType.getSkill(skillName) != null;
     }
 
     private static boolean isLocalizedSkill(String skillName) {
@@ -218,15 +214,11 @@ public class SkillUtils {
      * @return true if the player has combat skills, false otherwise
      */
     public static boolean hasCombatSkills(Player player) {
-        if (Permissions.skillEnabled(player, SkillType.AXES)
+        return Permissions.skillEnabled(player, SkillType.AXES)
                 || Permissions.skillEnabled(player, SkillType.ARCHERY)
                 || Permissions.skillEnabled(player, SkillType.SWORDS)
                 || Permissions.skillEnabled(player, SkillType.TAMING)
-                || Permissions.skillEnabled(player, SkillType.UNARMED)) {
-            return true;
-        }
-
-        return false;
+                || Permissions.skillEnabled(player, SkillType.UNARMED);
     }
 
     /**
@@ -236,15 +228,11 @@ public class SkillUtils {
      * @return true if the player has gathering skills, false otherwise
      */
     public static boolean hasGatheringSkills(Player player) {
-        if (Permissions.skillEnabled(player, SkillType.EXCAVATION)
+        return Permissions.skillEnabled(player, SkillType.EXCAVATION)
                 || Permissions.skillEnabled(player, SkillType.FISHING)
                 || Permissions.skillEnabled(player, SkillType.HERBALISM)
                 || Permissions.skillEnabled(player, SkillType.MINING)
-                || Permissions.skillEnabled(player, SkillType.WOODCUTTING)) {
-            return true;
-        }
-
-        return false;
+                || Permissions.skillEnabled(player, SkillType.WOODCUTTING);
     }
 
     /**
@@ -254,13 +242,9 @@ public class SkillUtils {
      * @return true if the player has misc skills, false otherwise
      */
     public static boolean hasMiscSkills(Player player) {
-        if (Permissions.skillEnabled(player, SkillType.ACROBATICS)
+        return Permissions.skillEnabled(player, SkillType.ACROBATICS)
                 || Permissions.skillEnabled(player, SkillType.SMELTING)
-                || Permissions.skillEnabled(player, SkillType.REPAIR)) {
-            return true;
-        }
-
-        return false;
+                || Permissions.skillEnabled(player, SkillType.REPAIR);
     }
 
     /**
@@ -492,11 +476,7 @@ public class SkillUtils {
         FakeBlockBreakEvent breakEvent = new FakeBlockBreakEvent(block, player);
         pluginManger.callEvent(breakEvent);
 
-        if (!damageEvent.isCancelled() && !breakEvent.isCancelled()) {
-            return true;
-        }
-
-        return false;
+        return !damageEvent.isCancelled() && !breakEvent.isCancelled();
     }
 
     public static boolean activationSuccessful(Player player, SkillType skill, double maxChance, int maxLevel) {
