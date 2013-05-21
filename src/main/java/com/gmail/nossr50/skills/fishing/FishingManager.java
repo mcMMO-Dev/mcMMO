@@ -143,12 +143,12 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean exploitPrevention() {
-        if (!AdvancedConfig.getInstance().getKrakenEnabled()) {
+        if (!AdvancedConfig.getInstance().getKrakenEnabled() || !getPlayer().getTargetBlock(null, 100).isLiquid()) {
             return false;
         }
 
         long currentTime = System.currentTimeMillis();
-        boolean hasFished = currentTime < fishingTimestamp + FISHING_COOLDOWN_SECONDS;
+        boolean hasFished = (currentTime < fishingTimestamp + FISHING_COOLDOWN_SECONDS);
 
         fishingTries = hasFished ? fishingTries + 1 : Math.max(fishingTries - 1, 0);
         fishingTimestamp = currentTime;

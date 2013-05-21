@@ -180,10 +180,10 @@ public class PlayerListener implements Listener {
             case FISHING:
                 if (!Permissions.krakenBypass(player)) {
                     event.setCancelled(fishingManager.exploitPrevention());
-                }
 
-                if (event.isCancelled()) {
-                    return;
+                    if (event.isCancelled()) {
+                        return;
+                    }
                 }
 
                 if (fishingManager.canMasterAngler()) {
