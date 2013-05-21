@@ -534,7 +534,7 @@ public final class CombatUtils {
                 return false;
             }
 
-            if (PartyManager.inSameParty(player, defender) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
+            if (mcMMO.getPartyManager().inSameParty(player, defender) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
                 return false;
             }
 
@@ -589,7 +589,7 @@ public final class CombatUtils {
             if (tamer instanceof Player) {
                 Player owner = (Player) tamer;
 
-                if (owner == attacker || PartyManager.inSameParty(attacker, owner)) {
+                if (owner == attacker || mcMMO.getPartyManager().inSameParty(attacker, owner)) {
                     return true;
                 }
             }

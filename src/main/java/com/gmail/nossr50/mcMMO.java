@@ -57,6 +57,7 @@ public class mcMMO extends JavaPlugin {
     private static ChunkManager      placeStore;
     private static RepairableManager repairableManager;
     private static DatabaseManager   databaseManager;
+    private static PartyManager      partyManager;
 
     /* File Paths */
     private static String mainDirectory;
@@ -114,7 +115,7 @@ public class mcMMO extends JavaPlugin {
             registerEvents();
             registerCustomRecipes();
 
-            PartyManager.loadParties();
+            partyManager = new PartyManager(this);
 
             for (Player player : getServer().getOnlinePlayers()) {
                 UserManager.addUser(player); // In case of reload add all users back into UserManager
@@ -156,7 +157,7 @@ public class mcMMO extends JavaPlugin {
     public void onDisable() {
         try {
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
-            PartyManager.saveParties(); // Save our parties
+            partyManager.saveParties(); // Save our parties
             placeStore.saveAll();       // Save our metadata
             placeStore.cleanUp();       // Cleanup empty metadata stores
         }
@@ -233,6 +234,10 @@ public class mcMMO extends JavaPlugin {
 
     public static RepairableManager getRepairableManager() {
         return repairableManager;
+    }
+
+    public static PartyManager getPartyManager() {
+        return partyManager;
     }
 
     public static boolean isSpoutEnabled() {

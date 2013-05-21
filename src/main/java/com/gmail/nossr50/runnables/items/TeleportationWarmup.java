@@ -4,6 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -37,7 +38,7 @@ public class TeleportationWarmup extends BukkitRunnable {
 
         mcMMOPlayer.setTeleportCommenceLocation(null);
 
-        if (!PartyManager.inSameParty(teleportingPlayer, targetPlayer)) {
+        if (!mcMMO.getPartyManager().inSameParty(teleportingPlayer, targetPlayer)) {
             teleportingPlayer.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetPlayer.getName()));
             return;
         }

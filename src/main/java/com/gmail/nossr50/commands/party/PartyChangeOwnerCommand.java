@@ -4,6 +4,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
@@ -21,7 +22,7 @@ public class PartyChangeOwnerCommand implements CommandExecutor {
                     return true;
                 }
 
-                PartyManager.setPartyLeader(args[1], playerParty);
+                mcMMO.getPartyManager().setPartyLeader(args[1], playerParty);
                 return true;
 
             default:

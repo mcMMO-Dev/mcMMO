@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -20,14 +21,14 @@ public class PartyDisbandCommand implements CommandExecutor {
                 String partyName = playerParty.getName();
 
                 for (Player member : playerParty.getOnlineMembers()) {
-                    if (!PartyManager.handlePartyChangeEvent(member, partyName, null, EventReason.KICKED_FROM_PARTY)) {
+                    if (!mcMMO.getPartyManager().handlePartyChangeEvent(member, partyName, null, EventReason.KICKED_FROM_PARTY)) {
                         return true;
                     }
 
                     member.sendMessage(LocaleLoader.getString("Party.Disband"));
                 }
 
-                PartyManager.disbandParty(playerParty);
+                mcMMO.getPartyManager().disbandParty(playerParty);
                 return true;
 
             default:

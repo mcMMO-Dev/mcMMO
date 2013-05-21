@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
@@ -30,17 +31,16 @@ public class PartyRenameCommand implements CommandExecutor {
                 }
 
                 Player player = mcMMOPlayer.getPlayer();
-                Party newParty = PartyManager.getParty(newPartyName);
 
                 // Check to see if the party exists, and if it does cancel renaming the party
-                if (PartyManager.checkPartyExistence(player, newParty, newPartyName)) {
+                if (mcMMO.getPartyManager().checkPartyExistence(player, newPartyName)) {
                     return true;
                 }
 
                 String leaderName = playerParty.getLeader();
 
                 for (Player member : playerParty.getOnlineMembers()) {
-                    if (!PartyManager.handlePartyChangeEvent(member, oldPartyName, newPartyName, EventReason.CHANGED_PARTIES)) {
+                    if (!mcMMO.getPartyManager().handlePartyChangeEvent(member, oldPartyName, newPartyName, EventReason.CHANGED_PARTIES)) {
                         return true;
                     }
 

@@ -27,7 +27,7 @@ public class PartyAutoKickTask extends BukkitRunnable {
         long currentTime = System.currentTimeMillis();
         long kickTime = 24L * 60L * 60L * 1000L * Config.getInstance().getAutoPartyKickTime();
 
-        for (Iterator<Party> partyIterator = PartyManager.getParties().iterator(); partyIterator.hasNext();) {
+        for (Iterator<Party> partyIterator = mcMMO.getPartyManager().getParties().iterator(); partyIterator.hasNext();) {
             Party party = partyIterator.next();
 
             for (String memberName : party.getMembers()) {
@@ -44,7 +44,7 @@ public class PartyAutoKickTask extends BukkitRunnable {
         }
 
         for (Entry<OfflinePlayer, Party> entry : toRemove.entrySet()) {
-            PartyManager.removeFromParty(entry.getKey(), entry.getValue());
+            mcMMO.getPartyManager().removeFromParty(entry.getKey(), entry.getValue());
         }
     }
 }

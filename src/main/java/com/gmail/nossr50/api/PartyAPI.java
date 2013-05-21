@@ -53,7 +53,7 @@ public final class PartyAPI {
      * @return true if the two players are in the same party, false otherwise
      */
     public static boolean inSameParty(Player playera, Player playerb) {
-        return PartyManager.inSameParty(playera, playerb);
+        return mcMMO.getPartyManager().inSameParty(playera, playerb);
     }
 
     /**
@@ -64,7 +64,7 @@ public final class PartyAPI {
      * @return the list of parties.
      */
     public static List<Party> getParties() {
-        return PartyManager.getParties();
+        return mcMMO.getPartyManager().getParties();
     }
 
     /**
@@ -76,7 +76,7 @@ public final class PartyAPI {
      * @param partyName The party to add the player to
      */
     public static void addToParty(Player player, String partyName) {
-        Party party = PartyManager.getParty(partyName);
+        Party party = mcMMO.getPartyManager().getParty(partyName);
 
         if (party == null) {
             party = new Party();
@@ -84,7 +84,7 @@ public final class PartyAPI {
             party.setLeader(player.getName());
         }
 
-        PartyManager.addToParty(player, UserManager.getPlayer(player), party);
+        mcMMO.getPartyManager().addToParty(player, party);
     }
 
     /**
@@ -95,7 +95,7 @@ public final class PartyAPI {
      * @param player The player to remove
      */
     public static void removeFromParty(Player player) {
-        PartyManager.removeFromParty(player, UserManager.getPlayer(player).getParty());
+        mcMMO.getPartyManager().removeFromParty(player, UserManager.getPlayer(player).getParty());
     }
 
     /**
@@ -107,7 +107,7 @@ public final class PartyAPI {
      * @return the leader of the party
      */
     public static String getPartyLeader(String partyName) {
-        return PartyManager.getPartyLeader(partyName);
+        return mcMMO.getPartyManager().getPartyLeader(partyName);
     }
 
     /**
@@ -119,7 +119,7 @@ public final class PartyAPI {
      * @param player The player to set as leader
      */
     public static void setPartyLeader(String partyName, String player) {
-        PartyManager.setPartyLeader(player, PartyManager.getParty(partyName));
+        mcMMO.getPartyManager().setPartyLeader(player, mcMMO.getPartyManager().getParty(partyName));
     }
 
     /**
@@ -134,7 +134,7 @@ public final class PartyAPI {
     public static List<OfflinePlayer> getOnlineAndOfflineMembers(Player player) {
         List<OfflinePlayer> members = new ArrayList<OfflinePlayer>();
 
-        for (String memberName : PartyManager.getAllMembers(player)) {
+        for (String memberName : mcMMO.getPartyManager().getAllMembers(UserManager.getPlayer(player).getParty())) {
             OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberName);
             members.add(member);
         }
@@ -150,7 +150,7 @@ public final class PartyAPI {
      * @return all the player names in the player's party
      */
     public static LinkedHashSet<String> getMembers(Player player) {
-        return PartyManager.getAllMembers(player);
+        return mcMMO.getPartyManager().getAllMembers(UserManager.getPlayer(player).getParty());
     }
 
     /**
@@ -162,7 +162,7 @@ public final class PartyAPI {
      * @return all online players in this party
      */
     public static List<Player> getOnlineMembers(String partyName) {
-        return PartyManager.getOnlineMembers(partyName);
+        return mcMMO.getPartyManager().getOnlineMembers(partyName);
     }
 
     /**
@@ -174,6 +174,6 @@ public final class PartyAPI {
      * @return all online players in the player's party
      */
     public static List<Player> getOnlineMembers(Player player) {
-        return PartyManager.getOnlineMembers(player);
+        return mcMMO.getPartyManager().getOnlineMembers(UserManager.getPlayer(player).getParty().getName());
     }
 }

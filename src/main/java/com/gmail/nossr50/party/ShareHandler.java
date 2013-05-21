@@ -6,6 +6,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
@@ -53,12 +54,10 @@ public final class ShareHandler {
      * @return True is the xp has been shared
      */
     public static boolean handleXpShare(float xp, McMMOPlayer mcMMOPlayer, SkillType skillType) {
-        Party party = mcMMOPlayer.getParty();
-
-        switch (party.getXpShareMode()) {
+        switch (mcMMOPlayer.getParty().getXpShareMode()) {
             case EQUAL:
                 Player player = mcMMOPlayer.getPlayer();
-                nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
+                nearMembers = mcMMO.getPartyManager().getNearbyPartyMembers(player, Config.getInstance().getPartyShareRange());
 
                 if (nearMembers.isEmpty()) {
                     return false;
@@ -112,7 +111,7 @@ public final class ShareHandler {
         switch (party.getItemShareMode()) {
             case EQUAL:
                 McMMOPlayer mcMMOTarget;
-                nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
+                nearMembers = mcMMO.getPartyManager().getNearbyPartyMembers(player, Config.getInstance().getPartyShareRange());
 
                 if (nearMembers.isEmpty()) {
                     return false;
@@ -159,7 +158,7 @@ public final class ShareHandler {
                 return true;
 
             case RANDOM:
-                nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
+                nearMembers = mcMMO.getPartyManager().getNearbyPartyMembers(player, Config.getInstance().getPartyShareRange());
 
                 if (nearMembers.isEmpty()) {
                     return false;

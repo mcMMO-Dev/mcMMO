@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -37,16 +38,16 @@ public class PartyJoinCommand implements CommandExecutor {
                 String password = getPassword(args);
 
                 // Make sure party passwords match
-                if (!PartyManager.checkPartyPassword(player, targetParty, password)) {
+                if (!mcMMO.getPartyManager().checkPartyPassword(player, targetParty, password)) {
                     return true;
                 }
 
                 // Changing parties
-                if (!PartyManager.changeOrJoinParty(mcMMOPlayer, player, playerParty, targetParty.getName())) {
+                if (!mcMMO.getPartyManager().changeOrJoinParty(mcMMOPlayer, targetParty.getName())) {
                     return true;
                 }
 
-                PartyManager.joinParty(player, mcMMOPlayer, targetParty, password);
+                mcMMO.getPartyManager().joinParty(player, targetParty, password);
                 return true;
 
             default:

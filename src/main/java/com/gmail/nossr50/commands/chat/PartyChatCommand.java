@@ -35,7 +35,7 @@ public class PartyChatCommand extends ChatCommand {
                 return;
             }
 
-            Party party = PartyManager.getParty(args[0]);
+            Party party = mcMMO.getPartyManager().getParty(args[0]);
 
             if (party == null) {
                 sender.sendMessage(LocaleLoader.getString("Party.InvalidName"));

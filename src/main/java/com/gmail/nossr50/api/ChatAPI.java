@@ -3,6 +3,7 @@ package com.gmail.nossr50.api;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -22,7 +23,7 @@ public final class ChatAPI {
      * @param message The message to send
      */
     public static void sendPartyChat(Plugin plugin, String sender, String displayName, String party, String message) {
-        ChatManager.handlePartyChat(plugin, PartyManager.getParty(party), sender, displayName, message);
+        ChatManager.handlePartyChat(plugin, mcMMO.getPartyManager().getParty(party), sender, displayName, message);
     }
 
     /**
@@ -36,7 +37,7 @@ public final class ChatAPI {
      * @param message The message to send
      */
     public static void sendPartyChat(Plugin plugin, String sender, String party, String message) {
-        ChatManager.handlePartyChat(plugin, PartyManager.getParty(party), sender, sender, message);
+        ChatManager.handlePartyChat(plugin, mcMMO.getPartyManager().getParty(party), sender, sender, message);
     }
 
     /**

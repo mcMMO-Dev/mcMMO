@@ -19,6 +19,6 @@ public class SaveTimerTask extends BukkitRunnable {
             count++;
         }
 
-        PartyManager.saveParties();
+        mcMMO.getPartyManager().saveParties();
     }
 }

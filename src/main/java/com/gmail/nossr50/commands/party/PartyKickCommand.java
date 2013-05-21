@@ -30,14 +30,14 @@ public class PartyKickCommand implements CommandExecutor {
                     Player onlineTarget = target.getPlayer();
                     String partyName = playerParty.getName();
 
-                    if (!PartyManager.handlePartyChangeEvent(onlineTarget, partyName, null, EventReason.KICKED_FROM_PARTY)) {
+                    if (!mcMMO.getPartyManager().handlePartyChangeEvent(onlineTarget, partyName, null, EventReason.KICKED_FROM_PARTY)) {
                         return true;
                     }
 
                     onlineTarget.sendMessage(LocaleLoader.getString("Commands.Party.Kick", partyName));
                 }
 
-                PartyManager.removeFromParty(target, playerParty);
+                mcMMO.getPartyManager().removeFromParty(target, playerParty);
                 return true;
 
             default:

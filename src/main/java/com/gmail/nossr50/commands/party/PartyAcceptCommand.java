@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
@@ -24,11 +25,11 @@ public class PartyAcceptCommand implements CommandExecutor {
                 }
 
                 // Changing parties
-                if (!PartyManager.changeOrJoinParty(mcMMOPlayer, player, mcMMOPlayer.getParty(), mcMMOPlayer.getPartyInvite().getName())) {
+                if (!mcMMO.getPartyManager().changeOrJoinParty(mcMMOPlayer, mcMMOPlayer.getPartyInvite().getName())) {
                     return true;
                 }
 
-                PartyManager.joinInvitedParty(player, mcMMOPlayer);
+                mcMMO.getPartyManager().joinInvitedParty(player);
                 return true;
 
             default:

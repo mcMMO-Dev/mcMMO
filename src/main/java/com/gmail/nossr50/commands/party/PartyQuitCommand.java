@@ -5,6 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -19,11 +20,11 @@ public class PartyQuitCommand implements CommandExecutor {
                 Player player = (Player) sender;
                 Party playerParty = UserManager.getPlayer(player).getParty();
 
-                if (!PartyManager.handlePartyChangeEvent(player, playerParty.getName(), null, EventReason.LEFT_PARTY)) {
+                if (!mcMMO.getPartyManager().handlePartyChangeEvent(player, playerParty.getName(), null, EventReason.LEFT_PARTY)) {
                     return true;
                 }
 
-                PartyManager.removeFromParty(player, playerParty);
+                mcMMO.getPartyManager().removeFromParty(player, playerParty);
                 sender.sendMessage(LocaleLoader.getString("Commands.Party.Leave"));
                 return true;
 
