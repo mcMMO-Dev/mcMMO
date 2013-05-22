@@ -65,12 +65,7 @@ public final class ShareHandler {
                 }
 
                 double partySize = nearMembers.size() + 1;
-                double shareBonus = Config.getInstance().getPartyShareBonusBase() + partySize * Config.getInstance().getPartyShareBonusIncrease();
-
-                if (shareBonus > Config.getInstance().getPartyShareBonusCap()) {
-                    shareBonus = Config.getInstance().getPartyShareBonusCap();
-                }
-
+                double shareBonus = Math.min(Config.getInstance().getPartyShareBonusBase() + partySize * Config.getInstance().getPartyShareBonusIncrease(), Config.getInstance().getPartyShareBonusCap());
                 float splitXp = (float) (xp / partySize * shareBonus);
 
                 for (Player member : nearMembers) {
@@ -78,7 +73,6 @@ public final class ShareHandler {
                 }
 
                 mcMMOPlayer.beginUnsharedXpGain(skillType, splitXp);
-
                 return true;
 
             case NONE:
@@ -96,32 +90,43 @@ public final class ShareHandler {
      */
     public static boolean handleItemShare(Item drop, McMMOPlayer mcMMOPlayer) {
         ItemStack itemStack = drop.getItemStack();
-        Party party = mcMMOPlayer.getParty();
-        Player player = mcMMOPlayer.getPlayer();
-        Player winningPlayer = null;
-
-        ItemStack newStack = itemStack.clone();
-        newStack.setAmount(1);
-
         ItemShareType dropType = ItemShareType.getShareType(itemStack);
 
-        if (dropType == null || !party.sharingDrops(dropType)) {
+        if (dropType == null) {
             return false;
         }
 
-        switch (party.getItemShareMode()) {
+        Party party = mcMMOPlayer.getParty();
+
+        if (!party.sharingDrops(dropType)) {
+            return false;
+        }
+
+        ShareMode shareMode = party.getItemShareMode();
+
+        if (shareMode == ShareMode.NONE) {
+            return false;
+        }
+
+        Player player = mcMMOPlayer.getPlayer();
+
+        nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
+
+        if (nearMembers.isEmpty()) {
+            return false;
+        }
+
+        Player winningPlayer = null;
+        ItemStack newStack = itemStack.clone();
+
+        nearMembers.add(player);
+        partySize = nearMembers.size();
+
+        drop.remove();
+        newStack.setAmount(1);
+
+        switch (shareMode) {
             case EQUAL:
-                McMMOPlayer mcMMOTarget;
-                nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
-
-                if (nearMembers.isEmpty()) {
-                    return false;
-                }
-
-                nearMembers.add(player);
-                partySize = nearMembers.size();
-
-                drop.remove();
                 int itemWeight = ItemWeightConfig.getInstance().getItemWeight(itemStack.getType());
 
                 for (int i = 0; i < itemStack.getAmount(); i++) {
@@ -132,64 +137,46 @@ public final class ShareHandler {
                         int itemShareModifier = mcMMOMember.getItemShareModifier();
                         int diceRoll = Misc.getRandom().nextInt(itemShareModifier);
 
-                        if (diceRoll > highestRoll) {
-                            highestRoll = diceRoll;
-
-                            if (winningPlayer != null) {
-                                McMMOPlayer mcMMOWinning = UserManager.getPlayer(winningPlayer);
-                                mcMMOWinning.setItemShareModifier(mcMMOWinning.getItemShareModifier() + itemWeight);
-                            }
-
-                            winningPlayer = member;
-                        }
-                        else {
+                        if (diceRoll <= highestRoll) {
                             mcMMOMember.setItemShareModifier(itemShareModifier + itemWeight);
+                            continue;
                         }
+
+                        highestRoll = diceRoll;
+
+                        if (winningPlayer != null) {
+                            McMMOPlayer mcMMOWinning = UserManager.getPlayer(winningPlayer);
+                            mcMMOWinning.setItemShareModifier(mcMMOWinning.getItemShareModifier() + itemWeight);
+                        }
+
+                        winningPlayer = member;
                     }
 
-                    mcMMOTarget = UserManager.getPlayer(winningPlayer);
+                    McMMOPlayer mcMMOTarget = UserManager.getPlayer(winningPlayer);
                     mcMMOTarget.setItemShareModifier(mcMMOTarget.getItemShareModifier() - itemWeight);
-
-                    if (winningPlayer.getInventory().addItem(newStack).size() != 0) {
-                        winningPlayer.getWorld().dropItemNaturally(winningPlayer.getLocation(), newStack);
-                    }
-
-                    winningPlayer.updateInventory();
+                    awardDrop(winningPlayer, newStack);
                 }
+
                 return true;
 
             case RANDOM:
-                nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
-
-                if (nearMembers.isEmpty()) {
-                    return false;
-                }
-
-                partySize = nearMembers.size() + 1;
-
-                drop.remove();
-
                 for (int i = 0; i < itemStack.getAmount(); i++) {
-                    int randomMember = Misc.getRandom().nextInt(partySize);
-
-                    if (randomMember >= nearMembers.size()) {
-                        winningPlayer = player;
-                    }
-                    else {
-                        winningPlayer = nearMembers.get(randomMember);
-                    }
-
-                    if (winningPlayer.getInventory().addItem(newStack).size() != 0) {
-                        winningPlayer.getWorld().dropItemNaturally(winningPlayer.getLocation(), newStack);
-                    }
-
-                    winningPlayer.updateInventory();
+                    winningPlayer = nearMembers.get(Misc.getRandom().nextInt(partySize));
+                    awardDrop(winningPlayer, newStack);
                 }
+
                 return true;
 
-            case NONE:
             default:
                 return false;
         }
+    }
+
+    private static void awardDrop(Player winningPlayer, ItemStack drop) {
+        if (winningPlayer.getInventory().addItem(drop).size() != 0) {
+            winningPlayer.getWorld().dropItemNaturally(winningPlayer.getLocation(), drop);
+        }
+
+        winningPlayer.updateInventory();
     }
 }
