@@ -383,38 +383,40 @@ public final class CombatUtils {
         int numberOfTargets = Misc.getTier(attacker.getItemInHand()); // The higher the weapon tier, the more targets you hit
         int damageAmount = Math.max(damage, 1);
 
-        while (numberOfTargets > 0) {
-            for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
-                if (Misc.isNPCEntity(entity) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
-                    continue;
-                }
-
-                LivingEntity livingEntity = (LivingEntity) entity;
-                mcMMO.p.getServer().getPluginManager().callEvent(new FakePlayerAnimationEvent(attacker));
-
-                switch (type) {
-                    case SWORDS:
-                        if (entity instanceof Player) {
-                            ((Player) entity).sendMessage(LocaleLoader.getString("Swords.Combat.SS.Struck"));
-                        }
-
-                        BleedTimerTask.add(livingEntity, Swords.serratedStrikesBleedTicks);
-                        break;
-
-                    case AXES:
-                        if (entity instanceof Player) {
-                            ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.Cleave.Struck"));
-                        }
-
-                        break;
-
-                    default:
-                        break;
-                }
-
-                dealDamage(livingEntity, damageAmount, attacker);
-                numberOfTargets--;
+        for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
+            if (numberOfTargets <= 0) {
+                break;
             }
+
+            if (Misc.isNPCEntity(entity) || !(entity instanceof LivingEntity) || !shouldBeAffected(attacker, entity)) {
+                continue;
+            }
+
+            LivingEntity livingEntity = (LivingEntity) entity;
+            mcMMO.p.getServer().getPluginManager().callEvent(new FakePlayerAnimationEvent(attacker));
+
+            switch (type) {
+                case SWORDS:
+                    if (entity instanceof Player) {
+                        ((Player) entity).sendMessage(LocaleLoader.getString("Swords.Combat.SS.Struck"));
+                    }
+
+                    BleedTimerTask.add(livingEntity, Swords.serratedStrikesBleedTicks);
+                    break;
+
+                case AXES:
+                    if (entity instanceof Player) {
+                        ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.Cleave.Struck"));
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            dealDamage(livingEntity, damageAmount, attacker);
+            numberOfTargets--;
         }
     }
 
