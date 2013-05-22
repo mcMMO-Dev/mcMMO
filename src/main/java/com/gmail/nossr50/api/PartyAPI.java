@@ -77,14 +77,13 @@ public final class PartyAPI {
      */
     public static void addToParty(Player player, String partyName) {
         Party party = PartyManager.getParty(partyName);
+        String playerName = player.getName();
 
         if (party == null) {
-            party = new Party();
-            party.setName(partyName);
-            party.setLeader(player.getName());
+            party = new Party(playerName, partyName);
         }
 
-        PartyManager.addToParty(player, UserManager.getPlayer(player), party);
+        PartyManager.addToParty(playerName, UserManager.getPlayer(player), party);
     }
 
     /**

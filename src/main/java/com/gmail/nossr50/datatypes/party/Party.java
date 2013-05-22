@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
@@ -12,7 +11,8 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.ShareHandler.ShareMode;
 
 public class Party {
-    private LinkedHashSet<String> members = new LinkedHashSet<String>();
+    private final LinkedHashSet<String> members = new LinkedHashSet<String>();
+
     private String leader;
     private String name;
     private String password;
@@ -27,6 +27,30 @@ public class Party {
     private boolean shareWoodcuttingDrops = true;
     private boolean shareMiscDrops        = true;
 
+    public Party(String name) {
+        this.name = name;
+    }
+
+    public Party(String leader, String name) {
+        this.leader = leader;
+        this.name = name;
+        this.locked = true;
+    }
+
+    public Party(String leader, String name, String password) {
+        this.leader = leader;
+        this.name = name;
+        this.password = password;
+        this.locked = true;
+    }
+
+    public Party(String leader, String name, String password, boolean locked) {
+        this.leader = leader;
+        this.name = name;
+        this.password = password;
+        this.locked = locked;
+    }
+
     public LinkedHashSet<String> getMembers() {
         return members;
     }
@@ -35,9 +59,10 @@ public class Party {
         List<Player> onlineMembers = new ArrayList<Player>();
 
         for (String memberName : members) {
-            OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberName);
-            if (member.isOnline()) {
-                onlineMembers.add(member.getPlayer());
+            Player member = mcMMO.p.getServer().getPlayerExact(memberName);
+
+            if (member != null) {
+                onlineMembers.add(member);
             }
         }
 
@@ -165,5 +190,29 @@ public class Party {
             default:
                 return;
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+
+        if (!(obj instanceof Party)) {
+            return false;
+        }
+
+        Party other = (Party) obj;
+
+        if ((this.getName() == null) || (other.getName() == null)) {
+            return false;
+        }
+
+        return this.getName().equals(other.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }
