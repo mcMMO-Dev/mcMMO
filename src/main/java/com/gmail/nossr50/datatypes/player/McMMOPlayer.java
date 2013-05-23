@@ -7,7 +7,6 @@ import java.util.Set;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -54,7 +53,7 @@ public class McMMOPlayer {
      * we make sure that all class inheriting from SkillManager are instanced.
      * Which solution is better, I let you decide. - bm01
      */
-    private Map<SkillType, SkillManager> skillManagers = new HashMap<SkillType, SkillManager>();
+    private final Map<SkillType, SkillManager> skillManagers = new HashMap<SkillType, SkillManager>();
 
     private Party   party;
     private Party   invite;
@@ -76,11 +75,11 @@ public class McMMOPlayer {
     private int     lastSalvageClick;
     private boolean godMode;
 
-    private Map<AbilityType, Boolean> abilityMode     = new HashMap<AbilityType, Boolean>();
-    private Map<AbilityType, Boolean> abilityInformed = new HashMap<AbilityType, Boolean>();
+    private final Map<AbilityType, Boolean> abilityMode     = new HashMap<AbilityType, Boolean>();
+    private final Map<AbilityType, Boolean> abilityInformed = new HashMap<AbilityType, Boolean>();
 
-    private Map<ToolType, Boolean> toolMode = new HashMap<ToolType, Boolean>();
-    private Map<ToolType, Integer> toolATS  = new HashMap<ToolType, Integer>();
+    private final Map<ToolType, Boolean> toolMode = new HashMap<ToolType, Boolean>();
+    private final Map<ToolType, Integer> toolATS  = new HashMap<ToolType, Integer>();
 
     private int recentlyHurt;
     private int respawnATS;
@@ -202,10 +201,10 @@ public class McMMOPlayer {
      * Set the mode of an ability.
      *
      * @param ability The ability to check
-     * @param bool True if the ability is active, false otherwise
+     * @param isActive True if the ability is active, false otherwise
      */
-    public void setAbilityMode(AbilityType ability, boolean bool) {
-        abilityMode.put(ability, bool);
+    public void setAbilityMode(AbilityType ability, boolean isActive) {
+        abilityMode.put(ability, isActive);
     }
 
     /**
@@ -222,10 +221,10 @@ public class McMMOPlayer {
      * Set the informed state of an ability.
      *
      * @param ability The ability to check
-     * @param bool True if the ability is informed, false otherwise
+     * @param isInformed True if the ability is informed, false otherwise
      */
-    public void setAbilityInformed(AbilityType ability, boolean bool) {
-        abilityInformed.put(ability, bool);
+    public void setAbilityInformed(AbilityType ability, boolean isInformed) {
+        abilityInformed.put(ability, isInformed);
     }
 
     /**
@@ -263,10 +262,10 @@ public class McMMOPlayer {
      * Set the current prep mode of a tool.
      *
      * @param tool Tool to set the mode for
-     * @param bool true if the tool should be prepped, false otherwise
+     * @param isPrepared true if the tool should be prepped, false otherwise
      */
-    public void setToolPreparationMode(ToolType tool, boolean bool) {
-        toolMode.put(tool, bool);
+    public void setToolPreparationMode(ToolType tool, boolean isPrepared) {
+        toolMode.put(tool, isPrepared);
     }
 
     /**
@@ -332,7 +331,7 @@ public class McMMOPlayer {
     }
 
     public void actualizeTeleportCommenceLocation(Player player) {
-        setTeleportCommenceLocation(player.getLocation());
+        teleportCommence = player.getLocation();
     }
 
     /*
@@ -500,6 +499,10 @@ public class McMMOPlayer {
      * @param xp Experience amount to add
      */
     public void applyXpGain(SkillType skillType, float xp) {
+        if (!Permissions.skillEnabled(player, skillType)) {
+            return;
+        }
+
         if (skillType.isChildSkill()) {
             Set<SkillType> parentSkills = FamilyTree.getParents(skillType);
 
@@ -507,10 +510,6 @@ public class McMMOPlayer {
                 applyXpGain(parentSkill, xp / parentSkills.size());
             }
 
-            return;
-        }
-
-        if (!Permissions.skillEnabled(player, skillType)) {
             return;
         }
 
@@ -529,7 +528,7 @@ public class McMMOPlayer {
             spoutHud.setLastGained(skillType);
         }
 
-        isUsingUnarmed = skillType == SkillType.UNARMED;
+        isUsingUnarmed = (skillType == SkillType.UNARMED);
         SkillUtils.xpCheckSkill(skillType, player, profile);
     }
 
@@ -562,11 +561,7 @@ public class McMMOPlayer {
     }
 
     public boolean hasPartyInvite() {
-        if (invite != null) {
-            return true;
-        }
-
-        return false;
+        return (invite != null);
     }
 
     public void setParty(Party party) {
@@ -578,11 +573,7 @@ public class McMMOPlayer {
     }
 
     public boolean inParty() {
-        if (party != null) {
-            return true;
-        }
-
-        return false;
+        return (party != null);
     }
 
     public void removeParty() {
@@ -610,11 +601,7 @@ public class McMMOPlayer {
     }
 
     public boolean hasPtpRequest() {
-        if (ptpRequest != null) {
-            return true;
-        }
-
-        return false;
+        return (ptpRequest != null);
     }
 
     public void removePtpRequest() {
@@ -646,11 +633,7 @@ public class McMMOPlayer {
     }
 
     public void setItemShareModifier(int modifier) {
-        if (modifier < 10) {
-            modifier = 10;
-        }
-
-        itemShareModifier = modifier;
+        itemShareModifier = Math.max(10, modifier);
     }
 
     /*
@@ -693,15 +676,14 @@ public class McMMOPlayer {
      * @return Modified experience
      */
     private float modifyXpGain(SkillType skillType, float xp) {
-        if (player.getGameMode() == GameMode.CREATIVE || (skillType.getMaxLevel() < profile.getSkillLevel(skillType) + 1) || (Config.getInstance().getPowerLevelCap() < getPowerLevel() + 1)) {
+        if (player.getGameMode() == GameMode.CREATIVE || (skillType.getMaxLevel() <= profile.getSkillLevel(skillType)) || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
         xp = (float) (xp / skillType.getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier());
 
         if (Config.getInstance().getToolModsEnabled()) {
-            ItemStack item = player.getItemInHand();
-            CustomTool tool = ModUtils.getToolFromItemStack(item);
+            CustomTool tool = ModUtils.getToolFromItemStack(player.getItemInHand());
 
             if (tool != null) {
                 xp *= tool.getXpMultiplier();
