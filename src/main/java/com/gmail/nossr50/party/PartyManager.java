@@ -381,7 +381,7 @@ public final class PartyManager {
      * @return true if the player can invite
      */
     public static boolean canInvite(Player player, Party party) {
-        return !(party.isLocked() && !party.getLeader().equalsIgnoreCase(player.getName()))
+        return !(party.isLocked() && !party.getLeader().equalsIgnoreCase(player.getName()));
     }
 
     /**
