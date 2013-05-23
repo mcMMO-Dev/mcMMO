@@ -442,13 +442,10 @@ public class TreasureConfig extends ConfigLoader {
     }
 
     private boolean noErrorsInTreasure(List<String> issues) {
-        if (issues.isEmpty()) {
-            return true;
-        }
-
         for (String issue : issues) {
             plugin.getLogger().warning(issue);
         }
-        return false;
+
+        return issues.isEmpty();
     }
 }

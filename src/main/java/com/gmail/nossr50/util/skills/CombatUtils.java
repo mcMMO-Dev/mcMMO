@@ -591,9 +591,7 @@ public final class CombatUtils {
             if (tamer instanceof Player) {
                 Player owner = (Player) tamer;
 
-                if (owner == attacker || PartyManager.inSameParty(attacker, owner)) {
-                    return true;
-                }
+                return (owner == attacker || PartyManager.inSameParty(attacker, owner));
             }
         }
 

@@ -88,21 +88,14 @@ public class RepairConfig extends ConfigLoader {
     }
 
     protected List<Repairable> getLoadedRepairables() {
-        if (repairables == null) {
-            return new ArrayList<Repairable>();
-        }
-
-        return repairables;
+        return repairables == null ? new ArrayList<Repairable>() : repairables;
     }
 
     private boolean noErrorsInRepairable(List<String> issues) {
-        if (issues.isEmpty()) {
-            return true;
-        }
-
         for (String issue : issues) {
             plugin.getLogger().warning(issue);
         }
-        return false;
+
+        return issues.isEmpty();
     }
 }

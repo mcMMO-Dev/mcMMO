@@ -56,11 +56,7 @@ public class McMMOHud {
     }
 
     public boolean isMenuOpened() {
-        if (menu != null) {
-            return true;
-        }
-
-        return false;
+        return (menu != null);
     }
 
     public void openMenu() {
