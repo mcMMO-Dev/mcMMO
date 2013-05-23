@@ -64,6 +64,10 @@ public final class PartyManager {
             return false;
         }
 
+        if (firstMcMMOPlayer.getParty() == null || secondMcMMOPlayer.getParty() == null) {
+            return false;
+        }
+
         return firstMcMMOPlayer.getParty().equals(secondMcMMOPlayer.getParty());
     }
 
