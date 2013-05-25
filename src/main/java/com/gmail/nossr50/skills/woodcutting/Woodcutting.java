@@ -233,7 +233,7 @@ public final class Woodcutting {
         boolean overMax = (finalDurability >= maxDurability);
 
         inHand.setDurability(overMax ? maxDurability : finalDurability);
-        return overMax;
+        return !overMax;
     }
 
     /**
