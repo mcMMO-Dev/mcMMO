@@ -505,10 +505,10 @@ public final class CombatUtils {
                         }
                         break;
                 }
+            }
 
-                if (target.hasMetadata(mcMMO.entityMetadataKey)) {
-                    baseXP *= Config.getInstance().getSpawnedMobXpMultiplier();
-                }
+            if (target.hasMetadata(mcMMO.entityMetadataKey)) {
+                baseXP *= Config.getInstance().getSpawnedMobXpMultiplier();
             }
 
             baseXP *= 10;
