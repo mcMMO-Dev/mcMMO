@@ -67,7 +67,5 @@ public class SelfListener implements Listener {
                 event.setCancelled(true);
             }
         }
-
-        mcMMOPlayer.getProfile().registeredXpGain(skillType, event.getRawXpGained());
     }
 }

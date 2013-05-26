@@ -262,7 +262,7 @@ public class PlayerProfile {
      */
     public float getRegisteredXpGain(SkillType skillType) {
         float xp;
-        
+
         if (rollingSkillsXp.get(skillType) == null) {
             xp = 0F;
         }
@@ -283,7 +283,7 @@ public class PlayerProfile {
     public void registeredXpGain(SkillType skillType, float xp) {
         LinkedList<SkillXpGain> gains = gainedSkillsXp.get(skillType);
 
-        if(gains == null) {
+        if (gains == null) {
             gains = new LinkedList<SkillXpGain>(); // Maybe add an initial capacity?
         }
         gains.addLast(new SkillXpGain(System.currentTimeMillis(), xp));
@@ -302,20 +302,21 @@ public class PlayerProfile {
         long now = System.currentTimeMillis();
 
         Iterator<Entry<SkillType, LinkedList<SkillXpGain>>> iterator = gainedSkillsXp.entrySet().iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             Entry<SkillType, LinkedList<SkillXpGain>> skillGains = iterator.next();
 
             float xp = 0;
             // Because we are using a LinkedList and addLast ordering is guaranteed, so we loop through and remove things that are too old, and stop immediately once we find a young'n
             Iterator<SkillXpGain> gainsIterator = skillGains.getValue().iterator();
-            while(gainsIterator.hasNext()) {
+            while (gainsIterator.hasNext()) {
                 SkillXpGain gain = gainsIterator.next();
 
-                if(now - gain.getTime() >= age) {
+                if (now - gain.getTime() >= age) {
                     gainsIterator.remove();
-                    // Because gainedSkillsXp conatins this SkillType, we assume that rollingSkillsXp must also have this SkillType
+                    // Because gainedSkillsXp contains this SkillType, we assume that rollingSkillsXp must also have this SkillType
                     xp += rollingSkillsXp.get(skillGains.getKey());
-                } else {
+                }
+                else {
                     break;
                 }
             }
