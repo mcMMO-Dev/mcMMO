@@ -313,8 +313,7 @@ public class PlayerProfile {
 
                 if (now - gain.getTime() >= age) {
                     gainsIterator.remove();
-                    // Because gainedSkillsXp contains this SkillType, we assume that rollingSkillsXp must also have this SkillType
-                    xp += rollingSkillsXp.get(skillGains.getKey());
+                    xp += gain.getXp();
                 }
                 else {
                     break;
