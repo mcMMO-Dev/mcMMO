@@ -286,6 +286,7 @@ Experience:
 
         # Limit the amount of experience a player can earn:
         # Threshold (amount of experience) per Time_Interval (in minutes)
+        # Setting one of these values to 0 or below will disable this feature.
         Deminished_Returns:
             Threshold: 20000
             Time_Interval: 10
