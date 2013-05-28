@@ -57,6 +57,7 @@ public class FishingManager extends SkillManager {
 
     private int fishingTries = 0;
     private long fishingTimestamp = 0L;
+    private Location fishingTarget;
 
     public FishingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.FISHING);
@@ -143,7 +144,13 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean exploitPrevention() {
-        if (!AdvancedConfig.getInstance().getKrakenEnabled() || !getPlayer().getTargetBlock(null, 100).isLiquid()) {
+        if (!AdvancedConfig.getInstance().getKrakenEnabled()) {
+            return false;
+        }
+
+        Block targetBlock = getPlayer().getTargetBlock(null, 100);
+
+        if (!targetBlock.isLiquid()) {
             return false;
         }
 
@@ -152,6 +159,13 @@ public class FishingManager extends SkillManager {
 
         fishingTries = hasFished ? fishingTries + 1 : Math.max(fishingTries - 1, 0);
         fishingTimestamp = currentTime;
+
+        Location targetLocation = targetBlock.getLocation();
+        boolean sameTarget = (fishingTarget != null && fishingTarget.equals(targetLocation));
+
+        fishingTries = sameTarget ? fishingTries + 1 : Math.max(fishingTries - 1, 0);
+        fishingTarget = targetLocation;
+
         return unleashTheKraken(false);
     }
 
