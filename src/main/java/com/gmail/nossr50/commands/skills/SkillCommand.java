@@ -56,8 +56,8 @@ public abstract class SkillCommand implements TabExecutor {
             return true;
         }
 
-        mcMMOPlayer = UserManager.getPlayer(sender.getName());
-        player = mcMMOPlayer.getPlayer();
+        player = (Player) sender;
+        mcMMOPlayer = UserManager.getPlayer(player);
 
         switch (args.length) {
             case 0:

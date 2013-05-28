@@ -7,6 +7,7 @@ import java.util.Set;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -29,7 +30,7 @@ public class KrakenCommand implements TabExecutor {
                     return true;
                 }
 
-                UserManager.getPlayer(sender.getName()).getFishingManager().unleashTheKraken();
+                UserManager.getPlayer((Player) sender).getFishingManager().unleashTheKraken();
                 return true;
 
             case 1:

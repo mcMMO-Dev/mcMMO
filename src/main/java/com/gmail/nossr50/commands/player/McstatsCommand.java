@@ -24,8 +24,8 @@ public class McstatsCommand implements TabExecutor {
 
         switch (args.length) {
             case 0:
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-                Player player = mcMMOPlayer.getPlayer();
+                Player player = (Player) sender;
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                 if (Config.getInstance().getMcstatsScoreboardsEnabled()) {
                     ScoreboardManager.setupPlayerScoreboard(player.getName());

@@ -2,6 +2,7 @@ package com.gmail.nossr50.commands.experience;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -39,8 +40,8 @@ public class SkillresetCommand extends ExperienceCommand {
                     return true;
                 }
 
-                mcMMOPlayer = UserManager.getPlayer(sender.getName());
-                player = mcMMOPlayer.getPlayer();
+                player = (Player) sender;
+                mcMMOPlayer = UserManager.getPlayer(player);
                 profile = mcMMOPlayer.getProfile();
 
                 editValues();

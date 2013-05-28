@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -17,7 +18,7 @@ public class McnotifyCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 0:
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
 
                 sender.sendMessage(LocaleLoader.getString("Commands.Notifications." + (mcMMOPlayer.useChatNotifications() ? "Off" : "On")));
                 mcMMOPlayer.toggleChatNotifications();

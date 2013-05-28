@@ -19,8 +19,8 @@ public class PartyCreateCommand implements CommandExecutor {
             case 3:
                 Party newParty = PartyManager.getParty(args[1]);
 
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-                Player player = mcMMOPlayer.getPlayer();
+                Player player = (Player) sender;
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                 // Check to see if the party exists, and if it does cancel creating a new party
                 if (PartyManager.checkPartyExistence(player, newParty, args[1])) {

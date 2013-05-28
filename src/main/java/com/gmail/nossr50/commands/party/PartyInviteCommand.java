@@ -24,8 +24,8 @@ public class PartyInviteCommand implements CommandExecutor {
                 }
 
                 Player target = mcMMOTarget.getPlayer();
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-                Player player = mcMMOPlayer.getPlayer();
+                Player player = (Player) sender;
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                 if (player.equals(target)) {
                     sender.sendMessage(LocaleLoader.getString("Party.Invite.Self"));

@@ -15,8 +15,8 @@ public class PartyAcceptCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 1:
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-                Player player = mcMMOPlayer.getPlayer();
+                Player player = (Player) sender;
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                 if (!mcMMOPlayer.hasPartyInvite()) {
                     sender.sendMessage(LocaleLoader.getString("mcMMO.NoInvites"));

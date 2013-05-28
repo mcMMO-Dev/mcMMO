@@ -17,7 +17,7 @@ public class PartyRenameCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer((Player) sender);
                 Party playerParty = mcMMOPlayer.getParty();
 
                 String oldPartyName = playerParty.getName();

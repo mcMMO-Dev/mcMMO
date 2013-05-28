@@ -3,6 +3,7 @@ package com.gmail.nossr50.commands.spout;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.spout.SpoutConfig;
@@ -27,7 +28,7 @@ public abstract class SpoutCommand implements TabExecutor {
             return true;
         }
 
-        playerProfile = UserManager.getPlayer(sender.getName()).getProfile();
+        playerProfile = UserManager.getPlayer((Player) sender).getProfile();
         spoutHud = playerProfile.getSpoutHud();
 
         if (spoutHud == null) {

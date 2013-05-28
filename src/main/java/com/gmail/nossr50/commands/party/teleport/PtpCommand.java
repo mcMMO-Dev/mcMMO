@@ -51,8 +51,8 @@ public class PtpCommand implements TabExecutor {
                     return ptpAcceptAnyCommand.onCommand(sender, command, label, args);
                 }
 
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-                Player player = mcMMOPlayer.getPlayer();
+                Player player = (Player) sender;
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                 long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
                 int hurtCooldown = Config.getInstance().getPTPCommandRecentlyHurtCooldown();

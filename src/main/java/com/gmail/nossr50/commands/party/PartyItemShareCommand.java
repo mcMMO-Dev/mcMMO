@@ -26,7 +26,7 @@ public class PartyItemShareCommand implements CommandExecutor {
 
         switch (args.length) {
             case 2:
-                playerParty = UserManager.getPlayer(sender.getName()).getParty();
+                playerParty = UserManager.getPlayer((Player) sender).getParty();
                 ShareMode mode = ShareMode.getShareMode(args[1].toUpperCase());
 
                 if (mode == null) {
@@ -38,7 +38,7 @@ public class PartyItemShareCommand implements CommandExecutor {
                 return true;
 
             case 3:
-                playerParty = UserManager.getPlayer(sender.getName()).getParty();
+                playerParty = UserManager.getPlayer((Player) sender).getParty();
                 boolean toggle = false;
 
                 if (CommandUtils.shouldEnableToggle(args[2])) {

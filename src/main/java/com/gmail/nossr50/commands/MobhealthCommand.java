@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.datatypes.MobHealthbarType;
@@ -38,7 +39,7 @@ public class MobhealthCommand implements TabExecutor {
 
         switch (args.length) {
             case 1:
-                PlayerProfile playerProfile = UserManager.getPlayer(sender.getName()).getProfile();
+                PlayerProfile playerProfile = UserManager.getPlayer((Player) sender).getProfile();
 
                 try {
                     MobHealthbarType type = MobHealthbarType.valueOf(args[0].toUpperCase().trim());

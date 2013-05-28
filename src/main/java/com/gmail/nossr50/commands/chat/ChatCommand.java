@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.chat.ChatMode;
@@ -32,7 +33,7 @@ public abstract class ChatCommand implements TabExecutor {
                     return true;
                 }
 
-                mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                mcMMOPlayer = UserManager.getPlayer((Player) sender);
 
                 if (chatMode.isEnabled(mcMMOPlayer)) {
                     disableChatMode(sender);
@@ -49,7 +50,7 @@ public abstract class ChatCommand implements TabExecutor {
                         return true;
                     }
 
-                    mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                    mcMMOPlayer = UserManager.getPlayer((Player) sender);
 
                     enableChatMode(sender);
                     return true;
@@ -60,7 +61,7 @@ public abstract class ChatCommand implements TabExecutor {
                         return true;
                     }
 
-                    mcMMOPlayer = UserManager.getPlayer(sender.getName());
+                    mcMMOPlayer = UserManager.getPlayer((Player) sender);
 
                     disableChatMode(sender);
                     return true;

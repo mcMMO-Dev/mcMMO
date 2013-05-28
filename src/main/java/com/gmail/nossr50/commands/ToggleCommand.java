@@ -33,8 +33,8 @@ public abstract class ToggleCommand implements TabExecutor {
                     return true;
                 }
 
-                mcMMOPlayer = UserManager.getPlayer(sender.getName());
-                player = mcMMOPlayer.getPlayer();
+                player = (Player) sender;
+                mcMMOPlayer = UserManager.getPlayer(player);
 
                 applyCommandAction();
                 return true;

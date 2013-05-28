@@ -18,8 +18,8 @@ public class PtpAcceptAnyCommand implements CommandExecutor {
             return true;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-        Player player = mcMMOPlayer.getPlayer();
+        Player player = (Player) sender;
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         if (mcMMOPlayer.getPtpConfirmRequired()) {
             player.sendMessage(LocaleLoader.getString("Commands.ptp.AcceptAny.Disabled"));

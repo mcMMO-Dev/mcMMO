@@ -26,7 +26,7 @@ public class PartyExpShareCommand implements CommandExecutor {
 
         switch (args.length) {
             case 2:
-                playerParty = UserManager.getPlayer(sender.getName()).getParty();
+                playerParty = UserManager.getPlayer((Player) sender).getParty();
 
                 if (args[1].equalsIgnoreCase("none") || CommandUtils.shouldDisableToggle(args[1])) {
                     handleChangingShareMode(ShareMode.NONE);

@@ -46,8 +46,8 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                mcMMOPlayer = UserManager.getPlayer(sender.getName());
-                player = mcMMOPlayer.getPlayer();
+                player = (Player) sender;
+                mcMMOPlayer = UserManager.getPlayer(player);
                 profile = mcMMOPlayer.getProfile();
 
                 editValues();

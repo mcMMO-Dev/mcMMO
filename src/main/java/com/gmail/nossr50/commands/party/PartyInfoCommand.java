@@ -25,8 +25,8 @@ public class PartyInfoCommand implements CommandExecutor {
         switch (args.length) {
             case 0:
             case 1:
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
-                player = mcMMOPlayer.getPlayer();
+                player = (Player) sender;
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
                 playerParty = mcMMOPlayer.getParty();
 
                 displayPartyHeader();

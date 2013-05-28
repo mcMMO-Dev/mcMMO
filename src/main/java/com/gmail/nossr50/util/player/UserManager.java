@@ -73,9 +73,11 @@ public final class UserManager {
      */
     public static McMMOPlayer getPlayer(String playerName) {
         List<Player> matches = mcMMO.p.getServer().matchPlayer(playerName);
+
         if (matches.size() == 1) {
             playerName = matches.get(0).getName();
         }
+
         return players.get(playerName);
     }
 
