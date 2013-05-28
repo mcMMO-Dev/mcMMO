@@ -29,7 +29,7 @@ public class Repair {
      * @return true if the item is salvageable, false otherwise
      */
     public static boolean isSalvageable(ItemStack item) {
-        if (Config.getInstance().getSalvageTools() && (ItemUtils.isMinecraftTool(item) || ItemUtils.isStringTool(item) || item.getType() == Material.BUCKET)) {
+        if (Config.getInstance().getSalvageTools() && ItemUtils.isMinecraftTool(item)) {
             return true;
         }
 
