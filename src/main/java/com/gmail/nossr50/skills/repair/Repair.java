@@ -33,7 +33,7 @@ public class Repair {
             return true;
         }
 
-        if (Config.getInstance().getSalvageArmor() && ItemUtils.isMinecraftArmor(item)) {
+        if (Config.getInstance().getSalvageArmor() && !ItemUtils.isChainmailArmor(item) && ItemUtils.isMinecraftArmor(item)) {
             return true;
         }
 
