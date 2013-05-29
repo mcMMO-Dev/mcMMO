@@ -96,13 +96,13 @@ public final class HolidayManager {
                 sender.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, here's a firework show!");
                 final int firework_amount = 10;
                 for (int i = 0; i < firework_amount; i++) {
-                    int delay = (int) (Math.random() * 3) + 4;
+                    int delay = (int) (Math.random() * 3 * 20) + 4;
                     mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new Runnable() {
                         @Override
                         public void run() {
                             spawnFireworks((Player) sender);
                         }
-                    }, 20 * delay);
+                    }, delay);
                 }
                 hasCelebrated.add(sender.getName());
             }
