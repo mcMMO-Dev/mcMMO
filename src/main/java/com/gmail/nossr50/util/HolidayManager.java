@@ -8,9 +8,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -26,6 +28,7 @@ import com.gmail.nossr50.mcMMO;
 
 public final class HolidayManager {
     public static ArrayList<String> hasCelebrated;
+    private static final Random rand = new Random();
 
     private HolidayManager() {}
 
@@ -96,7 +99,7 @@ public final class HolidayManager {
                 sender.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, here's a firework show!");
                 final int firework_amount = 10;
                 for (int i = 0; i < firework_amount; i++) {
-                    int delay = (int) (Math.random() * 3 * 20) + 4;
+                    int delay = (int) (rand.nextDouble() * 3 * 20) + 4;
                     mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new Runnable() {
                         @Override
                         public void run() {
@@ -106,6 +109,48 @@ public final class HolidayManager {
                 }
                 hasCelebrated.add(sender.getName());
             }
+        } else {
+            sender.sendMessage(ChatColor.BLUE + "Happy 2 Year Anniversary!  In honor of all of");
+            sender.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, here's a firework show!");
+            /*
+             * Credit: http://www.geocities.com/spunk1111/
+             *  (good luck finding that in 3 years heh)
+             *       .''.      .        *''*    :_\/_:     .
+             *      :_\/_:   _\(/_  .:.*_\/_*   : /\ :  .'.:.'.
+             *  .''.: /\ :    /)\   ':'* /\ *  : '..'.  -=:o:=-
+             * :_\/_:'.:::.    ' *''*    * '.\'/.'_\(/_ '.':'.'
+             * : /\ : :::::     *_\/_*     -= o =- /)\     '
+             *  '..'  ':::'     * /\ *     .'/.\'.  '      *
+             *      *            *..*         :           *
+             *       *                        *          *
+             *       *                        *          *
+             */
+
+            /*
+             * Color map
+             *       AAAA      D        GGGG    JJJJJJ     K
+             *      AAAAAA   DDDDD  EEEGGGGGG   JJJJJJ  KKKKKKK
+             *  BBBBAAAAAA    DDD   EEEGGGGGG  I JJJJJ  KKKKKKK
+             * BBBBBBACCCCC    D FFFF    G IIIIIIIHHHHH KKKKKKK
+             * BBBBBB CCCCC     FFFFFF     IIIIIII HHH     K
+             *  BBBB  CCCCC     FFFFFF     IIIIIII  H      k
+             *      b            FFFF         I           k
+             *       b                        i          k
+             *       b                        i          k
+             */
+            ChatColor colorA = chatcolorchoose();
+            ChatColor colorB = chatcolorchoose();
+            ChatColor colorC = chatcolorchoose();
+            ChatColor colorD = chatcolorchoose();
+            ChatColor colorE = chatcolorchoose();
+            ChatColor colorF = chatcolorchoose();
+            ChatColor colorG = chatcolorchoose();
+            ChatColor colorH = chatcolorchoose();
+            ChatColor colorI = chatcolorchoose();
+            ChatColor colorJ = chatcolorchoose();
+            ChatColor colorK = chatcolorchoose();
+            sender.sendMessage(String.format("      %1$s.''.      %4$s.        %7$s*''*    %10$s:_\/_:     %11$s.", colorA, colorB, colorC, colorD, colorE, colorF, colorG, colorH, colorI, colorJ, colorK));
+            sender.sendMessage(String.format("     %1$s:_\/_:   %4$s_\(/_  %5$s.:.%7$s*_\/_*   %10$s: /\ :  %11$s.'.:.'.")
         }
     }
 
@@ -114,8 +159,10 @@ public final class HolidayManager {
     }
 
     private static void spawnFireworks(Player player) {
-        int power = (int) (Math.random() * 3) + 1;
-        int type = (int) (Math.random() * 5) + 1;
+        int power = (int) (rand.nextDouble() * 3) + 1;
+        int type = (int) (rand.nextDouble() * 5) + 1;
+        double varX = rand.nextGaussian() * 3;
+        double varZ = rand.nextGaussian() * 3;
 
         Type typen;
         switch (type) {
@@ -139,9 +186,9 @@ public final class HolidayManager {
                 typen = Type.BALL;
         }
 
-        Firework fireworks = (Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK);
+        Firework fireworks = (Firework) player.getWorld().spawnEntity(player.getLocation().add(varX, 0, varZ), EntityType.FIREWORK);
         FireworkMeta fireworkmeta = fireworks.getFireworkMeta();
-        FireworkEffect effect = FireworkEffect.builder().flicker(Misc.getRandom().nextBoolean()).withColor(colorchoose()).withFade(colorchoose()).with(typen).trail(Misc.getRandom().nextBoolean()).build();
+        FireworkEffect effect = FireworkEffect.builder().flicker(rand.nextBoolean()).withColor(colorchoose()).withFade(colorchoose()).with(typen).trail(rand.nextBoolean()).build();
         fireworkmeta.addEffect(effect);
         fireworkmeta.setPower(power);
         fireworks.setFireworkMeta(fireworkmeta);
@@ -149,10 +196,23 @@ public final class HolidayManager {
 
     private static List<Color> colorchoose() {
         // Thanks Zomis and Tejpbit for the help with this function!
+        List<Color> acolors = Collections.shuffle(allcolors);
 
-        int numberofcolors = Misc.getRandom().nextInt(17) + 1;
+        int numberofcolors = rand.nextInt(acolors.size());
+        List<Color> choosencolors = acolors.subList(0, numberofcolors);
 
-        List<Color> allcolors = new ArrayList<Color>();
+        return choosencolors.clone(); // don't let caller modify allcolors
+    }
+    
+    private static Color chatcolorchoose() {
+        return allchatcolors.get(rand.nextInt(allchatcolors.size());
+    }
+
+    private static List<Color> allcolors; // do not modify
+    private static List<ChatColor> allchatcolors;
+
+    static {
+        allcolors = new ArrayList<Color>();
         allcolors.add(Color.AQUA);
         allcolors.add(Color.BLACK);
         allcolors.add(Color.BLUE);
@@ -170,12 +230,22 @@ public final class HolidayManager {
         allcolors.add(Color.TEAL);
         allcolors.add(Color.WHITE);
         allcolors.add(Color.YELLOW);
-
-        List<Color> choosencolors = new ArrayList<Color>();
-
-        for (int i = 0; i < numberofcolors; i++) {
-            choosencolors.add(allcolors.remove(Misc.getRandom().nextInt(allcolors.size())));
-        }
-        return choosencolors;
+        allchatcolors = new ArrayList<ChatColor>();
+        allchatcolors(ChatColor.AQUA);
+        allchatcolors(ChatColor.BLACK);
+        allchatcolors(ChatColor.BLUE);
+        allchatcolors(ChatColor.DARK_AQUA);
+        allchatcolors(ChatColor.DARK_BLUE);
+        allchatcolors(ChatColor.DARK_GRAY);
+        allchatcolors(ChatColor.DARK_GREEN);
+        allchatcolors(ChatColor.DARK_PURPLE);
+        allchatcolors(ChatColor.DARK_RED);
+        allchatcolors(ChatColor.GOLD);
+        allchatcolors(ChatColor.GRAY);
+        allchatcolors(ChatColor.GREEN);
+        allchatcolors(ChatColor.LIGHT_PURPLE);
+        allchatcolors(ChatColor.RED);
+        allchatcolors(ChatColor.WHITE);
+        allchatcolors(ChatColor.YELLOW);
     }
 }
