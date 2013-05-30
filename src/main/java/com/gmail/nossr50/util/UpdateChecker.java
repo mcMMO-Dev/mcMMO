@@ -35,7 +35,6 @@ public class UpdateChecker {
             Object o = jp.parse(isr);
 
             if (!(o instanceof JSONObject)) {
-                isr.close();
                 return false;
             }
 
@@ -56,15 +55,16 @@ public class UpdateChecker {
                     oldVer = 0;
                 }
                 if (oldVer < newVer) {
-                    isr.close();
                     return true;
                 }
             }
             return false;
         }
         catch (ParseException e) {
-            isr.close();
             return false;
+        }
+        finally {
+            isr.close();
         }
     }
 }
