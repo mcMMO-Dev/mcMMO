@@ -114,7 +114,9 @@ public class FishingManager extends SkillManager {
             mcMMO.p.getServer().broadcastMessage(ChatColor.RED + AdvancedConfig.getInstance().getServerUnleashMessage().replace("(PLAYER)", player.getDisplayName()));
         }
 
-        player.setItemInHand(null);
+        if (player.getItemInHand().getType() == Material.FISHING_ROD) {
+            player.setItemInHand(null);
+        }
 
         Creature kraken = (Creature) world.spawnEntity(player.getEyeLocation(), (Misc.getRandom().nextInt(100) == 0 ? EntityType.CHICKEN : EntityType.SQUID));
         kraken.setCustomName(AdvancedConfig.getInstance().getKrakenName());
