@@ -15,32 +15,26 @@ public class UpdateChecker {
     private UpdateChecker() {}
 
     public static boolean updateAvailable() throws Exception {
-        String checkType = "release";
-        if (Config.getInstance().getPreferBeta()) {
-            checkType = "latest";
-        }
+        String checkType = Config.getInstance().getPreferBeta() ? "latest" : "release";
         String version = mcMMO.p.getDescription().getVersion();
-        URL url = new URL("http://api.bukget.org/api2/bukkit/plugin/mcmmo/" + checkType);
         InputStreamReader isr;
+
         try {
-            isr = new InputStreamReader(url.openStream());
+            isr = new InputStreamReader(new URL("http://api.bukget.org/api2/bukkit/plugin/mcmmo/" + checkType).openStream());
         }
         catch (UnknownHostException e) {
             return false;
         }
 
-        String newVersion;
         try {
-            JSONParser jp = new JSONParser();
-            Object o = jp.parse(isr);
+            Object o = new JSONParser().parse(isr);
 
             if (!(o instanceof JSONObject)) {
                 return false;
             }
 
-            JSONObject jo = (JSONObject) o;
-            jo = (JSONObject) jo.get("versions");
-            newVersion = (String) jo.get("version");
+            JSONObject versions = (JSONObject) ((JSONObject) o).get("versions");
+            String newVersion = (String) versions.get("version");
 
             String[] oldTokens = version.replaceAll("(?i)(-)(.+?)(-)", "-").split("[.]|-b");
             String[] newTokens = newVersion.replaceAll("(?i)(-)(.+?)(-)", "-").split("[.]|-b");
@@ -48,16 +42,19 @@ public class UpdateChecker {
             for (int i = 0; i < 4; i++) {
                 Integer newVer = Integer.parseInt(newTokens[i]);
                 Integer oldVer;
+
                 try {
                     oldVer = Integer.parseInt(oldTokens[i]);
                 }
                 catch (NumberFormatException e) {
                     oldVer = 0;
                 }
+
                 if (oldVer < newVer) {
                     return true;
                 }
             }
+
             return false;
         }
         catch (ParseException e) {
