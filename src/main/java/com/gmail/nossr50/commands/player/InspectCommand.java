@@ -69,11 +69,11 @@ public class InspectCommand implements TabExecutor {
                 else {
                     Player target = mcMMOPlayer.getPlayer();
 
-                    if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
+                    if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
                         return true;
                     }
 
-                    if (CommandUtils.hidden(sender, target, Permissions.inspectHidden(sender))) {
+                    if (CommandUtils.tooFar(sender, target, Permissions.inspectFar(sender))) {
                         return true;
                     }
 
