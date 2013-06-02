@@ -628,11 +628,6 @@ permissions:
         description: Allows user to bypass Inspect's distance requirements
         children:
             mcmmo.commands.inspect.far: true
-    mcmmo.bypass.inspect.hidden:
-        default: false
-        description: Allows user to bypass Inspect's hidden player requirements
-        children:
-            mcmmo.commands.inspect.hidden: true
     mcmmo.bypass.inspect.offline:
         default: false
         description: Allows user to bypass Inspect's offline player requirements
