@@ -612,6 +612,7 @@ permissions:
             mcmmo.bypass.hardcoremode: true
             mcmmo.bypass.kraken: true
             mcmmo.commands.inspect.far: true
+            mcmmo.commands.inspect.hidden: true
             mcmmo.commands.inspect.offline: true
     mcmmo.bypass.arcanebypass:
         default: false
@@ -627,6 +628,11 @@ permissions:
         description: Allows user to bypass Inspect's distance requirements
         children:
             mcmmo.commands.inspect.far: true
+    mcmmo.bypass.inspect.hidden:
+        default: false
+        description: Allows user to bypass Inspect's hidden player requirements
+        children:
+            mcmmo.commands.inspect.hidden: true
     mcmmo.bypass.inspect.offline:
         default: false
         description: Allows user to bypass Inspect's offline player requirements
@@ -701,6 +707,7 @@ permissions:
             mcmmo.commands.defaults: true
             mcmmo.commands.hardcore.all: true
             mcmmo.commands.inspect.far: true
+            mcmmo.commands.inspect.hidden: true
             mcmmo.commands.inspect.offline: true
             mcmmo.commands.kraken: true
             mcmmo.commands.kraken.others: true
@@ -772,11 +779,14 @@ permissions:
         children:
             mcmmo.commands.inspect: true
             mcmmo.commands.inspect.far: true
+            mcmmo.commands.inspect.hidden: true
             mcmmo.commands.inspect.offline: true
     mcmmo.commands.inspect:
         description: Allows access to the inspect command
     mcmmo.commands.inspect.far:
         description: Allows access to the inspect command for far players
+    mcmmo.commands.inspect.hidden:
+        description: Allows access to the inspect command for hidden players
     mcmmo.commands.inspect.offline:
         description: Allows access to the inspect command for offline players
     mcmmo.commands.kraken:

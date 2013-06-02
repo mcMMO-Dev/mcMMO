@@ -48,6 +48,7 @@ public final class Permissions {
 
     public static boolean inspect(Permissible permissible) { return (permissible.hasPermission("mcmmo.commands.inspect")); }
     public static boolean inspectFar(Permissible permissible) { return (permissible.hasPermission("mcmmo.commands.inspect.far")); }
+    public static boolean inspectHidden(Permissible permissible) { return (permissible.hasPermission("mcmmo.commands.inspect.hidden")); }
     public static boolean inspectOffline(Permissible permissible) { return (permissible.hasPermission("mcmmo.commands.inspect.offline")); }
 
     public static boolean kraken(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.kraken"); }

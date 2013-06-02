@@ -55,6 +55,15 @@ public final class CommandUtils {
         return false;
     }
 
+    public static boolean hidden(CommandSender sender, Player target, boolean hasPermission) {
+        if (sender instanceof Player && ((Player)sender).canSee(target) && !hasPermission) {
+            sender.sendMessage(LocaleLoader.getString("Inspect.Offline"));
+            return true;
+        }
+
+        return false;
+    }
+
     public static boolean noConsoleUsage(CommandSender sender) {
         if (sender instanceof Player) {
             return false;
