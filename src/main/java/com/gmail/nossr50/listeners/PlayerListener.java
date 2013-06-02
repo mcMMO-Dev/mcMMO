@@ -128,27 +128,6 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Monitor PlayerLogin events.
-     *
-     * @param event The event to watch
-     */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerLogin(PlayerLoginEvent event) {
-        if (event.getResult() != Result.ALLOWED) {
-            return;
-        }
-
-        Player player = event.getPlayer();
-
-        if (Misc.isNPCEntity(player)) {
-            return;
-        }
-
-        UserManager.addUser(player).actualizeRespawnATS();
-        ScoreboardManager.enablePowerLevelDisplay(player);
-    }
-
-    /**
      * Handle PlayerDropItem events that involve modifying the event.
      *
      * @param event The event to modify
@@ -284,6 +263,13 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+
+        if (Misc.isNPCEntity(player)) {
+            return;
+        }
+
+        UserManager.addUser(player).actualizeRespawnATS();
+        ScoreboardManager.enablePowerLevelDisplay(player);
 
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
             Motd.displayAll(player);
