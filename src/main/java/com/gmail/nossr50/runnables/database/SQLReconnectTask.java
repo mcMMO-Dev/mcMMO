@@ -10,7 +10,7 @@ import com.gmail.nossr50.util.player.UserManager;
 public class SQLReconnectTask extends BukkitRunnable {
     @Override
     public void run() {
-        if (SQLDatabaseManager.checkConnected()) {
+        if (((SQLDatabaseManager) mcMMO.getDatabaseManager()).checkConnected()) {
             UserManager.saveAll();  // Save all profiles
             UserManager.clearAll(); // Clear the profiles
 

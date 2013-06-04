@@ -1,63 +1,79 @@
 package com.gmail.nossr50.database;
 
-import java.io.File;
-import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.database.PlayerStat;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 
-public class DatabaseManager {
-    private final mcMMO plugin;
-    private final boolean isUsingSQL;
-    private File usersFile;
+public interface DatabaseManager {
+    public final long PURGE_TIME = 2630000000L * Config.getInstance().getOldUsersCutoff();
 
-    public DatabaseManager(final mcMMO plugin, final boolean isUsingSQL) {
-        this.plugin = plugin;
-        this.isUsingSQL = isUsingSQL;
+    /**
+     * Purge users with 0 power level from the database.
+     */
+    public void purgePowerlessUsers();
 
-        if (isUsingSQL) {
-            SQLDatabaseManager.checkConnected();
-            SQLDatabaseManager.createStructure();
-        }
-        else {
-            usersFile = new File(mcMMO.getUsersFilePath());
-            createFlatfileDatabase();
-            FlatfileDatabaseManager.updateLeaderboards();
-        }
-    }
+    /**
+     * Purge users who haven't logged on in over a certain time frame from the database.
+     */
+    public void purgeOldUsers();
 
-    public void purgePowerlessUsers() {
-        plugin.getLogger().info("Purging powerless users...");
-        plugin.getLogger().info("Purged " + (isUsingSQL ? SQLDatabaseManager.purgePowerlessSQL() : FlatfileDatabaseManager.purgePowerlessFlatfile()) + " users from the database.");
-    }
+    /**
+     * Remove a user from the database.
+     *
+     * @param playerName The name of the user to remove
+     * @return true if the user was successfully removed, false otherwise
+     */
+    public boolean removeUser(String playerName);
 
-    public void purgeOldUsers() {
-        plugin.getLogger().info("Purging old users...");
-        plugin.getLogger().info("Purged " + (isUsingSQL ? SQLDatabaseManager.purgeOldSQL() : FlatfileDatabaseManager.removeOldFlatfileUsers()) + " users from the database.");
-    }
+    /**
+     * Save a user to the database.
+     *
+     * @param profile The profile of the player to save
+     */
+    public void saveUser(PlayerProfile profile);
 
-    public boolean removeUser(String playerName) {
-        if (isUsingSQL ? SQLDatabaseManager.removeUserSQL(playerName) : FlatfileDatabaseManager.removeFlatFileUser(playerName)) {
-            Misc.profileCleanup(playerName);
-            return true;
-        }
+    /**
+    * Retrieve leaderboard info.
+    *
+    * @param skillName The skill to retrieve info on
+    * @param pageNumber Which page in the leaderboards to retrieve
+    * @param statsPerPage The number of stats per page
+    * @return the requested leaderboard information
+    */
+    public List<PlayerStat> readLeaderboard(String skillName, int pageNumber, int statsPerPage);
 
-        return false;
-    }
+    /**
+     * Retrieve rank info.
+     *
+     * @param playerName The name of the user to retrieve the rankings for
+     * @return the requested rank information
+     */
+    public Map<String, Integer> readRank(String playerName);
 
-    private void createFlatfileDatabase() {
-        if (usersFile.exists()) {
-            return;
-        }
+    /**
+     * Add a new user to the database.
+     *
+     * @param playerName The name of the player to be added to the database
+     */
+    public void newUser(String playerName);
 
-        usersFile.getParentFile().mkdir();
+    /**
+     * Load a player from the database.
+     *
+     * @param playerName The name of the player to load from the database
+     * @return The player's data
+     */
+    public List<String> loadPlayerData(String playerName);
 
-        try {
-            plugin.debug("Creating mcmmo.users file...");
-            new File(mcMMO.getUsersFilePath()).createNewFile();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    /**
+     * Convert player data to a different storage format.
+     *
+     * @param data The player's data
+     * @return true if the conversion was successful, false otherwise
+     * @throws Exception
+     */
+    public boolean convert(String[] data) throws Exception;
 }

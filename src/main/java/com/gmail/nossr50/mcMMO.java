@@ -23,6 +23,7 @@ import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
+import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
@@ -109,7 +110,7 @@ public class mcMMO extends JavaPlugin {
 
             combatTagEnabled = getServer().getPluginManager().getPlugin("CombatTag") != null;
 
-            databaseManager = new DatabaseManager(this, Config.getInstance().getUseMySQL());
+            databaseManager = DatabaseManagerFactory.getDatabaseManager();
 
             registerEvents();
             registerCustomRecipes();
@@ -227,12 +228,17 @@ public class mcMMO extends JavaPlugin {
         return placeStore;
     }
 
+    public static RepairableManager getRepairableManager() {
+        return repairableManager;
+    }
+
     public static DatabaseManager getDatabaseManager() {
         return databaseManager;
     }
 
-    public static RepairableManager getRepairableManager() {
-        return repairableManager;
+    @Deprecated
+    public static void setDatabaseManager(DatabaseManager databaseManager) {
+        mcMMO.databaseManager = databaseManager;
     }
 
     public static boolean isSpoutEnabled() {

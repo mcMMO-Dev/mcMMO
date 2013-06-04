@@ -6,9 +6,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.database.FlatfileDatabaseManager;
-import com.gmail.nossr50.database.SQLDatabaseManager;
 
 public class McrankCommandAsyncTask extends BukkitRunnable {
     private final String playerName;
@@ -21,8 +18,9 @@ public class McrankCommandAsyncTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        Map<String, Integer> skills = Config.getInstance().getUseMySQL() ? SQLDatabaseManager.readSQLRank(playerName) : FlatfileDatabaseManager.getPlayerRanks(playerName);
+        Map<String, Integer> skills = mcMMO.getDatabaseManager().readRank(playerName);
 
         new McrankCommandDisplayTask(skills, sender, playerName).runTaskLater(mcMMO.p, 1);
     }
 }
+

@@ -3,7 +3,6 @@ package com.gmail.nossr50.commands.player;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -12,10 +11,7 @@ import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.database.FlatfileDatabaseManager;
-import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
@@ -84,39 +80,11 @@ public class MctopCommand implements TabExecutor {
             ScoreboardManager.enableGlobalStatsScoreboard((Player) sender, skill, page);
         }
         else {
-            if (Config.getInstance().getUseMySQL()) {
-                sqlDisplay(page, skill, sender);
-            }
-            else {
-                flatfileDisplay(page, skill, sender);
-            }
+            display(page, skill, sender);
         }
     }
 
-    private void flatfileDisplay(int page, String skill, CommandSender sender) {
-        FlatfileDatabaseManager.updateLeaderboards(); // Make sure we have the latest information
-
-        if (skill.equalsIgnoreCase("all")) {
-            sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
-        }
-        else {
-            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", StringUtils.getCapitalized(skill)));
-        }
-
-        int position = (page * 10) - 9;
-
-        for (PlayerStat stat : FlatfileDatabaseManager.retrieveInfo(skill, page, 10)) {
-            String digit = (position < 10) ? "0" : "" + String.valueOf(position);
-
-            // Format: 1. Playername - skill value
-            sender.sendMessage(digit + ". " + ChatColor.GREEN + stat.name + " - " + ChatColor.WHITE + stat.statVal);
-            position++;
-        }
-
-        sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
-    }
-
-    private void sqlDisplay(int page, String query, CommandSender sender) {
+    private void display(int page, String query, CommandSender sender) {
         new MctopCommandAsyncTask(page, query, sender).runTaskAsynchronously(mcMMO.p);
     }
 

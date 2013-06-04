@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.scoreboards;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +14,6 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.database.FlatfileDatabaseManager;
-import com.gmail.nossr50.database.SQLDatabaseManager;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -199,7 +196,7 @@ public class ScoreboardManager {
         Server server = mcMMO.p.getServer();
         Integer rank;
 
-        Map<String, Integer> skills = Config.getInstance().getUseMySQL() ? SQLDatabaseManager.readSQLRank(playerName) : FlatfileDatabaseManager.getPlayerRanks(playerName);
+        Map<String, Integer> skills = mcMMO.getDatabaseManager().readRank(playerName);
 
         for (SkillType skill : SkillType.nonChildSkills()) {
             if (!Permissions.skillEnabled(player, skill)) {
@@ -226,7 +223,7 @@ public class ScoreboardManager {
         Server server = mcMMO.p.getServer();
         Integer rank;
 
-        Map<String, Integer> skills = Config.getInstance().getUseMySQL() ? SQLDatabaseManager.readSQLRank(targetName) : FlatfileDatabaseManager.getPlayerRanks(targetName);
+        Map<String, Integer> skills = mcMMO.getDatabaseManager().readRank(targetName);
 
         for (SkillType skill : SkillType.nonChildSkills()) {
             rank = skills.get(skill.name());
@@ -289,33 +286,15 @@ public class ScoreboardManager {
         String endPosition = String.valueOf(position + 14);
         Server server = mcMMO.p.getServer();
 
-        if (Config.getInstance().getUseMySQL()) {
-            String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-            String query = (skillName.equalsIgnoreCase("all") ? "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing" : skillName);
-            final Collection<ArrayList<String>> userStats = SQLDatabaseManager.read("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT " + ((pageNumber * 15) - 15) + ",15").values();
+        for (PlayerStat stat : mcMMO.getDatabaseManager().readLeaderboard(skillName, pageNumber, 15)) {
+            String playerName = stat.name;
+            playerName = (playerName.equals(player.getName()) ? ChatColor.GOLD : "") + playerName;
 
-            for (ArrayList<String> stat : userStats) {
-                String playerName = stat.get(1);
-                playerName = (playerName.equals(player.getName()) ? ChatColor.GOLD : "") + playerName;
-
-                if (playerName.length() > 16) {
-                    playerName = playerName.substring(0, 16);
-                }
-
-                objective.getScore(server.getOfflinePlayer(playerName)).setScore(Integer.valueOf(stat.get(0)));
+            if (playerName.length() > 16) {
+                playerName = playerName.substring(0, 16);
             }
-        }
-        else {
-            for (PlayerStat stat : FlatfileDatabaseManager.retrieveInfo(skillName, pageNumber, 15)) {
-                String playerName = stat.name;
-                playerName = (playerName.equals(player.getName()) ? ChatColor.GOLD : "") + playerName;
 
-                if (playerName.length() > 16) {
-                    playerName = playerName.substring(0, 16);
-                }
-
-                objective.getScore(server.getOfflinePlayer(playerName)).setScore(stat.statVal);
-            }
+            objective.getScore(server.getOfflinePlayer(playerName)).setScore(stat.statVal);
         }
 
         objective.setDisplayName(objective.getDisplayName() + " (" + startPosition + " - " + endPosition + ")");
