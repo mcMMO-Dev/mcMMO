@@ -39,7 +39,12 @@ public class SelfListener implements Listener {
         int threshold = Config.getInstance().getExperienceDeminishedReturnsThreshold();
 
         if (threshold <= 0) {
-            return;
+            return; // Dim. returns is turned off
+        }
+
+        final int rawXp = event.getRawXpGained();
+        if (rawXp < 0) {
+            return; // Don't calculate for XP subtraction
         }
 
         Player player = event.getPlayer();
@@ -58,7 +63,7 @@ public class SelfListener implements Listener {
 //            System.out.println(difference * 100 + "% over the threshold!");
 //            System.out.println("Previous: " + event.getRawXpGained());
 //            System.out.println("Adjusted XP " + (event.getRawXpGained() - (event.getRawXpGained() * difference)));
-            float newValue = event.getRawXpGained() - (event.getRawXpGained() * difference);
+            float newValue = rawXp - (rawXp * difference);
 
             if (newValue > 0) {
                 event.setRawXpGained(newValue);
