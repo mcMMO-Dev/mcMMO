@@ -48,7 +48,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     // How many connection attempts have failed
     private int reconnectAttempt = 0;
 
-    public SQLDatabaseManager() {
+    protected SQLDatabaseManager() {
         checkConnected();
         createStructure();
     }

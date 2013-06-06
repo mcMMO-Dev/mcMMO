@@ -35,7 +35,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     private final long UPDATE_WAIT_TIME = 600000L; // 10 minutes
     private final File usersFile;
 
-    public FlatfileDatabaseManager() {
+    protected FlatfileDatabaseManager() {
         usersFile = new File(mcMMO.getUsersFilePath());
         createDatabase();
         updateLeaderboards();
