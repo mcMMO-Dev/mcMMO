@@ -28,6 +28,7 @@ import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -59,23 +60,31 @@ public class EntityListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityShootBow(EntityShootBowEvent event) {
-        ItemStack bow = event.getBow();
-
-        if (bow == null) {
-            return;
-        }
-
         Entity projectile = event.getProjectile();
 
         if (!(projectile instanceof Arrow)) {
             return;
         }
 
-        if (bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
+        ItemStack bow = event.getBow();
+
+        if (bow != null && bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
             projectile.setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
         }
 
         projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
+        projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, Archery.locationToString(projectile.getLocation())));
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onProjectileLaunch(ProjectileLaunchEvent event) {
+        Projectile projectile = event.getEntity();
+
+        if (!(projectile instanceof Arrow) || projectile.hasMetadata(mcMMO.bowForceKey)) {
+            return;
+        }
+
+        projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, 1.0));
         projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, Archery.locationToString(projectile.getLocation())));
     }
 
