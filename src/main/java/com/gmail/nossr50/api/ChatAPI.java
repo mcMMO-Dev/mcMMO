@@ -4,6 +4,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.chat.ChatManager;
+import com.gmail.nossr50.chat.ChatManagerFactory;
+import com.gmail.nossr50.chat.ChatMode;
+import com.gmail.nossr50.chat.PartyChatManager;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -22,7 +25,7 @@ public final class ChatAPI {
      * @param message The message to send
      */
     public static void sendPartyChat(Plugin plugin, String sender, String displayName, String party, String message) {
-        ChatManager.handlePartyChat(plugin, PartyManager.getParty(party), sender, displayName, message);
+        getPartyChatManager(plugin, party).handleChat(sender, displayName, message);
     }
 
     /**
@@ -36,7 +39,7 @@ public final class ChatAPI {
      * @param message The message to send
      */
     public static void sendPartyChat(Plugin plugin, String sender, String party, String message) {
-        ChatManager.handlePartyChat(plugin, PartyManager.getParty(party), sender, sender, message);
+        getPartyChatManager(plugin, party).handleChat(sender, message);
     }
 
     /**
@@ -50,7 +53,7 @@ public final class ChatAPI {
      * @param message The message to send
      */
     public static void sendAdminChat(Plugin plugin, String sender, String displayName, String message) {
-        ChatManager.handleAdminChat(plugin, sender, displayName, message);
+        ChatManagerFactory.getChatManager(plugin, ChatMode.ADMIN).handleChat(sender, displayName, message);
     }
 
     /**
@@ -63,7 +66,7 @@ public final class ChatAPI {
      * @param message The message to send
      */
     public static void sendAdminChat(Plugin plugin, String sender, String message) {
-        ChatManager.handleAdminChat(plugin, sender, sender, message);
+        ChatManagerFactory.getChatManager(plugin, ChatMode.ADMIN).handleChat(sender, message);
     }
 
     /**
@@ -73,7 +76,7 @@ public final class ChatAPI {
      * @return true if the player is using party chat, false otherwise
      */
     public static boolean isUsingPartyChat(Player player) {
-        return isUsingPartyChat(player.getName());
+        return UserManager.getPlayer(player).getPartyChatMode();
     }
 
     /**
@@ -93,7 +96,7 @@ public final class ChatAPI {
      * @return true if the player is using admin chat, false otherwise
      */
     public static boolean isUsingAdminChat(Player player) {
-        return isUsingAdminChat(player.getName());
+        return UserManager.getPlayer(player).getAdminChatMode();
     }
 
     /**
@@ -112,7 +115,7 @@ public final class ChatAPI {
      * @param player The player to toggle party chat on.
      */
     public static void togglePartyChat(Player player) {
-        togglePartyChat(player.getName());
+        UserManager.getPlayer(player).togglePartyChat();
     }
 
     /**
@@ -121,7 +124,7 @@ public final class ChatAPI {
      * @param playerName The name of the player to toggle party chat on.
      */
     public static void togglePartyChat(String playerName) {
-        UserManager.getPlayer(playerName).setPartyChat(!isUsingPartyChat(playerName));
+        UserManager.getPlayer(playerName).togglePartyChat();
     }
 
     /**
@@ -130,7 +133,7 @@ public final class ChatAPI {
      * @param player The player to toggle admin chat on.
      */
     public static void toggleAdminChat(Player player) {
-        toggleAdminChat(player.getName());
+        UserManager.getPlayer(player).toggleAdminChat();
     }
 
     /**
@@ -139,6 +142,13 @@ public final class ChatAPI {
      * @param playerName The name of the player to toggle party chat on.
      */
     public static void toggleAdminChat(String playerName) {
-        UserManager.getPlayer(playerName).setAdminChat(!isUsingAdminChat(playerName));
+        UserManager.getPlayer(playerName).toggleAdminChat();
+    }
+
+    private static ChatManager getPartyChatManager(Plugin plugin, String party) {
+        ChatManager chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.PARTY);
+        ((PartyChatManager) chatManager).setParty(PartyManager.getParty(party));
+
+        return chatManager;
     }
 }

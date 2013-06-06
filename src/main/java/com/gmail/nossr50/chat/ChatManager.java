@@ -1,78 +1,51 @@
 package com.gmail.nossr50.chat;
 
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
-import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
+import com.gmail.nossr50.events.chat.McMMOChatEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 
-public final class ChatManager {
-    public ChatManager() {}
+public abstract class ChatManager {
+    protected Plugin plugin;
+    protected boolean useDisplayNames;
+    protected String chatPrefix;
 
-    public static void handleAdminChat(Plugin plugin, String playerName, String displayName, String message, boolean isAsync) {
-        McMMOAdminChatEvent chatEvent = new McMMOAdminChatEvent(plugin, playerName, displayName, message, isAsync);
-        mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
+    protected String displayName;
+    protected String message;
 
-        if (chatEvent.isCancelled()) {
+    protected ChatManager(Plugin plugin, boolean useDisplayNames, String chatPrefix) {
+        this.plugin = plugin;
+        this.useDisplayNames = useDisplayNames;
+        this.chatPrefix = chatPrefix;
+    }
+
+    protected void handleChat(McMMOChatEvent event) {
+        plugin.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
             return;
         }
 
-        if (Config.getInstance().getAdminDisplayNames()) {
-            displayName = chatEvent.getDisplayName();
-        }
-        else {
-            displayName = chatEvent.getSender();
-        }
+        displayName = useDisplayNames ? event.getDisplayName() : event.getSender();
+        message = LocaleLoader.getString(chatPrefix, displayName) + event.getMessage();
 
-        String adminMessage = chatEvent.getMessage();
-
-        mcMMO.p.getServer().broadcast(LocaleLoader.getString("Commands.AdminChat.Prefix", displayName) + adminMessage, "mcmmo.chat.adminchat");
+        sendMessage();
     }
 
-    public static void handleAdminChat(Plugin plugin, String senderName, String message) {
-        handleAdminChat(plugin, senderName, senderName, message);
+    public void handleChat(String senderName, String message) {
+        handleChat(senderName, senderName, message, false);
     }
 
-    public static void handleAdminChat(Plugin plugin, String playerName, String displayName, String message) {
-        handleAdminChat(plugin, playerName, displayName, message, false);
+    public void handleChat(Player player, String message, boolean isAsync) {
+        handleChat(player.getName(), player.getDisplayName(), message, isAsync);
     }
 
-    public static void handlePartyChat(Plugin plugin, Party party, String playerName, String displayName, String message, boolean isAsync) {
-        String partyName = party.getName();
-
-        McMMOPartyChatEvent chatEvent = new McMMOPartyChatEvent(plugin, playerName, displayName, partyName, message, isAsync);
-        mcMMO.p.getServer().getPluginManager().callEvent(chatEvent);
-
-        if (chatEvent.isCancelled()) {
-            return;
-        }
-
-        if (Config.getInstance().getPartyDisplayNames()) {
-            displayName = chatEvent.getDisplayName();
-        }
-        else {
-            displayName = chatEvent.getSender();
-        }
-
-        String partyMessage = chatEvent.getMessage();
-
-        for (Player member : party.getOnlineMembers()) {
-            member.sendMessage(LocaleLoader.getString("Commands.Party.Chat.Prefix", displayName) + partyMessage);
-        }
-
-        mcMMO.p.getLogger().info("[P](" + partyName + ")" + "<" + ChatColor.stripColor(displayName) + "> " + partyMessage);
+    public void handleChat(String senderName, String displayName, String message) {
+        handleChat(senderName, displayName, message, false);
     }
 
-    public static void handlePartyChat(Plugin plugin, Party party, String senderName, String message) {
-        handlePartyChat(plugin, party, senderName, senderName, message);
-    }
+    public abstract void handleChat(String senderName, String displayName, String message, boolean isAsync);
 
-    public static void handlePartyChat(Plugin plugin, Party party, String playerName, String displayName, String message) {
-        handlePartyChat(plugin, party, playerName, displayName, message, false);
-    }
+    protected abstract void sendMessage();
 }

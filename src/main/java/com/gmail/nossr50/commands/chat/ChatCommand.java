@@ -9,6 +9,9 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.chat.ChatManager;
+import com.gmail.nossr50.chat.ChatManagerFactory;
 import com.gmail.nossr50.chat.ChatMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -19,10 +22,12 @@ import com.google.common.collect.ImmutableList;
 
 public abstract class ChatCommand implements TabExecutor {
     protected ChatMode chatMode;
+    protected ChatManager chatManager;
     private McMMOPlayer mcMMOPlayer;
 
     public ChatCommand(ChatMode chatMode) {
         this.chatMode = chatMode;
+        this.chatManager = ChatManagerFactory.getChatManager(mcMMO.p, chatMode);
     }
 
     @Override
@@ -95,6 +100,10 @@ public abstract class ChatCommand implements TabExecutor {
         }
 
         return builder.toString();
+    }
+
+    protected String getDisplayName(CommandSender sender) {
+        return (sender instanceof Player) ? ((Player) sender).getDisplayName() : LocaleLoader.getString("Commands.Chat.Console");
     }
 
     protected abstract void handleChatSending(CommandSender sender, String[] args);

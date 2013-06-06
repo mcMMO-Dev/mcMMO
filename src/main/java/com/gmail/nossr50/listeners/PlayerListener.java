@@ -28,6 +28,9 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
+import com.gmail.nossr50.chat.ChatManagerFactory;
+import com.gmail.nossr50.chat.ChatMode;
+import com.gmail.nossr50.chat.PartyChatManager;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -528,6 +531,8 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        ChatManager chatManager = null;
+
         if (mcMMOPlayer.getPartyChatMode()) {
             Party party = mcMMOPlayer.getParty();
 
@@ -537,11 +542,15 @@ public class PlayerListener implements Listener {
                 return;
             }
 
-            ChatManager.handlePartyChat(plugin, party, player.getName(), player.getDisplayName(), event.getMessage(), event.isAsynchronous());
-            event.setCancelled(true);
+            chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.PARTY);
+            ((PartyChatManager) chatManager).setParty(party);
         }
         else if (mcMMOPlayer.getAdminChatMode()) {
-            ChatManager.handleAdminChat(plugin, player.getName(), player.getDisplayName(), event.getMessage(), event.isAsynchronous());
+            chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.ADMIN);
+        }
+
+        if (chatManager != null) {
+            chatManager.handleChat(player, event.getMessage(), event.isAsynchronous());
             event.setCancelled(true);
         }
     }
