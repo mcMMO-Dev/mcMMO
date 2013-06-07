@@ -46,12 +46,136 @@ import com.gmail.nossr50.util.player.UserManager;
 public final class CombatUtils {
     private CombatUtils() {}
 
+    private static void processSwordCombat(LivingEntity target, Player player, int damage) {
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
+
+        if (swordsManager.canActivateAbility()) {
+            SkillUtils.abilityCheck(mcMMOPlayer, SkillType.SWORDS);
+        }
+
+        if (swordsManager.canUseBleed()) {
+            swordsManager.bleedCheck(target);
+        }
+
+        if (swordsManager.canUseSerratedStrike()) {
+            swordsManager.serratedStrikes(target, damage);
+        }
+
+        startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
+    }
+
+    private static void processAxeCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        AxesManager axesManager = mcMMOPlayer.getAxesManager();
+
+        if (axesManager.canActivateAbility()) {
+            SkillUtils.abilityCheck(mcMMOPlayer, SkillType.AXES);
+        }
+
+        if (axesManager.canUseAxeMastery()) {
+            event.setDamage(axesManager.axeMasteryCheck(event.getDamage()));
+        }
+
+        if (axesManager.canCriticalHit(target)) {
+            event.setDamage(axesManager.criticalHitCheck(target, event.getDamage()));
+        }
+
+        if (axesManager.canImpact(target)) {
+            axesManager.impactCheck(target);
+        }
+        else if (axesManager.canGreaterImpact(target)) {
+            event.setDamage(axesManager.greaterImpactCheck(target, event.getDamage()));
+        }
+
+        if (axesManager.canUseSkullSplitter(target)) {
+            axesManager.skullSplitterCheck(target, event.getDamage());
+        }
+
+        startGainXp(mcMMOPlayer, target, SkillType.AXES);
+    }
+
+    private static void processUnarmedCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
+
+        if (unarmedManager.canActivateAbility()) {
+            SkillUtils.abilityCheck(mcMMOPlayer, SkillType.UNARMED);
+        }
+
+        if (unarmedManager.canUseIronArm()) {
+            event.setDamage(unarmedManager.ironArmCheck(event.getDamage()));
+        }
+
+        if (unarmedManager.canUseBerserk()) {
+            event.setDamage(unarmedManager.berserkDamage(event.getDamage()));
+        }
+
+        if (unarmedManager.canDisarm(target)) {
+            unarmedManager.disarmCheck((Player) target);
+        }
+
+        startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
+    }
+
+    private static void processTamingCombat(LivingEntity target, Player master, Wolf wolf, EntityDamageByEntityEvent event) {
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(master);
+        TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+
+        if (tamingManager.canUseFastFoodService()) {
+            tamingManager.fastFoodService(wolf, event.getDamage());
+        }
+
+        if (tamingManager.canUseSharpenedClaws()) {
+            event.setDamage(Taming.sharpenedClaws(event.getDamage()));
+        }
+
+        if (tamingManager.canUseGore()) {
+            event.setDamage(tamingManager.gore(target, event.getDamage()));
+        }
+
+        startGainXp(mcMMOPlayer, target, SkillType.TAMING);
+    }
+
+    private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Entity arrow) {
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
+
+        if (archeryManager.canSkillShot()) {
+            event.setDamage(archeryManager.skillShotCheck(event.getDamage()));
+        }
+
+        if (target instanceof Player && SkillType.UNARMED.getPVPEnabled()) {
+            UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
+
+            if (unarmedManager.canDeflect()) {
+                event.setCancelled(unarmedManager.deflectCheck());
+
+                if (event.isCancelled()) {
+                    return;
+                }
+            }
+        }
+
+        if (archeryManager.canDaze(target)) {
+            event.setDamage(archeryManager.dazeCheck((Player) target, event.getDamage()));
+        }
+
+        if (!arrow.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canTrackArrows()) {
+            archeryManager.trackArrows(target);
+        }
+
+        archeryManager.distanceXpBonus(target, arrow);
+
+        startGainXp(mcMMOPlayer, target, SkillType.ARCHERY, arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble());
+    }
+
     /**
      * Apply combat modifiers and process and XP gain.
      *
      * @param event The event to run the combat checks on.
      */
-    public static void combatChecks(EntityDamageByEntityEvent event, Entity attacker, LivingEntity target) {
+    public static void processCombatAttack(EntityDamageByEntityEvent event, Entity attacker, LivingEntity target) {
         Entity damager = event.getDamager();
 
         if (attacker instanceof Player && damager.getType() == EntityType.PLAYER) {
@@ -61,12 +185,11 @@ public final class CombatUtils {
                 return;
             }
 
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             ItemStack heldItem = player.getItemInHand();
 
             if (target instanceof Tameable) {
                 if (heldItem.getType() == Material.BONE) {
-                    TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+                    TamingManager tamingManager = UserManager.getPlayer(player).getTamingManager();
 
                     if (tamingManager.canUseBeastLore()) {
                         tamingManager.beastLore(target);
@@ -86,21 +209,7 @@ public final class CombatUtils {
                 }
 
                 if (Permissions.skillEnabled(player, SkillType.SWORDS)) {
-                    SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
-
-                    if (swordsManager.canActivateAbility()) {
-                        SkillUtils.abilityCheck(mcMMOPlayer, SkillType.SWORDS);
-                    }
-
-                    if (swordsManager.canUseBleed()) {
-                        swordsManager.bleedCheck(target);
-                    }
-
-                    if (swordsManager.canUseSerratedStrike()) {
-                        swordsManager.serratedStrikes(target, event.getDamage());
-                    }
-
-                    startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
+                    processSwordCombat(target, player, event.getDamage());
                 }
             }
             else if (ItemUtils.isAxe(heldItem)) {
@@ -109,32 +218,7 @@ public final class CombatUtils {
                 }
 
                 if (Permissions.skillEnabled(player, SkillType.AXES)) {
-                    AxesManager axesManager = mcMMOPlayer.getAxesManager();
-
-                    if (axesManager.canActivateAbility()) {
-                        SkillUtils.abilityCheck(mcMMOPlayer, SkillType.AXES);
-                    }
-
-                    if (axesManager.canUseAxeMastery()) {
-                        event.setDamage(axesManager.axeMasteryCheck(event.getDamage()));
-                    }
-
-                    if (axesManager.canCriticalHit(target)) {
-                        event.setDamage(axesManager.criticalHitCheck(target, event.getDamage()));
-                    }
-
-                    if (axesManager.canImpact(target)) {
-                        axesManager.impactCheck(target);
-                    }
-                    else if (axesManager.canGreaterImpact(target)) {
-                        event.setDamage(axesManager.greaterImpactCheck(target, event.getDamage()));
-                    }
-
-                    if (axesManager.canUseSkullSplitter(target)) {
-                        axesManager.skullSplitterCheck(target, event.getDamage());
-                    }
-
-                    startGainXp(mcMMOPlayer, target, SkillType.AXES);
+                    processAxeCombat(target, player, event);
                 }
             }
             else if (heldItem.getType() == Material.AIR) {
@@ -143,25 +227,7 @@ public final class CombatUtils {
                 }
 
                 if (Permissions.skillEnabled(player, SkillType.UNARMED)) {
-                    UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
-
-                    if (unarmedManager.canActivateAbility()) {
-                        SkillUtils.abilityCheck(mcMMOPlayer, SkillType.UNARMED);
-                    }
-
-                    if (unarmedManager.canUseIronArm()) {
-                        event.setDamage(unarmedManager.ironArmCheck(event.getDamage()));
-                    }
-
-                    if (unarmedManager.canUseBerserk()) {
-                        event.setDamage(unarmedManager.berserkDamage(event.getDamage()));
-                    }
-
-                    if (unarmedManager.canDisarm(target)) {
-                        unarmedManager.disarmCheck((Player) target);
-                    }
-
-                    startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
+                    processUnarmedCombat(target, player, event);
                 }
             }
         }
@@ -169,36 +235,20 @@ public final class CombatUtils {
         switch (damager.getType()) {
             case WOLF:
                 Wolf wolf = (Wolf) damager;
+                AnimalTamer tamer = wolf.getOwner();
 
-                if (wolf.isTamed() && wolf.getOwner() instanceof Player) {
-                    Player master = (Player) wolf.getOwner();
+                if (tamer == null || !(tamer instanceof Player) || !shouldProcessSkill(target, SkillType.TAMING)) {
+                    break;
+                }
 
-                    if (Misc.isNPCEntity(master)) {
-                        return;
-                    }
+                Player master = (Player) tamer;
 
-                    if (!shouldProcessSkill(target, SkillType.TAMING)) {
-                        return;
-                    }
+                if (Misc.isNPCEntity(master)) {
+                    break;
+                }
 
-                    if (Permissions.skillEnabled(master, SkillType.TAMING)) {
-                        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(master);
-                        TamingManager tamingManager = mcMMOPlayer.getTamingManager();
-
-                        if (tamingManager.canUseFastFoodService()) {
-                            tamingManager.fastFoodService(wolf, event.getDamage());
-                        }
-
-                        if (tamingManager.canUseSharpenedClaws()) {
-                            event.setDamage(Taming.sharpenedClaws(event.getDamage()));
-                        }
-
-                        if (tamingManager.canUseGore()) {
-                            event.setDamage(tamingManager.gore(target, event.getDamage()));
-                        }
-
-                        startGainXp(mcMMOPlayer, target, SkillType.TAMING);
-                    }
+                if (Permissions.skillEnabled(master, SkillType.TAMING)) {
+                    processTamingCombat(target, master, wolf, event);
                 }
 
                 break;
@@ -206,12 +256,7 @@ public final class CombatUtils {
             case ARROW:
                 LivingEntity shooter = ((Arrow) damager).getShooter();
 
-                /* Break instead of return due to Dodge/Counter/Deflect abilities */
-                if (shooter == null || !(shooter instanceof Player)) {
-                    break;
-                }
-
-                if (!shouldProcessSkill(target, SkillType.ARCHERY)) {
+                if (shooter == null || !(shooter instanceof Player) || !shouldProcessSkill(target, SkillType.ARCHERY)) {
                     break;
                 }
 
@@ -222,38 +267,8 @@ public final class CombatUtils {
                 }
 
                 if (Permissions.skillEnabled(player, SkillType.ARCHERY)) {
-                    McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-                    ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
-
-                    if (archeryManager.canSkillShot()) {
-                        event.setDamage(archeryManager.skillShotCheck(event.getDamage()));
-                    }
-
-                    if (target instanceof Player && SkillType.UNARMED.getPVPEnabled()) {
-                        UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
-
-                        if (unarmedManager.canDeflect()) {
-                            event.setCancelled(unarmedManager.deflectCheck());
-
-                            if (event.isCancelled()) {
-                                return;
-                            }
-                        }
-                    }
-
-                    if (archeryManager.canDaze(target)) {
-                        event.setDamage(archeryManager.dazeCheck((Player) target, event.getDamage()));
-                    }
-
-                    if (!damager.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canTrackArrows()) {
-                        archeryManager.trackArrows(target);
-                    }
-
-                    archeryManager.distanceXpBonus(target, damager);
-
-                    startGainXp(mcMMOPlayer, target, SkillType.ARCHERY, damager.getMetadata(mcMMO.bowForceKey).get(0).asDouble());
+                    processArcheryCombat(target, player, event, damager);
                 }
-
                 break;
 
             default:
@@ -261,12 +276,11 @@ public final class CombatUtils {
         }
 
         if (target instanceof Player) {
-            Player player = (Player) target;
-
-            if (Misc.isNPCEntity(player)) {
+            if (Misc.isNPCEntity(target)) {
                 return;
             }
 
+            Player player = (Player) target;
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
@@ -283,24 +297,6 @@ public final class CombatUtils {
 
                 if (swordsManager.canUseCounterAttack(damager)) {
                     swordsManager.counterAttackChecks((LivingEntity) damager, event.getDamage());
-                }
-            }
-
-            if (damager.getType() == EntityType.ARROW) {
-                LivingEntity shooter = ((Arrow) damager).getShooter();
-
-                if (shooter instanceof Player || !SkillType.UNARMED.getPVEEnabled()) {
-                    return;
-                }
-
-                UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
-
-                if (unarmedManager.canDeflect()) {
-                    event.setCancelled(unarmedManager.deflectCheck());
-
-                    if (event.isCancelled()) {
-                        return;
-                    }
                 }
             }
         }

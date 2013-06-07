@@ -170,7 +170,7 @@ public class EntityListener implements Listener {
             }
         }
 
-        CombatUtils.combatChecks(event, attacker, target);
+        CombatUtils.processCombatAttack(event, attacker, target);
     }
 
     /**

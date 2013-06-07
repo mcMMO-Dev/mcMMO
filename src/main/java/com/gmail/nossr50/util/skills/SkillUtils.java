@@ -462,7 +462,7 @@ public class SkillUtils {
      * @param shouldArmSwing true if an armswing event should be fired, false otherwise
      * @return true if the event wasn't cancelled, false otherwise
      */
-    public static boolean blockBreakSimulate(Block block, Player player, Boolean shouldArmSwing) {
+    public static boolean blockBreakSimulate(Block block, Player player, boolean shouldArmSwing) {
         PluginManager pluginManger = mcMMO.p.getServer().getPluginManager();
 
         // Support for NoCheat

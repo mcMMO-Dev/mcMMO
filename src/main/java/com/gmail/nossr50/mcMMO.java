@@ -261,24 +261,25 @@ public class mcMMO extends JavaPlugin {
     }
 
     private void checkForUpdates() {
-        if (Config.getInstance().getUpdateCheckEnabled()) {
-            try {
-                updateAvailable = UpdateChecker.updateAvailable();
-            }
-            catch (Exception e) {
-                updateAvailable = false;
-            }
+        if (!Config.getInstance().getUpdateCheckEnabled()) {
+            return;
+        }
 
-            if (updateAvailable) {
-                getLogger().info(LocaleLoader.getString("UpdateChecker.outdated"));
-                getLogger().info(LocaleLoader.getString("UpdateChecker.newavailable"));
-            }
+        try {
+            updateAvailable = UpdateChecker.updateAvailable();
+        }
+        catch (Exception e) {
+            updateAvailable = false;
+        }
+
+        if (updateAvailable) {
+            getLogger().info(LocaleLoader.getString("UpdateChecker.outdated"));
+            getLogger().info(LocaleLoader.getString("UpdateChecker.newavailable"));
         }
     }
 
     private void loadConfigFiles() {
         // Force the loading of config files
-        Config configInstance = Config.getInstance();
         TreasureConfig.getInstance();
         HiddenConfig.getInstance();
         AdvancedConfig.getInstance();
@@ -286,19 +287,19 @@ public class mcMMO extends JavaPlugin {
 
         List<Repairable> repairables = new ArrayList<Repairable>();
 
-        if (configInstance.getToolModsEnabled()) {
+        if (Config.getInstance().getToolModsEnabled()) {
             repairables.addAll(CustomToolConfig.getInstance().getLoadedRepairables());
         }
 
-        if (configInstance.getArmorModsEnabled()) {
+        if (Config.getInstance().getArmorModsEnabled()) {
             repairables.addAll(CustomArmorConfig.getInstance().getLoadedRepairables());
         }
 
-        if (configInstance.getBlockModsEnabled()) {
+        if (Config.getInstance().getBlockModsEnabled()) {
             CustomBlockConfig.getInstance();
         }
 
-        if (configInstance.getEntityModsEnabled()) {
+        if (Config.getInstance().getEntityModsEnabled()) {
             CustomEntityConfig.getInstance();
         }
 
@@ -309,21 +310,22 @@ public class mcMMO extends JavaPlugin {
         repairableManager.registerRepairables(repairables);
 
         // Check if Repair Anvil and Salvage Anvil have different itemID's
-        if (configInstance.getSalvageAnvilId() == configInstance.getRepairAnvilId()) {
+        if (Config.getInstance().getSalvageAnvilId() == Config.getInstance().getRepairAnvilId()) {
             getLogger().warning("Can't use the same itemID for Repair/Salvage Anvils!");
         }
     }
 
     private void setupSpout() {
-        // Check for Spout
-        if (getServer().getPluginManager().isPluginEnabled("Spout")) {
-            spoutEnabled = true;
-
-            SpoutConfig.getInstance();
-            getServer().getPluginManager().registerEvents(new SpoutListener(), this);
-            SpoutUtils.preCacheFiles();
-            SpoutUtils.reloadSpoutPlayers(); // Handle spout players after a /reload
+        if (!getServer().getPluginManager().isPluginEnabled("Spout")) {
+            return;
         }
+
+        spoutEnabled = true;
+
+        SpoutConfig.getInstance();
+        getServer().getPluginManager().registerEvents(new SpoutListener(), this);
+        SpoutUtils.preCacheFiles();
+        SpoutUtils.reloadSpoutPlayers(); // Handle spout players after a /reload
     }
 
     private void registerEvents() {
