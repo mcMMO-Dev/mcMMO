@@ -328,6 +328,30 @@ public class EntityListener implements Listener {
      *
      * @param event The event to watch
      */
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onEntityDeathLowest(EntityDeathEvent event) {
+        LivingEntity entity = event.getEntity();
+
+        if (Misc.isNPCEntity(entity)) {
+            return;
+        }
+
+        if (entity.hasMetadata(mcMMO.customNameKey)) {
+            entity.setCustomName(entity.getMetadata(mcMMO.customNameKey).get(0).asString());
+            entity.removeMetadata(mcMMO.customNameKey, mcMMO.p);
+        }
+
+        if (entity.hasMetadata(mcMMO.customVisibleKey)) {
+            entity.setCustomNameVisible(entity.getMetadata(mcMMO.customVisibleKey).get(0).asBoolean());
+            entity.removeMetadata(mcMMO.customVisibleKey, mcMMO.p);
+        }
+    }
+
+    /**
+     * Monitor EntityDeath events.
+     *
+     * @param event The event to watch
+     */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
         LivingEntity entity = event.getEntity();
