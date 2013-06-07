@@ -18,7 +18,7 @@ public final class ExperienceAPI {
     /**
      * Returns whether given string is a valid type of skill suitable for the
      * other API calls in this class.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param skillType A string that may or may not be a skill
@@ -32,7 +32,7 @@ public final class ExperienceAPI {
      * Returns whether the given skill type string is both valid and not a
      * child skill. (Child skills have no XP of their own, and their level is
      * derived from the parent(s).)
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param skillType the skill to check
@@ -48,7 +48,7 @@ public final class ExperienceAPI {
 
     /**
      * Adds raw XP to the player.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to add XP to
@@ -63,7 +63,7 @@ public final class ExperienceAPI {
 
     /**
      * Adds raw XP to an offline player.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to add XP to
@@ -79,7 +79,7 @@ public final class ExperienceAPI {
 
     /**
      * Adds XP to the player, calculates for XP Rate only.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to add XP to
@@ -94,7 +94,7 @@ public final class ExperienceAPI {
 
     /**
      * Adds XP to an offline player, calculates for XP Rate only.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to add XP to
@@ -110,7 +110,7 @@ public final class ExperienceAPI {
 
     /**
      * Adds XP to the player, calculates for XP Rate and skill modifier.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to add XP to
@@ -127,7 +127,7 @@ public final class ExperienceAPI {
 
     /**
      * Adds XP to an offline player, calculates for XP Rate and skill modifier.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to add XP to
@@ -144,8 +144,9 @@ public final class ExperienceAPI {
     }
 
     /**
-     * Adds XP to the player, calculates for XP Rate, skill modifiers, perks, and child skills. May be shared with the party.
-     * <br>
+     * Adds XP to the player, calculates for XP Rate, skill modifiers, perks, child skills,
+     * and party sharing.
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to add XP to
@@ -160,7 +161,7 @@ public final class ExperienceAPI {
 
     /**
      * Get the amount of XP a player has in a specific skill.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to get XP for
@@ -176,7 +177,7 @@ public final class ExperienceAPI {
 
     /**
      * Get the amount of XP an offline player has in a specific skill.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to get XP for
@@ -193,7 +194,7 @@ public final class ExperienceAPI {
 
     /**
      * Get the raw amount of XP a player has in a specific skill.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to get XP for
@@ -209,7 +210,7 @@ public final class ExperienceAPI {
 
     /**
      * Get the raw amount of XP an offline player has in a specific skill.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to get XP for
@@ -226,7 +227,7 @@ public final class ExperienceAPI {
 
     /**
      * Get the total amount of XP needed to reach the next level.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to get the XP amount for
@@ -242,7 +243,7 @@ public final class ExperienceAPI {
 
     /**
      * Get the total amount of XP an offline player needs to reach the next level.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to get XP for
@@ -259,7 +260,7 @@ public final class ExperienceAPI {
 
     /**
      * Get the amount of XP remaining until the next level.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to get the XP amount for
@@ -279,7 +280,7 @@ public final class ExperienceAPI {
 
     /**
      * Get the amount of XP an offline player has left before leveling up.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to get XP for
@@ -300,7 +301,7 @@ public final class ExperienceAPI {
 
     /**
      * Add levels to a skill.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to add levels to
@@ -315,7 +316,7 @@ public final class ExperienceAPI {
 
     /**
      * Add levels to a skill for an offline player.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to add levels to
@@ -346,7 +347,7 @@ public final class ExperienceAPI {
 
     /**
      * Get the level a player has in a specific skill.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to get the level for
@@ -361,7 +362,7 @@ public final class ExperienceAPI {
 
     /**
      * Get the level an offline player has in a specific skill.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to get the level for
@@ -377,7 +378,7 @@ public final class ExperienceAPI {
 
     /**
      * Gets the power level of a player.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to get the power level for
@@ -389,7 +390,7 @@ public final class ExperienceAPI {
 
     /**
      * Gets the power level of an offline player.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to get the power level for
@@ -410,7 +411,7 @@ public final class ExperienceAPI {
 
     /**
      * Get the level cap of a specific skill.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param skillType The skill to get the level cap for
@@ -424,7 +425,7 @@ public final class ExperienceAPI {
 
     /**
      * Get the power level cap.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @return the overall power level cap
@@ -435,7 +436,7 @@ public final class ExperienceAPI {
 
     /**
      * Sets the level of a player in a specific skill type.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to set the level of
@@ -450,7 +451,7 @@ public final class ExperienceAPI {
 
     /**
      * Sets the level of an offline player in a specific skill type.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to set the level of
@@ -466,7 +467,7 @@ public final class ExperienceAPI {
 
     /**
      * Sets the XP of a player in a specific skill type.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to set the XP of
@@ -482,7 +483,7 @@ public final class ExperienceAPI {
 
     /**
      * Sets the XP of an offline player in a specific skill type.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to set the XP of
@@ -499,7 +500,7 @@ public final class ExperienceAPI {
 
     /**
      * Removes XP from a player in a specific skill type.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param player The player to change the XP of
@@ -515,7 +516,7 @@ public final class ExperienceAPI {
 
     /**
      * Removes XP from an offline player in a specific skill type.
-     * <br>
+     * </br>
      * This function is designed for API usage.
      *
      * @param playerName The player to change the XP of
