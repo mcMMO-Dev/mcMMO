@@ -32,7 +32,7 @@ public class PlayerProfile {
     private final Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
     private final Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
 
-    public PlayerProfile(String playerName, boolean addNew) {
+    public PlayerProfile(String playerName) {
         this.playerName = playerName;
 
         hudType = mcMMO.isSpoutEnabled() ? SpoutConfig.getInstance().getDefaultHudType() : HudType.DISABLED;
@@ -46,11 +46,27 @@ public class PlayerProfile {
             skills.put(skillType, 0);
             skillsXp.put(skillType, 0F);
         }
+    }
 
-        if (!loadPlayer() && addNew) {
-            mcMMO.getDatabaseManager().newUser(playerName);
-            loaded = true;
-        }
+    public PlayerProfile(String playerName, boolean isLoaded) {
+        this(playerName);
+        this.loaded = isLoaded;
+    }
+
+    /**
+     * Calling this constructor is considered loading the profile.
+     */
+    public PlayerProfile(String playerName, Map<SkillType, Integer> argSkills, Map<SkillType, Float> argSkillsXp, Map<AbilityType, Integer> argSkillsDats, HudType hudType, MobHealthbarType mobHealthbarType) {
+        this(playerName, true);
+
+        this.hudType = hudType;
+        this.mobHealthbarType = mobHealthbarType;
+
+        this.skills.putAll(argSkills);
+        this.skillsXp.putAll(argSkillsXp);
+        this.skillsDATS.putAll(argSkillsDats);
+
+        loaded = true;
     }
 
     public void save() {
@@ -253,69 +269,5 @@ public class PlayerProfile {
         }
 
         return sum / parents.size();
-    }
-
-    private boolean loadPlayer() {
-        List<String> playerData = mcMMO.getDatabaseManager().loadPlayerData(playerName);
-        
-        if (playerData == null || playerData.isEmpty()) {
-            return false;
-        }
-
-        skills.put(SkillType.TAMING, Integer.valueOf(playerData.get(0)));
-        skills.put(SkillType.MINING, Integer.valueOf(playerData.get(1)));
-        skills.put(SkillType.REPAIR, Integer.valueOf(playerData.get(2)));
-        skills.put(SkillType.WOODCUTTING, Integer.valueOf(playerData.get(3)));
-        skills.put(SkillType.UNARMED, Integer.valueOf(playerData.get(4)));
-        skills.put(SkillType.HERBALISM, Integer.valueOf(playerData.get(5)));
-        skills.put(SkillType.EXCAVATION, Integer.valueOf(playerData.get(6)));
-        skills.put(SkillType.ARCHERY, Integer.valueOf(playerData.get(7)));
-        skills.put(SkillType.SWORDS, Integer.valueOf(playerData.get(8)));
-        skills.put(SkillType.AXES, Integer.valueOf(playerData.get(9)));
-        skills.put(SkillType.ACROBATICS, Integer.valueOf(playerData.get(10)));
-        skills.put(SkillType.FISHING, Integer.valueOf(playerData.get(11)));
-
-        skillsXp.put(SkillType.TAMING, (float) Integer.valueOf(playerData.get(12)));
-        skillsXp.put(SkillType.MINING, (float) Integer.valueOf(playerData.get(13)));
-        skillsXp.put(SkillType.REPAIR, (float) Integer.valueOf(playerData.get(14)));
-        skillsXp.put(SkillType.WOODCUTTING, (float) Integer.valueOf(playerData.get(15)));
-        skillsXp.put(SkillType.UNARMED, (float) Integer.valueOf(playerData.get(16)));
-        skillsXp.put(SkillType.HERBALISM, (float) Integer.valueOf(playerData.get(17)));
-        skillsXp.put(SkillType.EXCAVATION, (float) Integer.valueOf(playerData.get(18)));
-        skillsXp.put(SkillType.ARCHERY, (float) Integer.valueOf(playerData.get(19)));
-        skillsXp.put(SkillType.SWORDS, (float) Integer.valueOf(playerData.get(20)));
-        skillsXp.put(SkillType.AXES, (float) Integer.valueOf(playerData.get(21)));
-        skillsXp.put(SkillType.ACROBATICS, (float) Integer.valueOf(playerData.get(22)));
-        skillsXp.put(SkillType.FISHING, (float) Integer.valueOf(playerData.get(23)));
-
-        // Taming 24 - Unused
-        skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(playerData.get(25)));
-        // Repair 26 - Unused
-        skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(playerData.get(27)));
-        skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(playerData.get(28)));
-        skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(playerData.get(29)));
-        skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(playerData.get(30)));
-        // Archery 31 - Unused
-        skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(playerData.get(32)));
-        skillsDATS.put(AbilityType.SKULL_SPLITTER, Integer.valueOf(playerData.get(33)));
-        // Acrobatics 34 - Unused
-        skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(playerData.get(35)));
-
-        try {
-            hudType = HudType.valueOf(playerData.get(36));
-        }
-        catch (Exception e) {
-            hudType = HudType.STANDARD; // Shouldn't happen unless database is being tampered with
-        }
-
-        try {
-            mobHealthbarType = MobHealthbarType.valueOf(playerData.get(37));
-        }
-        catch (Exception e) {
-            mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
-        }
-
-        loaded = true;
-        return true;
     }
 }

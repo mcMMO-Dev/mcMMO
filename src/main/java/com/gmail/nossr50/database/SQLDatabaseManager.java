@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -23,7 +24,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
 import com.gmail.nossr50.runnables.database.SQLReconnectTask;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.StringUtils;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private String connectionString;
@@ -314,8 +314,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    public List<String> loadPlayerData(String playerName) {
-        List<String> playerData = null;
+    public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
         PreparedStatement statement = null;
 
         try {
@@ -333,21 +332,38 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "WHERE u.user = ?");
             statement.setString(1, playerName);
 
-            playerData = readRow(statement);
+            ResultSet result = statement.executeQuery();
 
-            if (playerData == null || playerData.size() == 0) {
+            if (result.next()) {
+                PlayerProfile ret = loadFromResult(playerName, result);
+                result.close();
+                return ret;
+            }
+            else {
+                // Problem, no rows returned
                 int userId = readId(playerName);
 
-                // Check if user doesn't exist
                 if (userId == 0) {
-                    return playerData;
+                    if (!create) {
+                        // Give up
+                        return new PlayerProfile(playerName, false);
+                    }
+                    else {
+                        newUser(playerName);
+                        userId = readId(playerName);
+                    }
                 }
 
-                // Write missing table rows
                 writeMissingRows(userId);
 
-                // Re-read data
-                playerData = loadPlayerData(playerName);
+                if (!create) {
+                    // Give up
+                    return new PlayerProfile(playerName, false);
+                }
+                else {
+                    // Re-read data
+                    return loadPlayerProfile(playerName, false);
+                }
             }
         }
         catch (SQLException ex) {
@@ -363,108 +379,54 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
             }
         }
-        return playerData;
+        return new PlayerProfile(playerName, false);
     }
 
-    public boolean convert(String[] data) throws Exception {
-        String playerName = data[0];
+    public void convertUsers(DatabaseManager destination) {
+        PreparedStatement statement = null;
 
-        // Check for things we don't want put in the DB
-        if (playerName == null || playerName.equalsIgnoreCase("null") || playerName.length() > 16) {
-            return false;
+        try {
+            statement = connection.prepareStatement(
+                    "SELECT "
+                    + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, "
+                    + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, "
+                    + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
+                    + "h.hudtype, h.mobhealthbar "
+                    + "FROM " + tablePrefix + "users u "
+                    + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
+                    + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
+                    + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
+                    + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
+                    + "WHERE u.user = ?");
+            List<String> usernames = getStoredUsers();
+            ResultSet result = null;
+            for (String playerName : usernames) {
+                statement.setString(1, playerName);
+                try {
+                    result = statement.executeQuery();
+                    result.next();
+                    destination.saveUser(loadFromResult(playerName, result));
+                    result.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+        catch (SQLException e) {
+            printErrors(e);
+        }
+        finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
         }
 
-        String mining = (data.length > 1) ? data[1] : null;
-        String woodcutting = (data.length > 5) ? data[5] : null;
-        String repair = (data.length > 7) ? data[7] : null;
-        String unarmed = (data.length > 8) ? data[8] : null;
-        String herbalism = (data.length > 9) ? data[9] : null;
-        String excavation = (data.length > 10) ? data[10] : null;
-        String archery = (data.length > 11) ? data[11] : null;
-        String swords = (data.length > 12) ? data[12] : null;
-        String axes = (data.length > 13) ? data[13] : null;
-        String acrobatics = (data.length > 14) ? data[14] : null;
-        String taming = (data.length > 24) ? data[24] : null;
-        String fishing = (data.length > 34) ? data[34] : null;
-
-        String miningXP = (data.length > 4) ? data[4] : null;
-        String woodCuttingXP = (data.length > 6) ? data[6] : null;;
-        String repairXP = (data.length > 15) ? data[15] : null;
-        String unarmedXP = (data.length > 16) ? data[16] : null;
-        String herbalismXP = (data.length > 17) ? data[17] : null;
-        String excavationXP = (data.length > 18) ? data[18] : null;
-        String archeryXP = (data.length > 19) ? data[19] : null;
-        String swordsXP = (data.length > 20) ? data[20] : null;
-        String axesXP = (data.length > 21) ? data[21] : null;
-        String acrobaticsXP = (data.length > 22) ? data[22] : null;
-        String tamingXP = (data.length > 25) ? data[25] : null;
-        String fishingXP = (data.length > 35) ? data[35] : null;
-
-        String superBreakerCooldown = (data.length > 32) ? data[32] : null;
-        String treeFellerCooldown = (data.length > 28) ? data[28] : null;
-        String berserkCooldown = (data.length > 26) ? data[26] : null;
-        String greenTerraCooldown = (data.length > 29) ? data[29] : null;
-        String gigaDrillBreakerCooldown = (data.length > 27) ? data[27] : null;
-        String serratedStrikesCooldown = (data.length > 30) ? data[30] : null;
-        String skullSplitterCooldown = (data.length > 31) ? data[31] : null;
-        String blastMiningCooldown = (data.length > 36) ? data[36] : null;
-
-        String hudType = (data.length > 33) ? data[33] : null;
-        String mobHealthbarType = (data.length > 38 ? data[38] : null);
-        long lastLogin = mcMMO.p.getServer().getOfflinePlayer(playerName).getLastPlayed();
-
-        int id = readId(playerName); // Check to see if the user is in the DB
-
-        // Create the user if they don't exist
-        if (id == 0) {
-            newUser(playerName);
-            id = readId(playerName);
-        }
-
-        saveLogin(id, lastLogin);
-        saveIntegers(
-                "UPDATE " + tablePrefix + "skills SET "
-                        + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                        + ", unarmed = ?, herbalism = ?, excavation = ?"
-                        + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                        + ", fishing = ? WHERE user_id = ?",
-                StringUtils.getInt(taming), StringUtils.getInt(mining),
-                StringUtils.getInt(repair), StringUtils.getInt(woodcutting),
-                StringUtils.getInt(unarmed), StringUtils.getInt(herbalism),
-                StringUtils.getInt(excavation), StringUtils.getInt(archery),
-                StringUtils.getInt(swords), StringUtils.getInt(axes),
-                StringUtils.getInt(acrobatics), StringUtils.getInt(fishing),
-                id);
-        saveIntegers(
-                "UPDATE " + tablePrefix + "experience SET "
-                        + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                        + ", unarmed = ?, herbalism = ?, excavation = ?"
-                        + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                        + ", fishing = ? WHERE user_id = ?",
-                StringUtils.getInt(tamingXP), StringUtils.getInt(miningXP),
-                StringUtils.getInt(repairXP), StringUtils.getInt(woodCuttingXP),
-                StringUtils.getInt(unarmedXP), StringUtils.getInt(herbalismXP),
-                StringUtils.getInt(excavationXP), StringUtils.getInt(archeryXP),
-                StringUtils.getInt(swordsXP), StringUtils.getInt(axesXP),
-                StringUtils.getInt(acrobaticsXP), StringUtils.getInt(fishingXP),
-                id);
-        saveLongs(
-                "UPDATE " + tablePrefix + "cooldowns SET "
-                        + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                        + ", unarmed = ?, herbalism = ?, excavation = ?"
-                        + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                        + ", blast_mining = ? WHERE user_id = ?",
-                id,
-                StringUtils.getLong(null), StringUtils.getLong(superBreakerCooldown),
-                StringUtils.getLong(null), StringUtils.getInt(treeFellerCooldown),
-                StringUtils.getLong(berserkCooldown), StringUtils.getLong(greenTerraCooldown),
-                StringUtils.getLong(gigaDrillBreakerCooldown), StringUtils.getLong(null),
-                StringUtils.getLong(serratedStrikesCooldown), StringUtils.getLong(skullSplitterCooldown),
-                StringUtils.getLong(null), StringUtils.getLong(blastMiningCooldown));
-        saveHuds(id, hudType, mobHealthbarType);
-        return true;
     }
-
     /**
     * Check connection status and re-establish if dead or stale.
     *
@@ -555,9 +517,35 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return false;
     }
 
+    public List<String> getStoredUsers() {
+        ArrayList<String> users = new ArrayList<String>();
+        Statement stmt = null;
+        try {
+            stmt = connection.createStatement();
+            ResultSet result = stmt.executeQuery("SELECT user FROM " + tablePrefix + "users");
+            while (result.next()) {
+                users.add(result.getString("user"));
+            }
+            result.close();
+        }
+        catch (SQLException e) {
+            printErrors(e);
+        }
+        finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+        return users;
+    }
+
     /**
-    * Attempt to connect to the mySQL database.
-    */
+     * Attempt to connect to the mySQL database.
+     */
     private void connect() {
         connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
 
@@ -592,8 +580,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     /**
-    * Attempt to create the database structure.
-    */
+     * Attempt to create the database structure.
+     */
     private void createStructure() {
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
                 + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
@@ -662,10 +650,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     /**
-    * Check database structure for missing values.
-    *
-    * @param update Type of data to check updates for
-    */
+     * Check database structure for missing values.
+     *
+     * @param update Type of data to check updates for
+     */
     private void checkDatabaseStructure(DatabaseUpdateType update) {
         String sql = "";
 
@@ -793,11 +781,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     /**
-    * Attempt to write the SQL query.
-    *
-    * @param sql Query to write.
-    * @return true if the query was successfully written, false otherwise.
-    */
+     * Attempt to write the SQL query.
+     *
+     * @param sql Query to write.
+     * @return true if the query was successfully written, false otherwise.
+     */
     private boolean write(String sql) {
         if (!checkConnected()) {
             return false;
@@ -828,11 +816,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     /**
-    * Returns the number of rows affected by either a DELETE or UPDATE query
-    *
-    * @param sql SQL query to execute
-    * @return the number of rows affected
-    */
+     * Returns the number of rows affected by either a DELETE or UPDATE query
+     *
+     * @param sql SQL query to execute
+     * @return the number of rows affected
+     */
     private int update(String sql) {
         int rows = 0;
 
@@ -862,11 +850,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     /**
-    * Read SQL query.
-    *
-    * @param sql SQL query to read
-    * @return the rows in this SQL query
-    */
+     * Read SQL query.
+     *
+     * @param sql SQL query to read
+     * @return the rows in this SQL query
+     */
     private HashMap<Integer, ArrayList<String>> read(String sql) {
         HashMap<Integer, ArrayList<String>> rows = new HashMap<Integer, ArrayList<String>>();
 
@@ -906,45 +894,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return rows;
     }
 
-    private ArrayList<String> readRow(PreparedStatement statement) {
-        ArrayList<String> playerData = new ArrayList<String>();
-
-        if (checkConnected()) {
-            ResultSet resultSet = null;
-
-            try {
-                resultSet = statement.executeQuery();
-
-                if (resultSet.next()) {
-                    for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-                        playerData.add(resultSet.getString(i));
-                    }
-                }
-            }
-            catch (SQLException ex) {
-                printErrors(ex);
-            }
-            finally {
-                if (statement != null) {
-                    try {
-                        statement.close();
-                    }
-                    catch (SQLException e) {
-                        // Ignore
-                    }
-                }
-            }
-        }
-
-        return playerData;
-    }
-
     /**
-    * Get the Integer. Only return first row / first field.
-    *
-    * @param sql SQL query to execute
-    * @return the value in the first row / first field
-    */
+     * Get the Integer. Only return first row / first field.
+     *
+     * @param sql SQL query to execute
+     * @return the value in the first row / first field
+     */
     private int readInt(PreparedStatement statement) {
         int result = 0;
 
@@ -1140,6 +1095,74 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
             }
         }
+    }
+
+    private PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
+        Map<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>();   // Skill & Level
+        Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
+        Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
+        HudType hudType;
+        MobHealthbarType mobHealthbarType;
+
+        final int OFFSET_SKILLS = 0; // TODO update these numbers when the query changes (a new skill is added)
+        final int OFFSET_XP = 12;
+        final int OFFSET_DATS = 24;
+        final int OFFSET_OTHER = 36;
+
+        skills.put(SkillType.TAMING, result.getInt(OFFSET_SKILLS + 1));
+        skills.put(SkillType.MINING, result.getInt(OFFSET_SKILLS + 2));
+        skills.put(SkillType.REPAIR, result.getInt(OFFSET_SKILLS + 3));
+        skills.put(SkillType.WOODCUTTING, result.getInt(OFFSET_SKILLS + 4));
+        skills.put(SkillType.UNARMED, result.getInt(OFFSET_SKILLS + 5));
+        skills.put(SkillType.HERBALISM, result.getInt(OFFSET_SKILLS + 6));
+        skills.put(SkillType.EXCAVATION, result.getInt(OFFSET_SKILLS + 7));
+        skills.put(SkillType.ARCHERY, result.getInt(OFFSET_SKILLS + 8));
+        skills.put(SkillType.SWORDS, result.getInt(OFFSET_SKILLS + 9));
+        skills.put(SkillType.AXES, result.getInt(OFFSET_SKILLS + 10));
+        skills.put(SkillType.ACROBATICS, result.getInt(OFFSET_SKILLS + 11));
+        skills.put(SkillType.FISHING, result.getInt(OFFSET_SKILLS + 12));
+
+        skillsXp.put(SkillType.TAMING, result.getFloat(OFFSET_XP + 1));
+        skillsXp.put(SkillType.MINING, result.getFloat(OFFSET_XP + 2));
+        skillsXp.put(SkillType.REPAIR, result.getFloat(OFFSET_XP + 3));
+        skillsXp.put(SkillType.WOODCUTTING, result.getFloat(OFFSET_XP + 4));
+        skillsXp.put(SkillType.UNARMED, result.getFloat(OFFSET_XP + 5));
+        skillsXp.put(SkillType.HERBALISM, result.getFloat(OFFSET_XP + 6));
+        skillsXp.put(SkillType.EXCAVATION, result.getFloat(OFFSET_XP + 7));
+        skillsXp.put(SkillType.ARCHERY, result.getFloat(OFFSET_XP + 8));
+        skillsXp.put(SkillType.SWORDS, result.getFloat(OFFSET_XP + 9));
+        skillsXp.put(SkillType.AXES, result.getFloat(OFFSET_XP + 10));
+        skillsXp.put(SkillType.ACROBATICS, result.getFloat(OFFSET_XP + 11));
+        skillsXp.put(SkillType.FISHING, result.getFloat(OFFSET_XP + 12));
+
+        // Taming - Unused - result.getInt(OFFSET_DATS + 1)
+        skillsDATS.put(AbilityType.SUPER_BREAKER, result.getInt(OFFSET_DATS + 2));
+        // Repair - Unused - result.getInt(OFFSET_DATS + 3)
+        skillsDATS.put(AbilityType.TREE_FELLER, result.getInt(OFFSET_DATS + 4));
+        skillsDATS.put(AbilityType.BERSERK, result.getInt(OFFSET_DATS + 5));
+        skillsDATS.put(AbilityType.GREEN_TERRA, result.getInt(OFFSET_DATS + 6));
+        skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, result.getInt(OFFSET_DATS + 7));
+        // Archery - Unused - result.getInt(OFFSET_DATS + 8)
+        skillsDATS.put(AbilityType.SERRATED_STRIKES, result.getInt(OFFSET_DATS + 9));
+        skillsDATS.put(AbilityType.SKULL_SPLITTER, result.getInt(OFFSET_DATS + 10));
+        // Acrobatics - Unused - result.getInt(OFFSET_DATS + 11)
+        skillsDATS.put(AbilityType.BLAST_MINING, result.getInt(OFFSET_DATS + 12));
+
+        try {
+            hudType = HudType.valueOf(result.getString(OFFSET_OTHER + 1));
+        }
+        catch (Exception e) {
+            hudType = HudType.STANDARD; // Shouldn't happen unless database is being tampered with
+        }
+
+        try {
+            mobHealthbarType = MobHealthbarType.valueOf(result.getString(OFFSET_OTHER + 2));
+        }
+        catch (Exception e) {
+            mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
+        }
+
+        return new PlayerProfile(playerName, skills, skillsXp, skillsDATS, hudType, mobHealthbarType);
     }
 
     private void printErrors(SQLException ex) {

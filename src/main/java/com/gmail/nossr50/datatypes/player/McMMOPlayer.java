@@ -92,10 +92,10 @@ public class McMMOPlayer {
         String playerName = player.getName();
 
         this.player = player;
-        profile = new PlayerProfile(playerName, true);
+        profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, true);
         party = PartyManager.getPlayerParty(playerName);
 
-        /* 
+        /*
          * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
          * but I actually have no idea about the performance impact, if there is any.
          * If in the future someone wants to remove this, don't forget to also remove what is in the SkillType enum. - bm01

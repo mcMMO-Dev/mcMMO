@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.database.SQLConversionTask;
+import com.gmail.nossr50.runnables.database.FromFlatfileConversionTask;
 import com.gmail.nossr50.util.player.UserManager;
 
 import com.google.common.collect.ImmutableList;
@@ -28,7 +28,7 @@ public class MmoupdateCommand implements TabExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.mmoupdate.Start"));
                 UserManager.saveAll();
                 UserManager.clearAll();
-                new SQLConversionTask().runTaskLaterAsynchronously(mcMMO.p, 1);
+                new FromFlatfileConversionTask().runTaskAsynchronously(mcMMO.p);
 
                 for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
                     UserManager.addUser(player);

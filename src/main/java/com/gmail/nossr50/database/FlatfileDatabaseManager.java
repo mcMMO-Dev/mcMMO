@@ -294,12 +294,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
     }
 
-    public List<String> loadPlayerData(String playerName) {
-        List<String> playerData = new ArrayList<String>();
+    public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
+        FileReader file = null;
+        BufferedReader in = null;
         try {
             // Open the user file
-            FileReader file = new FileReader(mcMMO.getUsersFilePath());
-            BufferedReader in = new BufferedReader(file);
+            file = new FileReader(mcMMO.getUsersFilePath());
+            in = new BufferedReader(file);
             String line;
 
             while ((line = in.readLine()) != null) {
@@ -310,74 +311,105 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     continue;
                 }
 
-                // Skill levels
-                playerData.add(character[24]); // Taming
-                playerData.add(character[1]); // Mining
-                playerData.add(character[7]); // Repair
-                playerData.add(character[5]); // Woodcutting
-                playerData.add(character[8]); // Unarmed
-                playerData.add(character[9]); // Herbalism
-                playerData.add(character[10]); // Excavation
-                playerData.add(character[11]); // Archery
-                playerData.add(character[12]); // Swords
-                playerData.add(character[13]); // Axes
-                playerData.add(character[14]); // Acrobatics
-                playerData.add(character[34]); // Fishing
-
-                // Experience
-                playerData.add(character[25]); // Taming
-                playerData.add(character[4]); // Mining
-                playerData.add(character[15]); // Repair
-                playerData.add(character[6]); // Woodcutting
-                playerData.add(character[16]); // Unarmed
-                playerData.add(character[17]); // Herbalism
-                playerData.add(character[18]); // Excavation
-                playerData.add(character[19]); // Archery
-                playerData.add(character[20]); // Swords
-                playerData.add(character[21]); // Axes
-                playerData.add(character[22]); // Acrobatics
-                playerData.add(character[35]); // Fishing
-
-                // Cooldowns
-                playerData.add(null); // Taming
-                playerData.add(character[32]); // SuperBreaker
-                playerData.add(null); // Repair
-                playerData.add(character[28]); // Tree Feller
-                playerData.add(character[26]); // Beserk
-                playerData.add(character[29]); // Green Terra
-                playerData.add(character[27]); // Giga Drill Breaker
-                playerData.add(null); // Archery
-                playerData.add(character[30]); // Serrated Strikes
-                playerData.add(character[31]); // Skull Splitter
-                playerData.add(null); // Acrobatics
-                playerData.add(character[36]); // Blast Mining
-
-                playerData.add(character.length > 33 ? character[33] : null); // HudType
-                playerData.add(character.length > 38 ? character[38] : null); // MobHealthBar
+                return loadFromLine(character);
             }
-
-            in.close();
         }
         catch (Exception e) {
             e.printStackTrace();
         }
+        finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+                if (file != null) {
+                    file.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
-        return playerData;
+        if (create) {
+            newUser(playerName);
+            return new PlayerProfile(playerName, true);
+        }
+        return new PlayerProfile(playerName);
     }
 
-    public boolean convert(String[] character) throws Exception {
-        // Not implemented
-        return false;
+    public void convertUsers(DatabaseManager destination) {
+        FileReader file = null;
+        BufferedReader in = null;
+
+        try {
+            // Open the user file
+            file = new FileReader(mcMMO.getUsersFilePath());
+            in = new BufferedReader(file);
+            String line;
+
+            while ((line = in.readLine()) != null) {
+                String[] character = line.split(":");
+
+                try {
+                    destination.saveUser(loadFromLine(character));
+                }
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (in != null) {
+                    in.close();
+                }
+                if (file != null) {
+                    file.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public boolean checkConnected() {
         // Not implemented
-        return false;
+        return true;
+    }
+
+    public List<String> getStoredUsers() {
+        ArrayList<String> users = new ArrayList<String>();
+        BufferedReader in = null;
+        try {
+            // Open the user file
+            FileReader file = new FileReader(mcMMO.getUsersFilePath());
+            in = new BufferedReader(file);
+            String line;
+
+            while ((line = in.readLine()) != null) {
+                String[] character = line.split(":");
+                users.add(character[0]);
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return users;
     }
 
     /**
-* Update the leader boards.
-*/
+     * Update the leader boards.
+     */
     private void updateLeaderboards() {
         // Only update FFS leaderboards every 10 minutes.. this puts a lot of strain on the server (depending on the size of the database) and should not be done frequently
         if (System.currentTimeMillis() < lastUpdate + UPDATE_WAIT_TIME) {
@@ -521,5 +553,68 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         public int compare(PlayerStat o1, PlayerStat o2) {
             return (o2.statVal - o1.statVal);
         }
+    }
+
+    private PlayerProfile loadFromLine(String[] character) throws Exception {
+        Map<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>();   // Skill & Level
+        Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
+        Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
+        HudType hudType;
+        MobHealthbarType mobHealthbarType;
+
+        skills.put(SkillType.TAMING, Integer.valueOf(character[24]));
+        skills.put(SkillType.MINING, Integer.valueOf(character[1]));
+        skills.put(SkillType.REPAIR, Integer.valueOf(character[7]));
+        skills.put(SkillType.WOODCUTTING, Integer.valueOf(character[5]));
+        skills.put(SkillType.UNARMED, Integer.valueOf(character[8]));
+        skills.put(SkillType.HERBALISM, Integer.valueOf(character[9]));
+        skills.put(SkillType.EXCAVATION, Integer.valueOf(character[10]));
+        skills.put(SkillType.ARCHERY, Integer.valueOf(character[11]));
+        skills.put(SkillType.SWORDS, Integer.valueOf(character[12]));
+        skills.put(SkillType.AXES, Integer.valueOf(character[13]));
+        skills.put(SkillType.ACROBATICS, Integer.valueOf(character[14]));
+        skills.put(SkillType.FISHING, Integer.valueOf(character[34]));
+
+        skillsXp.put(SkillType.TAMING, (float) Integer.valueOf(character[25]));
+        skillsXp.put(SkillType.MINING, (float) Integer.valueOf(character[4]));
+        skillsXp.put(SkillType.REPAIR, (float) Integer.valueOf(character[15]));
+        skillsXp.put(SkillType.WOODCUTTING, (float) Integer.valueOf(character[6]));
+        skillsXp.put(SkillType.UNARMED, (float) Integer.valueOf(character[16]));
+        skillsXp.put(SkillType.HERBALISM, (float) Integer.valueOf(character[17]));
+        skillsXp.put(SkillType.EXCAVATION, (float) Integer.valueOf(character[18]));
+        skillsXp.put(SkillType.ARCHERY, (float) Integer.valueOf(character[19]));
+        skillsXp.put(SkillType.SWORDS, (float) Integer.valueOf(character[20]));
+        skillsXp.put(SkillType.AXES, (float) Integer.valueOf(character[21]));
+        skillsXp.put(SkillType.ACROBATICS, (float) Integer.valueOf(character[22]));
+        skillsXp.put(SkillType.FISHING, (float) Integer.valueOf(character[35]));
+
+        // Taming - Unused
+        skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(character[32]));
+        // Repair - Unused
+        skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(character[28]));
+        skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(character[26]));
+        skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(character[29]));
+        skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(character[27]));
+        // Archery - Unused
+        skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(character[30]));
+        skillsDATS.put(AbilityType.SKULL_SPLITTER, Integer.valueOf(character[31]));
+        // Acrobatics - Unused
+        skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(character[36]));
+
+        try {
+            hudType = HudType.valueOf(character[33]);
+        }
+        catch (Exception e) {
+            hudType = HudType.STANDARD; // Shouldn't happen unless database is being tampered with
+        }
+
+        try {
+            mobHealthbarType = MobHealthbarType.valueOf(character[38]);
+        }
+        catch (Exception e) {
+            mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
+        }
+
+        return new PlayerProfile(character[0], skills, skillsXp, skillsDATS, hudType, mobHealthbarType);
     }
 }
