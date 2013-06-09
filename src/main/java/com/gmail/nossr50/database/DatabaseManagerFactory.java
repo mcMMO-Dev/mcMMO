@@ -46,6 +46,10 @@ public class DatabaseManagerFactory {
         customManager = clazz;
     }
 
+    public static Class<? extends DatabaseManager> getCustomDatabaseManagerClass() {
+        return customManager;
+    }
+
     // For data conversion purposes
 
     public static FlatfileDatabaseManager createFlatfileDatabaseManager() {
