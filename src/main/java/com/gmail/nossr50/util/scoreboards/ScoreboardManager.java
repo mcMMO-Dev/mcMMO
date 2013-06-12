@@ -19,6 +19,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.scoreboards.ScoreboardChangeTask;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -309,7 +310,7 @@ public class ScoreboardManager {
             enablePowerLevelDisplay(player);
 
             if (displayTime != -1 && !SCOREBOARD_TASKS.contains(playerName)) {
-                new ScoreboardChangeTask(player, oldScoreboard).runTaskLater(mcMMO.p, displayTime * 20);
+                new ScoreboardChangeTask(player, oldScoreboard).runTaskLater(mcMMO.p, displayTime * Misc.TICK_CONVERSION_FACTOR);
                 SCOREBOARD_TASKS.add(playerName);
             }
         }

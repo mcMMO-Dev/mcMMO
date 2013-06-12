@@ -119,7 +119,7 @@ public class SkillUtils {
 
             mcMMOPlayer.setToolPreparationATS(tool, System.currentTimeMillis());
             mcMMOPlayer.setToolPreparationMode(tool, true);
-            new ToolLowerTask(mcMMOPlayer, tool).runTaskLaterAsynchronously(mcMMO.p, 4 * 20);
+            new ToolLowerTask(mcMMOPlayer, tool).runTaskLaterAsynchronously(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
@@ -300,7 +300,7 @@ public class SkillUtils {
                 handleAbilitySpeedIncrease(player);
             }
 
-            new AbilityDisableTask(mcMMOPlayer, ability).runTaskLater(mcMMO.p, ticks * 20);
+            new AbilityDisableTask(mcMMOPlayer, ability).runTaskLater(mcMMO.p, ticks * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
@@ -393,7 +393,7 @@ public class SkillUtils {
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             SkillType skill = mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER) ? SkillType.MINING : SkillType.EXCAVATION;
-            int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getProfile().getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), skill.getAbility().getMaxTicks()) * 20;
+            int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getProfile().getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), skill.getAbility().getMaxTicks()) * Misc.TICK_CONVERSION_FACTOR;
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
             player.addPotionEffect(abilityBuff, true);

@@ -28,8 +28,11 @@ import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public final class Misc {
     private static Random random = new Random();
-    public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
+
     public static final int TIME_CONVERSION_FACTOR = 1000;
+    public static final int TICK_CONVERSION_FACTOR = 20;
+
+    public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
 
     // Sound Pitches & Volumes from CB

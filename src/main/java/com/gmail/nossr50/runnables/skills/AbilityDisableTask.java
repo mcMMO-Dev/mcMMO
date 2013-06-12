@@ -60,6 +60,6 @@ public class AbilityDisableTask extends BukkitRunnable {
         }
 
         SkillUtils.sendSkillMessage(player, ability.getAbilityPlayerOff(player));
-        new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLaterAsynchronously(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * 20);
+        new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLaterAsynchronously(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
     }
 }

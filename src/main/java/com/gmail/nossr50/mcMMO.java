@@ -45,6 +45,7 @@ import com.gmail.nossr50.skills.repair.RepairableManagerFactory;
 import com.gmail.nossr50.skills.repair.config.RepairConfigManager;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.LogFilter;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.UpdateChecker;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
@@ -352,23 +353,23 @@ public class mcMMO extends JavaPlugin {
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
 
         // Bleed timer (Runs every two seconds)
-        new BleedTimerTask().runTaskTimer(this, 40, 40);
+        new BleedTimerTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
 
         // Old & Powerless User remover
-        long purgeIntervalTicks = Config.getInstance().getPurgeInterval() * 60 * 60 * 20;
+        long purgeIntervalTicks = Config.getInstance().getPurgeInterval() * 60 * 60 * Misc.TICK_CONVERSION_FACTOR;
 
         if (purgeIntervalTicks == 0) {
-            new UserPurgeTask().runTaskLater(this, 40); // Start 2 seconds after startup.
+            new UserPurgeTask().runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
         }
         else if (purgeIntervalTicks > 0) {
             new UserPurgeTask().runTaskTimer(this, purgeIntervalTicks, purgeIntervalTicks);
         }
 
         // Automatically remove old members from parties
-        long kickIntervalTicks = Config.getInstance().getAutoPartyKickInterval() * 60 * 60 * 20;
+        long kickIntervalTicks = Config.getInstance().getAutoPartyKickInterval() * 60 * 60 * Misc.TICK_CONVERSION_FACTOR;
 
         if (kickIntervalTicks == 0) {
-            new PartyAutoKickTask().runTaskLater(this, 40); // Start 2 seconds after startup.
+            new PartyAutoKickTask().runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
         }
         else if (kickIntervalTicks > 0) {
             new PartyAutoKickTask().runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);

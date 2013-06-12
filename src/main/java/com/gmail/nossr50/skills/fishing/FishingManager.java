@@ -122,7 +122,7 @@ public class FishingManager extends SkillManager {
         kraken.setCustomName(AdvancedConfig.getInstance().getKrakenName());
 
         if (!kraken.isValid()) {
-            int attackInterval = AdvancedConfig.getInstance().getKrakenAttackInterval() * 20;
+            int attackInterval = AdvancedConfig.getInstance().getKrakenAttackInterval() * Misc.TICK_CONVERSION_FACTOR;
             new KrakenAttackTask(kraken, player, player.getLocation()).runTaskTimer(mcMMO.p, attackInterval, attackInterval);
 
             if (!forceSpawn) {
@@ -135,7 +135,7 @@ public class FishingManager extends SkillManager {
         kraken.setMaxHealth(AdvancedConfig.getInstance().getKrakenHealth());
         kraken.setHealth(kraken.getMaxHealth());
 
-        int attackInterval = AdvancedConfig.getInstance().getKrakenAttackInterval() * 20;
+        int attackInterval = AdvancedConfig.getInstance().getKrakenAttackInterval() * Misc.TICK_CONVERSION_FACTOR;
         new KrakenAttackTask(kraken, player).runTaskTimer(mcMMO.p, attackInterval, attackInterval);
 
         if (!forceSpawn) {
