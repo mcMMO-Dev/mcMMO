@@ -8,6 +8,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
@@ -230,7 +231,31 @@ public final class Misc {
     public static Player getPlayerFromFurnace(Block furnaceBlock) {
         List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
 
-        return metadata.isEmpty() ? null : mcMMO.p.getServer().getPlayerExact(metadata.get(0).asString());
+        if (metadata.isEmpty()) {
+            return null;
+        }
+
+        return mcMMO.p.getServer().getPlayerExact(metadata.get(0).asString());
+    }
+
+    public static ItemStack getSmeltingFromFurnace(Block furnaceBlock) {
+        BlockState furnaceState = furnaceBlock.getState();
+
+        if (!(furnaceState instanceof Furnace)) {
+            return null;
+        }
+
+        return ((Furnace) furnaceState).getInventory().getSmelting();
+    }
+
+    public static ItemStack getResultFromFurnace(Block furnaceBlock) {
+        BlockState furnaceState = furnaceBlock.getState();
+
+        if (!(furnaceState instanceof Furnace)) {
+            return null;
+        }
+
+        return ((Furnace) furnaceState).getInventory().getResult();
     }
 
     public static Random getRandom() {

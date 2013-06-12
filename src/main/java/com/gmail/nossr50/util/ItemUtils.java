@@ -461,6 +461,10 @@ public class ItemUtils {
     }
 
     public static boolean isSmeltable(ItemStack item) {
+        if (item == null) {
+            return false;
+        }
+
         switch (item.getType()) {
             case COAL_ORE:
             case DIAMOND_ORE:
@@ -479,6 +483,10 @@ public class ItemUtils {
     }
 
     public static boolean isSmelted(ItemStack item) {
+        if (item == null) {
+            return false;
+        }
+
         switch (item.getType()) {
             case COAL:
             case DIAMOND:

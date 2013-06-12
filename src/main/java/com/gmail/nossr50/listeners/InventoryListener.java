@@ -1,8 +1,6 @@
 package com.gmail.nossr50.listeners;
 
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Furnace;
+import org.bukkit.block.Block;  
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +19,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.PlayerUpdateInventoryTask;
-import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -68,15 +65,9 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceBurnEvent(FurnaceBurnEvent event) {
         Block furnaceBlock = event.getBlock();
-        BlockState furnaceState = furnaceBlock.getState();
+        ItemStack smelting = Misc.getSmeltingFromFurnace(furnaceBlock);
 
-        if (!(furnaceState instanceof Furnace)) {
-            return;
-        }
-
-        ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
-
-        if (smelting == null || !ItemUtils.isSmeltable(smelting)) {
+        if (!ItemUtils.isSmeltable(smelting)) {
             return;
         }
 
@@ -92,15 +83,9 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceSmeltEvent(FurnaceSmeltEvent event) {
         Block furnaceBlock = event.getBlock();
-        BlockState furnaceState = furnaceBlock.getState();
+        ItemStack smelting = Misc.getSmeltingFromFurnace(furnaceBlock);
 
-        if (!(furnaceState instanceof Furnace)) {
-            return;
-        }
-
-        ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
-
-        if (smelting == null || !ItemUtils.isSmeltable(smelting)) {
+        if (!ItemUtils.isSmeltable(smelting)) {
             return;
         }
 
@@ -116,29 +101,19 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
         Block furnaceBlock = event.getBlock();
-        BlockState furnaceState = furnaceBlock.getState();
+        ItemStack result = Misc.getResultFromFurnace(furnaceBlock);
 
-        if (!(furnaceState instanceof Furnace)) {
-            return;
-        }
-
-        ItemStack result = ((Furnace) furnaceState).getInventory().getResult();
-
-        if (result == null || !ItemUtils.isSmelted(result)) {
+        if (!ItemUtils.isSmelted(result)) {
             return;
         }
 
         Player player = Misc.getPlayerFromFurnace(furnaceBlock);
 
-        if (Misc.isNPCEntity(player)) {
+        if (Misc.isNPCEntity(player) || !Permissions.vanillaXpBoost(player, SkillType.SMELTING)) {
             return;
         }
 
-        SmeltingManager smeltingManager = UserManager.getPlayer(player).getSmeltingManager();
-
-        if (smeltingManager.canUseVanillaXpBoost()) {
-            event.setExpToDrop(smeltingManager.vanillaXPBoost(event.getExpToDrop()));
-        }
+        event.setExpToDrop(UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(event.getExpToDrop()));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

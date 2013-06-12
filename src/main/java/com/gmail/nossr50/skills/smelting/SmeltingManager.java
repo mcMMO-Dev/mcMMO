@@ -28,10 +28,6 @@ public class SmeltingManager extends SkillManager {
         return getSkillLevel() >= Smelting.fluxMiningUnlockLevel && BlockUtils.affectedByFluxMining(blockState) && Permissions.fluxMining(getPlayer()) && !mcMMO.getPlaceStore().isTrue(blockState);
     }
 
-    public boolean canUseVanillaXpBoost() {
-        return getSkillLevel() >= Smelting.Tier.ONE.getLevel() && Permissions.vanillaXpBoost(getPlayer(), skill);
-    }
-
     /**
      * Process the Flux Mining ability.
      *
@@ -122,6 +118,6 @@ public class SmeltingManager extends SkillManager {
             }
         }
 
-        return 0;
+        return 1;
     }
 }
