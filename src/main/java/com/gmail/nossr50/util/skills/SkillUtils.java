@@ -392,14 +392,8 @@ public class SkillUtils {
             }
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-            int ticks = 0;
-
-            if (mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER)) {
-                ticks = ((int) (mcMMOPlayer.getProfile().getSkillDATS(AbilityType.SUPER_BREAKER) - (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR))) * 20;
-            }
-            else if (mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER)) {
-                ticks = ((int) (mcMMOPlayer.getProfile().getSkillDATS(AbilityType.GIGA_DRILL_BREAKER) - (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR))) * 20;
-            }
+            SkillType skill = mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER) ? SkillType.MINING : SkillType.EXCAVATION;
+            int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getProfile().getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), skill.getAbility().getMaxTicks()) * 20;
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
             player.addPotionEffect(abilityBuff, true);
@@ -414,9 +408,6 @@ public class SkillUtils {
                 ItemStack item = playerInventory.getItem(i);
                 playerInventory.setItem(i, removeAbilityBuff(item));
             }
-        }
-        else {
-            player.removePotionEffect(PotionEffectType.FAST_DIGGING);
         }
     }
 

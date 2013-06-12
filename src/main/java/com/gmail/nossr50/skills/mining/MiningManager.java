@@ -284,10 +284,7 @@ public class MiningManager extends SkillManager {
     private boolean blastMiningCooldownOver() {
         Player player = getPlayer();
         PlayerProfile profile = getProfile();
-
-        long oldTime = profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR;
-        int cooldown = AbilityType.BLAST_MINING.getCooldown();
-        int timeRemaining = SkillUtils.calculateTimeLeft(oldTime, cooldown, player);
+        int timeRemaining = SkillUtils.calculateTimeLeft(profile.getSkillDATS(AbilityType.BLAST_MINING) * Misc.TIME_CONVERSION_FACTOR, AbilityType.BLAST_MINING.getCooldown(), player);
 
         if (timeRemaining > 0) {
             player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
