@@ -1,6 +1,6 @@
 package com.gmail.nossr50.listeners;
 
-import org.bukkit.block.Block;  
+import org.bukkit.block.Block;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
