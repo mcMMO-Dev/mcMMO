@@ -26,9 +26,6 @@ General:
     Verbose_Logging: false
     # Should mcMMO over-write configs to update, or make new ones ending in .new?
     Config_Update_Overwrite: true
-    # Enable potato easter egg?
-    Potato_Explosion_Enabled: false
-    Potato_Explosion_Chance: 1
 
 Scoreboards:
     # Should mcMMO use scoreboards for /inspect?

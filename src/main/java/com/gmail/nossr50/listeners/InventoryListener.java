@@ -2,7 +2,6 @@ package com.gmail.nossr50.listeners;
 
 import java.util.List;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
@@ -23,7 +22,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
@@ -110,25 +108,15 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
+        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
 
-        if (smelting == null) {
+        if (metadata.isEmpty()) {
             return;
         }
 
-        Material smeltingType = smelting.getType();
+        ItemStack smelting = ((Furnace) furnaceState).getInventory().getSmelting();
 
-        if (Config.getInstance().getPotatoEnabled() && smeltingType == Material.POTATO_ITEM) {
-            if ((Config.getInstance().getPotatoChance() / 100.0) >= Misc.getRandom().nextDouble()) {
-                event.setCancelled(true);
-                furnaceState.getWorld().createExplosion(furnaceState.getLocation(), 4F, true);
-                return;
-            }
-        }
-
-        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
-
-        if (metadata.isEmpty() || !ItemUtils.isSmeltable(smelting)) {
+        if (smelting == null || !ItemUtils.isSmeltable(smelting)) {
             return;
         }
 
@@ -139,7 +127,7 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        event.setResult(UserManager.getPlayer(player).getSmeltingManager().smeltProcessing(smeltingType, event.getResult()));
+        event.setResult(UserManager.getPlayer(player).getSmeltingManager().smeltProcessing(smelting.getType(), event.getResult()));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
