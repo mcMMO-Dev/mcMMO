@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Chunk;
@@ -15,6 +16,7 @@ import org.bukkit.event.inventory.InventoryEvent;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.MetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -223,6 +225,12 @@ public final class Misc {
         }
 
         return furnace.getBlock();
+    }
+
+    public static Player getPlayerFromFurnace(Block furnaceBlock) {
+        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
+
+        return metadata.isEmpty() ? null : mcMMO.p.getServer().getPlayerExact(metadata.get(0).asString());
     }
 
     public static Random getRandom() {
