@@ -542,20 +542,21 @@ public class EntityListener implements Listener {
         Entity entity = event.getEntity();
         Entity target = event.getTarget();
 
-        if (entity instanceof Tameable && target instanceof Player) {
-            Player player = (Player) target;
-            Tameable tameable = (Tameable) entity;
+        if (!(entity instanceof Tameable) || !(target instanceof Player)) {
+            return;
+        }
 
-            if (!CombatUtils.isFriendlyPet(player, tameable)) {
-                return;
-            }
+        Player player = (Player) target;
+        Tameable tameable = (Tameable) entity;
 
-            // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
-            // So we can make some assumptions here, about our casting and our check
-            if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire((Player) tameable.getOwner()))) {
-                event.setCancelled(true);
-                return;
-            }
+        if (!CombatUtils.isFriendlyPet(player, tameable)) {
+            return;
+        }
+
+        // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
+        // So we can make some assumptions here, about our casting and our check
+        if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire((Player) tameable.getOwner()))) {
+            event.setCancelled(true);
         }
     }
 }

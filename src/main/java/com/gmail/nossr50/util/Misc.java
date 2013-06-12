@@ -6,9 +6,14 @@ import java.util.Random;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.Furnace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryEvent;
+import org.bukkit.inventory.FurnaceInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
@@ -202,6 +207,22 @@ public final class Misc {
                 player.getWorld().refreshChunk(x, z);
             }
         }
+    }
+
+    public static Block processInventoryOpenorCloseEvent(InventoryEvent event) {
+        Inventory inventory = event.getInventory();
+
+        if (!(inventory instanceof FurnaceInventory)) {
+            return null;
+        }
+
+        Furnace furnace = (Furnace) inventory.getHolder();
+
+        if (furnace == null || furnace.getBurnTime() != 0) {
+            return null;
+        }
+
+        return furnace.getBlock();
     }
 
     public static Random getRandom() {
