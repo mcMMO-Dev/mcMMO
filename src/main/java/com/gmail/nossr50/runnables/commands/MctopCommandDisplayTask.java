@@ -35,7 +35,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
         int place = (page * 10) - 9;
 
         for (PlayerStat stat : userStats) {
-            String digit = (place < 10) ? "0" : "" + String.valueOf(place);
+            String digit = ((place < 10) ? "0" : "") + String.valueOf(place);
 
             // Format: 1. Playername - skill value
             sender.sendMessage(digit + ". " + ChatColor.GREEN + stat.name + " - " + ChatColor.WHITE + stat.statVal);
