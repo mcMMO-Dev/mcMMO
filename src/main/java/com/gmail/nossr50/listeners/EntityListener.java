@@ -403,7 +403,7 @@ public class EntityListener implements Listener {
         }
 
         // We can make this assumption because we (should) be the only ones using this exact metadata
-        Player player = plugin.getServer().getPlayer(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
+        Player player = plugin.getServer().getPlayerExact(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
         if (Misc.isNPCEntity(player)) {
             return;
@@ -430,7 +430,7 @@ public class EntityListener implements Listener {
         }
 
         // We can make this assumption because we (should) be the only ones using this exact metadata
-        Player player = plugin.getServer().getPlayer(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
+        Player player = plugin.getServer().getPlayerExact(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
         if (Misc.isNPCEntity(player)) {
             return;

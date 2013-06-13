@@ -25,7 +25,7 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        Player player = mcMMO.p.getServer().getPlayer(playerName);
+        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
         Integer rank;
 
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
