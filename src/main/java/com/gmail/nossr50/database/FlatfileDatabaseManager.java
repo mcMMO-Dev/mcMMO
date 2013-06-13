@@ -13,19 +13,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.player.UserManager;
 
 public final class FlatfileDatabaseManager implements DatabaseManager {
     private final HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
@@ -61,10 +59,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
         mcMMO.p.getLogger().info("Purging old users...");
 
-        for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers().values()) {
-            Player player = mcMMOPlayer.getPlayer();
-
-            if (currentTime - player.getLastPlayed() > PURGE_TIME && removeUser(player.getName())) {
+        for (OfflinePlayer player : mcMMO.p.getServer().getOfflinePlayers()) {
+            if (!player.isOnline() && (currentTime - player.getLastPlayed() > PURGE_TIME && removeUser(player.getName()))) {
                 removedPlayers++;
             }
         }
