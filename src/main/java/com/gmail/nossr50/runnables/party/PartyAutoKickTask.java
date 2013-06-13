@@ -2,7 +2,6 @@ package com.gmail.nossr50.runnables.party;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -15,29 +14,25 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.party.PartyManager;
 
 public class PartyAutoKickTask extends BukkitRunnable {
+    private final static long KICK_TIME = 24L * 60L * 60L * 1000L * Config.getInstance().getAutoPartyKickTime();
+
     @Override
     public void run() {
-        updatePartyMembers();
-    }
-
-    private void updatePartyMembers() {
         HashMap<OfflinePlayer, Party> toRemove = new HashMap<OfflinePlayer, Party>();
         List<String> processedPlayers = new ArrayList<String>();
 
         long currentTime = System.currentTimeMillis();
-        long kickTime = 24L * 60L * 60L * 1000L * Config.getInstance().getAutoPartyKickTime();
 
-        for (Iterator<Party> partyIterator = PartyManager.getParties().iterator(); partyIterator.hasNext();) {
-            Party party = partyIterator.next();
-
+        for (Party party : PartyManager.getParties()) {
             for (String memberName : party.getMembers()) {
                 OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberName);
+                boolean isProcessed = processedPlayers.contains(memberName);
 
-                if ((currentTime - member.getLastPlayed() > kickTime) || processedPlayers.contains(memberName)) {
+                if ((!member.isOnline() && (currentTime - member.getLastPlayed() > KICK_TIME)) || isProcessed) {
                     toRemove.put(member, party);
                 }
 
-                if (!processedPlayers.contains(memberName)) {
+                if (!isProcessed) {
                     processedPlayers.add(memberName);
                 }
             }
