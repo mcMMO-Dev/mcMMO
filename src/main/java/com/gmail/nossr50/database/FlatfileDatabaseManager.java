@@ -44,9 +44,70 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
         mcMMO.p.getLogger().info("Purging powerless users...");
 
-        for (PlayerStat stat : powerLevels) {
-            if (stat.statVal == 0 && mcMMO.p.getServer().getPlayerExact(stat.name) == null && removeUser(stat.name)) {
-                purgedUsers++;
+        BufferedReader in = null;
+        FileWriter out = null;
+        String usersFilePath = mcMMO.getUsersFilePath();
+
+        // Rationale for doing a file read instead of using the cached values:
+        // If mulitple users need be removed, this only opens the file once as
+        // opposed to calling removeUser which opens the file once each time.
+        try {
+            in = new BufferedReader(new FileReader(usersFilePath));
+            StringBuilder writer = new StringBuilder();
+            String line = "";
+
+            while ((line = in.readLine()) != null) {
+                String[] character = line.split(":");
+                PlayerProfile profile = null;
+                try {
+                    profile = loadFromLine(character);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (profile == null) continue; // skip malformed lines
+
+                boolean powerless = true;
+                for (SkillType skill : SkillType.nonChildSkills()) {
+                    if (profile.getSkillLevel(skill) != 0) {
+                        powerless = false;
+                        break;
+                    }
+                }
+
+                // If they're still around, rewrite them to the file.
+                if (!powerless) {
+                    writer.append(line).append("\r\n");
+                }
+                else {
+                    purgedUsers++;
+                    Misc.profileCleanup(character[0]);
+                }
+            }
+
+            // Write the new file
+            out = new FileWriter(usersFilePath);
+            out.write(writer.toString());
+        }
+        catch (IOException e) {
+            mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+        }
+        finally {
+            if (in != null) {
+                try {
+                    in.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+            if (out != null) {
+                try {
+                    out.close();
+                }
+                catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
 
