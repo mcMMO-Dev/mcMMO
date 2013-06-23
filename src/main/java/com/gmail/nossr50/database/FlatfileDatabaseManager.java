@@ -2,6 +2,7 @@ package com.gmail.nossr50.database;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -59,17 +60,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
-                    PlayerProfile profile = null;
-                    try {
-                        profile = loadFromLine(character);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    if (profile == null) continue; // skip malformed lines
+                    Map<SkillType, Integer> skills = getSkillMapFromLine(character);
 
                     boolean powerless = true;
-                    for (SkillType skill : SkillType.nonChildSkills()) {
-                        if (profile.getSkillLevel(skill) != 0) {
+                    for (int skill : skills.values()) {
+                        if (skill != 0) {
                             powerless = false;
                             break;
                         }
@@ -93,23 +88,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
             }
             finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    }
-                    catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-
-                if (out != null) {
-                    try {
-                        out.close();
-                    }
-                    catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
+                tryClose(in);
+                tryClose(out);
             }
         }
 
@@ -144,7 +124,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     }
 
                     if (!old) {
-                        writer.append(line);
+                        writer.append(line).append("\r\n");
                     }
                     else {
                         removedPlayers++;
@@ -160,23 +140,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
             }
             finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    }
-                    catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-
-                if (out != null) {
-                    try {
-                        out.close();
-                    }
-                    catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
+                tryClose(in);
+                tryClose(out);
             }
         }
 
@@ -214,23 +179,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
             }
             finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    }
-                    catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-
-                if (out != null) {
-                    try {
-                        out.close();
-                    }
-                    catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
+                tryClose(in);
+                tryClose(out);
             }
         }
 
@@ -314,23 +264,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 e.printStackTrace();
             }
             finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    }
-                    catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-
-                if (out != null) {
-                    try {
-                        out.close();
-                    }
-                    catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }
+                tryClose(in);
+                tryClose(out);
             }
         }
     }
@@ -358,10 +293,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     public void newUser(String playerName) {
+        BufferedWriter out = null;
         synchronized (fileWritingLock) {
             try {
                 // Open the file to write the player
-                BufferedWriter out = new BufferedWriter(new FileWriter(mcMMO.getUsersFilePath(), true));
+                out = new BufferedWriter(new FileWriter(mcMMO.getUsersFilePath(), true));
 
                 // Add the player to the end
                 out.append(playerName).append(":");
@@ -407,22 +343,24 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 // Add more in the same format as the line above
 
                 out.newLine();
-                out.close();
             }
             catch (Exception e) {
                 e.printStackTrace();
+            }
+            finally {
+                tryClose(out);
             }
         }
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
-        FileReader file = null;
         BufferedReader in = null;
+        String usersFilePath = mcMMO.getUsersFilePath();
+
         synchronized (fileWritingLock) {
             try {
                 // Open the user file
-                file = new FileReader(mcMMO.getUsersFilePath());
-                in = new BufferedReader(file);
+                in = new BufferedReader(new FileReader(usersFilePath));
                 String line;
 
                 while ((line = in.readLine()) != null) {
@@ -433,23 +371,16 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         continue;
                     }
 
-                    return loadFromLine(character);
+                    PlayerProfile p = loadFromLine(character);
+                    in.close();
+                    return p;
                 }
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
             finally {
-                try {
-                    if (in != null) {
-                        in.close();
-                    }
-                    if (file != null) {
-                        file.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                tryClose(in);
             }
         }
 
@@ -461,14 +392,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     public void convertUsers(DatabaseManager destination) {
-        FileReader file = null;
         BufferedReader in = null;
+        String usersFilePath = mcMMO.getUsersFilePath();
 
         synchronized (fileWritingLock) {
             try {
                 // Open the user file
-                file = new FileReader(mcMMO.getUsersFilePath());
-                in = new BufferedReader(file);
+                in = new BufferedReader(new FileReader(usersFilePath));
                 String line;
 
                 while ((line = in.readLine()) != null) {
@@ -486,16 +416,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 e.printStackTrace();
             }
             finally {
-                try {
-                    if (in != null) {
-                        in.close();
-                    }
-                    if (file != null) {
-                        file.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                tryClose(in);
             }
         }
     }
@@ -508,12 +429,12 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     public List<String> getStoredUsers() {
         ArrayList<String> users = new ArrayList<String>();
         BufferedReader in = null;
+        String usersFilePath = mcMMO.getUsersFilePath();
 
         synchronized (fileWritingLock) {
             try {
                 // Open the user file
-                FileReader file = new FileReader(mcMMO.getUsersFilePath());
-                in = new BufferedReader(file);
+                in = new BufferedReader(new FileReader(usersFilePath));
                 String line;
 
                 while ((line = in.readLine()) != null) {
@@ -525,11 +446,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 e.printStackTrace();
             }
             finally {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                tryClose(in);
             }
         }
         return users;
@@ -562,43 +479,50 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         List<PlayerStat> taming = new ArrayList<PlayerStat>();
         List<PlayerStat> fishing = new ArrayList<PlayerStat>();
 
+        BufferedReader in = null;
         // Read from the FlatFile database and fill our arrays with information
-        try {
-            BufferedReader in = new BufferedReader(new FileReader(usersFilePath));
-            String line = "";
-            ArrayList<String> players = new ArrayList<String>();
+        synchronized (fileWritingLock) {
+            try {
+                in = new BufferedReader(new FileReader(usersFilePath));
+                String line = "";
+                ArrayList<String> players = new ArrayList<String>();
 
-            while ((line = in.readLine()) != null) {
-                String[] data = line.split(":");
-                String playerName = data[0];
-                int powerLevel = 0;
+                while ((line = in.readLine()) != null) {
+                    String[] data = line.split(":");
+                    String playerName = data[0];
+                    int powerLevel = 0;
 
-                // Prevent the same player from being added multiple times (I'd like to note that this shouldn't happen...)
-                if (players.contains(playerName)) {
-                    continue;
+                    // Prevent the same player from being added multiple times (I'd like to note that this shouldn't happen...)
+                    if (players.contains(playerName)) {
+                        continue;
+                    }
+
+                    players.add(playerName);
+
+                    Map<SkillType, Integer> skills = getSkillMapFromLine(data);
+
+                    powerLevel += putStat(acrobatics, playerName, skills.get(SkillType.ACROBATICS));
+                    powerLevel += putStat(archery, playerName, skills.get(SkillType.ARCHERY));
+                    powerLevel += putStat(axes, playerName, skills.get(SkillType.AXES));
+                    powerLevel += putStat(excavation, playerName, skills.get(SkillType.EXCAVATION));
+                    powerLevel += putStat(fishing, playerName, skills.get(SkillType.FISHING));
+                    powerLevel += putStat(herbalism, playerName, skills.get(SkillType.HERBALISM));
+                    powerLevel += putStat(mining, playerName, skills.get(SkillType.MINING));
+                    powerLevel += putStat(repair, playerName, skills.get(SkillType.REPAIR));
+                    powerLevel += putStat(swords, playerName, skills.get(SkillType.SWORDS));
+                    powerLevel += putStat(taming, playerName, skills.get(SkillType.TAMING));
+                    powerLevel += putStat(unarmed, playerName, skills.get(SkillType.UNARMED));
+                    powerLevel += putStat(woodcutting, playerName, skills.get(SkillType.WOODCUTTING));
+
+                    putStat(powerLevels, playerName, powerLevel);
                 }
-
-                players.add(playerName);
-
-                powerLevel += loadStat(mining, playerName, data, 1);
-                powerLevel += loadStat(woodcutting, playerName, data, 5);
-                powerLevel += loadStat(repair, playerName, data, 7);
-                powerLevel += loadStat(unarmed, playerName, data, 8);
-                powerLevel += loadStat(herbalism, playerName, data, 9);
-                powerLevel += loadStat(excavation, playerName, data, 10);
-                powerLevel += loadStat(archery, playerName, data, 11);
-                powerLevel += loadStat(swords, playerName, data, 12);
-                powerLevel += loadStat(axes, playerName, data, 13);
-                powerLevel += loadStat(acrobatics, playerName, data, 14);
-                powerLevel += loadStat(taming, playerName, data, 24);
-                powerLevel += loadStat(fishing, playerName, data, 34);
-
-                powerLevels.add(new PlayerStat(playerName, powerLevel));
             }
-            in.close();
-        }
-        catch (Exception e) {
-            mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+            catch (Exception e) {
+                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+            }
+            finally {
+                tryClose(in);
+            }
         }
 
         SkillComparator c = new SkillComparator();
@@ -647,6 +571,15 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
     }
 
+    private void tryClose(Closeable c) {
+        if (c == null) return;
+        try {
+            c.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     private Integer getPlayerRank(String playerName, List<PlayerStat> statsList) {
         if (statsList == null) {
             return null;
@@ -665,14 +598,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return null;
     }
 
-    private int loadStat(List<PlayerStat> statList, String playerName, String[] data, int dataIndex) {
-        if (data.length <= dataIndex) {
-            return 0;
-        }
-
-        int statValue = Integer.parseInt(data[dataIndex]);
+    private int putStat(List<PlayerStat> statList, String playerName, int statValue) {
         statList.add(new PlayerStat(playerName, statValue));
-
         return statValue;
     }
 
@@ -684,24 +611,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadFromLine(String[] character) throws Exception {
-        Map<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>();   // Skill & Level
+        Map<SkillType, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
         Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
         Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
         HudType hudType;
         MobHealthbarType mobHealthbarType;
 
-        skills.put(SkillType.TAMING, Integer.valueOf(character[24]));
-        skills.put(SkillType.MINING, Integer.valueOf(character[1]));
-        skills.put(SkillType.REPAIR, Integer.valueOf(character[7]));
-        skills.put(SkillType.WOODCUTTING, Integer.valueOf(character[5]));
-        skills.put(SkillType.UNARMED, Integer.valueOf(character[8]));
-        skills.put(SkillType.HERBALISM, Integer.valueOf(character[9]));
-        skills.put(SkillType.EXCAVATION, Integer.valueOf(character[10]));
-        skills.put(SkillType.ARCHERY, Integer.valueOf(character[11]));
-        skills.put(SkillType.SWORDS, Integer.valueOf(character[12]));
-        skills.put(SkillType.AXES, Integer.valueOf(character[13]));
-        skills.put(SkillType.ACROBATICS, Integer.valueOf(character[14]));
-        skills.put(SkillType.FISHING, Integer.valueOf(character[34]));
+        // TODO on updates, put new values in a try{} ?
 
         skillsXp.put(SkillType.TAMING, (float) Integer.valueOf(character[25]));
         skillsXp.put(SkillType.MINING, (float) Integer.valueOf(character[4]));
@@ -744,5 +660,24 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
 
         return new PlayerProfile(character[0], skills, skillsXp, skillsDATS, hudType, mobHealthbarType);
+    }
+
+    private Map<SkillType, Integer> getSkillMapFromLine(String[] character) {
+        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();   // Skill & Level
+
+        skills.put(SkillType.TAMING, Integer.valueOf(character[24]));
+        skills.put(SkillType.MINING, Integer.valueOf(character[1]));
+        skills.put(SkillType.REPAIR, Integer.valueOf(character[7]));
+        skills.put(SkillType.WOODCUTTING, Integer.valueOf(character[5]));
+        skills.put(SkillType.UNARMED, Integer.valueOf(character[8]));
+        skills.put(SkillType.HERBALISM, Integer.valueOf(character[9]));
+        skills.put(SkillType.EXCAVATION, Integer.valueOf(character[10]));
+        skills.put(SkillType.ARCHERY, Integer.valueOf(character[11]));
+        skills.put(SkillType.SWORDS, Integer.valueOf(character[12]));
+        skills.put(SkillType.AXES, Integer.valueOf(character[13]));
+        skills.put(SkillType.ACROBATICS, Integer.valueOf(character[14]));
+        skills.put(SkillType.FISHING, Integer.valueOf(character[34]));
+
+        return skills;
     }
 }

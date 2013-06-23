@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 
 public interface DatabaseManager {
+    // One month in milliseconds
     public final long PURGE_TIME = 2630000000L * Config.getInstance().getOldUsersCutoff();
 
     /**

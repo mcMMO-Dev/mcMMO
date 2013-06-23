@@ -341,29 +341,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
             else {
                 // Problem, no rows returned
-                int userId = readId(playerName);
-
-                if (userId == 0) {
-                    if (!create) {
-                        // Give up
-                        return new PlayerProfile(playerName, false);
-                    }
-                    else {
-                        newUser(playerName);
-                        userId = readId(playerName);
-                    }
-                }
-
-                writeMissingRows(userId);
-
+                result.close();
                 if (!create) {
-                    // Give up
                     return new PlayerProfile(playerName, false);
                 }
-                else {
-                    // Re-read data
-                    return loadPlayerProfile(playerName, false);
-                }
+
+                newUser(playerName);
+
+                return new PlayerProfile(playerName, true);
             }
         }
         catch (SQLException ex) {
@@ -379,7 +364,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
             }
         }
-        return new PlayerProfile(playerName, false);
+
+        if (!create) {
+            return new PlayerProfile(playerName, false);
+        }
+
+        newUser(playerName);
+
+        return new PlayerProfile(playerName, true);
     }
 
     public void convertUsers(DatabaseManager destination) {
