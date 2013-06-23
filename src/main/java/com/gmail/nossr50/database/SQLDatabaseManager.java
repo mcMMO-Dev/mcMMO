@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -102,7 +103,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public void saveUser(PlayerProfile profile) {
+        checkConnected();
         int userId = readId(profile.getPlayerName());
+        if (userId == -1) {
+            newUser(profile.getPlayerName());
+            userId = readId(profile.getPlayerName());
+            if (userId == -1) {
+                mcMMO.p.getLogger().log(Level.WARNING, "Failed to save user " + profile.getPlayerName());
+                return;
+            }
+        }
         MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
         HudType hudType = profile.getHudType();
 
@@ -297,7 +307,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setLong(2, System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
             statement.execute();
 
-            writeMissingRows(readId(playerName));
+            int id = statement.getGeneratedKeys().getInt("id");
+            writeMissingRows(id);
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -335,36 +346,34 @@ public final class SQLDatabaseManager implements DatabaseManager {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                PlayerProfile ret = loadFromResult(playerName, result);
-                result.close();
-                return ret;
-            }
-            else {
-                // Problem, no rows returned
-                int userId = readId(playerName);
-
-                if (userId == 0) {
-                    if (!create) {
-                        // Give up
-                        return new PlayerProfile(playerName, false);
-                    }
-                    else {
-                        newUser(playerName);
-                        userId = readId(playerName);
-                    }
+                try {
+                    PlayerProfile ret = loadFromResult(playerName, result);
+                    result.close();
+                    return ret;
                 }
+                catch (SQLException e) {}
+            }
+            // Problem, no rows returned
+            result.close();
 
-                writeMissingRows(userId);
+            // First, read User Id - this is to check for orphans
 
-                if (!create) {
-                    // Give up
-                    return new PlayerProfile(playerName, false);
+            int id = readId(playerName);
+
+            if (id == -1) {
+                // There is no such user
+                if (create) {
+                    newUser(playerName);
+                    return new PlayerProfile(playerName, true);
                 }
                 else {
-                    // Re-read data
-                    return loadPlayerProfile(playerName, false);
+                    return new PlayerProfile(playerName, false);
                 }
             }
+            // There is such a user
+            writeMissingRows(id);
+            // Retry, and abort on re-failure
+            return loadPlayerProfile(playerName, false);
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -379,7 +388,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
             }
         }
-        return new PlayerProfile(playerName, false);
+
+        if (!create) {
+            return new PlayerProfile(playerName, false);
+        }
+
+        newUser(playerName);
+
+        return new PlayerProfile(playerName, true);
     }
 
     public void convertUsers(DatabaseManager destination) {
@@ -1034,7 +1050,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private int readId(String playerName) {
-        int id = 0;
+        int id = -1;
 
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT id FROM " + tablePrefix + "users WHERE user = ?");

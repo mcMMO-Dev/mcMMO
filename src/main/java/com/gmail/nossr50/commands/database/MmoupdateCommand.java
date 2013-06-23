@@ -1,9 +1,9 @@
 package com.gmail.nossr50.commands.database;
 
 import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
@@ -81,11 +81,6 @@ public class MmoupdateCommand implements TabExecutor {
             default:
                 break;
         }
-        // If you don't do your research, you get lied to
-        if (!(sender instanceof ConsoleCommandSender)) {
-            sender.sendMessage(LocaleLoader.getString("Commands.mmoupdate.OpOnly"));
-            return true;
-        }
         return false;
     }
 
@@ -99,7 +94,7 @@ public class MmoupdateCommand implements TabExecutor {
             return "sql";
         }
 
-        if (type.equalsIgnoreCase("flatfile")) {
+        if (type.equalsIgnoreCase("flatfile") || type.equalsIgnoreCase("file")) {
             return "flatfile";
         }
 
@@ -134,15 +129,10 @@ public class MmoupdateCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (sender instanceof Player) {
-            // What, you're trying to run this on a live server? No autocomplete for you! Do your research first!
-            return ImmutableList.of();
-        }
-
         Class<?> clazz = DatabaseManagerFactory.getCustomDatabaseManagerClass();
         if (clazz != null) {
-            return ImmutableList.of("confirm", "flatfile", "sql", clazz.getName());
+            return ImmutableList.of("flatfile", "sql", clazz.getName());
         }
-        return ImmutableList.of("confirm", "flatfile", "sql");
+        return ImmutableList.of("flatfile", "sql");
     }
 }
