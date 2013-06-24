@@ -51,6 +51,7 @@ Version 1.4.06-dev
  = Fixed bug with Blast Mining where the Ability refreshed message was being send too early
  = Fixed bug where the chance of a successful Gracefull Roll was twice as high as displayed
  = Fixed bug where lucky perks where not working
+ = Fixed bug with Ice Fishing in the Nether
  ! Changed Spout notification tiers to be stored in SpoutConfig instead of AdvancedConfig
  ! Changed Berserk to add items to inventory rather than denying pickup
  ! Changed Call of the Wild, newly summoned pet's will have a custom name. (added permission node to disable this)

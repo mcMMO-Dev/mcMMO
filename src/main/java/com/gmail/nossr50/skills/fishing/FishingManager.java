@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.WeatherType;
 import org.bukkit.World;
+import org.bukkit.World.Environment;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -173,6 +174,10 @@ public class FishingManager extends SkillManager {
 
     public boolean canIceFish(Block block) {
         if (getSkillLevel() < AdvancedConfig.getInstance().getIceFishingUnlockLevel()) {
+            return false;
+        }
+
+        if (block.getWorld().getEnvironment() == Environment.NETHER) {
             return false;
         }
 
