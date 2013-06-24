@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.WeatherType;
 import org.bukkit.World;
-import org.bukkit.World.Environment;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -177,19 +176,15 @@ public class FishingManager extends SkillManager {
             return false;
         }
 
-        if (block.getWorld().getEnvironment() == Environment.NETHER) {
-            return false;
-        }
-
         if (block.getType() != Material.ICE) {
             return false;
         }
 
         // Make sure this is a body of water, not just a block of ice.
         Biome biome = block.getBiome();
-        boolean isFrozenBiome = (biome == Biome.FROZEN_OCEAN || biome == Biome.FROZEN_RIVER);
+        boolean isFrozenBiome = (biome == Biome.FROZEN_OCEAN || biome == Biome.FROZEN_RIVER || biome == Biome.TAIGA || biome == Biome.TAIGA_HILLS || biome == Biome.ICE_PLAINS || biome == Biome.ICE_MOUNTAINS);
 
-        if (!isFrozenBiome && block.getRelative(BlockFace.DOWN, 3).getType() == (Material.STATIONARY_WATER)) {
+        if (!isFrozenBiome && (block.getRelative(BlockFace.DOWN, 3).getType() != Material.STATIONARY_WATER)) {
             return false;
         }
 
