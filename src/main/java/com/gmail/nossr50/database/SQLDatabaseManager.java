@@ -320,11 +320,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             statement = connection.prepareStatement(
-                    "SELECT NOW(), "
+                    "SELECT "
                     + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, "
                     + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, "
                     + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
-                    + "h.hudtype, h.mobhealthbar "
+                    + "h.hudtype, h.mobhealthbar, NOW() "
                     + "FROM " + tablePrefix + "users u "
                     + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
                     + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
