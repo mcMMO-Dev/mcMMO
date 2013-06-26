@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.api.exceptions.InvalidPlayerException;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.Config;
@@ -552,7 +553,7 @@ public final class ExperienceAPI {
     }
 
     private static PlayerProfile getOfflineProfile(String playerName) {
-        PlayerProfile profile = new PlayerProfile(playerName, false);
+        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false);
 
         if (!profile.isLoaded()) {
             throw new InvalidPlayerException();

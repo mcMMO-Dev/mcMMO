@@ -58,7 +58,9 @@ commands:
     inspect:
         description: View detailed mcMMO info on another player
     mmoupdate:
-        description: Convert from Flat File to MySQL
+        description: Migrate mcMMO database from an old database type to the current
+    mmoshowdb:
+        description: Show the name of the current database type (for later use with /mmoupdate)
     partychat:
         aliases: [pc, p]
         description: Toggle Party chat or send party chat messages
@@ -717,6 +719,7 @@ permissions:
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
             mcmmo.commands.mmoupdate: true
+            mcmmo.commands.mmoshowdb: true
             mcmmo.commands.ptp.world.all: true
             mcmmo.commands.skillreset.all: true
             mcmmo.commands.vampirism.all: true
@@ -908,6 +911,8 @@ permissions:
         description: Allows access to the mmoedit command for other players
     mcmmo.commands.mmoupdate:
         description: Allows access to the mmoupdate command
+    mcmmo.commands.mmoshowdb:
+        description: Allows access to the mmoshowdb command
     mcmmo.commands.mobhealth:
          default: true
          description: Allows access to the mobhealth command
