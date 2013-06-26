@@ -19,6 +19,7 @@ import com.gmail.nossr50.commands.chat.AdminChatCommand;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.commands.database.McpurgeCommand;
 import com.gmail.nossr50.commands.database.McremoveCommand;
+import com.gmail.nossr50.commands.database.MmoshowdbCommand;
 import com.gmail.nossr50.commands.database.MmoupdateCommand;
 import com.gmail.nossr50.commands.experience.AddlevelsCommand;
 import com.gmail.nossr50.commands.experience.AddxpCommand;
@@ -276,9 +277,18 @@ public final class CommandRegistrationManager {
         PluginCommand command = mcMMO.p.getCommand("mmoupdate");
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoupdate"));
         command.setPermission("mcmmo.commands.mmoupdate");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mmoupdate"));
+        command.setPermissionMessage(LocaleLoader.getString("Commands.mmoupdate.OpOnly"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mmoupdate", "<confirm|flatfile|sql|" + LocaleLoader.getString("Commands.Usage.FullClassName") + ">"));
         command.setExecutor(new MmoupdateCommand());
+    }
+
+    private static void registerMmoshowdbCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mmoshowdb");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mmoshowdb"));
+        command.setPermission("mcmmo.commands.mmoshowdb");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mmoshowdb"));
+        command.setExecutor(new MmoshowdbCommand());
     }
 
     private static void registerAdminChatCommand() {
@@ -421,6 +431,7 @@ public final class CommandRegistrationManager {
         registerMcpurgeCommand();
         registerMcremoveCommand();
         registerMmoupdateCommand();
+        registerMmoshowdbCommand();
 
         // Experience Commands
         registerAddlevelsCommand();

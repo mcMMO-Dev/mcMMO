@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 
 public interface DatabaseManager {
+    // One month in milliseconds
     public final long PURGE_TIME = 2630000000L * Config.getInstance().getOldUsersCutoff();
 
     /**
@@ -64,16 +65,25 @@ public interface DatabaseManager {
      * Load a player from the database.
      *
      * @param playerName The name of the player to load from the database
-     * @return The player's data
+     * @param createNew Whether to create a new record if the player is not
+     *          found
+     * @return The player's data, or an unloaded PlayerProfile if not found
+     *          and createNew is false
      */
-    public List<String> loadPlayerData(String playerName);
+    public PlayerProfile loadPlayerProfile(String playerName, boolean createNew);
 
     /**
-     * Convert player data to a different storage format.
+     * Get all users currently stored in the database.
      *
-     * @param data The player's data
-     * @return true if the conversion was successful, false otherwise
-     * @throws Exception
+     * @return list of playernames
      */
-    public boolean convert(String[] data) throws Exception;
+    public List<String> getStoredUsers();
+
+    /**
+     * Convert all users from this database to the provided database using
+     * {@link #saveUser(PlayerProfile)}.
+     *
+     * @param the DatabaseManager to save to
+     */
+    public void convertUsers(DatabaseManager destination);
 }
