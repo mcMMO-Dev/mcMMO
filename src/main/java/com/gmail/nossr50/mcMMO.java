@@ -35,6 +35,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.metrics.MetricsManager;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.SaveTimerTask;
+import com.gmail.nossr50.runnables.UpdateCheckerTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
@@ -47,7 +48,6 @@ import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.LogFilter;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.UpdateChecker;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
@@ -266,13 +266,11 @@ public class mcMMO extends JavaPlugin {
             return;
         }
 
-        try {
-            updateAvailable = UpdateChecker.updateAvailable();
-        }
-        catch (Exception e) {
-            updateAvailable = false;
-        }
+        getServer().getScheduler().runTaskAsynchronously(this, new UpdateCheckerTask());
+    }
 
+    public void updateCheckerCallback(boolean updateAvailable) {
+        this.updateAvailable = updateAvailable;
         if (updateAvailable) {
             getLogger().info(LocaleLoader.getString("UpdateChecker.outdated"));
             getLogger().info(LocaleLoader.getString("UpdateChecker.newavailable"));
