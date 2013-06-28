@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -37,6 +36,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
@@ -193,7 +193,7 @@ public class PlayerListener implements Listener {
                 Block block = event.getPlayer().getTargetBlock(null, 100);
 
                 if (fishingManager.canIceFish(block)) {
-                    BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, player);
+                    FakeBlockBreakEvent blockBreakEvent = new FakeBlockBreakEvent(block, player);
                     mcMMO.p.getServer().getPluginManager().callEvent(blockBreakEvent);
 
                     if (blockBreakEvent.isCancelled()) {
