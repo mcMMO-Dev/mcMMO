@@ -338,7 +338,7 @@ public class BlockListener implements Listener {
                 event.setInstaBreak(true);
                 player.playSound(block.getLocation(), Sound.ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
             }
-            else if (Permissions.blockCracker(player) && SkillUtils.triggerCheck(player, block, AbilityType.BLOCK_CRACKER)) {
+            else if (mcMMOPlayer.getUnarmedManager().canUseBlockCracker() && SkillUtils.triggerCheck(player, block, AbilityType.BLOCK_CRACKER)) {
                 if (mcMMOPlayer.getUnarmedManager().blockCrackerCheck(blockState)) {
                     blockState.update();
                 }
