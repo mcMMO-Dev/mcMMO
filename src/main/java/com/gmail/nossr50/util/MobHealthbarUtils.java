@@ -44,6 +44,10 @@ public final class MobHealthbarUtils {
             return;
         }
 
+        if (isBoss(target)) {
+            return;
+        }
+
         PlayerProfile profile = UserManager.getPlayer(player).getProfile();
 
         if (profile.getMobHealthbarType() == null) {
@@ -148,5 +152,22 @@ public final class MobHealthbarUtils {
         }
 
         return healthbar;
+    }
+
+    /**
+     * Check if a given LivingEntity is a boss.
+     *
+     * @param livingEntity The {@link LivingEntity} of the livingEntity to check
+     * @return true if the livingEntity is a boss, false otherwise
+     */
+    public static boolean isBoss(LivingEntity livingEntity) {
+        switch (livingEntity.getType()) {
+            case ENDER_DRAGON:
+            case WITHER:
+                return true;
+
+            default:
+                return ModUtils.isCustomBossEntity(livingEntity);
+        }
     }
 }

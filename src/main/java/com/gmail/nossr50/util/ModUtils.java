@@ -291,4 +291,15 @@ public final class ModUtils {
 
         return false;
     }
+
+    /**
+     * Check if a custom entity is a boss.
+     *
+     * @param entity The entity to check
+     * @return true if the entity represents a boss, false otherwise
+     */
+    public static boolean isCustomBossEntity(Entity entity) {
+        //TODO: Finish this method
+        return false;
+    }
 }
