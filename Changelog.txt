@@ -53,6 +53,7 @@ Version 1.4.06-dev
  = Fixed bug where the chance of a successful Gracefull Roll was twice as high as displayed
  = Fixed bug where lucky perks where not working
  = Fixed bug with Ice Fishing on a single block of ice
+ = Fixed bug with Ice Fishing which allowed players to break ice in protected areas
  = Fixed a small bug with mob healthbars and bosses, such as EnderDragons and Withers
  ! Changed Spout notification tiers to be stored in SpoutConfig instead of AdvancedConfig
  ! Changed Berserk to add items to inventory rather than denying pickup

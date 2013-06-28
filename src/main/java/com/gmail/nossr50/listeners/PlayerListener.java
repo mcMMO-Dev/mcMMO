@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
@@ -192,6 +193,13 @@ public class PlayerListener implements Listener {
                 Block block = event.getPlayer().getTargetBlock(null, 100);
 
                 if (fishingManager.canIceFish(block)) {
+                    BlockBreakEvent blockBreakEvent = new BlockBreakEvent(block, player);
+                    mcMMO.p.getServer().getPluginManager().callEvent(blockBreakEvent);
+
+                    if (blockBreakEvent.isCancelled()) {
+                        return;
+                    }
+
                     event.setCancelled(true);
                     fishingManager.iceFishing(hook, block);
                 }
