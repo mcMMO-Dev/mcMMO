@@ -3,6 +3,7 @@ package com.gmail.nossr50.runnables;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+@SuppressWarnings("deprecation")
 public class PlayerUpdateInventoryTask extends BukkitRunnable {
     private Player player;
 

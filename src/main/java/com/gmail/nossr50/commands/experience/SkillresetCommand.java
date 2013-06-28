@@ -5,7 +5,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -61,7 +60,7 @@ public class SkillresetCommand extends ExperienceCommand {
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    profile = new PlayerProfile(args[0], false);
+                    profile = mcMMO.getDatabaseManager().loadPlayerProfile(args[0], false);
 
                     if (CommandUtils.unloadedProfile(sender, profile)) {
                         return true;

@@ -10,6 +10,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -68,7 +69,7 @@ public abstract class ExperienceCommand implements TabExecutor {
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    profile = new PlayerProfile(args[0], false);
+                    profile = mcMMO.getDatabaseManager().loadPlayerProfile(args[0], false);
 
                     if (CommandUtils.unloadedProfile(sender, profile)) {
                         return true;

@@ -29,6 +29,8 @@ Version 1.4.06-dev
  + Added information about /party itemshare and /party expshare to the party help page
  + Added option to use scoreboards for power level display instead of Spout.
  + Added permission node to prevent inspecting hidden players
+ + Added SQL to Flatfile database conversion
+ + Added ability to use custom database managers and convert to/from them
  = Fixed bug which could cause the server to hang for a minute when checking for updates. (Thanks to Riking)
  = Fixed bug where spawned arrows could throw ArrayIndexOutOfBoundsException
  = Fixed bug where custom Spout titles were overwritten by mcMMO.

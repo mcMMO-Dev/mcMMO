@@ -10,6 +10,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -35,7 +36,7 @@ public class InspectCommand implements TabExecutor {
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    PlayerProfile profile = new PlayerProfile(args[0], false); // Temporary Profile
+                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(args[0], false); // Temporary Profile
 
                     if (CommandUtils.inspectOffline(sender, profile, Permissions.inspectOffline(sender))) {
                         return true;
