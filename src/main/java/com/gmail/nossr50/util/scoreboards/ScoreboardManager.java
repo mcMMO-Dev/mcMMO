@@ -18,6 +18,7 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.scoreboards.ScoreboardChangeTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -28,10 +29,16 @@ public class ScoreboardManager {
     private static final Map<String, Scoreboard> PLAYER_SCOREBOARDS = new HashMap<String, Scoreboard>();
     private static final Scoreboard GLOBAL_STATS_SCOREBOARD = mcMMO.p.getServer().getScoreboardManager().getNewScoreboard();
 
-    private final static String PLAYER_STATS_HEADER   = "mcMMO Stats";
-    private final static String PLAYER_RANK_HEADER    = "mcMMO Rankings";
-    private final static String PLAYER_INSPECT_HEADER = "mcMMO Stats: ";
-    private final static String POWER_LEVEL_HEADER    = "Power Level";
+    private final static String PLAYER_STATS_HEADER   = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
+    private final static String PLAYER_RANK_HEADER    = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
+    private final static String PLAYER_INSPECT_HEADER = LocaleLoader.getString("Scoreboard.Header.PlayerInspect");
+    private final static String POWER_LEVEL_HEADER    = LocaleLoader.getString("Scoreboard.Header.PowerLevel");
+
+    private final static String POWER_LEVEL  = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");
+    private final static String LEVEL        = LocaleLoader.getString("Scoreboard.Misc.Level");
+    private final static String CURRENT_XP   = LocaleLoader.getString("Scoreboard.Misc.CurrentXP");
+    private final static String REMAINING_XP = LocaleLoader.getString("Scoreboard.Misc.RemainingXP");
+    private final static String OVERALL      = LocaleLoader.getString("Scoreboard.Misc.Overall");
 
     private final static List<String> SCOREBOARD_TASKS = new ArrayList<String>();
 
@@ -158,7 +165,7 @@ public class ScoreboardManager {
         }
 
         Objective newObjective = GLOBAL_STATS_SCOREBOARD.registerNewObjective(skillName, "dummy");
-        newObjective.setDisplayName(ChatColor.GOLD + (skillName.equalsIgnoreCase("all") ? "Power Level" : SkillUtils.getSkillName(SkillType.getSkill(skillName))));
+        newObjective.setDisplayName(ChatColor.GOLD + (skillName.equalsIgnoreCase("all") ? POWER_LEVEL : SkillUtils.getSkillName(SkillType.getSkill(skillName))));
 
         updateGlobalStatsScores(player, newObjective, skillName, pageNumber);
         changeScoreboard(player, oldScoreboard, GLOBAL_STATS_SCOREBOARD, Config.getInstance().getMctopScoreboardTime());
@@ -168,9 +175,9 @@ public class ScoreboardManager {
         Server server = mcMMO.p.getServer();
         int currentXP = profile.getSkillXpLevel(skill);
 
-        objective.getScore(server.getOfflinePlayer("Level")).setScore(profile.getSkillLevel(skill));
-        objective.getScore(server.getOfflinePlayer("Current XP")).setScore(currentXP);
-        objective.getScore(server.getOfflinePlayer("Remaining XP")).setScore(profile.getXpToLevel(skill) - currentXP);
+        objective.getScore(server.getOfflinePlayer(LEVEL)).setScore(profile.getSkillLevel(skill));
+        objective.getScore(server.getOfflinePlayer(CURRENT_XP)).setScore(currentXP);
+        objective.getScore(server.getOfflinePlayer(REMAINING_XP)).setScore(profile.getXpToLevel(skill) - currentXP);
 
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
@@ -188,7 +195,7 @@ public class ScoreboardManager {
             objective.getScore(server.getOfflinePlayer(SkillUtils.getSkillName(skill))).setScore(profile.getSkillLevel(skill));
         }
 
-        objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + "Power Level")).setScore(mcMMOPlayer.getPowerLevel());
+        objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + POWER_LEVEL)).setScore(mcMMOPlayer.getPowerLevel());
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
@@ -214,7 +221,7 @@ public class ScoreboardManager {
         rank = skills.get("ALL");
 
         if (rank != null) {
-            objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + "Overall")).setScore(rank);
+            objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + OVERALL)).setScore(rank);
         }
 
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -237,7 +244,7 @@ public class ScoreboardManager {
         rank = skills.get("ALL");
 
         if (rank != null) {
-            objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + "Overall")).setScore(rank);
+            objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + OVERALL)).setScore(rank);
         }
 
         objective.setDisplayName(PLAYER_RANK_HEADER + ": " + targetName);
@@ -261,7 +268,7 @@ public class ScoreboardManager {
             powerLevel += skillLevel;
         }
 
-        objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + "Power Level")).setScore(powerLevel);
+        objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + POWER_LEVEL)).setScore(powerLevel);
         objective.setDisplayName(PLAYER_INSPECT_HEADER + target.getName());
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
@@ -277,7 +284,7 @@ public class ScoreboardManager {
             powerLevel += skillLevel;
         }
 
-        objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + "Power Level")).setScore(powerLevel);
+        objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + POWER_LEVEL)).setScore(powerLevel);
         objective.setDisplayName(PLAYER_INSPECT_HEADER + targetProfile.getPlayerName());
     }
 
