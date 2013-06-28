@@ -353,27 +353,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
                 catch (SQLException e) {}
             }
-            // Problem, no rows returned
             result.close();
-
-            // First, read User Id - this is to check for orphans
-
-            int id = readId(playerName);
-
-            if (id == -1) {
-                // There is no such user
-                if (create) {
-                    newUser(playerName);
-                    return new PlayerProfile(playerName, true);
-                }
-                else {
-                    return new PlayerProfile(playerName, false);
-                }
-            }
-            // There is such a user
-            writeMissingRows(id);
-            // Retry, and abort on re-failure
-            return loadPlayerProfile(playerName, false);
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -389,13 +369,26 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
         }
 
-        if (!create) {
-            return new PlayerProfile(playerName, false);
+        // Problem, nothing was returned
+
+        // First, read User Id - this is to check for orphans
+
+        int id = readId(playerName);
+
+        if (id == -1) {
+            // There is no such user
+            if (create) {
+                newUser(playerName);
+                return new PlayerProfile(playerName, true);
+            }
+            else {
+                return new PlayerProfile(playerName, false);
+            }
         }
-
-        newUser(playerName);
-
-        return new PlayerProfile(playerName, true);
+        // There is such a user
+        writeMissingRows(id);
+        // Retry, and abort on re-failure
+        return loadPlayerProfile(playerName, false);
     }
 
     public void convertUsers(DatabaseManager destination) {
