@@ -105,10 +105,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public void saveUser(PlayerProfile profile) {
         checkConnected();
         int userId = readId(profile.getPlayerName());
-        if (userId == -1) {
+        if (userId == 0) {
             newUser(profile.getPlayerName());
             userId = readId(profile.getPlayerName());
-            if (userId == -1) {
+            if (userId == 0) {
                 mcMMO.p.getLogger().log(Level.WARNING, "Failed to save user " + profile.getPlayerName());
                 return;
             }
@@ -1043,7 +1043,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private int readId(String playerName) {
-        int id = -1;
+        int id = 0;
 
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT id FROM " + tablePrefix + "users WHERE user = ?");
