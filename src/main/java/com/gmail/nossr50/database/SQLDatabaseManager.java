@@ -375,7 +375,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         int id = readId(playerName);
 
-        if (id == -1) {
+        if (id == 0) {
             // There is no such user
             if (create) {
                 newUser(playerName);
