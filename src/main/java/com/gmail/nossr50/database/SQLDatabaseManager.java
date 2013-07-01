@@ -302,7 +302,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, lastlogin) VALUES (?, ?)");
+            statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, lastlogin) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, playerName);
             statement.setLong(2, System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
             statement.execute();
