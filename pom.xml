@@ -165,7 +165,7 @@
         <dependency>
             <groupId>com.turt2live.metrics</groupId>
             <artifactId>MetricsExtension</artifactId>
-            <version>0.0.4-SNAPSHOT</version>
+            <version>0.0.5-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <distributionManagement>
