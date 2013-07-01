@@ -40,10 +40,10 @@ public class DatabaseManagerFactory {
     public static void setCustomDatabaseManagerClass(Class<? extends DatabaseManager> clazz) {
         try {
             clazz.getConstructor((Class<?>) null);
+            customManager = clazz;
         } catch (Throwable e) {
             throw new IllegalArgumentException("Provided database manager class must have an empty constructor", e);
         }
-        customManager = clazz;
     }
 
     public static Class<? extends DatabaseManager> getCustomDatabaseManagerClass() {
