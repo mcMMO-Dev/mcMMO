@@ -51,7 +51,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     protected SQLDatabaseManager() {
         checkConnected();
-        createStructure();
+        checkStructure();
     }
 
     public void purgePowerlessUsers() {
@@ -589,9 +589,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     /**
-     * Attempt to create the database structure.
+     * Checks that the database structure is present and correct
      */
-    private void createStructure() {
+    private void checkStructure() {
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
                 + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                 + "`user` varchar(40) NOT NULL,"
@@ -1042,6 +1042,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
+    /**
+     * Retrieve the database id for a player
+     *
+     * @param playerName The name of the user to retrieve the id for
+     * @return the requested id or 0 if not found
+     */
     private int readId(String playerName) {
         int id = 0;
 

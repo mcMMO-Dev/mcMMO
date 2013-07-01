@@ -38,7 +38,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
     protected FlatfileDatabaseManager() {
         usersFile = new File(mcMMO.getUsersFilePath());
-        createDatabase();
+        checkStructure();
         updateLeaderboards();
     }
 
@@ -555,8 +555,44 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         playerStatHash.put(SkillType.FISHING, fishing);
     }
 
-    private void createDatabase() {
+    /**
+     * Checks that the file is present and valid
+     */
+    private void checkStructure() {
         if (usersFile.exists()) {
+            BufferedReader in = null;
+            FileWriter out = null;
+            String usersFilePath = mcMMO.getUsersFilePath();
+
+            synchronized (fileWritingLock) {
+                try {
+                    in = new BufferedReader(new FileReader(usersFilePath));
+                    StringBuilder writer = new StringBuilder();
+                    String line = "";
+
+                    while ((line = in.readLine()) != null) {
+                        String[] character = line.split(":");
+
+                        // If they're valid, rewrite them to the file.
+                        if (character.length >= 37) {
+                            writer.append(line).append("\r\n");
+                        } else {
+                            // Placeholder, repair row if needed (I.E. when new skills are added and such)
+                        }
+                    }
+
+                    // Write the new file
+                    out = new FileWriter(usersFilePath);
+                    out.write(writer.toString());
+                }
+                catch (IOException e) {
+                    mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+                }
+                finally {
+                    tryClose(in);
+                    tryClose(out);
+                }
+            }
             return;
         }
 
