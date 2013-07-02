@@ -214,8 +214,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return stats;
     }
 
-    public Map<String, Integer> readRank(String playerName) {
-        Map<String, Integer> skills = new HashMap<String, Integer>();
+    public Map<SkillType, Integer> readRank(String playerName) {
+        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();
 
         if (checkConnected()) {
             ResultSet resultSet;
@@ -246,7 +246,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
                     while (resultSet.next()) {
                         if (resultSet.getString("user").equalsIgnoreCase(playerName)) {
-                            skills.put(skillType.name(), rank + resultSet.getRow());
+                            skills.put(skillType, rank + resultSet.getRow());
                             break;
                         }
                     }
@@ -283,7 +283,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
                 while (resultSet.next()) {
                     if (resultSet.getString("user").equalsIgnoreCase(playerName)) {
-                        skills.put("ALL", rank + resultSet.getRow());
+                        skills.put(null, rank + resultSet.getRow());
                         break;
                     }
                 }

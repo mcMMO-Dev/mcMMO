@@ -278,16 +278,16 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return statsList.subList(Math.min(fromIndex, statsList.size()), Math.min(fromIndex + statsPerPage, statsList.size()));
     }
 
-    public Map<String, Integer> readRank(String playerName) {
+    public Map<SkillType, Integer> readRank(String playerName) {
         updateLeaderboards();
 
-        Map<String, Integer> skills = new HashMap<String, Integer>();
+        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();
 
         for (SkillType skill : SkillType.nonChildSkills()) {
-            skills.put(skill.name(), getPlayerRank(playerName, playerStatHash.get(skill)));
+            skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
         }
 
-        skills.put("ALL", getPlayerRank(playerName, powerLevels));
+        skills.put(null, getPlayerRank(playerName, powerLevels));
 
         return skills;
     }

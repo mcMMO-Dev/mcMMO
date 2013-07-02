@@ -15,13 +15,13 @@ import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class McrankCommandDisplayTask extends BukkitRunnable {
-    private final Map<String, Integer> skills;
+    private final Map<SkillType, Integer> skills;
     private final CommandSender sender;
     private final String playerName;
     private final boolean board;
     private final boolean chat;
 
-    public McrankCommandDisplayTask(Map<String, Integer> skills, CommandSender sender, String playerName, boolean board, boolean chat) {
+    public McrankCommandDisplayTask(Map<SkillType, Integer> skills, CommandSender sender, String playerName, boolean board, boolean chat) {
         this.skills = skills;
         this.sender = sender;
         this.playerName = playerName;
@@ -47,32 +47,20 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
                 continue;
             }
 
-            rank = skills.get(skill.name());
+            rank = skills.get(skill);
             sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillUtils.getSkillName(skill), (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
         }
 
-        rank = skills.get("ALL");
+        rank = skills.get(null);
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
     }
 
     public void displayBoard() {
-        // XXX Conversion code, remove ASAP!
-        Map<SkillType, Integer> rankMap = new HashMap<SkillType, Integer>();
-        Integer rank;
-        for (SkillType skill : SkillType.nonChildSkills()) {
-            rank = skills.get(skill.name());
-            if (rank != null) {
-                rankMap.put(skill, rank);
-            }
-        }
-        rank = skills.get("ALL");
-        rankMap.put(null, rank);
-
         if (playerName == null || sender.getName().equals(playerName)) {
-            ScoreboardManager.showPlayerRankScoreboard((Player) sender, rankMap);
+            ScoreboardManager.showPlayerRankScoreboard((Player) sender, skills);
         }
         else {
-            ScoreboardManager.showPlayerRankScoreboardOthers((Player) sender, playerName, rankMap);
+            ScoreboardManager.showPlayerRankScoreboardOthers((Player) sender, playerName, skills);
         }
     }
 }
