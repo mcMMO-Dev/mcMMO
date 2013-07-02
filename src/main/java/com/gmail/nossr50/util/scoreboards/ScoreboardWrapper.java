@@ -245,37 +245,43 @@ public class ScoreboardWrapper {
             break;
 
         case RANK_BOARD:
-            Map<String, Integer> rankData = mcMMO.getDatabaseManager().readRank(targetPlayer == null ? playerName : targetPlayer);
-            Integer rank;
-
-            for (SkillType skill : SkillType.nonChildSkills()) {
-                if (!Permissions.skillEnabled(bukkitPlayer, skill)) {
-                    continue;
-                }
-
-                rank = rankData.get(skill);
-                if (rank != null) {
-                    sidebarObj.getScore(ScoreboardManager.skillLabels.get(skill)).setScore(rank);
-                }
-            }
-            rank = rankData.get("ALL");
-            if (rank != null) {
-                sidebarObj.getScore(ScoreboardManager.labelPowerLevel).setScore(rank);
-            }
+        case TOP_BOARD:
+            /*
+             * @see #acceptRankData(Map<SkillType, Integer> rank)
+             * @see #acceptLeaderboardData(List<PlayerStat> stats)
+             */
             break;
 
-        case TOP_BOARD:
-            String skillQuery = (targetSkill == null) ? "all" : targetSkill.name();
+        }
+    }
 
-            List<PlayerStat> leaderboardData = mcMMO.getDatabaseManager().readLeaderboard(skillQuery, leaderboardPage, 15);
+    public void acceptRankData(Map<SkillType, Integer> rankData) {
+        Integer rank;
+        Player bukkitPlayer = Bukkit.getPlayerExact(playerName);
 
-            for (PlayerStat stat : leaderboardData) {
-                String statname = stat.name;
-                if (statname.equals(playerName)) {
-                    statname = ChatColor.GOLD + "--You--";
-                }
-                sidebarObj.getScore(Bukkit.getOfflinePlayer(statname)).setScore(stat.statVal);
+        for (SkillType skill : SkillType.nonChildSkills()) {
+            if (!Permissions.skillEnabled(bukkitPlayer, skill)) {
+                continue;
             }
+
+            rank = rankData.get(skill);
+            if (rank != null) {
+                sidebarObj.getScore(ScoreboardManager.skillLabels.get(skill)).setScore(rank);
+            }
+        }
+        rank = rankData.get("ALL");
+        if (rank != null) {
+            sidebarObj.getScore(ScoreboardManager.labelPowerLevel).setScore(rank);
+        }
+    }
+
+    public void acceptLeaderboardData(List<PlayerStat> leaderboardData) {
+        for (PlayerStat stat : leaderboardData) {
+            String statname = stat.name;
+            if (statname.equals(playerName)) {
+                statname = ChatColor.GOLD + "--You--";
+            }
+            sidebarObj.getScore(Bukkit.getOfflinePlayer(statname)).setScore(stat.statVal);
         }
     }
 }

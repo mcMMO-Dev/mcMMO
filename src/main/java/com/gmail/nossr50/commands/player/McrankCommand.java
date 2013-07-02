@@ -17,7 +17,6 @@ import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 
 public class McrankCommand implements TabExecutor {
@@ -34,10 +33,6 @@ public class McrankCommand implements TabExecutor {
                     return true;
                 }
 
-                if (Config.getInstance().getRankUseBoard()) {
-                    ScoreboardManager.enablePlayerRankScoreboard((Player) sender);
-                    if (!Config.getInstance().getRankUseChat()) return true;
-                }
                 display(sender, sender.getName());
 
                 return true;
@@ -62,11 +57,8 @@ public class McrankCommand implements TabExecutor {
                     return true;
                 }
 
-                if (sender instanceof Player && Config.getInstance().getRankUseBoard()) {
-                    ScoreboardManager.enablePlayerRankScoreboardOthers((Player) sender, playerName);
-                    if (!Config.getInstance().getRankUseChat()) return true;
-                }
                 display(sender, playerName);
+
                 return true;
 
             default:
@@ -86,6 +78,9 @@ public class McrankCommand implements TabExecutor {
     }
 
     private void display(CommandSender sender, String playerName) {
-        new McrankCommandAsyncTask(playerName, sender).runTaskAsynchronously(mcMMO.p);
+        boolean useBoard = (sender instanceof Player) && (Config.getInstance().getRankUseBoard());
+        boolean useChat = useBoard ? Config.getInstance().getRankUseChat() : true;
+
+        new McrankCommandAsyncTask(sender.getName(), sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
     }
 }

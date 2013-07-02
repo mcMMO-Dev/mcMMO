@@ -16,8 +16,6 @@ import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-
 import com.google.common.collect.ImmutableList;
 
 public class MctopCommand implements TabExecutor {
@@ -72,29 +70,17 @@ public class MctopCommand implements TabExecutor {
     }
 
     private void display(int page, SkillType skill, CommandSender sender, Command command) {
-        if (skill == null) {
-            if (sender instanceof Player && Config.getInstance().getTopUseBoard()) {
-                ScoreboardManager.enableTopPowerScoreboard((Player) sender, page);
-                if (!Config.getInstance().getTopUseChat()) return;
-            }
-            display(page, "ALL", sender);
-        }
-        else {
+        if (skill != null) {
             if (!Permissions.mctop(sender, skill)) {
                 sender.sendMessage(command.getPermissionMessage());
                 return;
             }
-
-            if (sender instanceof Player && Config.getInstance().getTopUseBoard()) {
-                ScoreboardManager.enableTopScoreboard((Player) sender, skill, page);
-                if (!Config.getInstance().getTopUseChat()) return;
-            }
-            display(page, skill.name(), sender);
         }
-    }
 
-    private void display(int page, String query, CommandSender sender) {
-        new MctopCommandAsyncTask(page, query, sender).runTaskAsynchronously(mcMMO.p);
+        boolean useBoard = (sender instanceof Player) && (Config.getInstance().getRankUseBoard());
+        boolean useChat = useBoard ? Config.getInstance().getRankUseChat() : true;
+
+        new MctopCommandAsyncTask(page, skill, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
     }
 
     private SkillType extractSkill(CommandSender sender, String skillName) {

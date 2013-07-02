@@ -50,7 +50,7 @@ public class McscoreboardCommand implements TabExecutor {
                         return true;
                     }
 
-                    ScoreboardManager.enablePlayerRankScoreboard(player);
+                    ScoreboardManager.showPlayerRankScoreboard(player);
                 }
                 else if (args[0].equalsIgnoreCase("stats")) {
                     if (!Config.getInstance().getStatsUseBoard()) {

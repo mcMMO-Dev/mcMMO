@@ -151,41 +151,45 @@ public class ScoreboardManager {
         changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getInspectScoreboardTime());
     }
 
-    public static void enablePlayerRankScoreboard(Player bukkitPlayer) {
+    public static void showPlayerRankScoreboard(Player bukkitPlayer, Map<SkillType, Integer> rank) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(bukkitPlayer.getName());
 
         wrapper.setOldScoreboard();
         wrapper.setTypeSelfRank();
+        wrapper.acceptRankData(rank);
         wrapper.showBoard();
 
         changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcrankScoreboardTime());
     }
 
-    public static void enablePlayerRankScoreboardOthers(Player bukkitPlayer, String targetName) {
+    public static void showPlayerRankScoreboardOthers(Player bukkitPlayer, String targetName, Map<SkillType, Integer> rank) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(bukkitPlayer.getName());
 
         wrapper.setOldScoreboard();
         wrapper.setTypeInspectRank(targetName);
+        wrapper.acceptRankData(rank);
         wrapper.showBoard();
 
         changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcrankScoreboardTime());
     }
 
-    public static void enableTopScoreboard(Player player, SkillType skill, int pageNumber) {
+    public static void showTopScoreboard(Player player, SkillType skill, int pageNumber, List<PlayerStat> stats) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
         wrapper.setOldScoreboard();
         wrapper.setTypeTop(skill, pageNumber);
+        wrapper.acceptLeaderboardData(stats);
         wrapper.showBoard();
 
         changeScoreboard(player, oldScoreboard, GLOBAL_STATS_SCOREBOARD, Config.getInstance().getMctopScoreboardTime());
     }
 
-    public static void enableTopPowerScoreboard(Player player, int pageNumber) {
+    public static void showTopPowerScoreboard(Player player, int pageNumber, List<PlayerStat> stats) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
         wrapper.setOldScoreboard();
         wrapper.setTypeTopPower(pageNumber);
+        wrapper.acceptLeaderboardData(stats);
         wrapper.showBoard();
 
         changeScoreboard(player, oldScoreboard, GLOBAL_STATS_SCOREBOARD, Config.getInstance().getMctopScoreboardTime());
