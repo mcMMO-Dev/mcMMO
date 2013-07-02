@@ -39,7 +39,6 @@ public class ScoreboardManager {
 
     static final String HEADER_STATS    = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
     static final String HEADER_RANK     = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
-    static final String HEADER_INSPECT  = LocaleLoader.getString("Scoreboard.Header.PlayerInspect");
     static final String TAG_POWER_LEVEL = LocaleLoader.getString("Scoreboard.Header.PowerLevel");
 
     static final String POWER_LEVEL  = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");

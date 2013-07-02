@@ -19,6 +19,7 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
@@ -38,6 +39,7 @@ public class ScoreboardWrapper {
     public Scoreboard oldBoard = null;
     public String targetPlayer = null;
     public SkillType targetSkill = null;
+    public PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
 
     private ScoreboardWrapper(String playerName, Scoreboard s) {
@@ -52,12 +54,41 @@ public class ScoreboardWrapper {
         return new ScoreboardWrapper(p.getName(), mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
     }
 
+    /**
+     * Set the old scoreboard, for use in reverting.
+     */
+    public void setOldScoreboard() {
+        Player player = Bukkit.getPlayerExact(playerName);
+        Validate.notNull(player);
+        Scoreboard old = player.getScoreboard();
+        if (old == board) { // Already displaying it
+            if (oldBoard == null) {
+                // Failsafe value - we're already displaying our board, but we don't have the one we should revert to
+                oldBoard = Bukkit.getScoreboardManager().getMainScoreboard();
+            }
+            else {
+                // Do nothing, we already have a prev board
+            }
+        }
+        else {
+            oldBoard = old;
+        }
+    }
+
+    public void showBoard() {
+        Player player = Bukkit.getPlayerExact(playerName);
+        Validate.notNull(player);
+        player.setScoreboard(board);
+    }
+
     // Board Type Changing 'API' methods
+
     public void setTypeNone() {
         this.sidebarType = SidebarType.NONE;
 
         targetPlayer = null;
         targetSkill = null;
+        targetProfile = null;
         leaderboardPage = -1;
 
         loadObjective("");
@@ -68,6 +99,7 @@ public class ScoreboardWrapper {
         targetSkill = skill;
 
         targetPlayer = null;
+        targetProfile = null;
         leaderboardPage = -1;
 
         loadObjective(SkillUtils.getSkillName(skill));
@@ -78,19 +110,21 @@ public class ScoreboardWrapper {
 
         targetPlayer = null;
         targetSkill = null;
+        targetProfile = null;
         leaderboardPage = -1;
 
         loadObjective(ScoreboardManager.HEADER_STATS);
     }
 
-    public void setTypeInspectStats(String otherPlayer) {
+    public void setTypeInspectStats(PlayerProfile profile) {
         this.sidebarType = SidebarType.STATS_BOARD;
-        targetPlayer = otherPlayer;
+        targetPlayer = profile.getPlayerName();
+        targetProfile = profile;
 
         targetSkill = null;
         leaderboardPage = -1;
 
-        loadObjective(ScoreboardManager.HEADER_INSPECT);
+        loadObjective(LocaleLoader.getString("Scoreboard.Header.PlayerInspect", targetPlayer));
     }
 
     public void setTypeSelfRank() {
@@ -98,6 +132,7 @@ public class ScoreboardWrapper {
         targetPlayer = null;
 
         targetSkill = null;
+        targetProfile = null;
         leaderboardPage = -1;
 
         loadObjective(ScoreboardManager.HEADER_RANK);
@@ -108,6 +143,7 @@ public class ScoreboardWrapper {
         targetPlayer = otherPlayer;
 
         targetSkill = null;
+        targetProfile = null;
         leaderboardPage = -1;
 
         loadObjective(ScoreboardManager.HEADER_RANK);
@@ -119,6 +155,7 @@ public class ScoreboardWrapper {
         targetSkill = null;
 
         targetPlayer = null;
+        targetProfile = null;
 
         int endPosition = page * 15;
         int startPosition = endPosition - 14;
@@ -131,6 +168,7 @@ public class ScoreboardWrapper {
         targetSkill = skill;
 
         targetPlayer = null;
+        targetProfile = null;
 
         int endPosition = page * 15;
         int startPosition = endPosition - 14;
@@ -179,13 +217,16 @@ public class ScoreboardWrapper {
             break;
 
         case STATS_BOARD:
-            // Select the target profile, which is self if target==null
+            // Select the profile to read from
             PlayerProfile prof;
-            if (targetPlayer == null) {
-                prof = profile;
+            if (targetProfile != null) {
+                prof = targetProfile; // offline
+            }
+            else if (targetPlayer == null) {
+                prof = profile; // self
             }
             else {
-                prof = UserManager.getPlayer(targetPlayer).getProfile();
+                prof = UserManager.getPlayer(targetPlayer).getProfile(); // online
             }
             // Calculate power level here
             int powerLevel = 0;
