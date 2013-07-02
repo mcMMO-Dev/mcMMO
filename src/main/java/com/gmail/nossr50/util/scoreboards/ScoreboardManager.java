@@ -120,83 +120,75 @@ public class ScoreboardManager {
     }
 
     public static void enablePlayerSkillScoreboard(McMMOPlayer mcMMOPlayer, SkillType skill) {
-        Player player = mcMMOPlayer.getPlayer();
-        Scoreboard oldScoreboard = player.getScoreboard();
-        Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(SkillUtils.getSkillName(skill));
+        Player bukkitPlayer = mcMMOPlayer.getPlayer();
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(bukkitPlayer.getName());
 
-        if (objective == null) {
-            objective = newScoreboard.registerNewObjective(SkillUtils.getSkillName(skill), "dummy");
-        }
+        wrapper.setOldScoreboard();
+        wrapper.setTypeSkill(skill);
+        wrapper.showBoard();
 
-        updatePlayerSkillScores(mcMMOPlayer.getProfile(), skill, objective);
         changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getSkillScoreboardTime());
     }
 
     public static void enablePlayerStatsScoreboard(McMMOPlayer mcMMOPlayer) {
-        Player player = mcMMOPlayer.getPlayer();
-        Scoreboard oldScoreboard = player.getScoreboard();
-        Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(HEADER_STATS);
+        Player bukkitPlayer = mcMMOPlayer.getPlayer();
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(bukkitPlayer.getName());
 
-        if (objective == null) {
-            objective = newScoreboard.registerNewObjective(HEADER_STATS, "dummy");
-        }
+        wrapper.setOldScoreboard();
+        wrapper.setTypeSelfStats();
+        wrapper.showBoard();
 
-        updatePlayerStatsScores(mcMMOPlayer, objective);
         changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcstatsScoreboardTime());
     }
 
-    public static void enablePlayerRankScoreboard(Player player) {
-        Scoreboard oldScoreboard = player.getScoreboard();
-        Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(HEADER_RANK);
+    public static void enablePlayerRankScoreboard(Player bukkitPlayer) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(bukkitPlayer.getName());
 
-        if (objective == null) {
-            objective = newScoreboard.registerNewObjective(HEADER_RANK, "dummy");
-        }
+        wrapper.setOldScoreboard();
+        wrapper.setTypeSelfRank();
+        wrapper.showBoard();
 
-        updatePlayerRankScores(player, objective);
         changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcrankScoreboardTime());
     }
 
-    public static void enablePlayerRankScoreboardOthers(Player player, String targetName) {
-        Scoreboard oldScoreboard = player.getScoreboard();
-        Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(HEADER_RANK);
+    public static void enablePlayerRankScoreboardOthers(Player bukkitPlayer, String targetName) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(bukkitPlayer.getName());
 
-        if (objective == null) {
-            objective = newScoreboard.registerNewObjective(HEADER_RANK, "dummy");
-        }
+        wrapper.setOldScoreboard();
+        wrapper.setTypeInspectRank(targetName);
+        wrapper.showBoard();
 
-        updatePlayerRankOthersScores(targetName, objective);
         changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcrankScoreboardTime());
     }
 
-    public static void enablePlayerInspectScoreboardOnline(Player player, McMMOPlayer mcMMOTarget) {
-        Scoreboard oldScoreboard = player.getScoreboard();
-        Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(HEADER_INSPECT);
+    public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
-        if (objective == null) {
-            objective = newScoreboard.registerNewObjective(HEADER_INSPECT, "dummy");
-        }
+        wrapper.setOldScoreboard();
+        wrapper.setTypeInspectStats(targetProfile);
+        wrapper.showBoard();
 
-        updatePlayerInspectOnlineScores(mcMMOTarget, objective);
         changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getInspectScoreboardTime());
     }
 
-    public static void enablePlayerInspectScoreboardOffline(Player player, PlayerProfile targetProfile) {
-        Scoreboard oldScoreboard = player.getScoreboard();
-        Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(HEADER_INSPECT);
+    public static void enableTopScoreboard(Player player, SkillType skill, int pageNumber) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
-        if (objective == null) {
-            objective = newScoreboard.registerNewObjective(HEADER_INSPECT, "dummy");
-        }
+        wrapper.setOldScoreboard();
+        wrapper.setTypeTop(skill, pageNumber);
+        wrapper.showBoard();
 
-        updatePlayerInspectOfflineScores(targetProfile, objective);
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getInspectScoreboardTime());
+        changeScoreboard(player, oldScoreboard, GLOBAL_STATS_SCOREBOARD, Config.getInstance().getMctopScoreboardTime());
+    }
+
+    public static void enableTopPowerScoreboard(Player player, int pageNumber) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+
+        wrapper.setOldScoreboard();
+        wrapper.setTypeTopPower(pageNumber);
+        wrapper.showBoard();
+
+        changeScoreboard(player, oldScoreboard, GLOBAL_STATS_SCOREBOARD, Config.getInstance().getMctopScoreboardTime());
     }
 
     public static void enableGlobalStatsScoreboard(Player player, String skillName, int pageNumber) {
