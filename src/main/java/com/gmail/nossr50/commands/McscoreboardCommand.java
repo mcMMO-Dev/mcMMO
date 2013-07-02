@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -28,6 +29,7 @@ public class McscoreboardCommand implements TabExecutor {
         }
 
         Player player = (Player) sender;
+        SkillType skill;
 
         switch (args.length) {
             case 0:
@@ -60,7 +62,7 @@ public class McscoreboardCommand implements TabExecutor {
                         return true;
                     }
 
-                    ScoreboardManager.enableGlobalStatsScoreboard(player, "all", 1);
+                    ScoreboardManager.enableTopPowerScoreboard(player, 1);
                 }
                 else {
                     return false;
@@ -79,7 +81,7 @@ public class McscoreboardCommand implements TabExecutor {
                 }
 
                 if (StringUtils.isInt(args[1])) {
-                    ScoreboardManager.enableGlobalStatsScoreboard(player, "all", Math.abs(Integer.parseInt(args[1])));
+                    ScoreboardManager.enableTopPowerScoreboard(player, Math.abs(Integer.parseInt(args[1])));
                     return true;
                 }
 
@@ -87,7 +89,8 @@ public class McscoreboardCommand implements TabExecutor {
                     return true;
                 }
 
-                ScoreboardManager.enableGlobalStatsScoreboard(player, args[1], 1);
+                skill = SkillType.getSkill(args[1]);
+                ScoreboardManager.enableTopScoreboard(player, skill, 1);
                 return true;
 
             case 3:
@@ -108,7 +111,8 @@ public class McscoreboardCommand implements TabExecutor {
                     return true;
                 }
 
-                ScoreboardManager.enableGlobalStatsScoreboard(player, args[1], Math.abs(Integer.parseInt(args[2])));
+                skill = SkillType.getSkill(args[1]);
+                ScoreboardManager.enableTopScoreboard(player, skill, Math.abs(Integer.parseInt(args[2])));
                 return true;
 
             default:
@@ -125,7 +129,31 @@ public class McscoreboardCommand implements TabExecutor {
                 if (args[0].equalsIgnoreCase("top")) {
                     return StringUtil.copyPartialMatches(args[1], SkillType.SKILL_NAMES, new ArrayList<String>(SkillType.SKILL_NAMES.size()));
                 }
-                // Fallthrough
+                else if (args[0].equalsIgnoreCase("rank")) {
+                    // Copied from Command.tabComplete()
+
+                    String lastWord = args[args.length - 1];
+
+                    Player senderPlayer = null;
+                    if (sender instanceof Player) {
+                        senderPlayer = (Player) sender;
+                    }
+
+                    ArrayList<String> matchedPlayers = new ArrayList<String>();
+                    for (Player player : sender.getServer().getOnlinePlayers()) {
+                        String name = player.getName();
+                        if (senderPlayer == null && StringUtil.startsWithIgnoreCase(name, lastWord)) {
+                            matchedPlayers.add(name);
+                        }
+                        else if (senderPlayer != null && senderPlayer.canSee(player) && StringUtil.startsWithIgnoreCase(name, lastWord)) {
+                            matchedPlayers.add(name);
+                        }
+                    }
+
+                    Collections.sort(matchedPlayers, String.CASE_INSENSITIVE_ORDER);
+                    return matchedPlayers;
+                }
+                // fallthrough;
 
             default:
                 return ImmutableList.of();
