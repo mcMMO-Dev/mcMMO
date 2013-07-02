@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -12,7 +13,10 @@ import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -42,7 +46,7 @@ public class McscoreboardCommand implements TabExecutor {
                 }
                 else if (args[0].equalsIgnoreCase("rank")) {
                     if (!Config.getInstance().getRankUseBoard()) {
-                        sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
+                        player.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                         return true;
                     }
 
@@ -50,7 +54,7 @@ public class McscoreboardCommand implements TabExecutor {
                 }
                 else if (args[0].equalsIgnoreCase("stats")) {
                     if (!Config.getInstance().getStatsUseBoard()) {
-                        sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
+                        player.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                         return true;
                     }
 
@@ -58,7 +62,7 @@ public class McscoreboardCommand implements TabExecutor {
                 }
                 else if (args[0].equalsIgnoreCase("top")) {
                     if (!Config.getInstance().getTopUseBoard()) {
-                        sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
+                        player.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                         return true;
                     }
 
@@ -71,26 +75,49 @@ public class McscoreboardCommand implements TabExecutor {
                 return true;
 
             case 2:
-                if (!args[0].equalsIgnoreCase("top")) {
+                if (args[0].equalsIgnoreCase("top")) {
+                    if (!Config.getInstance().getTopUseBoard()) {
+                        player.sendMessage("This scoreboard is not enabled."); //TODO: Localize
+                        return true;
+                    }
+
+                    if (StringUtils.isInt(args[1])) {
+                        ScoreboardManager.enableTopPowerScoreboard(player, Math.abs(Integer.parseInt(args[1])));
+                        return true;
+                    }
+
+                    if (CommandUtils.isInvalidSkill(player, args[1])) {
+                        return true;
+                    }
+
+                    skill = SkillType.getSkill(args[1]);
+                    ScoreboardManager.enableTopScoreboard(player, skill, 1);
+                }
+                else if (args[0].equalsIgnoreCase("rank")) {
+                    if (!Config.getInstance().getRankUseBoard()) {
+                        player.sendMessage("This scoreboard is not enabled."); //TODO: Localize
+                        return true;
+                    }
+
+                    String playerName = args[1];
+                    McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
+
+                    if (mcMMOPlayer != null) {
+                        playerName = mcMMOPlayer.getPlayer().getName();
+
+                        if (CommandUtils.tooFar(sender, mcMMOPlayer.getPlayer(), Permissions.mcrankFar(sender))) {
+                            return true;
+                        }
+                    }
+                    else if (CommandUtils.inspectOffline(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false), Permissions.mcrankOffline(sender))) {
+                        return true;
+                    }
+                    ScoreboardManager.enablePlayerRankScoreboardOthers(player, playerName);
+                }
+                else {
                     return false;
                 }
 
-                if (!Config.getInstance().getTopUseBoard()) {
-                    sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
-                    return true;
-                }
-
-                if (StringUtils.isInt(args[1])) {
-                    ScoreboardManager.enableTopPowerScoreboard(player, Math.abs(Integer.parseInt(args[1])));
-                    return true;
-                }
-
-                if (CommandUtils.isInvalidSkill(sender, args[1])) {
-                    return true;
-                }
-
-                skill = SkillType.getSkill(args[1]);
-                ScoreboardManager.enableTopScoreboard(player, skill, 1);
                 return true;
 
             case 3:
@@ -99,20 +126,21 @@ public class McscoreboardCommand implements TabExecutor {
                 }
 
                 if (!Config.getInstance().getTopUseBoard()) {
-                    sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
+                    player.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                     return true;
                 }
 
-                if (CommandUtils.isInvalidSkill(sender, args[1])) {
+                if (CommandUtils.isInvalidSkill(player, args[1])) {
                     return true;
                 }
 
-                if (CommandUtils.isInvalidInteger(sender, args[2])) {
+                if (CommandUtils.isInvalidInteger(player, args[2])) {
                     return true;
                 }
 
                 skill = SkillType.getSkill(args[1]);
                 ScoreboardManager.enableTopScoreboard(player, skill, Math.abs(Integer.parseInt(args[2])));
+
                 return true;
 
             default:
@@ -122,6 +150,10 @@ public class McscoreboardCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (!(sender instanceof Player)) {
+            return ImmutableList.of();
+        }
+        Player player = (Player) sender;
         switch (args.length) {
             case 1:
                 return StringUtil.copyPartialMatches(args[0], SCOREBOARD_TYPES, new ArrayList<String>(SCOREBOARD_TYPES.size()));
@@ -134,18 +166,10 @@ public class McscoreboardCommand implements TabExecutor {
 
                     String lastWord = args[args.length - 1];
 
-                    Player senderPlayer = null;
-                    if (sender instanceof Player) {
-                        senderPlayer = (Player) sender;
-                    }
-
                     ArrayList<String> matchedPlayers = new ArrayList<String>();
-                    for (Player player : sender.getServer().getOnlinePlayers()) {
-                        String name = player.getName();
-                        if (senderPlayer == null && StringUtil.startsWithIgnoreCase(name, lastWord)) {
-                            matchedPlayers.add(name);
-                        }
-                        else if (senderPlayer != null && senderPlayer.canSee(player) && StringUtil.startsWithIgnoreCase(name, lastWord)) {
+                    for (Player mplayer : sender.getServer().getOnlinePlayers()) {
+                        String name = mplayer.getName();
+                        if (player.canSee(player) && StringUtil.startsWithIgnoreCase(name, lastWord)) {
                             matchedPlayers.add(name);
                         }
                     }
