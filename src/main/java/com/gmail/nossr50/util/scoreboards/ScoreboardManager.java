@@ -35,7 +35,7 @@ public class ScoreboardManager {
     // Package-private constants galore!
 
     static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar"; // not localized
-    static final String POWER_OBJECTIVE = "mcmmo_pwrlvl";
+    static final String POWER_OBJECTIVE   = "mcmmo_pwrlvl";
 
     static final String HEADER_STATS    = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
     static final String HEADER_RANK     = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
@@ -48,11 +48,11 @@ public class ScoreboardManager {
     static final String REMAINING_XP = LocaleLoader.getString("Scoreboard.Misc.RemainingXP");
     static final String OVERALL      = LocaleLoader.getString("Scoreboard.Misc.Overall");
 
-    static final OfflinePlayer labelLevel = Bukkit.getOfflinePlayer(LEVEL);
-    static final OfflinePlayer labelCurrentXp = Bukkit.getOfflinePlayer(CURRENT_XP);
+    static final OfflinePlayer labelLevel       = Bukkit.getOfflinePlayer(LEVEL);
+    static final OfflinePlayer labelCurrentXp   = Bukkit.getOfflinePlayer(CURRENT_XP);
     static final OfflinePlayer labelRemainingXp = Bukkit.getOfflinePlayer(REMAINING_XP);
-    static final OfflinePlayer labelPowerLevel = Bukkit.getOfflinePlayer(POWER_LEVEL);
-    static final OfflinePlayer labelOverall = Bukkit.getOfflinePlayer(OVERALL);
+    static final OfflinePlayer labelPowerLevel  = Bukkit.getOfflinePlayer(POWER_LEVEL);
+    static final OfflinePlayer labelOverall     = Bukkit.getOfflinePlayer(OVERALL);
 
     static final Map<SkillType, OfflinePlayer> skillLabels;
 
