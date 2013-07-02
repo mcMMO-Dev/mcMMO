@@ -25,23 +25,6 @@ import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ScoreboardWrapper {
-    public static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar";
-    public static final String POWER_OBJECTIVE = "mcmmo_pwrlvl";
-
-    public static final OfflinePlayer labelLevel = Bukkit.getOfflinePlayer("Level");
-    public static final OfflinePlayer labelCurrentXp = Bukkit.getOfflinePlayer("Current XP");
-    public static final OfflinePlayer labelRemainingXp = Bukkit.getOfflinePlayer("Remaining XP");
-    public static final OfflinePlayer labelPowerLevel = Bukkit.getOfflinePlayer(ChatColor.GOLD + "Power Level");
-    public static final Map<SkillType, OfflinePlayer> skillLabels;
-
-    static {
-        skillLabels = new HashMap<SkillType, OfflinePlayer>();
-        for (SkillType type : SkillType.values()) {
-            // Include child skills
-            skillLabels.put(type, Bukkit.getOfflinePlayer(SkillUtils.getSkillName(type)));
-        }
-    }
-
     // Initialization variables
     public final String playerName;
     public final Scoreboard board;
@@ -61,8 +44,8 @@ public class ScoreboardWrapper {
         this.playerName = playerName;
         board = s;
         sidebarType = SidebarType.NONE;
-        sidebarObj = board.registerNewObjective(SIDEBAR_OBJECTIVE, "dummy");
-        powerObj = board.registerNewObjective(POWER_OBJECTIVE, "dummy");
+        sidebarObj = board.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
+        powerObj = board.registerNewObjective(ScoreboardManager.POWER_OBJECTIVE, "dummy");
     }
 
     public static ScoreboardWrapper create(Player p) {
@@ -97,7 +80,7 @@ public class ScoreboardWrapper {
         targetSkill = null;
         leaderboardPage = -1;
 
-        loadObjective("mcMMO Stats");
+        loadObjective(ScoreboardManager.HEADER_STATS);
     }
 
     public void setTypeInspectStats(String otherPlayer) {
@@ -107,7 +90,7 @@ public class ScoreboardWrapper {
         targetSkill = null;
         leaderboardPage = -1;
 
-        loadObjective("mcMMO Stats");
+        loadObjective(ScoreboardManager.HEADER_INSPECT);
     }
 
     public void setTypeSelfRank() {
@@ -117,7 +100,7 @@ public class ScoreboardWrapper {
         targetSkill = null;
         leaderboardPage = -1;
 
-        loadObjective("mcMMO Rankings");
+        loadObjective(ScoreboardManager.HEADER_RANK);
     }
 
     public void setTypeInspectRank(String otherPlayer) {
@@ -127,7 +110,7 @@ public class ScoreboardWrapper {
         targetSkill = null;
         leaderboardPage = -1;
 
-        loadObjective("mcMMO Rankings");
+        loadObjective(ScoreboardManager.HEADER_RANK);
     }
 
     public void setTypeTopPower(int page) {
@@ -139,7 +122,7 @@ public class ScoreboardWrapper {
 
         int endPosition = page * 15;
         int startPosition = endPosition - 14;
-        loadObjective(String.format("Power Level (%2d - %2d)", startPosition, endPosition));
+        loadObjective(String.format("%s (%2d - %2d)", ScoreboardManager.POWER_LEVEL, startPosition, endPosition));
     }
 
     public void setTypeTop(SkillType skill, int page) {
@@ -157,7 +140,7 @@ public class ScoreboardWrapper {
     // Setup for after a board type change
     protected void loadObjective(String displayName) {
         sidebarObj.unregister();
-        sidebarObj = board.registerNewObjective(SIDEBAR_OBJECTIVE, "");
+        sidebarObj = board.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "");
 
         if (displayName.length() > 32) {
             displayName = displayName.substring(0, 32);
@@ -190,9 +173,9 @@ public class ScoreboardWrapper {
         case SKILL_BOARD:
             Validate.notNull(targetSkill);
             int currentXP = profile.getSkillXpLevel(targetSkill);
-            sidebarObj.getScore(labelLevel).setScore(profile.getSkillLevel(targetSkill));
-            sidebarObj.getScore(labelCurrentXp).setScore(currentXP);
-            sidebarObj.getScore(labelRemainingXp).setScore(profile.getXpToLevel(targetSkill) - currentXP);
+            sidebarObj.getScore(ScoreboardManager.labelLevel).setScore(profile.getSkillLevel(targetSkill));
+            sidebarObj.getScore(ScoreboardManager.labelCurrentXp).setScore(currentXP);
+            sidebarObj.getScore(ScoreboardManager.labelRemainingXp).setScore(profile.getXpToLevel(targetSkill) - currentXP);
             break;
 
         case STATS_BOARD:
@@ -215,9 +198,9 @@ public class ScoreboardWrapper {
                 if (!Permissions.skillEnabled(bukkitPlayer, skill)) {
                     continue;
                 }
-                sidebarObj.getScore(skillLabels.get(skill)).setScore(level);
+                sidebarObj.getScore(ScoreboardManager.skillLabels.get(skill)).setScore(level);
             }
-            sidebarObj.getScore(labelPowerLevel).setScore(powerLevel);
+            sidebarObj.getScore(ScoreboardManager.labelPowerLevel).setScore(powerLevel);
             break;
 
         case RANK_BOARD:
@@ -231,12 +214,12 @@ public class ScoreboardWrapper {
 
                 rank = rankData.get(skill);
                 if (rank != null) {
-                    sidebarObj.getScore(skillLabels.get(skill)).setScore(rank);
+                    sidebarObj.getScore(ScoreboardManager.skillLabels.get(skill)).setScore(rank);
                 }
             }
             rank = rankData.get("ALL");
             if (rank != null) {
-                sidebarObj.getScore(labelPowerLevel).setScore(rank);
+                sidebarObj.getScore(ScoreboardManager.labelPowerLevel).setScore(rank);
             }
             break;
 

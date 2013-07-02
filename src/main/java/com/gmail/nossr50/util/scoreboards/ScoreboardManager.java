@@ -28,13 +28,18 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ScoreboardManager {
-    private static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<String, ScoreboardWrapper>();
-    private static final Scoreboard GLOBAL_STATS_SCOREBOARD = mcMMO.p.getServer().getScoreboardManager().getNewScoreboard();
+    static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<String, ScoreboardWrapper>();
+    static final List<String> SCOREBOARD_TASKS = new ArrayList<String>();
 
-    static final String PLAYER_STATS_HEADER   = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
-    static final String PLAYER_RANK_HEADER    = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
-    static final String PLAYER_INSPECT_HEADER = LocaleLoader.getString("Scoreboard.Header.PlayerInspect");
-    static final String POWER_LEVEL_HEADER    = LocaleLoader.getString("Scoreboard.Header.PowerLevel");
+    // Package-private constants galore!
+
+    static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar"; // not localized
+    static final String POWER_OBJECTIVE = "mcmmo_pwrlvl";
+
+    static final String HEADER_STATS    = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
+    static final String HEADER_RANK     = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
+    static final String HEADER_INSPECT  = LocaleLoader.getString("Scoreboard.Header.PlayerInspect");
+    static final String TAG_POWER_LEVEL = LocaleLoader.getString("Scoreboard.Header.PowerLevel");
 
     static final String POWER_LEVEL  = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");
     static final String LEVEL        = LocaleLoader.getString("Scoreboard.Misc.Level");
@@ -48,7 +53,17 @@ public class ScoreboardManager {
     static final OfflinePlayer labelPowerLevel = Bukkit.getOfflinePlayer(POWER_LEVEL);
     static final OfflinePlayer labelOverall = Bukkit.getOfflinePlayer(OVERALL);
 
-    private final static List<String> SCOREBOARD_TASKS = new ArrayList<String>();
+    static final Map<SkillType, OfflinePlayer> skillLabels;
+
+    static {
+        skillLabels = new HashMap<SkillType, OfflinePlayer>();
+        for (SkillType type : SkillType.values()) {
+            // Include child skills
+            skillLabels.put(type, Bukkit.getOfflinePlayer(SkillUtils.getSkillName(type)));
+        }
+    }
+
+    // Listener call-ins
 
     public static void setupPlayer(Player p) {
         PLAYER_SCOREBOARDS.put(p.getName(), ScoreboardWrapper.create(p));
@@ -86,15 +101,15 @@ public class ScoreboardManager {
         Objective objective;
 
         if (scoreboard.getObjective(DisplaySlot.BELOW_NAME) == null) {
-            objective = scoreboard.registerNewObjective(POWER_LEVEL_HEADER, "dummy");
+            objective = scoreboard.registerNewObjective(TAG_POWER_LEVEL, "dummy");
 
             objective.getScore(player).setScore(UserManager.getPlayer(player).getPowerLevel());
             objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         }
         else {
-            objective = scoreboard.getObjective(POWER_LEVEL_HEADER);
+            objective = scoreboard.getObjective(TAG_POWER_LEVEL);
 
-            if (scoreboard.getObjective(POWER_LEVEL_HEADER) != null) {
+            if (scoreboard.getObjective(TAG_POWER_LEVEL) != null) {
                 objective.getScore(player).setScore(UserManager.getPlayer(player).getPowerLevel());
             }
             else {
@@ -121,10 +136,10 @@ public class ScoreboardManager {
         Player player = mcMMOPlayer.getPlayer();
         Scoreboard oldScoreboard = player.getScoreboard();
         Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_STATS_HEADER);
+        Objective objective = newScoreboard.getObjective(HEADER_STATS);
 
         if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_STATS_HEADER, "dummy");
+            objective = newScoreboard.registerNewObjective(HEADER_STATS, "dummy");
         }
 
         updatePlayerStatsScores(mcMMOPlayer, objective);
@@ -134,10 +149,10 @@ public class ScoreboardManager {
     public static void enablePlayerRankScoreboard(Player player) {
         Scoreboard oldScoreboard = player.getScoreboard();
         Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_RANK_HEADER);
+        Objective objective = newScoreboard.getObjective(HEADER_RANK);
 
         if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_RANK_HEADER, "dummy");
+            objective = newScoreboard.registerNewObjective(HEADER_RANK, "dummy");
         }
 
         updatePlayerRankScores(player, objective);
@@ -147,10 +162,10 @@ public class ScoreboardManager {
     public static void enablePlayerRankScoreboardOthers(Player player, String targetName) {
         Scoreboard oldScoreboard = player.getScoreboard();
         Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_RANK_HEADER);
+        Objective objective = newScoreboard.getObjective(HEADER_RANK);
 
         if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_RANK_HEADER, "dummy");
+            objective = newScoreboard.registerNewObjective(HEADER_RANK, "dummy");
         }
 
         updatePlayerRankOthersScores(targetName, objective);
@@ -160,10 +175,10 @@ public class ScoreboardManager {
     public static void enablePlayerInspectScoreboardOnline(Player player, McMMOPlayer mcMMOTarget) {
         Scoreboard oldScoreboard = player.getScoreboard();
         Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_INSPECT_HEADER);
+        Objective objective = newScoreboard.getObjective(HEADER_INSPECT);
 
         if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_INSPECT_HEADER, "dummy");
+            objective = newScoreboard.registerNewObjective(HEADER_INSPECT, "dummy");
         }
 
         updatePlayerInspectOnlineScores(mcMMOTarget, objective);
@@ -173,10 +188,10 @@ public class ScoreboardManager {
     public static void enablePlayerInspectScoreboardOffline(Player player, PlayerProfile targetProfile) {
         Scoreboard oldScoreboard = player.getScoreboard();
         Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_INSPECT_HEADER);
+        Objective objective = newScoreboard.getObjective(HEADER_INSPECT);
 
         if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_INSPECT_HEADER, "dummy");
+            objective = newScoreboard.registerNewObjective(HEADER_INSPECT, "dummy");
         }
 
         updatePlayerInspectOfflineScores(targetProfile, objective);
@@ -274,7 +289,7 @@ public class ScoreboardManager {
             objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + OVERALL)).setScore(rank);
         }
 
-        objective.setDisplayName(PLAYER_RANK_HEADER + ": " + targetName);
+        objective.setDisplayName(HEADER_RANK + ": " + targetName);
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
@@ -296,7 +311,7 @@ public class ScoreboardManager {
         }
 
         objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + POWER_LEVEL)).setScore(powerLevel);
-        objective.setDisplayName(PLAYER_INSPECT_HEADER + target.getName());
+        objective.setDisplayName(HEADER_INSPECT + target.getName());
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
@@ -312,7 +327,7 @@ public class ScoreboardManager {
         }
 
         objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + POWER_LEVEL)).setScore(powerLevel);
-        objective.setDisplayName(PLAYER_INSPECT_HEADER + targetProfile.getPlayerName());
+        objective.setDisplayName(HEADER_INSPECT + targetProfile.getPlayerName());
     }
 
     private static void updateGlobalStatsScores(Player player, Objective objective, String skillName, int pageNumber) {
