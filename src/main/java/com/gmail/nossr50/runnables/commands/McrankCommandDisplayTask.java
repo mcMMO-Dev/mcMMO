@@ -65,6 +65,8 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
                 rankMap.put(skill, rank);
             }
         }
+        rank = skills.get("ALL");
+        rankMap.put(null, rank);
 
         if (playerName == null || sender.getName().equals(playerName)) {
             ScoreboardManager.showPlayerRankScoreboard((Player) sender, rankMap);

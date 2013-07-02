@@ -269,7 +269,7 @@ public class ScoreboardWrapper {
                 sidebarObj.getScore(ScoreboardManager.skillLabels.get(skill)).setScore(rank);
             }
         }
-        rank = rankData.get("ALL");
+        rank = rankData.get(null);
         if (rank != null) {
             sidebarObj.getScore(ScoreboardManager.labelPowerLevel).setScore(rank);
         }
