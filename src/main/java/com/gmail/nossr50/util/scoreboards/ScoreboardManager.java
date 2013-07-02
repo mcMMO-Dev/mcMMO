@@ -141,6 +141,16 @@ public class ScoreboardManager {
         changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcstatsScoreboardTime());
     }
 
+    public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+
+        wrapper.setOldScoreboard();
+        wrapper.setTypeInspectStats(targetProfile);
+        wrapper.showBoard();
+
+        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getInspectScoreboardTime());
+    }
+
     public static void enablePlayerRankScoreboard(Player bukkitPlayer) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(bukkitPlayer.getName());
 
@@ -159,16 +169,6 @@ public class ScoreboardManager {
         wrapper.showBoard();
 
         changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcrankScoreboardTime());
-    }
-
-    public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
-        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
-
-        wrapper.setOldScoreboard();
-        wrapper.setTypeInspectStats(targetProfile);
-        wrapper.showBoard();
-
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getInspectScoreboardTime());
     }
 
     public static void enableTopScoreboard(Player player, SkillType skill, int pageNumber) {
