@@ -26,6 +26,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.google.common.collect.ImmutableMap;
 
 public class ScoreboardManager {
     static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<String, ScoreboardWrapper>();
@@ -56,11 +57,12 @@ public class ScoreboardManager {
     static final Map<SkillType, OfflinePlayer> skillLabels;
 
     static {
-        skillLabels = new HashMap<SkillType, OfflinePlayer>();
+        ImmutableMap.Builder<SkillType, OfflinePlayer> b = ImmutableMap.builder();
         for (SkillType type : SkillType.values()) {
             // Include child skills
-            skillLabels.put(type, Bukkit.getOfflinePlayer(SkillUtils.getSkillName(type)));
+            b.put(type, Bukkit.getOfflinePlayer(SkillUtils.getSkillName(type)));
         }
+        skillLabels = b.build();
     }
 
     // Listener call-ins
