@@ -39,25 +39,23 @@ public class McscoreboardCommand implements TabExecutor {
                     clearScoreboard(player);
                 }
                 else if (args[0].equalsIgnoreCase("rank")) {
-                    if (!Config.getInstance().getMcrankScoreboardEnabled()) {
+                    if (!Config.getInstance().getRankUseBoard()) {
                         sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                         return true;
                     }
 
-                    ScoreboardManager.setupPlayerScoreboard(player.getName());
                     ScoreboardManager.enablePlayerRankScoreboard(player);
                 }
                 else if (args[0].equalsIgnoreCase("stats")) {
-                    if (!Config.getInstance().getMcstatsScoreboardsEnabled()) {
+                    if (!Config.getInstance().getStatsUseBoard()) {
                         sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                         return true;
                     }
 
-                    ScoreboardManager.setupPlayerScoreboard(player.getName());
                     ScoreboardManager.enablePlayerStatsScoreboard(UserManager.getPlayer(player));
                 }
                 else if (args[0].equalsIgnoreCase("top")) {
-                    if (!Config.getInstance().getMctopScoreboardEnabled()) {
+                    if (!Config.getInstance().getTopUseBoard()) {
                         sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                         return true;
                     }
@@ -75,7 +73,7 @@ public class McscoreboardCommand implements TabExecutor {
                     return false;
                 }
 
-                if (!Config.getInstance().getMctopScoreboardEnabled()) {
+                if (!Config.getInstance().getTopUseBoard()) {
                     sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                     return true;
                 }
@@ -97,7 +95,7 @@ public class McscoreboardCommand implements TabExecutor {
                     return false;
                 }
 
-                if (!Config.getInstance().getMctopScoreboardEnabled()) {
+                if (!Config.getInstance().getTopUseBoard()) {
                     sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                     return true;
                 }

@@ -34,13 +34,11 @@ public class McrankCommand implements TabExecutor {
                     return true;
                 }
 
-                if (Config.getInstance().getMcrankScoreboardEnabled()) {
-                    ScoreboardManager.setupPlayerScoreboard(sender.getName());
+                if (Config.getInstance().getRankUseBoard()) {
                     ScoreboardManager.enablePlayerRankScoreboard((Player) sender);
+                    if (!Config.getInstance().getRankUseChat()) return true;
                 }
-                else {
-                    display(sender, sender.getName());
-                }
+                display(sender, sender.getName());
 
                 return true;
 
@@ -64,13 +62,11 @@ public class McrankCommand implements TabExecutor {
                     return true;
                 }
 
-                if (sender instanceof Player && Config.getInstance().getMcrankScoreboardEnabled()) {
-                    ScoreboardManager.setupPlayerScoreboard(sender.getName());
+                if (sender instanceof Player && Config.getInstance().getRankUseBoard()) {
                     ScoreboardManager.enablePlayerRankScoreboardOthers((Player) sender, playerName);
+                    if (!Config.getInstance().getRankUseChat()) return true;
                 }
-                else {
-                    display(sender, playerName);
-                }
+                display(sender, playerName);
                 return true;
 
             default:
