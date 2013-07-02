@@ -26,7 +26,7 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ScoreboardManager {
-    private static final Map<String, Scoreboard> PLAYER_SCOREBOARDS = new HashMap<String, Scoreboard>();
+    private static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<String, ScoreboardWrapper>();
     private static final Scoreboard GLOBAL_STATS_SCOREBOARD = mcMMO.p.getServer().getScoreboardManager().getNewScoreboard();
 
     private final static String PLAYER_STATS_HEADER   = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
@@ -43,11 +43,11 @@ public class ScoreboardManager {
     private final static List<String> SCOREBOARD_TASKS = new ArrayList<String>();
 
     public static void setupPlayer(Player p) {
-        PLAYER_SCOREBOARDS.put(p.getName(), mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
+        PLAYER_SCOREBOARDS.put(p.getName(), ScoreboardWrapper.create(p));
     }
 
     public static void teardownPlayer(Player p) {
-        PLAYER_SCOREBOARDS.put(p.getName(), mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
+        PLAYER_SCOREBOARDS.remove(p.getName());
     }
 
     public static void enablePowerLevelDisplay(Player player) {
