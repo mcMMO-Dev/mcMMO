@@ -54,8 +54,8 @@ public class ScoreboardManager {
         NONE        (false, false, false),
         SKILL_BOARD (true,  true,  false),
         STATS_BOARD (true,  false, false),
-        RANK_BOARD  (false, false, true),
-        TOP_BOARD   (false, false, true),
+        RANK_BOARD  (false, false, true ),
+        TOP_BOARD   (false, false, true ),
         ;
 
         private final boolean listenLevelUp;
