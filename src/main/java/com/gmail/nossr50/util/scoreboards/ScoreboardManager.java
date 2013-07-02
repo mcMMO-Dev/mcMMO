@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -29,16 +31,22 @@ public class ScoreboardManager {
     private static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<String, ScoreboardWrapper>();
     private static final Scoreboard GLOBAL_STATS_SCOREBOARD = mcMMO.p.getServer().getScoreboardManager().getNewScoreboard();
 
-    private final static String PLAYER_STATS_HEADER   = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
-    private final static String PLAYER_RANK_HEADER    = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
-    private final static String PLAYER_INSPECT_HEADER = LocaleLoader.getString("Scoreboard.Header.PlayerInspect");
-    private final static String POWER_LEVEL_HEADER    = LocaleLoader.getString("Scoreboard.Header.PowerLevel");
+    static final String PLAYER_STATS_HEADER   = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
+    static final String PLAYER_RANK_HEADER    = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
+    static final String PLAYER_INSPECT_HEADER = LocaleLoader.getString("Scoreboard.Header.PlayerInspect");
+    static final String POWER_LEVEL_HEADER    = LocaleLoader.getString("Scoreboard.Header.PowerLevel");
 
-    private final static String POWER_LEVEL  = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");
-    private final static String LEVEL        = LocaleLoader.getString("Scoreboard.Misc.Level");
-    private final static String CURRENT_XP   = LocaleLoader.getString("Scoreboard.Misc.CurrentXP");
-    private final static String REMAINING_XP = LocaleLoader.getString("Scoreboard.Misc.RemainingXP");
-    private final static String OVERALL      = LocaleLoader.getString("Scoreboard.Misc.Overall");
+    static final String POWER_LEVEL  = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");
+    static final String LEVEL        = LocaleLoader.getString("Scoreboard.Misc.Level");
+    static final String CURRENT_XP   = LocaleLoader.getString("Scoreboard.Misc.CurrentXP");
+    static final String REMAINING_XP = LocaleLoader.getString("Scoreboard.Misc.RemainingXP");
+    static final String OVERALL      = LocaleLoader.getString("Scoreboard.Misc.Overall");
+
+    static final OfflinePlayer labelLevel = Bukkit.getOfflinePlayer(LEVEL);
+    static final OfflinePlayer labelCurrentXp = Bukkit.getOfflinePlayer(CURRENT_XP);
+    static final OfflinePlayer labelRemainingXp = Bukkit.getOfflinePlayer(REMAINING_XP);
+    static final OfflinePlayer labelPowerLevel = Bukkit.getOfflinePlayer(POWER_LEVEL);
+    static final OfflinePlayer labelOverall = Bukkit.getOfflinePlayer(OVERALL);
 
     private final static List<String> SCOREBOARD_TASKS = new ArrayList<String>();
 
