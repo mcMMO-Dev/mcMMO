@@ -50,6 +50,25 @@ public class ScoreboardManager {
         PLAYER_SCOREBOARDS.remove(p.getName());
     }
 
+    public enum SidebarType {
+        NONE        (false, false, false),
+        SKILL_BOARD (true,  true,  false),
+        STATS_BOARD (true,  false, false),
+        RANK_BOARD  (false, false, true),
+        TOP_BOARD   (false, false, true),
+        ;
+
+        private final boolean listenLevelUp;
+        private final boolean listenXpUp;
+        private final boolean listenTimer;
+
+        private SidebarType(boolean a, boolean b, boolean c) {
+            listenLevelUp = a;
+            listenXpUp = b;
+            listenTimer = c;
+        }
+    }
+
     public static void enablePowerLevelDisplay(Player player) {
         if (!Config.getInstance().getPowerLevelsEnabled()) {
             return;
