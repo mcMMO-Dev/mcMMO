@@ -105,10 +105,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public void saveUser(PlayerProfile profile) {
         checkConnected();
         int userId = readId(profile.getPlayerName());
-        if (userId == 0) {
+        if (userId == -1) {
             newUser(profile.getPlayerName());
             userId = readId(profile.getPlayerName());
-            if (userId == 0) {
+            if (userId == -1) {
                 mcMMO.p.getLogger().log(Level.WARNING, "Failed to save user " + profile.getPlayerName());
                 return;
             }
@@ -307,7 +307,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setLong(2, System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
             statement.execute();
 
-            int id = statement.getGeneratedKeys().getInt("id");
+            int id = readId(playerName);
             writeMissingRows(id);
         }
         catch (SQLException ex) {
@@ -375,7 +375,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         int id = readId(playerName);
 
-        if (id == 0) {
+        if (id == -1) {
             // There is no such user
             if (create) {
                 newUser(playerName);
@@ -910,7 +910,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * @return the value in the first row / first field
      */
     private int readInt(PreparedStatement statement) {
-        int result = 0;
+        int result = -1;
 
         if (checkConnected()) {
             ResultSet resultSet = null;
@@ -1046,10 +1046,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * Retrieve the database id for a player
      *
      * @param playerName The name of the user to retrieve the id for
-     * @return the requested id or 0 if not found
+     * @return the requested id or -1 if not found
      */
     private int readId(String playerName) {
-        int id = 0;
+        int id = -1;
 
         try {
             PreparedStatement statement = connection.prepareStatement("SELECT id FROM " + tablePrefix + "users WHERE user = ?");
