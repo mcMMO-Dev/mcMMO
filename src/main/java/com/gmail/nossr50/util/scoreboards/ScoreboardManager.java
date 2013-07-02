@@ -42,12 +42,12 @@ public class ScoreboardManager {
 
     private final static List<String> SCOREBOARD_TASKS = new ArrayList<String>();
 
-    public static void setupPlayerScoreboard(String playerName) {
-        if (PLAYER_SCOREBOARDS.containsKey(playerName)) {
-            return;
-        }
+    public static void setupPlayer(Player p) {
+        PLAYER_SCOREBOARDS.put(p.getName(), mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
+    }
 
-        PLAYER_SCOREBOARDS.put(playerName, mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
+    public static void teardownPlayer(Player p) {
+        PLAYER_SCOREBOARDS.put(p.getName(), mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
     }
 
     public static void enablePowerLevelDisplay(Player player) {

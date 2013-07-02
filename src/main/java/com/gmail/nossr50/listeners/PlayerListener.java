@@ -278,7 +278,6 @@ public class PlayerListener implements Listener {
         }
 
         UserManager.addUser(player).actualizeRespawnATS();
-        ScoreboardManager.enablePowerLevelDisplay(player);
 
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
             Motd.displayAll(player);
