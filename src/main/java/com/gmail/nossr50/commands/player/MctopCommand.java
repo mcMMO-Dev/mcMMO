@@ -21,26 +21,26 @@ import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.google.common.collect.ImmutableList;
 
 public class MctopCommand implements TabExecutor {
-    private SkillType skill;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        SkillType skill;
         switch (args.length) {
             case 0:
-                display(1, "ALL", sender, command);
+                display(1, null, sender, command);
                 return true;
 
             case 1:
                 if (StringUtils.isInt(args[0])) {
-                    display(Math.abs(Integer.parseInt(args[0])), "ALL", sender, command);
+                    display(Math.abs(Integer.parseInt(args[0])), null, sender, command);
                     return true;
                 }
 
-                if (!extractSkill(sender, args[0])) {
+                skill = extractSkill(sender, args[0]);
+                if (skill == null) {
                     return true;
                 }
 
-                display(1, skill.toString(), sender, command);
+                display(1, skill, sender, command);
                 return true;
 
             case 2:
@@ -48,11 +48,12 @@ public class MctopCommand implements TabExecutor {
                     return true;
                 }
 
-                if (!extractSkill(sender, args[0])) {
+                skill = extractSkill(sender, args[0]);
+                if (skill == null) {
                     return true;
                 }
 
-                display(Math.abs(Integer.parseInt(args[1])), skill.toString(), sender, command);
+                display(Math.abs(Integer.parseInt(args[1])), skill, sender, command);
                 return true;
 
             default:
@@ -70,34 +71,43 @@ public class MctopCommand implements TabExecutor {
         }
     }
 
-    private void display(int page, String skill, CommandSender sender, Command command) {
-        if (!skill.equalsIgnoreCase("all") && !Permissions.mctop(sender, this.skill)) {
-            sender.sendMessage(command.getPermissionMessage());
-            return;
+    private void display(int page, SkillType skill, CommandSender sender, Command command) {
+        if (skill == null) {
+            if (sender instanceof Player && Config.getInstance().getTopUseBoard()) {
+                ScoreboardManager.enableTopPowerScoreboard((Player) sender, page);
+                if (!Config.getInstance().getTopUseChat()) return;
+            }
+            display(page, "ALL", sender);
         }
+        else {
+            if (!Permissions.mctop(sender, skill)) {
+                sender.sendMessage(command.getPermissionMessage());
+                return;
+            }
 
-        if (sender instanceof Player && Config.getInstance().getTopUseBoard()) {
-            ScoreboardManager.enableGlobalStatsScoreboard((Player) sender, skill, page);
-            if (!Config.getInstance().getTopUseChat()) return;
+            if (sender instanceof Player && Config.getInstance().getTopUseBoard()) {
+                ScoreboardManager.enableTopScoreboard((Player) sender, skill, page);
+                if (!Config.getInstance().getTopUseChat()) return;
+            }
+            display(page, skill.name(), sender);
         }
-        display(page, skill, sender);
     }
 
     private void display(int page, String query, CommandSender sender) {
         new MctopCommandAsyncTask(page, query, sender).runTaskAsynchronously(mcMMO.p);
     }
 
-    private boolean extractSkill(CommandSender sender, String skillName) {
+    private SkillType extractSkill(CommandSender sender, String skillName) {
         if (CommandUtils.isInvalidSkill(sender, skillName)) {
-            return false;
+            return null;
         }
 
-        skill = SkillType.getSkill(skillName);
+        SkillType skill = SkillType.getSkill(skillName);
 
         if (CommandUtils.isChildSkill(sender, skill)) {
-            return false;
+            return null;
         }
 
-        return true;
+        return skill;
     }
 }
