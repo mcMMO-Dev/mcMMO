@@ -7,6 +7,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
+import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 
 public class ScoreboardListeners implements Listener {
@@ -28,6 +29,11 @@ public class ScoreboardListeners implements Listener {
 
     @EventHandler
     public void onPlayerLevelUp(McMMOPlayerLevelUpEvent e) {
+        ScoreboardManager.handleLevelUp(e.getPlayer(), e.getSkill());
+    }
 
+    @EventHandler
+    public void onPlayerXp(McMMOPlayerXpGainEvent e) {
+        ScoreboardManager.handleXp(e.getPlayer(), e.getSkill());
     }
 }

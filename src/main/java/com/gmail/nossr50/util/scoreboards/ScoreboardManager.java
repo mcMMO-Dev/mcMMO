@@ -99,6 +99,33 @@ public class ScoreboardManager {
         }
     }
 
+    public static void handleLevelUp(Player player, SkillType skill) {
+        // Selfboards
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+        if (wrapper.sidebarType == SidebarType.SKILL_BOARD && wrapper.targetSkill == skill) {
+            wrapper.updateSidebar();
+        }
+        else if (wrapper.sidebarType == SidebarType.STATS_BOARD) {
+            wrapper.updateSidebar();
+        }
+
+        // Otherboards
+        String playerName = player.getName();
+        for (ScoreboardWrapper w : PLAYER_SCOREBOARDS.values()) {
+            if (w.sidebarType == SidebarType.STATS_BOARD && w.targetPlayer == playerName) {
+                wrapper.updateSidebar();
+            }
+        }
+    }
+
+    public static void handleXp(Player player, SkillType skill) {
+        // Selfboards
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+        if (wrapper.sidebarType == SidebarType.SKILL_BOARD && wrapper.targetSkill == skill) {
+            wrapper.updateSidebar();
+        }
+    }
+
     public static void enablePowerLevelDisplay(Player player) {
         if (!Config.getInstance().getPowerLevelsEnabled()) {
             return;
