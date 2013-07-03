@@ -1,15 +1,14 @@
 package com.gmail.nossr50.util.scoreboards;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
@@ -20,6 +19,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.runnables.scoreboards.ScoreboardChangeTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
@@ -29,6 +29,7 @@ public class ScoreboardWrapper {
     // Initialization variables
     public final String playerName;
     public final Scoreboard board;
+    public final Object oldBoardLock = new Object();
 
     // Internal usage variables (should exist)
     public SidebarType sidebarType;
@@ -41,6 +42,8 @@ public class ScoreboardWrapper {
     public SkillType targetSkill = null;
     public PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
+
+    public BukkitTask revertTask;
 
     private ScoreboardWrapper(String playerName, Scoreboard s) {
         this.playerName = playerName;
@@ -59,7 +62,11 @@ public class ScoreboardWrapper {
      */
     public void setOldScoreboard() {
         Player player = Bukkit.getPlayerExact(playerName);
-        Validate.notNull(player);
+        if (player == null) {
+            ScoreboardManager.cleanup(this);
+            return;
+        }
+
         Scoreboard old = player.getScoreboard();
         if (old == board) { // Already displaying it
             if (oldBoard == null) {
@@ -75,10 +82,68 @@ public class ScoreboardWrapper {
         }
     }
 
-    public void showBoard() {
+    public void showBoardWithNoRevert() {
         Player player = Bukkit.getPlayerExact(playerName);
-        Validate.notNull(player);
+        if (player == null) {
+            ScoreboardManager.cleanup(this);
+            return;
+        }
+
+        if (revertTask != null) {
+            revertTask.cancel();
+        }
         player.setScoreboard(board);
+        revertTask = null;
+    }
+
+    public void showBoardAndScheduleRevert(int ticks) {
+        Player player = Bukkit.getPlayerExact(playerName);
+        if (player == null) {
+            ScoreboardManager.cleanup(this);
+            return;
+        }
+
+        if (revertTask != null) {
+            revertTask.cancel();
+        }
+        player.setScoreboard(board);
+        revertTask = new ScoreboardChangeTask(this).runTaskLater(mcMMO.p, ticks);
+    }
+
+    public void tryRevertBoard() {
+        Player player = Bukkit.getPlayerExact(playerName);
+        if (player == null) {
+            ScoreboardManager.cleanup(this);
+            return;
+        }
+
+        if (oldBoard != null) {
+            if (player.getScoreboard() == board) {
+                player.setScoreboard(oldBoard);
+                oldBoard = null;
+            }
+            else {
+                mcMMO.p.debug("Not reverting scoreboard for " + playerName + " - scoreboard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
+            }
+        }
+        else {
+            // Was already reverted
+        }
+
+        if (revertTask != null) {
+            revertTask.cancel();
+            revertTask = null;
+        }
+    }
+
+    public boolean isBoardShown() {
+        Player player = Bukkit.getPlayerExact(playerName);
+        if (player == null) {
+            ScoreboardManager.cleanup(this);
+            return false;
+        }
+
+        return player.getScoreboard() == board;
     }
 
     // Board Type Changing 'API' methods
@@ -199,9 +264,14 @@ public class ScoreboardWrapper {
             return;
         }
 
-        McMMOPlayer mcPlayer = UserManager.getPlayer(playerName);
+        Player bukkitPlayer = Bukkit.getPlayerExact(playerName);
+        if (bukkitPlayer == null) {
+            ScoreboardManager.cleanup(this);
+            return;
+        }
+
+        McMMOPlayer mcPlayer = UserManager.getPlayer(bukkitPlayer);
         PlayerProfile profile = mcPlayer.getProfile();
-        Player bukkitPlayer = mcPlayer.getPlayer();
         Server server = Bukkit.getServer();
 
         switch (sidebarType) {

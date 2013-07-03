@@ -5,23 +5,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardWrapper;
 
 public class ScoreboardChangeTask extends BukkitRunnable {
-    private Player player;
-    private Scoreboard oldScoreboard;
+    private ScoreboardWrapper wrapper;
 
-    public ScoreboardChangeTask(Player player, Scoreboard oldScoreboard) {
-        this.player = player;
-        this.oldScoreboard = oldScoreboard;
+    public ScoreboardChangeTask(ScoreboardWrapper wrapper) {
+        this.wrapper = wrapper;
     }
 
     @Override
     public void run() {
-        if (player.isOnline()) {
-            player.setScoreboard(oldScoreboard);
-            ScoreboardManager.enablePowerLevelDisplay(player);
-        }
-
-        ScoreboardManager.clearPendingTask(player.getName());
+        wrapper.tryRevertBoard();
     }
 }

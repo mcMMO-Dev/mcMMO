@@ -71,7 +71,17 @@ public class ScoreboardManager {
     }
 
     public static void teardownPlayer(Player p) {
-        PLAYER_SCOREBOARDS.remove(p.getName());
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.remove(p.getName());
+        if (wrapper.revertTask != null) {
+            wrapper.revertTask.cancel();
+        }
+    }
+
+    public static void cleanup(ScoreboardWrapper wrapper) {
+        PLAYER_SCOREBOARDS.remove(wrapper.playerName);
+        if (wrapper.revertTask != null) {
+            wrapper.revertTask.cancel();
+        }
     }
 
     public enum SidebarType {
@@ -125,9 +135,8 @@ public class ScoreboardManager {
 
         wrapper.setOldScoreboard();
         wrapper.setTypeSkill(skill);
-        wrapper.showBoard();
 
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getSkillScoreboardTime());
+        changeScoreboard(wrapper, Config.getInstance().getSkillScoreboardTime());
     }
 
     public static void enablePlayerStatsScoreboard(McMMOPlayer mcMMOPlayer) {
@@ -136,9 +145,8 @@ public class ScoreboardManager {
 
         wrapper.setOldScoreboard();
         wrapper.setTypeSelfStats();
-        wrapper.showBoard();
 
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcstatsScoreboardTime());
+        changeScoreboard(wrapper, Config.getInstance().getStatsScoreboardTime());
     }
 
     public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
@@ -146,9 +154,8 @@ public class ScoreboardManager {
 
         wrapper.setOldScoreboard();
         wrapper.setTypeInspectStats(targetProfile);
-        wrapper.showBoard();
 
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getInspectScoreboardTime());
+        changeScoreboard(wrapper, Config.getInstance().getInspectScoreboardTime());
     }
 
     public static void showPlayerRankScoreboard(Player bukkitPlayer, Map<SkillType, Integer> rank) {
@@ -157,9 +164,8 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeSelfRank();
         wrapper.acceptRankData(rank);
-        wrapper.showBoard();
 
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcrankScoreboardTime());
+        changeScoreboard(wrapper, Config.getInstance().getRankScoreboardTime());
     }
 
     public static void showPlayerRankScoreboardOthers(Player bukkitPlayer, String targetName, Map<SkillType, Integer> rank) {
@@ -168,9 +174,8 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeInspectRank(targetName);
         wrapper.acceptRankData(rank);
-        wrapper.showBoard();
 
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcrankScoreboardTime());
+        changeScoreboard(wrapper, Config.getInstance().getRankScoreboardTime());
     }
 
     public static void showTopScoreboard(Player player, SkillType skill, int pageNumber, List<PlayerStat> stats) {
@@ -179,9 +184,8 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeTop(skill, pageNumber);
         wrapper.acceptLeaderboardData(stats);
-        wrapper.showBoard();
 
-        changeScoreboard(player, oldScoreboard, GLOBAL_STATS_SCOREBOARD, Config.getInstance().getMctopScoreboardTime());
+        changeScoreboard(wrapper, Config.getInstance().getTopScoreboardTime());
     }
 
     public static void showTopPowerScoreboard(Player player, int pageNumber, List<PlayerStat> stats) {
@@ -190,23 +194,12 @@ public class ScoreboardManager {
         wrapper.setOldScoreboard();
         wrapper.setTypeTopPower(pageNumber);
         wrapper.acceptLeaderboardData(stats);
-        wrapper.showBoard();
 
-        changeScoreboard(player, oldScoreboard, GLOBAL_STATS_SCOREBOARD, Config.getInstance().getMctopScoreboardTime());
+        changeScoreboard(wrapper, Config.getInstance().getTopScoreboardTime());
     }
 
-    private static void changeScoreboard(Player player, Scoreboard oldScoreboard, Scoreboard newScoreboard, int displayTime) {
-        if (oldScoreboard != newScoreboard) {
-            String playerName = player.getName();
-
-            player.setScoreboard(newScoreboard);
-            enablePowerLevelDisplay(player);
-
-            if (displayTime != -1 && !SCOREBOARD_TASKS.contains(playerName)) {
-                new ScoreboardChangeTask(player, oldScoreboard).runTaskLater(mcMMO.p, displayTime * Misc.TICK_CONVERSION_FACTOR);
-                SCOREBOARD_TASKS.add(playerName);
-            }
-        }
+    private static void changeScoreboard(ScoreboardWrapper wrapper, int displayTime) {
+        wrapper.showBoardAndScheduleRevert(displayTime);
     }
 
     public static void clearPendingTask(String playerName) {
