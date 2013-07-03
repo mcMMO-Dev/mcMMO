@@ -28,12 +28,11 @@ General:
     Config_Update_Overwrite: true
 
 Scoreboards:
-    # Allow players to keep the informational scoreboards up indefinitely
-    Allow_Keep: true
-    
     # What commands should mcMMO use scoreboards for, and which should it send chat output for?
     # Setting both print and board to false is not recommended, as it effectively disables the
     # command without cutting out any of the processing required.
+    # Display_Time is the time in seconds for each scoreboard type to stay up before reverting.
+    # If it is set to -1, the scoreboards must be dismissed manually with /mcscoreboard clear.
     Commands:
         # The /mcrank command, which shows your rank in each skill (i.e. how far from the top you are).
         Rank:
@@ -50,24 +49,25 @@ Scoreboards:
         Inspect:
             Print: true
             Board: true
-            Display_Time: 25
+            Display_Time: 10
         # The /<skill> commands, e.g. /mining, /repair
         # The print version is only a few lines.
         Skill:
             Print: false
             Board: true
-            Display_Time: 30
+            Display_Time: 10
         # The /mctop <skill|all> command, which shows the top players on the server.
         # The print version is recommended, so that players can scroll up and read it again without reissuing the command.
         Top:
             Print: true
             Board: true
-            Display_Time: 15
-    
+            Display_Time: 10
     # Should mcMMO show players' power level below their names?
     # This is automatically disabled for Spout users, as they already
     # get the information through Spout.
     Power_Level_Tags: false
+    # Allow players to keep the informational scoreboards up indefinitely
+    Allow_Keep: true
 
 Mob_Healthbar:
     # Default display for mob health bars - HEARTS, BAR, or DISABLED

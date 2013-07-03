@@ -30,6 +30,8 @@ public class ScoreboardWrapper {
     public final String playerName;
     public final Scoreboard board;
     public final Object oldBoardLock = new Object();
+    public boolean tippedKeep = false;
+    public boolean tippedClear = false;
 
     // Internal usage variables (should exist)
     public SidebarType sidebarType;
@@ -108,6 +110,15 @@ public class ScoreboardWrapper {
         }
         player.setScoreboard(board);
         revertTask = new ScoreboardChangeTask(this).runTaskLater(mcMMO.p, ticks);
+
+        if (!tippedKeep) {
+            tippedKeep = true;
+            player.sendMessage(LocaleLoader.getString("Scoreboard.Tip.Mcboard.Keep"));
+        }
+        else if (!tippedClear) {
+            tippedClear = true;
+            player.sendMessage(LocaleLoader.getString("Scoreboard.Tip.Mcboard.Clear"));
+        }
     }
 
     public void tryRevertBoard() {
@@ -272,7 +283,6 @@ public class ScoreboardWrapper {
 
         McMMOPlayer mcPlayer = UserManager.getPlayer(bukkitPlayer);
         PlayerProfile profile = mcPlayer.getProfile();
-        Server server = Bukkit.getServer();
 
         switch (sidebarType) {
         case NONE:
