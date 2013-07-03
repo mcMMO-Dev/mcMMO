@@ -30,8 +30,12 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (chat) displayChat();
-        if (board) displayBoard();
+        if (chat) {
+            displayChat();
+        }
+        if (board) {
+            displayBoard();
+        }
     }
 
     public void displayChat() {

@@ -33,8 +33,12 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
     @Override
     public void run() {
         sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
-        if (chat) displayChat();
-        if (board) displayBoard();
+        if (chat) {
+            displayChat();
+        }
+        if (board) {
+            displayBoard();
+        }
     }
 
     public void displayChat() {
