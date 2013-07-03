@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -15,7 +14,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
+import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -50,7 +50,7 @@ public class McscoreboardCommand implements TabExecutor {
                         return true;
                     }
 
-                    ScoreboardManager.showPlayerRankScoreboard(player);
+                    new McrankCommandAsyncTask(player.getName(), player, true, false).runTaskAsynchronously(mcMMO.p);
                 }
                 else if (args[0].equalsIgnoreCase("stats")) {
                     if (!Config.getInstance().getStatsUseBoard()) {
@@ -66,7 +66,7 @@ public class McscoreboardCommand implements TabExecutor {
                         return true;
                     }
 
-                    ScoreboardManager.enableTopPowerScoreboard(player, 1);
+                    new MctopCommandAsyncTask(1, null, player, true, false).runTaskAsynchronously(mcMMO.p);
                 }
                 else {
                     return false;
@@ -82,7 +82,7 @@ public class McscoreboardCommand implements TabExecutor {
                     }
 
                     if (StringUtils.isInt(args[1])) {
-                        ScoreboardManager.enableTopPowerScoreboard(player, Math.abs(Integer.parseInt(args[1])));
+                        new MctopCommandAsyncTask(Math.abs(Integer.parseInt(args[1])), null, player, true, false).runTaskAsynchronously(mcMMO.p);
                         return true;
                     }
 
@@ -91,7 +91,7 @@ public class McscoreboardCommand implements TabExecutor {
                     }
 
                     skill = SkillType.getSkill(args[1]);
-                    ScoreboardManager.enableTopScoreboard(player, skill, 1);
+                    new MctopCommandAsyncTask(1, skill, player, true, false).runTaskAsynchronously(mcMMO.p);
                 }
                 else if (args[0].equalsIgnoreCase("rank")) {
                     if (!Config.getInstance().getRankUseBoard()) {
@@ -112,7 +112,7 @@ public class McscoreboardCommand implements TabExecutor {
                     else if (CommandUtils.inspectOffline(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false), Permissions.mcrankOffline(sender))) {
                         return true;
                     }
-                    ScoreboardManager.enablePlayerRankScoreboardOthers(player, playerName);
+                    new McrankCommandAsyncTask(playerName, player, true, false).runTaskAsynchronously(mcMMO.p);
                 }
                 else {
                     return false;
@@ -139,7 +139,7 @@ public class McscoreboardCommand implements TabExecutor {
                 }
 
                 skill = SkillType.getSkill(args[1]);
-                ScoreboardManager.enableTopScoreboard(player, skill, Math.abs(Integer.parseInt(args[2])));
+                new MctopCommandAsyncTask(Math.abs(Integer.parseInt(args[2])), skill, player, true, false).runTaskAsynchronously(mcMMO.p);
 
                 return true;
 

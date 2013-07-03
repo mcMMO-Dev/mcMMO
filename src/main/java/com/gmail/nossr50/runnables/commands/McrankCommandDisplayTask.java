@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables.commands;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.command.CommandSender;

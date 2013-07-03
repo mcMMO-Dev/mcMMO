@@ -72,9 +72,9 @@ public interface DatabaseManager {
      *
      * @param playerName The name of the player to load from the database
      * @param createNew Whether to create a new record if the player is not
-     *          found
+     *            found
      * @return The player's data, or an unloaded PlayerProfile if not found
-     *          and createNew is false
+     *         and createNew is false
      */
     public PlayerProfile loadPlayerProfile(String playerName, boolean createNew);
 
