@@ -67,7 +67,7 @@ public class ScoreboardWrapper {
     }
 
     public void doSidebarUpdateSoon() {
-        if (updateTask != null) {
+        if (updateTask == null) {
             updateTask = new ScoreboardQuickUpdate(this).runTaskLater(mcMMO.p, 2L); // Wait two tick, to avoid task floods
         }
     }
