@@ -6,6 +6,7 @@ import java.util.Map;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public interface DatabaseManager {
     // One month in milliseconds
@@ -17,7 +18,8 @@ public interface DatabaseManager {
     public void purgePowerlessUsers();
 
     /**
-     * Purge users who haven't logged on in over a certain time frame from the database.
+     * Purge users who haven't logged on in over a certain time frame from the
+     * database.
      */
     public void purgeOldUsers();
 
@@ -37,22 +39,26 @@ public interface DatabaseManager {
     public void saveUser(PlayerProfile profile);
 
     /**
-    * Retrieve leaderboard info.
-    *
-    * @param skillName The skill to retrieve info on
-    * @param pageNumber Which page in the leaderboards to retrieve
-    * @param statsPerPage The number of stats per page
-    * @return the requested leaderboard information
-    */
+     * Retrieve leaderboard info.
+     *
+     * @param skillName The skill to retrieve info on
+     * @param pageNumber Which page in the leaderboards to retrieve
+     * @param statsPerPage The number of stats per page
+     * @return the requested leaderboard information
+     */
     public List<PlayerStat> readLeaderboard(String skillName, int pageNumber, int statsPerPage);
 
     /**
      * Retrieve rank info.
+     * <p>
+     * The mapping for a given non-child SkillType is the player's rank in
+     * that skill, and the mapping for null is the player's rank in total
+     * power level.
      *
      * @param playerName The name of the user to retrieve the rankings for
      * @return the requested rank information
      */
-    public Map<String, Integer> readRank(String playerName);
+    public Map<SkillType, Integer> readRank(String playerName);
 
     /**
      * Add a new user to the database.
@@ -66,9 +72,9 @@ public interface DatabaseManager {
      *
      * @param playerName The name of the player to load from the database
      * @param createNew Whether to create a new record if the player is not
-     *          found
+     *            found
      * @return The player's data, or an unloaded PlayerProfile if not found
-     *          and createNew is false
+     *         and createNew is false
      */
     public PlayerProfile loadPlayerProfile(String playerName, boolean createNew);
 

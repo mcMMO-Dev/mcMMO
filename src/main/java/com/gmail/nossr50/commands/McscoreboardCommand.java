@@ -1,6 +1,7 @@
 package com.gmail.nossr50.commands;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
@@ -11,7 +12,12 @@ import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
+import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -28,6 +34,7 @@ public class McscoreboardCommand implements TabExecutor {
         }
 
         Player player = (Player) sender;
+        SkillType skill;
 
         switch (args.length) {
             case 0:
@@ -36,33 +43,35 @@ public class McscoreboardCommand implements TabExecutor {
 
             case 1:
                 if (args[0].equalsIgnoreCase("clear")) {
-                    clearScoreboard(player);
+                    ScoreboardManager.clearBoard(player.getName());
+                }
+                else if (args[0].equalsIgnoreCase("keep")) {
+                    ScoreboardManager.keepBoard(player.getName());
+                    player.sendMessage(LocaleLoader.getString("Scoreboard.Tip.Mcboard.Clear"));
                 }
                 else if (args[0].equalsIgnoreCase("rank")) {
-                    if (!Config.getInstance().getMcrankScoreboardEnabled()) {
-                        sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
+                    if (!Config.getInstance().getRankUseBoard()) {
+                        player.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                         return true;
                     }
 
-                    ScoreboardManager.setupPlayerScoreboard(player.getName());
-                    ScoreboardManager.enablePlayerRankScoreboard(player);
+                    new McrankCommandAsyncTask(player.getName(), player, true, false).runTaskAsynchronously(mcMMO.p);
                 }
                 else if (args[0].equalsIgnoreCase("stats")) {
-                    if (!Config.getInstance().getMcstatsScoreboardsEnabled()) {
-                        sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
+                    if (!Config.getInstance().getStatsUseBoard()) {
+                        player.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                         return true;
                     }
 
-                    ScoreboardManager.setupPlayerScoreboard(player.getName());
                     ScoreboardManager.enablePlayerStatsScoreboard(UserManager.getPlayer(player));
                 }
                 else if (args[0].equalsIgnoreCase("top")) {
-                    if (!Config.getInstance().getMctopScoreboardEnabled()) {
-                        sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
+                    if (!Config.getInstance().getTopUseBoard()) {
+                        player.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                         return true;
                     }
 
-                    ScoreboardManager.enableGlobalStatsScoreboard(player, "all", 1);
+                    new MctopCommandAsyncTask(1, null, player, true, false).runTaskAsynchronously(mcMMO.p);
                 }
                 else {
                     return false;
@@ -71,25 +80,49 @@ public class McscoreboardCommand implements TabExecutor {
                 return true;
 
             case 2:
-                if (!args[0].equalsIgnoreCase("top")) {
+                if (args[0].equalsIgnoreCase("top")) {
+                    if (!Config.getInstance().getTopUseBoard()) {
+                        player.sendMessage("This scoreboard is not enabled."); //TODO: Localize
+                        return true;
+                    }
+
+                    if (StringUtils.isInt(args[1])) {
+                        new MctopCommandAsyncTask(Math.abs(Integer.parseInt(args[1])), null, player, true, false).runTaskAsynchronously(mcMMO.p);
+                        return true;
+                    }
+
+                    if (CommandUtils.isInvalidSkill(player, args[1])) {
+                        return true;
+                    }
+
+                    skill = SkillType.getSkill(args[1]);
+                    new MctopCommandAsyncTask(1, skill, player, true, false).runTaskAsynchronously(mcMMO.p);
+                }
+                else if (args[0].equalsIgnoreCase("rank")) {
+                    if (!Config.getInstance().getRankUseBoard()) {
+                        player.sendMessage("This scoreboard is not enabled."); //TODO: Localize
+                        return true;
+                    }
+
+                    String playerName = args[1];
+                    McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
+
+                    if (mcMMOPlayer != null) {
+                        playerName = mcMMOPlayer.getPlayer().getName();
+
+                        if (CommandUtils.tooFar(sender, mcMMOPlayer.getPlayer(), Permissions.mcrankFar(sender))) {
+                            return true;
+                        }
+                    }
+                    else if (CommandUtils.inspectOffline(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false), Permissions.mcrankOffline(sender))) {
+                        return true;
+                    }
+                    new McrankCommandAsyncTask(playerName, player, true, false).runTaskAsynchronously(mcMMO.p);
+                }
+                else {
                     return false;
                 }
 
-                if (!Config.getInstance().getMctopScoreboardEnabled()) {
-                    sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
-                    return true;
-                }
-
-                if (StringUtils.isInt(args[1])) {
-                    ScoreboardManager.enableGlobalStatsScoreboard(player, "all", Math.abs(Integer.parseInt(args[1])));
-                    return true;
-                }
-
-                if (CommandUtils.isInvalidSkill(sender, args[1])) {
-                    return true;
-                }
-
-                ScoreboardManager.enableGlobalStatsScoreboard(player, args[1], 1);
                 return true;
 
             case 3:
@@ -97,20 +130,22 @@ public class McscoreboardCommand implements TabExecutor {
                     return false;
                 }
 
-                if (!Config.getInstance().getMctopScoreboardEnabled()) {
-                    sender.sendMessage("This scoreboard is not enabled."); //TODO: Localize
+                if (!Config.getInstance().getTopUseBoard()) {
+                    player.sendMessage("This scoreboard is not enabled."); //TODO: Localize
                     return true;
                 }
 
-                if (CommandUtils.isInvalidSkill(sender, args[1])) {
+                if (CommandUtils.isInvalidSkill(player, args[1])) {
                     return true;
                 }
 
-                if (CommandUtils.isInvalidInteger(sender, args[2])) {
+                if (CommandUtils.isInvalidInteger(player, args[2])) {
                     return true;
                 }
 
-                ScoreboardManager.enableGlobalStatsScoreboard(player, args[1], Math.abs(Integer.parseInt(args[2])));
+                skill = SkillType.getSkill(args[1]);
+                new MctopCommandAsyncTask(Math.abs(Integer.parseInt(args[2])), skill, player, true, false).runTaskAsynchronously(mcMMO.p);
+
                 return true;
 
             default:
@@ -120,6 +155,10 @@ public class McscoreboardCommand implements TabExecutor {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        if (!(sender instanceof Player)) {
+            return ImmutableList.of();
+        }
+        Player player = (Player) sender;
         switch (args.length) {
             case 1:
                 return StringUtil.copyPartialMatches(args[0], SCOREBOARD_TYPES, new ArrayList<String>(SCOREBOARD_TYPES.size()));
@@ -127,7 +166,23 @@ public class McscoreboardCommand implements TabExecutor {
                 if (args[0].equalsIgnoreCase("top")) {
                     return StringUtil.copyPartialMatches(args[1], SkillType.SKILL_NAMES, new ArrayList<String>(SkillType.SKILL_NAMES.size()));
                 }
-                // Fallthrough
+                else if (args[0].equalsIgnoreCase("rank")) {
+                    // Copied from Command.tabComplete()
+
+                    String lastWord = args[args.length - 1];
+
+                    ArrayList<String> matchedPlayers = new ArrayList<String>();
+                    for (Player mplayer : sender.getServer().getOnlinePlayers()) {
+                        String name = mplayer.getName();
+                        if (player.canSee(player) && StringUtil.startsWithIgnoreCase(name, lastWord)) {
+                            matchedPlayers.add(name);
+                        }
+                    }
+
+                    Collections.sort(matchedPlayers, String.CASE_INSENSITIVE_ORDER);
+                    return matchedPlayers;
+                }
+                // fallthrough;
 
             default:
                 return ImmutableList.of();

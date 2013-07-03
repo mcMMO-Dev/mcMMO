@@ -62,22 +62,29 @@ public class Config extends AutoUpdateConfigLoader {
     public int getMobHealthbarTime() { return config.getInt("Mob_Healthbar.Display_Time", 3); }
 
     /* Scoreboards */
-    public boolean getMcrankScoreboardEnabled() { return config.getBoolean("Scoreboards.Mcrank.Use", true); }
-    public int getMcrankScoreboardTime() { return config.getInt("Scoreboards.Mcrank.Display_Time", 10); }
+    public boolean getRankUseChat() { return config.getBoolean("Scoreboards.Commands.Rank.Print", false); }
+    public boolean getRankUseBoard() { return config.getBoolean("Scoreboards.Commands.Rank.Board", true); }
+    public int getRankScoreboardTime() { return config.getInt("Scoreboards.Commands.Rank.Display_Time", 10); }
 
-    public boolean getMcstatsScoreboardsEnabled() { return config.getBoolean("Scoreboards.Mcstats.Use", true); }
-    public int getMcstatsScoreboardTime() { return config.getInt("Scoreboards.Mcstats.Display_Time", 10); }
+    public boolean getStatsUseChat() { return config.getBoolean("Scoreboards.Commands.Stats.Print", true); }
+    public boolean getStatsUseBoard() { return config.getBoolean("Scoreboards.Commands.Stats.Board", true); }
+    public int getStatsScoreboardTime() { return config.getInt("Scoreboards.Commands.Stats.Display_Time", 10); }
 
-    public boolean getMctopScoreboardEnabled() { return config.getBoolean("Scoreboards.Mctop.Use", true); }
-    public int getMctopScoreboardTime() { return config.getInt("Scoreboards.Mctop.Display_Time", 10); }
+    public boolean getInspectUseChat() { return config.getBoolean("Scoreboards.Commands.Inspect.Print", true); }
+    public boolean getInspectUseBoard() { return config.getBoolean("Scoreboards.Commands.Inspect.Board", true); }
+    public int getInspectScoreboardTime() { return config.getInt("Scoreboards.Commands.Inspect.Display_Time", 25); }
 
-    public boolean getInspectScoreboardEnabled() { return config.getBoolean("Scoreboards.Inspect.Use", true); }
-    public int getInspectScoreboardTime() { return config.getInt("Scoreboards.Inspect.Display_Time", 10); }
+    public boolean getSkillUseChat() { return config.getBoolean("Scoreboards.Commands.Inspect.Print", false); }
+    public boolean getSkillUseBoard() { return config.getBoolean("Scoreboards.Commands.Inspect.Board", true); }
+    public int getSkillScoreboardTime() { return config.getInt("Scoreboards.Commands.Inspect.Display_Time", 30); }
 
-    public boolean getSkillScoreboardEnabled() { return config.getBoolean("Scoreboards.Skillname.Use", true); }
-    public int getSkillScoreboardTime() { return config.getInt("Scoreboards.Skillname.Display_Time", 10); }
+    public boolean getTopUseChat() { return config.getBoolean("Scoreboards.Commands.Inspect.Print", true); }
+    public boolean getTopUseBoard() { return config.getBoolean("Scoreboards.Commands.Inspect.Board", true); }
+    public int getTopScoreboardTime() { return config.getInt("Scoreboards.Commands.Inspect.Display_Time", 15); }
 
-    public boolean getPowerLevelsEnabled() { return config.getBoolean("Scoreboards.Power_Level.Use", false); }
+    public boolean getPowerLevelsEnabled() { return config.getBoolean("Scoreboards.Power_Level_Tags", false); }
+
+    public boolean getAllowKeepBoard() { return config.getBoolean("Scoreboards.Allow_Keep", true); }
 
     /* Database Purging */
     public int getPurgeInterval() { return config.getInt("Database_Purging.Purge_Interval", -1); }

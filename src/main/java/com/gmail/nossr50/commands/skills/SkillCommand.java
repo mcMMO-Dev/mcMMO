@@ -74,11 +74,10 @@ public abstract class SkillCommand implements TabExecutor {
                     player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
                     player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
 
-                    if (Config.getInstance().getSkillScoreboardEnabled()) {
-                        ScoreboardManager.setupPlayerScoreboard(player.getName());
+                    if (Config.getInstance().getSkillUseBoard()) {
                         ScoreboardManager.enablePlayerSkillScoreboard(mcMMOPlayer, skill);
                     }
-                    else {
+                    if (Config.getInstance().getSkillUseChat() || !Config.getInstance().getSkillUseBoard()) {
                         player.sendMessage(LocaleLoader.getString("Effects.Level", (int) skillValue, profile.getSkillXpLevel(skill), profile.getXpToLevel(skill)));
                     }
                 }
