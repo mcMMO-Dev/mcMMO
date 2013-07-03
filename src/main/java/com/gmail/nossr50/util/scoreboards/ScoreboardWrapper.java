@@ -20,6 +20,7 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.scoreboards.ScoreboardChangeTask;
+import com.gmail.nossr50.runnables.scoreboards.ScoreboardQuickUpdate;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
@@ -46,6 +47,7 @@ public class ScoreboardWrapper {
     public int leaderboardPage = -1;
 
     public BukkitTask revertTask;
+    public BukkitTask updateTask;
 
     private ScoreboardWrapper(String playerName, Scoreboard s) {
         this.playerName = playerName;
@@ -57,6 +59,12 @@ public class ScoreboardWrapper {
 
     public static ScoreboardWrapper create(Player p) {
         return new ScoreboardWrapper(p.getName(), mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
+    }
+
+    public void doSidebarUpdate() {
+        if (updateTask != null) {
+            updateTask = new ScoreboardQuickUpdate(this).runTaskLater(mcMMO.p, 1L); // Wait one tick, to avoid task floods
+        }
     }
 
     /**
@@ -271,6 +279,11 @@ public class ScoreboardWrapper {
      * depend on the update preferences of the SidebarType.
      */
     public void updateSidebar() {
+        try {
+            updateTask.cancel();
+        } catch (Throwable e) {} // catch NullPointerException + IllegalStateException + Error, Don't Care
+        updateTask = null;
+
         if (sidebarType == SidebarType.NONE) {
             return;
         }
