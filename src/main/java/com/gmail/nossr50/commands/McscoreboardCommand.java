@@ -14,6 +14,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
@@ -42,7 +43,11 @@ public class McscoreboardCommand implements TabExecutor {
 
             case 1:
                 if (args[0].equalsIgnoreCase("clear")) {
-                    clearScoreboard(player);
+                    ScoreboardManager.clearBoard(player.getName());
+                }
+                else if (args[0].equalsIgnoreCase("keep")) {
+                    ScoreboardManager.keepBoard(player.getName());
+                    player.sendMessage(LocaleLoader.getString("Scoreboard.Tip.Mcboard.Clear"));
                 }
                 else if (args[0].equalsIgnoreCase("rank")) {
                     if (!Config.getInstance().getRankUseBoard()) {

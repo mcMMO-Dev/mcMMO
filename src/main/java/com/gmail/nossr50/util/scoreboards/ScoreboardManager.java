@@ -225,7 +225,13 @@ public class ScoreboardManager {
         wrapper.showBoardAndScheduleRevert(displayTime * Misc.TICK_CONVERSION_FACTOR);
     }
 
-    public static void clearPendingTask(String playerName) {
-        SCOREBOARD_TASKS.remove(playerName);
+    public static void clearBoard(String playerName) {
+        PLAYER_SCOREBOARDS.get(playerName).tryRevertBoard();
+    }
+
+    public static void keepBoard(String playerName) {
+        if (Config.getInstance().getAllowKeepBoard()) {
+            PLAYER_SCOREBOARDS.get(playerName).cancelRevert();
+        }
     }
 }
