@@ -158,6 +158,11 @@ public class ScoreboardWrapper {
             revertTask.cancel();
             revertTask = null;
         }
+        sidebarType = SidebarType.NONE;
+        targetPlayer = null;
+        targetSkill = null;
+        targetProfile = null;
+        leaderboardPage = -1;
     }
 
     public boolean isBoardShown() {
