@@ -103,17 +103,17 @@ public class ScoreboardManager {
         // Selfboards
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
         if (wrapper.sidebarType == SidebarType.SKILL_BOARD && wrapper.targetSkill == skill) {
-            wrapper.updateSidebar();
+            wrapper.doSidebarUpdateSoon();
         }
         else if (wrapper.sidebarType == SidebarType.STATS_BOARD) {
-            wrapper.updateSidebar();
+            wrapper.doSidebarUpdateSoon();
         }
 
         // Otherboards
         String playerName = player.getName();
         for (ScoreboardWrapper w : PLAYER_SCOREBOARDS.values()) {
             if (w.sidebarType == SidebarType.STATS_BOARD && w.targetPlayer == playerName) {
-                wrapper.updateSidebar();
+                wrapper.doSidebarUpdateSoon();
             }
         }
     }
@@ -122,7 +122,7 @@ public class ScoreboardManager {
         // Selfboards
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
         if (wrapper.sidebarType == SidebarType.SKILL_BOARD && wrapper.targetSkill == skill) {
-            wrapper.updateSidebar();
+            wrapper.doSidebarUpdateSoon();
         }
     }
 

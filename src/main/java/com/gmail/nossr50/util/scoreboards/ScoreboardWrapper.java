@@ -6,7 +6,6 @@ import java.util.Map;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -46,7 +45,13 @@ public class ScoreboardWrapper {
     public PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
 
+    /**
+     * Is set to null when reverting has been disabled or is complete.
+     */
     public BukkitTask revertTask;
+    /**
+     * Set to null when appropriate to schedule again.
+     */
     public BukkitTask updateTask;
 
     private ScoreboardWrapper(String playerName, Scoreboard s) {
@@ -61,9 +66,9 @@ public class ScoreboardWrapper {
         return new ScoreboardWrapper(p.getName(), mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
     }
 
-    public void doSidebarUpdate() {
+    public void doSidebarUpdateSoon() {
         if (updateTask != null) {
-            updateTask = new ScoreboardQuickUpdate(this).runTaskLater(mcMMO.p, 1L); // Wait one tick, to avoid task floods
+            updateTask = new ScoreboardQuickUpdate(this).runTaskLater(mcMMO.p, 2L); // Wait two tick, to avoid task floods
         }
     }
 
@@ -163,6 +168,13 @@ public class ScoreboardWrapper {
         }
 
         return player.getScoreboard() == board;
+    }
+
+    public void cancelRevert() {
+        if (revertTask != null) {
+            revertTask.cancel();
+        }
+        revertTask = null;
     }
 
     // Board Type Changing 'API' methods
