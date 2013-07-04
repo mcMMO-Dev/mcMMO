@@ -262,6 +262,8 @@ public class PlayerListener implements Listener {
 
         /* GARBAGE COLLECTION */
         BleedTimerTask.bleedOut(player); // Bleed it out
+        UserManager.getPlayer(player).getProfile().save();
+        UserManager.remove(player.getName());
     }
 
     /**
