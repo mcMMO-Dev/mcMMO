@@ -270,22 +270,12 @@ public class PlayerListener implements Listener {
      * Start user data prefetch.
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void onFirstLogin(AsyncPlayerPreLoginEvent event) {
-        UserManager.prefetchUserData(event.getName());
+    public void onLoginStart(PlayerLoginEvent event) {
+        UserManager.prefetchUserData(event.getPlayer().getName());
     }
 
     /**
-     * Cancel user data prefetch if another plugin kicks them.
-     */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
-    public void onPreLoginComplete(AsyncPlayerPreLoginEvent event) {
-        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) {
-            UserManager.discardPrefetch(event.getName());
-        }
-    }
-
-    /**
-     * Cancel user data prefetch if they're banned or a plugin kicks them.
+     * Cancel user data prefetch if a plugin kicks them.
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
     public void onLoginComplete(PlayerLoginEvent event) {
