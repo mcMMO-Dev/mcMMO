@@ -30,6 +30,7 @@ public class PlayerProfile {
     private final Map<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>();   // Skill & Level
     private final Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
     private final Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
+    private boolean changed = false;
 
     public PlayerProfile(String playerName) {
         this.playerName = playerName;
@@ -69,7 +70,10 @@ public class PlayerProfile {
     }
 
     public void save() {
-        mcMMO.getDatabaseManager().saveUser(this);
+        if (changed) {
+            mcMMO.getDatabaseManager().saveUser(this);
+            changed = false;
+        }
     }
 
     public String getPlayerName() {
@@ -147,6 +151,8 @@ public class PlayerProfile {
     public void setSkillDATS(AbilityType abilityType, long DATS) {
         int wearsOff = (int) (DATS * .001D);
 
+        changed = true;
+
         skillsDATS.put(abilityType, wearsOff);
     }
 
@@ -154,6 +160,8 @@ public class PlayerProfile {
      * Reset all skill cooldowns.
      */
     public void resetCooldowns() {
+        changed = true;
+
         for (AbilityType ability : skillsDATS.keySet()) {
             skillsDATS.put(ability, 0);
         }
@@ -202,6 +210,8 @@ public class PlayerProfile {
             return;
         }
 
+        changed = true;
+
         skillsXp.put(skillType, skillsXp.get(skillType) - xp);
     }
 
@@ -215,6 +225,8 @@ public class PlayerProfile {
         if (skillType.isChildSkill()) {
             return;
         }
+
+        changed = true;
 
         skills.put(skillType, newValue);
         skillsXp.put(skillType, 0F);
@@ -231,6 +243,8 @@ public class PlayerProfile {
             return;
         }
 
+        changed = true;
+
         skills.put(skillType, skills.get(skillType) + levels);
         skillsXp.put(skillType, 0F);
     }
@@ -245,6 +259,8 @@ public class PlayerProfile {
         if (skillType.isChildSkill()) {
             return;
         }
+
+        changed = true;
 
         skillsXp.put(skillType, skillsXp.get(skillType) + experience);
     }
