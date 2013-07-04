@@ -89,10 +89,14 @@ public class McMMOPlayer {
     private boolean isUsingUnarmed;
 
     public McMMOPlayer(Player player) {
+        this(player, mcMMO.getDatabaseManager().loadPlayerProfile(player.getName(), true));
+    }
+
+    public McMMOPlayer(Player player, PlayerProfile profile) {
         String playerName = player.getName();
 
         this.player = player;
-        profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, true);
+        this.profile = profile;
         party = PartyManager.getPlayerParty(playerName);
 
         /*
