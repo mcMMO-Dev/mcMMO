@@ -15,12 +15,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -262,6 +264,34 @@ public class PlayerListener implements Listener {
 
         /* GARBAGE COLLECTION */
         BleedTimerTask.bleedOut(player); // Bleed it out
+    }
+
+    /**
+     * Start user data prefetch.
+     */
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onFirstLogin(AsyncPlayerPreLoginEvent event) {
+        UserManager.prefetchUserData(event.getName());
+    }
+
+    /**
+     * Cancel user data prefetch if another plugin kicks them.
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
+    public void onPreLoginComplete(AsyncPlayerPreLoginEvent event) {
+        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) {
+            UserManager.discardPrefetch(event.getName());
+        }
+    }
+
+    /**
+     * Cancel user data prefetch if they're banned or a plugin kicks them.
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = false)
+    public void onLoginComplete(PlayerLoginEvent event) {
+        if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) {
+            UserManager.discardPrefetch(event.getPlayer().getName());
+        }
     }
 
     /**
