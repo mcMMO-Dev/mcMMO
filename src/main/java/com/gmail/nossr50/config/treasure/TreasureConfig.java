@@ -25,13 +25,14 @@ import com.gmail.nossr50.datatypes.treasure.Treasure;
 public class TreasureConfig extends ConfigLoader {
     private static TreasureConfig instance;
 
-    public List<ExcavationTreasure> excavationFromDirt     = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromGrass    = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromSand     = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromGravel   = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromClay     = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromMycel    = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromSoulSand = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromDirt      = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromGrass     = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromSand      = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromGravel    = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromClay      = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromMycel     = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromSoulSand  = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromSnow      = new ArrayList<ExcavationTreasure>();
 
     public List<HylianTreasure> hylianFromBushes  = new ArrayList<HylianTreasure>();
     public List<HylianTreasure> hylianFromFlowers = new ArrayList<HylianTreasure>();
@@ -248,6 +249,10 @@ public class TreasureConfig extends ConfigLoader {
                     eTreasure.setDropsFromSoulSand();
                 }
 
+                if (config.getBoolean("Treasures." + treasureName + ".Drops_From.Snow", false)) {
+                    eTreasure.setDropsFromSnow();
+                }
+
                 if (config.getBoolean("Treasures." + treasureName + ".Drops_From.Bushes", false)) {
                     hTreasure.setDropsFromBushes();
                 }
@@ -436,6 +441,10 @@ public class TreasureConfig extends ConfigLoader {
 
                 if (eTreasure.getDropsFromSoulSand()) {
                     excavationFromSoulSand.add(eTreasure);
+                }
+
+                if (eTreasure.getDropsFromSnow()) {
+                    excavationFromSnow.add(eTreasure);
                 }
             }
         }

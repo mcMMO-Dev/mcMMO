@@ -180,6 +180,8 @@ public final class BlockUtils {
             case GRAVEL:
             case MYCEL:
             case SAND:
+            case SNOW:
+            case SNOW_BLOCK:
             case SOUL_SAND:
                 return true;
 

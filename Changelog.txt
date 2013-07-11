@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.4.07-dev
+ + Added snow to excavation
  ! Improved profile saving
  ! Updated localization files
 
