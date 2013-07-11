@@ -145,7 +145,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.5.2-R1.0</version>
+            <version>LATEST</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
