@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.4.07-dev
+ ! Updated localization files
 
 Version 1.4.06
  + Added "Ice Fishing" ability to Fishing
