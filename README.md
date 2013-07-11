@@ -5,9 +5,7 @@
 Our latest development builds are available [here](http://ci.mcmmo.info).
 
 ### Brief Description
-mcMMO takes core Minecraft game mechanics and expands them to add an extensive RPG experience, the goal of the project has always been a quality RPG experience. Everything in mcMMO is carefully thought out and is constantly improving. mcMMO adds eleven skills to train in and level in, while also offering a high level of customization for server admins. There are countless features, including custom sounds, graphical elements, and more added when running mcMMO in conjunction with Spout. I carefully read feedback and evaluate the mechanics of mcMMO in every update to provide an ever-evolving experience.
-
-If you want an original RPG experience like no other mod out there, mcMMO is for you.
+The goal of mcMMO is to take core Minecraft game mechanics and expand them into add an extensive and quality RPG experience. Everything in mcMMO has been carefully thought out and is constantly being improved upon. Currently, mcMMO adds thirteen unique skills to train and level in. Each of these skills is highly customizable through our configuration files, allowing server admins to tweak mcMMO to best suit the needs of his or her server. Additionally, when run in conjuction with SpoutPlugin, mcMMO also has a custom XP bar to allow for easy tracking of progress towards leveling up. Know that the mcMMO team is dedicated to providing an ever-evolving experience, and that we carefully read all feedback and bug reports in order to evaluate and balance the mechanics of mcMMO in every update.
 
 ## About the Team
 
@@ -41,7 +39,7 @@ The typical command used to build mcMMO is: mvn clean package install
 Required Libraries:
 * Spout API
 * JUnit
-* Metrics
+* EMetrics
 * Bukkit
 
 http://dev.bukkit.org/server-mods/mcmmo for more up to date information.
