@@ -379,11 +379,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             // There is no such user
             if (create) {
                 newUser(playerName);
-                return new PlayerProfile(playerName, true);
             }
-            else {
-                return new PlayerProfile(playerName, false);
-            }
+
+            return new PlayerProfile(playerName, create);
         }
         // There is such a user
         writeMissingRows(id);

@@ -17,22 +17,16 @@ public class MmoshowdbCommand implements TabExecutor {
         if (args.length != 0) {
             return false;
         }
-        else {
-            Class<?> clazz = DatabaseManagerFactory.getCustomDatabaseManagerClass();
-            if (clazz != null) {
-                sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", clazz.getName()));
-                return true;
-            }
-            else {
-                if (Config.getInstance().getUseMySQL()) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", "sql"));
-                }
-                else {
-                    sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", "flatfile"));
-                }
-                return true;
-            }
+
+        Class<?> clazz = DatabaseManagerFactory.getCustomDatabaseManagerClass();
+
+        if (clazz != null) {
+            sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", clazz.getName()));
+            return true;
         }
+
+        sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", (Config.getInstance().getUseMySQL() ? "sql" : "flatfile")));
+        return true;
     }
 
     @Override

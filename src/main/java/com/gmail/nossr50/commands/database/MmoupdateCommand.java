@@ -47,7 +47,7 @@ public class MmoupdateCommand implements TabExecutor {
                 else try {
                     @SuppressWarnings("unchecked")
                     Class<? extends DatabaseManager> clazz = (Class<? extends DatabaseManager>) Class.forName(oldType);
-                    oldDb = DatabaseManagerFactory.createCustomDatabaseManager((Class<? extends DatabaseManager>) clazz);
+                    oldDb = DatabaseManagerFactory.createCustomDatabaseManager(clazz);
 
                     oldType = clazz.getSimpleName(); // For pretty-printing; we have the database now
                 }
@@ -119,12 +119,7 @@ public class MmoupdateCommand implements TabExecutor {
             return DatabaseManagerFactory.getCustomDatabaseManagerClass().getSimpleName();
         }
 
-        if (Config.getInstance().getUseMySQL()) {
-            return "sql";
-        }
-        else {
-            return "flatfile";
-        }
+        return Config.getInstance().getUseMySQL() ? "sql" : "flatfile";
     }
 
     @Override
