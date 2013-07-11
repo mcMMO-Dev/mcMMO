@@ -7,6 +7,8 @@ Key:
   ! Change
   - Removal
 
+Version 1.4.07-dev
+
 Version 1.4.06
  + Added "Ice Fishing" ability to Fishing
  + Added global scoreboards to track skill rankings (display using /mctop)
