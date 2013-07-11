@@ -19,6 +19,7 @@ import com.gmail.nossr50.skills.child.FamilyTree;
 public class PlayerProfile {
     private final String playerName;
     private boolean loaded;
+    private boolean changed;
 
     /* HUDs */
     private HudType hudType;
@@ -30,7 +31,6 @@ public class PlayerProfile {
     private final Map<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>();   // Skill & Level
     private final Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
     private final Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
-    private boolean changed = false;
 
     public PlayerProfile(String playerName) {
         this.playerName = playerName;
@@ -70,10 +70,12 @@ public class PlayerProfile {
     }
 
     public void save() {
-        if (changed) {
-            mcMMO.getDatabaseManager().saveUser(this);
-            changed = false;
+        if (!changed) {
+            return;
         }
+
+        mcMMO.getDatabaseManager().saveUser(this);
+        changed = false;
     }
 
     public String getPlayerName() {
