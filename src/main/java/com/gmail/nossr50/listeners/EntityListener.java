@@ -124,7 +124,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        int damage = event.getDamage();
+        double damage = event.getDamage();
 
         if (damage <= 0) {
             return;
@@ -184,7 +184,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        int damage = event.getDamage();
+        double damage = event.getDamage();
 
         if (damage <= 0) {
             return;

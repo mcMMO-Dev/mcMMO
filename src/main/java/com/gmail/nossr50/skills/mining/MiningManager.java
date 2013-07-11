@@ -175,8 +175,8 @@ public class MiningManager extends SkillManager {
         return (float) (radius + getBlastRadiusModifier());
     }
 
-    public int processDemolitionsExpertise(int damage) {
-        return (int) (damage * ((100.0D - getBlastDamageModifier()) / 100.0D));
+    public double processDemolitionsExpertise(double damage) {
+        return damage * ((100.0D - getBlastDamageModifier()) / 100.0D);
     }
 
     /**

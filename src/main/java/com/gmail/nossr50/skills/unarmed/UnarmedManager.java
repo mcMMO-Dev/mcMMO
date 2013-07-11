@@ -95,8 +95,8 @@ public class UnarmedManager extends SkillManager {
         return false;
     }
 
-    public int berserkDamage(int damage) {
-        return (int) (damage * Unarmed.berserkDamageModifier);
+    public double berserkDamage(double damage) {
+        return damage * Unarmed.berserkDamageModifier;
     }
 
     /**
@@ -105,7 +105,7 @@ public class UnarmedManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage
      */
-    public int ironArmCheck(int damage) {
+    public double ironArmCheck(double damage) {
         int unarmedBonus = Math.min(3 + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
 
         return damage + unarmedBonus;

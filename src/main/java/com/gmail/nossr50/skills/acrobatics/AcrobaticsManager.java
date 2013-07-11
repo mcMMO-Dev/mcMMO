@@ -44,8 +44,8 @@ public class AcrobaticsManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    public int dodgeCheck(int damage) {
-        int modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
+    public double dodgeCheck(double damage) {
+        double modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
         Player player = getPlayer();
 
         if (!isFatal(modifiedDamage) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Acrobatics.dodgeMaxChance, Acrobatics.dodgeMaxBonusLevel)) {
@@ -57,7 +57,7 @@ public class AcrobaticsManager extends SkillManager {
 
             // Why do we check respawn cooldown here?
             if (System.currentTimeMillis() >= mcMMOPlayer.getRespawnATS() + Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS) {
-                applyXpGain(damage * Acrobatics.dodgeXpModifier);
+                applyXpGain((float) (damage * Acrobatics.dodgeXpModifier));
             }
 
             return modifiedDamage;
@@ -72,23 +72,23 @@ public class AcrobaticsManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    public int rollCheck(int damage) {
+    public double rollCheck(double damage) {
         Player player = getPlayer();
 
         if (player.isSneaking() && Permissions.gracefulRoll(player)) {
             return gracefulRollCheck(damage);
         }
 
-        int modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.rollThreshold);
+        double modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.rollThreshold);
 
         if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.rollMaxChance, Acrobatics.rollMaxBonusLevel)) {
             player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
-            applyXpGain(damage * Acrobatics.rollXpModifier);
+            applyXpGain((float) (damage * Acrobatics.rollXpModifier));
 
             return modifiedDamage;
         }
         else if (!isFatal(damage)) {
-            applyXpGain(damage * Acrobatics.fallXpModifier);
+            applyXpGain((float) (damage * Acrobatics.fallXpModifier));
         }
 
         return damage;
@@ -100,17 +100,17 @@ public class AcrobaticsManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    private int gracefulRollCheck(int damage) {
-        int modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
+    private double gracefulRollCheck(double damage) {
+        double modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
 
         if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.gracefulRollMaxChance, Acrobatics.gracefulRollMaxBonusLevel)) {
             getPlayer().sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
-            applyXpGain(damage * Acrobatics.rollXpModifier);
+            applyXpGain((float) (damage * Acrobatics.rollXpModifier));
 
             return modifiedDamage;
         }
         else if (!isFatal(damage)) {
-            applyXpGain(damage * Acrobatics.fallXpModifier);
+            applyXpGain((float) (damage * Acrobatics.fallXpModifier));
         }
 
         return damage;
@@ -120,7 +120,7 @@ public class AcrobaticsManager extends SkillManager {
         return (maxChance / maxLevel) * Math.min(getSkillLevel(), maxLevel) > Misc.getRandom().nextInt(activationChance);
     }
 
-    private boolean isFatal(int damage) {
+    private boolean isFatal(double damage) {
         return getPlayer().getHealth() - damage < 1;
     }
 }

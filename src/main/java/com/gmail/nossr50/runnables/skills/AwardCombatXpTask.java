@@ -11,7 +11,7 @@ public class AwardCombatXpTask extends BukkitRunnable {
     private double baseXp;
     private SkillType skillType;
     private LivingEntity target;
-    private int baseHealth;
+    private double baseHealth;
 
     public AwardCombatXpTask(McMMOPlayer mcMMOPlayer, SkillType skillType, double baseXp, LivingEntity target) {
         this.mcMMOPlayer = mcMMOPlayer;
@@ -23,8 +23,8 @@ public class AwardCombatXpTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        int health = target.getHealth();
-        int damage = baseHealth - health;
+        double health = target.getHealth();
+        double damage = baseHealth - health;
 
         // May avoid negative xp, we don't know what other plugins do with the entity health
         if (damage <= 0) {

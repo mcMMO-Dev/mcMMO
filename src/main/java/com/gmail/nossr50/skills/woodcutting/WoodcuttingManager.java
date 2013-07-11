@@ -103,10 +103,10 @@ public class WoodcuttingManager extends SkillManager {
         if (!Woodcutting.handleDurabilityLoss(treeFellerBlocks, player.getItemInHand())) {
             player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFeller.Splinter"));
 
-            int health = player.getHealth();
+            double health = player.getHealth();
 
             if (health > 1) {
-                CombatUtils.dealDamage(player, Misc.getRandom().nextInt(health - 1));
+                CombatUtils.dealDamage(player, Misc.getRandom().nextInt((int) (health - 1)));
             }
 
             return;

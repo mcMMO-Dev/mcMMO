@@ -46,7 +46,7 @@ import com.gmail.nossr50.util.player.UserManager;
 public final class CombatUtils {
     private CombatUtils() {}
 
-    private static void processSwordCombat(LivingEntity target, Player player, int damage) {
+    private static void processSwordCombat(LivingEntity target, Player player, double damage) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
 
@@ -317,7 +317,7 @@ public final class CombatUtils {
      * @param target LivingEntity which to attempt to damage
      * @param dmg Amount of damage to attempt to do
      */
-    public static void dealDamage(LivingEntity target, int dmg) {
+    public static void dealDamage(LivingEntity target, double dmg) {
         dealDamage(target, dmg, EntityDamageEvent.DamageCause.CUSTOM);
     }
 
@@ -328,7 +328,7 @@ public final class CombatUtils {
      * @param dmg Amount of damage to attempt to do
      * @param cause DamageCause to pass to damage event
      */
-    private static void dealDamage(LivingEntity target, int dmg, DamageCause cause) {
+    private static void dealDamage(LivingEntity target, double dmg, DamageCause cause) {
         if (Config.getInstance().getEventCallbackEnabled()) {
             EntityDamageEvent ede = new FakeEntityDamageEvent(target, cause, dmg);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
@@ -351,7 +351,7 @@ public final class CombatUtils {
      * @param dmg Amount of damage to attempt to do
      * @param attacker Player to pass to event as damager
      */
-    private static void dealDamage(LivingEntity target, int dmg, Player attacker) {
+    private static void dealDamage(LivingEntity target, double dmg, Player attacker) {
         if (Config.getInstance().getEventCallbackEnabled()) {
             EntityDamageEvent ede = new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
@@ -375,9 +375,9 @@ public final class CombatUtils {
      * @param damage The initial damage amount
      * @param type The type of skill being used
      */
-    public static void applyAbilityAoE(Player attacker, LivingEntity target, int damage, SkillType type) {
+    public static void applyAbilityAoE(Player attacker, LivingEntity target, double damage, SkillType type) {
         int numberOfTargets = Misc.getTier(attacker.getItemInHand()); // The higher the weapon tier, the more targets you hit
-        int damageAmount = Math.max(damage, 1);
+        double damageAmount = Math.max(damage, 1);
 
         for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
             if (numberOfTargets <= 0) {
@@ -565,7 +565,7 @@ public final class CombatUtils {
      * @param eventDamage The damage from the event the entity is involved in
      * @return true if the entity is invincible, false otherwise
      */
-    public static boolean isInvincible(LivingEntity entity, int eventDamage) {
+    public static boolean isInvincible(LivingEntity entity, double eventDamage) {
         /*
          * So apparently if you do more damage to a LivingEntity than its last damage int you bypass the invincibility.
          * So yeah, this is for that.

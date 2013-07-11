@@ -39,7 +39,7 @@ public final class MobHealthbarUtils {
      * @param target the targetted entity
      * @param damage damage done by the attack triggering this
      */
-    public static void handleMobHealthbars(Player player, LivingEntity target, int damage) {
+    public static void handleMobHealthbars(Player player, LivingEntity target, double damage) {
         if (!Permissions.mobHealthDisplay(player)) {
             return;
         }
@@ -91,10 +91,10 @@ public final class MobHealthbarUtils {
         }
     }
 
-    private static String createHealthDisplay(PlayerProfile profile, LivingEntity entity, int damage) {
-        int maxHealth = entity.getMaxHealth();
-        int currentHealth = Math.max(entity.getHealth() - damage, 0);
-        double healthPercentage = (currentHealth / (double) maxHealth) * 100.0D;
+    private static String createHealthDisplay(PlayerProfile profile, LivingEntity entity, double damage) {
+        double maxHealth = entity.getMaxHealth();
+        double currentHealth = Math.max(entity.getHealth() - damage, 0);
+        double healthPercentage = (currentHealth / maxHealth) * 100.0D;
 
         int fullDisplay = 0;
         ChatColor color = ChatColor.BLACK;
@@ -102,7 +102,7 @@ public final class MobHealthbarUtils {
 
         switch (profile.getMobHealthbarType()) {
             case HEARTS:
-                fullDisplay = Math.min(maxHealth / 2, 10);
+                fullDisplay = Math.min((int) (maxHealth / 2), 10);
                 color = ChatColor.DARK_RED;
                 symbol = "❤";
                 break;

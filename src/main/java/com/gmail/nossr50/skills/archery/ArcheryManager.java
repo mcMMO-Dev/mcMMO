@@ -68,7 +68,7 @@ public class ArcheryManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    public int dazeCheck(Player defender, int damage) {
+    public double dazeCheck(Player defender, double damage) {
         if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel)) {
             Location dazedLocation = defender.getLocation();
             dazedLocation.setPitch(90 - Misc.getRandom().nextInt(181));
@@ -96,9 +96,9 @@ public class ArcheryManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage
      */
-    public int skillShotCheck(int damage) {
+    public double skillShotCheck(double damage) {
         double damageBonusPercent = Math.min(((getSkillLevel() / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage);
-        int archeryBonus = (int) (damage * damageBonusPercent);
+        double archeryBonus = damage * damageBonusPercent;
 
         return damage + archeryBonus;
     }

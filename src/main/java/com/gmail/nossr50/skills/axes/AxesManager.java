@@ -55,8 +55,8 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage
      */
-    public int axeMasteryCheck(int damage) {
-        int axeBonus = Math.min(getSkillLevel() / (Axes.bonusDamageMaxBonusLevel / Axes.bonusDamageMaxBonus), Axes.bonusDamageMaxBonus);
+    public double axeMasteryCheck(double damage) {
+        double axeBonus = Math.min(getSkillLevel() / (Axes.bonusDamageMaxBonusLevel / Axes.bonusDamageMaxBonus), Axes.bonusDamageMaxBonus);
 
         return damage + axeBonus;
     }
@@ -68,17 +68,17 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    public int criticalHitCheck(LivingEntity target, int damage) {
+    public double criticalHitCheck(LivingEntity target, double damage) {
         if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Axes.criticalHitMaxChance, Axes.criticalHitMaxBonusLevel)) {
             getPlayer().sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
 
             if (target instanceof Player) {
                 ((Player) target).sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
 
-                return (int) (damage * Axes.criticalHitPVPModifier);
+                return damage * Axes.criticalHitPVPModifier;
             }
 
-            return (int) (damage * Axes.criticalHitPVEModifier);
+            return damage * Axes.criticalHitPVEModifier;
         }
 
         return damage;
@@ -111,7 +111,7 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    public int greaterImpactCheck(LivingEntity target, int damage) {
+    public double greaterImpactCheck(LivingEntity target, double damage) {
         if (Axes.greaterImpactChance > Misc.getRandom().nextInt(getActivationChance())) {
             Player player = getPlayer();
 
@@ -142,7 +142,7 @@ public class AxesManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      */
-    public void skullSplitterCheck(LivingEntity target, int damage) {
+    public void skullSplitterCheck(LivingEntity target, double damage) {
         CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Axes.skullSplitterModifier, skill);
     }
 }

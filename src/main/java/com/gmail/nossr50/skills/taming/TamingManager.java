@@ -84,14 +84,14 @@ public class TamingManager extends SkillManager {
      * @param wolf The wolf using the ability
      * @param damage The damage being absorbed by the wolf
      */
-    public void fastFoodService(Wolf wolf, int damage) {
+    public void fastFoodService(Wolf wolf, double damage) {
         if (Taming.fastFoodServiceActivationChance > Misc.getRandom().nextInt(getActivationChance())) {
 
-            int health = wolf.getHealth();
-            int maxHealth = wolf.getMaxHealth();
+            double health = wolf.getHealth();
+            double maxHealth = wolf.getMaxHealth();
 
             if (health < maxHealth) {
-                int newHealth = health + damage;
+                double newHealth = health + damage;
                 wolf.setHealth(Math.min(newHealth, maxHealth));
             }
         }
@@ -102,7 +102,7 @@ public class TamingManager extends SkillManager {
      *
      * @param event The event to modify
      */
-    public int gore(LivingEntity target, int damage) {
+    public double gore(LivingEntity target, double damage) {
         if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Taming.goreMaxChance, Taming.goreMaxBonusLevel)) {
             BleedTimerTask.add(target, Taming.goreBleedTicks);
 
@@ -150,7 +150,7 @@ public class TamingManager extends SkillManager {
         player.sendMessage(message);
     }
 
-    public void processEnvironmentallyAware(Wolf wolf, int damage) {
+    public void processEnvironmentallyAware(Wolf wolf, double damage) {
         if (damage > wolf.getHealth()) {
             return;
         }

@@ -39,7 +39,7 @@ public class Taming {
         return pet.isTamed() && owner instanceof Player && pet instanceof Wolf;
     }
 
-    public static int processThickFur(Wolf wolf, int damage) {
+    public static double processThickFur(Wolf wolf, double damage) {
         wolf.playEffect(EntityEffect.WOLF_SHAKE);
         return damage / thickFurModifier;
     }
@@ -49,7 +49,7 @@ public class Taming {
         wolf.setFireTicks(0);
     }
 
-    public static int processShockProof(Wolf wolf, int damage) {
+    public static double processShockProof(Wolf wolf, double damage) {
         wolf.playEffect(EntityEffect.WOLF_SHAKE);
         return damage / shockProofModifier;
     }
@@ -59,12 +59,12 @@ public class Taming {
      *
      * @param event The event to modify
      */
-    public static int sharpenedClaws(int damage) {
+    public static double sharpenedClaws(double damage) {
         return damage + Taming.sharpenedClawsBonusDamage;
     }
 
-    public static void processHolyHound(Wolf wolf, int damage) {
-        int modifiedHealth = Math.min(wolf.getHealth() + damage, wolf.getMaxHealth());
+    public static void processHolyHound(Wolf wolf, double damage) {
+        double modifiedHealth = Math.min(wolf.getHealth() + damage, wolf.getMaxHealth());
 
         wolf.setHealth(modifiedHealth);
         wolf.playEffect(EntityEffect.WOLF_HEARTS);

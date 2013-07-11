@@ -95,7 +95,7 @@ public final class ChimaeraWing {
                 player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
                 player.updateInventory();
                 player.setVelocity(new Vector(0, 0.5D, 0));
-                CombatUtils.dealDamage(player, Misc.getRandom().nextInt(player.getHealth() - 10));
+                CombatUtils.dealDamage(player, Misc.getRandom().nextInt((int) (player.getHealth() - 10)));
                 mcMMOPlayer.actualizeLastTeleport();
                 return;
             }

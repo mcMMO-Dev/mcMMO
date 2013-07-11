@@ -66,7 +66,7 @@ public class SwordsManager extends SkillManager {
         }
     }
 
-    public void counterAttackChecks(LivingEntity attacker, int damage) {
+    public void counterAttackChecks(LivingEntity attacker, double damage) {
         if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Swords.counterAttackMaxChance, Swords.counterAttackMaxBonusLevel)) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier);
 
@@ -78,7 +78,7 @@ public class SwordsManager extends SkillManager {
         }
     }
 
-    public void serratedStrikes(LivingEntity target, int damage) {
+    public void serratedStrikes(LivingEntity target, double damage) {
         CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, skill);
         BleedTimerTask.add(target, Swords.serratedStrikesBleedTicks);
     }
