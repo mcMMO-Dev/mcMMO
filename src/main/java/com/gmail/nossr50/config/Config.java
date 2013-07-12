@@ -1,11 +1,14 @@
 package com.gmail.nossr50.config;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -16,6 +19,7 @@ public class Config extends AutoUpdateConfigLoader {
 
     private Config() {
         super("config.yml");
+        loadKeys();
     }
 
     public static Config getInstance() {
@@ -27,7 +31,172 @@ public class Config extends AutoUpdateConfigLoader {
     }
 
     @Override
-    protected void loadKeys() {}
+    protected void loadKeys() {
+        // Validate all the settings!
+        List<String> reason = new ArrayList<String>();
+
+        /* General Settings */
+        if (getSaveInterval() <= 0) {
+            reason.add("General.Save_Interval should be greater than 0!");
+        }
+
+        /* Mob Healthbar */
+        if (getMobHealthbarTime() == 0) {
+            reason.add("Mob_Healthbar.Display_Time cannot be 0! Set to -1 to disable or set a valid value.");
+        }
+
+        /* Scoreboards */
+        if (getMcrankScoreboardTime() != -1 && getMcrankScoreboardTime() <= 0) {
+            reason.add("Scoreboards.Mcrank.Display_Time should be greater than 0 or -1!");
+        }
+
+        if (getMcstatsScoreboardTime() != -1 && getMcstatsScoreboardTime() <= 0) {
+            reason.add("Scoreboards.Mcstats.Display_Time should be greater than 0 or -1!");
+        }
+
+        if (getMctopScoreboardTime() != -1 && getMctopScoreboardTime() <= 0) {
+            reason.add("Scoreboards.Mctop.Display_Time should be greater than 0 or -1!");
+        }
+
+        if (getInspectScoreboardTime() != -1 && getInspectScoreboardTime() <= 0) {
+            reason.add("Scoreboards.Inspect.Display_Time should be greater than 0 or -1!");
+        }
+
+        if (getSkillScoreboardTime() != -1 && getSkillScoreboardTime() <= 0) {
+            reason.add("Scoreboards.Skillname.Display_Time should be greater than 0 or -1!");
+        }
+
+        /* Database Purging */
+        if (getPurgeInterval() <= -1) {
+            reason.add("Database_Purging.Purge_Interval should be greater than, or equal to -1!");
+        }
+
+        if (getOldUsersCutoff() != -1 && getOldUsersCutoff() <= 0) {
+            reason.add("Database_Purging.Old_User_Cutoff should be greater than 0 or -1!");
+        }
+
+        /* Hardcore Mode */
+        if (getHardcoreDeathStatPenaltyPercentage() < 1 || getHardcoreDeathStatPenaltyPercentage() > 100) {
+            reason.add("Hardcore.Death_Stat_Loss_Penalty_Percentage only accepts values from 1 to 100!");
+        }
+
+        if (getHardcoreVampirismStatLeechPercentage() < 1 || getHardcoreVampirismStatLeechPercentage() > 100) {
+            reason.add("Hardcore.Death_Stat_Loss_Penalty_Percentage only accepts values from 1 to 100!");
+        }
+
+        /* Items */
+        if (getChimaeraUseCost() < 1 || getChimaeraUseCost() > 64) {
+            reason.add("Items.Chimaera_Wing.Use_Cost only accepts values from 1 to 64!");
+        }
+
+        if (getChimaeraRecipeCost() < 1 || getChimaeraRecipeCost() > 9) {
+            reason.add("Items.Chimaera_Wing.Recipe_Cost only accepts values from 1 to 64!");
+        }
+
+        if (getChimaeraItemId() < 1) {
+            reason.add("Items.Chimaera_Wing.Item_ID should be at least 1!");
+        }
+
+        /* Particles */
+        if (getLevelUpEffectsTier() < 1) {
+            reason.add("Particles.LevelUp_Tier should be at least 1!");
+        }
+
+        /* PARTY SETTINGS */
+        if (getAutoPartyKickInterval() < 0) {
+            reason.add("Party.AutoKick_Interval should be at least 0!");
+        }
+
+        if (getAutoPartyKickTime() < 0) {
+            reason.add("Party.Old_Party_Member_Cutoff should be at least 0!");
+        }
+
+        if (getPartyShareBonusBase() <= 0) {
+            reason.add("Party.Sharing.ExpShare_bonus_base should be greater than 0!");
+        }
+
+        if (getPartyShareBonusIncrease() < 0) {
+            reason.add("Party.Sharing.ExpShare_bonus_increase should be greater than or equal to 0!");
+        }
+
+        if (getPartyShareBonusCap() <= 0) {
+            reason.add("Party.Sharing.ExpShare_bonus_cap should be greater than 0!");
+        }
+
+        if (getPartyShareRange() <= 0) {
+            reason.add("Party.Sharing.Range should be greater than 0!");
+        }
+
+        /* Inspect command distance */
+        if (getInspectDistance() <= 0) {
+            reason.add("Commands.inspect.Max_Distance should be greater than 0!");
+        }
+
+        if (getAbilityToolDamage() <= 0) {
+            reason.add("Abilities.Tools.Durability_Loss should be greater than 0!");
+        }
+
+        if (getTreeFellerThreshold() <= 0) {
+            reason.add("Abilities.Limits.Tree_Feller_Threshold should be greater than 0!");
+        }
+
+        if (getFishingBaseXP() <= 0) {
+            reason.add("Experience.Fishing.Base should be greater than 0!");
+        }
+
+        if (getDetonatorItemID() < 1) {
+            reason.add("Skills.Mining.Detonator_ID should be at least 1!");
+        }
+
+        if (getRepairAnvilId() < 1) {
+            reason.add("Skills.Repair.Anvil_ID should be at least 1!");
+        }
+
+        if (getSalvageAnvilId() < 1) {
+            reason.add("Skills.Repair.Salvage_Anvil_ID should be at least 1!");
+        }
+
+        if (getRepairAnvilId() == getSalvageAnvilId()) {
+            reason.add("Cannot use the same item ID for Repair and Salvage anvils!");
+        }
+
+        if (getTamingCOTWWolfCost() < 1) {
+            reason.add("Skills.Taming.Call_Of_The_Wild.Bones_Required should be at least 1!");
+        }
+
+        if (getTamingCOTWOcelotCost() < 1) {
+            reason.add("Skills.Taming.Call_Of_The_Wild.Fish_Required should be at least 1!");
+        }
+
+        if (getExperienceGainsGlobalMultiplier() <= 0) {
+            reason.add("Experience.Gains.Multiplier.Global should be greater than 0!");
+        }
+
+        if (getPlayerVersusPlayerXP() < 0) {
+            reason.add("Experience.Gains.Multiplier.PVP should be greater than 0!");
+        }
+
+        if (getAnimalsXP() < 0) {
+            reason.add("Experience.Gains.Multiplier.Animals should be greater than 0!");
+        }
+
+        if (getWitherSkeletonXP() < 0) {
+            reason.add("Experience.Gains.Multiplier.Wither_Skeleton should be greater than 0!");
+        }
+
+        if (getSpawnedMobXpMultiplier() < 0) {
+            reason.add("Experience.Gains.Mobspawners.Multiplier should be greater than 0!");
+        }
+
+        if (getFormulaMultiplierCurve() < 0) {
+            reason.add("Experience.Formula.Curve_Modifier should be greater than 0!");
+        }
+
+        // Check if there were any errors
+        if (noErrorsInConfig(reason)) {
+            mcMMO.p.debug("No errors found in config.yml!");
+        }
+    }
 
     /*
      * GENERAL SETTINGS
@@ -310,4 +479,12 @@ public class Config extends AutoUpdateConfigLoader {
     public int getFormulaMultiplierCurve() { return config.getInt("Experience.Formula.Curve_Modifier", 20); }
     public boolean getCumulativeCurveEnabled() { return config.getBoolean("Experience.Formula.Cumulative_Curve", false); }
     public double getFormulaSkillModifier(SkillType skill) { return config.getDouble("Experience.Formula.Modifier." + StringUtils.getCapitalized(skill.toString())); }
+
+    private boolean noErrorsInConfig(List<String> issues) {
+        for (String issue : issues) {
+            plugin.getLogger().warning(issue);
+        }
+
+        return issues.isEmpty();
+    }
 }

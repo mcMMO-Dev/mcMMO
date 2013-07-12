@@ -160,7 +160,7 @@ public final class ChimaeraWing {
     public static ShapelessRecipe getChimaeraWingRecipe() {
         Material ingredient = Material.getMaterial(Config.getInstance().getChimaeraItemId());
         int amount = Config.getInstance().getChimaeraRecipeCost();
-        if (amount > 9) {
+        if (amount < 1 || amount > 9) {
             amount = 9;
         }
 
