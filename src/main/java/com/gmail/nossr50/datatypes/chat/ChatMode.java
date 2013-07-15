@@ -1,4 +1,4 @@
-package com.gmail.nossr50.chat;
+package com.gmail.nossr50.datatypes.chat;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;

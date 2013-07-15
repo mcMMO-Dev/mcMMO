@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.nossr50.datatypes.chat.ChatMode;
+
 public class ChatManagerFactory {
     private static final HashMap<Plugin, AdminChatManager> adminChatManagers = new HashMap<Plugin, AdminChatManager>();
     private static final HashMap<Plugin, PartyChatManager> partyChatManagers = new HashMap<Plugin, PartyChatManager>();
