@@ -41,9 +41,6 @@ public final class ShareHandler {
 
     private ShareHandler() {}
 
-    private static List<Player> nearMembers;
-    private static int partySize;
-
     /**
      * Distribute Xp amongst party members.
      *
@@ -55,30 +52,28 @@ public final class ShareHandler {
     public static boolean handleXpShare(float xp, McMMOPlayer mcMMOPlayer, SkillType skillType) {
         Party party = mcMMOPlayer.getParty();
 
-        switch (party.getXpShareMode()) {
-            case EQUAL:
-                Player player = mcMMOPlayer.getPlayer();
-                nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
-
-                if (nearMembers.isEmpty()) {
-                    return false;
-                }
-
-                double partySize = nearMembers.size() + 1;
-                double shareBonus = Math.min(Config.getInstance().getPartyShareBonusBase() + partySize * Config.getInstance().getPartyShareBonusIncrease(), Config.getInstance().getPartyShareBonusCap());
-                float splitXp = (float) (xp / partySize * shareBonus);
-
-                for (Player member : nearMembers) {
-                    UserManager.getPlayer(member).beginUnsharedXpGain(skillType, splitXp);
-                }
-
-                mcMMOPlayer.beginUnsharedXpGain(skillType, splitXp);
-                return true;
-
-            case NONE:
-            default:
-                return false;
+        if (party.getXpShareMode() != ShareMode.EQUAL) {
+            return false;
         }
+
+        Player player = mcMMOPlayer.getPlayer();
+        List<Player> nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
+
+        if (nearMembers.isEmpty()) {
+            return false;
+        }
+
+        nearMembers.add(player);
+
+        int partySize = nearMembers.size();
+        double shareBonus = Math.min(Config.getInstance().getPartyShareBonusBase() + (partySize * Config.getInstance().getPartyShareBonusIncrease()), Config.getInstance().getPartyShareBonusCap());
+        float splitXp = (float) (xp / partySize * shareBonus);
+
+        for (Player member : nearMembers) {
+            UserManager.getPlayer(member).beginUnsharedXpGain(skillType, splitXp);
+        }
+
+        return true;
     }
 
     /**
@@ -109,8 +104,7 @@ public final class ShareHandler {
         }
 
         Player player = mcMMOPlayer.getPlayer();
-
-        nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
+        List<Player> nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
 
         if (nearMembers.isEmpty()) {
             return false;
@@ -120,7 +114,7 @@ public final class ShareHandler {
         ItemStack newStack = itemStack.clone();
 
         nearMembers.add(player);
-        partySize = nearMembers.size();
+        int partySize = nearMembers.size();
 
         drop.remove();
         newStack.setAmount(1);
