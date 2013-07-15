@@ -7,7 +7,6 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.party.ShareHandler.ShareMode;
 
 public class Party {
     private final LinkedHashSet<String> members = new LinkedHashSet<String>();

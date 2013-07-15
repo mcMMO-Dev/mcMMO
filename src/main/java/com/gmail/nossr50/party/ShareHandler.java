@@ -10,35 +10,13 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public final class ShareHandler {
-    public enum ShareMode {
-        NONE,
-        EQUAL,
-        RANDOM;
-
-        public static ShareMode getShareMode(String string) {
-            try {
-                return valueOf(string);
-            }
-            catch (IllegalArgumentException ex) {
-                if (string.equalsIgnoreCase("even")) {
-                    return EQUAL;
-                }
-                else if (CommandUtils.shouldDisableToggle(string)) {
-                    return NONE;
-                }
-
-                return null;
-            }
-        }
-    };
-
     private ShareHandler() {}
 
     /**

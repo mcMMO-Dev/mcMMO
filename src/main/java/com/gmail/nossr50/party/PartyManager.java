@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.ShareMode;
+
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
@@ -410,8 +412,8 @@ public final class PartyManager {
             party.setLeader(partiesFile.getString(partyName + ".Leader"));
             party.setPassword(partiesFile.getString(partyName + ".Password"));
             party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
-            party.setXpShareMode(ShareHandler.ShareMode.getShareMode(partiesFile.getString(partyName + ".ExpShareMode", "NONE")));
-            party.setItemShareMode(ShareHandler.ShareMode.getShareMode(partiesFile.getString(partyName + ".ItemShareMode", "NONE")));
+            party.setXpShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ExpShareMode", "NONE")));
+            party.setItemShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ItemShareMode", "NONE")));
 
             List<String> memberNames = partiesFile.getStringList(partyName + ".Members");
             LinkedHashSet<String> members = party.getMembers();

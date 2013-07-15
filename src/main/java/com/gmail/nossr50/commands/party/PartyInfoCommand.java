@@ -9,10 +9,10 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyInfoCommand implements CommandExecutor {
@@ -63,7 +63,7 @@ public class PartyInfoCommand implements CommandExecutor {
     private void displayShareModeInfo() {
         boolean xpShareEnabled = Config.getInstance().getExpShareEnabled();
         boolean itemShareEnabled = Config.getInstance().getItemShareEnabled();
-        boolean itemSharingActive = (playerParty.getItemShareMode() != ShareHandler.ShareMode.NONE);
+        boolean itemSharingActive = (playerParty.getItemShareMode() != ShareMode.NONE);
 
         if (!xpShareEnabled && !itemShareEnabled) {
             return;

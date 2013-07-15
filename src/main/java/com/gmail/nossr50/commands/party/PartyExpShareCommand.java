@@ -7,9 +7,8 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.ShareHandler;
-import com.gmail.nossr50.party.ShareHandler.ShareMode;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -46,7 +45,7 @@ public class PartyExpShareCommand implements CommandExecutor {
         }
     }
 
-    private void handleChangingShareMode(ShareHandler.ShareMode mode) {
+    private void handleChangingShareMode(ShareMode mode) {
         playerParty.setXpShareMode(mode);
 
         String changeModeMessage = LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode." + StringUtils.getCapitalized(mode.toString())));
