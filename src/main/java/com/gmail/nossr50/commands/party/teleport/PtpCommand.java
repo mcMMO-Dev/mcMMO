@@ -102,7 +102,7 @@ public class PtpCommand implements TabExecutor {
                 List<String> matches = StringUtil.copyPartialMatches(args[0], TELEPORT_SUBCOMMANDS, new ArrayList<String>(TELEPORT_SUBCOMMANDS.size()));
 
                 if (matches.size() == 0) {
-                    Set<String> playerNames = UserManager.getPlayers().keySet();
+                    Set<String> playerNames = UserManager.getPlayerNames();
                     return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
                 }
 

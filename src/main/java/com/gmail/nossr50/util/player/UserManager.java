@@ -1,8 +1,10 @@
 package com.gmail.nossr50.util.player;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -61,8 +63,12 @@ public final class UserManager {
         }
     }
 
-    public static Map<String, McMMOPlayer> getPlayers() {
-        return players;
+    public static Set<String> getPlayerNames() {
+        return players.keySet();
+    }
+
+    public static Collection<McMMOPlayer> getPlayers() {
+        return players.values();
     }
 
     /**

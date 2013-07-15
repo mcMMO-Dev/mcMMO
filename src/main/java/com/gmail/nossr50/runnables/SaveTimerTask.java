@@ -14,7 +14,7 @@ public class SaveTimerTask extends BukkitRunnable {
         // All player data will be saved periodically through this
         int count = 1;
 
-        for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers().values()) {
+        for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
             new PlayerProfileSaveTask(mcMMOPlayer.getProfile()).runTaskLater(mcMMO.p, count);
             count++;
         }

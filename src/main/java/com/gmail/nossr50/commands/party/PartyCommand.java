@@ -176,7 +176,7 @@ public class PartyCommand implements TabExecutor {
                     case INVITE:
                     case KICK:
                     case OWNER:
-                        Set<String> playerNames = UserManager.getPlayers().keySet();
+                        Set<String> playerNames = UserManager.getPlayerNames();
                         return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<String>(playerNames.size()));
                     case EXPSHARE:
                         return StringUtil.copyPartialMatches(args[1], EXPSHARE_COMPLETIONS, new ArrayList<String>(EXPSHARE_COMPLETIONS.size()));
@@ -191,7 +191,7 @@ public class PartyCommand implements TabExecutor {
                         List<String> matches = StringUtil.copyPartialMatches(args[1], PtpCommand.TELEPORT_SUBCOMMANDS, new ArrayList<String>(PtpCommand.TELEPORT_SUBCOMMANDS.size()));
 
                         if (matches.size() == 0) {
-                            playerNames = UserManager.getPlayers().keySet();
+                            playerNames = UserManager.getPlayerNames();
                             return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<String>(playerNames.size()));
                         }
 
