@@ -2,7 +2,9 @@ package com.gmail.nossr50.datatypes.party;
 
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.ItemUtils;
+import com.gmail.nossr50.util.StringUtils;
 
 public enum ItemShareType {
     LOOT,
@@ -29,5 +31,9 @@ public enum ItemShareType {
         }
 
         return null;
+    }
+
+    public String getLocaleString() {
+        return LocaleLoader.getString("Party.ItemShare.Category." + StringUtils.getCapitalized(this.toString()));
     }
 }
