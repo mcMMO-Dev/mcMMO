@@ -9,6 +9,7 @@ Key:
 
 Version 1.4.07-dev
  + Added snow to excavation
+ = Fixed bug with Skull Splitter not finding the locale string
  ! Improved profile saving
  ! Updated localization files
 

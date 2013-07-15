@@ -402,7 +402,7 @@ public final class CombatUtils {
 
                 case AXES:
                     if (entity instanceof Player) {
-                        ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.Cleave.Struck"));
+                        ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.SS.Struck"));
                     }
 
                     break;
