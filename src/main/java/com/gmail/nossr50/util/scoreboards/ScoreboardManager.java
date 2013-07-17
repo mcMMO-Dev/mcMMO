@@ -29,10 +29,10 @@ public class ScoreboardManager {
     private static final Map<String, Scoreboard> PLAYER_SCOREBOARDS = new HashMap<String, Scoreboard>();
     private static final Scoreboard GLOBAL_STATS_SCOREBOARD = mcMMO.p.getServer().getScoreboardManager().getNewScoreboard();
 
-    private final static String PLAYER_STATS_HEADER   = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
-    private final static String PLAYER_RANK_HEADER    = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
-    private final static String PLAYER_INSPECT_HEADER = LocaleLoader.getString("Scoreboard.Header.PlayerInspect");
-    private final static String POWER_LEVEL_HEADER    = LocaleLoader.getString("Scoreboard.Header.PowerLevel");
+    private final static String PLAYER_STATS_HEADER   = LocaleLoader.getString("Scoreboard.Header.PlayerStats").substring(0, 16);
+    private final static String PLAYER_RANK_HEADER    = LocaleLoader.getString("Scoreboard.Header.PlayerRank").substring(0, 16);
+    private final static String PLAYER_INSPECT_HEADER = LocaleLoader.getString("Scoreboard.Header.PlayerInspect").substring(0, 16);
+    private final static String POWER_LEVEL_HEADER    = LocaleLoader.getString("Scoreboard.Header.PowerLevel").substring(0, 16);
 
     private final static String POWER_LEVEL  = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");
     private final static String LEVEL        = LocaleLoader.getString("Scoreboard.Misc.Level");
