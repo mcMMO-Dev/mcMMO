@@ -232,48 +232,78 @@ public final class CombatUtils {
             }
         }
 
-        switch (damager.getType()) {
-            case WOLF:
-                Wolf wolf = (Wolf) damager;
-                AnimalTamer tamer = wolf.getOwner();
+        /* Temporary fix for MCPC+
+         * 
+         * This will be reverted back to the switch statement once the fix is addressed on their end.
+         */
 
-                if (tamer == null || !(tamer instanceof Player) || !shouldProcessSkill(target, SkillType.TAMING)) {
-                    break;
-                }
+        if (damager.getType() == EntityType.WOLF) {
+            Wolf wolf = (Wolf) damager;
+            AnimalTamer tamer = wolf.getOwner();
 
+            if (tamer != null && tamer instanceof Player && shouldProcessSkill(target, SkillType.TAMING)) {
                 Player master = (Player) tamer;
 
-                if (Misc.isNPCEntity(master)) {
-                    break;
-                }
-
-                if (Permissions.skillEnabled(master, SkillType.TAMING)) {
+                if (!Misc.isNPCEntity(master) && Permissions.skillEnabled(master, SkillType.TAMING)) {
                     processTamingCombat(target, master, wolf, event);
                 }
+            }
+        }
 
-                break;
+        if (damager.getType() == EntityType.ARROW) {
+            LivingEntity shooter = ((Arrow) damager).getShooter();
 
-            case ARROW:
-                LivingEntity shooter = ((Arrow) damager).getShooter();
-
-                if (shooter == null || !(shooter instanceof Player) || !shouldProcessSkill(target, SkillType.ARCHERY)) {
-                    break;
-                }
-
+            if (shooter != null && shooter instanceof Player && shouldProcessSkill(target, SkillType.ARCHERY)) {
                 Player player = (Player) shooter;
 
-                if (Misc.isNPCEntity(player)) {
-                    break;
-                }
-
-                if (Permissions.skillEnabled(player, SkillType.ARCHERY)) {
+                if (!Misc.isNPCEntity(player) && Permissions.skillEnabled(player, SkillType.ARCHERY)) {
                     processArcheryCombat(target, player, event, damager);
                 }
-                break;
-
-            default:
-                break;
+            }
         }
+
+//        switch (damager.getType()) {
+//            case WOLF:
+//                Wolf wolf = (Wolf) damager;
+//                AnimalTamer tamer = wolf.getOwner();
+//
+//                if (tamer == null || !(tamer instanceof Player) || !shouldProcessSkill(target, SkillType.TAMING)) {
+//                    break;
+//                }
+//
+//                Player master = (Player) tamer;
+//
+//                if (Misc.isNPCEntity(master)) {
+//                    break;
+//                }
+//
+//                if (Permissions.skillEnabled(master, SkillType.TAMING)) {
+//                    processTamingCombat(target, master, wolf, event);
+//                }
+//
+//                break;
+//
+//            case ARROW:
+//                LivingEntity shooter = ((Arrow) damager).getShooter();
+//
+//                if (shooter == null || !(shooter instanceof Player) || !shouldProcessSkill(target, SkillType.ARCHERY)) {
+//                    break;
+//                }
+//
+//                Player player = (Player) shooter;
+//
+//                if (Misc.isNPCEntity(player)) {
+//                    break;
+//                }
+//
+//                if (Permissions.skillEnabled(player, SkillType.ARCHERY)) {
+//                    processArcheryCombat(target, player, event, damager);
+//                }
+//                break;
+//
+//            default:
+//                break;
+//        }
 
         if (target instanceof Player) {
             if (Misc.isNPCEntity(target)) {
