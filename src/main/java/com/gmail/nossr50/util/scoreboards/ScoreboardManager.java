@@ -29,10 +29,10 @@ public class ScoreboardManager {
     private static final Map<String, Scoreboard> PLAYER_SCOREBOARDS = new HashMap<String, Scoreboard>();
     private static final Scoreboard GLOBAL_STATS_SCOREBOARD = mcMMO.p.getServer().getScoreboardManager().getNewScoreboard();
 
-    private final static String PLAYER_STATS_HEADER   = LocaleLoader.getString("Scoreboard.Header.PlayerStats").substring(0, 16);
-    private final static String PLAYER_RANK_HEADER    = LocaleLoader.getString("Scoreboard.Header.PlayerRank").substring(0, 16);
-    private final static String PLAYER_INSPECT_HEADER = LocaleLoader.getString("Scoreboard.Header.PlayerInspect").substring(0, 16);
-    private final static String POWER_LEVEL_HEADER    = LocaleLoader.getString("Scoreboard.Header.PowerLevel").substring(0, 16);
+    private final static String PLAYER_STATS_HEADER   = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
+    private final static String PLAYER_RANK_HEADER    = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
+    private final static String PLAYER_INSPECT_HEADER = LocaleLoader.getString("Scoreboard.Header.PlayerInspect");
+    private final static String POWER_LEVEL_HEADER    = LocaleLoader.getString("Scoreboard.Header.PowerLevel");
 
     private final static String POWER_LEVEL  = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");
     private final static String LEVEL        = LocaleLoader.getString("Scoreboard.Misc.Level");
@@ -59,15 +59,15 @@ public class ScoreboardManager {
         Objective objective;
 
         if (scoreboard.getObjective(DisplaySlot.BELOW_NAME) == null) {
-            objective = scoreboard.registerNewObjective(POWER_LEVEL_HEADER, "dummy");
+            objective = scoreboard.registerNewObjective(POWER_LEVEL_HEADER.substring(0, Math.min(POWER_LEVEL_HEADER.length(), 16)), "dummy");
 
             objective.getScore(player).setScore(UserManager.getPlayer(player).getPowerLevel());
             objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         }
         else {
-            objective = scoreboard.getObjective(POWER_LEVEL_HEADER);
+            objective = scoreboard.getObjective(POWER_LEVEL_HEADER.substring(0, Math.min(POWER_LEVEL_HEADER.length(), 16)));
 
-            if (scoreboard.getObjective(POWER_LEVEL_HEADER) != null) {
+            if (objective != null) {
                 objective.getScore(player).setScore(UserManager.getPlayer(player).getPowerLevel());
             }
             else {
@@ -94,10 +94,10 @@ public class ScoreboardManager {
         Player player = mcMMOPlayer.getPlayer();
         Scoreboard oldScoreboard = player.getScoreboard();
         Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_STATS_HEADER);
+        Objective objective = newScoreboard.getObjective(PLAYER_STATS_HEADER.substring(0, Math.min(PLAYER_STATS_HEADER.length(), 16)));
 
         if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_STATS_HEADER, "dummy");
+            objective = newScoreboard.registerNewObjective(PLAYER_STATS_HEADER.substring(0, Math.min(PLAYER_STATS_HEADER.length(), 16)), "dummy");
         }
 
         updatePlayerStatsScores(mcMMOPlayer, objective);
@@ -107,10 +107,10 @@ public class ScoreboardManager {
     public static void enablePlayerRankScoreboard(Player player) {
         Scoreboard oldScoreboard = player.getScoreboard();
         Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_RANK_HEADER);
+        Objective objective = newScoreboard.getObjective(PLAYER_RANK_HEADER.substring(0, Math.min(PLAYER_RANK_HEADER.length(), 16)));
 
         if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_RANK_HEADER, "dummy");
+            objective = newScoreboard.registerNewObjective(PLAYER_RANK_HEADER.substring(0, Math.min(PLAYER_RANK_HEADER.length(), 16)), "dummy");
         }
 
         updatePlayerRankScores(player, objective);
@@ -120,10 +120,10 @@ public class ScoreboardManager {
     public static void enablePlayerRankScoreboardOthers(Player player, String targetName) {
         Scoreboard oldScoreboard = player.getScoreboard();
         Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_RANK_HEADER);
+        Objective objective = newScoreboard.getObjective(PLAYER_RANK_HEADER.substring(0, Math.min(PLAYER_RANK_HEADER.length(), 16)));
 
         if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_RANK_HEADER, "dummy");
+            objective = newScoreboard.registerNewObjective(PLAYER_RANK_HEADER.substring(0, Math.min(PLAYER_RANK_HEADER.length(), 16)), "dummy");
         }
 
         updatePlayerRankOthersScores(targetName, objective);
@@ -133,10 +133,10 @@ public class ScoreboardManager {
     public static void enablePlayerInspectScoreboardOnline(Player player, McMMOPlayer mcMMOTarget) {
         Scoreboard oldScoreboard = player.getScoreboard();
         Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_INSPECT_HEADER);
+        Objective objective = newScoreboard.getObjective(PLAYER_INSPECT_HEADER.substring(0, Math.min(PLAYER_INSPECT_HEADER.length(), 16)));
 
         if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_INSPECT_HEADER, "dummy");
+            objective = newScoreboard.registerNewObjective(PLAYER_INSPECT_HEADER.substring(0, Math.min(PLAYER_INSPECT_HEADER.length(), 16)), "dummy");
         }
 
         updatePlayerInspectOnlineScores(mcMMOTarget, objective);
@@ -146,10 +146,10 @@ public class ScoreboardManager {
     public static void enablePlayerInspectScoreboardOffline(Player player, PlayerProfile targetProfile) {
         Scoreboard oldScoreboard = player.getScoreboard();
         Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_INSPECT_HEADER);
+        Objective objective = newScoreboard.getObjective(PLAYER_INSPECT_HEADER.substring(0, Math.min(PLAYER_INSPECT_HEADER.length(), 16)));
 
         if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_INSPECT_HEADER, "dummy");
+            objective = newScoreboard.registerNewObjective(PLAYER_INSPECT_HEADER.substring(0, Math.min(PLAYER_INSPECT_HEADER.length(), 16)), "dummy");
         }
 
         updatePlayerInspectOfflineScores(targetProfile, objective);
