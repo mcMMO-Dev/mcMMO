@@ -294,5 +294,6 @@ public class Config extends AutoUpdateConfigLoader {
 
     /* XP Formula Multiplier */
     public int getFormulaMultiplierCurve() { return config.getInt("Experience.Formula.Curve_Modifier", 20); }
+    public boolean getCumulativeCurveEnabled() { return config.getBoolean("Experience.Formula.Cumulative_Curve", false); }
     public double getFormulaSkillModifier(SkillType skill) { return config.getDouble("Experience.Formula.Modifier." + StringUtils.getCapitalized(skill.toString())); }
 }

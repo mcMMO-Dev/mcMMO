@@ -15,6 +15,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
 import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.skills.child.FamilyTree;
+import com.gmail.nossr50.util.player.UserManager;
 
 public class PlayerProfile {
     private final String playerName;
@@ -274,6 +275,10 @@ public class PlayerProfile {
      * @return the Xp remaining until next level
      */
     public int getXpToLevel(SkillType skillType) {
+        if (Config.getInstance().getCumulativeCurveEnabled()) {
+            return 1020 + (UserManager.getPlayer(playerName).getPowerLevel() * Config.getInstance().getFormulaMultiplierCurve());
+        }
+
         return 1020 + (skills.get(skillType) * Config.getInstance().getFormulaMultiplierCurve());
     }
 

@@ -290,6 +290,10 @@ Experience:
     Formula:
         Curve_Modifier: 20
 
+        # Cumulative experience curves will use a players power level instead of their skill level,
+        # players with high power levels will have to gain a lot more experience to reach the next level in every skill.
+        Cumulative_Curve: false
+
         # Experience gained will get divided by these values. 1.0 by default, 2.0 means two times lower
         Modifier:
             Swords: 1.0
