@@ -260,6 +260,8 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        UserManager.getPlayer(player).resetAbilityMode();
+
         /* GARBAGE COLLECTION */
         BleedTimerTask.bleedOut(player); // Bleed it out
         UserManager.getPlayer(player).getProfile().save();
