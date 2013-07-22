@@ -142,7 +142,7 @@ public class TamingManager extends SkillManager {
 
         String message = LocaleLoader.getString("Combat.BeastLore") + " ";
 
-        if (beast.isTamed()) {
+        if (beast.isTamed() && beast.getOwner() != null) {
             message = message.concat(LocaleLoader.getString("Combat.BeastLoreOwner", beast.getOwner().getName()) + " ");
         }
 

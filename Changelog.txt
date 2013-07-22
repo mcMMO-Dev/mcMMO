@@ -12,6 +12,8 @@ Version 1.4.07-dev
  + Added new experience curve option. Cumulative curve, calculates experience needed for next level using power level.
  = Fixed bug with Skull Splitter not finding the locale string
  = Fixed issue where locale strings could cause the scoreboard header to be longer than 16 characters.
+ = Fixed a bug with Beast Lore when the entity had no owner but was tamed.
+ = Fixed a bug where AbilityDeactivateEvent would throw an error if the player logged out before his ability ran out.
  ! Improved profile saving
  ! Updated localization files
 
