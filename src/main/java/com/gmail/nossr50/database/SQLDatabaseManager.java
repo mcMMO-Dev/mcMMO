@@ -55,6 +55,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public void purgePowerlessUsers() {
+        checkConnected();
         mcMMO.p.getLogger().info("Purging powerless users...");
 
         Collection<ArrayList<String>> usernames = read("SELECT u.user FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0").values();
@@ -71,6 +72,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public void purgeOldUsers() {
+        checkConnected();
         long currentTime = System.currentTimeMillis();
 
         mcMMO.p.getLogger().info("Purging old users...");
@@ -89,6 +91,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public boolean removeUser(String playerName) {
+        checkConnected();
         boolean success = update("DELETE FROM u, e, h, s, c " +
                 "USING " + tablePrefix + "users u " +
                 "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
@@ -299,6 +302,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public void newUser(String playerName) {
+        checkConnected();
         PreparedStatement statement = null;
 
         try {
@@ -326,6 +330,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
+        checkConnected();
         PreparedStatement statement = null;
 
         try {
@@ -390,6 +395,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public void convertUsers(DatabaseManager destination) {
+        checkConnected();
         PreparedStatement statement = null;
 
         try {
@@ -525,6 +531,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public List<String> getStoredUsers() {
+        checkConnected();
         ArrayList<String> users = new ArrayList<String>();
         Statement stmt = null;
         try {
