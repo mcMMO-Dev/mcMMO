@@ -195,6 +195,8 @@ public class PlayerProfile {
             return;
         }
 
+        changed = true;
+
         skillsXp.put(skillType, newValue);
     }
 
