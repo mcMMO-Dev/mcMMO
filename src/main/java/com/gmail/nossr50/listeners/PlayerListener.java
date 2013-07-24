@@ -260,11 +260,12 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        UserManager.getPlayer(player).resetAbilityMode();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        mcMMOPlayer.resetAbilityMode();
 
         /* GARBAGE COLLECTION */
         BleedTimerTask.bleedOut(player); // Bleed it out
-        UserManager.getPlayer(player).getProfile().save();
+        mcMMOPlayer.getProfile().save();
         UserManager.remove(player.getName());
     }
 
