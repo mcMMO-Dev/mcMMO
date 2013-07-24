@@ -50,6 +50,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class EntityListener implements Listener {
     private final mcMMO plugin;
@@ -221,6 +222,10 @@ public class EntityListener implements Listener {
 
             switch (cause) {
                 case FALL:
+                    if (SkillUtils.calculateTimeLeft((long) mcMMOPlayer.getTeleportATS() * Misc.TIME_CONVERSION_FACTOR, 5, player) > 0) {
+                        return;
+                    }
+
                     AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
                     if (acrobaticsManager.canRoll()) {

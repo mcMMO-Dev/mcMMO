@@ -24,6 +24,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
@@ -64,6 +65,12 @@ public class PlayerListener implements Listener {
 
     public PlayerListener(final mcMMO plugin) {
         this.plugin = plugin;
+    }
+
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
+        UserManager.getPlayer(event.getPlayer()).actualizeTeleportATS();
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)

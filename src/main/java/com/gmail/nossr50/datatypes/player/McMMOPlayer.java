@@ -84,6 +84,7 @@ public class McMMOPlayer {
 
     private int recentlyHurt;
     private int respawnATS;
+    private int teleportATS;
     private int chimeraWingLastUse;
     private Location teleportCommence;
 
@@ -341,6 +342,14 @@ public class McMMOPlayer {
 
     public void actualizeRespawnATS() {
         respawnATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+    }
+
+    public int getTeleportATS() {
+        return teleportATS;
+    }
+
+    public void actualizeTeleportATS() {
+        teleportATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /*
