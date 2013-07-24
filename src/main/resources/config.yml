@@ -221,6 +221,12 @@ Skills:
         Call_Of_The_Wild:
             Bones_Required: 10
             Fish_Required: 10
+
+            # Range to check for nearby pets when using Call Of The Wild, 0 will disable the check
+            Range: 40
+            # Amount of pets to summon when using Call Of The Wild
+            Wolf_Amount: 1
+            Ocelot_Amount: 1
     Unarmed:
         Enabled_For_PVP: true
         Enabled_For_PVE: true

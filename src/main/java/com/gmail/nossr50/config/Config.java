@@ -240,6 +240,19 @@ public class Config extends AutoUpdateConfigLoader {
     public int getTamingXPOcelot() { return config.getInt("Experience.Taming.Animal_Taming.Ocelot", 500); }
     public int getTamingCOTWWolfCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10); }
     public int getTamingCOTWOcelotCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Fish_Required", 10); }
+    public double getTamingCOTWRange() { return config.getDouble("Skills.Taming.Call_Of_The_Wild.Range", 40); }
+    public int getTamingCOTWAmount(EntityType type) {
+        switch (type) {
+            case OCELOT:
+                return config.getInt("Skills.Taming.Call_Of_The_Wild.Ocelot_Amount", 1);
+
+            case WOLF:
+                return config.getInt("Skills.Taming.Call_Of_The_Wild.Wolf_Amount", 1);
+
+            default:
+                return 1;
+        }
+    }
 
     /* Woodcutting */
     public int getWoodcuttingXPOak() { return config.getInt("Experience.Woodcutting.Oak", 70); }

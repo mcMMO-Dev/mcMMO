@@ -178,29 +178,39 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        for (Entity entity : player.getNearbyEntities(40, 40, 40)) {
-            if (entity.getType() == type) {
-                player.sendMessage(Taming.getCallOfTheWildFailureMessage(type));
-                return;
+        double range = Config.getInstance().getTamingCOTWRange();
+        if (range > 0) {
+            for (Entity entity : player.getNearbyEntities(range, range, range)) {
+                if (entity.getType() == type) {
+                    player.sendMessage(Taming.getCallOfTheWildFailureMessage(type));
+                    return;
+                }
             }
         }
 
-        LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), type);
-
-        entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-        ((Tameable) entity).setOwner(player);
-
-        if (type == EntityType.OCELOT) {
-            ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + Misc.getRandom().nextInt(3)));
-        }
-        else {
-            entity.setMaxHealth(20);
-            entity.setHealth(entity.getMaxHealth());
+        int amount = Config.getInstance().getTamingCOTWAmount(type);
+        if (amount <= 0) {
+            amount = 1;
         }
 
-        if (Permissions.renamePets(player)) {
-            entity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", player.getName(), StringUtils.getPrettyEntityTypeString(entity.getType())));
-            entity.setCustomNameVisible(true);
+        for (int i = 0; i < amount; i++) {
+            LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), type);
+
+            entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+            ((Tameable) entity).setOwner(player);
+
+            if (type == EntityType.OCELOT) {
+                ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + Misc.getRandom().nextInt(3)));
+            }
+            else {
+                entity.setMaxHealth(20);
+                entity.setHealth(entity.getMaxHealth());
+            }
+
+            if (Permissions.renamePets(player)) {
+                entity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", player.getName(), StringUtils.getPrettyEntityTypeString(entity.getType())));
+                entity.setCustomNameVisible(true);
+            }
         }
 
         player.setItemInHand(new ItemStack(heldItem.getType(), heldItemAmount - summonAmount));
