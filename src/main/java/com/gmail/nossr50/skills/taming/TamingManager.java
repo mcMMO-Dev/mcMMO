@@ -184,11 +184,6 @@ public class TamingManager extends SkillManager {
 
         int amount = Config.getInstance().getTamingCOTWAmount(type);
 
-        // TODO: Validate in config instead
-        if (amount <= 0) {
-            amount = 1;
-        }
-
         for (int i = 0; i < amount; i++) {
             LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), type);
 
