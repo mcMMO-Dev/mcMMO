@@ -178,17 +178,13 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        double range = Config.getInstance().getTamingCOTWRange();
-        if (range > 0) {
-            for (Entity entity : player.getNearbyEntities(range, range, range)) {
-                if (entity.getType() == type) {
-                    player.sendMessage(Taming.getCallOfTheWildFailureMessage(type));
-                    return;
-                }
-            }
+        if (!rangeCheck(type)) {
+            return;
         }
 
         int amount = Config.getInstance().getTamingCOTWAmount(type);
+
+        // TODO: Validate in config instead
         if (amount <= 0) {
             amount = 1;
         }
@@ -199,21 +195,45 @@ public class TamingManager extends SkillManager {
             entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
             ((Tameable) entity).setOwner(player);
 
-            if (type == EntityType.OCELOT) {
-                ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + Misc.getRandom().nextInt(3)));
-            }
-            else {
-                entity.setMaxHealth(20);
-                entity.setHealth(entity.getMaxHealth());
+            switch (type) {
+                case OCELOT:
+                    ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + Misc.getRandom().nextInt(3)));
+                    break;
+
+                case WOLF:
+                    entity.setMaxHealth(20.0);
+                    entity.setHealth(entity.getMaxHealth());
+                    break;
+
+                default:
+                    break;
             }
 
             if (Permissions.renamePets(player)) {
-                entity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", player.getName(), StringUtils.getPrettyEntityTypeString(entity.getType())));
+                entity.setCustomName(LocaleLoader.getString("Taming.Summon.Name.Format", player.getName(), StringUtils.getPrettyEntityTypeString(type)));
                 entity.setCustomNameVisible(true);
             }
         }
 
         player.setItemInHand(new ItemStack(heldItem.getType(), heldItemAmount - summonAmount));
         player.sendMessage(LocaleLoader.getString("Taming.Summon.Complete"));
+    }
+
+    private boolean rangeCheck(EntityType type) {
+        double range = Config.getInstance().getTamingCOTWRange();
+        Player player = getPlayer();
+
+        if (range == 0) {
+            return true;
+        }
+
+        for (Entity entity : player.getNearbyEntities(range, range, range)) {
+            if (entity.getType() == type) {
+                player.sendMessage(Taming.getCallOfTheWildFailureMessage(type));
+                return false;
+            }
+        }
+
+        return true;
     }
 }
