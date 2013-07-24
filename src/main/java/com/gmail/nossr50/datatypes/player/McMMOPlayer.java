@@ -63,6 +63,7 @@ public class McMMOPlayer {
     private boolean ptpEnabled = true;
     private boolean ptpConfirmRequired = Config.getInstance().getPTPCommandConfirmRequired();
     private long    ptpTimeout;
+    private int     ptpLastUse;
 
     private boolean partyChatMode;
     private boolean adminChatMode;
@@ -83,7 +84,7 @@ public class McMMOPlayer {
 
     private int recentlyHurt;
     private int respawnATS;
-    private int teleportLastUse;
+    private int chimeraWingLastUse;
     private Location teleportCommence;
 
     private boolean isUsingUnarmed;
@@ -310,12 +311,12 @@ public class McMMOPlayer {
      * Teleportation cooldown & warmup
      */
 
-    public int getLastTeleport() {
-        return teleportLastUse;
+    public int getChimeraWingLastUse() {
+        return chimeraWingLastUse;
     }
 
-    public void actualizeLastTeleport() {
-        teleportLastUse = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+    public void actualizeChimeraWingLastUse() {
+        chimeraWingLastUse = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
     public Location getTeleportCommenceLocation() {
@@ -610,6 +611,14 @@ public class McMMOPlayer {
 
     public void togglePtpConfirmRequired() {
         ptpConfirmRequired = !ptpConfirmRequired;
+    }
+
+    public int getPtpLastUse() {
+        return ptpLastUse;
+    }
+
+    public void actualizePtpLastUse() {
+        ptpLastUse = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
     public long getPtpTimeout() {

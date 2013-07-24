@@ -76,10 +76,10 @@ public class PtpCommand implements TabExecutor {
                 }
 
                 int ptpCooldown = Config.getInstance().getPTPCommandCooldown();
-                long lastTeleport = mcMMOPlayer.getLastTeleport();
+                long ptpLastUse = mcMMOPlayer.getPtpLastUse();
 
                 if (ptpCooldown > 0) {
-                    int timeRemaining = SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player);
+                    int timeRemaining = SkillUtils.calculateTimeLeft(ptpLastUse * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player);
 
                     if (timeRemaining > 0) {
                         player.sendMessage(LocaleLoader.getString("Item.Generic.Wait", timeRemaining));
@@ -196,6 +196,6 @@ public class PtpCommand implements TabExecutor {
         teleportingPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Player", targetPlayer.getName()));
         targetPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Target", teleportingPlayer.getName()));
 
-        mcMMOPlayer.actualizeRecentlyHurt();
+        mcMMOPlayer.actualizePtpLastUse();
     }
 }
