@@ -314,10 +314,6 @@ public class McMMOPlayer {
         return teleportLastUse;
     }
 
-    public void setLastTeleport(int value) {
-        teleportLastUse = value;
-    }
-
     public void actualizeLastTeleport() {
         teleportLastUse = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
