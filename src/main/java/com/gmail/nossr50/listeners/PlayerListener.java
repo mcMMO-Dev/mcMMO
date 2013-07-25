@@ -70,7 +70,13 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
-        UserManager.getPlayer(event.getPlayer()).actualizeTeleportATS();
+        Player player = event.getPlayer();
+
+        if (Misc.isNPCEntity(player)) {
+            return;
+        }
+
+        UserManager.getPlayer(player).actualizeTeleportATS();
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
