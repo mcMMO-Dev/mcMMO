@@ -2,6 +2,7 @@ package com.gmail.nossr50.util;
 
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -511,7 +512,11 @@ public class ItemUtils {
      * @param item Item that will get shared
      * @return True if the item can be shared.
      */
-    public static boolean isShareable(ItemStack item) {
+    public static boolean isSharable(ItemStack item) {
+        if (item == null || item.getType() == Material.AIR) {
+            return false;
+        }
+
         return isMiningDrop(item) || isWoodcuttingDrop(item) || isMobDrop(item) || isHerbalismDrop(item) || isMiscDrop(item);
     }
 

@@ -67,7 +67,15 @@ public class PlayerListener implements Listener {
         this.plugin = plugin;
     }
 
-
+    /**
+     * Monitor PlayerTeleportEvents.
+     * <p>
+     * These events are monitored for the purpose of setting the
+     * player's last teleportation timestamp, in order to prevent
+     * possible Acrobatics exploitation.
+     *
+     * @param event The event to monitor
+     */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
@@ -79,6 +87,15 @@ public class PlayerListener implements Listener {
         UserManager.getPlayer(player).actualizeTeleportATS();
     }
 
+    /**
+     * Handle PlayerDeathEvents at the lowest priority.
+     * <p>
+     * These events are used to modify the death message of a player when
+     * needed to correct issues potentially caused by the custom naming used
+     * for mob healthbars.
+     *
+     * @param event The event to modify
+     */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerDeathLowest(PlayerDeathEvent event) {
         String deathMessage = event.getDeathMessage();
@@ -87,13 +104,24 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        event.setDeathMessage(MobHealthbarUtils.fixDeathMessage(deathMessage, event.getEntity()));
+        Player player = event.getEntity();
+
+        if (Misc.isNPCEntity(player)) {
+            return;
+        }
+
+        event.setDeathMessage(MobHealthbarUtils.fixDeathMessage(deathMessage, player));
     }
 
     /**
-     * Monitor PlayerDeath events.
+     * Monitor PlayerDeathEvents.
+     * <p>
+     * These events are monitored for the purpose of dealing the penalties
+     * associated with hardcore and vampirism modes. If neither of these
+     * modes are enabled, or if the player who died has hardcore bypass
+     * permissions, this handler does nothing.
      *
-     * @param event The event to watch
+     * @param event The event to monitor
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeathMonitor(PlayerDeathEvent event) {
@@ -101,25 +129,29 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        Player player = event.getEntity();
+        Player killedPlayer = event.getEntity();
 
-        if (Misc.isNPCEntity(player) || Permissions.hardcoreBypass(player)) {
+        if (Misc.isNPCEntity(killedPlayer) || Permissions.hardcoreBypass(killedPlayer)) {
             return;
         }
 
-        Player killer = player.getKiller();
+        Player killer = killedPlayer.getKiller();
 
         if (killer != null && Config.getInstance().getHardcoreVampirismEnabled()) {
-            HardcoreManager.invokeVampirism(killer, player);
+            HardcoreManager.invokeVampirism(killer, killedPlayer);
         }
 
-        HardcoreManager.invokeStatPenalty(player);
+        HardcoreManager.invokeStatPenalty(killedPlayer);
     }
 
     /**
-     * Monitor PlayerChangedWorld events.
+     * Monitor PlayerChangedWorldEvents.
+     * <p>
+     * These events are monitored for the purpose of removing god mode or
+     * player parties if they are not allowed on the world the player has
+     * changed to.
      *
-     * @param event The event to watch
+     * @param event The event to monitor
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
@@ -131,34 +163,35 @@ public class PlayerListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (mcMMOPlayer.getGodMode() && !Permissions.mcgod(player)) {
-            mcMMOPlayer.toggleGodMode();
-            player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));
-        }
-
-        if (mcMMOPlayer.inParty() && !Permissions.party(player)) {
-            mcMMOPlayer.removeParty();
-            player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
-        }
+        mcMMOPlayer.checkGodMode();
+        mcMMOPlayer.checkParty();
     }
 
     /**
-     * Handle PlayerDropItem events that involve modifying the event.
+     * Handle PlayerDropItemEvents at the highest priority.
+     * <p>
+     * These events are used to flag sharable dropped items, as well as
+     * remove ability buffs from pickaxes and shovels.
      *
      * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         Item drop = event.getItemDrop();
+        ItemStack dropStack = drop.getItemStack();
 
-        drop.setMetadata(mcMMO.droppedItemKey, mcMMO.metadataValue);
-        SkillUtils.removeAbilityBuff(drop.getItemStack());
+        if (ItemUtils.isSharable(dropStack)) {
+            drop.setMetadata(mcMMO.droppedItemKey, mcMMO.metadataValue);
+        }
+
+        SkillUtils.removeAbilityBuff(dropStack);
     }
 
     /**
-     * Monitor PlayerFish events.
-     *
-     * @param event The event to watch
+     * Monitor PlayerFishEvents.
+     * <p>
+     * These events are monitored for the purpose of handling the various
+     * @param event The event to monitor
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerFish(PlayerFishEvent event) {
@@ -240,7 +273,7 @@ public class PlayerListener implements Listener {
         Item drop = event.getItem();
         ItemStack dropStack = drop.getItemStack();
 
-        if (!drop.hasMetadata(mcMMO.droppedItemKey) && mcMMOPlayer.inParty() && ItemUtils.isShareable(dropStack)) {
+        if (!drop.hasMetadata(mcMMO.droppedItemKey) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
             event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
 
             if (event.isCancelled()) {
@@ -249,7 +282,7 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if ((mcMMOPlayer.isUsingUnarmed() && ItemUtils.isShareable(dropStack)) || mcMMOPlayer.getAbilityMode(AbilityType.BERSERK)) {
+        if ((mcMMOPlayer.isUsingUnarmed() && ItemUtils.isSharable(dropStack)) || mcMMOPlayer.getAbilityMode(AbilityType.BERSERK)) {
             event.setCancelled(Unarmed.handleItemPickup(player.getInventory(), drop));
 
             if (event.isCancelled()) {

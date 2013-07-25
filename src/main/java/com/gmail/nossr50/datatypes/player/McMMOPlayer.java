@@ -17,6 +17,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
@@ -705,5 +706,19 @@ public class McMMOPlayer {
         }
 
         return PerksUtils.handleXpPerks(player, xp);
+    }
+
+    public void checkGodMode() {
+        if (godMode && !Permissions.mcgod(player)) {
+            toggleGodMode();
+            player.sendMessage(LocaleLoader.getString("Commands.GodMode.Forbidden"));
+        }
+    }
+
+    public void checkParty() {
+        if (inParty() && !Permissions.party(player)) {
+            removeParty();
+            player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
+        }
     }
 }
