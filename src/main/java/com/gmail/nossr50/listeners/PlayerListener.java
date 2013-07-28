@@ -6,7 +6,6 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Fish;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -168,14 +167,15 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Handle PlayerDropItemEvents at the highest priority.
+     * Monitor PlayerDropItemEvents.
      * <p>
-     * These events are used to flag sharable dropped items, as well as
-     * remove ability buffs from pickaxes and shovels.
+     * These events are monitored for the purpose of flagging sharable
+     * dropped items, as well as removing ability buffs from pickaxes
+     * and shovels.
      *
-     * @param event The event to modify
+     * @param event The event to monitor
      */
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         Item drop = event.getItemDrop();
         ItemStack dropStack = drop.getItemStack();
@@ -188,13 +188,15 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Monitor PlayerFishEvents.
+     * Handle PlayerFishEvents at the highest priority.
      * <p>
-     * These events are monitored for the purpose of handling the various
-     * @param event The event to monitor
+     * These events are used for the purpose of handling our anti-exploit
+     * code, as well as dealing with ice fishing.
+     *
+     * @param event The event to modify
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onPlayerFish(PlayerFishEvent event) {
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onPlayerFishHighest(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
         if (Misc.isNPCEntity(player) || !Permissions.skillEnabled(player, SkillType.FISHING)) {
@@ -207,59 +209,84 @@ public class PlayerListener implements Listener {
             case FISHING:
                 if (!Permissions.krakenBypass(player)) {
                     event.setCancelled(fishingManager.exploitPrevention());
-
-                    if (event.isCancelled()) {
-                        return;
-                    }
                 }
-
-                if (fishingManager.canMasterAngler()) {
-                    fishingManager.masterAngler(event.getHook());
-                }
-                break;
+                return;
 
             case CAUGHT_FISH:
-                fishingManager.handleFishing((Item) event.getCaught());
-
                 if (Permissions.vanillaXpBoost(player, SkillType.FISHING)) {
                     event.setExpToDrop(fishingManager.handleVanillaXpBoost(event.getExpToDrop()));
                 }
-                break;
-
-            case CAUGHT_ENTITY:
-                Entity entity = event.getCaught();
-
-                if (fishingManager.canShake(entity)) {
-                    fishingManager.shakeCheck((LivingEntity) entity);
-                }
-                break;
+                return;
 
             case IN_GROUND:
-                Fish hook = event.getHook();
-                Block block = event.getPlayer().getTargetBlock(null, 100);
+                Block block = player.getTargetBlock(null, 100);
 
                 if (fishingManager.canIceFish(block)) {
                     FakeBlockBreakEvent blockBreakEvent = new FakeBlockBreakEvent(block, player);
-                    mcMMO.p.getServer().getPluginManager().callEvent(blockBreakEvent);
+                    plugin.getServer().getPluginManager().callEvent(blockBreakEvent);
 
                     if (blockBreakEvent.isCancelled()) {
                         return;
                     }
 
                     event.setCancelled(true);
-                    fishingManager.iceFishing(hook, block);
+                    fishingManager.iceFishing(event.getHook(), block);
                 }
-                break;
+                return;
 
             default:
-                break;
+                return;
         }
     }
 
     /**
-     * Monitor PlayerPickupItem events.
+     * Monitor PlayerFishEvents.
+     * <p>
+     * These events are monitored for the purpose of handling the various
+     * Fishing skills and abilities.
      *
-     * @param event The event to watch
+     * @param event The event to monitor
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPlayerFishMonitor(PlayerFishEvent event) {
+        Player player = event.getPlayer();
+
+        if (Misc.isNPCEntity(player) || !Permissions.skillEnabled(player, SkillType.FISHING)) {
+            return;
+        }
+
+        FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
+        Entity caught = event.getCaught();
+
+        switch (event.getState()) {
+            case FISHING:
+                if (fishingManager.canMasterAngler()) {
+                    fishingManager.masterAngler(event.getHook());
+                }
+                return;
+
+            case CAUGHT_FISH:
+                fishingManager.handleFishing((Item) caught);
+                return;
+
+            case CAUGHT_ENTITY:
+                if (fishingManager.canShake(caught)) {
+                    fishingManager.shakeCheck((LivingEntity) caught);
+                }
+                return;
+
+            default:
+                return;
+        }
+    }
+
+    /**
+     * Handle PlayerPickupItemEvents at the highest priority.
+     * <p>
+     * These events are used to handle item sharing between party members and
+     * are also used to handle item pickup for the Unarmed skill.
+     *
+     * @param event The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
@@ -294,9 +321,13 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Monitor PlayerQuit events.
+     * Monitor PlayerQuitEvents.
+     * <p>
+     * These events are monitored for the purpose of resetting player
+     * variables and other garbage collection tasks that must take place when
+     * a player exits the server.
      *
-     * @param event The event to watch
+     * @param event The event to monitor
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerQuit(PlayerQuitEvent event) {
@@ -307,18 +338,21 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        mcMMOPlayer.resetAbilityMode();
 
-        /* GARBAGE COLLECTION */
-        BleedTimerTask.bleedOut(player); // Bleed it out
+        mcMMOPlayer.resetAbilityMode();
+        BleedTimerTask.bleedOut(player);
         mcMMOPlayer.getProfile().save();
         UserManager.remove(player.getName());
     }
 
     /**
-     * Monitor PlayerJoin events.
+     * Monitor PlayerJoinEvents.
+     * <p>
+     * These events are monitored for the purpose of initializing player
+     * variables, as well as handling the MOTD display and other important
+     * join messages.
      *
-     * @param event The event to watch
+     * @param event The event to monitor
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -346,9 +380,13 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Monitor PlayerRespawn events.
+     * Monitor PlayerRespawnEvents.
+     * <p>
+     * These events are monitored for the purpose of setting the
+     * player's last respawn timestamp, in order to prevent
+     * possible exploitation.
      *
-     * @param event The event to watch
+     * @param event The event to monitor
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
@@ -362,34 +400,34 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Handle PlayerInteract events that involve modifying the event.
+     * Handle PlayerInteractEvents at the lowest priority.
      *
      * @param event The event to modify
      */
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerInteractLowest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        Block block = event.getClickedBlock();
 
         if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
-        ItemStack heldItem = player.getItemInHand();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        // This shouldn't be possible - this is probably a band-aid for a larger issue somewhere else.
+        // TODO: This shouldn't be possible - this is probably a band-aid for a larger issue somewhere else.
         if (mcMMOPlayer == null) {
             return;
         }
 
         MiningManager miningManager = mcMMOPlayer.getMiningManager();
+        Block block = event.getClickedBlock();
+        ItemStack heldItem = player.getItemInHand();
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
                 int blockID = block.getTypeId();
 
-                if ((Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() && player.isSneaking()) || !Config.getInstance().getAbilitiesOnlyActivateWhenSneaking()) {
+                if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
                     if (blockID == Repair.repairAnvilId && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
@@ -467,25 +505,26 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Monitor PlayerInteract events.
+     * Monitor PlayerInteractEvents.
      *
-     * @param event The event to watch
+     * @param event The event to monitor
      */
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteract(PlayerInteractEvent event) {
+    public void onPlayerInteractMonitor(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
         if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
-        ItemStack heldItem = player.getItemInHand();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        // This shouldn't be possible - this is probably a band-aid for a larger issue somewhere else.
+        // TODO: This shouldn't be possible - this is probably a band-aid for a larger issue somewhere else.
         if (mcMMOPlayer == null) {
             return;
         }
+
+        ItemStack heldItem = player.getItemInHand();
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
@@ -571,7 +610,7 @@ public class PlayerListener implements Listener {
     }
 
     /**
-     * Monitor PlayerChat events.
+     * Handle PlayerChatEvents at high priority.
      *
      * @param event The event to watch
      */
