@@ -11,6 +11,7 @@ Version 1.4.07-dev
  + Added snow to excavation
  + Added new experience curve option. Cumulative curve, calculates experience needed for next level using power level.
  + Added extra settings to config.yml for Call of the Wild (Taming)
+ + Added a 5 cooldown after teleporting before Acrobatics XP can be earned. + Config option to disable
  = Fixed bug with Skull Splitter not finding the locale string
  = Fixed issue where locale strings could cause the scoreboard header to be longer than 16 characters.
  = Fixed a bug with Beast Lore when the entity had no owner but was tamed.

@@ -34,6 +34,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
@@ -222,7 +223,7 @@ public class EntityListener implements Listener {
 
             switch (cause) {
                 case FALL:
-                    if (SkillUtils.calculateTimeLeft((long) mcMMOPlayer.getTeleportATS() * Misc.TIME_CONVERSION_FACTOR, 5, player) > 0) {
+                    if (!Config.getInstance().getPreventXPAfterTeleport() || SkillUtils.calculateTimeLeft((long) mcMMOPlayer.getTeleportATS() * Misc.TIME_CONVERSION_FACTOR, 5, player) > 0) {
                         return;
                     }
 

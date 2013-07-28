@@ -179,6 +179,7 @@ Skills:
         Enabled_For_PVE: true
         Prevent_AFK_Leveling: true
         Prevent_Dodge_Lightning: false
+        Prevent_XP_After_Teleport: true
         Level_Cap: 0
     Archery:
         Enabled_For_PVP: true
