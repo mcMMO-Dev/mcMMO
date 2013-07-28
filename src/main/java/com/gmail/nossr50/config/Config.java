@@ -67,7 +67,7 @@ public class Config extends AutoUpdateConfigLoader {
         }
 
         /* Database Purging */
-        if (getPurgeInterval() <= -1) {
+        if (getPurgeInterval() < -1) {
             reason.add("Database_Purging.Purge_Interval should be greater than, or equal to -1!");
         }
 
@@ -202,7 +202,10 @@ public class Config extends AutoUpdateConfigLoader {
 
         // Check if there were any errors
         if (noErrorsInConfig(reason)) {
-            mcMMO.p.debug("No errors found in config.yml!");
+            mcMMO.p.debug("No errors found in " + fileName + "!");
+        } else {
+            mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
+            mcMMO.p.getServer().getPluginManager().disablePlugin(mcMMO.p);
         }
     }
 
