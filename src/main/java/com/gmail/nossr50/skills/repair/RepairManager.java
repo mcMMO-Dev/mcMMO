@@ -194,11 +194,10 @@ public class RepairManager extends SkillManager {
     public boolean checkConfirmation(int anvilId, boolean actualize) {
         Player player = getPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-        long LastUse = mcMMOPlayer.getLastAnvilUse(anvilId);
+        long lastUse = mcMMOPlayer.getLastAnvilUse(anvilId);
 
         // Don't use SkillUtils.cooldownOver() here since that also accounts for the cooldown perks
-        if ((((LastUse + 3) * Misc.TIME_CONVERSION_FACTOR) >= System.currentTimeMillis()) || !Config.getInstance().getRepairConfirmRequired()) {
+        if ((((lastUse + 3) * Misc.TIME_CONVERSION_FACTOR) >= System.currentTimeMillis()) || !Config.getInstance().getRepairConfirmRequired()) {
             return true;
         }
 
@@ -211,10 +210,10 @@ public class RepairManager extends SkillManager {
         if (anvilId == Repair.repairAnvilId) {
             player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Repair.Pretty.Name")));
         }
-
-        if (anvilId == Repair.salvageAnvilId) {
+        else if (anvilId == Repair.salvageAnvilId) {
             player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Salvage.Pretty.Name")));
         }
+
         return false;
     }
 
