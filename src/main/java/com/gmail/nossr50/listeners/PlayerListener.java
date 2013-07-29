@@ -222,13 +222,6 @@ public class PlayerListener implements Listener {
                 Block block = player.getTargetBlock(null, 100);
 
                 if (fishingManager.canIceFish(block)) {
-                    FakeBlockBreakEvent blockBreakEvent = new FakeBlockBreakEvent(block, player);
-                    plugin.getServer().getPluginManager().callEvent(blockBreakEvent);
-
-                    if (blockBreakEvent.isCancelled()) {
-                        return;
-                    }
-
                     event.setCancelled(true);
                     fishingManager.iceFishing(event.getHook(), block);
                 }

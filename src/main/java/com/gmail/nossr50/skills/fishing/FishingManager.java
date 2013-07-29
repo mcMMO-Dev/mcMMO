@@ -38,6 +38,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
+import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakePlayerFishEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerMagicHunterEvent;
@@ -188,7 +189,16 @@ public class FishingManager extends SkillManager {
             return false;
         }
 
-        return Permissions.iceFishing(getPlayer());
+        Player player = getPlayer();
+
+        if (!Permissions.iceFishing(player)) {
+            return false;
+        }
+
+        FakeBlockBreakEvent blockBreakEvent = new FakeBlockBreakEvent(block, player);
+        mcMMO.p.getServer().getPluginManager().callEvent(blockBreakEvent);
+
+        return !blockBreakEvent.isCancelled();
     }
 
     /**
