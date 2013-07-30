@@ -581,14 +581,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connection = null;
 
             if (reconnectAttempt == 0 || reconnectAttempt >= 11) {
-                mcMMO.p.getLogger().info("Connection to MySQL failed!");
+                mcMMO.p.getLogger().severe("Connection to MySQL failed!");
+                printErrors(ex);
             }
         }
         catch (ClassNotFoundException ex) {
             connection = null;
 
             if (reconnectAttempt == 0 || reconnectAttempt >= 11) {
-                mcMMO.p.getLogger().info("MySQL database driver not found!");
+                mcMMO.p.getLogger().severe("MySQL database driver not found!");
             }
         }
     }
