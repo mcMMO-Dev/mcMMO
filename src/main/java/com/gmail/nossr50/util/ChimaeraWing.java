@@ -133,6 +133,7 @@ public final class ChimaeraWing {
         player.setItemInHand(new ItemStack(getChimaeraWing(player.getItemInHand().getAmount() - Config.getInstance().getChimaeraUseCost())));
         player.updateInventory();
         mcMMOPlayer.actualizeChimeraWingLastUse();
+        mcMMOPlayer.setTeleportCommenceLocation(null);
         if (Config.getInstance().getStatsTrackingEnabled()) {
             MetricsManager.chimeraWingUsed();
         }
