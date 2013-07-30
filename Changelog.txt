@@ -16,6 +16,8 @@ Version 1.4.07-dev
  = Fixed issue where locale strings could cause the scoreboard header to be longer than 16 characters.
  = Fixed a bug with Beast Lore when the entity had no owner but was tamed.
  = Fixed a bug where AbilityDeactivateEvent would throw an error if the player logged out before his ability ran out.
+ = Fixed a bug where LevelUpEvent would be called for an offline player.
+ = Fixed a bug where teleport location was never reset if warmup was set to 0 for Chimera Wing.
  ! Improved profile saving
  ! Updated localization files
 
