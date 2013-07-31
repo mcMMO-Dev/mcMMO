@@ -598,6 +598,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         } else {
                             String oldVersion = null;
                             StringBuilder newLine = new StringBuilder(line);
+                            boolean announce = false;
                             if (character.length <= 33) {
                                 // Introduction of HUDType
                                 // Version 1.1.06
@@ -632,6 +633,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                     time = System.currentTimeMillis();
                                 }
                                 newLine.append(time / Misc.TIME_CONVERSION_FACTOR).append(":");
+                                announce = true; // TODO move this down
                                 if (oldVersion == null) oldVersion = "1.4.00";
                             }
                             if (character.length <= 38) {
@@ -641,7 +643,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 newLine.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":");
                                 if (oldVersion == null) oldVersion = "1.4.06";
                             }
-                            mcMMO.p.debug("Updating database line for player " + character[0] + " from before version " + oldVersion);
+                            if (announce) {
+                                mcMMO.p.debug("Updating database line for player " + character[0] + " from before version " + oldVersion);
+                            }
                             writer.append(newLine).append("\r\n");
                         }
                     }
