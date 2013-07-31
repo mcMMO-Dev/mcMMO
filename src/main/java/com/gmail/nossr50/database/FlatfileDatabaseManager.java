@@ -26,6 +26,7 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public final class FlatfileDatabaseManager implements DatabaseManager {
     private final HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
@@ -115,20 +116,38 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 String line = "";
 
                 while ((line = in.readLine()) != null) {
+                    // Length checks depend on last character being ':'
+                    if (line.charAt(line.length() - 1) != ':') {
+                        line = line + ":";
+                    }
                     String[] character = line.split(":");
                     String name = character[0];
-                    OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-                    boolean old = true;
-                    if (player != null) {
-                        old = (currentTime - player.getLastPlayed()) > PURGE_TIME;
+                    long lastPlayed = 0;
+                    boolean rewrite = false;
+                    try {
+                        lastPlayed = Long.parseLong(character[37]) * Misc.TIME_CONVERSION_FACTOR;
+                    } catch (NumberFormatException e) {
+                    }
+                    if (lastPlayed == 0) {
+                        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+                        lastPlayed = player.getLastPlayed();
+                        rewrite = true;
                     }
 
-                    if (!old) {
-                        writer.append(line).append("\r\n");
-                    }
-                    else {
+                    if (currentTime - lastPlayed > PURGE_TIME) {
                         removedPlayers++;
                         Misc.profileCleanup(name);
+                    }
+                    else {
+                        if (rewrite) {
+                            // Rewrite their data with a valid time
+                            character[37] = Long.toString(lastPlayed);
+                            String newLine = org.apache.commons.lang.StringUtils.join(character, ":");
+                            writer.append(newLine).append("\r\n");
+                        }
+                        else {
+                            writer.append(line).append("\r\n");
+                        }
                     }
                 }
 
@@ -577,7 +596,52 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         if (character.length >= 37) {
                             writer.append(line).append("\r\n");
                         } else {
-                            // Placeholder, repair row if needed (I.E. when new skills are added and such)
+                            String oldVersion = null;
+                            StringBuilder newLine = new StringBuilder(line);
+                            boolean announce = false;
+                            if (character.length <= 33) {
+                                // Introduction of HUDType
+                                // Version 1.1.06
+                                // commit 78f79213cdd7190cd11ae54526f3b4ea42078e8a
+                                newLine.append("STANDARD").append(":");
+                                oldVersion = "1.1.06";
+                            }
+                            if (character.length <= 35) {
+                                // Introduction of Fishing
+                                // Version 1.2.00
+                                // commit a814b57311bc7734661109f0e77fc8bab3a0bd29
+                                newLine.append(0).append(":");
+                                newLine.append(0).append(":");
+                                if (oldVersion == null) oldVersion = "1.2.00";
+                            }
+                            if (character.length <= 36) {
+                                // Introduction of Blast Mining cooldowns
+                                // Version 1.3.00-dev
+                                // commit fadbaf429d6b4764b8f1ad0efaa524a090e82ef5
+                                newLine.append((int) 0).append(":");
+                                if (oldVersion == null) oldVersion = "1.3.00";
+                            }
+                            if (character.length <= 37) {
+                                // Making old-purge work with flatfile
+                                // Version 1.4.00-dev
+                                // commmit 3f6c07ba6aaf44e388cc3b882cac3d8f51d0ac28
+
+                                // XXX Cannot create an OfflinePlayer at startup, use 0 and fix in purge
+                                newLine.append("0").append(":");
+                                announce = true; // TODO move this down
+                                if (oldVersion == null) oldVersion = "1.4.00";
+                            }
+                            if (character.length <= 38) {
+                                // Addition of mob healthbars
+                                // Version 1.4.06
+                                // commit da29185b7dc7e0d992754bba555576d48fa08aa6
+                                newLine.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":");
+                                if (oldVersion == null) oldVersion = "1.4.06";
+                            }
+                            if (announce) {
+                                mcMMO.p.debug("Updating database line for player " + character[0] + " from before version " + oldVersion);
+                            }
+                            writer.append(newLine).append("\r\n");
                         }
                     }
 
