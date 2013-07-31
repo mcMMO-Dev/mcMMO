@@ -586,10 +586,59 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         String[] character = line.split(":");
 
                         // If they're valid, rewrite them to the file.
-                        if (character.length >= 37) {
+                        if (character.length > 38) {
                             writer.append(line).append("\r\n");
+                        } else if (character.length < 33) {
+                            // Before Version 1.0 - Drop
+                            mcMMO.p.getLogger().warning("Dropping malformed or before version 1.0 line from database - " + line);
                         } else {
-                            // Placeholder, repair row if needed (I.E. when new skills are added and such)
+                            String oldVersion = null;
+                            StringBuilder newLine = new StringBuilder(line);
+                            if (character.length <= 33) {
+                                // Introduction of HUDType
+                                // Version 1.1.06
+                                // commit 78f79213cdd7190cd11ae54526f3b4ea42078e8a
+                                newLine.append("STANDARD").append(":");
+                                oldVersion = "1.1.06";
+                            }
+                            if (character.length <= 35) {
+                                // Introduction of Fishing
+                                // Version 1.2.00
+                                // commit a814b57311bc7734661109f0e77fc8bab3a0bd29
+                                newLine.append(0).append(":");
+                                newLine.append(0).append(":");
+                                if (oldVersion == null) oldVersion = "1.2.00";
+                            }
+                            if (character.length <= 36) {
+                                // Introduction of Blast Mining cooldowns
+                                // Version 1.3.00-dev
+                                // commit fadbaf429d6b4764b8f1ad0efaa524a090e82ef5
+                                newLine.append((int) 0).append(":");
+                                if (oldVersion == null) oldVersion = "1.3.00";
+                            }
+                            if (character.length <= 37) {
+                                // Making old-purge work with flatfile
+                                // Version 1.4.00-dev
+                                // commmit 3f6c07ba6aaf44e388cc3b882cac3d8f51d0ac28
+                                String playerName = character[0];
+                                // Try to get a accurate time, instead of "right now"
+                                OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+                                long time = player.getLastPlayed();
+                                if (time == 0) {
+                                    time = System.currentTimeMillis();
+                                }
+                                newLine.append(time / Misc.TIME_CONVERSION_FACTOR).append(":");
+                                if (oldVersion == null) oldVersion = "1.4.00";
+                            }
+                            if (character.length <= 38) {
+                                // Addition of mob healthbars
+                                // Version 1.4.06
+                                // commit da29185b7dc7e0d992754bba555576d48fa08aa6
+                                newLine.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":");
+                                if (oldVersion == null) oldVersion = "1.4.06";
+                            }
+                            mcMMO.p.debug("Updating database line for player " + character[0] + " from before version " + oldVersion);
+                            writer.append(newLine).append("\r\n");
                         }
                     }
 
