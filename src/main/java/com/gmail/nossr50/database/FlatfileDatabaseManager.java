@@ -116,6 +116,10 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 String line = "";
 
                 while ((line = in.readLine()) != null) {
+                    // Length checks depend on last character being ':'
+                    if (line.charAt(line.length() - 1) != ':') {
+                        line = line + ":";
+                    }
                     String[] character = line.split(":");
                     String name = character[0];
                     long lastPlayed = StringUtils.getLong(character[37]) * Misc.TIME_CONVERSION_FACTOR;
