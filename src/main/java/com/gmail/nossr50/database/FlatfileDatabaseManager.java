@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -116,10 +117,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 String line = "";
 
                 while ((line = in.readLine()) != null) {
-                    // Length checks depend on last character being ':'
-                    if (line.charAt(line.length() - 1) != ':') {
-                        line = line + ":";
-                    }
                     String[] character = line.split(":");
                     String name = character[0];
                     long lastPlayed = 0;
@@ -504,19 +501,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             try {
                 in = new BufferedReader(new FileReader(usersFilePath));
                 String line = "";
-                ArrayList<String> players = new ArrayList<String>();
 
                 while ((line = in.readLine()) != null) {
                     String[] data = line.split(":");
                     String playerName = data[0];
                     int powerLevel = 0;
-
-                    // Prevent the same player from being added multiple times (I'd like to note that this shouldn't happen...)
-                    if (players.contains(playerName)) {
-                        continue;
-                    }
-
-                    players.add(playerName);
 
                     Map<SkillType, Integer> skills = getSkillMapFromLine(data);
 
@@ -588,13 +577,26 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     in = new BufferedReader(new FileReader(usersFilePath));
                     StringBuilder writer = new StringBuilder();
                     String line = "";
+                    HashSet<String> players = new HashSet<String>();
 
                     while ((line = in.readLine()) != null) {
+                        // Length checks depend on last character being ':'
+                        if (line.charAt(line.length() - 1) != ':') {
+                            line = line + ":";
+                        }
                         String[] character = line.split(":");
 
+                        // Prevent the same player from being present multiple times
+                        if (!players.add(character[0])) {
+                            continue;
+                        }
+
                         // If they're valid, rewrite them to the file.
-                        if (character.length >= 37) {
+                        if (character.length > 38) {
                             writer.append(line).append("\r\n");
+                        } else if (character.length < 33) {
+                            // Before Version 1.0 - Drop
+                            mcMMO.p.getLogger().warning("Dropping malformed or before version 1.0 line from database - " + line);
                         } else {
                             String oldVersion = null;
                             StringBuilder newLine = new StringBuilder(line);
@@ -625,7 +627,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 // Making old-purge work with flatfile
                                 // Version 1.4.00-dev
                                 // commmit 3f6c07ba6aaf44e388cc3b882cac3d8f51d0ac28
-
                                 // XXX Cannot create an OfflinePlayer at startup, use 0 and fix in purge
                                 newLine.append("0").append(":");
                                 announce = true; // TODO move this down
@@ -638,6 +639,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 newLine.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":");
                                 if (oldVersion == null) oldVersion = "1.4.06";
                             }
+
                             if (announce) {
                                 mcMMO.p.debug("Updating database line for player " + character[0] + " from before version " + oldVersion);
                             }
