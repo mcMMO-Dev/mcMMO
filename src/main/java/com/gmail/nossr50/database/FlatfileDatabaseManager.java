@@ -26,6 +26,7 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public final class FlatfileDatabaseManager implements DatabaseManager {
     private final HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
@@ -117,18 +118,29 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
                     String name = character[0];
-                    OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-                    boolean old = true;
-                    if (player != null) {
-                        old = (currentTime - player.getLastPlayed()) > PURGE_TIME;
+                    long lastPlayed = StringUtils.getLong(character[37]) * Misc.TIME_CONVERSION_FACTOR;
+                    boolean rewrite = false;
+
+                    if (lastPlayed == 0) {
+                        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+                        lastPlayed = player.getLastPlayed();
+                        rewrite = true;
                     }
 
-                    if (!old) {
-                        writer.append(line).append("\r\n");
-                    }
-                    else {
+                    if (currentTime - lastPlayed > PURGE_TIME) {
                         removedPlayers++;
                         Misc.profileCleanup(name);
+                    }
+                    else {
+                        if (rewrite) {
+                            // Rewrite their data with a valid time
+                            character[37] = Long.toString(lastPlayed);
+                            String newLine = org.apache.commons.lang.StringUtils.join(character, ":");
+                            writer.append(newLine).append("\r\n");
+                        }
+                        else {
+                            writer.append(line).append("\r\n");
+                        }
                     }
                 }
 
