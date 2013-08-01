@@ -122,13 +122,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     }
                     String[] character = line.split(":");
                     String name = character[0];
-                    long lastPlayed = StringUtils.getLong(character[37]) * Misc.TIME_CONVERSION_FACTOR;
+                    long lastPlayed;
                     boolean rewrite = false;
-
-                    if (lastPlayed == 0) {
-                        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
-                        lastPlayed = player.getLastPlayed();
+                    try {
+                        lastPlayed = Long.parseLong(character[37]) * Misc.TIME_CONVERSION_FACTOR;
+                    } catch (NumberFormatException e) {
                         rewrite = true;
+                        lastPlayed = System.currentTimeMillis();
                     }
 
                     if (currentTime - lastPlayed > PURGE_TIME) {
