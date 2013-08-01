@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -497,19 +498,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             try {
                 in = new BufferedReader(new FileReader(usersFilePath));
                 String line = "";
-                ArrayList<String> players = new ArrayList<String>();
 
                 while ((line = in.readLine()) != null) {
                     String[] data = line.split(":");
                     String playerName = data[0];
                     int powerLevel = 0;
-
-                    // Prevent the same player from being added multiple times (I'd like to note that this shouldn't happen...)
-                    if (players.contains(playerName)) {
-                        continue;
-                    }
-
-                    players.add(playerName);
 
                     Map<SkillType, Integer> skills = getSkillMapFromLine(data);
 
@@ -581,6 +574,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     in = new BufferedReader(new FileReader(usersFilePath));
                     StringBuilder writer = new StringBuilder();
                     String line = "";
+                    HashSet<String> players = new HashSet<String>();
 
                     while ((line = in.readLine()) != null) {
                         // Length checks depend on last character being ':'
@@ -588,6 +582,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             line = line + ":";
                         }
                         String[] character = line.split(":");
+
+                        // Prevent the same player from being present multiple times
+                        if (!players.add(character[0])) {
+                            continue;
+                        }
 
                         // If they're valid, rewrite them to the file.
                         if (character.length > 38) {
