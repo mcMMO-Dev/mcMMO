@@ -82,7 +82,13 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        UserManager.getPlayer(player).actualizeTeleportATS();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        if (mcMMOPlayer == null) {
+            return;
+        }
+
+        mcMMOPlayer.actualizeTeleportATS();
     }
 
     /**
