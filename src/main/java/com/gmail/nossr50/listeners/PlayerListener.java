@@ -489,14 +489,6 @@ public class PlayerListener implements Listener {
 
                 break;
 
-            case RIGHT_CLICK_AIR:
-                /* BLAST MINING CHECK */
-                if (miningManager.canDetonate()) {
-                    miningManager.remoteDetonation();
-                }
-
-                break;
-
             default:
                 break;
         }
@@ -581,6 +573,12 @@ public class PlayerListener implements Listener {
 
                 /* ITEM CHECKS */
                 ChimaeraWing.activationCheck(player);
+
+                /* BLAST MINING CHECK */
+                MiningManager miningManager = mcMMOPlayer.getMiningManager();
+                if (miningManager.canDetonate()) {
+                    miningManager.remoteDetonation();
+                }
 
                 break;
 
