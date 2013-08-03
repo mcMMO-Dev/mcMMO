@@ -29,9 +29,9 @@ public class Unarmed {
     public static boolean handleItemPickup(PlayerInventory inventory, Item drop) {
         ItemStack dropStack = drop.getItemStack();
         int firstEmpty = inventory.firstEmpty();
+        int dropAmount = dropStack.getAmount();
 
         if (inventory.containsAtLeast(dropStack, 1)) {
-            int dropAmount = dropStack.getAmount();
             int nextSlot = 0;
 
             for (Iterator<ItemStack> iterator = inventory.iterator(); iterator.hasNext();) {
@@ -72,6 +72,7 @@ public class Unarmed {
 
                 if (itemstack == null) {
                     drop.remove();
+                    dropStack.setAmount(dropAmount);
                     inventory.setItem(nextSlot, dropStack);
                     return true;
                 }
@@ -79,6 +80,8 @@ public class Unarmed {
                 nextSlot++;
             }
         }
+
+        dropStack.setAmount(dropAmount); // Even when only partially finished we need to prevent dupes
 
         return false;
     }
