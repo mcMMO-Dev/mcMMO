@@ -167,6 +167,10 @@ public class PlayerListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
+        if (mcMMOPlayer == null) {
+            return;
+        }
+
         mcMMOPlayer.checkGodMode();
         mcMMOPlayer.checkParty();
     }
