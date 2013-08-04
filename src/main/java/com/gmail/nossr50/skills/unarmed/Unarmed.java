@@ -84,11 +84,9 @@ public class Unarmed {
             dropStack.setAmount(dropAmount);
             inventory.setItem(firstEmpty, dropStack);
             return true;
-        } else {
-            drop.remove();
-            return true;
         }
 
-        return false;
+        drop.remove();
+        return true;
     }
 }
