@@ -79,10 +79,14 @@ public class Unarmed {
 
                 nextSlot++;
             }
+        } else if (firstEmpty != -1) {
+            dropStack.setAmount(dropAmount);
+            inventory.setItem(firstEmpty, dropStack);
+            return true;
+        } else {
+            // This should never happen as event contract states that the amount on the stack is equal to the amount they can actually pick up
+            return true;
         }
-
-        dropStack.setAmount(dropAmount); // Even when only partially finished we need to prevent dupes
-        drop.setItemStack(dropStack);
 
         return false;
     }
