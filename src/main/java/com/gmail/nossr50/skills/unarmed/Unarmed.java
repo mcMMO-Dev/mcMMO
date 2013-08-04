@@ -82,6 +82,7 @@ public class Unarmed {
         }
 
         dropStack.setAmount(dropAmount); // Even when only partially finished we need to prevent dupes
+        drop.setItemStack(dropStack);
 
         return false;
     }
