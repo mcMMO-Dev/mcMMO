@@ -85,7 +85,7 @@ public class Unarmed {
             inventory.setItem(firstEmpty, dropStack);
             return true;
         } else {
-            // This should never happen as event contract states that the amount on the stack is equal to the amount they can actually pick up
+            drop.remove();
             return true;
         }
 
