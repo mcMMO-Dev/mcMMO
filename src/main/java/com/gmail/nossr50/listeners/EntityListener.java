@@ -215,6 +215,10 @@ public class EntityListener implements Listener {
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
+            if (mcMMOPlayer == null) {
+                return;
+            }
+
             /* Check for invincibility */
             if (mcMMOPlayer.getGodMode()) {
                 event.setCancelled(true);

@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -40,7 +41,13 @@ public final class PartyAPI {
      * @return true if the player is in a party, false otherwise
      */
     public static boolean inParty(Player player) {
-        return UserManager.getPlayer(player).inParty();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        if (mcMMOPlayer == null) {
+            return false;
+        }
+
+        return mcMMOPlayer.inParty();
     }
 
     /**

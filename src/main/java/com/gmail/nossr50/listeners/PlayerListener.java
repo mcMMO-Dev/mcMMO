@@ -299,6 +299,11 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        if (mcMMOPlayer == null) {
+            return;
+        }
+
         Item drop = event.getItem();
         ItemStack dropStack = drop.getItemStack();
 
@@ -340,6 +345,10 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        if (mcMMOPlayer == null) {
+            return;
+        }
 
         mcMMOPlayer.resetAbilityMode();
         BleedTimerTask.bleedOut(player);

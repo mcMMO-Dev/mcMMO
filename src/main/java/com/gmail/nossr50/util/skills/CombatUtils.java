@@ -139,6 +139,11 @@ public final class CombatUtils {
 
     private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Entity arrow) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        if (mcMMOPlayer == null) {
+            return;
+        }
+
         ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
 
         if (archeryManager.canSkillShot()) {
@@ -312,6 +317,11 @@ public final class CombatUtils {
 
             Player player = (Player) target;
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+            if (mcMMOPlayer == null) {
+                return;
+            }
+
             AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
             if (acrobaticsManager.canDodge(damager)) {
