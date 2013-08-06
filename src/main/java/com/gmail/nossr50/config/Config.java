@@ -286,7 +286,7 @@ public class Config extends AutoUpdateConfigLoader {
             str = String.valueOf(cfg.getInt(key));
         }
 
-        if (str == "0") {
+        if (str.equals("0")) {
             str = "No value set for '" + key + "'";
         }
         return str;
