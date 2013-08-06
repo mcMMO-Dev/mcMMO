@@ -20,6 +20,7 @@ Version 1.4.07-dev
  = Fixed a bug where teleport location was never reset if warmup was set to 0 for Chimera Wing.
  ! Improved profile saving
  ! Updated localization files
+ ! Party item share category states are now saved when the server shuts down.
 
 Version 1.4.06
  + Added "Ice Fishing" ability to Fishing

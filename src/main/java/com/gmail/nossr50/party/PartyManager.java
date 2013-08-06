@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.party.ItemShareType;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -415,6 +416,10 @@ public final class PartyManager {
             party.setXpShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ExpShareMode", "NONE")));
             party.setItemShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ItemShareMode", "NONE")));
 
+            for (ItemShareType itemShareType : ItemShareType.values()) {
+                party.setSharingDrops(itemShareType, partiesFile.getBoolean(partyName + ".ItemShareType." + itemShareType.toString(), true));
+            }
+
             List<String> memberNames = partiesFile.getStringList(partyName + ".Members");
             LinkedHashSet<String> members = party.getMembers();
 
@@ -444,6 +449,10 @@ public final class PartyManager {
             partiesFile.set(partyName + ".Locked", party.isLocked());
             partiesFile.set(partyName + ".ExpShareMode", party.getXpShareMode().toString());
             partiesFile.set(partyName + ".ItemShareMode", party.getItemShareMode().toString());
+
+            for (ItemShareType itemShareType : ItemShareType.values()) {
+                partiesFile.set(partyName + ".ItemShareType." + itemShareType.toString(), party.sharingDrops(itemShareType));
+            }
 
             List<String> memberNames = new ArrayList<String>();
 
