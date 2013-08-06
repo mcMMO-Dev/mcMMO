@@ -298,7 +298,7 @@ public final class PartyManager {
     /**
      * Accept a party invitation
      *
-     * @param Player The plaer to add to the party
+     * @param player The player to add to the party
      * @param mcMMOPlayer The player to add to the party
      */
     public static void joinInvitedParty(Player player, McMMOPlayer mcMMOPlayer) {
@@ -320,7 +320,7 @@ public final class PartyManager {
     /**
      * Add a player to a party
      *
-     * @param player The player to add to a party
+     * @param playerName The name of the player to add to a party
      * @param mcMMOPlayer The player to add to the party
      * @param party The party
      */
@@ -379,7 +379,7 @@ public final class PartyManager {
      * Check if a player can invite others to his party.
      *
      * @param player The player to check
-     * @param mcMMOPlayer The player to check
+     * @param party The party to check
      * @return true if the player can invite
      */
     public static boolean canInvite(Player player, Party party) {
