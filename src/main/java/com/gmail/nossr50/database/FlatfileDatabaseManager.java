@@ -119,13 +119,16 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
                     String name = character[0];
-                    long lastPlayed;
+                    long lastPlayed = 0;
                     boolean rewrite = false;
                     try {
                         lastPlayed = Long.parseLong(character[37]) * Misc.TIME_CONVERSION_FACTOR;
                     } catch (NumberFormatException e) {
+                    }
+                    if (lastPlayed == 0) {
+                        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+                        lastPlayed = player.getLastPlayed();
                         rewrite = true;
-                        lastPlayed = System.currentTimeMillis();
                     }
 
                     if (currentTime - lastPlayed > PURGE_TIME) {
@@ -624,14 +627,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 // Making old-purge work with flatfile
                                 // Version 1.4.00-dev
                                 // commmit 3f6c07ba6aaf44e388cc3b882cac3d8f51d0ac28
-                                String playerName = character[0];
-                                // Try to get a accurate time, instead of "right now"
-                                OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
-                                long time = player.getLastPlayed();
-                                if (time == 0) {
-                                    time = System.currentTimeMillis();
-                                }
-                                newLine.append(time / Misc.TIME_CONVERSION_FACTOR).append(":");
+
+                                // XXX Cannot create an OfflinePlayer at startup, use 0 and fix in purge
+                                newLine.append("0").append(":");
                                 announce = true; // TODO move this down
                                 if (oldVersion == null) oldVersion = "1.4.00";
                             }
