@@ -27,7 +27,6 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.StringUtils;
 
 public final class FlatfileDatabaseManager implements DatabaseManager {
     private final HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
@@ -104,7 +103,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
         mcMMO.p.getLogger().info("Purging old users...");
 
-
         BufferedReader in = null;
         FileWriter out = null;
         String usersFilePath = mcMMO.getUsersFilePath();
@@ -123,8 +121,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     boolean rewrite = false;
                     try {
                         lastPlayed = Long.parseLong(character[37]) * Misc.TIME_CONVERSION_FACTOR;
-                    } catch (NumberFormatException e) {
                     }
+                    catch (NumberFormatException e) {}
                     if (lastPlayed == 0) {
                         OfflinePlayer player = Bukkit.getOfflinePlayer(name);
                         lastPlayed = player.getLastPlayed();
@@ -594,10 +592,12 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         // If they're valid, rewrite them to the file.
                         if (character.length > 38) {
                             writer.append(line).append("\r\n");
-                        } else if (character.length < 33) {
+                        }
+                        else if (character.length < 33) {
                             // Before Version 1.0 - Drop
                             mcMMO.p.getLogger().warning("Dropping malformed or before version 1.0 line from database - " + line);
-                        } else {
+                        }
+                        else {
                             String oldVersion = null;
                             StringBuilder newLine = new StringBuilder(line);
                             boolean announce = false;
@@ -614,14 +614,18 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 // commit a814b57311bc7734661109f0e77fc8bab3a0bd29
                                 newLine.append(0).append(":");
                                 newLine.append(0).append(":");
-                                if (oldVersion == null) oldVersion = "1.2.00";
+                                if (oldVersion == null) {
+                                    oldVersion = "1.2.00";
+                                }
                             }
                             if (character.length <= 36) {
                                 // Introduction of Blast Mining cooldowns
                                 // Version 1.3.00-dev
                                 // commit fadbaf429d6b4764b8f1ad0efaa524a090e82ef5
                                 newLine.append((int) 0).append(":");
-                                if (oldVersion == null) oldVersion = "1.3.00";
+                                if (oldVersion == null) {
+                                    oldVersion = "1.3.00";
+                                }
                             }
                             if (character.length <= 37) {
                                 // Making old-purge work with flatfile
@@ -630,14 +634,18 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 // XXX Cannot create an OfflinePlayer at startup, use 0 and fix in purge
                                 newLine.append("0").append(":");
                                 announce = true; // TODO move this down
-                                if (oldVersion == null) oldVersion = "1.4.00";
+                                if (oldVersion == null) {
+                                    oldVersion = "1.4.00";
+                                }
                             }
                             if (character.length <= 38) {
                                 // Addition of mob healthbars
                                 // Version 1.4.06
                                 // commit da29185b7dc7e0d992754bba555576d48fa08aa6
                                 newLine.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":");
-                                if (oldVersion == null) oldVersion = "1.4.06";
+                                if (oldVersion == null) {
+                                    oldVersion = "1.4.06";
+                                }
                             }
 
                             if (announce) {
@@ -674,10 +682,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     private void tryClose(Closeable c) {
-        if (c == null) return;
+        if (c == null) {
+            return;
+        }
         try {
             c.close();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
