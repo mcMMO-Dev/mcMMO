@@ -132,8 +132,8 @@ public class Config extends AutoUpdateConfigLoader {
             reason.add("Commands.inspect.Max_Distance should be greater than 0!");
         }
 
-        if (getAbilityToolDamage() <= 0) {
-            reason.add("Abilities.Tools.Durability_Loss should be greater than 0!");
+        if (getAbilityToolDamage() < 0) {
+            reason.add("Abilities.Tools.Durability_Loss should be at least 0!");
         }
 
         if (getTreeFellerThreshold() <= 0) {
@@ -365,7 +365,6 @@ public class Config extends AutoUpdateConfigLoader {
     public int getMaxTicks(AbilityType ability) { return config.getInt("Abilities.Max_Seconds." + ability.toString()); }
 
     /* Durability Settings */
-    public boolean getAbilitiesDamageTools() { return config.getBoolean("Abilities.Tools.Durability_Loss_Enabled", true); }
     public int getAbilityToolDamage() { return config.getInt("Abilities.Tools.Durability_Loss", 2); }
 
     /* Thresholds */

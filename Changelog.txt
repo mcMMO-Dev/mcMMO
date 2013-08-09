@@ -22,6 +22,7 @@ Version 1.4.07-dev
  ! Improved profile saving
  ! Updated localization files
  ! Party item share category states are now saved when the server shuts down.
+ - Removed Abilities.Tools.Durability_Loss_Enabled, set Abilities.Tools.Durability_Loss to 0 to disable instead.
 
 Version 1.4.06
  + Added "Ice Fishing" ability to Fishing
