@@ -66,6 +66,10 @@ public class MiningManager extends SkillManager {
 
         Material material = blockState.getType();
 
+        if (mcMMOPlayer.getAbilityMode(skill.getAbility())) {
+            SkillUtils.handleDurabilityChange(getPlayer().getItemInHand(), Config.getInstance().getAbilityToolDamage());
+        }
+
         if (material != Material.GLOWING_REDSTONE_ORE && !Config.getInstance().getDoubleDropsEnabled(skill, material)) {
             return;
         }

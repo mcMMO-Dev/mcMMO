@@ -5,6 +5,7 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
@@ -53,5 +54,7 @@ public class ExcavationManager extends SkillManager {
     public void gigaDrillBreaker(BlockState blockState) {
         excavationBlockCheck(blockState);
         excavationBlockCheck(blockState);
+
+        SkillUtils.handleDurabilityChange(getPlayer().getItemInHand(), Config.getInstance().getAbilityToolDamage());
     }
 }

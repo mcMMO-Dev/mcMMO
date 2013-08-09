@@ -14,7 +14,6 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
@@ -29,6 +28,7 @@ import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
 import com.gmail.nossr50.util.ItemUtils;
@@ -443,6 +443,21 @@ public class SkillUtils {
         }
 
         return item;
+    }
+
+    /**
+     * Modify the durability of an ItemStack.
+     *
+     * @param itemStack The ItemStack which durability should be modified
+     * @return the itemStack with modified durability
+     */
+    public static ItemStack handleDurabilityChange(ItemStack itemStack, int durabilityModifier) {
+        short finalDurability = (short) (itemStack.getDurability() + durabilityModifier);
+        short maxDurability = ModUtils.isCustomTool(itemStack) ? ModUtils.getToolFromItemStack(itemStack).getDurability() : itemStack.getType().getMaxDurability();
+        boolean overMax = (finalDurability >= maxDurability);
+
+        itemStack.setDurability(overMax ? maxDurability : finalDurability);
+        return itemStack;
     }
 
     /**

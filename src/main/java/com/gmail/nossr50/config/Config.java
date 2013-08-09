@@ -133,10 +133,6 @@ public class Config extends AutoUpdateConfigLoader {
             reason.add("Commands.inspect.Max_Distance should be greater than 0!");
         }
 
-        if (getAbilityToolDamage() < 0) {
-            reason.add("Abilities.Tools.Durability_Loss should be at least 0!");
-        }
-
         if (getTreeFellerThreshold() <= 0) {
             reason.add("Abilities.Limits.Tree_Feller_Threshold should be greater than 0!");
         }
