@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.Misc;
 
 public class AdvancedConfig extends AutoUpdateConfigLoader {
     private static AdvancedConfig instance;
@@ -771,7 +772,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         // Check if there were any errors
-        if (noErrorsInConfig(reason)) {
+        if (Misc.noErrorsInConfig(reason)) {
             mcMMO.p.debug("No errors found in " + fileName + "!");
         } else {
             mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
@@ -1050,12 +1051,4 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public String getPlayerEscapeMessage() { return config.getString("Kraken.Defeated_Message.Escape", "You have escaped from the kraken!"); }
     public int getKrakenAttackInterval() { return config.getInt("Kraken.Attack_Interval_Seconds", 1); }
     public int getKrakenAttackDamage() { return config.getInt("Kraken.Attack_Damage", 1); }
-
-    private boolean noErrorsInConfig(List<String> issues) {//TODO move this to misc
-        for (String issue : issues) {
-            plugin.getLogger().warning(issue);
-        }
-
-        return issues.isEmpty();
-    }
 }

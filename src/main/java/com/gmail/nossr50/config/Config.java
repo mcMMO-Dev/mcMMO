@@ -12,6 +12,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 
 public class Config extends AutoUpdateConfigLoader {
@@ -201,7 +202,7 @@ public class Config extends AutoUpdateConfigLoader {
         }
 
         // Check if there were any errors
-        if (noErrorsInConfig(reason)) {
+        if (Misc.noErrorsInConfig(reason)) {
             mcMMO.p.debug("No errors found in " + fileName + "!");
         } else {
             mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
@@ -489,12 +490,4 @@ public class Config extends AutoUpdateConfigLoader {
     public int getFormulaMultiplierCurve() { return config.getInt("Experience.Formula.Curve_Modifier", 20); }
     public boolean getCumulativeCurveEnabled() { return config.getBoolean("Experience.Formula.Cumulative_Curve", false); }
     public double getFormulaSkillModifier(SkillType skill) { return config.getDouble("Experience.Formula.Modifier." + StringUtils.getCapitalized(skill.toString())); }
-
-    private boolean noErrorsInConfig(List<String> issues) {
-        for (String issue : issues) {
-            plugin.getLogger().warning(issue);
-        }
-
-        return issues.isEmpty();
-    }
 }
