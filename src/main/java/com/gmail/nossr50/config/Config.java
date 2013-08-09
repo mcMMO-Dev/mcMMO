@@ -103,8 +103,8 @@ public class Config extends AutoUpdateConfigLoader {
         }
 
         /* PARTY SETTINGS */
-        if (getAutoPartyKickInterval() < 0) {
-            reason.add("Party.AutoKick_Interval should be at least 0!");
+        if (getAutoPartyKickInterval() < -1) {
+            reason.add("Party.AutoKick_Interval should be at least -1!");
         }
 
         if (getAutoPartyKickTime() < 0) {
