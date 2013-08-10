@@ -38,10 +38,10 @@ public class MmoupdateCommand implements TabExecutor {
                 }
 
                 DatabaseManager oldDb;
-                if (oldType == "sql") {
+                if (oldType.equals("sql")) {
                     oldDb = DatabaseManagerFactory.createSQLDatabaseManager();
                 }
-                else if (oldType == "flatfile") {
+                else if (oldType.equals("flatfile")) {
                     oldDb = DatabaseManagerFactory.createFlatfileDatabaseManager();
                 }
                 else try {
