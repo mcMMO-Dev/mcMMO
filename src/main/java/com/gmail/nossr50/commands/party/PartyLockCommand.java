@@ -73,8 +73,6 @@ public class PartyLockCommand implements CommandExecutor {
 
     /**
      * Handle unlocking a party.
-     *
-     * @return true if party is successfully unlocked, false otherwise.
      */
     private void unlockParty(CommandSender sender, String permissionMessage) {
         if (!Permissions.partySubcommand(sender, PartySubcommandType.UNLOCK)) {

@@ -57,7 +57,8 @@ public class Taming {
     /**
      * Apply the Sharpened Claws ability.
      *
-     * @param event The event to modify
+     * @param damage The initial damage
+     * @return Damage with SharpenedClaws bonus damage
      */
     public static double sharpenedClaws(double damage) {
         return damage + Taming.sharpenedClawsBonusDamage;

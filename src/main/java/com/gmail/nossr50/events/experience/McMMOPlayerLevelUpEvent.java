@@ -21,8 +21,7 @@ public class McMMOPlayerLevelUpEvent extends McMMOPlayerExperienceEvent {
     }
 
     /**
-     * @param levelsGained 
-     * @return Set the number of levels gained in this event
+     * @param levelsGained Set the number of levels gained in this event
      */
     public void setLevelsGained(int levelsGained) {
         this.levelsGained = levelsGained;

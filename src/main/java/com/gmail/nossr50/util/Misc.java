@@ -99,7 +99,7 @@ public final class Misc {
      * @param first The first location
      * @param second The second location
      * @param maxDistance The max distance apart
-     * @return true if the distance between <code>first</code> and <code>second</code> is less than <code>maxDistance</code>, false otherwise
+     * @return true if the distance between {@code first} and {@code second} is less than {@code maxDistance}, false otherwise
      */
     public static boolean isNear(Location first, Location second, double maxDistance) {
         if (first.getWorld() != second.getWorld()) {
@@ -142,11 +142,10 @@ public final class Misc {
     }
 
     /**
-     * Randomly drop items at a given location.
+     * Drop items with random quantity at a given location.
      *
      * @param location The location to drop the items at
      * @param is The item to drop
-     * @param chance The percentage chance for the item to drop
      * @param quantity The amount of items to drop
      */
     public static void randomDropItems(Location location, ItemStack is, int quantity) {

@@ -57,7 +57,7 @@ public final class ShareHandler {
     /**
      * Distribute Items amongst party members.
      *
-     * @param item Item that will get shared
+     * @param drop Item that will get shared
      * @param mcMMOPlayer Player who picked up the item
      * @return True if the item has been shared
      */

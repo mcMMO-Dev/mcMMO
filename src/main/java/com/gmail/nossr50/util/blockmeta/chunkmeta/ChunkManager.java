@@ -136,7 +136,7 @@ public interface ChunkManager {
     /**
      * Check to see if a given BlockState location is set to true
      *
-     * @param location BlockState location to check
+     * @param blockState BlockState to check
      * @return true if the given BlockState location is set to true, false if otherwise
      */
     public boolean isTrue(BlockState blockState);
@@ -161,7 +161,7 @@ public interface ChunkManager {
     /**
      * Set a given BlockState location to true, should create stores as necessary if the location does not exist
      *
-     * @param block BlockState location to set
+     * @param blockState BlockState location to set
      */
     public void setTrue(BlockState blockState);
 
@@ -185,7 +185,7 @@ public interface ChunkManager {
     /**
      * Set a given BlockState location to false, should not create stores if one does not exist for the given location
      *
-     * @param block BlockState location to set
+     * @param blockState BlockState location to set
      */
     public void setFalse(BlockState blockState);
 

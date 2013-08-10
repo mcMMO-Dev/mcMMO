@@ -912,7 +912,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     /**
      * Get the Integer. Only return first row / first field.
      *
-     * @param sql SQL query to execute
+     * @param statement SQL query to execute
      * @return the value in the first row / first field
      */
     private int readInt(PreparedStatement statement) {

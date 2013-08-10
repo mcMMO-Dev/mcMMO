@@ -355,7 +355,7 @@ public class FishingManager extends SkillManager {
     /**
      * Handle the Shake ability
      *
-     * @param mob The {@link LivingEntity} affected by the ability
+     * @param target The {@link LivingEntity} affected by the ability
      */
     public void shakeCheck(LivingEntity target) {
         fishingTries--; // Because autoclicking to shake is OK.

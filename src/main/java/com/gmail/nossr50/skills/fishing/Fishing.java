@@ -66,7 +66,7 @@ public final class Fishing {
      * Finds the possible drops of an entity
      *
      * @param target Targeted entity
-     * @param possibleDrops List of ItemStack that can be dropped
+     * @return possibleDrops List of ItemStack that can be dropped
      */
     protected static List<ShakeTreasure> findPossibleDrops(LivingEntity target) {
         switch (target.getType()) {

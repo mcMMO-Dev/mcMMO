@@ -83,7 +83,6 @@ public final class Woodcutting {
     /**
      * Checks for double drops
      *
-     * @param mcMMOPlayer Player breaking the block
      * @param blockState Block being broken
      */
     protected static void checkForDoubleDrop(BlockState blockState) {

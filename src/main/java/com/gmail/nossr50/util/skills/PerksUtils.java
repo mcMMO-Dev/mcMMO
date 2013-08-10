@@ -66,8 +66,9 @@ public final class PerksUtils {
     /**
      * Calculate activation chance for a skill.
      *
-     * @param isLucky true if the player has the appropriate "lucky" perk, false otherwise
-     * @return the activation chance
+     * @param player Player to check the activation chance for
+     * @param skill SkillType to check the activation chance of
+     * @return the activation chance with "lucky perk" accounted for
      */
     public static int handleLuckyPerks(Player player, SkillType skill) {
         if (Permissions.lucky(player, skill)) {

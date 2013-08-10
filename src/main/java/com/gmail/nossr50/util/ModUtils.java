@@ -83,7 +83,7 @@ public final class ModUtils {
     /**
      * Check if a custom block is a woodcutting block.
      *
-     * @param block The block to check
+     * @param blockState The BlockState of the block to check
      * @return true if the block represents a log, false otherwise
      */
     public static boolean isCustomWoodcuttingBlock(BlockState blockState) {
@@ -105,7 +105,7 @@ public final class ModUtils {
     /**
      * Check if a custom block should not activate abilites.
      *
-     * @param block The block to check
+     * @param blockState The BlockState of the block to check
      * @return true if the block represents an ability block, false otherwise
      */
     public static boolean isCustomAbilityBlock(BlockState blockState) {
@@ -127,7 +127,7 @@ public final class ModUtils {
     /**
      * Check if a custom block is a mining block.
      *
-     * @param block The block to check
+     * @param blockState The BlockState of the block to check
      * @return true if the block is custom, false otherwise
      */
     public static boolean isCustomMiningBlock(BlockState blockState) {
@@ -149,7 +149,7 @@ public final class ModUtils {
     /**
      * Check if a custom block is an excavation block.
      *
-     * @param block The block to check
+     * @param blockState The BlockState of the block to check
      * @return true if the block is custom, false otherwise
      */
     public static boolean isCustomExcavationBlock(BlockState blockState) {
@@ -193,7 +193,7 @@ public final class ModUtils {
     /**
      * Check if a custom block is a leaf block.
      *
-     * @param block The block to check
+     * @param blockState The BlockState of the block to check
      * @return true if the block represents leaves, false otherwise
      */
     public static boolean isCustomLeafBlock(BlockState blockState) {
@@ -215,7 +215,7 @@ public final class ModUtils {
     /**
      * Check if a custom block is a log block.
      *
-     * @param block The block to check
+     * @param blockState The BlockState of the block to check
      * @return true if the block represents a log, false otherwise
      */
     public static boolean isCustomLogBlock(BlockState blockState) {

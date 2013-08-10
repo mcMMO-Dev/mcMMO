@@ -23,7 +23,7 @@ public class McMMOPlayerXpGainEvent extends McMMOPlayerExperienceEvent {
     }
 
     /**
-     * @param xpGained int amount of experience gained in this event
+     * @return int amount of experience gained in this event
      */
     @Deprecated
     public int getXpGained() {

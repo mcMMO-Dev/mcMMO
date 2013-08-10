@@ -61,7 +61,7 @@ public class TamingManager extends SkillManager {
     /**
      * Award XP for taming.
      *
-     * @param event The event to award XP for
+     * @param entity The LivingEntity to award XP for
      */
     public void awardTamingXP(LivingEntity entity) {
         switch (entity.getType()) {
@@ -100,7 +100,8 @@ public class TamingManager extends SkillManager {
     /**
      * Apply the Gore ability.
      *
-     * @param event The event to modify
+     * @param target The LivingEntity to apply Gore on
+     * @param damage The initial damage
      */
     public double gore(LivingEntity target, double damage) {
         if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Taming.goreMaxChance, Taming.goreMaxBonusLevel)) {

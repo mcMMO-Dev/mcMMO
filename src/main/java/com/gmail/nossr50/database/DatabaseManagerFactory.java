@@ -33,7 +33,7 @@ public class DatabaseManagerFactory {
      * stable. This method is subject to change and/or removal in future
      * versions.
      *
-     * @param man the DatabaseManager class to use
+     * @param clazz the DatabaseManager class to use
      * @throws IllegalArgumentException if the provided class does not have
      *             an empty constructor
      */

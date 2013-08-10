@@ -83,7 +83,7 @@ public interface DatabaseManager {
      * Convert all users from this database to the provided database using
      * {@link #saveUser(PlayerProfile)}.
      *
-     * @param the DatabaseManager to save to
+     * @param destination The DatabaseManager to save to
      */
     public void convertUsers(DatabaseManager destination);
 }

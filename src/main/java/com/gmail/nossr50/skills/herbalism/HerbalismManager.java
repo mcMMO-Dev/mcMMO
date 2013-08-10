@@ -270,7 +270,7 @@ public class HerbalismManager extends SkillManager {
      * Process the Green Thumb ability for plants.
      *
      * @param blockState The {@link BlockState} to check ability activation for
-     * @param greenTerra
+     * @param greenTerra boolean to determine if greenTerra is active or not
      */
     private void processGreenThumbPlants(BlockState blockState, boolean greenTerra) {
         Player player = getPlayer();

@@ -120,7 +120,6 @@ public class WoodcuttingManager extends SkillManager {
      * Handles the dropping of blocks
      *
      * @param treeFellerBlocks List of blocks to be dropped
-     * @param player Player using the ability
      */
     private void dropBlocks(List<BlockState> treeFellerBlocks) {
         Player player = getPlayer();

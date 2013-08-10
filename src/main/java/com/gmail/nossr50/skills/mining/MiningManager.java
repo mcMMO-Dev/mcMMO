@@ -119,7 +119,8 @@ public class MiningManager extends SkillManager {
     /**
      * Handler for explosion drops and XP gain.
      *
-     * @param event Event whose explosion is being processed
+     * @param yield
+     * @param blockList
      */
     public void blastMiningDropProcessing(float yield, List<Block> blockList) {
         List<BlockState> ores = new ArrayList<BlockState>();
@@ -173,7 +174,8 @@ public class MiningManager extends SkillManager {
     /**
      * Increases the blast radius of the explosion.
      *
-     * @param event Event whose explosion radius is being changed
+     * @param radius to modify
+     * @return modified radius
      */
     public float biggerBombs(float radius) {
         return (float) (radius + getBlastRadiusModifier());
