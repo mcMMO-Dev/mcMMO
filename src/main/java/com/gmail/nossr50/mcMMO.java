@@ -78,6 +78,9 @@ public class mcMMO extends JavaPlugin {
     private static boolean spoutEnabled;
     private static boolean combatTagEnabled;
 
+    // Config Validation Check
+    public boolean noErrorsInConfigFiles = true;
+
     // XP Event Check
     private boolean xpEventEnabled;
 
@@ -108,6 +111,10 @@ public class mcMMO extends JavaPlugin {
             setupFilePaths();
             setupSpout();
             loadConfigFiles();
+
+            if (!noErrorsInConfigFiles) {
+                return;
+            }
 
             combatTagEnabled = getServer().getPluginManager().getPlugin("CombatTag") != null;
 
@@ -307,11 +314,6 @@ public class mcMMO extends JavaPlugin {
         repairables.addAll(rManager.getLoadedRepairables());
         repairableManager = RepairableManagerFactory.getRepairManager(repairables.size());
         repairableManager.registerRepairables(repairables);
-
-        // Check if Repair Anvil and Salvage Anvil have different itemID's
-        if (Config.getInstance().getSalvageAnvilId() == Config.getInstance().getRepairAnvilId()) {
-            getLogger().warning("Can't use the same itemID for Repair/Salvage Anvils!");
-        }
     }
 
     private void setupSpout() {

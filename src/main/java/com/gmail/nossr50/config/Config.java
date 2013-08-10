@@ -203,6 +203,7 @@ public class Config extends AutoUpdateConfigLoader {
         } else {
             mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
             mcMMO.p.getServer().getPluginManager().disablePlugin(mcMMO.p);
+            mcMMO.p.noErrorsInConfigFiles = false;
         }
     }
 
