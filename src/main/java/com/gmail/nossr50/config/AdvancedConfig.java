@@ -499,36 +499,36 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Repair.Salvage_UnlockLevel should be at least 1!");
         }
 
-        if (getArcaneForgingDowngradeChanceRank1() < 1 || getArcaneForgingDowngradeChanceRank1() > 100) {
-            reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_1 only accepts values from 1 to 100!");
+        if (getArcaneForgingDowngradeChanceRank1() < 0 || getArcaneForgingDowngradeChanceRank1() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_1 only accepts values from 0 to 100!");
         }
 
-        if (getArcaneForgingDowngradeChanceRank2() < 1 || getArcaneForgingDowngradeChanceRank2() > 100) {
-            reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_2 only accepts values from 1 to 100!");
+        if (getArcaneForgingDowngradeChanceRank2() < 0 || getArcaneForgingDowngradeChanceRank2() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_2 only accepts values from 0 to 100!");
         }
 
-        if (getArcaneForgingDowngradeChanceRank3() < 1 || getArcaneForgingDowngradeChanceRank3() > 100) {
-            reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_3 only accepts values from 1 to 100!");
+        if (getArcaneForgingDowngradeChanceRank3() < 0 || getArcaneForgingDowngradeChanceRank3() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_3 only accepts values from 0 to 100!");
         }
 
-        if (getArcaneForgingDowngradeChanceRank4() < 1 || getArcaneForgingDowngradeChanceRank4() > 100) {
-            reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_4 only accepts values from 1 to 100!");
+        if (getArcaneForgingDowngradeChanceRank4() < 0 || getArcaneForgingDowngradeChanceRank4() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_4 only accepts values from 0 to 100!");
         }
 
-        if (getArcaneForgingKeepEnchantsChanceRank1() < 1 || getArcaneForgingKeepEnchantsChanceRank1() > 100) {
-            reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_1 only accepts values from 1 to 100!");
+        if (getArcaneForgingKeepEnchantsChanceRank1() < 0 || getArcaneForgingKeepEnchantsChanceRank1() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_1 only accepts values from 0 to 100!");
         }
 
-        if (getArcaneForgingDowngradeChanceRank2() < 1 || getArcaneForgingDowngradeChanceRank2() > 100) {
-            reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_2 only accepts values from 1 to 100!");
+        if (getArcaneForgingDowngradeChanceRank2() < 0 || getArcaneForgingDowngradeChanceRank2() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_2 only accepts values from 0 to 100!");
         }
 
-        if (getArcaneForgingDowngradeChanceRank3() < 1 || getArcaneForgingDowngradeChanceRank3() > 100) {
-            reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_3 only accepts values from 1 to 100!");
+        if (getArcaneForgingDowngradeChanceRank3() < 0 || getArcaneForgingDowngradeChanceRank3() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_3 only accepts values from 0 to 100!");
         }
 
-        if (getArcaneForgingDowngradeChanceRank4() < 1 || getArcaneForgingDowngradeChanceRank4() > 100) {
-            reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_4 only accepts values from 1 to 100!");
+        if (getArcaneForgingDowngradeChanceRank4() < 0 || getArcaneForgingDowngradeChanceRank4() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_4 only accepts values from 0 to 100!");
         }
 
         if (getArcaneForgingRankLevels1() < 0) {
