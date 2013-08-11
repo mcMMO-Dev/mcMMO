@@ -46,7 +46,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         if (getDodgeDamageModifier() <= 1) {
-            reason.add("Skills.Acrobatics.Dodge_DamageModifer should be greater than 1!");
+            reason.add("Skills.Acrobatics.Dodge_DamageModifier should be greater than 1!");
         }
 
         if (getRollChanceMax() < 1) {
@@ -519,15 +519,15 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_1 only accepts values from 0 to 100!");
         }
 
-        if (getArcaneForgingDowngradeChanceRank2() < 0 || getArcaneForgingDowngradeChanceRank2() > 100) {
+        if (getArcaneForgingKeepEnchantsChanceRank2() < 0 || getArcaneForgingKeepEnchantsChanceRank2() > 100) {
             reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_2 only accepts values from 0 to 100!");
         }
 
-        if (getArcaneForgingDowngradeChanceRank3() < 0 || getArcaneForgingDowngradeChanceRank3() > 100) {
+        if (getArcaneForgingKeepEnchantsChanceRank3() < 0 || getArcaneForgingKeepEnchantsChanceRank3() > 100) {
             reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_3 only accepts values from 0 to 100!");
         }
 
-        if (getArcaneForgingDowngradeChanceRank4() < 0 || getArcaneForgingDowngradeChanceRank4() > 100) {
+        if (getArcaneForgingKeepEnchantsChanceRank4() < 0 || getArcaneForgingKeepEnchantsChanceRank4() > 100) {
             reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_4 only accepts values from 0 to 100!");
         }
 
@@ -788,7 +788,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /* ACROBATICS */
     public double getDodgeChanceMax() { return config.getDouble("Skills.Acrobatics.Dodge_ChanceMax", 20.0D); }
     public int getDodgeMaxBonusLevel() { return config.getInt("Skills.Acrobatics.Dodge_MaxBonusLevel", 800); }
-    public int getDodgeDamageModifier() { return config.getInt("Skills.Acrobatics.Dodge_DamageModifer", 2); }
+    public int getDodgeDamageModifier() { return config.getInt("Skills.Acrobatics.Dodge_DamageModifier", 2); }
 
     public double getRollChanceMax() { return config.getDouble("Skills.Acrobatics.Roll_ChanceMax", 100.0D); }
     public int getRollMaxBonusLevel() { return config.getInt("Skills.Acrobatics.Roll_MaxBonusLevel", 1000); }

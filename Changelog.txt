@@ -18,7 +18,8 @@ Version 1.4.07-dev
  = Fixed a bug with Beast Lore when the entity had no owner but was tamed.
  = Fixed a bug where AbilityDeactivateEvent would throw an error if the player logged out before his ability ran out.
  = Fixed a bug where LevelUpEvent would be called for an offline player.
- = Fixed a bug where teleport location was never reset if warmup was set to 0 for Chimera Wing.
+ = Fixed a bug where teleport location was never reset if warmup was set to 0 for Chimaera Wing.
+ = Fixed a bug where the Dodge DamageModifier wasn't being read from advanced.yml
  ! Improved profile saving
  ! Updated localization files
  ! Party item share category states are now saved when the server shuts down.
