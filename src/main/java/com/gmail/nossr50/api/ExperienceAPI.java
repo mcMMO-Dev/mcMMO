@@ -436,6 +436,40 @@ public final class ExperienceAPI {
     }
 
     /**
+     * Get the position on the leaderboard of a player.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param playerName The name of the player to check
+     * @param skillType The skill to check
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     * @throws InvalidPlayerException if the given player does not exist in the database
+     * @throws UnsupportedOperationException if the given skill is a child skill
+     *
+     * @return the position on the leaderboard
+     */
+    public static int getPlayerRankSkill(String playerName, String skillType) {
+        return mcMMO.getDatabaseManager().readRank(getOfflineProfile(playerName).getPlayerName()).get(getNonChildSkillType(skillType).toString());
+    }
+
+
+    /**
+     * Get the position on the power level leaderboard of a player.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param playerName The name of the player to check
+     *
+     * @throws InvalidPlayerException if the given player does not exist in the database
+     *
+     * @return the position on the power level leaderboard
+     */
+    public static int getPlayerRankOverall(String playerName) {
+        return mcMMO.getDatabaseManager().readRank(getOfflineProfile(playerName).getPlayerName()).get("ALL");
+    }
+
+    /**
      * Sets the level of a player in a specific skill type.
      * </br>
      * This function is designed for API usage.
