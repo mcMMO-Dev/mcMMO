@@ -53,7 +53,7 @@ public interface Repairable {
     public short getMaximumDurability();
 
     /**
-     * Gets the base repair durability on which to calcuate bonuses.
+     * Gets the base repair durability on which to calculate bonuses.
      *
      * This is actually the maximum durability divided by the minimum quantity
      *

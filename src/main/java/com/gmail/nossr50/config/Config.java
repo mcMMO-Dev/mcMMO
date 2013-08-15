@@ -12,6 +12,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.skills.repair.RepairMaterialType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 
@@ -403,6 +404,11 @@ public class Config extends AutoUpdateConfigLoader {
     public int getDetonatorItemID() { return config.getInt("Skills.Mining.Detonator_ID", 259); }
 
     /* Repair */
+    public double getRepairXPBase() { return config.getDouble("Experience.Repair.Base", 1000.0); }
+    public double getRepairXP(RepairMaterialType repairMaterialType) {
+        return config.getDouble("Experience.Repair." + StringUtils.getCapitalized(repairMaterialType.toString()));
+    }
+
     public boolean getRepairAnvilMessagesEnabled() { return config.getBoolean("Skills.Repair.Anvil_Messages", true); }
     public int getRepairAnvilId() { return config.getInt("Skills.Repair.Anvil_ID", 42); }
     public int getSalvageAnvilId() { return config.getInt("Skills.Repair.Salvage_Anvil_ID", 41); }

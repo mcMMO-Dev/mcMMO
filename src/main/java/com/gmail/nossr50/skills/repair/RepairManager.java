@@ -155,13 +155,17 @@ public class RepairManager extends SkillManager {
         Repair.removeOneFrom(inventory, repairItemLocation);
 
         // Give out XP like candy
-        applyXpGain((int) ((startDurability - newDurability) * repairable.getXpMultiplier()) * 10);
+        applyXpGain((float) ((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability()) * repairable.getXpMultiplier()) * Config.getInstance().getRepairXPBase() * Config.getInstance().getRepairXP(repairable.getRepairMaterialType())));
 
         // BWONG BWONG BWONG
         player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
 
         // Repair the item!
         item.setDurability(newDurability);
+    }
+
+    private float getPercentageRepaired(short startDurability, short newDurability, short totalDurability) {
+        return ((startDurability - newDurability) / (float) totalDurability);
     }
 
     public void handleSalvage(Location location, ItemStack item) {

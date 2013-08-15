@@ -21,6 +21,7 @@ Version 1.4.07-dev
  = Fixed a bug where LevelUpEvent would be called for an offline player.
  = Fixed a bug where teleport location was never reset if warmup was set to 0 for Chimaera Wing.
  = Fixed a bug where the Dodge DamageModifier wasn't being read from advanced.yml
+ ! Changed the way Repair hands out XP, also added config options to control Repair XP
  ! Improved profile saving
  ! Updated localization files
  ! Party item share category states are now saved when the server shuts down.
