@@ -426,9 +426,13 @@ Commands:
         # to teleport to, from, or within any given world.
         World_Based_Permissions: false
     p:
+        Chat_Prefix_Format: '[[GREEN]]([[WHITE]]{0}[[GREEN]])'
+
         # Allow mcMMO to use player display names in chat instead of their usernames
         Use_Display_Names: true
     a:
+        Chat_Prefix_Format: '[[AQUA]][[[WHITE]]{0}[[AQUA]]]'
+
         # Allow mcMMO to use player display names in chat instead of their usernames
         Use_Display_Names: true
 

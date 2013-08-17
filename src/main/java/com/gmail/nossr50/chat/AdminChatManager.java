@@ -7,7 +7,7 @@ import com.gmail.nossr50.events.chat.McMMOAdminChatEvent;
 
 public class AdminChatManager extends ChatManager {
     protected AdminChatManager(Plugin plugin) {
-        super(plugin, Config.getInstance().getAdminDisplayNames(), "Commands.AdminChat.Prefix");
+        super(plugin, Config.getInstance().getAdminDisplayNames(), Config.getInstance().getAdminChatPrefix());
     }
 
     @Override

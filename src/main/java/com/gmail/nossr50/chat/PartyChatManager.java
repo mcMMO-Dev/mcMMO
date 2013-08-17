@@ -11,7 +11,7 @@ public class PartyChatManager extends ChatManager {
     private Party party;
 
     protected PartyChatManager(Plugin plugin) {
-        super(plugin, Config.getInstance().getPartyDisplayNames(), "Commands.Party.Chat.Prefix");
+        super(plugin, Config.getInstance().getPartyDisplayNames(), Config.getInstance().getPartyChatPrefix());
     }
 
     public void setParty(Party party) {

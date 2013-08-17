@@ -28,7 +28,7 @@ public abstract class ChatManager {
         }
 
         displayName = useDisplayNames ? event.getDisplayName() : event.getSender();
-        message = LocaleLoader.getString(chatPrefix, displayName) + event.getMessage();
+        message = LocaleLoader.formatString(chatPrefix, displayName) + " " + event.getMessage();
 
         sendMessage();
     }

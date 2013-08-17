@@ -46,17 +46,19 @@ public final class LocaleLoader {
     }
 
     private static String getString(String key, ResourceBundle bundle, Object... messageArguments) throws MissingResourceException {
-        String output = bundle.getString(key);
+        return formatString(bundle.getString(key), messageArguments);
+    }
 
+    public static String formatString(String string, Object... messageArguments) {
         if (messageArguments != null) {
             MessageFormat formatter = new MessageFormat("");
-            formatter.applyPattern(output);
-            output = formatter.format(messageArguments);
+            formatter.applyPattern(string);
+            string = formatter.format(messageArguments);
         }
 
-        output = addColors(output);
+        string = addColors(string);
 
-        return output;
+        return string;
     }
 
     public static Locale getCurrentLocale() {
