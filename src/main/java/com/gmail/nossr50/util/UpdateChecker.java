@@ -47,7 +47,8 @@ public class UpdateChecker {
                     oldVer = Integer.parseInt(oldTokens[i]);
                 }
                 catch (NumberFormatException e) {
-                    oldVer = 0;
+                    mcMMO.p.getLogger().warning("Could not get information about this mcMMO version; perhaps you are running a custom one?");
+                    return false;
                 }
 
                 if (oldVer < newVer) {
