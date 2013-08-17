@@ -47,6 +47,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.skills.KrakenAttackTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
+import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -151,7 +152,7 @@ public class FishingManager extends SkillManager {
             return false;
         }
 
-        Block targetBlock = getPlayer().getTargetBlock(null, 100);
+        Block targetBlock = getPlayer().getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
 
         if (!targetBlock.isLiquid()) {
             return false;

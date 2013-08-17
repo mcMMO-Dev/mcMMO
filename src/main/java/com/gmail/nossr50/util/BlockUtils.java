@@ -1,5 +1,8 @@
 package com.gmail.nossr50.util;
 
+import java.util.Arrays;
+import java.util.HashSet;
+
 import org.bukkit.CropState;
 import org.bukkit.NetherWartsState;
 import org.bukkit.block.BlockState;
@@ -312,5 +315,14 @@ public final class BlockUtils {
         int blockId = blockState.getTypeId();
 
         return blockId == Repair.repairAnvilId || blockId == Repair.salvageAnvilId;
+    }
+
+    /**
+     * Get a HashSet containing every transparent block
+     *
+     * @return HashSet with the IDs of every transparent block
+     */
+    public static HashSet<Byte> getTransparentBlocks() {
+        return new HashSet<Byte>(Arrays.asList((byte) 0, (byte) 6, (byte) 18, (byte) 20, (byte) 27, (byte) 28, (byte) 31, (byte) 32, (byte) 32, (byte) 34, (byte) 37, (byte) 38, (byte) 39, (byte) 40, (byte) 50, (byte) 51, (byte) 52, (byte) 53, (byte) 55, (byte) 59, (byte) 63, (byte) 64, (byte) 65, (byte) 66, (byte) 67, (byte) 68, (byte) 69, (byte) 70, (byte) 71, (byte) 72, (byte) 75, (byte) 76, (byte) 77, (byte) 78, (byte) 79, (byte) 81, (byte) 83, (byte) 85, (byte) 92, (byte) 93, (byte) 94, (byte) 96, (byte) 101, (byte) 102, (byte) 104, (byte) 105, (byte) 106, (byte) 107, (byte) 108, (byte) 109, (byte) 111, (byte) 113, (byte) 114, (byte) 115, (byte) 119, (byte) 126, (byte) 128, (byte) 131, (byte) 132, (byte) 134, (byte) 135, (byte) 136, (byte) 139, (byte) 141, (byte) 142, (byte) 143, (byte) 145, (byte) 147, (byte) 148, (byte) 149, (byte) 150, (byte) 151, (byte) 156, (byte) 157, (byte) 171));
     }
 }
