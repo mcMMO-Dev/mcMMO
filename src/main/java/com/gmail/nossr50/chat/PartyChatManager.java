@@ -1,5 +1,6 @@
 package com.gmail.nossr50.chat;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -25,6 +26,10 @@ public class PartyChatManager extends ChatManager {
 
     @Override
     protected void sendMessage() {
+        if (Config.getInstance().getPartyChatColorLeaderName() && senderName.equalsIgnoreCase(party.getLeader())) {
+            message = message.replaceAll(displayName, ChatColor.GOLD + displayName + ChatColor.RESET);
+        }
+
         for (Player member : party.getOnlineMembers()) {
             member.sendMessage(message);
         }

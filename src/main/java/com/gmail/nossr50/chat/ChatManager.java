@@ -11,6 +11,7 @@ public abstract class ChatManager {
     protected boolean useDisplayNames;
     protected String chatPrefix;
 
+    protected String senderName;
     protected String displayName;
     protected String message;
 
@@ -27,7 +28,8 @@ public abstract class ChatManager {
             return;
         }
 
-        displayName = useDisplayNames ? event.getDisplayName() : event.getSender();
+        senderName = event.getSender();
+        displayName = useDisplayNames ? event.getDisplayName() : senderName;
         message = LocaleLoader.formatString(chatPrefix, displayName) + " " + event.getMessage();
 
         sendMessage();
