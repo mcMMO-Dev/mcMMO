@@ -106,7 +106,7 @@ public class UnarmedManager extends SkillManager {
      * @return the modified event damage
      */
     public double ironArmCheck(double damage) {
-        int unarmedBonus = Math.min(3 + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
+        int unarmedBonus = Math.min(Unarmed.ironArmMinBonusDamage + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
 
         return damage + unarmedBonus;
     }

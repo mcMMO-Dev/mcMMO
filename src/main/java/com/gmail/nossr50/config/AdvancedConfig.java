@@ -1030,6 +1030,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getIronGripChanceMax() { return config.getDouble("Skills.Unarmed.IronGrip_ChanceMax", 100.0D); }
     public int getIronGripMaxBonusLevel() { return config.getInt("Skills.Unarmed.IronGrip_MaxBonusLevel", 1000); }
 
+    public int getIronArmMinBonus() { return config.getInt("Skills.Unarmed.IronArm_BonusMin", 3); }
     public int getIronArmMaxBonus() { return config.getInt("Skills.Unarmed.IronArm_BonusMax", 8); }
     public int getIronArmIncreaseLevel() { return config.getInt("Skills.Unarmed.IronArm_IncreaseLevel", 50); }
 

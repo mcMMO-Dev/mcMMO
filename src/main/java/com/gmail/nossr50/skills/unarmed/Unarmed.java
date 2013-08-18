@@ -10,6 +10,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 
 public class Unarmed {
+    public static int ironArmMinBonusDamage = AdvancedConfig.getInstance().getIronArmMinBonus();
     public static int ironArmMaxBonusDamage = AdvancedConfig.getInstance().getIronArmMaxBonus();
     public static int ironArmIncreaseLevel  = AdvancedConfig.getInstance().getIronArmIncreaseLevel();
 
