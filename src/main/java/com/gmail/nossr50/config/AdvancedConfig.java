@@ -733,8 +733,16 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Unarmed.IronGrip_MaxBonusLevel should be at least 1!");
         }
 
+        if (getIronArmMinBonus() < 0) {
+            reason.add("Skills.Unarmed.IronArm_BonusMin should be at least 0!");
+        }
+
         if (getIronArmMaxBonus() < 0) {
             reason.add("Skills.Unarmed.IronArm_BonusMax should be at least 0!");
+        }
+
+        if (getIronArmMaxBonus() < getIronArmMinBonus()) {
+            reason.add("Skills.Unarmed.IronArm_BonusMax should be greater than or equal to Skills.Unarmed.IronArm_BonusMin!");
         }
 
         if (getIronArmIncreaseLevel() < 1) {
