@@ -9,8 +9,8 @@ import java.util.Set;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.util.Misc;
 
 public final class UserManager {
     private final static Map<String, McMMOPlayer> players = new HashMap<String, McMMOPlayer>();
@@ -78,12 +78,22 @@ public final class UserManager {
      * @return the player's McMMOPlayer object
      */
     public static McMMOPlayer getPlayer(String playerName) {
-        List<Player> matches = mcMMO.p.getServer().matchPlayer(playerName);
+        List<String> matches = Misc.matchPlayer(playerName);
 
         if (matches.size() == 1) {
-            playerName = matches.get(0).getName();
+            playerName = matches.get(0);
         }
 
+        return players.get(playerName);
+    }
+
+    /**
+     * Get the McMMOPlayer of a player by the exact name.
+     *
+     * @param playerName The exact name of the player whose McMMOPlayer to retrieve
+     * @return the player's McMMOPlayer object
+     */
+    public static McMMOPlayer getPlayerExact(String playerName) {
         return players.get(playerName);
     }
 

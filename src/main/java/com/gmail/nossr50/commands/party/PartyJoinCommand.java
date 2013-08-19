@@ -9,6 +9,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -64,7 +65,8 @@ public class PartyJoinCommand implements CommandExecutor {
     }
 
     private boolean canJoinParty(CommandSender sender, String targetName) {
-        mcMMOTarget = UserManager.getPlayer(targetName);
+        targetName = Misc.getMatchedPlayerName(targetName);
+        mcMMOTarget = UserManager.getPlayerExact(targetName);
 
         if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
             return false;

@@ -16,6 +16,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -32,11 +33,12 @@ public class InspectCommand implements TabExecutor {
                     ScoreboardManager.setupPlayerScoreboard(sender.getName());
                 }
 
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(args[0]);
+                String playerName = Misc.getMatchedPlayerName(args[0]);
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayerExact(playerName);
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(args[0], false); // Temporary Profile
+                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false); // Temporary Profile
 
                     if (CommandUtils.inspectOffline(sender, profile, Permissions.inspectOffline(sender))) {
                         return true;
@@ -47,7 +49,7 @@ public class InspectCommand implements TabExecutor {
                         return true;
                     }
 
-                    sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", args[0]));
+                    sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
                     CommandUtils.displaySkill(sender, profile, SkillType.EXCAVATION);
