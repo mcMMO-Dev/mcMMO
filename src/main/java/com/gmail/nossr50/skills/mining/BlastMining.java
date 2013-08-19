@@ -1,9 +1,5 @@
 package com.gmail.nossr50.skills.mining;
 
-import java.util.HashSet;
-
-import org.bukkit.Material;
-
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 
@@ -88,16 +84,4 @@ public class BlastMining {
     public static int detonatorID = Config.getInstance().getDetonatorItemID();
 
     public final static int MAXIMUM_REMOTE_DETONATION_DISTANCE = 100;
-
-    protected static HashSet<Byte> generateTransparentBlockList() {
-        HashSet<Byte> transparentBlocks = new HashSet<Byte>();
-
-        for (Material material : Material.values()) {
-            if (material.isTransparent()) {
-                transparentBlocks.add((byte) material.getId());
-            }
-        }
-
-        return transparentBlocks;
-    }
 }

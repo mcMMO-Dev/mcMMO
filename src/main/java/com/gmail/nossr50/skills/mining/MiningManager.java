@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.mining;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -93,9 +92,7 @@ public class MiningManager extends SkillManager {
      */
     public void remoteDetonation() {
         Player player = getPlayer();
-
-        HashSet<Byte> transparentBlocks = BlastMining.generateTransparentBlockList();
-        Block targetBlock = player.getTargetBlock(transparentBlocks, BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
+        Block targetBlock = player.getTargetBlock(BlockUtils.getTransparentBlocks(), BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
 
         if (targetBlock.getType() != Material.TNT || !SkillUtils.blockBreakSimulate(targetBlock, player, true) || !blastMiningCooldownOver()) {
             return;
