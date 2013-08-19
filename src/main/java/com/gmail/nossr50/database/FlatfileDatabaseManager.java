@@ -622,7 +622,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 // Introduction of Blast Mining cooldowns
                                 // Version 1.3.00-dev
                                 // commit fadbaf429d6b4764b8f1ad0efaa524a090e82ef5
-                                newLine.append((int) 0).append(":");
+                                newLine.append(0).append(":");
                                 if (oldVersion == null) {
                                     oldVersion = "1.3.00";
                                 }
