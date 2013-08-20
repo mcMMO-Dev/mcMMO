@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.Misc;
 
 public class AdvancedConfig extends AutoUpdateConfigLoader {
     private static AdvancedConfig instance;

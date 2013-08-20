@@ -188,7 +188,7 @@ public class TreasureConfig extends ConfigLoader {
 
                 int maxLevel = config.getInt("Treasures." + treasureName + ".Max_Level");
 
-                if (noErrorsInTreasure(reason)) {
+                if (noErrorsInConfig(reason)) {
                     FishingTreasure fTreasure = new FishingTreasure(item, xp, dropChance, dropLevel, maxLevel);
                     treasures.put(treasureName, fTreasure);
                 }
@@ -212,7 +212,7 @@ public class TreasureConfig extends ConfigLoader {
                     reason.add("Invalid Mob: " + mobType);
                 }
 
-                if (noErrorsInTreasure(reason)) {
+                if (noErrorsInConfig(reason)) {
                     ShakeTreasure sTreasure = new ShakeTreasure(item, xp, dropChance, dropLevel, mob);
                     treasures.put(treasureName, sTreasure);
                 }
@@ -273,10 +273,10 @@ public class TreasureConfig extends ConfigLoader {
                     reason.add("This cannot also be a shake drop.");
                 }
 
-                if (noErrorsInTreasure(reason) && hTreasure.getDropsFrom() == (byte) 0x0) {
+                if (noErrorsInConfig(reason) && hTreasure.getDropsFrom() == (byte) 0x0) {
                     treasures.put(treasureName, eTreasure);
                 }
-                else if (noErrorsInTreasure(reason) && eTreasure.getDropsFrom() == (byte) 0x0) {
+                else if (noErrorsInConfig(reason) && eTreasure.getDropsFrom() == (byte) 0x0) {
                     treasures.put(treasureName, hTreasure);
                 }
             }
@@ -448,13 +448,5 @@ public class TreasureConfig extends ConfigLoader {
                 }
             }
         }
-    }
-
-    private boolean noErrorsInTreasure(List<String> issues) {
-        for (String issue : issues) {
-            plugin.getLogger().warning(issue);
-        }
-
-        return issues.isEmpty();
     }
 }

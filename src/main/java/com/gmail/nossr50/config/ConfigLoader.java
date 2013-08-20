@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -89,5 +90,13 @@ public abstract class ConfigLoader {
                 e.printStackTrace();
             }
         }
+    }
+
+    protected boolean noErrorsInConfig(List<String> issues) {
+        for (String issue : issues) {
+            plugin.getLogger().warning(issue);
+        }
+
+        return issues.isEmpty();
     }
 }

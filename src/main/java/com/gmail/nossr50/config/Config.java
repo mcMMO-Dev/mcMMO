@@ -13,7 +13,6 @@ import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.repair.RepairMaterialType;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 
 public class Config extends AutoUpdateConfigLoader {
