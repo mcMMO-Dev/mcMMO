@@ -201,7 +201,8 @@ public class Config extends AutoUpdateConfigLoader {
         // Check if there were any errors
         if (Misc.noErrorsInConfig(reason)) {
             mcMMO.p.debug("No errors found in " + fileName + "!");
-        } else {
+        }
+        else {
             mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
             mcMMO.p.getServer().getPluginManager().disablePlugin(mcMMO.p);
             mcMMO.p.noErrorsInConfigFiles = false;
@@ -409,9 +410,7 @@ public class Config extends AutoUpdateConfigLoader {
 
     /* Repair */
     public double getRepairXPBase() { return config.getDouble("Experience.Repair.Base", 1000.0); }
-    public double getRepairXP(RepairMaterialType repairMaterialType) {
-        return config.getDouble("Experience.Repair." + StringUtils.getCapitalized(repairMaterialType.toString()));
-    }
+    public double getRepairXP(RepairMaterialType repairMaterialType) { return config.getDouble("Experience.Repair." + StringUtils.getCapitalized(repairMaterialType.toString())); }
 
     public boolean getRepairAnvilMessagesEnabled() { return config.getBoolean("Skills.Repair.Anvil_Messages", true); }
     public int getRepairAnvilId() { return config.getInt("Skills.Repair.Anvil_ID", 42); }
