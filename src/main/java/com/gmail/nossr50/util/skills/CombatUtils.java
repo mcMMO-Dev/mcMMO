@@ -139,11 +139,6 @@ public final class CombatUtils {
 
     private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Entity arrow) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-        if (mcMMOPlayer == null) {
-            return;
-        }
-
         ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
 
         if (archeryManager.canSkillShot()) {
@@ -242,7 +237,7 @@ public final class CombatUtils {
          * This will be reverted back to the switch statement once the fix is addressed on their end.
          */
 
-        if (damager.getType() == EntityType.WOLF) {
+        else if (damager.getType() == EntityType.WOLF) {
             Wolf wolf = (Wolf) damager;
             AnimalTamer tamer = wolf.getOwner();
 
@@ -254,8 +249,7 @@ public final class CombatUtils {
                 }
             }
         }
-
-        if (damager.getType() == EntityType.ARROW) {
+        else if (damager.getType() == EntityType.ARROW) {
             LivingEntity shooter = ((Arrow) damager).getShooter();
 
             if (shooter != null && shooter instanceof Player && shouldProcessSkill(target, SkillType.ARCHERY)) {
@@ -317,11 +311,6 @@ public final class CombatUtils {
 
             Player player = (Player) target;
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-            if (mcMMOPlayer == null) {
-                return;
-            }
-
             AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
             if (acrobaticsManager.canDodge(damager)) {

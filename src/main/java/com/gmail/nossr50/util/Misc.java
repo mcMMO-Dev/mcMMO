@@ -182,23 +182,20 @@ public final class Misc {
 
     public static void profileCleanup(String playerName) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
+        Player player = mcMMOPlayer.getPlayer();
+        McMMOHud spoutHud = mcMMOPlayer.getProfile().getSpoutHud();
 
-        if (mcMMOPlayer != null) {
-            Player player = mcMMOPlayer.getPlayer();
-            McMMOHud spoutHud = mcMMOPlayer.getProfile().getSpoutHud();
+        if (spoutHud != null) {
+            spoutHud.removeWidgets();
+        }
 
-            if (spoutHud != null) {
-                spoutHud.removeWidgets();
-            }
+        UserManager.remove(playerName);
 
-            UserManager.remove(playerName);
+        if (player.isOnline()) {
+            UserManager.addUser(player);
 
-            if (player.isOnline()) {
-                UserManager.addUser(player);
-
-                if (mcMMO.isSpoutEnabled()) {
-                    SpoutUtils.reloadSpoutPlayer(player);
-                }
+            if (mcMMO.isSpoutEnabled()) {
+                SpoutUtils.reloadSpoutPlayer(player);
             }
         }
     }
@@ -273,16 +270,16 @@ public final class Misc {
     public static List<String> matchPlayer(String partialName) {
         List<String> matchedPlayers = new ArrayList<String>();
 
-        for (String iterPlayerName : mcMMO.getDatabaseManager().getStoredUsers()) {
-            if (partialName.equalsIgnoreCase(iterPlayerName)) {
+        for (String playerName : mcMMO.getDatabaseManager().getStoredUsers()) {
+            if (partialName.equalsIgnoreCase(playerName)) {
                 // Exact match
                 matchedPlayers.clear();
-                matchedPlayers.add(iterPlayerName);
+                matchedPlayers.add(playerName);
                 break;
             }
-            if (iterPlayerName.toLowerCase().contains(partialName.toLowerCase())) {
+            if (playerName.toLowerCase().contains(partialName.toLowerCase())) {
                 // Partial match
-                matchedPlayers.add(iterPlayerName);
+                matchedPlayers.add(playerName);
             }
         }
 
@@ -301,6 +298,7 @@ public final class Misc {
         if (matches.size() == 1) {
             partialName = matches.get(0);
         }
+
         return partialName;
     }
 

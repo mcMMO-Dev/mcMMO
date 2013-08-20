@@ -63,10 +63,6 @@ public final class PartyManager {
         McMMOPlayer firstMcMMOPlayer = UserManager.getPlayer(firstPlayer);
         McMMOPlayer secondMcMMOPlayer = UserManager.getPlayer(secondPlayer);
 
-        if (firstMcMMOPlayer == null || secondMcMMOPlayer == null) {
-            return false;
-        }
-
         if (firstMcMMOPlayer.getParty() == null || secondMcMMOPlayer.getParty() == null) {
             return false;
         }
@@ -514,10 +510,6 @@ public final class PartyManager {
     }
 
     private static void processPartyLeaving(McMMOPlayer mcMMOPlayer) {
-        if (mcMMOPlayer == null) {
-            return;
-        }
-
         mcMMOPlayer.removeParty();
         mcMMOPlayer.setPartyChat(false);
         mcMMOPlayer.setItemShareModifier(10);

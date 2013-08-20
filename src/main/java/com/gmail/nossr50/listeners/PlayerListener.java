@@ -82,13 +82,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-        if (mcMMOPlayer == null) {
-            return;
-        }
-
-        mcMMOPlayer.actualizeTeleportATS();
+        UserManager.getPlayer(player).actualizeTeleportATS();
     }
 
     /**
@@ -166,10 +160,6 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-        if (mcMMOPlayer == null) {
-            return;
-        }
 
         mcMMOPlayer.checkGodMode();
         mcMMOPlayer.checkParty();
@@ -300,10 +290,6 @@ public class PlayerListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (mcMMOPlayer == null) {
-            return;
-        }
-
         Item drop = event.getItem();
         ItemStack dropStack = drop.getItemStack();
 
@@ -345,10 +331,6 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-        if (mcMMOPlayer == null) {
-            return;
-        }
 
         mcMMOPlayer.resetAbilityMode();
         BleedTimerTask.bleedOut(player);
@@ -424,12 +406,6 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-        // TODO: This shouldn't be possible - this is probably a band-aid for a larger issue somewhere else.
-        if (mcMMOPlayer == null) {
-            return;
-        }
-
         MiningManager miningManager = mcMMOPlayer.getMiningManager();
         Block block = event.getClickedBlock();
         ItemStack heldItem = player.getItemInHand();
@@ -521,12 +497,6 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-        // TODO: This shouldn't be possible - this is probably a band-aid for a larger issue somewhere else.
-        if (mcMMOPlayer == null) {
-            return;
-        }
-
         ItemStack heldItem = player.getItemInHand();
 
         switch (event.getAction()) {
@@ -632,12 +602,6 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-        if (mcMMOPlayer == null) {
-            mcMMO.p.debug(player.getName() + " is currently chatting, but has never logged on to the server.");
-            return;
-        }
-
         ChatManager chatManager = null;
 
         if (mcMMOPlayer.getPartyChatMode()) {

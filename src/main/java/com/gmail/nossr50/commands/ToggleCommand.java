@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -45,9 +46,10 @@ public abstract class ToggleCommand implements TabExecutor {
                     return true;
                 }
 
-                mcMMOPlayer = UserManager.getPlayer(args[0]);
+                String playerName = Misc.getMatchedPlayerName(args[0]);
+                mcMMOPlayer = UserManager.getPlayer(playerName);
 
-                if (!CommandUtils.checkPlayerExistence(sender, args[0], mcMMOPlayer)) {
+                if (!CommandUtils.checkPlayerExistence(sender, playerName, mcMMOPlayer)) {
                     return true;
                 }
 

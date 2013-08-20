@@ -11,6 +11,7 @@ import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -21,15 +22,17 @@ public class McremoveCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 1:
-                if (UserManager.getPlayer(args[0]) == null && CommandUtils.unloadedProfile(sender, mcMMO.getDatabaseManager().loadPlayerProfile(args[0], false))) {
+                String playerName = Misc.getMatchedPlayerName(args[0]);
+
+                if (UserManager.getPlayer(playerName) == null && CommandUtils.unloadedProfile(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false))) {
                     return true;
                 }
 
-                if (mcMMO.getDatabaseManager().removeUser(args[0])) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", args[0]));
+                if (mcMMO.getDatabaseManager().removeUser(playerName)) {
+                    sender.sendMessage(LocaleLoader.getString("Commands.mcremove.Success", playerName));
                 }
                 else {
-                    sender.sendMessage(args[0] + " could not be removed from the database."); // Pretty sure this should NEVER happen.
+                    sender.sendMessage(playerName + " could not be removed from the database."); // Pretty sure this should NEVER happen.
                 }
 
                 return true;

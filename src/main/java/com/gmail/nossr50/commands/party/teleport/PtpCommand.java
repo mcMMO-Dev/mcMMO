@@ -87,7 +87,7 @@ public class PtpCommand implements TabExecutor {
                     }
                 }
 
-                sendTeleportRequest(sender, player, args[0]);
+                sendTeleportRequest(sender, player, Misc.getMatchedPlayerName(args[0]));
                 return true;
 
             default:
@@ -139,7 +139,6 @@ public class PtpCommand implements TabExecutor {
         }
 
         target = mcMMOTarget.getPlayer();
-        targetName = target.getName();
 
         if (player.equals(target)) {
             player.sendMessage(LocaleLoader.getString("Party.Teleport.Self"));

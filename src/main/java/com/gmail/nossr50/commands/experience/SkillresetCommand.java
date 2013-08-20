@@ -8,6 +8,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -56,11 +57,12 @@ public class SkillresetCommand extends ExperienceCommand {
                     return true;
                 }
 
-                mcMMOPlayer = UserManager.getPlayer(args[0]);
+                String playerName = Misc.getMatchedPlayerName(args[0]);
+                mcMMOPlayer = UserManager.getPlayer(playerName);
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    profile = mcMMO.getDatabaseManager().loadPlayerProfile(args[0], false);
+                    profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false);
 
                     if (CommandUtils.unloadedProfile(sender, profile)) {
                         return true;
@@ -76,7 +78,7 @@ public class SkillresetCommand extends ExperienceCommand {
                     editValues();
                 }
 
-                handleSenderMessage(sender, args[0]);
+                handleSenderMessage(sender, playerName);
                 return true;
 
             default:

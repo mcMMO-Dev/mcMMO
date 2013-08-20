@@ -66,7 +66,7 @@ public class PartyJoinCommand implements CommandExecutor {
 
     private boolean canJoinParty(CommandSender sender, String targetName) {
         targetName = Misc.getMatchedPlayerName(targetName);
-        mcMMOTarget = UserManager.getPlayerExact(targetName);
+        mcMMOTarget = UserManager.getPlayer(targetName);
 
         if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
             return false;
