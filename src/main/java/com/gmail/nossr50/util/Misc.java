@@ -302,14 +302,6 @@ public final class Misc {
         return partialName;
     }
 
-    public static boolean noErrorsInConfig(List<String> issues) {
-        for (String issue : issues) {
-            mcMMO.p.getLogger().warning(issue);
-        }
-
-        return issues.isEmpty();
-    }
-
     public static Random getRandom() {
         return random;
     }

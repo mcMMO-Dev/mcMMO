@@ -7,11 +7,13 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.metrics.MetricsManager;
 
 public abstract class AutoUpdateConfigLoader extends ConfigLoader {
@@ -124,5 +126,13 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
                 }
             }
         }
+    }
+
+    protected boolean noErrorsInConfig(List<String> issues) {
+        for (String issue : issues) {
+            mcMMO.p.getLogger().warning(issue);
+        }
+
+        return issues.isEmpty();
     }
 }

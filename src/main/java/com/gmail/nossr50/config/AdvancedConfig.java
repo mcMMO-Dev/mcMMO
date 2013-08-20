@@ -780,9 +780,10 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         // Check if there were any errors
-        if (Misc.noErrorsInConfig(reason)) {
+        if (noErrorsInConfig(reason)) {
             mcMMO.p.debug("No errors found in " + fileName + "!");
-        } else {
+        }
+        else {
             mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
             mcMMO.p.getServer().getPluginManager().disablePlugin(mcMMO.p);
             mcMMO.p.noErrorsInConfigFiles = false;

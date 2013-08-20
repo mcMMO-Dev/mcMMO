@@ -199,7 +199,7 @@ public class Config extends AutoUpdateConfigLoader {
         }
 
         // Check if there were any errors
-        if (Misc.noErrorsInConfig(reason)) {
+        if (noErrorsInConfig(reason)) {
             mcMMO.p.debug("No errors found in " + fileName + "!");
         }
         else {
