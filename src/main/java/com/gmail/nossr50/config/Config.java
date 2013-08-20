@@ -8,7 +8,6 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -20,7 +19,7 @@ public class Config extends AutoUpdateConfigLoader {
 
     private Config() {
         super("config.yml");
-        loadKeys();
+        validate();
     }
 
     public static Config getInstance() {
@@ -32,7 +31,7 @@ public class Config extends AutoUpdateConfigLoader {
     }
 
     @Override
-    protected void loadKeys() {
+    protected boolean validateKeys() {
         // Validate all the settings!
         List<String> reason = new ArrayList<String>();
 
@@ -197,16 +196,11 @@ public class Config extends AutoUpdateConfigLoader {
             reason.add("Experience.Formula.Curve_Modifier should be at least 0!");
         }
 
-        // Check if there were any errors
-        if (noErrorsInConfig(reason)) {
-            mcMMO.p.debug("No errors found in " + fileName + "!");
-        }
-        else {
-            mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
-            mcMMO.p.getServer().getPluginManager().disablePlugin(mcMMO.p);
-            mcMMO.p.noErrorsInConfigFiles = false;
-        }
+        return noErrorsInConfig(reason);
     }
+
+    @Override
+    protected void loadKeys() {}
 
     /*
      * GENERAL SETTINGS

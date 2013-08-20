@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -83,9 +82,7 @@ public class TreasureConfig extends ConfigLoader {
             return;
         }
 
-        Set<String> treasureConfigSet = treasureSection.getKeys(false);
-
-        for (String treasureName : treasureConfigSet) {
+        for (String treasureName : treasureSection.getKeys(false)) {
 
             // Validate all the things!
             List<String> reason = new ArrayList<String>();

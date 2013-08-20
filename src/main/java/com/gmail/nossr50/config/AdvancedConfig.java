@@ -3,14 +3,12 @@ package com.gmail.nossr50.config;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.nossr50.mcMMO;
-
 public class AdvancedConfig extends AutoUpdateConfigLoader {
     private static AdvancedConfig instance;
 
     private AdvancedConfig() {
         super("advanced.yml");
-        loadKeys();
+        validate();
     }
 
     public static AdvancedConfig getInstance() {
@@ -22,7 +20,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     }
 
     @Override
-    protected void loadKeys() {
+    protected boolean validateKeys() {
         // Validate all the settings!
         List<String> reason = new ArrayList<String>();
 
@@ -778,16 +776,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Kraken.Attack_Damage should be at least 1!");
         }
 
-        // Check if there were any errors
-        if (noErrorsInConfig(reason)) {
-            mcMMO.p.debug("No errors found in " + fileName + "!");
-        }
-        else {
-            mcMMO.p.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
-            mcMMO.p.getServer().getPluginManager().disablePlugin(mcMMO.p);
-            mcMMO.p.noErrorsInConfigFiles = false;
-        }
+        return noErrorsInConfig(reason);
     }
+
+    @Override
+    protected void loadKeys() {}
 
     /* GENERAL */
     public int getAbilityLength() { return config.getInt("Skills.General.Ability_IncreaseLevel", 50); }

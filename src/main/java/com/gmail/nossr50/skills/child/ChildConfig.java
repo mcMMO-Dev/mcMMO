@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.child;
 
 import java.util.EnumSet;
-import java.util.List;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -22,11 +21,10 @@ public class ChildConfig extends AutoUpdateConfigLoader {
         for (SkillType skill : SkillType.childSkills()) {
             plugin.debug("Finding parents of " + skill.name());
 
-            List<String> parentNames = config.getStringList(StringUtils.getCapitalized(skill.name()));
             EnumSet<SkillType> parentSkills = EnumSet.noneOf(SkillType.class);
             boolean useDefaults = false; // If we had an error we back out and use defaults
 
-            for (String name : parentNames) {
+            for (String name : config.getStringList(StringUtils.getCapitalized(skill.name()))) {
                 try {
                     SkillType parentSkill = SkillType.valueOf(name.toUpperCase());
                     FamilyTree.enforceNotChildSkill(parentSkill);

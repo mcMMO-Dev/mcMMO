@@ -92,11 +92,26 @@ public abstract class ConfigLoader {
         }
     }
 
+    protected boolean validateKeys() {
+        return true;
+    }
+
     protected boolean noErrorsInConfig(List<String> issues) {
         for (String issue : issues) {
             plugin.getLogger().warning(issue);
         }
 
         return issues.isEmpty();
+    }
+
+    protected void validate() {
+        if (validateKeys()) {
+            plugin.debug("No errors found in " + fileName + "!");
+        }
+        else {
+            plugin.getLogger().warning("Errors were found in " + fileName + "! mcMMO was disabled!");
+            plugin.getServer().getPluginManager().disablePlugin(plugin);
+            plugin.noErrorsInConfigFiles = false;
+        }
     }
 }
