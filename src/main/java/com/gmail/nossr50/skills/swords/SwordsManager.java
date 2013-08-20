@@ -4,6 +4,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -67,6 +68,10 @@ public class SwordsManager extends SkillManager {
     }
 
     public void counterAttackChecks(LivingEntity attacker, double damage) {
+        if (Swords.counterAttackRequiresBlock && !getPlayer().isBlocking()) {
+            return;
+        }
+
         if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Swords.counterAttackMaxChance, Swords.counterAttackMaxBonusLevel)) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier);
 
