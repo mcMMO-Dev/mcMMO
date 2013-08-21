@@ -105,20 +105,20 @@ public class FormulaManager {
      */
     public int getCachedXpToLevel(int level, FormulaType formulaType) {
         int experience;
-        double multiplier;
+
+        if (formulaType == FormulaType.UNKNOWN) {
+            formulaType = FormulaType.LINEAR;
+        }
+
+        int base = ExperienceConfig.getInstance().getBase(formulaType);
+        double multiplier = ExperienceConfig.getInstance().getMultiplier(formulaType);
+        double exponent = ExperienceConfig.getInstance().getExponent(formulaType);
 
         switch (formulaType) {
             case UNKNOWN:
             case LINEAR:
                 if (!experienceNeededLinear.containsKey(level)) {
-                    multiplier = ExperienceConfig.getInstance().getLinearMultiplier();
-
-                    //TODO: Validate at load?
-                    if (multiplier <= 0) {
-                        multiplier = 20;
-                    }
-
-                    experience = (int) Math.floor(ExperienceConfig.getInstance().getLinearBase() + level * multiplier);
+                    experience = (int) Math.floor(base + level * multiplier);
                     experienceNeededLinear.put(level, experience);
                 }
 
@@ -126,20 +126,6 @@ public class FormulaManager {
 
             case EXPONENTIAL:
                 if (!experienceNeededExponential.containsKey(level)) {
-                    multiplier = ExperienceConfig.getInstance().getExponentialMultiplier();
-                    double exponent = ExperienceConfig.getInstance().getExponentialExponent();
-                    int base = ExperienceConfig.getInstance().getExponentialBase();
-
-                    //TODO: Validate at load?
-                    if (multiplier <= 0) {
-                        multiplier = 0.1;
-                    }
-
-                    //TODO: Validate at load?
-                    if (exponent <= 0) {
-                        exponent = 1.80;
-                    }
-
                     experience = (int) Math.floor(multiplier * Math.pow(level, exponent) + base);
                     experienceNeededExponential.put(level, experience);
                 }

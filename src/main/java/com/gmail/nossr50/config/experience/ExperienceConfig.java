@@ -1,5 +1,8 @@
 package com.gmail.nossr50.config.experience;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.gmail.nossr50.config.AutoUpdateConfigLoader;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -10,6 +13,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
 
     private ExperienceConfig() {
         super("experienceFormula.yml");
+        validate();
     }
 
     public static ExperienceConfig getInstance() {
@@ -23,18 +27,37 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     @Override
     protected void loadKeys() {}
 
+    @Override
+    protected boolean validateKeys() {
+        List<String> reason = new ArrayList<String>();
+
+        if (getExpModifier() <= 0) {
+            reason.add("Conversion.Exp_Modifier should be greater than 0!");
+        }
+
+        if (getMultiplier(FormulaType.EXPONENTIAL) <= 0) {
+            reason.add("Experience_Formula.Exponential_Values.multiplier should be greater than 0!");
+        }
+
+        if (getMultiplier(FormulaType.LINEAR) <= 0) {
+            reason.add("Experience_Formula.Linear_Values.multiplier should be greater than 0!");
+        }
+
+        if (getExponent(FormulaType.EXPONENTIAL) <= 0) {
+            reason.add("Experience_Formula.Exponential_Values.exponent should be greater than 0!");
+        }
+
+        return noErrorsInConfig(reason);
+    }
+
     /* XP Formula Multiplier */
     public FormulaType getFormulaType() { return FormulaType.getFormulaType(config.getString("Experience_Formula.Curve")); }
     public boolean getCumulativeCurveEnabled() { return config.getBoolean("Experience_Formula.Cumulative_Curve", false); }
 
-    /* Linear curve values */
-    public int getLinearBase() { return config.getInt("Experience_Formula.Linear_Values.base", 1020); }
-    public double getLinearMultiplier() { return config.getDouble("Experience_Formula.Linear_Values.multiplier", 20); }
-
-    /* Exponential curve values */
-    public double getExponentialMultiplier() { return config.getDouble("Experience_Formula.Exponential_Values.multiplier", 0.1); }
-    public double getExponentialExponent() { return config.getDouble("Experience_Formula.Exponential_Values.exponent", 1.80); }
-    public int getExponentialBase() { return config.getInt("Experience_Formula.Exponential_Values.base", 2000); }
+    /* Curve values */
+    public double getMultiplier(FormulaType type) { return config.getDouble("Experience_Formula." + StringUtils.getCapitalized(type.toString()) + "_Values.multiplier"); }
+    public int getBase(FormulaType type) { return config.getInt("Experience_Formula." + StringUtils.getCapitalized(type.toString()) + "_Values.base"); }
+    public double getExponent(FormulaType type) { return config.getDouble("Experience_Formula." + StringUtils.getCapitalized(type.toString()) +"_Values.exponent"); }
 
     /* Skill modifiers */
     public double getFormulaSkillModifier(SkillType skill) { return config.getDouble("Experience_Formula.Modifier." + StringUtils.getCapitalized(skill.toString())); }

@@ -33,7 +33,7 @@ public class FormulaConversionTask extends BukkitRunnable {
                 profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false);
 
                 if (!profile.isLoaded()) {
-                    mcMMO.p.debug("Profile not loaded");
+                    mcMMO.p.debug("Profile not loaded.");
                     continue;
                 }
 
@@ -62,15 +62,7 @@ public class FormulaConversionTask extends BukkitRunnable {
                 continue;
             }
 
-            double modifier = ExperienceConfig.getInstance().getExpModifier();
-
-            //TODO: Why not validate like the other configs?
-            if (modifier <= 0) {
-                modifier = 1;
-                mcMMO.p.getLogger().warning("Invalid value found for Conversion.Exp_Modifier! Skipping using the modifier...");
-            }
-
-            int[] newExperienceValues = mcMMO.getFormulaManager().calculateNewLevel(skillType, (int) Math.floor(totalOldXP / modifier), formulaType);
+            int[] newExperienceValues = mcMMO.getFormulaManager().calculateNewLevel(skillType, (int) Math.floor(totalOldXP / ExperienceConfig.getInstance().getExpModifier()), formulaType);
             int newLevel = newExperienceValues[0];
             int newXPlevel = newExperienceValues[1];
 

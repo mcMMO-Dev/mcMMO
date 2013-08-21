@@ -9,6 +9,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.turt2live.metrics.EMetrics;
 import com.turt2live.metrics.Metrics;
@@ -200,7 +201,7 @@ public class MetricsManager {
                 // GlobalCurveModifier Graph
                 Graph globalCurveModifierGraph = metrics.createGraph("Global Curve Modifier Graph");
 
-                globalCurveModifierGraph.addPlotter(new Metrics.Plotter(ExperienceConfig.getInstance().getLinearMultiplier() + "") {
+                globalCurveModifierGraph.addPlotter(new Metrics.Plotter(ExperienceConfig.getInstance().getMultiplier(FormulaType.LINEAR) + "") {
                     @Override
                     public int getValue() {
                         return 1;
@@ -238,7 +239,7 @@ public class MetricsManager {
                 // GlobalCurveModifier Fuzzy Logic Numbers
                 Graph globalCurveMultiplierGraphFuzzy = metrics.createGraph("Global Curve Multiplier Fuzz");
 
-                if (ExperienceConfig.getInstance().getLinearMultiplier() > 20.0) {
+                if (ExperienceConfig.getInstance().getMultiplier(FormulaType.LINEAR) > 20.0) {
                     globalCurveMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Higher") {
                         @Override
                         public int getValue() {
@@ -246,7 +247,7 @@ public class MetricsManager {
                         }
                     });
                 }
-                else if (ExperienceConfig.getInstance().getLinearMultiplier() < 20.0) {
+                else if (ExperienceConfig.getInstance().getMultiplier(FormulaType.LINEAR) < 20.0) {
                     globalCurveMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Lower") {
                         @Override
                         public int getValue() {
