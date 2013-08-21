@@ -30,7 +30,7 @@ public final class Motd {
     /**
      * Display version info.
      *
-     * @param player Target player
+     * @param player  Target player
      * @param version Plugin version
      */
     public static void displayVersion(Player player, String version) {
@@ -43,16 +43,32 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayHardcoreSettings(Player player) {
-        if (HardcoreManager.getHardcoreStatLossEnabled()) {
-            if (HardcoreManager.getHardcoreVampirismEnabled()) {
-                player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.VampireOn"));
-                player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", Config.getInstance().getHardcoreDeathStatPenaltyPercentage()));
-                player.sendMessage(LocaleLoader.getString("MOTD.Vampire.Stats", Config.getInstance().getHardcoreVampirismStatLeechPercentage()));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.VampireOff"));
-                player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", Config.getInstance().getHardcoreDeathStatPenaltyPercentage()));
-            }
+        if (!HardcoreManager.getHardcoreStatLossEnabled() && !HardcoreManager.getHardcoreVampirismEnabled()) {
+            return;
+        }
+
+        String enabledModes;
+
+        boolean deathStatLossEnabled = HardcoreManager.getHardcoreStatLossEnabled();
+        boolean vampirismEnabled = HardcoreManager.getHardcoreVampirismEnabled();
+        if (deathStatLossEnabled && vampirismEnabled) {
+            enabledModes = LocaleLoader.getString("Hardcore.DeathStatLoss.Name") + " & " + LocaleLoader.getString("Hardcore.Vampirism.Name");
+        }
+        else if (deathStatLossEnabled) {
+            enabledModes = LocaleLoader.getString("Hardcore.DeathStatLoss.Name");
+        }
+        else {
+            enabledModes = LocaleLoader.getString("Hardcore.Vampirism.Name");
+        }
+
+        player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Enabled", enabledModes));
+
+        if (deathStatLossEnabled) {
+            player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.DeathStatLoss.Stats", Config.getInstance().getHardcoreDeathStatPenaltyPercentage()));
+        }
+
+        if (vampirismEnabled) {
+            player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Vampirism.Stats", Config.getInstance().getHardcoreVampirismStatLeechPercentage()));
         }
     }
 
@@ -113,7 +129,7 @@ public final class Motd {
     /**
      * Display website info.
      *
-     * @param player Target player
+     * @param player  Target player
      * @param website Plugin website
      */
     public static void displayWebsite(Player player, String website) {
