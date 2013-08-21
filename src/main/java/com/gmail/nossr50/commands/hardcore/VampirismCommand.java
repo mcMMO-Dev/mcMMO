@@ -2,7 +2,9 @@ package com.gmail.nossr50.commands.hardcore;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.HardcoreManager;
 import com.gmail.nossr50.util.Permissions;
 
 public class VampirismCommand extends HardcoreModeCommand {
@@ -17,20 +19,41 @@ public class VampirismCommand extends HardcoreModeCommand {
     }
 
     @Override
-    protected boolean checkEnabled() {
-        return Config.getInstance().getHardcoreVampirismEnabled();
+    protected boolean checkEnabled(String skill) {
+        if (skill.equalsIgnoreCase("ALL")) {
+            return !HardcoreManager.getHardcoreVampirismDisabled();
+        }
+        else {
+            return SkillType.getSkill(skill).getHardcoreVampirismEnabled();
+        }
     }
 
     @Override
-    protected void enable() {
-        Config.getInstance().setHardcoreVampirismEnabled(true);
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Vampirism.Enabled"));
+    protected void enable(String skill) {
+        if (skill.equalsIgnoreCase("ALL")) {
+            for (SkillType skillType : SkillType.nonChildSkills()) {
+                Config.getInstance().setHardcoreVampirismEnabled(skillType, true);
+            }
+        }
+        else {
+            Config.getInstance().setHardcoreVampirismEnabled(SkillType.getSkill(skill), true);
+        }
+
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Vampirism.Enabled", skill));
     }
 
     @Override
-    protected void disable() {
-        Config.getInstance().setHardcoreVampirismEnabled(false);
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Vampirism.Disabled"));
+    protected void disable(String skill) {
+        if (skill.equalsIgnoreCase("ALL")) {
+            for (SkillType skillType : SkillType.nonChildSkills()) {
+                Config.getInstance().setHardcoreVampirismEnabled(skillType, false);
+            }
+        }
+        else {
+            Config.getInstance().setHardcoreVampirismEnabled(SkillType.getSkill(skill), false);
+        }
+
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Vampirism.Disabled", skill));
     }
 
     @Override

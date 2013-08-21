@@ -88,4 +88,76 @@ public final class HardcoreManager {
             victim.sendMessage(LocaleLoader.getString("Vampirism.Victim.Failure", killer.getName()));
         }
     }
+
+    /**
+     * Check if Hardcore Stat Loss is enabled for one or more skill types
+     *
+     * @return true if Stat Loss is enabled for one or more skill types
+     */
+    public static boolean getHardcoreStatLossEnabled() {
+        boolean enabled = false;
+
+        for (SkillType skillType : SkillType.nonChildSkills()) {
+            if (skillType.getHardcoreStatLossEnabled()) {
+                enabled = true;
+                break;
+            }
+        }
+
+        return enabled;
+    }
+
+    /**
+     * Check if Hardcore Stat Loss is disabled for one or more skill types
+     *
+     * @return true if Stat Loss is disabled for one or more skill types
+     */
+    public static boolean getHardcoreStatLossDisabled() {
+        boolean disabled = false;
+
+        for (SkillType skillType : SkillType.nonChildSkills()) {
+            if (!skillType.getHardcoreStatLossEnabled()) {
+                disabled = true;
+                break;
+            }
+        }
+
+        return disabled;
+    }
+
+    /**
+     * Check if Hardcore Vampirism is enabled for one or more skill types
+     *
+     * @return true if Vampirism is enabled for one or more skill types
+     */
+    public static boolean getHardcoreVampirismEnabled() {
+        boolean enabled = false;
+
+        for (SkillType skillType : SkillType.nonChildSkills()) {
+            if (skillType.getHardcoreVampirismEnabled()) {
+                enabled = true;
+                break;
+            }
+        }
+
+        return enabled;
+    }
+
+    /**
+     * Check if Hardcore Vampirism is disabled for one or more skill types
+     *
+     * @return true if Vampirism is disabled for one or more skill types
+     */
+    public static boolean getHardcoreVampirismDisabled() {
+        boolean disabled = false;
+
+        for (SkillType skillType : SkillType.nonChildSkills()) {
+            if (!skillType.getHardcoreVampirismEnabled()) {
+                disabled = true;
+                break;
+            }
+        }
+
+        return disabled;
+    }
 }

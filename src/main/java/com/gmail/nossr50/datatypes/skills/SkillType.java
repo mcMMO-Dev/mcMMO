@@ -104,6 +104,14 @@ public enum SkillType {
         return Config.getInstance().getDoubleDropsDisabled(this);
     }
 
+    public boolean getHardcoreStatLossEnabled() {
+        return Config.getInstance().getHardcoreStatLossEnabled(this);
+    }
+
+    public boolean getHardcoreVampirismEnabled() {
+        return Config.getInstance().getHardcoreVampirismEnabled(this);
+    }
+
     public ToolType getTool() {
         return tool;
     }

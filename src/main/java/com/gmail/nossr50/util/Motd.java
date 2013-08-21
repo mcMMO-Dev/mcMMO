@@ -43,8 +43,8 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayHardcoreSettings(Player player) {
-        if (Config.getInstance().getHardcoreEnabled()) {
-            if (Config.getInstance().getHardcoreVampirismEnabled()) {
+        if (HardcoreManager.getHardcoreStatLossEnabled()) {
+            if (HardcoreManager.getHardcoreVampirismEnabled()) {
                 player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.VampireOn"));
                 player.sendMessage(LocaleLoader.getString("MOTD.Hardcore.Stats", Config.getInstance().getHardcoreDeathStatPenaltyPercentage()));
                 player.sendMessage(LocaleLoader.getString("MOTD.Vampire.Stats", Config.getInstance().getHardcoreVampirismStatLeechPercentage()));

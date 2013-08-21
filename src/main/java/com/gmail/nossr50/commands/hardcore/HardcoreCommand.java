@@ -2,22 +2,12 @@ package com.gmail.nossr50.commands.hardcore;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.HardcoreManager;
 import com.gmail.nossr50.util.Permissions;
 
 public class HardcoreCommand extends HardcoreModeCommand {
-    @Override
-    protected void disable() {
-        Config.getInstance().setHardcoreEnabled(false);
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Disabled"));
-    }
-
-    @Override
-    protected void enable() {
-        Config.getInstance().setHardcoreEnabled(true);
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Enabled"));
-    }
-
     @Override
     protected boolean checkTogglePermissions() {
         return Permissions.hardcoreToggle(sender);
@@ -29,8 +19,41 @@ public class HardcoreCommand extends HardcoreModeCommand {
     }
 
     @Override
-    protected boolean checkEnabled() {
-        return Config.getInstance().getHardcoreEnabled();
+    protected boolean checkEnabled(String skill) {
+        if (skill.equalsIgnoreCase("ALL")) {
+            return !HardcoreManager.getHardcoreStatLossDisabled();
+        }
+        else {
+            return SkillType.getSkill(skill).getHardcoreStatLossEnabled();
+        }
+    }
+
+    @Override
+    protected void enable(String skill) {
+        if (skill.equalsIgnoreCase("ALL")) {
+            for (SkillType skillType : SkillType.nonChildSkills()) {
+                Config.getInstance().setHardcoreStatLossEnabled(skillType, true);
+            }
+        }
+        else {
+            Config.getInstance().setHardcoreStatLossEnabled(SkillType.getSkill(skill), true);
+        }
+
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Enabled", skill));
+    }
+
+    @Override
+    protected void disable(String skill) {
+        if (skill.equalsIgnoreCase("ALL")) {
+            for (SkillType skillType : SkillType.nonChildSkills()) {
+                Config.getInstance().setHardcoreStatLossEnabled(skillType, false);
+            }
+        }
+        else {
+            Config.getInstance().setHardcoreStatLossEnabled(SkillType.getSkill(skill), false);
+        }
+
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Disabled", skill));
     }
 
     @Override

@@ -123,7 +123,7 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeathMonitor(PlayerDeathEvent event) {
-        if (!Config.getInstance().getHardcoreEnabled()) {
+        if (!HardcoreManager.getHardcoreStatLossEnabled()) {
             return;
         }
 
@@ -135,7 +135,7 @@ public class PlayerListener implements Listener {
 
         Player killer = killedPlayer.getKiller();
 
-        if (killer != null && Config.getInstance().getHardcoreVampirismEnabled()) {
+        if (killer != null && HardcoreManager.getHardcoreVampirismEnabled()) {
             HardcoreManager.invokeVampirism(killer, killedPlayer);
         }
 

@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
 
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -19,6 +20,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
     protected CommandSender sender;
     protected double newPercent;
     protected DecimalFormat percent;
+    protected String skill;
 
     public HardcoreModeCommand() {
         percent = new DecimalFormat("##0.00%");
@@ -35,11 +37,11 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                     return true;
                 }
 
-                if (checkEnabled()) {
-                    disable();
+                if (checkEnabled("ALL")) {
+                    disable("ALL");
                 }
                 else {
-                    enable();
+                    enable("ALL");
                 }
 
                 return true;
@@ -51,7 +53,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                         return true;
                     }
 
-                    enable();
+                    enable("ALL");
                     return true;
                 }
 
@@ -61,7 +63,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                         return true;
                     }
 
-                    disable();
+                    disable("ALL");
                     return true;
                 }
 
@@ -75,6 +77,36 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                 }
 
                 modify();
+                return true;
+
+
+            case 2:
+                if (!args[0].equalsIgnoreCase("ALL") && CommandUtils.isChildSkill(sender, SkillType.getSkill(args[0]))) {
+                    return true;
+                }
+
+                skill = args[0];
+
+                if (CommandUtils.shouldEnableToggle(args[1])) {
+                    if (!Permissions.hardcoreToggle(sender)) {
+                        sender.sendMessage(command.getPermissionMessage());
+                        return true;
+                    }
+
+                    enable(skill);
+                    return true;
+                }
+
+                if (CommandUtils.shouldDisableToggle(args[1])) {
+                    if (!Permissions.hardcoreToggle(sender)) {
+                        sender.sendMessage(command.getPermissionMessage());
+                        return true;
+                    }
+
+                    disable(skill);
+                    return true;
+                }
+
                 return true;
 
             default:
@@ -98,9 +130,9 @@ public abstract class HardcoreModeCommand implements TabExecutor {
 
     protected abstract boolean checkTogglePermissions();
     protected abstract boolean checkModifyPermissions();
-    protected abstract boolean checkEnabled();
-    protected abstract void enable();
-    protected abstract void disable();
+    protected abstract boolean checkEnabled(String skill);
+    protected abstract void enable(String skill);
+    protected abstract void disable(String skill);
     protected abstract void modify();
 
     private boolean isInvalidPercentage(CommandSender sender, String value) {
