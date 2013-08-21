@@ -14,7 +14,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 public final class UserManager {
     private final static Map<String, McMMOPlayer> players = new HashMap<String, McMMOPlayer>();
 
-    private UserManager() {};
+    private UserManager() {}
 
     /**
      * Add a new user.
@@ -91,9 +91,9 @@ public final class UserManager {
     }
 
     public static McMMOPlayer getPlayer(String playerName, boolean offlineValid) {
-    	return retrieveMcMMOPlayer(playerName, offlineValid);
+        return retrieveMcMMOPlayer(playerName, offlineValid);
     }
-    
+
     private static McMMOPlayer retrieveMcMMOPlayer(String playerName, boolean offlineValid) {
         McMMOPlayer mcMMOPlayer = players.get(playerName);
 
@@ -101,9 +101,9 @@ public final class UserManager {
             Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
             if (player == null) {
-            	if (!offlineValid) {
+                if (!offlineValid) {
                     mcMMO.p.getLogger().warning("A valid mcMMOPlayer object could not be found for " + playerName + ".");
-            	}
+                }
 
                 return null;
             }
