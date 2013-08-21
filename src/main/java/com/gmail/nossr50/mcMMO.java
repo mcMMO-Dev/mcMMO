@@ -127,7 +127,7 @@ public class mcMMO extends JavaPlugin {
 
             PartyManager.loadParties();
 
-            formulaManager = new FormulaManager(this);
+            formulaManager = new FormulaManager();
 
             for (Player player : getServer().getOnlinePlayers()) {
                 UserManager.addUser(player); // In case of reload add all users back into UserManager

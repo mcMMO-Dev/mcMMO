@@ -13,7 +13,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.mcMMO;
 
 public class FormulaManager {
-    private final mcMMO plugin;
     private static String formulaFilePath = mcMMO.getFlatFileDirectory() + "formula.yml";
     private static File formulaFile = new File(formulaFilePath);
 
@@ -23,9 +22,7 @@ public class FormulaManager {
 
     private FormulaType previousFormula;
 
-    public FormulaManager(final mcMMO plugin) {
-        this.plugin = plugin;
-
+    public FormulaManager() {
         loadFormula();
     }
 
@@ -52,18 +49,17 @@ public class FormulaManager {
      * the amount of levels and experience, using the previously
      * used formula type.
      *
-     * @param oldExperienceValues level and experience amount
+     * @param skillLevel Amount of levels
+     * @param skillXPLevel Amount of experience
      * @return The total amount of experience
      */
-    public int calculateTotalExperience(int[] oldExperienceValues) {
+    public int calculateTotalExperience(int skillLevel, int skillXPLevel) {
         int totalXP = 0;
-
-        int skillLevel = oldExperienceValues[0];
-        int skillXPLevel = oldExperienceValues[1];
 
         for (int level = 0; level < skillLevel; level++) {
             totalXP += getCachedXpToLevel(level, previousFormula);
         }
+
         totalXP += skillXPLevel;
 
         return totalXP;
@@ -79,25 +75,23 @@ public class FormulaManager {
      * @return the amount of levels and experience
      */
     public int[] calculateNewLevel(SkillType skillType, int experience, FormulaType formulaType) {
-        int[] newExperienceValues = new int[2];
         int newLevel = 0;
         int remainder = 0;
         int maxLevel = Config.getInstance().getLevelCap(skillType);
 
         while (experience > 0 && newLevel < maxLevel) {
             int experienceToNextLevel = getCachedXpToLevel(newLevel, formulaType);
-            if (experience - experienceToNextLevel >= 0) {
-                newLevel++;
-                experience -= experienceToNextLevel;
-            }
-            else {
+
+            if (experience - experienceToNextLevel < 0) {
                 remainder = experience;
                 break;
             }
+
+            newLevel++;
+            experience -= experienceToNextLevel;
         }
-        newExperienceValues[0] = newLevel;
-        newExperienceValues[1] = remainder;
-        return newExperienceValues;
+
+        return new int[]{newLevel, remainder};
     }
 
     /**
@@ -111,45 +105,46 @@ public class FormulaManager {
      */
     public int getCachedXpToLevel(int level, FormulaType formulaType) {
         int experience;
+        double multiplier;
 
         switch (formulaType) {
             case UNKNOWN:
             case LINEAR:
-                if (experienceNeededLinear.containsKey(level)) {
-                    experience = experienceNeededLinear.get(level);
-                    return experience;
+                if (!experienceNeededLinear.containsKey(level)) {
+                    multiplier = ExperienceConfig.getInstance().getLinearMultiplier();
+
+                    //TODO: Validate at load?
+                    if (multiplier <= 0) {
+                        multiplier = 20;
+                    }
+
+                    experience = (int) Math.floor(ExperienceConfig.getInstance().getLinearBase() + level * multiplier);
+                    experienceNeededLinear.put(level, experience);
                 }
 
-                double multiplier = ExperienceConfig.getInstance().getLinearMultiplier();
-                if (multiplier <= 0) {
-                    multiplier = 20;
-                }
-
-                experience = (int) Math.floor(ExperienceConfig.getInstance().getLinearBase() + level * multiplier);
-                experienceNeededLinear.put(level, experience);
-                return experience;
+                return experienceNeededLinear.get(level);
 
             case EXPONENTIAL:
-                if (experienceNeededExponential.containsKey(level)) {
-                    experience = experienceNeededExponential.get(level);
-                    return experience;
+                if (!experienceNeededExponential.containsKey(level)) {
+                    multiplier = ExperienceConfig.getInstance().getExponentialMultiplier();
+                    double exponent = ExperienceConfig.getInstance().getExponentialExponent();
+                    int base = ExperienceConfig.getInstance().getExponentialBase();
+
+                    //TODO: Validate at load?
+                    if (multiplier <= 0) {
+                        multiplier = 0.1;
+                    }
+
+                    //TODO: Validate at load?
+                    if (exponent <= 0) {
+                        exponent = 1.80;
+                    }
+
+                    experience = (int) Math.floor(multiplier * Math.pow(level, exponent) + base);
+                    experienceNeededExponential.put(level, experience);
                 }
 
-                multiplier = ExperienceConfig.getInstance().getExponentialMultiplier();
-                double exponent = ExperienceConfig.getInstance().getExponentialExponent();
-                int base = ExperienceConfig.getInstance().getExponentialBase();
-
-                if (multiplier <= 0) {
-                    multiplier = 0.1;
-                }
-
-                if (exponent <= 0) {
-                    exponent = 1.80;
-                }
-
-                experience = (int) Math.floor(multiplier * Math.pow(level, exponent) + base);
-                experienceNeededExponential.put(level, experience);
-                return experience;
+                return experienceNeededExponential.get(level);
 
             default:
                 return 0;

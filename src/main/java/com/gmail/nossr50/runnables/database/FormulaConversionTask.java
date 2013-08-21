@@ -25,7 +25,7 @@ public class FormulaConversionTask extends BukkitRunnable {
     @Override
     public void run() {
         for (String playerName : mcMMO.getDatabaseManager().getStoredUsers()) {
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName, true);
             PlayerProfile profile;
 
             // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
@@ -53,21 +53,18 @@ public class FormulaConversionTask extends BukkitRunnable {
     private void editValues(PlayerProfile profile) {
         mcMMO.p.debug("========================================================================");
         mcMMO.p.debug("Conversion report for " + profile.getPlayerName() + ":");
-        for (SkillType skillType : SkillType.values()) {
-            if (skillType.isChildSkill()) {
-                continue;
-            }
+        for (SkillType skillType : SkillType.nonChildSkills()) {
+            int oldLevel = profile.getSkillLevel(skillType);
+            int oldXPLevel = profile.getSkillXpLevel(skillType);
+            int totalOldXP = mcMMO.getFormulaManager().calculateTotalExperience(oldLevel, oldXPLevel);
 
-            int[] oldExperienceValues = new int[2];
-            oldExperienceValues[0] = profile.getSkillLevel(skillType);
-            oldExperienceValues[1] = profile.getSkillXpLevel(skillType);
-
-            int totalOldXP = mcMMO.getFormulaManager().calculateTotalExperience(oldExperienceValues);
             if (totalOldXP == 0) {
                 continue;
             }
 
             double modifier = ExperienceConfig.getInstance().getExpModifier();
+
+            //TODO: Why not validate like the other configs?
             if (modifier <= 0) {
                 modifier = 1;
                 mcMMO.p.getLogger().warning("Invalid value found for Conversion.Exp_Modifier! Skipping using the modifier...");
@@ -80,8 +77,8 @@ public class FormulaConversionTask extends BukkitRunnable {
             mcMMO.p.debug("  Skill: " + skillType.toString());
 
             mcMMO.p.debug("    OLD:");
-            mcMMO.p.debug("      Level: " + oldExperienceValues[0]);
-            mcMMO.p.debug("      XP " + oldExperienceValues[1]);
+            mcMMO.p.debug("      Level: " + oldLevel);
+            mcMMO.p.debug("      XP " + oldXPLevel);
             mcMMO.p.debug("      Total XP " + totalOldXP);
 
             mcMMO.p.debug("    NEW:");

@@ -297,7 +297,7 @@ public final class CommandRegistrationManager {
         command.setDescription(LocaleLoader.getString("Commands.Description.mcconvert"));
         command.setPermission("mcmmo.commands.mcconvert");
         command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcconvert"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcconvert", "<linear | exponential>"));
         command.setExecutor(new McconvertCommand());
     }
 
