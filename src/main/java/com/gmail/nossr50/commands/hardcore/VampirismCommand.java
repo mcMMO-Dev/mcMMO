@@ -39,7 +39,7 @@ public class VampirismCommand extends HardcoreModeCommand {
             Config.getInstance().setHardcoreVampirismEnabled(SkillType.getSkill(skill), true);
         }
 
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Vampirism.Enabled", skill));
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode.Enabled", LocaleLoader.getString("Hardcore.Vampirism.Name"), skill));
     }
 
     @Override
@@ -53,12 +53,12 @@ public class VampirismCommand extends HardcoreModeCommand {
             Config.getInstance().setHardcoreVampirismEnabled(SkillType.getSkill(skill), false);
         }
 
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Vampirism.Disabled", skill));
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode.Disabled", LocaleLoader.getString("Hardcore.Vampirism.Name"), skill));
     }
 
     @Override
     protected void modify() {
         Config.getInstance().setHardcoreVampirismStatLeechPercentage(newPercent);
-        sender.sendMessage(LocaleLoader.getString("Vampirism.PercentageChanged", percent.format(newPercent / 100D)));
+        sender.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.PercentageChanged", percent.format(newPercent / 100D)));
     }
 }

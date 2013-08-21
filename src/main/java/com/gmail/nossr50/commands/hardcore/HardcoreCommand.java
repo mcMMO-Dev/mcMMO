@@ -39,7 +39,7 @@ public class HardcoreCommand extends HardcoreModeCommand {
             Config.getInstance().setHardcoreStatLossEnabled(SkillType.getSkill(skill), true);
         }
 
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Enabled", skill));
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode.Enabled", LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), skill));
     }
 
     @Override
@@ -53,12 +53,12 @@ public class HardcoreCommand extends HardcoreModeCommand {
             Config.getInstance().setHardcoreStatLossEnabled(SkillType.getSkill(skill), false);
         }
 
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Disabled", skill));
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode.Disabled", LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), skill));
     }
 
     @Override
     protected void modify() {
         Config.getInstance().setHardcoreDeathStatPenaltyPercentage(newPercent);
-        sender.sendMessage(LocaleLoader.getString("Hardcore.PercentageChanged", percent.format(newPercent / 100D)));
+        sender.sendMessage(LocaleLoader.getString("Hardcore.DeathStatLoss.PercentageChanged", percent.format(newPercent / 100D)));
     }
 }

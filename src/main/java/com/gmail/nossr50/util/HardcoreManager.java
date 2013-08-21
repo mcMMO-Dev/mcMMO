@@ -43,7 +43,7 @@ public final class HardcoreManager {
             playerProfile.modifySkill(skillType, playerSkillLevel - levelsLost);
         }
 
-        player.sendMessage(LocaleLoader.getString("Hardcore.Player.Loss", totalLost));
+        player.sendMessage(LocaleLoader.getString("Hardcore.DeathStatLoss.PlayerDeath", totalLost));
     }
 
     public static void invokeVampirism(Player killer, Player victim) {
@@ -80,12 +80,12 @@ public final class HardcoreManager {
         }
 
         if (totalStolen > 0) {
-            killer.sendMessage(LocaleLoader.getString("Vampirism.Killer.Success", totalStolen, victim.getName()));
-            victim.sendMessage(LocaleLoader.getString("Vampirism.Victim.Success", killer.getName(), totalStolen));
+            killer.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.Killer.Success", totalStolen, victim.getName()));
+            victim.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.Victim.Success", killer.getName(), totalStolen));
         }
         else {
-            killer.sendMessage(LocaleLoader.getString("Vampirism.Killer.Failure", victim.getName()));
-            victim.sendMessage(LocaleLoader.getString("Vampirism.Victim.Failure", killer.getName()));
+            killer.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.Killer.Failure", victim.getName()));
+            victim.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.Victim.Failure", killer.getName()));
         }
     }
 
