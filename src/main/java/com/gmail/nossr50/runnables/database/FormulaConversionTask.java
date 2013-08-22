@@ -47,7 +47,7 @@ public class FormulaConversionTask extends BukkitRunnable {
         }
         mcMMO.getFormulaManager().setPreviousFormulaType(formulaType);
 
-        sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Finish", formulaType.toString()));
+        sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Experience.Finish", formulaType.toString()));
     }
 
     private void editValues(PlayerProfile profile) {

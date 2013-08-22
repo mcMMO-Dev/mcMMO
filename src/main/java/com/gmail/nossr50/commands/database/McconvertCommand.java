@@ -5,71 +5,67 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.commands.experience.ConvertExperienceCommand;
+import com.gmail.nossr50.database.DatabaseManagerFactory;
+import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.runnables.database.FormulaConversionTask;
-import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 
 public class McconvertCommand implements TabExecutor {
     private static final List<String> FORMULA_TYPES;
+    private static final List<String> DATABASE_TYPES;
+    private static final List<String> SUBCOMMANDS = ImmutableList.of("database", "experience");
+
+    private CommandExecutor databaseConvertCommand   = new ConvertDatabaseCommand();
+    private CommandExecutor experienceConvertCommand = new ConvertExperienceCommand();
 
     static {
-        ArrayList<String> types = new ArrayList<String>();
+        ArrayList<String> formulaTypes = new ArrayList<String>();
 
         for (FormulaType type : FormulaType.values()) {
-            types.add(type.toString());
+            formulaTypes.add(type.toString());
         }
 
-        Collections.sort(types);
-        FORMULA_TYPES = ImmutableList.copyOf(types);
+        Collections.sort(formulaTypes);
+        FORMULA_TYPES = ImmutableList.copyOf(formulaTypes);
     }
 
-    /*
-    * Do this later; Use mcconvert instead of mmoupdate:
-    * OLD :
-    * /mmoupdate flatfile / mysql
-    *
-    * NEW :
-    * /mcconvert <database> <flatfile / sql>
-    * /mcconvert <experience> <linear / exponential>
-    * */
+    static {
+        ArrayList<String> databaseTypes = new ArrayList<String>();
+
+        for (DatabaseType type : DatabaseType.values()) {
+            databaseTypes.add(type.toString());
+        }
+
+        // Custom stuff
+        databaseTypes.remove(DatabaseType.CUSTOM);
+
+        if (mcMMO.getDatabaseManager().getDatabaseType() == DatabaseType.CUSTOM) {
+            databaseTypes.add(DatabaseManagerFactory.getCustomDatabaseManagerClass().getName());
+        }
+
+        Collections.sort(databaseTypes);
+        DATABASE_TYPES = ImmutableList.copyOf(databaseTypes);
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
-            case 1:
-                FormulaType previousType = mcMMO.getFormulaManager().getPreviousFormulaType();
-                FormulaType newType = FormulaType.getFormulaType(args[0].toUpperCase());
-
-                if (newType == FormulaType.UNKNOWN) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Invalid"));
-                    return true;
+            case 2:
+                if (args[0].equalsIgnoreCase("database") || args[0].equalsIgnoreCase("db")) {
+                    return databaseConvertCommand.onCommand(sender, command, label, args);
+                }
+                else if (args[0].equalsIgnoreCase("experience") || args[0].equalsIgnoreCase("xp") || args[1].equalsIgnoreCase("exp")) {
+                    return experienceConvertCommand.onCommand(sender, command, label, args);
                 }
 
-                if (previousType == newType) {
-                    sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Same", newType));
-                    return true;
-                }
-
-                sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Start", previousType.toString(), newType.toString()));
-
-                UserManager.saveAll();
-                UserManager.clearAll();
-
-                new FormulaConversionTask(sender, newType).runTaskLater(mcMMO.p, 1);
-
-                for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-                    UserManager.addUser(player);
-                }
-
-                return true;
-
+                return false;
             default:
                 return false;
         }
@@ -79,7 +75,16 @@ public class McconvertCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         switch (args.length) {
             case 1:
-                return StringUtil.copyPartialMatches(args[0], FORMULA_TYPES, new ArrayList<String>(FORMULA_TYPES.size()));
+                return StringUtil.copyPartialMatches(args[0], SUBCOMMANDS, new ArrayList<String>(SUBCOMMANDS.size()));
+            case 2:
+                if (args[0].equalsIgnoreCase("database") || args[0].equalsIgnoreCase("db")) {
+                    StringUtil.copyPartialMatches(args[0], DATABASE_TYPES, new ArrayList<String>(DATABASE_TYPES.size()));
+                }
+                else if (args[0].equalsIgnoreCase("experience") || args[0].equalsIgnoreCase("xp") || args[0].equalsIgnoreCase("exp")) {
+                    StringUtil.copyPartialMatches(args[0], FORMULA_TYPES, new ArrayList<String>(FORMULA_TYPES.size()));
+                }
+
+                return ImmutableList.of();
             default:
                 return ImmutableList.of();
         }

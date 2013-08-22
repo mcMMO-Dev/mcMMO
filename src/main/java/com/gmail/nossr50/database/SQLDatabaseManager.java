@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
+import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.DatabaseUpdateType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -1190,5 +1191,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
         mcMMO.p.getLogger().severe("SQLException: " + ex.getMessage());
         mcMMO.p.getLogger().severe("SQLState: " + ex.getSQLState());
         mcMMO.p.getLogger().severe("VendorError: " + ex.getErrorCode());
+    }
+
+    public DatabaseType getDatabaseType() {
+        return DatabaseType.SQL;
     }
 }

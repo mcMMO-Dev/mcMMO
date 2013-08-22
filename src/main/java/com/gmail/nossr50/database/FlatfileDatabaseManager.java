@@ -21,6 +21,7 @@ import org.bukkit.OfflinePlayer;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
+import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -792,5 +793,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         skills.put(SkillType.FISHING, Integer.valueOf(character[34]));
 
         return skills;
+    }
+
+    public DatabaseType getDatabaseType() {
+        return DatabaseType.FLATFILE;
     }
 }

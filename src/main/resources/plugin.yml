@@ -62,7 +62,7 @@ commands:
     mmoshowdb:
         description: Show the name of the current database type (for later use with /mmoupdate)
     mcconvert:
-        description: Convert from linear to exponential formula
+        description: Convert between different database and formula types
     partychat:
         aliases: [pc, p]
         description: Toggle Party chat or send party chat messages
@@ -601,6 +601,7 @@ permissions:
         default: false
         description: Implies access to everything in mcMMO
         children:
+            mcmmo.commands.mcconvert.all: true
             mcmmo.commands.mmoupdate: true
             mcmmo.commands.xprate.all: true
     mcmmo.bypass.*:
@@ -664,9 +665,6 @@ permissions:
         children:
             mcmmo.commands.defaults: true
             mcmmo.commands.defaultsop: true
-            mcmmo.commands.mcpurge: true
-            mcmmo.commands.mcremove: true
-            mcmmo.commands.mmoupdate: true
     mcmmo.commands.defaults:
         description: Implies all default mcmmo.commands permissions.
         children:
@@ -711,6 +709,7 @@ permissions:
             mcmmo.commands.kraken: true
             mcmmo.commands.kraken.others: true
             mcmmo.commands.mcability.others: true
+            mcmmo.commands.mcconvert.all: true
             mcmmo.commands.mcgod: true
             mcmmo.commands.mcgod.others: true
             mcmmo.commands.mcpurge: true
@@ -720,7 +719,6 @@ permissions:
             mcmmo.commands.mcremove: true
             mcmmo.commands.mmoedit: true
             mcmmo.commands.mmoedit.others: true
-            mcmmo.commands.mmoupdate: true
             mcmmo.commands.mmoshowdb: true
             mcmmo.commands.ptp.world.all: true
             mcmmo.commands.skillreset.all: true
@@ -802,6 +800,20 @@ permissions:
         description: Allows access to the mcmmo help command
         children:
             mcmmo.commands.mcmmo.help: true
+    mcmmo.commands.mcconvert.*:
+        default: false
+        description: Allows access to the mcconvert commands
+        children:
+            mcmmo.commands.mcconvert.all: true
+    mcmmo.commands.mcconvert.all:
+        description: Allows access to the mcconvert commands
+        children:
+            mcmmo.commands.mcconvert.database: true
+            mcmmo.commands.mcconvert.experience: true
+    mcmmo.commands.mcconvert.database:
+        description: Allows access to the mcconvert command for databases
+    mcmmo.commands.mcconvert.experience:
+        description: Allows access to the mcconvert command for experience
     mcmmo.commands.mcgod:
         description: Allows access to the mcgod command
     mcmmo.commands.mcgod.others:
@@ -912,11 +924,13 @@ permissions:
     mcmmo.commands.mmoedit.others:
         description: Allows access to the mmoedit command for other players
     mcmmo.commands.mmoupdate:
+        default: false
         description: Allows access to the mmoupdate command
+        children:
+            mcmmo.commands.mcconvert.database: true
     mcmmo.commands.mmoshowdb:
         description: Allows access to the mmoshowdb command
     mcmmo.commands.mobhealth:
-         default: true
          description: Allows access to the mobhealth command
     mcmmo.commands.party.*:
         default: false

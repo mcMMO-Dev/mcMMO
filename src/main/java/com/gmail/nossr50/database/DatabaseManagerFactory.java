@@ -2,6 +2,7 @@ package com.gmail.nossr50.database;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.database.DatabaseType;
 
 public class DatabaseManagerFactory {
     private static Class<? extends DatabaseManager> customManager = null;
@@ -10,20 +11,23 @@ public class DatabaseManagerFactory {
         if (customManager != null) {
             try {
                 return createCustomDatabaseManager(customManager);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 mcMMO.p.debug("Could not create custom database manager");
                 e.printStackTrace();
-            } catch (Throwable e) {
+            }
+            catch (Throwable e) {
                 mcMMO.p.debug("Failed to create custom database manager");
                 e.printStackTrace();
             }
             mcMMO.p.debug("Falling back on " + (Config.getInstance().getUseMySQL() ? "SQL" : "Flatfile") + " database");
         }
+
         return Config.getInstance().getUseMySQL() ? new SQLDatabaseManager() : new FlatfileDatabaseManager();
     }
 
     /**
-     * Sets the custom DatabaseManager class for McMMO to use. This should be
+     * Sets the custom DatabaseManager class for mcMMO to use. This should be
      * called prior to mcMMO enabling.
      * <p>
      * The provided class must have an empty constructor, which is the one
@@ -41,7 +45,8 @@ public class DatabaseManagerFactory {
         try {
             clazz.getConstructor((Class<?>) null);
             customManager = clazz;
-        } catch (Throwable e) {
+        }
+        catch (Throwable e) {
             throw new IllegalArgumentException("Provided database manager class must have an empty constructor", e);
         }
     }
@@ -50,16 +55,20 @@ public class DatabaseManagerFactory {
         return customManager;
     }
 
-    // For data conversion purposes
+    public static DatabaseManager createDatabaseManager(DatabaseType type) {
+        switch (type) {
+            case FLATFILE:
+                return new FlatfileDatabaseManager();
 
-    public static FlatfileDatabaseManager createFlatfileDatabaseManager() {
-        return new FlatfileDatabaseManager();
+            case SQL:
+                return new SQLDatabaseManager();
+
+            default:
+                return null;
+        }
     }
 
-    public static SQLDatabaseManager createSQLDatabaseManager() {
-        return new SQLDatabaseManager();
-    }
-
+    //TODO: Why is clazz never used here?
     public static DatabaseManager createCustomDatabaseManager(Class<? extends DatabaseManager> clazz) throws Throwable {
         return customManager.getConstructor((Class<?>) clazz).newInstance((Object[]) null);
     }
