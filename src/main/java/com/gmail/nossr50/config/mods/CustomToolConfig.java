@@ -15,13 +15,15 @@ import com.gmail.nossr50.skills.repair.RepairableFactory;
 public class CustomToolConfig extends ConfigLoader {
     private static CustomToolConfig instance;
     private List<Repairable> repairables;
-    public List<Integer> customAxeIDs = new ArrayList<Integer>();
-    public List<Integer> customBowIDs = new ArrayList<Integer>();
-    public List<Integer> customHoeIDs = new ArrayList<Integer>();
+
+    public List<Integer> customAxeIDs     = new ArrayList<Integer>();
+    public List<Integer> customBowIDs     = new ArrayList<Integer>();
+    public List<Integer> customHoeIDs     = new ArrayList<Integer>();
     public List<Integer> customPickaxeIDs = new ArrayList<Integer>();
-    public List<Integer> customShovelIDs = new ArrayList<Integer>();
-    public List<Integer> customSwordIDs = new ArrayList<Integer>();
-    public List<Integer> customIDs = new ArrayList<Integer>();
+    public List<Integer> customShovelIDs  = new ArrayList<Integer>();
+    public List<Integer> customSwordIDs   = new ArrayList<Integer>();
+    public List<Integer> customIDs        = new ArrayList<Integer>();
+
     public List<CustomTool> customToolList = new ArrayList<CustomTool>();
     public HashMap<Integer, CustomTool> customTools = new HashMap<Integer, CustomTool>();
 
