@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
+import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -106,7 +106,7 @@ public class SkillresetCommand extends ExperienceCommand {
         profile.modifySkill(skill, 0);
 
         if (player != null) {
-            mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerLevelUpEvent(player, skill, 0 - profile.getSkillLevel(skill)));
+            mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerLevelDownEvent(player, skill, profile.getSkillLevel(skill)));
         }
     }
 

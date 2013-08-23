@@ -7,7 +7,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 /**
  * Called when a user levels up in a skill
  */
-public class McMMOPlayerLevelUpEvent extends McMMOPlayerExperienceEvent {
+public class McMMOPlayerLevelUpEvent extends McMMOPlayerLevelChangeEvent {
     private int levelsGained;
 
     public McMMOPlayerLevelUpEvent(Player player, SkillType skill) {

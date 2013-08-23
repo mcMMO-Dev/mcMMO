@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
@@ -24,8 +25,17 @@ public class MmoeditCommand extends ExperienceCommand {
     protected void handleCommand(SkillType skill) {
         profile.modifySkill(skill, value);
 
-        if (player != null) {
-            mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerLevelUpEvent(player, skill, value - profile.getSkillLevel(skill)));
+        if (player == null) {
+            return;
+        }
+
+        int skillLevel = profile.getSkillLevel(skill);
+
+        if (value > skillLevel) {
+            mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerLevelUpEvent(player, skill, value - skillLevel));
+        }
+        else if (value < skillLevel) {
+            mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerLevelDownEvent(player, skill, skillLevel - value));
         }
     }
 
