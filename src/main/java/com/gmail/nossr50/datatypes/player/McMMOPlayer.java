@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -695,7 +696,7 @@ public class McMMOPlayer {
             return 0;
         }
 
-        xp = (float) (xp / skillType.getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier());
+        xp = (float) (xp / skillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
         if (Config.getInstance().getToolModsEnabled()) {
             CustomTool tool = ModUtils.getToolFromItemStack(player.getItemInHand());

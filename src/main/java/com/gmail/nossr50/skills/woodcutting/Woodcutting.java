@@ -13,6 +13,7 @@ import org.bukkit.material.Tree;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
@@ -43,10 +44,10 @@ public final class Woodcutting {
         // Mushrooms aren't trees so we could never get species data from them
         switch (blockState.getType()) {
             case HUGE_MUSHROOM_1:
-                return Config.getInstance().getWoodcuttingXPHugeBrownMushroom();
+                return ExperienceConfig.getInstance().getWoodcuttingXPHugeBrownMushroom();
 
             case HUGE_MUSHROOM_2:
-                return Config.getInstance().getWoodcuttingXPHugeRedMushroom();
+                return ExperienceConfig.getInstance().getWoodcuttingXPHugeRedMushroom();
 
             default:
                 break;
@@ -58,16 +59,16 @@ public final class Woodcutting {
 
         switch (((Tree) blockState.getData()).getSpecies()) {
             case GENERIC:
-                return Config.getInstance().getWoodcuttingXPOak();
+                return ExperienceConfig.getInstance().getWoodcuttingXPOak();
 
             case REDWOOD:
-                return Config.getInstance().getWoodcuttingXPSpruce();
+                return ExperienceConfig.getInstance().getWoodcuttingXPSpruce();
 
             case BIRCH:
-                return Config.getInstance().getWoodcuttingXPBirch();
+                return ExperienceConfig.getInstance().getWoodcuttingXPBirch();
 
             case JUNGLE:
-                int xp = Config.getInstance().getWoodcuttingXPJungle();
+                int xp = ExperienceConfig.getInstance().getWoodcuttingXPJungle();
 
                 if (experienceGainMethod == ExperienceGainMethod.TREE_FELLER) {
                     xp *= 0.5;

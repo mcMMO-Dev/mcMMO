@@ -9,7 +9,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
@@ -21,7 +21,7 @@ public class XprateCommand implements TabExecutor {
     private double originalRate;
 
     public XprateCommand() {
-        originalRate = Config.getInstance().getExperienceGainsGlobalMultiplier();
+        originalRate = ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier();
     }
 
     @Override
@@ -42,7 +42,7 @@ public class XprateCommand implements TabExecutor {
                     mcMMO.p.toggleXpEventEnabled();
                 }
 
-                Config.getInstance().setExperienceGainsGlobalMultiplier(originalRate);
+                ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(originalRate);
                 return true;
 
             case 2:
@@ -66,7 +66,7 @@ public class XprateCommand implements TabExecutor {
                 }
 
                 int newXpRate = Integer.parseInt(args[0]);
-                Config.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
+                ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(newXpRate);
 
                 if (mcMMO.p.isXPEventEnabled()) {
                     mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Commands.xprate.started.0"));

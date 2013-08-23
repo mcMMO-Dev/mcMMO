@@ -191,7 +191,7 @@ public class MetricsManager {
                 // GlobalMultiplier Graph
                 Graph globalMultiplierGraph = metrics.createGraph("Global Multiplier Graph");
 
-                globalMultiplierGraph.addPlotter(new Metrics.Plotter(Config.getInstance().getExperienceGainsGlobalMultiplier() + "") {
+                globalMultiplierGraph.addPlotter(new Metrics.Plotter(ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier() + "") {
                     @Override
                     public int getValue() {
                         return 1;
@@ -211,7 +211,7 @@ public class MetricsManager {
                 // GlobalMultiplierGraph Fuzzy Logic Numbers
                 Graph globalMultiplierGraphFuzzy = metrics.createGraph("Global Multiplier Fuzz");
 
-                if (Config.getInstance().getExperienceGainsGlobalMultiplier() > 1.0) {
+                if (ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier() > 1.0) {
                     globalMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Higher") {
                         @Override
                         public int getValue() {
@@ -219,7 +219,7 @@ public class MetricsManager {
                         }
                     });
                 }
-                else if (Config.getInstance().getExperienceGainsGlobalMultiplier() < 1.0) {
+                else if (ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier() < 1.0) {
                     globalMultiplierGraphFuzzy.addPlotter(new Metrics.Plotter("Lower") {
                         @Override
                         public int getValue() {

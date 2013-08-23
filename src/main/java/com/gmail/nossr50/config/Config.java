@@ -11,7 +11,6 @@ import org.bukkit.entity.EntityType;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.skills.repair.RepairMaterialType;
 import com.gmail.nossr50.util.StringUtils;
 
 public class Config extends AutoUpdateConfigLoader {
@@ -136,9 +135,6 @@ public class Config extends AutoUpdateConfigLoader {
             reason.add("Abilities.Limits.Tree_Feller_Threshold should be greater than 0!");
         }
 
-        if (getFishingBaseXP() <= 0) {
-            reason.add("Experience.Fishing.Base should be greater than 0!");
-        }
 
         if (getDetonatorItemID() < 1) {
             reason.add("Skills.Mining.Detonator_ID should be at least 1!");
@@ -170,26 +166,6 @@ public class Config extends AutoUpdateConfigLoader {
 
         if (getTamingCOTWAmount(EntityType.WOLF) <= 0) {
             reason.add("Skills.Taming.Call_Of_The_Wild.Wolf_Amount should be greater than 0!");
-        }
-
-        if (getExperienceGainsGlobalMultiplier() <= 0) {
-            reason.add("Experience.Gains.Multiplier.Global should be greater than 0!");
-        }
-
-        if (getPlayerVersusPlayerXP() < 0) {
-            reason.add("Experience.Gains.Multiplier.PVP should be at least 0!");
-        }
-
-        if (getAnimalsXP() < 0) {
-            reason.add("Experience.Gains.Multiplier.Animals should be at least 0!");
-        }
-
-        if (getWitherSkeletonXP() < 0) {
-            reason.add("Experience.Gains.Multiplier.Wither_Skeleton should be at least 0!");
-        }
-
-        if (getSpawnedMobXpMultiplier() < 0) {
-            reason.add("Experience.Gains.Mobspawners.Multiplier should be at least 0!");
         }
 
         return noErrorsInConfig(reason);
@@ -366,8 +342,6 @@ public class Config extends AutoUpdateConfigLoader {
     /*
      * SKILL SETTINGS
      */
-
-    public int getXp(SkillType skill, Material material) { return config.getInt("Experience." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_")); }
     public boolean getDoubleDropsEnabled(SkillType skill, Material material) { return config.getBoolean("Double_Drops." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_")); }
 
     public boolean getDoubleDropsDisabled(SkillType skill) {
@@ -391,16 +365,12 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getPreventXPAfterTeleport() { return config.getBoolean("Skills.Acrobatics.Prevent_XP_After_Teleport", true); }
 
     /* Fishing */
-    public int getFishingBaseXP() { return config.getInt("Experience.Fishing.Base", 800); }
     public boolean getFishingDropsEnabled() { return config.getBoolean("Skills.Fishing.Drops_Enabled", true); }
 
     /* Mining */
     public int getDetonatorItemID() { return config.getInt("Skills.Mining.Detonator_ID", 259); }
 
     /* Repair */
-    public double getRepairXPBase() { return config.getDouble("Experience.Repair.Base", 1000.0); }
-    public double getRepairXP(RepairMaterialType repairMaterialType) { return config.getDouble("Experience.Repair." + StringUtils.getCapitalized(repairMaterialType.toString())); }
-
     public boolean getRepairAnvilMessagesEnabled() { return config.getBoolean("Skills.Repair.Anvil_Messages", true); }
     public int getRepairAnvilId() { return config.getInt("Skills.Repair.Anvil_ID", 42); }
     public int getSalvageAnvilId() { return config.getInt("Skills.Repair.Salvage_Anvil_ID", 41); }
@@ -412,8 +382,6 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getUnarmedBlockCrackerSmoothbrickToCracked() { return config.getBoolean("Skills.Unarmed.Block_Cracker.SmoothBrick_To_CrackedBrick", true); }
 
     /* Taming */
-    public int getTamingXPWolf() { return config.getInt("Experience.Taming.Animal_Taming.Wolf", 250); }
-    public int getTamingXPOcelot() { return config.getInt("Experience.Taming.Animal_Taming.Ocelot", 500); }
     public int getTamingCOTWWolfCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10); }
     public int getTamingCOTWOcelotCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Fish_Required", 10); }
     public double getTamingCOTWRange() { return config.getDouble("Skills.Taming.Call_Of_The_Wild.Range", 40); }
@@ -431,13 +399,6 @@ public class Config extends AutoUpdateConfigLoader {
     }
 
     /* Woodcutting */
-    public int getWoodcuttingXPOak() { return config.getInt("Experience.Woodcutting.Oak", 70); }
-    public int getWoodcuttingXPBirch() { return config.getInt("Experience.Woodcutting.Birch", 90); }
-    public int getWoodcuttingXPSpruce() { return config.getInt("Experience.Woodcutting.Spruce", 80); }
-    public int getWoodcuttingXPJungle() { return config.getInt("Experience.Woodcutting.Jungle", 100); }
-    public int getWoodcuttingXPHugeBrownMushroom() { return config.getInt("Experience.Woodcutting.Huge_Mushroom_Brown", 70); }
-    public int getWoodcuttingXPHugeRedMushroom() { return config.getInt("Experience.Woodcutting.Huge_Mushroom_Red", 70); }
-
     public boolean getOakDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Oak", true); }
     public boolean getBirchDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Birch", true); }
     public boolean getSpruceDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Spruce", true); }
@@ -461,23 +422,4 @@ public class Config extends AutoUpdateConfigLoader {
     /* PVP & PVE Settings */
     public boolean getPVPEnabled(SkillType skill) { return config.getBoolean("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVP", true); }
     public boolean getPVEEnabled(SkillType skill) { return config.getBoolean("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVE", true); }
-
-    /*
-     * XP SETTINGS
-     */
-
-    /* General Settings */
-    public boolean getExperienceGainsPlayerVersusPlayerEnabled() { return config.getBoolean("Experience.PVP.Rewards", true); }
-
-    public double getExperienceGainsGlobalMultiplier() { return config.getDouble("Experience.Gains.Multiplier.Global", 1.0); }
-    public void setExperienceGainsGlobalMultiplier(double value) { config.set("Experience.Gains.Multiplier.Global", value); }
-
-    /* Combat XP Multipliers */
-    public double getPlayerVersusPlayerXP() { return config.getDouble("Experience.Gains.Multiplier.PVP", 1.0); }
-    public double getCombatXP(EntityType entity) { return config.getDouble("Experience.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_")); }
-
-    public double getAnimalsXP() { return config.getDouble("Experience.Combat.Multiplier.Animals", 1.0); }
-    public double getWitherSkeletonXP() { return config.getDouble("Experience.Combat.Multiplier.Wither_Skeleton", 4.0); }
-
-    public double getSpawnedMobXpMultiplier() { return config.getDouble("Experience.Gains.Mobspawners.Multiplier", 0.0); }
 }

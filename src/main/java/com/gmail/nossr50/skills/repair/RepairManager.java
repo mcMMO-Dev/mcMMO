@@ -13,6 +13,7 @@ import org.bukkit.inventory.PlayerInventory;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
@@ -155,7 +156,7 @@ public class RepairManager extends SkillManager {
         Repair.removeOneFrom(inventory, repairItemLocation);
 
         // Give out XP like candy
-        applyXpGain((float) ((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability()) * repairable.getXpMultiplier()) * Config.getInstance().getRepairXPBase() * Config.getInstance().getRepairXP(repairable.getRepairMaterialType())));
+        applyXpGain((float) ((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability()) * repairable.getXpMultiplier()) * ExperienceConfig.getInstance().getRepairXPBase() * ExperienceConfig.getInstance().getRepairXP(repairable.getRepairMaterialType())));
 
         // BWONG BWONG BWONG
         player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);

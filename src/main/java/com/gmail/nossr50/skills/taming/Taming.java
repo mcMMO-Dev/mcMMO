@@ -8,7 +8,7 @@ import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class Taming {
@@ -32,8 +32,8 @@ public class Taming {
     public static int thickFurUnlockLevel = AdvancedConfig.getInstance().getThickFurUnlock();
     public static int thickFurModifier    = AdvancedConfig.getInstance().getThickFurModifier();
 
-    public static int wolfXp   = Config.getInstance().getTamingXPWolf();
-    public static int ocelotXp = Config.getInstance().getTamingXPOcelot();
+    public static int wolfXp   = ExperienceConfig.getInstance().getTamingXPWolf();
+    public static int ocelotXp = ExperienceConfig.getInstance().getTamingXPOcelot();
 
     public static boolean canPreventDamage(Tameable pet, AnimalTamer owner) {
         return pet.isTamed() && owner instanceof Player && pet instanceof Wolf;

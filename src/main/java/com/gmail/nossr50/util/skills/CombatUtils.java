@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
@@ -460,14 +461,14 @@ public final class CombatUtils {
         double baseXP = 0;
 
         if (target instanceof Player) {
-            if (!Config.getInstance().getExperienceGainsPlayerVersusPlayerEnabled()) {
+            if (!ExperienceConfig.getInstance().getExperienceGainsPlayerVersusPlayerEnabled()) {
                 return;
             }
 
             Player defender = (Player) target;
 
             if (defender.isOnline() && System.currentTimeMillis() >= UserManager.getPlayer(defender).getRespawnATS() + 5) {
-                baseXP = 20 * Config.getInstance().getPlayerVersusPlayerXP();
+                baseXP = 20 * ExperienceConfig.getInstance().getPlayerVersusPlayerXP();
             }
         }
         else {
@@ -476,7 +477,7 @@ public final class CombatUtils {
                     baseXP = ModUtils.getCustomEntity(target).getXpMultiplier();
                 }
                 else {
-                    baseXP = Config.getInstance().getAnimalsXP();
+                    baseXP = ExperienceConfig.getInstance().getAnimalsXP();
                 }
             }
             else {
@@ -484,7 +485,7 @@ public final class CombatUtils {
 
                 switch (type) {
                     case BAT:
-                        baseXP = Config.getInstance().getAnimalsXP();
+                        baseXP = ExperienceConfig.getInstance().getAnimalsXP();
                         break;
 
                     case BLAZE:
@@ -499,7 +500,7 @@ public final class CombatUtils {
                     case SLIME:
                     case SPIDER:
                     case ZOMBIE:
-                        baseXP = Config.getInstance().getCombatXP(type);
+                        baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                         break;
 
                     // Temporary workaround for custom entities
@@ -510,17 +511,17 @@ public final class CombatUtils {
                     case SKELETON:
                         switch (((Skeleton) target).getSkeletonType()) {
                             case WITHER:
-                                baseXP = Config.getInstance().getWitherSkeletonXP();
+                                baseXP = ExperienceConfig.getInstance().getWitherSkeletonXP();
                                 break;
                             default:
-                                baseXP = Config.getInstance().getCombatXP(type);
+                                baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                                 break;
                         }
                         break;
 
                     case IRON_GOLEM:
                         if (!((IronGolem) target).isPlayerCreated()) {
-                            baseXP = Config.getInstance().getCombatXP(type);
+                            baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                         }
                         break;
 
@@ -533,7 +534,7 @@ public final class CombatUtils {
             }
 
             if (target.hasMetadata(mcMMO.entityMetadataKey)) {
-                baseXP *= Config.getInstance().getSpawnedMobXpMultiplier();
+                baseXP *= ExperienceConfig.getInstance().getSpawnedMobXpMultiplier();
             }
 
             baseXP *= 10;

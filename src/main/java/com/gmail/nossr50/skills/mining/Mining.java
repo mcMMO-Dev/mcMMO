@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
@@ -23,10 +24,10 @@ public class Mining {
      */
     protected static int getBlockXp(BlockState blockState) {
         Material blockType = blockState.getType();
-        int xp = Config.getInstance().getXp(SkillType.MINING, blockType);
+        int xp = ExperienceConfig.getInstance().getXp(SkillType.MINING, blockType);
 
         if (blockType == Material.GLOWING_REDSTONE_ORE) {
-            xp = Config.getInstance().getXp(SkillType.MINING, Material.REDSTONE_ORE);
+            xp = ExperienceConfig.getInstance().getXp(SkillType.MINING, Material.REDSTONE_ORE);
         }
         else if (xp == 0 && ModUtils.isCustomMiningBlock(blockState)) {
             xp = ModUtils.getCustomBlock(blockState).getXpGain();

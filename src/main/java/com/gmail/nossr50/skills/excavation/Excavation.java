@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.block.BlockState;
 
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
@@ -47,7 +47,7 @@ public class Excavation {
     }
 
     protected static int getBlockXP(BlockState blockState) {
-        int xp = Config.getInstance().getXp(SkillType.EXCAVATION, blockState.getType());
+        int xp = ExperienceConfig.getInstance().getXp(SkillType.EXCAVATION, blockState.getType());
 
         if (xp == 0 && ModUtils.isCustomExcavationBlock(blockState)) {
             xp = ModUtils.getCustomBlock(blockState).getXpGain();

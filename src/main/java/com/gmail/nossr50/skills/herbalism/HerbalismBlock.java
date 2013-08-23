@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Permissions;
 import com.google.common.collect.Maps;
@@ -58,7 +59,7 @@ public enum HerbalismBlock {
     }
 
     public int getXpGain() {
-        return Config.getInstance().getXp(SkillType.HERBALISM, blockType);
+        return ExperienceConfig.getInstance().getXp(SkillType.HERBALISM, blockType);
     }
 
     public boolean canDoubleDrop() {

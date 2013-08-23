@@ -3,7 +3,7 @@ package com.gmail.nossr50.skills.smelting;
 import org.bukkit.Material;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public class Smelting {
@@ -49,10 +49,10 @@ public class Smelting {
     public static double fluxMiningChance      = AdvancedConfig.getInstance().getFluxMiningChance();
 
     protected static int getResourceXp(Material resourceType) {
-        int xp = Config.getInstance().getXp(SkillType.SMELTING, resourceType);
+        int xp = ExperienceConfig.getInstance().getXp(SkillType.SMELTING, resourceType);
 
         if (resourceType == Material.GLOWING_REDSTONE_ORE) {
-            xp = Config.getInstance().getXp(SkillType.SMELTING, Material.REDSTONE_ORE);
+            xp = ExperienceConfig.getInstance().getXp(SkillType.SMELTING, Material.REDSTONE_ORE);
         }
 
         return xp;

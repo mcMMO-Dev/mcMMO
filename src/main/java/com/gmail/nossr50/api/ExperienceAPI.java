@@ -8,6 +8,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.api.exceptions.InvalidPlayerException;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.child.FamilyTree;
@@ -90,7 +91,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      */
     public static void addMultipliedXP(Player player, String skillType, int XP) {
-        UserManager.getPlayer(player).applyXpGain(getSkillType(skillType), (int) (XP * Config.getInstance().getExperienceGainsGlobalMultiplier()));
+        UserManager.getPlayer(player).applyXpGain(getSkillType(skillType), (int) (XP * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
     }
 
     /**
@@ -106,7 +107,7 @@ public final class ExperienceAPI {
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
     public static void addMultipliedXPOffline(String playerName, String skillType, int XP) {
-        addOfflineXP(playerName, getSkillType(skillType), (int) (XP * Config.getInstance().getExperienceGainsGlobalMultiplier()));
+        addOfflineXP(playerName, getSkillType(skillType), (int) (XP * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
     }
 
     /**
@@ -123,7 +124,7 @@ public final class ExperienceAPI {
     public static void addModifiedXP(Player player, String skillType, int XP) {
         SkillType skill = getSkillType(skillType);
 
-        UserManager.getPlayer(player).applyXpGain(skill, (int) (XP / skill.getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier()));
+        UserManager.getPlayer(player).applyXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
     }
 
     /**
@@ -141,7 +142,7 @@ public final class ExperienceAPI {
     public static void addModifiedXPOffline(String playerName, String skillType, int XP) {
         SkillType skill = getSkillType(skillType);
 
-        addOfflineXP(playerName, skill, (int) (XP / skill.getXpModifier() * Config.getInstance().getExperienceGainsGlobalMultiplier()));
+        addOfflineXP(playerName, skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()));
     }
 
     /**
