@@ -20,6 +20,7 @@ Version 1.4.07-dev
  + Added new McMMOPlayerLevelChangeEvent, fired when a players level changes
  + Added new McMMOPlayerLevelDownEvent, fired when a player loses levels
  = Fixed bug which allowed players to bypass fishing's exploit prevention
+ = Fixed bug where FakeEntityDamageByEntityEvent wasn't being fired
  = Fixed bug with Skull Splitter not finding the locale string
  = Fixed issue where locale strings could cause the scoreboard header to be longer than 16 characters.
  = Fixed a bug with Beast Lore when the entity had no owner but was tamed.

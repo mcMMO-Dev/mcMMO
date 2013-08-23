@@ -75,18 +75,18 @@ public final class CombatUtils {
         }
 
         if (axesManager.canUseAxeMastery()) {
-            event.setDamage(axesManager.axeMasteryCheck(event.getDamage()));
+            dealDamage(target, axesManager.axeMasteryCheck(event.getDamage()), player);
         }
 
         if (axesManager.canCriticalHit(target)) {
-            event.setDamage(axesManager.criticalHitCheck(target, event.getDamage()));
+            dealDamage(target, axesManager.criticalHitCheck(target, event.getDamage()), player);
         }
 
         if (axesManager.canImpact(target)) {
             axesManager.impactCheck(target);
         }
         else if (axesManager.canGreaterImpact(target)) {
-            event.setDamage(axesManager.greaterImpactCheck(target, event.getDamage()));
+            dealDamage(target, axesManager.greaterImpactCheck(target, event.getDamage()), player);
         }
 
         if (axesManager.canUseSkullSplitter(target)) {
@@ -105,11 +105,11 @@ public final class CombatUtils {
         }
 
         if (unarmedManager.canUseIronArm()) {
-            event.setDamage(unarmedManager.ironArmCheck(event.getDamage()));
+            dealDamage(target, unarmedManager.ironArmCheck(event.getDamage()), player);
         }
 
         if (unarmedManager.canUseBerserk()) {
-            event.setDamage(unarmedManager.berserkDamage(event.getDamage()));
+            dealDamage(target, unarmedManager.berserkDamage(event.getDamage()), player);
         }
 
         if (unarmedManager.canDisarm(target)) {
@@ -128,11 +128,11 @@ public final class CombatUtils {
         }
 
         if (tamingManager.canUseSharpenedClaws()) {
-            event.setDamage(Taming.sharpenedClaws(event.getDamage()));
+            dealDamage(target, Taming.sharpenedClawsBonusDamage, master);
         }
 
         if (tamingManager.canUseGore()) {
-            event.setDamage(tamingManager.gore(target, event.getDamage()));
+            dealDamage(target, tamingManager.gore(target, event.getDamage()), master);
         }
 
         startGainXp(mcMMOPlayer, target, SkillType.TAMING);
@@ -143,7 +143,7 @@ public final class CombatUtils {
         ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
 
         if (archeryManager.canSkillShot()) {
-            event.setDamage(archeryManager.skillShotCheck(event.getDamage()));
+            dealDamage(target, archeryManager.skillShotCheck(event.getDamage()), player);
         }
 
         if (target instanceof Player && SkillType.UNARMED.getPVPEnabled()) {
@@ -159,7 +159,7 @@ public final class CombatUtils {
         }
 
         if (archeryManager.canDaze(target)) {
-            event.setDamage(archeryManager.dazeCheck((Player) target, event.getDamage()));
+            dealDamage(target, archeryManager.dazeCheck((Player) target, event.getDamage()), player);
         }
 
         if (!arrow.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canTrackArrows()) {

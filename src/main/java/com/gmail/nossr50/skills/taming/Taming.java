@@ -54,16 +54,6 @@ public class Taming {
         return damage / shockProofModifier;
     }
 
-    /**
-     * Apply the Sharpened Claws ability.
-     *
-     * @param damage The initial damage
-     * @return Damage with SharpenedClaws bonus damage
-     */
-    public static double sharpenedClaws(double damage) {
-        return damage + Taming.sharpenedClawsBonusDamage;
-    }
-
     public static void processHolyHound(Wolf wolf, double damage) {
         double modifiedHealth = Math.min(wolf.getHealth() + damage, wolf.getMaxHealth());
 
