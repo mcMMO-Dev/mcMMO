@@ -55,10 +55,10 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage
      */
-    public double axeMasteryCheck(double damage) {
+    public void axeMastery(LivingEntity target) {
         double axeBonus = Math.min(getSkillLevel() / (Axes.bonusDamageMaxBonusLevel / Axes.bonusDamageMaxBonus), Axes.bonusDamageMaxBonus);
 
-        return damage + axeBonus;
+        CombatUtils.dealDamage(target, axeBonus, getPlayer());
     }
 
     /**
@@ -68,20 +68,25 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    public double criticalHitCheck(LivingEntity target, double damage) {
-        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Axes.criticalHitMaxChance, Axes.criticalHitMaxBonusLevel)) {
-            getPlayer().sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
-
-            if (target instanceof Player) {
-                ((Player) target).sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
-
-                return damage * Axes.criticalHitPVPModifier;
-            }
-
-            return damage * Axes.criticalHitPVEModifier;
+    public void criticalHit(LivingEntity target, double damage) {
+        if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Axes.criticalHitMaxChance, Axes.criticalHitMaxBonusLevel)) {
+            return;
         }
 
-        return damage;
+        Player player = getPlayer();
+
+        player.sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
+
+        if (target instanceof Player) {
+            ((Player) target).sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
+
+            damage = (damage * Axes.criticalHitPVPModifier) - damage;
+        }
+        else {
+            damage = (damage * Axes.criticalHitPVEModifier) - damage;
+        }
+
+        CombatUtils.dealDamage(target, damage, player);
     }
 
     /**
@@ -111,29 +116,29 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    public double greaterImpactCheck(LivingEntity target, double damage) {
-        if (Axes.greaterImpactChance > Misc.getRandom().nextInt(getActivationChance())) {
-            Player player = getPlayer();
-
-            ParticleEffectUtils.playGreaterImpactEffect(target);
-            target.setVelocity(player.getLocation().getDirection().normalize().multiply(Axes.greaterImpactKnockbackMultiplier));
-
-            if (mcMMOPlayer.useChatNotifications()) {
-                player.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));
-            }
-
-            if (target instanceof Player) {
-                Player defender = (Player) target;
-
-                if (UserManager.getPlayer(defender).useChatNotifications()) {
-                    defender.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Struck"));
-                }
-            }
-
-            return damage + Axes.greaterImpactBonusDamage;
+    public void greaterImpact(LivingEntity target) {
+        if (!(Axes.greaterImpactChance > Misc.getRandom().nextInt(getActivationChance()))) {
+            return;
         }
 
-        return damage;
+        Player player = getPlayer();
+
+        ParticleEffectUtils.playGreaterImpactEffect(target);
+        target.setVelocity(player.getLocation().getDirection().normalize().multiply(Axes.greaterImpactKnockbackMultiplier));
+
+        if (mcMMOPlayer.useChatNotifications()) {
+            player.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Proc"));
+        }
+
+        if (target instanceof Player) {
+            Player defender = (Player) target;
+
+            if (UserManager.getPlayer(defender).useChatNotifications()) {
+                defender.sendMessage(LocaleLoader.getString("Axes.Combat.GI.Struck"));
+            }
+        }
+
+        CombatUtils.dealDamage(target, Axes.greaterImpactBonusDamage, player);
     }
 
     /**

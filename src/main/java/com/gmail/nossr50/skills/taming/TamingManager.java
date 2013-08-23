@@ -19,6 +19,7 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class TamingManager extends SkillManager {
@@ -103,19 +104,25 @@ public class TamingManager extends SkillManager {
      * @param target The LivingEntity to apply Gore on
      * @param damage The initial damage
      */
-    public double gore(LivingEntity target, double damage) {
-        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Taming.goreMaxChance, Taming.goreMaxBonusLevel)) {
-            BleedTimerTask.add(target, Taming.goreBleedTicks);
-
-            if (target instanceof Player) {
-                ((Player) target).sendMessage(LocaleLoader.getString("Combat.StruckByGore"));
-            }
-
-            getPlayer().sendMessage(LocaleLoader.getString("Combat.Gore"));
-            return damage * Taming.goreModifier;
+    public void gore(LivingEntity target, double damage, Wolf wolf) {
+        if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Taming.goreMaxChance, Taming.goreMaxBonusLevel)) {
+            return;
         }
 
-        return damage;
+        BleedTimerTask.add(target, Taming.goreBleedTicks);
+
+        if (target instanceof Player) {
+            ((Player) target).sendMessage(LocaleLoader.getString("Combat.StruckByGore"));
+        }
+
+        getPlayer().sendMessage(LocaleLoader.getString("Combat.Gore"));
+
+        damage = (damage * Taming.goreModifier) - damage;
+        CombatUtils.dealDamage(target, damage, wolf);
+    }
+
+    public void sharpenedClaws(LivingEntity target, Wolf wolf) {
+        CombatUtils.dealDamage(target, Taming.sharpenedClawsBonusDamage, wolf);
     }
 
     /**

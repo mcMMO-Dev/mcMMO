@@ -34,7 +34,6 @@ import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
 import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.skills.swords.SwordsManager;
-import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.ItemUtils;
@@ -75,18 +74,18 @@ public final class CombatUtils {
         }
 
         if (axesManager.canUseAxeMastery()) {
-            dealDamage(target, axesManager.axeMasteryCheck(event.getDamage()), player);
+            axesManager.axeMastery(target);
         }
 
         if (axesManager.canCriticalHit(target)) {
-            dealDamage(target, axesManager.criticalHitCheck(target, event.getDamage()), player);
+            axesManager.criticalHit(target, event.getDamage());
         }
 
         if (axesManager.canImpact(target)) {
             axesManager.impactCheck(target);
         }
         else if (axesManager.canGreaterImpact(target)) {
-            dealDamage(target, axesManager.greaterImpactCheck(target, event.getDamage()), player);
+            axesManager.greaterImpact(target);
         }
 
         if (axesManager.canUseSkullSplitter(target)) {
@@ -105,11 +104,11 @@ public final class CombatUtils {
         }
 
         if (unarmedManager.canUseIronArm()) {
-            dealDamage(target, unarmedManager.ironArmCheck(event.getDamage()), player);
+            unarmedManager.ironArm(target);
         }
 
         if (unarmedManager.canUseBerserk()) {
-            dealDamage(target, unarmedManager.berserkDamage(event.getDamage()), player);
+            unarmedManager.berserkDamage(target, event.getDamage());
         }
 
         if (unarmedManager.canDisarm(target)) {
@@ -128,22 +127,22 @@ public final class CombatUtils {
         }
 
         if (tamingManager.canUseSharpenedClaws()) {
-            dealDamage(target, Taming.sharpenedClawsBonusDamage, master);
+            tamingManager.sharpenedClaws(target, wolf);
         }
 
         if (tamingManager.canUseGore()) {
-            dealDamage(target, tamingManager.gore(target, event.getDamage()), master);
+            tamingManager.gore(target, event.getDamage(), wolf);
         }
 
         startGainXp(mcMMOPlayer, target, SkillType.TAMING);
     }
 
-    private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Entity arrow) {
+    private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Arrow arrow) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
 
         if (archeryManager.canSkillShot()) {
-            dealDamage(target, archeryManager.skillShotCheck(event.getDamage()), player);
+            archeryManager.skillShot(target, event.getDamage(), arrow);
         }
 
         if (target instanceof Player && SkillType.UNARMED.getPVPEnabled()) {
@@ -159,7 +158,7 @@ public final class CombatUtils {
         }
 
         if (archeryManager.canDaze(target)) {
-            dealDamage(target, archeryManager.dazeCheck((Player) target, event.getDamage()), player);
+            archeryManager.daze((Player) target, arrow);
         }
 
         if (!arrow.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canTrackArrows()) {
@@ -251,13 +250,14 @@ public final class CombatUtils {
             }
         }
         else if (damager.getType() == EntityType.ARROW) {
-            LivingEntity shooter = ((Arrow) damager).getShooter();
+            Arrow arrow = (Arrow) damager;
+            LivingEntity shooter = arrow.getShooter();
 
             if (shooter != null && shooter instanceof Player && shouldProcessSkill(target, SkillType.ARCHERY)) {
                 Player player = (Player) shooter;
 
                 if (!Misc.isNPCEntity(player) && Permissions.skillEnabled(player, SkillType.ARCHERY)) {
-                    processArcheryCombat(target, player, event, damager);
+                    processArcheryCombat(target, player, event, arrow);
                 }
             }
         }
@@ -345,56 +345,54 @@ public final class CombatUtils {
      * Attempt to damage target for value dmg with reason CUSTOM
      *
      * @param target LivingEntity which to attempt to damage
-     * @param dmg Amount of damage to attempt to do
+     * @param damage Amount of damage to attempt to do
      */
-    public static void dealDamage(LivingEntity target, double dmg) {
-        dealDamage(target, dmg, EntityDamageEvent.DamageCause.CUSTOM);
-    }
-
-    /**
-     * Attempt to damage target for value dmg with reason cause
-     *
-     * @param target LivingEntity which to attempt to damage
-     * @param dmg Amount of damage to attempt to do
-     * @param cause DamageCause to pass to damage event
-     */
-    private static void dealDamage(LivingEntity target, double dmg, DamageCause cause) {
+    public static void dealDamage(LivingEntity target, double damage) {
         if (Config.getInstance().getEventCallbackEnabled()) {
-            EntityDamageEvent ede = new FakeEntityDamageEvent(target, cause, dmg);
+            EntityDamageEvent ede = new FakeEntityDamageEvent(target, DamageCause.CUSTOM, damage);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
             if (ede.isCancelled()) {
                 return;
             }
 
-            target.damage(ede.getDamage());
+            damage = ede.getDamage();
         }
-        else {
-            target.damage(dmg);
-        }
+
+        target.damage(damage);
     }
 
     /**
      * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
      *
      * @param target LivingEntity which to attempt to damage
-     * @param dmg Amount of damage to attempt to do
+     * @param damage Amount of damage to attempt to do
      * @param attacker Player to pass to event as damager
      */
-    private static void dealDamage(LivingEntity target, double dmg, Player attacker) {
+    public static void dealDamage(LivingEntity target, double damage, LivingEntity attacker) {
+        dealDamage(target, damage, DamageCause.ENTITY_ATTACK, attacker);
+    }
+
+    /**
+     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
+     *
+     * @param target LivingEntity which to attempt to damage
+     * @param damage Amount of damage to attempt to do
+     * @param attacker Player to pass to event as damager
+     */
+    public static void dealDamage(LivingEntity target, double damage, DamageCause cause, Entity attacker) {
         if (Config.getInstance().getEventCallbackEnabled()) {
-            EntityDamageEvent ede = new FakeEntityDamageByEntityEvent(attacker, target, EntityDamageEvent.DamageCause.ENTITY_ATTACK, dmg);
+            EntityDamageEvent ede = new FakeEntityDamageByEntityEvent(attacker, target, cause, damage);
             mcMMO.p.getServer().getPluginManager().callEvent(ede);
 
             if (ede.isCancelled()) {
                 return;
             }
 
-            target.damage(ede.getDamage());
+            damage = ede.getDamage();
         }
-        else {
-            target.damage(dmg);
-        }
+
+        target.damage(damage);
     }
 
     /**

@@ -1,9 +1,11 @@
 package com.gmail.nossr50.skills.archery;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -15,6 +17,7 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ArcheryManager extends SkillManager {
@@ -68,26 +71,26 @@ public class ArcheryManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    public double dazeCheck(Player defender, double damage) {
-        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel)) {
-            Location dazedLocation = defender.getLocation();
-            dazedLocation.setPitch(90 - Misc.getRandom().nextInt(181));
-
-            defender.teleport(dazedLocation);
-            defender.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 10));
-
-            if (UserManager.getPlayer(defender).useChatNotifications()) {
-                defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
-            }
-
-            if (mcMMOPlayer.useChatNotifications()) {
-                getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
-            }
-
-            return damage + Archery.dazeModifier;
+    public void daze(Player defender, Arrow arrow) {
+        if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel)) {
+            return;
         }
 
-        return damage;
+        Location dazedLocation = defender.getLocation();
+        dazedLocation.setPitch(90 - Misc.getRandom().nextInt(181));
+
+        defender.teleport(dazedLocation);
+        defender.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 10));
+
+        if (UserManager.getPlayer(defender).useChatNotifications()) {
+            defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
+        }
+
+        if (mcMMOPlayer.useChatNotifications()) {
+            getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
+        }
+
+        CombatUtils.dealDamage(defender, Archery.dazeModifier, DamageCause.PROJECTILE, arrow);
     }
 
     /**
@@ -96,10 +99,10 @@ public class ArcheryManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage
      */
-    public double skillShotCheck(double damage) {
+    public void skillShot(LivingEntity target, double damage, Arrow arrow) {
         double damageBonusPercent = Math.min(((getSkillLevel() / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage);
         double archeryBonus = damage * damageBonusPercent;
 
-        return damage + archeryBonus;
+        CombatUtils.dealDamage(target, archeryBonus, DamageCause.PROJECTILE, arrow);
     }
 }

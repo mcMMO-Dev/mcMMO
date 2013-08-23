@@ -16,6 +16,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class UnarmedManager extends SkillManager {
@@ -95,8 +96,10 @@ public class UnarmedManager extends SkillManager {
         return false;
     }
 
-    public double berserkDamage(double damage) {
-        return damage * Unarmed.berserkDamageModifier;
+    public void berserkDamage(LivingEntity target, double damage) {
+        damage = (damage * Unarmed.berserkDamageModifier) - damage;
+
+        CombatUtils.dealDamage(target, damage, getPlayer());
     }
 
     /**
@@ -105,10 +108,10 @@ public class UnarmedManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage
      */
-    public double ironArmCheck(double damage) {
+    public void ironArm(LivingEntity target) {
         int unarmedBonus = Math.min(Unarmed.ironArmMinBonusDamage + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
 
-        return damage + unarmedBonus;
+        CombatUtils.dealDamage(target, unarmedBonus, getPlayer());
     }
 
     /**
