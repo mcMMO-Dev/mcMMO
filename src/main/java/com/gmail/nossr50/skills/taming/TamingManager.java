@@ -103,6 +103,7 @@ public class TamingManager extends SkillManager {
      *
      * @param target The LivingEntity to apply Gore on
      * @param damage The initial damage
+     * @param wolf The wolf using the ability
      */
     public void gore(LivingEntity target, double damage, Wolf wolf) {
         if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Taming.goreMaxChance, Taming.goreMaxBonusLevel)) {

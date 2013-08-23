@@ -66,6 +66,12 @@ public class SwordsManager extends SkillManager {
         }
     }
 
+    /**
+     * Handle the effects of the Counter Attack ability
+     *
+     * @param attacker The {@link LivingEntity} being affected by the ability
+     * @param damage The amount of damage initially dealt by the event
+     */
     public void counterAttackChecks(LivingEntity attacker, double damage) {
         if (Swords.counterAttackRequiresBlock && !getPlayer().isBlocking()) {
             return;
@@ -82,6 +88,12 @@ public class SwordsManager extends SkillManager {
         }
     }
 
+    /**
+     * Handle the effects of the Serrated Strikes ability
+     *
+     * @param target The {@link LivingEntity} being affected by the ability
+     * @param damage The amount of damage initially dealt by the event
+     */
     public void serratedStrikes(LivingEntity target, double damage) {
         CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, skill);
         BleedTimerTask.add(target, Swords.serratedStrikesBleedTicks);

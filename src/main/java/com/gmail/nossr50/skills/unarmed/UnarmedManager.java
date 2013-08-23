@@ -96,6 +96,12 @@ public class UnarmedManager extends SkillManager {
         return false;
     }
 
+    /**
+     * Handle the effects of the Berserk ability
+     *
+     * @param target The {@link LivingEntity} being affected by the ability
+     * @param damage The amount of damage initially dealt by the event
+     */
     public void berserkDamage(LivingEntity target, double damage) {
         damage = (damage * Unarmed.berserkDamageModifier) - damage;
 
@@ -105,8 +111,7 @@ public class UnarmedManager extends SkillManager {
     /**
      * Handle the effects of the Iron Arm ability
      *
-     * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage
+     * @param target The {@link LivingEntity} being affected by the ability
      */
     public void ironArm(LivingEntity target) {
         int unarmedBonus = Math.min(Unarmed.ironArmMinBonusDamage + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);

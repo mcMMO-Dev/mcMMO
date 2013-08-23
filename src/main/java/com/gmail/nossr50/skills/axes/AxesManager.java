@@ -52,8 +52,7 @@ public class AxesManager extends SkillManager {
     /**
      * Handle the effects of the Axe Mastery ability
      *
-     * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage
+     * @param target The {@link LivingEntity} being affected by the ability
      */
     public void axeMastery(LivingEntity target) {
         double axeBonus = Math.min(getSkillLevel() / (Axes.bonusDamageMaxBonusLevel / Axes.bonusDamageMaxBonus), Axes.bonusDamageMaxBonus);
@@ -66,7 +65,6 @@ public class AxesManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public void criticalHit(LivingEntity target, double damage) {
         if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Axes.criticalHitMaxChance, Axes.criticalHitMaxBonusLevel)) {
@@ -113,8 +111,6 @@ public class AxesManager extends SkillManager {
      * Handle the effects of the Greater Impact ability
      *
      * @param target The {@link LivingEntity} being affected by the ability
-     * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public void greaterImpact(LivingEntity target) {
         if (!(Axes.greaterImpactChance > Misc.getRandom().nextInt(getActivationChance()))) {

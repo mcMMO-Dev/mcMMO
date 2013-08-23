@@ -41,6 +41,7 @@ public class ArcheryManager extends SkillManager {
      * Calculate bonus XP awarded for Archery when hitting a far-away target.
      *
      * @param target The {@link LivingEntity} damaged by the arrow
+     * @param damager The {@link Entity} who shot the arrow
      */
     public void distanceXpBonus(LivingEntity target, Entity damager) {
         Location firedLocation = Archery.stringToLocation(damager.getMetadata(mcMMO.arrowDistanceKey).get(0).asString());
@@ -68,8 +69,7 @@ public class ArcheryManager extends SkillManager {
      * Handle the effects of the Daze ability
      *
      * @param defender The {@link Player} being affected by the ability
-     * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage if the ability was successful, the original event damage otherwise
+     * @param arrow The {@link Arrow} that was fired
      */
     public void daze(Player defender, Arrow arrow) {
         if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel)) {
@@ -96,8 +96,9 @@ public class ArcheryManager extends SkillManager {
     /**
      * Handle the effects of the Skill Shot ability
      *
+     * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage
+     * @param arrow The {@link Arrow} that was fired
      */
     public void skillShot(LivingEntity target, double damage, Arrow arrow) {
         double damageBonusPercent = Math.min(((getSkillLevel() / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage);
