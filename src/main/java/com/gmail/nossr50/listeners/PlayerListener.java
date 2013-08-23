@@ -78,7 +78,7 @@ public class PlayerListener implements Listener {
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player) || !Config.getInstance().getPreventXPAfterTeleport()) {
+        if (Misc.isNPCEntity(player) || !Config.getInstance().getPreventXPAfterTeleport() || event.getFrom().equals(event.getTo())) {
             return;
         }
 
