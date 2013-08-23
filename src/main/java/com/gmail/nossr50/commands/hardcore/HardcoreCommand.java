@@ -4,7 +4,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.HardcoreManager;
 import com.gmail.nossr50.util.Permissions;
 
 public class HardcoreCommand extends HardcoreModeCommand {
@@ -21,44 +20,44 @@ public class HardcoreCommand extends HardcoreModeCommand {
     @Override
     protected boolean checkEnabled(String skill) {
         if (skill.equalsIgnoreCase("ALL")) {
-            return !HardcoreManager.getHardcoreStatLossDisabled();
+            for (SkillType skillType : SkillType.values()) {
+                if (!skillType.getHardcoreStatLossEnabled()) {
+                    return false;
+                }
+            }
+
+            return true;
         }
-        else {
-            return SkillType.getSkill(skill).getHardcoreStatLossEnabled();
-        }
+
+        return SkillType.getSkill(skill).getHardcoreStatLossEnabled();
     }
 
     @Override
     protected void enable(String skill) {
-        if (skill.equalsIgnoreCase("ALL")) {
-            for (SkillType skillType : SkillType.nonChildSkills()) {
-                Config.getInstance().setHardcoreStatLossEnabled(skillType, true);
-            }
-        }
-        else {
-            Config.getInstance().setHardcoreStatLossEnabled(SkillType.getSkill(skill), true);
-        }
-
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode.Enabled", LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), skill));
+        toggle(true);
     }
 
     @Override
     protected void disable(String skill) {
-        if (skill.equalsIgnoreCase("ALL")) {
-            for (SkillType skillType : SkillType.nonChildSkills()) {
-                Config.getInstance().setHardcoreStatLossEnabled(skillType, false);
-            }
-        }
-        else {
-            Config.getInstance().setHardcoreStatLossEnabled(SkillType.getSkill(skill), false);
-        }
-
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode.Disabled", LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), skill));
+        toggle(false);
     }
 
     @Override
     protected void modify() {
         Config.getInstance().setHardcoreDeathStatPenaltyPercentage(newPercent);
         sender.sendMessage(LocaleLoader.getString("Hardcore.DeathStatLoss.PercentageChanged", percent.format(newPercent / 100D)));
+    }
+
+    private void toggle(boolean enable) {
+        if (skill.equalsIgnoreCase("ALL")) {
+            for (SkillType skillType : SkillType.nonChildSkills()) {
+                Config.getInstance().setHardcoreStatLossEnabled(skillType, enable);
+            }
+        }
+        else {
+            Config.getInstance().setHardcoreStatLossEnabled(SkillType.getSkill(skill), enable);
+        }
+
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), skill));
     }
 }

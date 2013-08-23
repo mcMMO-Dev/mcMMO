@@ -4,7 +4,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.HardcoreManager;
 import com.gmail.nossr50.util.Permissions;
 
 public class VampirismCommand extends HardcoreModeCommand {
@@ -21,44 +20,44 @@ public class VampirismCommand extends HardcoreModeCommand {
     @Override
     protected boolean checkEnabled(String skill) {
         if (skill.equalsIgnoreCase("ALL")) {
-            return !HardcoreManager.getHardcoreVampirismDisabled();
+            for (SkillType skillType : SkillType.values()) {
+                if (!skillType.getHardcoreVampirismEnabled()) {
+                    return false;
+                }
+            }
+
+            return true;
         }
-        else {
-            return SkillType.getSkill(skill).getHardcoreVampirismEnabled();
-        }
+
+        return SkillType.getSkill(skill).getHardcoreVampirismEnabled();
     }
 
     @Override
     protected void enable(String skill) {
-        if (skill.equalsIgnoreCase("ALL")) {
-            for (SkillType skillType : SkillType.nonChildSkills()) {
-                Config.getInstance().setHardcoreVampirismEnabled(skillType, true);
-            }
-        }
-        else {
-            Config.getInstance().setHardcoreVampirismEnabled(SkillType.getSkill(skill), true);
-        }
-
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode.Enabled", LocaleLoader.getString("Hardcore.Vampirism.Name"), skill));
+        toggle(true);
     }
 
     @Override
     protected void disable(String skill) {
-        if (skill.equalsIgnoreCase("ALL")) {
-            for (SkillType skillType : SkillType.nonChildSkills()) {
-                Config.getInstance().setHardcoreVampirismEnabled(skillType, false);
-            }
-        }
-        else {
-            Config.getInstance().setHardcoreVampirismEnabled(SkillType.getSkill(skill), false);
-        }
-
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode.Disabled", LocaleLoader.getString("Hardcore.Vampirism.Name"), skill));
+        toggle(false);
     }
 
     @Override
     protected void modify() {
         Config.getInstance().setHardcoreVampirismStatLeechPercentage(newPercent);
         sender.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.PercentageChanged", percent.format(newPercent / 100D)));
+    }
+
+    private void toggle(boolean enabled) {
+        if (skill.equalsIgnoreCase("ALL")) {
+            for (SkillType skillType : SkillType.nonChildSkills()) {
+                Config.getInstance().setHardcoreVampirismEnabled(skillType, enabled);
+            }
+        }
+        else {
+            Config.getInstance().setHardcoreVampirismEnabled(SkillType.getSkill(skill), enabled);
+        }
+
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enabled ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.Vampirism.Name"), skill));
     }
 }

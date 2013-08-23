@@ -108,24 +108,6 @@ public final class HardcoreManager {
     }
 
     /**
-     * Check if Hardcore Stat Loss is disabled for one or more skill types
-     *
-     * @return true if Stat Loss is disabled for one or more skill types
-     */
-    public static boolean getHardcoreStatLossDisabled() {
-        boolean disabled = false;
-
-        for (SkillType skillType : SkillType.nonChildSkills()) {
-            if (!skillType.getHardcoreStatLossEnabled()) {
-                disabled = true;
-                break;
-            }
-        }
-
-        return disabled;
-    }
-
-    /**
      * Check if Hardcore Vampirism is enabled for one or more skill types
      *
      * @return true if Vampirism is enabled for one or more skill types
@@ -141,23 +123,5 @@ public final class HardcoreManager {
         }
 
         return enabled;
-    }
-
-    /**
-     * Check if Hardcore Vampirism is disabled for one or more skill types
-     *
-     * @return true if Vampirism is disabled for one or more skill types
-     */
-    public static boolean getHardcoreVampirismDisabled() {
-        boolean disabled = false;
-
-        for (SkillType skillType : SkillType.nonChildSkills()) {
-            if (!skillType.getHardcoreVampirismEnabled()) {
-                disabled = true;
-                break;
-            }
-        }
-
-        return disabled;
     }
 }
