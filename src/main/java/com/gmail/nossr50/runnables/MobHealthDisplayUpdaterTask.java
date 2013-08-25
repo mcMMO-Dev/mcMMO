@@ -20,7 +20,7 @@ public class MobHealthDisplayUpdaterTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (target.isValid()) {
+        if (target != null && target.isValid()) {
             target.setCustomNameVisible(oldNameVisible);
             target.setCustomName(oldName);
             target.removeMetadata(mcMMO.customNameKey, mcMMO.p);
