@@ -28,7 +28,7 @@ public class PartyAcceptCommand implements CommandExecutor {
                     return true;
                 }
 
-                PartyManager.joinInvitedParty(player, mcMMOPlayer);
+                PartyManager.joinInvitedParty(mcMMOPlayer);
                 return true;
 
             default:

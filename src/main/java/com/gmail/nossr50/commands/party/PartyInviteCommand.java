@@ -18,16 +18,17 @@ public class PartyInviteCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
-                String playerName = Misc.getMatchedPlayerName(args[1]);
-                McMMOPlayer mcMMOTarget = UserManager.getPlayer(playerName);
+                String targetName = Misc.getMatchedPlayerName(args[1]);
+                McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName);
 
-                if (!CommandUtils.checkPlayerExistence(sender, playerName, mcMMOTarget)) {
+                if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
                     return false;
                 }
 
                 Player target = mcMMOTarget.getPlayer();
                 Player player = (Player) sender;
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                String playerName = player.getName();
 
                 if (player.equals(target)) {
                     sender.sendMessage(LocaleLoader.getString("Party.Invite.Self"));
@@ -35,13 +36,13 @@ public class PartyInviteCommand implements CommandExecutor {
                 }
 
                 if (PartyManager.inSameParty(player, target)) {
-                    sender.sendMessage(LocaleLoader.getString("Party.Player.InSameParty", target.getName()));
+                    sender.sendMessage(LocaleLoader.getString("Party.Player.InSameParty", targetName));
                     return true;
                 }
 
                 Party playerParty = mcMMOPlayer.getParty();
 
-                if (!PartyManager.canInvite(player, playerParty)) {
+                if (!PartyManager.canInvite(playerName, playerParty)) {
                     player.sendMessage(LocaleLoader.getString("Party.Locked"));
                     return true;
                 }
@@ -49,7 +50,7 @@ public class PartyInviteCommand implements CommandExecutor {
                 mcMMOTarget.setPartyInvite(playerParty);
 
                 sender.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
-                target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", playerParty.getName(), player.getName()));
+                target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.0", playerParty.getName(), playerName));
                 target.sendMessage(LocaleLoader.getString("Commands.Party.Invite.1"));
                 return true;
 

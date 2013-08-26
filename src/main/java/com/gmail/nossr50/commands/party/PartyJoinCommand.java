@@ -41,12 +41,15 @@ public class PartyJoinCommand implements CommandExecutor {
                     return true;
                 }
 
+                String partyName = targetParty.getName();
+
                 // Changing parties
-                if (!PartyManager.changeOrJoinParty(mcMMOPlayer, targetParty.getName())) {
+                if (!PartyManager.changeOrJoinParty(mcMMOPlayer, partyName)) {
                     return true;
                 }
 
-                PartyManager.joinParty(player, mcMMOPlayer, targetParty, password);
+                player.sendMessage(LocaleLoader.getString("Commands.Party.Join", partyName));
+                PartyManager.addToParty(mcMMOPlayer, targetParty);
                 return true;
 
             default:

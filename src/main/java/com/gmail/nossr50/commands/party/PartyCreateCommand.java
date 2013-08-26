@@ -29,7 +29,7 @@ public class PartyCreateCommand implements CommandExecutor {
                     return true;
                 }
 
-                PartyManager.createParty(player, mcMMOPlayer, args[1], getPassword(args));
+                PartyManager.createParty(mcMMOPlayer, args[1], getPassword(args));
                 return true;
 
             default:

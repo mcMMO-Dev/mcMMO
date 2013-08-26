@@ -77,13 +77,12 @@ public final class PartyAPI {
      */
     public static void addToParty(Player player, String partyName) {
         Party party = PartyManager.getParty(partyName);
-        String playerName = player.getName();
 
         if (party == null) {
-            party = new Party(playerName, partyName);
+            party = new Party(player.getName(), partyName);
         }
 
-        PartyManager.addToParty(playerName, UserManager.getPlayer(player), party);
+        PartyManager.addToParty(UserManager.getPlayer(player), party);
     }
 
     /**
@@ -94,7 +93,7 @@ public final class PartyAPI {
      * @param player The player to remove
      */
     public static void removeFromParty(Player player) {
-        PartyManager.removeFromParty(player, UserManager.getPlayer(player).getParty());
+        PartyManager.removeFromParty(UserManager.getPlayer(player));
     }
 
     /**
