@@ -5,16 +5,15 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.party.ItemShareType;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.ShareMode;
-
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
@@ -93,7 +92,6 @@ public final class PartyManager {
      * Get the near party members.
      *
      * @param mcMMOPlayer The player to check
-     * @param range The distance
      * @return the near party members
      */
     public static List<Player> getNearMembers(McMMOPlayer mcMMOPlayer) {
@@ -167,6 +165,22 @@ public final class PartyManager {
     }
 
     /**
+     * Retrieve a party by a members name
+     *
+     * @param playerName The members name
+     * @return the existing party, null otherwise
+     */
+    public static Party getPlayerParty(String playerName) {
+        for (Party party : parties) {
+            if (party.getMembers().contains(playerName)) {
+                return party;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Retrieve a party by member
      *
      * @param player The member
@@ -179,13 +193,7 @@ public final class PartyManager {
             return mcMMOPlayer.getParty();
         }
 
-        for (Party party : parties) {
-            if (party.getMembers().contains(player.getName())) {
-                return party;
-            }
-        }
-
-        return null;
+        return getPlayerParty(player.getName());
     }
 
     /**
@@ -248,7 +256,6 @@ public final class PartyManager {
     /**
      * Create a new party
      *
-     * @param player The player to add to the party
      * @param mcMMOPlayer The player to add to the party
      * @param partyName The party to add the player to
      * @param password The password for this party, null if there was no password
@@ -303,7 +310,6 @@ public final class PartyManager {
     /**
      * Accept a party invitation
      *
-     * @param player The player to add to the party
      * @param mcMMOPlayer The player to add to the party
      */
     public static void joinInvitedParty(McMMOPlayer mcMMOPlayer) {
@@ -374,8 +380,6 @@ public final class PartyManager {
     /**
      * Check if a player can invite others to his party.
      *
-     * @param playerName The name of the player to check
-     * @param party The party to check
      * @return true if the player can invite
      */
     public static boolean canInvite(McMMOPlayer mcMMOPlayer) {

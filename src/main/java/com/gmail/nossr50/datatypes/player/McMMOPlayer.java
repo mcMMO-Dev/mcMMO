@@ -97,7 +97,7 @@ public class McMMOPlayer {
 
         this.player = player;
         profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, true);
-        party = PartyManager.getParty(player);
+        party = PartyManager.getPlayerParty(playerName);
 
         /*
          * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
