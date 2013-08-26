@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -28,8 +29,15 @@ public final class PartyManager {
 
     private PartyManager() {}
 
-    public static boolean checkPartyExistence(Player player, Party party, String partyName) {
-        if (party == null) {
+    /**
+     * Check if a party with a given name already exists.
+     *
+     * @param player The player to notify
+     * @param partyName The name of the party to check
+     * @return true if a party with that name exists, false otherwise
+     */
+    public static boolean checkPartyExistence(Player player, String partyName) {
+        if (getParty(partyName) == null) {
             return false;
         }
 
@@ -37,8 +45,19 @@ public final class PartyManager {
         return true;
     }
 
-    public static boolean changeOrJoinParty(McMMOPlayer mcMMOPlayer, Player player, Party oldParty, String newPartyName) {
+    /**
+     * Attempt to change parties or join a new party.
+     *
+     * @param mcMMOPlayer The player changing or joining parties
+     * @param newPartyName The name of the party being joined
+     * @return true if the party was joined successfully, false otherwise
+     */
+    public static boolean changeOrJoinParty(McMMOPlayer mcMMOPlayer, String newPartyName) {
+        Player player = mcMMOPlayer.getPlayer();
+
         if (mcMMOPlayer.inParty()) {
+            Party oldParty = mcMMOPlayer.getParty();
+
             if (!handlePartyChangeEvent(player, oldParty.getName(), newPartyName, EventReason.CHANGED_PARTIES)) {
                 return false;
             }
@@ -60,27 +79,31 @@ public final class PartyManager {
      * @return true if they are in the same party, false otherwise
      */
     public static boolean inSameParty(Player firstPlayer, Player secondPlayer) {
-        McMMOPlayer firstMcMMOPlayer = UserManager.getPlayer(firstPlayer);
-        McMMOPlayer secondMcMMOPlayer = UserManager.getPlayer(secondPlayer);
+        Party firstParty = UserManager.getPlayer(firstPlayer).getParty();
+        Party secondParty = UserManager.getPlayer(secondPlayer).getParty();
 
-        if (firstMcMMOPlayer.getParty() == null || secondMcMMOPlayer.getParty() == null) {
+        if (firstParty == null || secondParty == null) {
             return false;
         }
 
-        return firstMcMMOPlayer.getParty().equals(secondMcMMOPlayer.getParty());
+        return firstParty.equals(secondParty);
     }
 
     /**
      * Get the near party members.
      *
-     * @param player The player to check
+     * @param mcMMOPlayer The player to check
      * @param range The distance
      * @return the near party members
      */
-    public static List<Player> getNearMembers(Player player, Party party, double range) {
+    public static List<Player> getNearMembers(McMMOPlayer mcMMOPlayer) {
         List<Player> nearMembers = new ArrayList<Player>();
+        Party party = mcMMOPlayer.getParty();
 
         if (party != null) {
+            Player player = mcMMOPlayer.getPlayer();
+            double range = Config.getInstance().getPartyShareRange();
+
             for (Player member : party.getOnlineMembers()) {
                 if (!player.equals(member) && member.isValid() && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
                     nearMembers.add(member);

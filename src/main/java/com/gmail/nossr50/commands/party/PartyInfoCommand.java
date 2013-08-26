@@ -16,6 +16,7 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyInfoCommand implements CommandExecutor {
+    private McMMOPlayer mcMMOPlayer;
     private Player player;
     private Party playerParty;
 
@@ -25,7 +26,7 @@ public class PartyInfoCommand implements CommandExecutor {
             case 0:
             case 1:
                 player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                mcMMOPlayer = UserManager.getPlayer(player);
                 playerParty = mcMMOPlayer.getParty();
 
                 displayPartyHeader();
@@ -103,7 +104,7 @@ public class PartyInfoCommand implements CommandExecutor {
     }
 
     private void displayMemberInfo() {
-        int membersNear = PartyManager.getNearMembers(player, playerParty, Config.getInstance().getPartyShareRange()).size();
+        int membersNear = PartyManager.getNearMembers(mcMMOPlayer).size();
         int membersOnline = playerParty.getOnlineMembers().size() - 1;
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.Members.Header"));

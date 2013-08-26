@@ -34,14 +34,13 @@ public final class ShareHandler {
             return false;
         }
 
-        Player player = mcMMOPlayer.getPlayer();
-        List<Player> nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
+        List<Player> nearMembers = PartyManager.getNearMembers(mcMMOPlayer);
 
         if (nearMembers.isEmpty()) {
             return false;
         }
 
-        nearMembers.add(player);
+        nearMembers.add(mcMMOPlayer.getPlayer());
 
         int partySize = nearMembers.size();
         double shareBonus = Math.min(Config.getInstance().getPartyShareBonusBase() + (partySize * Config.getInstance().getPartyShareBonusIncrease()), Config.getInstance().getPartyShareBonusCap());
@@ -81,8 +80,7 @@ public final class ShareHandler {
             return false;
         }
 
-        Player player = mcMMOPlayer.getPlayer();
-        List<Player> nearMembers = PartyManager.getNearMembers(player, party, Config.getInstance().getPartyShareRange());
+        List<Player> nearMembers = PartyManager.getNearMembers(mcMMOPlayer);
 
         if (nearMembers.isEmpty()) {
             return false;
@@ -91,7 +89,7 @@ public final class ShareHandler {
         Player winningPlayer = null;
         ItemStack newStack = itemStack.clone();
 
-        nearMembers.add(player);
+        nearMembers.add(mcMMOPlayer.getPlayer());
         int partySize = nearMembers.size();
 
         drop.remove();

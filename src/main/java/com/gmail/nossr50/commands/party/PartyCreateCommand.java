@@ -5,7 +5,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
@@ -17,18 +16,16 @@ public class PartyCreateCommand implements CommandExecutor {
         switch (args.length) {
             case 2:
             case 3:
-                Party newParty = PartyManager.getParty(args[1]);
-
                 Player player = (Player) sender;
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                 // Check to see if the party exists, and if it does cancel creating a new party
-                if (PartyManager.checkPartyExistence(player, newParty, args[1])) {
+                if (PartyManager.checkPartyExistence(player, args[1])) {
                     return true;
                 }
 
                 // Changing parties
-                if (!PartyManager.changeOrJoinParty(mcMMOPlayer, player, mcMMOPlayer.getParty(), args[1])) {
+                if (!PartyManager.changeOrJoinParty(mcMMOPlayer, args[1])) {
                     return true;
                 }
 

@@ -20,7 +20,6 @@ public class PartyJoinCommand implements CommandExecutor {
 
     private McMMOPlayer mcMMOPlayer;
     private Player player;
-    private Party playerParty;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -43,7 +42,7 @@ public class PartyJoinCommand implements CommandExecutor {
                 }
 
                 // Changing parties
-                if (!PartyManager.changeOrJoinParty(mcMMOPlayer, player, playerParty, targetParty.getName())) {
+                if (!PartyManager.changeOrJoinParty(mcMMOPlayer, targetParty.getName())) {
                     return true;
                 }
 
@@ -81,11 +80,9 @@ public class PartyJoinCommand implements CommandExecutor {
 
         player = (Player) sender;
         mcMMOPlayer = UserManager.getPlayer(player);
-
-        playerParty = mcMMOPlayer.getParty();
         targetParty = mcMMOTarget.getParty();
 
-        if (player.equals(target) || (mcMMOPlayer.inParty() && playerParty.equals(targetParty))) {
+        if (player.equals(target) || (mcMMOPlayer.inParty() && mcMMOPlayer.getParty().equals(targetParty))) {
             sender.sendMessage(LocaleLoader.getString("Party.Join.Self"));
             return false;
         }
