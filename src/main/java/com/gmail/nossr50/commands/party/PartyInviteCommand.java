@@ -40,13 +40,12 @@ public class PartyInviteCommand implements CommandExecutor {
                     return true;
                 }
 
-                Party playerParty = mcMMOPlayer.getParty();
-
-                if (!PartyManager.canInvite(playerName, playerParty)) {
+                if (!PartyManager.canInvite(mcMMOPlayer)) {
                     player.sendMessage(LocaleLoader.getString("Party.Locked"));
                     return true;
                 }
 
+                Party playerParty = mcMMOPlayer.getParty();
                 mcMMOTarget.setPartyInvite(playerParty);
 
                 sender.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));

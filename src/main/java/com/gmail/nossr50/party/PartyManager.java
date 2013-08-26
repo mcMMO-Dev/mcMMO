@@ -378,8 +378,10 @@ public final class PartyManager {
      * @param party The party to check
      * @return true if the player can invite
      */
-    public static boolean canInvite(String playerName, Party party) {
-        return !party.isLocked() || party.getLeader().equalsIgnoreCase(playerName);
+    public static boolean canInvite(McMMOPlayer mcMMOPlayer) {
+        Party party = mcMMOPlayer.getParty();
+
+        return !party.isLocked() || party.getLeader().equalsIgnoreCase(mcMMOPlayer.getPlayer().getName());
     }
 
     /**
