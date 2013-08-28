@@ -346,7 +346,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
         if (!checkConnected()) {
-            return loadPlayerProfile(playerName, false); //Retry if not connected
+            return new PlayerProfile(playerName, create); // return fake profile if not connected
         }
 
         PreparedStatement statement = null;
