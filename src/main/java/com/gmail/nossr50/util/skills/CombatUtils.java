@@ -348,18 +348,7 @@ public final class CombatUtils {
      * @param damage Amount of damage to attempt to do
      */
     public static void dealDamage(LivingEntity target, double damage) {
-        if (Config.getInstance().getEventCallbackEnabled()) {
-            EntityDamageEvent ede = new FakeEntityDamageEvent(target, DamageCause.CUSTOM, damage);
-            mcMMO.p.getServer().getPluginManager().callEvent(ede);
-
-            if (ede.isCancelled()) {
-                return;
-            }
-
-            damage = ede.getDamage();
-        }
-
-        target.damage(damage);
+        dealDamage(target, damage, DamageCause.CUSTOM, null);
     }
 
     /**
@@ -381,15 +370,19 @@ public final class CombatUtils {
      * @param attacker Player to pass to event as damager
      */
     public static void dealDamage(LivingEntity target, double damage, DamageCause cause, Entity attacker) {
-        if (Config.getInstance().getEventCallbackEnabled()) {
-            EntityDamageEvent ede = new FakeEntityDamageByEntityEvent(attacker, target, cause, damage);
-            mcMMO.p.getServer().getPluginManager().callEvent(ede);
+        if (target.isDead()) {
+            return;
+        }
 
-            if (ede.isCancelled()) {
+        if (Config.getInstance().getEventCallbackEnabled()) {
+            EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, damage) : new FakeEntityDamageByEntityEvent(attacker, target, cause, damage);
+            mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
+
+            if (damageEvent.isCancelled()) {
                 return;
             }
 
-            damage = ede.getDamage();
+            damage = damageEvent.getDamage();
         }
 
         target.damage(damage);
