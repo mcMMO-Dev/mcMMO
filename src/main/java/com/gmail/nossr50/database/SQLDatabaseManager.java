@@ -51,12 +51,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private int reconnectAttempt = 0;
 
     protected SQLDatabaseManager() {
-        checkConnected();
         checkStructure();
     }
 
     public void purgePowerlessUsers() {
-        checkConnected();
+        if (!checkConnected()) {
+            return;
+        }
+
         mcMMO.p.getLogger().info("Purging powerless users...");
 
         Collection<ArrayList<String>> usernames = read("SELECT u.user FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0").values();
@@ -73,7 +75,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public void purgeOldUsers() {
-        checkConnected();
+        if (!checkConnected()) {
+            return;
+        }
+
         long currentTime = System.currentTimeMillis();
 
         mcMMO.p.getLogger().info("Purging old users...");
@@ -92,7 +97,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public boolean removeUser(String playerName) {
-        checkConnected();
+        if (!checkConnected()) {
+            return false;
+        }
+
         boolean success = update("DELETE FROM u, e, h, s, c " +
                 "USING " + tablePrefix + "users u " +
                 "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
@@ -107,7 +115,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public void saveUser(PlayerProfile profile) {
-        checkConnected();
+        if (!checkConnected()) {
+            return;
+        }
+
         int userId = readId(profile.getPlayerName());
         if (userId == -1) {
             newUser(profile.getPlayerName());
@@ -303,7 +314,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public void newUser(String playerName) {
-        checkConnected();
+        if (!checkConnected()) {
+            return;
+        }
+
         PreparedStatement statement = null;
 
         try {
@@ -331,7 +345,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
-        checkConnected();
+        if (!checkConnected()) {
+            return loadPlayerProfile(playerName, false); //Retry if not connected
+        }
+
         PreparedStatement statement = null;
 
         try {
@@ -396,7 +413,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public void convertUsers(DatabaseManager destination) {
-        checkConnected();
+        if (!checkConnected()) {
+            return;
+        }
+
         PreparedStatement statement = null;
 
         try {
@@ -532,29 +552,32 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public List<String> getStoredUsers() {
-        checkConnected();
         ArrayList<String> users = new ArrayList<String>();
-        Statement stmt = null;
-        try {
-            stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT user FROM " + tablePrefix + "users");
-            while (result.next()) {
-                users.add(result.getString("user"));
+
+        if (checkConnected()) {
+            Statement stmt = null;
+            try {
+                stmt = connection.createStatement();
+                ResultSet result = stmt.executeQuery("SELECT user FROM " + tablePrefix + "users");
+                while (result.next()) {
+                    users.add(result.getString("user"));
+                }
+                result.close();
             }
-            result.close();
-        }
-        catch (SQLException e) {
-            printErrors(e);
-        }
-        finally {
-            if (stmt != null) {
-                try {
-                    stmt.close();
-                } catch (SQLException e) {
-                    // Ignore
+            catch (SQLException e) {
+                printErrors(e);
+            }
+            finally {
+                if (stmt != null) {
+                    try {
+                        stmt.close();
+                    } catch (SQLException e) {
+                        // Ignore
+                    }
                 }
             }
         }
+
         return users;
     }
 
@@ -599,6 +622,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * Checks that the database structure is present and correct
      */
     private void checkStructure() {
+        if (!checkConnected()) {
+            return;
+        }
+
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
                 + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                 + "`user` varchar(40) NOT NULL,"
