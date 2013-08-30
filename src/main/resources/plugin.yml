@@ -525,8 +525,7 @@ permissions:
         description: Allows access to all Taming abilities
         children:
             mcmmo.ability.taming.beastlore: true
-            mcmmo.ability.taming.callofthewild: true
-            mcmmo.ability.taming.callofthewild_renamepets: true
+            mcmmo.ability.taming.callofthewild.all: true
             mcmmo.ability.taming.environmentallyaware: true
             mcmmo.ability.taming.fastfoodservice: true
             mcmmo.ability.taming.gore: true
@@ -536,10 +535,33 @@ permissions:
             mcmmo.ability.taming.thickfur: true
     mcmmo.ability.taming.beastlore:
         description: Allows access to the Beast Lore ability
-    mcmmo.ability.taming.callofthewild:
+    mcmmo.ability.taming.callofthewild.*:
+        default: false
         description: Allows access to the Call of the Wild ability
+        children:
+            mcmmo.ability.taming.callofthewild.all: true
+    mcmmo.ability.taming.callofthewild:
+        default: false
+        description: Allows access to the Call of the Wild ability
+        children:
+            mcmmo.ability.taming.callofthewild.all: true
+    mcmmo.ability.taming.callofthewild.all:
+        description: Allows access to the Call of the Wild abilities
+        children:
+            mcmmo.ability.taming.callofthewild.ocelot: true
+            mcmmo.ability.taming.callofthewild.renamepets: true
+            mcmmo.ability.taming.callofthewild.wolf: true
+    mcmmo.ability.taming.callofthewild.ocelot:
+        description: Allows players to summon Ocelots with Call of the Wild
+    mcmmo.ability.taming.callofthewild.renamepets:
+        description: Allows players to rename pets with Call of the Wild
+    mcmmo.ability.taming.callofthewild.wolf:
+        description: Allows players to summon Wolves with Call of the Wild
     mcmmo.ability.taming.callofthewild_renamepets:
+        default: false
         description: Pets spawned with Call of the Wild will have custom names
+        children:
+            mcmmo.ability.taming.callofthewild.renamepets: true
     mcmmo.ability.taming.environmentallyaware:
         description: Allows access to the Environmentally Aware ability
     mcmmo.ability.taming.fastfoodservice:

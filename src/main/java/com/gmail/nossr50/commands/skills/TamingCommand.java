@@ -1,5 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
+import org.bukkit.entity.EntityType;
+
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -36,7 +38,7 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck() {
         canBeastLore = Permissions.beastLore(player);
-        canCallWild = Permissions.callOfTheWild(player);
+        canCallWild = Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
         canEnvironmentallyAware = Permissions.environmentallyAware(player);
         canFastFood = Permissions.fastFoodService(player);
         canGore = Permissions.gore(player);

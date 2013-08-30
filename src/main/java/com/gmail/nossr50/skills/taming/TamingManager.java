@@ -130,6 +130,10 @@ public class TamingManager extends SkillManager {
      * Summon an ocelot to your side.
      */
     public void summonOcelot() {
+        if (!Permissions.callOfTheWild(getPlayer(), EntityType.OCELOT)) {
+            return;
+        }
+
         callOfTheWild(EntityType.OCELOT, Config.getInstance().getTamingCOTWOcelotCost());
     }
 
@@ -137,6 +141,10 @@ public class TamingManager extends SkillManager {
      * Summon a wolf to your side.
      */
     public void summonWolf() {
+        if (!Permissions.callOfTheWild(getPlayer(), EntityType.WOLF)) {
+            return;
+        }
+
         callOfTheWild(EntityType.WOLF, Config.getInstance().getTamingCOTWWolfCost());
     }
 

@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
+import org.bukkit.entity.EntityType;
 import org.bukkit.permissions.Permissible;
 import org.bukkit.permissions.Permission;
 import org.bukkit.permissions.PermissionDefault;
@@ -196,8 +197,8 @@ public final class Permissions {
 
     /* TAMING */
     public static boolean beastLore(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.beastlore"); }
-    public static boolean callOfTheWild(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.callofthewild"); }
-    public static boolean renamePets(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.callofthewild_renamepets"); }
+    public static boolean callOfTheWild(Permissible permissible, EntityType type) { return permissible.hasPermission("mcmmo.ability.taming.callofthewild." + type.toString().toLowerCase()); }
+    public static boolean renamePets(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.callofthewild.renamepets"); }
     public static boolean environmentallyAware(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.environmentallyaware"); }
     public static boolean fastFoodService(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.fastfoodservice"); }
     public static boolean gore(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.gore"); }

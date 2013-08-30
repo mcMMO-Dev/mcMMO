@@ -572,7 +572,7 @@ public class PlayerListener implements Listener {
             case LEFT_CLICK_BLOCK:
 
                 /* CALL OF THE WILD CHECKS */
-                if (player.isSneaking() && Permissions.callOfTheWild(player)) {
+                if (player.isSneaking()) {
                     Material type = heldItem.getType();
                     TamingManager tamingManager = mcMMOPlayer.getTamingManager();
 
