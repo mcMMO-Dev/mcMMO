@@ -139,6 +139,7 @@ Experience:
         Animal_Taming:
             Wolf: 250
             Ocelot: 500
+            Horse: 1000
     Combat:
         Multiplier:
             Animals: 1.0

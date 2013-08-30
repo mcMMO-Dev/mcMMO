@@ -66,6 +66,10 @@ public class TamingManager extends SkillManager {
      */
     public void awardTamingXP(LivingEntity entity) {
         switch (entity.getType()) {
+            case HORSE:
+                applyXpGain(Taming.horseXp);
+                return;
+
             case WOLF:
                 applyXpGain(Taming.wolfXp);
                 return;
@@ -146,6 +150,17 @@ public class TamingManager extends SkillManager {
         }
 
         callOfTheWild(EntityType.WOLF, Config.getInstance().getTamingCOTWWolfCost());
+    }
+
+    /**
+     * Summon a horse to your side.
+     */
+    public void summonHorse() {
+        if (!Permissions.callOfTheWild(getPlayer(), EntityType.HORSE)) {
+            return;
+        }
+
+        callOfTheWild(EntityType.HORSE, Config.getInstance().getTamingCOTWHorseCost());
     }
 
     /**

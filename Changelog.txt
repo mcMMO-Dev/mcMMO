@@ -8,6 +8,9 @@ Key:
   - Removal
 
 Version 1.4.07-dev
+ + Added ability to summon horses via Call of the Wild using apples
+ + Added XP gain to Taming for horses
+ + Added new permission nodes to allow more control over Taming and Call of the Wild
  + Added new experience.yml config file! Moved all experience related settings from config.yml to experience.yml
  + Added support for EXPONENTIAL formula curves to experience.yml
  + Added new /mcconvert command to convert players levels and experience from one formula curve to another.

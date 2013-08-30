@@ -382,21 +382,11 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getUnarmedBlockCrackerSmoothbrickToCracked() { return config.getBoolean("Skills.Unarmed.Block_Cracker.SmoothBrick_To_CrackedBrick", true); }
 
     /* Taming */
+    public int getTamingCOTWHorseCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Apples_Required", 10); }
     public int getTamingCOTWWolfCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10); }
     public int getTamingCOTWOcelotCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Fish_Required", 10); }
     public double getTamingCOTWRange() { return config.getDouble("Skills.Taming.Call_Of_The_Wild.Range", 40); }
-    public int getTamingCOTWAmount(EntityType type) {
-        switch (type) {
-            case OCELOT:
-                return config.getInt("Skills.Taming.Call_Of_The_Wild.Ocelot_Amount", 1);
-
-            case WOLF:
-                return config.getInt("Skills.Taming.Call_Of_The_Wild.Wolf_Amount", 1);
-
-            default:
-                return 1;
-        }
-    }
+    public int getTamingCOTWAmount(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type)+ "_Amount"); }
 
     /* Woodcutting */
     public boolean getOakDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Oak", true); }

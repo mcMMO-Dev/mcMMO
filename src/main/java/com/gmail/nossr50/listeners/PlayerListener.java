@@ -571,17 +571,29 @@ public class PlayerListener implements Listener {
             case LEFT_CLICK_AIR:
             case LEFT_CLICK_BLOCK:
 
-                /* CALL OF THE WILD CHECKS */
-                if (player.isSneaking()) {
-                    Material type = heldItem.getType();
-                    TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+                if (!player.isSneaking()) {
+                    break;
+                }
 
-                    if (type == Material.RAW_FISH) {
-                        tamingManager.summonOcelot();
-                    }
-                    else if (type == Material.BONE) {
+                /* CALL OF THE WILD CHECKS */
+                Material type = heldItem.getType();
+                TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+
+                switch (type) {
+                    case APPLE:
+                        tamingManager.summonHorse();
+                        break;
+
+                    case BONE:
                         tamingManager.summonWolf();
-                    }
+                        break;
+
+                    case RAW_FISH:
+                        tamingManager.summonOcelot();
+                        break;
+
+                    default:
+                        break;
                 }
 
                 break;
