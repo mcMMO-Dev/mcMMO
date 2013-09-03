@@ -706,7 +706,7 @@ public class McMMOPlayer {
             }
         }
 
-        return PerksUtils.handleXpPerks(player, xp);
+        return PerksUtils.handleXpPerks(player, xp, skillType);
     }
 
     public void checkGodMode() {

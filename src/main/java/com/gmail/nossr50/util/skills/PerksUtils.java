@@ -43,20 +43,20 @@ public final class PerksUtils {
         return ticks;
     }
 
-    public static float handleXpPerks(Player player, float xp) {
-        if (Permissions.quadrupleXp(player)) {
+    public static float handleXpPerks(Player player, float xp, SkillType skill) {
+        if (Permissions.quadrupleXp(player, skill)) {
             xp *= 4;
         }
-        else if (Permissions.tripleXp(player)) {
+        else if (Permissions.tripleXp(player, skill)) {
             xp *= 3;
         }
-        else if (Permissions.doubleAndOneHalfXp(player)) {
+        else if (Permissions.doubleAndOneHalfXp(player, skill)) {
             xp *= 2.5;
         }
-        else if (Permissions.doubleXp(player)) {
+        else if (Permissions.doubleXp(player, skill)) {
             xp *= 2;
         }
-        else if (Permissions.oneAndOneHalfXp(player)) {
+        else if (Permissions.oneAndOneHalfXp(player, skill)) {
             xp *= 1.5;
         }
 

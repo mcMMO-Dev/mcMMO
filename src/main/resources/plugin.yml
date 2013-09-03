@@ -1425,26 +1425,341 @@ permissions:
         default: false
         description: XP Perks typically given to donors or VIPs
         children:
-            mcmmo.perks.xp.150percentboost: true
-            mcmmo.perks.xp.50percentboost: true
-            mcmmo.perks.xp.double: true
-            mcmmo.perks.xp.quadruple: true
-            mcmmo.perks.xp.triple: true
+            mcmmo.perks.xp.150percentboost.all: true
+            mcmmo.perks.xp.50percentboost.all: true
+            mcmmo.perks.xp.double.all: true
+            mcmmo.perks.xp.quadruple.all: true
+            mcmmo.perks.xp.triple.all: true
+    mcmmo.perks.xp.150percentboost.*:
+        default: false
+        description: Mulitplies incoming XP by 2.5
+        children:
+            mcmmo.perks.xp.150percentboost.all: true
     mcmmo.perks.xp.150percentboost:
         default: false
         description: Mulitplies incoming XP by 2.5
+        children:
+            mcmmo.perks.xp.150percentboost.all: true
+    mcmmo.perks.xp.150percentboost.all:
+        default: false
+        description: Mulitplies incoming XP by 2.5
+        children:
+            mcmmo.perks.xp.150percentboost.acrobatics: true
+            mcmmo.perks.xp.150percentboost.archery: true
+            mcmmo.perks.xp.150percentboost.axes: true
+            mcmmo.perks.xp.150percentboost.excavation: true
+            mcmmo.perks.xp.150percentboost.fishing: true
+            mcmmo.perks.xp.150percentboost.herbalism: true
+            mcmmo.perks.xp.150percentboost.mining: true
+            mcmmo.perks.xp.150percentboost.repair: true
+            mcmmo.perks.xp.150percentboost.smelting: true
+            mcmmo.perks.xp.150percentboost.swords: true
+            mcmmo.perks.xp.150percentboost.taming: true
+            mcmmo.perks.xp.150percentboost.unarmed: true
+            mcmmo.perks.xp.150percentboost.woodcutting: true
+    mcmmo.perks.xp.150percentboost.acrobatics:
+        default: false
+        description: Multiplies incoming Acrobatics XP by 2.5
+    mcmmo.perks.xp.150percentboost.archery:
+        default: false
+        description: Multiplies incoming Archery XP by 2.5
+    mcmmo.perks.xp.150percentboost.axes:
+        default: false
+        description: Multiplies incoming Axes XP by 2.5
+    mcmmo.perks.xp.150percentboost.excavation:
+        default: false
+        description: Multiplies incoming Excavation XP by 2.5
+    mcmmo.perks.xp.150percentboost.fishing:
+        default: false
+        description: Multiplies incoming Fishing XP by 2.5
+    mcmmo.perks.xp.150percentboost.herbalism:
+        default: false
+        description: Multiplies incoming Herbalism XP by 2.5
+    mcmmo.perks.xp.150percentboost.mining:
+        default: false
+        description: Multiplies incoming Mining XP by 2.5
+    mcmmo.perks.xp.150percentboost.repair:
+        default: false
+        description: Multiplies incoming Repair XP by 2.5
+    mcmmo.perks.xp.150percentboost.smelting:
+        default: false
+        description: Multiplies incoming Smelting XP by 2.5
+    mcmmo.perks.xp.150percentboost.swords:
+        default: false
+        description: Multiplies incoming Swords XP by 2.5
+    mcmmo.perks.xp.150percentboost.taming:
+        default: false
+        description: Multiplies incoming Taming XP by 2.5
+    mcmmo.perks.xp.150percentboost.unarmed:
+        default: false
+        description: Multiplies incoming Unarmed XP by 2.5
+    mcmmo.perks.xp.150percentboost.woodcutting:
+        default: false
+        description: Multiplies incoming Woodcutting XP by 2.5
+    mcmmo.perks.xp.50percentboost.*:
+        default: false
+        description: Mulitplies incoming XP by 1.5
+        children:
+            mcmmo.perks.xp.50percentboost.all: true
     mcmmo.perks.xp.50percentboost:
         default: false
         description: Mulitplies incoming XP by 1.5
+        children:
+            mcmmo.perks.xp.150percentboost.all: true
+    mcmmo.perks.xp.50percentboost.all:
+        default: false
+        description: Mulitplies incoming XP by 1.5
+        children:
+            mcmmo.perks.xp.50percentboost.acrobatics: true
+            mcmmo.perks.xp.50percentboost.archery: true
+            mcmmo.perks.xp.50percentboost.axes: true
+            mcmmo.perks.xp.50percentboost.excavation: true
+            mcmmo.perks.xp.50percentboost.fishing: true
+            mcmmo.perks.xp.50percentboost.herbalism: true
+            mcmmo.perks.xp.50percentboost.mining: true
+            mcmmo.perks.xp.50percentboost.repair: true
+            mcmmo.perks.xp.50percentboost.smelting: true
+            mcmmo.perks.xp.50percentboost.swords: true
+            mcmmo.perks.xp.50percentboost.taming: true
+            mcmmo.perks.xp.50percentboost.unarmed: true
+            mcmmo.perks.xp.50percentboost.woodcutting: true
+    mcmmo.perks.xp.50percentboost.acrobatics:
+        default: false
+        description: Multiplies incoming Acrobatics XP by 1.5
+    mcmmo.perks.xp.50percentboost.archery:
+        default: false
+        description: Multiplies incoming Archery XP by 1.5
+    mcmmo.perks.xp.50percentboost.axes:
+        default: false
+        description: Multiplies incoming Axes XP by 1.5
+    mcmmo.perks.xp.50percentboost.excavation:
+        default: false
+        description: Multiplies incoming Excavation XP by 1.5
+    mcmmo.perks.xp.50percentboost.fishing:
+        default: false
+        description: Multiplies incoming Fishing XP by 1.5
+    mcmmo.perks.xp.50percentboost.herbalism:
+        default: false
+        description: Multiplies incoming Herbalism XP by 1.5
+    mcmmo.perks.xp.50percentboost.mining:
+        default: false
+        description: Multiplies incoming Mining XP by 1.5
+    mcmmo.perks.xp.50percentboost.repair:
+        default: false
+        description: Multiplies incoming Repair XP by 1.5
+    mcmmo.perks.xp.50percentboost.smelting:
+        default: false
+        description: Multiplies incoming Smelting XP by 1.5
+    mcmmo.perks.xp.50percentboost.swords:
+        default: false
+        description: Multiplies incoming Swords XP by 1.5
+    mcmmo.perks.xp.50percentboost.taming:
+        default: false
+        description: Multiplies incoming Taming XP by 1.5
+    mcmmo.perks.xp.50percentboost.unarmed:
+        default: false
+        description: Multiplies incoming Unarmed XP by 1.5
+    mcmmo.perks.xp.50percentboost.woodcutting:
+        default: false
+        description: Multiplies incoming Woodcutting XP by 1.5
+    mcmmo.perks.xp.double.*:
+        default: false
+        description: Doubles incoming XP
+        children:
+            mcmmo.perks.xp.double.all: true
     mcmmo.perks.xp.double:
         default: false
         description: Doubles incoming XP
+        children:
+            mcmmo.perks.xp.double.all: true
+    mcmmo.perks.xp.double.all:
+        default: false
+        description: Doubles incoming XP
+        children:
+            mcmmo.perks.xp.double.acrobatics: true
+            mcmmo.perks.xp.double.archery: true
+            mcmmo.perks.xp.double.axes: true
+            mcmmo.perks.xp.double.excavation: true
+            mcmmo.perks.xp.double.fishing: true
+            mcmmo.perks.xp.double.herbalism: true
+            mcmmo.perks.xp.double.mining: true
+            mcmmo.perks.xp.double.repair: true
+            mcmmo.perks.xp.double.smelting: true
+            mcmmo.perks.xp.double.swords: true
+            mcmmo.perks.xp.double.taming: true
+            mcmmo.perks.xp.double.unarmed: true
+            mcmmo.perks.xp.double.woodcutting: true
+    mcmmo.perks.xp.double.acrobatics:
+        default: false
+        description: Doubles incoming Acrobatics XP
+    mcmmo.perks.xp.double.archery:
+        default: false
+        description: Doubles incoming Archery XP
+    mcmmo.perks.xp.double.axes:
+        default: false
+        description: Doubles incoming Axes XP
+    mcmmo.perks.xp.double.excavation:
+        default: false
+        description: Doubles incoming Excavation XP
+    mcmmo.perks.xp.double.fishing:
+        default: false
+        description: Doubles incoming Fishing XP
+    mcmmo.perks.xp.double.herbalism:
+        default: false
+        description: Doubles incoming Herbalism XP
+    mcmmo.perks.xp.double.mining:
+        default: false
+        description: Doubles incoming Mining XP
+    mcmmo.perks.xp.double.repair:
+        default: false
+        description: Doubles incoming Repair XP
+    mcmmo.perks.xp.double.smelting:
+        default: false
+        description: Doubles incoming Smelting XP
+    mcmmo.perks.xp.double.swords:
+        default: false
+        description: Doubles incoming Swords XP
+    mcmmo.perks.xp.double.taming:
+        default: false
+        description: Doubles incoming Taming XP
+    mcmmo.perks.xp.double.unarmed:
+        default: false
+        description: Doubles incoming Unarmed XP
+    mcmmo.perks.xp.double.woodcutting:
+        default: false
+        description: Doubles incoming Woodcutting XP
+    mcmmo.perks.xp.quadruple.*:
+        default: false
+        description: Quadruples incoming XP
+        children:
+            mcmmo.perks.xp.quadruple.all: true
     mcmmo.perks.xp.quadruple:
         default: false
         description: Quadruples incoming XP
+        children:
+            mcmmo.perks.xp.quadruple.all: true
+    mcmmo.perks.xp.quadruple.all:
+        default: false
+        description: Quadruples incoming XP
+        children:
+            mcmmo.perks.xp.quadruple.acrobatics: true
+            mcmmo.perks.xp.quadruple.archery: true
+            mcmmo.perks.xp.quadruple.axes: true
+            mcmmo.perks.xp.quadruple.excavation: true
+            mcmmo.perks.xp.quadruple.fishing: true
+            mcmmo.perks.xp.quadruple.herbalism: true
+            mcmmo.perks.xp.quadruple.mining: true
+            mcmmo.perks.xp.quadruple.repair: true
+            mcmmo.perks.xp.quadruple.smelting: true
+            mcmmo.perks.xp.quadruple.swords: true
+            mcmmo.perks.xp.quadruple.taming: true
+            mcmmo.perks.xp.quadruple.unarmed: true
+            mcmmo.perks.xp.quadruple.woodcutting: true
+    mcmmo.perks.xp.quadruple.acrobatics:
+        default: false
+        description: Quadruples incoming Acrobatics XP
+    mcmmo.perks.xp.quadruple.archery:
+        default: false
+        description: Quadruples incoming Archery XP
+    mcmmo.perks.xp.quadruple.axes:
+        default: false
+        description: Quadruples incoming Axes XP
+    mcmmo.perks.xp.quadruple.excavation:
+        default: false
+        description: Quadruples incoming Excavation XP
+    mcmmo.perks.xp.quadruple.fishing:
+        default: false
+        description: Quadruples incoming Fishing XP
+    mcmmo.perks.xp.quadruple.herbalism:
+        default: false
+        description: Quadruples incoming Herbalism XP
+    mcmmo.perks.xp.quadruple.mining:
+        default: false
+        description: Quadruples incoming Mining XP
+    mcmmo.perks.xp.quadruple.repair:
+        default: false
+        description: Quadruples incoming Repair XP
+    mcmmo.perks.xp.quadruple.smelting:
+        default: false
+        description: Quadruples incoming Smelting XP
+    mcmmo.perks.xp.quadruple.swords:
+        default: false
+        description: Quadruples incoming Swords XP
+    mcmmo.perks.xp.quadruple.taming:
+        default: false
+        description: Quadruples incoming Taming XP
+    mcmmo.perks.xp.quadruple.unarmed:
+        default: false
+        description: Quadruples incoming Unarmed XP
+    mcmmo.perks.xp.quadruple.woodcutting:
+        default: false
+        description: Quadruples incoming Woodcutting XP
+    mcmmo.perks.xp.triple.*:
+        default: false
+        description: Triples incoming XP
+        children:
+            mcmmo.perks.xp.triple.all: true
     mcmmo.perks.xp.triple:
         default: false
         description: Triples incoming XP
+        children:
+            mcmmo.perks.xp.triple.all: true
+    mcmmo.perks.xp.triple.all:
+        default: false
+        description: Triples incoming XP
+        children:
+            mcmmo.perks.xp.triple.acrobatics: true
+            mcmmo.perks.xp.triple.archery: true
+            mcmmo.perks.xp.triple.axes: true
+            mcmmo.perks.xp.triple.excavation: true
+            mcmmo.perks.xp.triple.fishing: true
+            mcmmo.perks.xp.triple.herbalism: true
+            mcmmo.perks.xp.triple.mining: true
+            mcmmo.perks.xp.triple.repair: true
+            mcmmo.perks.xp.triple.smelting: true
+            mcmmo.perks.xp.triple.swords: true
+            mcmmo.perks.xp.triple.taming: true
+            mcmmo.perks.xp.triple.unarmed: true
+            mcmmo.perks.xp.triple.woodcutting: true
+    mcmmo.perks.xp.triple.acrobatics:
+        default: false
+        description: Triples incoming Acrobatics XP
+    mcmmo.perks.xp.triple.archery:
+        default: false
+        description: Triples incoming Archery XP
+    mcmmo.perks.xp.triple.axes:
+        default: false
+        description: Triples incoming Axes XP
+    mcmmo.perks.xp.triple.excavation:
+        default: false
+        description: Triples incoming Excavation XP
+    mcmmo.perks.xp.triple.fishing:
+        default: false
+        description: Triples incoming Fishing XP
+    mcmmo.perks.xp.triple.herbalism:
+        default: false
+        description: Triples incoming Herbalism XP
+    mcmmo.perks.xp.triple.mining:
+        default: false
+        description: Triples incoming Mining XP
+    mcmmo.perks.xp.triple.repair:
+        default: false
+        description: Triples incoming Repair XP
+    mcmmo.perks.xp.triple.smelting:
+        default: false
+        description: Triples incoming Smelting XP
+    mcmmo.perks.xp.triple.swords:
+        default: false
+        description: Triples incoming Swords XP
+    mcmmo.perks.xp.triple.taming:
+        default: false
+        description: Triples incoming Taming XP
+    mcmmo.perks.xp.triple.unarmed:
+        default: false
+        description: Triples incoming Unarmed XP
+    mcmmo.perks.xp.triple.woodcutting:
+        default: false
+        description: Triples incoming Woodcutting XP
     mcmmo.skillreset:
         default: false
         description: Allow reset of skill levels

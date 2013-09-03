@@ -101,11 +101,11 @@ public final class Permissions {
     public static boolean lucky(Permissible permissible, SkillType skill) { return permissible.hasPermission("mcmmo.perks.lucky." + skill.toString().toLowerCase()); }
 
     /* XP PERKS */
-    public static boolean quadrupleXp(Permissible permissible) { return permissible.hasPermission("mcmmo.perks.xp.quadruple"); }
-    public static boolean tripleXp(Permissible permissible) { return permissible.hasPermission("mcmmo.perks.xp.triple"); }
-    public static boolean doubleAndOneHalfXp(Permissible permissible) { return permissible.hasPermission("mcmmo.perks.xp.150percentboost"); }
-    public static boolean doubleXp(Permissible permissible) { return permissible.hasPermission("mcmmo.perks.xp.double"); }
-    public static boolean oneAndOneHalfXp(Permissible permissible) { return permissible.hasPermission("mcmmo.perks.xp.50percentboost"); }
+    public static boolean quadrupleXp(Permissible permissible, SkillType skill) { return permissible.hasPermission("mcmmo.perks.xp.quadruple." + skill.toString().toLowerCase()); }
+    public static boolean tripleXp(Permissible permissible, SkillType skill) { return permissible.hasPermission("mcmmo.perks.xp.triple." + skill.toString().toLowerCase()); }
+    public static boolean doubleAndOneHalfXp(Permissible permissible, SkillType skill) { return permissible.hasPermission("mcmmo.perks.xp.150percentboost." + skill.toString().toLowerCase()); }
+    public static boolean doubleXp(Permissible permissible, SkillType skill) { return permissible.hasPermission("mcmmo.perks.xp.double." + skill.toString().toLowerCase()); }
+    public static boolean oneAndOneHalfXp(Permissible permissible, SkillType skill) { return permissible.hasPermission("mcmmo.perks.xp.50percentboost." + skill.toString().toLowerCase()); }
 
     /* ACTIVATION PERKS */
     public static boolean twelveSecondActivationBoost(Permissible permissible) { return permissible.hasPermission("mcmmo.perks.activationtime.twelveseconds"); }
