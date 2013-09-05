@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.repair;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
@@ -102,7 +103,7 @@ public class Repair {
                 continue;
             }
 
-            if (item.getTypeId() == itemId && item.getData().getData() == metadata) {
+            if (item.getData().equals(new MaterialData(itemId, metadata))) {
                 return i;
             }
         }

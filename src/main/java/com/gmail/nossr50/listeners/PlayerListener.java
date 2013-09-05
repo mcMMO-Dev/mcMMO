@@ -443,7 +443,7 @@ public class PlayerListener implements Listener {
                 }
                 /* BLAST MINING CHECK */
                 else if (miningManager.canDetonate()) {
-                    if (blockID == Material.TNT.getId()) {
+                    if (block.getType() == Material.TNT) {
                         event.setCancelled(true); // Don't detonate the TNT if they're too close
                     }
                     else {

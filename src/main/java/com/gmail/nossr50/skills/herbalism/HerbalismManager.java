@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.material.CocoaPlant;
 import org.bukkit.material.CocoaPlant.CocoaPlantSize;
+import org.bukkit.material.Crops;
 import org.bukkit.material.NetherWarts;
 
 import com.gmail.nossr50.mcMMO;
@@ -294,15 +295,41 @@ public class HerbalismManager extends SkillManager {
     }
 
     private boolean handleBlockState(BlockState blockState, boolean greenTerra) {
+        byte greenThumbStage = getGreenThumbStage();
+
         switch (blockState.getType()) {
             case CROPS:
+                Crops crops = (Crops) blockState.getData();
+
+                if (greenTerra) {
+                    crops.setState(CropState.MEDIUM);
+                }
+                else {
+                    switch (greenThumbStage) {
+                        case 4:
+                            crops.setState(CropState.SMALL);
+                            break;
+                        case 3:
+                            crops.setState(CropState.VERY_SMALL);
+                            break;
+                        case 2:
+                            crops.setState(CropState.GERMINATED);
+                            break;
+                        default:
+                            crops.setState(CropState.SEEDED);
+                            break;
+                    }
+                }
+
+                return true;
+
             case CARROT:
             case POTATO:
                 if (greenTerra) {
-                    blockState.setRawData(CropState.MEDIUM.getData()); // 2
+                    blockState.setRawData(CropState.MEDIUM.getData());
                 }
                 else {
-                    blockState.setRawData(getGreenThumbStage());
+                    blockState.setRawData(greenThumbStage);
                 }
 
                 return true;
@@ -310,21 +337,14 @@ public class HerbalismManager extends SkillManager {
             case NETHER_WARTS:
                 NetherWarts warts = (NetherWarts) blockState.getData();
 
-                if (greenTerra) {
+                if (greenTerra || greenThumbStage > 2) {
                     warts.setState(NetherWartsState.STAGE_TWO);
                 }
+                else if (greenThumbStage == 2) {
+                    warts.setState(NetherWartsState.STAGE_ONE);
+                }
                 else {
-                    int greenThumbStage = getGreenThumbStage();
-
-                    if (greenThumbStage > 2) {
-                        warts.setState(NetherWartsState.STAGE_TWO);
-                    }
-                    else if (greenThumbStage == 2) {
-                        warts.setState(NetherWartsState.STAGE_ONE);
-                    }
-                    else {
-                        warts.setState(NetherWartsState.SEEDED);
-                    }
+                    warts.setState(NetherWartsState.SEEDED);
                 }
 
                 return true;

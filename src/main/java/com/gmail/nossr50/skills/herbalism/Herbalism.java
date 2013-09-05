@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.material.SmoothBrick;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -37,8 +38,11 @@ public class Herbalism {
     protected static boolean convertGreenTerraBlocks(BlockState blockState) {
         switch (blockState.getType()) {
             case COBBLE_WALL:
-            case SMOOTH_BRICK:
                 blockState.setRawData((byte) 0x1);
+                return true;
+
+            case SMOOTH_BRICK:
+                ((SmoothBrick) blockState.getData()).setMaterial(Material.MOSSY_COBBLESTONE);
                 return true;
 
             case DIRT:

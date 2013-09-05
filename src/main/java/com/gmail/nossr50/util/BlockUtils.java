@@ -7,6 +7,8 @@ import org.bukkit.Material;
 import org.bukkit.NetherWartsState;
 import org.bukkit.block.BlockState;
 import org.bukkit.material.CocoaPlant;
+import org.bukkit.material.Crops;
+import org.bukkit.material.SmoothBrick;
 import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 import org.bukkit.material.NetherWarts;
 
@@ -103,6 +105,8 @@ public final class BlockUtils {
                 return true;
 
             case SMOOTH_BRICK:
+                return ((SmoothBrick) blockState.getData()).getMaterial() == Material.STONE;
+
             case COBBLE_WALL:
                 return blockState.getRawData() == (byte) 0x0;
 
@@ -132,9 +136,11 @@ public final class BlockUtils {
                 return true;
 
             case CARROT:
-            case CROPS:
             case POTATO:
                 return blockState.getRawData() == CropState.RIPE.getData();
+
+            case CROPS:
+                return ((Crops) blockState.getData()).getState() == CropState.RIPE;
 
             case NETHER_WARTS:
                 return ((NetherWarts) blockState.getData()).getState() == NetherWartsState.RIPE;
@@ -281,7 +287,7 @@ public final class BlockUtils {
     public static boolean affectedByBlockCracker(BlockState blockState) {
         switch (blockState.getType()) {
             case SMOOTH_BRICK:
-                return blockState.getRawData() == (byte) 0x0;
+                return ((SmoothBrick) blockState.getData()).getMaterial() == Material.STONE;
 
             default:
                 return false;
