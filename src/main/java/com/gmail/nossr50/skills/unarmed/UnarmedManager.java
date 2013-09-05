@@ -5,6 +5,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
+import org.bukkit.material.SmoothBrick;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -51,13 +53,22 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean blockCrackerCheck(BlockState blockState) {
-        Material type = blockState.getType();
+        MaterialData data = blockState.getData();
 
-        switch (type) {
+        switch (blockState.getType()) {
             case SMOOTH_BRICK:
-                if (Unarmed.blockCrackerSmoothBrick && blockState.getRawData() == (byte) 0x0) {
-                    blockState.setRawData((byte) 0x2);
+                if (!Unarmed.blockCrackerSmoothBrick) {
+                    return false;
                 }
+
+                // Yes, this is awkward, but it's the *right* way to do it.
+                SmoothBrick smoothBrick = (SmoothBrick) data;
+
+                if (smoothBrick.getMaterial() != Material.STONE) {
+                    return false;
+                }
+
+                smoothBrick.setMaterial(Material.COBBLESTONE);
                 return true;
 
             default:

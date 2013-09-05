@@ -206,7 +206,7 @@ public class TamingManager extends SkillManager {
         int heldItemAmount = heldItem.getAmount();
 
         if (heldItemAmount < summonAmount) {
-            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(heldItem.getTypeId())));
+            player.sendMessage(LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(heldItem.getType())));
             return;
         }
 

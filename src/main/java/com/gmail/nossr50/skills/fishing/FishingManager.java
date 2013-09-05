@@ -29,6 +29,7 @@ import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Wool;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -386,7 +387,7 @@ public class FishingManager extends SkillManager {
                             return;
                         }
 
-                        drop.setDurability(sheep.getColor().getWoolData());
+                        drop.setData(new Wool(sheep.getColor()));
                         sheep.setSheared(true);
                     }
                     break;

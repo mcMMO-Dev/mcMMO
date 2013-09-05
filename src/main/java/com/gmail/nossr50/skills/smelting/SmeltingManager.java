@@ -65,7 +65,6 @@ public class SmeltingManager extends SkillManager {
                 Misc.dropItem(location, item);
             }
 
-            blockState.setRawData((byte) 0x0);
             blockState.setType(Material.AIR);
             player.sendMessage(LocaleLoader.getString("Smelting.FluxMining.Success"));
             return true;

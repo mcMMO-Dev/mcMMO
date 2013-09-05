@@ -226,7 +226,6 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        blockState.setRawData((byte) 0x0);
         blockState.setType(Material.AIR);
 
         Misc.dropItem(blockState.getLocation(), treasures.get(Misc.getRandom().nextInt(treasures.size())).getDrop());

@@ -105,7 +105,6 @@ public class MiningManager extends SkillManager {
 
         tnt.setMetadata(mcMMO.tntMetadataKey, new FixedMetadataValue(mcMMO.p, player.getName()));
         tnt.setFuseTicks(0);
-        targetBlock.setData((byte) 0x0);
         targetBlock.setType(Material.AIR);
 
         getProfile().setSkillDATS(AbilityType.BLAST_MINING, System.currentTimeMillis());

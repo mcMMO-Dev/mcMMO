@@ -5,6 +5,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Dye;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.api.SpoutToolsAPI;
@@ -499,7 +500,7 @@ public class ItemUtils {
                 return true;
 
             case INK_SACK:
-                return item.getData().getData() == DyeColor.BLUE.getDyeData();
+                return ((Dye) item.getData()).getColor() == DyeColor.BLUE;
 
             default:
                 return false;
@@ -545,7 +546,7 @@ public class ItemUtils {
                 return true;
 
             case INK_SACK:
-                return item.getData().getData() == DyeColor.BLUE.getDyeData();
+                return ((Dye) item.getData()).getColor() == DyeColor.BLUE;
 
             default:
                 return false;
@@ -580,7 +581,7 @@ public class ItemUtils {
                 return true;
 
             case INK_SACK:
-                return item.getData().getData() == DyeColor.BROWN.getDyeData();
+                return ((Dye) item.getData()).getColor() == DyeColor.BROWN;
 
             default:
                 return false;

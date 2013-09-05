@@ -103,9 +103,9 @@ public final class Woodcutting {
         else {
             Location location = blockState.getLocation();
             Tree tree = (Tree) blockState.getData();
-            ItemStack item = new ItemStack(Material.LOG, 1, tree.getSpecies().getData());
+            ItemStack item = tree.toItemStack(1);
 
-            switch (((Tree) blockState.getData()).getSpecies()) {
+            switch (tree.getSpecies()) {
                 case GENERIC:
                     if (Config.getInstance().getOakDoubleDropsEnabled()) {
                         Misc.dropItem(location, item);
