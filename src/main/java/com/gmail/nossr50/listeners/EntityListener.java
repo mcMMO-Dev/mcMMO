@@ -134,6 +134,11 @@ public class EntityListener implements Listener {
 
         Entity defender = event.getEntity();
 
+        if (defender.hasMetadata(mcMMO.customDamageKey)) {
+            defender.removeMetadata(mcMMO.customDamageKey, plugin);
+            return;
+        }
+
         if (Misc.isNPCEntity(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
             return;
         }
@@ -344,12 +349,12 @@ public class EntityListener implements Listener {
 
         if (entity.hasMetadata(mcMMO.customNameKey)) {
             entity.setCustomName(entity.getMetadata(mcMMO.customNameKey).get(0).asString());
-            entity.removeMetadata(mcMMO.customNameKey, mcMMO.p);
+            entity.removeMetadata(mcMMO.customNameKey, plugin);
         }
 
         if (entity.hasMetadata(mcMMO.customVisibleKey)) {
             entity.setCustomNameVisible(entity.getMetadata(mcMMO.customVisibleKey).get(0).asBoolean());
-            entity.removeMetadata(mcMMO.customVisibleKey, mcMMO.p);
+            entity.removeMetadata(mcMMO.customVisibleKey, plugin);
         }
     }
 

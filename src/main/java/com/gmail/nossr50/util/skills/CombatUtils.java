@@ -389,7 +389,14 @@ public final class CombatUtils {
             startGainXp(mcMMOPlayer, target, skill);
         }
 
-        target.damage(damage);
+        int damageTicks = target.getNoDamageTicks();
+        double lastDamage = target.getLastDamage();
+
+        target.setMetadata(mcMMO.customDamageKey, mcMMO.metadataValue);
+        target.damage(damage, attacker);
+
+        target.setNoDamageTicks(damageTicks);
+        target.setLastDamage(lastDamage);
     }
 
     /**
