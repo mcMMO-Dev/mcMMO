@@ -123,11 +123,11 @@ public class TamingManager extends SkillManager {
         getPlayer().sendMessage(LocaleLoader.getString("Combat.Gore"));
 
         damage = (damage * Taming.goreModifier) - damage;
-        CombatUtils.dealDamage(target, damage, wolf);
+        CombatUtils.dealDamage(target, damage, wolf, mcMMOPlayer, SkillType.TAMING);
     }
 
     public void sharpenedClaws(LivingEntity target, Wolf wolf) {
-        CombatUtils.dealDamage(target, Taming.sharpenedClawsBonusDamage, wolf);
+        CombatUtils.dealDamage(target, Taming.sharpenedClawsBonusDamage, wolf, mcMMOPlayer, SkillType.TAMING);
     }
 
     /**

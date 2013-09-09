@@ -57,7 +57,7 @@ public class AxesManager extends SkillManager {
     public void axeMastery(LivingEntity target) {
         double axeBonus = Math.min(getSkillLevel() / (Axes.bonusDamageMaxBonusLevel / Axes.bonusDamageMaxBonus), Axes.bonusDamageMaxBonus);
 
-        CombatUtils.dealDamage(target, axeBonus, getPlayer());
+        CombatUtils.dealDamage(target, axeBonus, getPlayer(), mcMMOPlayer, SkillType.AXES);
     }
 
     /**
@@ -84,7 +84,7 @@ public class AxesManager extends SkillManager {
             damage = (damage * Axes.criticalHitPVEModifier) - damage;
         }
 
-        CombatUtils.dealDamage(target, damage, player);
+        CombatUtils.dealDamage(target, damage, player, mcMMOPlayer, SkillType.AXES);
     }
 
     /**
@@ -134,7 +134,7 @@ public class AxesManager extends SkillManager {
             }
         }
 
-        CombatUtils.dealDamage(target, Axes.greaterImpactBonusDamage, player);
+        CombatUtils.dealDamage(target, Axes.greaterImpactBonusDamage, player, mcMMOPlayer, SkillType.AXES);
     }
 
     /**

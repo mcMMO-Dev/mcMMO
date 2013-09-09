@@ -90,7 +90,7 @@ public class ArcheryManager extends SkillManager {
             getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
         }
 
-        CombatUtils.dealDamage(defender, Archery.dazeModifier, DamageCause.PROJECTILE, arrow);
+        CombatUtils.dealDamage(defender, Archery.dazeModifier, DamageCause.PROJECTILE, arrow, mcMMOPlayer, SkillType.ARCHERY);
     }
 
     /**
@@ -104,6 +104,6 @@ public class ArcheryManager extends SkillManager {
         double damageBonusPercent = Math.min(((getSkillLevel() / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage);
         double archeryBonus = damage * damageBonusPercent;
 
-        CombatUtils.dealDamage(target, archeryBonus, DamageCause.PROJECTILE, arrow);
+        CombatUtils.dealDamage(target, archeryBonus, DamageCause.PROJECTILE, arrow, mcMMOPlayer, SkillType.ARCHERY);
     }
 }

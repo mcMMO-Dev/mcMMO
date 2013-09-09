@@ -348,7 +348,7 @@ public final class CombatUtils {
      * @param damage Amount of damage to attempt to do
      */
     public static void dealDamage(LivingEntity target, double damage) {
-        dealDamage(target, damage, DamageCause.CUSTOM, null);
+        dealDamage(target, damage, DamageCause.CUSTOM, null, null, null);
     }
 
     /**
@@ -358,8 +358,8 @@ public final class CombatUtils {
      * @param damage Amount of damage to attempt to do
      * @param attacker Player to pass to event as damager
      */
-    public static void dealDamage(LivingEntity target, double damage, LivingEntity attacker) {
-        dealDamage(target, damage, DamageCause.ENTITY_ATTACK, attacker);
+    public static void dealDamage(LivingEntity target, double damage, LivingEntity attacker, McMMOPlayer mcMMOPlayer, SkillType skill) {
+        dealDamage(target, damage, DamageCause.ENTITY_ATTACK, attacker, mcMMOPlayer, skill);
     }
 
     /**
@@ -369,7 +369,7 @@ public final class CombatUtils {
      * @param damage Amount of damage to attempt to do
      * @param attacker Player to pass to event as damager
      */
-    public static void dealDamage(LivingEntity target, double damage, DamageCause cause, Entity attacker) {
+    public static void dealDamage(LivingEntity target, double damage, DamageCause cause, Entity attacker, McMMOPlayer mcMMOPlayer, SkillType skill) {
         if (target.isDead()) {
             return;
         }
@@ -383,6 +383,10 @@ public final class CombatUtils {
             }
 
             damage = damageEvent.getDamage();
+        }
+
+        if (mcMMOPlayer != null) {
+            startGainXp(mcMMOPlayer, target, skill);
         }
 
         target.damage(damage);
@@ -432,7 +436,7 @@ public final class CombatUtils {
                     break;
             }
 
-            dealDamage(livingEntity, damageAmount, attacker);
+            dealDamage(livingEntity, damageAmount, attacker, UserManager.getPlayer(attacker), type);
             numberOfTargets--;
         }
     }

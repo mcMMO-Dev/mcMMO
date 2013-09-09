@@ -116,7 +116,7 @@ public class UnarmedManager extends SkillManager {
     public void berserkDamage(LivingEntity target, double damage) {
         damage = (damage * Unarmed.berserkDamageModifier) - damage;
 
-        CombatUtils.dealDamage(target, damage, getPlayer());
+        CombatUtils.dealDamage(target, damage, getPlayer(), mcMMOPlayer, SkillType.UNARMED);
     }
 
     /**
@@ -127,7 +127,7 @@ public class UnarmedManager extends SkillManager {
     public void ironArm(LivingEntity target) {
         int unarmedBonus = Math.min(Unarmed.ironArmMinBonusDamage + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
 
-        CombatUtils.dealDamage(target, unarmedBonus, getPlayer());
+        CombatUtils.dealDamage(target, unarmedBonus, getPlayer(), mcMMOPlayer, SkillType.UNARMED);
     }
 
     /**
