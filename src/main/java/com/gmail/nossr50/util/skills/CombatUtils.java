@@ -476,6 +476,7 @@ public final class CombatUtils {
 
                 switch (type) {
                     case BAT:
+                    case SQUID:
                         baseXP = ExperienceConfig.getInstance().getAnimalsXP();
                         break;
 
