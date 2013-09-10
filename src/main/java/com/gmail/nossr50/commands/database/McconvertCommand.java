@@ -79,10 +79,11 @@ public class McconvertCommand implements TabExecutor {
                 return StringUtil.copyPartialMatches(args[0], SUBCOMMANDS, new ArrayList<String>(SUBCOMMANDS.size()));
             case 2:
                 if (args[0].equalsIgnoreCase("database") || args[0].equalsIgnoreCase("db")) {
-                    StringUtil.copyPartialMatches(args[0], DATABASE_TYPES, new ArrayList<String>(DATABASE_TYPES.size()));
+                    return StringUtil.copyPartialMatches(args[0], DATABASE_TYPES, new ArrayList<String>(DATABASE_TYPES.size()));
                 }
-                else if (args[0].equalsIgnoreCase("experience") || args[0].equalsIgnoreCase("xp") || args[0].equalsIgnoreCase("exp")) {
-                    StringUtil.copyPartialMatches(args[0], FORMULA_TYPES, new ArrayList<String>(FORMULA_TYPES.size()));
+
+                if (args[0].equalsIgnoreCase("experience") || args[0].equalsIgnoreCase("xp") || args[0].equalsIgnoreCase("exp")) {
+                    return StringUtil.copyPartialMatches(args[0], FORMULA_TYPES, new ArrayList<String>(FORMULA_TYPES.size()));
                 }
 
                 return ImmutableList.of();

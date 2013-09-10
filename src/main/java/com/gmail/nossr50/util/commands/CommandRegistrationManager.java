@@ -273,15 +273,6 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McremoveCommand());
     }
 
-//    private static void registerMmoupdateCommand() {
-//        PluginCommand command = mcMMO.p.getCommand("mmoupdate");
-//        command.setDescription(LocaleLoader.getString("Commands.Description.mmoupdate"));
-//        command.setPermission("mcmmo.commands.mmoupdate");
-//        command.setPermissionMessage(LocaleLoader.getString("Commands.mmoupdate.OpOnly"));
-//        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mmoupdate", "<flatfile|sql|" + LocaleLoader.getString("Commands.Usage.FullClassName") + ">"));
-//        command.setExecutor(new MmoupdateCommand());
-//    }
-
     private static void registerMmoshowdbCommand() {
         PluginCommand command = mcMMO.p.getCommand("mmoshowdb");
         command.setDescription(LocaleLoader.getString("Commands.Description.mmoshowdb"));
@@ -296,7 +287,8 @@ public final class CommandRegistrationManager {
         command.setDescription(LocaleLoader.getString("Commands.Description.mcconvert"));
         command.setPermission("mcmmo.commands.mcconvert;mcmmo.commands.mcconvert.experience;mcmmo.commands.mcconvert.database");
         command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.2", "mcconvert", "<database|experience>", "<linear|exponential>"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.2", "mcconvert", "database", "<flatfile|sql>"));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.2", "mcconvert", "experience", "<linear|exponential>"));
         command.setExecutor(new McconvertCommand());
     }
 

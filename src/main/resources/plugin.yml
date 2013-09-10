@@ -57,8 +57,6 @@ commands:
         description: Create/join a party
     inspect:
         description: View detailed mcMMO info on another player
-    mmoupdate:
-        description: Migrate mcMMO database from an old database type to the current
     mmoshowdb:
         description: Show the name of the current database type (for later use with /mmoupdate)
     mcconvert:
@@ -627,7 +625,6 @@ permissions:
         description: Implies access to everything in mcMMO
         children:
             mcmmo.commands.mcconvert.all: true
-            mcmmo.commands.mmoupdate: true
             mcmmo.commands.xprate.all: true
     mcmmo.bypass.*:
         default: false
@@ -950,7 +947,7 @@ permissions:
         description: Allows access to the mmoedit command for other players
     mcmmo.commands.mmoupdate:
         default: false
-        description: Allows access to the mmoupdate command
+        description: Allows access to the mcconvert database command
         children:
             mcmmo.commands.mcconvert.database: true
     mcmmo.commands.mmoshowdb:
