@@ -124,7 +124,10 @@ public class PlayerListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerDeathMonitor(PlayerDeathEvent event) {
-        if (!HardcoreManager.getHardcoreStatLossEnabled() && !HardcoreManager.getHardcoreVampirismEnabled()) {
+        boolean statLossEnabled = HardcoreManager.isStatLossEnabled();
+        boolean vampirismEnabled = HardcoreManager.isVampirismEnabled();
+
+        if (!statLossEnabled && !vampirismEnabled) {
             return;
         }
 
@@ -136,11 +139,11 @@ public class PlayerListener implements Listener {
 
         Player killer = killedPlayer.getKiller();
 
-        if (killer != null && HardcoreManager.getHardcoreVampirismEnabled()) {
+        if (killer != null && vampirismEnabled) {
             HardcoreManager.invokeVampirism(killer, killedPlayer);
         }
 
-        if (HardcoreManager.getHardcoreStatLossEnabled()) {
+        if (statLossEnabled) {
             HardcoreManager.invokeStatPenalty(killedPlayer);
         }
     }

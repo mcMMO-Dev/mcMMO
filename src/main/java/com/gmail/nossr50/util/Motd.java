@@ -43,8 +43,8 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayHardcoreSettings(Player player) {
-        boolean deathStatLossEnabled = HardcoreManager.getHardcoreStatLossEnabled();
-        boolean vampirismEnabled = HardcoreManager.getHardcoreVampirismEnabled();
+        boolean deathStatLossEnabled = HardcoreManager.isStatLossEnabled();
+        boolean vampirismEnabled = HardcoreManager.isVampirismEnabled();
 
         if (!deathStatLossEnabled && !vampirismEnabled) {
             return;

@@ -94,7 +94,7 @@ public final class HardcoreManager {
      *
      * @return true if Stat Loss is enabled for one or more skill types
      */
-    public static boolean getHardcoreStatLossEnabled() {
+    public static boolean isStatLossEnabled() {
         boolean enabled = false;
 
         for (SkillType skillType : SkillType.nonChildSkills()) {
@@ -112,7 +112,7 @@ public final class HardcoreManager {
      *
      * @return true if Vampirism is enabled for one or more skill types
      */
-    public static boolean getHardcoreVampirismEnabled() {
+    public static boolean isVampirismEnabled() {
         boolean enabled = false;
 
         for (SkillType skillType : SkillType.nonChildSkills()) {
