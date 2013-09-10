@@ -10,11 +10,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.experience.ConvertExperienceCommand;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
-import com.gmail.nossr50.mcMMO;
+
 import com.google.common.collect.ImmutableList;
 
 public class McconvertCommand implements TabExecutor {

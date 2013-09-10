@@ -4,12 +4,12 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.UnknownHostException;
 
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
+
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
 
 public class UpdateChecker {
     private UpdateChecker() {}

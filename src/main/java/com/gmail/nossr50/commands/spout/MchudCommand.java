@@ -10,6 +10,7 @@ import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
 import com.gmail.nossr50.locale.LocaleLoader;
+
 import com.google.common.collect.ImmutableList;
 
 public class MchudCommand extends SpoutCommand {

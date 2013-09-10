@@ -1,10 +1,5 @@
 package com.gmail.nossr50.datatypes.spout.popups;
 
-import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.GenericPopup;
-import org.getspout.spoutapi.gui.InGameHUD;
-import org.getspout.spoutapi.player.SpoutPlayer;
-
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.spout.buttons.McMMOButton;
@@ -12,6 +7,11 @@ import com.gmail.nossr50.datatypes.spout.buttons.McMMOButton.Slot;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
 import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.locale.LocaleLoader;
+
+import org.getspout.spoutapi.gui.GenericLabel;
+import org.getspout.spoutapi.gui.GenericPopup;
+import org.getspout.spoutapi.gui.InGameHUD;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class McMMOMenu extends GenericPopup {
     private McMMOButton hudButton;

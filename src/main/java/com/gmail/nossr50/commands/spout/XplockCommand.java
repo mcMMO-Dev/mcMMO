@@ -12,6 +12,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+
 import com.google.common.collect.ImmutableList;
 
 public class XplockCommand extends SpoutCommand {

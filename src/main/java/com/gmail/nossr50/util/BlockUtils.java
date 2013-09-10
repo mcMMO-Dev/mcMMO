@@ -7,10 +7,10 @@ import org.bukkit.Material;
 import org.bukkit.NetherWartsState;
 import org.bukkit.block.BlockState;
 import org.bukkit.material.CocoaPlant;
-import org.bukkit.material.Crops;
-import org.bukkit.material.SmoothBrick;
 import org.bukkit.material.CocoaPlant.CocoaPlantSize;
+import org.bukkit.material.Crops;
 import org.bukkit.material.NetherWarts;
+import org.bukkit.material.SmoothBrick;
 
 import com.gmail.nossr50.skills.repair.Repair;
 

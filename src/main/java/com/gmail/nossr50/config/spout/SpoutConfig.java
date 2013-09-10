@@ -1,10 +1,10 @@
 package com.gmail.nossr50.config.spout;
 
-import org.getspout.spoutapi.keyboard.Keyboard;
-
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
+
+import org.getspout.spoutapi.keyboard.Keyboard;
 
 public class SpoutConfig extends ConfigLoader {
     private static SpoutConfig instance;

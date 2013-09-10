@@ -3,13 +3,6 @@ package com.gmail.nossr50.listeners;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.getspout.spoutapi.event.input.KeyPressedEvent;
-import org.getspout.spoutapi.event.screen.ButtonClickEvent;
-import org.getspout.spoutapi.event.screen.ScreenCloseEvent;
-import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
-import org.getspout.spoutapi.gui.Button;
-import org.getspout.spoutapi.gui.ScreenType;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -18,6 +11,14 @@ import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.datatypes.spout.popups.McMMOMenu;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
+
+import org.getspout.spoutapi.event.input.KeyPressedEvent;
+import org.getspout.spoutapi.event.screen.ButtonClickEvent;
+import org.getspout.spoutapi.event.screen.ScreenCloseEvent;
+import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;
+import org.getspout.spoutapi.gui.Button;
+import org.getspout.spoutapi.gui.ScreenType;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class SpoutListener implements Listener {
 

@@ -1,5 +1,12 @@
 package com.gmail.nossr50.datatypes.spout.popups;
 
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.spout.SpoutConfig;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.spout.huds.HudType;
+import com.gmail.nossr50.util.StringUtils;
+
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericGradient;
 import org.getspout.spoutapi.gui.GenericTexture;
@@ -7,13 +14,6 @@ import org.getspout.spoutapi.gui.InGameHUD;
 import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.gui.Widget;
 import org.getspout.spoutapi.player.SpoutPlayer;
-
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.spout.SpoutConfig;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.datatypes.spout.huds.HudType;
-import com.gmail.nossr50.util.StringUtils;
 
 public class McMMOXpBar {
     private SpoutPlayer spoutPlayer;

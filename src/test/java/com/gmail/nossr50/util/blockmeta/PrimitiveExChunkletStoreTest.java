@@ -1,9 +1,9 @@
 package com.gmail.nossr50.util.blockmeta;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class PrimitiveExChunkletStoreTest {
     byte addresses[][] = new byte[16][16];

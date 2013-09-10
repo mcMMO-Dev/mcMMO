@@ -11,6 +11,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Permissions;
+
 import com.google.common.collect.Maps;
 
 public enum HerbalismBlock {

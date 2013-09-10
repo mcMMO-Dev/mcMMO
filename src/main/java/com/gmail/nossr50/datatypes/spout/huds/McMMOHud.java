@@ -1,7 +1,6 @@
 package com.gmail.nossr50.datatypes.spout.huds;
 
 import org.bukkit.entity.Player;
-import org.getspout.spoutapi.SpoutManager;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.spout.SpoutConfig;
@@ -10,6 +9,8 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.spout.popups.McMMOMenu;
 import com.gmail.nossr50.datatypes.spout.popups.McMMOXpBar;
+
+import org.getspout.spoutapi.SpoutManager;
 
 public class McMMOHud {
     private Player        player;
