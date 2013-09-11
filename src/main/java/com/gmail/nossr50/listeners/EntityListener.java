@@ -199,7 +199,12 @@ public class EntityListener implements Listener {
 
         Entity entity = event.getEntity();
 
-        if (!(entity instanceof LivingEntity)) {
+        if (entity.hasMetadata(mcMMO.customDamageKey)) {
+            entity.removeMetadata(mcMMO.customDamageKey, plugin);
+            return;
+        }
+
+        if (Misc.isNPCEntity(entity) || !entity.isValid() || !(entity instanceof LivingEntity)) {
             return;
         }
 
@@ -213,11 +218,6 @@ public class EntityListener implements Listener {
 
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
-
-            if (Misc.isNPCEntity(player)) {
-                return;
-            }
-
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             /* Check for invincibility */
