@@ -22,6 +22,7 @@ public class Archery {
     public static int    skillShotIncreaseLevel      = AdvancedConfig.getInstance().getSkillShotIncreaseLevel();
     public static double skillShotIncreasePercentage = AdvancedConfig.getInstance().getSkillShotIncreasePercentage();
     public static double skillShotMaxBonusPercentage = AdvancedConfig.getInstance().getSkillShotBonusMax();
+    public static double skillShotMaxBonusDamage = AdvancedConfig.getInstance().getSkillShotDamageMax();
 
     public static int    dazeMaxBonusLevel = AdvancedConfig.getInstance().getDazeMaxBonusLevel();
     public static int    dazeModifier      = AdvancedConfig.getInstance().getDazeModifier();

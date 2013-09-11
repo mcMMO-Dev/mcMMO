@@ -58,6 +58,7 @@ Skills:
         SkillShot_IncreaseLevel: 50
         SkillShot_IncreasePercentage: 0.1
         SkillShot_MaxBonus: 2.0
+        SkillShot_MaxDamage: 9.0
 
         # Daze_MaxChance: Maximum chance of causing daze to opponents
         # Daze_MaxBonusLevel: Maximum bonus level of Daze, when a player reaches this level his chance of causing a daze will be "Daze_MaxChance"

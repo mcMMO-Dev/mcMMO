@@ -102,7 +102,7 @@ public class ArcheryManager extends SkillManager {
      */
     public void skillShot(LivingEntity target, double damage, Arrow arrow) {
         double damageBonusPercent = Math.min(((getSkillLevel() / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage);
-        double archeryBonus = (damage * damageBonusPercent) - damage;
+        double archeryBonus = Math.min(damage * damageBonusPercent, Archery.skillShotMaxBonusDamage);
 
         CombatUtils.dealDamage(target, archeryBonus, DamageCause.PROJECTILE, arrow, mcMMOPlayer, SkillType.ARCHERY);
     }
