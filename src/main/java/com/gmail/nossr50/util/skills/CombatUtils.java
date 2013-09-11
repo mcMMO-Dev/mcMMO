@@ -141,10 +141,6 @@ public final class CombatUtils {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
 
-        if (archeryManager.canSkillShot()) {
-            archeryManager.skillShot(target, event.getDamage(), arrow);
-        }
-
         if (target instanceof Player && SkillType.UNARMED.getPVPEnabled()) {
             UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
 
@@ -155,6 +151,10 @@ public final class CombatUtils {
                     return;
                 }
             }
+        }
+
+        if (archeryManager.canSkillShot()) {
+            archeryManager.skillShot(target, event.getDamage(), arrow);
         }
 
         if (archeryManager.canDaze(target)) {
