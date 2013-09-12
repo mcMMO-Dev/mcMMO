@@ -285,24 +285,24 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
     }
 
-    public List<PlayerStat> readLeaderboard(String skillName, int pageNumber, int statsPerPage) {
+    public List<PlayerStat> readLeaderboard(SkillType skill, int pageNumber, int statsPerPage) {
         updateLeaderboards();
-        List<PlayerStat> statsList = skillName.equalsIgnoreCase("all") ? powerLevels : playerStatHash.get(SkillType.getSkill(skillName));
+        List<PlayerStat> statsList = skill == null ? powerLevels : playerStatHash.get(skill);
         int fromIndex = (Math.max(pageNumber, 1) - 1) * statsPerPage;
 
         return statsList.subList(Math.min(fromIndex, statsList.size()), Math.min(fromIndex + statsPerPage, statsList.size()));
     }
 
-    public Map<String, Integer> readRank(String playerName) {
+    public Map<SkillType, Integer> readRank(String playerName) {
         updateLeaderboards();
 
-        Map<String, Integer> skills = new HashMap<String, Integer>();
+        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();
 
         for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
-            skills.put(skill.name(), getPlayerRank(playerName, playerStatHash.get(skill)));
+            skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
         }
 
-        skills.put("ALL", getPlayerRank(playerName, powerLevels));
+        skills.put(null, getPlayerRank(playerName, powerLevels));
 
         return skills;
     }
@@ -400,7 +400,16 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 e.printStackTrace();
             }
             finally {
-                tryClose(in);
+                // I have no idea why it's necessary to inline tryClose() here, but it removes
+                // a resource leak warning, and I'm trusting the compiler on this one.
+                if (in != null) {
+                    try {
+                        in.close();
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         }
 

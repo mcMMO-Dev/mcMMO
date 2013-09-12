@@ -57,7 +57,6 @@ import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class PlayerListener implements Listener {
@@ -363,7 +362,6 @@ public class PlayerListener implements Listener {
         }
 
         UserManager.addUser(player).actualizeRespawnATS();
-        ScoreboardManager.enablePowerLevelDisplay(player);
 
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
             Motd.displayAll(player);

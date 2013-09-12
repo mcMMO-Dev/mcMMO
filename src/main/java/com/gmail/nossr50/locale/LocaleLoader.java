@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import org.bukkit.ChatColor;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 
 public final class LocaleLoader {
@@ -40,6 +41,7 @@ public final class LocaleLoader {
                 return getString(key, enBundle, messageArguments);
             }
             catch (MissingResourceException ex2) {
+                mcMMO.p.getLogger().warning("Could not find locale string: " + key);
                 return '!' + key + '!';
             }
         }

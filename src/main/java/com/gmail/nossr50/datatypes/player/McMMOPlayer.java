@@ -97,6 +97,7 @@ public class McMMOPlayer {
     private int recentlyHurt;
     private int respawnATS;
     private int teleportATS;
+    private long databaseATS;
     private int chimeraWingLastUse;
     private Location teleportCommence;
 
@@ -425,6 +426,14 @@ public class McMMOPlayer {
 
     public void actualizeTeleportATS() {
         teleportATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+    }
+
+    public long getDatabaseATS() {
+        return databaseATS;
+    }
+
+    public void actualizeDatabaseATS() {
+        databaseATS = System.currentTimeMillis();
     }
 
     /*

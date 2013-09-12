@@ -30,6 +30,7 @@ import com.gmail.nossr50.commands.hardcore.VampirismCommand;
 import com.gmail.nossr50.commands.party.PartyCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.commands.player.InspectCommand;
+import com.gmail.nossr50.commands.player.MccooldownCommand;
 import com.gmail.nossr50.commands.player.McrankCommand;
 import com.gmail.nossr50.commands.player.McstatsCommand;
 import com.gmail.nossr50.commands.player.MctopCommand;
@@ -206,6 +207,15 @@ public final class CommandRegistrationManager {
         command.setExecutor(new InspectCommand());
     }
 
+    private static void registerMccooldownCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mccooldown");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mccooldown"));
+        command.setPermission("mcmmo.commands.mccooldown");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mccooldowns"));
+        command.setExecutor(new MccooldownCommand());
+    }
+
     private static void registerMcabilityCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcability");
         command.setDescription(LocaleLoader.getString("Commands.Description.mcability"));
@@ -375,8 +385,7 @@ public final class CommandRegistrationManager {
         command.setDescription("Change the current mcMMO scoreboard being displayed"); //TODO: Localize
         command.setPermission("mcmmo.commands.mcscoreboard");
         command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcscoreboard", "<CLEAR | RANK | STATS | TOP>"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.3", "mcscoreboard", "top", "[" + LocaleLoader.getString("Commands.Usage.Skill") + "]", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcscoreboard", "<CLEAR | KEEP | TIME>"));
         command.setExecutor(new McscoreboardCommand());
     }
 
@@ -427,6 +436,7 @@ public final class CommandRegistrationManager {
 
         // Player Commands
         registerInspectCommand();
+        registerMccooldownCommand();
         registerMcrankCommand();
         registerMcstatsCommand();
         registerMctopCommand();

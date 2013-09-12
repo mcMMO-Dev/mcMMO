@@ -27,35 +27,62 @@ General:
     # Should mcMMO over-write configs to update, or make new ones ending in .new?
     Config_Update_Overwrite: true
 
-Scoreboards:
-    # Should mcMMO use scoreboards for /inspect?
-    # Amount of time (in seconds) to display. To display permanently, set to -1
-    Inspect:
-        Use: true
-        Display_Time: 10
-    # Should mcMMO use scoreboards for /mcrank?
-    # Amount of time (in seconds) to display. To display permanently, set to -1
-    Mcrank:
-        Use: true
-        Display_Time: 10
-    # Should mcMMO use scoreboards for /mcstats?
-    # Amount of time (in seconds) to display. To display permanently, set to -1
-    Mcstats:
-        Use: true
-        Display_Time: 10
-    # Should mcMMO use scoreboards for /mctop?
-    # Amount of time (in seconds) to display. To display permanently, set to -1
-    Mctop:
-        Use: true
-        Display_Time: 10
-    # Should mcMMO use scoreboards for /skillname (/mining, /fishing, etc.)?
-    # Amount of time (in seconds) to display. To display permanently, set to -1
-    Skillname:
-        Use: true
-        Display_Time: 10
-    # Should mcMMO display power levels on scoreboards? (below player name-tags)
-    Power_Level:
-        Use: false
+#
+#  Settings for the mcMMO scoreboards
+###
+Scoreboard:
+    # Display player's power levels below their names?
+    Power_Level_Tags: false
+
+    # Allow players to use "/mcscoreboard keep" to keep the scoreboard up
+    Allow_Keep: true
+
+    # Add some more color on the board :-)
+    Rainbows: false
+
+    # Settings for each type of scoreboard
+    Types:
+        # Settings for /mcrank
+        # The sub-options (Print, Board, Display_Time) are the same for each type.
+        Rank:
+            # Should the command output be printed in chat?
+            Print: false
+            # Should the command output be displayed in the scoreboard sidebar?
+            Board: true
+            # Amount of time (seconds) to display in the sidebar before clearing.
+            # To display permanently, use "/mcscoreboard keep" or set to -1
+            Display_Time: 15
+        # Settings for /mctop
+        Top:
+            Print: true
+            Board: true
+            Display_Time: 15
+        # Settings for /mcstats
+        Stats:
+            Print: false
+            Board: true
+            Display_Time: 15
+        # Settings for /inspect
+        Inspect:
+            Print: false
+            Board: true
+            Display_Time: 20
+        # Settings for /mccooldown
+        Cooldown:
+            Print: true
+            Board: true
+            Display_Time: 41
+        # Settings for /<skillname> (e.g. /mining, /unarmed)
+        # No "print" option is given here; the information will always be displayed in chat.
+        # It should also be noted that this display is pretty dang cool.
+        Skill:
+            Board: true
+            Display_Time: 30
+
+            # Should the board be shown when a player levels up, and for how long?
+            # It is recommended to NOT have LevelUp_Time be -1, as this may confuse players.
+            LevelUp_Board: true
+            LevelUp_Time: 5
 
 Mob_Healthbar:
     # Default display for mob health bars - HEARTS, BAR, or DISABLED

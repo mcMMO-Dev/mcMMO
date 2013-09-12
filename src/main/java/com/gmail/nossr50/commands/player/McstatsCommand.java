@@ -8,7 +8,6 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -26,28 +25,25 @@ public class McstatsCommand implements TabExecutor {
         switch (args.length) {
             case 0:
                 Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-                if (Config.getInstance().getMcstatsScoreboardsEnabled()) {
-                    ScoreboardManager.setupPlayerScoreboard(player.getName());
-                    ScoreboardManager.enablePlayerStatsScoreboard(mcMMOPlayer);
+                if (Config.getInstance().getStatsUseBoard()) {
+                    ScoreboardManager.enablePlayerStatsScoreboard(player);
+                    if (!Config.getInstance().getStatsUseChat()) return true;
+                }
+                player.sendMessage(LocaleLoader.getString("Stats.Own.Stats"));
+                player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
+
+                CommandUtils.printGatheringSkills(player);
+                CommandUtils.printCombatSkills(player);
+                CommandUtils.printMiscSkills(player);
+
+                int powerLevelCap = Config.getInstance().getPowerLevelCap();
+
+                if (powerLevelCap != Integer.MAX_VALUE) {
+                    player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
                 }
                 else {
-                    player.sendMessage(LocaleLoader.getString("Stats.Own.Stats"));
-                    player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
-
-                    CommandUtils.printGatheringSkills(player);
-                    CommandUtils.printCombatSkills(player);
-                    CommandUtils.printMiscSkills(player);
-
-                    int powerLevelCap = Config.getInstance().getPowerLevelCap();
-
-                    if (powerLevelCap != Integer.MAX_VALUE) {
-                        player.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Capped", UserManager.getPlayer(player).getPowerLevel(), powerLevelCap));
-                    }
-                    else {
-                        player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", UserManager.getPlayer(player).getPowerLevel()));
-                    }
+                    player.sendMessage(LocaleLoader.getString("Commands.PowerLevel", UserManager.getPlayer(player).getPowerLevel()));
                 }
 
                 return true;
