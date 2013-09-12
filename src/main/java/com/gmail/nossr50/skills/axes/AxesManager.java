@@ -54,10 +54,10 @@ public class AxesManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} being affected by the ability
      */
-    public void axeMastery(LivingEntity target) {
+    public double axeMastery(LivingEntity target) {
         double axeBonus = Math.min(getSkillLevel() / (Axes.bonusDamageMaxBonusLevel / Axes.bonusDamageMaxBonus), Axes.bonusDamageMaxBonus);
 
-        CombatUtils.dealDamage(target, axeBonus, getPlayer(), mcMMOPlayer, SkillType.AXES);
+        return CombatUtils.callFakeDamageEvent(getPlayer(), target, axeBonus);
     }
 
     /**
@@ -66,9 +66,9 @@ public class AxesManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      */
-    public void criticalHit(LivingEntity target, double damage) {
+    public double criticalHit(LivingEntity target, double damage) {
         if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Axes.criticalHitMaxChance, Axes.criticalHitMaxBonusLevel)) {
-            return;
+            return 0;
         }
 
         Player player = getPlayer();
@@ -84,7 +84,7 @@ public class AxesManager extends SkillManager {
             damage = (damage * Axes.criticalHitPVEModifier) - damage;
         }
 
-        CombatUtils.dealDamage(target, damage, player, mcMMOPlayer, SkillType.AXES);
+        return CombatUtils.callFakeDamageEvent(player, target, damage);
     }
 
     /**
@@ -112,9 +112,9 @@ public class AxesManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} being affected by the ability
      */
-    public void greaterImpact(LivingEntity target) {
+    public double greaterImpact(LivingEntity target) {
         if (!(Axes.greaterImpactChance > Misc.getRandom().nextInt(getActivationChance()))) {
-            return;
+            return 0;
         }
 
         Player player = getPlayer();
@@ -134,7 +134,7 @@ public class AxesManager extends SkillManager {
             }
         }
 
-        CombatUtils.dealDamage(target, Axes.greaterImpactBonusDamage, player, mcMMOPlayer, SkillType.AXES);
+        return CombatUtils.callFakeDamageEvent(player, target, Axes.greaterImpactBonusDamage);
     }
 
     /**

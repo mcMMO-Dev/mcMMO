@@ -71,9 +71,9 @@ public class ArcheryManager extends SkillManager {
      * @param defender The {@link Player} being affected by the ability
      * @param arrow The {@link Arrow} that was fired
      */
-    public void daze(Player defender, Arrow arrow) {
+    public double daze(Player defender, Arrow arrow) {
         if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel)) {
-            return;
+            return 0;
         }
 
         Location dazedLocation = defender.getLocation();
@@ -90,7 +90,7 @@ public class ArcheryManager extends SkillManager {
             getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
         }
 
-        CombatUtils.dealDamage(defender, Archery.dazeModifier, DamageCause.PROJECTILE, arrow, mcMMOPlayer, SkillType.ARCHERY);
+        return CombatUtils.callFakeDamageEvent(arrow, defender, DamageCause.PROJECTILE, Archery.dazeModifier);
     }
 
     /**
@@ -100,10 +100,10 @@ public class ArcheryManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @param arrow The {@link Arrow} that was fired
      */
-    public void skillShot(LivingEntity target, double damage, Arrow arrow) {
+    public double skillShot(LivingEntity target, double damage, Arrow arrow) {
         double damageBonusPercent = Math.min(((getSkillLevel() / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage);
         double archeryBonus = Math.min(damage * damageBonusPercent, Archery.skillShotMaxBonusDamage);
 
-        CombatUtils.dealDamage(target, archeryBonus, DamageCause.PROJECTILE, arrow, mcMMOPlayer, SkillType.ARCHERY);
+        return CombatUtils.callFakeDamageEvent(arrow, target, DamageCause.PROJECTILE, archeryBonus);
     }
 }

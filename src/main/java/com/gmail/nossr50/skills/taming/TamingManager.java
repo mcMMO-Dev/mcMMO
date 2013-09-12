@@ -109,9 +109,9 @@ public class TamingManager extends SkillManager {
      * @param damage The initial damage
      * @param wolf The wolf using the ability
      */
-    public void gore(LivingEntity target, double damage, Wolf wolf) {
+    public double gore(LivingEntity target, double damage, Wolf wolf) {
         if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Taming.goreMaxChance, Taming.goreMaxBonusLevel)) {
-            return;
+            return 0;
         }
 
         BleedTimerTask.add(target, Taming.goreBleedTicks);
@@ -123,11 +123,11 @@ public class TamingManager extends SkillManager {
         getPlayer().sendMessage(LocaleLoader.getString("Combat.Gore"));
 
         damage = (damage * Taming.goreModifier) - damage;
-        CombatUtils.dealDamage(target, damage, wolf, mcMMOPlayer, SkillType.TAMING);
+        return CombatUtils.callFakeDamageEvent(wolf, target, damage);
     }
 
-    public void sharpenedClaws(LivingEntity target, Wolf wolf) {
-        CombatUtils.dealDamage(target, Taming.sharpenedClawsBonusDamage, wolf, mcMMOPlayer, SkillType.TAMING);
+    public double sharpenedClaws(LivingEntity target, Wolf wolf) {
+        return CombatUtils.callFakeDamageEvent(wolf, target, Taming.sharpenedClawsBonusDamage);
     }
 
     /**
