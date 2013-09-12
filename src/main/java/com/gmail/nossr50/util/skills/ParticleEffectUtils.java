@@ -59,6 +59,14 @@ public final class ParticleEffectUtils {
         livingEntity.getWorld().createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
     }
 
+    public static void playCallOfTheWildEffect(LivingEntity livingEntity) {
+        if (!Config.getInstance().getCallOfTheWildEffectEnabled()) {
+            return;
+        }
+
+        livingEntity.getWorld().playEffect(livingEntity.getEyeLocation(), Effect.MOBSPAWNER_FLAMES, 1);
+    }
+
     public static void playAbilityEnabledEffect(Player player) {
         if (!Config.getInstance().getAbilityActivationEffectEnabled()) {
             return;

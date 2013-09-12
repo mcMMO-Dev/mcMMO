@@ -353,21 +353,26 @@ Skills:
             # Item_Material: Material of the item needed to summon the pet
             # Item_Amount: Amount of items required to summon the pet
             # Summon_Amount: Amount of pets to summon when using Call Of The Wild
+            # Summon_Length: Pets despawn when their summon life length expires
             Wolf:
                 Item_Material: BONE
                 Item_Amount: 10
                 Summon_Amount: 1
+                Summon_Length: 240
             Ocelot:
                 Item_Material: RAW_FISH
                 Item_Amount: 10
                 Summon_Amount: 1
+                Summon_Length: 240
             Horse:
                 Item_Material: APPLE
                 Item_Amount: 10
                 Summon_Amount: 1
+                Summon_Length: 240
 
             # Range to check for nearby pets when using Call Of The Wild, 0 will disable the check
             Range: 40.0
+
     Unarmed:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
@@ -473,6 +478,7 @@ Particles:
     Dodge: true
     Bleed: true
     Greater_Impact: true
+    Call_of_the_Wild: true
 
     # These settings determine if fireworks should get launched when a player levels-up,
     # this will happen by default for every 100 levels.

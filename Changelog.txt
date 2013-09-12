@@ -27,6 +27,8 @@ Version 1.5.01-dev
  + Added options to tools.yml and armor.yml config files to set a pretty repair material name
  + Added full support for repairables in tools.yml and armor.yml config files
  + Added magical mod config file import command, for Cauldron 1.7+. Check wiki for usage
+ + Added particle effects and sounds to "Call of the Wild" (Taming)
+ + Added summon length to "Call of the Wild". Summons will now commit suicide after their lifespan expires
  = Fixed bug where pistons would mess with the block tracking
  = Fixed bug where the Updater was running on the main thread.
  = Fixed bug when players would use /ptp without being in a party

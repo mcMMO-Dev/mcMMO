@@ -383,6 +383,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getDodgeEffectEnabled() { return config.getBoolean("Particles.Dodge", true); }
     public boolean getBleedEffectEnabled() { return config.getBoolean("Particles.Bleed", true); }
     public boolean getGreaterImpactEffectEnabled() { return config.getBoolean("Particles.Greater_Impact", true); }
+    public boolean getCallOfTheWildEffectEnabled() { return config.getBoolean("Particles.Call_of_the_Wild", true); }
     public boolean getLevelUpEffectsEnabled() { return config.getBoolean("Particles.LevelUp_Enabled", true); }
     public int getLevelUpEffectsTier() { return config.getInt("Particles.LevelUp_Tier", 100); }
     public boolean getLargeFireworks() { return config.getBoolean("Particles.LargeFireworks", true); }
@@ -496,7 +497,9 @@ public class Config extends AutoUpdateConfigLoader {
     public Material getTamingCOTWMaterial(EntityType type) { return Material.matchMaterial(config.getString("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Item_Material")); }
     public int getTamingCOTWCost(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Item_Amount"); }
     public int getTamingCOTWAmount(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Summon_Amount"); }
+    public int getTamingCOTWLength(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type)+ ".Summon_Length"); }
     public double getTamingCOTWRange() { return config.getDouble("Skills.Taming.Call_Of_The_Wild.Range", 40.0D); }
+    public int getTamingCOTWMaxAmount(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type)+ "_MaxAmount"); }
 
     /* Woodcutting */
     public boolean getWoodcuttingDoubleDropsEnabled(TreeSpecies species) { return config.getBoolean("Double_Drops.Woodcutting." + StringUtils.getPrettyTreeSpeciesString(species).replace(" ", "_")); }

@@ -1,8 +1,12 @@
 package com.gmail.nossr50.skills.taming;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.EntityEffect;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
@@ -12,6 +16,8 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class Taming {
+    private static List<TrackedTamingEntity> trackedEntities = new ArrayList<TrackedTamingEntity>();
+
     public static int environmentallyAwareUnlockLevel = AdvancedConfig.getInstance().getEnviromentallyAwareUnlock();
     public static int holyHoundUnlockLevel            = AdvancedConfig.getInstance().getHolyHoundUnlock();
 
@@ -74,5 +80,15 @@ public class Taming {
             default:
                 return "";
         }
+    }
+
+    protected static void addToTracker(LivingEntity livingEntity) {
+        TrackedTamingEntity trackedEntity = new TrackedTamingEntity(livingEntity);
+
+        trackedEntities.add(trackedEntity);
+    }
+
+    protected static void removeFromTracker(TrackedTamingEntity trackedEntity) {
+        trackedEntities.remove(trackedEntity);
     }
 }
