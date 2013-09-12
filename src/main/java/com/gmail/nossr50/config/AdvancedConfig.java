@@ -789,15 +789,15 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /* ACROBATICS */
     public double getDodgeChanceMax() { return config.getDouble("Skills.Acrobatics.Dodge_ChanceMax", 20.0D); }
     public int getDodgeMaxBonusLevel() { return config.getInt("Skills.Acrobatics.Dodge_MaxBonusLevel", 800); }
-    public int getDodgeDamageModifier() { return config.getInt("Skills.Acrobatics.Dodge_DamageModifier", 2); }
+    public double getDodgeDamageModifier() { return config.getDouble("Skills.Acrobatics.Dodge_DamageModifier", 2.0D); }
 
     public double getRollChanceMax() { return config.getDouble("Skills.Acrobatics.Roll_ChanceMax", 100.0D); }
     public int getRollMaxBonusLevel() { return config.getInt("Skills.Acrobatics.Roll_MaxBonusLevel", 1000); }
-    public int getRollDamageThreshold() { return config.getInt("Skills.Acrobatics.Roll_DamageThreshold", 7); }
+    public double getRollDamageThreshold() { return config.getDouble("Skills.Acrobatics.Roll_DamageThreshold", 7.0D); }
 
     public double getGracefulRollChanceMax() { return config.getDouble("Skills.Acrobatics.GracefulRoll_ChanceMax", 100.0D); }
     public int getGracefulRollMaxBonusLevel() { return config.getInt("Skills.Acrobatics.GracefulRoll_MaxBonusLevel", 500); }
-    public int getGracefulRollDamageThreshold() { return config.getInt("Skills.Acrobatics.GracefulRoll_DamageThreshold", 14); }
+    public double getGracefulRollDamageThreshold() { return config.getDouble("Skills.Acrobatics.GracefulRoll_DamageThreshold", 14.0D); }
 
     public int getDodgeXPModifier() { return config.getInt("Skills.Acrobatics.Dodge_XP_Modifier", 120); }
     public int getRollXPModifier() { return config.getInt("Skills.Acrobatics.Roll_XP_Modifier", 80); }
@@ -811,7 +811,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     public double getDazeBonusMax() { return config.getDouble("Skills.Archery.Daze_MaxChance", 50.0D); }
     public int getDazeMaxBonusLevel() { return config.getInt("Skills.Archery.Daze_MaxBonusLevel", 1000); }
-    public int getDazeModifier() { return config.getInt("Skills.Archery.Daze_BonusDamage", 4); }
+    public double getDazeModifier() { return config.getDouble("Skills.Archery.Daze_BonusDamage", 4.0D); }
 
     public double getRetrieveChanceMax() { return config.getDouble("Skills.Archery.Retrieve_MaxBonus", 100.0D); }
     public int getRetrieveMaxBonusLevel() { return config.getInt("Skills.Archery.Retrieve_MaxBonusLevel", 1000); }
@@ -819,7 +819,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getForceMultiplier() { return config.getDouble("Skills.Archery.Force_Multiplier", 2.0D); }
 
     /* AXES */
-    public int getBonusDamageAxesBonusMax() { return config.getInt("Skills.Axes.DamageIncrease_MaxBonus", 4); }
+    public double getBonusDamageAxesBonusMax() { return config.getDouble("Skills.Axes.DamageIncrease_MaxBonus", 4.0D); }
     public int getBonusDamageAxesMaxBonusLevel() { return config.getInt("Skills.Axes.DamageIncrease_MaxBonusLevel", 200); }
 
     public double getAxesCriticalChance() { return config.getDouble("Skills.Axes.AxesCritical_MaxChance", 37.50D); }
@@ -828,14 +828,14 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getAxesCriticalPVEModifier() { return config.getDouble("Skills.Axes.AxesCritical_PVE_Modifier", 2.0D); }
 
     public double getGreaterImpactChance() { return config.getDouble("Skills.Axes.GreaterImpact_Chance", 25.0D); }
-    public double getGreaterImpactModifier() { return config.getDouble("Skills.Axes.GreaterImpact_KnockbackModifier", 1.5); }
-    public int getGreaterImpactBonusDamage() { return config.getInt("Skills.Axes.GreaterImpact_BonusDamage", 2); }
+    public double getGreaterImpactModifier() { return config.getDouble("Skills.Axes.GreaterImpact_KnockbackModifier", 1.5D); }
+    public double getGreaterImpactBonusDamage() { return config.getDouble("Skills.Axes.GreaterImpact_BonusDamage", 2.0D); }
 
     public int getArmorImpactIncreaseLevel() { return config.getInt("Skills.Axes.ArmorImpact_IncreaseLevel", 50); }
     public double getImpactChance() { return config.getDouble("Skills.Axes.ArmorImpact_Chance", 25.0D); }
     public double getArmorImpactMaxDurabilityDamage() { return config.getDouble("Skills.Axes.ArmorImpact_MaxPercentageDurabilityDamage", 20.0D); }
 
-    public int getSkullSplitterModifier() { return config.getInt("Skills.Axes.SkullSplitter_DamagerModifier", 2); }
+    public double getSkullSplitterModifier() { return config.getDouble("Skills.Axes.SkullSplitter_DamagerModifier", 2.0D); }
 
     /* EXCAVATION */
     //Nothing to configure, everything is already configurable in config.yml
@@ -847,7 +847,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getFishingTierLevelsTier4() { return config.getInt("Skills.Fishing.Tier_Levels.Tier4", 600); }
     public int getFishingTierLevelsTier5() { return config.getInt("Skills.Fishing.Tier_Levels.Tier5", 800); }
 
-    public int getFishingMagicMultiplier() { return config.getInt("Skills.Fishing.MagicHunter_Multiplier", 5); }
+    public double getFishingMagicMultiplier() { return config.getDouble("Skills.Fishing.MagicHunter_Multiplier", 5.0D); }
 
     public int getFishermanDietRankChange() { return config.getInt("Skills.Fishing.Fisherman_Diet_RankChange", 200); }
 
@@ -855,11 +855,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* Shake */
     public int getShakeUnlockLevel() { return config.getInt("Skills.Fishing.Shake_UnlockLevel", 150); }
-    public int getShakeChanceRank1() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_1", 25); }
-    public int getShakeChanceRank2() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_2", 40); }
-    public int getShakeChanceRank3() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_3", 55); }
-    public int getShakeChanceRank4() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_4", 60); }
-    public int getShakeChanceRank5() { return config.getInt("Skills.Fishing.Shake_Chance.Rank_5", 75); }
+    public double getShakeChanceRank1() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_1", 25.0D); }
+    public double getShakeChanceRank2() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_2", 40.0D); }
+    public double getShakeChanceRank3() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_3", 55.0D); }
+    public double getShakeChanceRank4() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_4", 60.0D); }
+    public double getShakeChanceRank5() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_5", 75.0D); }
 
     /* Vanilla XP Boost */
     public int getFishingVanillaXPModifierRank1() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_1", 1); }
@@ -951,15 +951,17 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* Arcane Forging */
     public boolean getArcaneForgingDowngradeEnabled() { return config.getBoolean("Skills.Repair.Arcane_Forging.Downgrades.Enabled", true); }
-    public int getArcaneForgingDowngradeChanceRank1() { return config.getInt("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_1", 75); }
-    public int getArcaneForgingDowngradeChanceRank2() { return config.getInt("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_2", 50); }
-    public int getArcaneForgingDowngradeChanceRank3() { return config.getInt("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_3", 25); }
-    public int getArcaneForgingDowngradeChanceRank4() { return config.getInt("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_4", 15); }
+    public double getArcaneForgingDowngradeChanceRank1() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_1", 75.0D); }
+    public double getArcaneForgingDowngradeChanceRank2() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_2", 50.0D); }
+    public double getArcaneForgingDowngradeChanceRank3() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_3", 25.0D); }
+    public double getArcaneForgingDowngradeChanceRank4() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_4", 15.0D); }
+
     public boolean getArcaneForgingEnchantLossEnabled() { return config.getBoolean("Skills.Repair.Arcane_Forging.May_Lose_Enchants", true); }
-    public int getArcaneForgingKeepEnchantsChanceRank1() { return config.getInt("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10); }
-    public int getArcaneForgingKeepEnchantsChanceRank2() { return config.getInt("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20); }
-    public int getArcaneForgingKeepEnchantsChanceRank3() { return config.getInt("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30); }
-    public int getArcaneForgingKeepEnchantsChanceRank4() { return config.getInt("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40); }
+    public double getArcaneForgingKeepEnchantsChanceRank1() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10.0D); }
+    public double getArcaneForgingKeepEnchantsChanceRank2() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20.0D); }
+    public double getArcaneForgingKeepEnchantsChanceRank3() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30.0D); }
+    public double getArcaneForgingKeepEnchantsChanceRank4() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40.0D); }
+
     public int getArcaneForgingRankLevels1() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_1", 100); }
     public int getArcaneForgingRankLevels2() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_2", 250); }
     public int getArcaneForgingRankLevels3() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_3", 500); }
@@ -996,32 +998,32 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public boolean getCounterRequiresBlock() { return config.getBoolean("Skills.Swords.Counter_RequiresBlock"); }
     public double getCounterChanceMax() { return config.getDouble("Skills.Swords.Counter_ChanceMax", 30.0D); }
     public int getCounterMaxBonusLevel() { return config.getInt("Skills.Swords.Counter_MaxBonusLevel", 600); }
-    public int getCounterModifier() { return config.getInt("Skills.Swords.Counter_DamageModifier", 2); }
+    public double getCounterModifier() { return config.getDouble("Skills.Swords.Counter_DamageModifier", 2.0D); }
 
-    public int getSerratedStrikesModifier() { return config.getInt("Skills.Swords.SerratedStrikes_DamageModifier", 4); }
+    public double getSerratedStrikesModifier() { return config.getDouble("Skills.Swords.SerratedStrikes_DamageModifier", 4.0D); }
     public int getSerratedStrikesTicks() { return config.getInt("Skills.Swords.SerratedStrikes_BleedTicks", 5); }
 
     /* TAMING */
-    public double getGoreChanceMax() { return config.getInt("Skills.Taming.Gore_ChanceMax", 100); }
+    public double getGoreChanceMax() { return config.getDouble("Skills.Taming.Gore_ChanceMax", 100.0D); }
     public int getGoreMaxBonusLevel() { return config.getInt("Skills.Taming.Gore_MaxBonusLevel", 1000); }
     public int getGoreBleedTicks() { return config.getInt("Skills.Taming.Gore_BleedTicks", 2); }
-    public int getGoreModifier() { return config.getInt("Skills.Taming.Gore_Modifier", 2); }
+    public double getGoreModifier() { return config.getDouble("Skills.Taming.Gore_Modifier", 2.0D); }
 
     public int getFastFoodUnlock() { return config.getInt("Skills.Taming.FastFood_UnlockLevel", 50); }
-    public double getFastFoodChance() { return config.getInt("Skills.Taming.FastFood_Chance", 50); }
+    public double getFastFoodChance() { return config.getDouble("Skills.Taming.FastFood_Chance", 50.0D); }
 
     public int getEnviromentallyAwareUnlock() { return config.getInt("Skills.Taming.EnvironmentallyAware_UnlockLevel", 100); }
 
     public int getThickFurUnlock() { return config.getInt("Skills.Taming.ThickFur_UnlockLevel", 250); }
-    public int getThickFurModifier() { return config.getInt("Skills.Taming.ThickFur_Modifier", 2); }
+    public double getThickFurModifier() { return config.getDouble("Skills.Taming.ThickFur_Modifier", 2.0D); }
 
     public int getHolyHoundUnlock() {return config.getInt("Skills.Taming.HolyHound_UnlockLevel", 375); }
 
     public int getShockProofUnlock() { return config.getInt("Skills.Taming.ShockProof_UnlockLevel", 500); }
-    public int getShockProofModifier() { return config.getInt("Skills.Taming.ShockProof_Modifier", 6); }
+    public double getShockProofModifier() { return config.getDouble("Skills.Taming.ShockProof_Modifier", 6.0D); }
 
     public int getSharpenedClawsUnlock() { return config.getInt("Skills.Taming.SharpenedClaws_UnlockLevel", 750); }
-    public int getSharpenedClawsBonus() { return config.getInt("Skills.Taming.SharpenedClaws_Bonus", 2); }
+    public double getSharpenedClawsBonus() { return config.getDouble("Skills.Taming.SharpenedClaws_Bonus", 2.0D); }
 
     /* UNARMED */
     public double getDisarmChanceMax() { return config.getDouble("Skills.Unarmed.Disarm_ChanceMax", 33.0D); }
@@ -1033,8 +1035,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getIronGripChanceMax() { return config.getDouble("Skills.Unarmed.IronGrip_ChanceMax", 100.0D); }
     public int getIronGripMaxBonusLevel() { return config.getInt("Skills.Unarmed.IronGrip_MaxBonusLevel", 1000); }
 
-    public int getIronArmMinBonus() { return config.getInt("Skills.Unarmed.IronArm_BonusMin", 3); }
-    public int getIronArmMaxBonus() { return config.getInt("Skills.Unarmed.IronArm_BonusMax", 8); }
+    public double getIronArmMinBonus() { return config.getDouble("Skills.Unarmed.IronArm_BonusMin", 3.0D); }
+    public double getIronArmMaxBonus() { return config.getDouble("Skills.Unarmed.IronArm_BonusMax", 8.0D); }
     public int getIronArmIncreaseLevel() { return config.getInt("Skills.Unarmed.IronArm_IncreaseLevel", 50); }
 
     /* WOODCUTTING */
@@ -1048,12 +1050,12 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public boolean getKrakenGlobalSoundsEnabled() { return config.getBoolean("Kraken.Global_Sounds", true); }
     public boolean getKrakenEscapeAllowed() { return config.getBoolean("Kraken.Allow_Escaping", false); }
     public int getKrakenTriesBeforeRelease() { return config.getInt("Kraken.Tries_Before_Release", 50); }
-    public int getKrakenHealth() { return config.getInt("Kraken.Health", 50); }
+    public double getKrakenHealth() { return config.getDouble("Kraken.Health", 50.0D); }
     public String getKrakenName() { return config.getString("Kraken.Name", "The Kraken"); }
     public String getServerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Server", "(PLAYER) has unleashed the kraken!"); }
     public String getPlayerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Player", "THE KRAKEN HAS BEEN UNLEASHED!"); }
     public String getPlayerDefeatMessage() { return config.getString("Kraken.Defeated_Message.Killed", "You have slain the kraken!"); }
     public String getPlayerEscapeMessage() { return config.getString("Kraken.Defeated_Message.Escape", "You have escaped from the kraken!"); }
     public int getKrakenAttackInterval() { return config.getInt("Kraken.Attack_Interval_Seconds", 1); }
-    public int getKrakenAttackDamage() { return config.getInt("Kraken.Attack_Damage", 1); }
+    public double getKrakenAttackDamage() { return config.getDouble("Kraken.Attack_Damage", 1.0D); }
 }

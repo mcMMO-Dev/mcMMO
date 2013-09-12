@@ -18,23 +18,23 @@ public final class Fishing {
     protected enum Tier {
         FIVE(5) {
             @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier5(); }
-            @Override public int getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank5(); }
+            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank5(); }
             @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank5(); }},
         FOUR(4) {
             @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier4(); }
-            @Override public int getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank4(); }
+            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank4(); }
             @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank4(); }},
         THREE(3) {
             @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier3(); }
-            @Override public int getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank3(); }
+            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank3(); }
             @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank3(); }},
         TWO(2) {
             @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier2(); }
-            @Override public int getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank2(); }
+            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank2(); }
             @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank2(); }},
         ONE(1) {
             @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier1(); }
-            @Override public int getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank1(); }
+            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank1(); }
             @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank1(); }};
 
         int numerical;
@@ -48,7 +48,7 @@ public final class Fishing {
         }
 
         abstract protected int getLevel();
-        abstract protected int getShakeChance();
+        abstract protected double getShakeChance();
         abstract protected int getVanillaXPBoostModifier();
     }
 

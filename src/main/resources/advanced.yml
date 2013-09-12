@@ -27,14 +27,14 @@ Skills:
         # Dodge_DamageModifer: Dodge damage will be divided by this modifier
         Dodge_ChanceMax: 20.0
         Dodge_MaxBonusLevel: 800
-        Dodge_DamageModifier: 2
+        Dodge_DamageModifier: 2.0
 
         # Roll_ChanceMax: Maximum chance of rolling when on Roll_MaxBonusLevel or higher
         # Roll_MaxBonusLevel: On this level or higher, the roll chance will not go higher than Roll_ChanceMax
         # Roll_DamageThreshold: The max damage a player can negate with a roll
         Roll_ChanceMax: 100.0
         Roll_MaxBonusLevel: 1000
-        Roll_DamageThreshold: 7
+        Roll_DamageThreshold: 7.0
 
         # GracefulRoll_ChanceMax: Maximum chance of graceful rolling when on GracefulRoll_MaxBonusLevel or higher
         # GracefulRoll_MaxBonusLevel: On this level or higher, the graceful roll chance will not go higher than GracefulRoll_ChanceMax
@@ -42,7 +42,7 @@ Skills:
         # GracefulRoll_SuccessModifier: Graceful rolls will be this many times more likely to succeed than regular rolls
         GracefulRoll_ChanceMax: 100.0
         GracefulRoll_MaxBonusLevel: 500
-        GracefulRoll_DamageThreshold: 14
+        GracefulRoll_DamageThreshold: 14.0
 
         # Amount of experience for performing a dodge, roll or fall
         Dodge_XP_Modifier: 120
@@ -65,7 +65,7 @@ Skills:
         # Daze_Modifier: Extra damage for arrows that cause a daze (2 damage = 1 heart)
         Daze_MaxChance: 50.0
         Daze_MaxBonusLevel: 1000
-        Daze_Modifier: 4
+        Daze_Modifier: 4.0
 
         # Retrieve_MaxChance: Maximum chance or retrieving arrows
         # Retrieve_MaxBonusLevel: Maximum bonus level for Arrow retrieval, at this level the chance of retrieving arrows from mobs is Retrieve_MaxBonus
@@ -80,7 +80,7 @@ Skills:
     Axes:
         # DamageIncrease_MaxBonus: Maximum bonus damage
         # DamageIncrease_MaxBonusLevel: Level where the maximum bonus is reached
-        DamageIncrease_MaxBonus: 4
+        DamageIncrease_MaxBonus: 4.0
         DamageIncrease_MaxBonusLevel: 200
 
         # AxesCritical_MaxChance: Maximum chance of causing a critical hit
@@ -97,7 +97,7 @@ Skills:
         # GreaterImpact_BonusDamage: Extra damage for GreaterImpact hits
         GreaterImpact_Chance: 25.0
         GreaterImpact_KnockbackModifier: 1.5
-        GreaterImpact_BonusDamage: 2
+        GreaterImpact_BonusDamage: 2.0
 
         # ArmorImpact_IncreaseLevel: Every "IncreaseLevel" the durability damage goes up with 1
         # ArmorImpact_Chance: Chance of hitting with ArmorImpact
@@ -107,7 +107,7 @@ Skills:
         ArmorImpact_MaxPercentageDurabilityDamage: 20.0
 
         # SkullSplitter_DamageModifier: Damage will get divided by this modifier
-        SkullSplitter_DamageModifier: 2
+        SkullSplitter_DamageModifier: 2.0
     #
     #  Settings for Fishing
     ###
@@ -115,11 +115,11 @@ Skills:
         # Shake_UnlockLevel: Fishing level when the Shake ability unlocks
         Shake_UnlockLevel: 150
         Shake_Chance:
-            Rank_1: 25
-            Rank_2: 40
-            Rank_3: 55
-            Rank_4: 60
-            Rank_5: 75
+            Rank_1: 25.0
+            Rank_2: 40.0
+            Rank_3: 55.0
+            Rank_4: 60.0
+            Rank_5: 75.0
 
         #VanillaXPBoost: Vanilla XP gained from fishing is mutliplied by these values.
         VanillaXPBoost:
@@ -138,7 +138,7 @@ Skills:
             Tier5: 800
             
         # MagicHunter_Multiplier: Determines the chance of fishing enchanted items. The chance is calculated by getting the fishing TreasureHunt tier and multiplying it with MagicHunter_Multiplier
-        MagicHunter_Multiplier: 5
+        MagicHunter_Multiplier: 5.0
 
         # This determines when Fisherman's Diet adds extra hunger recovery to food
         Fisherman_Diet_RankChange: 200
@@ -179,7 +179,7 @@ Skills:
     Mining:
         # DoubleDrops_ChanceMax: Maximum chance of receiving double drops
         # DoubleDrops_MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
-        DoubleDrops_ChanceMax: 100
+        DoubleDrops_ChanceMax: 100.0
         DoubleDrops_MaxBonusLevel: 1000
 
         # BlastMining_Rank: BlastMining rank unlocks
@@ -267,17 +267,17 @@ Skills:
                 Rank_4: 750
             Keep_Enchants:
                 Chance:
-                    Rank_4: 40
-                    Rank_3: 30
-                    Rank_2: 20
-                    Rank_1: 10
+                    Rank_4: 40.0
+                    Rank_3: 30.0
+                    Rank_2: 20.0
+                    Rank_1: 10.0
             Downgrades:
                 Enabled: true
                 Chance:
-                    Rank_4: 15
-                    Rank_3: 25
-                    Rank_2: 50
-                    Rank_1: 75
+                    Rank_4: 15.0
+                    Rank_3: 25.0
+                    Rank_2: 50.0
+                    Rank_1: 75.0
     #
     #  Settings for Smelting
     ###
@@ -289,7 +289,7 @@ Skills:
 
         # SecondSmelt_MaxBonusChance: Maximum chance of triggering Second Smelt
         # SecondSmelt_MaxBonusLevel: On this level, the chance to cause Second Smelt will be SecondSmelt_MaxBonusChance
-        SecondSmelt_MaxBonusChance: 100
+        SecondSmelt_MaxBonusChance: 100.0
         SecondSmelt_MaxBonusLevel: 1000
 
         # FluxMining_UnlockLevel: Level when Flux Mining becomes available
@@ -330,11 +330,11 @@ Skills:
         Counter_MaxBonusLevel: 600
 
         # Counter_DamageModifier: Damaged caused by the damager will get divided by this modifier and dealt back to the damager
-        Counter_DamageModifier: 2
+        Counter_DamageModifier: 2.0
 
         # SerratedStrikes_DamageModifier: Damage will get divided by this modifier
         # SerratedStrikes_BleedTicks: This determines how long the bleeding effect of SerratedStrikes lasts
-        SerratedStrikes_DamageModifier: 4
+        SerratedStrikes_DamageModifier: 4.0
         SerratedStrikes_BleedTicks: 5
     #
     #  Settings for Taming
@@ -348,7 +348,7 @@ Skills:
         # Gore_BleedTicks: Determines the length of the bleeding effect
         # Gore_Modifier: Damage will get multiplied by this modifier
         Gore_BleedTicks: 2
-        Gore_Modifier: 2
+        Gore_Modifier: 2.0
 
         # FastFood_UnlockLevel: Level when FastFood unlocks
         # FastFood_Chance: The chance for wolves to heal hp when inflicting damage
@@ -361,7 +361,7 @@ Skills:
         # ThickFur_UnlockLevel: Level when ThickFur unlocks
         # ThickFur_Modifier: Damage will get divided by this modifier
         ThickFur_UnlockLevel: 250
-        ThickFur_Modifier: 2
+        ThickFur_Modifier: 2.0
 
         # HolyHound_UnlockLevel: Level when HolyHound unlocks
         HolyHound_UnlockLevel: 375
@@ -369,12 +369,12 @@ Skills:
         # ShockProof_UnlockLevel: Level when ShockProof unlocks
         # ShockProof_Modifier: Damage will get divided by this modifier
         ShockProof_UnlockLevel: 500
-        ShockProof_Modifier: 6
+        ShockProof_Modifier: 6.0
 
         # SharpenedClaws_UnlockLevel: Level when SharpenedClaws unlocks
         # SharpenedClaws_Bonus: This bonus will get added to the damage caused
         SharpenedClaws_UnlockLevel: 750
-        SharpenedClaws_Bonus: 2
+        SharpenedClaws_Bonus: 2.0
     #
     #  Settings for Unarmed
     ###
@@ -397,8 +397,8 @@ Skills:
         # IronArm_BonusMin: Minimum bonus damage for unarmed
         # IronArm_BonusMax: Maximum bonus damage for unarmed
         # IronArm_IncreaseLevel: Bonus damage increases every increase level
-        IronArm_BonusMin: 3
-        IronArm_BonusMax: 8
+        IronArm_BonusMin: 3.0
+        IronArm_BonusMax: 8.0
         IronArm_IncreaseLevel: 50
     #
     #  Settings for Woodcutting
@@ -417,10 +417,10 @@ Skills:
 Kraken:
     Enabled: true
     Tries_Before_Release: 50
-    Health: 50
+    Health: 50.0
     Name: The Kraken
     Attack_Interval_Seconds: 1
-    Attack_Damage: 1
+    Attack_Damage: 1.0
     Global_Sounds: true
     Allow_Escaping: false
     Unleashed_Message:

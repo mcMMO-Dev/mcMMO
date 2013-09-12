@@ -7,8 +7,8 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.util.ItemUtils;
 
 public class Axes {
-    public static int bonusDamageMaxBonus      = AdvancedConfig.getInstance().getBonusDamageAxesBonusMax();
-    public static int bonusDamageMaxBonusLevel = AdvancedConfig.getInstance().getBonusDamageAxesMaxBonusLevel();
+    public static double bonusDamageMaxBonus      = AdvancedConfig.getInstance().getBonusDamageAxesBonusMax();
+    public static int    bonusDamageMaxBonusLevel = AdvancedConfig.getInstance().getBonusDamageAxesMaxBonusLevel();
 
     public static int    criticalHitMaxBonusLevel = AdvancedConfig.getInstance().getAxesCriticalMaxBonusLevel();
     public static double criticalHitMaxChance     = AdvancedConfig.getInstance().getAxesCriticalChance();
@@ -19,11 +19,11 @@ public class Axes {
     public static double impactChance                = AdvancedConfig.getInstance().getImpactChance();
     public static double impactMaxDurabilityModifier = AdvancedConfig.getInstance().getArmorImpactMaxDurabilityDamage() / 100D;
 
-    public static int    greaterImpactBonusDamage         = AdvancedConfig.getInstance().getGreaterImpactBonusDamage();
+    public static double greaterImpactBonusDamage         = AdvancedConfig.getInstance().getGreaterImpactBonusDamage();
     public static double greaterImpactChance              = AdvancedConfig.getInstance().getGreaterImpactChance();
     public static double greaterImpactKnockbackMultiplier = AdvancedConfig.getInstance().getGreaterImpactModifier();
 
-    public static int skullSplitterModifier = AdvancedConfig.getInstance().getSkullSplitterModifier();
+    public static double skullSplitterModifier = AdvancedConfig.getInstance().getSkullSplitterModifier();
 
     protected static boolean hasArmor(LivingEntity target) {
         for (ItemStack itemStack : target.getEquipment().getArmorContents()) {

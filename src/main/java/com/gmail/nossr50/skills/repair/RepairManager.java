@@ -244,7 +244,7 @@ public class RepairManager extends SkillManager {
      *
      * @return The chance of keeping the enchantment
      */
-    public int getKeepEnchantChance() {
+    public double getKeepEnchantChance() {
         int skillLevel = getSkillLevel();
 
         for (Tier tier : Tier.values()) {
@@ -261,7 +261,7 @@ public class RepairManager extends SkillManager {
      *
      * @return The chance of the enchantment being downgraded
      */
-    public int getDowngradeEnchantChance() {
+    public double getDowngradeEnchantChance() {
         int skillLevel = getSkillLevel();
 
         for (Tier tier : Tier.values()) {

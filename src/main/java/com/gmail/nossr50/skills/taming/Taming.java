@@ -20,17 +20,17 @@ public class Taming {
 
     public static int    goreBleedTicks    = AdvancedConfig.getInstance().getGoreBleedTicks();
     public static int    goreMaxBonusLevel = AdvancedConfig.getInstance().getGoreMaxBonusLevel();
-    public static int    goreModifier      = AdvancedConfig.getInstance().getGoreModifier();
+    public static double goreModifier      = AdvancedConfig.getInstance().getGoreModifier();
     public static double goreMaxChance     = AdvancedConfig.getInstance().getGoreChanceMax();
 
-    public static int sharpenedClawsUnlockLevel = AdvancedConfig.getInstance().getSharpenedClawsUnlock();
-    public static int sharpenedClawsBonusDamage = AdvancedConfig.getInstance().getSharpenedClawsBonus();
+    public static int    sharpenedClawsUnlockLevel = AdvancedConfig.getInstance().getSharpenedClawsUnlock();
+    public static double sharpenedClawsBonusDamage = AdvancedConfig.getInstance().getSharpenedClawsBonus();
 
-    public static int shockProofUnlockLevel = AdvancedConfig.getInstance().getShockProofUnlock();
-    public static int shockProofModifier    = AdvancedConfig.getInstance().getShockProofModifier();
+    public static int    shockProofUnlockLevel = AdvancedConfig.getInstance().getShockProofUnlock();
+    public static double shockProofModifier    = AdvancedConfig.getInstance().getShockProofModifier();
 
-    public static int thickFurUnlockLevel = AdvancedConfig.getInstance().getThickFurUnlock();
-    public static int thickFurModifier    = AdvancedConfig.getInstance().getThickFurModifier();
+    public static int    thickFurUnlockLevel = AdvancedConfig.getInstance().getThickFurUnlock();
+    public static double thickFurModifier    = AdvancedConfig.getInstance().getThickFurModifier();
 
     public static int wolfXp   = ExperienceConfig.getInstance().getTamingXPWolf();
     public static int ocelotXp = ExperienceConfig.getInstance().getTamingXPOcelot();

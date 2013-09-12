@@ -10,9 +10,9 @@ public class Swords {
 
     public static boolean counterAttackRequiresBlock = AdvancedConfig.getInstance().getCounterRequiresBlock();
     public static int     counterAttackMaxBonusLevel = AdvancedConfig.getInstance().getCounterMaxBonusLevel();
-    public static int     counterAttackModifier      = AdvancedConfig.getInstance().getCounterModifier();
+    public static double  counterAttackModifier      = AdvancedConfig.getInstance().getCounterModifier();
     public static double  counterAttackMaxChance     = AdvancedConfig.getInstance().getCounterChanceMax();
 
-    public static int serratedStrikesModifier   = AdvancedConfig.getInstance().getSerratedStrikesModifier();
-    public static int serratedStrikesBleedTicks = AdvancedConfig.getInstance().getSerratedStrikesTicks();
+    public static double serratedStrikesModifier   = AdvancedConfig.getInstance().getSerratedStrikesModifier();
+    public static int    serratedStrikesBleedTicks = AdvancedConfig.getInstance().getSerratedStrikesTicks();
 }

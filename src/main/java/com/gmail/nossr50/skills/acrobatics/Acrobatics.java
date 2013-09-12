@@ -5,16 +5,16 @@ import com.gmail.nossr50.config.Config;
 
 public final class Acrobatics {
     public static int    dodgeMaxBonusLevel  = AdvancedConfig.getInstance().getDodgeMaxBonusLevel();
-    public static int    dodgeDamageModifier = AdvancedConfig.getInstance().getDodgeDamageModifier();
+    public static double dodgeDamageModifier = AdvancedConfig.getInstance().getDodgeDamageModifier();
     public static double dodgeMaxChance      = AdvancedConfig.getInstance().getDodgeChanceMax();
 
     public static int    rollMaxBonusLevel = AdvancedConfig.getInstance().getRollMaxBonusLevel();
-    public static int    rollThreshold     = AdvancedConfig.getInstance().getRollDamageThreshold();
+    public static double rollThreshold     = AdvancedConfig.getInstance().getRollDamageThreshold();
     public static double rollMaxChance     = AdvancedConfig.getInstance().getRollChanceMax();
 
-    public static int    gracefulRollMaxBonusLevel   = AdvancedConfig.getInstance().getGracefulRollMaxBonusLevel();
-    public static int    gracefulRollThreshold       = AdvancedConfig.getInstance().getGracefulRollDamageThreshold();
-    public static double gracefulRollMaxChance       = AdvancedConfig.getInstance().getGracefulRollChanceMax();
+    public static int    gracefulRollMaxBonusLevel = AdvancedConfig.getInstance().getGracefulRollMaxBonusLevel();
+    public static double gracefulRollThreshold     = AdvancedConfig.getInstance().getGracefulRollDamageThreshold();
+    public static double gracefulRollMaxChance     = AdvancedConfig.getInstance().getGracefulRollChanceMax();
 
     public static int dodgeXpModifier = AdvancedConfig.getInstance().getDodgeXPModifier();
     public static int rollXpModifier  = AdvancedConfig.getInstance().getRollXPModifier();
@@ -25,11 +25,11 @@ public final class Acrobatics {
 
     private Acrobatics() {};
 
-    protected static double calculateModifiedDodgeDamage(double damage, int damageModifier) {
-        return Math.max(damage / damageModifier, 1);
+    protected static double calculateModifiedDodgeDamage(double damage, double damageModifier) {
+        return Math.max(damage / damageModifier, 1.0);
     }
 
-    protected static double calculateModifiedRollDamage(double damage, int damageThreshold) {
-        return Math.max(damage - damageThreshold, 0);
+    protected static double calculateModifiedRollDamage(double damage, double damageThreshold) {
+        return Math.max(damage - damageThreshold, 0.0);
     }
 }

@@ -7,20 +7,20 @@ public class ArcaneForging {
     protected enum Tier {
         FOUR(4) {
             @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneForgingRankLevels4(); }
-            @Override public int getKeepEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChanceRank4(); }
-            @Override public int getDowngradeEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingDowngradeChanceRank4(); }},
+            @Override public double getKeepEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChanceRank4(); }
+            @Override public double getDowngradeEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingDowngradeChanceRank4(); }},
         THREE(3) {
             @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneForgingRankLevels3(); }
-            @Override public int getKeepEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChanceRank3(); }
-            @Override public int getDowngradeEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingDowngradeChanceRank3(); }},
+            @Override public double getKeepEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChanceRank3(); }
+            @Override public double getDowngradeEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingDowngradeChanceRank3(); }},
         TWO(2) {
             @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneForgingRankLevels2(); }
-            @Override public int getKeepEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChanceRank2(); }
-            @Override public int getDowngradeEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingDowngradeChanceRank2(); }},
+            @Override public double getKeepEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChanceRank2(); }
+            @Override public double getDowngradeEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingDowngradeChanceRank2(); }},
         ONE(1) {
             @Override public int getLevel() { return AdvancedConfig.getInstance().getArcaneForgingRankLevels1(); }
-            @Override public int getKeepEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChanceRank1(); }
-            @Override public int getDowngradeEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingDowngradeChanceRank1(); }};
+            @Override public double getKeepEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingKeepEnchantsChanceRank1(); }
+            @Override public double getDowngradeEnchantChance() { return AdvancedConfig.getInstance().getArcaneForgingDowngradeChanceRank1(); }};
 
         int numerical;
 
@@ -33,8 +33,8 @@ public class ArcaneForging {
         }
 
         abstract protected int getLevel();
-        abstract protected int getKeepEnchantChance();
-        abstract protected int getDowngradeEnchantChance();
+        abstract protected double getKeepEnchantChance();
+        abstract protected double getDowngradeEnchantChance();
     }
 
     public static boolean arcaneForgingDowngrades  = AdvancedConfig.getInstance().getArcaneForgingDowngradeEnabled();

@@ -8,8 +8,8 @@ import com.gmail.nossr50.util.Permissions;
 public class AxesCommand extends SkillCommand {
     private String critChance;
     private String critChanceLucky;
-    private float bonusDamage;
-    private float impactDamage;
+    private double bonusDamage;
+    private double impactDamage;
     private String skullSplitterLength;
     private String skullSplitterLengthEndurance;
 

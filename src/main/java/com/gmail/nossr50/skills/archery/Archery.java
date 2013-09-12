@@ -22,10 +22,10 @@ public class Archery {
     public static int    skillShotIncreaseLevel      = AdvancedConfig.getInstance().getSkillShotIncreaseLevel();
     public static double skillShotIncreasePercentage = AdvancedConfig.getInstance().getSkillShotIncreasePercentage();
     public static double skillShotMaxBonusPercentage = AdvancedConfig.getInstance().getSkillShotBonusMax();
-    public static double skillShotMaxBonusDamage = AdvancedConfig.getInstance().getSkillShotDamageMax();
+    public static double skillShotMaxBonusDamage     = AdvancedConfig.getInstance().getSkillShotDamageMax();
 
     public static int    dazeMaxBonusLevel = AdvancedConfig.getInstance().getDazeMaxBonusLevel();
-    public static int    dazeModifier      = AdvancedConfig.getInstance().getDazeModifier();
+    public static double dazeModifier      = AdvancedConfig.getInstance().getDazeModifier();
     public static double dazeMaxBonus      = AdvancedConfig.getInstance().getDazeBonusMax();
 
     public static final double DISTANCE_XP_MULTIPLIER = 0.025;

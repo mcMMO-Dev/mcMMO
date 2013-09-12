@@ -14,7 +14,7 @@ public class UnarmedCommand extends SkillCommand {
     private String disarmChanceLucky;
     private String ironGripChance;
     private String ironGripChanceLucky;
-    private int ironArmBonus;
+    private double ironArmBonus;
 
     private boolean canBerserk;
     private boolean canDisarm;

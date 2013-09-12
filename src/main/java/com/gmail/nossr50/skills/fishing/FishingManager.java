@@ -226,7 +226,7 @@ public class FishingManager extends SkillManager {
      *
      * @return Shake Mob probability
      */
-    public int getShakeProbability() {
+    public double getShakeProbability() {
         int skillLevel = getSkillLevel();
 
         for (Tier tier : Tier.values()) {
@@ -235,7 +235,7 @@ public class FishingManager extends SkillManager {
             }
         }
 
-        return 0;
+        return 0.0;
     }
 
     /**

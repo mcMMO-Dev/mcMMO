@@ -125,7 +125,7 @@ public class UnarmedManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      */
     public double ironArm(LivingEntity target) {
-        int unarmedBonus = Math.min(Unarmed.ironArmMinBonusDamage + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
+        double unarmedBonus = Math.min(Unarmed.ironArmMinBonusDamage + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
 
         return CombatUtils.callFakeDamageEvent(getPlayer(), target, unarmedBonus);
     }
