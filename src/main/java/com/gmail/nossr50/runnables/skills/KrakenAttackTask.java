@@ -15,6 +15,8 @@ public class KrakenAttackTask extends BukkitRunnable {
     private Player player;
     private Location location;
     private final boolean GLOBAL_SOUNDS = AdvancedConfig.getInstance().getKrakenGlobalSoundsEnabled();
+    private final String DEFEAT_MESSAGE = AdvancedConfig.getInstance().getPlayerDefeatMessage();
+    private final String ESCAPE_MESSAGE = AdvancedConfig.getInstance().getPlayerEscapeMessage();
 
     public KrakenAttackTask(Creature kraken, Player player) {
         this.kraken = kraken;
@@ -56,7 +58,10 @@ public class KrakenAttackTask extends BukkitRunnable {
         }
 
         if (!kraken.isValid()) {
-            player.sendMessage(AdvancedConfig.getInstance().getPlayerDefeatMessage());
+            if (!DEFEAT_MESSAGE.isEmpty()) {
+                player.sendMessage(DEFEAT_MESSAGE);
+            }
+
             player.resetPlayerWeather();
             cancel();
         }
@@ -65,7 +70,10 @@ public class KrakenAttackTask extends BukkitRunnable {
             Location location = player.getLocation();
 
             if (!location.getBlock().isLiquid() && AdvancedConfig.getInstance().getKrakenEscapeAllowed()) {
-                player.sendMessage(AdvancedConfig.getInstance().getPlayerEscapeMessage());
+                if (!ESCAPE_MESSAGE.isEmpty()) {
+                    player.sendMessage(AdvancedConfig.getInstance().getPlayerEscapeMessage());
+                }
+
                 kraken.remove();
                 player.resetPlayerWeather();
                 cancel();
