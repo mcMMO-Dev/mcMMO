@@ -19,9 +19,9 @@ public class Repair {
 
     public static int salvageUnlockLevel = AdvancedConfig.getInstance().getSalvageUnlockLevel();
 
-    public static int     salvageAnvilId       = Config.getInstance().getSalvageAnvilId();
-    public static int     repairAnvilId        = Config.getInstance().getRepairAnvilId();
-    public static boolean anvilMessagesEnabled = Config.getInstance().getRepairAnvilMessagesEnabled();
+    public static Material salvageAnvilMaterial = Config.getInstance().getSalvageAnvilMaterial();
+    public static Material repairAnvilMaterial  = Config.getInstance().getRepairAnvilMaterial();
+    public static boolean  anvilMessagesEnabled = Config.getInstance().getRepairAnvilMessagesEnabled();
 
     /**
      * Checks if the item is salvageable.
@@ -41,25 +41,25 @@ public class Repair {
         return false;
     }
 
-    public static String getAnvilMessage(int blockId) {
-        if (blockId == repairAnvilId) {
+    public static String getAnvilMessage(Material type) {
+        if (type == repairAnvilMaterial) {
             return LocaleLoader.getString("Repair.Listener.Anvil");
         }
 
-        if (blockId == salvageAnvilId) {
+        if (type == salvageAnvilMaterial) {
             return LocaleLoader.getString("Repair.Listener.Anvil2");
         }
 
         return "";
     }
 
-    public static String[] getSpoutAnvilMessages(int blockId) {
-        if (blockId == repairAnvilId) {
+    public static String[] getSpoutAnvilMessages(Material type) {
+        if (type == repairAnvilMaterial) {
             return new String[] {LocaleLoader.getString("Repair.AnvilPlaced.Spout1"), LocaleLoader.getString("Repair.AnvilPlaced.Spout2")};
         }
 
-        if (blockId == salvageAnvilId) {
-            return new String[] {"[mcMMO] Anvil Placed", "Right click to salvage!"};
+        if (type == salvageAnvilMaterial) {
+            return new String[] {"[mcMMO] Anvil Placed", "Right click to salvage!"}; //TODO: Localize
         }
 
         return new String[] {"", ""};

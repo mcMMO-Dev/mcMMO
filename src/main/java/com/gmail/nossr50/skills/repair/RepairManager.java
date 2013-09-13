@@ -37,22 +37,22 @@ public class RepairManager extends SkillManager {
      *
      * @param anvilId The item ID of the anvil block
      */
-    public void placedAnvilCheck(int anvilId) {
+    public void placedAnvilCheck(Material anvilType) {
         Player player = getPlayer();
 
-        if (mcMMOPlayer.getPlacedAnvil(anvilId)) {
+        if (mcMMOPlayer.getPlacedAnvil(anvilType)) {
             return;
         }
 
         if (mcMMO.isSpoutEnabled()) {
-            SpoutUtils.sendRepairNotifications(player, anvilId);
+            SpoutUtils.sendRepairNotifications(player, anvilType);
         }
         else {
-            player.sendMessage(Repair.getAnvilMessage(anvilId));
+            player.sendMessage(Repair.getAnvilMessage(anvilType));
         }
 
         player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-        mcMMOPlayer.togglePlacedAnvil(anvilId);
+        mcMMOPlayer.togglePlacedAnvil(anvilType);
     }
 
     public void handleRepair(ItemStack item) {
@@ -196,10 +196,10 @@ public class RepairManager extends SkillManager {
      *
      * @return true if the player has confirmed using an Anvil
      */
-    public boolean checkConfirmation(int anvilId, boolean actualize) {
+    public boolean checkConfirmation(Material anvilType, boolean actualize) {
         Player player = getPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        long lastUse = mcMMOPlayer.getLastAnvilUse(anvilId);
+        long lastUse = mcMMOPlayer.getLastAnvilUse(anvilType);
 
         // Don't use SkillUtils.cooldownOver() here since that also accounts for the cooldown perks
         if ((((lastUse + 3) * Misc.TIME_CONVERSION_FACTOR) >= System.currentTimeMillis()) || !Config.getInstance().getRepairConfirmRequired()) {
@@ -210,12 +210,12 @@ public class RepairManager extends SkillManager {
             return false;
         }
 
-        mcMMOPlayer.actualizeLastAnvilUse(anvilId);
+        mcMMOPlayer.actualizeLastAnvilUse(anvilType);
 
-        if (anvilId == Repair.repairAnvilId) {
+        if (anvilType == Repair.repairAnvilMaterial) {
             player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Repair.Pretty.Name")));
         }
-        else if (anvilId == Repair.salvageAnvilId) {
+        else if (anvilType == Repair.salvageAnvilMaterial) {
             player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Salvage.Pretty.Name")));
         }
 

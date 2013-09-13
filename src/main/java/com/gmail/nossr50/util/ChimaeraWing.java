@@ -142,7 +142,7 @@ public final class ChimaeraWing {
     }
 
     public static ItemStack getChimaeraWing(int amount) {
-        ItemStack itemStack = new ItemStack(Config.getInstance().getChimaeraItemId(), amount);
+        ItemStack itemStack = new ItemStack(Config.getInstance().getChimaeraItem(), amount);
 
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.GOLD + LocaleLoader.getString("Item.ChimaeraWing.Name"));
@@ -157,7 +157,7 @@ public final class ChimaeraWing {
     }
 
     public static ShapelessRecipe getChimaeraWingRecipe() {
-        Material ingredient = Material.getMaterial(Config.getInstance().getChimaeraItemId());
+        Material ingredient = Config.getInstance().getChimaeraItem();
         int amount = Config.getInstance().getChimaeraRecipeCost();
         if (amount < 1 || amount > 9) {
             amount = 9;

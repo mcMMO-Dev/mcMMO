@@ -91,7 +91,7 @@ MySQL:
 ###
 Hardcore:
     Death_Stat_Loss:
-        Penalty_Percentage: 75
+        Penalty_Percentage: 75.0
         Enabled:
             Acrobatics: false
             Archery: false
@@ -105,7 +105,7 @@ Hardcore:
             Unarmed: false
             Woodcutting: false
     Vampirism:
-        Leech_Percentage: 5
+        Leech_Percentage: 5.0
         Enabled:
             Acrobatics: false
             Archery: false
@@ -140,7 +140,7 @@ Items:
         Prevent_Use_Underground: true
         Use_Cost: 1
         Recipe_Cost: 5
-        Item_ID: 288
+        Item_Name: FEATHER
 
 #
 #  Settings for Parties
@@ -223,12 +223,12 @@ Skills:
         Prevent_AFK_Leveling: true
     Mining:
         Level_Cap: 0
-        Detonator_ID: 259
+        Detonator_Name: FLINT_AND_STEEL
     Repair:
         Level_Cap: 0
         Anvil_Messages: true
-        Anvil_ID: 42
-        Salvage_Anvil_ID: 41
+        Anvil_Material: IRON_BLOCK
+        Salvage_Anvil_Material: GOLD_BLOCK
         Salvage_tools: true
         Salvage_armor: true
         # Ask for a confirmation when a player tries to repair an enchanted item
@@ -249,7 +249,7 @@ Skills:
             Apples_Required: 10
 
             # Range to check for nearby pets when using Call Of The Wild, 0 will disable the check
-            Range: 40
+            Range: 40.0
             # Amount of pets to summon when using Call Of The Wild
             Wolf_Amount: 1
             Ocelot_Amount: 1
@@ -312,7 +312,7 @@ Commands:
     mcmmo:
         Donate_Message: true
     inspect:
-        Max_Distance: 30
+        Max_Distance: 30.0
     ptp:
         Cooldown: 120
         Warmup: 5

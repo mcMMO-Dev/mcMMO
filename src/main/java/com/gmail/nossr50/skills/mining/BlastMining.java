@@ -1,5 +1,7 @@
 package com.gmail.nossr50.skills.mining;
 
+import org.bukkit.Material;
+
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 
@@ -81,7 +83,7 @@ public class BlastMining {
         abstract protected int getDropMultiplier();
     }
 
-    public static int detonatorID = Config.getInstance().getDetonatorItemID();
+    public static Material detonator = Config.getInstance().getDetonatorItem();
 
     public final static int MAXIMUM_REMOTE_DETONATION_DISTANCE = 100;
 }

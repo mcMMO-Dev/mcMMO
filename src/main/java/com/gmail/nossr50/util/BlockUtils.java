@@ -318,9 +318,9 @@ public final class BlockUtils {
      * @return true if the block is an mcMMO anvil, false otherwise
      */
     public static boolean isMcMMOAnvil(BlockState blockState) {
-        int blockId = blockState.getTypeId();
+        Material type = blockState.getType();
 
-        return blockId == Repair.repairAnvilId || blockId == Repair.salvageAnvilId;
+        return type == Repair.repairAnvilMaterial || type == Repair.salvageAnvilMaterial;
     }
 
     /**

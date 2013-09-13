@@ -92,8 +92,8 @@ public class Config extends AutoUpdateConfigLoader {
             reason.add("Items.Chimaera_Wing.Recipe_Cost only accepts values from 1 to 64!");
         }
 
-        if (getChimaeraItemId() < 1) {
-            reason.add("Items.Chimaera_Wing.Item_ID should be at least 1!");
+        if (getChimaeraItem() == null) {
+            reason.add("Items.Chimaera_Wing.Item_Name is invalid!");
         }
 
         /* Particles */
@@ -135,21 +135,20 @@ public class Config extends AutoUpdateConfigLoader {
             reason.add("Abilities.Limits.Tree_Feller_Threshold should be greater than 0!");
         }
 
-
-        if (getDetonatorItemID() < 1) {
-            reason.add("Skills.Mining.Detonator_ID should be at least 1!");
+        if (getDetonatorItem() == null) {
+            reason.add("Skills.Mining.Detonator_Item is invalid!");
         }
 
-        if (getRepairAnvilId() < 1) {
-            reason.add("Skills.Repair.Anvil_ID should be at least 1!");
+        if (getRepairAnvilMaterial() == null) {
+            reason.add("Skills.Repair.Anvil_Type is invalid!!");
         }
 
-        if (getSalvageAnvilId() < 1) {
-            reason.add("Skills.Repair.Salvage_Anvil_ID should be at least 1!");
+        if (getSalvageAnvilMaterial() == null) {
+            reason.add("Skills.Repair.Salvage_Anvil_Type is invalid!");
         }
 
-        if (getRepairAnvilId() == getSalvageAnvilId()) {
-            reason.add("Cannot use the same item ID for Repair and Salvage anvils!");
+        if (getRepairAnvilMaterial() == getSalvageAnvilMaterial()) {
+            reason.add("Cannot use the same item for Repair and Salvage anvils!");
         }
 
         if (getTamingCOTWWolfCost() < 1) {
@@ -265,13 +264,13 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getHardcoreStatLossEnabled(SkillType skillType) { return config.getBoolean("Hardcore.Death_Stat_Loss.Enabled." + StringUtils.getCapitalized(skillType.toString()), false); }
     public void setHardcoreStatLossEnabled(SkillType skillType, boolean enabled) { config.set("Hardcore.Death_Stat_Loss.Enabled." + StringUtils.getCapitalized(skillType.toString()), enabled); }
 
-    public double getHardcoreDeathStatPenaltyPercentage() { return config.getDouble("Hardcore.Death_Stat_Loss.Penalty_Percentage", 75.0); }
+    public double getHardcoreDeathStatPenaltyPercentage() { return config.getDouble("Hardcore.Death_Stat_Loss.Penalty_Percentage", 75.0D); }
     public void setHardcoreDeathStatPenaltyPercentage(double value) { config.set("Hardcore.Death_Stat_Loss.Penalty_Percentage", value); }
 
     public boolean getHardcoreVampirismEnabled(SkillType skillType) { return config.getBoolean("Hardcore.Vampirism.Enabled." + StringUtils.getCapitalized(skillType.toString()), false); }
     public void setHardcoreVampirismEnabled(SkillType skillType, boolean enabled) { config.set("Hardcore.Vampirism.Enabled." + StringUtils.getCapitalized(skillType.toString()), enabled); }
 
-    public double getHardcoreVampirismStatLeechPercentage() { return config.getDouble("Hardcore.Vampirism.Leech_Percentage", 5.0); }
+    public double getHardcoreVampirismStatLeechPercentage() { return config.getDouble("Hardcore.Vampirism.Leech_Percentage", 5.0D); }
     public void setHardcoreVampirismStatLeechPercentage(double value) { config.set("Hardcore.Vampirism.Leech_Percentage", value); }
 
     /* SMP Mods */
@@ -283,7 +282,7 @@ public class Config extends AutoUpdateConfigLoader {
     /* Items */
     public int getChimaeraUseCost() { return config.getInt("Items.Chimaera_Wing.Use_Cost", 1); }
     public int getChimaeraRecipeCost() { return config.getInt("Items.Chimaera_Wing.Recipe_Cost", 5); }
-    public int getChimaeraItemId() { return config.getInt("Items.Chimaera_Wing.Item_ID", 288); }
+    public Material getChimaeraItem() { return Material.matchMaterial(config.getString("Items.Chimaera_Wing.Item_Name", "Feather")); }
     public boolean getChimaeraEnabled() { return config.getBoolean("Items.Chimaera_Wing.Enabled", true); }
     public boolean getChimaeraPreventUseUnderground() { return config.getBoolean("Items.Chimaera_Wing.Prevent_Use_Underground", true); }
     public int getChimaeraCooldown() { return config.getInt("Items.Chimaera_Wing.Cooldown", 240); }
@@ -304,11 +303,11 @@ public class Config extends AutoUpdateConfigLoader {
     public int getAutoPartyKickInterval() { return config.getInt("Party.AutoKick_Interval", 12); }
     public int getAutoPartyKickTime() { return config.getInt("Party.Old_Party_Member_Cutoff", 7); }
     public boolean getExpShareEnabled() { return config.getBoolean("Party.Sharing.ExpShare_enabled", true); }
-    public double getPartyShareBonusBase() { return config.getDouble("Party.Sharing.ExpShare_bonus_base", 1.1); }
-    public double getPartyShareBonusIncrease() { return config.getDouble("Party.Sharing.ExpShare_bonus_increase", 0.05); }
-    public double getPartyShareBonusCap() { return config.getDouble("Party.Sharing.ExpShare_bonus_cap", 1.5); }
+    public double getPartyShareBonusBase() { return config.getDouble("Party.Sharing.ExpShare_bonus_base", 1.1D); }
+    public double getPartyShareBonusIncrease() { return config.getDouble("Party.Sharing.ExpShare_bonus_increase", 0.05D); }
+    public double getPartyShareBonusCap() { return config.getDouble("Party.Sharing.ExpShare_bonus_cap", 1.5D); }
     public boolean getItemShareEnabled() { return config.getBoolean("Party.Sharing.ItemShare_enabled", true); }
-    public double getPartyShareRange() { return config.getDouble("Party.Sharing.Range", 75.0); }
+    public double getPartyShareRange() { return config.getDouble("Party.Sharing.Range", 75.0D); }
 
     /* Party Teleport Settings */
     public int getPTPCommandCooldown() { return config.getInt("Commands.ptp.Cooldown", 120); }
@@ -319,7 +318,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getPTPCommandWorldPermissions() { return config.getBoolean("Commands.ptp.World_Based_Permissions", false); }
 
     /* Inspect command distance */
-    public double getInspectDistance() { return config.getDouble("Commands.inspect.Max_Distance", 30); }
+    public double getInspectDistance() { return config.getDouble("Commands.inspect.Max_Distance", 30.0D); }
 
     /*
      * ABILITY SETTINGS
@@ -368,12 +367,12 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getFishingDropsEnabled() { return config.getBoolean("Skills.Fishing.Drops_Enabled", true); }
 
     /* Mining */
-    public int getDetonatorItemID() { return config.getInt("Skills.Mining.Detonator_ID", 259); }
+    public Material getDetonatorItem() { return Material.matchMaterial(config.getString("Skills.Mining.Detonator_Name", "FLINT_AND_STEEL")); }
 
     /* Repair */
     public boolean getRepairAnvilMessagesEnabled() { return config.getBoolean("Skills.Repair.Anvil_Messages", true); }
-    public int getRepairAnvilId() { return config.getInt("Skills.Repair.Anvil_ID", 42); }
-    public int getSalvageAnvilId() { return config.getInt("Skills.Repair.Salvage_Anvil_ID", 41); }
+    public Material getRepairAnvilMaterial() { return Material.matchMaterial(config.getString("Skills.Repair.Anvil_Material", "IRON_BLOCK")); }
+    public Material getSalvageAnvilMaterial() { return Material.matchMaterial(config.getString("Skills.Repair.Salvage_Anvil_ID", "GOLD_BLOCK")); }
     public boolean getSalvageTools() { return config.getBoolean("Skills.Repair.Salvage_tools", true); }
     public boolean getSalvageArmor() { return config.getBoolean("Skills.Repair.Salvage_armor", true); }
     public boolean getRepairConfirmRequired() { return config.getBoolean("Skills.Repair.Confirm_Required", true); }
@@ -385,7 +384,7 @@ public class Config extends AutoUpdateConfigLoader {
     public int getTamingCOTWHorseCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Apples_Required", 10); }
     public int getTamingCOTWWolfCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Bones_Required", 10); }
     public int getTamingCOTWOcelotCost() { return config.getInt("Skills.Taming.Call_Of_The_Wild.Fish_Required", 10); }
-    public double getTamingCOTWRange() { return config.getDouble("Skills.Taming.Call_Of_The_Wild.Range", 40); }
+    public double getTamingCOTWRange() { return config.getDouble("Skills.Taming.Call_Of_The_Wild.Range", 40.0D); }
     public int getTamingCOTWAmount(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type)+ "_Amount"); }
 
     /* Woodcutting */

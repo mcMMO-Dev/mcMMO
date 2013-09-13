@@ -38,7 +38,7 @@ public class MiningManager extends SkillManager {
     public boolean canDetonate() {
         Player player = getPlayer();
 
-        return canUseBlastMining() && player.isSneaking() && player.getItemInHand().getTypeId() == BlastMining.detonatorID && Permissions.remoteDetonation(player);
+        return canUseBlastMining() && player.isSneaking() && player.getItemInHand().getType() == BlastMining.detonator && Permissions.remoteDetonation(player);
     }
 
     public boolean canUseBlastMining() {

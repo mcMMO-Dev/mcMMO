@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
@@ -358,24 +359,24 @@ public class McMMOPlayer {
      * Repair Anvil Placement
      */
 
-    public boolean getPlacedAnvil(int anvilId) {
-        if (anvilId == Repair.repairAnvilId) {
+    public boolean getPlacedAnvil(Material anvilType) {
+        if (anvilType == Repair.repairAnvilMaterial) {
             return placedRepairAnvil;
         }
 
-        if (anvilId == Repair.salvageAnvilId) {
+        if (anvilType == Repair.salvageAnvilMaterial) {
             return placedSalvageAnvil;
         }
 
         return true;
     }
 
-    public void togglePlacedAnvil(int anvilId) {
-        if (anvilId == Repair.repairAnvilId) {
+    public void togglePlacedAnvil(Material anvilType) {
+        if (anvilType == Repair.repairAnvilMaterial) {
             placedRepairAnvil = !placedRepairAnvil;
         }
 
-        if (anvilId == Repair.salvageAnvilId) {
+        if (anvilType == Repair.salvageAnvilMaterial) {
             placedSalvageAnvil = !placedSalvageAnvil;
         }
     }
@@ -384,34 +385,34 @@ public class McMMOPlayer {
      * Repair Anvil Usage
      */
 
-    public int getLastAnvilUse(int anvilId) {
-        if (anvilId == Repair.repairAnvilId) {
+    public int getLastAnvilUse(Material anvilType) {
+        if (anvilType == Repair.repairAnvilMaterial) {
             return lastRepairClick;
         }
 
-        if (anvilId == Repair.salvageAnvilId) {
+        if (anvilType == Repair.salvageAnvilMaterial) {
             return lastSalvageClick;
         }
 
         return 0;
     }
 
-    public void setLastAnvilUse(int anvilId, int value) {
-        if (anvilId == Repair.repairAnvilId) {
+    public void setLastAnvilUse(Material anvilType, int value) {
+        if (anvilType == Repair.repairAnvilMaterial) {
             lastRepairClick = value;
         }
 
-        if (anvilId == Repair.salvageAnvilId) {
+        if (anvilType == Repair.salvageAnvilMaterial) {
             lastSalvageClick = value;
         }
     }
 
-    public void actualizeLastAnvilUse(int anvilId) {
-        if (anvilId == Repair.repairAnvilId) {
+    public void actualizeLastAnvilUse(Material anvilType) {
+        if (anvilType == Repair.repairAnvilMaterial) {
             lastRepairClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
         }
 
-        if (anvilId == Repair.salvageAnvilId) {
+        if (anvilType == Repair.salvageAnvilMaterial) {
             lastSalvageClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
         }
     }
