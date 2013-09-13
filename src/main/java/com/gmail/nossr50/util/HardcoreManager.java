@@ -16,10 +16,6 @@ public final class HardcoreManager {
     public static void invokeStatPenalty(Player player) {
         double statLossPercentage = Config.getInstance().getHardcoreDeathStatPenaltyPercentage();
 
-        if (statLossPercentage <= 0 || statLossPercentage > 100) {
-            return;
-        }
-
         McMMOPlayerDeathPenaltyEvent eventToFire = new McMMOPlayerDeathPenaltyEvent(player);
         mcMMO.p.getServer().getPluginManager().callEvent(eventToFire);
 
@@ -48,10 +44,6 @@ public final class HardcoreManager {
 
     public static void invokeVampirism(Player killer, Player victim) {
         double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
-
-        if (vampirismStatLeechPercentage <= 0 || vampirismStatLeechPercentage > 100) {
-            return;
-        }
 
         McMMOPlayerDeathPenaltyEvent eventToFire = new McMMOPlayerDeathPenaltyEvent(victim);
         mcMMO.p.getServer().getPluginManager().callEvent(eventToFire);
