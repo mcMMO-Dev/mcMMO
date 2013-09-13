@@ -33,7 +33,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.metrics.MetricsManager;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.SaveTimerTask;
-import com.gmail.nossr50.runnables.UpdateCheckerTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
@@ -52,6 +51,10 @@ import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.spout.SpoutUtils;
+
+import net.h31ix.updater.Updater;
+import net.h31ix.updater.Updater.UpdateResult;
+import net.h31ix.updater.Updater.UpdateType;
 
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
@@ -283,7 +286,17 @@ public class mcMMO extends JavaPlugin {
             return;
         }
 
-        getServer().getScheduler().runTaskAsynchronously(this, new UpdateCheckerTask());
+        Updater updater = new Updater(this, "mcmmo", mcmmo, UpdateType.NO_DOWNLOAD, false);
+
+        if (updater.getResult() != UpdateResult.UPDATE_AVAILABLE) {
+            return;
+        }
+
+        if (updater.getLatestVersionString().contains("-beta") && !Config.getInstance().getPreferBeta()) {
+            return;
+        }
+
+        updateCheckerCallback(true);
     }
 
     public void updateCheckerCallback(boolean updateAvailable) {
