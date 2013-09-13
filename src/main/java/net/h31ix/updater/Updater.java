@@ -437,30 +437,49 @@ public class Updater
         if(type != UpdateType.NO_VERSION_CHECK)
         {
             String version = plugin.getDescription().getVersion();
+            title = title.substring(6);
 
-            String[] oldTokens = version.replaceAll("(?i)(-)(.+?)(-)", "-").split("[.]|-b");
-            String[] newTokens = title.replaceAll("(?i)(-)(.+?)(-)", "-").split("[.]|-b");
+            String[] oldTokens = version.split("-");
+            String[] newTokens = title.split("-");
 
-            for (int i = 0; i < 4; i++) {
-                Integer newVer = Integer.parseInt(newTokens[i]);
-                Integer oldVer;
+            int oldVersion = Integer.parseInt(oldTokens[0].replaceAll(".", ""));
+            int newVersion = Integer.parseInt(newTokens[0].replaceAll(".", ""));
 
-                try {
-                    oldVer = Integer.parseInt(oldTokens[i]);
-                }
-                catch (NumberFormatException e) {
-                    plugin.getLogger().warning("Could not get information about this mcMMO version; perhaps you are running a custom one?");
-                    result = UpdateResult.FAIL_NOVERSION;
-                    return false;
-                }
-
-                if (oldVer < newVer) {
-                    return true;
-                }
+            // Check versions
+            if (oldVersion < newVersion) {
+                return true;
             }
 
-            result = Updater.UpdateResult.NO_UPDATE;
-            return false;
+            // Check release vs. beta & dev
+            if (newTokens.length == 0 && oldTokens.length == 2 && oldVersion == newVersion) {
+                return true;
+            }
+
+            // Check beta vs. dev
+            if (version.contains("dev") && title.contains("beta")) {
+                if (Integer.parseInt(oldTokens[1].substring(3)) < Integer.parseInt(newTokens[1].substring(4))) {
+                    return true;
+                }
+
+                result = UpdateResult.NO_UPDATE;
+                return false;
+            }
+
+            // Check beta vs. beta
+            if (version.contains("beta") && title.contains("beta")) {
+                if (Integer.parseInt(oldTokens[1].substring(4)) < Integer.parseInt(newTokens[1].substring(4))) {
+                    return true;
+                }
+
+                result = UpdateResult.NO_UPDATE;
+                return false;
+            }
+
+            if (oldTokens.length == 2 && !version.contains("beta") && !version.contains("dev")) {
+                plugin.getLogger().warning("Could not get information about this mcMMO version; perhaps you are running a custom one?");
+                result = UpdateResult.FAIL_NOVERSION;
+                return false;
+            }
         }
 
         return true;
