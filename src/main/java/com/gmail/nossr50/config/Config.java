@@ -75,12 +75,12 @@ public class Config extends AutoUpdateConfigLoader {
         }
 
         /* Hardcore Mode */
-        if (getHardcoreDeathStatPenaltyPercentage() < 1 || getHardcoreDeathStatPenaltyPercentage() > 100) {
-            reason.add("Hardcore.Death_Stat_Loss.Penalty_Percentage only accepts values from 1 to 100!");
+        if (getHardcoreDeathStatPenaltyPercentage() < 0.01 || getHardcoreDeathStatPenaltyPercentage() > 100) {
+            reason.add("Hardcore.Death_Stat_Loss.Penalty_Percentage only accepts values from 0.01 to 100!");
         }
 
-        if (getHardcoreVampirismStatLeechPercentage() < 1 || getHardcoreVampirismStatLeechPercentage() > 100) {
-            reason.add("Hardcore.Vampirism.Leech_Percentage only accepts values from 1 to 100!");
+        if (getHardcoreVampirismStatLeechPercentage() < 0.01 || getHardcoreVampirismStatLeechPercentage() > 100) {
+            reason.add("Hardcore.Vampirism.Leech_Percentage only accepts values from 0.01 to 100!");
         }
 
         /* Items */
