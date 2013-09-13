@@ -224,7 +224,7 @@ public class TamingManager extends SkillManager {
 
             switch (type) {
                 case OCELOT:
-                    ((Ocelot) entity).setCatType(Ocelot.Type.getType(1 + Misc.getRandom().nextInt(3)));
+                    ((Ocelot) entity).setCatType(Ocelot.Type.values()[1 + Misc.getRandom().nextInt(3)]);
                     break;
 
                 case WOLF:
