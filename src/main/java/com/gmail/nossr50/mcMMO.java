@@ -289,22 +289,18 @@ public class mcMMO extends JavaPlugin {
         Updater updater = new Updater(this, "mcmmo", mcmmo, UpdateType.NO_DOWNLOAD, false);
 
         if (updater.getResult() != UpdateResult.UPDATE_AVAILABLE) {
+            this.updateAvailable = false;
             return;
         }
 
         if (updater.getLatestVersionString().contains("-beta") && !Config.getInstance().getPreferBeta()) {
+            this.updateAvailable = false;
             return;
         }
 
-        updateCheckerCallback(true);
-    }
-
-    public void updateCheckerCallback(boolean updateAvailable) {
-        this.updateAvailable = updateAvailable;
-        if (updateAvailable) {
-            getLogger().info(LocaleLoader.getString("UpdateChecker.outdated"));
-            getLogger().info(LocaleLoader.getString("UpdateChecker.newavailable"));
-        }
+        this.updateAvailable = true;
+        getLogger().info(LocaleLoader.getString("UpdateChecker.outdated"));
+        getLogger().info(LocaleLoader.getString("UpdateChecker.newavailable"));
     }
 
     private void loadConfigFiles() {
