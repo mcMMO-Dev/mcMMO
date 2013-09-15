@@ -740,7 +740,7 @@ Shake:
             XP: 0
             Drop_Chance: 3.0
             Drop_Level: 0
-        SNOWBALL:
+        SNOW_BALL:
             Amount: 2
             XP: 0
             Drop_Chance: 97.0
