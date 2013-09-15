@@ -398,8 +398,8 @@ public class Updater {
             String[] oldTokens = version.split("-");
             String[] newTokens = title.split("-");
 
-            int oldVersion = Integer.parseInt(oldTokens[0].replaceAll(".", ""));
-            int newVersion = Integer.parseInt(newTokens[0].replaceAll(".", ""));
+            int oldVersion = Integer.parseInt(oldTokens[0].replaceAll("[.]", ""));
+            int newVersion = Integer.parseInt(newTokens[0].replaceAll("[.]", ""));
 
             // Check versions
             if (oldVersion < newVersion) {
