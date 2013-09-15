@@ -330,7 +330,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getAbilitiesOnlyActivateWhenSneaking() { return config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false); }
 
     public int getCooldown(AbilityType ability) { return config.getInt("Abilities.Cooldowns." + ability.toString()); }
-    public int getMaxTicks(AbilityType ability) { return config.getInt("Abilities.Max_Seconds." + ability.toString()); }
+    public int getMaxLength(AbilityType ability) { return config.getInt("Abilities.Max_Seconds." + ability.toString()); }
 
     /* Durability Settings */
     public int getAbilityToolDamage() { return config.getInt("Abilities.Tools.Durability_Loss", 2); }

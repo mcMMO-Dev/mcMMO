@@ -99,8 +99,8 @@ public enum AbilityType {
         return Config.getInstance().getCooldown(this);
     }
 
-    public int getMaxTicks() {
-        return Config.getInstance().getMaxTicks(this);
+    public int getMaxLength() {
+        return Config.getInstance().getMaxLength(this);
     }
 
     public String getAbilityOn() {

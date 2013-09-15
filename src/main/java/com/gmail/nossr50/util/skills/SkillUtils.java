@@ -283,7 +283,7 @@ public class SkillUtils {
                 return;
             }
 
-            int ticks = PerksUtils.handleActivationPerks(player, 2 + (playerProfile.getSkillLevel(type) / AdvancedConfig.getInstance().getAbilityLength()), ability.getMaxTicks());
+            int ticks = PerksUtils.handleActivationPerks(player, 2 + (playerProfile.getSkillLevel(type) / AdvancedConfig.getInstance().getAbilityLength()), ability.getMaxLength());
 
             ParticleEffectUtils.playAbilityEnabledEffect(player);
 
@@ -393,7 +393,7 @@ public class SkillUtils {
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             SkillType skill = mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER) ? SkillType.MINING : SkillType.EXCAVATION;
-            int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getProfile().getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), skill.getAbility().getMaxTicks()) * Misc.TICK_CONVERSION_FACTOR;
+            int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getProfile().getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
             player.addPotionEffect(abilityBuff, true);

@@ -143,7 +143,7 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     protected String[] calculateLengthDisplayValues() {
-        int maxLength = skill.getAbility().getMaxTicks();
+        int maxLength = skill.getAbility().getMaxLength();
         int length = 2 + (int) (skillValue / AdvancedConfig.getInstance().getAbilityLength());
         int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
 
