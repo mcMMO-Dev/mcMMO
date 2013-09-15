@@ -17,7 +17,6 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
-import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
@@ -530,12 +529,6 @@ public class McMMOPlayer {
         }
 
         profile.setSkillXpLevel(skillType, profile.getSkillXpLevelRaw(skillType) + event.getRawXpGained());
-
-        McMMOHud spoutHud = profile.getSpoutHud();
-
-        if (spoutHud != null) {
-            spoutHud.setLastGained(skillType);
-        }
 
         isUsingUnarmed = (skillType == SkillType.UNARMED);
         SkillUtils.xpCheckSkill(skillType, player, profile);

@@ -18,7 +18,6 @@ import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomBlockConfig;
 import com.gmail.nossr50.config.mods.CustomEntityConfig;
 import com.gmail.nossr50.config.mods.CustomToolConfig;
-import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
@@ -27,7 +26,6 @@ import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.SelfListener;
-import com.gmail.nossr50.listeners.SpoutListener;
 import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.metrics.MetricsManager;
@@ -50,12 +48,10 @@ import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.spout.SpoutUtils;
 
 import net.h31ix.updater.Updater;
 import net.h31ix.updater.Updater.UpdateResult;
 import net.h31ix.updater.Updater.UpdateType;
-
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
 public class mcMMO extends JavaPlugin {
@@ -115,7 +111,6 @@ public class mcMMO extends JavaPlugin {
             metadataValue = new FixedMetadataValue(this, true);
 
             setupFilePaths();
-            setupSpout();
             loadConfigFiles();
 
             if (!noErrorsInConfigFiles) {
@@ -333,19 +328,6 @@ public class mcMMO extends JavaPlugin {
         repairables.addAll(rManager.getLoadedRepairables());
         repairableManager = RepairableManagerFactory.getRepairManager(repairables.size());
         repairableManager.registerRepairables(repairables);
-    }
-
-    private void setupSpout() {
-        if (!getServer().getPluginManager().isPluginEnabled("Spout")) {
-            return;
-        }
-
-        spoutEnabled = true;
-
-        SpoutConfig.getInstance();
-        getServer().getPluginManager().registerEvents(new SpoutListener(), this);
-        SpoutUtils.preCacheFiles();
-        SpoutUtils.reloadSpoutPlayers(); // Handle spout players after a /reload
     }
 
     private void registerEvents() {

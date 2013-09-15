@@ -7,8 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Dye;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.api.SpoutToolsAPI;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomToolConfig;
@@ -32,7 +30,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customSwordIDs.contains(item.getTypeId())) || (mcMMO.isSpoutEnabled() && SpoutToolsAPI.spoutSwords.contains(item));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customSwordIDs.contains(item.getTypeId()));
         }
     }
 
@@ -52,7 +50,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customHoeIDs.contains(item.getTypeId())) || (mcMMO.isSpoutEnabled() && SpoutToolsAPI.spoutHoes.contains(item));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customHoeIDs.contains(item.getTypeId()));
         }
     }
 
@@ -72,7 +70,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customShovelIDs.contains(item.getTypeId())) || (mcMMO.isSpoutEnabled() && SpoutToolsAPI.spoutShovels.contains(item));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customShovelIDs.contains(item.getTypeId()));
         }
     }
 
@@ -92,7 +90,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customAxeIDs.contains(item.getTypeId())) || (mcMMO.isSpoutEnabled() && SpoutToolsAPI.spoutAxes.contains(item));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customAxeIDs.contains(item.getTypeId()));
         }
     }
 
@@ -112,7 +110,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customPickaxeIDs.contains(item.getTypeId())) || (mcMMO.isSpoutEnabled() && SpoutToolsAPI.spoutPickaxes.contains(item));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customPickaxeIDs.contains(item.getTypeId()));
         }
     }
 

@@ -9,13 +9,10 @@ import org.bukkit.scoreboard.Scoreboard;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.datatypes.spout.huds.HudType;
-import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -25,9 +22,7 @@ public class PlayerProfile {
     private boolean changed;
 
     /* HUDs */
-    private HudType hudType;
     private MobHealthbarType mobHealthbarType;
-    private McMMOHud spoutHud;
     private Scoreboard playerStatsScoreboard;
 
     /* Skill Data */
@@ -38,7 +33,6 @@ public class PlayerProfile {
     public PlayerProfile(String playerName) {
         this.playerName = playerName;
 
-        hudType = mcMMO.isSpoutEnabled() ? SpoutConfig.getInstance().getDefaultHudType() : HudType.DISABLED;
         mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
 
         for (AbilityType abilityType : AbilityType.values()) {
@@ -59,10 +53,9 @@ public class PlayerProfile {
     /**
      * Calling this constructor is considered loading the profile.
      */
-    public PlayerProfile(String playerName, Map<SkillType, Integer> argSkills, Map<SkillType, Float> argSkillsXp, Map<AbilityType, Integer> argSkillsDats, HudType hudType, MobHealthbarType mobHealthbarType) {
+    public PlayerProfile(String playerName, Map<SkillType, Integer> argSkills, Map<SkillType, Float> argSkillsXp, Map<AbilityType, Integer> argSkillsDats, MobHealthbarType mobHealthbarType) {
         this(playerName, true);
 
-        this.hudType = hudType;
         this.mobHealthbarType = mobHealthbarType;
 
         this.skills.putAll(argSkills);
@@ -87,26 +80,6 @@ public class PlayerProfile {
 
     public boolean isLoaded() {
         return loaded;
-    }
-
-    /*
-     * HUD Stuff
-     */
-
-    public HudType getHudType() {
-        return hudType;
-    }
-
-    public McMMOHud getSpoutHud() {
-        return spoutHud;
-    }
-
-    public void setSpoutHud(McMMOHud spoutHud) {
-        this.spoutHud = spoutHud;
-    }
-
-    public void setHudType(HudType hudType) {
-        this.hudType = hudType;
     }
 
     /*

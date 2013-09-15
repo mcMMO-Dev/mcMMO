@@ -23,10 +23,8 @@ import org.bukkit.metadata.MetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public final class Misc {
     private static Random random = new Random();
@@ -186,20 +184,11 @@ public final class Misc {
     public static void profileCleanup(String playerName) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
         Player player = mcMMOPlayer.getPlayer();
-        McMMOHud spoutHud = mcMMOPlayer.getProfile().getSpoutHud();
-
-        if (spoutHud != null) {
-            spoutHud.removeWidgets();
-        }
 
         UserManager.remove(playerName);
 
         if (player.isOnline()) {
             UserManager.addUser(player);
-
-            if (mcMMO.isSpoutEnabled()) {
-                SpoutUtils.reloadSpoutPlayer(player);
-            }
         }
     }
 

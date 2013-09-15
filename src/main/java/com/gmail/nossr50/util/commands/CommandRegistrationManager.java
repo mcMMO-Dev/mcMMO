@@ -46,8 +46,6 @@ import com.gmail.nossr50.commands.skills.SwordsCommand;
 import com.gmail.nossr50.commands.skills.TamingCommand;
 import com.gmail.nossr50.commands.skills.UnarmedCommand;
 import com.gmail.nossr50.commands.skills.WoodcuttingCommand;
-import com.gmail.nossr50.commands.spout.MchudCommand;
-import com.gmail.nossr50.commands.spout.XplockCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -314,26 +312,6 @@ public final class CommandRegistrationManager {
         command.setExecutor(new PartyChatCommand());
     }
 
-    private static void registerMchudCommand() {
-        PluginCommand command = mcMMO.p.getCommand("mchud");
-        command.setDescription(LocaleLoader.getString("Commands.Description.mchud"));
-        command.setPermission("mcmmo.commands.mchud");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mchud", "<DISABLED | STANDARD | SMALL | RETRO>"));
-        command.setExecutor(new MchudCommand());
-    }
-
-    private static void registerXplockCommand() {
-        PluginCommand command = mcMMO.p.getCommand("xplock");
-        command.setDescription(LocaleLoader.getString("Commands.Description.xplock"));
-        command.setPermission("mcmmo.commands.xplock");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "xplock"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "xplock", "<on|off>"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "xplock", "<" + LocaleLoader.getString("Commands.Usage.Skill") + ">"));
-        command.setExecutor(new XplockCommand());
-    }
-
     private static void registerPartyCommand() {
         PluginCommand command = mcMMO.p.getCommand("party");
         command.setDescription(LocaleLoader.getString("Commands.Description.party"));
@@ -456,9 +434,5 @@ public final class CommandRegistrationManager {
 
         // Skill Commands
         registerSkillCommands();
-
-        // Spout Commands
-        registerXplockCommand();
-        registerMchudCommand();
     }
 }

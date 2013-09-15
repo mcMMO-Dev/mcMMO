@@ -38,7 +38,6 @@ import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public class SkillUtils {
     public static int handleFoodSkills(Player player, SkillType skill, int eventFoodLevel, int baseLevel, int maxLevel, int rankChange) {
@@ -163,17 +162,8 @@ public class SkillUtils {
 
             String capitalized = StringUtils.getCapitalized(skillType.toString());
 
-            if (mcMMO.isSpoutEnabled()) {
-                SpoutUtils.processLevelup(mcMMOPlayer, skillType, levelsGained);
-            }
-            else {
-                player.playSound(player.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
-                player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", levelsGained, profile.getSkillLevel(skillType)));
-            }
-        }
-
-        if (mcMMO.isSpoutEnabled()) {
-            SpoutUtils.processXpGain(player, profile);
+            player.playSound(player.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+            player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", levelsGained, profile.getSkillLevel(skillType)));
         }
     }
 

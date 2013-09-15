@@ -23,38 +23,6 @@
                 </includes>
             </resource>
             <resource>
-                <targetPath>resources</targetPath>
-                <filtering>false</filtering>
-                <directory>${basedir}/src/main/resources/xpbar/</directory>
-                <includes>
-                    <include>xpbar*.png</include>
-                </includes>
-            </resource>
-            <resource>
-                <targetPath>resources</targetPath>
-                <filtering>false</filtering>
-                <directory>${basedir}/src/main/resources/healthbar/</directory>
-                <includes>
-                    <include>health*.png</include>
-                </includes>
-            </resource>
-            <resource>
-                <targetPath>resources</targetPath>
-                <filtering>false</filtering>
-                <directory>${basedir}/src/main/resources/skillicon/</directory>
-                <includes>
-                    <include>*.png</include>
-                </includes>
-            </resource>
-            <resource>
-                <targetPath>resources</targetPath>
-                <filtering>false</filtering>
-                <directory>${basedir}/src/main/resources/sound/</directory>
-                <includes>
-                    <include>*.wav</include>
-                </includes>
-            </resource>
-            <resource>
                 <targetPath>com/gmail/nossr50/locale</targetPath>
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/locale/</directory>
@@ -133,10 +101,6 @@
             <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
         <repository>
-            <id>spout-repo</id>
-            <url>http://nexus.spout.org/content/groups/public/</url>
-        </repository>
-        <repository>
             <id>Plugin MetricsExtension</id>
             <url>http://repo.turt2live.com</url>
         </repository>
@@ -145,13 +109,6 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>LATEST</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.getspout</groupId>
-            <artifactId>spoutplugin</artifactId>
             <version>LATEST</version>
             <type>jar</type>
             <scope>compile</scope>

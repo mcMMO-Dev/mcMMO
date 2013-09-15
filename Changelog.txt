@@ -53,6 +53,7 @@ Version 1.4.07-dev
  ! When using "Super Breaker" or "Giga Driller" abilities extra tool durability is used (again)
  - The /mmoupdate command has been removed. It is replaced by /mcconvert database
  - Removed Abilities.Tools.Durability_Loss_Enabled, set Abilities.Tools.Durability_Loss to 0 to disable instead.
+ - Removed SpoutPlugin support
 
 Version 1.4.06
  + Added "Ice Fishing" ability to Fishing

@@ -25,7 +25,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
-import com.gmail.nossr50.util.spout.SpoutUtils;
 
 public class RepairManager extends SkillManager {
     public RepairManager(McMMOPlayer mcMMOPlayer) {
@@ -44,12 +43,7 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (mcMMO.isSpoutEnabled()) {
-            SpoutUtils.sendRepairNotifications(player, anvilType);
-        }
-        else {
-            player.sendMessage(Repair.getAnvilMessage(anvilType));
-        }
+        player.sendMessage(Repair.getAnvilMessage(anvilType));
 
         player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
         mcMMOPlayer.togglePlacedAnvil(anvilType);

@@ -23,7 +23,6 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.datatypes.spout.huds.HudType;
 import com.gmail.nossr50.runnables.database.SQLReconnectTask;
 import com.gmail.nossr50.util.Misc;
 
@@ -129,10 +128,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
         }
         MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
-        HudType hudType = profile.getHudType();
 
         saveLogin(userId, ((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
-        saveHuds(userId, (hudType == null ? "STANDARD" : hudType.toString()), (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()));
         saveLongs(
                 "UPDATE " + tablePrefix + "cooldowns SET "
                     + "  mining = ?, woodcutting = ?, unarmed = ?"
@@ -1150,7 +1147,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Map<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>();   // Skill & Level
         Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
         Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
-        HudType hudType;
         MobHealthbarType mobHealthbarType;
 
         final int OFFSET_SKILLS = 0; // TODO update these numbers when the query changes (a new skill is added)
@@ -1198,20 +1194,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skillsDATS.put(AbilityType.BLAST_MINING, result.getInt(OFFSET_DATS + 12));
 
         try {
-            hudType = HudType.valueOf(result.getString(OFFSET_OTHER + 1));
-        }
-        catch (Exception e) {
-            hudType = HudType.STANDARD; // Shouldn't happen unless database is being tampered with
-        }
-
-        try {
             mobHealthbarType = MobHealthbarType.valueOf(result.getString(OFFSET_OTHER + 2));
         }
         catch (Exception e) {
             mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
         }
 
-        return new PlayerProfile(playerName, skills, skillsXp, skillsDATS, hudType, mobHealthbarType);
+        return new PlayerProfile(playerName, skills, skillsXp, skillsDATS, mobHealthbarType);
     }
 
     private void printErrors(SQLException ex) {
