@@ -1,5 +1,6 @@
 #
 #  Experience configuration
+#  Last updated on ${project.version}-b${BUILD_NUMBER}
 #
 #  Configure the experience formula and experience settings here.
 #

@@ -1,5 +1,7 @@
 #
 #  mcMMO child skill configuration
+#  Last updated on ${project.version}-b${BUILD_NUMBER}
+#
 #  You do not need to modify this file except to change parents of child skills
 #
 #  If you wish a child skill to be the parent of another child skill, you must also make your changes to the child.yml within the jar
