@@ -191,7 +191,7 @@ public class TreasureConfig extends ConfigLoader {
                     reason.add("Invalid Dye_Color: " + color);
                 }
             }
-            else {
+            else if (material != null) {
                 item = new ItemStack(material, amount, (short) data);
             }
 
