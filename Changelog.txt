@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.4.07-dev
+ + Added Horses to the "Shake" ability
  + Added ability to summon horses via "Call of the Wild" using apples
  + Added XP gain to Taming for horses
  + Added new permission nodes to allow more control over Taming and "Call of the Wild"
@@ -32,6 +33,8 @@ Version 1.4.07-dev
  = Fixed a bug where teleport location was never reset if warmup was set to 0 for "Chimaera Wing".
  = Fixed a bug where the "Dodge" DamageModifier wasn't being read from advanced.yml
  = Fixed a bug where squid were not awarding XP.
+ ! Changed format of treasures.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
+ ! Witches no longer drop water bottles from Shake, since they no longer drop them in Vanilla.
  ! Changed various values to double in advanced.yml for the sake of consistency.
  ! Nerfed Archery damage to eliminate constant one-hit kills.
  ! Changed the way Repair hands out XP, also added config options to control Repair XP

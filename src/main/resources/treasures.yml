@@ -2,1540 +2,815 @@
 #  Settings for Fishing
 ###
 Fishing:
-    Treasure:
-        - Leather_Boots
-        - Leather_Helmet
-        - Leather_Leggings
-        - Leather_Chestplate
-        - Wooden_Sword
-        - Wooden_Shovel
-        - Wooden_Pickaxe
-        - Wooden_Axe
-        - Wooden_Hoe
-        - Stone_Sword
-        - Stone_Shovel
-        - Stone_Pickaxe
-        - Stone_Axe
-        - Stone_Hoe
-        - Iron_Sword
-        - Iron_Shovel
-        - Iron_Pickaxe
-        - Iron_Axe
-        - Iron_Hoe
-        - Iron_Boots
-        - Iron_Helmet
-        - Iron_Leggings
-        - Iron_Chestplate
-        - Ender_Pearl
-        - Gold_Sword
-        - Gold_Shovel
-        - Gold_Pickaxe
-        - Gold_Axe
-        - Gold_Hoe
-        - Gold_Boots
-        - Gold_Helmet
-        - Gold_Leggings
-        - Gold_Chestplate
-        - Blaze_Rod
-        - Record_3
-        - Record_4
-        - Record_5
-        - Record_6
-        - Record_7
-        - Record_8
-        - Record_9
-        - Record_10
-        - Record_11
-        - Record_12
-        - Diamond_Sword
-        - Diamond_Shovel
-        - Diamond_Pickaxe
-        - Diamond_Axe
-        - Diamond_Hoe
-        - Diamond_Boots
-        - Diamond_Helmet
-        - Diamond_Leggings
-        - Diamond_Chestplate
-        - Ghast_Tear
-        - Diamonds
-        - Iron_Ingots
-        - Gold_Ingots
-        - Lapis_Lazuli
-#
-#  Settings for Excavation
-###
-Excavation:
-    Treasure:
-        - Cake
-        - Gunpowder
-        - Bone
-        - Apple
-        - Slimeball
-        - Bucket
-        - Netherrack
-        - Red_Mushroom
-        - Brown_Mushroom
-        - Egg
-        - Soul_Sand
-        - Clock
-        - Cobweb
-        - String
-        - Glowstone_Dust
-        - Gold_Music
-        - Green_Music
-        - Diamond
-        - Cocoa_Beans
-#
-#  Settings for Hylian Luck
-###
-Hylian_Luck:
-    Treasure:
-        - Melon_Seeds
-        - Pumpkin_Seeds
-        - Cocoa
-        - Carrot
-        - Potato
-        - Apples
-        - Emeralds
-        - Diamond_Gem
-        - Gold_Nuggets
-#
-#	Settings for Shake
-###
-Shake:
-    Treasure:
-        - Blaze_Blaze_Rod
-        - Cave_Spider_Cobweb
-        - Cave_Spider_Potion
-        - Cave_Spider_Spider_Eye
-        - Cave_Spider_String
-        - Spider_Spider_Eye
-        - Spider_String
-        - Chicken_Feather
-        - Chicken_Raw_Chicken
-        - Chicken_Egg
-        - Cow_Milk_Bucket
-        - Cow_Leather
-        - Cow_Raw_Beef
-        - Creeper_Skull
-        - Creeper_Sulphur
-        - Enderman_Ender_Pearl
-        - Ghast_Sulphur
-        - Ghast_Ghast_Tear
-        - Iron_Golem_Pumpkin
-        - Iron_Golem_Iron_Ingot
-        - Iron_Golem_Red_Rose
-        - Magma_Cube_Magma_Cream
-        - Mushroom_Cow_Milk_Bucket
-        - Mushroom_Cow_Mushroom_Soup
-        - Mushroom_Cow_Leather
-        - Mushroom_Cow_Raw_Beef
-        - Mushroom_Cow_Red_Mushroom
-        - Pig_Pork
-        - Pig_Zombie_Rotten_Flesh
-        - Pig_Zombie_Gold_Nugget
-        - Sheep_Wool
-        - Skeleton_Skull
-        - Skeleton_Bone
-        - Skeleton_Arrow
-        - Slime_Slime_Ball
-        - Snowman_Pumpkin
-        - Snowman_Snowball
-        - Squid_Ink_Sack
-        - Witch_Heal_Potion
-        - Witch_Fire_Potion
-        - Witch_Speed_Potion
-        - Witch_Glass_Bottle
-        - Witch_Glowstone_Dust
-        - Witch_Sulphur
-        - Witch_Redstone
-        - Witch_Spider_Eye
-        - Witch_Stick
-        - Witch_Sugar
-        - Witch_Potion
-        - Zombie_Skull
-        - Zombie_Rotten_Flesh
-#
-#  Configuration to define Treasures
-###
-Treasures:
-    Cake:
-        ID: 354
-        Data: 0
-        Amount: 1
-        XP: 3000
-        Drop_Chance: 0.05
-        Drop_Level: 750
-        Drops_From:
-            Dirt: true
-            Grass: true
-            Sand: true
-            Gravel: true
-            Clay: true
-            Mycelium: true
-            Soul_Sand: true
-    Gunpowder:
-        ID: 289
-        Data: 0
-        Amount: 1
-        XP: 30
-        Drop_Chance: 10.0
-        Drop_Level: 75
-        Drops_From:
-            Gravel: true
-    Bone:
-        ID: 352
-        Data: 0
-        Amount: 1
-        XP: 30
-        Drop_Chance: 10.0
-        Drop_Level: 175
-        Drops_From:
-            Gravel: true
-    Apple:
-        ID: 260
-        Data: 0
-        Amount: 1
-        XP: 100
-        Drop_Chance: 0.1
-        Drop_Level: 250
-        Drops_From:
-            Grass: true
-            Mycelium: true
-    Slimeball:
-        ID: 341
-        Data: 0
-        Amount: 1
-        XP: 100
-        Drop_Chance: 5.0
-        Drop_Level: 150
-        Drops_From:
-            Clay: true
-    Bucket:
-        ID: 325
-        Data: 0
-        Amount: 1
-        XP: 100
-        Drop_Chance: 0.1
-        Drop_Level: 500
-        Drops_From:
-            Clay: true
-    Netherrack:
-        ID: 87
-        Data: 0
-        Amount: 1
-        XP: 30
-        Drop_Chance: 0.5
-        Drop_Level: 850
-        Drops_From:
-            Gravel: true
-    Red_Mushroom:
-        ID: 40
-        Data: 0
-        Amount: 1
-        XP: 80
-        Drop_Chance: 0.5
-        Drop_Level: 500
-        Drops_From:
-            Dirt: true
-            Grass: true
-            Mycelium: true
-    Brown_Mushroom:
-        ID: 39
-        Data: 0
-        Amount: 1
-        XP: 80
-        Drop_Chance: 0.5
-        Drop_Level: 500
-        Drops_From:
-            Dirt: true
-            Grass: true
-            Mycelium: true
-    Egg:
-        ID: 344
-        Data: 0
-        Amount: 1
-        XP: 100
-        Drop_Chance: 1.0
-        Drop_Level: 250
-        Drops_From:
-            Grass: true
-    Soul_Sand:
-        ID: 88
-        Data: 0
-        Amount: 1
-        XP: 80
-        Drop_Chance: 0.5
-        Drop_Level: 650
-        Drops_From:
-            Sand: true
-    Clock:
-        ID: 347
-        Data: 0
-        Amount: 1
-        XP: 100
-        Drop_Chance: 0.1
-        Drop_Level: 500
-        Drops_From:
-            Clay: true
-    Cobweb:
-        ID: 30
-        Data: 0
-        Amount: 1
-        XP: 150
-        Drop_Chance: 5.0
-        Drop_Level: 750
-        Drops_From:
-            Clay: true
-    String:
-        ID: 287
-        Data: 0
-        Amount: 1
-        XP: 200
-        Drop_Chance: 5.0
-        Drop_Level: 250
-        Drops_From:
-            Clay: true
-    Glowstone_Dust:
-        ID: 348
-        Data: 0
-        Amount: 1
-        XP: 80
-        Drop_Chance: 5.0
-        Drop_Level: 25
-        Drops_From:
-            Dirt: true
-            Grass: true
-            Sand: true
-            Mycelium: true
-    Gold_Music:
-        ID: 2256
-        Data: 0
-        Amount: 1
-        XP: 3000
-        Drop_Chance: 0.05
-        Drop_Level: 250
-        Drops_From:
-            Dirt: true
-            Grass: true
-            Sand: true
-            Gravel: true
-            Clay: true
-            Mycelium: true
-            Soul_Sand: true
-    Green_Music:
-        ID: 2257
-        Data: 0
-        Amount: 1
-        XP: 3000
-        Drop_Chance: 0.05
-        Drop_Level: 250
-        Drops_From:
-            Dirt: true
-            Grass: true
-            Sand: true
-            Gravel: true
-            Clay: true
-            Mycelium: true
-            Soul_Sand: true
-    Diamond:
-        ID: 264
-        Data: 0
-        Amount: 1
-        XP: 1000
-        Drop_Chance: 0.13
-        Drop_Level: 350
-        Drops_From:
-            Dirt: true
-            Grass: true
-            Sand: true
-            Gravel: true
-            Clay: true
-            Mycelium: true
-            Soul_Sand: true
-    Cocoa_Beans:
-        ID: 351
-        Data: 3
-        Amount: 1
-        XP: 100
-        Drop_Chance: 1.33
-        Drop_Level: 350
-        Drops_From:
-            Dirt: true
-            Grass: true
-            Mycelium: true
-    Leather_Boots:
-        ID: 301
-        Data: 0
+    LEATHER_BOOTS:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 400
-        Drops_From:
-            Fishing: true
-    Leather_Helmet:
-        ID: 298
-        Data: 0
+    LEATHER_HELMET:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 400
-        Drops_From:
-            Fishing: true
-    Leather_Leggings:
-        ID: 300
-        Data: 0
+    LEATHER_LEGGINGS:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 400
-        Drops_From:
-            Fishing: true
-    Leather_Chestplate:
-        ID: 299
-        Data: 0
+    LEATHER_CHESTPLATE:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 400
-        Drops_From:
-            Fishing: true
-    Wooden_Sword:
-        ID: 268
-        Data: 0
+    WOOD_SWORD:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 200
-        Drops_From:
-            Fishing: true
-    Wooden_Shovel:
-        ID: 269
-        Data: 0
+    WOOD_SPADE:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 200
-        Drops_From:
-            Fishing: true
-    Wooden_Pickaxe:
-        ID: 270
-        Data: 0
+    WOOD_PICKAXE:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 200
-        Drops_From:
-            Fishing: true
-    Wooden_Axe:
-        ID: 271
-        Data: 0
+    WOOD_AXE:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 200
-        Drops_From:
-            Fishing: true
-    Wooden_Hoe:
-        ID: 290
-        Data: 0
+    WOOD_HOE:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 200
-        Drops_From:
-            Fishing: true
-    Stone_Sword:
-        ID: 272
-        Data: 0
+    STONE_SWORD:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 400
-        Drops_From:
-            Fishing: true
-    Stone_Shovel:
-        ID: 273
-        Data: 0
+    STONE_SPADE:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 400
-        Drops_From:
-            Fishing: true
-    Stone_Pickaxe:
-        ID: 274
-        Data: 0
+    STONE_PICKAXE:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 400
-        Drops_From:
-            Fishing: true
-    Stone_Axe:
-        ID: 275
-        Data: 0
+    STONE_AXE:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 400
-        Drops_From:
-            Fishing: true
-    Stone_Hoe:
-        ID: 291
-        Data: 0
+    STONE_HOE:
         Amount: 1
         XP: 200
         Drop_Chance: 20.0
         Drop_Level: 0
         Max_Level: 400
-        Drops_From:
-            Fishing: true
-    Iron_Sword:
-        ID: 267
-        Data: 0
+    IRON_SWORD:
         Amount: 1
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Iron_Shovel:
-        ID: 256
-        Data: 0
+    IRON_SPADE:
         Amount: 1
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Iron_Pickaxe:
-        ID: 257
-        Data: 0
+    IRON_PICKAXE:
         Amount: 1
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Iron_Axe:
-        ID: 258
-        Data: 0
+    IRON_AXE:
         Amount: 1
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Iron_Hoe:
-        ID: 292
-        Data: 0
+    IRON_HOE:
         Amount: 1
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Iron_Boots:
-        ID: 309
-        Data: 0
+    IRON_BOOTS:
         Amount: 1
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Iron_Helmet:
-        ID: 306
-        Data: 0
+    IRON_HELMET:
         Amount: 1
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Iron_Leggings:
-        ID: 308
-        Data: 0
+    IRON_LEGGINGS:
         Amount: 1
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Iron_Chestplate:
-        ID: 307
-        Data: 0
+    IRON_CHESTPLATE:
         Amount: 1
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Ender_Pearl:
-        ID: 368
-        Data: 0
+    ENDER_PEARL:
         Amount: 1
         XP: 200
         Drop_Chance: 25.0
         Drop_Level: 200
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Gold_Sword:
-        ID: 283
-        Data: 0
+    GOLD_SWORD:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Gold_Shovel:
-        ID: 284
-        Data: 0
+    GOLD_SPADE:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Gold_Pickaxe:
-        ID: 285
-        Data: 0
+    GOLD_PICKAXE:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Gold_Axe:
-        ID: 286
-        Data: 0
+    GOLD_AXE:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Gold_Hoe:
-        ID: 294
-        Data: 0
+    GOLD_HOE:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Gold_Boots:
-        ID: 317
-        Data: 0
+    GOLD_BOOTS:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Gold_Helmet:
-        ID: 314
-        Data: 0
+    GOLD_HELMET:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Gold_Leggings:
-        ID: 316
-        Data: 0
+    GOLD_LEGGINGS:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Gold_Chestplate:
-        ID: 315
-        Data: 0
+    GOLD_CHESTPLATE:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Blaze_Rod:
-        ID: 369
-        Data: 0
+    BLAZE_ROD:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Record_3:
-        ID: 2258
-        Data: 0
+    RECORD_3:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Record_4:
-        ID: 2259
-        Data: 0
+    RECORD_4:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Record_5:
-        ID: 2260
-        Data: 0
+    RECORD_5:
         Amount: 1
         XP: 200
         Drop_Chance: 30.0
         Drop_Level: 400
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Diamond_Sword:
-        ID: 276
-        Data: 0
+    DIAMOND_SWORD:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Diamond_Shovel:
-        ID: 277
-        Data: 0
+    DIAMOND_SPADE:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Diamond_Pickaxe:
-        ID: 278
-        Data: 0
+    DIAMOND_PICKAXE:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Diamond_Axe:
-        ID: 279
-        Data: 0
+    DIAMOND_AXE:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Diamond_Hoe:
-        ID: 293
-        Data: 0
+    DIAMOND_HOE:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Diamond_Boots:
-        ID: 313
-        Data: 0
+    DIAMOND_BOOTS:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Diamond_Helmet:
-        ID: 310
-        Data: 0
+    DIAMOND_HELMET:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Diamond_Leggings:
-        ID: 312
-        Data: 0
+    DIAMOND_LEGGINGS:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Diamond_Chestplate:
-        ID: 311
-        Data: 0
+    DIAMOND_CHESTPLATE:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Record_6:
-        ID: 2261
-        Data: 0
+    RECORD_6:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Record_7:
-        ID: 2262
-        Data: 0
+    RECORD_7:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Record_8:
-        ID: 2263
-        Data: 0
+    RECORD_8:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Record_9:
-        ID: 2264
-        Data: 0
+    RECORD_9:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Record_10:
-        ID: 2265
-        Data: 0
+    RECORD_10:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Record_11:
-        ID: 2266
-        Data: 0
+    RECORD_11:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Record_12:
-        ID: 2267
-        Data: 0
+    RECORD_12:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Ghast_Tear:
-        ID: 370
-        Data: 0
+    GHAST_TEAR:
         Amount: 1
         XP: 200
         Drop_Chance: 35.0
         Drop_Level: 600
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Diamonds:
-        ID: 264
-        Data: 0
+    DIAMOND:
         Amount: 5
         XP: 200
         Drop_Chance: 40.0
         Drop_Level: 800
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Iron_Ingots:
-        ID: 265
-        Data: 0
+    IRON_INGOT:
         Amount: 5
         XP: 200
         Drop_Chance: 40.0
         Drop_Level: 800
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Gold_Ingots:
-        ID: 266
-        Data: 0
+    GOLD_INGOT:
         Amount: 5
         XP: 200
         Drop_Chance: 40.0
         Drop_Level: 800
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Lapis_Lazuli:
-        ID: 351
-        Data: 4
+    INK_SACK:
+        Dye_Color: BLUE
         Amount: 20
         XP: 200
         Drop_Chance: 40.0
         Drop_Level: 800
         Max_Level: -1
-        Drops_From:
-            Fishing: true
-    Melon_Seeds:
-        ID: 362
-        Data: 0
+#
+#  Settings for Excavation
+###
+Excavation:
+    CAKE:
         Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Bushes: true
-    Pumpkin_Seeds:
-        ID: 361
-        Data: 0
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 750
+        Drops_From: [Dirt, Grass, Sand, Gravel, Clay, Mycelium, Soul_Sand]
+    SULPHUR:
         Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Bushes: true
-    Cocoa:
-        ID: 351
-        Data: 3
+        XP: 30
+        Drop_Chance: 10.0
+        Drop_Level: 75
+        Drops_From: [Gravel]
+    BONE:
         Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Bushes: true
-    Carrot:
-        ID: 391
-        Data: 0
+        XP: 30
+        Drop_Chance: 10.0
+        Drop_Level: 175
+        Drops_From: [Gravel]
+    APPLE:
         Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Flowers: true
-    Potato:
-        ID: 392
-        Data: 0
+        XP: 100
+        Drop_Chance: 0.1
+        Drop_Level: 250
+        Drops_From: [Grass, Mycelium]
+    SLIME_BALL:
         Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Flowers: true
-    Apples:
-        ID: 260
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Flowers: true
-    Emeralds:
-        ID: 388
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Pots: true
-    Diamond_Gem:
-        ID: 264
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Pots: true
-    Gold_Nuggets:
-        ID: 371
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Pots: true
-    Blaze_Blaze_Rod:
-        ID: 369
-        Mob: BLAZE
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Cave_Spider_Spider_Eye:
-        ID: 375
-        Mob: CAVE_SPIDER
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 49.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Cave_Spider_String:
-        ID: 287
-        Mob: CAVE_SPIDER
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 49.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Cave_Spider_Cobweb:
-        ID: 30
-        Mob: CAVE_SPIDER
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 1.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Cave_Spider_Potion:
-        ID: 373
-        Mob: CAVE_SPIDER
-        Potion_Type: POISON
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 1.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Spider_Spider_Eye:
-        ID: 375
-        Mob: SPIDER
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 50.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Spider_String:
-        ID: 287
-        Mob: SPIDER
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 50.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Chicken_Feather:
-        ID: 288
-        Mob: CHICKEN
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 33.3
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Chicken_Raw_Chicken:
-        ID: 365
-        Mob: CHICKEN
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 33.3
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Chicken_Egg:
-        ID: 344
-        Mob: CHICKEN
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 33.3
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Cow_Milk_Bucket:
-        ID: 335
-        Mob: COW
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 2.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Cow_Leather:
-        ID: 334
-        Mob: COW
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 49.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Cow_Raw_Beef:
-        ID: 363
-        Mob: COW
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 49.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Creeper_Skull:
-        ID: 397
-        Mob: CREEPER
-        Data: 4
-        Amount: 1
-        XP: 0
-        Drop_Chance: 1.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Creeper_Sulphur:
-        ID: 289
-        Mob: CREEPER
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 99.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Enderman_Ender_Pearl:
-        ID: 368
-        Mob: ENDERMAN
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Ghast_Sulphur:
-        ID: 289
-        Mob: GHAST
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 50.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Ghast_Ghast_Tear:
-        ID: 370
-        Mob: GHAST
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 50.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Iron_Golem_Pumpkin:
-        ID: 86
-        Mob: IRON_GOLEM
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 3.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Iron_Golem_Iron_Ingot:
-        ID: 265
-        Mob: IRON_GOLEM
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 12.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Iron_Golem_Red_Rose:
-        ID: 38
-        Mob: IRON_GOLEM
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 85.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Magma_Cube_Magma_Cream:
-        ID: 378
-        Mob: MAGMA_CUBE
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Mushroom_Cow_Milk_Bucket:
-        ID: 335
-        Mob: MUSHROOM_COW
-        Data: 0
-        Amount: 1
-        XP: 0
+        XP: 100
         Drop_Chance: 5.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Mushroom_Cow_Mushroom_Soup:
-        ID: 282
-        Mob: MUSHROOM_COW
-        Data: 0
+        Drop_Level: 150
+        Drops_From: [Clay]
+    BUCKET:
         Amount: 1
-        XP: 0
+        XP: 100
+        Drop_Chance: 0.1
+        Drop_Level: 500
+        Drops_From: [Clay]
+    NETHERRACK:
+        Amount: 1
+        XP: 30
+        Drop_Chance: 0.5
+        Drop_Level: 850
+        Drops_From: [Gravel]
+    RED_MUSHROOM:
+        Amount: 1
+        XP: 80
+        Drop_Chance: 0.5
+        Drop_Level: 500
+        Drops_From: [Dirt, Grass, Mycelium]
+    BROWN_MUSHROOM:
+        Amount: 1
+        XP: 80
+        Drop_Chance: 0.5
+        Drop_Level: 500
+        Drops_From: [Dirt, Grass, Mycelium]
+    EGG:
+        Amount: 1
+        XP: 100
+        Drop_Chance: 1.0
+        Drop_Level: 250
+        Drops_From: [Grass]
+    SOUL_SAND:
+        Amount: 1
+        XP: 80
+        Drop_Chance: 0.5
+        Drop_Level: 650
+        Drops_From: [Sand]
+    CLOCK:
+        Amount: 1
+        XP: 100
+        Drop_Chance: 0.1
+        Drop_Level: 500
+        Drops_From: [Clay]
+    WEB:
+        Amount: 1
+        XP: 150
         Drop_Chance: 5.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Mushroom_Cow_Leather:
-        ID: 334
-        Mob: MUSHROOM_COW
-        Data: 0
+        Drop_Level: 750
+        Drops_From: [Clay]
+    STRING:
         Amount: 1
-        XP: 0
-        Drop_Chance: 30.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Mushroom_Cow_Raw_Beef:
-        ID: 363
-        Mob: MUSHROOM_COW
-        Data: 0
+        XP: 200
+        Drop_Chance: 5.0
+        Drop_Level: 250
+        Drops_From: [Clay]
+    GLOWSTONE_DUST:
         Amount: 1
-        XP: 0
-        Drop_Chance: 30.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Mushroom_Cow_Red_Mushroom:
-        ID: 40
-        Mob: MUSHROOM_COW
-        Data: 0
-        Amount: 2
-        XP: 0
-        Drop_Chance: 30.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Pig_Pork:
-        ID: 319
-        Mob: PIG
-        Data: 0
+        XP: 80
+        Drop_Chance: 5.0
+        Drop_Level: 25
+        Drops_From: [Dirt, Grass, Sand, Mycelium]
+    GOLD_RECORD:
         Amount: 1
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Pig_Zombie_Rotten_Flesh:
-        ID: 367
-        Mob: PIG_ZOMBIE
-        Data: 0
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 250
+        Drops_From: [Dirt, Grass, Sand, Gravel, Clay, Mycelium, Soul_Sand]
+    GREEN_RECORD:
         Amount: 1
-        XP: 0
-        Drop_Chance: 50.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Pig_Zombie_Gold_Nugget:
-        ID: 371
-        Mob: PIG_ZOMBIE
-        Data: 0
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 250
+        Drops_From: [Dirt, Grass, Sand, Gravel, Clay, Mycelium, Soul_Sand]
+    DIAMOND:
         Amount: 1
-        XP: 0
-        Drop_Chance: 50.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Sheep_Wool:
-        ID: 35
-        Mob: SHEEP
-        Data: 0
-        Amount: 3
-        XP: 0
-        Drop_Chance: 100.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Skeleton_Skull:
-        ID: 397
-        Mob: SKELETON
-        Data: 0
+        XP: 1000
+        Drop_Chance: 0.13
+        Drop_Level: 350
+        Drops_From: [Dirt, Grass, Sand, Gravel, Clay, Mycelium, Soul_Sand]
+    INK_SACK:
+        Dye_Color: BROWN
         Amount: 1
-        XP: 0
-        Drop_Chance: 2.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Skeleton_Bone:
-        ID: 352
-        Mob: SKELETON
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 49.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Skeleton_Arrow:
-        ID: 262
-        Mob: SKELETON
-        Data: 0
-        Amount: 2
-        XP: 0
-        Drop_Chance: 49.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Slime_Slime_Ball:
-        ID: 341
-        Mob: SLIME
-        Data: 0
+        XP: 100
+        Drop_Chance: 1.33
+        Drop_Level: 350
+        Drops_From: [Dirt, Grass, Mycelium]
+#
+#  Settings for Hylian Luck
+###
+Hylian_Luck:
+    MELON_SEEDS:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Snowman_Pumpkin:
-        ID: 86
-        Mob: SNOWMAN
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 3.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Snowman_Snowball:
-        ID: 341
-        Mob: SNOWMAN
-        Data: 0
-        Amount: 2
-        XP: 0
-        Drop_Chance: 97.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Squid_Ink_Sack:
-        ID: 351
-        Mob: SQUID
-        Data: 0
+        Drops_From: [Bushes]
+    PUMPKIN_SEEDS:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Witch_Heal_Potion:
-        ID: 373
-        Mob: WITCH
-        Potion_Type: INSTANT_HEAL
-        Data: 0
+        Drops_From: [Bushes]
+    INK_SACK:
+        Dye_Color: BROWN
         Amount: 1
         XP: 0
-        Drop_Chance: 1.0
+        Drop_Chance: 100.0
         Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Witch_Fire_Potion:
-        ID: 373
-        Mob: WITCH
-        Potion_Type: FIRE_RESISTANCE
-        Data: 0
+        Drops_From: [Bushes]
+    CARROT_ITEM:
         Amount: 1
         XP: 0
-        Drop_Chance: 1.0
+        Drop_Chance: 100.0
         Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Witch_Speed_Potion:
-        ID: 373
-        Mob: WITCH
-        Potion_Type: SPEED
-        Data: 0
+        Drops_From: [Flowers]
+    POTATO_ITEM:
         Amount: 1
         XP: 0
-        Drop_Chance: 1.0
+        Drop_Chance: 100.0
         Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Witch_Glass_Bottle:
-        ID: 374
-        Mob: WITCH
-        Data: 0
+        Drops_From: [Flowers]
+    APPLE:
+        Drop_Chance: 100.0
+        Drop_Level: 0
+        Drops_From: [Flowers]
+    EMERALD:
         Amount: 1
         XP: 0
-        Drop_Chance: 9.0
+        Drop_Chance: 100.0
         Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Witch_Glowstone_Dust:
-        ID: 348
-        Mob: WITCH
-        Data: 0
+        Drops_From: [Pots]
+    DIAMOND:
         Amount: 1
         XP: 0
-        Drop_Chance: 13.0
+        Drop_Chance: 100.0
         Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Witch_Sulphur:
-        ID: 289
-        Mob: WITCH
-        Data: 0
+        Drops_From: [Pots]
+    GOLD_NUGGET:
         Amount: 1
         XP: 0
-        Drop_Chance: 12.0
+        Drop_Chance: 100.0
         Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Witch_Redstone:
-        ID: 331
-        Mob: WITCH
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 13.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Witch_Spider_Eye:
-        ID: 375
-        Mob: WITCH
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 12.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Witch_Stick:
-        ID: 380
-        Mob: WITCH
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 13.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Witch_Sugar:
-        ID: 353
-        Mob: WITCH
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 12.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Witch_Potion:
-        ID: 373
-        Mob: WITCH
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 13.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Zombie_Skull:
-        ID: 397
-        Mob: ZOMBIE
-        Data: 2
-        Amount: 1
-        XP: 0
-        Drop_Chance: 2.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
-    Zombie_Rotten_Flesh:
-        ID: 367
-        Mob: ZOMBIE
-        Data: 0
-        Amount: 1
-        XP: 0
-        Drop_Chance: 98.0
-        Drop_Level: 0
-        Drops_From:
-            Shake: true
+        Drops_From: [Pots]
+#
+#	Settings for Shake
+###
+Shake:
+    BLAZE:
+        BLAZE_ROD:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    CAVE_SPIDER:
+        SPIDER_EYE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+        STRING:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+        WEB:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        POTION_POISON:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+    CHICKEN:
+        FEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 33.3
+            Drop_Level: 0
+        RAW_CHICKEN:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 33.3
+            Drop_Level: 0
+        EGG:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 33.3
+            Drop_Level: 0
+    COW:
+        MILK_BUCKET:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.0
+            Drop_Level: 0
+        LEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+        RAW_BEEF:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+    CREEPER:
+        SKULL:
+            Data: 4
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        SULPHUR:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 99.0
+            Drop_Level: 0
+    ENDERMAN:
+        ENDER_PEARL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    GHAST:
+        SULPHUR:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+        GHAST_TEAR:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+    HORSE:
+        LEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 99.0
+            Drop_Level: 0
+        SADDLE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+    IRON_GOLEM:
+        PUMPKIN:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 3.0
+            Drop_Level: 0
+        IRON_INGOT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 12.0
+            Drop_Level: 0
+        RED_ROSE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 85.0
+            Drop_Level: 0
+    MAGMA_CUBE:
+        MAGMA_CREAM:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    MUSHROOM_COW:
+        MILK_BUCKET:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 5.0
+            Drop_Level: 0
+        MUSHROOM_SOUP:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 5.0
+            Drop_Level: 0
+        LEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 30.0
+            Drop_Level: 0
+        RAW_BEEF:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 30.0
+            Drop_Level: 0
+        RED_MUSHROOM:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 30.0
+            Drop_Level: 0
+    PIG:
+        PORK:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    PIG_ZOMBIE:
+        ROTTEN_FLESH:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+        GOLD_NUGGET:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+    SHEEP:
+        WOOL:
+            Amount: 3
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    SKELETON:
+        SKULL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.0
+            Drop_Level: 0
+        BONE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+        ARROW:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+    SLIME:
+        SLIME_BALL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    SPIDER:
+        SPIDER_EYE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+        STRING:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 50.0
+            Drop_Level: 0
+    SNOWMAN:
+        PUMPKIN:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 3.0
+            Drop_Level: 0
+        SNOWBALL:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 97.0
+            Drop_Level: 0
+    SQUID:
+        INK_SACK:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
+    WITCH:
+        POTION_INSTANT_HEAL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        POTION_FIRE_RESISTANCE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        POTION_SPEED:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 1.0
+            Drop_Level: 0
+        GLASS_BOTTLE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 7.0
+            Drop_Level: 0
+        GLOWSTONE_DUST:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+        SULPHUR:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+        REDSTONE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+        SPIDER_EYE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+        STICK:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+        SUGAR:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 15.0
+            Drop_Level: 0
+    ZOMBIE:
+        SKULL:
+            D\ata: 2
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.0
+            Drop_Level: 0
+        ROTTEN_FLESH:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 98.0
+            Drop_Level: 0
