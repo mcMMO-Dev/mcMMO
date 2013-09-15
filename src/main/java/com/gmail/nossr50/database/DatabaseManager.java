@@ -55,7 +55,7 @@ public interface DatabaseManager {
     /**
      * Retrieve rank info into a HashMap from SkillType to the rank.
      * <p>
-     * The special value <code>null</code> is used to represent the Power
+     * The special value {@code null} is used to represent the Power
      * Level rank (the combination of all skill levels).
      *
      * @param playerName The name of the user to retrieve the rankings for

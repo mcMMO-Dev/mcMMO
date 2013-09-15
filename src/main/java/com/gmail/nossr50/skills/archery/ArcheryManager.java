@@ -23,14 +23,30 @@ public class ArcheryManager extends SkillManager {
         super(mcMMOPlayer, SkillType.ARCHERY);
     }
 
+    /**
+     * Check if the target can be dazed. Checks if target is valid and if the player has sufficient permissions.
+     *
+     * @param target the {@link LivingEntity} object of the target to check
+     * @return true if the target can be dazed, false otherwise
+     */
     public boolean canDaze(LivingEntity target) {
         return target instanceof Player && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.DAZE);
     }
 
+    /**
+     * Check if the player can use SkillShot.
+     *
+     * @return true if the player can use SkillShot, false otherwise
+     */
     public boolean canSkillShot() {
         return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.SKILL_SHOT);
     }
 
+    /**
+     * Check if the player can use RetrieveArrows.
+     *
+     * @return true if the player can use RetrieveArrows, false otherwise
+     */
     public boolean canRetrieveArrows() {
         return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.RETRIEVE);
     }
@@ -67,6 +83,8 @@ public class ArcheryManager extends SkillManager {
      * Handle the effects of the Daze ability
      *
      * @param defender The {@link Player} being affected by the ability
+     *
+     * @return amount of damage from Daze
      */
     public double daze(Player defender) {
         if (!SkillUtils.activationSuccessful(SecondaryAbility.DAZE, getPlayer(), getSkillLevel(), activationChance)) {
@@ -94,6 +112,7 @@ public class ArcheryManager extends SkillManager {
      * Handle the effects of the Skill Shot ability
      *
      * @param damage The amount of damage initially dealt by the event
+     * @return amount of damage from Skill Shot
      */
     public double skillShot(double damage) {
         if (!SkillUtils.activationSuccessful(SecondaryAbility.SKILL_SHOT, getPlayer())) {

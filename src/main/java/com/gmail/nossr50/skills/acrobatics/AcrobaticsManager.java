@@ -28,10 +28,22 @@ public class AcrobaticsManager extends SkillManager {
         super(mcMMOPlayer, SkillType.ACROBATICS);
     }
 
+    /**
+     * Check if the player is allowed to use Roll,
+     * checks permissions and exploit prevention.
+     *
+     * @return true if the player is allowed to use Roll
+     */
     public boolean canRoll() {
         return !exploitPrevention() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.ROLL);
     }
 
+    /**
+     * Check if the player is allowed to use Dodge
+     *
+     * @param damager {@link Entity} that caused damage
+     * @return true if the player can Dodge damage from damager
+     */
     public boolean canDodge(Entity damager) {
         if (Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.DODGE)) {
             if (damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) {
@@ -152,10 +164,23 @@ public class AcrobaticsManager extends SkillManager {
         return fallTries + 1 > maxTries;
     }
 
+    /**
+     * Check if a fall is fatal
+     *
+     * @param damage amount of damage taken from the fall
+     * @return true if the fall is fatal, false otherwise
+     */
     private boolean isFatal(double damage) {
         return getPlayer().getHealth() - damage <= 0;
     }
 
+    /**
+     * Calculate the amount of XP gained from falling
+     *
+     * @param damage amount of damage taken in the fall
+     * @param isRoll boolean if the player was rolling
+     * @return amount of XP gained
+     */
     private float calculateRollXP(double damage, boolean isRoll) {
         ItemStack boots = getPlayer().getInventory().getBoots();
         float xp = (float) (damage * (isRoll ? Acrobatics.rollXpModifier : Acrobatics.fallXpModifier));

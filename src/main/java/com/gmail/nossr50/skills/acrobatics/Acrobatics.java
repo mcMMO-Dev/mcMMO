@@ -19,10 +19,26 @@ public final class Acrobatics {
 
     private Acrobatics() {};
 
+    /**
+     * Calculates how much damage should be dealt when Dodging
+     *
+     * @param damage         the base damage
+     * @param damageModifier the damage modifier
+     *
+     * @return modified damage
+     */
     protected static double calculateModifiedDodgeDamage(double damage, double damageModifier) {
         return Math.max(damage / damageModifier, 1.0);
     }
 
+    /**
+     * Calculates how much damage should be dealt when Rolling
+     *
+     * @param damage         the base damage
+     * @param damageThreshold the damage threshold
+     *
+     * @return modified damage
+     */
     protected static double calculateModifiedRollDamage(double damage, double damageThreshold) {
         return Math.max(damage - damageThreshold, 0.0);
     }

@@ -85,30 +85,67 @@ public enum AbilityType {
         this.abilityPlayerOff = abilityPlayerOff;
     }
 
+    /**
+     * Get the cooldown time in seconds for this ability
+     *
+     * @return cooldown time in seconds
+     */
     public int getCooldown() {
         return Config.getInstance().getCooldown(this);
     }
 
+    /**
+     * Get the maximum length in seconds for this ability
+     *
+     * @return maximum length in seconds
+     */
     public int getMaxLength() {
         return Config.getInstance().getMaxLength(this);
     }
 
+    /**
+     * Get the locale string for when the ability activates
+     *
+     * @return localized activation message
+     */
     public String getAbilityOn() {
         return LocaleLoader.getString(this.abilityOn);
     }
 
+    /**
+     * Get the locale string for when the ability deactivates
+     *
+     * @return localized deactivation message
+     */
     public String getAbilityOff() {
         return LocaleLoader.getString(this.abilityOff);
     }
 
+    /**
+     * Get the locale string for nearby players when someone activates this ability
+     *
+     * @param player {@link Player} object that activates this ability
+     * @return localized activation message
+     */
     public String getAbilityPlayer(Player player) {
         return LocaleLoader.getString(this.abilityPlayer, player.getName());
     }
 
+    /**
+     * Get the locale string for nearby players when someone deactivates this ability
+     *
+     * @param player {@link Player} object that deactivates this ability
+     * @return localized deactivation message
+     */
     public String getAbilityPlayerOff(Player player) {
         return LocaleLoader.getString(this.abilityPlayerOff, player.getName());
     }
 
+    /**
+     * Get ability refresh message
+     *
+     * @return Localized ability refresh message
+     */
     public String getAbilityRefresh() {
         return LocaleLoader.getString(this.abilityRefresh);
     }

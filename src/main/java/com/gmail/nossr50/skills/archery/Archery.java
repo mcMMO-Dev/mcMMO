@@ -23,6 +23,12 @@ public class Archery {
 
     public static final double DISTANCE_XP_MULTIPLIER = 0.025;
 
+    /**
+     * Increment tracked arrow count for a LivingEntity,
+     * if the entity isn't tracked yet it will get added to the tracker.
+     *
+     * @param livingEntity the {@link LivingEntity} to increment the arrow count for
+     */
     protected static void incrementTrackerValue(LivingEntity livingEntity) {
         for (TrackedEntity trackedEntity : trackedEntities) {
             if (trackedEntity.getLivingEntity().getEntityId() == livingEntity.getEntityId()) {
@@ -34,6 +40,11 @@ public class Archery {
         addToTracker(livingEntity); // If the entity isn't tracked yet
     }
 
+    /**
+     * Add a LivingEntity to the tracker.
+     *
+     * @param livingEntity the {@link LivingEntity} to add.
+     */
     protected static void addToTracker(LivingEntity livingEntity) {
         TrackedEntity trackedEntity = new TrackedEntity(livingEntity);
 
@@ -41,6 +52,11 @@ public class Archery {
         trackedEntities.add(trackedEntity);
     }
 
+    /**
+     * Remove a TrackedEntity from the tracker.
+     *
+     * @param trackedEntity the {@link TrackedEntity} to remove.
+     */
     protected static void removeFromTracker(TrackedEntity trackedEntity) {
         trackedEntities.remove(trackedEntity);
     }

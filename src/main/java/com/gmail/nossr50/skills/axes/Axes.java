@@ -23,6 +23,12 @@ public class Axes {
 
     public static double skullSplitterModifier = AdvancedConfig.getInstance().getSkullSplitterModifier();
 
+    /**
+     * Check if the target is wearing any armor.
+     *
+     * @param target the {@link LivingEntity} object of the target to check.
+     * @return true if the target is wearing at least one piece of armor, false otherwise
+     */
     protected static boolean hasArmor(LivingEntity target) {
         for (ItemStack itemStack : target.getEquipment().getArmorContents()) {
             if (ItemUtils.isArmor(itemStack)) {
