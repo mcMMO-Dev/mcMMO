@@ -5,9 +5,12 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Tree;
 
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -160,17 +163,20 @@ public class WoodcuttingManager extends SkillManager {
                 Misc.randomDropItem(blockState.getLocation(), ModUtils.getCustomBlock(blockState).getItemDrop(), 10);
             }
             else {
+                Tree tree = (Tree) blockState.getData();
+                tree.setDirection(BlockFace.UP);
+
                 switch (material) {
                     case LOG:
                         if (canGetDoubleDrops()) {
                             Woodcutting.checkForDoubleDrop(blockState);
                         }
                         xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
-                        Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack(1));
+                        Misc.dropItem(blockState.getLocation(), tree.toItemStack(1));
                         break;
 
                     case LEAVES:
-                        Misc.randomDropItem(blockState.getLocation(), blockState.getData().toItemStack(1), 10);
+                        Misc.randomDropItem(blockState.getLocation(), new ItemStack(Material.SAPLING, 1, tree.getSpecies().getData()), 10);
                         break;
 
                     default:
