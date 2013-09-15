@@ -421,7 +421,7 @@ Excavation:
         Drop_Chance: 0.5
         Drop_Level: 650
         Drops_From: [Sand]
-    CLOCK:
+    WATCH:
         Amount: 1
         XP: 100
         Drop_Chance: 0.1
