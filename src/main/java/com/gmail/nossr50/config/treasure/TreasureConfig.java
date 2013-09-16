@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Dye;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
@@ -193,6 +194,18 @@ public class TreasureConfig extends ConfigLoader {
             }
             else if (material != null) {
                 item = new ItemStack(material, amount, (short) data);
+
+                if (config.contains(type + "." + treasureName + ".Custom_Name")) {
+                    ItemMeta itemMeta = item.getItemMeta();
+                    itemMeta.setDisplayName(config.getString(type + "." + treasureName + "Custom_Name"));
+                    item.setItemMeta(itemMeta);
+                }
+
+                if (config.contains(type + "." + treasureName + ".Lore")) {
+                    ItemMeta itemMeta = item.getItemMeta();
+                    itemMeta.setLore(config.getStringList(type + "." + treasureName + "Custom_Name"));
+                    item.setItemMeta(itemMeta);
+                }
             }
 
             if (noErrorsInConfig(reason)) {
