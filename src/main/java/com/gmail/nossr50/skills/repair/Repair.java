@@ -53,18 +53,6 @@ public class Repair {
         return "";
     }
 
-    public static String[] getSpoutAnvilMessages(Material type) {
-        if (type == repairAnvilMaterial) {
-            return new String[] {LocaleLoader.getString("Repair.AnvilPlaced.Spout1"), LocaleLoader.getString("Repair.AnvilPlaced.Spout2")};
-        }
-
-        if (type == salvageAnvilMaterial) {
-            return new String[] {"[mcMMO] Anvil Placed", "Right click to salvage!"}; //TODO: Localize
-        }
-
-        return new String[] {"", ""};
-    }
-
     /**
      * Search the inventory for an item and return the index.
      *

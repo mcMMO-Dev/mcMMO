@@ -76,7 +76,6 @@ public class mcMMO extends JavaPlugin {
     private boolean updateAvailable;
 
     /* Plugin Checks */
-    private static boolean spoutEnabled;
     private static boolean combatTagEnabled;
 
     // Config Validation Check
@@ -255,10 +254,6 @@ public class mcMMO extends JavaPlugin {
     @Deprecated
     public static void setDatabaseManager(DatabaseManager databaseManager) {
         mcMMO.databaseManager = databaseManager;
-    }
-
-    public static boolean isSpoutEnabled() {
-        return spoutEnabled;
     }
 
     public static boolean isCombatTagEnabled() {
