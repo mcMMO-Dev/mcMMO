@@ -182,12 +182,11 @@ public final class Misc {
     }
 
     public static void profileCleanup(String playerName) {
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
-        Player player = mcMMOPlayer.getPlayer();
-
         UserManager.remove(playerName);
 
-        if (player.isOnline()) {
+        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+
+        if (player != null) {
             UserManager.addUser(player);
         }
     }
