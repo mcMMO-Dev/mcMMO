@@ -345,8 +345,7 @@ Fishing:
         Drop_Chance: 40.0
         Drop_Level: 800
         Max_Level: -1
-    INK_SACK:
-        Dye_Color: BLUE
+    INK_SACK_BLUE:
         Amount: 20
         XP: 200
         Drop_Chance: 40.0
@@ -464,8 +463,7 @@ Excavation:
         Drop_Chance: 0.13
         Drop_Level: 350
         Drops_From: [Dirt, Grass, Sand, Gravel, Clay, Mycelium, Soul_Sand]
-    INK_SACK:
-        Dye_Color: BROWN
+    INK_SACK_BROWN:
         Amount: 1
         XP: 100
         Drop_Chance: 1.33
@@ -487,8 +485,7 @@ Hylian_Luck:
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Bushes]
-    INK_SACK:
-        Dye_Color: BROWN
+    INK_SACK_BROWN:
         Amount: 1
         XP: 0
         Drop_Chance: 100.0

@@ -111,7 +111,18 @@ public class TreasureConfig extends ConfigLoader {
             /*
              * Material, Amount, and Data
              */
-            Material material = treasureName.contains("POTION") ? Material.POTION : Material.matchMaterial(treasureName);
+            Material material;
+
+            if (treasureName.contains("POTION")) {
+                material = Material.POTION;
+            }
+            else if (treasureName.contains("INK_SACK")) {
+                material = Material.INK_SACK;
+            }
+            else {
+                material = Material.matchMaterial(treasureName);
+            }
+
             int amount = config.getInt(type + "." + treasureName + ".Amount");
             int data = config.getInt(type + "." + treasureName + ".Data");
 
@@ -179,8 +190,8 @@ public class TreasureConfig extends ConfigLoader {
                     reason.add("Invalid Potion_Type: " + potionType);
                 }
             }
-            else if (config.contains(type + "." + treasureName + ".Dye_Color")) {
-                String color = config.getString("Fishing." + treasureName + ".Dye_Color");
+            else if (treasureName.contains("INK_SACK")) {
+                String color = treasureName.substring(9);
 
                 try {
                     Dye dye = new Dye();
