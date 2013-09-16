@@ -745,7 +745,7 @@ Shake:
             Drop_Chance: 97.0
             Drop_Level: 0
     SQUID:
-        INK_SACK:
+        INK_SACK_BLACK:
             Amount: 1
             XP: 0
             Drop_Chance: 100.0
