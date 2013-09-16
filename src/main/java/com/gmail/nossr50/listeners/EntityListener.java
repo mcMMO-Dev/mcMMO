@@ -151,6 +151,10 @@ public class EntityListener implements Listener {
 
         Entity attacker = event.getDamager();
 
+        if (Misc.isNPCEntity(attacker)) {
+            return;
+        }
+
         if (attacker instanceof Projectile) {
             attacker = ((Projectile) attacker).getShooter();
         }
