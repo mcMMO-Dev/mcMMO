@@ -354,21 +354,25 @@ Skills:
             # Item_Amount: Amount of items required to summon the pet
             # Summon_Amount: Amount of pets to summon when using Call Of The Wild
             # Summon_Length: Pets despawn when their summon life length expires
+            # Summon_Max_Amount: Maximum amount of pets that can be summoned at the same time
             Wolf:
                 Item_Material: BONE
                 Item_Amount: 10
                 Summon_Amount: 1
                 Summon_Length: 240
+                Summon_Max_Amount: 10
             Ocelot:
                 Item_Material: RAW_FISH
                 Item_Amount: 10
                 Summon_Amount: 1
                 Summon_Length: 240
+                Summon_Max_Amount: 10
             Horse:
                 Item_Material: APPLE
                 Item_Amount: 10
                 Summon_Amount: 1
                 Summon_Length: 240
+                Summon_Max_Amount: 10
 
             # Range to check for nearby pets when using Call Of The Wild, 0 will disable the check
             Range: 40.0

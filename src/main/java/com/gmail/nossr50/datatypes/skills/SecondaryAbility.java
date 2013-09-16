@@ -71,6 +71,7 @@ public enum SecondaryAbility {
     SHARPENED_CLAWS,
     SHOCK_PROOF,
     THICK_FUR,
+    PUMMEL,
 
     /* Unarmed */
     BLOCK_CRACKER,

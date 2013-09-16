@@ -498,8 +498,8 @@ public class Config extends AutoUpdateConfigLoader {
     public int getTamingCOTWCost(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Item_Amount"); }
     public int getTamingCOTWAmount(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Summon_Amount"); }
     public int getTamingCOTWLength(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type)+ ".Summon_Length"); }
+    public int getTamingCOTWMaxAmount(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type)+ ".Summon_Max_Amount"); }
     public double getTamingCOTWRange() { return config.getDouble("Skills.Taming.Call_Of_The_Wild.Range", 40.0D); }
-    public int getTamingCOTWMaxAmount(EntityType type) { return config.getInt("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type)+ "_MaxAmount"); }
 
     /* Woodcutting */
     public boolean getWoodcuttingDoubleDropsEnabled(TreeSpecies species) { return config.getBoolean("Double_Drops.Woodcutting." + StringUtils.getPrettyTreeSpeciesString(species).replace(" ", "_")); }

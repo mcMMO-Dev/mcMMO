@@ -34,8 +34,12 @@ public final class ParticleEffectUtils {
             return;
         }
 
-        Location location = player.getEyeLocation();
-        World world = player.getWorld();
+        playSmokeEffect(player);
+    }
+
+    public static void playSmokeEffect(LivingEntity livingEntity) {
+        Location location = livingEntity.getEyeLocation();
+        World world = livingEntity.getWorld();
 
         // Have to do it this way, because not all block directions are valid for smoke
         world.playEffect(location, Effect.SMOKE, BlockFace.SOUTH_EAST);

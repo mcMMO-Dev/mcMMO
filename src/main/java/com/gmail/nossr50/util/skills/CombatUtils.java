@@ -147,6 +147,8 @@ public final class CombatUtils {
             tamingManager.fastFoodService(wolf, event.getDamage());
         }
 
+        tamingManager.pummel(target, wolf);
+
         if (tamingManager.canUseSharpenedClaws()) {
             finalDamage += tamingManager.sharpenedClaws();
         }
