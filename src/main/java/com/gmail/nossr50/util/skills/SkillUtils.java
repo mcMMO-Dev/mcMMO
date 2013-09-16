@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -166,6 +167,7 @@ public class SkillUtils {
                 SpoutUtils.processLevelup(mcMMOPlayer, skillType, levelsGained);
             }
             else {
+                player.playSound(player.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
                 player.sendMessage(LocaleLoader.getString(capitalized + ".Skillup", levelsGained, profile.getSkillLevel(skillType)));
             }
         }

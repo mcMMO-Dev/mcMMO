@@ -38,13 +38,15 @@ public final class Misc {
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
 
     // Sound Pitches & Volumes from CB
-    public static final float ANVIL_USE_PITCH  = 0.3F; // Not in CB directly, I went off the place sound values
-    public static final float ANVIL_USE_VOLUME = 1.0F; // Not in CB directly, I went off the place sound values
+    public static final float ANVIL_USE_PITCH  = 0.3F;  // Not in CB directly, I went off the place sound values
+    public static final float ANVIL_USE_VOLUME = 1.0F;  // Not in CB directly, I went off the place sound values
     public static final float FIZZ_VOLUME      = 0.5F;
     public static final float POP_VOLUME       = 0.2F;
     public static final float BAT_VOLUME       = 1.0F;
     public static final float BAT_PITCH        = 0.6F;
     public static final float GHAST_VOLUME     = 1.0F;
+    public static final float LEVELUP_PITCH    = 0.5F;  // Reduced to differentiate between vanilla level-up
+    public static final float LEVELUP_VOLUME   = 0.75F; // Use max volume always
 
     private Misc() {};
 
