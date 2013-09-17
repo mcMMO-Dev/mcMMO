@@ -38,7 +38,7 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck() {
         canBeastLore = Permissions.beastLore(player);
-        canCallWild = Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
+        canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
         canEnvironmentallyAware = Permissions.environmentallyAware(player);
         canFastFood = Permissions.fastFoodService(player);
         canGore = Permissions.gore(player);
@@ -93,6 +93,7 @@ public class TamingCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.12"), LocaleLoader.getString("Taming.Effect.13")));
             player.sendMessage(LocaleLoader.getString("Taming.Effect.14", Config.getInstance().getTamingCOTWOcelotCost()));
             player.sendMessage(LocaleLoader.getString("Taming.Effect.15", Config.getInstance().getTamingCOTWWolfCost()));
+            player.sendMessage(LocaleLoader.getString("Taming.Effect.20", Config.getInstance().getTamingCOTWHorseCost()));
         }
     }
 
