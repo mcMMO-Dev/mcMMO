@@ -46,7 +46,7 @@ public final class LocaleLoader {
     }
 
     private static String getString(String key, ResourceBundle bundle, Object... messageArguments) throws MissingResourceException {
-        return formatString(bundle.getString(key), messageArguments);
+        return formatString(bundle.getString(key).replace("\'", "''"), messageArguments);
     }
 
     public static String formatString(String string, Object... messageArguments) {
