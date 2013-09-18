@@ -130,6 +130,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
 
         saveLogin(userId, ((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
+        saveHuds(userId, (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()));
         saveLongs(
                 "UPDATE " + tablePrefix + "cooldowns SET "
                     + "  mining = ?, woodcutting = ?, unarmed = ?"
@@ -354,7 +355,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, "
                     + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, "
                     + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
-                    + "h.hudtype, h.mobhealthbar "
+                    + "h.mobhealthbar "
                     + "FROM " + tablePrefix + "users u "
                     + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
                     + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
@@ -422,7 +423,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, "
                     + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, "
                     + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
-                    + "h.hudtype, h.mobhealthbar "
+                    + "h.mobhealthbar "
                     + "FROM " + tablePrefix + "users u "
                     + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
                     + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
@@ -631,7 +632,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 + "UNIQUE KEY `user` (`user`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
                 + "`user_id` int(10) unsigned NOT NULL,"
-                + "`hudtype` varchar(50) NOT NULL DEFAULT 'STANDARD',"
                 + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
                 + "PRIMARY KEY (`user_id`)) "
                 + "DEFAULT CHARSET=latin1;");
@@ -730,6 +730,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             case PARTY_NAMES:
                 write("ALTER TABLE `" + tablePrefix + "users` DROP COLUMN `party` ;");
+                return;
+
+            case DROPPED_SPOUT:
+                write("ALTER TABLE `" + tablePrefix + "huds` DROP COLUMN `hudtype` ;");
                 return;
 
             case KILL_ORPHANS:
@@ -1118,14 +1122,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void saveHuds(int userId, String hudType, String mobHealthBar) {
+    private void saveHuds(int userId, String mobHealthBar) {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET hudtype = ?, mobhealthbar = ? WHERE user_id = ?");
-            statement.setString(1, hudType);
-            statement.setString(2, mobHealthBar);
-            statement.setInt(3, userId);
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ? WHERE user_id = ?");
+            statement.setString(1, mobHealthBar);
+            statement.setInt(2, userId);
             statement.execute();
         }
         catch (SQLException ex) {

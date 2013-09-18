@@ -346,7 +346,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out.append("0:"); // DATS
                 out.append("0:"); // DATS
                 out.append("0:"); // DATS
-                out.append("STANDARD").append(":"); // HUD
+                out.append(":");
                 out.append("0:"); // Fishing
                 out.append("0:"); // FishingXp
                 out.append("0:"); // Blast Mining
@@ -609,7 +609,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 // Introduction of HUDType
                                 // Version 1.1.06
                                 // commit 78f79213cdd7190cd11ae54526f3b4ea42078e8a
-                                newLine.append("STANDARD").append(":");
+                                newLine.append(":");
                                 oldVersion = "1.1.06";
                             }
                             if (character.length <= 35) {
