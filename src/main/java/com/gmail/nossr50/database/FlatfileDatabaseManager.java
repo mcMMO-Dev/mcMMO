@@ -577,6 +577,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     HashSet<String> players = new HashSet<String>();
 
                     while ((line = in.readLine()) != null) {
+                        // Remove empty lines from the file
+                        if (line.isEmpty()) {
+                            continue;
+                        }
+
                         // Length checks depend on last character being ':'
                         if (line.charAt(line.length() - 1) != ':') {
                             line = line + ":";
