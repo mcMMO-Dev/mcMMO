@@ -593,70 +593,81 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             continue;
                         }
 
+                        if (character.length < 33) {
+                            // Before Version 1.0 - Drop
+                            mcMMO.p.getLogger().warning("Dropping malformed or before version 1.0 line from database - " + line);
+                            continue;
+                        }
+
+                        String oldVersion = null;
+
+                        if (!character[33].isEmpty()) {
+                            // Removal of Spout Support
+                            // Version 1.4.07-dev2
+                            // commit 7bac0e2ca5143bce84dc160617fed97f0b1cb968
+                            line = line.replace(character[33], "");
+                            oldVersion = "1.4.07";
+                        }
+
                         // If they're valid, rewrite them to the file.
                         if (character.length > 38) {
                             writer.append(line).append("\r\n");
+                            continue;
                         }
-                        else if (character.length < 33) {
-                            // Before Version 1.0 - Drop
-                            mcMMO.p.getLogger().warning("Dropping malformed or before version 1.0 line from database - " + line);
-                        }
-                        else {
-                            String oldVersion = null;
-                            StringBuilder newLine = new StringBuilder(line);
-                            boolean announce = false;
-                            if (character.length <= 33) {
-                                // Introduction of HUDType
-                                // Version 1.1.06
-                                // commit 78f79213cdd7190cd11ae54526f3b4ea42078e8a
-                                newLine.append(":");
-                                oldVersion = "1.1.06";
-                            }
-                            if (character.length <= 35) {
-                                // Introduction of Fishing
-                                // Version 1.2.00
-                                // commit a814b57311bc7734661109f0e77fc8bab3a0bd29
-                                newLine.append(0).append(":");
-                                newLine.append(0).append(":");
-                                if (oldVersion == null) {
-                                    oldVersion = "1.2.00";
-                                }
-                            }
-                            if (character.length <= 36) {
-                                // Introduction of Blast Mining cooldowns
-                                // Version 1.3.00-dev
-                                // commit fadbaf429d6b4764b8f1ad0efaa524a090e82ef5
-                                newLine.append(0).append(":");
-                                if (oldVersion == null) {
-                                    oldVersion = "1.3.00";
-                                }
-                            }
-                            if (character.length <= 37) {
-                                // Making old-purge work with flatfile
-                                // Version 1.4.00-dev
-                                // commmit 3f6c07ba6aaf44e388cc3b882cac3d8f51d0ac28
-                                // XXX Cannot create an OfflinePlayer at startup, use 0 and fix in purge
-                                newLine.append("0").append(":");
-                                announce = true; // TODO move this down
-                                if (oldVersion == null) {
-                                    oldVersion = "1.4.00";
-                                }
-                            }
-                            if (character.length <= 38) {
-                                // Addition of mob healthbars
-                                // Version 1.4.06
-                                // commit da29185b7dc7e0d992754bba555576d48fa08aa6
-                                newLine.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":");
-                                if (oldVersion == null) {
-                                    oldVersion = "1.4.06";
-                                }
-                            }
 
-                            if (announce) {
-                                mcMMO.p.debug("Updating database line for player " + character[0] + " from before version " + oldVersion);
-                            }
-                            writer.append(newLine).append("\r\n");
+                        StringBuilder newLine = new StringBuilder(line);
+
+                        if (character.length <= 33) {
+                            // Introduction of HUDType
+                            // Version 1.1.06
+                            // commit 78f79213cdd7190cd11ae54526f3b4ea42078e8a
+                            newLine.append(":");
+                            oldVersion = "1.1.06";
                         }
+                        if (character.length <= 35) {
+                            // Introduction of Fishing
+                            // Version 1.2.00
+                            // commit a814b57311bc7734661109f0e77fc8bab3a0bd29
+                            newLine.append(0).append(":");
+                            newLine.append(0).append(":");
+                            if (oldVersion == null) {
+                                oldVersion = "1.2.00";
+                            }
+                        }
+                        if (character.length <= 36) {
+                            // Introduction of Blast Mining cooldowns
+                            // Version 1.3.00-dev
+                            // commit fadbaf429d6b4764b8f1ad0efaa524a090e82ef5
+                            newLine.append(0).append(":");
+                            if (oldVersion == null) {
+                                oldVersion = "1.3.00";
+                            }
+                        }
+                        if (character.length <= 37) {
+                            // Making old-purge work with flatfile
+                            // Version 1.4.00-dev
+                            // commmit 3f6c07ba6aaf44e388cc3b882cac3d8f51d0ac28
+                            // XXX Cannot create an OfflinePlayer at startup, use 0 and fix in purge
+                            newLine.append("0").append(":");
+                            if (oldVersion == null) {
+                                oldVersion = "1.4.00";
+                            }
+                        }
+                        if (character.length <= 38) {
+                            // Addition of mob healthbars
+                            // Version 1.4.06
+                            // commit da29185b7dc7e0d992754bba555576d48fa08aa6
+                            newLine.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":");
+                            if (oldVersion == null) {
+                                oldVersion = "1.4.06";
+                            }
+                        }
+
+                        if (oldVersion != null) {
+                            mcMMO.p.debug("Updating database line for player " + character[0] + " from before version " + oldVersion);
+                        }
+
+                        writer.append(newLine).append("\r\n");
                     }
 
                     // Write the new file
