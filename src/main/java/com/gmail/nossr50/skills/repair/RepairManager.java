@@ -83,10 +83,10 @@ public class RepairManager extends SkillManager {
         ItemStack toRemove = new MaterialData(repairMaterialId, repairMaterialMetadata).toItemStack(1);
 
         // Check if they have the proper material to repair with
-        if (!inventory.containsAtLeast(toRemove, 1)) {
+        if (!inventory.contains(Material.getMaterial(repairMaterialId))) {
             String message = LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(repairMaterialId));
 
-            if (repairMaterialMetadata > 0) {
+            if (repairMaterialMetadata != (byte) -1 && !inventory.containsAtLeast(toRemove, 1)) {
                 message += ":" + repairMaterialMetadata;
             }
 
@@ -130,6 +130,11 @@ public class RepairManager extends SkillManager {
         }
 
         // Remove the item
+        if (repairMaterialMetadata == -1) {
+            toRemove = inventory.getItem(inventory.first(Material.getMaterial(repairMaterialId))).clone();
+            toRemove.setAmount(1);
+        }
+
         inventory.removeItem(toRemove);
 
         // Give out XP like candy
