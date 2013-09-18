@@ -10,6 +10,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -79,16 +80,14 @@ public class RepairManager extends SkillManager {
 
         int repairMaterialId = repairable.getRepairMaterialId();
         byte repairMaterialMetadata = repairable.getRepairMaterialMetadata();
+        ItemStack toRemove = new MaterialData(repairMaterialId, repairMaterialMetadata).toItemStack(1);
 
         // Check if they have the proper material to repair with
-        if (!inventory.contains(repairMaterialId)) {
+        if (!inventory.containsAtLeast(toRemove, 1)) {
             String message = LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(repairMaterialId));
 
-            if (repairMaterialMetadata != (byte) -1) {
-                // TODO: Do something nicer than append the metadata as a :# ?
-                if (Repair.findInInventory(inventory, repairMaterialId, repairMaterialMetadata) == -1) {
-                    message += ":" + repairMaterialMetadata;
-                }
+            if (repairMaterialMetadata > 0) {
+                message += ":" + repairMaterialMetadata;
             }
 
             player.sendMessage(message);
@@ -117,24 +116,8 @@ public class RepairManager extends SkillManager {
         int baseRepairAmount = repairable.getBaseRepairDurability(); // Did they send me daughters?
         short newDurability = repairCalculate(startDurability, baseRepairAmount); // When I asked for sons?
 
-        // We're going to hold onto our repair item location
-        int repairItemLocation;
-        if (repairable.getRepairMaterialMetadata() == (byte) -1) {
-            repairItemLocation = Repair.findInInventory(inventory, repairMaterialId);
-        }
-        else {
-            // Special case for when the repairable has metadata that must be addressed
-            repairItemLocation = Repair.findInInventory(inventory, repairMaterialId, repairMaterialMetadata);
-        }
-
-        // This should never happen, but if it does we need to complain loudly about it.
-        if (repairItemLocation == -1) {
-            player.sendMessage(LocaleLoader.getString("Repair.Error"));
-            return;
-        }
-
         // Call event
-        McMMOPlayerRepairCheckEvent event = new McMMOPlayerRepairCheckEvent(player, (short) (startDurability - newDurability), inventory.getItem(repairItemLocation), item);
+        McMMOPlayerRepairCheckEvent event = new McMMOPlayerRepairCheckEvent(player, (short) (startDurability - newDurability), toRemove, item);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
@@ -147,7 +130,7 @@ public class RepairManager extends SkillManager {
         }
 
         // Remove the item
-        Repair.removeOneFrom(inventory, repairItemLocation);
+        inventory.removeItem(toRemove);
 
         // Give out XP like candy
         applyXpGain((float) ((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability()) * repairable.getXpMultiplier()) * ExperienceConfig.getInstance().getRepairXPBase() * ExperienceConfig.getInstance().getRepairXP(repairable.getRepairMaterialType())));
