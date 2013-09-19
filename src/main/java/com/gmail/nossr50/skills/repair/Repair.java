@@ -2,7 +2,11 @@ package com.gmail.nossr50.skills.repair;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -79,29 +83,53 @@ public class Repair {
     }
 
     protected static int getSalvagedAmount(ItemStack inHand) {
-        if (ItemUtils.isPickaxe(inHand) || ItemUtils.isAxe(inHand) || inHand.getType() == Material.BOW || inHand.getType() == Material.BUCKET) {
-            return 3;
+        // Temporary workaround until they get their stuff fixed.
+        if (mcMMO.p.getServer().getName().equals("MCPC+")) {
+            if (ItemUtils.isPickaxe(inHand) || ItemUtils.isAxe(inHand) || inHand.getType() == Material.BOW || inHand.getType() == Material.BUCKET) {
+                return 3;
+            }
+            else if (ItemUtils.isShovel(inHand) || inHand.getType() == Material.FLINT_AND_STEEL) {
+                return 1;
+            }
+            else if (ItemUtils.isSword(inHand) || ItemUtils.isHoe(inHand) || inHand.getType() == Material.CARROT_STICK || inHand.getType() == Material.FISHING_ROD || inHand.getType() == Material.SHEARS) {
+                return 2;
+            }
+            else if (ItemUtils.isHelmet(inHand)) {
+                return 5;
+            }
+            else if (ItemUtils.isChestplate(inHand)) {
+                return 8;
+            }
+            else if (ItemUtils.isLeggings(inHand)) {
+                return 7;
+            }
+            else if (ItemUtils.isBoots(inHand)) {
+                return 4;
+            }
+            else {
+                return 0;
+            }
         }
-        else if (ItemUtils.isShovel(inHand) || inHand.getType() == Material.FLINT_AND_STEEL) {
-            return 1;
+
+        Recipe recipe = mcMMO.p.getServer().getRecipesFor(inHand).get(0);
+        int salvageAmount = 0;
+        Material salvageMaterial = getSalvagedItem(inHand);
+
+        if (recipe instanceof ShapelessRecipe) {
+            for (ItemStack ingredient : ((ShapelessRecipe) recipe).getIngredientList()) {
+                if (ingredient != null && ingredient.getType() == salvageMaterial) {
+                    salvageAmount += ingredient.getAmount();
+                }
+            }
         }
-        else if (ItemUtils.isSword(inHand) || ItemUtils.isHoe(inHand) || inHand.getType() == Material.CARROT_STICK || inHand.getType() == Material.FISHING_ROD || inHand.getType() == Material.SHEARS) {
-            return 2;
+        else if (recipe instanceof ShapedRecipe) {
+            for (ItemStack ingredient : ((ShapedRecipe) recipe).getIngredientMap().values()) {
+                if (ingredient != null && ingredient.getType() == salvageMaterial) {
+                    salvageAmount += ingredient.getAmount();
+                }
+            }
         }
-        else if (ItemUtils.isHelmet(inHand)) {
-            return 5;
-        }
-        else if (ItemUtils.isChestplate(inHand)) {
-            return 8;
-        }
-        else if (ItemUtils.isLeggings(inHand)) {
-            return 7;
-        }
-        else if (ItemUtils.isBoots(inHand)) {
-            return 4;
-        }
-        else {
-            return 0;
-        }
+
+        return salvageAmount;
     }
 }

@@ -164,8 +164,6 @@ public class RepairConfig extends ConfigLoader {
                 }
             }
 
-            System.out.println("Minimum quantity of " + key + ": " + minimumQuantity);
-
             if (minimumQuantity <= 0) {
                 reason.add("Minimum quantity of " + key + " must be greater than 0!");
             }
