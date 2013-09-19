@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.gmail.nossr50.config.ConfigLoader;
@@ -93,7 +94,7 @@ public class CustomToolConfig extends ConfigLoader {
             CustomTool tool;
 
             if (repairable) {
-                repairables.add(RepairableFactory.getRepairable(id, repairID, repairData, repairQuantity, durability));
+                repairables.add(RepairableFactory.getRepairable(Material.getMaterial(id), Material.getMaterial(repairID), repairData, repairQuantity, durability));
             }
 
             tool = new CustomTool(tier, abilityEnabled, multiplier, durability, id);

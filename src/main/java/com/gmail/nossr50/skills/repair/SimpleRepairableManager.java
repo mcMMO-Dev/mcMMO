@@ -3,23 +3,24 @@ package com.gmail.nossr50.skills.repair;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class SimpleRepairableManager implements RepairableManager {
-    private HashMap<Integer, Repairable> repairables;
+    private HashMap<Material, Repairable> repairables;
 
     protected SimpleRepairableManager() {
         this(55);
     }
 
     protected SimpleRepairableManager(int repairablesSize) {
-        this.repairables = new HashMap<Integer, Repairable>(repairablesSize);
+        this.repairables = new HashMap<Material, Repairable>(repairablesSize);
     }
 
     @Override
     public void registerRepairable(Repairable repairable) {
-        Integer itemId = repairable.getItemId();
-        repairables.put(itemId, repairable);
+        Material item = repairable.getItemMaterial();
+        repairables.put(item, repairable);
     }
 
     @Override
@@ -30,17 +31,17 @@ public class SimpleRepairableManager implements RepairableManager {
     }
 
     @Override
-    public boolean isRepairable(int itemId) {
-        return repairables.containsKey(itemId);
+    public boolean isRepairable(Material type) {
+        return repairables.containsKey(type);
     }
 
     @Override
     public boolean isRepairable(ItemStack itemStack) {
-        return isRepairable(itemStack.getTypeId());
+        return isRepairable(itemStack.getType());
     }
 
     @Override
-    public Repairable getRepairable(int id) {
-        return repairables.get(id);
+    public Repairable getRepairable(Material type) {
+        return repairables.get(type);
     }
 }

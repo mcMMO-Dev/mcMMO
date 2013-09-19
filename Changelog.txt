@@ -36,6 +36,7 @@ Version 1.4.07-dev
  = Fixed a bug where the "Dodge" DamageModifier wasn't being read from advanced.yml
  = Fixed a bug where squid were not awarding XP.
  ! Changed format of treasures.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
+ ! Changed format of repair.vanilla.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
  ! Witches no longer drop water bottles from Shake, since they no longer drop them in Vanilla.
  ! Changed various values to double in advanced.yml for the sake of consistency.
  ! Nerfed Archery damage to eliminate constant one-hit kills.

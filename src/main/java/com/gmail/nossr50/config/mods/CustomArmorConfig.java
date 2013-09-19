@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.gmail.nossr50.config.ConfigLoader;
@@ -87,7 +88,7 @@ public class CustomArmorConfig extends ConfigLoader {
             CustomItem armor;
 
             if (repairable) {
-                repairables.add(RepairableFactory.getRepairable(id, repairID, repairData, repairQuantity, durability));
+                repairables.add(RepairableFactory.getRepairable(Material.getMaterial(id), Material.getMaterial(repairID), repairData, repairQuantity, durability));
             }
 
             armor = new CustomItem(id, durability);

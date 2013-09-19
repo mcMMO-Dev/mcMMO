@@ -1,19 +1,21 @@
 package com.gmail.nossr50.skills.repair;
 
+import org.bukkit.Material;
+
 public interface Repairable {
     /**
-     * Gets the item id of this repairable item
+     * Gets the type of this repairable item
      *
-     * @return the id of this repairable
+     * @return the type of this repairable
      */
-    public int getItemId();
+    public Material getItemMaterial();
 
     /**
      * Gets the id of the material used to repair this item
      *
      * @return the id of the repair material
      */
-    public int getRepairMaterialId();
+    public Material getRepairMaterial();
 
     /**
      * Gets the metadata byte value of the material used to repair this item

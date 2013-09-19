@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.repair;
 
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.util.Permissions;
@@ -48,6 +49,35 @@ public enum RepairMaterialType {
 
             default:
                 return false;
+        }
+    }
+
+    public Material getDefaultRepairMaterial() {
+        switch (this) {
+            case STRING:
+                return Material.STRING;
+
+            case LEATHER:
+                return Material.LEATHER;
+
+            case WOOD:
+                return Material.WOOD;
+
+            case STONE:
+                return Material.COBBLESTONE;
+
+            case IRON:
+                return Material.IRON_INGOT;
+
+            case GOLD:
+                return Material.GOLD_INGOT;
+
+            case DIAMOND:
+                return Material.DIAMOND;
+
+            case OTHER:
+            default:
+                return null;
         }
     }
 }

@@ -52,9 +52,7 @@ public class RepairManager extends SkillManager {
 
     public void handleRepair(ItemStack item) {
         Player player = getPlayer();
-        int itemId = item.getTypeId();
-
-        Repairable repairable = mcMMO.getRepairableManager().getRepairable(itemId);
+        Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
 
         // Permissions checks on material and item types
         if (!repairable.getRepairItemType().getPermissions(player)) {
@@ -78,13 +76,13 @@ public class RepairManager extends SkillManager {
 
         PlayerInventory inventory = player.getInventory();
 
-        int repairMaterialId = repairable.getRepairMaterialId();
+        Material repairMaterial = repairable.getRepairMaterial();
         byte repairMaterialMetadata = repairable.getRepairMaterialMetadata();
-        ItemStack toRemove = new MaterialData(repairMaterialId, repairMaterialMetadata).toItemStack(1);
+        ItemStack toRemove = new MaterialData(repairMaterial, repairMaterialMetadata).toItemStack(1);
 
         // Check if they have the proper material to repair with
-        if (!inventory.contains(Material.getMaterial(repairMaterialId))) {
-            String message = LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(repairMaterialId));
+        if (!inventory.contains(repairMaterial)) {
+            String message = LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(repairMaterial));
 
             if (repairMaterialMetadata != (byte) -1 && !inventory.containsAtLeast(toRemove, 1)) {
                 message += ":" + repairMaterialMetadata;
@@ -131,7 +129,7 @@ public class RepairManager extends SkillManager {
 
         // Remove the item
         if (repairMaterialMetadata == -1) {
-            toRemove = inventory.getItem(inventory.first(Material.getMaterial(repairMaterialId))).clone();
+            toRemove = inventory.getItem(inventory.first(repairMaterial)).clone();
             toRemove.setAmount(1);
         }
 
