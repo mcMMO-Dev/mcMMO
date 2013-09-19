@@ -14,16 +14,6 @@ public class StringUtils {
         return target.substring(0, 1).toUpperCase() + target.substring(1).toLowerCase();
     }
 
-    /**
-     * Gets a nicely formatted string version of an item name from a given item ID.
-     *
-     * @param itemID The ID of the item to convert to string.
-     * @return the nicely formatted string
-     */
-    public static String getPrettyItemString(int itemID) {
-        return createPrettyEnumString(Material.getMaterial(itemID).toString());
-    }
-
     public static String getPrettyItemString(Material material) {
         return createPrettyEnumString(material.toString());
     }
