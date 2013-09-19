@@ -29,6 +29,7 @@ public class Repair {
      * Checks if the item is salvageable.
      *
      * @param item Item to check
+     *
      * @return true if the item is salvageable, false otherwise
      */
     public static boolean isSalvageable(ItemStack item) {

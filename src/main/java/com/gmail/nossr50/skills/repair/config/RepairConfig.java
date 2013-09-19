@@ -37,7 +37,7 @@ public class RepairConfig extends ConfigLoader {
 
         for (String key : keys) {
             if (config.contains("Repairables." + key + ".ItemId")) {
-                plugin.getLogger().warning("You are using an old version of the repair.yml file.");
+                plugin.getLogger().warning("You are using an old version of the " + fileName + " file.");
                 plugin.getLogger().warning("You should delete your current file and allow a new one to generate.");
                 plugin.getLogger().warning("Repair will not work properly until you do.");
                 return;
@@ -103,7 +103,7 @@ public class RepairConfig extends ConfigLoader {
             short maximumDurability = (config.contains("Repairables." + key + ".MaximumDurability") ? (short) config.getInt("Repairables." + key + ".MaximumDurability") : (itemMaterial != null ? itemMaterial.getMaxDurability() : 0));
 
             if (maximumDurability <= 0) {
-                reason.add("Maxium durability of " + key + " must be greater than 0!");
+                reason.add("Maximum durability of " + key + " must be greater than 0!");
             }
 
             // Item Type
