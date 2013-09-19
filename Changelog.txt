@@ -8,7 +8,7 @@ Key:
   - Removal
 
 Version 1.4.07-dev
- + Added Horses to the "Shake" ability
+ + Added horses to the "Shake" ability
  + Added ability to summon horses via "Call of the Wild" using apples
  + Added XP gain to Taming for horses
  + Added new permission nodes to allow more control over Taming and "Call of the Wild"
@@ -42,13 +42,13 @@ Version 1.4.07-dev
  ! Nerfed Archery damage to eliminate constant one-hit kills.
  ! Changed the way Repair hands out XP, also added config options to control Repair XP
  ! Changed Swords "Counter Attack" ability from passive to active. Blocking is required to activate.
- ! Hardcore mode can now be toggled for each skill individually
+ ! Hardcore modes can now be toggled for each skill individually
  ! Vampirism can now be enabled without having Skill Death Penalty enabled
  ! Admin and Party chat prefixes are now customizable
  ! Changed the color of party leader names in Party chat
  ! Improved profile saving
  ! Improved partial name matcher
- ! Slightly improved update checker feedback
+ ! Improved update checker
  ! Updated localization files
  ! Party item share category states are now saved when the server shuts down.
  ! When using "Super Breaker" or "Giga Driller" abilities extra tool durability is used (again)

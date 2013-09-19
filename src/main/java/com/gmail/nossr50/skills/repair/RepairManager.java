@@ -35,7 +35,7 @@ public class RepairManager extends SkillManager {
     /**
      * Handles notifications for placing an anvil.
      *
-     * @param anvilId The item ID of the anvil block
+     * @param anvilType The {@link Material} of the anvil block
      */
     public void placedAnvilCheck(Material anvilType) {
         Player player = getPlayer();
