@@ -460,7 +460,7 @@ public class SkillUtils {
      */
     public static ItemStack handleDurabilityChange(ItemStack itemStack, int durabilityModifier) {
         short finalDurability = (short) (itemStack.getDurability() + durabilityModifier);
-        short maxDurability = ModUtils.isCustomTool(itemStack) ? ModUtils.getToolFromItemStack(itemStack).getDurability() : itemStack.getType().getMaxDurability();
+        short maxDurability = itemStack.getType().getMaxDurability();
         boolean overMax = (finalDurability >= maxDurability);
 
         itemStack.setDurability(overMax ? maxDurability : finalDurability);

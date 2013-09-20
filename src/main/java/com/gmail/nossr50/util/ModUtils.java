@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
@@ -11,7 +12,6 @@ import com.gmail.nossr50.config.mods.CustomEntityConfig;
 import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.mods.CustomEntity;
-import com.gmail.nossr50.datatypes.mods.CustomItem;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 
 public final class ModUtils {
@@ -23,16 +23,6 @@ public final class ModUtils {
     private static boolean customEntitiesEnabled = configInstance.getEntityModsEnabled();
 
     private ModUtils() {}
-
-    /**
-     * Get the custom armor associated with an item.
-     *
-     * @param item The item to check
-     * @return the armor if it exists, null otherwise
-     */
-    public static CustomItem getArmorFromItemStack(ItemStack item) {
-        return CustomArmorConfig.getInstance().customArmor.get(item.getTypeId());
-    }
 
     /**
      * Get the custom tool associated with an item.
@@ -56,7 +46,7 @@ public final class ModUtils {
 
             if (CustomBlockConfig.getInstance().customItems.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
-                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                    if (new MaterialData(block.getItemID(), block.getDataValue()).equals(blockState.getData())) {
                         return block;
                     }
                 }
@@ -92,7 +82,7 @@ public final class ModUtils {
 
             if (CustomBlockConfig.getInstance().customWoodcuttingBlocks.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
-                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                    if (new MaterialData(block.getItemID(), block.getDataValue()).equals(blockState.getData())) {
                         return true;
                     }
                 }
@@ -114,7 +104,7 @@ public final class ModUtils {
 
             if (CustomBlockConfig.getInstance().customAbilityBlocks.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
-                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                    if (new MaterialData(block.getItemID(), block.getDataValue()).equals(blockState.getData())) {
                         return true;
                     }
                 }
@@ -136,7 +126,7 @@ public final class ModUtils {
 
             if (CustomBlockConfig.getInstance().customMiningBlocks.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
-                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                    if (new MaterialData(block.getItemID(), block.getDataValue()).equals(blockState.getData())) {
                         return true;
                     }
                 }
@@ -158,7 +148,7 @@ public final class ModUtils {
 
             if (CustomBlockConfig.getInstance().customExcavationBlocks.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
-                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                    if (new MaterialData(block.getItemID(), block.getDataValue()).equals(blockState.getData())) {
                         return true;
                     }
                 }
@@ -180,7 +170,7 @@ public final class ModUtils {
 
             if (CustomBlockConfig.getInstance().customHerbalismBlocks.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
-                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                    if (new MaterialData(block.getItemID(), block.getDataValue()).equals(blockState.getData())) {
                         return true;
                     }
                 }
@@ -202,7 +192,7 @@ public final class ModUtils {
 
             if (CustomBlockConfig.getInstance().customLeaves.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
-                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                    if (new MaterialData(block.getItemID(), block.getDataValue()).equals(blockState.getData())) {
                         return true;
                     }
                 }
@@ -224,7 +214,7 @@ public final class ModUtils {
 
             if (CustomBlockConfig.getInstance().customLogs.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
-                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                    if (new MaterialData(block.getItemID(), block.getDataValue()).equals(blockState.getData())) {
                         return true;
                     }
                 }
@@ -246,7 +236,7 @@ public final class ModUtils {
 
             if (CustomBlockConfig.getInstance().customOres.contains(item)) {
                 for (CustomBlock block : CustomBlockConfig.getInstance().customBlocks) {
-                    if ((block.getItemID() == blockState.getTypeId()) && (block.getDataValue() == blockState.getRawData())) {
+                    if (new MaterialData(block.getItemID(), block.getDataValue()).equals(blockState.getData())) {
                         return true;
                     }
                 }
@@ -277,7 +267,7 @@ public final class ModUtils {
      * @return true if the item is custom armor, false otherwise
      */
     public static boolean isCustomArmor(ItemStack item) {
-        if (customArmorEnabled && CustomArmorConfig.getInstance().customArmor.containsKey(item.getTypeId())) {
+        if (customArmorEnabled && CustomArmorConfig.getInstance().customArmor.contains(item.getType())) {
             return true;
         }
 

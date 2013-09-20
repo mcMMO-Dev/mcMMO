@@ -1,15 +1,15 @@
 package com.gmail.nossr50.config.mods;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.datatypes.mods.CustomItem;
+import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.RepairableFactory;
 
@@ -18,14 +18,11 @@ public class CustomArmorConfig extends ConfigLoader {
 
     private List<Repairable> repairables;
 
-    public List<Integer> customBootIDs       = new ArrayList<Integer>();
-    public List<Integer> customChestplateIDs = new ArrayList<Integer>();
-    public List<Integer> customHelmetIDs     = new ArrayList<Integer>();
-    public List<Integer> customLeggingIDs    = new ArrayList<Integer>();
-    public List<Integer> customIDs           = new ArrayList<Integer>();
-
-    public List<CustomItem> customArmorList = new ArrayList<CustomItem>();
-    public HashMap<Integer, CustomItem> customArmor = new HashMap<Integer, CustomItem>();
+    public List<Material> customBoots       = new ArrayList<Material>();
+    public List<Material> customChestplates = new ArrayList<Material>();
+    public List<Material> customHelmets     = new ArrayList<Material>();
+    public List<Material> customLeggings    = new ArrayList<Material>();
+    public List<Material> customArmor       = new ArrayList<Material>();
 
     public CustomArmorConfig() {
         super("ModConfigs", "armor.yml");
@@ -52,13 +49,13 @@ public class CustomArmorConfig extends ConfigLoader {
     protected void loadKeys() {
         repairables = new ArrayList<Repairable>();
 
-        loadArmor("Boots", customBootIDs);
-        loadArmor("Chestplates", customChestplateIDs);
-        loadArmor("Helmets", customHelmetIDs);
-        loadArmor("Leggings", customLeggingIDs);
+        loadArmor("Boots", customBoots);
+        loadArmor("Chestplates", customChestplates);
+        loadArmor("Helmets", customHelmets);
+        loadArmor("Leggings", customLeggings);
     }
 
-    private void loadArmor(String armorType, List<Integer> idList) {
+    private void loadArmor(String armorType, List<Material> materialList) {
         ConfigurationSection armorSection = config.getConfigurationSection(armorType);
 
         if (armorSection == null) {
@@ -68,35 +65,40 @@ public class CustomArmorConfig extends ConfigLoader {
         Set<String> armorConfigSet = armorSection.getKeys(false);
 
         for (String armorName : armorConfigSet) {
-            int id = config.getInt(armorType + "." + armorName + ".ID", 0);
-            boolean repairable = config.getBoolean(armorType + "." + armorName + ".Repairable");
-            int repairID = config.getInt(armorType + "." + armorName + ".Repair_Material_ID", 0);
-            byte repairData = (byte) config.getInt(armorType + "." + armorName + ".Repair_Material_Data_Value", 0);
-            int repairQuantity = config.getInt(armorType + "." + armorName + ".Repair_Material_Quantity", 0);
-            short durability = (short) config.getInt(armorType + "." + armorName + ".Durability", 0);
+            Material armorMaterial = Material.matchMaterial(armorName);
 
-            if (id == 0) {
-                plugin.getLogger().warning("Missing ID. This item will be skipped.");
+            if (armorMaterial == null) {
+                plugin.getLogger().warning("Invalid material name. This item will be skipped.");
                 continue;
             }
 
-            if (repairable && (repairID == 0 || repairQuantity == 0 || durability == 0)) {
+            boolean repairable = config.getBoolean(armorType + "." + armorName + ".Repairable");
+            Material repairMaterial = Material.matchMaterial(config.getString(armorType + "." + armorName + ".Repair_Material", ""));
+
+            if (repairMaterial == null) {
                 plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable.");
                 repairable = false;
             }
 
-            CustomItem armor;
-
             if (repairable) {
-                repairables.add(RepairableFactory.getRepairable(Material.getMaterial(id), Material.getMaterial(repairID), repairData, repairQuantity, durability));
+                byte repairData = (byte) config.getInt(armorType + "." + armorName + ".Repair_Material_Data_Value", -1);
+                int repairQuantity = Repair.getRepairAndSalvageQuantities(new ItemStack(armorMaterial), repairMaterial, repairData);
+
+                if (repairQuantity == 0) {
+                    repairQuantity = config.getInt(armorType + "." + armorName + ".Repair_Material_Data_Quantity", 2);
+                }
+
+                short durability = armorMaterial.getMaxDurability();
+
+                if (durability == 0) {
+                    durability = (short) config.getInt(armorType + "." + armorName + ".Durability", 70);
+                }
+
+                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, repairQuantity, durability));
             }
 
-            armor = new CustomItem(id, durability);
-
-            idList.add(id);
-            customIDs.add(id);
-            customArmorList.add(armor);
-            customArmor.put(id, armor);
+            materialList.add(armorMaterial);
+            customArmor.add(armorMaterial);
         }
     }
 }

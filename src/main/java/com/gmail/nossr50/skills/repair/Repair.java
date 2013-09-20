@@ -5,6 +5,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -112,25 +113,29 @@ public class Repair {
             }
         }
 
-        Recipe recipe = mcMMO.p.getServer().getRecipesFor(inHand).get(0);
-        int salvageAmount = 0;
-        Material salvageMaterial = getSalvagedItem(inHand);
+        return getRepairAndSalvageQuantities(inHand, getSalvagedItem(inHand), (byte) -1);
+    }
 
+    public static int getRepairAndSalvageQuantities(ItemStack item, Material repairMaterial, byte repairMetadata) {
+        int quantity = 0;
+        MaterialData repairData = new MaterialData(repairMaterial, repairMetadata);
+        Recipe recipe = mcMMO.p.getServer().getRecipesFor(item).get(0);
+    
         if (recipe instanceof ShapelessRecipe) {
             for (ItemStack ingredient : ((ShapelessRecipe) recipe).getIngredientList()) {
-                if (ingredient != null && ingredient.getType() == salvageMaterial) {
-                    salvageAmount += ingredient.getAmount();
+                if (ingredient != null && ingredient.getType() == repairMaterial && (repairMetadata == -1 || ingredient.getData() == repairData)) {
+                    quantity += ingredient.getAmount();
                 }
             }
         }
         else if (recipe instanceof ShapedRecipe) {
             for (ItemStack ingredient : ((ShapedRecipe) recipe).getIngredientMap().values()) {
-                if (ingredient != null && ingredient.getType() == salvageMaterial) {
-                    salvageAmount += ingredient.getAmount();
+                if (ingredient != null && ingredient.getType() == repairMaterial && (repairMetadata == -1 || ingredient.getData() == repairData)) {
+                    quantity += ingredient.getAmount();
                 }
             }
         }
 
-        return salvageAmount;
+        return quantity;
     }
 }

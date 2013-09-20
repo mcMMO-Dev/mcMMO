@@ -121,7 +121,9 @@ public class ItemUtils {
      * @return true if the item is a helmet, false otherwise
      */
     public static boolean isHelmet(ItemStack item) {
-        switch (item.getType()) {
+        Material type = item.getType();
+
+        switch (type) {
             case DIAMOND_HELMET:
             case GOLD_HELMET:
             case IRON_HELMET:
@@ -130,7 +132,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().customHelmetIDs.contains(item.getTypeId());
+                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().customHelmets.contains(type);
         }
     }
 
@@ -141,7 +143,9 @@ public class ItemUtils {
      * @return true if the item is a chestplate, false otherwise
      */
     public static boolean isChestplate(ItemStack item) {
-        switch (item.getType()) {
+        Material type = item.getType();
+
+        switch (type) {
             case DIAMOND_CHESTPLATE:
             case GOLD_CHESTPLATE:
             case IRON_CHESTPLATE:
@@ -150,7 +154,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().customChestplateIDs.contains(item.getTypeId());
+                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().customChestplates.contains(type);
         }
     }
 
@@ -161,7 +165,9 @@ public class ItemUtils {
      * @return true if the item is a pair of pants, false otherwise
      */
     public static boolean isLeggings(ItemStack item) {
-        switch (item.getType()) {
+        Material type = item.getType();
+
+        switch (type) {
             case DIAMOND_LEGGINGS:
             case GOLD_LEGGINGS:
             case IRON_LEGGINGS:
@@ -170,7 +176,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().customLeggingIDs.contains(item.getTypeId());
+                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().customLeggings.contains(type);
         }
     }
 
@@ -181,7 +187,9 @@ public class ItemUtils {
      * @return true if the item is a pair of boots, false otherwise
      */
     public static boolean isBoots(ItemStack item) {
-        switch (item.getType()) {
+        Material type = item.getType();
+
+        switch (type) {
             case DIAMOND_BOOTS:
             case GOLD_BOOTS:
             case IRON_BOOTS:
@@ -190,7 +198,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().customBootIDs.contains(item.getTypeId());
+                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().customBoots.contains(type);
         }
     }
 

@@ -13,7 +13,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -99,7 +98,7 @@ public class AxesManager extends SkillManager {
             if (ItemUtils.isArmor(armor) && Axes.impactChance > Misc.getRandom().nextInt(getActivationChance())) {
                 double durabilityModifier = 1 / (armor.getEnchantmentLevel(Enchantment.DURABILITY) + 1); // Modifier to simulate the durability enchantment behavior
                 double modifiedDurabilityDamage = durabilityDamage * durabilityModifier;
-                short maxDurability = ModUtils.isCustomArmor(armor) ? ModUtils.getArmorFromItemStack(armor).getDurability() : armor.getType().getMaxDurability();
+                short maxDurability = armor.getType().getMaxDurability();
                 double maxDurabilityDamage = maxDurability * Axes.impactMaxDurabilityModifier;
 
                 armor.setDurability((short) (Math.min(modifiedDurabilityDamage, maxDurabilityDamage) + armor.getDurability()));

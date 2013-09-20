@@ -1,15 +1,26 @@
 package com.gmail.nossr50.datatypes.mods;
 
-public class CustomTool extends CustomItem {
+import org.bukkit.Material;
+
+public class CustomTool {
+    private Material material;
     private double xpMultiplier;
     private boolean abilityEnabled;
     private int tier;
 
-    public CustomTool(int tier, boolean abilityEnabled, double xpMultiplier, short durability, int itemID) {
-        super(itemID, durability);
+    public CustomTool(int tier, boolean abilityEnabled, double xpMultiplier, int itemID) {
+        this.material = Material.getMaterial(itemID);
         this.xpMultiplier = xpMultiplier;
         this.abilityEnabled = abilityEnabled;
         this.tier = tier;
+    }
+
+    public Material getType() {
+        return material;
+    }
+
+    public void setType(Material material) {
+        this.material = material;
     }
 
     public double getXpMultiplier() {

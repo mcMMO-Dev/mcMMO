@@ -229,7 +229,7 @@ public final class Woodcutting {
         }
 
         short finalDurability = (short) (inHand.getDurability() + durabilityLoss);
-        short maxDurability = ModUtils.isCustomTool(inHand) ? ModUtils.getToolFromItemStack(inHand).getDurability() : inHandMaterial.getMaxDurability();
+        short maxDurability = inHandMaterial.getMaxDurability();
         boolean overMax = (finalDurability >= maxDurability);
 
         inHand.setDurability(overMax ? maxDurability : finalDurability);

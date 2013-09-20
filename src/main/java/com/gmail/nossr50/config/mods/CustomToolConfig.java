@@ -97,7 +97,7 @@ public class CustomToolConfig extends ConfigLoader {
                 repairables.add(RepairableFactory.getRepairable(Material.getMaterial(id), Material.getMaterial(repairID), repairData, repairQuantity, durability));
             }
 
-            tool = new CustomTool(tier, abilityEnabled, multiplier, durability, id);
+            tool = new CustomTool(tier, abilityEnabled, multiplier, id);
 
             idList.add(id);
             customIDs.add(id);
