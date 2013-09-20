@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.4.07-dev
+ + Added Carrot on a Stick, Bucket, and Flint & Steel to repair.vanilla.yml
  + Added horses to the "Shake" ability
  + Added ability to summon horses via "Call of the Wild" using apples
  + Added XP gain to Taming for horses
@@ -37,6 +38,7 @@ Version 1.4.07-dev
  = Fixed a bug where squid were not awarding XP.
  = Fixed a bug where Combat XP was granted within 5 seconds for respawned players
  = Fixed a bug where wrong feedback messages were being send when using a command on an offline player
+ ! Changed default XP multiplier for repairing shears
  ! Changed format of treasures.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
  ! Changed format of repair.vanilla.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
  ! Witches no longer drop water bottles from Shake, since they no longer drop them in Vanilla.
