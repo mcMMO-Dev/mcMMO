@@ -842,7 +842,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             return true;
         }
         catch (SQLException ex) {
-            if (!sql.equalsIgnoreCase("ALTER TABLE `" + tablePrefix + "users` DROP COLUMN `party` ;")) {
+            if (!sql.contains("DROP COLUMN")) {
                 printErrors(ex);
             }
             return false;
