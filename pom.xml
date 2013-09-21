@@ -64,19 +64,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>1.5</version>
-                <configuration>
-                    <artifactSet>
-                        <includes>
-                            <include>com.turt2live.metrics:MetricsExtension</include>
-                        </includes>
-                    </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>com.turt2live.metrics</pattern>
-                            <shadedPattern>com.gmail.nossr50.metrics.mcstats</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -100,10 +87,6 @@
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
         </repository>
-        <repository>
-            <id>Plugin MetricsExtension</id>
-            <url>http://repo.turt2live.com</url>
-        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -118,11 +101,6 @@
             <artifactId>junit-dep</artifactId>
             <version>4.10</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.turt2live.metrics</groupId>
-            <artifactId>MetricsExtension</artifactId>
-            <version>0.0.5-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <distributionManagement>
