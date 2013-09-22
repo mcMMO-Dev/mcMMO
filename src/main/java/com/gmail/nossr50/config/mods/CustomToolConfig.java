@@ -7,9 +7,13 @@ import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
+import com.gmail.nossr50.skills.repair.Repair;
+import com.gmail.nossr50.skills.repair.RepairItemType;
+import com.gmail.nossr50.skills.repair.RepairMaterialType;
 import com.gmail.nossr50.skills.repair.Repairable;
 import com.gmail.nossr50.skills.repair.RepairableFactory;
 
@@ -17,16 +21,15 @@ public class CustomToolConfig extends ConfigLoader {
     private static CustomToolConfig instance;
     private List<Repairable> repairables;
 
-    public List<Integer> customAxeIDs     = new ArrayList<Integer>();
-    public List<Integer> customBowIDs     = new ArrayList<Integer>();
-    public List<Integer> customHoeIDs     = new ArrayList<Integer>();
-    public List<Integer> customPickaxeIDs = new ArrayList<Integer>();
-    public List<Integer> customShovelIDs  = new ArrayList<Integer>();
-    public List<Integer> customSwordIDs   = new ArrayList<Integer>();
-    public List<Integer> customIDs        = new ArrayList<Integer>();
+    public List<Material> customAxes     = new ArrayList<Material>();
+    public List<Material> customBows     = new ArrayList<Material>();
+    public List<Material> customHoes     = new ArrayList<Material>();
+    public List<Material> customPickaxes = new ArrayList<Material>();
+    public List<Material> customShovels  = new ArrayList<Material>();
+    public List<Material> customSwords   = new ArrayList<Material>();
+    public List<Material> customTool     = new ArrayList<Material>();
 
-    public List<CustomTool> customToolList = new ArrayList<CustomTool>();
-    public HashMap<Integer, CustomTool> customTools = new HashMap<Integer, CustomTool>();
+    public HashMap<Material, CustomTool> customToolMap = new HashMap<Material, CustomTool>();
 
     private CustomToolConfig() {
         super("ModConfigs", "tools.yml");
@@ -53,15 +56,15 @@ public class CustomToolConfig extends ConfigLoader {
     protected void loadKeys() {
         repairables = new ArrayList<Repairable>();
 
-        loadTool("Axes", customAxeIDs);
-        loadTool("Bows", customBowIDs);
-        loadTool("Hoes", customHoeIDs);
-        loadTool("Pickaxes", customPickaxeIDs);
-        loadTool("Shovels", customShovelIDs);
-        loadTool("Swords", customSwordIDs);
+        loadTool("Axes", customAxes);
+        loadTool("Bows", customBows);
+        loadTool("Hoes", customHoes);
+        loadTool("Pickaxes", customPickaxes);
+        loadTool("Shovels", customShovels);
+        loadTool("Swords", customSwords);
     }
 
-    private void loadTool(String toolType, List<Integer> idList) {
+    private void loadTool(String toolType, List<Material> materialList) {
         ConfigurationSection toolSection = config.getConfigurationSection(toolType);
 
         if (toolSection == null) {
@@ -71,38 +74,48 @@ public class CustomToolConfig extends ConfigLoader {
         Set<String> toolConfigSet = toolSection.getKeys(false);
 
         for (String toolName : toolConfigSet) {
-            int id = config.getInt(toolType + "." + toolName + ".ID", 0);
-            double multiplier = config.getDouble(toolType + "." + toolName + ".XP_Modifier", 1.0);
-            boolean abilityEnabled = config.getBoolean(toolType + "." + toolName + ".Ability_Enabled", true);
-            int tier = config.getInt(toolType + "." + toolName + ".Tier", 1);
-            boolean repairable = config.getBoolean(toolType + "." + toolName + ".Repairable");
-            int repairID = config.getInt(toolType + "." + toolName + ".Repair_Material_ID", 0);
-            byte repairData = (byte) config.getInt(toolType + "." + toolName + ".Repair_Material_Data_Value", 0);
-            int repairQuantity = config.getInt(toolType + "." + toolName + ".Repair_Material_Quantity", 0);
-            short durability = (short) config.getInt(toolType + "." + toolName + ".Durability", 0);
+            Material toolMaterial = Material.matchMaterial(toolName);
 
-            if (id == 0) {
-                plugin.getLogger().warning("Missing ID. This item will be skipped.");
+            if (toolMaterial == null) {
+                plugin.getLogger().warning("Invalid material name. This item will be skipped.");
                 continue;
             }
 
-            if (repairable && (repairID == 0 || repairQuantity == 0 || durability == 0)) {
+            boolean repairable = config.getBoolean(toolType + "." + toolName + ".Repairable");
+            Material repairMaterial = Material.matchMaterial(config.getString(toolType + "." + toolName + ".Repair_Material", ""));
+
+            if (repairMaterial == null) {
                 plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable.");
                 repairable = false;
             }
 
-            CustomTool tool;
-
             if (repairable) {
-                repairables.add(RepairableFactory.getRepairable(Material.getMaterial(id), Material.getMaterial(repairID), repairData, repairQuantity, durability));
+                byte repairData = (byte) config.getInt(toolType + "." + toolName + ".Repair_Material_Data_Value", -1);
+                int repairQuantity = Repair.getRepairAndSalvageQuantities(new ItemStack(toolMaterial), repairMaterial, repairData);
+
+                if (repairQuantity == 0) {
+                    repairQuantity = config.getInt(toolType + "." + toolName + ".Repair_Material_Data_Quantity", 2);
+                }
+
+                short durability = toolMaterial.getMaxDurability();
+
+                if (durability == 0) {
+                    durability = (short) config.getInt(toolType + "." + toolName + ".Durability", 60);
+                }
+
+                repairables.add(RepairableFactory.getRepairable(toolMaterial, repairMaterial, repairData, 0, repairQuantity, durability, RepairItemType.TOOL, RepairMaterialType.OTHER, 1.0));
             }
 
-            tool = new CustomTool(tier, abilityEnabled, multiplier, id);
+            double multiplier = config.getDouble(toolType + "." + toolName + ".XP_Modifier", 1.0);
+            boolean abilityEnabled = config.getBoolean(toolType + "." + toolName + ".Ability_Enabled", true);
+            int tier = config.getInt(toolType + "." + toolName + ".Tier", 1);
 
-            idList.add(id);
-            customIDs.add(id);
-            customToolList.add(tool);
-            customTools.put(id, tool);
+            CustomTool tool = new CustomTool(tier, abilityEnabled, multiplier);
+
+            materialList.add(toolMaterial);
+            customTool.add(toolMaterial);
+            customToolMap.put(toolMaterial, tool);
         }
     }
 }
+

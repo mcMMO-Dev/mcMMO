@@ -21,7 +21,9 @@ public class ItemUtils {
      * @return true if the item is a sword, false otherwise
      */
     public static boolean isSword(ItemStack item) {
-        switch (item.getType()) {
+        Material type = item.getType();
+
+        switch (type) {
             case DIAMOND_SWORD:
             case GOLD_SWORD:
             case IRON_SWORD:
@@ -30,7 +32,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customSwordIDs.contains(item.getTypeId()));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customSwords.contains(type));
         }
     }
 
@@ -41,7 +43,9 @@ public class ItemUtils {
      * @return true if the item is a hoe, false otherwise
      */
     public static boolean isHoe(ItemStack item) {
-        switch (item.getType()) {
+        Material type = item.getType();
+
+        switch (type) {
             case DIAMOND_HOE:
             case GOLD_HOE:
             case IRON_HOE:
@@ -50,7 +54,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customHoeIDs.contains(item.getTypeId()));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customHoes.contains(type));
         }
     }
 
@@ -61,7 +65,9 @@ public class ItemUtils {
      * @return true if the item is a shovel, false otherwise
      */
     public static boolean isShovel(ItemStack item) {
-        switch (item.getType()) {
+        Material type = item.getType();
+
+        switch (type) {
             case DIAMOND_SPADE:
             case GOLD_SPADE:
             case IRON_SPADE:
@@ -70,7 +76,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customShovelIDs.contains(item.getTypeId()));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customShovels.contains(type));
         }
     }
 
@@ -81,7 +87,9 @@ public class ItemUtils {
      * @return true if the item is an axe, false otherwise
      */
     public static boolean isAxe(ItemStack item) {
-        switch (item.getType()) {
+        Material type = item.getType();
+
+        switch (type) {
             case DIAMOND_AXE:
             case GOLD_AXE:
             case IRON_AXE:
@@ -90,7 +98,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customAxeIDs.contains(item.getTypeId()));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customAxes.contains(type));
         }
     }
 
@@ -101,7 +109,9 @@ public class ItemUtils {
      * @return true if the item is a pickaxe, false otherwise
      */
     public static boolean isPickaxe(ItemStack item) {
-        switch (item.getType()) {
+        Material type = item.getType();
+
+        switch (type) {
             case DIAMOND_PICKAXE:
             case GOLD_PICKAXE:
             case IRON_PICKAXE:
@@ -110,7 +120,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customPickaxeIDs.contains(item.getTypeId()));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customPickaxes.contains(type));
         }
     }
 

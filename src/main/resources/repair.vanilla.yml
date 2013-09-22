@@ -102,9 +102,6 @@ Repairables:
     SHEARS:
         MinimumLevel: 0
         XpMultiplier: .5
-    BUCKET:
-        MinimumLevel: 0
-        XpMultiplier: 1
     FLINT_AND_STEEL:
         MinimumLevel: 0
         XpMultiplier: .3

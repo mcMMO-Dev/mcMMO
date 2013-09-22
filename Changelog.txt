@@ -8,7 +8,7 @@ Key:
   - Removal
 
 Version 1.4.07-dev
- + Added Carrot on a Stick, Bucket, and Flint & Steel to repair.vanilla.yml
+ + Added Carrot on a Stick and Flint & Steel to repair.vanilla.yml
  + Added horses to the "Shake" ability
  + Added ability to summon horses via "Call of the Wild" using apples
  + Added XP gain to Taming for horses

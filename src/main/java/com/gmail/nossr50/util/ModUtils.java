@@ -31,7 +31,7 @@ public final class ModUtils {
      * @return the tool if it exists, null otherwise
      */
     public static CustomTool getToolFromItemStack(ItemStack item) {
-        return CustomToolConfig.getInstance().customTools.get(item.getTypeId());
+        return CustomToolConfig.getInstance().customToolMap.get(item.getType());
     }
 
     /**
@@ -253,7 +253,7 @@ public final class ModUtils {
      * @return true if the item is a custom tool, false otherwise
      */
     public static boolean isCustomTool(ItemStack item) {
-        if (customToolsEnabled && CustomToolConfig.getInstance().customTools.containsKey(item.getTypeId())) {
+        if (customToolsEnabled && CustomToolConfig.getInstance().customTool.contains(item.getType())) {
             return true;
         }
 

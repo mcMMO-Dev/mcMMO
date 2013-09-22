@@ -65,7 +65,7 @@ public class CustomEntityConfig extends ConfigLoader {
             CustomEntity entity;
 
             if (id == 0) {
-                plugin.getLogger().warning("Missing ID. This block will be skipped.");
+                plugin.getLogger().warning("Missing ID. This entity will be skipped.");
                 continue;
             }
 
