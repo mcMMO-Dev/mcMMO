@@ -35,6 +35,7 @@ Version 1.4.07-dev
  = Fixed a bug where teleport location was never reset if warmup was set to 0 for "Chimaera Wing".
  = Fixed a bug where the "Dodge" DamageModifier wasn't being read from advanced.yml
  = Fixed a bug where squid were not awarding XP.
+ = Fixed a bug where Combat XP was granted within 5 seconds for respawned players
  ! Changed format of treasures.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
  ! Changed format of repair.vanilla.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
  ! Witches no longer drop water bottles from Shake, since they no longer drop them in Vanilla.

@@ -60,10 +60,25 @@ public class SkillUtils {
      *
      * @param deactivatedTimeStamp Time of deactivation
      * @param cooldown The length of the cooldown
+     * @param player The Player to check for cooldown perks
+     *
      * @return the number of seconds remaining before the cooldown expires
      */
     public static int calculateTimeLeft(long deactivatedTimeStamp, int cooldown, Player player) {
         return (int) (((deactivatedTimeStamp + (PerksUtils.handleCooldownPerks(player, cooldown) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
+    }
+
+    /**
+     * Check if the cooldown has expired.
+     * This does NOT account for cooldown perks!
+     *
+     * @param deactivatedTimeStamp Time of deactivation in seconds
+     * @param cooldown The length of the cooldown in seconds
+     *
+     * @return true if the cooldown is expired
+     */
+    public static boolean cooldownExpired(long deactivatedTimeStamp, int cooldown) {
+        return (System.currentTimeMillis() >= (deactivatedTimeStamp + cooldown) * Misc.TIME_CONVERSION_FACTOR);
     }
 
     /**

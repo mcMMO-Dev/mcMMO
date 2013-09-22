@@ -56,7 +56,7 @@ public class AcrobaticsManager extends SkillManager {
             }
 
             // Why do we check respawn cooldown here?
-            if (System.currentTimeMillis() >= mcMMOPlayer.getRespawnATS() + Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS) {
+            if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
                 applyXpGain((float) (damage * Acrobatics.dodgeXpModifier));
             }
 

@@ -463,7 +463,7 @@ public final class CombatUtils {
 
             Player defender = (Player) target;
 
-            if (defender.isOnline() && System.currentTimeMillis() >= UserManager.getPlayer(defender).getRespawnATS() + 5) {
+            if (defender.isOnline() && SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
                 baseXP = 20 * ExperienceConfig.getInstance().getPlayerVersusPlayerXP();
             }
         }
