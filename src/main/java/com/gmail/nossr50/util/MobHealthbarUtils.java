@@ -40,7 +40,7 @@ public final class MobHealthbarUtils {
      * @param damage damage done by the attack triggering this
      */
     public static void handleMobHealthbars(Player player, LivingEntity target, double damage) {
-        if (!Permissions.mobHealthDisplay(player)) {
+        if (!mcMMO.isHealthBarEnabled() || !Permissions.mobHealthDisplay(player)) {
             return;
         }
 

@@ -15,7 +15,7 @@ authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1]
 website: http://dev.bukkit.org/server-mods/mcmmo/
 
 main: com.gmail.nossr50.mcMMO
-softdepend: [CombatTag]
+softdepend: [CombatTag, HealthBar]
 load: STARTUP
 
 commands:
