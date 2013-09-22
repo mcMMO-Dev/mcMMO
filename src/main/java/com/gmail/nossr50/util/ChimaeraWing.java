@@ -17,6 +17,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.metrics.MetricsManager;
 import com.gmail.nossr50.runnables.items.ChimaeraWingWarmup;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -133,6 +134,9 @@ public final class ChimaeraWing {
         player.updateInventory();
         mcMMOPlayer.actualizeChimeraWingLastUse();
         mcMMOPlayer.setTeleportCommenceLocation(null);
+        if (Config.getInstance().getStatsTrackingEnabled()) {
+            MetricsManager.chimeraWingUsed();
+        }
         player.playSound(location, Sound.BAT_TAKEOFF, Misc.BAT_VOLUME, Misc.BAT_PITCH);
         player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
     }
