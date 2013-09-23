@@ -69,6 +69,9 @@ public class Taming {
 
             case WOLF:
                 return LocaleLoader.getString("Taming.Summon.Fail.Wolf");
+                
+            case HORSE:
+                return LocalLoader.getString("Taming.Summon.Fail.Horse");
 
             default:
                 return "";
