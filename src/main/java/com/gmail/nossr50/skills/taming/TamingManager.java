@@ -5,6 +5,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
@@ -230,6 +231,13 @@ public class TamingManager extends SkillManager {
                 case WOLF:
                     entity.setMaxHealth(20.0);
                     entity.setHealth(entity.getMaxHealth());
+                    break;
+
+                case HORSE:
+                    entity.setMaxHealth(15 + Misc.getRandom().nextInt(16));
+                    entity.setHealth(entity.getMaxHealth());
+                    ((Horse) entity).setColor(Horse.Color.values()[Misc.getRandom().nextInt(Horse.Color.values().length)]);
+                    ((Horse) entity).setStyle(Horse.Style.values()[Misc.getRandom().nextInt(Horse.Style.values().length)]);
                     break;
 
                 default:
