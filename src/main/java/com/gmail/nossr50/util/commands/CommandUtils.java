@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.commands;
 
 import java.util.List;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -72,7 +73,7 @@ public final class CommandUtils {
         return true;
     }
 
-    public static boolean isOffline(CommandSender sender, Player player) {
+    public static boolean isOffline(CommandSender sender, OfflinePlayer player) {
         if (player.isOnline()) {
             return false;
         }
@@ -81,6 +82,15 @@ public final class CommandUtils {
         return true;
     }
 
+    /**
+     * Checks if there is a valid mcMMOPlayer object.
+     *
+     * @param sender CommandSender who used the command
+     * @param playerName name of the target player
+     * @param mcMMOPlayer mcMMOPlayer object of the target player
+     *
+     * @return true if the player is online and a valid mcMMOPlayer object was found
+     */
     public static boolean checkPlayerExistence(CommandSender sender, String playerName, McMMOPlayer mcMMOPlayer) {
         if (mcMMOPlayer != null) {
             return true;
@@ -92,7 +102,7 @@ public final class CommandUtils {
             return false;
         }
 
-        sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+        sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
         return false;
     }
 
@@ -101,7 +111,7 @@ public final class CommandUtils {
             return false;
         }
 
-        sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+        sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
         return true;
     }
 
