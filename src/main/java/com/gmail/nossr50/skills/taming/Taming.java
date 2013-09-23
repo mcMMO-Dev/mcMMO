@@ -71,7 +71,7 @@ public class Taming {
                 return LocaleLoader.getString("Taming.Summon.Fail.Wolf");
                 
             case HORSE:
-                return LocalLoader.getString("Taming.Summon.Fail.Wolf");
+                return LocalLoader.getString("Taming.Summon.Fail.Horse");
 
             default:
                 return "";
