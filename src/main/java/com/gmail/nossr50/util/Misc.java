@@ -8,6 +8,7 @@ import java.util.Random;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
@@ -260,7 +261,9 @@ public final class Misc {
     public static List<String> matchPlayer(String partialName) {
         List<String> matchedPlayers = new ArrayList<String>();
 
-        for (String playerName : mcMMO.getDatabaseManager().getStoredUsers()) {
+        for (OfflinePlayer offlinePlayer : mcMMO.p.getServer().getOfflinePlayers()) {
+            String playerName = offlinePlayer.getName();
+
             if (partialName.equalsIgnoreCase(playerName)) {
                 // Exact match
                 matchedPlayers.clear();
