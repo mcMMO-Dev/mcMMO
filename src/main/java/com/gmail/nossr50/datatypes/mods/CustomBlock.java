@@ -1,9 +1,10 @@
 package com.gmail.nossr50.datatypes.mods;
 
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 public class CustomBlock {
-    private int itemID;
+    private Material type;
     private byte dataValue;
     private int xpGain;
     private int tier;
@@ -11,8 +12,8 @@ public class CustomBlock {
     private int minimumDropAmount;
     private int maximumDropAmount;
 
-    public CustomBlock(int minimumDropAmount, int maximumDropAmount, ItemStack itemDrop, int tier, int xpGain, byte dataValue, int itemID) {
-        this.itemID = itemID;
+    public CustomBlock(int minimumDropAmount, int maximumDropAmount, ItemStack itemDrop, int tier, int xpGain, byte dataValue, Material type) {
+        this.type = type;
         this.dataValue = dataValue;
         this.xpGain = xpGain;
         this.tier = tier;
@@ -21,12 +22,12 @@ public class CustomBlock {
         this.maximumDropAmount = maximumDropAmount;
     }
 
-    public int getItemID() {
-        return itemID;
+    public Material getType() {
+        return type;
     }
 
-    public void setItemID(int itemID) {
-        this.itemID = itemID;
+    public void setType(Material type) {
+        this.type = type;
     }
 
     public byte getDataValue() {

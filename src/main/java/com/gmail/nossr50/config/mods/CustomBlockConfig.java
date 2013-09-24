@@ -1,9 +1,11 @@
 package com.gmail.nossr50.config.mods;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
@@ -14,17 +16,17 @@ import com.gmail.nossr50.datatypes.mods.CustomBlock;
 public class CustomBlockConfig extends ConfigLoader {
     private static CustomBlockConfig instance;
 
-    public List<ItemStack> customExcavationBlocks  = new ArrayList<ItemStack>();
-    public List<ItemStack> customHerbalismBlocks   = new ArrayList<ItemStack>();
-    public List<ItemStack> customMiningBlocks      = new ArrayList<ItemStack>();
-    public List<ItemStack> customWoodcuttingBlocks = new ArrayList<ItemStack>();
-    public List<ItemStack> customOres              = new ArrayList<ItemStack>();
-    public List<ItemStack> customLogs              = new ArrayList<ItemStack>();
-    public List<ItemStack> customLeaves            = new ArrayList<ItemStack>();
-    public List<ItemStack> customAbilityBlocks     = new ArrayList<ItemStack>();
-    public List<ItemStack> customItems             = new ArrayList<ItemStack>();
+    public List<MaterialData> customExcavationBlocks  = new ArrayList<MaterialData>();
+    public List<MaterialData> customHerbalismBlocks   = new ArrayList<MaterialData>();
+    public List<MaterialData> customMiningBlocks      = new ArrayList<MaterialData>();
+    public List<MaterialData> customWoodcuttingBlocks = new ArrayList<MaterialData>();
+    public List<MaterialData> customOres              = new ArrayList<MaterialData>();
+    public List<MaterialData> customLogs              = new ArrayList<MaterialData>();
+    public List<MaterialData> customLeaves            = new ArrayList<MaterialData>();
+    public List<MaterialData> customAbilityBlocks     = new ArrayList<MaterialData>();
+    public List<MaterialData> customItems             = new ArrayList<MaterialData>();
 
-    public List<CustomBlock> customBlocks = new ArrayList<CustomBlock>();
+    public HashMap<MaterialData, CustomBlock> customBlockMap = new HashMap<MaterialData, CustomBlock>();
 
     public CustomBlockConfig() {
         super("ModConfigs", "blocks.yml");
@@ -48,7 +50,7 @@ public class CustomBlockConfig extends ConfigLoader {
         loadBlocks("Ability_Blocks", customAbilityBlocks);
     }
 
-    private void loadBlocks(String skillType, List<ItemStack> blockList) {
+    private void loadBlocks(String skillType, List<MaterialData> blockList) {
         ConfigurationSection skillSection = config.getConfigurationSection(skillType);
 
         if (skillSection == null) {
@@ -58,63 +60,65 @@ public class CustomBlockConfig extends ConfigLoader {
         Set<String> skillConfigSet = skillSection.getKeys(false);
 
         for (String blockName : skillConfigSet) {
-            int id = config.getInt(skillType + "." + blockName + ".ID", 0);
-            byte data = (byte) config.getInt(skillType + "." + blockName + ".Data_Value", 0);
-            int xp = config.getInt(skillType + "." + blockName + ".XP_Gain", 0);
+            String[] blockInfo = blockName.split("[|]");
+
+            Material blockMaterial = Material.matchMaterial(blockInfo[0]);
+
+            if (blockMaterial == null) {
+                plugin.getLogger().warning("Invalid material name. This item will be skipped.");
+                continue;
+            }
+
+            byte blockData = Byte.valueOf(blockInfo[1]);
+            MaterialData blockMaterialData = new MaterialData(blockMaterial, blockData);
+            blockList.add(blockMaterialData);
+
+            if (skillType.equals("Ability_Blocks")) {
+                continue;
+            }
+
+            customItems.add(blockMaterialData);
+
+            int xp = config.getInt(skillType + "." + blockName + ".XP_Gain");
             int tier = config.getInt(skillType + "." + blockName + ".Tier", 1);
-            boolean dropItem = config.getBoolean(skillType + "." + blockName + ".Drop_Item", false);
-            int dropID = config.getInt(skillType + "." + blockName + ".Drop_Item_ID", 0);
-            byte dropData = (byte) config.getInt(skillType + "." + blockName + ".Drop_Item_Data_Value", 0);
+
+            boolean shouldDropItem = config.getBoolean(skillType + "." + blockName + ".Drop_Item");
+            Material dropMaterial = Material.matchMaterial(config.getString(skillType + "." + blockName + ".Drop_Item_Name"));
+
+            if (shouldDropItem && dropMaterial == null) {
+                plugin.getLogger().warning("Incomplete item drop information. This block will drop itself.");
+                shouldDropItem = false;
+            }
+
+            ItemStack itemDrop;
+
+            if (shouldDropItem) {
+                byte dropData = (byte) config.getInt(skillType + "." + blockName + ".Drop_Item_Data_Value");
+                itemDrop = (new MaterialData(dropMaterial, dropData)).toItemStack(1);
+            }
+            else {
+                itemDrop = blockMaterialData.toItemStack(1);
+            }
+
             int minimumDropAmount = config.getInt(skillType + "." + blockName + ".Min_Drop_Item_Amount", 1);
             int maxiumDropAmount = config.getInt(skillType + "." + blockName + ".Max_Drop_Item_Amount", 1);
 
-            CustomBlock block;
-            ItemStack itemDrop;
-            ItemStack blockItem;
-
-            if (id == 0) {
-                plugin.getLogger().warning("Missing ID. This block will be skipped.");
-                continue;
-            }
-
-            if (skillType.equals("Ability_Blocks")) {
-                blockItem = (new MaterialData(id, data)).toItemStack(1);
-
-                blockList.add(blockItem);
-                continue;
-            }
-
-            if (dropItem && dropID == 0) {
-                plugin.getLogger().warning("Incomplete item drop information. This block will drop itself.");
-                dropItem = false;
-            }
-
-            if (dropItem) {
-                itemDrop = (new MaterialData(dropID, dropData)).toItemStack(1);
-            }
-            else {
-                itemDrop = (new MaterialData(id, data)).toItemStack(1);
-            }
-
-            block = new CustomBlock(minimumDropAmount, maxiumDropAmount, itemDrop, tier, xp, data, id);
-            blockItem = (new MaterialData(id, data)).toItemStack(1);
+            CustomBlock block = new CustomBlock(minimumDropAmount, maxiumDropAmount, itemDrop, tier, xp, blockData, blockMaterial);
 
             if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
-                customOres.add(blockItem);
+                customOres.add(blockMaterialData);
             }
             else if (skillType.equals("Woodcutting")) {
                 if (config.getBoolean(skillType + "." + blockName + ".Is_Log")) {
-                    customLogs.add(blockItem);
+                    customLogs.add(blockMaterialData);
                 }
                 else {
-                    customLeaves.add(blockItem);
+                    customLeaves.add(blockMaterialData);
                     block.setXpGain(0); // Leaves don't grant XP
                 }
             }
 
-            blockList.add(blockItem);
-            customItems.add(blockItem);
-            customBlocks.add(block);
+            customBlockMap.put(blockMaterialData, block);
         }
     }
 }
