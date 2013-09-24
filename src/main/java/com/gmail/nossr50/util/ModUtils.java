@@ -44,17 +44,24 @@ public final class ModUtils {
     }
 
     public static CustomEntity getCustomEntity(Entity entity) {
-        if (!CustomEntityConfig.getInstance().customEntityIds.contains(entity.getEntityId()) && !CustomEntityConfig.getInstance().customEntityTypes.contains(entity.getType())) {
-            return null;
-        }
+        CustomEntity customEntity = CustomEntityConfig.getInstance().customEntityTypeMap.get(entity.getType().toString());
 
-        for (CustomEntity customEntity : CustomEntityConfig.getInstance().customEntities) {
-            if ((customEntity.getEntityID() == entity.getEntityId()) && (customEntity.getEntityType() == entity.getType())) {
-                return customEntity;
+        if (customEntity == null) {
+            try {
+                customEntity = CustomEntityConfig.getInstance().customEntityClassMap.get(((Class<?>) entity.getClass().getDeclaredField("entityClass").get(entity)).getName());
+            }
+            catch (NoSuchFieldException e){
+                return null;
+            }
+            catch (IllegalArgumentException e) {
+                return null;
+            }
+            catch (IllegalAccessException e) {
+                return null;
             }
         }
 
-        return null;
+        return customEntity;
     }
 
     /**
@@ -158,7 +165,26 @@ public final class ModUtils {
     }
 
     public static boolean isCustomEntity(Entity entity) {
-        return customEntitiesEnabled && CustomEntityConfig.getInstance().customEntityIds.contains(entity.getEntityId());
+        if (!customEntitiesEnabled) {
+            return false;
+        }
+
+        if (CustomEntityConfig.getInstance().customEntityTypeMap.containsKey(entity.getType().toString())) {
+            return true;
+        }
+
+        try {
+            return CustomEntityConfig.getInstance().customEntityClassMap.containsKey(((Class<?>) entity.getClass().getDeclaredField("entityClass").get(entity)).getName());
+        }
+        catch (NoSuchFieldException e){
+            return false;
+        }
+        catch (IllegalArgumentException e) {
+            return false;
+        }
+        catch (IllegalAccessException e) {
+            return false;
+        }
     }
 
     /**

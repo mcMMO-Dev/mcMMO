@@ -3,7 +3,7 @@
 ###
 Hostile:
     Mob_1:
-        ID: 9999
+        Class: CLASS_NAME
         XP_Multiplier: 1.0
         Tameable: false
         Taming_XP: 250
@@ -12,7 +12,7 @@ Hostile:
         COTW_Material_Data: 9
         COTW_Material_Amount: 99
     Mob_2:
-        ID: 9999
+        Class: CLASS_NAME
         XP_Multiplier: 1.0
         Tameable: false
         Taming_XP: 250
@@ -25,7 +25,7 @@ Hostile:
 ###
 Neutral:
     Mob_1:
-        ID: 9999
+        Class: CLASS_NAME
         XP_Multiplier: 1.0
         Tameable: false
         Taming_XP: 250
@@ -34,7 +34,7 @@ Neutral:
         COTW_Material_Data: 9
         COTW_Material_Amount: 99
     Mob_2:
-        ID: 9999
+        Class: CLASS_NAME
         XP_Multiplier: 1.0
         Tameable: false
         Taming_XP: 250
@@ -47,7 +47,7 @@ Neutral:
 ###
 Passive:
     Mob_1:
-        ID: 9999
+        Class: CLASS_NAME
         XP_Multiplier: 1.0
         Tameable: false
         Taming_XP: 250
@@ -56,7 +56,7 @@ Passive:
         COTW_Material_Data: 9
         COTW_Material_Amount: 99
     Mob_2:
-        ID: 9999
+        Class: CLASS_NAME
         XP_Multiplier: 1.0
         Tameable: false
         Taming_XP: 250

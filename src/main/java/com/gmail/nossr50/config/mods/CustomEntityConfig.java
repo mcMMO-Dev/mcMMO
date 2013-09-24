@@ -1,11 +1,12 @@
 package com.gmail.nossr50.config.mods;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang.ClassUtils;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.ConfigLoader;
@@ -14,13 +15,13 @@ import com.gmail.nossr50.datatypes.mods.CustomEntity;
 public class CustomEntityConfig extends ConfigLoader {
     private static CustomEntityConfig instance;
 
-    public List<Integer> customEntityIds        = new ArrayList<Integer>();
-    public List<Integer> customHostileEntityIds = new ArrayList<Integer>();
-    public List<Integer> customNeutralEntityIds = new ArrayList<Integer>();
-    public List<Integer> customPassiveEntityIds = new ArrayList<Integer>();
+    public List<String> customHostileEntityTypes = new ArrayList<String>();
+    public List<String> customNeutralEntityTypes = new ArrayList<String>();
+    public List<String> customPassiveEntityTypes = new ArrayList<String>();
+    public List<String> customEntityTypes        = new ArrayList<String>();
 
-    public List<EntityType> customEntityTypes = new ArrayList<EntityType>();
-    public List<CustomEntity> customEntities = new ArrayList<CustomEntity>();
+    public HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();
+    public HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<String, CustomEntity>();
 
     public CustomEntityConfig() {
         super("ModConfigs", "entities.yml");
@@ -37,12 +38,12 @@ public class CustomEntityConfig extends ConfigLoader {
 
     @Override
     protected void loadKeys() {
-        loadMobs("Hostile", customHostileEntityIds);
-        loadMobs("Neutral", customNeutralEntityIds);
-        loadMobs("Passive", customPassiveEntityIds);
+        loadMobs("Hostile", customHostileEntityTypes);
+        loadMobs("Neutral", customNeutralEntityTypes);
+        loadMobs("Passive", customPassiveEntityTypes);
     }
 
-    private void loadMobs(String entityType, List<Integer> entityIdList) {
+    private void loadMobs(String entityType, List<String> entityTypeList) {
         ConfigurationSection entitySection = config.getConfigurationSection(entityType);
 
         if (entitySection == null) {
@@ -52,8 +53,18 @@ public class CustomEntityConfig extends ConfigLoader {
         Set<String> entityConfigSet = entitySection.getKeys(false);
 
         for (String entityName : entityConfigSet) {
-            int id = config.getInt(entityType + "." + entityName + ".ID", 0);
-            EntityType type = EntityType.fromId(id);
+            Class<?> clazz = null;
+            String className = config.getString(entityType + "." + entityName + ".Class", "");
+
+            try {
+                clazz = ClassUtils.getClass(className);
+            }
+            catch (ClassNotFoundException e) {
+                plugin.getLogger().warning("Invalid class (" + className + ") detected for " + entityName + ".");
+                plugin.getLogger().warning("This custom entity may not function properly.");
+            }
+
+            String entityTypeName = entityName.replace("_", ".");
             double xpMultiplier = config.getDouble(entityType + "." + entityName + ".XP_Multiplier", 1.0D);
             boolean canBeTamed = config.getBoolean(entityType + "." + entityName + ".Tameable", false);
             int tamingXp = config.getInt(entityType + "." + entityName + "Taming_XP", 0);
@@ -64,21 +75,17 @@ public class CustomEntityConfig extends ConfigLoader {
 
             CustomEntity entity;
 
-            if (id == 0) {
-                plugin.getLogger().warning("Missing ID. This entity will be skipped.");
-                continue;
-            }
-
             if (canBeSummoned && (callOfTheWildId == 0 || callOfTheWildAmount == 0)) {
                 plugin.getLogger().warning("Incomplete Call of the Wild information. This enitity will not be able to be summoned by Call of the Wild.");
                 canBeSummoned = false;
             }
 
-            entity = new CustomEntity(id, type, xpMultiplier, canBeTamed, tamingXp, canBeSummoned, new ItemStack(callOfTheWildId, callOfTheWildData), callOfTheWildAmount);
+            entity = new CustomEntity(xpMultiplier, canBeTamed, tamingXp, canBeSummoned, new ItemStack(callOfTheWildId, callOfTheWildData), callOfTheWildAmount);
 
-            entityIdList.add(id);
-            customEntityTypes.add(type);
-            customEntities.add(entity);
+            entityTypeList.add(entityTypeName);
+            customEntityTypeMap.put(entityTypeName, entity);
+            customEntityClassMap.put(clazz == null ? null : clazz.getName(), entity);
+            customEntityTypes.add(entityTypeName);
         }
     }
 }

@@ -1,11 +1,8 @@
 package com.gmail.nossr50.datatypes.mods;
 
-import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 
 public class CustomEntity {
-    private int entityID;
-    private EntityType entityType;
     private double xpMultiplier;
     private boolean canBeTamed;
     private int tamingXP;
@@ -13,31 +10,13 @@ public class CustomEntity {
     private ItemStack callOfTheWildItem;
     private int callOfTheWildAmount;
 
-    public CustomEntity(int entityID, EntityType entityType, double xpMultiplier, boolean canBeTamed, int tamingXP, boolean canBeSummoned, ItemStack callOfTheWildItem, int callOfTheWildAmount) {
-        this.entityID = entityID;
-        this.entityType = entityType;
+    public CustomEntity(double xpMultiplier, boolean canBeTamed, int tamingXP, boolean canBeSummoned, ItemStack callOfTheWildItem, int callOfTheWildAmount) {
         this.xpMultiplier = xpMultiplier;
         this.canBeTamed = canBeTamed;
         this.tamingXP = tamingXP;
         this.canBeSummoned = canBeSummoned;
         this.callOfTheWildItem = callOfTheWildItem;
         this.callOfTheWildAmount = callOfTheWildAmount;
-    }
-
-    public int getEntityID() {
-        return entityID;
-    }
-
-    public void setEntityID(int entityID) {
-        this.entityID = entityID;
-    }
-
-    public EntityType getEntityType() {
-        return entityType;
-    }
-
-    public void setEntityType(EntityType entityType) {
-        this.entityType = entityType;
     }
 
     public double getXpMultiplier() {
