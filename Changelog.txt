@@ -26,6 +26,7 @@ Version 1.4.07-dev
  + Added new McMMOPlayerLevelDownEvent, fired when a player loses levels
  + Added ability to give custom names to items in treasures.yml - use the key "Custom_Name" to set, expects a string.
  + Added ability to give lore to items in treasures.yml - use the key "Lore" to set, expects a list of strings.
+ + Killing a custom entity will automatically add it to the custom entity config file with default values.
  = Fixed bug which allowed players to bypass fishing's exploit prevention
  = Fixed bug where FakeEntityDamageByEntityEvent wasn't being fired
  = Fixed bug with "Skull Splitter" not finding the locale string
@@ -38,6 +39,7 @@ Version 1.4.07-dev
  = Fixed a bug where squid were not awarding XP.
  = Fixed a bug where Combat XP was granted within 5 seconds for respawned players
  = Fixed a bug where wrong feedback messages were being send when using a command on an offline player
+ ! Reworked mod config files. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
  ! Changed default XP multiplier for repairing shears
  ! Changed format of treasures.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
  ! Changed format of repair.vanilla.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**

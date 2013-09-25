@@ -5,6 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -98,7 +99,7 @@ public class AxesManager extends SkillManager {
             if (ItemUtils.isArmor(armor) && Axes.impactChance > Misc.getRandom().nextInt(getActivationChance())) {
                 double durabilityModifier = 1 / (armor.getEnchantmentLevel(Enchantment.DURABILITY) + 1); // Modifier to simulate the durability enchantment behavior
                 double modifiedDurabilityDamage = durabilityDamage * durabilityModifier;
-                short maxDurability = armor.getType().getMaxDurability();
+                short maxDurability = mcMMO.getRepairableManager().getRepairable(armor.getType()).getMaximumDurability();
                 double maxDurabilityDamage = maxDurability * Axes.impactMaxDurabilityModifier;
 
                 armor.setDurability((short) (Math.min(modifiedDurabilityDamage, maxDurabilityDamage) + armor.getDurability()));

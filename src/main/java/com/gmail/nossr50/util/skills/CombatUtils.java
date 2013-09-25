@@ -498,10 +498,6 @@ public final class CombatUtils {
                         baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                         break;
 
-                    case UNKNOWN:
-                        baseXP = 1.0;
-                        break;
-
                     case SKELETON:
                         switch (((Skeleton) target).getSkeletonType()) {
                             case WITHER:
@@ -520,6 +516,8 @@ public final class CombatUtils {
                         break;
 
                     default:
+                        baseXP = 1.0;
+                        ModUtils.addCustomEntity(target);
                         break;
                 }
             }

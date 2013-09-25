@@ -1,27 +1,21 @@
 package com.gmail.nossr50.config.mods;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
-import org.apache.commons.lang.ClassUtils;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.Material;
+import org.bukkit.entity.Entity;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomEntity;
 
+import org.apache.commons.lang.ClassUtils;
+
 public class CustomEntityConfig extends ConfigLoader {
     private static CustomEntityConfig instance;
 
-    public List<String> customHostileEntityTypes = new ArrayList<String>();
-    public List<String> customNeutralEntityTypes = new ArrayList<String>();
-    public List<String> customPassiveEntityTypes = new ArrayList<String>();
-    public List<String> customEntityTypes        = new ArrayList<String>();
-
-    public HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();
-    public HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<String, CustomEntity>();
+    private HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();
+    private HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<String, CustomEntity>();
 
     public CustomEntityConfig() {
         super("ModConfigs", "entities.yml");
@@ -38,23 +32,9 @@ public class CustomEntityConfig extends ConfigLoader {
 
     @Override
     protected void loadKeys() {
-        loadMobs("Hostile", customHostileEntityTypes);
-        loadMobs("Neutral", customNeutralEntityTypes);
-        loadMobs("Passive", customPassiveEntityTypes);
-    }
-
-    private void loadMobs(String entityType, List<String> entityTypeList) {
-        ConfigurationSection entitySection = config.getConfigurationSection(entityType);
-
-        if (entitySection == null) {
-            return;
-        }
-
-        Set<String> entityConfigSet = entitySection.getKeys(false);
-
-        for (String entityName : entityConfigSet) {
+        for (String entityName : config.getKeys(false)) {
             Class<?> clazz = null;
-            String className = config.getString(entityType + "." + entityName + ".Class", "");
+            String className = config.getString(entityName + ".Class", "");
 
             try {
                 clazz = ClassUtils.getClass(className);
@@ -65,27 +45,68 @@ public class CustomEntityConfig extends ConfigLoader {
             }
 
             String entityTypeName = entityName.replace("_", ".");
-            double xpMultiplier = config.getDouble(entityType + "." + entityName + ".XP_Multiplier", 1.0D);
-            boolean canBeTamed = config.getBoolean(entityType + "." + entityName + ".Tameable", false);
-            int tamingXp = config.getInt(entityType + "." + entityName + "Taming_XP", 0);
-            boolean canBeSummoned = config.getBoolean(entityType + "." + entityName + "CanBeSummoned", false);
-            int callOfTheWildId = config.getInt(entityType + "." + entityName + "COTW_Material_ID", 0);
-            int callOfTheWildData = config.getInt(entityType + "." + entityName + "COTW_Material_Data", 0);
-            int callOfTheWildAmount = config.getInt(entityType + "." + entityName + "COTW_Material_Amount", 0);
+            double xpMultiplier = config.getDouble(entityName + ".XP_Multiplier", 1.0D);
 
-            CustomEntity entity;
+            boolean canBeTamed = config.getBoolean(entityName + ".Tameable");
+            int tamingXp = config.getInt(entityName + ".Taming_XP");
 
-            if (canBeSummoned && (callOfTheWildId == 0 || callOfTheWildAmount == 0)) {
-                plugin.getLogger().warning("Incomplete Call of the Wild information. This enitity will not be able to be summoned by Call of the Wild.");
+            boolean canBeSummoned = config.getBoolean(entityName + ".CanBeSummoned");
+            Material callOfTheWildMaterial = Material.matchMaterial(config.getString(entityName + ".COTW_Material", ""));
+            byte callOfTheWildData = (byte) config.getInt(entityName + ".COTW_Material_Data");
+            int callOfTheWildAmount = config.getInt(entityName + ".COTW_Material_Amount");
+
+            if (canBeSummoned && (callOfTheWildMaterial == null || callOfTheWildAmount == 0)) {
+                plugin.getLogger().warning("Incomplete Call of the Wild information. This entity will not be able to be summoned by Call of the Wild.");
                 canBeSummoned = false;
             }
 
-            entity = new CustomEntity(xpMultiplier, canBeTamed, tamingXp, canBeSummoned, new ItemStack(callOfTheWildId, callOfTheWildData), callOfTheWildAmount);
+            CustomEntity entity = new CustomEntity(xpMultiplier, canBeTamed, tamingXp, canBeSummoned, (canBeSummoned ? new MaterialData(callOfTheWildMaterial, callOfTheWildData).toItemStack(1) : null), callOfTheWildAmount);
 
-            entityTypeList.add(entityTypeName);
             customEntityTypeMap.put(entityTypeName, entity);
             customEntityClassMap.put(clazz == null ? null : clazz.getName(), entity);
-            customEntityTypes.add(entityTypeName);
         }
+    }
+
+    public boolean isCustomEntity(Entity entity) {
+        if (customEntityTypeMap.containsKey(entity.getType().toString())) {
+            return true;
+        }
+
+        try {
+            return customEntityClassMap.containsKey(((Class<?>) entity.getClass().getDeclaredField("entityClass").get(entity)).getName());
+        }
+        catch (Exception e) {
+            if (e instanceof NoSuchFieldException || e instanceof IllegalArgumentException || e instanceof IllegalAccessException) {
+                return customEntityClassMap.containsKey(entity.getClass().getName());
+            }
+
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public CustomEntity getCustomEntity(Entity entity) {
+        CustomEntity customEntity = customEntityTypeMap.get(entity.getType().toString());
+
+        if (customEntity == null) {
+            try {
+                customEntity = customEntityClassMap.get(((Class<?>) entity.getClass().getDeclaredField("entityClass").get(entity)).getName());
+            }
+            catch (Exception e) {
+                if (e instanceof NoSuchFieldException || e instanceof IllegalArgumentException || e instanceof IllegalAccessException) {
+                    customEntity = customEntityClassMap.get(entity.getClass().getName());
+                }
+                else {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return customEntity;
+    }
+
+    public void addEntity(CustomEntity customEntity, String className, String entityName) {
+        customEntityTypeMap.put(entityName, customEntity);
+        customEntityClassMap.put(className, customEntity);
     }
 }

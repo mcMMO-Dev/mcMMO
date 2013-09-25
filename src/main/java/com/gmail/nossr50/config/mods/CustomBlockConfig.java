@@ -16,17 +16,16 @@ import com.gmail.nossr50.datatypes.mods.CustomBlock;
 public class CustomBlockConfig extends ConfigLoader {
     private static CustomBlockConfig instance;
 
-    public List<MaterialData> customExcavationBlocks  = new ArrayList<MaterialData>();
-    public List<MaterialData> customHerbalismBlocks   = new ArrayList<MaterialData>();
-    public List<MaterialData> customMiningBlocks      = new ArrayList<MaterialData>();
-    public List<MaterialData> customWoodcuttingBlocks = new ArrayList<MaterialData>();
-    public List<MaterialData> customOres              = new ArrayList<MaterialData>();
-    public List<MaterialData> customLogs              = new ArrayList<MaterialData>();
-    public List<MaterialData> customLeaves            = new ArrayList<MaterialData>();
-    public List<MaterialData> customAbilityBlocks     = new ArrayList<MaterialData>();
-    public List<MaterialData> customItems             = new ArrayList<MaterialData>();
+    private List<MaterialData> customExcavationBlocks  = new ArrayList<MaterialData>();
+    private List<MaterialData> customHerbalismBlocks   = new ArrayList<MaterialData>();
+    private List<MaterialData> customMiningBlocks      = new ArrayList<MaterialData>();
+    private List<MaterialData> customWoodcuttingBlocks = new ArrayList<MaterialData>();
+    private List<MaterialData> customOres              = new ArrayList<MaterialData>();
+    private List<MaterialData> customLogs              = new ArrayList<MaterialData>();
+    private List<MaterialData> customLeaves            = new ArrayList<MaterialData>();
+    private List<MaterialData> customAbilityBlocks     = new ArrayList<MaterialData>();
 
-    public HashMap<MaterialData, CustomBlock> customBlockMap = new HashMap<MaterialData, CustomBlock>();
+    private HashMap<MaterialData, CustomBlock> customBlockMap = new HashMap<MaterialData, CustomBlock>();
 
     public CustomBlockConfig() {
         super("ModConfigs", "blocks.yml");
@@ -65,7 +64,7 @@ public class CustomBlockConfig extends ConfigLoader {
             Material blockMaterial = Material.matchMaterial(blockInfo[0]);
 
             if (blockMaterial == null) {
-                plugin.getLogger().warning("Invalid material name. This item will be skipped.");
+                plugin.getLogger().warning("Invalid material name. This item will be skipped. - " + blockInfo[0]);
                 continue;
             }
 
@@ -77,16 +76,13 @@ public class CustomBlockConfig extends ConfigLoader {
                 continue;
             }
 
-            customItems.add(blockMaterialData);
-
             int xp = config.getInt(skillType + "." + blockName + ".XP_Gain");
-            int tier = config.getInt(skillType + "." + blockName + ".Tier", 1);
 
             boolean shouldDropItem = config.getBoolean(skillType + "." + blockName + ".Drop_Item");
             Material dropMaterial = Material.matchMaterial(config.getString(skillType + "." + blockName + ".Drop_Item_Name"));
 
             if (shouldDropItem && dropMaterial == null) {
-                plugin.getLogger().warning("Incomplete item drop information. This block will drop itself.");
+                plugin.getLogger().warning("Incomplete item drop information. This block will drop itself. - " + blockInfo[0]);
                 shouldDropItem = false;
             }
 
@@ -103,8 +99,6 @@ public class CustomBlockConfig extends ConfigLoader {
             int minimumDropAmount = config.getInt(skillType + "." + blockName + ".Min_Drop_Item_Amount", 1);
             int maxiumDropAmount = config.getInt(skillType + "." + blockName + ".Max_Drop_Item_Amount", 1);
 
-            CustomBlock block = new CustomBlock(minimumDropAmount, maxiumDropAmount, itemDrop, tier, xp, blockData, blockMaterial);
-
             if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
                 customOres.add(blockMaterialData);
             }
@@ -114,11 +108,47 @@ public class CustomBlockConfig extends ConfigLoader {
                 }
                 else {
                     customLeaves.add(blockMaterialData);
-                    block.setXpGain(0); // Leaves don't grant XP
+                    xp = 0; // Leaves don't grant XP
                 }
             }
 
-            customBlockMap.put(blockMaterialData, block);
+            customBlockMap.put(blockMaterialData, new CustomBlock(minimumDropAmount, maxiumDropAmount, itemDrop, xp));
         }
+    }
+
+    public CustomBlock getCustomBlock(MaterialData data) {
+        return customBlockMap.get(data);
+    }
+
+    public boolean isCustomOre(MaterialData data) {
+        return customOres.contains(data);
+    }
+
+    public boolean isCustomLog(MaterialData data) {
+        return customLogs.contains(data);
+    }
+
+    public boolean isCustomLeaf(MaterialData data) {
+        return customLeaves.contains(data);
+    }
+
+    public boolean isCustomAbilityBlock(MaterialData data) {
+        return customAbilityBlocks.contains(data);
+    }
+
+    public boolean isCustomExcavationBlock(MaterialData data) {
+        return customExcavationBlocks.contains(data);
+    }
+
+    public boolean isCustomHerbalismBlock(MaterialData data) {
+        return customHerbalismBlocks.contains(data);
+    }
+
+    public boolean isCustomMiningBlock(MaterialData data) {
+        return customMiningBlocks.contains(data);
+    }
+
+    public boolean isCustomWoodcuttingBlock(MaterialData data) {
+        return customWoodcuttingBlocks.contains(data);
     }
 }

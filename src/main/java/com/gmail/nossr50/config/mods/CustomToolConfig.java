@@ -21,15 +21,14 @@ public class CustomToolConfig extends ConfigLoader {
     private static CustomToolConfig instance;
     private List<Repairable> repairables;
 
-    public List<Material> customAxes     = new ArrayList<Material>();
-    public List<Material> customBows     = new ArrayList<Material>();
-    public List<Material> customHoes     = new ArrayList<Material>();
-    public List<Material> customPickaxes = new ArrayList<Material>();
-    public List<Material> customShovels  = new ArrayList<Material>();
-    public List<Material> customSwords   = new ArrayList<Material>();
-    public List<Material> customTool     = new ArrayList<Material>();
+    private List<Material> customAxes     = new ArrayList<Material>();
+    private List<Material> customBows     = new ArrayList<Material>();
+    private List<Material> customHoes     = new ArrayList<Material>();
+    private List<Material> customPickaxes = new ArrayList<Material>();
+    private List<Material> customShovels  = new ArrayList<Material>();
+    private List<Material> customSwords   = new ArrayList<Material>();
 
-    public HashMap<Material, CustomTool> customToolMap = new HashMap<Material, CustomTool>();
+    private HashMap<Material, CustomTool> customToolMap = new HashMap<Material, CustomTool>();
 
     private CustomToolConfig() {
         super("ModConfigs", "tools.yml");
@@ -77,7 +76,7 @@ public class CustomToolConfig extends ConfigLoader {
             Material toolMaterial = Material.matchMaterial(toolName);
 
             if (toolMaterial == null) {
-                plugin.getLogger().warning("Invalid material name. This item will be skipped.");
+                plugin.getLogger().warning("Invalid material name. This item will be skipped. - " + toolName);
                 continue;
             }
 
@@ -85,7 +84,7 @@ public class CustomToolConfig extends ConfigLoader {
             Material repairMaterial = Material.matchMaterial(config.getString(toolType + "." + toolName + ".Repair_Material", ""));
 
             if (repairMaterial == null) {
-                plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable.");
+                plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable. - " + toolName);
                 repairable = false;
             }
 
@@ -113,9 +112,39 @@ public class CustomToolConfig extends ConfigLoader {
             CustomTool tool = new CustomTool(tier, abilityEnabled, multiplier);
 
             materialList.add(toolMaterial);
-            customTool.add(toolMaterial);
             customToolMap.put(toolMaterial, tool);
         }
     }
-}
 
+    public boolean isCustomAxe(Material material) {
+        return customAxes.contains(material);
+    }
+
+    public boolean isCustomBow(Material material) {
+        return customBows.contains(material);
+    }
+
+    public boolean isCustomHoe(Material material) {
+        return customHoes.contains(material);
+    }
+
+    public boolean isCustomPickaxe(Material material) {
+        return customPickaxes.contains(material);
+    }
+
+    public boolean isCustomShovel(Material material) {
+        return customShovels.contains(material);
+    }
+
+    public boolean isCustomSword(Material material) {
+        return customSwords.contains(material);
+    }
+
+    public boolean isCustomTool(Material material) {
+        return customToolMap.containsKey(material);
+    }
+
+    public CustomTool getCustomTool(Material material) {
+        return customToolMap.get(material);
+    }
+}

@@ -14,6 +14,25 @@ import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public class ItemUtils {
+
+    /**
+     * Checks if the item is a bow.
+     *
+     * @param item Item to check
+     * @return true if the item is a bow, false otherwise
+     */
+    public static boolean isBow(ItemStack item) {
+        Material type = item.getType();
+
+        switch (type) {
+            case BOW:
+                return true;
+
+            default:
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().isCustomBow(type));
+        }
+    }
+
     /**
      * Checks if the item is a sword.
      *
@@ -32,7 +51,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customSwords.contains(type));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().isCustomSword(type));
         }
     }
 
@@ -54,7 +73,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customHoes.contains(type));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().isCustomHoe(type));
         }
     }
 
@@ -76,7 +95,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customShovels.contains(type));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().isCustomShovel(type));
         }
     }
 
@@ -98,7 +117,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customAxes.contains(type));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().isCustomAxe(type));
         }
     }
 
@@ -120,7 +139,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().customPickaxes.contains(type));
+                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().isCustomPickaxe(type));
         }
     }
 
@@ -142,7 +161,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().customHelmets.contains(type);
+                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().isCustomHelmet(type);
         }
     }
 
@@ -164,7 +183,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().customChestplates.contains(type);
+                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().isCustomChestplate(type);
         }
     }
 
@@ -186,7 +205,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().customLeggings.contains(type);
+                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().isCustomLeggings(type);
         }
     }
 
@@ -208,7 +227,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().customBoots.contains(type);
+                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().isCustomBoots(type);
         }
     }
 
@@ -469,12 +488,11 @@ public class ItemUtils {
             case SHEARS:
             case FISHING_ROD:
             case CARROT_STICK:
-            case BOW:
             case FLINT_AND_STEEL:
                 return true;
 
             default:
-                return isArmor(item) || isSword(item) || isAxe(item) || isShovel(item) || isPickaxe(item);
+                return isArmor(item) || isSword(item) || isAxe(item) || isShovel(item) || isPickaxe(item) || isBow(item);
         }
     }
 

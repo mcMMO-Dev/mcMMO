@@ -20,11 +20,10 @@ public class CustomArmorConfig extends ConfigLoader {
 
     private List<Repairable> repairables;
 
-    public List<Material> customBoots       = new ArrayList<Material>();
-    public List<Material> customChestplates = new ArrayList<Material>();
-    public List<Material> customHelmets     = new ArrayList<Material>();
-    public List<Material> customLeggings    = new ArrayList<Material>();
-    public List<Material> customArmor       = new ArrayList<Material>();
+    private List<Material> customBoots       = new ArrayList<Material>();
+    private List<Material> customChestplates = new ArrayList<Material>();
+    private List<Material> customHelmets     = new ArrayList<Material>();
+    private List<Material> customLeggings    = new ArrayList<Material>();
 
     public CustomArmorConfig() {
         super("ModConfigs", "armor.yml");
@@ -100,7 +99,22 @@ public class CustomArmorConfig extends ConfigLoader {
             }
 
             materialList.add(armorMaterial);
-            customArmor.add(armorMaterial);
         }
+    }
+
+    public boolean isCustomBoots(Material material) {
+        return customBoots.contains(material);
+    }
+
+    public boolean isCustomChestplate(Material material) {
+        return customChestplates.contains(material);
+    }
+
+    public boolean isCustomHelmet(Material material) {
+        return customHelmets.contains(material);
+    }
+
+    public boolean isCustomLeggings(Material material) {
+        return customLeggings.contains(material);
     }
 }

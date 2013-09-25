@@ -43,7 +43,6 @@ Mining:
     Block_1|0:
         XP_Gain: 99
         Is_Ore: true
-        Tier: 1
         Drop_Item: false
         Drop_Item_Name: BLOCK_DROP
         Drop_Item_Data_Value: 0
@@ -52,7 +51,6 @@ Mining:
     Block_2|0:
         XP_Gain: 99
         Is_Ore: true
-        Tier: 1
         Drop_Item: false
         Drop_Item_Name: BLOCK_DROP
         Drop_Item_Data_Value: 0

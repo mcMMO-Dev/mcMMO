@@ -114,4 +114,8 @@ public abstract class ConfigLoader {
             plugin.noErrorsInConfigFiles = false;
         }
     }
+
+    public File getFile() {
+        return configFile;
+    }
 }

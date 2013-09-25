@@ -87,7 +87,7 @@ public class Repair {
     protected static int getSalvagedAmount(ItemStack inHand) {
         // Temporary workaround until they get their stuff fixed.
         if (mcMMO.p.getServer().getName().equals("MCPC+")) {
-            if (ItemUtils.isPickaxe(inHand) || ItemUtils.isAxe(inHand) || inHand.getType() == Material.BOW || inHand.getType() == Material.BUCKET) {
+            if (ItemUtils.isPickaxe(inHand) || ItemUtils.isAxe(inHand) || ItemUtils.isBow(inHand) || inHand.getType() == Material.BUCKET) {
                 return 3;
             }
             else if (ItemUtils.isShovel(inHand) || inHand.getType() == Material.FLINT_AND_STEEL) {
@@ -120,7 +120,7 @@ public class Repair {
         int quantity = 0;
         MaterialData repairData = new MaterialData(repairMaterial, repairMetadata);
         Recipe recipe = mcMMO.p.getServer().getRecipesFor(item).get(0);
-    
+
         if (recipe instanceof ShapelessRecipe) {
             for (ItemStack ingredient : ((ShapelessRecipe) recipe).getIngredientList()) {
                 if (ingredient != null && ingredient.getType() == repairMaterial && (repairMetadata == -1 || ingredient.getData() == repairData)) {

@@ -23,47 +23,23 @@ public class CustomEntity {
         return xpMultiplier;
     }
 
-    public void setXpMultiplier(double xpMultiplier) {
-        this.xpMultiplier = xpMultiplier;
-    }
-
-    public boolean isCanBeTamed() {
+    public boolean canBeTamed() {
         return canBeTamed;
-    }
-
-    public void setCanBeTamed(boolean canBeTamed) {
-        this.canBeTamed = canBeTamed;
     }
 
     public int getTamingXP() {
         return tamingXP;
     }
 
-    public void setTamingXP(int tamingXP) {
-        this.tamingXP = tamingXP;
-    }
-
-    public boolean isCanBeSummoned() {
+    public boolean canBeSummoned() {
         return canBeSummoned;
-    }
-
-    public void setCanBeSummoned(boolean canBeSummoned) {
-        this.canBeSummoned = canBeSummoned;
     }
 
     public ItemStack getCallOfTheWildItem() {
         return callOfTheWildItem;
     }
 
-    public void setCallOfTheWildItem(ItemStack callOfTheWildItem) {
-        this.callOfTheWildItem = callOfTheWildItem;
-    }
-
     public int getCallOfTheWildAmount() {
         return callOfTheWildAmount;
-    }
-
-    public void setCallOfTheWildAmount(int callOfTheWildAmount) {
-        this.callOfTheWildAmount = callOfTheWildAmount;
     }
 }
