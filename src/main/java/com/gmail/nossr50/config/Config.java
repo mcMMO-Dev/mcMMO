@@ -197,6 +197,8 @@ public class Config extends AutoUpdateConfigLoader {
     public String getAdminChatPrefix() { return config.getString("Commands.a.Chat_Prefix_Format", "[[AQUA]][[[WHITE]]{0}[[AQUA]]]"); }
     public boolean getAdminDisplayNames() { return config.getBoolean("Commands.a.Use_Display_Names", true); }
 
+    public boolean getMatchOfflinePlayers() { return config.getBoolean("Commands.General.Match_OfflinePlayers", false); }
+
     /* Mob Healthbar */
     public MobHealthbarType getMobHealthbarDefault() {
         try {

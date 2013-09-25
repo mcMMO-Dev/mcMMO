@@ -309,6 +309,10 @@ Double_Drops:
 #  Settings for commands
 ###
 Commands:
+    General:
+        # If true, when using partial names in commands mcMMO will try to look for a match from
+        # the offline players. Enabling this might slow the server down if there are a lot of offline players.
+        Match_OfflinePlayers: false
     mcmmo:
         Donate_Message: true
     inspect:

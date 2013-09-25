@@ -22,6 +22,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.util.player.UserManager;
@@ -283,13 +284,23 @@ public final class Misc {
      * Get a matched player name if one was found in the database.
      *
      * @param partialName Name to match
+     *
      * @return Matched name or {@code partialName} if no match was found
      */
     public static String getMatchedPlayerName(String partialName) {
-        List<String> matches = matchPlayer(partialName);
+        if (Config.getInstance().getMatchOfflinePlayers()) {
+            List<String> matches = matchPlayer(partialName);
 
-        if (matches.size() == 1) {
-            partialName = matches.get(0);
+            if (matches.size() == 1) {
+                partialName = matches.get(0);
+            }
+
+        }
+        else {
+            Player player = mcMMO.p.getServer().getPlayer(partialName);
+            if (player != null) {
+                partialName = player.getName();
+            }
         }
 
         return partialName;
