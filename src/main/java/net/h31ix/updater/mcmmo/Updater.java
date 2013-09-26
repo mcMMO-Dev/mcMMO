@@ -58,7 +58,6 @@ public class Updater {
     private File file; // The plugin's file
     private Thread thread; // Updater thread
     private static final String DBOUrl = "http://dev.bukkit.org/server-mods/"; // Slugs will be appended to this to get to the project's RSS feed
-    private String[] noUpdateTag = {}; // If the version number contains one of these, don't update.
     private static final int BYTE_SIZE = 1024; // Used for downloading files
     private String updateFolder = YamlConfiguration.loadConfiguration(new File("bukkit.yml")).getString("settings.update-folder"); // The folder that downloads will be placed in
     private Updater.UpdateResult result = Updater.UpdateResult.SUCCESS; // Used for determining the outcome of the update process
@@ -266,23 +265,23 @@ public class Updater {
                 if (entry.isDirectory()) {
                     continue;
                 }
-                else {
-                    BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
-                    int b;
-                    byte buffer[] = new byte[BYTE_SIZE];
-                    FileOutputStream fos = new FileOutputStream(destinationFilePath);
-                    BufferedOutputStream bos = new BufferedOutputStream(fos, BYTE_SIZE);
-                    while ((b = bis.read(buffer, 0, BYTE_SIZE)) != -1) {
-                        bos.write(buffer, 0, b);
-                    }
-                    bos.flush();
-                    bos.close();
-                    bis.close();
-                    String name = destinationFilePath.getName();
-                    if (name.endsWith(".jar") && pluginFile(name)) {
-                        destinationFilePath.renameTo(new File("plugins/" + updateFolder + "/" + name));
-                    }
+
+                BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
+                int b;
+                byte buffer[] = new byte[BYTE_SIZE];
+                FileOutputStream fos = new FileOutputStream(destinationFilePath);
+                BufferedOutputStream bos = new BufferedOutputStream(fos, BYTE_SIZE);
+                while ((b = bis.read(buffer, 0, BYTE_SIZE)) != -1) {
+                    bos.write(buffer, 0, b);
                 }
+                bos.flush();
+                bos.close();
+                bis.close();
+                String name = destinationFilePath.getName();
+                if (name.endsWith(".jar") && pluginFile(name)) {
+                    destinationFilePath.renameTo(new File("plugins/" + updateFolder + "/" + name));
+                }
+
                 entry = null;
                 destinationFilePath = null;
             }
@@ -442,35 +441,6 @@ public class Updater {
     }
 
     /**
-     * Used to calculate the version string as an Integer
-     */
-    private Integer calVer(String s) throws NumberFormatException {
-        if (s.contains(".")) {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < s.length(); i++) {
-                Character c = s.charAt(i);
-                if (Character.isLetterOrDigit(c)) {
-                    sb.append(c);
-                }
-            }
-            return Integer.parseInt(sb.toString());
-        }
-        return Integer.parseInt(s);
-    }
-
-    /**
-     * Evaluate whether the version number is marked showing that it should not be updated by this program
-     */
-    private boolean hasTag(String version) {
-        for (String string : noUpdateTag) {
-            if (version.contains(string)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Part of RSS Reader by Vogella, modified by H31IX for use with Bukkit
      */
     private boolean readFeed() {
@@ -511,9 +481,8 @@ public class Updater {
                 }
                 return true;
             }
-            else {
-                return false;
-            }
+
+            return false;
         }
         catch (XMLStreamException e) {
             plugin.getLogger().warning("Could not reach dev.bukkit.org for update checking. Is it offline?");
