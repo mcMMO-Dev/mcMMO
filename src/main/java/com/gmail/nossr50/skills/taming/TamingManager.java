@@ -234,10 +234,14 @@ public class TamingManager extends SkillManager {
                     break;
 
                 case HORSE:
-                    entity.setMaxHealth(15 + Misc.getRandom().nextInt(16));
+                    Horse horse = (Horse) entity;
+
+                    entity.setMaxHealth(15.0 + (Misc.getRandom().nextDouble() * 15));
                     entity.setHealth(entity.getMaxHealth());
-                    ((Horse) entity).setColor(Horse.Color.values()[Misc.getRandom().nextInt(Horse.Color.values().length)]);
-                    ((Horse) entity).setStyle(Horse.Style.values()[Misc.getRandom().nextInt(Horse.Style.values().length)]);
+                    horse.setColor(Horse.Color.values()[Misc.getRandom().nextInt(Horse.Color.values().length)]);
+                    horse.setStyle(Horse.Style.values()[Misc.getRandom().nextInt(Horse.Style.values().length)]);
+                    horse.setJumpStrength(Misc.getRandom().nextDouble() * 2);
+                    //TODO: setSpeed, once available
                     break;
 
                 default:
