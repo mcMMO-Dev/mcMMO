@@ -49,9 +49,9 @@ import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
 
-import net.h31ix.updater.Updater;
-import net.h31ix.updater.Updater.UpdateResult;
-import net.h31ix.updater.Updater.UpdateType;
+import net.h31ix.updater.mcmmo.Updater;
+import net.h31ix.updater.mcmmo.Updater.UpdateResult;
+import net.h31ix.updater.mcmmo.Updater.UpdateType;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
 public class mcMMO extends JavaPlugin {
