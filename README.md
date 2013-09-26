@@ -34,7 +34,7 @@ mcMMO is currently developed by a team of individuals from all over the world.
 
 mcMMO uses Maven 3 to manage dependancies, packaging, and shading of necessary classes; Maven 3 is required to compile mcMMO.
 
-The typical command used to build mcMMO is: mvn clean package install
+The typical command used to build mcMMO is: `mvn clean package install`
 
 Required Libraries:
 * JUnit
