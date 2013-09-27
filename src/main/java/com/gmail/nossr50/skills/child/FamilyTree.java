@@ -35,6 +35,10 @@ public class FamilyTree {
         }
     }
 
+    protected static void clearRegistrations() {
+        tree.clear();
+    }
+
     protected static void enforceChildSkill(SkillType skill) {
         if (!skill.isChildSkill()) {
             throw new IllegalArgumentException(skill.name() + " is not a child skill!");

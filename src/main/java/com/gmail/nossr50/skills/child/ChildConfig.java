@@ -18,6 +18,8 @@ public class ChildConfig extends AutoUpdateConfigLoader {
     protected void loadKeys() {
         config.setDefaults(YamlConfiguration.loadConfiguration(plugin.getResource("child.yml")));
 
+        FamilyTree.clearRegistrations(); // when reloading, need to clear statics
+
         for (SkillType skill : SkillType.childSkills()) {
             plugin.debug("Finding parents of " + skill.name());
 
