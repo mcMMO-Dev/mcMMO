@@ -116,21 +116,25 @@ public class Repair {
         return getRepairAndSalvageQuantities(inHand, getSalvagedItem(inHand), (byte) -1);
     }
 
+    public static int getRepairAndSalvageQuantities(ItemStack item) {
+        return getRepairAndSalvageQuantities(item, null, (byte) -1);
+    }
+
     public static int getRepairAndSalvageQuantities(ItemStack item, Material repairMaterial, byte repairMetadata) {
         int quantity = 0;
-        MaterialData repairData = new MaterialData(repairMaterial, repairMetadata);
+        MaterialData repairData = repairMaterial != null ? new MaterialData(repairMaterial, repairMetadata) : null;
         Recipe recipe = mcMMO.p.getServer().getRecipesFor(item).get(0);
 
         if (recipe instanceof ShapelessRecipe) {
             for (ItemStack ingredient : ((ShapelessRecipe) recipe).getIngredientList()) {
-                if (ingredient != null && ingredient.getType() == repairMaterial && (repairMetadata == -1 || ingredient.getData() == repairData)) {
+                if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getData() == repairData)) {
                     quantity += ingredient.getAmount();
                 }
             }
         }
         else if (recipe instanceof ShapedRecipe) {
             for (ItemStack ingredient : ((ShapedRecipe) recipe).getIngredientMap().values()) {
-                if (ingredient != null && ingredient.getType() == repairMaterial && (repairMetadata == -1 || ingredient.getData() == repairData)) {
+                if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getData() == repairData)) {
                     quantity += ingredient.getAmount();
                 }
             }
