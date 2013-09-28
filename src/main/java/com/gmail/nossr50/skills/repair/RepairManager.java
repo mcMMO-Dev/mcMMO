@@ -181,7 +181,7 @@ public class RepairManager extends SkillManager {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         long lastUse = mcMMOPlayer.getLastAnvilUse(anvilType);
 
-        if (SkillUtils.cooldownExpired(lastUse, 3) || !Config.getInstance().getRepairConfirmRequired()) {
+        if (!SkillUtils.cooldownExpired(lastUse, 3) || !Config.getInstance().getRepairConfirmRequired()) {
             return true;
         }
 
