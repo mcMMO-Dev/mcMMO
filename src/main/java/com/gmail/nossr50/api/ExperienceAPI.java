@@ -59,7 +59,7 @@ public final class ExperienceAPI {
      *
      * @throws InvalidSkillException if the given skill is not valid
      */
-    public static void addRawXP(Player player, String skillType, int XP) {
+    public static void addRawXP(Player player, String skillType, float XP) {
         UserManager.getPlayer(player).applyXpGain(getSkillType(skillType), XP);
     }
 
@@ -75,8 +75,8 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      * @throws InvalidPlayerException if the given player does not exist in the database
      */
-    public static void addRawXPOffline(String playerName, String skillType, int XP) {
-        addOfflineXP(playerName, getSkillType(skillType), XP);
+    public static void addRawXPOffline(String playerName, String skillType, float XP) {
+        addOfflineXP(playerName, getSkillType(skillType), (int) Math.floor(XP));
     }
 
     /**
