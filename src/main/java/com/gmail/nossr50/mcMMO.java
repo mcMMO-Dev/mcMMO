@@ -77,7 +77,7 @@ public class mcMMO extends JavaPlugin {
 
     /* Plugin Checks */
     private static boolean combatTagEnabled;
-    private static boolean healthBarEnabled;
+    private static boolean healthBarPluginEnabled;
 
     // Config Validation Check
     public boolean noErrorsInConfigFiles = true;
@@ -118,9 +118,9 @@ public class mcMMO extends JavaPlugin {
             }
 
             combatTagEnabled = getServer().getPluginManager().getPlugin("CombatTag") != null;
-            healthBarEnabled = getServer().getPluginManager().getPlugin("HealthBar") != null;
+            healthBarPluginEnabled = getServer().getPluginManager().getPlugin("HealthBar") != null;
 
-            if (healthBarEnabled) {
+            if (healthBarPluginEnabled) {
                 getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
             }
 
@@ -266,8 +266,8 @@ public class mcMMO extends JavaPlugin {
         return combatTagEnabled;
     }
 
-    public static boolean isHealthBarEnabled() {
-        return healthBarEnabled;
+    public static boolean isHealthBarPluginEnabled() {
+        return healthBarPluginEnabled;
     }
 
     /**
