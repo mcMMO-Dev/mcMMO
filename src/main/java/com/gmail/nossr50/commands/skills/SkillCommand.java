@@ -157,7 +157,7 @@ public abstract class SkillCommand implements TabExecutor {
     protected void luckyEffectsDisplay() {
         if (isLucky) {
             String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.lucky.name"), LocaleLoader.getString("Perks.lucky.desc", skillName)));
+            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Lucky.Name"), LocaleLoader.getString("Perks.Lucky.Desc", skillName)));
         }
     }
 

@@ -90,7 +90,7 @@ public class SmeltingCommand extends SkillCommand {
         }
 
         if (canSecondSmelt) {
-            player.sendMessage(LocaleLoader.getString("Smelting.Ability.SecondSmelt", secondSmeltChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", secondSmeltChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Smelting.Ability.SecondSmelt", secondSmeltChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", secondSmeltChanceLucky) : ""));
         }
 
         if (canVanillaXPBoost) {
@@ -109,7 +109,7 @@ public class SmeltingCommand extends SkillCommand {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Smelting.Ability.Locked.1", Smelting.fluxMiningUnlockLevel)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Smelting.Ability.FluxMining", fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", fluxMiningChanceLucky) : ""));
+                player.sendMessage(LocaleLoader.getString("Smelting.Ability.FluxMining", fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", fluxMiningChanceLucky) : ""));
             }
         }
     }

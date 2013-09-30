@@ -109,11 +109,11 @@ public class AxesCommand extends SkillCommand {
         }
 
         if (canCritical) {
-            player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", critChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", critChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", critChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", critChanceLucky) : ""));
         }
 
         if (canSkullSplitter) {
-            player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", skullSplitterLength) + (hasEndurance ? LocaleLoader.getString("Perks.activationtime.bonus", skullSplitterLengthEndurance) : ""));
+            player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", skullSplitterLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", skullSplitterLengthEndurance) : ""));
         }
     }
 }

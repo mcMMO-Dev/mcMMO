@@ -57,7 +57,7 @@ public class ExcavationCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canGigaDrill) {
-            player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.activationtime.bonus", gigaDrillBreakerLengthEndurance) : ""));
+            player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
         }
     }
 }

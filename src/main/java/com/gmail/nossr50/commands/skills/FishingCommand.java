@@ -139,7 +139,7 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canMagicHunt) {
-            player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", magicChance) + chanceRaining + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", magicChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", magicChance) + chanceRaining + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", magicChanceLucky) : ""));
         }
 
         if (canShake) {
@@ -149,7 +149,7 @@ public class FishingCommand extends SkillCommand {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.0", unlockLevel)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", shakeChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", shakeChanceLucky) : ""));
+                player.sendMessage(LocaleLoader.getString("Fishing.Ability.Shake", shakeChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shakeChanceLucky) : ""));
             }
         }
 

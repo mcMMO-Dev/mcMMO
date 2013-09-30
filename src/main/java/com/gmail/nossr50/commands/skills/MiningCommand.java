@@ -106,11 +106,11 @@ public class MiningCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canDoubleDrop) {
-            player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", doubleDropChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Mining.Effect.DropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
 
         if (canSuperBreaker) {
-            player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", superBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.activationtime.bonus", superBreakerLengthEndurance) : ""));
+            player.sendMessage(LocaleLoader.getString("Mining.Ability.Length", superBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", superBreakerLengthEndurance) : ""));
         }
 
         if (canBlast) {

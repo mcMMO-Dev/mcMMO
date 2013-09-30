@@ -84,11 +84,11 @@ public class ArcheryCommand extends SkillCommand {
         }
 
         if (canDaze) {
-            player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", dazeChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", dazeChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Archery.Combat.DazeChance", dazeChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dazeChanceLucky) : ""));
         }
 
         if (canRetrieve) {
-            player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", retrieveChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", retrieveChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Archery.Combat.RetrieveChance", retrieveChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", retrieveChanceLucky) : ""));
         }
     }
 }

@@ -85,11 +85,11 @@ public class WoodcuttingCommand extends SkillCommand {
         }
 
         if (canDoubleDrop) {
-            player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", doubleDropChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Chance.DDrop", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
 
         if (canTreeFell) {
-            player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", treeFellerLength) + (hasEndurance ? LocaleLoader.getString("Perks.activationtime.bonus", treeFellerLengthEndurance) : ""));
+            player.sendMessage(LocaleLoader.getString("Woodcutting.Ability.Length", treeFellerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", treeFellerLengthEndurance) : ""));
         }
     }
 }

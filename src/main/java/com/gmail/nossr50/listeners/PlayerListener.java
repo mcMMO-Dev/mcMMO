@@ -373,8 +373,8 @@ public class PlayerListener implements Listener {
         }
 
         if (Permissions.updateNotifications(player) && plugin.isUpdateAvailable()) {
-            player.sendMessage(LocaleLoader.getString("UpdateChecker.outdated"));
-            player.sendMessage(LocaleLoader.getString("UpdateChecker.newavailable"));
+            player.sendMessage(LocaleLoader.getString("UpdateChecker.Outdated"));
+            player.sendMessage(LocaleLoader.getString("UpdateChecker.NewAvailable"));
         }
     }
 

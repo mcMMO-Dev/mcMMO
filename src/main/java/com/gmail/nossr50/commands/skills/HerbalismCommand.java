@@ -135,11 +135,11 @@ public class HerbalismCommand extends SkillCommand {
     @Override
     protected void statsDisplay() {
         if (canGreenTerra) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", greenTerraLength) + (hasEndurance ? LocaleLoader.getString("Perks.activationtime.bonus", greenTerraLengthEndurance) : ""));
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.Length", greenTerraLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", greenTerraLengthEndurance) : ""));
         }
 
         if (canGreenThumbBlocks || canGreenThumbPlants) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", greenThumbChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", greenThumbChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Chance", greenThumbChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", greenThumbChanceLucky) : ""));
         }
 
         if (canGreenThumbPlants) {
@@ -151,15 +151,15 @@ public class HerbalismCommand extends SkillCommand {
         }
 
         if (hasHylianLuck) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.HylianLuck", hylianLuckChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", hylianLuckChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.HylianLuck", hylianLuckChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", hylianLuckChanceLucky) : ""));
         }
 
         if (canShroomThumb) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.ShroomThumb.Chance", shroomThumbChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", shroomThumbChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.ShroomThumb.Chance", shroomThumbChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", shroomThumbChanceLucky) : ""));
         }
 
         if (canDoubleDrop) {
-            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", doubleDropChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Herbalism.Ability.DoubleDropChance", doubleDropChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", doubleDropChanceLucky) : ""));
         }
     }
 }

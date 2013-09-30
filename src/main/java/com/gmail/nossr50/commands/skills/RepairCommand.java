@@ -139,7 +139,7 @@ public class RepairCommand extends SkillCommand {
         }
 
         if (canSuperRepair) {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", superRepairChance) + (isLucky ? LocaleLoader.getString("Perks.lucky.bonus", superRepairChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.Super.Chance", superRepairChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", superRepairChanceLucky) : ""));
         }
 
         if (canArcaneForge) {

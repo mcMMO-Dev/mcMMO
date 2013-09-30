@@ -299,8 +299,8 @@ public class mcMMO extends JavaPlugin {
         }
 
         this.updateAvailable = true;
-        getLogger().info(LocaleLoader.getString("UpdateChecker.outdated"));
-        getLogger().info(LocaleLoader.getString("UpdateChecker.newavailable"));
+        getLogger().info(LocaleLoader.getString("UpdateChecker.Outdated"));
+        getLogger().info(LocaleLoader.getString("UpdateChecker.NewAvailable"));
     }
 
     private void loadConfigFiles() {
