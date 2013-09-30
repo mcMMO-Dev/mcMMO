@@ -76,7 +76,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    if (line.contains("#")) {
+                    if (line.contains("#") && !line.contains("User_Password:")) {
                         temp += line + "\n";
                     }
                     else if (line.contains(":")) {
