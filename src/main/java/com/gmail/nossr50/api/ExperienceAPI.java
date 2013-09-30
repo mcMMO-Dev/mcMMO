@@ -50,7 +50,7 @@ public final class ExperienceAPI {
 
     @Deprecated
     public static void addRawXP(Player player, String skillType, int XP) {
-        addRawXP(player, skillType, XP);
+        addRawXP(player, skillType, (float) XP);
     }
 
     /**
@@ -70,7 +70,7 @@ public final class ExperienceAPI {
 
     @Deprecated
     public static void addRawXPOffline(String playerName, String skillType, int XP) {
-        addRawXPOffline(playerName, skillType, XP);
+        addRawXPOffline(playerName, skillType, (float) XP);
     }
 
     /**
