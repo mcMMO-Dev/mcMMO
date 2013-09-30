@@ -246,8 +246,8 @@ public final class PartyManager {
      * @param party The party to remove
      */
     public static void disbandParty(Party party) {
-        for (String memberName : party.getMembers()) {
-            processPartyLeaving(UserManager.getPlayer(memberName));
+        for (Player member : party.getOnlineMembers()) {
+            processPartyLeaving(UserManager.getPlayer(member));
         }
 
         parties.remove(party);
