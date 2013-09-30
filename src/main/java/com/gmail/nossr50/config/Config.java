@@ -236,24 +236,17 @@ public class Config extends AutoUpdateConfigLoader {
     /* mySQL */
     public boolean getUseMySQL() { return config.getBoolean("MySQL.Enabled", false); }
     public String getMySQLTablePrefix() { return config.getString("MySQL.Database.TablePrefix", "mcmmo_"); }
-    public String getMySQLDatabaseName() { return getStringIncludingInts(config, "MySQL.Database.Name"); }
-    public String getMySQLUserName() { return getStringIncludingInts(config, "MySQL.Database.User_Name"); }
+    public String getMySQLDatabaseName() { return getStringIncludingInts("MySQL.Database.Name"); }
+    public String getMySQLUserName() { return getStringIncludingInts("MySQL.Database.User_Name"); }
     public int getMySQLServerPort() { return config.getInt("MySQL.Server.Port", 3306); }
     public String getMySQLServerName() { return config.getString("MySQL.Server.Address", "localhost"); }
+    public String getMySQLUserPassword() { return getStringIncludingInts("MySQL.Database.User_Password"); }
 
-    public String getMySQLUserPassword() {
-        if (getStringIncludingInts(config, "MySQL.Database.User_Password") != null) {
-            return getStringIncludingInts(config, "MySQL.Database.User_Password");
-        }
-
-        return "";
-    }
-
-    private static String getStringIncludingInts(ConfigurationSection cfg, String key) {
-        String str = cfg.getString(key);
+    private String getStringIncludingInts(String key) {
+        String str = config.getString(key);
 
         if (str == null) {
-            str = String.valueOf(cfg.getInt(key));
+            str = String.valueOf(config.getInt(key));
         }
 
         if (str.equals("0")) {
