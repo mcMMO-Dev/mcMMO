@@ -143,7 +143,7 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canShake) {
-            int unlockLevel = AdvancedConfig.getInstance().getShakeUnlockLevel();
+            int unlockLevel = AdvancedConfig.getInstance().getFishingTierLevelsTier1();
 
             if (skillValue < unlockLevel) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.0", unlockLevel)));

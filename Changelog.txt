@@ -67,6 +67,7 @@ Version 1.4.07-dev
  ! Mob healthbars are automatically disabled when the plugin "HealthBar" is found
  - The /mmoupdate command has been removed. It is replaced by /mcconvert database
  - Removed Abilities.Tools.Durability_Loss_Enabled, set Abilities.Tools.Durability_Loss to 0 to disable instead.
+ - Removed Skills.Fishing.Shake_UnlockLevel from advanced.yml, now using Skills.Fishing.Rank_Levels.Rank_1 instead.
  - Removed SpoutPlugin support
 
 Version 1.4.06

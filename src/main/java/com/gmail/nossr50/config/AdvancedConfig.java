@@ -213,10 +213,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Fishing.Ice_Fishing_UnlockLevel should be at least 1!");
         }
 
-        if (getShakeUnlockLevel() < 1) {
-            reason.add("Skills.Fishing.Shake_UnlockLevel should be at least 1!");
-        }
-
         if (getShakeChanceRank1() > getShakeChanceRank2()) {
             reason.add("Skills.Fishing.Shake_Chance.Rank_1 should be less or equal to Skills.Fishing.Shake_Chance.Rank_2!");
         }
@@ -979,7 +975,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getIceFishingUnlockLevel() { return config.getInt("Skills.Fishing.Ice_Fishing_UnlockLevel", 50); }
 
     /* Shake */
-    public int getShakeUnlockLevel() { return config.getInt("Skills.Fishing.Shake_UnlockLevel", 150); }
     public double getShakeChanceRank1() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_1", 25.0D); }
     public double getShakeChanceRank2() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_2", 25.0D); }
     public double getShakeChanceRank3() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_3", 35.0D); }

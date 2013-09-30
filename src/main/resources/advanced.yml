@@ -116,9 +116,6 @@ Skills:
     #  Settings for Fishing
     ###
     Fishing:
-        # Shake_UnlockLevel: Fishing level when the Shake ability unlocks
-        Shake_UnlockLevel: 150
-
         # Rank_Levels: Fishing level where rank gets unlocked
         Rank_Levels:
             Rank_1: 125
