@@ -118,29 +118,40 @@ Skills:
     Fishing:
         # Shake_UnlockLevel: Fishing level when the Shake ability unlocks
         Shake_UnlockLevel: 150
+
+        # Rank_Levels: Fishing level where rank gets unlocked
+        Rank_Levels:
+            Rank_1: 125
+            Rank_2: 250
+            Rank_3: 375
+            Rank_4: 500
+            Rank_5: 625
+            Rank_6: 750
+            Rank_7: 875
+            Rank_8: 1000
+
         Shake_Chance:
             Rank_1: 25.0
-            Rank_2: 40.0
-            Rank_3: 55.0
-            Rank_4: 60.0
-            Rank_5: 75.0
+            Rank_2: 25.0
+            Rank_3: 35.0
+            Rank_4: 35.0
+            Rank_5: 45.0
+            Rank_6: 55.0
+            Rank_7: 65.0
+            Rank_8: 75.0
 
-        #VanillaXPBoost: Vanilla XP gained from fishing is mutliplied by these values.
+        # VanillaXPBoost: Vanilla XP gained from fishing is multiplied by these values.
         VanillaXPBoost:
-            Rank_1: 1
-            Rank_2: 2
-            Rank_3: 3
-            Rank_4: 4
-            Rank_5: 5
+            XP_Multiplier:
+                Rank_1: 1
+                Rank_2: 1
+                Rank_3: 2
+                Rank_4: 2
+                Rank_5: 3
+                Rank_6: 4
+                Rank_7: 5
+                Rank_8: 6
 
-        # Tiers
-        Tier_Levels:
-            Tier1: 0
-            Tier2: 200
-            Tier3: 400
-            Tier4: 600
-            Tier5: 800
-            
         # MagicHunter_Multiplier: Determines the chance of fishing enchanted items. The chance is calculated by getting the fishing TreasureHunt tier and multiplying it with MagicHunter_Multiplier
         MagicHunter_Multiplier: 5.0
 
@@ -265,23 +276,33 @@ Skills:
         Arcane_Forging:
             May_Lose_Enchants: true
             Rank_Levels:
-                Rank_1: 100
+                Rank_1: 125
                 Rank_2: 250
-                Rank_3: 500
-                Rank_4: 750
-            Keep_Enchants:
-                Chance:
-                    Rank_4: 40.0
-                    Rank_3: 30.0
-                    Rank_2: 20.0
-                    Rank_1: 10.0
-            Downgrades:
-                Enabled: true
-                Chance:
-                    Rank_4: 15.0
-                    Rank_3: 25.0
-                    Rank_2: 50.0
-                    Rank_1: 75.0
+                Rank_3: 375
+                Rank_4: 500
+                Rank_5: 625
+                Rank_6: 750
+                Rank_7: 875
+                Rank_8: 1000
+            Keep_Enchants_Chance:
+                Rank_1: 10.0
+                Rank_2: 20.0
+                Rank_3: 30.0
+                Rank_4: 40.0
+                Rank_5: 50.0
+                Rank_6: 50.0
+                Rank_7: 60.0
+                Rank_8: 60.0
+            Downgrades_Enabled: true
+            Downgrades_Chance:
+                Rank_1: 75.0
+                Rank_2: 50.0
+                Rank_3: 40.0
+                Rank_4: 30.0
+                Rank_5: 25.0
+                Rank_6: 20.0
+                Rank_7: 15.0
+                Rank_8: 10.0
     #
     #  Settings for Smelting
     ###
@@ -302,17 +323,26 @@ Skills:
         FluxMining_Chance: 33.0
 
         # These are the levels at which each progressive level of Vanilla XP Boost unlocks.
-        VanillaXPBoost_Rank1Level: 100
-        VanillaXPBoost_Rank2Level: 300
-        VanillaXPBoost_Rank3Level: 500
-        VanillaXPBoost_Rank4Level: 700
-        VanillaXPBoost_Rank5Level: 900
-        # These are the multipliers for each rank.
-        VanillaXPBoost_Rank1Multiplier: 2
-        VanillaXPBoost_Rank2Multiplier: 3
-        VanillaXPBoost_Rank3Multiplier: 4
-        VanillaXPBoost_Rank4Multiplier: 5
-        VanillaXPBoost_Rank5Multiplier: 6
+        VanillaXPBoost:
+            Rank_Levels:
+                Rank_1: 125
+                Rank_2: 250
+                Rank_3: 375
+                Rank_4: 500
+                Rank_5: 625
+                Rank_6: 750
+                Rank_7: 875
+                Rank_8: 1000
+            XP_Multiplier:
+                Rank_1: 1
+                Rank_2: 2
+                Rank_3: 3
+                Rank_4: 3
+                Rank_5: 4
+                Rank_6: 4
+                Rank_7: 5
+                Rank_8: 5
+
     #
     #  Settings for Swords
     ###

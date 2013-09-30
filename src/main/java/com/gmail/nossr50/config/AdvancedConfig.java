@@ -189,6 +189,18 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Fishing.Tier_Levels.Tier4 should be less than Skills.Fishing.Tier_Levels.Tier5!");
         }
 
+        if (getFishingTierLevelsTier5() >= getFishingTierLevelsTier6()) {
+            reason.add("Skills.Fishing.Tier_Levels.Tier5 should be less than Skills.Fishing.Tier_Levels.Tier6!");
+        }
+
+        if (getFishingTierLevelsTier6() >= getFishingTierLevelsTier7()) {
+            reason.add("Skills.Fishing.Tier_Levels.Tier6 should be less than Skills.Fishing.Tier_Levels.Tier7!");
+        }
+
+        if (getFishingTierLevelsTier7() >= getFishingTierLevelsTier8()) {
+            reason.add("Skills.Fishing.Tier_Levels.Tier7 should be less than Skills.Fishing.Tier_Levels.Tier8!");
+        }
+
         if (getFishingMagicMultiplier() <= 0) {
             reason.add("Skills.Fishing.MagicHunter_Multiplier should be greater than 0!");
         }
@@ -221,6 +233,18 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Fishing.Shake_Chance.Rank_4 should be less or equal to Skills.Fishing.Shake_Chance.Rank_5!");
         }
 
+        if (getShakeChanceRank5() > getShakeChanceRank6()) {
+            reason.add("Skills.Fishing.Shake_Chance.Rank_5 should be less or equal to Skills.Fishing.Shake_Chance.Rank_6!");
+        }
+
+        if (getShakeChanceRank6() > getShakeChanceRank7()) {
+            reason.add("Skills.Fishing.Shake_Chance.Rank_6 should be less or equal to Skills.Fishing.Shake_Chance.Rank_7!");
+        }
+
+        if (getShakeChanceRank7() > getShakeChanceRank8()) {
+            reason.add("Skills.Fishing.Shake_Chance.Rank_7 should be less or equal to Skills.Fishing.Shake_Chance.Rank_8!");
+        }
+
         if (getFishingVanillaXPModifierRank1() > getFishingVanillaXPModifierRank2()) {
             reason.add("Skills.Fishing.VanillaXPBoost.Rank_1 should be less or equal to Skills.Fishing.VanillaXPBoost.Rank_2!");
         }
@@ -235,6 +259,18 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
         if (getFishingVanillaXPModifierRank4() > getFishingVanillaXPModifierRank5()) {
             reason.add("Skills.Fishing.VanillaXPBoost.Rank_4 should be less or equal to Skills.Fishing.VanillaXPBoost.Rank_5!");
+        }
+
+        if (getFishingVanillaXPModifierRank5() > getFishingVanillaXPModifierRank6()) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_5 should be less or equal to Skills.Fishing.VanillaXPBoost.Rank_6!");
+        }
+
+        if (getFishingVanillaXPModifierRank6() > getFishingVanillaXPModifierRank7()) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_6 should be less or equal to Skills.Fishing.VanillaXPBoost.Rank_7!");
+        }
+
+        if (getFishingVanillaXPModifierRank7() > getFishingVanillaXPModifierRank8()) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_7 should be less or equal to Skills.Fishing.VanillaXPBoost.Rank_8!");
         }
 
         if (getFishingVanillaXPModifierRank1() < 0) {
@@ -255,6 +291,18 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
         if (getFishingVanillaXPModifierRank5() < 0) {
             reason.add("Skills.Fishing.VanillaXPBoost.Rank_5 should be at least 0!");
+        }
+
+        if (getFishingVanillaXPModifierRank6() < 0) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_6 should be at least 0!");
+        }
+
+        if (getFishingVanillaXPModifierRank7() < 0) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_7 should be at least 0!");
+        }
+
+        if (getFishingVanillaXPModifierRank8() < 0) {
+            reason.add("Skills.Fishing.VanillaXPBoost.Rank_8 should be at least 0!");
         }
 
         /* HERBALISM */
@@ -512,6 +560,22 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_4 only accepts values from 0 to 100!");
         }
 
+        if (getArcaneForgingDowngradeChanceRank5() < 0 || getArcaneForgingDowngradeChanceRank5() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_5 only accepts values from 0 to 100!");
+        }
+
+        if (getArcaneForgingDowngradeChanceRank6() < 0 || getArcaneForgingDowngradeChanceRank6() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_6 only accepts values from 0 to 100!");
+        }
+
+        if (getArcaneForgingDowngradeChanceRank7() < 0 || getArcaneForgingDowngradeChanceRank7() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_7 only accepts values from 0 to 100!");
+        }
+
+        if (getArcaneForgingDowngradeChanceRank8() < 0 || getArcaneForgingDowngradeChanceRank8() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_8 only accepts values from 0 to 100!");
+        }
+
         if (getArcaneForgingKeepEnchantsChanceRank1() < 0 || getArcaneForgingKeepEnchantsChanceRank1() > 100) {
             reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_1 only accepts values from 0 to 100!");
         }
@@ -528,6 +592,22 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_4 only accepts values from 0 to 100!");
         }
 
+        if (getArcaneForgingKeepEnchantsChanceRank5() < 0 || getArcaneForgingKeepEnchantsChanceRank5() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_5 only accepts values from 0 to 100!");
+        }
+
+        if (getArcaneForgingKeepEnchantsChanceRank6() < 0 || getArcaneForgingKeepEnchantsChanceRank6() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_6 only accepts values from 0 to 100!");
+        }
+
+        if (getArcaneForgingKeepEnchantsChanceRank7() < 0 || getArcaneForgingKeepEnchantsChanceRank7() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_7 only accepts values from 0 to 100!");
+        }
+
+        if (getArcaneForgingKeepEnchantsChanceRank8() < 0 || getArcaneForgingKeepEnchantsChanceRank8() > 100) {
+            reason.add("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_8 only accepts values from 0 to 100!");
+        }
+
         if (getArcaneForgingRankLevels1() < 0) {
             reason.add("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_1 should be at least 0!");
         }
@@ -542,6 +622,22 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
         if (getArcaneForgingRankLevels4() < 0) {
             reason.add("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_4 should be at least 0!");
+        }
+
+        if (getArcaneForgingRankLevels5() < 0) {
+            reason.add("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_5 should be at least 0!");
+        }
+
+        if (getArcaneForgingRankLevels6() < 0) {
+            reason.add("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_6 should be at least 0!");
+        }
+
+        if (getArcaneForgingRankLevels7() < 0) {
+            reason.add("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_7 should be at least 0!");
+        }
+
+        if (getArcaneForgingRankLevels8() < 0) {
+            reason.add("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_8 should be at least 0!");
         }
 
         /* SMELTING */
@@ -585,6 +681,18 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Smelting.VanillaXPBoost_Rank4Level should be less or equal to Skills.Smelting.VanillaXPBoost_Rank5Level!");
         }
 
+        if (getSmeltingVanillaXPBoostRank5Level() > getSmeltingVanillaXPBoostRank6Level()) {
+            reason.add("Skills.Smelting.VanillaXPBoost_Rank5Level should be less or equal to Skills.Smelting.VanillaXPBoost_Rank6Level!");
+        }
+
+        if (getSmeltingVanillaXPBoostRank6Level() > getSmeltingVanillaXPBoostRank7Level()) {
+            reason.add("Skills.Smelting.VanillaXPBoost_Rank6Level should be less or equal to Skills.Smelting.VanillaXPBoost_Rank7Level!");
+        }
+
+        if (getSmeltingVanillaXPBoostRank7Level() > getSmeltingVanillaXPBoostRank8Level()) {
+            reason.add("Skills.Smelting.VanillaXPBoost_Rank7Level should be less or equal to Skills.Smelting.VanillaXPBoost_Rank8Level!");
+        }
+
         if (getSmeltingVanillaXPBoostRank1Multiplier() < 1) {
             reason.add("Skills.Smelting.VanillaXPBoost_Rank1Multiplier should be at least 1!");
         }
@@ -603,6 +711,18 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
         if (getSmeltingVanillaXPBoostRank5Multiplier() < 1) {
             reason.add("Skills.Smelting.VanillaXPBoost_Rank5Multiplier should be at least 1!");
+        }
+
+        if (getSmeltingVanillaXPBoostRank6Multiplier() < 1) {
+            reason.add("Skills.Smelting.VanillaXPBoost_Rank6Multiplier should be at least 1!");
+        }
+
+        if (getSmeltingVanillaXPBoostRank7Multiplier() < 1) {
+            reason.add("Skills.Smelting.VanillaXPBoost_Rank7Multiplier should be at least 1!");
+        }
+
+        if (getSmeltingVanillaXPBoostRank8Multiplier() < 1) {
+            reason.add("Skills.Smelting.VanillaXPBoost_Rank8Multiplier should be at least 1!");
         }
 
         /* SWORDS */
@@ -843,11 +963,14 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     //Nothing to configure, everything is already configurable in config.yml
 
     /* FISHING */
-    public int getFishingTierLevelsTier1() { return config.getInt("Skills.Fishing.Tier_Levels.Tier1", 0); }
-    public int getFishingTierLevelsTier2() { return config.getInt("Skills.Fishing.Tier_Levels.Tier2", 200); }
-    public int getFishingTierLevelsTier3() { return config.getInt("Skills.Fishing.Tier_Levels.Tier3", 400); }
-    public int getFishingTierLevelsTier4() { return config.getInt("Skills.Fishing.Tier_Levels.Tier4", 600); }
-    public int getFishingTierLevelsTier5() { return config.getInt("Skills.Fishing.Tier_Levels.Tier5", 800); }
+    public int getFishingTierLevelsTier1() { return config.getInt("Skills.Fishing.Rank_Levels.Rank_1", 125); }
+    public int getFishingTierLevelsTier2() { return config.getInt("Skills.Fishing.Rank_Levels.Rank_2", 250); }
+    public int getFishingTierLevelsTier3() { return config.getInt("Skills.Fishing.Rank_Levels.Rank_3", 375); }
+    public int getFishingTierLevelsTier4() { return config.getInt("Skills.Fishing.Rank_Levels.Rank_4", 500); }
+    public int getFishingTierLevelsTier5() { return config.getInt("Skills.Fishing.Rank_Levels.Rank_5", 625); }
+    public int getFishingTierLevelsTier6() { return config.getInt("Skills.Fishing.Rank_Levels.Rank_6", 750); }
+    public int getFishingTierLevelsTier7() { return config.getInt("Skills.Fishing.Rank_Levels.Rank_7", 875); }
+    public int getFishingTierLevelsTier8() { return config.getInt("Skills.Fishing.Rank_Levels.Rank_8", 1000); }
 
     public double getFishingMagicMultiplier() { return config.getDouble("Skills.Fishing.MagicHunter_Multiplier", 5.0D); }
 
@@ -858,17 +981,23 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /* Shake */
     public int getShakeUnlockLevel() { return config.getInt("Skills.Fishing.Shake_UnlockLevel", 150); }
     public double getShakeChanceRank1() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_1", 25.0D); }
-    public double getShakeChanceRank2() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_2", 40.0D); }
-    public double getShakeChanceRank3() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_3", 55.0D); }
-    public double getShakeChanceRank4() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_4", 60.0D); }
-    public double getShakeChanceRank5() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_5", 75.0D); }
+    public double getShakeChanceRank2() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_2", 25.0D); }
+    public double getShakeChanceRank3() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_3", 35.0D); }
+    public double getShakeChanceRank4() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_4", 35.0D); }
+    public double getShakeChanceRank5() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_5", 45.0D); }
+    public double getShakeChanceRank6() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_6", 55.0D); }
+    public double getShakeChanceRank7() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_7", 65.0D); }
+    public double getShakeChanceRank8() { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_8", 75.0D); }
 
     /* Vanilla XP Boost */
     public int getFishingVanillaXPModifierRank1() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_1", 1); }
-    public int getFishingVanillaXPModifierRank2() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_2", 2); }
-    public int getFishingVanillaXPModifierRank3() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_3", 3); }
-    public int getFishingVanillaXPModifierRank4() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_4", 4); }
-    public int getFishingVanillaXPModifierRank5() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_5", 5); }
+    public int getFishingVanillaXPModifierRank2() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_2", 1); }
+    public int getFishingVanillaXPModifierRank3() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_3", 2); }
+    public int getFishingVanillaXPModifierRank4() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_4", 2); }
+    public int getFishingVanillaXPModifierRank5() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_5", 3); }
+    public int getFishingVanillaXPModifierRank6() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_6", 4); }
+    public int getFishingVanillaXPModifierRank7() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_7", 5); }
+    public int getFishingVanillaXPModifierRank8() { return config.getInt("Skills.Fishing.VanillaXPBoost.Rank_8", 6); }
 
     /* HERBALISM */
     public int getFarmerDietRankChange() { return config.getInt("Skills.Herbalism.Farmer_Diet_RankChange", 200); }
@@ -952,22 +1081,34 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getSalvageUnlockLevel() { return config.getInt("Skills.Repair.Salvage_UnlockLevel", 600); }
 
     /* Arcane Forging */
-    public boolean getArcaneForgingDowngradeEnabled() { return config.getBoolean("Skills.Repair.Arcane_Forging.Downgrades.Enabled", true); }
-    public double getArcaneForgingDowngradeChanceRank1() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_1", 75.0D); }
-    public double getArcaneForgingDowngradeChanceRank2() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_2", 50.0D); }
-    public double getArcaneForgingDowngradeChanceRank3() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_3", 25.0D); }
-    public double getArcaneForgingDowngradeChanceRank4() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades.Chance.Rank_4", 15.0D); }
+    public int getArcaneForgingRankLevels1() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_1", 125); }
+    public int getArcaneForgingRankLevels2() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_2", 250); }
+    public int getArcaneForgingRankLevels3() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_3", 375); }
+    public int getArcaneForgingRankLevels4() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_4", 500); }
+    public int getArcaneForgingRankLevels5() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_5", 625); }
+    public int getArcaneForgingRankLevels6() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_6", 750); }
+    public int getArcaneForgingRankLevels7() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_7", 875); }
+    public int getArcaneForgingRankLevels8() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_8", 1000); }
 
     public boolean getArcaneForgingEnchantLossEnabled() { return config.getBoolean("Skills.Repair.Arcane_Forging.May_Lose_Enchants", true); }
-    public double getArcaneForgingKeepEnchantsChanceRank1() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_1", 10.0D); }
-    public double getArcaneForgingKeepEnchantsChanceRank2() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_2", 20.0D); }
-    public double getArcaneForgingKeepEnchantsChanceRank3() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_3", 30.0D); }
-    public double getArcaneForgingKeepEnchantsChanceRank4() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants.Chance.Rank_4", 40.0D); }
+    public double getArcaneForgingKeepEnchantsChanceRank1() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants_Chance.Rank_1", 10.0D); }
+    public double getArcaneForgingKeepEnchantsChanceRank2() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants_Chance.Rank_2", 20.0D); }
+    public double getArcaneForgingKeepEnchantsChanceRank3() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants_Chance.Rank_3", 30.0D); }
+    public double getArcaneForgingKeepEnchantsChanceRank4() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants_Chance.Rank_4", 40.0D); }
+    public double getArcaneForgingKeepEnchantsChanceRank5() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants_Chance.Rank_5", 50.0D); }
+    public double getArcaneForgingKeepEnchantsChanceRank6() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants_Chance.Rank_6", 50.0D); }
+    public double getArcaneForgingKeepEnchantsChanceRank7() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants_Chance.Rank_7", 60.0D); }
+    public double getArcaneForgingKeepEnchantsChanceRank8() { return config.getDouble("Skills.Repair.Arcane_Forging.Keep_Enchants_Chance.Rank_8", 60.0D); }
 
-    public int getArcaneForgingRankLevels1() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_1", 100); }
-    public int getArcaneForgingRankLevels2() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_2", 250); }
-    public int getArcaneForgingRankLevels3() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_3", 500); }
-    public int getArcaneForgingRankLevels4() { return config.getInt("Skills.Repair.Arcane_Forging.Rank_Levels.Rank_4", 750); }
+    public boolean getArcaneForgingDowngradeEnabled() { return config.getBoolean("Skills.Repair.Arcane_Forging.Downgrades_Enabled", true); }
+    public double getArcaneForgingDowngradeChanceRank1() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades_Chance.Rank_1", 75.0D); }
+    public double getArcaneForgingDowngradeChanceRank2() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades_Chance.Rank_2", 50.0D); }
+    public double getArcaneForgingDowngradeChanceRank3() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades_Chance.Rank_3", 40.0D); }
+    public double getArcaneForgingDowngradeChanceRank4() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades_Chance.Rank_4", 30.0D); }
+    public double getArcaneForgingDowngradeChanceRank5() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades_Chance.Rank_5", 25.0D); }
+    public double getArcaneForgingDowngradeChanceRank6() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades_Chance.Rank_6", 20.0D); }
+    public double getArcaneForgingDowngradeChanceRank7() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades_Chance.Rank_7", 15.0D); }
+    public double getArcaneForgingDowngradeChanceRank8() { return config.getDouble("Skills.Repair.Arcane_Forging.Downgrades_Chance.Rank_8", 10.0D); }
 
     /* SMELTING */
     public int getBurnModifierMaxLevel() { return config.getInt("Skills.Smelting.FuelEfficiency_MaxBonusLevel", 1000); }
@@ -979,17 +1120,23 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getFluxMiningUnlockLevel() { return config.getInt("Skills.Smelting.FluxMining_UnlockLevel", 250); }
     public double getFluxMiningChance() { return config.getDouble("Skills.Smelting.FluxMining_Chance", 33.0D); }
 
-    public int getSmeltingVanillaXPBoostRank1Level() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank1Level", 100); }
-    public int getSmeltingVanillaXPBoostRank2Level() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank2Level", 300); }
-    public int getSmeltingVanillaXPBoostRank3Level() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank3Level", 500); }
-    public int getSmeltingVanillaXPBoostRank4Level() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank4Level", 700); }
-    public int getSmeltingVanillaXPBoostRank5Level() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank5Level", 900); }
+    public int getSmeltingVanillaXPBoostRank1Level() { return config.getInt("Skills.Smelting.VanillaXPBoost.Rank_Levels.Rank_1", 125); }
+    public int getSmeltingVanillaXPBoostRank2Level() { return config.getInt("Skills.Smelting.VanillaXPBoost.Rank_Levels.Rank_2", 250); }
+    public int getSmeltingVanillaXPBoostRank3Level() { return config.getInt("Skills.Smelting.VanillaXPBoost.Rank_Levels.Rank_3", 375); }
+    public int getSmeltingVanillaXPBoostRank4Level() { return config.getInt("Skills.Smelting.VanillaXPBoost.Rank_Levels.Rank_4", 500); }
+    public int getSmeltingVanillaXPBoostRank5Level() { return config.getInt("Skills.Smelting.VanillaXPBoost.Rank_Levels.Rank_5", 625); }
+    public int getSmeltingVanillaXPBoostRank6Level() { return config.getInt("Skills.Smelting.VanillaXPBoost.Rank_Levels.Rank_6", 750); }
+    public int getSmeltingVanillaXPBoostRank7Level() { return config.getInt("Skills.Smelting.VanillaXPBoost.Rank_Levels.Rank_7", 875); }
+    public int getSmeltingVanillaXPBoostRank8Level() { return config.getInt("Skills.Smelting.VanillaXPBoost.Rank_Levels.Rank_8", 1000); }
 
-    public int getSmeltingVanillaXPBoostRank1Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank1Multiplier", 2); }
-    public int getSmeltingVanillaXPBoostRank2Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank2Multiplier", 3); }
-    public int getSmeltingVanillaXPBoostRank3Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank3Multiplier", 4); }
-    public int getSmeltingVanillaXPBoostRank4Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank4Multiplier", 5); }
-    public int getSmeltingVanillaXPBoostRank5Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost_Rank5Multiplier", 6); }
+    public int getSmeltingVanillaXPBoostRank1Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost.XP_Multiplier.Rank_1", 1); }
+    public int getSmeltingVanillaXPBoostRank2Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost.XP_Multiplier.Rank_2", 2); }
+    public int getSmeltingVanillaXPBoostRank3Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost.XP_Multiplier.Rank_3", 3); }
+    public int getSmeltingVanillaXPBoostRank4Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost.XP_Multiplier.Rank_4", 3); }
+    public int getSmeltingVanillaXPBoostRank5Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost.XP_Multiplier.Rank_5", 4); }
+    public int getSmeltingVanillaXPBoostRank6Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost.XP_Multiplier.Rank_6", 4); }
+    public int getSmeltingVanillaXPBoostRank7Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost.XP_Multiplier.Rank_7", 5); }
+    public int getSmeltingVanillaXPBoostRank8Multiplier() { return config.getInt("Skills.Smelting.VanillaXPBoost.XP_Multiplier.Rank_8", 5); }
 
     /* SWORDS */
     public double getBleedChanceMax() { return config.getDouble("Skills.Swords.Bleed_ChanceMax", 75.0D); }

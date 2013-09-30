@@ -16,6 +16,18 @@ import com.gmail.nossr50.util.Misc;
 public final class Fishing {
     // The order of the values is extremely important, a few methods depend on it to work properly
     protected enum Tier {
+        EIGHT(8) {
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier8(); }
+            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank8(); }
+            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank8(); }},
+        SEVEN(7) {
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier7(); }
+            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank7(); }
+            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank7(); }},
+        SIX(6) {
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier6(); }
+            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank6(); }
+            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank6(); }},
         FIVE(5) {
             @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier5(); }
             @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank5(); }

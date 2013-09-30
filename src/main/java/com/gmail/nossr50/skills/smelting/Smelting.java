@@ -9,6 +9,15 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 public class Smelting {
     // The order of the values is extremely important, a few methods depend on it to work properly
     protected enum Tier {
+        EIGHT(8) {
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank8Level(); }
+            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank8Multiplier(); }},
+        SEVEN(7) {
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank7Level(); }
+            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank7Multiplier(); }},
+        SIX(6) {
+            @Override public int getLevel() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank6Level(); }
+            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank6Multiplier(); }},
         FIVE(5) {
             @Override public int getLevel() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank5Level(); }
             @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank5Multiplier(); }},
