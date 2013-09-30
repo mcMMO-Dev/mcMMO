@@ -34,6 +34,7 @@ public class PartyKickCommand implements CommandExecutor {
                         return true;
                     }
 
+                    PartyManager.processPartyLeaving(UserManager.getPlayer(onlineTarget));
                     onlineTarget.sendMessage(LocaleLoader.getString("Commands.Party.Kick", partyName));
                 }
 
