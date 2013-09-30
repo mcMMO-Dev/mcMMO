@@ -48,6 +48,11 @@ public final class ExperienceAPI {
         return !skill.isChildSkill();
     }
 
+    @Deprecated
+    public static void addRawXP(Player player, String skillType, int XP) {
+        addRawXP(player, skillType, XP);
+    }
+
     /**
      * Adds raw XP to the player.
      * </br>
@@ -61,6 +66,11 @@ public final class ExperienceAPI {
      */
     public static void addRawXP(Player player, String skillType, float XP) {
         UserManager.getPlayer(player).applyXpGain(getSkillType(skillType), XP);
+    }
+
+    @Deprecated
+    public static void addRawXPOffline(String playerName, String skillType, int XP) {
+        addRawXPOffline(playerName, skillType, XP);
     }
 
     /**
