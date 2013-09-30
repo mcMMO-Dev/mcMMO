@@ -26,6 +26,7 @@ Version 1.4.07-dev
  + Added new McMMOPlayerLevelDownEvent, fired when a player loses levels
  + Added ability to give custom names to items in treasures.yml - use the key "Custom_Name" to set, expects a string.
  + Added ability to give lore to items in treasures.yml - use the key "Lore" to set, expects a list of strings.
+ + Added Quartz and Name Tags to the default Excavation treasures
  + Killing a custom entity will automatically add it to the custom entity config file with default values.
  = Fixed bug which allowed players to bypass fishing's exploit prevention
  = Fixed bug where FakeEntityDamageByEntityEvent wasn't being fired

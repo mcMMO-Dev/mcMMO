@@ -469,6 +469,18 @@ Excavation:
         Drop_Chance: 1.33
         Drop_Level: 350
         Drops_From: [Dirt, Grass, Mycelium]
+    QUARTZ:
+        Amount: 1
+        XP: 100
+        Drop_Chance: 0.5
+        Drop_Level: 850
+        Drops_From: [Dirt, Sand, Gravel, Mycelium, Soul_Sand]
+    NAME_TAG:
+        Amount: 1
+        XP: 3000
+        Drop_Chance: 0.05
+        Drop_Level: 250
+        Drops_From: [Dirt, Grass, Sand, Gravel, Clay, Mycelium, Soul_Sand]
 #
 #  Settings for Hylian Luck
 ###
