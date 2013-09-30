@@ -315,10 +315,11 @@ public final class PartyManager {
     public static void joinInvitedParty(McMMOPlayer mcMMOPlayer) {
         Party invite = mcMMOPlayer.getPartyInvite();
 
-//        // Pretty sure this isn't possible
-//        if (!parties.contains(invite)) {
-//            parties.add(invite);
-//        }
+        // Check if the party still exists, it might have been disbanded
+        if (!parties.contains(invite)) {
+            mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Party.Disband"));
+            return;
+        }
 
         mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Invite.Accepted", invite.getName()));
         mcMMOPlayer.removePartyInvite();
