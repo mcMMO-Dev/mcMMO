@@ -22,7 +22,7 @@ public class PartyKickCommand implements CommandExecutor {
                 OfflinePlayer target = mcMMO.p.getServer().getOfflinePlayer(args[1]);
 
                 if (!playerParty.getMembers().contains(target.getName())) {
-                    sender.sendMessage(LocaleLoader.getString("Party.NotInYourParty", args[1]));
+                    sender.sendMessage(LocaleLoader.getString("Party.NotInYourParty", target.getName()));
                     return true;
                 }
 

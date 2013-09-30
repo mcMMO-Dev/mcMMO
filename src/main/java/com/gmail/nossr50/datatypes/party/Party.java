@@ -67,12 +67,12 @@ public class Party {
         return onlineMembers;
     }
 
-    public String getLeader() {
-        return leader;
-    }
-
     public String getName() {
         return name;
+    }
+
+    public String getLeader() {
+        return leader;
     }
 
     public String getPassword() {
