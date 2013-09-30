@@ -63,7 +63,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
             output = output.replace("  ", "    ");
 
             // Rip out Bukkit's attempt to save comments at the top of the file
-            while (output.indexOf('#') != -1) {
+            while (!output.startsWith("General:")) {
                 output = output.substring(output.indexOf('\n', output.indexOf('#')) + 1);
             }
 
@@ -76,7 +76,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    if (line.contains("#") && !line.contains("User_Password:")) {
+                    if (line.contains("#")) {
                         temp += line + "\n";
                     }
                     else if (line.contains(":")) {
