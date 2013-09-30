@@ -309,7 +309,7 @@ Double_Drops:
 #  Settings for commands
 ###
 Commands:
-    General:
+    Generic:
         # If true, when using partial names in commands mcMMO will try to look for a match from
         # the offline players. Enabling this might slow the server down if there are a lot of offline players.
         Match_OfflinePlayers: false
@@ -326,12 +326,12 @@ Commands:
         # If true, require players to have a mcmmo.commands.ptp.world.[WorldName] permission
         # to teleport to, from, or within any given world.
         World_Based_Permissions: false
-    p:
+    partychat:
         Chat_Prefix_Format: '[[GREEN]]([[WHITE]]{0}[[GREEN]])'
 
         # Allow mcMMO to use player display names in chat instead of their usernames
         Use_Display_Names: true
-    a:
+    adminchat:
         Chat_Prefix_Format: '[[AQUA]][[[WHITE]]{0}[[AQUA]]]'
 
         # Allow mcMMO to use player display names in chat instead of their usernames

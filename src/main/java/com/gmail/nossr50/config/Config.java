@@ -190,14 +190,14 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getVerboseLoggingEnabled() { return config.getBoolean("General.Verbose_Logging", false); }
     public boolean getConfigOverwriteEnabled() { return config.getBoolean("General.Config_Update_Overwrite", true); }
 
-    public String getPartyChatPrefix() { return config.getString("Commands.p.Chat_Prefix_Format", "[[GREEN]]([[WHITE]]{0}[[GREEN]])"); }
-    public boolean getPartyChatColorLeaderName() { return config.getBoolean("Commands.p.Gold_Leader_Name", true); }
-    public boolean getPartyDisplayNames() { return config.getBoolean("Commands.p.Use_Display_Names", true); }
+    public String getPartyChatPrefix() { return config.getString("Commands.partychat.Chat_Prefix_Format", "[[GREEN]]([[WHITE]]{0}[[GREEN]])"); }
+    public boolean getPartyChatColorLeaderName() { return config.getBoolean("Commands.partychat.Gold_Leader_Name", true); }
+    public boolean getPartyDisplayNames() { return config.getBoolean("Commands.partychat.Use_Display_Names", true); }
 
-    public String getAdminChatPrefix() { return config.getString("Commands.a.Chat_Prefix_Format", "[[AQUA]][[[WHITE]]{0}[[AQUA]]]"); }
-    public boolean getAdminDisplayNames() { return config.getBoolean("Commands.a.Use_Display_Names", true); }
+    public String getAdminChatPrefix() { return config.getString("Commands.adminchat.Chat_Prefix_Format", "[[AQUA]][[[WHITE]]{0}[[AQUA]]]"); }
+    public boolean getAdminDisplayNames() { return config.getBoolean("Commands.adminchat.Use_Display_Names", true); }
 
-    public boolean getMatchOfflinePlayers() { return config.getBoolean("Commands.General.Match_OfflinePlayers", false); }
+    public boolean getMatchOfflinePlayers() { return config.getBoolean("Commands.Generic.Match_OfflinePlayers", false); }
 
     /* Mob Healthbar */
     public MobHealthbarType getMobHealthbarDefault() {
