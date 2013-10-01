@@ -40,11 +40,11 @@ Version 1.4.07-dev
  = Fixed a bug where squid were not awarding XP.
  = Fixed a bug where Combat XP was granted within 5 seconds for respawned players
  = Fixed a bug where wrong feedback messages were being send when using a command on an offline player
- ! Reworked mod config files. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
- ! Changed default XP multiplier for repairing shears
+ ! Changed format of mod config files. (blocks.yml, tools.yml, armor.yml and entities.yml) **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
  ! Changed format of treasures.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
  ! Changed format of repair.vanilla.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
- ! Witches no longer drop water bottles from Shake, since they no longer drop them in Vanilla.
+ ! Changed default XP multiplier for repairing shears
+ ! Changed "Shake" drops for Witches. They no longer drop water bottles, since they no longer drop them in Vanilla.
  ! Changed various values to double in advanced.yml for the sake of consistency.
  ! Nerfed Archery damage to eliminate constant one-hit kills.
  ! Changed the way Repair hands out XP, also added config options to control Repair XP
