@@ -15,35 +15,38 @@
 ###
 Skills:
     General:
-        # This setting will determine when the length of every ability gets longer with 1 second
-        Ability_IncreaseLevel: 50
-        # This setting determines how many enchant levels to use when buffing Super Breaker & Giga Drill Breaker
-        Ability_EnchantBuff: 5
+        Ability:
+            # IncreaseLevel: This setting will determine when the length of every ability gets longer with 1 second
+            # EnchantBuff: This setting determines how many enchant levels to use when buffing Super Breaker & Giga Drill Breaker
+            IncreaseLevel: 50
+            EnchantBuff: 5
     #
     #  Settings for Acrobatics
     ###
     Acrobatics:
-        # Dodge_ChanceMax: Maximum chance of dodging when on Dodge_MaxBonusLevel or higher
-        # Dodge_MaxBonusLevel: On this level or higher, the dodge chance will not go higher than Dodge_ChanceMax
-        # Dodge_DamageModifer: Dodge damage will be divided by this modifier
-        Dodge_ChanceMax: 20.0
-        Dodge_MaxBonusLevel: 800
-        Dodge_DamageModifier: 2.0
+        Dodge:
+            # ChanceMax: Maximum chance of dodging when on Dodge_MaxBonusLevel or higher
+            # MaxBonusLevel: On this level or higher, the dodge chance will not go higher than Dodge_ChanceMax
+            # DamageModifer: Dodge damage will be divided by this modifier
+            ChanceMax: 20.0
+            MaxBonusLevel: 800
+            DamageModifier: 2.0
 
-        # Roll_ChanceMax: Maximum chance of rolling when on Roll_MaxBonusLevel or higher
-        # Roll_MaxBonusLevel: On this level or higher, the roll chance will not go higher than Roll_ChanceMax
-        # Roll_DamageThreshold: The max damage a player can negate with a roll
-        Roll_ChanceMax: 100.0
-        Roll_MaxBonusLevel: 1000
-        Roll_DamageThreshold: 7.0
+        Roll:
+            # ChanceMax: Maximum chance of rolling when on Roll_MaxBonusLevel or higher
+            # MaxBonusLevel: On this level or higher, the roll chance will not go higher than Roll_ChanceMax
+            # DamageThreshold: The max damage a player can negate with a roll
+            ChanceMax: 100.0
+            MaxBonusLevel: 1000
+            DamageThreshold: 7.0
 
-        # GracefulRoll_ChanceMax: Maximum chance of graceful rolling when on GracefulRoll_MaxBonusLevel or higher
-        # GracefulRoll_MaxBonusLevel: On this level or higher, the graceful roll chance will not go higher than GracefulRoll_ChanceMax
-        # GracefulRoll_DamageThreshold: The max damage a player can negate with a graceful roll
-        # GracefulRoll_SuccessModifier: Graceful rolls will be this many times more likely to succeed than regular rolls
-        GracefulRoll_ChanceMax: 100.0
-        GracefulRoll_MaxBonusLevel: 500
-        GracefulRoll_DamageThreshold: 14.0
+        GracefulRoll:
+            # ChanceMax: Maximum chance of graceful rolling when on GracefulRoll_MaxBonusLevel or higher
+            # MaxBonusLevel: On this level or higher, the graceful roll chance will not go higher than GracefulRoll_ChanceMax
+            # DamageThreshold: The max damage a player can negate with a graceful roll
+            ChanceMax: 100.0
+            MaxBonusLevel: 500
+            DamageThreshold: 14.0
 
         # Amount of experience for performing a dodge, roll or fall
         Dodge_XP_Modifier: 120
@@ -56,221 +59,248 @@ Skills:
     #  Settings for Archery
     ###
     Archery:
-        # SkillShot_IncreaseLevel: Every "SkillShot_IncreaseLevel" the skillshot bonus will go up by "SkillShot_IncreasePercentage"
-        # SkillShot_IncreasePercentage: This is a percentage value, 0.1 = 10%
-        # SkillShot_MaxBonus: When the SkillShot_MaxBonus has been reached, the bonus percentage will not go up anymore. 2.0 = 200%
-        SkillShot_IncreaseLevel: 50
-        SkillShot_IncreasePercentage: 0.1
-        SkillShot_MaxBonus: 2.0
-        SkillShot_MaxDamage: 9.0
+        SkillShot:
+            # IncreaseLevel: Every <IncreaseLevel> the skillshot bonus will go up by <IncreasePercentage>
+            # IncreasePercentage: This is a percentage value, 0.1 = 10%
+            # MaxBonus: When the <MaxBonus> has been reached, the bonus percentage will not go up anymore. 2.0 = 200%
+            IncreaseLevel: 50
+            IncreasePercentage: 0.1
+            MaxBonus: 2.0
+            MaxDamage: 9.0
 
-        # Daze_MaxChance: Maximum chance of causing daze to opponents
-        # Daze_MaxBonusLevel: Maximum bonus level of Daze, when a player reaches this level his chance of causing a daze will be "Daze_MaxChance"
-        # Daze_Modifier: Extra damage for arrows that cause a daze (2 damage = 1 heart)
-        Daze_MaxChance: 50.0
-        Daze_MaxBonusLevel: 1000
-        Daze_Modifier: 4.0
+        Daze:
+            # MaxChance: Maximum chance of causing daze to opponents
+            # MaxBonusLevel: Maximum bonus level of Daze, when a player reaches this level his chance of causing a daze will be <Daze_MaxChance>
+            # Modifier: Extra damage for arrows that cause a daze (2 damage = 1 heart)
+            MaxChance: 50.0
+            MaxBonusLevel: 1000
+            Modifier: 4.0
 
-        # Retrieve_MaxChance: Maximum chance or retrieving arrows
-        # Retrieve_MaxBonusLevel: Maximum bonus level for Arrow retrieval, at this level the chance of retrieving arrows from mobs is Retrieve_MaxBonus
-        Retrieve_MaxChance: 100.0
-        Retrieve_MaxBonusLevel: 1000
+        Retrieve:
+            # MaxChance: Maximum chance or retrieving arrows
+            # MaxBonusLevel: Maximum bonus level for Arrow retrieval, at this level the chance of retrieving arrows from mobs is <MaxBonus>
+            MaxChance: 100.0
+            MaxBonusLevel: 1000
 
-        #Force_Multiplier: Multiply the force of the bow by this for an XP boost.
-        Force_Multiplier: 2.0
+        # ForceMultiplier: Multiply the force of the bow by this for an XP boost.
+        ForceMultiplier: 2.0
     #
     #  Settings for Axes
     ###
     Axes:
-        # DamageIncrease_MaxBonus: Maximum bonus damage
-        # DamageIncrease_MaxBonusLevel: Level where the maximum bonus is reached
-        DamageIncrease_MaxBonus: 4.0
-        DamageIncrease_MaxBonusLevel: 200
+        DamageIncrease:
+            # MaxBonus: Maximum bonus damage
+            # MaxBonusLevel: Level where the maximum bonus is reached
+            MaxBonus: 4.0
+            MaxBonusLevel: 200
 
-        # AxesCritical_MaxChance: Maximum chance of causing a critical hit
-        # AxesCritical_MaxBonusLevel: Level where the maximum chance of causing critical hits is reached
-        AxesCritical_MaxChance: 37.50
-        AxesCritical_MaxBonusLevel: 750
+        AxesCritical:
+            # MaxChance: Maximum chance of causing a critical hit
+            # MaxBonusLevel: Level where the maximum chance of causing critical hits is reached
+            MaxChance: 37.50
+            MaxBonusLevel: 750
 
-        # Damage modifier of critical hits for PVP / PVE, when causing a critical hit the damage gets multiplied by the modifier
-        AxesCritical_PVP_Modifier: 1.5
-        AxesCritical_PVE_Modifier: 2.0
+        AxesCritical:
+            # Damage modifier of critical hits for PVP / PVE, when causing a critical hit the damage gets multiplied by the modifier
+            PVP_Modifier: 1.5
+            PVE_Modifier: 2.0
 
-        # GreaterImpact_Chance: Chance of hitting with GreaterImpact, knocksbacks mobs
-        # GreaterImpact_KnockbackModifier: Velocity modifier of GreaterImpact hits, this determines how great the knockback is
-        # GreaterImpact_BonusDamage: Extra damage for GreaterImpact hits
-        GreaterImpact_Chance: 25.0
-        GreaterImpact_KnockbackModifier: 1.5
-        GreaterImpact_BonusDamage: 2.0
+        GreaterImpact:
+            # Chance: Chance of hitting with GreaterImpact, knocksbacks mobs
+            # KnockbackModifier: Velocity modifier of GreaterImpact hits, this determines how great the knockback is
+            # BonusDamage: Extra damage for GreaterImpact hits
+            Chance: 25.0
+            KnockbackModifier: 1.5
+            BonusDamage: 2.0
 
-        # ArmorImpact_IncreaseLevel: Every "IncreaseLevel" the durability damage goes up with 1
-        # ArmorImpact_Chance: Chance of hitting with ArmorImpact
-        # ArmorImpact_MaxPercentageDurabilityDamage: Durability damage cap for ArmorImpact, 20% means that you can never destroy a piece of armor in less than 5 hits
-        ArmorImpact_IncreaseLevel: 50
-        ArmorImpact_Chance: 25.0
-        ArmorImpact_MaxPercentageDurabilityDamage: 20.0
+        ArmorImpact:
+            # IncreaseLevel: Every "IncreaseLevel" the durability damage goes up with 1
+            # Chance: Chance of hitting with ArmorImpact
+            # MaxPercentageDurabilityDamage: Durability damage cap for ArmorImpact, 20% means that you can never destroy a piece of armor in less than 5 hits
+            IncreaseLevel: 50
+            Chance: 25.0
+            MaxPercentageDurabilityDamage: 20.0
 
-        # SkullSplitter_DamageModifier: Damage will get divided by this modifier
-        SkullSplitter_DamageModifier: 2.0
+        SkullSplitter:
+            # DamageModifier: Damage will get divided by this modifier
+            DamageModifier: 2.0
     #
     #  Settings for Fishing
     ###
     Fishing:
         # Rank_Levels: Fishing level where rank gets unlocked
         Rank_Levels:
-            Rank_1: 125
-            Rank_2: 250
-            Rank_3: 375
-            Rank_4: 500
-            Rank_5: 625
-            Rank_6: 750
-            Rank_7: 875
-            Rank_8: 1000
+            Rank_1: 0
+            Rank_2: 125
+            Rank_3: 250
+            Rank_4: 375
+            Rank_5: 500
+            Rank_6: 625
+            Rank_7: 700
+            Rank_8: 875
 
         Shake_Chance:
-            Rank_1: 25.0
-            Rank_2: 25.0
-            Rank_3: 35.0
+            Rank_1: 15.0
+            Rank_2: 15.0
+            Rank_3: 25.0
             Rank_4: 35.0
             Rank_5: 45.0
             Rank_6: 55.0
             Rank_7: 65.0
             Rank_8: 75.0
 
-        # VanillaXPBoost: Vanilla XP gained from fishing is multiplied by these values.
-        VanillaXPBoost:
-            XP_Multiplier:
-                Rank_1: 1
-                Rank_2: 1
-                Rank_3: 2
-                Rank_4: 2
-                Rank_5: 3
-                Rank_6: 4
-                Rank_7: 5
-                Rank_8: 6
+        # VanillaXPMultiplier: Vanilla XP gained from fishing is multiplied by these values.
+        VanillaXPMultiplier:
+            Rank_1: 1
+            Rank_2: 2
+            Rank_3: 3
+            Rank_4: 3
+            Rank_5: 4
+            Rank_6: 4
+            Rank_7: 5
+            Rank_8: 5
 
-        # MagicHunter_Multiplier: Determines the chance of fishing enchanted items. The chance is calculated by getting the fishing TreasureHunt tier and multiplying it with MagicHunter_Multiplier
-        MagicHunter_Multiplier: 5.0
+        MagicHunter:
+            # Multiplier: Determines the chance of fishing enchanted items. The chance is calculated by getting the fishing TreasureHunt tier and multiplying it with <Multiplier>
+            Multiplier: 2.5
 
-        # This determines when Fisherman's Diet adds extra hunger recovery to food
-        Fisherman_Diet_RankChange: 200
+        FishermansDiet:
+            # This determines when Fisherman's Diet adds extra hunger recovery to food
+            RankChange: 200
 
-        # Ice_Fishing_UnlockLevel: Fishing level when the Ice Fishing ability unlocks
-        Ice_Fishing_UnlockLevel: 50
+        IceFishing:
+            # UnlockLevel: Fishing level when the Ice Fishing ability unlocks
+            UnlockLevel: 50
     #
     #  Settings for Herbalism
     ###
     Herbalism:
-        # This determines when Farmersdiet and Fishermans diet add extra hunger recovery to food
-        Farmer_Diet_RankChange: 200
+        FarmersDiet:
+            # This determines when Farmers Diet adds extra hunger recovery to food
+            RankChange: 200
 
-        # GreenThumb_StageChange: Level value when the GreenThumb stage level goes up
-        # GreenThumb_ChanceMax: Maximum chance of GreenThumb
-        # GreenThumb_MaxBonusLevel: On this level, GreenThumb chance will be GreenThumb_ChanceMax
-        GreenThumb_StageChange: 200
-        GreenThumb_ChanceMax: 100.0
-        GreenThumb_MaxBonusLevel: 1500
+        GreenThumb:
+            # StageChange: Level value when the GreenThumb stage level goes up
+            # ChanceMax: Maximum chance of GreenThumb
+            # MaxBonusLevel: On this level, GreenThumb chance will be ChanceMax
+            StageChange: 200
+            ChanceMax: 100.0
+            MaxBonusLevel: 1500
 
-        # DoubleDrops_ChanceMax: Maximum chance of receiving double drops
-        # DoubleDrops_MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
-        DoubleDrops_ChanceMax: 100.0
-        DoubleDrops_MaxBonusLevel: 1000
+        DoubleDrops:
+            # ChanceMax: Maximum chance of receiving double drops
+            # MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
+            ChanceMax: 100.0
+            MaxBonusLevel: 1000
 
-        # HylianLuck_ChanceMax: Maximum chance of Hylian Luck
-        # HylianLuck_MaxBonusLevel: On this level, Hylian Luck chance will be HylianLuck_ChanceMax
-        HylianLuck_ChanceMax: 10.0
-        HylianLuck_MaxBonusLevel: 1000
+        HylianLuck:
+            # ChanceMax: Maximum chance of Hylian Luck
+            # MaxBonusLevel: On this level, Hylian Luck chance will be ChanceMax
+            ChanceMax: 10.0
+            MaxBonusLevel: 1000
 
-        # ShroomThumb_ChanceMax: Maximum chance of ShroomThumb
-        # ShroomThumb_MaxBonusLevel: On this level, ShroomThumb chance will be ShroomThumb_ChanceMax
-        ShroomThumb_ChanceMax: 50.0
-        ShroomThumb_MaxBonusLevel: 1500
+        # ChanceMax: Maximum chance of ShroomThumb
+        # MaxBonusLevel: On this level, ShroomThumb chance will be ChanceMax
+        ShroomThumb:
+            ChanceMax: 50.0
+            MaxBonusLevel: 1500
     #
     #  Settings for Mining
     ###
     Mining:
-        # DoubleDrops_ChanceMax: Maximum chance of receiving double drops
-        # DoubleDrops_MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
-        DoubleDrops_ChanceMax: 100.0
-        DoubleDrops_MaxBonusLevel: 1000
+        DoubleDrops:
+            # ChanceMax: Maximum chance of receiving double drops
+            # MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
+            ChanceMax: 100.0
+            MaxBonusLevel: 1000
 
         # BlastMining_Rank: BlastMining rank unlocks
-        BlastMining_Rank1: 125
-        BlastMining_Rank2: 250
-        BlastMining_Rank3: 375
-        BlastMining_Rank4: 500
-        BlastMining_Rank5: 625
-        BlastMining_Rank6: 750
-        BlastMining_Rank7: 875
-        BlastMining_Rank8: 1000
+        BlastMining:
+            Rank_Levels:
+                Rank_1: 125
+                Rank_2: 250
+                Rank_3: 375
+                Rank_4: 500
+                Rank_5: 625
+                Rank_6: 750
+                Rank_7: 875
+                Rank_8: 1000
 
-        # BlastDamageDecrease_Rank: % of damage reduced from TNT explosions
-        BlastDamageDecrease_Rank1: 0.0
-        BlastDamageDecrease_Rank2: 0.0
-        BlastDamageDecrease_Rank3: 0.0
-        BlastDamageDecrease_Rank4: 25.0
-        BlastDamageDecrease_Rank5: 25.0
-        BlastDamageDecrease_Rank6: 50.0
-        BlastDamageDecrease_Rank7: 50.0
-        BlastDamageDecrease_Rank8: 100.0
+            # BlastDamageDecrease Ranks: % of damage reduced from TNT explosions
+            BlastDamageDecrease:
+                Rank_1: 0.0
+                Rank_2: 0.0
+                Rank_3: 0.0
+                Rank_4: 25.0
+                Rank_5: 25.0
+                Rank_6: 50.0
+                Rank_7: 50.0
+                Rank_8: 100.0
 
-        # OreBonus_Rank: % of extra ores received when Blast Mining
-        OreBonus_Rank1: 35.0
-        OreBonus_Rank2: 40.0
-        OreBonus_Rank3: 45.0
-        OreBonus_Rank4: 50.0
-        OreBonus_Rank5: 55.0
-        OreBonus_Rank6: 60.0
-        OreBonus_Rank7: 65.0
-        OreBonus_Rank8: 70.0
+            # OreBonus Ranks: % of extra ores received when Blast Mining
+            OreBonus:
+                Rank_1: 35.0
+                Rank_2: 40.0
+                Rank_3: 45.0
+                Rank_4: 50.0
+                Rank_5: 55.0
+                Rank_6: 60.0
+                Rank_7: 65.0
+                Rank_8: 70.0
 
-        # DebrisReduction_Rank: % of fewer non-ores received when Blast Mining
-        DebrisReduction_Rank1: 10.0
-        DebrisReduction_Rank2: 20.0
-        DebrisReduction_Rank3: 30.0
-        DebrisReduction_Rank4: 30.0
-        DebrisReduction_Rank5: 30.0
-        DebrisReduction_Rank6: 30.0
-        DebrisReduction_Rank7: 30.0
-        DebrisReduction_Rank8: 30.0
+            # DebrisReduction_Rank: % of fewer non-ores received when Blast Mining
+            DebrisReduction:
+                Rank_1: 10.0
+                Rank_2: 20.0
+                Rank_3: 30.0
+                Rank_4: 30.0
+                Rank_5: 30.0
+                Rank_6: 30.0
+                Rank_7: 30.0
+                Rank_8: 30.0
 
-        # DropMultiplier_Rank: # of times each ore will drop
-        DropMultiplier_Rank1: 1
-        DropMultiplier_Rank2: 1
-        DropMultiplier_Rank3: 1
-        DropMultiplier_Rank4: 1
-        DropMultiplier_Rank5: 2
-        DropMultiplier_Rank6: 2
-        DropMultiplier_Rank7: 3
-        DropMultiplier_Rank8: 3
+            # DropMultiplier Ranks: # of times each ore will drop
+            DropMultiplier:
+                Rank_1: 1
+                Rank_2: 1
+                Rank_3: 1
+                Rank_4: 1
+                Rank_5: 2
+                Rank_6: 2
+                Rank_7: 3
+                Rank_8: 3
 
-        # BlastRadiusModifier_Rank: Increases the blast radius by this amount
-        BlastRadiusModifier_Rank1: 1.0
-        BlastRadiusModifier_Rank2: 1.0
-        BlastRadiusModifier_Rank3: 2.0
-        BlastRadiusModifier_Rank4: 2.0
-        BlastRadiusModifier_Rank5: 3.0
-        BlastRadiusModifier_Rank6: 3.0
-        BlastRadiusModifier_Rank7: 4.0
-        BlastRadiusModifier_Rank8: 4.0
+            # BlastRadiusModifier Ranks: Increases the blast radius by this amount
+            BlastRadiusModifier:
+                Rank_1: 1.0
+                Rank_2: 1.0
+                Rank_3: 2.0
+                Rank_4: 2.0
+                Rank_5: 3.0
+                Rank_6: 3.0
+                Rank_7: 4.0
+                Rank_8: 4.0
     #
     #  Settings for Repair
     ###
     Repair:
-        # RepairMastery_ChanceMax: Maximum bonus percentage for Repair Mastery
-        # RepairMastery_MaxBonusLevel: On this level, the maximum bonus is reached
-        RepairMastery_MaxBonusPercentage: 200.0
-        RepairMastery_MaxBonusLevel: 1000
+        RepairMastery:
+            # ChanceMax: Maximum bonus percentage for Repair Mastery
+            # MaxBonusLevel: On this level, the maximum bonus is reached
+            MaxBonusPercentage: 200.0
+            MaxBonusLevel: 1000
 
-        # SuperRepair_ChanceMax: Maximum chance of Super Repair
-        # SuperRepair_MaxBonusLevel: On this level, Super Repair chance will be SuperRepair_ChanceMax
-        SuperRepair_ChanceMax: 100.0
-        SuperRepair_MaxBonusLevel: 1000
+        SuperRepair:
+            # ChanceMax: Maximum chance of Super Repair
+            # MaxBonusLevel: On this level, Super Repair chance will be SuperRepair_ChanceMax
+            ChanceMax: 100.0
+            MaxBonusLevel: 1000
 
-        # Salvage_UnlockLevel: Level when Salvage become available
-        Salvage_UnlockLevel: 600
+        Salvage:
+            # UnlockLevel: Level when Salvage become available
+            UnlockLevel: 600
 
-        Arcane_Forging:
+        ArcaneForging:
             May_Lose_Enchants: true
             Rank_Levels:
                 Rank_1: 125
@@ -304,144 +334,165 @@ Skills:
     #  Settings for Smelting
     ###
     Smelting:
-        # FuelEfficiency_Multiplier: The furnace burn time will be multiplied by this value.
-        # FuelEfficiency_MaxBonusLevel: On this level, the efficiency multiplier will stop increasing
-        FuelEfficiency_Multiplier: 3.0
-        FuelEfficiency_MaxBonusLevel: 1000
+        FuelEfficiency:
+            # Multiplier: The furnace burn time will be multiplied by this value.
+            # MaxBonusLevel: On this level, the efficiency multiplier will stop increasing
+            Multiplier: 3.0
+            MaxBonusLevel: 1000
 
-        # SecondSmelt_MaxBonusChance: Maximum chance of triggering Second Smelt
-        # SecondSmelt_MaxBonusLevel: On this level, the chance to cause Second Smelt will be SecondSmelt_MaxBonusChance
-        SecondSmelt_MaxBonusChance: 100.0
-        SecondSmelt_MaxBonusLevel: 1000
+        SecondSmelt:
+            # MaxBonusChance: Maximum chance of triggering Second Smelt
+            # MaxBonusLevel: On this level, the chance to cause Second Smelt will be SecondSmelt_MaxBonusChance
+            MaxBonusChance: 100.0
+            MaxBonusLevel: 1000
 
-        # FluxMining_UnlockLevel: Level when Flux Mining becomes available
-        # FluxMining_Chance: Chance for Flux Mining to activate
-        FluxMining_UnlockLevel: 250
-        FluxMining_Chance: 33.0
+        FluxMining:
+            # UnlockLevel: Level when Flux Mining becomes available
+            # Chance: Chance for Flux Mining to activate
+            UnlockLevel: 250
+            Chance: 33.0
 
-        # These are the levels at which each progressive level of Vanilla XP Boost unlocks.
-        VanillaXPBoost:
-            Rank_Levels:
-                Rank_1: 125
-                Rank_2: 250
-                Rank_3: 375
-                Rank_4: 500
-                Rank_5: 625
-                Rank_6: 750
-                Rank_7: 875
-                Rank_8: 1000
-            XP_Multiplier:
-                Rank_1: 1
-                Rank_2: 2
-                Rank_3: 3
-                Rank_4: 3
-                Rank_5: 4
-                Rank_6: 4
-                Rank_7: 5
-                Rank_8: 5
+        # Rank_Levels: Smelting level where rank gets unlocked
+        Rank_Levels:
+            Rank_1: 125
+            Rank_2: 250
+            Rank_3: 375
+            Rank_4: 500
+            Rank_5: 625
+            Rank_6: 750
+            Rank_7: 875
+            Rank_8: 1000
+
+        # VanillaXPMultiplier: Vanilla XP gained from smelting ores is multiplied by these values.
+        VanillaXPMultiplier:
+            Rank_1: 1
+            Rank_2: 2
+            Rank_3: 3
+            Rank_4: 3
+            Rank_5: 4
+            Rank_6: 4
+            Rank_7: 5
+            Rank_8: 5
 
     #
     #  Settings for Swords
     ###
     Swords:
-        # Bleed_ChanceMax: Maximum chance of triggering bleeding
-        # Bleed_MaxBonusLevel: On this level, the chance to cause Bleeding will be Bleed_ChanceMax
-        Bleed_ChanceMax: 75.0
-        Bleed_MaxBonusLevel: 750
-        # These settings determine how long the Bleeding effect lasts
-        Bleed_MaxTicks: 3
-        Bleed_BaseTicks: 2
+        Bleed:
+            # ChanceMax: Maximum chance of triggering bleeding
+            # MaxBonusLevel: On this level, the chance to cause Bleeding will be Bleed_ChanceMax
+            ChanceMax: 75.0
+            MaxBonusLevel: 750
 
-        # Counter_RequiresBlock: Determines if blocking is required to trigger counter attack
-        Counter_RequiresBlock: true
+            # These settings determine how long the Bleeding effect lasts
+            MaxTicks: 3
+            BaseTicks: 2
 
-        # Counter_ChanceMax: Maximum chance of triggering a counter attack
-        # Counter_MaxBonusLevel: On this level, the chance to Counter will be Counter_ChanceMax
-        Counter_ChanceMax: 30.0
-        Counter_MaxBonusLevel: 600
+        Counter:
+            # RequiresBlock: Determines if blocking is required to trigger counter attack
+            RequiresBlock: true
 
-        # Counter_DamageModifier: Damaged caused by the damager will get divided by this modifier and dealt back to the damager
-        Counter_DamageModifier: 2.0
+            # ChanceMax: Maximum chance of triggering a counter attack
+            # MaxBonusLevel: On this level, the chance to Counter will be Counter_ChanceMax
+            ChanceMax: 30.0
+            MaxBonusLevel: 600
 
-        # SerratedStrikes_DamageModifier: Damage will get divided by this modifier
-        # SerratedStrikes_BleedTicks: This determines how long the bleeding effect of SerratedStrikes lasts
-        SerratedStrikes_DamageModifier: 4.0
-        SerratedStrikes_BleedTicks: 5
+            # DamageModifier: Damaged caused by the damager will get divided by this modifier and dealt back to the damager
+            DamageModifier: 2.0
+
+        SerratedStrikes:
+            # DamageModifier: Damage will get divided by this modifier
+            # BleedTicks: This determines how long the bleeding effect of SerratedStrikes lasts
+            DamageModifier: 4.0
+            BleedTicks: 5
     #
     #  Settings for Taming
     ###
     Taming:
-        # Gore_ChanceMax: Maximum chance of triggering gore
-        # Gore_MaxBonusLevel: On this level, the chance to cause Gore will be Gore_ChanceMax
-        Gore_ChanceMax: 100.0
-        Gore_MaxBonusLevel: 1000
+        Gore:
+            # ChanceMax: Maximum chance of triggering gore
+            # MaxBonusLevel: On this level, the chance to cause Gore will be Gore_ChanceMax
+            ChanceMax: 100.0
+            MaxBonusLevel: 1000
 
-        # Gore_BleedTicks: Determines the length of the bleeding effect
-        # Gore_Modifier: Damage will get multiplied by this modifier
-        Gore_BleedTicks: 2
-        Gore_Modifier: 2.0
+            # BleedTicks: Determines the length of the bleeding effect
+            # Modifier: Damage will get multiplied by this modifier
+            BleedTicks: 2
+            Modifier: 2.0
 
-        # FastFood_UnlockLevel: Level when FastFood unlocks
-        # FastFood_Chance: The chance for wolves to heal hp when inflicting damage
-        FastFood_UnlockLevel: 50
-        FastFood_Chance: 50.0
+        FastFood:
+            # UnlockLevel: Level when FastFood unlocks
+            # Chance: The chance for wolves to heal hp when inflicting damage
+            UnlockLevel: 50
+            Chance: 50.0
 
-        # EnvironmentallyAware_UnlockLevel: Level when EnvironmentallyAware unlocks
-        EnvironmentallyAware_UnlockLevel: 100
+        EnvironmentallyAware:
+            # UnlockLevel: Level when EnvironmentallyAware unlocks
+            UnlockLevel: 100
 
-        # ThickFur_UnlockLevel: Level when ThickFur unlocks
-        # ThickFur_Modifier: Damage will get divided by this modifier
-        ThickFur_UnlockLevel: 250
-        ThickFur_Modifier: 2.0
+        ThickFur:
+            # UnlockLevel: Level when ThickFur unlocks
+            # Modifier: Damage will get divided by this modifier
+            UnlockLevel: 250
+            Modifier: 2.0
 
-        # HolyHound_UnlockLevel: Level when HolyHound unlocks
-        HolyHound_UnlockLevel: 375
+        HolyHound:
+            # UnlockLevel: Level when HolyHound unlocks
+            UnlockLevel: 375
 
-        # ShockProof_UnlockLevel: Level when ShockProof unlocks
-        # ShockProof_Modifier: Damage will get divided by this modifier
-        ShockProof_UnlockLevel: 500
-        ShockProof_Modifier: 6.0
+        ShockProof:
+            # UnlockLevel: Level when ShockProof unlocks
+            # Modifier: Damage will get divided by this modifier
+            UnlockLevel: 500
+            Modifier: 6.0
 
-        # SharpenedClaws_UnlockLevel: Level when SharpenedClaws unlocks
-        # SharpenedClaws_Bonus: This bonus will get added to the damage caused
-        SharpenedClaws_UnlockLevel: 750
-        SharpenedClaws_Bonus: 2.0
+        SharpenedClaws:
+            # UnlockLevel: Level when SharpenedClaws unlocks
+            # Bonus: This bonus will get added to the damage caused
+            UnlockLevel: 750
+            Bonus: 2.0
     #
     #  Settings for Unarmed
     ###
     Unarmed:
-        # Disarm_ChanceMax: Maximum chance of disarming other players
-        # Disarm_MaxBonusLevel: Level when the maximum chance to disarm is reached
-        Disarm_ChanceMax: 33.0
-        Disarm_MaxBonusLevel: 1000
+        Disarm:
+            # ChanceMax: Maximum chance of disarming other players
+            # MaxBonusLevel: Level when the maximum chance to disarm is reached
+            ChanceMax: 33.0
+            MaxBonusLevel: 1000
 
-        # Deflect_ChanceMax: Maximum chance of deflecting arrows
-        # Deflect_MaxBonusLevel: Level when the maximum chance to deflect is reached
-        Deflect_ChanceMax: 50.0
-        Deflect_MaxBonusLevel: 1000
+        Deflect:
+            # ChanceMax: Maximum chance of deflecting arrows
+            # MaxBonusLevel: Level when the maximum chance to deflect is reached
+            ChanceMax: 50.0
+            MaxBonusLevel: 1000
 
-        # IronGrip_ChanceMax: Maximum chance of preventing being disarmed
-        # IronGrip_MaxBonusLevel: Level when the maximum chance to prevent being disarmed is reached
-        IronGrip_ChanceMax: 100.0
-        IronGrip_MaxBonusLevel: 1000
+        IronGrip:
+            # ChanceMax: Maximum chance of preventing being disarmed
+            # MaxBonusLevel: Level when the maximum chance to prevent being disarmed is reached
+            ChanceMax: 100.0
+            MaxBonusLevel: 1000
 
-        # IronArm_BonusMin: Minimum bonus damage for unarmed
-        # IronArm_BonusMax: Maximum bonus damage for unarmed
-        # IronArm_IncreaseLevel: Bonus damage increases every increase level
-        IronArm_BonusMin: 3.0
-        IronArm_BonusMax: 8.0
-        IronArm_IncreaseLevel: 50
+        IronArm:
+            # BonusMin: Minimum bonus damage for unarmed
+            # BonusMax: Maximum bonus damage for unarmed
+            # IncreaseLevel: Bonus damage increases every increase level
+            BonusMin: 3.0
+            BonusMax: 8.0
+            IncreaseLevel: 50
     #
     #  Settings for Woodcutting
     ###
     Woodcutting:
-        # LeafBlower_UnlockLevel: At this level, the passive ability LeafBlower unlocks
-        LeafBlower_UnlockLevel: 100
+        LeafBlower:
+            # UnlockLevel: At this level, the passive ability LeafBlower unlocks
+            UnlockLevel: 100
 
-        # DoubleDrops_ChanceMax: Maximum chance of receiving double drops
-        # DoubleDrops_MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
-        DoubleDrops_ChanceMax: 100.0
-        DoubleDrops_MaxBonusLevel: 1000
+        DoubleDrops:
+            # ChanceMax: Maximum chance of receiving double drops
+            # MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
+            ChanceMax: 100.0
+            MaxBonusLevel: 1000
 #
 #  Customize the kraken!
 ###

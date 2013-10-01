@@ -95,7 +95,7 @@ public class SmeltingCommand extends SkillCommand {
         }
 
         if (canVanillaXPBoost) {
-            int unlockLevel = AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRankLevel(Tier.ONE);
+            int unlockLevel = AdvancedConfig.getInstance().getSmeltingRankLevel(Tier.ONE);
 
             if (skillValue < unlockLevel) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Smelting.Ability.Locked.0", unlockLevel)));

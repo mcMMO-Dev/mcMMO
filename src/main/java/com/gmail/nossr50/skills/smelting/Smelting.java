@@ -29,7 +29,7 @@ public class Smelting {
         }
 
         protected int getLevel() {
-            return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRankLevel(this);
+            return AdvancedConfig.getInstance().getSmeltingRankLevel(this);
         }
 
         protected int getVanillaXPBoostModifier() {
