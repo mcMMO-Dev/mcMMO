@@ -28,7 +28,7 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import com.gmail.nossr50.mcMMO;
 
 public final class HolidayManager {
-    public static ArrayList<String> hasCelebrated;
+    private static ArrayList<String> hasCelebrated;
     private static final Random rand = new Random();
 
     private HolidayManager() {}
@@ -93,22 +93,26 @@ public final class HolidayManager {
         if (hasCelebrated.contains(sender.getName())) {
             return;
         }
+
         if (getDateRange(day.getTime(), anniversaryStart.getTime(), anniversaryEnd.getTime())) {
-            sender.sendMessage(ChatColor.BLUE + "Happy 3 Year Anniversary!  In honor of all of");
-            sender.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, here's a firework show!");
-            if (sender instanceof Player) {
-                final int firework_amount = 10;
-                for (int i = 0; i < firework_amount; i++) {
-                    int delay = (int) (rand.nextDouble() * 3 * 20) + 4;
-                    mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new Runnable() {
-                        @Override
-                        public void run() {
-                            spawnFireworks((Player) sender);
-                        }
-                    }, delay);
-                }
+            return;
+        }
+
+        sender.sendMessage(ChatColor.BLUE + "Happy 3 Year Anniversary!  In honor of all of");
+        sender.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, here's a firework show!");
+        if (sender instanceof Player) {
+            final int firework_amount = 10;
+            for (int i = 0; i < firework_amount; i++) {
+                int delay = (int) (rand.nextDouble() * 3 * 20) + 4;
+                mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new Runnable() {
+                    @Override
+                    public void run() {
+                        spawnFireworks((Player) sender);
+                    }
+                }, delay);
             }
-            else {
+        }
+        else {
                 /*
                  * Credit: http://www.geocities.com/spunk1111/
                  *  (good luck finding that in 3 years heh)
@@ -135,30 +139,30 @@ public final class HolidayManager {
                  *       b                        i          k
                  *       b                        i          k
                  */
-                String colorA = chatcolorchoose();
-                String colorB = chatcolorchoose();
-                String colorC = chatcolorchoose();
-                String colorD = chatcolorchoose();
-                String colorE = chatcolorchoose();
-                String colorF = chatcolorchoose();
-                String colorG = chatcolorchoose();
-                String colorH = chatcolorchoose();
-                String colorI = chatcolorchoose();
-                String colorJ = chatcolorchoose();
-                String colorK = chatcolorchoose();
-                Object[] colorParams = new Object[] { colorA, colorB, colorC, colorD, colorE, colorF, colorG, colorH, colorI, colorJ, colorK };
-                sender.sendMessage(String.format("      %1$s.''.      %4$s.        %7$s*''*    %10$s:_\\/_:     %11$s.", colorParams));
-                sender.sendMessage(String.format("     %1$s:_\\/_:   %4$s_\\(/_  %5$s.:.%7$s*_\\/_*   %10$s: /\\ :  %11$s.'.:.'.", colorParams));
-                sender.sendMessage(String.format(" %2$s.''.%1$s: /\\ :    %4$s/)\\   %5$s':'%7$s* /\\ *  %9$s: %10$s'..'.  %11$s-=:o:=-", colorParams));
-                sender.sendMessage(String.format("%2$s:_\\/_:%1$s'%3$s.:::.    %4$s' %6$s*''*    %7$s* %9$s'.\\'/.'%8$s_\\(/_ %11$s'.':'.'", colorParams));
-                sender.sendMessage(String.format("%2$s: /\\ : %3$s:::::     %6$s*_\\/_*     %9$s-= o =-%8$s /)\\     %11$s'", colorParams));
-                sender.sendMessage(String.format(" %2$s'..'  %3$s':::'     %6$s* /\\ *     %9$s.'/.\\'.  %8$s'      %11$s*", colorParams));
-                sender.sendMessage(String.format("     %2$s*            %6$s*..*         %9$s:           %11$s*", colorParams));
-                sender.sendMessage(String.format("      %2$s*                        %9$s*          %11$s*", colorParams));
-                sender.sendMessage(String.format("      %2$s*                        %9$s*          %11$s*", colorParams));
-            }
-            hasCelebrated.add(sender.getName());
+            String colorA = chatColorChoose();
+            String colorB = chatColorChoose();
+            String colorC = chatColorChoose();
+            String colorD = chatColorChoose();
+            String colorE = chatColorChoose();
+            String colorF = chatColorChoose();
+            String colorG = chatColorChoose();
+            String colorH = chatColorChoose();
+            String colorI = chatColorChoose();
+            String colorJ = chatColorChoose();
+            String colorK = chatColorChoose();
+            Object[] colorParams = new Object[]{colorA, colorB, colorC, colorD, colorE, colorF, colorG, colorH, colorI, colorJ, colorK};
+            sender.sendMessage(String.format("      %1$s.''.      %4$s.        %7$s*''*    %10$s:_\\/_:     %11$s.", colorParams));
+            sender.sendMessage(String.format("     %1$s:_\\/_:   %4$s_\\(/_  %5$s.:.%7$s*_\\/_*   %10$s: /\\ :  %11$s.'.:.'.", colorParams));
+            sender.sendMessage(String.format(" %2$s.''.%1$s: /\\ :    %4$s/)\\   %5$s':'%7$s* /\\ *  %9$s: %10$s'..'.  %11$s-=:o:=-", colorParams));
+            sender.sendMessage(String.format("%2$s:_\\/_:%1$s'%3$s.:::.    %4$s' %6$s*''*    %7$s* %9$s'.\\'/.'%8$s_\\(/_ %11$s'.':'.'", colorParams));
+            sender.sendMessage(String.format("%2$s: /\\ : %3$s:::::     %6$s*_\\/_*     %9$s-= o =-%8$s /)\\     %11$s'", colorParams));
+            sender.sendMessage(String.format(" %2$s'..'  %3$s':::'     %6$s* /\\ *     %9$s.'/.\\'.  %8$s'      %11$s*", colorParams));
+            sender.sendMessage(String.format("     %2$s*            %6$s*..*         %9$s:           %11$s*", colorParams));
+            sender.sendMessage(String.format("      %2$s*                        %9$s*          %11$s*", colorParams));
+            sender.sendMessage(String.format("      %2$s*                        %9$s*          %11$s*", colorParams));
         }
+
+        hasCelebrated.add(sender.getName());
     }
 
     private static boolean getDateRange(Date date, Date start, Date end) {
@@ -195,62 +199,64 @@ public final class HolidayManager {
 
         Firework fireworks = (Firework) player.getWorld().spawnEntity(player.getLocation().add(varX, 0, varZ), EntityType.FIREWORK);
         FireworkMeta fireworkmeta = fireworks.getFireworkMeta();
-        FireworkEffect effect = FireworkEffect.builder().flicker(rand.nextBoolean()).withColor(colorchoose()).withFade(colorchoose()).with(typen).trail(rand.nextBoolean()).build();
+        FireworkEffect effect = FireworkEffect.builder().flicker(rand.nextBoolean()).withColor(colorChoose()).withFade(colorChoose()).with(typen).trail(rand.nextBoolean()).build();
         fireworkmeta.addEffect(effect);
         fireworkmeta.setPower(power);
         fireworks.setFireworkMeta(fireworkmeta);
     }
 
-    private static List<Color> colorchoose() {
+    private static List<Color> colorChoose() {
         // Thanks Zomis and Tejpbit for the help with this function!
-        Collections.shuffle(allcolors, rand);
+        Collections.shuffle(ALL_COLORS, rand);
 
-        int numberofcolors = rand.nextInt(allcolors.size());
-        List<Color> choosencolors = allcolors.subList(0, numberofcolors);
+        int numberOfColors = rand.nextInt(ALL_COLORS.size());
+        List<Color> choosenColors = ALL_COLORS.subList(0, numberOfColors);
 
-        return new ArrayList<Color>(choosencolors); // don't let caller modify allcolors
+        return new ArrayList<Color>(choosenColors); // don't let caller modify ALL_COLORS
     }
 
-    private static String chatcolorchoose() {
-        StringBuilder ret = new StringBuilder(allchatcolors.get(rand.nextInt(allchatcolors.size())).toString());
-        for (int i = 0; i < chatFormats.length; i++) {
+    private static String chatColorChoose() {
+        StringBuilder ret = new StringBuilder(ALL_CHAT_COLORS.get(rand.nextInt(ALL_CHAT_COLORS.size())).toString());
+
+        for (ChatColor CHAT_FORMAT : CHAT_FORMATS) {
             if (rand.nextInt(4) == 0) {
-                ret.append(chatFormats[i]);
+                ret.append(CHAT_FORMAT);
             }
         }
+
         return ret.toString();
     }
 
-    private static final List<Color> allcolors;
-    private static final List<ChatColor> allchatcolors;
-    private static final ChatColor[] chatFormats = new ChatColor[] { ChatColor.BOLD, ChatColor.ITALIC, ChatColor.UNDERLINE, ChatColor.STRIKETHROUGH };
+    private static final List<Color> ALL_COLORS;
+    private static final List<ChatColor> ALL_CHAT_COLORS;
+    private static final ChatColor[] CHAT_FORMATS = new ChatColor[]{ChatColor.BOLD, ChatColor.ITALIC, ChatColor.UNDERLINE, ChatColor.STRIKETHROUGH};
 
     static {
-        allcolors = Arrays.asList(
-            Color.AQUA,
-            Color.BLACK,
-            Color.BLUE,
-            Color.FUCHSIA,
-            Color.GRAY,
-            Color.GREEN,
-            Color.LIME,
-            Color.MAROON,
-            Color.NAVY,
-            Color.OLIVE,
-            Color.ORANGE,
-            Color.PURPLE,
-            Color.RED,
-            Color.SILVER,
-            Color.TEAL,
-            Color.WHITE,
-            Color.YELLOW
+        ALL_COLORS = Arrays.asList(
+                Color.AQUA,
+                Color.BLACK,
+                Color.BLUE,
+                Color.FUCHSIA,
+                Color.GRAY,
+                Color.GREEN,
+                Color.LIME,
+                Color.MAROON,
+                Color.NAVY,
+                Color.OLIVE,
+                Color.ORANGE,
+                Color.PURPLE,
+                Color.RED,
+                Color.SILVER,
+                Color.TEAL,
+                Color.WHITE,
+                Color.YELLOW
         );
-        allchatcolors = new ArrayList<ChatColor>(16);
+        ALL_CHAT_COLORS = new ArrayList<ChatColor>(16);
         for (ChatColor c : ChatColor.values()) {
             if (c.isColor()) {
-                allchatcolors.add(c);
+                ALL_CHAT_COLORS.add(c);
             }
         }
-        Collections.shuffle(allchatcolors, rand);
+        Collections.shuffle(ALL_CHAT_COLORS, rand);
     }
 }
