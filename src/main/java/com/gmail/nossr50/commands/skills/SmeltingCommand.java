@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.smelting.Smelting;
+import com.gmail.nossr50.skills.smelting.Smelting.Tier;
 import com.gmail.nossr50.util.Permissions;
 
 public class SmeltingCommand extends SkillCommand {
@@ -94,7 +95,7 @@ public class SmeltingCommand extends SkillCommand {
         }
 
         if (canVanillaXPBoost) {
-            int unlockLevel = AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank1Level();
+            int unlockLevel = AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRankLevel(Tier.ONE);
 
             if (skillValue < unlockLevel) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Smelting.Ability.Locked.0", unlockLevel)));

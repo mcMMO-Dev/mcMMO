@@ -15,39 +15,15 @@ import com.gmail.nossr50.util.Misc;
 
 public final class Fishing {
     // The order of the values is extremely important, a few methods depend on it to work properly
-    protected enum Tier {
-        EIGHT(8) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier8(); }
-            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank8(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank8(); }},
-        SEVEN(7) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier7(); }
-            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank7(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank7(); }},
-        SIX(6) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier6(); }
-            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank6(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank6(); }},
-        FIVE(5) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier5(); }
-            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank5(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank5(); }},
-        FOUR(4) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier4(); }
-            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank4(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank4(); }},
-        THREE(3) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier3(); }
-            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank3(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank3(); }},
-        TWO(2) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier2(); }
-            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank2(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank2(); }},
-        ONE(1) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getFishingTierLevelsTier1(); }
-            @Override public double getShakeChance() { return AdvancedConfig.getInstance().getShakeChanceRank1(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getFishingVanillaXPModifierRank1(); }};
+    public enum Tier {
+        EIGHT(8),
+        SEVEN(7),
+        SIX(6),
+        FIVE(5),
+        FOUR(4),
+        THREE(3),
+        TWO(2),
+        ONE(1);
 
         int numerical;
 
@@ -59,9 +35,17 @@ public final class Fishing {
             return numerical;
         }
 
-        abstract protected int getLevel();
-        abstract protected double getShakeChance();
-        abstract protected int getVanillaXPBoostModifier();
+        protected int getLevel() {
+            return AdvancedConfig.getInstance().getFishingTierLevel(this);
+        }
+
+        protected double getShakeChance() {
+            return AdvancedConfig.getInstance().getShakeChance(this);
+        }
+
+        protected int getVanillaXPBoostModifier() {
+            return AdvancedConfig.getInstance().getFishingVanillaXPModifier(this);
+        }
     }
 
     protected static final HashMap<Material, List<Enchantment>> ENCHANTABLE_CACHE = new HashMap<Material, List<Enchantment>>();

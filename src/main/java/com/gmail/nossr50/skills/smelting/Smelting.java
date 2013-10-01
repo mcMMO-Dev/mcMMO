@@ -8,31 +8,15 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public class Smelting {
     // The order of the values is extremely important, a few methods depend on it to work properly
-    protected enum Tier {
-        EIGHT(8) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank8Level(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank8Multiplier(); }},
-        SEVEN(7) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank7Level(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank7Multiplier(); }},
-        SIX(6) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank6Level(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank6Multiplier(); }},
-        FIVE(5) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank5Level(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank5Multiplier(); }},
-        FOUR(4) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank4Level(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank4Multiplier(); }},
-        THREE(3) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank3Level(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank3Multiplier(); }},
-        TWO(2) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank2Level(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank2Multiplier(); }},
-        ONE(1) {
-            @Override public int getLevel() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank1Level(); }
-            @Override public int getVanillaXPBoostModifier() { return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRank1Multiplier(); }};
+    public enum Tier {
+        EIGHT(8),
+        SEVEN(7),
+        SIX(6),
+        FIVE(5),
+        FOUR(4),
+        THREE(3),
+        TWO(2),
+        ONE(1);
 
         int numerical;
 
@@ -44,8 +28,13 @@ public class Smelting {
             return numerical;
         }
 
-        abstract protected int getLevel();
-        abstract protected int getVanillaXPBoostModifier();
+        protected int getLevel() {
+            return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostRankLevel(this);
+        }
+
+        protected int getVanillaXPBoostModifier() {
+            return AdvancedConfig.getInstance().getSmeltingVanillaXPBoostMultiplier(this);
+        }
     }
 
     public static int    burnModifierMaxLevel = AdvancedConfig.getInstance().getBurnModifierMaxLevel();

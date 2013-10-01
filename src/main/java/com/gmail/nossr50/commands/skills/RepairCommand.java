@@ -6,6 +6,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.repair.ArcaneForging;
+import com.gmail.nossr50.skills.repair.ArcaneForging.Tier;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
@@ -145,7 +146,7 @@ public class RepairCommand extends SkillCommand {
         if (canArcaneForge) {
             RepairManager repairManager = mcMMOPlayer.getRepairManager();
 
-            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Rank", repairManager.getArcaneForgingRank()));
+            player.sendMessage(LocaleLoader.getString("Repair.Arcane.Rank", repairManager.getArcaneForgingRank(), Tier.EIGHT.toNumerical()));
 
             if (ArcaneForging.arcaneForgingEnchantLoss) {
                 player.sendMessage(LocaleLoader.getString("Repair.Arcane.Chance.Success", (arcaneBypass ? 100 : repairManager.getKeepEnchantChance())));

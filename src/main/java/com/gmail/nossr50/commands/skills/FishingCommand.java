@@ -7,6 +7,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.fishing.Fishing;
+import com.gmail.nossr50.skills.fishing.Fishing.Tier;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -135,7 +136,7 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canTreasureHunt) {
-            player.sendMessage(LocaleLoader.getString("Fishing.Ability.Rank", lootTier));
+            player.sendMessage(LocaleLoader.getString("Fishing.Ability.Rank", lootTier, Tier.EIGHT.toNumerical()));
         }
 
         if (canMagicHunt) {
@@ -143,7 +144,7 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canShake) {
-            int unlockLevel = AdvancedConfig.getInstance().getFishingTierLevelsTier1();
+            int unlockLevel = AdvancedConfig.getInstance().getFishingTierLevel(Tier.ONE);
 
             if (skillValue < unlockLevel) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.0", unlockLevel)));

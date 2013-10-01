@@ -3,6 +3,7 @@ package com.gmail.nossr50.commands.skills;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.mining.BlastMining.Tier;
 import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
@@ -114,18 +115,18 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canBlast) {
-            int unlockLevel = AdvancedConfig.getInstance().getBlastMiningRank1();
+            int unlockLevel = AdvancedConfig.getInstance().getBlastMiningRankLevel(Tier.ONE);
 
             if (skillValue < unlockLevel) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.0", unlockLevel)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
+                player.sendMessage(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, Tier.EIGHT.toNumerical(), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
             }
         }
 
         if (canBiggerBombs) {
-            int unlockLevel = AdvancedConfig.getInstance().getBlastMiningRank2();
+            int unlockLevel = AdvancedConfig.getInstance().getBlastMiningRankLevel(Tier.TWO);
 
             if (skillValue < unlockLevel) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.1", unlockLevel)));
@@ -136,7 +137,7 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canDemoExpert) {
-            int unlockLevel = AdvancedConfig.getInstance().getBlastMiningRank4();
+            int unlockLevel = AdvancedConfig.getInstance().getBlastMiningRankLevel(Tier.FOUR);
 
             if (skillValue < unlockLevel) {
                 player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.2", unlockLevel)));
