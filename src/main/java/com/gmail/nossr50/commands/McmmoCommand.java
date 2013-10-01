@@ -9,6 +9,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.party.PartySubcommandType;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.HolidayManager;
 import com.gmail.nossr50.util.Permissions;
 
 public class McmmoCommand implements CommandExecutor {
@@ -31,6 +32,7 @@ public class McmmoCommand implements CommandExecutor {
                 }
 
                 sender.sendMessage(LocaleLoader.getString("MOTD.Version", mcMMO.p.getDescription().getVersion()));
+                HolidayManager.anniversaryCheck(sender);
                 return true;
 
             case 1:
