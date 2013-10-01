@@ -66,6 +66,13 @@ Conversion:
 Experience:
     PVP:
         Rewards: true
+    Acrobatics:
+        Dodge: 120
+        Roll: 80
+        Fall: 120
+
+        # FeatherFall_Multiplier: Multiply Acrobatics XP by this value when wearing boots with the Feather Fall enchant
+        FeatherFall_Multiplier: 2.0
     Fishing:
         Base: 800
     Excavation:

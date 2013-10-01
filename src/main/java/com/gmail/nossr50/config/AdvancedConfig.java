@@ -76,18 +76,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Acrobatics.GracefulRoll.DamageThreshold should be at least 0!");
         }
 
-        if (getDodgeXPModifier() < 0) {
-            reason.add("Skills.Acrobatics.Dodge_XP_Modifier should be at least 0!");
-        }
-
-        if (getRollXPModifier() < 0) {
-            reason.add("Skills.Acrobatics.Roll_XP_Modifier should be at least 0!");
-        }
-
-        if (getFallXPModifier() < 0) {
-            reason.add("Skills.Acrobatics.Fall_XP_Modifier should be at least 0!");
-        }
-
         /* ARCHERY */
         if (getSkillShotIncreaseLevel() < 1) {
             reason.add("Skills.Archery.SkillShot.IncreaseLevel should be at least 1!");
@@ -624,12 +612,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getGracefulRollChanceMax() { return config.getDouble("Skills.Acrobatics.GracefulRoll.ChanceMax", 100.0D); }
     public int getGracefulRollMaxBonusLevel() { return config.getInt("Skills.Acrobatics.GracefulRoll.MaxBonusLevel", 500); }
     public double getGracefulRollDamageThreshold() { return config.getDouble("Skills.Acrobatics.GracefulRoll.DamageThreshold", 14.0D); }
-
-    public int getDodgeXPModifier() { return config.getInt("Skills.Acrobatics.Dodge_XP_Modifier", 120); }
-    public int getRollXPModifier() { return config.getInt("Skills.Acrobatics.Roll_XP_Modifier", 80); }
-    public int getFallXPModifier() { return config.getInt("Skills.Acrobatics.Fall_XP_Modifier", 120); }
-
-    public double getFeatherFallXPModifier() { return config.getDouble("Skills.Acrobatics.FeatherFall_Multiplier", 2.0); }
 
     /* ARCHERY */
     public int getSkillShotIncreaseLevel() { return config.getInt("Skills.Archery.SkillShot.IncreaseLevel", 50); }

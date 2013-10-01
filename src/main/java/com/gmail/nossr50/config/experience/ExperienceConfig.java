@@ -85,6 +85,18 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
             reason.add("Experience.Combat.Multiplier.Wither_Skeleton should be at least 0!");
         }
 
+        if (getDodgeXPModifier() < 0) {
+            reason.add("Skills.Acrobatics.Dodge_XP_Modifier should be at least 0!");
+        }
+
+        if (getRollXPModifier() < 0) {
+            reason.add("Skills.Acrobatics.Roll_XP_Modifier should be at least 0!");
+        }
+
+        if (getFallXPModifier() < 0) {
+            reason.add("Skills.Acrobatics.Fall_XP_Modifier should be at least 0!");
+        }
+
         /* Fishing */
         if (getFishingBaseXP() <= 0) {
             reason.add("Experience.Fishing.Base should be greater than 0!");
@@ -175,6 +187,13 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
 
     /* Materials  */
     public int getXp(SkillType skill, Material material) { return config.getInt("Experience." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_")); }
+
+    /* Acrobatics */
+    public int getDodgeXPModifier() { return config.getInt("Experience.Acrobatics.Dodge", 120); }
+    public int getRollXPModifier() { return config.getInt("Experience.Acrobatics.Roll", 80); }
+    public int getFallXPModifier() { return config.getInt("Experience.Acrobatics.Fall", 120); }
+
+    public double getFeatherFallXPModifier() { return config.getDouble("Experience.Acrobatics.FeatherFall_Multiplier", 2.0); }
 
     /* Fishing */
     public int getFishingBaseXP() { return config.getInt("Experience.Fishing.Base", 800); }
