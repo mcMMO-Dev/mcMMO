@@ -63,7 +63,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
             output = output.replace("  ", "    ");
 
             // Rip out Bukkit's attempt to save comments at the top of the file
-            while (!output.startsWith("General:")) {
+            while (output.replaceAll("[//s]", "").startsWith("#")) {
                 output = output.substring(output.indexOf('\n', output.indexOf('#')) + 1);
             }
 
@@ -90,7 +90,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 
                 // Dump to the new one
                 for (String key : comments.keySet()) {
-                    if (output.indexOf(key) != -1) {
+                    if (output.contains(key)) {
                         output = output.substring(0, output.indexOf(key)) + comments.get(key) + output.substring(output.indexOf(key));
                     }
                 }
