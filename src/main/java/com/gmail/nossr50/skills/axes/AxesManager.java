@@ -101,15 +101,7 @@ public class AxesManager extends SkillManager {
                 Material armorType = armor.getType();
                 double durabilityModifier = 1 / (armor.getEnchantmentLevel(Enchantment.DURABILITY) + 1); // Modifier to simulate the durability enchantment behavior
                 double modifiedDurabilityDamage = durabilityDamage * durabilityModifier;
-                short maxDurability;
-
-                try {
-                    maxDurability = mcMMO.getRepairableManager().getRepairable(armorType).getMaximumDurability();
-                }
-                catch (NullPointerException e) {
-                    maxDurability = armorType.getMaxDurability();
-                }
-
+                short maxDurability = mcMMO.getRepairableManager().isRepairable(armorType) ? mcMMO.getRepairableManager().getRepairable(armorType).getMaximumDurability() : armorType.getMaxDurability();
                 double maxDurabilityDamage = maxDurability * Axes.impactMaxDurabilityModifier;
 
                 armor.setDurability((short) (Math.min(modifiedDurabilityDamage, maxDurabilityDamage) + armor.getDurability()));
