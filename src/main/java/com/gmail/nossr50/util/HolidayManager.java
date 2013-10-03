@@ -94,7 +94,7 @@ public final class HolidayManager {
             return;
         }
 
-        if (getDateRange(day.getTime(), anniversaryStart.getTime(), anniversaryEnd.getTime())) {
+        if (!getDateRange(day.getTime(), anniversaryStart.getTime(), anniversaryEnd.getTime())) {
             return;
         }
 
