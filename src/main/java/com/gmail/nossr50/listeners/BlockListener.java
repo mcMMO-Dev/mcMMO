@@ -221,6 +221,11 @@ public class BlockListener implements Listener {
                     blockState.update(true);
                     event.setCancelled(true);
                 }
+                else if (blockState.getType() == Material.FLOWER_POT) {
+                    blockState.setType(Material.AIR);
+                    blockState.update(true);
+                    event.setCancelled(true);
+                }
             }
         }
         else if (ItemUtils.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
