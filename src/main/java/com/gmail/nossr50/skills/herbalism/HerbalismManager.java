@@ -123,6 +123,10 @@ public class HerbalismManager extends SkillManager {
             return;
         }
 
+        if (!canBlockCheck()) {
+            return;
+        }
+
         HerbalismBlock herbalismBlock = HerbalismBlock.getHerbalismBlock(material);
         ItemStack drop = null;
         int amount = 1;

@@ -40,6 +40,7 @@ Version 1.4.07-dev
  = Fixed a bug where squid were not awarding XP.
  = Fixed a bug where Combat XP was granted within 5 seconds for respawned players
  = Fixed a bug where wrong feedback messages were being send when using a command on an offline player
+ = Fixed a bug where players were able to gain Herbalism XP in mine carts, even though Prevent_AFK_Leveling was enabled
  ! Changed format of mod config files. (blocks.yml, tools.yml, armor.yml and entities.yml) **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
  ! Changed format of treasures.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
  ! Changed format of repair.vanilla.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
