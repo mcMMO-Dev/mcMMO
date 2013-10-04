@@ -86,7 +86,7 @@ public class Repair {
 
     protected static int getSalvagedAmount(ItemStack inHand) {
         // Temporary workaround until they get their stuff fixed.
-        if (mcMMO.p.getServer().getName().equals("MCPC+")) {
+        if (mcMMO.isMCPCEnabled()) {
             if (ItemUtils.isPickaxe(inHand) || ItemUtils.isAxe(inHand) || ItemUtils.isBow(inHand) || inHand.getType() == Material.BUCKET) {
                 return 3;
             }

@@ -78,6 +78,7 @@ public class mcMMO extends JavaPlugin {
     /* Plugin Checks */
     private static boolean combatTagEnabled;
     private static boolean healthBarPluginEnabled;
+    private static boolean mcpcEnabled;
 
     // Config Validation Check
     public boolean noErrorsInConfigFiles = true;
@@ -111,6 +112,7 @@ public class mcMMO extends JavaPlugin {
             metadataValue = new FixedMetadataValue(this, true);
 
             setupFilePaths();
+
             loadConfigFiles();
 
             if (!noErrorsInConfigFiles) {
@@ -119,6 +121,11 @@ public class mcMMO extends JavaPlugin {
 
             combatTagEnabled = getServer().getPluginManager().getPlugin("CombatTag") != null;
             healthBarPluginEnabled = getServer().getPluginManager().getPlugin("HealthBar") != null;
+            mcpcEnabled = getServer().getName().equals("MCPC+");
+
+            if (mcpcEnabled) {
+                checkModConfigs();
+            }
 
             if (healthBarPluginEnabled) {
                 getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
@@ -270,6 +277,10 @@ public class mcMMO extends JavaPlugin {
         return healthBarPluginEnabled;
     }
 
+    public static boolean isMCPCEnabled() {
+        return mcpcEnabled;
+    }
+
     /**
      * Setup the various storage file paths
      */
@@ -379,6 +390,28 @@ public class mcMMO extends JavaPlugin {
         }
         else if (kickIntervalTicks > 0) {
             new PartyAutoKickTask().runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
+        }
+    }
+
+    private void checkModConfigs() {
+        if (!Config.getInstance().getToolModsEnabled()) {
+            getLogger().info("MCPC+ implementation found, but the custom tool config for mcMMO is disabled!");
+            getLogger().info("To enable, set Mods.Tool_Mods_Enabled to TRUE in config.yml.");
+        }
+
+        if (!Config.getInstance().getArmorModsEnabled()) {
+            getLogger().info("MCPC+ implementation found, but the custom armor config for mcMMO is disabled!");
+            getLogger().info("To enable, set Mods.Armor_Mods_Enabled to TRUE in config.yml.");
+        }
+
+        if (!Config.getInstance().getBlockModsEnabled()) {
+            getLogger().info("MCPC+ implementation found, but the custom block config for mcMMO is disabled!");
+            getLogger().info("To enable, set Mods.Block_Mods_Enabled to TRUE in config.yml.");
+        }
+
+        if (!Config.getInstance().getEntityModsEnabled()) {
+            getLogger().info("MCPC+ implementation found, but the custom entity config for mcMMO is disabled!");
+            getLogger().info("To enable, set Mods.Entity_Mods_Enabled to TRUE in config.yml.");
         }
     }
 }
