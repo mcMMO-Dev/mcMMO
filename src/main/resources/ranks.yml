@@ -1,0 +1,41 @@
+Ranks:
+    Fishing:
+        Rank1:
+            Level: 0
+            ShakeChance: 1.0
+            VanillaXPBoost: 1
+        ect:
+            Level: 1
+            ShakeChance: 1.0
+            VanillaXPBoost: 1
+    Smelting:
+        Rank1:
+            Level: 0
+            VanillaXPBoost: 1
+        ect:
+            Level: 1
+            VanillaXPBoost: 1
+    BlastMining:
+        Rank1:
+            Level: 0
+            BlastDamageDecrease: 1.0
+            OreBonus: 1.0
+            DebrisReduction: 1.0
+            DropMultiplier: 1
+            BlastRadiusModifier: 1
+        ect:
+            Level: 1
+            BlastDamageDecrease: 1.0
+            OreBonus: 1.0
+            DebrisReduction: 1.0
+            DropMultiplier: 1
+            BlastRadiusModifier: 1
+    Repair:
+        Rank1:
+            Level: 0
+            DowngradeChance: 1.0
+            KeepEnchantsChance: 1.0
+        ect:
+            Level: 1
+            DowngradeChance: 1.0
+            KeepEnchantsChance: 1.0
