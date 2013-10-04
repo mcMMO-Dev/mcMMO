@@ -83,7 +83,7 @@ public class TreasureConfig extends ConfigLoader {
 
         loadTreaures("Fishing");
         loadTreaures("Excavation");
-        loadTreaures("Hylian");
+        loadTreaures("Hylian_Luck");
 
         for (EntityType entity : EntityType.values()) {
             if (entity.isAlive()) {
@@ -96,7 +96,7 @@ public class TreasureConfig extends ConfigLoader {
         boolean isFishing = type.equals("Fishing");
         boolean isShake = type.contains("Shake");
         boolean isExcavation = type.equals("Excavation");
-        boolean isHylian = type.equals("Hylian");
+        boolean isHylian = type.equals("Hylian_Luck");
 
         ConfigurationSection treasureSection = config.getConfigurationSection(type);
 
