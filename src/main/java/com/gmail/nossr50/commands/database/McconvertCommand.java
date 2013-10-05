@@ -45,7 +45,7 @@ public class McconvertCommand implements TabExecutor {
         }
 
         // Custom stuff
-        databaseTypes.remove(DatabaseType.CUSTOM);
+        databaseTypes.remove(DatabaseType.CUSTOM.toString());
 
         if (mcMMO.getDatabaseManager().getDatabaseType() == DatabaseType.CUSTOM) {
             databaseTypes.add(DatabaseManagerFactory.getCustomDatabaseManagerClass().getName());
