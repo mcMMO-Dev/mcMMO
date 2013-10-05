@@ -387,22 +387,30 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     }
 
                     PlayerProfile p = loadFromLine(character);
-                    in.close();
                     return p;
+                }
+
+                // Didn't find the player, create a new one
+                if (create) {
+                    newUser(playerName);
+                    return new PlayerProfile(playerName, true);
                 }
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
             finally {
-                tryClose(in);
+                // Silly inlining of tryClose() because the compiler is giving a warning when I use tryClose()
+                try {
+                    if (in != null) {
+                        in.close();
+                    }
+                }
+                catch (IOException ignored) {}
             }
         }
 
-        if (create) {
-            newUser(playerName);
-            return new PlayerProfile(playerName, true);
-        }
+        // Return unloaded profile
         return new PlayerProfile(playerName);
     }
 
