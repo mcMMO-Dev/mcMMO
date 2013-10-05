@@ -54,7 +54,7 @@ public class PlayerProfile {
      * Calling this constructor is considered loading the profile.
      */
     public PlayerProfile(String playerName, Map<SkillType, Integer> argSkills, Map<SkillType, Float> argSkillsXp, Map<AbilityType, Integer> argSkillsDats, MobHealthbarType mobHealthbarType) {
-        this(playerName, true);
+        this(playerName);
 
         this.mobHealthbarType = mobHealthbarType;
 
@@ -66,7 +66,7 @@ public class PlayerProfile {
     }
 
     public void save() {
-        if (!changed) {
+        if (!changed || !loaded) {
             return;
         }
 
