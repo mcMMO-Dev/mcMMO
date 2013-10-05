@@ -24,6 +24,7 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.database.SQLReconnectTask;
+import com.gmail.nossr50.runnables.database.SQLDatabaseKeepaliveTask;
 import com.gmail.nossr50.util.Misc;
 
 public final class SQLDatabaseManager implements DatabaseManager {
@@ -51,6 +52,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     protected SQLDatabaseManager() {
         checkStructure();
+
+        new SQLDatabaseKeepaliveTask(this).runTaskTimerAsynchronously(mcMMO.p, 10, 60L * 60 * Misc.TICK_CONVERSION_FACTOR);
     }
 
     public void purgePowerlessUsers() {
