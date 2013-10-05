@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -122,6 +125,68 @@ public class McMMOPlayer {
         for (ToolType toolType : ToolType.values()) {
             toolMode.put(toolType, false);
             toolATS.put(toolType, 0);
+        }
+
+        if (!profile.isLoaded()) {
+            mcMMO.p.getLogger().warning("Unable to load the PlayerProfile for " + playerName + ". Will retry over the next several seconds.");
+            new RetryProfileLoadingTask().runTaskTimerAsynchronously(mcMMO.p, 11L, 31L);
+        }
+    }
+
+    private class RetryProfileLoadingTask extends BukkitRunnable {
+        private static final int MAX_TRIES = 5;
+        private final String playerName = McMMOPlayer.this.player.getName();
+        private int attempt = 0;
+
+        // WARNING: ASYNC TASK
+        // DO NOT MODIFY THE McMMOPLAYER FROM THIS CODE
+        @Override
+        public void run() {
+            // Quit if they logged out
+            if (!player.isOnline()) {
+                mcMMO.p.getLogger().info("Aborting profile loading recovery for " + playerName + " - player logged out");
+                this.cancel();
+                return;
+            }
+
+            // Send the message that we're doing the recovery
+            if (attempt == 0) {
+                player.sendMessage(LocaleLoader.getString("Recovery.Notice"));
+            }
+
+            // Increment attempt counter and try
+            attempt++;
+            PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, true);
+            // If successful, schedule the apply
+            if (profile.isLoaded()) {
+                new ApplySuccessfulProfile(profile).runTask(mcMMO.p);
+                player.sendMessage(LocaleLoader.getString("Recovery.Success"));
+                this.cancel();
+                return;
+            }
+
+            // If we've failed five times, give up
+            if (attempt >= MAX_TRIES) {
+                mcMMO.p.getLogger().severe("Giving up on attempting to load the PlayerProfile for " + playerName);
+                Bukkit.broadcast(LocaleLoader.getString("Recovery.AdminFailureNotice", playerName), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
+                player.sendMessage(LocaleLoader.getString("Recovery.Failure").split("\n"));
+                this.cancel();
+                return;
+            }
+        }
+    }
+
+    private class ApplySuccessfulProfile extends BukkitRunnable {
+        private final PlayerProfile profile;
+        private ApplySuccessfulProfile(PlayerProfile profile) {
+            this.profile = profile;
+        }
+
+        // Synchronized task
+        // No database access permitted
+        @Override
+        public void run() {
+            McMMOPlayer.this.profile = profile;
         }
     }
 
