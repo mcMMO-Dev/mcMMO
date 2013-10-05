@@ -116,9 +116,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return success;
     }
 
-    public void saveUser(PlayerProfile profile) {
+    public boolean saveUser(PlayerProfile profile) {
         if (!checkConnected()) {
-            return;
+            return false;
         }
 
         int userId = readId(profile.getPlayerName());
@@ -126,15 +126,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
             newUser(profile.getPlayerName());
             userId = readId(profile.getPlayerName());
             if (userId == -1) {
-                mcMMO.p.getLogger().log(Level.WARNING, "Failed to save user " + profile.getPlayerName());
-                return;
+                return false;
             }
         }
+        boolean success = true;
         MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
 
-        saveLogin(userId, ((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
-        saveHuds(userId, (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()));
-        saveLongs(
+        success &= saveLogin(userId, ((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
+        success &= saveHuds(userId, (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()));
+        success &= saveLongs(
                 "UPDATE " + tablePrefix + "cooldowns SET "
                     + "  mining = ?, woodcutting = ?, unarmed = ?"
                     + ", herbalism = ?, excavation = ?, swords = ?"
@@ -148,7 +148,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 profile.getSkillDATS(AbilityType.SERRATED_STRIKES),
                 profile.getSkillDATS(AbilityType.SKULL_SPLITTER),
                 profile.getSkillDATS(AbilityType.BLAST_MINING));
-        saveIntegers(
+        success &= saveIntegers(
                 "UPDATE " + tablePrefix + "skills SET "
                     + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
                     + ", unarmed = ?, herbalism = ?, excavation = ?"
@@ -167,7 +167,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 profile.getSkillLevel(SkillType.ACROBATICS),
                 profile.getSkillLevel(SkillType.FISHING),
                 userId);
-        saveIntegers(
+        success &= saveIntegers(
                 "UPDATE " + tablePrefix + "experience SET "
                     + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
                     + ", unarmed = ?, herbalism = ?, excavation = ?"
@@ -186,6 +186,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 profile.getSkillXpLevel(SkillType.ACROBATICS),
                 profile.getSkillXpLevel(SkillType.FISHING),
                 userId);
+        return success;
     }
 
     public List<PlayerStat> readLeaderboard(String skillName, int pageNumber, int statsPerPage) {
@@ -1023,7 +1024,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void saveIntegers(String sql, int... args) {
+    private boolean saveIntegers(String sql, int... args) {
         PreparedStatement statement = null;
 
         try {
@@ -1035,9 +1036,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             statement.execute();
+            return true;
         }
         catch (SQLException ex) {
             printErrors(ex);
+            return false;
         }
         finally {
             if (statement != null) {
@@ -1051,7 +1054,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void saveLongs(String sql, int id, long... args) {
+    private boolean saveLongs(String sql, int id, long... args) {
         PreparedStatement statement = null;
 
         try {
@@ -1064,9 +1067,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             statement.setInt(i++, id);
             statement.execute();
+            return true;
         }
         catch (SQLException ex) {
             printErrors(ex);
+            return false;
         }
         finally {
             if (statement != null) {
@@ -1101,7 +1106,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return id;
     }
 
-    private void saveLogin(int id, long login) {
+    private boolean saveLogin(int id, long login) {
         PreparedStatement statement = null;
 
         try {
@@ -1109,9 +1114,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setLong(1, login);
             statement.setInt(2, id);
             statement.execute();
+            return true;
         }
         catch (SQLException ex) {
             printErrors(ex);
+            return false;
         }
         finally {
             if (statement != null) {
@@ -1125,7 +1132,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void saveHuds(int userId, String mobHealthBar) {
+    private boolean saveHuds(int userId, String mobHealthBar) {
         PreparedStatement statement = null;
 
         try {
@@ -1133,9 +1140,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setString(1, mobHealthBar);
             statement.setInt(2, userId);
             statement.execute();
+            return true;
         }
         catch (SQLException ex) {
             printErrors(ex);
+            return false;
         }
         finally {
             if (statement != null) {

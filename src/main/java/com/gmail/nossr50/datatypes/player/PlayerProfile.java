@@ -70,8 +70,10 @@ public class PlayerProfile {
             return;
         }
 
-        mcMMO.getDatabaseManager().saveUser(this);
-        changed = false;
+        changed = !mcMMO.getDatabaseManager().saveUser(this);
+        if (changed) {
+            mcMMO.p.getLogger().warning("PlayerProfile for " + playerName + " failed to save");
+        }
     }
 
     public String getPlayerName() {

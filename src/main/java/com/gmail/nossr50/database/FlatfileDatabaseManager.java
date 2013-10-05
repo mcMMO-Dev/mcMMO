@@ -203,7 +203,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return worked;
     }
 
-    public void saveUser(PlayerProfile profile) {
+    public boolean saveUser(PlayerProfile profile) {
         String playerName = profile.getPlayerName();
 
         BufferedReader in = null;
@@ -272,9 +272,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 // Write the new file
                 out = new FileWriter(usersFilePath);
                 out.write(writer.toString());
+                return true;
             }
             catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
             finally {
                 tryClose(in);
@@ -432,11 +434,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 tryClose(in);
             }
         }
-    }
-
-    public boolean checkConnected() {
-        // Not implemented
-        return true;
     }
 
     public List<String> getStoredUsers() {
