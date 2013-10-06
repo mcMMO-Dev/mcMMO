@@ -328,7 +328,7 @@ public class Config extends AutoUpdateConfigLoader {
     public int getMaxLength(AbilityType ability) { return config.getInt("Abilities.Max_Seconds." + ability.toString()); }
 
     /* Durability Settings */
-    public int getAbilityToolDamage() { return config.getInt("Abilities.Tools.Durability_Loss", 2); }
+    public int getAbilityToolDamage() { return config.getInt("Abilities.Tools.Durability_Loss", 1); }
 
     /* Thresholds */
     public int getTreeFellerThreshold() { return config.getInt("Abilities.Limits.Tree_Feller_Threshold", 500); }

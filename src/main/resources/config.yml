@@ -191,7 +191,7 @@ Abilities:
        Tree_Feller_Threshold: 500
     Tools:
         # Use more tool durability while using abilities. Set Durability_Loss to 0 to disable the extra durability damage.
-        Durability_Loss: 2
+        Durability_Loss: 1
 
 #
 #  Settings for Skills
