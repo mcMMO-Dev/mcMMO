@@ -516,6 +516,8 @@ Hylian_Luck:
         Drop_Level: 0
         Drops_From: [Flowers]
     APPLE:
+        Amount: 1
+        XP: 0
         Drop_Chance: 100.0
         Drop_Level: 0
         Drops_From: [Flowers]

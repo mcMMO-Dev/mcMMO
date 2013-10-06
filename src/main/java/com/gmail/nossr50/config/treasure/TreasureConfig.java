@@ -130,12 +130,12 @@ public class TreasureConfig extends ConfigLoader {
                 reason.add("Invalid material: " + treasureName);
             }
 
-            if (amount < 1) {
-                reason.add("Invalid amount: " + amount);
+            if (amount <= 0) {
+                reason.add("Amount of " + treasureName + " must be greater than 0! " + amount);
             }
 
             if (material != null && material.isBlock() && (data > 127 || data < -128)) {
-                reason.add("Invalid data: " + data);
+                reason.add("Data of " + treasureName + " is invalid! " + data);
             }
 
             /*
@@ -147,15 +147,15 @@ public class TreasureConfig extends ConfigLoader {
             int dropLevel = config.getInt(type + "." + treasureName + ".Drop_Level");
 
             if (xp < 0) {
-                reason.add("Invalid xp: " + xp);
+                reason.add(treasureName + " has an invalid XP value: " + xp);
             }
 
             if (dropChance < 0.0D) {
-                reason.add("Invalid Drop_Chance: " + dropChance);
+                reason.add(treasureName + " has an invalid Drop_Chance: " + dropChance);
             }
 
             if (dropLevel < 0) {
-                reason.add("Invalid Drop_Level: " + dropLevel);
+                reason.add(treasureName + " has an invalid Drop_Level: " + dropLevel);
             }
 
             /*
@@ -167,11 +167,11 @@ public class TreasureConfig extends ConfigLoader {
                 maxLevel = config.getInt(type + "." + treasureName + ".Max_Level");
 
                 if (maxLevel < -1) {
-                    reason.add("Invalid Max_Level: " + maxLevel);
+                    reason.add(treasureName + " has an invalid Max_Level: " + maxLevel);
                 }
 
                 if (maxLevel != -1 && maxLevel < dropLevel) {
-                    reason.add("Max_Level must be -1 or greater than Drop_Level!");
+                    reason.add(treasureName + " Max_Level must be -1 or greater than Drop_Level!");
                 }
             }
 
