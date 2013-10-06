@@ -10,7 +10,7 @@ import com.gmail.nossr50.database.SQLDatabaseManager;
  * This task is in charge of sending a MySQL ping over the MySQL connection
  * every hour to prevent the connection from timing out and losing players'
  * data when they join.
- * <p>
+ * <p/>
  * A WeakReference is used to keep the database instance, because
  * {@link com.gmail.nossr50.commands.database.ConvertDatabaseCommand database
  * conversion} may create a SQLDatabaseManager that will be thrown out. If a

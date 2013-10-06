@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -23,8 +22,8 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.runnables.database.SQLReconnectTask;
 import com.gmail.nossr50.runnables.database.SQLDatabaseKeepaliveTask;
+import com.gmail.nossr50.runnables.database.SQLReconnectTask;
 import com.gmail.nossr50.util.Misc;
 
 public final class SQLDatabaseManager implements DatabaseManager {
@@ -95,7 +94,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 "WHERE ((" + currentTime + " - lastlogin * " + Misc.TIME_CONVERSION_FACTOR + ") > " + PURGE_TIME + ")");
 
         processPurge(usernames);
-        mcMMO.p.getLogger().info("Purged " + usernames.size() + " users from the database.");;
+        mcMMO.p.getLogger().info("Purged " + usernames.size() + " users from the database.");
     }
 
     public boolean removeUser(String playerName) {
@@ -380,7 +379,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     result.close();
                     return ret;
                 }
-                catch (SQLException e) {}
+                catch (SQLException e) {
+                }
             }
             result.close();
         }
@@ -467,13 +467,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
         }
 
     }
+
     /**
     * Check connection status and re-establish if dead or stale.
     *
@@ -584,7 +586,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 if (stmt != null) {
                     try {
                         stmt.close();
-                    } catch (SQLException e) {
+                    }
+                    catch (SQLException e) {
                         // Ignore
                     }
                 }

@@ -178,6 +178,7 @@ public class McMMOPlayer {
 
     private class ApplySuccessfulProfile extends BukkitRunnable {
         private final PlayerProfile profile;
+
         private ApplySuccessfulProfile(PlayerProfile profile) {
             this.profile = profile;
         }

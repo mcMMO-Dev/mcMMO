@@ -122,7 +122,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     try {
                         lastPlayed = Long.parseLong(character[37]) * Misc.TIME_CONVERSION_FACTOR;
                     }
-                    catch (NumberFormatException e) {}
+                    catch (NumberFormatException e) {
+                    }
                     if (lastPlayed == 0) {
                         OfflinePlayer player = Bukkit.getOfflinePlayer(name);
                         lastPlayed = player.getLastPlayed();
@@ -406,7 +407,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         in.close();
                     }
                 }
-                catch (IOException ignored) {}
+                catch (IOException e) {
+                }
             }
         }
 
