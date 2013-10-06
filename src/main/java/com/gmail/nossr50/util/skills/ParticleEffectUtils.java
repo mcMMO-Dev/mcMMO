@@ -85,7 +85,11 @@ public final class ParticleEffectUtils {
 
     private static void fireworkParticleShower(Player player, Color color) {
         Location location = player.getLocation();
-        location.setY(location.getY() - 1.0);
+
+        if (!player.isInsideVehicle()) {
+            location.setY(location.getY() - 1.0);
+        }
+
         location.setPitch(-90);
 
         Firework firework = (Firework) player.getWorld().spawnEntity(location, EntityType.FIREWORK);
