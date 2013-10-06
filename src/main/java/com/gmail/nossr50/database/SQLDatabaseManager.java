@@ -24,6 +24,7 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.database.SQLReconnectTask;
+import com.gmail.nossr50.runnables.database.SQLDatabaseKeepaliveTask;
 import com.gmail.nossr50.util.Misc;
 
 public final class SQLDatabaseManager implements DatabaseManager {
@@ -51,6 +52,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     protected SQLDatabaseManager() {
         checkStructure();
+
+        new SQLDatabaseKeepaliveTask(this).runTaskTimerAsynchronously(mcMMO.p, 10, 60L * 60 * Misc.TICK_CONVERSION_FACTOR);
     }
 
     public void purgePowerlessUsers() {
@@ -113,9 +116,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return success;
     }
 
-    public void saveUser(PlayerProfile profile) {
+    public boolean saveUser(PlayerProfile profile) {
         if (!checkConnected()) {
-            return;
+            return false;
         }
 
         int userId = readId(profile.getPlayerName());
@@ -123,15 +126,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
             newUser(profile.getPlayerName());
             userId = readId(profile.getPlayerName());
             if (userId == -1) {
-                mcMMO.p.getLogger().log(Level.WARNING, "Failed to save user " + profile.getPlayerName());
-                return;
+                return false;
             }
         }
+        boolean success = true;
         MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
 
-        saveLogin(userId, ((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
-        saveHuds(userId, (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()));
-        saveLongs(
+        success &= saveLogin(userId, ((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
+        success &= saveHuds(userId, (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()));
+        success &= saveLongs(
                 "UPDATE " + tablePrefix + "cooldowns SET "
                     + "  mining = ?, woodcutting = ?, unarmed = ?"
                     + ", herbalism = ?, excavation = ?, swords = ?"
@@ -145,7 +148,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 profile.getSkillDATS(AbilityType.SERRATED_STRIKES),
                 profile.getSkillDATS(AbilityType.SKULL_SPLITTER),
                 profile.getSkillDATS(AbilityType.BLAST_MINING));
-        saveIntegers(
+        success &= saveIntegers(
                 "UPDATE " + tablePrefix + "skills SET "
                     + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
                     + ", unarmed = ?, herbalism = ?, excavation = ?"
@@ -164,7 +167,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 profile.getSkillLevel(SkillType.ACROBATICS),
                 profile.getSkillLevel(SkillType.FISHING),
                 userId);
-        saveIntegers(
+        success &= saveIntegers(
                 "UPDATE " + tablePrefix + "experience SET "
                     + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
                     + ", unarmed = ?, herbalism = ?, excavation = ?"
@@ -183,6 +186,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 profile.getSkillXpLevel(SkillType.ACROBATICS),
                 profile.getSkillXpLevel(SkillType.FISHING),
                 userId);
+        return success;
     }
 
     public List<PlayerStat> readLeaderboard(String skillName, int pageNumber, int statsPerPage) {
@@ -343,6 +347,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
+        return _loadPlayerProfile(playerName, create, true);
+    }
+
+    private PlayerProfile _loadPlayerProfile(String playerName, boolean create, boolean retry) {
         if (!checkConnected()) {
             return new PlayerProfile(playerName, false); // return fake profile if not connected
         }
@@ -392,6 +400,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         // Problem, nothing was returned
 
+        // Quit if this is second time around
+        if (!retry) {
+            return new PlayerProfile(playerName, false);
+        }
+
         // First, read User Id - this is to check for orphans
 
         int id = readId(playerName);
@@ -400,14 +413,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
             // There is no such user
             if (create) {
                 newUser(playerName);
+                return _loadPlayerProfile(playerName, false, false);
             }
 
-            return new PlayerProfile(playerName, create);
+            // Return unloaded profile if can't create
+            return new PlayerProfile(playerName, false);
         }
         // There is such a user
         writeMissingRows(id);
         // Retry, and abort on re-failure
-        return loadPlayerProfile(playerName, false);
+        return _loadPlayerProfile(playerName, create, false);
     }
 
     public void convertUsers(DatabaseManager destination) {
@@ -1020,7 +1035,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void saveIntegers(String sql, int... args) {
+    private boolean saveIntegers(String sql, int... args) {
         PreparedStatement statement = null;
 
         try {
@@ -1032,9 +1047,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             statement.execute();
+            return true;
         }
         catch (SQLException ex) {
             printErrors(ex);
+            return false;
         }
         finally {
             if (statement != null) {
@@ -1048,7 +1065,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void saveLongs(String sql, int id, long... args) {
+    private boolean saveLongs(String sql, int id, long... args) {
         PreparedStatement statement = null;
 
         try {
@@ -1061,9 +1078,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             statement.setInt(i++, id);
             statement.execute();
+            return true;
         }
         catch (SQLException ex) {
             printErrors(ex);
+            return false;
         }
         finally {
             if (statement != null) {
@@ -1098,7 +1117,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return id;
     }
 
-    private void saveLogin(int id, long login) {
+    private boolean saveLogin(int id, long login) {
         PreparedStatement statement = null;
 
         try {
@@ -1106,9 +1125,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setLong(1, login);
             statement.setInt(2, id);
             statement.execute();
+            return true;
         }
         catch (SQLException ex) {
             printErrors(ex);
+            return false;
         }
         finally {
             if (statement != null) {
@@ -1122,7 +1143,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void saveHuds(int userId, String mobHealthBar) {
+    private boolean saveHuds(int userId, String mobHealthBar) {
         PreparedStatement statement = null;
 
         try {
@@ -1130,9 +1151,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setString(1, mobHealthBar);
             statement.setInt(2, userId);
             statement.execute();
+            return true;
         }
         catch (SQLException ex) {
             printErrors(ex);
+            return false;
         }
         finally {
             if (statement != null) {

@@ -203,7 +203,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return worked;
     }
 
-    public void saveUser(PlayerProfile profile) {
+    public boolean saveUser(PlayerProfile profile) {
         String playerName = profile.getPlayerName();
 
         BufferedReader in = null;
@@ -272,9 +272,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 // Write the new file
                 out = new FileWriter(usersFilePath);
                 out.write(writer.toString());
+                return true;
             }
             catch (Exception e) {
                 e.printStackTrace();
+                return false;
             }
             finally {
                 tryClose(in);
@@ -385,22 +387,30 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     }
 
                     PlayerProfile p = loadFromLine(character);
-                    in.close();
                     return p;
+                }
+
+                // Didn't find the player, create a new one
+                if (create) {
+                    newUser(playerName);
+                    return new PlayerProfile(playerName, true);
                 }
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
             finally {
-                tryClose(in);
+                // Silly inlining of tryClose() because the compiler is giving a warning when I use tryClose()
+                try {
+                    if (in != null) {
+                        in.close();
+                    }
+                }
+                catch (IOException ignored) {}
             }
         }
 
-        if (create) {
-            newUser(playerName);
-            return new PlayerProfile(playerName, true);
-        }
+        // Return unloaded profile
         return new PlayerProfile(playerName);
     }
 
@@ -432,11 +442,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 tryClose(in);
             }
         }
-    }
-
-    public boolean checkConnected() {
-        // Not implemented
-        return true;
     }
 
     public List<String> getStoredUsers() {
