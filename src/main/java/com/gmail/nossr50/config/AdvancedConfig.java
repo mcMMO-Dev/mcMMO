@@ -199,10 +199,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             }
         }
 
-        if (getFishingMagicMultiplier() <= 0) {
-            reason.add("Skills.Fishing.MagicHunter.Multiplier should be greater than 0!");
-        }
-
         if (getFishermanDietRankChange() < 1) {
             reason.add("Skills.Fishing.FishermansDiet.RankChange should be at least 1!");
         }
@@ -654,8 +650,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getFishingTierLevel(Fishing.Tier tier) { return config.getInt("Skills.Fishing.Rank_Levels.Rank_" + tier.toNumerical()); }
     public double getShakeChance(Fishing.Tier tier) { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_" + tier.toNumerical()); }
     public int getFishingVanillaXPModifier(Fishing.Tier tier) { return config.getInt("Skills.Fishing.VanillaXPMultiplier.Rank_" + tier.toNumerical()); }
-
-    public double getFishingMagicMultiplier() { return config.getDouble("Skills.Fishing.MagicHunter.Multiplier", 2.5D); }
 
     public int getFishermanDietRankChange() { return config.getInt("Skills.Fishing.FishermansDiet.RankChange", 200); }
 

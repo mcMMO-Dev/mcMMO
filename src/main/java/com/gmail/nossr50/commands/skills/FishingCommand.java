@@ -4,7 +4,9 @@ import org.bukkit.block.Biome;
 import org.bukkit.entity.EntityType;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
@@ -13,13 +15,20 @@ import com.gmail.nossr50.util.player.UserManager;
 
 public class FishingCommand extends SkillCommand {
     private int lootTier;
-    private String magicChance;
-    private String magicChanceLucky;
-    private String chanceRaining = "";
     private String shakeChance;
     private String shakeChanceLucky;
     private int fishermansDietRank;
     private String biteChance;
+
+    private String trapTreasure;
+    private String commonTreasure;
+    private String uncommonTreasure;
+    private String rareTreasure;
+    private String epicTreasure;
+    private String legendaryTreasure;
+    private String recordTreasure;
+
+    private String magicChance;
 
     private boolean canTreasureHunt;
     private boolean canMagicHunt;
@@ -39,16 +48,24 @@ public class FishingCommand extends SkillCommand {
         // TREASURE HUNTER
         if (canTreasureHunt) {
             lootTier = mcMMOPlayer.getFishingManager().getLootTier();
-            double enchantChance = lootTier * AdvancedConfig.getInstance().getFishingMagicMultiplier();
 
-            if (isStorming) {
-                chanceRaining = LocaleLoader.getString("Fishing.Chance.Raining");
-                enchantChance *= 1.1D;
-            }
+            // Item drop rates
+            trapTreasure = calculateAbilityDisplayValues(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.TRAP))[0];
+            commonTreasure = calculateAbilityDisplayValues(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.COMMON))[0];
+            uncommonTreasure = calculateAbilityDisplayValues(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.UNCOMMON))[0];
+            rareTreasure = calculateAbilityDisplayValues(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.RARE))[0];
+            epicTreasure = calculateAbilityDisplayValues(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.EPIC))[0];
+            legendaryTreasure = calculateAbilityDisplayValues(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.LEGENDARY))[0];
+            recordTreasure = calculateAbilityDisplayValues(TreasureConfig.getInstance().getItemDropRate(lootTier, Rarity.RECORD))[0];
 
-            String[] treasureHunterStrings = calculateAbilityDisplayValues(enchantChance);
-            magicChance = treasureHunterStrings[0];
-            magicChanceLucky = treasureHunterStrings[1];
+            // Magic hunter drop rates
+            double commonEnchantment = TreasureConfig.getInstance().getEnchantmentDropRate(lootTier, Rarity.COMMON);
+            double uncommonEnchantment = TreasureConfig.getInstance().getEnchantmentDropRate(lootTier, Rarity.UNCOMMON);
+            double rareEnchantment = TreasureConfig.getInstance().getEnchantmentDropRate(lootTier, Rarity.RARE);
+            double epicEnchantment = TreasureConfig.getInstance().getEnchantmentDropRate(lootTier, Rarity.EPIC);
+            double legendaryEnchantment = TreasureConfig.getInstance().getEnchantmentDropRate(lootTier, Rarity.LEGENDARY);
+
+            magicChance = calculateAbilityDisplayValues(commonEnchantment + uncommonEnchantment + rareEnchantment + epicEnchantment + legendaryEnchantment)[0];
         }
 
         // SHAKE
@@ -107,20 +124,20 @@ public class FishingCommand extends SkillCommand {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.2"), LocaleLoader.getString("Fishing.Effect.3")));
         }
 
-        if (canShake) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.4"), LocaleLoader.getString("Fishing.Effect.5")));
-        }
-
-        if (canFishermansDiet) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.6"), LocaleLoader.getString("Fishing.Effect.7")));
+        if (canIceFish) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.10"), LocaleLoader.getString("Fishing.Effect.11")));
         }
 
         if (canMasterAngler) {
             player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.8"), LocaleLoader.getString("Fishing.Effect.9")));
         }
 
-        if (canIceFish) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.10"), LocaleLoader.getString("Fishing.Effect.11")));
+        if (canShake) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.4"), LocaleLoader.getString("Fishing.Effect.5")));
+        }
+
+        if (canFishermansDiet) {
+            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Fishing.Effect.6"), LocaleLoader.getString("Fishing.Effect.7")));
         }
     }
 
@@ -131,16 +148,28 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void statsDisplay() {
-        if (canMasterAngler) {
-            player.sendMessage(LocaleLoader.getString("Fishing.Ability.Chance", biteChance));
-        }
-
         if (canTreasureHunt) {
             player.sendMessage(LocaleLoader.getString("Fishing.Ability.Rank", lootTier, Tier.EIGHT.toNumerical()));
+            player.sendMessage(LocaleLoader.getString("Fishing.Ability.TH.DropRate", trapTreasure, commonTreasure, uncommonTreasure, rareTreasure, epicTreasure, legendaryTreasure, recordTreasure));
         }
 
         if (canMagicHunt) {
-            player.sendMessage(LocaleLoader.getString("Fishing.Enchant.Chance", magicChance) + chanceRaining + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", magicChanceLucky) : ""));
+            player.sendMessage(LocaleLoader.getString("Fishing.Ability.TH.MagicRate", magicChance));
+        }
+
+        if (canIceFish) {
+            int unlockLevel = AdvancedConfig.getInstance().getIceFishingUnlockLevel();
+
+            if (skillValue < unlockLevel) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.1", unlockLevel)));
+            }
+            else {
+                player.sendMessage(LocaleLoader.getString("Fishing.Ability.IceFishing"));
+            }
+        }
+
+        if (canMasterAngler) {
+            player.sendMessage(LocaleLoader.getString("Fishing.Ability.Chance", biteChance));
         }
 
         if (canShake) {
@@ -156,17 +185,6 @@ public class FishingCommand extends SkillCommand {
 
         if (canFishermansDiet) {
             player.sendMessage(LocaleLoader.getString("Fishing.Ability.FD", fishermansDietRank));
-        }
-
-        if (canIceFish) {
-            int unlockLevel = AdvancedConfig.getInstance().getIceFishingUnlockLevel();
-
-            if (skillValue < unlockLevel) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.1", unlockLevel)));
-            }
-            else {
-                player.sendMessage(LocaleLoader.getString("Fishing.Ability.IceFishing"));
-            }
         }
     }
 }

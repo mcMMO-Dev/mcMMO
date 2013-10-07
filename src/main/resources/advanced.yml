@@ -152,10 +152,6 @@ Skills:
             Rank_7: 5
             Rank_8: 5
 
-        MagicHunter:
-            # Multiplier: Determines the chance of fishing enchanted items. The chance is calculated by getting the fishing TreasureHunt tier and multiplying it with <Multiplier>
-            Multiplier: 2.5
-
         FishermansDiet:
             # This determines when Fisherman's Diet adds extra hunger recovery to food
             RankChange: 200

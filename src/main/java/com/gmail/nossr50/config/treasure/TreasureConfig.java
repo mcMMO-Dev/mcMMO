@@ -1,11 +1,13 @@
 package com.gmail.nossr50.config.treasure;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,10 +16,13 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 
 import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.datatypes.treasure.EnchantmentTreasure;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
+import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
+import com.gmail.nossr50.util.EnchantmentUtils;
 
 public class TreasureConfig extends ConfigLoader {
     private static TreasureConfig instance;
@@ -57,7 +62,8 @@ public class TreasureConfig extends ConfigLoader {
     public List<ShakeTreasure> shakeFromWitch       = new ArrayList<ShakeTreasure>();
     public List<ShakeTreasure> shakeFromZombie      = new ArrayList<ShakeTreasure>();
 
-    public List<FishingTreasure> fishingRewards = new ArrayList<FishingTreasure>();
+    public HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<Rarity, List<FishingTreasure>>();
+    public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
 
     private TreasureConfig() {
         super("treasures.yml");
@@ -82,6 +88,7 @@ public class TreasureConfig extends ConfigLoader {
         loadTreaures("Fishing");
         loadTreaures("Excavation");
         loadTreaures("Hylian_Luck");
+        loadEnchantments();
 
         for (EntityType entity : EntityType.values()) {
             if (entity.isAlive()) {
@@ -100,6 +107,13 @@ public class TreasureConfig extends ConfigLoader {
 
         if (treasureSection == null) {
             return;
+        }
+
+        // Initialize fishing HashMap
+        for (Rarity rarity : Rarity.values()) {
+            if (!fishingRewards.containsKey(rarity)) {
+                fishingRewards.put(rarity, (new ArrayList<FishingTreasure>()));
+            }
         }
 
         for (String treasureName : treasureSection.getKeys(false)) {
@@ -159,17 +173,13 @@ public class TreasureConfig extends ConfigLoader {
             /*
              * Specific Types
              */
-            int maxLevel = 0;
+            Rarity rarity = null;
 
             if (isFishing) {
-                maxLevel = config.getInt(type + "." + treasureName + ".Max_Level");
+                rarity = Rarity.getRarity(config.getString(type + "." + treasureName + ".Rarity"));
 
-                if (maxLevel < -1) {
-                    reason.add(treasureName + " has an invalid Max_Level: " + maxLevel);
-                }
-
-                if (maxLevel != -1 && maxLevel < dropLevel) {
-                    reason.add(treasureName + " Max_Level must be -1 or greater than Drop_Level!");
+                if (rarity == null) {
+                    reason.add("Invalid Rarity for item: " + treasureName);
                 }
             }
 
@@ -219,7 +229,7 @@ public class TreasureConfig extends ConfigLoader {
 
             if (noErrorsInConfig(reason)) {
                 if (isFishing) {
-                    fishingRewards.add(new FishingTreasure(item, xp, dropChance, dropLevel, maxLevel));
+                    fishingRewards.get(rarity).add(new FishingTreasure(item, xp));
                 }
                 else if (isShake) {
                     ShakeTreasure shakeTreasure = new ShakeTreasure(item, xp, dropChance, dropLevel);
@@ -343,4 +353,37 @@ public class TreasureConfig extends ConfigLoader {
             }
         }
     }
+
+    private void loadEnchantments() {
+        for (Rarity rarity : Rarity.values()) {
+            if (rarity == Rarity.TRAP || rarity == Rarity.RECORD) {
+                continue;
+            }
+
+            if (!fishingEnchantments.containsKey(rarity)) {
+                fishingEnchantments.put(rarity, (new ArrayList<EnchantmentTreasure>()));
+            }
+
+            ConfigurationSection enchantmentSection = config.getConfigurationSection("Enchantments_Rarity." + rarity.toString());
+
+            if (enchantmentSection == null) {
+                return;
+            }
+
+            for (String enchantmentName : enchantmentSection.getKeys(false)) {
+                int level = config.getInt("Enchantments_Rarity." + rarity.toString() + "." + enchantmentName);
+                Enchantment enchantment = EnchantmentUtils.getByName(enchantmentName);
+
+                if (enchantment == null) {
+                    plugin.getLogger().warning("Skipping invalid enchantment in treasures.yml: " + enchantmentName);
+                    continue;
+                }
+
+                fishingEnchantments.get(rarity).add(new EnchantmentTreasure(enchantment, level));
+            }
+        }
+    }
+
+    public double getItemDropRate(int tier, Rarity rarity) { return config.getDouble("Item_Drop_Rates.Tier_" + tier + "." + rarity.toString()); }
+    public double getEnchantmentDropRate(int tier, Rarity rarity) { return config.getDouble("Enchantment_Drop_Rates.Tier_" + tier + "." + rarity.toString()); }
 }
