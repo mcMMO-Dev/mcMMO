@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.repair.config;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -33,9 +34,7 @@ public class RepairConfig extends ConfigLoader {
 
         for (String key : keys) {
             if (config.contains("Repairables." + key + ".ItemId")) {
-                plugin.getLogger().warning("You are using an old version of the " + fileName + " file.");
-                plugin.getLogger().warning("You should delete your current file and allow a new one to generate.");
-                plugin.getLogger().warning("Repair will not work properly until you do.");
+                backup();
                 return;
             }
 
@@ -161,5 +160,20 @@ public class RepairConfig extends ConfigLoader {
         }
 
         return issues.isEmpty();
+    }
+
+    private void backup() {
+        plugin.getLogger().warning("You are using an old version of the " + fileName + " file.");
+        plugin.getLogger().warning("Your old file has been renamed to " + fileName + ".old and has been replaced by an updated version.");
+
+        configFile.renameTo(new File(configFile.getPath() + ".old"));
+
+        if (plugin.getResource(fileName) != null) {
+            plugin.saveResource(fileName, true);
+        }
+
+        plugin.getLogger().warning("Reloading " + fileName + " with new values...");
+        loadFile();
+        loadKeys();
     }
 }

@@ -11,7 +11,7 @@ import com.gmail.nossr50.mcMMO;
 public abstract class ConfigLoader {
     protected static final mcMMO plugin = mcMMO.p;
     protected String fileName;
-    private File configFile;
+    protected File configFile;
     protected FileConfiguration config;
 
     public ConfigLoader(String relativePath, String fileName) {
