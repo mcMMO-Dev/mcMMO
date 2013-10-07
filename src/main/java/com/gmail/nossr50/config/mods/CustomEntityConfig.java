@@ -18,7 +18,7 @@ public class CustomEntityConfig extends ConfigLoader {
     private HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<String, CustomEntity>();
 
     public CustomEntityConfig() {
-        super("ModConfigs", "entities.yml");
+        super("mods", "entities.yml");
         loadKeys();
     }
 

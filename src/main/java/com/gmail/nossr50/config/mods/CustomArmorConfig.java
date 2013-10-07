@@ -26,7 +26,7 @@ public class CustomArmorConfig extends ConfigLoader {
     private List<Material> customLeggings    = new ArrayList<Material>();
 
     public CustomArmorConfig() {
-        super("ModConfigs", "armor.yml");
+        super("mods", "armor.yml");
         loadKeys();
     }
 

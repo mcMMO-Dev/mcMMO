@@ -289,7 +289,7 @@ public class mcMMO extends JavaPlugin {
         mainDirectory = getDataFolder().getPath() + File.separator;
         flatFileDirectory = mainDirectory + "FlatFileStuff" + File.separator;
         usersFile = flatFileDirectory + "mcmmo.users";
-        modDirectory = mainDirectory + "ModConfigs" + File.separator;
+        modDirectory = mainDirectory + "mods" + File.separator;
     }
 
     private void checkForUpdates() {

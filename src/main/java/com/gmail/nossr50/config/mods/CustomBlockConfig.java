@@ -28,7 +28,7 @@ public class CustomBlockConfig extends ConfigLoader {
     private HashMap<MaterialData, CustomBlock> customBlockMap = new HashMap<MaterialData, CustomBlock>();
 
     public CustomBlockConfig() {
-        super("ModConfigs", "blocks.yml");
+        super("mods", "blocks.yml");
         loadKeys();
     }
 

@@ -31,7 +31,7 @@ public class CustomToolConfig extends ConfigLoader {
     private HashMap<Material, CustomTool> customToolMap = new HashMap<Material, CustomTool>();
 
     private CustomToolConfig() {
-        super("ModConfigs", "tools.yml");
+        super("mods", "tools.yml");
         loadKeys();
     }
 
