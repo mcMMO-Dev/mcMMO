@@ -401,14 +401,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 e.printStackTrace();
             }
             finally {
-                // Silly inlining of tryClose() because the compiler is giving a warning when I use tryClose()
-                try {
-                    if (in != null) {
-                        in.close();
-                    }
-                }
-                catch (IOException e) {
-                }
+                tryClose(in);
             }
         }
 
