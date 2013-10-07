@@ -75,9 +75,7 @@ public class TreasureConfig extends ConfigLoader {
     @Override
     protected void loadKeys() {
         if (config.getConfigurationSection("Treasures") != null) {
-            plugin.getLogger().warning("You are using an old version of the treasures.yml file.");
-            plugin.getLogger().warning("You should delete your current file and allow a new one to generate.");
-            plugin.getLogger().warning("Shake, Hylian Luck, Fishing, and Excavation will not work properly until you do.");
+            backup();
             return;
         }
 

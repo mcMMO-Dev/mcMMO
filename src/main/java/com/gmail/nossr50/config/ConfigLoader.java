@@ -11,7 +11,7 @@ import com.gmail.nossr50.mcMMO;
 public abstract class ConfigLoader {
     protected static final mcMMO plugin = mcMMO.p;
     protected String fileName;
-    protected File configFile;
+    private File configFile;
     protected FileConfiguration config;
 
     public ConfigLoader(String relativePath, String fileName) {
@@ -65,5 +65,20 @@ public abstract class ConfigLoader {
 
     public File getFile() {
         return configFile;
+    }
+
+    public void backup() {
+        plugin.getLogger().warning("You are using an old version of the " + fileName + " file.");
+        plugin.getLogger().warning("Your old file has been renamed to " + fileName + ".old and has been replaced by an updated version.");
+
+        configFile.renameTo(new File(configFile.getPath() + ".old"));
+
+        if (plugin.getResource(fileName) != null) {
+            plugin.saveResource(fileName, true);
+        }
+
+        plugin.getLogger().warning("Reloading " + fileName + " with new values...");
+        loadFile();
+        loadKeys();
     }
 }
