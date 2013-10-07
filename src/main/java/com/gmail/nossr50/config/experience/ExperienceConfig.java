@@ -9,7 +9,7 @@ import org.bukkit.entity.EntityType;
 import com.gmail.nossr50.config.AutoUpdateConfigLoader;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.skills.repair.RepairMaterialType;
+import com.gmail.nossr50.skills.repair.repairables.RepairMaterialType;
 import com.gmail.nossr50.util.StringUtils;
 
 public class ExperienceConfig extends AutoUpdateConfigLoader {

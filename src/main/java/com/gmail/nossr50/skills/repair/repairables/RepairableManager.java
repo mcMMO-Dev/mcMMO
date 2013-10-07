@@ -1,4 +1,4 @@
-package com.gmail.nossr50.skills.repair;
+package com.gmail.nossr50.skills.repair.repairables;
 
 import java.util.List;
 

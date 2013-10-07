@@ -1,6 +1,7 @@
-package com.gmail.nossr50.skills.repair;
+package com.gmail.nossr50.skills.repair.repairables;
 
 import org.bukkit.Material;
+
 
 public interface Repairable {
     /**

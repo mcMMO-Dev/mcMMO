@@ -10,10 +10,10 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.skills.repair.Repair;
-import com.gmail.nossr50.skills.repair.RepairItemType;
-import com.gmail.nossr50.skills.repair.RepairMaterialType;
-import com.gmail.nossr50.skills.repair.Repairable;
-import com.gmail.nossr50.skills.repair.RepairableFactory;
+import com.gmail.nossr50.skills.repair.repairables.RepairItemType;
+import com.gmail.nossr50.skills.repair.repairables.RepairMaterialType;
+import com.gmail.nossr50.skills.repair.repairables.Repairable;
+import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 
 public class CustomArmorConfig extends ConfigLoader {
     private static CustomArmorConfig instance;

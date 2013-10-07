@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.skills.repair.Repairable;
+import com.gmail.nossr50.skills.repair.repairables.Repairable;
 
 public class RepairConfigManager {
     private List<Repairable> repairables;

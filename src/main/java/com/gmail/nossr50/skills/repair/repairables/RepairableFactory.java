@@ -1,6 +1,7 @@
-package com.gmail.nossr50.skills.repair;
+package com.gmail.nossr50.skills.repair.repairables;
 
 import org.bukkit.Material;
+
 
 public class RepairableFactory {
     public static Repairable getRepairable(Material itemMaterial, Material repairMaterial, byte repairMetadata, int minimumQuantity, short maximumDurability) {
