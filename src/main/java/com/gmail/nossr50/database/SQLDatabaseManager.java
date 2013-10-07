@@ -346,10 +346,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
-        return _loadPlayerProfile(playerName, create, true);
+        return loadPlayerProfile(playerName, create, true);
     }
 
-    private PlayerProfile _loadPlayerProfile(String playerName, boolean create, boolean retry) {
+    private PlayerProfile loadPlayerProfile(String playerName, boolean create, boolean retry) {
         if (!checkConnected()) {
             return new PlayerProfile(playerName, false); // return fake profile if not connected
         }
@@ -413,7 +413,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             // There is no such user
             if (create) {
                 newUser(playerName);
-                return _loadPlayerProfile(playerName, false, false);
+                return loadPlayerProfile(playerName, false, false);
             }
 
             // Return unloaded profile if can't create
@@ -422,7 +422,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         // There is such a user
         writeMissingRows(id);
         // Retry, and abort on re-failure
-        return _loadPlayerProfile(playerName, create, false);
+        return loadPlayerProfile(playerName, create, false);
     }
 
     public void convertUsers(DatabaseManager destination) {
