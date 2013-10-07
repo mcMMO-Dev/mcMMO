@@ -290,6 +290,20 @@ public class mcMMO extends JavaPlugin {
         flatFileDirectory = mainDirectory + "flatfile" + File.separator;
         usersFile = flatFileDirectory + "mcmmo.users";
         modDirectory = mainDirectory + "mods" + File.separator;
+        fixFilePaths();
+    }
+
+    private void fixFilePaths() {
+        File oldFlatfilePath = new File(mainDirectory + "FlatFileStuff" + File.separator);
+        File oldModPath = new File(mainDirectory + "ModConfigs" + File.separator);
+
+        if (oldFlatfilePath.exists()) {
+            oldFlatfilePath.renameTo(new File(flatFileDirectory));
+        }
+
+        if (oldModPath.exists()) {
+            oldModPath.renameTo(new File(modDirectory));
+        }
     }
 
     private void checkForUpdates() {
