@@ -1,9 +1,11 @@
 package com.gmail.nossr50.skills.acrobatics;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -83,12 +85,12 @@ public class AcrobaticsManager extends SkillManager {
 
         if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.rollMaxChance, Acrobatics.rollMaxBonusLevel)) {
             player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
-            applyXpGain((float) (damage * Acrobatics.rollXpModifier));
+            applyXpGain(calculateRollXP(damage, true));
 
             return modifiedDamage;
         }
         else if (!isFatal(damage)) {
-            applyXpGain((float) (damage * Acrobatics.fallXpModifier));
+            applyXpGain(calculateRollXP(damage, false));
         }
 
         return damage;
@@ -105,12 +107,12 @@ public class AcrobaticsManager extends SkillManager {
 
         if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.gracefulRollMaxChance, Acrobatics.gracefulRollMaxBonusLevel)) {
             getPlayer().sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
-            applyXpGain((float) (damage * Acrobatics.rollXpModifier));
+            applyXpGain(calculateRollXP(damage, true));
 
             return modifiedDamage;
         }
         else if (!isFatal(damage)) {
-            applyXpGain((float) (damage * Acrobatics.fallXpModifier));
+            applyXpGain(calculateRollXP(damage, false));
         }
 
         return damage;
@@ -122,5 +124,16 @@ public class AcrobaticsManager extends SkillManager {
 
     private boolean isFatal(double damage) {
         return getPlayer().getHealth() - damage < 1;
+    }
+
+    private float calculateRollXP(double damage, boolean isRoll) {
+        ItemStack boots = getPlayer().getInventory().getBoots();
+        float xp = (float) (damage * (isRoll ? Acrobatics.rollXpModifier : Acrobatics.fallXpModifier));
+
+        if (boots != null && boots.containsEnchantment(Enchantment.PROTECTION_FALL)) {
+            xp *= Acrobatics.featherFallXPModifier;
+        }
+
+        return xp;
     }
 }

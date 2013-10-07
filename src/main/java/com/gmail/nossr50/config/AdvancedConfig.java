@@ -803,6 +803,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getRollXPModifier() { return config.getInt("Skills.Acrobatics.Roll_XP_Modifier", 80); }
     public int getFallXPModifier() { return config.getInt("Skills.Acrobatics.Fall_XP_Modifier", 120); }
 
+    public double getFeatherFallXPModifier() { return config.getDouble("Skills.Acrobatics.FeatherFall_Multiplier", 2.0); }
+
     /* ARCHERY */
     public int getSkillShotIncreaseLevel() { return config.getInt("Skills.Archery.SkillShot_IncreaseLevel", 50); }
     public double getSkillShotIncreasePercentage() { return config.getDouble("Skills.Archery.SkillShot_IncreasePercentage", 0.1D); }

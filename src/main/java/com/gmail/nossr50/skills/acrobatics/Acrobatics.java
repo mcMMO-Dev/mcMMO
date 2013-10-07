@@ -20,6 +20,8 @@ public final class Acrobatics {
     public static int rollXpModifier  = AdvancedConfig.getInstance().getRollXPModifier();
     public static int fallXpModifier  = AdvancedConfig.getInstance().getFallXPModifier();
 
+    public static double featherFallXPModifier = AdvancedConfig.getInstance().getFeatherFallXPModifier();
+
     public static boolean afkLevelingDisabled    = Config.getInstance().getAcrobaticsAFKDisabled();
     public static boolean dodgeLightningDisabled = Config.getInstance().getDodgeLightningDisabled();
 

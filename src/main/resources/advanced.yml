@@ -49,6 +49,9 @@ Skills:
         Dodge_XP_Modifier: 120
         Roll_XP_Modifier: 80
         Fall_XP_Modifier: 120
+
+        # FeatherFall_Multiplier: Multiply Acrobatics XP by this value when wearing boots with the Feather Fall enchant
+        FeatherFall_Multiplier: 2.0
     #
     #  Settings for Archery
     ###
