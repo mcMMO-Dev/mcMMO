@@ -16,6 +16,8 @@ import com.gmail.nossr50.datatypes.mods.CustomBlock;
 public class CustomBlockConfig extends ConfigLoader {
     private static CustomBlockConfig instance;
 
+    private boolean needsUpdate = false;
+
     private List<MaterialData> customExcavationBlocks  = new ArrayList<MaterialData>();
     private List<MaterialData> customHerbalismBlocks   = new ArrayList<MaterialData>();
     private List<MaterialData> customMiningBlocks      = new ArrayList<MaterialData>();
@@ -42,11 +44,18 @@ public class CustomBlockConfig extends ConfigLoader {
 
     @Override
     protected void loadKeys() {
-        loadBlocks("Excavation", customExcavationBlocks);
-        loadBlocks("Herbalism", customHerbalismBlocks);
-        loadBlocks("Mining", customMiningBlocks);
-        loadBlocks("Woodcutting", customWoodcuttingBlocks);
-        loadBlocks("Ability_Blocks", customAbilityBlocks);
+        while (!needsUpdate) {
+            loadBlocks("Excavation", customExcavationBlocks);
+            loadBlocks("Herbalism", customHerbalismBlocks);
+            loadBlocks("Mining", customMiningBlocks);
+            loadBlocks("Woodcutting", customWoodcuttingBlocks);
+            loadBlocks("Ability_Blocks", customAbilityBlocks);
+        }
+
+        if (needsUpdate) {
+            needsUpdate = false;
+            backup();
+        }
     }
 
     private void loadBlocks(String skillType, List<MaterialData> blockList) {
@@ -59,6 +68,11 @@ public class CustomBlockConfig extends ConfigLoader {
         Set<String> skillConfigSet = skillSection.getKeys(false);
 
         for (String blockName : skillConfigSet) {
+            if (config.contains(skillType + "." + blockName + "." + ".ID")) {
+                needsUpdate = true;
+                return;
+            }
+
             String[] blockInfo = blockName.split("[|]");
 
             Material blockMaterial = Material.matchMaterial(blockInfo[0]);

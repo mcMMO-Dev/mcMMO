@@ -32,6 +32,11 @@ public class CustomEntityConfig extends ConfigLoader {
 
     @Override
     protected void loadKeys() {
+        if (config.getConfigurationSection("Hostile") != null) {
+            backup();
+            return;
+        }
+
         for (String entityName : config.getKeys(false)) {
             Class<?> clazz = null;
             String className = config.getString(entityName + ".Class", "");

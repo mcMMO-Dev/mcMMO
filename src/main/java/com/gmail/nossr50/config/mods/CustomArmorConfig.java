@@ -18,6 +18,8 @@ import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 public class CustomArmorConfig extends ConfigLoader {
     private static CustomArmorConfig instance;
 
+    private boolean needsUpdate = false;
+
     private List<Repairable> repairables;
 
     private List<Material> customBoots       = new ArrayList<Material>();
@@ -50,10 +52,17 @@ public class CustomArmorConfig extends ConfigLoader {
     protected void loadKeys() {
         repairables = new ArrayList<Repairable>();
 
-        loadArmor("Boots", customBoots);
-        loadArmor("Chestplates", customChestplates);
-        loadArmor("Helmets", customHelmets);
-        loadArmor("Leggings", customLeggings);
+        while (!needsUpdate) {
+            loadArmor("Boots", customBoots);
+            loadArmor("Chestplates", customChestplates);
+            loadArmor("Helmets", customHelmets);
+            loadArmor("Leggings", customLeggings);
+        }
+
+        if (needsUpdate) {
+            needsUpdate = false;
+            backup();
+        }
     }
 
     private void loadArmor(String armorType, List<Material> materialList) {
@@ -66,6 +75,11 @@ public class CustomArmorConfig extends ConfigLoader {
         Set<String> armorConfigSet = armorSection.getKeys(false);
 
         for (String armorName : armorConfigSet) {
+            if (config.contains(armorType + "." + armorName + "." + ".ID")) {
+                needsUpdate = true;
+                return;
+            }
+
             Material armorMaterial = Material.matchMaterial(armorName);
 
             if (armorMaterial == null) {

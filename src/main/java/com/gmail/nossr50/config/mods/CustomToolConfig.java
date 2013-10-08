@@ -19,6 +19,9 @@ import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 
 public class CustomToolConfig extends ConfigLoader {
     private static CustomToolConfig instance;
+
+    private boolean needsUpdate = false;
+
     private List<Repairable> repairables;
 
     private List<Material> customAxes     = new ArrayList<Material>();
@@ -55,12 +58,19 @@ public class CustomToolConfig extends ConfigLoader {
     protected void loadKeys() {
         repairables = new ArrayList<Repairable>();
 
-        loadTool("Axes", customAxes);
-        loadTool("Bows", customBows);
-        loadTool("Hoes", customHoes);
-        loadTool("Pickaxes", customPickaxes);
-        loadTool("Shovels", customShovels);
-        loadTool("Swords", customSwords);
+        while (!needsUpdate) {
+            loadTool("Axes", customAxes);
+            loadTool("Bows", customBows);
+            loadTool("Hoes", customHoes);
+            loadTool("Pickaxes", customPickaxes);
+            loadTool("Shovels", customShovels);
+            loadTool("Swords", customSwords);
+        }
+
+        if (needsUpdate) {
+            needsUpdate = false;
+            backup();
+        }
     }
 
     private void loadTool(String toolType, List<Material> materialList) {
@@ -73,6 +83,11 @@ public class CustomToolConfig extends ConfigLoader {
         Set<String> toolConfigSet = toolSection.getKeys(false);
 
         for (String toolName : toolConfigSet) {
+            if (config.contains(toolType + "." + toolName + "." + ".ID")) {
+                needsUpdate = true;
+                return;
+            }
+
             Material toolMaterial = Material.matchMaterial(toolName);
 
             if (toolMaterial == null) {
