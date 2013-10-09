@@ -109,8 +109,16 @@ public enum SkillType {
         return Config.getInstance().getHardcoreStatLossEnabled(this);
     }
 
+    public void setHardcoreStatLossEnabled(boolean enable) {
+        Config.getInstance().setHardcoreStatLossEnabled(this, enable);
+    }
+
     public boolean getHardcoreVampirismEnabled() {
         return Config.getInstance().getHardcoreVampirismEnabled(this);
+    }
+
+    public void setHardcoreVampirismEnabled(boolean enable) {
+        Config.getInstance().setHardcoreVampirismEnabled(this, enable);
     }
 
     public ToolType getTool() {

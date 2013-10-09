@@ -51,11 +51,11 @@ public class HardcoreCommand extends HardcoreModeCommand {
     private void toggle(boolean enable) {
         if (skill.equalsIgnoreCase("ALL")) {
             for (SkillType skillType : SkillType.nonChildSkills()) {
-                Config.getInstance().setHardcoreStatLossEnabled(skillType, enable);
+                skillType.setHardcoreStatLossEnabled(enable);
             }
         }
         else {
-            Config.getInstance().setHardcoreStatLossEnabled(SkillType.getSkill(skill), enable);
+            SkillType.getSkill(skill).setHardcoreStatLossEnabled(enable);
         }
 
         mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), skill));
