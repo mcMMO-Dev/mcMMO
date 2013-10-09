@@ -10,7 +10,7 @@ public class DatabaseManagerFactory {
     public static DatabaseManager getDatabaseManager() {
         if (customManager != null) {
             try {
-                return createCustomDatabaseManager(customManager);
+                return createDefaultCustomDatabaseManager();
             }
             catch (Exception e) {
                 mcMMO.p.debug("Could not create custom database manager");
@@ -63,13 +63,24 @@ public class DatabaseManagerFactory {
             case SQL:
                 return new SQLDatabaseManager();
 
+            case CUSTOM:
+                try {
+                    return createDefaultCustomDatabaseManager();
+                } catch (Throwable e) {
+                    e.printStackTrace();
+
+                }
+
             default:
                 return null;
         }
     }
 
-    //TODO: Why is clazz never used here?
+    public static DatabaseManager createDefaultCustomDatabaseManager() throws Throwable {
+        return customManager.getConstructor((Class<?>) null).newInstance((Object[]) null);
+    }
+
     public static DatabaseManager createCustomDatabaseManager(Class<? extends DatabaseManager> clazz) throws Throwable {
-        return customManager.getConstructor((Class<?>) clazz).newInstance((Object[]) null);
+        return clazz.getConstructor((Class<?>) null).newInstance((Object[]) null);
     }
 }
