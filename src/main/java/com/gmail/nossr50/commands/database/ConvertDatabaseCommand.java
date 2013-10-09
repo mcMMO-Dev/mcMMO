@@ -22,7 +22,7 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                 DatabaseType previousType = DatabaseType.getDatabaseType(args[1]);
                 DatabaseType newType = mcMMO.getDatabaseManager().getDatabaseType();
 
-                if ((newType == DatabaseType.CUSTOM && DatabaseManagerFactory.getCustomDatabaseManagerClass().getSimpleName().equalsIgnoreCase(args[1])) || previousType == newType) {
+                if (previousType == newType || (newType == DatabaseType.CUSTOM && DatabaseManagerFactory.getCustomDatabaseManagerClass().getSimpleName().equalsIgnoreCase(args[1]))) {
                     sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.Same", newType.toString()));
                     return true;
                 }
@@ -39,17 +39,12 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                             sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.InvalidType", args[1]));
                             return true;
                         }
-                    }
-                    catch (Exception e) {
-                        sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.InvalidType", args[1]));
-                        return true;
-                    }
 
-                    try {
                         oldDatabase = DatabaseManagerFactory.createCustomDatabaseManager((Class<? extends DatabaseManager>) clazz);
                     }
-                    catch (Throwable t) {
-                        sender.sendMessage("An error occurred during the conversion process."); // TODO: Localize
+                    catch (Throwable e) {
+                        e.printStackTrace();
+                        sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.InvalidType", args[1]));
                         return true;
                     }
                 }
