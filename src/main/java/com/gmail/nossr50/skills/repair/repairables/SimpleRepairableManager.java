@@ -10,11 +10,11 @@ import org.bukkit.inventory.ItemStack;
 public class SimpleRepairableManager implements RepairableManager {
     private HashMap<Material, Repairable> repairables;
 
-    protected SimpleRepairableManager() {
+    public SimpleRepairableManager() {
         this(55);
     }
 
-    protected SimpleRepairableManager(int repairablesSize) {
+    public SimpleRepairableManager(int repairablesSize) {
         this.repairables = new HashMap<Material, Repairable>(repairablesSize);
     }
 
