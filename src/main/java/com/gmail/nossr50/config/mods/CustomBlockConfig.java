@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.ConfigLoader;
@@ -92,27 +91,6 @@ public class CustomBlockConfig extends ConfigLoader {
 
             int xp = config.getInt(skillType + "." + blockName + ".XP_Gain");
 
-            boolean shouldDropItem = config.getBoolean(skillType + "." + blockName + ".Drop_Item");
-            Material dropMaterial = Material.matchMaterial(config.getString(skillType + "." + blockName + ".Drop_Item_Name"));
-
-            if (shouldDropItem && dropMaterial == null) {
-                plugin.getLogger().warning("Incomplete item drop information. This block will drop itself. - " + blockInfo[0]);
-                shouldDropItem = false;
-            }
-
-            ItemStack itemDrop;
-
-            if (shouldDropItem) {
-                byte dropData = (byte) config.getInt(skillType + "." + blockName + ".Drop_Item_Data_Value");
-                itemDrop = (new MaterialData(dropMaterial, dropData)).toItemStack(1);
-            }
-            else {
-                itemDrop = blockMaterialData.toItemStack(1);
-            }
-
-            int minimumDropAmount = config.getInt(skillType + "." + blockName + ".Min_Drop_Item_Amount", 1);
-            int maxiumDropAmount = config.getInt(skillType + "." + blockName + ".Max_Drop_Item_Amount", 1);
-
             if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
                 customOres.add(blockMaterialData);
             }
@@ -126,7 +104,7 @@ public class CustomBlockConfig extends ConfigLoader {
                 }
             }
 
-            customBlockMap.put(blockMaterialData, new CustomBlock(minimumDropAmount, maxiumDropAmount, itemDrop, xp));
+            customBlockMap.put(blockMaterialData, new CustomBlock(xp, config.getBoolean(skillType + "." + blockName + ".Double_Drops_Enabled")));
         }
     }
 

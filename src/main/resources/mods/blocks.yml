@@ -4,18 +4,10 @@
 Excavation:
     Block_1|0:
         XP_Gain: 99
-        Drop_Item: false
-        Drop_Item_Name: BLOCK_DROP
-        Drop_Item_Data_Value: 0
-        Min_Drop_Item_Amount: 1
-        Max_Drop_Item_Amount: 1
+        Double_Drops_Enabled: true
     Block_2|0:
         XP_Gain: 99
-        Drop_Item: false
-        Drop_Item_Name: BLOCK_DROP
-        Drop_Item_Data_Value: 0
-        Min_Drop_Item_Amount: 1
-        Max_Drop_Item_Amount: 1
+        Double_Drops_Enabled: true
 
 #
 #  Settings for Custom Herbalism Blocks
@@ -23,18 +15,10 @@ Excavation:
 Herbalism:
     Block_1|0:
         XP_Gain: 99
-        Drop_Item: false
-        Drop_Item_Name: BLOCK_DROP
-        Drop_Item_Data_Value: 0
-        Min_Drop_Item_Amount: 1
-        Max_Drop_Item_Amount: 1
+        Double_Drops_Enabled: true
     Block_2|0:
         XP_Gain: 99
-        Drop_Item: false
-        Drop_Item_Name: BLOCK_DROP
-        Drop_Item_Data_Value: 0
-        Min_Drop_Item_Amount: 1
-        Max_Drop_Item_Amount: 1
+        Double_Drops_Enabled: true
 
 #
 #  Settings for Custom Mining Blocks
@@ -42,20 +26,12 @@ Herbalism:
 Mining:
     Block_1|0:
         XP_Gain: 99
+        Double_Drops_Enabled: true
         Is_Ore: true
-        Drop_Item: false
-        Drop_Item_Name: BLOCK_DROP
-        Drop_Item_Data_Value: 0
-        Min_Drop_Item_Amount: 1
-        Max_Drop_Item_Amount: 1
     Block_2|0:
         XP_Gain: 99
+        Double_Drops_Enabled: true
         Is_Ore: true
-        Drop_Item: false
-        Drop_Item_Name: BLOCK_DROP
-        Drop_Item_Data_Value: 0
-        Min_Drop_Item_Amount: 1
-        Max_Drop_Item_Amount: 1
 
 #
 #  Settings for Custom Woodcutting Blocks
@@ -63,20 +39,12 @@ Mining:
 Woodcutting:
     Block_1|0:
         XP_Gain: 99
+        Double_Drops_Enabled: true
         Is_Log: true
-        Drop_Item: false
-        Drop_Item_Name: BLOCK_DROP
-        Drop_Item_Data_Value: 0
-        Min_Drop_Item_Amount: 1
-        Max_Drop_Item_Amount: 1
     Block_2|0:
         XP_Gain: 99
+        Double_Drops_Enabled: true
         Is_Log: true
-        Drop_Item: false
-        Drop_Item_Name: BLOCK_DROP
-        Drop_Item_Data_Value: 0
-        Min_Drop_Item_Amount: 1
-        Max_Drop_Item_Amount: 1
 
 #
 #  Settings for Custom Ability Blocks

@@ -20,6 +20,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
+import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -135,10 +136,10 @@ public class HerbalismManager extends SkillManager {
         boolean greenTerra = mcMMOPlayer.getAbilityMode(skill.getAbility());
 
         if (ModUtils.isCustomHerbalismBlock(blockState)) {
-            xp = ModUtils.getCustomBlock(blockState).getXpGain();
+            CustomBlock customBlock = ModUtils.getCustomBlock(blockState);
+            xp = customBlock.getXpGain();
 
-            // XXX: Add double drop check to blocks.yml
-            if (Permissions.doubleDrops(player, skill)) {
+            if (Permissions.doubleDrops(player, skill) && customBlock.isDoubleDropEnabled()) {
                 drops = blockState.getBlock().getDrops();
             }
         }

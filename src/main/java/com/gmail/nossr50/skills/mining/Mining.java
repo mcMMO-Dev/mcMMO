@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.mining;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.inventory.ItemStack;
@@ -8,7 +7,6 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
@@ -88,10 +86,7 @@ public class Mining {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     protected static void handleMiningDrops(BlockState blockState) {
-        Material blockType = blockState.getType();
-        Location location = blockState.getLocation();
-
-        switch (blockType) {
+        switch (blockState.getType()) {
             case COAL_ORE:
             case DIAMOND_ORE:
             case EMERALD_ORE:
@@ -104,36 +99,21 @@ public class Mining {
             case MOSSY_COBBLESTONE:
             case NETHERRACK:
             case OBSIDIAN:
+            case REDSTONE_ORE:
             case SANDSTONE:
             case QUARTZ_ORE:
-                for (ItemStack drop : blockState.getBlock().getDrops()) {
-                    Misc.dropItem(location, drop);
-                }
+                Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
                 return;
 
             case GLOWING_REDSTONE_ORE:
-            case REDSTONE_ORE:
                 if (Config.getInstance().getDoubleDropsEnabled(SkillType.MINING, Material.REDSTONE_ORE)) {
-                    for (ItemStack drop : blockState.getBlock().getDrops()) {
-                        Misc.dropItem(location, drop);
-                    }
+                    Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
                 }
                 return;
+
             default:
                 if (ModUtils.isCustomMiningBlock(blockState)) {
-                    CustomBlock customBlock = ModUtils.getCustomBlock(blockState);
-                    int minimumDropAmount = customBlock.getMinimumDropAmount();
-                    int maximumDropAmount = customBlock.getMaximumDropAmount();
-
-                    ItemStack dropItem = customBlock.getItemDrop();
-
-                    if (minimumDropAmount != maximumDropAmount) {
-                        Misc.dropItems(location, dropItem, minimumDropAmount);
-                        Misc.randomDropItems(location, dropItem, maximumDropAmount - minimumDropAmount);
-                    }
-                    else {
-                        Misc.dropItems(location, dropItem, minimumDropAmount);
-                    }
+                    Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
                 }
                 return;
         }

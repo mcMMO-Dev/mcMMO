@@ -138,7 +138,7 @@ public final class Misc {
      * @param is The item to drop
      * @param chance The percentage chance for the item to drop
      */
-    public static void randomDropItem(Location location, ItemStack is, int chance) {
+    public static void randomDropItem(Location location, ItemStack is, double chance) {
         if (random.nextInt(100) < chance) {
             dropItem(location, is);
         }
@@ -157,6 +157,12 @@ public final class Misc {
         if (dropCount > 0) {
             is.setAmount(dropCount);
             dropItem(location, is);
+        }
+    }
+
+    public static void randomDropItems(Location location, Collection<ItemStack> drops, double chance) {
+        for (ItemStack item : drops) {
+            randomDropItem(location, item, chance);
         }
     }
 

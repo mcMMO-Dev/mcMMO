@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.smelting;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -26,6 +25,10 @@ public class SmeltingManager extends SkillManager {
 
     public boolean canUseFluxMining(BlockState blockState) {
         return getSkillLevel() >= Smelting.fluxMiningUnlockLevel && BlockUtils.affectedByFluxMining(blockState) && Permissions.fluxMining(getPlayer()) && !mcMMO.getPlaceStore().isTrue(blockState);
+    }
+
+    public boolean isDoubleDropSuccessful() {
+        return Permissions.doubleDrops(getPlayer(), skill) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel);
     }
 
     /**
@@ -57,13 +60,7 @@ public class SmeltingManager extends SkillManager {
                 return false;
             }
 
-            Location location = blockState.getLocation();
-
-            Misc.dropItem(location, item);
-
-            if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel)) {
-                Misc.dropItem(location, item);
-            }
+            Misc.dropItems(blockState.getLocation(), item, isDoubleDropSuccessful() ? 2 : 1);
 
             blockState.setType(Material.AIR);
             player.sendMessage(LocaleLoader.getString("Smelting.FluxMining.Success"));

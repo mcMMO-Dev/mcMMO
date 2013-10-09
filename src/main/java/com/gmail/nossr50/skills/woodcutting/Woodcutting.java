@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills.woodcutting;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.enchantments.Enchantment;
@@ -14,7 +13,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
@@ -87,46 +85,32 @@ public final class Woodcutting {
      * @param blockState Block being broken
      */
     protected static void checkForDoubleDrop(BlockState blockState) {
-        if (ModUtils.isCustomLogBlock(blockState)) {
-            CustomBlock customBlock = ModUtils.getCustomBlock(blockState);
-            int minimumDropAmount = customBlock.getMinimumDropAmount();
-            int maximumDropAmount = customBlock.getMaximumDropAmount();
-            Location location = blockState.getLocation();
-            ItemStack item = customBlock.getItemDrop();
-
-            Misc.dropItems(location, item, minimumDropAmount);
-
-            if (minimumDropAmount != maximumDropAmount) {
-                Misc.randomDropItems(location, item, maximumDropAmount - minimumDropAmount);
-            }
+        if (ModUtils.isCustomLogBlock(blockState) && ModUtils.getCustomBlock(blockState).isDoubleDropEnabled()) {
+            Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
         }
         else {
-            Location location = blockState.getLocation();
-            Tree tree = (Tree) blockState.getData();
-            ItemStack item = tree.toItemStack(1);
-
-            switch (tree.getSpecies()) {
+            switch (((Tree) blockState.getData()).getSpecies()) {
                 case GENERIC:
                     if (Config.getInstance().getOakDoubleDropsEnabled()) {
-                        Misc.dropItem(location, item);
+                        Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
                     }
                     return;
 
                 case REDWOOD:
                     if (Config.getInstance().getSpruceDoubleDropsEnabled()) {
-                        Misc.dropItem(location, item);
+                        Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
                     }
                     return;
 
                 case BIRCH:
                     if (Config.getInstance().getBirchDoubleDropsEnabled()) {
-                        Misc.dropItem(location, item);
+                        Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
                     }
                     return;
 
                 case JUNGLE:
                     if (Config.getInstance().getJungleDoubleDropsEnabled()) {
-                        Misc.dropItem(location, item);
+                        Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
                     }
                     return;
 

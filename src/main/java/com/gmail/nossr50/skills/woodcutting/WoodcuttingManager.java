@@ -3,8 +3,8 @@ package com.gmail.nossr50.skills.woodcutting;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -127,7 +127,9 @@ public class WoodcuttingManager extends SkillManager {
         int xp = 0;
 
         for (BlockState blockState : treeFellerBlocks) {
-            if (!SkillUtils.blockBreakSimulate(blockState.getBlock(), player, true)) {
+            Block block = blockState.getBlock();
+
+            if (!SkillUtils.blockBreakSimulate(block, player, true)) {
                 break; // TODO: Shouldn't we use continue instead?
             }
 
@@ -135,10 +137,7 @@ public class WoodcuttingManager extends SkillManager {
 
             if (material == Material.HUGE_MUSHROOM_1 || material == Material.HUGE_MUSHROOM_2) {
                 xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
-
-                for (ItemStack drop : blockState.getBlock().getDrops()) {
-                    Misc.dropItem(blockState.getLocation(), drop);
-                }
+                Misc.dropItems(blockState.getLocation(), block.getDrops());
             }
             else if (ModUtils.isCustomLogBlock(blockState)) {
                 if (canGetDoubleDrops()) {
@@ -147,19 +146,11 @@ public class WoodcuttingManager extends SkillManager {
 
                 CustomBlock customBlock = ModUtils.getCustomBlock(blockState);
                 xp = customBlock.getXpGain();
-                int minimumDropAmount = customBlock.getMinimumDropAmount();
-                int maximumDropAmount = customBlock.getMaximumDropAmount();
-                Location location = blockState.getLocation();
-                ItemStack item = customBlock.getItemDrop();;
 
-                Misc.dropItems(location, item, minimumDropAmount);
-
-                if (minimumDropAmount < maximumDropAmount) {
-                    Misc.randomDropItems(location, item, maximumDropAmount - minimumDropAmount);
-                }
+                Misc.dropItems(blockState.getLocation(), block.getDrops());
             }
             else if (ModUtils.isCustomLeafBlock(blockState)) {
-                Misc.randomDropItem(blockState.getLocation(), ModUtils.getCustomBlock(blockState).getItemDrop(), 10);
+                Misc.randomDropItems(blockState.getLocation(), block.getDrops(), 10.0);
             }
             else {
                 Tree tree = (Tree) blockState.getData();
@@ -171,11 +162,11 @@ public class WoodcuttingManager extends SkillManager {
                             Woodcutting.checkForDoubleDrop(blockState);
                         }
                         xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
-                        Misc.dropItem(blockState.getLocation(), tree.toItemStack(1));
+                        Misc.dropItems(blockState.getLocation(), block.getDrops());
                         break;
 
                     case LEAVES:
-                        Misc.randomDropItem(blockState.getLocation(), new ItemStack(Material.SAPLING, 1, tree.getSpecies().getData()), 10);
+                        Misc.randomDropItems(blockState.getLocation(), block.getDrops(), 10.0);
                         break;
 
                     default:
