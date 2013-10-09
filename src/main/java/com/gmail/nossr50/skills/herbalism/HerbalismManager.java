@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.herbalism;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.CropState;
@@ -17,8 +18,8 @@ import org.bukkit.material.NetherWarts;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
-import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -116,6 +117,7 @@ public class HerbalismManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public void herbalismBlockCheck(BlockState blockState) {
+        Player player = getPlayer();
         Material material = blockState.getType();
         boolean oneBlockPlant = !(material == Material.CACTUS || material == Material.SUGAR_CANE_BLOCK);
 
@@ -127,21 +129,28 @@ public class HerbalismManager extends SkillManager {
             return;
         }
 
-        HerbalismBlock herbalismBlock = HerbalismBlock.getHerbalismBlock(material);
-        ItemStack drop = null;
+        Collection<ItemStack> drops = null;
         int amount = 1;
         int xp = 0;
         boolean greenTerra = mcMMOPlayer.getAbilityMode(skill.getAbility());
 
-        if (herbalismBlock != null) {
-            if (herbalismBlock.hasGreenThumbPermission(getPlayer())) {
+        if (ModUtils.isCustomHerbalismBlock(blockState)) {
+            xp = ModUtils.getCustomBlock(blockState).getXpGain();
+
+            // XXX: Add double drop check to blocks.yml
+            if (Permissions.doubleDrops(player, skill)) {
+                drops = blockState.getBlock().getDrops();
+            }
+        }
+        else {
+            if (Permissions.greenThumbPlant(player, material)) {
                 processGreenThumbPlants(blockState, greenTerra);
             }
 
-            xp = herbalismBlock.getXpGain();
+            xp = ExperienceConfig.getInstance().getXp(skill, material);
 
-            if (herbalismBlock.canDoubleDrop() && Permissions.doubleDrops(getPlayer(), skill)) {
-                drop = herbalismBlock.getDropItem();
+            if (Config.getInstance().getDoubleDropsEnabled(skill, material) && Permissions.doubleDrops(player, skill)) {
+                drops = blockState.getBlock().getDrops();
             }
 
             if (!oneBlockPlant) {
@@ -149,27 +158,18 @@ public class HerbalismManager extends SkillManager {
                 xp *= amount;
             }
         }
-        else {
-            CustomBlock customBlock = ModUtils.getCustomBlock(blockState);
-            xp = customBlock.getXpGain();
-
-            if (Permissions.doubleDrops(getPlayer(), skill)) {
-                int minimumDropAmount = customBlock.getMinimumDropAmount();
-                int maximumDropAmount = customBlock.getMaximumDropAmount();
-                drop = customBlock.getItemDrop();
-                amount = Misc.getRandom().nextInt(maximumDropAmount - minimumDropAmount + 1) + minimumDropAmount;
-            }
-        }
 
         applyXpGain(xp);
 
-        if (drop == null) {
+        if (drops == null) {
             return;
         }
 
         for (int i = greenTerra ? 2 : 1; i != 0; i--) {
             if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Herbalism.doubleDropsMaxChance, Herbalism.doubleDropsMaxLevel)) {
-                Misc.dropItems(blockState.getLocation(), drop, amount);
+                for (ItemStack item : drops) {
+                    Misc.dropItems(blockState.getLocation(), item, amount);
+                }
             }
         }
     }
@@ -279,7 +279,28 @@ public class HerbalismManager extends SkillManager {
     private void processGreenThumbPlants(BlockState blockState, boolean greenTerra) {
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
-        ItemStack seed = (blockState.getType() == Material.CROPS) ? new ItemStack(Material.SEEDS) : HerbalismBlock.getHerbalismBlock(blockState.getType()).getDropItem();
+        ItemStack seed = null;
+
+        switch (blockState.getType()) {
+            case CARROT:
+                seed = new ItemStack(Material.CARROT_ITEM);
+                break;
+
+            case CROPS:
+                seed = new ItemStack(Material.SEEDS);
+                break;
+
+            case NETHER_WARTS:
+                seed = new ItemStack(Material.NETHER_STALK);
+                break;
+
+            case POTATO:
+                seed = new ItemStack(Material.POTATO_ITEM);
+                break;
+
+            default:
+                break;
+        }
 
         if (!playerInventory.containsAtLeast(seed, 1)) {
             return;
