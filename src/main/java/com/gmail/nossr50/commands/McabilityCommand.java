@@ -24,6 +24,6 @@ public class McabilityCommand extends ToggleCommand {
 
     @Override
     protected void sendSuccessMessage(CommandSender sender) {
-        sender.sendMessage("Ability use has been toggled for " + player.getName()); // TODO: Localize
+        sender.sendMessage(LocaleLoader.getString("Commands.Ability.Toggle"));
     }
 }

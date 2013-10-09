@@ -189,11 +189,7 @@ public final class PartyManager {
     public static Party getParty(Player player) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (mcMMOPlayer != null) {
-            return mcMMOPlayer.getParty();
-        }
-
-        return getPlayerParty(player.getName());
+        return mcMMOPlayer.getParty();
     }
 
     /**

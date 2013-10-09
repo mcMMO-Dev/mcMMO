@@ -24,6 +24,6 @@ public class McgodCommand extends ToggleCommand {
 
     @Override
     protected void sendSuccessMessage(CommandSender sender) {
-        sender.sendMessage("God mode has been toggled for " + player.getName()); // TODO: Localize
+        sender.sendMessage(LocaleLoader.getString("Commands.GodMode.Success"));
     }
 }
