@@ -10,7 +10,7 @@ public class DatabaseManagerFactory {
     public static DatabaseManager getDatabaseManager() {
         if (customManager != null) {
             try {
-                return createCustomDatabaseManager(customManager);
+                return createDefaultCustomDatabaseManager();
             }
             catch (Exception e) {
                 mcMMO.p.debug("Could not create custom database manager");
@@ -29,17 +29,18 @@ public class DatabaseManagerFactory {
     /**
      * Sets the custom DatabaseManager class for mcMMO to use. This should be
      * called prior to mcMMO enabling.
-     * <p>
+     * <p/>
      * The provided class must have an empty constructor, which is the one
      * that will be used.
-     * <p>
+     * <p/>
      * This method is intended for API use, but it should not be considered
      * stable. This method is subject to change and/or removal in future
      * versions.
      *
      * @param clazz the DatabaseManager class to use
+     *
      * @throws IllegalArgumentException if the provided class does not have
-     *             an empty constructor
+     *                                  an empty constructor
      */
     public static void setCustomDatabaseManagerClass(Class<? extends DatabaseManager> clazz) {
         try {
@@ -63,13 +64,24 @@ public class DatabaseManagerFactory {
             case SQL:
                 return new SQLDatabaseManager();
 
+            case CUSTOM:
+                try {
+                    return createDefaultCustomDatabaseManager();
+                }
+                catch (Throwable e) {
+                    e.printStackTrace();
+                }
+
             default:
                 return null;
         }
     }
 
-    //TODO: Why is clazz never used here?
+    public static DatabaseManager createDefaultCustomDatabaseManager() throws Throwable {
+        return customManager.getConstructor((Class<?>) null).newInstance((Object[]) null);
+    }
+
     public static DatabaseManager createCustomDatabaseManager(Class<? extends DatabaseManager> clazz) throws Throwable {
-        return customManager.getConstructor((Class<?>) clazz).newInstance((Object[]) null);
+        return clazz.getConstructor((Class<?>) null).newInstance((Object[]) null);
     }
 }
