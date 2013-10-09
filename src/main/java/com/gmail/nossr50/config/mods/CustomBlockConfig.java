@@ -67,7 +67,7 @@ public class CustomBlockConfig extends ConfigLoader {
         Set<String> skillConfigSet = skillSection.getKeys(false);
 
         for (String blockName : skillConfigSet) {
-            if (config.contains(skillType + "." + blockName + "." + ".ID")) {
+            if (config.contains(skillType + "." + blockName + "." + ".Drop_Item")) {
                 needsUpdate = true;
                 return;
             }
