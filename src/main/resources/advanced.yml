@@ -159,6 +159,14 @@ Skills:
         IceFishing:
             # UnlockLevel: Fishing level when the Ice Fishing ability unlocks
             UnlockLevel: 50
+
+        MasterAngler:
+            # UnlockLevel: Fishing level when the Master Angler ability unlocks
+            # BoatMultiplier: Catch rate is multiplied by this modifier
+            # BiomeModifier: Catch rate is multiplied by this modifier
+            UnlockLevel: 125
+            BoatModifier: 2.0
+            BiomeModifier: 2.0
     #
     #  Settings for Herbalism
     ###

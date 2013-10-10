@@ -52,6 +52,7 @@ Version 1.4.07-dev
  ! Changed default XP multiplier for repairing shears
  ! Changed "Shake" drops for Witches. They no longer drop water bottles, since they no longer drop them in Vanilla.
  ! Changed various values to double in advanced.yml for the sake of consistency.
+ ! Nerfed Fishing "Master Angler" (removed skill level based bonus) and also made the modifiers configurable
  ! Nerfed Archery damage to eliminate constant one-hit kills.
  ! Changed the way Repair hands out XP, also added config options to control Repair XP
  ! Changed Swords "Counter Attack" ability from passive to active. Blocking is required to activate.

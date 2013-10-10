@@ -80,7 +80,7 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean canMasterAngler() {
-        return Permissions.masterAngler(getPlayer());
+        return getSkillLevel() >= AdvancedConfig.getInstance().getMasterAnglerUnlockLevel() && Permissions.masterAngler(getPlayer());
     }
 
     public boolean unleashTheKraken() {
@@ -284,14 +284,14 @@ public class FishingManager extends SkillManager {
     public void masterAngler(Fish hook) {
         Player player = getPlayer();
         Biome biome = player.getLocation().getBlock().getBiome();
-        double biteChance = Math.min(hook.getBiteChance() * Math.max((getSkillLevel() / 200.0), 1.0), 1.0);
+        double biteChance = hook.getBiteChance();
 
         if (biome == Biome.RIVER || biome == Biome.OCEAN) {
-            biteChance = biteChance * 2.0;
+            biteChance = biteChance * AdvancedConfig.getInstance().getMasterAnglerBiomeModifier();
         }
 
         if (player.isInsideVehicle() && player.getVehicle().getType() == EntityType.BOAT) {
-            biteChance = biteChance * 2.0;
+            biteChance = biteChance * AdvancedConfig.getInstance().getMasterAnglerBoatModifier();
         }
 
         hook.setBiteChance(biteChance);

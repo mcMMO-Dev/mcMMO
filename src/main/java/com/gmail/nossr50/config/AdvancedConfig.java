@@ -207,6 +207,18 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Fishing.IceFishing.UnlockLevel should be at least 1!");
         }
 
+        if (getMasterAnglerUnlockLevel() < 1) {
+            reason.add("Skills.Fishing.MasterAngler.UnlockLevel should be at least 1!");
+        }
+
+        if (getMasterAnglerBoatModifier() < 1) {
+            reason.add("Skills.Fishing.MasterAngler.BoatModifier should be at least 1!");
+        }
+
+        if (getMasterAnglerBiomeModifier() < 1) {
+            reason.add("Skills.Fishing.MasterAngler.BiomeModifier should be at least 1!");
+        }
+
         /* HERBALISM */
         if (getFarmerDietRankChange() < 1) {
             reason.add("Skills.Herbalism.FarmersDiet.RankChange should be at least 1!");
@@ -654,6 +666,10 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getFishermanDietRankChange() { return config.getInt("Skills.Fishing.FishermansDiet.RankChange", 200); }
 
     public int getIceFishingUnlockLevel() { return config.getInt("Skills.Fishing.IceFishing.UnlockLevel", 50); }
+
+    public int getMasterAnglerUnlockLevel() {return config.getInt("Skills.Fishing.MasterAngler.UnlockLevel", 125); }
+    public double getMasterAnglerBoatModifier() {return config.getDouble("Skills.Fishing.MasterAngler.BoatModifier", 2.0); }
+    public double getMasterAnglerBiomeModifier() {return config.getDouble("Skills.Fishing.MasterAngler.BiomeModifier", 2.0); }
 
     /* HERBALISM */
     public int getFarmerDietRankChange() { return config.getInt("Skills.Herbalism.FarmersDiet.RankChange", 200); }

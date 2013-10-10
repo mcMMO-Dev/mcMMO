@@ -82,7 +82,7 @@ public class FishingCommand extends SkillCommand {
 
         // MASTER ANGLER
         if (canMasterAngler) {
-            double rawBiteChance = ((Math.max((skillValue / 200.0), 1.0)) / (isStorming ? 300 : 500));
+            double rawBiteChance = 1.0 / (isStorming ? 300 : 500);
             Biome biome = player.getLocation().getBlock().getBiome();
 
             if (biome == Biome.RIVER || biome == Biome.OCEAN) {
@@ -169,7 +169,14 @@ public class FishingCommand extends SkillCommand {
         }
 
         if (canMasterAngler) {
-            player.sendMessage(LocaleLoader.getString("Fishing.Ability.Chance", biteChance));
+            int unlockLevel = AdvancedConfig.getInstance().getMasterAnglerUnlockLevel();
+
+            if (skillValue < unlockLevel) {
+                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Fishing.Ability.Locked.2", unlockLevel)));
+            }
+            else {
+                player.sendMessage(LocaleLoader.getString("Fishing.Ability.Chance", biteChance));
+            }
         }
 
         if (canShake) {
