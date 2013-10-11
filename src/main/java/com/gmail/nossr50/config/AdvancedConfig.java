@@ -90,7 +90,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         if (getDazeBonusMax() < 1) {
-            reason.add("Skills.Acrobatics.Daze.MaxChance should be at least 1!");
+            reason.add("Skills.Acrobatics.Daze.ChanceMax should be at least 1!");
         }
 
         if (getDazeMaxBonusLevel() < 1) {
@@ -102,7 +102,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         if (getRetrieveChanceMax() < 1) {
-            reason.add("Skills.Acrobatics.Retrieve.MaxBonus should be at least 1!");
+            reason.add("Skills.Acrobatics.Retrieve.ChanceMax should be at least 1!");
         }
 
         if (getRetrieveMaxBonusLevel() < 1) {
@@ -123,7 +123,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         if (getAxesCriticalChance() < 1) {
-            reason.add("Skills.Axes.AxesCritical.MaxChance should be at least 1!");
+            reason.add("Skills.Axes.AxesCritical.ChanceMax should be at least 1!");
         }
 
         if (getAxesCriticalMaxBonusLevel() < 1) {
@@ -384,7 +384,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         if (getSecondSmeltMaxChance() < 1) {
-            reason.add("Skills.Smelting.SecondSmelt.MaxBonusChance should be at least 1!");
+            reason.add("Skills.Smelting.SecondSmelt.ChanceMax should be at least 1!");
         }
 
         if (getFluxMiningUnlockLevel() < 1) {
@@ -619,11 +619,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getSkillShotBonusMax() { return config.getDouble("Skills.Archery.SkillShot.MaxBonus", 2.0D); }
     public double getSkillShotDamageMax() { return config.getDouble("Skills.Archery.SkillShot.MaxDamage", 9.0D); }
 
-    public double getDazeBonusMax() { return config.getDouble("Skills.Archery.Daze.MaxChance", 50.0D); }
+    public double getDazeBonusMax() { return config.getDouble("Skills.Archery.Daze.ChanceMax", 50.0D); }
     public int getDazeMaxBonusLevel() { return config.getInt("Skills.Archery.Daze.MaxBonusLevel", 1000); }
     public double getDazeModifier() { return config.getDouble("Skills.Archery.Daze.BonusDamage", 4.0D); }
 
-    public double getRetrieveChanceMax() { return config.getDouble("Skills.Archery.Retrieve.MaxBonus", 100.0D); }
+    public double getRetrieveChanceMax() { return config.getDouble("Skills.Archery.Retrieve.ChanceMax", 100.0D); }
     public int getRetrieveMaxBonusLevel() { return config.getInt("Skills.Archery.Retrieve.MaxBonusLevel", 1000); }
 
     public double getForceMultiplier() { return config.getDouble("Skills.Archery.ForceMultiplier", 2.0D); }
@@ -632,7 +632,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getBonusDamageAxesBonusMax() { return config.getDouble("Skills.Axes.DamageIncrease.MaxBonus", 4.0D); }
     public int getBonusDamageAxesMaxBonusLevel() { return config.getInt("Skills.Axes.DamageIncrease.MaxBonusLevel", 200); }
 
-    public double getAxesCriticalChance() { return config.getDouble("Skills.Axes.AxesCritical.MaxChance", 37.50D); }
+    public double getAxesCriticalChance() { return config.getDouble("Skills.Axes.AxesCritical.ChanceMax", 37.50D); }
     public int getAxesCriticalMaxBonusLevel() { return config.getInt("Skills.Axes.AxesCritical.MaxBonusLevel", 750); }
     public double getAxesCriticalPVPModifier() { return config.getDouble("Skills.Axes.AxesCritical.PVP_Modifier", 1.5D); }
     public double getAxesCriticalPVEModifier() { return config.getDouble("Skills.Axes.AxesCritical.PVE_Modifier", 2.0D); }
@@ -709,7 +709,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getBurnTimeMultiplier() { return config.getDouble("Skills.Smelting.FuelEfficiency.Multiplier", 3.0D); }
 
     public int getSecondSmeltMaxLevel() { return config.getInt("Skills.Smelting.SecondSmelt.MaxBonusLevel", 1000); }
-    public double getSecondSmeltMaxChance() { return config.getDouble("Skills.Smelting.SecondSmelt.MaxBonusChance", 100.0D); }
+    public double getSecondSmeltMaxChance() { return config.getDouble("Skills.Smelting.SecondSmelt.ChanceMax", 100.0D); }
 
     public int getFluxMiningUnlockLevel() { return config.getInt("Skills.Smelting.FluxMining.UnlockLevel", 250); }
     public double getFluxMiningChance() { return config.getDouble("Skills.Smelting.FluxMining.Chance", 33.0D); }

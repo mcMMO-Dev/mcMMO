@@ -25,24 +25,24 @@ Skills:
     ###
     Acrobatics:
         Dodge:
-            # ChanceMax: Maximum chance of dodging when on Dodge_MaxBonusLevel or higher
-            # MaxBonusLevel: On this level or higher, the dodge chance will not go higher than Dodge_ChanceMax
-            # DamageModifer: Dodge damage will be divided by this modifier
+            # ChanceMax: Maximum chance of dodging when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: On this level or higher, the dodge chance will not go higher than <ChanceMax>
+            # DamageModifier: Dodge damage will be divided by this modifier
             ChanceMax: 20.0
             MaxBonusLevel: 800
             DamageModifier: 2.0
 
         Roll:
-            # ChanceMax: Maximum chance of rolling when on Roll_MaxBonusLevel or higher
-            # MaxBonusLevel: On this level or higher, the roll chance will not go higher than Roll_ChanceMax
+            # ChanceMax: Maximum chance of rolling when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: On this level or higher, the roll chance will not go higher than <ChanceMax>
             # DamageThreshold: The max damage a player can negate with a roll
             ChanceMax: 100.0
             MaxBonusLevel: 1000
             DamageThreshold: 7.0
 
         GracefulRoll:
-            # ChanceMax: Maximum chance of graceful rolling when on GracefulRoll_MaxBonusLevel or higher
-            # MaxBonusLevel: On this level or higher, the graceful roll chance will not go higher than GracefulRoll_ChanceMax
+            # ChanceMax: Maximum chance of graceful rolling when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: On this level or higher, the graceful roll chance will not go higher than <ChanceMax>
             # DamageThreshold: The max damage a player can negate with a graceful roll
             ChanceMax: 100.0
             MaxBonusLevel: 500
@@ -61,17 +61,17 @@ Skills:
             MaxDamage: 9.0
 
         Daze:
-            # MaxChance: Maximum chance of causing daze to opponents
-            # MaxBonusLevel: Maximum bonus level of Daze, when a player reaches this level his chance of causing a daze will be <Daze_MaxChance>
+            # ChanceMax: Maximum chance of causing daze to opponents when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: Maximum bonus level of Daze, when a player reaches this level his chance of causing a daze will be <ChanceMax>
             # Modifier: Extra damage for arrows that cause a daze (2 damage = 1 heart)
-            MaxChance: 50.0
+            ChanceMax: 50.0
             MaxBonusLevel: 1000
             Modifier: 4.0
 
         Retrieve:
-            # MaxChance: Maximum chance or retrieving arrows
-            # MaxBonusLevel: Maximum bonus level for Arrow retrieval, at this level the chance of retrieving arrows from mobs is <MaxBonus>
-            MaxChance: 100.0
+            # ChanceMax: Maximum chance of retrieving arrows when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: Maximum bonus level for Arrow retrieval, at this level the chance of retrieving arrows from mobs is <ChanceMax>
+            ChanceMax: 100.0
             MaxBonusLevel: 1000
 
         # ForceMultiplier: Multiply the force of the bow by this for an XP boost.
@@ -81,15 +81,15 @@ Skills:
     ###
     Axes:
         DamageIncrease:
-            # MaxBonus: Maximum bonus damage
-            # MaxBonusLevel: Level where the maximum bonus is reached
+            # MaxBonus: Maximum bonus damage when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: Level where <MaxBonus> is reached
             MaxBonus: 4.0
             MaxBonusLevel: 200
 
         AxesCritical:
-            # MaxChance: Maximum chance of causing a critical hit
-            # MaxBonusLevel: Level where the maximum chance of causing critical hits is reached
-            MaxChance: 37.50
+            # ChanceMax: Maximum chance of causing a critical hit when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: Level where <ChanceMax> of causing critical hits is reached
+            ChanceMax: 37.50
             MaxBonusLevel: 750
 
         AxesCritical:
@@ -98,7 +98,7 @@ Skills:
             PVE_Modifier: 2.0
 
         GreaterImpact:
-            # Chance: Chance of hitting with GreaterImpact, knocksbacks mobs
+            # Chance: Chance of hitting with GreaterImpact, mobs are knocked backwards when successful
             # KnockbackModifier: Velocity modifier of GreaterImpact hits, this determines how great the knockback is
             # BonusDamage: Extra damage for GreaterImpact hits
             Chance: 25.0
@@ -106,7 +106,7 @@ Skills:
             BonusDamage: 2.0
 
         ArmorImpact:
-            # IncreaseLevel: Every "IncreaseLevel" the durability damage goes up with 1
+            # IncreaseLevel: Every <IncreaseLevel> the durability damage goes up with 1
             # Chance: Chance of hitting with ArmorImpact
             # MaxPercentageDurabilityDamage: Durability damage cap for ArmorImpact, 20% means that you can never destroy a piece of armor in less than 5 hits
             IncreaseLevel: 50
@@ -131,7 +131,7 @@ Skills:
             Rank_7: 700
             Rank_8: 875
 
-        Shake_Chance:
+        ShakeChance:
             Rank_1: 15.0
             Rank_2: 15.0
             Rank_3: 25.0
@@ -172,28 +172,28 @@ Skills:
             RankChange: 200
 
         GreenThumb:
-            # StageChange: Level value when the GreenThumb stage level goes up
-            # ChanceMax: Maximum chance of GreenThumb
-            # MaxBonusLevel: On this level, GreenThumb chance will be ChanceMax
+            # StageChange: Level value when the GreenThumb stage rank goes up
+            # ChanceMax: Maximum chance of GreenThumb when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: On this level, GreenThumb chance will be <ChanceMax>
             StageChange: 200
             ChanceMax: 100.0
             MaxBonusLevel: 1500
 
         DoubleDrops:
-            # ChanceMax: Maximum chance of receiving double drops
-            # MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
+            # ChanceMax: Maximum chance of receiving double drops when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: Level when <ChanceMax> of receiving double drops is reached
             ChanceMax: 100.0
             MaxBonusLevel: 1000
 
         HylianLuck:
-            # ChanceMax: Maximum chance of Hylian Luck
-            # MaxBonusLevel: On this level, Hylian Luck chance will be ChanceMax
+            # ChanceMax: Maximum chance of Hylian Luck when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: On this level, Hylian Luck chance will be <ChanceMax>
             ChanceMax: 10.0
             MaxBonusLevel: 1000
 
-        # ChanceMax: Maximum chance of ShroomThumb
-        # MaxBonusLevel: On this level, ShroomThumb chance will be ChanceMax
         ShroomThumb:
+            # ChanceMax: Maximum chance of ShroomThumb when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: On this level, ShroomThumb chance will be <ChanceMax>
             ChanceMax: 50.0
             MaxBonusLevel: 1500
     #
@@ -201,8 +201,8 @@ Skills:
     ###
     Mining:
         DoubleDrops:
-            # ChanceMax: Maximum chance of receiving double drops
-            # MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
+            # ChanceMax: Maximum chance of receiving double drops when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: Level when <ChanceMax> of receiving double drops is reached
             ChanceMax: 100.0
             MaxBonusLevel: 1000
 
@@ -277,14 +277,14 @@ Skills:
     ###
     Repair:
         RepairMastery:
-            # ChanceMax: Maximum bonus percentage for Repair Mastery
+            # MaxBonusPercentage: Maximum bonus percentage for Repair Mastery
             # MaxBonusLevel: On this level, the maximum bonus is reached
             MaxBonusPercentage: 200.0
             MaxBonusLevel: 1000
 
         SuperRepair:
-            # ChanceMax: Maximum chance of Super Repair
-            # MaxBonusLevel: On this level, Super Repair chance will be SuperRepair_ChanceMax
+            # ChanceMax: Maximum chance of Super Repair when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: On this level, Super Repair chance will be <ChanceMax>
             ChanceMax: 100.0
             MaxBonusLevel: 1000
 
@@ -333,9 +333,9 @@ Skills:
             MaxBonusLevel: 1000
 
         SecondSmelt:
-            # MaxBonusChance: Maximum chance of triggering Second Smelt
-            # MaxBonusLevel: On this level, the chance to cause Second Smelt will be SecondSmelt_MaxBonusChance
-            MaxBonusChance: 100.0
+            # ChanceMax: Maximum chance of triggering Second Smelt
+            # MaxBonusLevel: On this level, the chance to cause Second Smelt will be <ChanceMax>
+            ChanceMax: 100.0
             MaxBonusLevel: 1000
 
         FluxMining:
@@ -372,7 +372,7 @@ Skills:
     Swords:
         Bleed:
             # ChanceMax: Maximum chance of triggering bleeding
-            # MaxBonusLevel: On this level, the chance to cause Bleeding will be Bleed_ChanceMax
+            # MaxBonusLevel: On this level, the chance to cause Bleeding will be <ChanceMax>
             ChanceMax: 75.0
             MaxBonusLevel: 750
 
@@ -385,7 +385,7 @@ Skills:
             RequiresBlock: true
 
             # ChanceMax: Maximum chance of triggering a counter attack
-            # MaxBonusLevel: On this level, the chance to Counter will be Counter_ChanceMax
+            # MaxBonusLevel: On this level, the chance to Counter will be <ChanceMax>
             ChanceMax: 30.0
             MaxBonusLevel: 600
 
@@ -403,7 +403,7 @@ Skills:
     Taming:
         Gore:
             # ChanceMax: Maximum chance of triggering gore
-            # MaxBonusLevel: On this level, the chance to cause Gore will be Gore_ChanceMax
+            # MaxBonusLevel: On this level, the chance to cause Gore will be <ChanceMax>
             ChanceMax: 100.0
             MaxBonusLevel: 1000
 
