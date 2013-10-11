@@ -16,6 +16,7 @@ import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 import org.bukkit.material.Crops;
 import org.bukkit.material.NetherWarts;
 
+import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -229,6 +230,13 @@ public class HerbalismManager extends SkillManager {
         }
 
         if (treasures.isEmpty()) {
+            return false;
+        }
+
+        FakeBlockBreakEvent blockBreakEvent = new FakeBlockBreakEvent(blockState.getBlock(), getPlayer());
+        mcMMO.p.getServer().getPluginManager().callEvent(blockBreakEvent);
+
+        if (blockBreakEvent.isCancelled()) {
             return false;
         }
 
