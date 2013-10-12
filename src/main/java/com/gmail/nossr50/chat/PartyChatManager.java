@@ -27,7 +27,7 @@ public class PartyChatManager extends ChatManager {
     @Override
     protected void sendMessage() {
         if (Config.getInstance().getPartyChatColorLeaderName() && senderName.equalsIgnoreCase(party.getLeader())) {
-            message = message.replaceAll(displayName, ChatColor.GOLD + displayName + ChatColor.RESET);
+            message = message.replaceFirst(displayName, ChatColor.GOLD + displayName + ChatColor.RESET);
         }
 
         for (Player member : party.getOnlineMembers()) {
