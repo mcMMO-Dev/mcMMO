@@ -127,6 +127,10 @@ Fishing:
         Amount: 1
         XP: 200
         Rarity: RARE
+    BOW:
+        Amount: 1
+        XP: 200
+        Rarity: RARE
     ENDER_PEARL:
         Amount: 1
         XP: 200
