@@ -49,9 +49,9 @@ import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
 
-import net.h31ix.updater.mcmmo.Updater;
-import net.h31ix.updater.mcmmo.Updater.UpdateResult;
-import net.h31ix.updater.mcmmo.Updater.UpdateType;
+import net.gravitydevelopment.updater.mcmmo.Updater;
+import net.gravitydevelopment.updater.mcmmo.Updater.UpdateResult;
+import net.gravitydevelopment.updater.mcmmo.Updater.UpdateType;
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
 public class mcMMO extends JavaPlugin {
@@ -312,14 +312,14 @@ public class mcMMO extends JavaPlugin {
             return;
         }
 
-        Updater updater = new Updater(this, "mcmmo", mcmmo, UpdateType.NO_DOWNLOAD, false);
+        Updater updater = new Updater(this, 31030, mcmmo, UpdateType.NO_DOWNLOAD, false);
 
         if (updater.getResult() != UpdateResult.UPDATE_AVAILABLE) {
             this.updateAvailable = false;
             return;
         }
 
-        if (updater.getLatestVersionString().contains("-beta") && !Config.getInstance().getPreferBeta()) {
+        if (updater.getLatestType().equals("beta") && !Config.getInstance().getPreferBeta()) {
             this.updateAvailable = false;
             return;
         }
