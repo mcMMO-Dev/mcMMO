@@ -460,6 +460,22 @@ public class EntityListener implements Listener {
     }
 
     /**
+     * Monitor EntityExplode events.
+     *
+     * @param event The event to monitor
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onEnitityExplodeMonitor(EntityExplodeEvent event) {
+        Entity entity = event.getEntity();
+
+        if (!entity.hasMetadata(mcMMO.tntsafeMetadataKey)) {
+            return;
+        }
+
+        event.blockList().clear();
+    }
+
+    /**
      * Handle FoodLevelChange events that involve modifying the event.
      *
      * @param event The event to modify

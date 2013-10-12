@@ -499,6 +499,7 @@ public class FishingManager extends SkillManager {
             double magnitude = velocity.length();
             fishingCatch.setVelocity(velocity.multiply((magnitude + 1) / magnitude));
 
+            tnt.setMetadata(mcMMO.tntsafeMetadataKey, mcMMO.metadataValue);
             tnt.setFuseTicks(3 * Misc.TICK_CONVERSION_FACTOR);
         }
         else {
