@@ -86,11 +86,11 @@ public class FishingCommand extends SkillCommand {
             Biome biome = player.getLocation().getBlock().getBiome();
 
             if (biome == Biome.RIVER || biome == Biome.OCEAN) {
-                rawBiteChance = rawBiteChance * 2.0;
+                rawBiteChance = rawBiteChance * AdvancedConfig.getInstance().getMasterAnglerBiomeModifier();
             }
 
             if (player.isInsideVehicle() && player.getVehicle().getType() == EntityType.BOAT) {
-                rawBiteChance = rawBiteChance * 2.0;
+                rawBiteChance = rawBiteChance * AdvancedConfig.getInstance().getMasterAnglerBoatModifier();
             }
 
             biteChance = calculateAbilityDisplayValues(rawBiteChance * 100.0)[0];
