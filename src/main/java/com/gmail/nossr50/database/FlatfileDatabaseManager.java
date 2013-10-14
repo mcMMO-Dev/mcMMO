@@ -493,6 +493,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         List<PlayerStat> fishing = new ArrayList<PlayerStat>();
 
         BufferedReader in = null;
+        String playerName = null;
         // Read from the FlatFile database and fill our arrays with information
         synchronized (fileWritingLock) {
             try {
@@ -501,7 +502,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     String[] data = line.split(":");
-                    String playerName = data[0];
+                    playerName = data[0];
                     int powerLevel = 0;
 
                     Map<SkillType, Integer> skills = getSkillMapFromLine(data);
@@ -523,7 +524,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 }
             }
             catch (Exception e) {
-                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " during user " + playerName + " (Are you sure you formatted it correctly?) " + e.toString());
             }
             finally {
                 tryClose(in);

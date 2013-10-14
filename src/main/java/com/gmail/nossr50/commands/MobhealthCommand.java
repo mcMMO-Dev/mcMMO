@@ -12,9 +12,9 @@ import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableList;
 
 public class MobhealthCommand implements TabExecutor {
@@ -44,11 +44,11 @@ public class MobhealthCommand implements TabExecutor {
                 try {
                     MobHealthbarType type = MobHealthbarType.valueOf(args[0].toUpperCase().trim());
                     playerProfile.setMobHealthbarType(type);
-                    sender.sendMessage("Display type changed to: " + type); //TODO: Localize
+                    sender.sendMessage(LocaleLoader.getString("Commands.Healthbars.Changed." + type.name()));
                     return true;
                 }
                 catch (IllegalArgumentException ex) {
-                    sender.sendMessage("Invalid type!"); //TODO: Localize
+                    sender.sendMessage(LocaleLoader.getString("Commands.Healthbars.Invalid"));
                     return true;
                 }
 

@@ -38,7 +38,7 @@ import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.config.RepairConfigManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
-import com.gmail.nossr50.skills.repair.repairables.RepairableManagerFactory;
+import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
 import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.LogFilter;
 import com.gmail.nossr50.util.Misc;
@@ -357,7 +357,7 @@ public class mcMMO extends JavaPlugin {
         // Load repair configs, make manager, and register them at this time
         RepairConfigManager rManager = new RepairConfigManager(this);
         repairables.addAll(rManager.getLoadedRepairables());
-        repairableManager = RepairableManagerFactory.getRepairManager(repairables.size());
+        repairableManager = new SimpleRepairableManager(repairables.size());
         repairableManager.registerRepairables(repairables);
     }
 
