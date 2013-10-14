@@ -460,12 +460,12 @@ public class EntityListener implements Listener {
     }
 
     /**
-     * Monitor EntityExplode events.
+     * Handle EntityExplode events that involve modifying the event.
      *
-     * @param event The event to monitor
+     * @param event The event to modify
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onEnitityExplodeMonitor(EntityExplodeEvent event) {
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onEntityExplodeMonitor(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
 
         if (!entity.hasMetadata(mcMMO.tntsafeMetadataKey)) {
