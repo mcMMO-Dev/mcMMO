@@ -200,16 +200,6 @@ public final class BlockUtils {
     }
 
     /**
-     * Determine if a given block should be affected by Tree Feller
-     *
-     * @param blockState The {@link BlockState} of the block to check
-     * @return true if the block should affected by Tree Feller, false otherwise
-     */
-    public static boolean affectedByTreeFeller(BlockState blockState) {
-        return isLog(blockState) || isLeaves(blockState);
-    }
-
-    /**
      * Check if a given block is a log
      *
      * @param blockState The {@link BlockState} of the block to check

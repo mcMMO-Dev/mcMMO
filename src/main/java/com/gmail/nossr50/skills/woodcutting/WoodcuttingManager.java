@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.woodcutting;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,8 +27,6 @@ import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class WoodcuttingManager extends SkillManager {
-    protected static boolean treeFellerReachedThreshold = false;
-
     public WoodcuttingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.WOODCUTTING);
     }
@@ -74,28 +72,15 @@ public class WoodcuttingManager extends SkillManager {
      */
     public void processTreeFeller(BlockState blockState) {
         Player player = getPlayer();
-        List<BlockState> treeFellerBlocks = new ArrayList<BlockState>();
+        LinkedHashSet<BlockState> treeFellerBlocks = new LinkedHashSet<BlockState>();
 
-        switch (blockState.getType()) {
-            case LOG:
-            case HUGE_MUSHROOM_1:
-                Woodcutting.processRegularTrees(blockState, treeFellerBlocks);
-                break;
+        Woodcutting.treeFellerReachedThreshold = false;
 
-            case HUGE_MUSHROOM_2:
-                Woodcutting.processRedMushroomTrees(blockState, treeFellerBlocks);
-                break;
-
-            default:
-                if (ModUtils.isCustomLogBlock(blockState)) {
-                    Woodcutting.processRegularTrees(blockState, treeFellerBlocks);
-                }
-                break;
-        }
+        Woodcutting.processTree(blockState, treeFellerBlocks);
 
         // If the player is trying to break too many blocks
-        if (treeFellerReachedThreshold) {
-            treeFellerReachedThreshold = false;
+        if (Woodcutting.treeFellerReachedThreshold) {
+            Woodcutting.treeFellerReachedThreshold = false;
 
             player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFellerThreshold"));
             return;
@@ -115,7 +100,7 @@ public class WoodcuttingManager extends SkillManager {
         }
 
         dropBlocks(treeFellerBlocks);
-        treeFellerReachedThreshold = false; // Reset the value after we're done with Tree Feller each time.
+        Woodcutting.treeFellerReachedThreshold = false; // Reset the value after we're done with Tree Feller each time.
     }
 
     /**
@@ -123,7 +108,7 @@ public class WoodcuttingManager extends SkillManager {
      *
      * @param treeFellerBlocks List of blocks to be dropped
      */
-    private void dropBlocks(List<BlockState> treeFellerBlocks) {
+    private void dropBlocks(Set<BlockState> treeFellerBlocks) {
         Player player = getPlayer();
         int xp = 0;
 
