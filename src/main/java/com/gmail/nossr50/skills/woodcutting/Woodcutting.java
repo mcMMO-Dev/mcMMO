@@ -1,9 +1,11 @@
 package com.gmail.nossr50.skills.woodcutting;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -121,56 +123,43 @@ public final class Woodcutting {
     }
 
     /**
-     * Processes Tree Feller for generic Trees
-     *
-     * @param blockState Block being checked
-     * @param treeFellerBlocks List of blocks to be removed
+     * The x/y differences to the blocks in a flat cylinder around the center
+     * block, which is excluded.
      */
-    protected static void processRegularTrees(BlockState blockState, List<BlockState> treeFellerBlocks) {
-        List<BlockState> futureCenterBlocks = new ArrayList<BlockState>();
-
-        // Handle the blocks around 'block'
-        for (int y = 0; y <= 1; y++) {
-            for (int x = -1; x <= 1; x++) {
-                for (int z = -1; z <= 1; z++) {
-                    BlockState nextBlock = blockState.getBlock().getRelative(x, y, z).getState();
-                    handleBlock(nextBlock, futureCenterBlocks, treeFellerBlocks);
-
-                    if (WoodcuttingManager.treeFellerReachedThreshold) {
-                        return;
-                    }
-                }
-            }
-        }
-
-        // Recursive call for each log found
-        for (BlockState futureCenterBlock : futureCenterBlocks) {
-            if (WoodcuttingManager.treeFellerReachedThreshold) {
-                return;
-            }
-
-            processRegularTrees(futureCenterBlock, treeFellerBlocks);
-        }
-    }
+    private static final int[][] directions = {
+                            new int[] {-2, -1}, new int[] {-2, 0}, new int[] {-2, 1},
+        new int[] {-1, -2}, new int[] {-1, -1}, new int[] {-1, 0}, new int[] {-1, 1}, new int[] {-1, 2},
+        new int[] { 0, -2}, new int[] { 0, -1},                    new int[] { 0, 1}, new int[] { 0, 2},
+        new int[] { 1, -2}, new int[] { 1, -1}, new int[] { 1, 0}, new int[] { 1, 1}, new int[] { 1, 2},
+                            new int[] { 2, -1}, new int[] { 2, 0}, new int[] { 2, 1},
+    };
 
     /**
-     * Processes Tree Feller for Red Mushrooms (Dome Shaped)
+     * Processes Tree Feller in a recursive manner
      *
      * @param blockState Block being checked
      * @param treeFellerBlocks List of blocks to be removed
      */
-    protected static void processRedMushroomTrees(BlockState blockState, List<BlockState> treeFellerBlocks) {
+    protected static void processTree(BlockState blockState, LinkedHashSet<BlockState> treeFellerBlocks) {
         List<BlockState> futureCenterBlocks = new ArrayList<BlockState>();
 
-        // Handle the blocks around 'block'
-        for (int y = 0; y <= 1; y++) {
-            for (int x = -1; x <= 1; x++) {
-                for (int z = -1; z <= 1; z++) {
-                    BlockState nextBlock = blockState.getBlock().getRelative(x, y, z).getState();
-                    BlockState otherNextBlock = blockState.getBlock().getRelative(x, y - (y * 2), z).getState();
+        // Check the block up and take different behavior (smaller search) if it's a log
+        if (handleBlock(blockState.getBlock().getRelative(BlockFace.UP).getState(), futureCenterBlocks, treeFellerBlocks)) {
+            for (int[] dir : directions) {
+                handleBlock(blockState.getBlock().getRelative(dir[0], 0, dir[1]).getState(), futureCenterBlocks, treeFellerBlocks);
 
-                    handleBlock(nextBlock, futureCenterBlocks, treeFellerBlocks);
-                    handleBlock(otherNextBlock, futureCenterBlocks, treeFellerBlocks);
+                if (WoodcuttingManager.treeFellerReachedThreshold) {
+                    return;
+                }
+            }
+        }
+        else {
+            // Cover DOWN
+            handleBlock(blockState.getBlock().getRelative(BlockFace.DOWN).getState(), futureCenterBlocks, treeFellerBlocks);
+            // Search in a cube
+            for (int y = -1; y <= 1; y++) {
+                for (int[] dir : directions) {
+                    handleBlock(blockState.getBlock().getRelative(dir[0], y, dir[1]).getState(), futureCenterBlocks, treeFellerBlocks);
 
                     if (WoodcuttingManager.treeFellerReachedThreshold) {
                         return;
@@ -185,7 +174,7 @@ public final class Woodcutting {
                 return;
             }
 
-            processRedMushroomTrees(futureCenterBlock, treeFellerBlocks);
+            processTree(futureCenterBlock, treeFellerBlocks);
         }
     }
 
@@ -196,7 +185,7 @@ public final class Woodcutting {
      * @param inHand tool being used
      * @return True if the tool can sustain the durability loss
      */
-    protected static boolean handleDurabilityLoss(List<BlockState> treeFellerBlocks, ItemStack inHand) {
+    protected static boolean handleDurabilityLoss(LinkedHashSet<BlockState> treeFellerBlocks, ItemStack inHand) {
         Material inHandMaterial = inHand.getType();
 
         if (inHandMaterial == Material.AIR) {
@@ -221,27 +210,35 @@ public final class Woodcutting {
     }
 
     /**
-     * Handle a block addition to the list of blocks to be removed and to the list of blocks used for future recursive calls of 'processRecursively()'
+     * Handle a block addition to the list of blocks to be removed and to the
+     * list of blocks used for future recursive calls of
+     * 'processRecursively()'
      *
      * @param blockState Block to be added
-     * @param futureCenterBlocks List of blocks that will be used to call 'processRecursively()'
+     * @param futureCenterBlocks List of blocks that will be used to call
+     *     'processRecursively()'
      * @param treeFellerBlocks List of blocks to be removed
+     * @return true if and only if the given blockState was a Log not already
+     *     in treeFellerBlocks.
      */
-    private static void handleBlock(BlockState blockState, List<BlockState> futureCenterBlocks, List<BlockState> treeFellerBlocks) {
-        if (!BlockUtils.affectedByTreeFeller(blockState) || mcMMO.getPlaceStore().isTrue(blockState) || treeFellerBlocks.contains(blockState)) {
-            return;
+    private static boolean handleBlock(BlockState blockState, List<BlockState> futureCenterBlocks, LinkedHashSet<BlockState> treeFellerBlocks) {
+        if (mcMMO.getPlaceStore().isTrue(blockState) || treeFellerBlocks.contains(blockState)) {
+            return false;
         }
-
-        treeFellerBlocks.add(blockState);
 
         if (treeFellerBlocks.size() > treeFellerThreshold) {
             WoodcuttingManager.treeFellerReachedThreshold = true;
-            return;
         }
 
         // Without this check Tree Feller propagates through leaves until the threshold is hit
         if (BlockUtils.isLog(blockState)) {
+            treeFellerBlocks.add(blockState);
             futureCenterBlocks.add(blockState);
+            return true;
+        } else if (BlockUtils.isLeaves(blockState)) {
+            treeFellerBlocks.add(blockState);
+            return false;
         }
+        return false;
     }
 }

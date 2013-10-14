@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.woodcutting;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -73,24 +72,9 @@ public class WoodcuttingManager extends SkillManager {
      */
     public void processTreeFeller(BlockState blockState) {
         Player player = getPlayer();
-        List<BlockState> treeFellerBlocks = new ArrayList<BlockState>();
+        LinkedHashSet<BlockState> treeFellerBlocks = new LinkedHashSet<BlockState>();
 
-        switch (blockState.getType()) {
-            case LOG:
-            case HUGE_MUSHROOM_1:
-                Woodcutting.processRegularTrees(blockState, treeFellerBlocks);
-                break;
-
-            case HUGE_MUSHROOM_2:
-                Woodcutting.processRedMushroomTrees(blockState, treeFellerBlocks);
-                break;
-
-            default:
-                if (ModUtils.isCustomLogBlock(blockState)) {
-                    Woodcutting.processRegularTrees(blockState, treeFellerBlocks);
-                }
-                break;
-        }
+        Woodcutting.processTree(blockState, treeFellerBlocks);
 
         // If the player is trying to break too many blocks
         if (treeFellerReachedThreshold) {
@@ -122,7 +106,7 @@ public class WoodcuttingManager extends SkillManager {
      *
      * @param treeFellerBlocks List of blocks to be dropped
      */
-    private void dropBlocks(List<BlockState> treeFellerBlocks) {
+    private void dropBlocks(LinkedHashSet<BlockState> treeFellerBlocks) {
         Player player = getPlayer();
         int xp = 0;
 
