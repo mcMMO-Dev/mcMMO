@@ -1,12 +1,14 @@
 package com.gmail.nossr50.datatypes.skills;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 
@@ -215,6 +217,25 @@ public enum AbilityType {
 
             case TREE_FELLER:
                 return BlockUtils.isLog(blockState);
+
+            default:
+                return false;
+        }
+    }
+
+    /**
+     * Check to see if ability should be triggered.
+     *
+     * @param player The player using the ability
+     * @param block The block modified by the ability
+     * @return true if the ability should activate, false otherwise
+     */
+    public boolean triggerCheck(Player player, Block block) {
+        switch (this) {
+            case BERSERK:
+            case BLOCK_CRACKER:
+            case LEAF_BLOWER:
+                return blockCheck(block.getState()) && EventUtils.simulateBlockBreak(block, player, true);
 
             default:
                 return false;

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util.commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.OfflinePlayer;
@@ -157,16 +158,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printGatheringSkills(Player inspect, CommandSender display) {
-        if (SkillUtils.hasGatheringSkills(inspect)) {
-            PlayerProfile profile = UserManager.getPlayer(inspect).getProfile();
-
-            display.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
-            displaySkill(inspect, profile, SkillType.EXCAVATION, display);
-            displaySkill(inspect, profile, SkillType.FISHING, display);
-            displaySkill(inspect, profile, SkillType.HERBALISM, display);
-            displaySkill(inspect, profile, SkillType.MINING, display);
-            displaySkill(inspect, profile, SkillType.WOODCUTTING, display);
-        }
+        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Gathering"), SkillType.GATHERING_SKILLS);
     }
 
     public static void printGatheringSkills(Player player) {
@@ -180,16 +172,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printCombatSkills(Player inspect, CommandSender display) {
-        if (SkillUtils.hasCombatSkills(inspect)) {
-            PlayerProfile profile = UserManager.getPlayer(inspect).getProfile();
-
-            display.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
-            displaySkill(inspect, profile, SkillType.AXES, display);
-            displaySkill(inspect, profile, SkillType.ARCHERY, display);
-            displaySkill(inspect, profile, SkillType.SWORDS, display);
-            displaySkill(inspect, profile, SkillType.TAMING, display);
-            displaySkill(inspect, profile, SkillType.UNARMED, display);
-        }
+        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Combat"), SkillType.COMBAT_SKILLS);
     }
 
     public static void printCombatSkills(Player player) {
@@ -203,26 +186,38 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printMiscSkills(Player inspect, CommandSender display) {
-        if (SkillUtils.hasMiscSkills(inspect)) {
-            PlayerProfile profile = UserManager.getPlayer(inspect).getProfile();
-
-            display.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
-            displaySkill(inspect, profile, SkillType.ACROBATICS, display);
-            displaySkill(inspect, profile, SkillType.REPAIR, display);
-        }
+        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Misc"), SkillType.MISC_SKILLS);
     }
 
     public static void printMiscSkills(Player player) {
         printMiscSkills(player, player);
     }
 
-    private static void displaySkill(Player player, PlayerProfile profile, SkillType skill, CommandSender display) {
-        if (Permissions.skillEnabled(player, skill)) {
-            displaySkill(display, profile, skill);
+    public static String displaySkill(PlayerProfile profile, SkillType skill) {
+        if (skill.isChildSkill()) {
+            return LocaleLoader.getString("Skills.ChildStats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener"), profile.getSkillLevel(skill));
+        }
+
+        return LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener"), profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill));
+    }
+
+    private static void printGroupedSkillData(Player inspect, CommandSender display, String header, List<SkillType> skillGroup) {
+        PlayerProfile profile = UserManager.getPlayer(inspect).getProfile();
+
+        List<String> displayData = new ArrayList<String>();
+        displayData.add(header);
+
+        for (SkillType skill : skillGroup) {
+            if (Permissions.skillEnabled(inspect, skill)) {
+                displayData.add(displaySkill(profile, skill));
+            }
+        }
+
+        int size = displayData.size();
+
+        if (size > 1) {
+            display.sendMessage(displayData.toArray(new String[size]));
         }
     }
 
-    public static void displaySkill(CommandSender sender, PlayerProfile profile, SkillType skill) {
-        sender.sendMessage(LocaleLoader.getString("Skills.Stats", LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".Listener"), profile.getSkillLevel(skill), profile.getSkillXpLevel(skill), profile.getXpToLevel(skill)));
-    }
 }

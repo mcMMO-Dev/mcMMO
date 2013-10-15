@@ -23,7 +23,6 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 import com.google.common.collect.ImmutableList;
 
@@ -46,7 +45,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     public SkillCommand(SkillType skill) {
         this.skill = skill;
-        skillName = SkillUtils.getSkillName(skill);
+        skillName = skill.getSkillName();
         skillGuideCommand = new SkillGuideCommand(skill);
     }
 
@@ -91,7 +90,7 @@ public abstract class SkillCommand implements TabExecutor {
                     Set<SkillType> parents = FamilyTree.getParents(skill);
 
                     for (SkillType parent : parents) {
-                        player.sendMessage(SkillUtils.getSkillName(parent) + " - " + LocaleLoader.getString("Effects.Level", profile.getSkillLevel(parent), profile.getSkillXpLevel(parent), profile.getXpToLevel(parent)));
+                        player.sendMessage(parent.getSkillName() + " - " + LocaleLoader.getString("Effects.Level", profile.getSkillLevel(parent), profile.getSkillXpLevel(parent), profile.getXpToLevel(parent)));
                     }
                 }
 

@@ -22,6 +22,7 @@ import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.mining.BlastMining.Tier;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
@@ -95,7 +96,7 @@ public class MiningManager extends SkillManager {
         Player player = getPlayer();
         Block targetBlock = player.getTargetBlock(BlockUtils.getTransparentBlocks(), BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
 
-        if (targetBlock.getType() != Material.TNT || !SkillUtils.blockBreakSimulate(targetBlock, player, true) || !blastMiningCooldownOver()) {
+        if (targetBlock.getType() != Material.TNT || !EventUtils.simulateBlockBreak(targetBlock, player, true) || !blastMiningCooldownOver()) {
             return;
         }
 

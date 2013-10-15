@@ -7,7 +7,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class AddlevelsCommand extends ExperienceCommand {
     @Override
@@ -36,6 +35,6 @@ public class AddlevelsCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageSkill() {
-        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, SkillUtils.getSkillName(skill)));
+        player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, skill.getSkillName()));
     }
 }

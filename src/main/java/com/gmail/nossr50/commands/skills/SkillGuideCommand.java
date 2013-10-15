@@ -10,7 +10,6 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SkillGuideCommand implements CommandExecutor {
     private String header;
@@ -19,7 +18,7 @@ public class SkillGuideCommand implements CommandExecutor {
     private String invalidPage;
 
     public SkillGuideCommand(SkillType skillType) {
-        header = LocaleLoader.getString("Guides.Header", SkillUtils.getSkillName(skillType));
+        header = LocaleLoader.getString("Guides.Header", skillType.getSkillName());
         guide = getGuide(skillType);
 
         invalidPage = LocaleLoader.getString("Guides.Page.Invalid");

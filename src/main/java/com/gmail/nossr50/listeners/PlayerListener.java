@@ -49,6 +49,7 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.ChimaeraWing;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.HardcoreManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
@@ -514,15 +515,15 @@ public class PlayerListener implements Listener {
                 if (BlockUtils.canActivateAbilities(blockState)) {
                     if (Config.getInstance().getAbilitiesEnabled()) {
                         if (BlockUtils.canActivateHerbalism(blockState)) {
-                            SkillUtils.activationCheck(player, SkillType.HERBALISM);
+                            mcMMOPlayer.processAbilityActivation(SkillType.HERBALISM);
                         }
 
-                        SkillUtils.activationCheck(player, SkillType.AXES);
-                        SkillUtils.activationCheck(player, SkillType.EXCAVATION);
-                        SkillUtils.activationCheck(player, SkillType.MINING);
-                        SkillUtils.activationCheck(player, SkillType.SWORDS);
-                        SkillUtils.activationCheck(player, SkillType.UNARMED);
-                        SkillUtils.activationCheck(player, SkillType.WOODCUTTING);
+                        mcMMOPlayer.processAbilityActivation(SkillType.AXES);
+                        mcMMOPlayer.processAbilityActivation(SkillType.EXCAVATION);
+                        mcMMOPlayer.processAbilityActivation(SkillType.MINING);
+                        mcMMOPlayer.processAbilityActivation(SkillType.SWORDS);
+                        mcMMOPlayer.processAbilityActivation(SkillType.UNARMED);
+                        mcMMOPlayer.processAbilityActivation(SkillType.WOODCUTTING);
                     }
 
                     ChimaeraWing.activationCheck(player);
@@ -534,14 +535,14 @@ public class PlayerListener implements Listener {
                 if (herbalismManager.canGreenThumbBlock(blockState)) {
                     player.setItemInHand(new ItemStack(Material.SEEDS, heldItem.getAmount() - 1));
 
-                    if (herbalismManager.processGreenThumbBlocks(blockState) && SkillUtils.blockBreakSimulate(block, player, false)) {
+                    if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
                         blockState.update(true);
                     }
                 }
 
                 /* SHROOM THUMB CHECK */
                 else if (herbalismManager.canUseShroomThumb(blockState)) {
-                    if (herbalismManager.processShroomThumb(blockState) && SkillUtils.blockBreakSimulate(block, player, false)) {
+                    if (herbalismManager.processShroomThumb(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
                         blockState.update(true);
                     }
                 }
@@ -551,13 +552,13 @@ public class PlayerListener implements Listener {
 
                 /* ACTIVATION CHECKS */
                 if (Config.getInstance().getAbilitiesEnabled()) {
-                    SkillUtils.activationCheck(player, SkillType.AXES);
-                    SkillUtils.activationCheck(player, SkillType.EXCAVATION);
-                    SkillUtils.activationCheck(player, SkillType.HERBALISM);
-                    SkillUtils.activationCheck(player, SkillType.MINING);
-                    SkillUtils.activationCheck(player, SkillType.SWORDS);
-                    SkillUtils.activationCheck(player, SkillType.UNARMED);
-                    SkillUtils.activationCheck(player, SkillType.WOODCUTTING);
+                    mcMMOPlayer.processAbilityActivation(SkillType.AXES);
+                    mcMMOPlayer.processAbilityActivation(SkillType.EXCAVATION);
+                    mcMMOPlayer.processAbilityActivation(SkillType.HERBALISM);
+                    mcMMOPlayer.processAbilityActivation(SkillType.MINING);
+                    mcMMOPlayer.processAbilityActivation(SkillType.SWORDS);
+                    mcMMOPlayer.processAbilityActivation(SkillType.UNARMED);
+                    mcMMOPlayer.processAbilityActivation(SkillType.WOODCUTTING);
                 }
 
                 /* ITEM CHECKS */
@@ -659,7 +660,7 @@ public class PlayerListener implements Listener {
             // Do these ACTUALLY have to be lower case to work properly?
             for (SkillType skill : SkillType.values()) {
                 String skillName = skill.toString().toLowerCase();
-                String localizedName = SkillUtils.getSkillName(skill).toLowerCase();
+                String localizedName = skill.getSkillName().toLowerCase();
 
                 if (lowerCaseCommand.equals(localizedName)) {
                     event.setMessage(message.replace(command, skillName));

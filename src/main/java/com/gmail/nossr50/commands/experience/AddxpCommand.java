@@ -5,7 +5,6 @@ import org.bukkit.command.CommandSender;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class AddxpCommand extends ExperienceCommand {
     @Override
@@ -35,6 +34,6 @@ public class AddxpCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageSkill() {
-        player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, SkillUtils.getSkillName(skill)));
+        player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, skill.getSkillName()));
     }
 }

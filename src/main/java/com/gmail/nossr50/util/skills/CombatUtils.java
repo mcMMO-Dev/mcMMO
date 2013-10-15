@@ -51,7 +51,7 @@ public final class CombatUtils {
         SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
 
         if (swordsManager.canActivateAbility()) {
-            SkillUtils.abilityCheck(mcMMOPlayer, SkillType.SWORDS);
+            mcMMOPlayer.checkAbilityActivation(SkillType.SWORDS);
         }
 
         if (swordsManager.canUseBleed()) {
@@ -73,7 +73,7 @@ public final class CombatUtils {
         AxesManager axesManager = mcMMOPlayer.getAxesManager();
 
         if (axesManager.canActivateAbility()) {
-            SkillUtils.abilityCheck(mcMMOPlayer, SkillType.AXES);
+            mcMMOPlayer.checkAbilityActivation(SkillType.AXES);
         }
 
         if (axesManager.canUseAxeMastery()) {
@@ -107,7 +107,7 @@ public final class CombatUtils {
         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
         if (unarmedManager.canActivateAbility()) {
-            SkillUtils.abilityCheck(mcMMOPlayer, SkillType.UNARMED);
+            mcMMOPlayer.checkAbilityActivation(SkillType.UNARMED);
         }
 
         if (unarmedManager.canUseIronArm()) {

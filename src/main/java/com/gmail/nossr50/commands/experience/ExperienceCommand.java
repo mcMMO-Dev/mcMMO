@@ -18,7 +18,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 import com.google.common.collect.ImmutableList;
 
@@ -149,7 +148,7 @@ public abstract class ExperienceCommand implements TabExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", SkillUtils.getSkillName(skill), playerName));
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getSkillName(), playerName));
         }
     }
 

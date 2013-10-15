@@ -8,7 +8,6 @@ import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class MmoeditCommand extends ExperienceCommand {
     @Override
@@ -46,6 +45,6 @@ public class MmoeditCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageSkill() {
-        player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", SkillUtils.getSkillName(skill), value));
+        player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", skill.getSkillName(), value));
     }
 }

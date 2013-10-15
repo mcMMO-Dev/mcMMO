@@ -50,7 +50,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public final class CommandRegistrationManager {
     private CommandRegistrationManager() {};
@@ -60,7 +59,7 @@ public final class CommandRegistrationManager {
     private static void registerSkillCommands() {
         for (SkillType skill : SkillType.values()) {
             String commandName = skill.toString().toLowerCase();
-            String localizedName = SkillUtils.getSkillName(skill).toLowerCase();
+            String localizedName = skill.getSkillName().toLowerCase();
 
             PluginCommand command;
 

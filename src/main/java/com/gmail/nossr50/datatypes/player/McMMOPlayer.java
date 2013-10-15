@@ -9,10 +9,13 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
@@ -25,6 +28,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
+import com.gmail.nossr50.runnables.skills.ToolLowerTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
@@ -41,9 +45,12 @@ import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
@@ -514,7 +521,7 @@ public class McMMOPlayer {
     public int getPowerLevel() {
         int powerLevel = 0;
 
-        for (SkillType type : SkillType.nonChildSkills()) {
+        for (SkillType type : SkillType.NON_CHILD_SKILLS) {
             if (Permissions.skillEnabled(player, type)) {
                 powerLevel += profile.getSkillLevel(type);
             }
@@ -597,7 +604,42 @@ public class McMMOPlayer {
         profile.setSkillXpLevel(skillType, profile.getSkillXpLevelRaw(skillType) + event.getRawXpGained());
 
         isUsingUnarmed = (skillType == SkillType.UNARMED);
-        SkillUtils.xpCheckSkill(skillType, player, profile);
+        checkXp(skillType);
+    }
+
+    /**
+     * Check the XP of a skill.
+     *
+     * @param skillType The skill to check
+     */
+    private void checkXp(SkillType skillType) {
+        int levelsGained = 0;
+        float xpRemoved = 0;
+
+        if (profile.getSkillXpLevelRaw(skillType) >= profile.getXpToLevel(skillType)) {
+            while (profile.getSkillXpLevelRaw(skillType) >= profile.getXpToLevel(skillType)) {
+                if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Config.getInstance().getPowerLevelCap() >= getPowerLevel() + 1)) {
+                    int xp = profile.getXpToLevel(skillType);
+                    xpRemoved += xp;
+
+                    profile.removeXp(skillType, xp);
+                    levelsGained++;
+                    profile.skillUp(skillType, 1);
+                }
+                else {
+                    profile.addLevels(skillType, 0);
+                }
+            }
+
+            if (EventUtils.callLevelUpEvent(player, skillType, levelsGained).isCancelled()) {
+                profile.modifySkill(skillType, profile.getSkillLevel(skillType) - levelsGained);
+                profile.setSkillXpLevel(skillType, profile.getSkillXpLevelRaw(skillType) + xpRemoved);
+                return;
+            }
+
+            player.playSound(player.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+            player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(skillType.toString()) + ".Skillup", levelsGained, profile.getSkillLevel(skillType)));
+        }
     }
 
     /*
@@ -780,6 +822,109 @@ public class McMMOPlayer {
         if (inParty() && !Permissions.party(player)) {
             removeParty();
             player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
+        }
+    }
+
+    /**
+     * Check to see if an ability can be activated.
+     *
+     * @param skill The skill the ability is based on
+     */
+    public void checkAbilityActivation(SkillType skill) {
+        ToolType tool = skill.getTool();
+        AbilityType ability = skill.getAbility();
+
+        setToolPreparationMode(tool, false);
+
+        if (!getAbilityMode(ability)) {
+            return;
+        }
+
+        int timeRemaining = SkillUtils.calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player);
+
+        if (timeRemaining > 0) {
+            /*
+             * Axes and Woodcutting are odd because they share the same tool.
+             * We show them the too tired message when they take action.
+             */
+            if (skill == SkillType.WOODCUTTING || skill == SkillType.AXES) {
+                player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
+            }
+
+            return;
+        }
+
+        if (EventUtils.callPlayerAbilityActivateEvent(player, skill).isCancelled()) {
+            return;
+        }
+
+        int ticks = PerksUtils.handleActivationPerks(player, 2 + (profile.getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), ability.getMaxLength());
+
+        // Notify people that ability has been activated
+        ParticleEffectUtils.playAbilityEnabledEffect(player);
+
+        if (useChatNotifications()) {
+            player.sendMessage(ability.getAbilityOn());
+        }
+
+        SkillUtils.sendSkillMessage(player, ability.getAbilityPlayer(player));
+
+        // Enable the ability
+        profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
+        setAbilityMode(ability, true);
+
+        if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
+            SkillUtils.handleAbilitySpeedIncrease(player);
+        }
+
+        new AbilityDisableTask(this, ability).runTaskLater(mcMMO.p, ticks * Misc.TICK_CONVERSION_FACTOR);
+    }
+
+    public void processAbilityActivation(SkillType skill) {
+        if (Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() && !player.isSneaking()) {
+            return;
+        }
+
+        ItemStack inHand = player.getItemInHand();
+
+        if (ModUtils.isCustomTool(inHand) && !ModUtils.getToolFromItemStack(inHand).isAbilityEnabled()) {
+            return;
+        }
+
+        if (!getAbilityUse()) {
+            return;
+        }
+
+        for (AbilityType abilityType : AbilityType.values()) {
+            if (getAbilityMode(abilityType)) {
+                return;
+            }
+        }
+
+        AbilityType ability = skill.getAbility();
+        ToolType tool = skill.getTool();
+
+        /*
+         * Woodcutting & Axes need to be treated differently.
+         * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
+         */
+        if (ability.getPermissions(player) && tool.inHand(inHand) && !getToolPreparationMode(tool)) {
+            if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
+                int timeRemaining = SkillUtils.calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player);
+
+                if (!getAbilityMode(ability) && timeRemaining > 0) {
+                    player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
+                    return;
+                }
+            }
+
+            if (Config.getInstance().getAbilityMessagesEnabled()) {
+                player.sendMessage(tool.getRaiseTool());
+            }
+
+            setToolPreparationATS(tool, System.currentTimeMillis());
+            setToolPreparationMode(tool, true);
+            new ToolLowerTask(this, tool).runTaskLaterAsynchronously(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 }

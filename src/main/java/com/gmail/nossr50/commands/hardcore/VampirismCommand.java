@@ -50,7 +50,7 @@ public class VampirismCommand extends HardcoreModeCommand {
 
     private void toggle(boolean enable) {
         if (skill.equalsIgnoreCase("ALL")) {
-            for (SkillType skillType : SkillType.nonChildSkills()) {
+            for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
                 skillType.setHardcoreVampirismEnabled(enable);
             }
         }

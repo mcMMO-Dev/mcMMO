@@ -10,7 +10,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class McrankCommandDisplayTask extends BukkitRunnable {
     private final Map<String, Integer> skills;
@@ -31,13 +30,13 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
 
-        for (SkillType skill : SkillType.nonChildSkills()) {
+        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
             if (player != null && !Permissions.skillEnabled(player, skill)) {
                 continue;
             }
 
             rank = skills.get(skill.name());
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", SkillUtils.getSkillName(skill), (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", skill.getSkillName(), (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
         }
 
         rank = skills.get("ALL");

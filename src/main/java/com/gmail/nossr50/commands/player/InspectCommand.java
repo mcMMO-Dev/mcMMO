@@ -52,22 +52,20 @@ public class InspectCommand implements TabExecutor {
                     sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
-                    CommandUtils.displaySkill(sender, profile, SkillType.EXCAVATION);
-                    CommandUtils.displaySkill(sender, profile, SkillType.FISHING);
-                    CommandUtils.displaySkill(sender, profile, SkillType.HERBALISM);
-                    CommandUtils.displaySkill(sender, profile, SkillType.MINING);
-                    CommandUtils.displaySkill(sender, profile, SkillType.WOODCUTTING);
+                    for (SkillType skill : SkillType.GATHERING_SKILLS) {
+                        sender.sendMessage(CommandUtils.displaySkill(profile, skill));
+                    }
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
-                    CommandUtils.displaySkill(sender, profile, SkillType.AXES);
-                    CommandUtils.displaySkill(sender, profile, SkillType.ARCHERY);
-                    CommandUtils.displaySkill(sender, profile, SkillType.SWORDS);
-                    CommandUtils.displaySkill(sender, profile, SkillType.TAMING);
-                    CommandUtils.displaySkill(sender, profile, SkillType.UNARMED);
+                    for (SkillType skill : SkillType.COMBAT_SKILLS) {
+                        sender.sendMessage(CommandUtils.displaySkill(profile, skill));
+                    }
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
-                    CommandUtils.displaySkill(sender, profile, SkillType.ACROBATICS);
-                    CommandUtils.displaySkill(sender, profile, SkillType.REPAIR);
+                    for (SkillType skill : SkillType.MISC_SKILLS) {
+                        sender.sendMessage(CommandUtils.displaySkill(profile, skill));
+                    }
+
                 }
                 else {
                     Player target = mcMMOPlayer.getPlayer();

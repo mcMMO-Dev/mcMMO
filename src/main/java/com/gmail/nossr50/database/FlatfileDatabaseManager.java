@@ -299,7 +299,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
         Map<String, Integer> skills = new HashMap<String, Integer>();
 
-        for (SkillType skill : SkillType.nonChildSkills()) {
+        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
             skills.put(skill.name(), getPlayerRank(playerName, playerStatHash.get(skill)));
         }
 

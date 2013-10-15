@@ -18,6 +18,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.woodcutting.Woodcutting.ExperienceGainMethod;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
@@ -129,7 +130,7 @@ public class WoodcuttingManager extends SkillManager {
         for (BlockState blockState : treeFellerBlocks) {
             Block block = blockState.getBlock();
 
-            if (!SkillUtils.blockBreakSimulate(block, player, true)) {
+            if (!EventUtils.simulateBlockBreak(block, player, true)) {
                 break; // TODO: Shouldn't we use continue instead?
             }
 

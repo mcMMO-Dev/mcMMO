@@ -39,7 +39,7 @@ public class PlayerProfile {
             skillsDATS.put(abilityType, 0);
         }
 
-        for (SkillType skillType : SkillType.nonChildSkills()) {
+        for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
             skills.put(skillType, 0);
             skillsXp.put(skillType, 0F);
         }
@@ -152,11 +152,7 @@ public class PlayerProfile {
      */
 
     public int getSkillLevel(SkillType skillType) {
-        if (skillType.isChildSkill()) {
-            return getChildSkillLevel(skillType);
-        }
-
-        return skills.get(skillType);
+        return skillType.isChildSkill() ? getChildSkillLevel(skillType) : skills.get(skillType);
     }
 
     public float getSkillXpLevelRaw(SkillType skillType) {

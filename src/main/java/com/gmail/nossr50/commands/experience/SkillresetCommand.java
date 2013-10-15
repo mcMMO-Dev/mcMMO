@@ -12,7 +12,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SkillresetCommand extends ExperienceCommand {
     private CommandSender sender;
@@ -117,6 +116,6 @@ public class SkillresetCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageSkill() {
-        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", SkillUtils.getSkillName(skill)));
+        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getSkillName()));
     }
 }

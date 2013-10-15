@@ -23,7 +23,6 @@ import com.gmail.nossr50.runnables.scoreboards.ScoreboardChangeTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ScoreboardManager {
     private static final Map<String, Scoreboard> PLAYER_SCOREBOARDS = new HashMap<String, Scoreboard>();
@@ -80,10 +79,10 @@ public class ScoreboardManager {
         Player player = mcMMOPlayer.getPlayer();
         Scoreboard oldScoreboard = player.getScoreboard();
         Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(SkillUtils.getSkillName(skill));
+        Objective objective = newScoreboard.getObjective(skill.getSkillName());
 
         if (objective == null) {
-            objective = newScoreboard.registerNewObjective(SkillUtils.getSkillName(skill), "dummy");
+            objective = newScoreboard.registerNewObjective(skill.getSkillName(), "dummy");
         }
 
         updatePlayerSkillScores(mcMMOPlayer.getProfile(), skill, objective);
@@ -165,7 +164,7 @@ public class ScoreboardManager {
         }
 
         Objective newObjective = GLOBAL_STATS_SCOREBOARD.registerNewObjective(skillName, "dummy");
-        newObjective.setDisplayName(ChatColor.GOLD + (skillName.equalsIgnoreCase("all") ? POWER_LEVEL : SkillUtils.getSkillName(SkillType.getSkill(skillName))));
+        newObjective.setDisplayName(ChatColor.GOLD + (skillName.equalsIgnoreCase("all") ? POWER_LEVEL : SkillType.getSkill(skillName).getSkillName()));
 
         updateGlobalStatsScores(player, newObjective, skillName, pageNumber);
         changeScoreboard(player, oldScoreboard, GLOBAL_STATS_SCOREBOARD, Config.getInstance().getMctopScoreboardTime());
@@ -187,12 +186,12 @@ public class ScoreboardManager {
         PlayerProfile profile = mcMMOPlayer.getProfile();
         Server server = mcMMO.p.getServer();
 
-        for (SkillType skill : SkillType.nonChildSkills()) {
+        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
             if (!Permissions.skillEnabled(player, skill)) {
                 continue;
             }
 
-            objective.getScore(server.getOfflinePlayer(SkillUtils.getSkillName(skill))).setScore(profile.getSkillLevel(skill));
+            objective.getScore(server.getOfflinePlayer(skill.getSkillName())).setScore(profile.getSkillLevel(skill));
         }
 
         objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + POWER_LEVEL)).setScore(mcMMOPlayer.getPowerLevel());
@@ -206,7 +205,7 @@ public class ScoreboardManager {
 
         Map<String, Integer> skills = mcMMO.getDatabaseManager().readRank(playerName);
 
-        for (SkillType skill : SkillType.nonChildSkills()) {
+        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
             if (!Permissions.skillEnabled(player, skill)) {
                 continue;
             }
@@ -214,7 +213,7 @@ public class ScoreboardManager {
             rank = skills.get(skill.name());
 
             if (rank != null) {
-                objective.getScore(server.getOfflinePlayer(SkillUtils.getSkillName(skill))).setScore(rank);
+                objective.getScore(server.getOfflinePlayer(skill.getSkillName())).setScore(rank);
             }
         }
 
@@ -233,11 +232,11 @@ public class ScoreboardManager {
 
         Map<String, Integer> skills = mcMMO.getDatabaseManager().readRank(targetName);
 
-        for (SkillType skill : SkillType.nonChildSkills()) {
+        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
             rank = skills.get(skill.name());
 
             if (rank != null) {
-                objective.getScore(server.getOfflinePlayer(SkillUtils.getSkillName(skill))).setScore(rank);
+                objective.getScore(server.getOfflinePlayer(skill.getSkillName())).setScore(rank);
             }
         }
 
@@ -258,13 +257,13 @@ public class ScoreboardManager {
         int powerLevel = 0;
         int skillLevel;
 
-        for (SkillType skill : SkillType.nonChildSkills()) {
+        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
             if (!Permissions.skillEnabled(target, skill)) {
                 continue;
             }
 
             skillLevel = profile.getSkillLevel(skill);
-            objective.getScore(server.getOfflinePlayer(SkillUtils.getSkillName(skill))).setScore(skillLevel);
+            objective.getScore(server.getOfflinePlayer(skill.getSkillName())).setScore(skillLevel);
             powerLevel += skillLevel;
         }
 
@@ -278,9 +277,9 @@ public class ScoreboardManager {
         int powerLevel = 0;
         int skillLevel;
 
-        for (SkillType skill : SkillType.nonChildSkills()) {
+        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
             skillLevel = targetProfile.getSkillLevel(skill);
-            objective.getScore(server.getOfflinePlayer(SkillUtils.getSkillName(skill))).setScore(skillLevel);
+            objective.getScore(server.getOfflinePlayer(skill.getSkillName())).setScore(skillLevel);
             powerLevel += skillLevel;
         }
 

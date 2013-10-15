@@ -237,7 +237,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             ResultSet resultSet;
 
             try {
-                for (SkillType skillType : SkillType.nonChildSkills()) {
+                for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
                     String skillName = skillType.name().toLowerCase();
                     String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
                                  "AND " + skillName + " > (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +

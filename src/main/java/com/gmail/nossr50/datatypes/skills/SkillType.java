@@ -25,7 +25,6 @@ import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 import com.google.common.collect.ImmutableList;
 
@@ -51,15 +50,34 @@ public enum SkillType {
 
     public static final List<String> SKILL_NAMES;
 
+    public static final List<SkillType> CHILD_SKILLS;
+    public static final List<SkillType> NON_CHILD_SKILLS;
+
+    public static final List<SkillType> COMBAT_SKILLS = ImmutableList.of(ARCHERY, AXES, SWORDS, TAMING, UNARMED);
+    public static final List<SkillType> GATHERING_SKILLS = ImmutableList.of(EXCAVATION, FISHING, HERBALISM, MINING, WOODCUTTING);
+    public static final List<SkillType> MISC_SKILLS = ImmutableList.of(ACROBATICS, REPAIR, SMELTING);
+
     static {
+        List<SkillType> childSkills = new ArrayList<SkillType>();
+        List<SkillType> nonChildSkills = new ArrayList<SkillType>();
         ArrayList<String> names = new ArrayList<String>();
 
         for (SkillType skill : values()) {
-            names.add(SkillUtils.getSkillName(skill));
+            if (skill.isChildSkill()) {
+                childSkills.add(skill);
+            }
+            else {
+                nonChildSkills.add(skill);
+            }
+
+            names.add(skill.getSkillName());
         }
 
         Collections.sort(names);
         SKILL_NAMES = ImmutableList.copyOf(names);
+
+        CHILD_SKILLS = ImmutableList.copyOf(childSkills);
+        NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
     }
 
     private SkillType(Class<? extends SkillManager> managerClass, Color runescapeColor) {
@@ -151,31 +169,12 @@ public enum SkillType {
     // TODO: This is a little "hacky", we probably need to add something to distinguish child skills in the enum, or to use another enum for them
     public boolean isChildSkill() {
         switch (this) {
-        case SMELTING:
-            return true;
+            case SMELTING:
+                return true;
 
-        default:
-            return false;
+            default:
+                return false;
         }
-    }
-
-    public static SkillType[] nonChildSkills() {
-        return new SkillType[] {SkillType.ACROBATICS,
-                SkillType.ARCHERY,
-                SkillType.AXES,
-                SkillType.EXCAVATION,
-                SkillType.FISHING,
-                SkillType.HERBALISM,
-                SkillType.MINING,
-                SkillType.REPAIR,
-                SkillType.SWORDS,
-                SkillType.TAMING,
-                SkillType.UNARMED,
-                SkillType.WOODCUTTING };
-    }
-
-    public static SkillType[] childSkills() {
-        return new SkillType[] { SkillType.SMELTING };
     }
 
     public Color getRunescapeModeColor() {
@@ -190,5 +189,9 @@ public enum SkillType {
         }
 
         return null;
+    }
+
+    public String getSkillName() {
+        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? StringUtils.getCapitalized(this.toString()) : StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
     }
 }
