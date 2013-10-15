@@ -468,7 +468,7 @@ public class EntityListener implements Listener {
     public void onEntityExplodeMonitor(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
 
-        if (!entity.hasMetadata(mcMMO.tntsafeMetadataKey)) {
+        if (!(entity instanceof TNTPrimed) || !entity.hasMetadata(mcMMO.tntsafeMetadataKey)) {
             return;
         }
 
