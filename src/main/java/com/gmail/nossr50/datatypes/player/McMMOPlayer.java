@@ -836,7 +836,7 @@ public class McMMOPlayer {
 
         setToolPreparationMode(tool, false);
 
-        if (!getAbilityMode(ability)) {
+        if (getAbilityMode(ability)) {
             return;
         }
 
