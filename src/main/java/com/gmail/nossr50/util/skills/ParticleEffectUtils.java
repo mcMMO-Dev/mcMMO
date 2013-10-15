@@ -38,9 +38,16 @@ public final class ParticleEffectUtils {
         Location location = player.getEyeLocation();
         World world = player.getWorld();
 
-        for (BlockFace face : BlockFace.values()) {
-            world.playEffect(location, Effect.SMOKE, face);
-        }
+        // Have to do it this way, because not all block directions are valid for smoke
+        world.playEffect(location, Effect.SMOKE, BlockFace.SOUTH_EAST);
+        world.playEffect(location, Effect.SMOKE, BlockFace.SOUTH);
+        world.playEffect(location, Effect.SMOKE, BlockFace.SOUTH_WEST);
+        world.playEffect(location, Effect.SMOKE, BlockFace.EAST);
+        world.playEffect(location, Effect.SMOKE, BlockFace.SELF);
+        world.playEffect(location, Effect.SMOKE, BlockFace.WEST);
+        world.playEffect(location, Effect.SMOKE, BlockFace.NORTH_EAST);
+        world.playEffect(location, Effect.SMOKE, BlockFace.NORTH);
+        world.playEffect(location, Effect.SMOKE, BlockFace.NORTH_WEST);
     }
 
     public static void playGreaterImpactEffect(LivingEntity livingEntity) {
