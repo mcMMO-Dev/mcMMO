@@ -447,6 +447,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "WHERE u.user = ?");
             List<String> usernames = getStoredUsers();
             ResultSet result = null;
+            int convertedUsers = 0;
+            long startMillis = System.currentTimeMillis();
             for (String playerName : usernames) {
                 statement.setString(1, playerName);
                 try {
@@ -457,6 +459,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
                 catch (SQLException e) {
                     // Ignore
+                }
+                convertedUsers++;
+                if ((convertedUsers % DatabaseManager.progressInterval) == 0) {
+                    // Can't use Bukkit.broadcastMessage because async
+                    System.out.println(String.format("[mcMMO] Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / ((System.currentTimeMillis() - startMillis) / 1000D)));
                 }
             }
         }
