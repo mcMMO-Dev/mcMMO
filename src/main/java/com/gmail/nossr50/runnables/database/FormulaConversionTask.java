@@ -5,6 +5,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -23,6 +24,8 @@ public class FormulaConversionTask extends BukkitRunnable {
 
     @Override
     public void run() {
+        int convertedUsers = 0;
+        long startMillis = System.currentTimeMillis();
         for (String playerName : mcMMO.getDatabaseManager().getStoredUsers()) {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName, true);
             PlayerProfile profile;
@@ -42,6 +45,11 @@ public class FormulaConversionTask extends BukkitRunnable {
             else {
                 profile = mcMMOPlayer.getProfile();
                 editValues(profile);
+            }
+            convertedUsers++;
+            if ((convertedUsers % DatabaseManager.progressInterval) == 0) {
+                // Can't use Bukkit.broadcastMessage because async
+                System.out.println(String.format("[mcMMO] Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / ((System.currentTimeMillis() - startMillis) / 1000D)));
             }
         }
         mcMMO.getFormulaManager().setPreviousFormulaType(formulaType);

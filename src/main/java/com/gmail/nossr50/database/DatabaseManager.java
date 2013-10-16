@@ -11,6 +11,8 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 public interface DatabaseManager {
     // One month in milliseconds
     public final long PURGE_TIME = 2630000000L * Config.getInstance().getOldUsersCutoff();
+    // During convertUsers, how often to output a status
+    public final int progressInterval = 200;
 
     /**
      * Purge users with 0 power level from the database.

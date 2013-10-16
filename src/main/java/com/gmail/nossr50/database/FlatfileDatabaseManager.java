@@ -411,6 +411,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     public void convertUsers(DatabaseManager destination) {
         BufferedReader in = null;
         String usersFilePath = mcMMO.getUsersFilePath();
+        int convertedUsers = 0;
+        long startMillis = System.currentTimeMillis();
 
         synchronized (fileWritingLock) {
             try {
@@ -426,6 +428,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     }
                     catch (Exception e) {
                         e.printStackTrace();
+                    }
+                    convertedUsers++;
+                    if ((convertedUsers % DatabaseManager.progressInterval) == 0) {
+                        // Can't use Bukkit.broadcastMessage because async
+                        System.out.println(String.format("[mcMMO] Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / ((System.currentTimeMillis() - startMillis) / 1000D)));
                     }
                 }
             }
