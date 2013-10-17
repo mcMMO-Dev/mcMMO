@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -175,7 +174,7 @@ public class McMMOPlayer {
             // If we've failed five times, give up
             if (attempt >= MAX_TRIES) {
                 mcMMO.p.getLogger().severe("Giving up on attempting to load the PlayerProfile for " + playerName);
-                Bukkit.broadcast(LocaleLoader.getString("Recovery.AdminFailureNotice", playerName), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
+                mcMMO.p.getServer().broadcast(LocaleLoader.getString("Recovery.AdminFailureNotice", playerName), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
                 player.sendMessage(LocaleLoader.getString("Recovery.Failure").split("\n"));
                 this.cancel();
                 return;
