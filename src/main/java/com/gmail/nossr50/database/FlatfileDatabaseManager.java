@@ -15,7 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import com.gmail.nossr50.mcMMO;
@@ -125,7 +124,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     catch (NumberFormatException e) {
                     }
                     if (lastPlayed == 0) {
-                        OfflinePlayer player = Bukkit.getOfflinePlayer(name);
+                        OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(name);
                         lastPlayed = player.getLastPlayed();
                         rewrite = true;
                     }
