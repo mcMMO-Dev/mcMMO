@@ -30,6 +30,14 @@
                     <include>locale*.properties</include>
                 </includes>
             </resource>
+            <resource>
+                <targetPath>mods</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/main/resources/mods</directory>
+                <includes>
+                    <include>*.yml</include>
+                </includes>
+            </resource>
         </resources>
         <plugins>
             <plugin>
