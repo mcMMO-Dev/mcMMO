@@ -20,6 +20,7 @@ public final class UserManager {
      * Add a new user.
      *
      * @param player The player to create a user record for
+     *
      * @return the player's {@link McMMOPlayer} object
      */
     public static McMMOPlayer addUser(Player player) {
@@ -74,6 +75,7 @@ public final class UserManager {
      * Get the McMMOPlayer of a player by name.
      *
      * @param playerName The name of the player whose McMMOPlayer to retrieve
+     *
      * @return the player's McMMOPlayer object
      */
     public static McMMOPlayer getPlayer(String playerName) {
@@ -84,6 +86,7 @@ public final class UserManager {
      * Get the McMMOPlayer of a player.
      *
      * @param player The player whose McMMOPlayer to retrieve
+     *
      * @return the player's McMMOPlayer object
      */
     public static McMMOPlayer getPlayer(OfflinePlayer player) {

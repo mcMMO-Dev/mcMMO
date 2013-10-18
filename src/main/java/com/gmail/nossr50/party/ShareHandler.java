@@ -22,9 +22,10 @@ public final class ShareHandler {
     /**
      * Distribute Xp amongst party members.
      *
-     * @param xp Xp without party sharing
+     * @param xp          Xp without party sharing
      * @param mcMMOPlayer Player initiating the Xp gain
-     * @param skillType Skill being used
+     * @param skillType   Skill being used
+     *
      * @return True is the xp has been shared
      */
     public static boolean handleXpShare(float xp, McMMOPlayer mcMMOPlayer, SkillType skillType) {
@@ -56,8 +57,9 @@ public final class ShareHandler {
     /**
      * Distribute Items amongst party members.
      *
-     * @param drop Item that will get shared
+     * @param drop        Item that will get shared
      * @param mcMMOPlayer Player who picked up the item
+     *
      * @return True if the item has been shared
      */
     public static boolean handleItemShare(Item drop, McMMOPlayer mcMMOPlayer) {

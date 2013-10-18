@@ -52,7 +52,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 
 public final class CommandRegistrationManager {
-    private CommandRegistrationManager() {};
+    private CommandRegistrationManager() {}
 
     private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
 

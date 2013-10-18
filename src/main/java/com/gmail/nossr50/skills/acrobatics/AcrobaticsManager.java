@@ -44,6 +44,7 @@ public class AcrobaticsManager extends SkillManager {
      * Handle the damage reduction and XP gain from the Dodge ability
      *
      * @param damage The amount of damage initially dealt by the event
+     *
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public double dodgeCheck(double damage) {
@@ -72,6 +73,7 @@ public class AcrobaticsManager extends SkillManager {
      * Handle the damage reduction and XP gain from the Roll ability
      *
      * @param damage The amount of damage initially dealt by the event
+     *
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public double rollCheck(double damage) {
@@ -100,6 +102,7 @@ public class AcrobaticsManager extends SkillManager {
      * Handle the damage reduction and XP gain from the Graceful Roll ability
      *
      * @param damage The amount of damage initially dealt by the event
+     *
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     private double gracefulRollCheck(double damage) {

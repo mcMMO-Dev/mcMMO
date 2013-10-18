@@ -62,6 +62,7 @@ public final class Fishing {
      * Finds the possible drops of an entity
      *
      * @param target Targeted entity
+     *
      * @return possibleDrops List of ItemStack that can be dropped
      */
     protected static List<ShakeTreasure> findPossibleDrops(LivingEntity target) {
@@ -135,6 +136,7 @@ public final class Fishing {
      * Randomly chooses a drop among the list
      *
      * @param possibleDrops List of ItemStack that can be dropped
+     *
      * @return Chosen ItemStack
      */
     protected static ItemStack chooseDrop(List<ShakeTreasure> possibleDrops) {

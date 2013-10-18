@@ -13,6 +13,7 @@ public enum RepairItemType {
      * Get the base permissions associated with this RepairItemType.
      *
      * @param player The player to check the permissions for
+     *
      * @return true if the player has permissions, false otherwise
      */
     public boolean getPermissions(Player player) {

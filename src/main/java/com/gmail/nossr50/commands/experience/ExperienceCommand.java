@@ -108,9 +108,13 @@ public abstract class ExperienceCommand implements TabExecutor {
     }
 
     protected abstract boolean permissionsCheckSelf(CommandSender sender);
+
     protected abstract boolean permissionsCheckOthers(CommandSender sender);
+
     protected abstract void handleCommand(SkillType skill);
+
     protected abstract void handlePlayerMessageAll();
+
     protected abstract void handlePlayerMessageSkill();
 
     private boolean validateArguments(CommandSender sender, String skillName, String value) {

@@ -117,7 +117,8 @@ public class BlockStoreConversionZDirectory implements Runnable {
 
                                 this.newManager.setTrue(this.cxPos, this.y2, this.czPos, this.world);
                             }
-                            catch (Exception e) {}
+                            catch (Exception e) {
+                            }
                         }
                     }
                 }

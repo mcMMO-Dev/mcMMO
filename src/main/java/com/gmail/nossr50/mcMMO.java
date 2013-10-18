@@ -186,7 +186,8 @@ public class mcMMO extends JavaPlugin {
             placeStore.saveAll();       // Save our metadata
             placeStore.cleanUp();       // Cleanup empty metadata stores
         }
-        catch (NullPointerException e) {}
+        catch (NullPointerException e) {
+        }
 
         getServer().getScheduler().cancelTasks(this); // This removes our tasks
         HandlerList.unregisterAll(this); // Cancel event registrations

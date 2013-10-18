@@ -31,6 +31,7 @@ public final class ModUtils {
      * Get the custom tool associated with an item.
      *
      * @param item The item to check
+     *
      * @return the tool if it exists, null otherwise
      */
     public static CustomTool getToolFromItemStack(ItemStack item) {
@@ -41,6 +42,7 @@ public final class ModUtils {
      * Get the custom entity associated with an entity.
      *
      * @param entity The entity to check
+     *
      * @return the entity is if exists, null otherwise
      */
     public static CustomEntity getCustomEntity(Entity entity) {
@@ -51,6 +53,7 @@ public final class ModUtils {
      * Get the custom block associated with an block.
      *
      * @param blockState The BlockState of the bloc to check
+     *
      * @return the block if it exists, null otherwise
      */
     public static CustomBlock getCustomBlock(BlockState blockState) {
@@ -61,6 +64,7 @@ public final class ModUtils {
      * Check if a custom block is a woodcutting block.
      *
      * @param blockState The BlockState of the block to check
+     *
      * @return true if the block represents a custom woodcutting block, false otherwise
      */
     public static boolean isCustomWoodcuttingBlock(BlockState blockState) {
@@ -71,6 +75,7 @@ public final class ModUtils {
      * Check if a custom block should not activate abilites.
      *
      * @param blockState The BlockState of the block to check
+     *
      * @return true if the block represents an ability block, false otherwise
      */
     public static boolean isCustomAbilityBlock(BlockState blockState) {
@@ -81,6 +86,7 @@ public final class ModUtils {
      * Check if a custom block is a mining block.
      *
      * @param blockState The BlockState of the block to check
+     *
      * @return true if the block represents a custom mining block, false otherwise
      */
     public static boolean isCustomMiningBlock(BlockState blockState) {
@@ -91,6 +97,7 @@ public final class ModUtils {
      * Check if a custom block is an excavation block.
      *
      * @param blockState The BlockState of the block to check
+     *
      * @return true if the block represents a custom excavation block, false otherwise
      */
     public static boolean isCustomExcavationBlock(BlockState blockState) {
@@ -101,6 +108,7 @@ public final class ModUtils {
      * Check if a custom block is an herbalism block.
      *
      * @param blockState The BlockState of the block to check
+     *
      * @return true if the block represents a custom herbalism block, false otherwise
      */
     public static boolean isCustomHerbalismBlock(BlockState blockState) {
@@ -111,6 +119,7 @@ public final class ModUtils {
      * Check if a custom block is a leaf block.
      *
      * @param blockState The BlockState of the block to check
+     *
      * @return true if the block represents leaves, false otherwise
      */
     public static boolean isCustomLeafBlock(BlockState blockState) {
@@ -121,6 +130,7 @@ public final class ModUtils {
      * Check if a custom block is a log block.
      *
      * @param blockState The BlockState of the block to check
+     *
      * @return true if the block represents a log, false otherwise
      */
     public static boolean isCustomLogBlock(BlockState blockState) {
@@ -131,6 +141,7 @@ public final class ModUtils {
      * Check if a custom block is an ore block.
      *
      * @param blockState The BlockState of the block to check
+     *
      * @return true if the block represents an ore, false otherwise
      */
     public static boolean isCustomOreBlock(BlockState blockState) {
@@ -141,6 +152,7 @@ public final class ModUtils {
      * Checks to see if an item is a custom tool.
      *
      * @param item Item to check
+     *
      * @return true if the item is a custom tool, false otherwise
      */
     public static boolean isCustomTool(ItemStack item) {
@@ -151,6 +163,7 @@ public final class ModUtils {
      * Checks to see if an entity is a custom entity.
      *
      * @param entity Entity to check
+     *
      * @return true if the entity is a custom entity, false otherwise
      */
     public static boolean isCustomEntity(Entity entity) {
@@ -161,6 +174,7 @@ public final class ModUtils {
      * Check if a custom entity is a boss.
      *
      * @param entity The entity to check
+     *
      * @return true if the entity represents a boss, false otherwise
      */
     public static boolean isCustomBossEntity(Entity entity) {

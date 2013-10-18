@@ -66,7 +66,7 @@ public final class ChimaeraWing {
         long lastTeleport = mcMMOPlayer.getChimeraWingLastUse();
         int cooldown = Config.getInstance().getChimaeraCooldown();
 
-        if (cooldown > 0 ) {
+        if (cooldown > 0) {
             int timeRemaining = SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, cooldown, player);
 
             if (timeRemaining > 0) {

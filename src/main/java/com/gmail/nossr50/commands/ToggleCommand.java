@@ -80,7 +80,10 @@ public abstract class ToggleCommand implements TabExecutor {
     }
 
     protected abstract boolean hasOtherPermission(CommandSender sender);
+
     protected abstract boolean hasSelfPermission(CommandSender sender);
+
     protected abstract void applyCommandAction();
+
     protected abstract void sendSuccessMessage(CommandSender sender);
 }

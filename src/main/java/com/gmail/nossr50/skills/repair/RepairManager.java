@@ -253,8 +253,9 @@ public class RepairManager extends SkillManager {
     /**
      * Computes repair bonuses.
      *
-     * @param durability The durability of the item being repaired
+     * @param durability   The durability of the item being repaired
      * @param repairAmount The base amount of durability repaired to the item
+     *
      * @return The final amount of durability repaired to the item
      */
     private short repairCalculate(short durability, int repairAmount) {

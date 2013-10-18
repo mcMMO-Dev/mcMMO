@@ -21,6 +21,7 @@ public final class BlockUtils {
      * Checks to see if a given block awards XP.
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block awards XP, false otherwise
      */
     public static boolean shouldBeWatched(BlockState blockState) {
@@ -31,6 +32,7 @@ public final class BlockUtils {
      * Check if a given block should allow for the activation of abilities
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block should allow ability activation, false otherwise
      */
     public static boolean canActivateAbilities(BlockState blockState) {
@@ -72,6 +74,7 @@ public final class BlockUtils {
      * Check if a given block is an ore
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block is an ore, false otherwise
      */
     public static boolean isOre(BlockState blockState) {
@@ -96,6 +99,7 @@ public final class BlockUtils {
      * Determine if a given block can be made mossy
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block can be made mossy, false otherwise
      */
     public static boolean canMakeMossy(BlockState blockState) {
@@ -119,6 +123,7 @@ public final class BlockUtils {
      * Determine if a given block should be affected by Green Terra
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(BlockState blockState) {
@@ -157,6 +162,7 @@ public final class BlockUtils {
      * Determine if a given block should be affected by Super Breaker
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block should affected by Super Breaker, false otherwise
      */
     public static Boolean affectedBySuperBreaker(BlockState blockState) {
@@ -179,6 +185,7 @@ public final class BlockUtils {
      * Determine if a given block should be affected by Giga Drill Breaker
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block should affected by Giga Drill Breaker, false otherwise
      */
     public static boolean affectedByGigaDrillBreaker(BlockState blockState) {
@@ -203,6 +210,7 @@ public final class BlockUtils {
      * Check if a given block is a log
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block is a log, false otherwise
      */
     public static boolean isLog(BlockState blockState) {
@@ -221,6 +229,7 @@ public final class BlockUtils {
      * Check if a given block is a leaf
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block is a leaf, false otherwise
      */
     public static boolean isLeaves(BlockState blockState) {
@@ -237,6 +246,7 @@ public final class BlockUtils {
      * Determine if a given block should be affected by Flux Mining
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block should affected by Flux Mining, false otherwise
      */
     public static boolean affectedByFluxMining(BlockState blockState) {
@@ -254,6 +264,7 @@ public final class BlockUtils {
      * Determine if a given block can activate Herbalism abilities
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block can be activate Herbalism abilities, false otherwise
      */
     public static boolean canActivateHerbalism(BlockState blockState) {
@@ -272,6 +283,7 @@ public final class BlockUtils {
      * Determine if a given block should be affected by Block Cracker
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block should affected by Block Cracker, false otherwise
      */
     public static boolean affectedByBlockCracker(BlockState blockState) {
@@ -288,6 +300,7 @@ public final class BlockUtils {
      * Determine if a given block can be made into Mycelium
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block can be made in Mycelium, false otherwise
      */
     public static boolean canMakeShroomy(BlockState blockState) {
@@ -305,6 +318,7 @@ public final class BlockUtils {
      * Determine if a given block is an mcMMO anvil
      *
      * @param blockState The {@link BlockState} of the block to check
+     *
      * @return true if the block is an mcMMO anvil, false otherwise
      */
     public static boolean isMcMMOAnvil(BlockState blockState) {

@@ -150,7 +150,7 @@ public abstract class SkillCommand implements TabExecutor {
             length = Math.min(length, maxLength);
         }
 
-        return new String[] { String.valueOf(length), String.valueOf(enduranceLength) };
+        return new String[]{String.valueOf(length), String.valueOf(enduranceLength)};
     }
 
     protected void luckyEffectsDisplay() {

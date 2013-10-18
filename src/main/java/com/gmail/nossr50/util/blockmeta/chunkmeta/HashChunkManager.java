@@ -160,7 +160,8 @@ public class HashChunkManager implements ChunkManager {
         try {
             chunkStore = readChunkStore(world, cx, cz);
         }
-        catch (Exception e) {}
+        catch (Exception e) {
+        }
 
         if (chunkStore == null) {
             return;

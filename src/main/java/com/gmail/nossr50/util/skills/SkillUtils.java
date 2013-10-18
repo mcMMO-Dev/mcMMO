@@ -44,8 +44,8 @@ public class SkillUtils {
      * Calculate the time remaining until the cooldown expires.
      *
      * @param deactivatedTimeStamp Time of deactivation
-     * @param cooldown The length of the cooldown
-     * @param player The Player to check for cooldown perks
+     * @param cooldown             The length of the cooldown
+     * @param player               The Player to check for cooldown perks
      *
      * @return the number of seconds remaining before the cooldown expires
      */
@@ -58,7 +58,7 @@ public class SkillUtils {
      * This does NOT account for cooldown perks!
      *
      * @param deactivatedTimeStamp Time of deactivation in seconds
-     * @param cooldown The length of the cooldown in seconds
+     * @param cooldown             The length of the cooldown in seconds
      *
      * @return true if the cooldown is expired
      */
@@ -70,6 +70,7 @@ public class SkillUtils {
      * Checks if the given string represents a valid skill
      *
      * @param skillName The name of the skill to check
+     *
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
@@ -171,6 +172,7 @@ public class SkillUtils {
      * Modify the durability of an ItemStack.
      *
      * @param itemStack The ItemStack which durability should be modified
+     *
      * @return the itemStack with modified durability
      */
     public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier) {

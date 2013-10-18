@@ -69,7 +69,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Monitor PlayerTeleportEvents.
-     * <p>
+     * <p/>
      * These events are monitored for the purpose of setting the
      * player's last teleportation timestamp, in order to prevent
      * possible Acrobatics exploitation.
@@ -89,7 +89,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Handle PlayerDeathEvents at the lowest priority.
-     * <p>
+     * <p/>
      * These events are used to modify the death message of a player when
      * needed to correct issues potentially caused by the custom naming used
      * for mob healthbars.
@@ -115,7 +115,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Monitor PlayerDeathEvents.
-     * <p>
+     * <p/>
      * These events are monitored for the purpose of dealing the penalties
      * associated with hardcore and vampirism modes. If neither of these
      * modes are enabled, or if the player who died has hardcore bypass
@@ -151,7 +151,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Monitor PlayerChangedWorldEvents.
-     * <p>
+     * <p/>
      * These events are monitored for the purpose of removing god mode or
      * player parties if they are not allowed on the world the player has
      * changed to.
@@ -174,7 +174,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Monitor PlayerDropItemEvents.
-     * <p>
+     * <p/>
      * These events are monitored for the purpose of flagging sharable
      * dropped items, as well as removing ability buffs from pickaxes
      * and shovels.
@@ -195,7 +195,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Handle PlayerFishEvents at the highest priority.
-     * <p>
+     * <p/>
      * These events are used for the purpose of handling our anti-exploit
      * code, as well as dealing with ice fishing.
      *
@@ -240,7 +240,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Monitor PlayerFishEvents.
-     * <p>
+     * <p/>
      * These events are monitored for the purpose of handling the various
      * Fishing skills and abilities.
      *
@@ -281,7 +281,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Handle PlayerPickupItemEvents at the highest priority.
-     * <p>
+     * <p/>
      * These events are used to handle item sharing between party members and
      * are also used to handle item pickup for the Unarmed skill.
      *
@@ -322,7 +322,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Monitor PlayerQuitEvents.
-     * <p>
+     * <p/>
      * These events are monitored for the purpose of resetting player
      * variables and other garbage collection tasks that must take place when
      * a player exits the server.
@@ -347,7 +347,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Monitor PlayerJoinEvents.
-     * <p>
+     * <p/>
      * These events are monitored for the purpose of initializing player
      * variables, as well as handling the MOTD display and other important
      * join messages.
@@ -381,7 +381,7 @@ public class PlayerListener implements Listener {
 
     /**
      * Monitor PlayerRespawnEvents.
-     * <p>
+     * <p/>
      * These events are monitored for the purpose of setting the
      * player's last respawn timestamp, in order to prevent
      * possible exploitation.

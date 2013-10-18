@@ -129,10 +129,15 @@ public abstract class HardcoreModeCommand implements TabExecutor {
     }
 
     protected abstract boolean checkTogglePermissions();
+
     protected abstract boolean checkModifyPermissions();
+
     protected abstract boolean checkEnabled(String skill);
+
     protected abstract void enable(String skill);
+
     protected abstract void disable(String skill);
+
     protected abstract void modify();
 
     private boolean isInvalidPercentage(CommandSender sender, String value) {

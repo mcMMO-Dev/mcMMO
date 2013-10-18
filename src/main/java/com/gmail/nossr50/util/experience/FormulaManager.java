@@ -49,8 +49,9 @@ public class FormulaManager {
      * the amount of levels and experience, using the previously
      * used formula type.
      *
-     * @param skillLevel Amount of levels
+     * @param skillLevel   Amount of levels
      * @param skillXPLevel Amount of experience
+     *
      * @return The total amount of experience
      */
     public int calculateTotalExperience(int skillLevel, int skillXPLevel) {
@@ -69,9 +70,10 @@ public class FormulaManager {
      * Calculate how many levels a player should have using
      * the new formula type.
      *
-     * @param skillType skill where new levels and experience are calculated for
-     * @param experience total amount of experience
+     * @param skillType   skill where new levels and experience are calculated for
+     * @param experience  total amount of experience
      * @param formulaType The new {@link FormulaType}
+     *
      * @return the amount of levels and experience
      */
     public int[] calculateNewLevel(SkillType skillType, int experience, FormulaType formulaType) {
@@ -99,8 +101,9 @@ public class FormulaManager {
      * if cache doesn't contain the given value it is calculated and added
      * to the cached data.
      *
-     * @param level level to check
+     * @param level       level to check
      * @param formulaType The {@link FormulaType} used
+     *
      * @return amount of experience needed to reach next level
      */
     public int getCachedXpToLevel(int level, FormulaType formulaType) {

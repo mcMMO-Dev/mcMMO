@@ -266,6 +266,7 @@ public class McMMOPlayer {
      * Get the mode of an ability.
      *
      * @param ability The ability to check
+     *
      * @return true if the ability is enabled, false otherwise
      */
     public boolean getAbilityMode(AbilityType ability) {
@@ -275,7 +276,7 @@ public class McMMOPlayer {
     /**
      * Set the mode of an ability.
      *
-     * @param ability The ability to check
+     * @param ability  The ability to check
      * @param isActive True if the ability is active, false otherwise
      */
     public void setAbilityMode(AbilityType ability, boolean isActive) {
@@ -286,6 +287,7 @@ public class McMMOPlayer {
      * Get the informed state of an ability
      *
      * @param ability The ability to check
+     *
      * @return true if the ability is informed, false otherwise
      */
     public boolean getAbilityInformed(AbilityType ability) {
@@ -295,7 +297,7 @@ public class McMMOPlayer {
     /**
      * Set the informed state of an ability.
      *
-     * @param ability The ability to check
+     * @param ability    The ability to check
      * @param isInformed True if the ability is informed, false otherwise
      */
     public void setAbilityInformed(AbilityType ability, boolean isInformed) {
@@ -306,6 +308,7 @@ public class McMMOPlayer {
      * Get the current prep mode of a tool.
      *
      * @param tool Tool to get the mode for
+     *
      * @return true if the tool is prepped, false otherwise
      */
     public boolean getToolPreparationMode(ToolType tool) {
@@ -336,7 +339,7 @@ public class McMMOPlayer {
     /**
      * Set the current prep mode of a tool.
      *
-     * @param tool Tool to set the mode for
+     * @param tool       Tool to set the mode for
      * @param isPrepared true if the tool should be prepped, false otherwise
      */
     public void setToolPreparationMode(ToolType tool, boolean isPrepared) {
@@ -347,6 +350,7 @@ public class McMMOPlayer {
      * Get the current prep ATS of a tool.
      *
      * @param tool Tool to get the ATS for
+     *
      * @return the ATS for the tool
      */
     public long getToolPreparationATS(ToolType tool) {
@@ -357,7 +361,7 @@ public class McMMOPlayer {
      * Set the current prep ATS of a tool.
      *
      * @param tool Tool to set the ATS for
-     * @param ATS the ATS of the tool
+     * @param ATS  the ATS of the tool
      */
     public void setToolPreparationATS(ToolType tool, long ATS) {
         int startTime = (int) (ATS / Misc.TIME_CONVERSION_FACTOR);
@@ -532,7 +536,7 @@ public class McMMOPlayer {
      * Begins an experience gain. The amount will be affected by skill modifiers, global rate, perks, and may be shared with the party
      *
      * @param skillType Skill being used
-     * @param xp Experience amount to process
+     * @param xp        Experience amount to process
      */
     public void beginXpGain(SkillType skillType, float xp) {
         if (xp == 0) {
@@ -563,7 +567,7 @@ public class McMMOPlayer {
      * Begins an experience gain. The amount will be affected by skill modifiers, global rate and perks
      *
      * @param skillType Skill being used
-     * @param xp Experience amount to process
+     * @param xp        Experience amount to process
      */
     public void beginUnsharedXpGain(SkillType skillType, float xp) {
         xp = modifyXpGain(skillType, xp);
@@ -575,7 +579,7 @@ public class McMMOPlayer {
      * Applies an experience gain
      *
      * @param skillType Skill being used
-     * @param xp Experience amount to add
+     * @param xp        Experience amount to add
      */
     public void applyXpGain(SkillType skillType, float xp) {
         if (!Permissions.skillEnabled(player, skillType)) {
@@ -781,7 +785,8 @@ public class McMMOPlayer {
      * Modifies an experience gain using skill modifiers, global rate and perks
      *
      * @param skillType Skill being used
-     * @param xp Experience amount to process
+     * @param xp        Experience amount to process
+     *
      * @return Modified experience
      */
     private float modifyXpGain(SkillType skillType, float xp) {

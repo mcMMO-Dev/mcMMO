@@ -22,8 +22,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -47,7 +47,7 @@ public final class Misc {
     public static final float LEVELUP_PITCH    = 0.5F;  // Reduced to differentiate between vanilla level-up
     public static final float LEVELUP_VOLUME   = 0.75F; // Use max volume always
 
-    private Misc() {};
+    private Misc() {}
 
     public static float getFizzPitch() {
         return 2.6F + (getRandom().nextFloat() - getRandom().nextFloat()) * 0.8F;
@@ -69,6 +69,7 @@ public final class Misc {
      * Get the upgrade tier of the item in hand.
      *
      * @param inHand The item to check the tier of
+     *
      * @return the tier of the item
      */
     public static int getTier(ItemStack inHand) {
@@ -99,9 +100,10 @@ public final class Misc {
     /**
      * Determine if two locations are near each other.
      *
-     * @param first The first location
-     * @param second The second location
+     * @param first       The first location
+     * @param second      The second location
      * @param maxDistance The max distance apart
+     *
      * @return true if the distance between {@code first} and {@code second} is less than {@code maxDistance}, false otherwise
      */
     public static boolean isNear(Location first, Location second, double maxDistance) {
@@ -122,7 +124,7 @@ public final class Misc {
      * Drop items at a given location.
      *
      * @param location The location to drop the items at
-     * @param is The items to drop
+     * @param is       The items to drop
      * @param quantity The amount of items to drop
      */
     public static void dropItems(Location location, ItemStack is, int quantity) {
@@ -135,8 +137,8 @@ public final class Misc {
      * Randomly drop an item at a given location.
      *
      * @param location The location to drop the items at
-     * @param is The item to drop
-     * @param chance The percentage chance for the item to drop
+     * @param is       The item to drop
+     * @param chance   The percentage chance for the item to drop
      */
     public static void randomDropItem(Location location, ItemStack is, double chance) {
         if (random.nextInt(100) < chance) {
@@ -148,7 +150,7 @@ public final class Misc {
      * Drop items with random quantity at a given location.
      *
      * @param location The location to drop the items at
-     * @param is The item to drop
+     * @param is       The item to drop
      * @param quantity The amount of items to drop
      */
     public static void randomDropItems(Location location, ItemStack is, int quantity) {
@@ -169,7 +171,7 @@ public final class Misc {
     /**
      * Drop an item at a given location.
      *
-     * @param location The location to drop the item at
+     * @param location  The location to drop the item at
      * @param itemStack The item to drop
      */
     public static void dropItem(Location location, ItemStack itemStack) {
@@ -258,11 +260,12 @@ public final class Misc {
 
     /**
      * Attempts to match any player names with the given name, and returns a list of all possibly matches.
-     *
+     * <p/>
      * This list is not sorted in any particular order.
      * If an exact match is found, the returned list will only contain a single result.
      *
      * @param partialName Name to match
+     *
      * @return List of all possible names
      */
     public static List<String> matchPlayer(String partialName) {

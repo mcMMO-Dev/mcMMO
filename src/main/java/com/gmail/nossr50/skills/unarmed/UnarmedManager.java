@@ -132,6 +132,7 @@ public class UnarmedManager extends SkillManager {
      * Check Iron Grip ability success
      *
      * @param defender The defending player
+     *
      * @return true if the defender was not disarmed, false otherwise
      */
     private boolean hasIronGrip(Player defender) {

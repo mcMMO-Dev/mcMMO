@@ -68,9 +68,10 @@ public class EventUtils {
     /**
      * Simulate a block break event.
      *
-     * @param block The block to break
-     * @param player The player breaking the block
+     * @param block          The block to break
+     * @param player         The player breaking the block
      * @param shouldArmSwing true if an armswing event should be fired, false otherwise
+     *
      * @return true if the event wasn't cancelled, false otherwise
      */
     public static boolean simulateBlockBreak(Block block, Player player, boolean shouldArmSwing) {

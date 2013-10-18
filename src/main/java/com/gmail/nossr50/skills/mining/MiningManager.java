@@ -173,6 +173,7 @@ public class MiningManager extends SkillManager {
      * Increases the blast radius of the explosion.
      *
      * @param radius to modify
+     *
      * @return modified radius
      */
     public float biggerBombs(float radius) {

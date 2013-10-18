@@ -94,7 +94,7 @@ public class BleedTimerTask extends BukkitRunnable {
      * Add a LivingEntity to the bleedList if it is not in it.
      *
      * @param entity LivingEntity to add
-     * @param ticks Number of bleeding ticks
+     * @param ticks  Number of bleeding ticks
      */
     public static void add(LivingEntity entity, int ticks) {
         int newTicks = ticks;

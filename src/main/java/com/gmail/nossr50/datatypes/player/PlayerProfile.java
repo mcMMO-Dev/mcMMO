@@ -116,6 +116,7 @@ public class PlayerProfile {
      * Get the current DATS of a skill.
      *
      * @param abilityType Ability to get the DATS for
+     *
      * @return the DATS for the ability
      */
     public long getSkillDATS(AbilityType abilityType) {
@@ -125,8 +126,8 @@ public class PlayerProfile {
     /**
      * Set the current DATS of a skill.
      *
-     *  @param abilityType Ability to set the DATS for
-     * @param DATS the DATS of the ability
+     * @param abilityType Ability to set the DATS for
+     * @param DATS        the DATS of the ability
      */
     public void setSkillDATS(AbilityType abilityType, long DATS) {
         int wearsOff = (int) (DATS * .001D);
@@ -181,7 +182,7 @@ public class PlayerProfile {
      * Remove Xp from a skill.
      *
      * @param skillType Type of skill to modify
-     * @param xp Amount of xp to remove
+     * @param xp        Amount of xp to remove
      */
     public void removeXp(SkillType skillType, int xp) {
         if (skillType.isChildSkill()) {
@@ -197,7 +198,7 @@ public class PlayerProfile {
      * Modify a skill level.
      *
      * @param skillType Type of skill to modify
-     * @param newValue New level value for the skill
+     * @param newValue  New level value for the skill
      */
     public void modifySkill(SkillType skillType, int newValue) {
         if (skillType.isChildSkill()) {
@@ -214,7 +215,7 @@ public class PlayerProfile {
      * Add levels to a skill.
      *
      * @param skillType Type of skill to add levels to
-     * @param levels Number of levels to add
+     * @param levels    Number of levels to add
      */
     public void addLevels(SkillType skillType, int levels) {
         if (skillType.isChildSkill()) {
@@ -230,7 +231,7 @@ public class PlayerProfile {
     /**
      * Add Experience to a skill.
      *
-     * @param skillType Type of skill to add experience to
+     * @param skillType  Type of skill to add experience to
      * @param experience Number of experience to add
      */
     public void addExperience(SkillType skillType, int experience) {
@@ -247,6 +248,7 @@ public class PlayerProfile {
      * Get the total amount of Xp before the next level.
      *
      * @param skillType Type of skill to check
+     *
      * @return the total amount of Xp until next level
      */
     public int getXpToLevel(SkillType skillType) {

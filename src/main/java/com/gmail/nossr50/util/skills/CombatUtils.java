@@ -370,8 +370,8 @@ public final class CombatUtils {
     /**
      * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
      *
-     * @param target LivingEntity which to attempt to damage
-     * @param damage Amount of damage to attempt to do
+     * @param target   LivingEntity which to attempt to damage
+     * @param damage   Amount of damage to attempt to do
      * @param attacker Player to pass to event as damager
      */
     public static void dealDamage(LivingEntity target, double damage, LivingEntity attacker) {
@@ -381,8 +381,8 @@ public final class CombatUtils {
     /**
      * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
      *
-     * @param target LivingEntity which to attempt to damage
-     * @param damage Amount of damage to attempt to do
+     * @param target   LivingEntity which to attempt to damage
+     * @param damage   Amount of damage to attempt to do
      * @param attacker Player to pass to event as damager
      */
     public static void dealDamage(LivingEntity target, double damage, DamageCause cause, Entity attacker) {
@@ -397,9 +397,9 @@ public final class CombatUtils {
      * Apply Area-of-Effect ability actions.
      *
      * @param attacker The attacking player
-     * @param target The defending entity
-     * @param damage The initial damage amount
-     * @param type The type of skill being used
+     * @param target   The defending entity
+     * @param damage   The initial damage amount
+     * @param type     The type of skill being used
      */
     public static void applyAbilityAoE(Player attacker, LivingEntity target, double damage, SkillType type) {
         int numberOfTargets = Misc.getTier(attacker.getItemInHand()); // The higher the weapon tier, the more targets you hit
@@ -450,8 +450,8 @@ public final class CombatUtils {
      * Start the task that gives combat XP.
      *
      * @param mcMMOPlayer The attacking player
-     * @param target The defending entity
-     * @param skillType The skill being used
+     * @param target      The defending entity
+     * @param skillType   The skill being used
      */
     private static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, SkillType skillType, double multiplier) {
         double baseXP = 0;
@@ -541,6 +541,7 @@ public final class CombatUtils {
      *
      * @param player The attacking Player
      * @param entity The defending Entity
+     *
      * @return true if the Entity should be damaged, false otherwise.
      */
     private static boolean shouldBeAffected(Player player, Entity entity) {
@@ -577,8 +578,9 @@ public final class CombatUtils {
     /**
      * Checks to see if an entity is currently invincible.
      *
-     * @param entity The {@link LivingEntity} to check
+     * @param entity      The {@link LivingEntity} to check
      * @param eventDamage The damage from the event the entity is involved in
+     *
      * @return true if the entity is invincible, false otherwise
      */
     public static boolean isInvincible(LivingEntity entity, double eventDamage) {
@@ -593,7 +595,8 @@ public final class CombatUtils {
      * Checks to see if an entity is currently friendly toward a given player.
      *
      * @param attacker The player to check.
-     * @param pet The entity to check.
+     * @param pet      The entity to check.
+     *
      * @return true if the entity is friendly, false otherwise
      */
     public static boolean isFriendlyPet(Player attacker, Tameable pet) {

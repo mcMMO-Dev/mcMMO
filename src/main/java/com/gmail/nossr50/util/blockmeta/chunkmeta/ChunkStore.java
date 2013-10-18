@@ -42,6 +42,7 @@ public interface ChunkStore extends Serializable {
      * @param x x coordinate in current chunklet
      * @param y y coordinate in current chunklet
      * @param z z coordinate in current chunklet
+     *
      * @return true if the value is true at the given coordinates, false if otherwise
      */
     public boolean isTrue(int x, int y, int z);

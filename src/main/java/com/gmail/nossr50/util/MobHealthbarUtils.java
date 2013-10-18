@@ -16,13 +16,14 @@ import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
 import com.gmail.nossr50.util.player.UserManager;
 
 public final class MobHealthbarUtils {
-    private MobHealthbarUtils() {};
+    private MobHealthbarUtils() {}
 
     /**
      * Fix issues with death messages caused by the mob healthbars.
      *
      * @param deathMessage The original death message
-     * @param player The player who died
+     * @param player       The player who died
+     *
      * @return the fixed death message
      */
     public static String fixDeathMessage(String deathMessage, Player player) {
@@ -158,6 +159,7 @@ public final class MobHealthbarUtils {
      * Check if a given LivingEntity is a boss.
      *
      * @param livingEntity The {@link LivingEntity} of the livingEntity to check
+     *
      * @return true if the livingEntity is a boss, false otherwise
      */
     public static boolean isBoss(LivingEntity livingEntity) {

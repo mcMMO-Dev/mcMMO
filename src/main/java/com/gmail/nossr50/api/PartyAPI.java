@@ -21,6 +21,7 @@ public final class PartyAPI {
      * This function is designed for API usage.
      *
      * @param player The player to check the party name of
+     *
      * @return the name of the player's party, or null if not in a party
      */
     public static String getPartyName(Player player) {
@@ -37,6 +38,7 @@ public final class PartyAPI {
      * This function is designed for API usage.
      *
      * @param player The player to check
+     *
      * @return true if the player is in a party, false otherwise
      */
     public static boolean inParty(Player player) {
@@ -50,6 +52,7 @@ public final class PartyAPI {
      *
      * @param playera The first player to check
      * @param playerb The second player to check
+     *
      * @return true if the two players are in the same party, false otherwise
      */
     public static boolean inSameParty(Player playera, Player playerb) {
@@ -72,7 +75,7 @@ public final class PartyAPI {
      * </br>
      * This function is designed for API usage.
      *
-     * @param player The player to add to the party
+     * @param player    The player to add to the party
      * @param partyName The party to add the player to
      */
     public static void addToParty(Player player, String partyName) {
@@ -102,6 +105,7 @@ public final class PartyAPI {
      * This function is designed for API usage.
      *
      * @param partyName The party name
+     *
      * @return the leader of the party
      */
     public static String getPartyLeader(String partyName) {
@@ -114,7 +118,7 @@ public final class PartyAPI {
      * This function is designed for API usage.
      *
      * @param partyName The name of the party to set the leader of
-     * @param player The player to set as leader
+     * @param player    The player to set as leader
      */
     public static void setPartyLeader(String partyName, String player) {
         PartyManager.setPartyLeader(player, PartyManager.getParty(partyName));
@@ -126,6 +130,7 @@ public final class PartyAPI {
      * This function is designed for API usage.
      *
      * @param player The player to check
+     *
      * @return all the players in the player's party
      */
     @Deprecated
@@ -145,6 +150,7 @@ public final class PartyAPI {
      * This function is designed for API usage.
      *
      * @param player The player to check
+     *
      * @return all the player names in the player's party
      */
     public static LinkedHashSet<String> getMembers(Player player) {
@@ -157,6 +163,7 @@ public final class PartyAPI {
      * This function is designed for API usage.
      *
      * @param partyName The party to check
+     *
      * @return all online players in this party
      */
     public static List<Player> getOnlineMembers(String partyName) {
@@ -169,6 +176,7 @@ public final class PartyAPI {
      * This function is designed for API usage.
      *
      * @param player The player to check
+     *
      * @return all online players in the player's party
      */
     public static List<Player> getOnlineMembers(Player player) {

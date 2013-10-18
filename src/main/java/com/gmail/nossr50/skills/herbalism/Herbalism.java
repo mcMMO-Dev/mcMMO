@@ -33,6 +33,7 @@ public class Herbalism {
      * Convert blocks affected by the Green Thumb & Green Terra abilities.
      *
      * @param blockState The {@link BlockState} to check ability activation for
+     *
      * @return true if the ability was successful, false otherwise
      */
     protected static boolean convertGreenTerraBlocks(BlockState blockState) {
@@ -62,6 +63,7 @@ public class Herbalism {
      * Calculate the drop amounts for cacti & sugar cane based on the blocks above them.
      *
      * @param blockState The {@link BlockState} of the bottom block of the plant
+     *
      * @return the number of bonus drops to award from the blocks in this plant
      */
     protected static int calculateCatciAndSugarDrops(BlockState blockState) {
@@ -92,6 +94,7 @@ public class Herbalism {
      * Convert blocks affected by the Green Thumb & Green Terra abilities.
      *
      * @param blockState The {@link BlockState} to check ability activation for
+     *
      * @return true if the ability was successful, false otherwise
      */
     protected static boolean convertShroomThumb(BlockState blockState) {

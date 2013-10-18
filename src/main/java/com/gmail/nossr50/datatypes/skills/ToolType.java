@@ -34,6 +34,7 @@ public enum ToolType {
      * Check to see if the item is of the appropriate type.
      *
      * @param itemStack The item to check
+     *
      * @return true if the item is the right type, false otherwise
      */
     public boolean inHand(ItemStack itemStack) {

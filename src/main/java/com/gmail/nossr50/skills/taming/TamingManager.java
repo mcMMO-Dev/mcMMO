@@ -2,10 +2,10 @@ package com.gmail.nossr50.skills.taming;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
@@ -87,7 +87,7 @@ public class TamingManager extends SkillManager {
     /**
      * Apply the Fast Food Service ability.
      *
-     * @param wolf The wolf using the ability
+     * @param wolf   The wolf using the ability
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, double damage) {
@@ -108,7 +108,7 @@ public class TamingManager extends SkillManager {
      *
      * @param target The LivingEntity to apply Gore on
      * @param damage The initial damage
-     * @param wolf The wolf using the ability
+     * @param wolf   The wolf using the ability
      */
     public double gore(LivingEntity target, double damage, Wolf wolf) {
         if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Taming.goreMaxChance, Taming.goreMaxBonusLevel)) {
@@ -197,7 +197,7 @@ public class TamingManager extends SkillManager {
     /**
      * Handle the Call of the Wild ability.
      *
-     * @param type The type of entity to summon.
+     * @param type         The type of entity to summon.
      * @param summonAmount The amount of material needed to summon the entity
      */
     private void callOfTheWild(EntityType type, int summonAmount) {

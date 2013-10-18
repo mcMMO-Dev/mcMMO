@@ -303,7 +303,7 @@ public class HashChunkletManager implements ChunkletManager {
     }
 
     /**
-     * @param cStore ChunkletStore to save
+     * @param cStore   ChunkletStore to save
      * @param location Where on the disk to put it
      */
     private void serializeChunkletStore(ChunkletStore cStore, File location) {
@@ -345,6 +345,7 @@ public class HashChunkletManager implements ChunkletManager {
 
     /**
      * @param location Where on the disk to read from
+     *
      * @return ChunkletStore from the specified location
      */
     private ChunkletStore deserializeChunkletStore(File location) {

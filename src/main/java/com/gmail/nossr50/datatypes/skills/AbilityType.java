@@ -150,6 +150,7 @@ public enum AbilityType {
      * Get the permissions for this ability.
      *
      * @param player Player to check permissions for
+     *
      * @return true if the player has permissions, false otherwise
      */
     public boolean getPermissions(Player player) {
@@ -193,6 +194,7 @@ public enum AbilityType {
      * Check if a block is affected by this ability.
      *
      * @param blockState the block to check
+     *
      * @return true if the block is affected by this ability, false otherwise
      */
     public boolean blockCheck(BlockState blockState) {
@@ -227,7 +229,8 @@ public enum AbilityType {
      * Check to see if ability should be triggered.
      *
      * @param player The player using the ability
-     * @param block The block modified by the ability
+     * @param block  The block modified by the ability
+     *
      * @return true if the ability should activate, false otherwise
      */
     public boolean triggerCheck(Player player, Block block) {

@@ -16,6 +16,7 @@ public class Excavation {
      * Get the list of possible {@link ExcavationTreasure|ExcavationTreasures} obtained from a given block.
      *
      * @param blockState The {@link BlockState} of the block to check.
+     *
      * @return the list of treasures that could be found
      */
     protected static List<ExcavationTreasure> getTreasures(BlockState blockState) {

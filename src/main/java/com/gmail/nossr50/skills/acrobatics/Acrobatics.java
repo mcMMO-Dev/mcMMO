@@ -26,7 +26,7 @@ public final class Acrobatics {
     public static boolean afkLevelingDisabled    = Config.getInstance().getAcrobaticsAFKDisabled();
     public static boolean dodgeLightningDisabled = Config.getInstance().getDodgeLightningDisabled();
 
-    private Acrobatics() {};
+    private Acrobatics() {}
 
     protected static double calculateModifiedDodgeDamage(double damage, double damageModifier) {
         return Math.max(damage / damageModifier, 1.0);

@@ -31,8 +31,9 @@ public final class PartyManager {
     /**
      * Check if a party with a given name already exists.
      *
-     * @param player The player to notify
+     * @param player    The player to notify
      * @param partyName The name of the party to check
+     *
      * @return true if a party with that name exists, false otherwise
      */
     public static boolean checkPartyExistence(Player player, String partyName) {
@@ -47,8 +48,9 @@ public final class PartyManager {
     /**
      * Attempt to change parties or join a new party.
      *
-     * @param mcMMOPlayer The player changing or joining parties
+     * @param mcMMOPlayer  The player changing or joining parties
      * @param newPartyName The name of the party being joined
+     *
      * @return true if the party was joined successfully, false otherwise
      */
     public static boolean changeOrJoinParty(McMMOPlayer mcMMOPlayer, String newPartyName) {
@@ -73,8 +75,9 @@ public final class PartyManager {
     /**
      * Check if two online players are in the same party.
      *
-     * @param firstPlayer The first player
+     * @param firstPlayer  The first player
      * @param secondPlayer The second player
+     *
      * @return true if they are in the same party, false otherwise
      */
     public static boolean inSameParty(Player firstPlayer, Player secondPlayer) {
@@ -92,6 +95,7 @@ public final class PartyManager {
      * Get the near party members.
      *
      * @param mcMMOPlayer The player to check
+     *
      * @return the near party members
      */
     public static List<Player> getNearMembers(McMMOPlayer mcMMOPlayer) {
@@ -116,6 +120,7 @@ public final class PartyManager {
      * Get a list of all players in this player's party.
      *
      * @param player The player to check
+     *
      * @return all the players in the player's party
      */
     public static LinkedHashSet<String> getAllMembers(Player player) {
@@ -128,6 +133,7 @@ public final class PartyManager {
      * Get a list of all online players in this party.
      *
      * @param partyName The party to check
+     *
      * @return all online players in this party
      */
     public static List<Player> getOnlineMembers(String partyName) {
@@ -138,6 +144,7 @@ public final class PartyManager {
      * Get a list of all online players in this party.
      *
      * @param player The player to check
+     *
      * @return all online players in this party
      */
     public static List<Player> getOnlineMembers(Player player) {
@@ -152,6 +159,7 @@ public final class PartyManager {
      * Retrieve a party by its name
      *
      * @param partyName The party name
+     *
      * @return the existing party, null otherwise
      */
     public static Party getParty(String partyName) {
@@ -168,6 +176,7 @@ public final class PartyManager {
      * Retrieve a party by a members name
      *
      * @param playerName The members name
+     *
      * @return the existing party, null otherwise
      */
     public static Party getPlayerParty(String playerName) {
@@ -184,6 +193,7 @@ public final class PartyManager {
      * Retrieve a party by member
      *
      * @param player The member
+     *
      * @return the existing party, null otherwise
      */
     public static Party getParty(Player player) {
@@ -205,7 +215,7 @@ public final class PartyManager {
      * Remove a player from a party.
      *
      * @param player The player to remove
-     * @param party The party
+     * @param party  The party
      */
     public static void removeFromParty(OfflinePlayer player, Party party) {
         LinkedHashSet<String> members = party.getMembers();
@@ -253,8 +263,8 @@ public final class PartyManager {
      * Create a new party
      *
      * @param mcMMOPlayer The player to add to the party
-     * @param partyName The party to add the player to
-     * @param password The password for this party, null if there was no password
+     * @param partyName   The party to add the player to
+     * @param password    The password for this party, null if there was no password
      */
     public static void createParty(McMMOPlayer mcMMOPlayer, String partyName, String password) {
         Player player = mcMMOPlayer.getPlayer();
@@ -275,9 +285,10 @@ public final class PartyManager {
     /**
      * Check if a player can join a party
      *
-     * @param player The player trying to join a party
-     * @param party The party
+     * @param player   The player trying to join a party
+     * @param party    The party
      * @param password The password provided by the player
+     *
      * @return true if the player can join the party
      */
     public static boolean checkPartyPassword(Player player, Party party, String password) {
@@ -326,7 +337,7 @@ public final class PartyManager {
      * Add a player to a party
      *
      * @param mcMMOPlayer The player to add to the party
-     * @param party The party
+     * @param party       The party
      */
     public static void addToParty(McMMOPlayer mcMMOPlayer, Party party) {
         String playerName = mcMMOPlayer.getPlayer().getName();
@@ -340,6 +351,7 @@ public final class PartyManager {
      * Get the leader of a party.
      *
      * @param partyName The party name
+     *
      * @return the leader of the party
      */
     public static String getPartyLeader(String partyName) {
@@ -352,7 +364,7 @@ public final class PartyManager {
      * Set the leader of a party.
      *
      * @param playerName The name of the player to set as leader
-     * @param party The party
+     * @param party      The party
      */
     public static void setPartyLeader(String playerName, Party party) {
         String leaderName = party.getLeader();
@@ -389,6 +401,7 @@ public final class PartyManager {
      * Check if a string is a valid party name.
      *
      * @param partyName The party name to check
+     *
      * @return true if this is a valid party, false otherwise
      */
     public static boolean isParty(String partyName) {
@@ -474,10 +487,11 @@ public final class PartyManager {
     /**
      * Handle party change event.
      *
-     * @param player The player changing parties
+     * @param player       The player changing parties
      * @param oldPartyName The name of the old party
      * @param newPartyName The name of the new party
-     * @param reason The reason for changing parties
+     * @param reason       The reason for changing parties
+     *
      * @return true if the change event was successful, false otherwise
      */
     public static boolean handlePartyChangeEvent(Player player, String oldPartyName, String newPartyName, EventReason reason) {
@@ -501,7 +515,7 @@ public final class PartyManager {
     /**
      * Notify party members when a player joins.
      *
-     * @param party The concerned party
+     * @param party      The concerned party
      * @param playerName The name of the player that joined
      */
     private static void informPartyMembersJoin(Party party, String playerName) {
@@ -513,7 +527,7 @@ public final class PartyManager {
     /**
      * Notify party members when a party member quits.
      *
-     * @param party The concerned party
+     * @param party      The concerned party
      * @param playerName The name of the player that left
      */
     private static void informPartyMembersQuit(Party party, String playerName) {

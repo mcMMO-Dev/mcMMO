@@ -78,8 +78,9 @@ public class HerbalismManager extends SkillManager {
     /**
      * Handle the Farmer's Diet ability
      *
-     * @param rankChange The # of levels to change rank for the food
+     * @param rankChange     The # of levels to change rank for the food
      * @param eventFoodLevel The initial change in hunger from the event
+     *
      * @return the modified change in hunger for the event
      */
     public int farmersDiet(int rankChange, int eventFoodLevel) {
@@ -90,6 +91,7 @@ public class HerbalismManager extends SkillManager {
      * Process the Green Terra ability.
      *
      * @param blockState The {@link BlockState} to check ability activation for
+     *
      * @return true if the ability was successful, false otherwise
      */
     public boolean processGreenTerra(BlockState blockState) {
@@ -114,8 +116,6 @@ public class HerbalismManager extends SkillManager {
     }
 
     /**
-     * 
-     *
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public void herbalismBlockCheck(BlockState blockState) {
@@ -180,6 +180,7 @@ public class HerbalismManager extends SkillManager {
      * Process the Green Thumb ability for blocks.
      *
      * @param blockState The {@link BlockState} to check ability activation for
+     *
      * @return true if the ability was successful, false otherwise
      */
     public boolean processGreenThumbBlocks(BlockState blockState) {
@@ -195,6 +196,7 @@ public class HerbalismManager extends SkillManager {
      * Process the Hylian Luck ability.
      *
      * @param blockState The {@link BlockState} to check ability activation for
+     *
      * @return true if the ability was successful, false otherwise
      */
     public boolean processHylianLuck(BlockState blockState) {
@@ -246,6 +248,7 @@ public class HerbalismManager extends SkillManager {
      * Process the Shroom Thumb ability.
      *
      * @param blockState The {@link BlockState} to check ability activation for
+     *
      * @return true if the ability was successful, false otherwise
      */
     public boolean processShroomThumb(BlockState blockState) {

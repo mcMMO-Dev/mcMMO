@@ -32,15 +32,16 @@ public final class Woodcutting {
     protected enum ExperienceGainMethod {
         DEFAULT,
         TREE_FELLER,
-    };
+    }
 
     private Woodcutting() {}
 
     /**
      * Retrieves the experience reward from a log
      *
-     * @param blockState Log being broken
+     * @param blockState           Log being broken
      * @param experienceGainMethod How the log is being broken
+     *
      * @return Amount of experience
      */
     protected static int getExperienceFromLog(BlockState blockState, ExperienceGainMethod experienceGainMethod) {
@@ -140,7 +141,7 @@ public final class Woodcutting {
     /**
      * Processes Tree Feller in a recursive manner
      *
-     * @param blockState Block being checked
+     * @param blockState       Block being checked
      * @param treeFellerBlocks List of blocks to be removed
      */
     /*
@@ -208,7 +209,8 @@ public final class Woodcutting {
      * Handles the durability loss
      *
      * @param treeFellerBlocks List of blocks to be removed
-     * @param inHand tool being used
+     * @param inHand           tool being used
+     *
      * @return True if the tool can sustain the durability loss
      */
     protected static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand) {
@@ -240,12 +242,13 @@ public final class Woodcutting {
      * list of blocks used for future recursive calls of
      * 'processTree()'
      *
-     * @param blockState Block to be added
+     * @param blockState         Block to be added
      * @param futureCenterBlocks List of blocks that will be used to call
-     *     'processTree()'
-     * @param treeFellerBlocks List of blocks to be removed
+     *                           'processTree()'
+     * @param treeFellerBlocks   List of blocks to be removed
+     *
      * @return true if and only if the given blockState was a Log not already
-     *     in treeFellerBlocks.
+     *         in treeFellerBlocks.
      */
     private static boolean handleBlock(BlockState blockState, List<BlockState> futureCenterBlocks, Set<BlockState> treeFellerBlocks) {
         if (treeFellerBlocks.contains(blockState) || mcMMO.getPlaceStore().isTrue(blockState)) {

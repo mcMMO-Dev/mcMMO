@@ -14,7 +14,7 @@ public final class LocaleLoader {
     private static ResourceBundle bundle = null;
     private static ResourceBundle enBundle = null;
 
-    private LocaleLoader() {};
+    private LocaleLoader() {}
 
     public static String getString(String key) {
         return getString(key, (Object[]) null);
@@ -23,8 +23,9 @@ public final class LocaleLoader {
     /**
      * Gets the appropriate string from the Locale files.
      *
-     * @param key The key to look up the string with
+     * @param key              The key to look up the string with
      * @param messageArguments Any arguments to be added to the string
+     *
      * @return The properly formatted locale string
      */
     public static String getString(String key, Object... messageArguments) {

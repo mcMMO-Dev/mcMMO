@@ -70,7 +70,7 @@ public class SwordsManager extends SkillManager {
      * Handle the effects of the Counter Attack ability
      *
      * @param attacker The {@link LivingEntity} being affected by the ability
-     * @param damage The amount of damage initially dealt by the event
+     * @param damage   The amount of damage initially dealt by the event
      */
     public void counterAttackChecks(LivingEntity attacker, double damage) {
         if (Swords.counterAttackRequiresBlock && !getPlayer().isBlocking()) {

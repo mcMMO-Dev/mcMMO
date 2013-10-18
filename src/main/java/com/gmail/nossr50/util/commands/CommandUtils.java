@@ -58,7 +58,7 @@ public final class CommandUtils {
     }
 
     public static boolean hidden(CommandSender sender, Player target, boolean hasPermission) {
-        if (sender instanceof Player && !((Player)sender).canSee(target) && !hasPermission) {
+        if (sender instanceof Player && !((Player) sender).canSee(target) && !hasPermission) {
             return true;
         }
 
@@ -86,8 +86,8 @@ public final class CommandUtils {
     /**
      * Checks if there is a valid mcMMOPlayer object.
      *
-     * @param sender CommandSender who used the command
-     * @param playerName name of the target player
+     * @param sender      CommandSender who used the command
+     * @param playerName  name of the target player
      * @param mcMMOPlayer mcMMOPlayer object of the target player
      *
      * @return true if the player is online and a valid mcMMOPlayer object was found

@@ -9,7 +9,7 @@ public final class PerksUtils {
     private static final int LUCKY_SKILL_ACTIVATION_CHANCE = 75;
     private static final int NORMAL_SKILL_ACTIVATION_CHANCE = 100;
 
-    private PerksUtils() {};
+    private PerksUtils() {}
 
     public static int handleCooldownPerks(Player player, int cooldown) {
         if (Permissions.halvedCooldowns(player)) {
@@ -67,7 +67,8 @@ public final class PerksUtils {
      * Calculate activation chance for a skill.
      *
      * @param player Player to check the activation chance for
-     * @param skill SkillType to check the activation chance of
+     * @param skill  SkillType to check the activation chance of
+     *
      * @return the activation chance with "lucky perk" accounted for
      */
     public static int handleLuckyPerks(Player player, SkillType skill) {

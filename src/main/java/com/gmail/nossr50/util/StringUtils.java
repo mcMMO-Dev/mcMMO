@@ -8,6 +8,7 @@ public class StringUtils {
      * Gets a capitalized version of the target string.
      *
      * @param target String to capitalize
+     *
      * @return the capitalized string
      */
     public static String getCapitalized(String target) {
@@ -44,6 +45,7 @@ public class StringUtils {
      * Gets the int represented by this string.
      *
      * @param string The string to parse
+     *
      * @return the int represented by this string
      */
     public static int getInt(String string) {
@@ -59,6 +61,7 @@ public class StringUtils {
      * Gets the long represented by this string.
      *
      * @param string The string to parse
+     *
      * @return the long represented by this string
      */
     public static long getLong(String string) {
@@ -74,6 +77,7 @@ public class StringUtils {
      * Determine if a string represents an Integer
      *
      * @param string String to check
+     *
      * @return true if the string is an Integer, false otherwise
      */
     public static boolean isInt(String string) {
@@ -90,6 +94,7 @@ public class StringUtils {
      * Determine if a string represents a Double
      *
      * @param string String to check
+     *
      * @return true if the string is a Double, false otherwise
      */
     public static boolean isDouble(String string) {

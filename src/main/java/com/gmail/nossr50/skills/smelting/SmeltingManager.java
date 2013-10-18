@@ -35,6 +35,7 @@ public class SmeltingManager extends SkillManager {
      * Process the Flux Mining ability.
      *
      * @param blockState The {@link BlockState} to check ability activation for
+     *
      * @return true if the ability was successful, false otherwise
      */
     public boolean processFluxMining(BlockState blockState) {
