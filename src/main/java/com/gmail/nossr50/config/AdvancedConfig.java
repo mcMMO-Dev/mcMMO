@@ -660,7 +660,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* FISHING */
     public int getFishingTierLevel(Fishing.Tier tier) { return config.getInt("Skills.Fishing.Rank_Levels.Rank_" + tier.toNumerical()); }
-    public double getShakeChance(Fishing.Tier tier) { return config.getDouble("Skills.Fishing.Shake_Chance.Rank_" + tier.toNumerical()); }
+    public double getShakeChance(Fishing.Tier tier) { return config.getDouble("Skills.Fishing.ShakeChance.Rank_" + tier.toNumerical()); }
     public int getFishingVanillaXPModifier(Fishing.Tier tier) { return config.getInt("Skills.Fishing.VanillaXPMultiplier.Rank_" + tier.toNumerical()); }
 
     public int getFishermanDietRankChange() { return config.getInt("Skills.Fishing.FishermansDiet.RankChange", 200); }
