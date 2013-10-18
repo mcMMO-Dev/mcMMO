@@ -78,6 +78,8 @@ public class mcMMO extends JavaPlugin {
     /* Plugin Checks */
     private static boolean combatTagEnabled;
     private static boolean healthBarPluginEnabled;
+    private static boolean noCheatPlusPluginEnabled;
+    private static boolean compatNoCheatPlusPluginEnabled;
     private static boolean mcpcEnabled;
 
     // Config Validation Check
@@ -120,9 +122,11 @@ public class mcMMO extends JavaPlugin {
                 return;
             }
 
+            mcpcEnabled = getServer().getName().equals("MCPC+");
             combatTagEnabled = getServer().getPluginManager().getPlugin("CombatTag") != null;
             healthBarPluginEnabled = getServer().getPluginManager().getPlugin("HealthBar") != null;
-            mcpcEnabled = getServer().getName().equals("MCPC+");
+            noCheatPlusPluginEnabled = getServer().getPluginManager().getPlugin("NoCheatPlus") != null;
+            compatNoCheatPlusPluginEnabled = getServer().getPluginManager().getPlugin("CompatNoCheatPlus") != null;
 
             if (mcpcEnabled) {
                 checkModConfigs();
@@ -130,6 +134,11 @@ public class mcMMO extends JavaPlugin {
 
             if (healthBarPluginEnabled) {
                 getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
+            }
+
+            if (noCheatPlusPluginEnabled && !compatNoCheatPlusPluginEnabled) {
+                getLogger().warning("NoCheatPlus plugin found, but CompatNoCheatPlus was not found!");
+                getLogger().warning("mcMMO will not work properly alongside NoCheatPlus without CompatNoCheatPlus");
             }
 
             databaseManager = DatabaseManagerFactory.getDatabaseManager();
