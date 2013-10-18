@@ -29,7 +29,7 @@ public abstract class ConfigLoader {
     protected void loadFile() {
         if (!configFile.exists()) {
             plugin.debug("Creating mcMMO " + fileName + " File...");
-            plugin.saveResource(configFile.getPath(), false);
+            plugin.saveResource(configFile.getParentFile().getName() + File.separator + fileName, false);
         }
         else {
             plugin.debug("Loading mcMMO " + fileName + " File...");
