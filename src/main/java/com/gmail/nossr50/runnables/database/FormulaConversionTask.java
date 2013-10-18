@@ -11,6 +11,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class FormulaConversionTask extends BukkitRunnable {
@@ -47,10 +48,7 @@ public class FormulaConversionTask extends BukkitRunnable {
                 editValues(profile);
             }
             convertedUsers++;
-            if ((convertedUsers % DatabaseManager.progressInterval) == 0) {
-                // Can't use Bukkit.broadcastMessage because async
-                System.out.println(String.format("[mcMMO] Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / ((System.currentTimeMillis() - startMillis) / 1000D)));
-            }
+            Misc.printProgress(convertedUsers, DatabaseManager.progressInterval, startMillis);
         }
         mcMMO.getFormulaManager().setPreviousFormulaType(formulaType);
 

@@ -22,8 +22,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -195,6 +195,12 @@ public final class Misc {
 
         if (player != null) {
             UserManager.addUser(player);
+        }
+    }
+
+    public static void printProgress(int convertedUsers, int progressInterval, long startMillis) {
+        if ((convertedUsers % progressInterval) == 0) {
+            mcMMO.p.getLogger().info(String.format("Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / ((System.currentTimeMillis() - startMillis) / TIME_CONVERSION_FACTOR)));
         }
     }
 

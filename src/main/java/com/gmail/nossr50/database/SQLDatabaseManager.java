@@ -461,10 +461,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     // Ignore
                 }
                 convertedUsers++;
-                if ((convertedUsers % DatabaseManager.progressInterval) == 0) {
-                    // Can't use Bukkit.broadcastMessage because async
-                    System.out.println(String.format("[mcMMO] Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / ((System.currentTimeMillis() - startMillis) / 1000D)));
-                }
+                Misc.printProgress(convertedUsers, progressInterval, startMillis);
             }
         }
         catch (SQLException e) {
