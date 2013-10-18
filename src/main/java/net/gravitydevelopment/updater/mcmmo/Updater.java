@@ -447,7 +447,7 @@ public class Updater {
 
             // Check beta vs. dev
             if (version.contains("dev") && title.contains("beta")) {
-                if (Integer.parseInt(oldTokens[1].substring(3)) < Integer.parseInt(newTokens[1].substring(4))) {
+                if (Integer.parseInt(oldTokens[1].substring(3)) <= Integer.parseInt(newTokens[1].substring(4))) {
                     return true;
                 }
 
