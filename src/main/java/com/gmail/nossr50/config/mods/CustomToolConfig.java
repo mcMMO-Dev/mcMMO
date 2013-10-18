@@ -58,14 +58,12 @@ public class CustomToolConfig extends ConfigLoader {
     protected void loadKeys() {
         repairables = new ArrayList<Repairable>();
 
-        while (!needsUpdate) {
-            loadTool("Axes", customAxes);
-            loadTool("Bows", customBows);
-            loadTool("Hoes", customHoes);
-            loadTool("Pickaxes", customPickaxes);
-            loadTool("Shovels", customShovels);
-            loadTool("Swords", customSwords);
-        }
+        loadTool("Axes", customAxes);
+        loadTool("Bows", customBows);
+        loadTool("Hoes", customHoes);
+        loadTool("Pickaxes", customPickaxes);
+        loadTool("Shovels", customShovels);
+        loadTool("Swords", customSwords);
 
         if (needsUpdate) {
             needsUpdate = false;
@@ -74,6 +72,10 @@ public class CustomToolConfig extends ConfigLoader {
     }
 
     private void loadTool(String toolType, List<Material> materialList) {
+        if (needsUpdate) {
+            return;
+        }
+
         ConfigurationSection toolSection = config.getConfigurationSection(toolType);
 
         if (toolSection == null) {

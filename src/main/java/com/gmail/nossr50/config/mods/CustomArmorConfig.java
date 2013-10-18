@@ -52,12 +52,10 @@ public class CustomArmorConfig extends ConfigLoader {
     protected void loadKeys() {
         repairables = new ArrayList<Repairable>();
 
-        while (!needsUpdate) {
-            loadArmor("Boots", customBoots);
-            loadArmor("Chestplates", customChestplates);
-            loadArmor("Helmets", customHelmets);
-            loadArmor("Leggings", customLeggings);
-        }
+        loadArmor("Boots", customBoots);
+        loadArmor("Chestplates", customChestplates);
+        loadArmor("Helmets", customHelmets);
+        loadArmor("Leggings", customLeggings);
 
         if (needsUpdate) {
             needsUpdate = false;
@@ -66,6 +64,10 @@ public class CustomArmorConfig extends ConfigLoader {
     }
 
     private void loadArmor(String armorType, List<Material> materialList) {
+        if (needsUpdate) {
+            return;
+        }
+
         ConfigurationSection armorSection = config.getConfigurationSection(armorType);
 
         if (armorSection == null) {

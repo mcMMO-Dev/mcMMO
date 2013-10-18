@@ -43,13 +43,11 @@ public class CustomBlockConfig extends ConfigLoader {
 
     @Override
     protected void loadKeys() {
-        while (!needsUpdate) {
-            loadBlocks("Excavation", customExcavationBlocks);
-            loadBlocks("Herbalism", customHerbalismBlocks);
-            loadBlocks("Mining", customMiningBlocks);
-            loadBlocks("Woodcutting", customWoodcuttingBlocks);
-            loadBlocks("Ability_Blocks", customAbilityBlocks);
-        }
+        loadBlocks("Excavation", customExcavationBlocks);
+        loadBlocks("Herbalism", customHerbalismBlocks);
+        loadBlocks("Mining", customMiningBlocks);
+        loadBlocks("Woodcutting", customWoodcuttingBlocks);
+        loadBlocks("Ability_Blocks", customAbilityBlocks);
 
         if (needsUpdate) {
             needsUpdate = false;
@@ -58,6 +56,10 @@ public class CustomBlockConfig extends ConfigLoader {
     }
 
     private void loadBlocks(String skillType, List<MaterialData> blockList) {
+        if (needsUpdate) {
+            return;
+        }
+
         ConfigurationSection skillSection = config.getConfigurationSection(skillType);
 
         if (skillSection == null) {
