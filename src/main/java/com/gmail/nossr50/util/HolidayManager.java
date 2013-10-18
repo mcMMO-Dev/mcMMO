@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Random;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -28,14 +27,14 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import com.gmail.nossr50.mcMMO;
 
 public final class HolidayManager {
+    static String anniversaryFilePath = mcMMO.getFlatFileDirectory() + "anniversary";
     private static ArrayList<String> hasCelebrated;
-    private static final Random rand = new Random();
 
     private HolidayManager() {}
 
     // This gets called onEnable
     public static void createAnniversaryFile() {
-        File anniversaryFile = new File(mcMMO.p.getDataFolder().getAbsolutePath() + File.separator + "anniversary");
+        File anniversaryFile = new File(anniversaryFilePath);
 
         if (!anniversaryFile.exists()) {
             try {
@@ -50,7 +49,7 @@ public final class HolidayManager {
 
         try {
             hasCelebrated.clear();
-            BufferedReader reader = new BufferedReader(new FileReader(mcMMO.p.getDataFolder().getAbsolutePath() + File.separator + "anniversary"));
+            BufferedReader reader = new BufferedReader(new FileReader(anniversaryFilePath));
             String line = reader.readLine();
 
             while (line != null) {
@@ -68,7 +67,7 @@ public final class HolidayManager {
     // This gets called onDisable
     public static void saveAnniversaryFiles() {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(mcMMO.p.getDataFolder().getAbsolutePath() + File.separator + "anniversary"));
+            BufferedWriter writer = new BufferedWriter(new FileWriter(anniversaryFilePath));
             for (String player : hasCelebrated) {
                 writer.write(player);
                 writer.newLine();
@@ -103,7 +102,7 @@ public final class HolidayManager {
         if (sender instanceof Player) {
             final int firework_amount = 10;
             for (int i = 0; i < firework_amount; i++) {
-                int delay = (int) (rand.nextDouble() * 3 * 20) + 4;
+                int delay = (int) (Misc.getRandom().nextDouble() * 3 * 20) + 4;
                 mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new Runnable() {
                     @Override
                     public void run() {
@@ -170,56 +169,38 @@ public final class HolidayManager {
     }
 
     private static void spawnFireworks(Player player) {
-        int power = (int) (rand.nextDouble() * 3) + 1;
-        int type = (int) (rand.nextDouble() * 5) + 1;
-        double varX = rand.nextGaussian() * 3;
-        double varZ = rand.nextGaussian() * 3;
-
-        Type typen;
-        switch (type) {
-            case 2:
-                typen = Type.BALL_LARGE;
-                break;
-
-            case 3:
-                typen = Type.BURST;
-                break;
-
-            case 4:
-                typen = Type.CREEPER;
-                break;
-
-            case 5:
-                typen = Type.STAR;
-                break;
-
-            default:
-                typen = Type.BALL;
-        }
+        int power = (int) (Misc.getRandom().nextDouble() * 3) + 1;
+        Type fireworkType = Type.values()[Misc.getRandom().nextInt(Type.values().length)];
+        double varX = Misc.getRandom().nextGaussian() * 3;
+        double varZ = Misc.getRandom().nextGaussian() * 3;
 
         Firework fireworks = (Firework) player.getWorld().spawnEntity(player.getLocation().add(varX, 0, varZ), EntityType.FIREWORK);
         FireworkMeta fireworkmeta = fireworks.getFireworkMeta();
-        FireworkEffect effect = FireworkEffect.builder().flicker(rand.nextBoolean()).withColor(colorChoose()).withFade(colorChoose()).with(typen).trail(rand.nextBoolean()).build();
+        FireworkEffect effect = FireworkEffect.builder().flicker(Misc.getRandom().nextBoolean()).withColor(colorChoose()).withFade(colorChoose()).with(fireworkType).trail(Misc.getRandom().nextBoolean()).build();
         fireworkmeta.addEffect(effect);
         fireworkmeta.setPower(power);
         fireworks.setFireworkMeta(fireworkmeta);
     }
 
     private static List<Color> colorChoose() {
-        // Thanks Zomis and Tejpbit for the help with this function!
-        Collections.shuffle(ALL_COLORS, rand);
+        Collections.shuffle(ALL_COLORS, Misc.getRandom());
 
-        int numberOfColors = rand.nextInt(ALL_COLORS.size());
-        List<Color> choosenColors = ALL_COLORS.subList(0, numberOfColors);
+        int numberOfColors = Misc.getRandom().nextInt(ALL_COLORS.size() + 1);
 
-        return new ArrayList<Color>(choosenColors); // don't let caller modify ALL_COLORS
+        if (numberOfColors == 0) {
+            numberOfColors = 1;
+        }
+
+        List<Color> chosenColors = ALL_COLORS.subList(0, numberOfColors);
+
+        return new ArrayList<Color>(chosenColors); // don't let caller modify ALL_COLORS
     }
 
     private static String chatColorChoose() {
-        StringBuilder ret = new StringBuilder(ALL_CHAT_COLORS.get(rand.nextInt(ALL_CHAT_COLORS.size())).toString());
+        StringBuilder ret = new StringBuilder(ALL_CHAT_COLORS.get(Misc.getRandom().nextInt(ALL_CHAT_COLORS.size())).toString());
 
         for (ChatColor CHAT_FORMAT : CHAT_FORMATS) {
-            if (rand.nextInt(4) == 0) {
+            if (Misc.getRandom().nextInt(4) == 0) {
                 ret.append(CHAT_FORMAT);
             }
         }
@@ -257,6 +238,6 @@ public final class HolidayManager {
                 ALL_CHAT_COLORS.add(c);
             }
         }
-        Collections.shuffle(ALL_CHAT_COLORS, rand);
+        Collections.shuffle(ALL_CHAT_COLORS, Misc.getRandom());
     }
 }
