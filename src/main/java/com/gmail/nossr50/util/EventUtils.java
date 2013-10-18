@@ -58,7 +58,7 @@ public class EventUtils {
         if (isCancelled) {
             PlayerProfile profile = UserManager.getPlayer(player).getProfile();
 
-            profile.modifySkill(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : - levelsChanged));
+            profile.modifySkill(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
             profile.setSkillXpLevel(skill, profile.getSkillXpLevelRaw(skill) + xpRemoved);
         }
 
