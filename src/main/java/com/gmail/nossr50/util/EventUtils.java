@@ -1,16 +1,38 @@
 package com.gmail.nossr50.util;
 
+import java.util.Map;
+
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Fish;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.experience.McMMOPlayerLevelChangeEvent;
+import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
+import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
+import com.gmail.nossr50.events.fake.FakePlayerFishEvent;
+import com.gmail.nossr50.events.hardcore.McMMOPlayerDeathPenaltyEvent;
+import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
+import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
+import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
+import com.gmail.nossr50.events.skills.fishing.McMMOPlayerMagicHunterEvent;
+import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
+import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.player.UserManager;
 
 public class EventUtils {
     public static McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, SkillType skill) {
@@ -27,11 +49,20 @@ public class EventUtils {
         return event;
     }
 
-    public static McMMOPlayerLevelUpEvent callLevelUpEvent(Player player, SkillType skill, int levelsGained) {
-        McMMOPlayerLevelUpEvent event = new McMMOPlayerLevelUpEvent(player, skill, levelsGained);
+    public static boolean handleLevelChangeEvent(Player player, SkillType skill, int levelsChanged, float xpRemoved, boolean isLevelUp) {
+        McMMOPlayerLevelChangeEvent event = isLevelUp ? new McMMOPlayerLevelUpEvent(player, skill, levelsChanged) : new McMMOPlayerLevelDownEvent(player, skill, levelsChanged);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-        return event;
+        boolean isCancelled = event.isCancelled();
+
+        if (isCancelled) {
+            PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+
+            profile.modifySkill(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : - levelsChanged));
+            profile.setSkillXpLevel(skill, profile.getSkillXpLevelRaw(skill) + xpRemoved);
+        }
+
+        return !isCancelled;
     }
 
     /**
@@ -58,5 +89,78 @@ public class EventUtils {
 
         return !damageEvent.isCancelled() && !breakEvent.isCancelled();
     }
-}
 
+    public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
+
+        McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(teleportingPlayer, targetPlayer, mcMMOPlayer.getParty().getName());
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
+
+        teleportingPlayer.teleport(targetPlayer);
+
+        teleportingPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Player", targetPlayer.getName()));
+        targetPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Target", teleportingPlayer.getName()));
+
+        mcMMOPlayer.actualizePtpLastUse();
+    }
+
+    public static boolean handleXpGainEvent(Player player, SkillType skill, float xpGained) {
+        McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skill, xpGained);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        boolean isCancelled = event.isCancelled();
+
+        if (!isCancelled) {
+            PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+            profile.setSkillXpLevel(skill, profile.getSkillXpLevelRaw(skill) + event.getRawXpGained());
+        }
+
+        return isCancelled;
+    }
+
+    public static McMMOPlayerAbilityDeactivateEvent callAbilityDeactivateEvent(Player player, AbilityType ability) {
+        McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, SkillType.byAbility(ability));
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+
+    public static McMMOPlayerFishingTreasureEvent callFishingTreasureEvent(Player player, ItemStack treasureDrop, int treasureXp, Map<Enchantment, Integer> enchants) {
+        McMMOPlayerFishingTreasureEvent event = enchants.isEmpty() ? new McMMOPlayerFishingTreasureEvent(player, treasureDrop, treasureXp) : new McMMOPlayerMagicHunterEvent(player, treasureDrop, treasureXp, enchants);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+
+    public static FakePlayerFishEvent callFakeFishEvent(Player player, Fish hook) {
+        FakePlayerFishEvent event = new FakePlayerFishEvent(player, null, hook, PlayerFishEvent.State.FISHING);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+
+    public static McMMOPlayerRepairCheckEvent callRepairCheckEvent(Player player, short durability, ItemStack repairMaterial, ItemStack repairedObject) {
+        McMMOPlayerRepairCheckEvent event = new McMMOPlayerRepairCheckEvent(player, durability, repairMaterial, repairedObject);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+
+    public static McMMOPlayerDeathPenaltyEvent callDeathPenaltyEvent(Player player) {
+        McMMOPlayerDeathPenaltyEvent event = new McMMOPlayerDeathPenaltyEvent(player);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+
+    public static McMMOPlayerDisarmEvent callDisarmEvent(Player defender) {
+        McMMOPlayerDisarmEvent event = new McMMOPlayerDisarmEvent(defender);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+}

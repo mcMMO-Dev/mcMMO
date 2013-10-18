@@ -24,7 +24,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
-import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
@@ -36,6 +35,7 @@ import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.MobHealthbarUtils;
@@ -415,7 +415,7 @@ public final class CombatUtils {
             }
 
             LivingEntity livingEntity = (LivingEntity) entity;
-            mcMMO.p.getServer().getPluginManager().callEvent(new FakePlayerAnimationEvent(attacker));
+            EventUtils.callFakeArmSwingEvent(attacker);
 
             switch (type) {
                 case SWORDS:
@@ -543,7 +543,7 @@ public final class CombatUtils {
      * @param entity The defending Entity
      * @return true if the Entity should be damaged, false otherwise.
      */
-    public static boolean shouldBeAffected(Player player, Entity entity) {
+    private static boolean shouldBeAffected(Player player, Entity entity) {
         if (entity instanceof Player) {
             Player defender = (Player) entity;
 
@@ -556,10 +556,7 @@ public final class CombatUtils {
             }
 
             // It may seem a bit redundant but we need a check here to prevent bleed from being applied in applyAbilityAoE()
-            EntityDamageEvent ede = new FakeEntityDamageByEntityEvent(player, entity, EntityDamageEvent.DamageCause.ENTITY_ATTACK, 1);
-            mcMMO.p.getServer().getPluginManager().callEvent(ede);
-
-            if (ede.isCancelled()) {
+            if (callFakeDamageEvent(player, entity, 1.0) == 0) {
                 return false;
             }
         }
@@ -617,11 +614,11 @@ public final class CombatUtils {
         return (target instanceof Player || (target instanceof Tameable && ((Tameable) target).isTamed())) ? skill.getPVPEnabled() : skill.getPVEEnabled();
     }
 
-    public static double callFakeDamageEvent(LivingEntity attacker, LivingEntity target, double damage) {
+    public static double callFakeDamageEvent(Entity attacker, Entity target, double damage) {
         return callFakeDamageEvent(attacker, target, DamageCause.ENTITY_ATTACK, damage);
     }
 
-    public static double callFakeDamageEvent(Entity attacker, LivingEntity target, DamageCause cause, double damage) {
+    public static double callFakeDamageEvent(Entity attacker, Entity target, DamageCause cause, double damage) {
         if (Config.getInstance().getEventCallbackEnabled()) {
             EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, damage) : new FakeEntityDamageByEntityEvent(attacker, target, cause, damage);
             mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);

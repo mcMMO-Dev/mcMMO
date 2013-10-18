@@ -2,10 +2,9 @@ package com.gmail.nossr50.commands.experience;
 
 import org.bukkit.command.CommandSender;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 
 public class AddlevelsCommand extends ExperienceCommand {
@@ -21,11 +20,14 @@ public class AddlevelsCommand extends ExperienceCommand {
 
     @Override
     protected void handleCommand(SkillType skill) {
+        float xpRemoved = profile.getSkillXpLevelRaw(skill);
         profile.addLevels(skill, value);
 
-        if (player != null) {
-            mcMMO.p.getServer().getPluginManager().callEvent(new McMMOPlayerLevelUpEvent(player, skill, value));
+        if (player == null) {
+            return;
         }
+
+        EventUtils.handleLevelChangeEvent(player, skill, value, xpRemoved, true);
     }
 
     @Override

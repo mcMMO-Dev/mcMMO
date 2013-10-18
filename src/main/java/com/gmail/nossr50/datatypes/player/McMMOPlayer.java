@@ -22,7 +22,6 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
-import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
@@ -593,14 +592,9 @@ public class McMMOPlayer {
             return;
         }
 
-        McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skillType, xp);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
+        if (!EventUtils.handleXpGainEvent(player, skillType, xp)) {
             return;
         }
-
-        profile.setSkillXpLevel(skillType, profile.getSkillXpLevelRaw(skillType) + event.getRawXpGained());
 
         isUsingUnarmed = (skillType == SkillType.UNARMED);
         checkXp(skillType);
@@ -626,13 +620,11 @@ public class McMMOPlayer {
                     profile.skillUp(skillType, 1);
                 }
                 else {
-                    profile.addLevels(skillType, 0);
+                    profile.addLevels(skillType, 0); // This seems kinda pointless... why do we have this again?
                 }
             }
 
-            if (EventUtils.callLevelUpEvent(player, skillType, levelsGained).isCancelled()) {
-                profile.modifySkill(skillType, profile.getSkillLevel(skillType) - levelsGained);
-                profile.setSkillXpLevel(skillType, profile.getSkillXpLevelRaw(skillType) + xpRemoved);
+            if (!EventUtils.handleLevelChangeEvent(player, skillType, levelsGained, xpRemoved, true)) {
                 return;
             }
 

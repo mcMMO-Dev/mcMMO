@@ -17,11 +17,11 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.repair.ArcaneForging.Tier;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
@@ -116,10 +116,7 @@ public class RepairManager extends SkillManager {
         short newDurability = repairCalculate(startDurability, baseRepairAmount); // When I asked for sons?
 
         // Call event
-        McMMOPlayerRepairCheckEvent event = new McMMOPlayerRepairCheckEvent(player, (short) (startDurability - newDurability), toRemove, item);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
+        if (EventUtils.callRepairCheckEvent(player, (short) (startDurability - newDurability), toRemove, item).isCancelled()) {
             return;
         }
 

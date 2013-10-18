@@ -28,7 +28,6 @@ import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
-import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Wool;
@@ -47,16 +46,14 @@ import com.gmail.nossr50.datatypes.treasure.EnchantmentTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
 import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
-import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
-import com.gmail.nossr50.events.fake.FakePlayerFishEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
-import com.gmail.nossr50.events.skills.fishing.McMMOPlayerMagicHunterEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.skills.KrakenAttackTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -211,10 +208,7 @@ public class FishingManager extends SkillManager {
             return false;
         }
 
-        FakeBlockBreakEvent blockBreakEvent = new FakeBlockBreakEvent(block, player);
-        mcMMO.p.getServer().getPluginManager().callEvent(blockBreakEvent);
-
-        return !blockBreakEvent.isCancelled();
+        return EventUtils.simulateBlockBreak(block, player, false);
     }
 
     /**
@@ -278,7 +272,7 @@ public class FishingManager extends SkillManager {
         }
 
         // Recast in the new spot
-        mcMMO.p.getServer().getPluginManager().callEvent(new FakePlayerFishEvent(getPlayer(), null, hook, PlayerFishEvent.State.FISHING));
+        EventUtils.callFakeFishEvent(getPlayer(), hook);
     }
 
     public void masterAngler(Fish hook) {
@@ -316,26 +310,20 @@ public class FishingManager extends SkillManager {
         if (treasure != null) {
             player.sendMessage(LocaleLoader.getString("Fishing.Ability.TH.ItemFound"));
 
-            treasureXp = treasure.getXp();
             ItemStack treasureDrop = treasure.getDrop().clone(); // Not cloning is bad, m'kay?
-
-            McMMOPlayerFishingTreasureEvent event;
             Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
 
             if (Permissions.magicHunter(player) && ItemUtils.isEnchantable(treasureDrop)) {
                 enchants = handleMagicHunter(treasureDrop);
-                event = new McMMOPlayerMagicHunterEvent(player, treasureDrop, treasureXp, enchants);
+            }
+
+            McMMOPlayerFishingTreasureEvent event = EventUtils.callFishingTreasureEvent(player, treasureDrop, treasure.getXp(), enchants);
+
+            if (!event.isCancelled()) {
+                treasureDrop = event.getTreasure();
+                treasureXp = event.getXp();
             }
             else {
-                event = new McMMOPlayerFishingTreasureEvent(player, treasureDrop, treasureXp);
-            }
-
-            mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-            treasureDrop = event.getTreasure();
-            treasureXp = event.getXp();
-
-            if (event.isCancelled()) {
                 treasureDrop = null;
                 treasureXp = 0;
             }
@@ -353,7 +341,6 @@ public class FishingManager extends SkillManager {
                     player.sendMessage(LocaleLoader.getString("Fishing.Ability.TH.MagicFound"));
                 }
 
-//                Misc.dropItem(player.getEyeLocation(), fishingCatch.getItemStack());
                 fishingCatch.setItemStack(treasureDrop);
             }
         }

@@ -8,14 +8,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.SmoothBrick;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
-import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -83,15 +82,14 @@ public class UnarmedManager extends SkillManager {
      */
     public void disarmCheck(Player defender) {
         if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Unarmed.disarmMaxChance, Unarmed.disarmMaxBonusLevel) && !hasIronGrip(defender)) {
-            McMMOPlayerDisarmEvent disarmEvent = new McMMOPlayerDisarmEvent(defender);
-            mcMMO.p.getServer().getPluginManager().callEvent(disarmEvent);
-
-            if (!disarmEvent.isCancelled()) {
-                Misc.dropItem(defender.getLocation(), defender.getItemInHand());
-
-                defender.setItemInHand(new ItemStack(Material.AIR));
-                defender.sendMessage(LocaleLoader.getString("Skills.Disarmed"));
+            if (EventUtils.callDisarmEvent(defender).isCancelled()) {
+                return;
             }
+
+            Misc.dropItem(defender.getLocation(), defender.getItemInHand());
+
+            defender.setItemInHand(new ItemStack(Material.AIR));
+            defender.sendMessage(LocaleLoader.getString("Skills.Disarmed"));
         }
     }
 

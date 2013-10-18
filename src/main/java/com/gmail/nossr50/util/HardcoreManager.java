@@ -2,11 +2,9 @@ package com.gmail.nossr50.util;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.events.hardcore.McMMOPlayerDeathPenaltyEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -16,10 +14,7 @@ public final class HardcoreManager {
     public static void invokeStatPenalty(Player player) {
         double statLossPercentage = Config.getInstance().getHardcoreDeathStatPenaltyPercentage();
 
-        McMMOPlayerDeathPenaltyEvent eventToFire = new McMMOPlayerDeathPenaltyEvent(player);
-        mcMMO.p.getServer().getPluginManager().callEvent(eventToFire);
-
-        if (eventToFire.isCancelled()) {
+        if (EventUtils.callDeathPenaltyEvent(player).isCancelled()) {
             return;
         }
 
@@ -45,10 +40,7 @@ public final class HardcoreManager {
     public static void invokeVampirism(Player killer, Player victim) {
         double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
 
-        McMMOPlayerDeathPenaltyEvent eventToFire = new McMMOPlayerDeathPenaltyEvent(victim);
-        mcMMO.p.getServer().getPluginManager().callEvent(eventToFire);
-
-        if (eventToFire.isCancelled()) {
+        if (EventUtils.callDeathPenaltyEvent(victim).isCancelled()) {
             return;
         }
 

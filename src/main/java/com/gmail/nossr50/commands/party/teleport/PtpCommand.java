@@ -14,10 +14,10 @@ import org.bukkit.util.StringUtil;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.items.TeleportationWarmup;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
@@ -177,25 +177,7 @@ public class PtpCommand implements TabExecutor {
             new TeleportationWarmup(mcMMOPlayer, mcMMOTarget).runTaskLater(mcMMO.p, 20 * warmup);
         }
         else {
-            handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
+            EventUtils.handlePartyTeleportEvent(teleportingPlayer, targetPlayer);
         }
-    }
-
-    public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
-        McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(teleportingPlayer, targetPlayer, mcMMOPlayer.getParty().getName());
-
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
-            return;
-        }
-
-        teleportingPlayer.teleport(targetPlayer);
-
-        teleportingPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Player", targetPlayer.getName()));
-        targetPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Target", teleportingPlayer.getName()));
-
-        mcMMOPlayer.actualizePtpLastUse();
     }
 }

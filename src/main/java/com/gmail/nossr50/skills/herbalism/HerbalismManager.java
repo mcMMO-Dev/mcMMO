@@ -16,7 +16,6 @@ import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 import org.bukkit.material.Crops;
 import org.bukkit.material.NetherWarts;
 
-import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -31,6 +30,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
@@ -229,21 +229,16 @@ public class HerbalismManager extends SkillManager {
                 return false;
         }
 
-        if (treasures.isEmpty()) {
-            return false;
-        }
+        Player player = getPlayer();
 
-        FakeBlockBreakEvent blockBreakEvent = new FakeBlockBreakEvent(blockState.getBlock(), getPlayer());
-        mcMMO.p.getServer().getPluginManager().callEvent(blockBreakEvent);
-
-        if (blockBreakEvent.isCancelled()) {
+        if (treasures.isEmpty() || EventUtils.simulateBlockBreak(blockState.getBlock(), player, false)) {
             return false;
         }
 
         blockState.setType(Material.AIR);
 
         Misc.dropItem(blockState.getLocation(), treasures.get(Misc.getRandom().nextInt(treasures.size())).getDrop());
-        getPlayer().sendMessage(LocaleLoader.getString("Herbalism.HylianLuck"));
+        player.sendMessage(LocaleLoader.getString("Herbalism.HylianLuck"));
         return true;
     }
 
