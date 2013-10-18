@@ -85,7 +85,7 @@ public class CustomArmorConfig extends ConfigLoader {
             Material armorMaterial = Material.matchMaterial(armorName);
 
             if (armorMaterial == null) {
-                plugin.getLogger().warning("Invalid material name. This item will be skipped.");
+                plugin.getLogger().warning("Invalid material name. This item will be skipped. - " + armorName);
                 continue;
             }
 
@@ -93,7 +93,7 @@ public class CustomArmorConfig extends ConfigLoader {
             Material repairMaterial = Material.matchMaterial(config.getString(armorType + "." + armorName + ".Repair_Material", ""));
 
             if (repairMaterial == null) {
-                plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable.");
+                plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable. - " + armorName);
                 repairable = false;
             }
 
