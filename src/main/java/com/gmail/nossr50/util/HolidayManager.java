@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -16,6 +15,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.command.CommandSender;
@@ -25,10 +25,42 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.gmail.nossr50.mcMMO;
+import com.google.common.collect.ImmutableList;
 
 public final class HolidayManager {
     static String anniversaryFilePath = mcMMO.getFlatFileDirectory() + "anniversary";
     private static ArrayList<String> hasCelebrated;
+
+    private static final List<Color> ALL_COLORS;
+    private static final List<ChatColor> ALL_CHAT_COLORS;
+    private static final List<ChatColor> CHAT_FORMATS;
+
+    static {
+        List<Color> colors = new ArrayList<Color>();
+        List<ChatColor> chatColors = new ArrayList<ChatColor>();
+        List<ChatColor> chatFormats = new ArrayList<ChatColor>();
+
+        for (ChatColor color : ChatColor.values()) {
+            if (color.isColor()) {
+                chatColors.add(color);
+            }
+            else {
+                chatFormats.add(color);
+            }
+        }
+
+        for (DyeColor color : DyeColor.values()) {
+            colors.add(color.getFireworkColor());
+        }
+
+        Collections.shuffle(chatColors, Misc.getRandom());
+        Collections.shuffle(colors, Misc.getRandom());
+        Collections.shuffle(chatFormats, Misc.getRandom());
+
+        ALL_CHAT_COLORS = ImmutableList.copyOf(chatColors);
+        ALL_COLORS = ImmutableList.copyOf(colors);
+        CHAT_FORMATS = ImmutableList.copyOf(chatFormats);
+    }
 
     private HolidayManager() {}
 
@@ -102,7 +134,7 @@ public final class HolidayManager {
         if (sender instanceof Player) {
             final int firework_amount = 10;
             for (int i = 0; i < firework_amount; i++) {
-                int delay = (int) (Misc.getRandom().nextDouble() * 3 * 20) + 4;
+                int delay = (int) (Misc.getRandom().nextDouble() * 3 * Misc.TICK_CONVERSION_FACTOR) + 4;
                 mcMMO.p.getServer().getScheduler().runTaskLater(mcMMO.p, new Runnable() {
                     @Override
                     public void run() {
@@ -138,18 +170,7 @@ public final class HolidayManager {
                  *       b                        i          k
                  *       b                        i          k
                  */
-            String colorA = chatColorChoose();
-            String colorB = chatColorChoose();
-            String colorC = chatColorChoose();
-            String colorD = chatColorChoose();
-            String colorE = chatColorChoose();
-            String colorF = chatColorChoose();
-            String colorG = chatColorChoose();
-            String colorH = chatColorChoose();
-            String colorI = chatColorChoose();
-            String colorJ = chatColorChoose();
-            String colorK = chatColorChoose();
-            Object[] colorParams = new Object[]{colorA, colorB, colorC, colorD, colorE, colorF, colorG, colorH, colorI, colorJ, colorK};
+            Object[] colorParams = new Object[]{chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose(), chatColorChoose()};
             sender.sendMessage(String.format("      %1$s.''.      %4$s.        %7$s*''*    %10$s:_\\/_:     %11$s.", colorParams));
             sender.sendMessage(String.format("     %1$s:_\\/_:   %4$s_\\(/_  %5$s.:.%7$s*_\\/_*   %10$s: /\\ :  %11$s.'.:.'.", colorParams));
             sender.sendMessage(String.format(" %2$s.''.%1$s: /\\ :    %4$s/)\\   %5$s':'%7$s* /\\ *  %9$s: %10$s'..'.  %11$s-=:o:=-", colorParams));
@@ -183,61 +204,18 @@ public final class HolidayManager {
     }
 
     private static List<Color> colorChoose() {
-        Collections.shuffle(ALL_COLORS, Misc.getRandom());
-
-        int numberOfColors = Misc.getRandom().nextInt(ALL_COLORS.size() + 1);
-
-        if (numberOfColors == 0) {
-            numberOfColors = 1;
-        }
-
-        List<Color> chosenColors = ALL_COLORS.subList(0, numberOfColors);
-
-        return new ArrayList<Color>(chosenColors); // don't let caller modify ALL_COLORS
+        return ALL_COLORS.subList(0, Math.max(Misc.getRandom().nextInt(ALL_COLORS.size() + 1), 1));
     }
 
     private static String chatColorChoose() {
         StringBuilder ret = new StringBuilder(ALL_CHAT_COLORS.get(Misc.getRandom().nextInt(ALL_CHAT_COLORS.size())).toString());
 
-        for (ChatColor CHAT_FORMAT : CHAT_FORMATS) {
-            if (Misc.getRandom().nextInt(4) == 0) {
-                ret.append(CHAT_FORMAT);
+        for (ChatColor chatFormat : CHAT_FORMATS) {
+            if (Misc.getRandom().nextInt(CHAT_FORMATS.size()) == 0) {
+                ret.append(chatFormat);
             }
         }
 
         return ret.toString();
-    }
-
-    private static final List<Color> ALL_COLORS;
-    private static final List<ChatColor> ALL_CHAT_COLORS;
-    private static final ChatColor[] CHAT_FORMATS = new ChatColor[]{ChatColor.BOLD, ChatColor.ITALIC, ChatColor.UNDERLINE, ChatColor.STRIKETHROUGH};
-
-    static {
-        ALL_COLORS = Arrays.asList(
-                Color.AQUA,
-                Color.BLACK,
-                Color.BLUE,
-                Color.FUCHSIA,
-                Color.GRAY,
-                Color.GREEN,
-                Color.LIME,
-                Color.MAROON,
-                Color.NAVY,
-                Color.OLIVE,
-                Color.ORANGE,
-                Color.PURPLE,
-                Color.RED,
-                Color.SILVER,
-                Color.TEAL,
-                Color.WHITE,
-                Color.YELLOW
-        );
-        ALL_CHAT_COLORS = new ArrayList<ChatColor>(16);
-        for (ChatColor c : ChatColor.values()) {
-            if (c.isColor()) {
-                ALL_CHAT_COLORS.add(c);
-            }
-        }
-        Collections.shuffle(ALL_CHAT_COLORS, Misc.getRandom());
     }
 }
