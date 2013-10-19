@@ -415,7 +415,7 @@ public class ScoreboardWrapper {
                 if (targetSkill != SkillType.MINING) {
                     AbilityType ab = targetSkill.getAbility();
                     Score cooldown = sidebarObj.getScore(ScoreboardManager.abilityLabelsSkill.get(ab));
-                    int seconds = SkillUtils.calculateTimeLeft(profile.getSkillDATS(ab) * Misc.TIME_CONVERSION_FACTOR, ab.getCooldown(), bukkitPlayer);
+                    int seconds = SkillUtils.calculateTimeLeft(ab, profile, bukkitPlayer);
                     seconds = (seconds <= 0) ? 0 : seconds;
                     if (seconds == 0) {
                         cooldown.setScore(0);
@@ -431,8 +431,8 @@ public class ScoreboardWrapper {
                     AbilityType bm = AbilityType.BLAST_MINING;
                     Score cooldownSB = sidebarObj.getScore(ScoreboardManager.abilityLabelsSkill.get(sb));
                     Score cooldownBM = sidebarObj.getScore(ScoreboardManager.abilityLabelsSkill.get(bm));
-                    int secondsSB = SkillUtils.calculateTimeLeft(profile.getSkillDATS(sb) * Misc.TIME_CONVERSION_FACTOR, sb.getCooldown(), bukkitPlayer);
-                    int secondsBM = SkillUtils.calculateTimeLeft(profile.getSkillDATS(bm) * Misc.TIME_CONVERSION_FACTOR, bm.getCooldown(), bukkitPlayer);
+                    int secondsSB = SkillUtils.calculateTimeLeft(sb, profile, bukkitPlayer);
+                    int secondsBM = SkillUtils.calculateTimeLeft(bm, profile, bukkitPlayer);
                     secondsSB = (secondsSB <= 0) ? 0 : secondsSB;
                     secondsBM = (secondsBM <= 0) ? 0 : secondsBM;
                     if (secondsSB == 0 && secondsBM == 0) {
@@ -452,7 +452,7 @@ public class ScoreboardWrapper {
         case COOLDOWNS_BOARD:
             boolean anyCooldownsActive = false;
             for (AbilityType ability : AbilityType.NORMAL_ABILITIES) {
-                int seconds = SkillUtils.calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), bukkitPlayer);
+                int seconds = SkillUtils.calculateTimeLeft(ability, profile, bukkitPlayer);
                 seconds = (seconds <= 0) ? 0 : seconds;
                 if (seconds != 0) {
                     anyCooldownsActive = true;

@@ -44,6 +44,6 @@ public class ScoreboardsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onAbility(McMMOPlayerAbilityActivateEvent e) {
-        ScoreboardManager.cooldownUpdate(e.getPlayer(), e.getSkill(), SkillUtils.calculateTimeLeft(UserManager.getPlayer(e.getPlayer()).getProfile().getSkillDATS(e.getAbility()) * Misc.TIME_CONVERSION_FACTOR, e.getAbility().getCooldown(), e.getPlayer()));
+        ScoreboardManager.cooldownUpdate(e.getPlayer(), e.getSkill(), SkillUtils.calculateTimeLeft(e.getAbility(), UserManager.getPlayer(e.getPlayer()).getProfile(), e.getPlayer()));
     }
 }

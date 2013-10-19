@@ -854,7 +854,7 @@ public class McMMOPlayer {
             return;
         }
 
-        int timeRemaining = SkillUtils.calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player);
+        int timeRemaining = SkillUtils.calculateTimeLeft(ability, profile, player);
 
         if (timeRemaining > 0) {
             /*
@@ -924,7 +924,7 @@ public class McMMOPlayer {
          */
         if (ability.getPermissions(player) && tool.inHand(inHand) && !getToolPreparationMode(tool)) {
             if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
-                int timeRemaining = SkillUtils.calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player);
+                int timeRemaining = SkillUtils.calculateTimeLeft(ability, profile, player);
 
                 if (!getAbilityMode(ability) && timeRemaining > 0) {
                     player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
