@@ -119,7 +119,7 @@ public class EventUtils {
             profile.setSkillXpLevel(skill, profile.getSkillXpLevelRaw(skill) + event.getRawXpGained());
         }
 
-        return isCancelled;
+        return !isCancelled;
     }
 
     public static McMMOPlayerAbilityDeactivateEvent callAbilityDeactivateEvent(Player player, AbilityType ability) {
