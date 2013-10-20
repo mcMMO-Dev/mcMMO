@@ -52,6 +52,7 @@ Version 1.4.07-dev
  ! Changed format of repair.vanilla.yml. **YOU WILL NEED TO UPDATE YOUR FILE TO THE NEW FORMAT**
  ! Changed default XP multiplier for repairing shears
  ! Changed "Shake" drops for Witches. They no longer drop water bottles, since they no longer drop them in Vanilla.
+ ! Changed fishing exploit prevention, by default it will no longer send global sounds, effects and messages.
  ! Changed various values to double in advanced.yml for the sake of consistency.
  ! Nerfed Fishing "Master Angler" (removed skill level based bonus) and also made the modifiers configurable
  ! Nerfed Archery damage to eliminate constant one-hit kills.

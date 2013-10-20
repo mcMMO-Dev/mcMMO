@@ -103,29 +103,29 @@ public class FishingManager extends SkillManager {
 
         player.teleport(player.getTargetBlock(null, 100).getLocation(), TeleportCause.PLUGIN);
 
-        Location location = player.getLocation();
-
-        world.strikeLightningEffect(location);
-        world.strikeLightningEffect(location);
-        world.strikeLightningEffect(location);
-
         String unleashMessage = AdvancedConfig.getInstance().getPlayerUnleashMessage();
 
         if (!unleashMessage.isEmpty()) {
             player.sendMessage(unleashMessage);
         }
 
-        if (AdvancedConfig.getInstance().getKrakenGlobalSoundsEnabled()) {
+        Location location = player.getLocation();
+        boolean globalEffectsEnabled = AdvancedConfig.getInstance().getKrakenGlobalEffectsEnabled();
+
+        if (globalEffectsEnabled) {
+            world.strikeLightningEffect(location);
+            world.strikeLightningEffect(location);
+            world.strikeLightningEffect(location);
+
             world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            mcMMO.p.getServer().broadcastMessage(ChatColor.RED + AdvancedConfig.getInstance().getServerUnleashMessage().replace("(PLAYER)", player.getDisplayName()));
         }
         else {
+            world.createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
+            world.createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
+            world.createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
+
             player.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
-        }
-
-        String globalMessage = AdvancedConfig.getInstance().getServerUnleashMessage();
-
-        if (!globalMessage.isEmpty()) {
-            mcMMO.p.getServer().broadcastMessage(ChatColor.RED + AdvancedConfig.getInstance().getServerUnleashMessage().replace("(PLAYER)", player.getDisplayName()));
         }
 
         if (player.getItemInHand().getType() == Material.FISHING_ROD) {

@@ -786,15 +786,15 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* KRAKEN STUFF */
     public boolean getKrakenEnabled() { return config.getBoolean("Kraken.Enabled", true); }
-    public boolean getKrakenGlobalSoundsEnabled() { return config.getBoolean("Kraken.Global_Sounds", true); }
-    public boolean getKrakenEscapeAllowed() { return config.getBoolean("Kraken.Allow_Escaping", false); }
     public int getKrakenTriesBeforeRelease() { return config.getInt("Kraken.Tries_Before_Release", 50); }
     public double getKrakenHealth() { return config.getDouble("Kraken.Health", 50.0D); }
     public String getKrakenName() { return config.getString("Kraken.Name", "The Kraken"); }
+    public int getKrakenAttackInterval() { return config.getInt("Kraken.Attack_Interval_Seconds", 1); }
+    public double getKrakenAttackDamage() { return config.getDouble("Kraken.Attack_Damage", 1.0D); }
+    public boolean getKrakenGlobalEffectsEnabled() { return config.getBoolean("Kraken.Global_Effects", false); }
+    public boolean getKrakenEscapeAllowed() { return config.getBoolean("Kraken.Allow_Escaping", false); }
     public String getServerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Server", ""); }
     public String getPlayerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Player", ""); }
     public String getPlayerDefeatMessage() { return config.getString("Kraken.Defeated_Message.Killed", ""); }
     public String getPlayerEscapeMessage() { return config.getString("Kraken.Defeated_Message.Escape", ""); }
-    public int getKrakenAttackInterval() { return config.getInt("Kraken.Attack_Interval_Seconds", 1); }
-    public double getKrakenAttackDamage() { return config.getDouble("Kraken.Attack_Damage", 1.0D); }
 }

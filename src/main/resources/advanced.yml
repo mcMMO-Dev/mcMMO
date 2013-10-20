@@ -499,7 +499,7 @@ Kraken:
     Name: The Kraken
     Attack_Interval_Seconds: 1
     Attack_Damage: 1.0
-    Global_Sounds: true
+    Global_Effects: false
     Allow_Escaping: false
     Unleashed_Message:
         Server: (PLAYER) has unleashed the kraken!

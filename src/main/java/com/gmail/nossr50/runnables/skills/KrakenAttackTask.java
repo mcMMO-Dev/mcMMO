@@ -14,7 +14,7 @@ public class KrakenAttackTask extends BukkitRunnable {
     private Creature kraken;
     private Player player;
     private Location location;
-    private final boolean GLOBAL_SOUNDS = AdvancedConfig.getInstance().getKrakenGlobalSoundsEnabled();
+    private final boolean GLOBAL_EFFECTS = AdvancedConfig.getInstance().getKrakenGlobalEffectsEnabled();
     private final String DEFEAT_MESSAGE = AdvancedConfig.getInstance().getPlayerDefeatMessage();
     private final String ESCAPE_MESSAGE = AdvancedConfig.getInstance().getPlayerEscapeMessage();
 
@@ -37,16 +37,7 @@ public class KrakenAttackTask extends BukkitRunnable {
             if (player.isValid() && playerLocation.getBlock().isLiquid()) {
                 World world = player.getWorld();
 
-                player.damage(AdvancedConfig.getInstance().getKrakenAttackDamage(), kraken);
-
-                if (GLOBAL_SOUNDS) {
-                    world.playSound(playerLocation, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
-                }
-                else {
-                    player.playSound(playerLocation, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
-                }
-
-                world.strikeLightningEffect(playerLocation);
+                krakenAttack(playerLocation, world);
             }
             else {
                 player.sendMessage(AdvancedConfig.getInstance().getPlayerEscapeMessage());
@@ -83,20 +74,24 @@ public class KrakenAttackTask extends BukkitRunnable {
             World world = player.getWorld();
 
             kraken.teleport(player);
-            player.damage(AdvancedConfig.getInstance().getKrakenAttackDamage(), kraken);
-
-            if (GLOBAL_SOUNDS) {
-                world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
-            }
-            else {
-                player.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
-            }
-
-            world.strikeLightningEffect(location);
+            krakenAttack(location, world);
         }
         else {
             kraken.remove();
             cancel();
+        }
+    }
+
+    private void krakenAttack(Location playerLocation, World world) {
+        player.damage(AdvancedConfig.getInstance().getKrakenAttackDamage(), kraken);
+
+        if (GLOBAL_EFFECTS) {
+            world.playSound(playerLocation, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            world.strikeLightningEffect(playerLocation);
+        }
+        else {
+            player.playSound(playerLocation, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            world.createExplosion(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), 0F, false, false);
         }
     }
 }
