@@ -19,22 +19,27 @@ public final class HardcoreManager {
         }
 
         PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
-        int totalLost = 0;
+        int totalLevelsLost = 0;
 
         for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
             int playerSkillLevel = playerProfile.getSkillLevel(skillType);
+            int playerSkillXpLevel = playerProfile.getSkillXpLevel(skillType);
 
             if (playerSkillLevel <= 0) {
                 continue;
             }
 
-            int levelsLost = (int) (playerSkillLevel * (statLossPercentage * 0.01D));
-            totalLost += levelsLost;
+            double statsLost = playerSkillLevel * (statLossPercentage * 0.01D);
+            int levelsLost = (int) statsLost;
+            int xpLost = (int) Math.floor(playerSkillXpLevel * (statsLost - levelsLost));
+
+            totalLevelsLost += levelsLost;
 
             playerProfile.modifySkill(skillType, playerSkillLevel - levelsLost);
+            playerProfile.removeXp(skillType, xpLost);
         }
 
-        player.sendMessage(LocaleLoader.getString("Hardcore.DeathStatLoss.PlayerDeath", totalLost));
+        player.sendMessage(LocaleLoader.getString("Hardcore.DeathStatLoss.PlayerDeath", totalLevelsLost));
     }
 
     public static void invokeVampirism(Player killer, Player victim) {
@@ -46,7 +51,7 @@ public final class HardcoreManager {
 
         PlayerProfile killerProfile = UserManager.getPlayer(killer).getProfile();
         PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
-        int totalStolen = 0;
+        int totalLevelsStolen = 0;
 
         for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
             int killerSkillLevel = killerProfile.getSkillLevel(skillType);
@@ -56,16 +61,24 @@ public final class HardcoreManager {
                 continue;
             }
 
-            int levelsStolen = (int) (victimSkillLevel * (vampirismStatLeechPercentage * 0.01D));
-            totalStolen += levelsStolen;
+            int victimSkillXpLevel = victimProfile.getSkillXpLevel(skillType);
+
+            double statsStolen = victimSkillLevel * (vampirismStatLeechPercentage * 0.01D);
+            int levelsStolen = (int) statsStolen;
+            int xpStolen = (int) Math.floor(victimSkillXpLevel * (statsStolen - levelsStolen));
+
+            totalLevelsStolen += levelsStolen;
 
             killerProfile.modifySkill(skillType, killerSkillLevel + levelsStolen);
+            killerProfile.addExperience(skillType, xpStolen);
+
             victimProfile.modifySkill(skillType, victimSkillLevel - levelsStolen);
+            victimProfile.removeXp(skillType, xpStolen);
         }
 
-        if (totalStolen > 0) {
-            killer.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.Killer.Success", totalStolen, victim.getName()));
-            victim.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.Victim.Success", killer.getName(), totalStolen));
+        if (totalLevelsStolen > 0) {
+            killer.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.Killer.Success", totalLevelsStolen, victim.getName()));
+            victim.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.Victim.Success", killer.getName(), totalLevelsStolen));
         }
         else {
             killer.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.Killer.Failure", victim.getName()));
