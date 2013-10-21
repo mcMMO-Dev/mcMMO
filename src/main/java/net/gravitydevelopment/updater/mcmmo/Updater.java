@@ -345,23 +345,23 @@ public class Updater {
                 if (entry.isDirectory()) {
                     continue;
                 }
-                else {
-                    final BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
-                    int b;
-                    final byte buffer[] = new byte[Updater.BYTE_SIZE];
-                    final FileOutputStream fos = new FileOutputStream(destinationFilePath);
-                    final BufferedOutputStream bos = new BufferedOutputStream(fos, Updater.BYTE_SIZE);
-                    while ((b = bis.read(buffer, 0, Updater.BYTE_SIZE)) != -1) {
-                        bos.write(buffer, 0, b);
-                    }
-                    bos.flush();
-                    bos.close();
-                    bis.close();
-                    final String name = destinationFilePath.getName();
-                    if (name.endsWith(".jar") && this.pluginFile(name)) {
-                        destinationFilePath.renameTo(new File(this.plugin.getDataFolder().getParent(), this.updateFolder + "/" + name));
-                    }
+
+                final BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
+                int b;
+                final byte buffer[] = new byte[Updater.BYTE_SIZE];
+                final FileOutputStream fos = new FileOutputStream(destinationFilePath);
+                final BufferedOutputStream bos = new BufferedOutputStream(fos, Updater.BYTE_SIZE);
+                while ((b = bis.read(buffer, 0, Updater.BYTE_SIZE)) != -1) {
+                    bos.write(buffer, 0, b);
                 }
+                bos.flush();
+                bos.close();
+                bis.close();
+                final String name = destinationFilePath.getName();
+                if (name.endsWith(".jar") && this.pluginFile(name)) {
+                    destinationFilePath.renameTo(new File(this.plugin.getDataFolder().getParent(), this.updateFolder + "/" + name));
+                }
+
                 entry = null;
                 destinationFilePath = null;
             }
