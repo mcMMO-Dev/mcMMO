@@ -5,7 +5,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
+import com.gmail.nossr50.events.experience.levels.McMMOPlayerLevelUpEvent;
 
 public class SelfListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

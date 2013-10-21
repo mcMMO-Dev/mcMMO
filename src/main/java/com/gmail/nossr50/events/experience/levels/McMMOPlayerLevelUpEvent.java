@@ -1,4 +1,4 @@
-package com.gmail.nossr50.events.experience;
+package com.gmail.nossr50.events.experience.levels;
 
 import org.bukkit.entity.Player;
 
