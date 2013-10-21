@@ -35,13 +35,29 @@ import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class EventUtils {
-    public static McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, AbilityType ability) {
+    public static boolean handlePlayerAbilityActivateEvent(Player player, AbilityType ability) {
         McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, ability);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-        return event;
+        boolean isCancelled = event.isCancelled();
+
+        if (!isCancelled) {
+            if (event.useParticleEffects()) {
+                ParticleEffectUtils.playAbilityEnabledEffect(player);
+            }
+
+            if (UserManager.getPlayer(player).useChatNotifications()) {
+                player.sendMessage(ability.getAbilityOn());
+            }
+
+            SkillUtils.sendSkillMessage(player, ability.getAbilityPlayer(player));
+        }
+
+        return !isCancelled;
     }
 
     public static FakePlayerAnimationEvent callFakeArmSwingEvent(Player player) {
@@ -124,11 +140,19 @@ public class EventUtils {
         return !isCancelled;
     }
 
-    public static McMMOPlayerAbilityDeactivateEvent callAbilityDeactivateEvent(Player player, AbilityType ability) {
+    public static void handleAbilityDeactivateEvent(Player player, AbilityType ability) {
         McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, ability);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-        return event;
+        if (event.useParticleEffects()) {
+            ParticleEffectUtils.playAbilityDisabledEffect(player);
+        }
+
+        if (UserManager.getPlayer(player).useChatNotifications()) {
+            player.sendMessage(ability.getAbilityOff());
+        }
+
+        SkillUtils.sendSkillMessage(player, ability.getAbilityPlayerOff(player));
     }
 
     public static McMMOPlayerFishingTreasureEvent callFishingTreasureEvent(Player player, ItemStack treasureDrop, int treasureXp, Map<Enchantment, Integer> enchants) {

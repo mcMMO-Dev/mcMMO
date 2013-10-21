@@ -777,7 +777,7 @@ public class McMMOPlayer {
             return;
         }
 
-        if (EventUtils.callPlayerAbilityActivateEvent(player, ability).isCancelled()) {
+        if (!EventUtils.handlePlayerAbilityActivateEvent(player, ability)) {
             return;
         }
 

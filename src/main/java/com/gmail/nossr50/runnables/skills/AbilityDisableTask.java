@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
@@ -46,18 +45,11 @@ public class AbilityDisableTask extends BukkitRunnable {
                 break;
         }
 
-        EventUtils.callAbilityDeactivateEvent(player, ability);
+        EventUtils.handleAbilityDeactivateEvent(player, ability);
 
         mcMMOPlayer.setAbilityMode(ability, false);
         mcMMOPlayer.setAbilityInformed(ability, false);
 
-        ParticleEffectUtils.playAbilityDisabledEffect(player);
-
-        if (mcMMOPlayer.useChatNotifications()) {
-            player.sendMessage(ability.getAbilityOff());
-        }
-
-        SkillUtils.sendSkillMessage(player, ability.getAbilityPlayerOff(player));
         new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLaterAsynchronously(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
     }
 }
