@@ -7,7 +7,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 /**
  * Called when a player gains XP in a skill
  */
-public class McMMOPlayerXpGainEvent extends McMMOPlayerExperienceEvent {
+public class McMMOPlayerXpGainEvent extends McMMOPlayerXpChangeEvent {
     private float xpGained;
 
     public McMMOPlayerXpGainEvent(Player player, SkillType skill, float xpGained) {
@@ -31,7 +31,7 @@ public class McMMOPlayerXpGainEvent extends McMMOPlayerExperienceEvent {
     }
 
     /**
-     * @param xpGained int amount of experience gained in this event
+     * @param xpGained float amount of experience gained in this event
      */
     public void setRawXpGained(float xpGained) {
         this.xpGained = xpGained;
