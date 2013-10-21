@@ -35,8 +35,11 @@ public final class HardcoreManager {
 
             totalLevelsLost += levelsLost;
 
+            float xpRemoved = playerProfile.getSkillXpLevelRaw(skillType);
             playerProfile.modifySkill(skillType, playerSkillLevel - levelsLost);
             playerProfile.removeXp(skillType, xpLost);
+
+            EventUtils.handleLevelChangeEvent(player, skillType, levelsLost, xpLost + xpRemoved, false);
         }
 
         player.sendMessage(LocaleLoader.getString("Hardcore.DeathStatLoss.PlayerDeath", totalLevelsLost));
@@ -69,11 +72,18 @@ public final class HardcoreManager {
 
             totalLevelsStolen += levelsStolen;
 
+            float killerXpRemoved = killerProfile.getSkillXpLevelRaw(skillType);
             killerProfile.modifySkill(skillType, killerSkillLevel + levelsStolen);
-            killerProfile.addXp(skillType, xpStolen);
+            EventUtils.handleLevelChangeEvent(killer, skillType, levelsStolen, killerXpRemoved, true);
 
+            killerProfile.addXp(skillType, xpStolen);
+            EventUtils.handleXpGainEvent(killer, skillType, xpStolen);
+
+            float victimXpRemoved = killerProfile.getSkillXpLevelRaw(skillType);
             victimProfile.modifySkill(skillType, victimSkillLevel - levelsStolen);
             victimProfile.removeXp(skillType, xpStolen);
+
+            EventUtils.handleLevelChangeEvent(victim, skillType, levelsStolen, victimXpRemoved + xpStolen, false);
         }
 
         if (totalLevelsStolen > 0) {
