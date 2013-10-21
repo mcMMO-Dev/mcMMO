@@ -15,6 +15,8 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.abilities.McMMOPlayerAbilityActivateEvent;
+import com.gmail.nossr50.events.abilities.McMMOPlayerAbilityDeactivateEvent;
 import com.gmail.nossr50.events.experience.levels.McMMOPlayerLevelChangeEvent;
 import com.gmail.nossr50.events.experience.levels.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.events.experience.levels.McMMOPlayerLevelUpEvent;
@@ -27,8 +29,6 @@ import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
 import com.gmail.nossr50.events.fake.FakePlayerFishEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerDeathPenaltyEvent;
 import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
-import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
-import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerMagicHunterEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
@@ -37,8 +37,8 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class EventUtils {
-    public static McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, SkillType skill) {
-        McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, skill);
+    public static McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, AbilityType ability) {
+        McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, ability);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;
@@ -125,7 +125,7 @@ public class EventUtils {
     }
 
     public static McMMOPlayerAbilityDeactivateEvent callAbilityDeactivateEvent(Player player, AbilityType ability) {
-        McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, SkillType.byAbility(ability));
+        McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, ability);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;
