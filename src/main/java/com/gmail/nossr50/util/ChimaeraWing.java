@@ -107,7 +107,7 @@ public final class ChimaeraWing {
 
         if (warmup > 0) {
             player.sendMessage(LocaleLoader.getString("Teleport.Commencing", warmup));
-            new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(mcMMO.p, 20 * warmup);
+            new ChimaeraWingWarmup(mcMMOPlayer).runTaskLater(mcMMO.p, Misc.TICK_CONVERSION_FACTOR * warmup);
         }
         else {
             chimaeraExecuteTeleport();

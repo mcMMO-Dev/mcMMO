@@ -8,9 +8,11 @@ import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.skills.acrobatics.McMMOPlayerDodgeEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
@@ -30,44 +32,8 @@ public class AcrobaticsManager extends SkillManager {
         return !exploitPrevention() && Permissions.roll(getPlayer());
     }
 
-    public boolean canDodge(Entity damager) {
-        if (Permissions.dodge(getPlayer())) {
-            if (damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) {
-                return false;
-            }
-
-            return skill.shouldProcess(damager);
-        }
-
-        return false;
-    }
-
-    /**
-     * Handle the damage reduction and XP gain from the Dodge ability
-     *
-     * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage if the ability was successful, the original event damage otherwise
-     */
-    public double dodgeCheck(double damage) {
-        double modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
-        Player player = getPlayer();
-
-        if (!isFatal(modifiedDamage) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Acrobatics.dodgeMaxChance, Acrobatics.dodgeMaxBonusLevel)) {
-            ParticleEffectUtils.playDodgeEffect(player);
-
-            if (mcMMOPlayer.useChatNotifications()) {
-                player.sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));
-            }
-
-            // Why do we check respawn cooldown here?
-            if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
-                applyXpGain((float) (damage * Acrobatics.dodgeXpModifier));
-            }
-
-            return modifiedDamage;
-        }
-
-        return damage;
+    private boolean canDodge(Entity damager, double modifiedDamage) {
+        return (Permissions.dodge(getPlayer()) && !(damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) && skill.shouldProcess(damager) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Acrobatics.dodgeMaxChance, Acrobatics.dodgeMaxBonusLevel) && !isFatal(modifiedDamage));
     }
 
     /**
@@ -166,5 +132,45 @@ public class AcrobaticsManager extends SkillManager {
         }
 
         return xp;
+    }
+
+    /**
+     * Handle the damage reduction and XP gain from the Dodge ability
+     *
+     * @param damager The entity that dealt the damage
+     * @param damage The amount of damage initially dealt by the event
+     * @return the modified event damage if the ability was successful, the original event damage otherwise
+     */
+    public double dodge(Entity damager, double damage) {
+        double modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
+
+        if (!canDodge(damager, modifiedDamage)) {
+            return damage;
+        }
+
+        Player player = getPlayer();
+
+        McMMOPlayerDodgeEvent event = new McMMOPlayerDodgeEvent(player, modifiedDamage, (float) (damage * Acrobatics.dodgeXpModifier));
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return damage;
+        }
+
+        if (event.shouldUseParticles()) {
+            ParticleEffectUtils.playDodgeEffect(player);
+        }
+
+        if (mcMMOPlayer.useChatNotifications()) {
+            player.sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));
+        }
+
+        // Why do we check respawn cooldown here?
+        // No, seriously, why?
+        if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
+            applyXpGain(event.getXpGained());
+        }
+
+        return event.getDamageTaken();
     }
 }

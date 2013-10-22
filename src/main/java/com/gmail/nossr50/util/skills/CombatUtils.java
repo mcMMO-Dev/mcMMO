@@ -28,7 +28,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
-import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
 import com.gmail.nossr50.skills.swords.Swords;
@@ -281,11 +280,8 @@ public final class CombatUtils {
 
             Player player = (Player) target;
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-            AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
-            if (acrobaticsManager.canDodge(damager)) {
-                event.setDamage(acrobaticsManager.dodgeCheck(event.getDamage()));
-            }
+            event.setDamage(mcMMOPlayer.getAcrobaticsManager().dodge(damager, event.getDamage()));
 
             if (ItemUtils.isSword(player.getItemInHand())) {
                 if (!SkillType.SWORDS.shouldProcess(target)) {
