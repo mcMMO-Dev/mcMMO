@@ -2,14 +2,16 @@ package com.gmail.nossr50.events.skills.acrobatics;
 
 import org.bukkit.entity.Player;
 
-public class McMMOPlayerDodgeEvent extends McMMOPlayerAcrobaticsEvent {
+public class McMMOPlayerRollEvent extends McMMOPlayerAcrobaticsEvent {
     private double damageTaken;
     private float xpGained;
+    private boolean graceful;
 
-    public McMMOPlayerDodgeEvent(Player player, double damageTaken, float xpGained) {
+    public McMMOPlayerRollEvent(Player player, double damageTaken, float xpGained, boolean graceful) {
         super(player);
         this.damageTaken = damageTaken;
         this.xpGained = xpGained;
+        this.graceful = graceful;
     }
 
     public double getDamageTaken() {
@@ -26,5 +28,9 @@ public class McMMOPlayerDodgeEvent extends McMMOPlayerAcrobaticsEvent {
 
     public void setXpGained(float xpGained) {
         this.xpGained = xpGained;
+    }
+
+    public boolean isGraceful() {
+        return graceful;
     }
 }

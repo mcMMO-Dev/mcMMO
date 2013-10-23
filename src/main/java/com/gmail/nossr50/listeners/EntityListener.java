@@ -40,7 +40,6 @@ import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
-import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
@@ -236,16 +235,8 @@ public class EntityListener implements Listener {
                         return;
                     }
 
-                    AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
-
-                    if (acrobaticsManager.canRoll()) {
-                        event.setDamage(acrobaticsManager.rollCheck(event.getDamage()));
-
-                        if (event.getDamage() == 0) {
-                            event.setCancelled(true);
-                            return;
-                        }
-                    }
+                    event.setDamage(mcMMOPlayer.getAcrobaticsManager().roll(event.getDamage()));
+                    event.setCancelled(event.getDamage() == 0);
                     break;
 
                 case BLOCK_EXPLOSION:

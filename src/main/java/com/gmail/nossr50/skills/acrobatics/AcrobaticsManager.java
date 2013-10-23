@@ -13,6 +13,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.skills.acrobatics.McMMOPlayerDodgeEvent;
+import com.gmail.nossr50.events.skills.acrobatics.McMMOPlayerRollEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
@@ -42,47 +43,28 @@ public class AcrobaticsManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
-    public double rollCheck(double damage) {
+    public double roll(double damage) {
+        if (!canRoll()) {
+            return damage;
+        }
+
         Player player = getPlayer();
+        boolean isGraceful = player.isSneaking() && Permissions.gracefulRoll(player);
+        double modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, isGraceful);
 
-        if (player.isSneaking() && Permissions.gracefulRoll(player)) {
-            return gracefulRollCheck(damage);
-        }
+        if (!isFatal(modifiedDamage) && isSuccessfulRoll(isGraceful)) {
+            McMMOPlayerRollEvent event = new McMMOPlayerRollEvent(player, modifiedDamage, calculateRollXP(damage, true), isGraceful);
+            mcMMO.p.getServer().getPluginManager().callEvent(event);
 
-        double modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.rollThreshold);
+            if (event.isCancelled()) {
+                return damage;
+            }
 
-        if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.rollMaxChance, Acrobatics.rollMaxBonusLevel)) {
-            player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
-            applyXpGain(calculateRollXP(damage, true));
-
-            return modifiedDamage;
-        }
-        else if (!isFatal(damage)) {
-            applyXpGain(calculateRollXP(damage, false));
-        }
-
-        lastFallLocation = player.getLocation();
-
-        return damage;
-    }
-
-    /**
-     * Handle the damage reduction and XP gain from the Graceful Roll ability
-     *
-     * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage if the ability was successful, the original event damage otherwise
-     */
-    private double gracefulRollCheck(double damage) {
-        double modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
-
-        if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.gracefulRollMaxChance, Acrobatics.gracefulRollMaxBonusLevel)) {
-            getPlayer().sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
-            applyXpGain(calculateRollXP(damage, true));
-
-            return modifiedDamage;
+            return event.getDamageTaken();
         }
         else if (!isFatal(damage)) {
             applyXpGain(calculateRollXP(damage, false));
+            lastFallLocation = player.getLocation();
         }
 
         return damage;
@@ -115,25 +97,6 @@ public class AcrobaticsManager extends SkillManager {
         return fallTries > Config.getInstance().getAcrobaticsAFKMaxTries();
     }
 
-    private boolean isSuccessfulRoll(double maxChance, int maxLevel) {
-        return (maxChance / maxLevel) * Math.min(getSkillLevel(), maxLevel) > Misc.getRandom().nextInt(activationChance);
-    }
-
-    private boolean isFatal(double damage) {
-        return getPlayer().getHealth() - damage < 1;
-    }
-
-    private float calculateRollXP(double damage, boolean isRoll) {
-        ItemStack boots = getPlayer().getInventory().getBoots();
-        float xp = (float) (damage * (isRoll ? Acrobatics.rollXpModifier : Acrobatics.fallXpModifier));
-
-        if (boots != null && boots.containsEnchantment(Enchantment.PROTECTION_FALL)) {
-            xp *= Acrobatics.featherFallXPModifier;
-        }
-
-        return xp;
-    }
-
     /**
      * Handle the damage reduction and XP gain from the Dodge ability
      *
@@ -142,7 +105,7 @@ public class AcrobaticsManager extends SkillManager {
      * @return the modified event damage if the ability was successful, the original event damage otherwise
      */
     public double dodge(Entity damager, double damage) {
-        double modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
+        double modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage);
 
         if (!canDodge(damager, modifiedDamage)) {
             return damage;
@@ -157,20 +120,38 @@ public class AcrobaticsManager extends SkillManager {
             return damage;
         }
 
-        if (event.shouldUseParticles()) {
-            ParticleEffectUtils.playDodgeEffect(player);
-        }
+        ParticleEffectUtils.playDodgeEffect(player);
 
         if (mcMMOPlayer.useChatNotifications()) {
             player.sendMessage(LocaleLoader.getString("Acrobatics.Combat.Proc"));
         }
 
-        // Why do we check respawn cooldown here?
-        // No, seriously, why?
         if (SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
             applyXpGain(event.getXpGained());
         }
 
         return event.getDamageTaken();
+    }
+
+    private boolean isSuccessfulRoll(boolean isGraceful) {
+        double maxChance = isGraceful ? Acrobatics.gracefulRollMaxChance : Acrobatics.rollMaxChance;
+        int maxLevel = isGraceful ? Acrobatics.gracefulRollMaxBonusLevel : Acrobatics.rollMaxBonusLevel;
+
+        return (maxChance / maxLevel) * Math.min(getSkillLevel(), maxLevel) > Misc.getRandom().nextInt(activationChance);
+    }
+
+    private float calculateRollXP(double damage, boolean isRoll) {
+        ItemStack boots = getPlayer().getInventory().getBoots();
+        float xp = (float) (damage * (isRoll ? Acrobatics.rollXpModifier : Acrobatics.fallXpModifier));
+
+        if (boots != null && boots.containsEnchantment(Enchantment.PROTECTION_FALL)) {
+            xp *= Acrobatics.featherFallXPModifier;
+        }
+
+        return xp;
+    }
+
+    private boolean isFatal(double damage) {
+        return getPlayer().getHealth() - damage < 1;
     }
 }

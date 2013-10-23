@@ -27,11 +27,11 @@ public final class Acrobatics {
 
     private Acrobatics() {};
 
-    protected static double calculateModifiedDodgeDamage(double damage, double damageModifier) {
-        return Math.max(damage / damageModifier, 1.0);
+    protected static double calculateModifiedDodgeDamage(double damage) {
+        return Math.max(damage / dodgeDamageModifier, 1.0);
     }
 
-    protected static double calculateModifiedRollDamage(double damage, double damageThreshold) {
-        return Math.max(damage - damageThreshold, 0.0);
+    protected static double calculateModifiedRollDamage(double damage, boolean isGraceful) {
+        return Math.max(damage - (isGraceful ? gracefulRollThreshold : rollThreshold), 0.0);
     }
 }
