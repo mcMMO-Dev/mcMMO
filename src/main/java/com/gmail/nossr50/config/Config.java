@@ -205,7 +205,6 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getStatsTrackingEnabled() { return config.getBoolean("General.Stats_Tracking", true); }
     public boolean getUpdateCheckEnabled() { return config.getBoolean("General.Update_Check", true); }
     public boolean getPreferBeta() { return config.getBoolean("General.Prefer_Beta", false); }
-    public boolean getEventCallbackEnabled() { return config.getBoolean("General.Event_Callback", true); }
     public boolean getVerboseLoggingEnabled() { return config.getBoolean("General.Verbose_Logging", false); }
     public boolean getConfigOverwriteEnabled() { return config.getBoolean("General.Config_Update_Overwrite", true); }
 
