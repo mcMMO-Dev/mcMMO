@@ -22,13 +22,9 @@ public class TrackedEntity extends BukkitRunnable {
     @Override
     public void run() {
         if (!livingEntity.isValid()) {
-            Archery.removeFromTracker(this);
+            Archery.removeFromTracker(id);
             this.cancel();
         }
-    }
-
-    protected LivingEntity getLivingEntity() {
-        return livingEntity;
     }
 
     protected UUID getID() {

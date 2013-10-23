@@ -5,19 +5,19 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.skills.archery.McMMOPlayerDazeEvent;
+import com.gmail.nossr50.events.skills.archery.McMMOPlayerSkillShotEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ArcheryManager extends SkillManager {
@@ -26,15 +26,15 @@ public class ArcheryManager extends SkillManager {
     }
 
     public boolean canDaze(LivingEntity target) {
-        return target instanceof Player && Permissions.daze(getPlayer());
+        return target instanceof Player && Permissions.daze(getPlayer()) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel);
     }
 
-    public boolean canSkillShot() {
+    public boolean canUseSkillShot() {
         return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.bonusDamage(getPlayer(), skill);
     }
 
-    public boolean canTrackArrows() {
-        return Permissions.arrowRetrieval(getPlayer());
+    public boolean canTrack(Arrow arrow) {
+        return Permissions.arrowRetrieval(getPlayer()) && !arrow.hasMetadata(mcMMO.infiniteArrowKey) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.retrieveMaxChance, Archery.retrieveMaxBonusLevel);
     }
 
     /**
@@ -44,7 +44,7 @@ public class ArcheryManager extends SkillManager {
      * @param damager The {@link Entity} who shot the arrow
      */
     public void distanceXpBonus(LivingEntity target, Entity damager) {
-        Location firedLocation = Archery.stringToLocation(damager.getMetadata(mcMMO.arrowDistanceKey).get(0).asString());
+        Location firedLocation = (Location) damager.getMetadata(mcMMO.arrowDistanceKey).get(0).value();
         Location targetLocation = target.getLocation();
 
         if (firedLocation.getWorld() != targetLocation.getWorld()) {
@@ -58,39 +58,52 @@ public class ArcheryManager extends SkillManager {
      * Track arrows fired for later retrieval.
      *
      * @param target The {@link LivingEntity} damaged by the arrow
+     * @param arrow The {@link Arrow} that damaged the target
      */
-    public void trackArrows(LivingEntity target) {
-        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.retrieveMaxChance, Archery.retrieveMaxBonusLevel)) {
-            Archery.incrementTrackerValue(target);
+    public void trackArrow(LivingEntity target, Arrow arrow) {
+        if (!canTrack(arrow)) {
+            return;
         }
+
+        Archery.incrementTrackerValue(target);
     }
 
     /**
      * Handle the effects of the Daze ability
      *
-     * @param defender The {@link Player} being affected by the ability
+     * @param target The {@link LivingEntity} being affected by the ability
      * @param arrow The {@link Arrow} that was fired
      */
-    public double daze(Player defender, Arrow arrow) {
-        if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel)) {
+    public double daze(LivingEntity target, Arrow arrow) {
+        if (!canDaze(target)) {
             return 0;
         }
 
+        Player attacker = getPlayer();
+
+        McMMOPlayerDazeEvent event = new McMMOPlayerDazeEvent(attacker, arrow, target);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return 0;
+        }
+
+        Player defender = (Player) target;
         Location dazedLocation = defender.getLocation();
         dazedLocation.setPitch(90 - Misc.getRandom().nextInt(181));
 
         defender.teleport(dazedLocation);
-        defender.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 20 * 10, 10));
+        defender.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, Misc.TICK_CONVERSION_FACTOR * 10, 10));
 
         if (UserManager.getPlayer(defender).useChatNotifications()) {
             defender.sendMessage(LocaleLoader.getString("Combat.TouchedFuzzy"));
         }
 
         if (mcMMOPlayer.useChatNotifications()) {
-            getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
+            attacker.sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
         }
 
-        return CombatUtils.callFakeDamageEvent(arrow, defender, DamageCause.PROJECTILE, Archery.dazeModifier);
+        return event.getDamage();
     }
 
     /**
@@ -101,9 +114,24 @@ public class ArcheryManager extends SkillManager {
      * @param arrow The {@link Arrow} that was fired
      */
     public double skillShot(LivingEntity target, double damage, Arrow arrow) {
+        if (!canUseSkillShot()) {
+            return 0;
+        }
+
+        McMMOPlayerSkillShotEvent event = new McMMOPlayerSkillShotEvent(getPlayer(), arrow, target, calculateSkillShotBonus(damage));
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return 0;
+        }
+
+        return event.getDamage();
+    }
+
+    private double calculateSkillShotBonus(double damage) {
         double damageBonusPercent = Math.min(((getSkillLevel() / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage);
         double archeryBonus = Math.min(damage * damageBonusPercent, Archery.skillShotMaxBonusDamage);
 
-        return CombatUtils.callFakeDamageEvent(arrow, target, DamageCause.PROJECTILE, archeryBonus);
+        return archeryBonus;
     }
 }

@@ -74,7 +74,7 @@ public class EntityListener implements Listener {
         }
 
         projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, Math.min(event.getForce() * AdvancedConfig.getInstance().getForceMultiplier(), 1.0)));
-        projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, Archery.locationToString(projectile.getLocation())));
+        projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, projectile.getLocation()));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -86,7 +86,7 @@ public class EntityListener implements Listener {
         }
 
         projectile.setMetadata(mcMMO.bowForceKey, new FixedMetadataValue(plugin, 1.0));
-        projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, Archery.locationToString(projectile.getLocation())));
+        projectile.setMetadata(mcMMO.arrowDistanceKey, new FixedMetadataValue(plugin, projectile.getLocation()));
     }
 
     /**
