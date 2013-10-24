@@ -277,7 +277,8 @@ public class FishingManager extends SkillManager {
 
     public void masterAngler(Fish hook) {
         Player player = getPlayer();
-        Biome biome = player.getLocation().getBlock().getBiome();
+        mcMMOPlayer.setHookLocation(hook.getLocation());
+        Biome biome = hook.getLocation().getBlock().getBiome();
         double biteChance = hook.getBiteChance();
 
         if (biome == Biome.RIVER || biome == Biome.OCEAN) {

@@ -86,6 +86,8 @@ public class McMMOPlayer {
     private int     lastSalvageClick;
     private boolean godMode;
 
+    private Location hookLocation;
+
     private final Map<AbilityType, Boolean> abilityMode     = new HashMap<AbilityType, Boolean>();
     private final Map<AbilityType, Boolean> abilityInformed = new HashMap<AbilityType, Boolean>();
 
@@ -497,6 +499,18 @@ public class McMMOPlayer {
 
     public void toggleGodMode() {
         godMode = !godMode;
+    }
+
+    /*
+     * Fishing: Master Angler
+     */
+
+    public Location getHookLocation() {
+        return hookLocation;
+    }
+
+    public void setHookLocation(Location hookLocation) {
+        this.hookLocation = hookLocation;
     }
 
     /*

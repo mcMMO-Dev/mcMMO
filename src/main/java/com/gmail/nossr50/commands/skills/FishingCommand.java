@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.skills;
 
+import org.bukkit.Location;
 import org.bukkit.block.Biome;
 import org.bukkit.entity.EntityType;
 
@@ -83,7 +84,9 @@ public class FishingCommand extends SkillCommand {
         // MASTER ANGLER
         if (canMasterAngler) {
             double rawBiteChance = 1.0 / (isStorming ? 300 : 500);
-            Biome biome = player.getLocation().getBlock().getBiome();
+            Location location = (mcMMOPlayer.getHookLocation() != null) ? mcMMOPlayer.getHookLocation() : player.getLocation();
+
+            Biome biome = location.getBlock().getBiome();
 
             if (biome == Biome.RIVER || biome == Biome.OCEAN) {
                 rawBiteChance = rawBiteChance * AdvancedConfig.getInstance().getMasterAnglerBiomeModifier();
