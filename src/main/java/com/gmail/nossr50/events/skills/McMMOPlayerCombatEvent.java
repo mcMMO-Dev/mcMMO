@@ -12,8 +12,15 @@ public abstract class McMMOPlayerCombatEvent extends FakeEntityDamageByEntityEve
     private SkillType skill;
     private int skillLevel;
 
-    public McMMOPlayerCombatEvent(Player player, Entity damager, Entity damagee, DamageCause cause, double damage, SkillType skill) {
+    protected McMMOPlayerCombatEvent(Player player, Entity damager, Entity damagee, DamageCause cause, double damage, SkillType skill) {
         super(damager, damagee, cause, damage);
+        this.player = player;
+        this.skill = skill;
+        skillLevel = UserManager.getPlayer(player).getProfile().getSkillLevel(skill);
+    }
+
+    protected McMMOPlayerCombatEvent(Player player, Entity damagee, DamageCause cause, double damage, SkillType skill) {
+        super(player, damagee, cause, damage);
         this.player = player;
         this.skill = skill;
         skillLevel = UserManager.getPlayer(player).getProfile().getSkillLevel(skill);

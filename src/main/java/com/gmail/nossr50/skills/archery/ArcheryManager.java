@@ -49,7 +49,7 @@ public class ArcheryManager extends SkillManager {
      * @param arrow The {@link Arrow} that damaged the target
      */
     public void trackArrow(LivingEntity target, Arrow arrow) {
-        if (!canTrack(arrow)) {
+        if (!canTrackArrows(target, arrow)) {
             return;
         }
 
@@ -102,7 +102,7 @@ public class ArcheryManager extends SkillManager {
      * @param arrow The {@link Arrow} that was fired
      */
     public double skillShot(LivingEntity target, double damage, Arrow arrow) {
-        if (!canUseSkillShot()) {
+        if (!canUseSkillShot(target)) {
             return 0;
         }
 
@@ -124,14 +124,14 @@ public class ArcheryManager extends SkillManager {
     }
 
     private boolean canDaze(LivingEntity target) {
-        return target instanceof Player && Permissions.daze(getPlayer()) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel);
+        return target.isValid() && target instanceof Player && Permissions.daze(getPlayer()) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel);
     }
 
-    private boolean canUseSkillShot() {
-        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.bonusDamage(getPlayer(), skill);
+    private boolean canUseSkillShot(LivingEntity target) {
+        return target.isValid() && getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.bonusDamage(getPlayer(), skill);
     }
 
-    private boolean canTrack(Arrow arrow) {
-        return Permissions.arrowRetrieval(getPlayer()) && !arrow.hasMetadata(mcMMO.infiniteArrowKey) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.retrieveMaxChance, Archery.retrieveMaxBonusLevel);
+    private boolean canTrackArrows(LivingEntity target, Arrow arrow) {
+        return target.isValid() && Permissions.arrowRetrieval(getPlayer()) && !arrow.hasMetadata(mcMMO.infiniteArrowKey) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.retrieveMaxChance, Archery.retrieveMaxBonusLevel);
     }
 }

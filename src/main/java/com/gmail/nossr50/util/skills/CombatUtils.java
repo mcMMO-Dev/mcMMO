@@ -20,6 +20,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
@@ -54,9 +55,7 @@ public final class CombatUtils {
             swordsManager.bleedCheck(target);
         }
 
-        if (swordsManager.canUseSerratedStrike()) {
-            swordsManager.serratedStrikes(target, damage);
-        }
+        swordsManager.serratedStrikes(target, damage);
 
         startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
     }
@@ -70,24 +69,12 @@ public final class CombatUtils {
 
         mcMMOPlayer.checkAbilityActivation(SkillType.AXES);
 
-        if (axesManager.canUseAxeMastery()) {
-            bonusDamage += axesManager.axeMastery(target);
-        }
+        bonusDamage += axesManager.axeMastery(target);
+        bonusDamage += axesManager.criticalHit(target, initialDamage);
+        bonusDamage += axesManager.greaterImpact(target);
 
-        if (axesManager.canCriticalHit(target)) {
-            bonusDamage += axesManager.criticalHit(target, initialDamage);
-        }
-
-        if (axesManager.canImpact(target)) {
-            axesManager.impactCheck(target);
-        }
-        else if (axesManager.canGreaterImpact(target)) {
-            bonusDamage += axesManager.greaterImpact(target);
-        }
-
-        if (axesManager.canUseSkullSplitter(target)) {
-            axesManager.skullSplitterCheck(target, initialDamage);
-        }
+        axesManager.impact(target);
+        axesManager.skullSplitter(target, initialDamage);
 
         event.setDamage(initialDamage + bonusDamage);
         startGainXp(mcMMOPlayer, target, SkillType.AXES);
@@ -328,9 +315,15 @@ public final class CombatUtils {
      * @param attacker The attacking player
      * @param target The defending entity
      * @param damage The initial damage amount
-     * @param type The type of skill being used
+     * @param skill The type of skill being used
      */
-    public static void applyAbilityAoE(Player attacker, LivingEntity target, double damage, SkillType type) {
+    public static void applyAbilityAoE(Player attacker, LivingEntity target, double damage, SkillType skill) {
+        AbilityType ability = skill.getAbility();
+
+        if (!target.isValid() || !UserManager.getPlayer(attacker).getAbilityMode(ability) || !ability.getPermissions(attacker)) {
+            return;
+        }
+
         int numberOfTargets = Misc.getTier(attacker.getItemInHand()); // The higher the weapon tier, the more targets you hit
         double damageAmount = Math.max(damage, 1);
 
@@ -346,7 +339,7 @@ public final class CombatUtils {
             LivingEntity livingEntity = (LivingEntity) entity;
             EventUtils.callFakeArmSwingEvent(attacker);
 
-            switch (type) {
+            switch (skill) {
                 case SWORDS:
                     if (entity instanceof Player) {
                         ((Player) entity).sendMessage(LocaleLoader.getString("Swords.Combat.SS.Struck"));
