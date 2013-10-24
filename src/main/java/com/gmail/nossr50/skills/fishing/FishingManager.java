@@ -277,9 +277,11 @@ public class FishingManager extends SkillManager {
 
     public void masterAngler(Fish hook) {
         Player player = getPlayer();
-        mcMMOPlayer.setHookLocation(hook.getLocation());
-        Biome biome = hook.getLocation().getBlock().getBiome();
+        Location location = hook.getLocation();
+        Biome biome = location.getBlock().getBiome();
         double biteChance = hook.getBiteChance();
+
+        mcMMOPlayer.setHookLocation(location);
 
         if (biome == Biome.RIVER || biome == Biome.OCEAN) {
             biteChance = biteChance * AdvancedConfig.getInstance().getMasterAnglerBiomeModifier();
