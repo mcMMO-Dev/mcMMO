@@ -32,7 +32,6 @@ import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerMagicHunterEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
-import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
@@ -178,13 +177,6 @@ public class EventUtils {
 
     public static McMMOPlayerDeathPenaltyEvent callDeathPenaltyEvent(Player player) {
         McMMOPlayerDeathPenaltyEvent event = new McMMOPlayerDeathPenaltyEvent(player);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        return event;
-    }
-
-    public static McMMOPlayerDisarmEvent callDisarmEvent(Player defender) {
-        McMMOPlayerDisarmEvent event = new McMMOPlayerDisarmEvent(defender);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;

@@ -25,25 +25,13 @@ public class ArcheryManager extends SkillManager {
         super(mcMMOPlayer, SkillType.ARCHERY);
     }
 
-    public boolean canDaze(LivingEntity target) {
-        return target instanceof Player && Permissions.daze(getPlayer()) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel);
-    }
-
-    public boolean canUseSkillShot() {
-        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.bonusDamage(getPlayer(), skill);
-    }
-
-    public boolean canTrack(Arrow arrow) {
-        return Permissions.arrowRetrieval(getPlayer()) && !arrow.hasMetadata(mcMMO.infiniteArrowKey) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.retrieveMaxChance, Archery.retrieveMaxBonusLevel);
-    }
-
     /**
      * Calculate bonus XP awarded for Archery when hitting a far-away target.
      *
      * @param target The {@link LivingEntity} damaged by the arrow
      * @param damager The {@link Entity} who shot the arrow
      */
-    public void distanceXpBonus(LivingEntity target, Entity damager) {
+    public void awardDistanceXpBonus(LivingEntity target, Entity damager) {
         Location firedLocation = (Location) damager.getMetadata(mcMMO.arrowDistanceKey).get(0).value();
         Location targetLocation = target.getLocation();
 
@@ -133,5 +121,17 @@ public class ArcheryManager extends SkillManager {
         double archeryBonus = Math.min(damage * damageBonusPercent, Archery.skillShotMaxBonusDamage);
 
         return archeryBonus;
+    }
+
+    private boolean canDaze(LivingEntity target) {
+        return target instanceof Player && Permissions.daze(getPlayer()) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel);
+    }
+
+    private boolean canUseSkillShot() {
+        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.bonusDamage(getPlayer(), skill);
+    }
+
+    private boolean canTrack(Arrow arrow) {
+        return Permissions.arrowRetrieval(getPlayer()) && !arrow.hasMetadata(mcMMO.infiniteArrowKey) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.retrieveMaxChance, Archery.retrieveMaxBonusLevel);
     }
 }

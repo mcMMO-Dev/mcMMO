@@ -1,32 +1,27 @@
 package com.gmail.nossr50.events.skills.unarmed;
 
 import org.bukkit.entity.Player;
-import org.bukkit.event.Cancellable;
+import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
-
-public class McMMOPlayerDisarmEvent extends McMMOPlayerSkillEvent implements Cancellable {
-    private boolean cancelled;
+public class McMMOPlayerDisarmEvent extends McMMOPlayerUnarmedEvent {
     private Player defender;
+    private ItemStack droppedItem;
 
-    public McMMOPlayerDisarmEvent(Player defender) {
-        super(defender, SkillType.UNARMED);
+    public McMMOPlayerDisarmEvent(Player attacker, Player defender) {
+        super(attacker);
         this.defender = defender;
+        this.setDroppedItem(defender.getItemInHand());
     }
 
     public Player getDefender() {
         return defender;
     }
 
-    /** Following are required for Cancellable **/
-    @Override
-    public boolean isCancelled() {
-        return cancelled;
+    public ItemStack getDroppedItem() {
+        return droppedItem;
     }
 
-    @Override
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
+    public void setDroppedItem(ItemStack droppedItem) {
+        this.droppedItem = droppedItem;
     }
 }

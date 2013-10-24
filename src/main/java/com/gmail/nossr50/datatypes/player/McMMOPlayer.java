@@ -757,6 +757,10 @@ public class McMMOPlayer {
         ToolType tool = skill.getTool();
         AbilityType ability = skill.getAbility();
 
+        if (!getToolPreparationMode(tool) || !ability.getPermissions(player)) {
+            return;
+        }
+
         setToolPreparationMode(tool, false);
 
         if (getAbilityMode(ability)) {

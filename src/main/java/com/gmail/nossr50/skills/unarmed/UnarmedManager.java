@@ -8,13 +8,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.SmoothBrick;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
+import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDeflectEvent;
+import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -37,14 +39,20 @@ public class UnarmedManager extends SkillManager {
         return mcMMOPlayer.getAbilityMode(AbilityType.BERSERK) && Permissions.berserk(getPlayer());
     }
 
-    public boolean canDisarm(LivingEntity target) {
-        return target instanceof Player && ((Player) target).getItemInHand().getType() != Material.AIR && Permissions.disarm(getPlayer());
+    private boolean canDisarm(LivingEntity target) {
+        if (target instanceof Player) {
+            Player defender = (Player) target;
+
+            return defender.getItemInHand().getType() != Material.AIR && Permissions.disarm(getPlayer()) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Unarmed.disarmMaxChance, Unarmed.disarmMaxBonusLevel) && !hasIronGrip(defender);
+        }
+
+        return false;
     }
 
-    public boolean canDeflect() {
+    private boolean canDeflect() {
         Player player = getPlayer();
 
-        return player.getItemInHand().getType() == Material.AIR && Permissions.arrowDeflect(player);
+        return skill.getPVPEnabled() && player.getItemInHand().getType() == Material.AIR && Permissions.arrowDeflect(player) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Unarmed.deflectMaxChance, Unarmed.deflectMaxBonusLevel);
     }
 
     public boolean canUseBlockCracker() {
@@ -78,31 +86,47 @@ public class UnarmedManager extends SkillManager {
     /**
      * Check for disarm.
      *
-     * @param defender The defending player
+     * @param target The defending {@link LivingEntity}
      */
-    public void disarmCheck(Player defender) {
-        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Unarmed.disarmMaxChance, Unarmed.disarmMaxBonusLevel) && !hasIronGrip(defender)) {
-            if (EventUtils.callDisarmEvent(defender).isCancelled()) {
-                return;
-            }
-
-            Misc.dropItem(defender.getLocation(), defender.getItemInHand());
-
-            defender.setItemInHand(new ItemStack(Material.AIR));
-            defender.sendMessage(LocaleLoader.getString("Skills.Disarmed"));
+    public void disarm(LivingEntity target) {
+        if (!canDisarm(target)) {
+            return;
         }
+
+        Player defender = (Player) target;
+
+        McMMOPlayerDisarmEvent event = new McMMOPlayerDisarmEvent(getPlayer(), defender);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
+
+        Misc.dropItem(defender.getLocation(), event.getDroppedItem());
+
+        defender.setItemInHand(new ItemStack(Material.AIR));
+        defender.sendMessage(LocaleLoader.getString("Skills.Disarmed"));
     }
 
     /**
      * Check for arrow deflection.
      */
-    public boolean deflectCheck() {
-        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Unarmed.deflectMaxChance, Unarmed.deflectMaxBonusLevel)) {
-            getPlayer().sendMessage(LocaleLoader.getString("Combat.ArrowDeflect"));
-            return true;
+    public boolean deflect() {
+        if (!canDeflect()) {
+            return false;
         }
 
-        return false;
+        Player player = getPlayer();
+
+        McMMOPlayerDeflectEvent event = new McMMOPlayerDeflectEvent(player);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return false;
+        }
+
+        player.sendMessage(LocaleLoader.getString("Combat.ArrowDeflect"));
+        return true;
     }
 
     /**

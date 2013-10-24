@@ -48,9 +48,7 @@ public final class CombatUtils {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
 
-        if (swordsManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(SkillType.SWORDS);
-        }
+        mcMMOPlayer.checkAbilityActivation(SkillType.SWORDS);
 
         if (swordsManager.canUseBleed()) {
             swordsManager.bleedCheck(target);
@@ -65,35 +63,33 @@ public final class CombatUtils {
 
     private static void processAxeCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
         double initialDamage = event.getDamage();
-        double finalDamage = initialDamage;
+        double bonusDamage = 0;
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         AxesManager axesManager = mcMMOPlayer.getAxesManager();
 
-        if (axesManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(SkillType.AXES);
-        }
+        mcMMOPlayer.checkAbilityActivation(SkillType.AXES);
 
         if (axesManager.canUseAxeMastery()) {
-            finalDamage += axesManager.axeMastery(target);
+            bonusDamage += axesManager.axeMastery(target);
         }
 
         if (axesManager.canCriticalHit(target)) {
-            finalDamage += axesManager.criticalHit(target, initialDamage);
+            bonusDamage += axesManager.criticalHit(target, initialDamage);
         }
 
         if (axesManager.canImpact(target)) {
             axesManager.impactCheck(target);
         }
         else if (axesManager.canGreaterImpact(target)) {
-            finalDamage += axesManager.greaterImpact(target);
+            bonusDamage += axesManager.greaterImpact(target);
         }
 
         if (axesManager.canUseSkullSplitter(target)) {
             axesManager.skullSplitterCheck(target, initialDamage);
         }
 
-        event.setDamage(finalDamage);
+        event.setDamage(initialDamage + bonusDamage);
         startGainXp(mcMMOPlayer, target, SkillType.AXES);
     }
 
@@ -104,9 +100,7 @@ public final class CombatUtils {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
-        if (unarmedManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(SkillType.UNARMED);
-        }
+        mcMMOPlayer.checkAbilityActivation(SkillType.UNARMED);
 
         if (unarmedManager.canUseIronArm()) {
             finalDamage += unarmedManager.ironArm(target);
@@ -116,9 +110,7 @@ public final class CombatUtils {
             finalDamage += unarmedManager.berserkDamage(target, initialDamage);
         }
 
-        if (unarmedManager.canDisarm(target)) {
-            unarmedManager.disarmCheck((Player) target);
-        }
+        unarmedManager.disarm(target);
 
         event.setDamage(finalDamage);
         startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
@@ -148,31 +140,28 @@ public final class CombatUtils {
     }
 
     private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Arrow arrow) {
+        if (target instanceof Player) {
+            UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
+            event.setCancelled(unarmedManager.deflect());
+
+            if (event.isCancelled()) {
+                return;
+            }
+        }
+
         double initialDamage = event.getDamage();
-        double finalDamage = initialDamage;
+        double bonusDamage = 0;
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
 
-        if (target instanceof Player && SkillType.UNARMED.getPVPEnabled()) {
-            UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
-
-            if (unarmedManager.canDeflect()) {
-                event.setCancelled(unarmedManager.deflectCheck());
-
-                if (event.isCancelled()) {
-                    return;
-                }
-            }
-        }
-
-        finalDamage += archeryManager.skillShot(target, initialDamage, arrow);
-        finalDamage += archeryManager.daze(target, arrow);
+        bonusDamage += archeryManager.skillShot(target, initialDamage, arrow);
+        bonusDamage += archeryManager.daze(target, arrow);
 
         archeryManager.trackArrow(target, arrow);
-        archeryManager.distanceXpBonus(target, arrow);
+        archeryManager.awardDistanceXpBonus(target, arrow);
 
-        event.setDamage(finalDamage);
+        event.setDamage(initialDamage + bonusDamage);
         startGainXp(mcMMOPlayer, target, SkillType.ARCHERY, arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble());
     }
 
