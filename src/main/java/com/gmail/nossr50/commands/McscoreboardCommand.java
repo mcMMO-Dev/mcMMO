@@ -35,6 +35,10 @@ public class McscoreboardCommand implements TabExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.Disabled"));
                 return true;
             }
+            if (!ScoreboardManager.isBoardShown(sender.getName())) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.NoBoard"));
+                return true;
+            }
             ScoreboardManager.keepBoard(sender.getName());
             sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Keep"));
         }

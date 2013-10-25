@@ -371,14 +371,16 @@ public class ScoreboardManager {
         }
     }
 
+    public static boolean isBoardShown(String playerName) {
+        return PLAYER_SCOREBOARDS.get(playerName).isBoardShown();
+    }
+
     public static void clearBoard(String playerName) {
         PLAYER_SCOREBOARDS.get(playerName).tryRevertBoard();
     }
 
     public static void keepBoard(String playerName) {
-        if (Config.getInstance().getAllowKeepBoard()) {
-            PLAYER_SCOREBOARDS.get(playerName).cancelRevert();
-        }
+        PLAYER_SCOREBOARDS.get(playerName).cancelRevert();
     }
 
     public static void setRevertTimer(String playerName, int seconds) {
