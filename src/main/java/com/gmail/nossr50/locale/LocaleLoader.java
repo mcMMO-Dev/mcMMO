@@ -41,7 +41,10 @@ public final class LocaleLoader {
                 return getString(key, enBundle, messageArguments);
             }
             catch (MissingResourceException ex2) {
-                mcMMO.p.getLogger().warning("Could not find locale string: " + key);
+                if (!key.contains("Guides")) {
+                    mcMMO.p.getLogger().warning("Could not find locale string: " + key);
+                }
+
                 return '!' + key + '!';
             }
         }
