@@ -29,6 +29,8 @@ mcMMO is currently developed by a team of individuals from all over the world.
 (https://github.com/TfT-02)
 [![t00thpick1](http://www.gravatar.com/avatar/ee23c7794a0c40120c3474287c7bce06.png)]
 (https://github.com/t00thpick1)
+[![riking](https://1.gravatar.com/avatar/aca9f37e569ac3a63929920035a91ba4.png)]
+(https://github.com/riking)
 
 ## Compiling
 
