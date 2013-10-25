@@ -50,7 +50,9 @@ public class McscoreboardCommand implements TabExecutor {
             if (CommandUtils.isInvalidInteger(sender, args[1])) {
                 return true;
             }
-            ScoreboardManager.setRevertTimer(sender.getName(), Math.abs(Integer.parseInt(args[1])));
+            int time = Math.abs(Integer.parseInt(args[1]));
+            ScoreboardManager.setRevertTimer(sender.getName(), time);
+            sender.sendMessage(LocaleLoader.getString("Commands.Scoreboard.Timer", time));
         }
         else {
             help(sender);
