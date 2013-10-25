@@ -30,7 +30,7 @@ public class AcrobaticsManager extends SkillManager {
     public boolean canRoll() {
         Player player = getPlayer();
 
-        return (player.getItemInHand().getType() != Material.ENDER_PEARL) && !exploitPrevention() && Permissions.roll(player);
+        return !exploitPrevention() && Permissions.roll(player);
     }
 
     public boolean canDodge(Entity damager) {
@@ -126,15 +126,21 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     public boolean exploitPrevention() {
+        Player player = getPlayer();
+
+        if (player.getItemInHand().getType() == Material.ENDER_PEARL) {
+            return true;
+        }
+
         if (!Config.getInstance().getAcrobaticsAFKDisabled()) {
             return false;
         }
 
-        if (getPlayer().isInsideVehicle()) {
+        if (player.isInsideVehicle()) {
             return true;
         }
 
-        Location fallLocation = getPlayer().getLocation();
+        Location fallLocation = player.getLocation();
 
         boolean sameLocation = (lastFallLocation != null && Misc.isNear(lastFallLocation, fallLocation, 2));
 
