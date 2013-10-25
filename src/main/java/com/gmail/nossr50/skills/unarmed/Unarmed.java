@@ -80,7 +80,8 @@ public class Unarmed {
 
                 nextSlot++;
             }
-        } else if (firstEmpty != -1) {
+        }
+        else if (firstEmpty != -1) {
             drop.remove();
             dropStack.setAmount(dropAmount);
             inventory.setItem(firstEmpty, dropStack);

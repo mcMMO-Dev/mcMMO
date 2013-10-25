@@ -91,9 +91,8 @@ public final class ChimaeraWing {
 
         if (Config.getInstance().getChimaeraPreventUseUnderground()) {
             if (location.getY() < player.getWorld().getHighestBlockYAt(location)) {
-                player.setItemInHand(new ItemStack(getChimaeraWing(amount - Config.getInstance().getChimaeraUseCost())));
+                inHand.setAmount(amount - Config.getInstance().getChimaeraUseCost());
                 player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Fail"));
-                player.updateInventory();
                 player.setVelocity(new Vector(0, 0.5D, 0));
                 CombatUtils.dealDamage(player, Misc.getRandom().nextInt((int) (player.getHealth() - 10)));
                 mcMMOPlayer.actualizeChimeraWingLastUse();
@@ -130,8 +129,8 @@ public final class ChimaeraWing {
             }
         }
 
-        player.setItemInHand(new ItemStack(getChimaeraWing(player.getItemInHand().getAmount() - Config.getInstance().getChimaeraUseCost())));
-        player.updateInventory();
+        ItemStack inHand = player.getItemInHand();
+        inHand.setAmount(inHand.getAmount() - Config.getInstance().getChimaeraUseCost());
         mcMMOPlayer.actualizeChimeraWingLastUse();
         mcMMOPlayer.setTeleportCommenceLocation(null);
 

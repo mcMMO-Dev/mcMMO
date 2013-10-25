@@ -143,7 +143,7 @@ public class BlockListener implements Listener {
         ItemStack heldItem = player.getItemInHand();
 
         /* HERBALISM */
-        if (BlockUtils.affectedByGreenTerra(blockState)) {
+        if (BlockUtils.affectedByGreenTerra(blockState) && Permissions.skillEnabled(player, SkillType.HERBALISM)) {
             HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
             /* Green Terra */
@@ -153,9 +153,7 @@ public class BlockListener implements Listener {
              * We don't check the block store here because herbalism has too many unusual edge cases.
              * Instead, we check it inside the drops handler.
              */
-            if (SkillType.HERBALISM.getPermissions(player)) {
-                herbalismManager.herbalismBlockCheck(blockState);
-            }
+            herbalismManager.blockBreak(blockState);
         }
 
         /* MINING */
@@ -331,7 +329,7 @@ public class BlockListener implements Listener {
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
         if (mcMMOPlayer.getAbilityMode(AbilityType.GREEN_TERRA) && BlockUtils.canMakeMossy(blockState)) {
-            if (mcMMOPlayer.getHerbalismManager().processGreenTerra(blockState)) {
+            if (mcMMOPlayer.getHerbalismManager().greenTerra(blockState)) {
                 blockState.update(true);
             }
         }

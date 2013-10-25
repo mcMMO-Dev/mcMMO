@@ -92,7 +92,7 @@ public class HerbalismManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      * @return true if the ability was successful, false otherwise
      */
-    public boolean processGreenTerra(BlockState blockState) {
+    public boolean greenTerra(BlockState blockState) {
         Player player = getPlayer();
 
         if (!Permissions.greenThumbBlock(player, blockState.getType())) {
@@ -100,34 +100,29 @@ public class HerbalismManager extends SkillManager {
         }
 
         PlayerInventory playerInventory = player.getInventory();
-        ItemStack seed = new ItemStack(Material.SEEDS);
 
-        if (!playerInventory.containsAtLeast(seed, 1)) {
+        if (!playerInventory.contains(Material.SEEDS)) {
             player.sendMessage(LocaleLoader.getString("Herbalism.Ability.GTe.NeedMore"));
             return false;
         }
 
-        playerInventory.removeItem(seed);
-        player.updateInventory(); // Needed until replacement available
+        playerInventory.removeItem(new ItemStack(Material.SEEDS));
+        player.updateInventory();
 
         return Herbalism.convertGreenTerraBlocks(blockState);
     }
 
     /**
-     * 
+     * Process double drops & XP gain for Herbalism.
      *
      * @param blockState The {@link BlockState} to check ability activation for
      */
-    public void herbalismBlockCheck(BlockState blockState) {
+    public void blockBreak(BlockState blockState) {
         Player player = getPlayer();
         Material material = blockState.getType();
         boolean oneBlockPlant = !(material == Material.CACTUS || material == Material.SUGAR_CANE_BLOCK);
 
-        if (oneBlockPlant && mcMMO.getPlaceStore().isTrue(blockState)) {
-            return;
-        }
-
-        if (!canBlockCheck()) {
+        if (!canBlockCheck() || (oneBlockPlant && mcMMO.getPlaceStore().isTrue(blockState))) {
             return;
         }
 
@@ -182,7 +177,14 @@ public class HerbalismManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      * @return true if the ability was successful, false otherwise
      */
-    public boolean processGreenThumbBlocks(BlockState blockState) {
+    public boolean greenThumbBlocks(BlockState blockState) {
+        if (!canGreenThumbBlock(blockState)) {
+            return false;
+        }
+
+        ItemStack heldItem = getPlayer().getItemInHand();
+        heldItem.setAmount(heldItem.getAmount() - 1);
+
         if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Herbalism.greenThumbMaxChance, Herbalism.greenThumbMaxLevel)) {
             getPlayer().sendMessage(LocaleLoader.getString("Herbalism.Ability.GTh.Fail"));
             return false;
@@ -283,43 +285,35 @@ public class HerbalismManager extends SkillManager {
     private void processGreenThumbPlants(BlockState blockState, boolean greenTerra) {
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
-        ItemStack seed = null;
+        Material seed = null;
 
         switch (blockState.getType()) {
             case CARROT:
-                seed = new ItemStack(Material.CARROT_ITEM);
+                seed = Material.CARROT_ITEM;
                 break;
 
             case CROPS:
-                seed = new ItemStack(Material.SEEDS);
+                seed = Material.SEEDS;
                 break;
 
             case NETHER_WARTS:
-                seed = new ItemStack(Material.NETHER_STALK);
+                seed = Material.NETHER_STALK;
                 break;
 
             case POTATO:
-                seed = new ItemStack(Material.POTATO_ITEM);
+                seed = Material.POTATO_ITEM;
                 break;
 
             default:
                 break;
         }
 
-        if (!playerInventory.containsAtLeast(seed, 1)) {
+        if (!playerInventory.contains(seed) || (!greenTerra && !SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Herbalism.greenThumbMaxChance, Herbalism.greenThumbMaxLevel)) || !handleBlockState(blockState, greenTerra)) {
             return;
         }
 
-        if (!greenTerra && !SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Herbalism.greenThumbMaxChance, Herbalism.greenThumbMaxLevel)) {
-            return;
-        }
-
-        if (!handleBlockState(blockState, greenTerra)) {
-            return;
-        }
-
-        playerInventory.removeItem(seed);
-        player.updateInventory(); // Needed until replacement available
+        playerInventory.removeItem(new ItemStack(seed));
+        player.updateInventory();
         new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
     }
 

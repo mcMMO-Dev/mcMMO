@@ -425,7 +425,6 @@ public class PlayerListener implements Listener {
                         // Make sure the player knows what he's doing when trying to salvage an enchanted item
                         if (!(heldItem.getEnchantments().size() > 0) || repairManager.checkConfirmation(type, true)) {
                             repairManager.handleSalvage(block.getLocation(), heldItem);
-                            player.updateInventory();
                         }
                     }
                 }
@@ -516,12 +515,8 @@ public class PlayerListener implements Listener {
                 /* GREEN THUMB CHECK */
                 HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
-                if (herbalismManager.canGreenThumbBlock(blockState)) {
-                    player.setItemInHand(new ItemStack(Material.SEEDS, heldItem.getAmount() - 1));
-
-                    if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
-                        blockState.update(true);
-                    }
+                if (herbalismManager.greenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
+                    blockState.update(true);
                 }
 
                 /* SHROOM THUMB CHECK */

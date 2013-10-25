@@ -167,7 +167,7 @@ public class RepairManager extends SkillManager {
         }
 
         if (item.getDurability() == 0) {
-            player.setItemInHand(new ItemStack(Material.AIR));
+            player.setItemInHand(null);
             location.setY(location.getY() + 1);
 
             Misc.dropItems(location, new ItemStack(Repair.getRepairAndSalvageItem(item)), Repair.getRepairAndSalvageQuantities(item) * item.getAmount());

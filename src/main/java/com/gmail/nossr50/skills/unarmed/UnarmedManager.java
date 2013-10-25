@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.SmoothBrick;
 
@@ -104,7 +103,7 @@ public class UnarmedManager extends SkillManager {
 
         Misc.dropItem(defender.getLocation(), event.getDroppedItem());
 
-        defender.setItemInHand(new ItemStack(Material.AIR));
+        defender.setItemInHand(null);
         defender.sendMessage(LocaleLoader.getString("Skills.Disarmed"));
     }
 
