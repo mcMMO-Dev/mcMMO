@@ -45,25 +45,51 @@ public class Config extends AutoUpdateConfigLoader {
         }
 
         /* Scoreboards */
-        if (getMcrankScoreboardTime() != -1 && getMcrankScoreboardTime() <= 0) {
-            reason.add("Scoreboards.Mcrank.Display_Time should be greater than 0 or -1!");
+        if (getRankScoreboardTime() != -1 && getRankScoreboardTime() <= 0) {
+            reason.add("Scoreboard.Types.Rank.Display_Time should be greater than 0, or -1!");
         }
 
-        if (getMcstatsScoreboardTime() != -1 && getMcstatsScoreboardTime() <= 0) {
-            reason.add("Scoreboards.Mcstats.Display_Time should be greater than 0 or -1!");
+        if (getStatsScoreboardTime() != -1 && getStatsScoreboardTime() <= 0) {
+            reason.add("Scoreboard.Types.Stats.Display_Time should be greater than 0, or -1!");
         }
 
-        if (getMctopScoreboardTime() != -1 && getMctopScoreboardTime() <= 0) {
-            reason.add("Scoreboards.Mctop.Display_Time should be greater than 0 or -1!");
+        if (getTopScoreboardTime() != -1 && getTopScoreboardTime() <= 0) {
+            reason.add("Scoreboard.Types.Top.Display_Time should be greater than 0, or -1!");
         }
 
         if (getInspectScoreboardTime() != -1 && getInspectScoreboardTime() <= 0) {
-            reason.add("Scoreboards.Inspect.Display_Time should be greater than 0 or -1!");
+            reason.add("Scoreboard.Types.Inspect.Display_Time should be greater than 0, or -1!");
         }
 
         if (getSkillScoreboardTime() != -1 && getSkillScoreboardTime() <= 0) {
-            reason.add("Scoreboards.Skillname.Display_Time should be greater than 0 or -1!");
+            reason.add("Scoreboard.Types.Skill.Display_Time should be greater than 0, or -1!");
         }
+
+        if (getSkillLevelUpTime() != -1 && getSkillScoreboardTime() <= 0) {
+            reason.add("Scoreboard.Types.Skill.Display_Time should be greater than 0, or -1!");
+        }
+
+        if (!(getRankUseChat() || getRankUseBoard())) {
+            reason.add("Either Board or Print in Scoreboard.Types.Rank must be true!");
+        }
+
+        if (!(getTopUseChat() || getTopUseBoard())) {
+            reason.add("Either Board or Print in Scoreboard.Types.Top must be true!");
+        }
+
+        if (!(getStatsUseChat() || getStatsUseBoard())) {
+            reason.add("Either Board or Print in Scoreboard.Types.Stats must be true!");
+        }
+
+        if (!(getInspectUseChat() || getInspectUseBoard())) {
+            reason.add("Either Board or Print in Scoreboard.Types.Inspect must be true!");
+        }
+
+        /* Skill.Print setting removed, as I can't think of a good use for it
+        if (!(getSkillUseChat() || getSkillUseBoard())) {
+            reason.add("Either Board or Print in Scoreboard.Commands.Skill must be true!");
+        }
+        // */
 
         /* Database Purging */
         if (getPurgeInterval() < -1) {
@@ -212,22 +238,36 @@ public class Config extends AutoUpdateConfigLoader {
     public int getMobHealthbarTime() { return config.getInt("Mob_Healthbar.Display_Time", 3); }
 
     /* Scoreboards */
-    public boolean getMcrankScoreboardEnabled() { return config.getBoolean("Scoreboards.Mcrank.Use", true); }
-    public int getMcrankScoreboardTime() { return config.getInt("Scoreboards.Mcrank.Display_Time", 10); }
+    public boolean getRankUseChat() { return config.getBoolean("Scoreboard.Types.Rank.Print", false); }
+    public boolean getRankUseBoard() { return config.getBoolean("Scoreboard.Types.Rank.Board", true); }
+    public int getRankScoreboardTime() { return config.getInt("Scoreboard.Types.Rank.Display_Time", 10); }
 
-    public boolean getMcstatsScoreboardsEnabled() { return config.getBoolean("Scoreboards.Mcstats.Use", true); }
-    public int getMcstatsScoreboardTime() { return config.getInt("Scoreboards.Mcstats.Display_Time", 10); }
+    public boolean getTopUseChat() { return config.getBoolean("Scoreboard.Types.Top.Print", true); }
+    public boolean getTopUseBoard() { return config.getBoolean("Scoreboard.Types.Top.Board", true); }
+    public int getTopScoreboardTime() { return config.getInt("Scoreboard.Types.Top.Display_Time", 15); }
 
-    public boolean getMctopScoreboardEnabled() { return config.getBoolean("Scoreboards.Mctop.Use", true); }
-    public int getMctopScoreboardTime() { return config.getInt("Scoreboards.Mctop.Display_Time", 10); }
+    public boolean getStatsUseChat() { return config.getBoolean("Scoreboard.Types.Stats.Print", true); }
+    public boolean getStatsUseBoard() { return config.getBoolean("Scoreboard.Types.Stats.Board", true); }
+    public int getStatsScoreboardTime() { return config.getInt("Scoreboard.Types.Stats.Display_Time", 10); }
 
-    public boolean getInspectScoreboardEnabled() { return config.getBoolean("Scoreboards.Inspect.Use", true); }
-    public int getInspectScoreboardTime() { return config.getInt("Scoreboards.Inspect.Display_Time", 10); }
+    public boolean getInspectUseChat() { return config.getBoolean("Scoreboard.Types.Inspect.Print", true); }
+    public boolean getInspectUseBoard() { return config.getBoolean("Scoreboard.Types.Inspect.Board", true); }
+    public int getInspectScoreboardTime() { return config.getInt("Scoreboard.Types.Inspect.Display_Time", 25); }
 
-    public boolean getSkillScoreboardEnabled() { return config.getBoolean("Scoreboards.Skillname.Use", true); }
-    public int getSkillScoreboardTime() { return config.getInt("Scoreboards.Skillname.Display_Time", 10); }
+    public boolean getCooldownUseChat() { return config.getBoolean("Scoreboard.Types.Cooldown.Print", false); }
+    public boolean getCooldownUseBoard() { return config.getBoolean("Scoreboard.Types.Cooldown.Board", true); }
+    public int getCooldownScoreboardTime() { return config.getInt("Scoreboard.Types.Cooldown.Display_Time", 41); }
 
-    public boolean getPowerLevelsEnabled() { return config.getBoolean("Scoreboards.Power_Level.Use", false); }
+    // public boolean getSkillUseChat() { return config.getBoolean("Scoreboard.Types.Skill.Print", false); }
+    public boolean getSkillUseBoard() { return config.getBoolean("Scoreboard.Types.Skill.Board", true); }
+    public int getSkillScoreboardTime() { return config.getInt("Scoreboard.Types.Skill.Display_Time", 30); }
+    public boolean getSkillLevelUpBoard() { return config.getBoolean("Scoreboard.Types.Skill.LevelUp_Board", true); }
+    public int getSkillLevelUpTime() { return config.getInt("Scoreboard.Types.Skill.LevelUp_Time", 5); }
+
+    public boolean getPowerLevelTagsEnabled() { return config.getBoolean("Scoreboard.Power_Level_Tags", false); }
+
+    public boolean getAllowKeepBoard() { return config.getBoolean("Scoreboard.Allow_Keep", true); }
+    public boolean getScoreboardRainbows() { return config.getBoolean("Scoreboard.Rainbows", false); }
 
     /* Database Purging */
     public int getPurgeInterval() { return config.getInt("Database_Purging.Purge_Interval", -1); }
@@ -324,8 +364,8 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getAbilitiesEnabled() { return config.getBoolean("Abilities.Enabled", true); }
     public boolean getAbilitiesOnlyActivateWhenSneaking() { return config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false); }
 
-    public int getCooldown(AbilityType ability) { return config.getInt("Abilities.Cooldowns." + ability.toString()); }
-    public int getMaxLength(AbilityType ability) { return config.getInt("Abilities.Max_Seconds." + ability.toString()); }
+    public int getCooldown(AbilityType ability) { return config.getInt("Abilities.Cooldowns." + ability.getConfigString()); }
+    public int getMaxLength(AbilityType ability) { return config.getInt("Abilities.Max_Seconds." + ability.getConfigString()); }
 
     /* Durability Settings */
     public int getAbilityToolDamage() { return config.getInt("Abilities.Tools.Durability_Loss", 1); }

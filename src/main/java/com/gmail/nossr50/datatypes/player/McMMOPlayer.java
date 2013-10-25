@@ -97,6 +97,7 @@ public class McMMOPlayer {
     private int recentlyHurt;
     private int respawnATS;
     private int teleportATS;
+    private long databaseATS;
     private int chimeraWingLastUse;
     private Location teleportCommence;
 
@@ -425,6 +426,14 @@ public class McMMOPlayer {
 
     public void actualizeTeleportATS() {
         teleportATS = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+    }
+
+    public long getDatabaseATS() {
+        return databaseATS;
+    }
+
+    public void actualizeDatabaseATS() {
+        databaseATS = System.currentTimeMillis();
     }
 
     /*
@@ -845,7 +854,7 @@ public class McMMOPlayer {
             return;
         }
 
-        int timeRemaining = SkillUtils.calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player);
+        int timeRemaining = SkillUtils.calculateTimeLeft(ability, profile, player);
 
         if (timeRemaining > 0) {
             /*
@@ -915,7 +924,7 @@ public class McMMOPlayer {
          */
         if (ability.getPermissions(player) && tool.inHand(inHand) && !getToolPreparationMode(tool)) {
             if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
-                int timeRemaining = SkillUtils.calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player);
+                int timeRemaining = SkillUtils.calculateTimeLeft(ability, profile, player);
 
                 if (!getAbilityMode(ability) && timeRemaining > 0) {
                     player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));

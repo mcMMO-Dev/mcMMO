@@ -1,328 +1,387 @@
 package com.gmail.nossr50.util.scoreboards;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Server;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
-import org.bukkit.scoreboard.Scoreboard;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.scoreboards.ScoreboardChangeTask;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.google.common.collect.ImmutableMap;
 
 public class ScoreboardManager {
-    private static final Map<String, Scoreboard> PLAYER_SCOREBOARDS = new HashMap<String, Scoreboard>();
-    private static final Scoreboard GLOBAL_STATS_SCOREBOARD = mcMMO.p.getServer().getScoreboardManager().getNewScoreboard();
+    static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<String, ScoreboardWrapper>();
 
-    private final static String PLAYER_STATS_HEADER   = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
-    private final static String PLAYER_RANK_HEADER    = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
-    private final static String PLAYER_INSPECT_HEADER = LocaleLoader.getString("Scoreboard.Header.PlayerInspect");
-    private final static String POWER_LEVEL_HEADER    = LocaleLoader.getString("Scoreboard.Header.PowerLevel");
+    // do not localize; these are internal identifiers
+    static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar";
+    static final String POWER_OBJECTIVE = "mcmmo_pwrlvl";
 
-    private final static String POWER_LEVEL  = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");
-    private final static String LEVEL        = LocaleLoader.getString("Scoreboard.Misc.Level");
-    private final static String CURRENT_XP   = LocaleLoader.getString("Scoreboard.Misc.CurrentXP");
-    private final static String REMAINING_XP = LocaleLoader.getString("Scoreboard.Misc.RemainingXP");
-    private final static String OVERALL      = LocaleLoader.getString("Scoreboard.Misc.Overall");
+    static final String HEADER_STATS = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
+    static final String HEADER_COOLDOWNS = LocaleLoader.getString("Scoreboard.Header.PlayerCooldowns");
+    static final String HEADER_RANK = LocaleLoader.getString("Scoreboard.Header.PlayerRank");
+    static final String TAG_POWER_LEVEL = LocaleLoader.getString("Scoreboard.Header.PowerLevel");
 
-    private final static List<String> SCOREBOARD_TASKS = new ArrayList<String>();
+    static final String POWER_LEVEL = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");
 
-    public static void setupPlayerScoreboard(String playerName) {
-        if (PLAYER_SCOREBOARDS.containsKey(playerName)) {
-            return;
-        }
+    static final OfflinePlayer LABEL_POWER_LEVEL = getOfflinePlayer(POWER_LEVEL);
+    static final OfflinePlayer LABEL_LEVEL = getOfflinePlayer(LocaleLoader.getString("Scoreboard.Misc.Level"));
+    static final OfflinePlayer LABEL_CURRENT_XP = getOfflinePlayer(LocaleLoader.getString("Scoreboard.Misc.CurrentXP"));
+    static final OfflinePlayer LABEL_REMAINING_XP = getOfflinePlayer(LocaleLoader.getString("Scoreboard.Misc.RemainingXP"));
+    static final OfflinePlayer LABEL_ABILITY_COOLDOWN = getOfflinePlayer(LocaleLoader.getString("Scoreboard.Misc.Cooldown"));
+    static final OfflinePlayer LABEL_OVERALL = getOfflinePlayer(LocaleLoader.getString("Scoreboard.Misc.Overall"));
 
-        PLAYER_SCOREBOARDS.put(playerName, mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
-    }
-
-    public static void enablePowerLevelDisplay(Player player) {
-        if (!Config.getInstance().getPowerLevelsEnabled()) {
-            return;
-        }
-
-        Scoreboard scoreboard = player.getScoreboard();
-        Objective objective;
-
-        if (scoreboard.getObjective(DisplaySlot.BELOW_NAME) == null) {
-            objective = scoreboard.registerNewObjective(POWER_LEVEL_HEADER.substring(0, Math.min(POWER_LEVEL_HEADER.length(), 16)), "dummy");
-
-            objective.getScore(player).setScore(UserManager.getPlayer(player).getPowerLevel());
-            objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+    static final Map<SkillType, OfflinePlayer> skillLabels;
+    static final Map<AbilityType, OfflinePlayer> abilityLabelsColored;
+    static final Map<AbilityType, OfflinePlayer> abilityLabelsSkill;
+    static {
+        ImmutableMap.Builder<SkillType, OfflinePlayer> b = ImmutableMap.builder();
+        ImmutableMap.Builder<AbilityType, OfflinePlayer> c = ImmutableMap.builder();
+        ImmutableMap.Builder<AbilityType, OfflinePlayer> d = ImmutableMap.builder();
+        if (Config.getInstance().getScoreboardRainbows()) {
+            Random shuffler = new Random(Bukkit.getWorlds().get(0).getSeed());
+            List<ChatColor> colors = Arrays.asList(
+                    ChatColor.WHITE,
+                    ChatColor.YELLOW,
+                    ChatColor.LIGHT_PURPLE,
+                    ChatColor.RED,
+                    ChatColor.AQUA,
+                    ChatColor.GREEN,
+                    ChatColor.DARK_GRAY,
+                    ChatColor.BLUE,
+                    ChatColor.DARK_PURPLE,
+                    ChatColor.DARK_RED,
+                    ChatColor.DARK_AQUA,
+                    ChatColor.DARK_GREEN,
+                    ChatColor.DARK_BLUE
+            );
+            Collections.shuffle(colors, shuffler);
+            int i = 0;
+            for (SkillType type : SkillType.values()) {
+                // Include child skills
+                b.put(type, getOfflinePlayer(colors.get(i) + type.getSkillName()));
+                if (type.getAbility() != null) {
+                    // the toString is the properly formatted verison for abilities
+                    c.put(type.getAbility(), getOfflinePlayer(colors.get(i) + type.getAbility().getAbilityName()));
+                    if (type == SkillType.MINING) {
+                        c.put(AbilityType.BLAST_MINING, getOfflinePlayer(colors.get(i) + AbilityType.BLAST_MINING.getAbilityName()));
+                    }
+                }
+                if (++i == colors.size()) i = 0;
+            }
         }
         else {
-            objective = scoreboard.getObjective(POWER_LEVEL_HEADER.substring(0, Math.min(POWER_LEVEL_HEADER.length(), 16)));
+            for (SkillType type : SkillType.values()) {
+                // Include child skills
+                b.put(type, getOfflinePlayer(ChatColor.GREEN + type.getSkillName()));
+                if (type.getAbility() != null) {
+                    // the toString is the properly formatted verison for abilities
+                    c.put(type.getAbility(), getOfflinePlayerDots(ChatColor.AQUA + type.getAbility().getAbilityName()));
+                    if (type == SkillType.MINING) {
+                        c.put(AbilityType.BLAST_MINING, getOfflinePlayerDots(ChatColor.AQUA + AbilityType.BLAST_MINING.getAbilityName()));
+                    }
+                }
+            }
+        }
 
-            if (objective != null) {
-                objective.getScore(player).setScore(UserManager.getPlayer(player).getPowerLevel());
+        for (AbilityType type : AbilityType.NORMAL_ABILITIES) {
+            if (type == AbilityType.BLAST_MINING) {
+                // Special-case: get a different color
+                d.put(AbilityType.BLAST_MINING, getOfflinePlayerDots(ChatColor.BLUE + AbilityType.BLAST_MINING.getAbilityName()));
             }
             else {
-                mcMMO.p.debug("Another plugin is using this scoreboard slot, so power levels cannot be enabled."); //TODO: Locale
+                d.put(type, getOfflinePlayerDots(ChatColor.AQUA + type.getAbilityName()));
             }
         }
+
+        skillLabels = b.build();
+        abilityLabelsColored = c.build();
+        abilityLabelsSkill = d.build();
     }
 
-    public static void enablePlayerSkillScoreboard(McMMOPlayer mcMMOPlayer, SkillType skill) {
-        Player player = mcMMOPlayer.getPlayer();
-        Scoreboard oldScoreboard = player.getScoreboard();
-        Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(skill.getSkillName());
+    private static List<String> dirtyPowerLevels = new ArrayList<String>();
 
-        if (objective == null) {
-            objective = newScoreboard.registerNewObjective(skill.getSkillName(), "dummy");
+    private static OfflinePlayer getOfflinePlayer(String name) {
+        if (name.length() > 16) {
+            name = name.substring(0, 16);
+        }
+        return Bukkit.getOfflinePlayer(name);
+    }
+
+    private static OfflinePlayer getOfflinePlayerDots(String name) {
+        if (name.length() > 16) {
+            name = name.substring(0, 16 - 2) + "..";
+        }
+        return Bukkit.getOfflinePlayer(name);
+    }
+
+    public enum SidebarType {
+        NONE,
+        SKILL_BOARD,
+        STATS_BOARD,
+        COOLDOWNS_BOARD,
+        RANK_BOARD,
+        TOP_BOARD;
+    }
+
+    // **** Listener call-ins **** //
+
+    // Called by PlayerJoinEvent listener
+    public static void setupPlayer(Player p) {
+        PLAYER_SCOREBOARDS.put(p.getName(), ScoreboardWrapper.create(p));
+        dirtyPowerLevels.add(p.getName());
+    }
+
+    // Called by PlayerQuitEvent listener
+    public static void teardownPlayer(Player p) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.remove(p.getName());
+        if (wrapper.revertTask != null) {
+            wrapper.revertTask.cancel();
+        }
+    }
+
+    // Called in onDisable()
+    public static void teardownAll() {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            teardownPlayer(p);
+        }
+    }
+
+    // Called by ScoreboardWrapper when its Player logs off and an action tries to be performed
+    public static void cleanup(ScoreboardWrapper wrapper) {
+        PLAYER_SCOREBOARDS.remove(wrapper.playerName);
+        if (wrapper.revertTask != null) {
+            wrapper.revertTask.cancel();
+        }
+    }
+
+    // Called by internal level-up event listener
+    public static void handleLevelUp(Player player, SkillType skill) {
+        // Selfboards
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+        if ((wrapper.isSkillScoreboard() && wrapper.targetSkill == skill) || (wrapper.isStatsScoreboard()) && wrapper.isBoardShown()) {
+            wrapper.doSidebarUpdateSoon();
         }
 
-        updatePlayerSkillScores(mcMMOPlayer.getProfile(), skill, objective);
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getSkillScoreboardTime());
-    }
-
-    public static void enablePlayerStatsScoreboard(McMMOPlayer mcMMOPlayer) {
-        Player player = mcMMOPlayer.getPlayer();
-        Scoreboard oldScoreboard = player.getScoreboard();
-        Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_STATS_HEADER.substring(0, Math.min(PLAYER_STATS_HEADER.length(), 16)));
-
-        if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_STATS_HEADER.substring(0, Math.min(PLAYER_STATS_HEADER.length(), 16)), "dummy");
-        }
-
-        updatePlayerStatsScores(mcMMOPlayer, objective);
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcstatsScoreboardTime());
-    }
-
-    public static void enablePlayerRankScoreboard(Player player) {
-        Scoreboard oldScoreboard = player.getScoreboard();
-        Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_RANK_HEADER.substring(0, Math.min(PLAYER_RANK_HEADER.length(), 16)));
-
-        if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_RANK_HEADER.substring(0, Math.min(PLAYER_RANK_HEADER.length(), 16)), "dummy");
-        }
-
-        updatePlayerRankScores(player, objective);
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcrankScoreboardTime());
-    }
-
-    public static void enablePlayerRankScoreboardOthers(Player player, String targetName) {
-        Scoreboard oldScoreboard = player.getScoreboard();
-        Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_RANK_HEADER.substring(0, Math.min(PLAYER_RANK_HEADER.length(), 16)));
-
-        if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_RANK_HEADER.substring(0, Math.min(PLAYER_RANK_HEADER.length(), 16)), "dummy");
-        }
-
-        updatePlayerRankOthersScores(targetName, objective);
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getMcrankScoreboardTime());
-    }
-
-    public static void enablePlayerInspectScoreboardOnline(Player player, McMMOPlayer mcMMOTarget) {
-        Scoreboard oldScoreboard = player.getScoreboard();
-        Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_INSPECT_HEADER.substring(0, Math.min(PLAYER_INSPECT_HEADER.length(), 16)));
-
-        if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_INSPECT_HEADER.substring(0, Math.min(PLAYER_INSPECT_HEADER.length(), 16)), "dummy");
-        }
-
-        updatePlayerInspectOnlineScores(mcMMOTarget, objective);
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getInspectScoreboardTime());
-    }
-
-    public static void enablePlayerInspectScoreboardOffline(Player player, PlayerProfile targetProfile) {
-        Scoreboard oldScoreboard = player.getScoreboard();
-        Scoreboard newScoreboard = PLAYER_SCOREBOARDS.get(player.getName());
-        Objective objective = newScoreboard.getObjective(PLAYER_INSPECT_HEADER.substring(0, Math.min(PLAYER_INSPECT_HEADER.length(), 16)));
-
-        if (objective == null) {
-            objective = newScoreboard.registerNewObjective(PLAYER_INSPECT_HEADER.substring(0, Math.min(PLAYER_INSPECT_HEADER.length(), 16)), "dummy");
-        }
-
-        updatePlayerInspectOfflineScores(targetProfile, objective);
-        changeScoreboard(player, oldScoreboard, newScoreboard, Config.getInstance().getInspectScoreboardTime());
-    }
-
-    public static void enableGlobalStatsScoreboard(Player player, String skillName, int pageNumber) {
-        Objective oldObjective = GLOBAL_STATS_SCOREBOARD.getObjective(skillName);
-        Scoreboard oldScoreboard = player.getScoreboard();
-
-        if (oldObjective != null) {
-            oldObjective.unregister();
-        }
-
-        Objective newObjective = GLOBAL_STATS_SCOREBOARD.registerNewObjective(skillName, "dummy");
-        newObjective.setDisplayName(ChatColor.GOLD + (skillName.equalsIgnoreCase("all") ? POWER_LEVEL : SkillType.getSkill(skillName).getSkillName()));
-
-        updateGlobalStatsScores(player, newObjective, skillName, pageNumber);
-        changeScoreboard(player, oldScoreboard, GLOBAL_STATS_SCOREBOARD, Config.getInstance().getMctopScoreboardTime());
-    }
-
-    private static void updatePlayerSkillScores(PlayerProfile profile, SkillType skill, Objective objective) {
-        Server server = mcMMO.p.getServer();
-        int currentXP = profile.getSkillXpLevel(skill);
-
-        objective.getScore(server.getOfflinePlayer(LEVEL)).setScore(profile.getSkillLevel(skill));
-        objective.getScore(server.getOfflinePlayer(CURRENT_XP)).setScore(currentXP);
-        objective.getScore(server.getOfflinePlayer(REMAINING_XP)).setScore(profile.getXpToLevel(skill) - currentXP);
-
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-    }
-
-    private static void updatePlayerStatsScores(McMMOPlayer mcMMOPlayer, Objective objective) {
-        Player player = mcMMOPlayer.getPlayer();
-        PlayerProfile profile = mcMMOPlayer.getProfile();
-        Server server = mcMMO.p.getServer();
-
-        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
-            if (!Permissions.skillEnabled(player, skill)) {
-                continue;
-            }
-
-            objective.getScore(server.getOfflinePlayer(skill.getSkillName())).setScore(profile.getSkillLevel(skill));
-        }
-
-        objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + POWER_LEVEL)).setScore(mcMMOPlayer.getPowerLevel());
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-    }
-
-    private static void updatePlayerRankScores(Player player, Objective objective) {
+        // Otherboards
         String playerName = player.getName();
-        Server server = mcMMO.p.getServer();
-        Integer rank;
-
-        Map<String, Integer> skills = mcMMO.getDatabaseManager().readRank(playerName);
-
-        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
-            if (!Permissions.skillEnabled(player, skill)) {
-                continue;
-            }
-
-            rank = skills.get(skill.name());
-
-            if (rank != null) {
-                objective.getScore(server.getOfflinePlayer(skill.getSkillName())).setScore(rank);
+        for (ScoreboardWrapper w : PLAYER_SCOREBOARDS.values()) {
+            if (w.isStatsScoreboard() && playerName.equals(w.targetPlayer) && wrapper.isBoardShown()) {
+                wrapper.doSidebarUpdateSoon();
             }
         }
 
-        rank = skills.get("ALL");
-
-        if (rank != null) {
-            objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + OVERALL)).setScore(rank);
+        if (Config.getInstance().getPowerLevelTagsEnabled()) {
+            dirtyPowerLevels.add(player.getName());
         }
 
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        if (Config.getInstance().getSkillLevelUpBoard()) {
+            enablePlayerSkillLevelUpScoreboard(player, skill);
+        }
     }
 
-    private static void updatePlayerRankOthersScores(String targetName, Objective objective) {
-        Server server = mcMMO.p.getServer();
-        Integer rank;
+    // Called by internal xp event listener
+    public static void handleXp(Player player, SkillType skill) {
+        // Selfboards
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+        if (wrapper.isSkillScoreboard() && wrapper.targetSkill == skill && wrapper.isBoardShown()) {
+            wrapper.doSidebarUpdateSoon();
+        }
+    }
 
-        Map<String, Integer> skills = mcMMO.getDatabaseManager().readRank(targetName);
+    // Called by internal ability event listeners
+    public static void cooldownUpdate(Player player, SkillType skill, int cooldownSeconds) {
+        // Selfboards
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+        if ((wrapper.isCooldownScoreboard() || wrapper.isSkillScoreboard() && wrapper.targetSkill == skill) && wrapper.isBoardShown()) {
+            wrapper.doSidebarUpdateSoon();
+        }
+    }
 
-        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
-            rank = skills.get(skill.name());
+    // **** Setup methods **** //
 
-            if (rank != null) {
-                objective.getScore(server.getOfflinePlayer(skill.getSkillName())).setScore(rank);
+    public static void enablePlayerSkillScoreboard(Player player, SkillType skill) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+
+        wrapper.setOldScoreboard();
+        wrapper.setTypeSkill(skill);
+
+        changeScoreboard(wrapper, Config.getInstance().getSkillScoreboardTime());
+    }
+
+    public static void enablePlayerSkillLevelUpScoreboard(Player player, SkillType skill) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+
+        // Do NOT run if already shown
+        if (wrapper.isBoardShown()) {
+            return;
+        }
+
+        wrapper.setOldScoreboard();
+        wrapper.setTypeSkill(skill);
+
+        changeScoreboard(wrapper, Config.getInstance().getSkillLevelUpTime());
+    }
+
+    public static void enablePlayerStatsScoreboard(Player player) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+
+        wrapper.setOldScoreboard();
+        wrapper.setTypeSelfStats();
+
+        changeScoreboard(wrapper, Config.getInstance().getStatsScoreboardTime());
+    }
+
+    public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+
+        wrapper.setOldScoreboard();
+        wrapper.setTypeInspectStats(targetProfile);
+
+        changeScoreboard(wrapper, Config.getInstance().getInspectScoreboardTime());
+    }
+
+    public static void enablePlayerCooldownScoreboard(Player player) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+
+        wrapper.setOldScoreboard();
+        wrapper.setTypeCooldowns();
+
+        changeScoreboard(wrapper, Config.getInstance().getCooldownScoreboardTime());
+    }
+
+    public static void showPlayerRankScoreboard(Player bukkitPlayer, Map<SkillType, Integer> rank) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(bukkitPlayer.getName());
+
+        wrapper.setOldScoreboard();
+        wrapper.setTypeSelfRank();
+        wrapper.acceptRankData(rank);
+
+        changeScoreboard(wrapper, Config.getInstance().getRankScoreboardTime());
+    }
+
+    public static void showPlayerRankScoreboardOthers(Player bukkitPlayer, String targetName, Map<SkillType, Integer> rank) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(bukkitPlayer.getName());
+
+        wrapper.setOldScoreboard();
+        wrapper.setTypeInspectRank(targetName);
+        wrapper.acceptRankData(rank);
+
+        changeScoreboard(wrapper, Config.getInstance().getRankScoreboardTime());
+    }
+
+    public static void showTopScoreboard(Player player, SkillType skill, int pageNumber, List<PlayerStat> stats) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+
+        wrapper.setOldScoreboard();
+        wrapper.setTypeTop(skill, pageNumber);
+        wrapper.acceptLeaderboardData(stats);
+
+        changeScoreboard(wrapper, Config.getInstance().getTopScoreboardTime());
+    }
+
+    public static void showTopPowerScoreboard(Player player, int pageNumber, List<PlayerStat> stats) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+
+        wrapper.setOldScoreboard();
+        wrapper.setTypeTopPower(pageNumber);
+        wrapper.acceptLeaderboardData(stats);
+
+        changeScoreboard(wrapper, Config.getInstance().getTopScoreboardTime());
+    }
+
+    // **** Helper methods **** //
+
+    /**
+     * @return false if power levels are disabled
+     */
+    public static boolean powerLevelHeartbeat() {
+        Objective mainObjective = getPowerLevelObjective();
+        if (mainObjective == null) {
+            return false; // indicates
+        }
+
+        if (!dirtyPowerLevels.isEmpty())
+            mcMMO.p.getLogger().info(dirtyPowerLevels.toString());
+        for (String playerName : dirtyPowerLevels) {
+            McMMOPlayer mcpl = UserManager.getPlayer(playerName);
+            Player player = mcpl.getPlayer();
+            int power = mcpl.getPowerLevel();
+
+            mainObjective.getScore(player).setScore(power);
+            for (ScoreboardWrapper wrapper : PLAYER_SCOREBOARDS.values()) {
+                wrapper.updatePowerLevel(player, power);
             }
         }
+        dirtyPowerLevels.clear();
 
-        rank = skills.get("ALL");
-
-        if (rank != null) {
-            objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + OVERALL)).setScore(rank);
-        }
-
-        objective.setDisplayName(PLAYER_RANK_HEADER + ": " + targetName);
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        return true;
     }
 
-    private static void updatePlayerInspectOnlineScores(McMMOPlayer mcMMOTarget, Objective objective) {
-        Player target = mcMMOTarget.getPlayer();
-        PlayerProfile profile = mcMMOTarget.getProfile();
-        Server server = mcMMO.p.getServer();
-        int powerLevel = 0;
-        int skillLevel;
-
-        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
-            if (!Permissions.skillEnabled(target, skill)) {
-                continue;
+    /**
+     * Gets or creates the power level objective on the main scoreboard.
+     * <p>
+     * If power levels are disabled, the objective is deleted and null is
+     * returned.
+     *
+     * @return the main scoreboard objective, or null if disabled
+     */
+    public static Objective getPowerLevelObjective() {
+        if (!Config.getInstance().getPowerLevelTagsEnabled()) {
+            Objective obj = Bukkit.getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
+            if (obj != null) {
+                obj.unregister();
+                mcMMO.p.debug("Removed leftover scoreboard objects from Power Level Tags.");
             }
-
-            skillLevel = profile.getSkillLevel(skill);
-            objective.getScore(server.getOfflinePlayer(skill.getSkillName())).setScore(skillLevel);
-            powerLevel += skillLevel;
+            return null;
         }
 
-        objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + POWER_LEVEL)).setScore(powerLevel);
-        objective.setDisplayName(PLAYER_INSPECT_HEADER + target.getName());
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-    }
-
-    private static void updatePlayerInspectOfflineScores(PlayerProfile targetProfile, Objective objective) {
-        Server server = mcMMO.p.getServer();
-        int powerLevel = 0;
-        int skillLevel;
-
-        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
-            skillLevel = targetProfile.getSkillLevel(skill);
-            objective.getScore(server.getOfflinePlayer(skill.getSkillName())).setScore(skillLevel);
-            powerLevel += skillLevel;
+        Objective powerObj = Bukkit.getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
+        if (powerObj == null) {
+            powerObj = Bukkit.getScoreboardManager().getMainScoreboard().registerNewObjective(POWER_OBJECTIVE, "dummy");
+            powerObj.setDisplayName(TAG_POWER_LEVEL);
+            powerObj.setDisplaySlot(DisplaySlot.BELOW_NAME);
         }
-
-        objective.getScore(server.getOfflinePlayer(ChatColor.GOLD + POWER_LEVEL)).setScore(powerLevel);
-        objective.setDisplayName(PLAYER_INSPECT_HEADER + targetProfile.getPlayerName());
+        return powerObj;
     }
 
-    private static void updateGlobalStatsScores(Player player, Objective objective, String skillName, int pageNumber) {
-        int position = (pageNumber * 15) - 14;
-        String startPosition = ((position < 10) ? "0" : "") + String.valueOf(position);
-        String endPosition = String.valueOf(position + 14);
-        Server server = mcMMO.p.getServer();
-
-        for (PlayerStat stat : mcMMO.getDatabaseManager().readLeaderboard(skillName, pageNumber, 15)) {
-            String playerName = stat.name;
-            playerName = (playerName.equals(player.getName()) ? ChatColor.GOLD : "") + playerName;
-
-            if (playerName.length() > 16) {
-                playerName = playerName.substring(0, 16);
-            }
-
-            objective.getScore(server.getOfflinePlayer(playerName)).setScore(stat.statVal);
+    private static void changeScoreboard(ScoreboardWrapper wrapper, int displayTime) {
+        if (displayTime == -1) {
+            wrapper.showBoardWithNoRevert();
         }
-
-        objective.setDisplayName(objective.getDisplayName() + " (" + startPosition + " - " + endPosition + ")");
-        objective.setDisplaySlot(DisplaySlot.SIDEBAR);
-    }
-
-    private static void changeScoreboard(Player player, Scoreboard oldScoreboard, Scoreboard newScoreboard, int displayTime) {
-        if (oldScoreboard != newScoreboard) {
-            String playerName = player.getName();
-
-            player.setScoreboard(newScoreboard);
-            enablePowerLevelDisplay(player);
-
-            if (displayTime != -1 && !SCOREBOARD_TASKS.contains(playerName)) {
-                new ScoreboardChangeTask(player, oldScoreboard).runTaskLater(mcMMO.p, displayTime * Misc.TICK_CONVERSION_FACTOR);
-                SCOREBOARD_TASKS.add(playerName);
-            }
+        else {
+            wrapper.showBoardAndScheduleRevert(displayTime * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
-    public static void clearPendingTask(String playerName) {
-        SCOREBOARD_TASKS.remove(playerName);
+    public static void clearBoard(String playerName) {
+        PLAYER_SCOREBOARDS.get(playerName).tryRevertBoard();
+    }
+
+    public static void keepBoard(String playerName) {
+        if (Config.getInstance().getAllowKeepBoard()) {
+            PLAYER_SCOREBOARDS.get(playerName).cancelRevert();
+        }
+    }
+
+    public static void setRevertTimer(String playerName, int seconds) {
+        PLAYER_SCOREBOARDS.get(playerName).showBoardAndScheduleRevert(seconds * Misc.TICK_CONVERSION_FACTOR);;
     }
 }

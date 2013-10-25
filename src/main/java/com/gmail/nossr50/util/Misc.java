@@ -33,6 +33,7 @@ public final class Misc {
     public static final int TIME_CONVERSION_FACTOR = 1000;
     public static final int TICK_CONVERSION_FACTOR = 20;
 
+    public static final long PLAYER_DATABASE_COOLDOWN_MILLIS = 1750;
     public static final int PLAYER_RESPAWN_COOLDOWN_SECONDS = 5;
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
 

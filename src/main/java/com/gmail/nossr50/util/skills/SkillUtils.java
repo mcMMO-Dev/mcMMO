@@ -16,6 +16,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -51,6 +52,19 @@ public class SkillUtils {
      */
     public static int calculateTimeLeft(long deactivatedTimeStamp, int cooldown, Player player) {
         return (int) (((deactivatedTimeStamp + (PerksUtils.handleCooldownPerks(player, cooldown) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
+    }
+
+    /**
+     * Calculate the time remaining until the ability's cooldown expires.
+     *
+     * @param ability AbilityType whose cooldown to check
+     * @param profile The PlayerProfile to get the cooldown from
+     * @param player The Player to check for cooldown perks
+     *
+     * @return the number of seconds remaining before the cooldown expires
+     */
+    public static int calculateTimeLeft(AbilityType ability, PlayerProfile profile, Player player) {
+        return calculateTimeLeft(profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR, ability.getCooldown(), player);
     }
 
     /**

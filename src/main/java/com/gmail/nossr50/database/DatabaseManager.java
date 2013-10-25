@@ -7,6 +7,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public interface DatabaseManager {
     // One month in milliseconds
@@ -48,15 +49,18 @@ public interface DatabaseManager {
     * @param statsPerPage The number of stats per page
     * @return the requested leaderboard information
     */
-    public List<PlayerStat> readLeaderboard(String skillName, int pageNumber, int statsPerPage);
+    public List<PlayerStat> readLeaderboard(SkillType skill, int pageNumber, int statsPerPage);
 
     /**
-     * Retrieve rank info.
+     * Retrieve rank info into a HashMap from SkillType to the rank.
+     * <p>
+     * The special value <code>null</code> is used to represent the Power
+     * Level rank (the combination of all skill levels).
      *
      * @param playerName The name of the user to retrieve the rankings for
      * @return the requested rank information
      */
-    public Map<String, Integer> readRank(String playerName);
+    public Map<SkillType, Integer> readRank(String playerName);
 
     /**
      * Add a new user to the database.

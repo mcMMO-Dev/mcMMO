@@ -36,6 +36,9 @@ commands:
         description: Toggle whether or not abilities get readied on right click
     mcrefresh:
         description: Refresh all cooldowns for mcMMO
+    mccooldown:
+        description: Show the cooldowns on all your mcMMO abilities
+        aliases: [mccooldowns]
     mcgod:
         description: Toggle mcMMO god-mode on/off
     mcstats:
@@ -104,7 +107,7 @@ commands:
         aliases: [mcmobhealth]
         description: Change the style of the mob healthbar
     mcscoreboard:
-        description: Change the current mcMMO scoreboard being displayed
+        description: Manage your mcMMO Scoreboard
     kraken:
         aliases: [mckraken]
         description: Unleash the kraken!
@@ -692,6 +695,7 @@ permissions:
             mcmmo.commands.herbalism: true
             mcmmo.commands.inspect: true
             mcmmo.commands.mcability: true
+            mcmmo.commands.mccooldown: true
             mcmmo.commands.mcmmo.all: true
             mcmmo.commands.mcnotify: true
             mcmmo.commands.mcrank: true
@@ -828,6 +832,8 @@ permissions:
         description: Allows access to the mcconvert command for databases
     mcmmo.commands.mcconvert.experience:
         description: Allows access to the mcconvert command for experience
+    mcmmo.commands.mccooldown:
+        description: Allows access to the mccooldowns command
     mcmmo.commands.mcgod:
         description: Allows access to the mcgod command
     mcmmo.commands.mcgod.others:

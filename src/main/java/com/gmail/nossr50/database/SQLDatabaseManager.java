@@ -188,11 +188,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return success;
     }
 
-    public List<PlayerStat> readLeaderboard(String skillName, int pageNumber, int statsPerPage) {
+    public List<PlayerStat> readLeaderboard(SkillType skill, int pageNumber, int statsPerPage) {
         List<PlayerStat> stats = new ArrayList<PlayerStat>();
 
         if (checkConnected()) {
-            String query = skillName.equalsIgnoreCase("ALL") ? "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing" : skillName;
+            String query = skill == null ? "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing" : skill.name().toLowerCase();
             ResultSet resultSet = null;
             PreparedStatement statement = null;
 
@@ -230,8 +230,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return stats;
     }
 
-    public Map<String, Integer> readRank(String playerName) {
-        Map<String, Integer> skills = new HashMap<String, Integer>();
+    public Map<SkillType, Integer> readRank(String playerName) {
+        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();
 
         if (checkConnected()) {
             ResultSet resultSet;
@@ -262,7 +262,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
                     while (resultSet.next()) {
                         if (resultSet.getString("user").equalsIgnoreCase(playerName)) {
-                            skills.put(skillType.name(), rank + resultSet.getRow());
+                            skills.put(skillType, rank + resultSet.getRow());
                             break;
                         }
                     }
@@ -299,7 +299,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
                 while (resultSet.next()) {
                     if (resultSet.getString("user").equalsIgnoreCase(playerName)) {
-                        skills.put("ALL", rank + resultSet.getRow());
+                        skills.put(null, rank + resultSet.getRow());
                         break;
                     }
                 }

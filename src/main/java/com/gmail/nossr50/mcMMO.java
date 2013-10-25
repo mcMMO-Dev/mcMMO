@@ -25,6 +25,7 @@ import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
+import com.gmail.nossr50.listeners.ScoreboardsListener;
 import com.gmail.nossr50.listeners.SelfListener;
 import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -33,6 +34,7 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
+import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.config.RepairConfigManager;
@@ -48,6 +50,7 @@ import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 
 import net.gravitydevelopment.updater.mcmmo.Updater;
 import net.gravitydevelopment.updater.mcmmo.Updater.UpdateResult;
@@ -152,6 +155,7 @@ public class mcMMO extends JavaPlugin {
 
             for (Player player : getServer().getOnlinePlayers()) {
                 UserManager.addUser(player); // In case of reload add all users back into UserManager
+                ScoreboardManager.setupPlayer(player);
             }
 
             debug("Version " + getDescription().getVersion() + " is enabled!");
@@ -191,6 +195,7 @@ public class mcMMO extends JavaPlugin {
         try {
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
             PartyManager.saveParties(); // Save our parties
+            ScoreboardManager.teardownAll();
             formulaManager.saveFormula();
             placeStore.saveAll();       // Save our metadata
             placeStore.cleanUp();       // Cleanup empty metadata stores
@@ -379,6 +384,7 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(new EntityListener(this), this);
         pluginManager.registerEvents(new InventoryListener(this), this);
         pluginManager.registerEvents(new SelfListener(), this);
+        pluginManager.registerEvents(new ScoreboardsListener(this), this);
         pluginManager.registerEvents(new WorldListener(this), this);
     }
 
@@ -415,6 +421,9 @@ public class mcMMO extends JavaPlugin {
         else if (kickIntervalTicks > 0) {
             new PartyAutoKickTask().runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
         }
+
+        // Update power level tag scoreboards
+        new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
     }
 
     private void checkModConfigs() {

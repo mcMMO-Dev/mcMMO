@@ -461,7 +461,7 @@ public final class ExperienceAPI {
      * @return the position on the leaderboard
      */
     public static int getPlayerRankSkill(String playerName, String skillType) {
-        return mcMMO.getDatabaseManager().readRank(getOfflineProfile(playerName).getPlayerName()).get(getNonChildSkillType(skillType).toString());
+        return mcMMO.getDatabaseManager().readRank(getOfflineProfile(playerName).getPlayerName()).get(getNonChildSkillType(skillType));
     }
 
 
@@ -477,7 +477,7 @@ public final class ExperienceAPI {
      * @return the position on the power level leaderboard
      */
     public static int getPlayerRankOverall(String playerName) {
-        return mcMMO.getDatabaseManager().readRank(getOfflineProfile(playerName).getPlayerName()).get("ALL");
+        return mcMMO.getDatabaseManager().readRank(getOfflineProfile(playerName).getPlayerName()).get(null);
     }
 
     /**

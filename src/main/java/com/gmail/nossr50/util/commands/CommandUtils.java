@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -97,10 +98,9 @@ public final class CommandUtils {
             return true;
         }
 
-        PlayerProfile playerProfile = new PlayerProfile(playerName, false);
-
-        if (unloadedProfile(sender, playerProfile)) {
-            return false;
+        OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
+        if (!player.hasPlayedBefore()) {
+            sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
         }
 
         sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));

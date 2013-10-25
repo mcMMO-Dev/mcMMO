@@ -29,10 +29,6 @@ public class InspectCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 1:
-                if (sender instanceof Player && Config.getInstance().getInspectScoreboardEnabled()) {
-                    ScoreboardManager.setupPlayerScoreboard(sender.getName());
-                }
-
                 String playerName = Misc.getMatchedPlayerName(args[0]);
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName, true);
 
@@ -44,9 +40,9 @@ public class InspectCommand implements TabExecutor {
                         return true;
                     }
 
-                    if (sender instanceof Player && Config.getInstance().getInspectScoreboardEnabled()) {
-                        ScoreboardManager.enablePlayerInspectScoreboardOffline((Player) sender, profile);
-                        return true;
+                    if (sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
+                        ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, profile);
+                        if (!Config.getInstance().getInspectUseChat()) return true;
                     }
 
                     sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
@@ -80,9 +76,9 @@ public class InspectCommand implements TabExecutor {
                         return true;
                     }
 
-                    if (sender instanceof Player && Config.getInstance().getInspectScoreboardEnabled()) {
-                        ScoreboardManager.enablePlayerInspectScoreboardOnline((Player) sender, mcMMOPlayer);
-                        return true;
+                    if (sender instanceof Player && Config.getInstance().getInspectUseBoard()) {
+                        ScoreboardManager.enablePlayerInspectScoreboard((Player) sender, mcMMOPlayer.getProfile());
+                        if (!Config.getInstance().getInspectUseChat()) return true;
                     }
 
                     sender.sendMessage(LocaleLoader.getString("Inspect.Stats", target.getName()));
