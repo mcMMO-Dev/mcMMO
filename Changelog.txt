@@ -7,6 +7,8 @@ Key:
   ! Change
   - Removal
 
+Version 1.4.08-dev
+
 Version 1.4.07
  + Added XP boost to Acrobatics when wearing Boots of Feather Falling
  + Added SQL Database can now recover from a dropped connection without losing data. (Thanks Riking!)
