@@ -23,7 +23,6 @@ public final class Acrobatics {
 
     public static double featherFallXPModifier = ExperienceConfig.getInstance().getFeatherFallXPModifier();
 
-    public static boolean afkLevelingDisabled    = Config.getInstance().getAcrobaticsAFKDisabled();
     public static boolean dodgeLightningDisabled = Config.getInstance().getDodgeLightningDisabled();
 
     private Acrobatics() {};

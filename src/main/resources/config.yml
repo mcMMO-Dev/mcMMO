@@ -231,6 +231,7 @@ Skills:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
         Prevent_AFK_Leveling: true
+        Max_Tries_At_Same_Location: 3
         Prevent_Dodge_Lightning: false
         Prevent_XP_After_Teleport: true
         Level_Cap: 0

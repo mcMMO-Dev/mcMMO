@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.acrobatics;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
@@ -7,6 +8,7 @@ import org.bukkit.entity.LightningStrike;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -18,6 +20,9 @@ import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class AcrobaticsManager extends SkillManager {
+    private int fallTries = 0;
+    Location lastFallLocation;
+
     public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.ACROBATICS);
     }
@@ -25,7 +30,7 @@ public class AcrobaticsManager extends SkillManager {
     public boolean canRoll() {
         Player player = getPlayer();
 
-        return (player.getItemInHand().getType() != Material.ENDER_PEARL) && !(Acrobatics.afkLevelingDisabled && player.isInsideVehicle()) && Permissions.roll(player);
+        return (player.getItemInHand().getType() != Material.ENDER_PEARL) && !exploitPrevention() && Permissions.roll(player);
     }
 
     public boolean canDodge(Entity damager) {
@@ -93,6 +98,8 @@ public class AcrobaticsManager extends SkillManager {
             applyXpGain(calculateRollXP(damage, false));
         }
 
+        lastFallLocation = player.getLocation();
+
         return damage;
     }
 
@@ -116,6 +123,25 @@ public class AcrobaticsManager extends SkillManager {
         }
 
         return damage;
+    }
+
+    public boolean exploitPrevention() {
+        if (!Config.getInstance().getAcrobaticsAFKDisabled()) {
+            return false;
+        }
+
+        if (getPlayer().isInsideVehicle()) {
+            return true;
+        }
+
+        Location fallLocation = getPlayer().getLocation();
+
+        boolean sameLocation = (lastFallLocation != null && Misc.isNear(lastFallLocation, fallLocation, 2));
+
+        fallTries = sameLocation ? fallTries + 1 : Math.max(fallTries - 1, 0);
+        lastFallLocation = fallLocation;
+
+        return fallTries > Config.getInstance().getAcrobaticsAFKMaxTries();
     }
 
     private boolean isSuccessfulRoll(double maxChance, int maxLevel) {

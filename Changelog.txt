@@ -69,6 +69,7 @@ Version 1.4.07-dev
  ! Admin and Party chat prefixes are now customizable
  ! Changed the color of party leader names in Party chat
  ! Improved "Tree Feller" algorithm (Thanks Riking!)
+ ! Improved AFK Acrobatics prevention mechanism
  ! Improved profile saving
  ! Improved partial name matcher
  ! Improved update checker
