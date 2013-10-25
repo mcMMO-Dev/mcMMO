@@ -19,6 +19,8 @@ Version 1.4.08-dev
  = Fixed exploit where you could receive smelting XP for improper items
  = Fixed bug where the Unbreaking enchantment was ignored when using "Super Breaker" or "Giga Drill Breaker"
  = Fixed bug which prevented players from gaining Acrobatics XP when the setting 'Prevent_XP_After_Teleport' was set to false
+ = Fixed McMMOPlayerDisarmEvent reporting the skill level of the defending player, not the attacking player.
+ = Fixed bug where arrow retrieval was not properly detecting entities that already existed in the tracker
  ! Updated localization files
 
 Version 1.4.07
@@ -51,8 +53,6 @@ Version 1.4.07
  + Added new /mccooldowns command to show all ability cooldowns
  + Commands may now both print text and display a scoreboard
  + Killing a custom entity will automatically add it to the custom entity config file with default values.
- = Fixed McMMOPlayerDisarmEvent reporting the skill level of the defending player, not the attacking player.
- = Fixed bug where arrow retrieval was not properly detecting entities that already existed in the tracker
  = Fixed bug which allowed players to bypass fishing's exploit prevention
  = Fixed bug where FakeEntityDamageByEntityEvent wasn't being fired
  = Fixed bug with "Skull Splitter" not finding the locale string
