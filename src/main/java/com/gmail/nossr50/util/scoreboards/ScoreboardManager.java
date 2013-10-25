@@ -207,7 +207,7 @@ public class ScoreboardManager {
     }
 
     // Called by internal ability event listeners
-    public static void cooldownUpdate(Player player, SkillType skill, int cooldownSeconds) {
+    public static void cooldownUpdate(Player player, SkillType skill) {
         // Selfboards
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
         if ((wrapper.isCooldownScoreboard() || wrapper.isSkillScoreboard() && wrapper.targetSkill == skill) && wrapper.isBoardShown()) {

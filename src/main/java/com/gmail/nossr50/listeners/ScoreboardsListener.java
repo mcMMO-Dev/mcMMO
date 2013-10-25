@@ -6,21 +6,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ScoreboardsListener implements Listener {
-    private final mcMMO plugin;
-
-    public ScoreboardsListener(final mcMMO plugin) {
-        this.plugin = plugin;
-    }
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         ScoreboardManager.setupPlayer(e.getPlayer());
@@ -43,6 +34,6 @@ public class ScoreboardsListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onAbility(McMMOPlayerAbilityActivateEvent e) {
-        ScoreboardManager.cooldownUpdate(e.getPlayer(), e.getSkill(), SkillUtils.calculateTimeLeft(e.getAbility(), UserManager.getPlayer(e.getPlayer()).getProfile(), e.getPlayer()));
+        ScoreboardManager.cooldownUpdate(e.getPlayer(), e.getSkill());
     }
 }
