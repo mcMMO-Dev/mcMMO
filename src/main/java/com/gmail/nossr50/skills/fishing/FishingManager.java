@@ -73,14 +73,6 @@ public class FishingManager extends SkillManager {
         super(mcMMOPlayer, SkillType.FISHING);
     }
 
-    public boolean canShake(Entity target) {
-        return target instanceof LivingEntity && getSkillLevel() >= Tier.ONE.getLevel() && Permissions.shake(getPlayer());
-    }
-
-    public boolean canMasterAngler() {
-        return getSkillLevel() >= AdvancedConfig.getInstance().getMasterAnglerUnlockLevel() && Permissions.masterAngler(getPlayer());
-    }
-
     public boolean unleashTheKraken() {
         return unleashTheKraken(true);
     }
@@ -161,11 +153,13 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean exploitPrevention() {
-        if (!AdvancedConfig.getInstance().getKrakenEnabled()) {
+        Player player = getPlayer();
+
+        if (Permissions.krakenBypass(player) || !AdvancedConfig.getInstance().getKrakenEnabled()) {
             return false;
         }
 
-        Block targetBlock = getPlayer().getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
+        Block targetBlock = player.getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
 
         if (!targetBlock.isLiquid()) {
             return false;
@@ -186,66 +180,6 @@ public class FishingManager extends SkillManager {
         return unleashTheKraken(false);
     }
 
-    public boolean canIceFish(Block block) {
-        if (getSkillLevel() < AdvancedConfig.getInstance().getIceFishingUnlockLevel()) {
-            return false;
-        }
-
-        if (block.getType() != Material.ICE) {
-            return false;
-        }
-
-        // Make sure this is a body of water, not just a block of ice.
-        Biome biome = block.getBiome();
-        boolean isFrozenBiome = (biome == Biome.FROZEN_OCEAN || biome == Biome.FROZEN_RIVER || biome == Biome.TAIGA || biome == Biome.TAIGA_HILLS || biome == Biome.ICE_PLAINS || biome == Biome.ICE_MOUNTAINS);
-
-        if (!isFrozenBiome && (block.getRelative(BlockFace.DOWN, 3).getType() != Material.STATIONARY_WATER)) {
-            return false;
-        }
-
-        Player player = getPlayer();
-
-        if (!Permissions.iceFishing(player)) {
-            return false;
-        }
-
-        return EventUtils.simulateBlockBreak(block, player, false);
-    }
-
-    /**
-     * Gets the loot tier
-     *
-     * @return the loot tier
-     */
-    public int getLootTier() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.toNumerical();
-            }
-        }
-
-        return 0;
-    }
-
-    /**
-     * Gets the Shake Mob probability
-     *
-     * @return Shake Mob probability
-     */
-    public double getShakeProbability() {
-        int skillLevel = getSkillLevel();
-
-        for (Tier tier : Tier.values()) {
-            if (skillLevel >= tier.getLevel()) {
-                return tier.getShakeChance();
-            }
-        }
-
-        return 0.0;
-    }
-
     /**
      * Handle the Fisherman's Diet ability
      *
@@ -254,29 +188,35 @@ public class FishingManager extends SkillManager {
      *
      * @return the modified change in hunger for the event
      */
-    public int handleFishermanDiet(int rankChange, int eventFoodLevel) {
+    public int fishermansDiet(int rankChange, int eventFoodLevel) {
         return SkillUtils.handleFoodSkills(getPlayer(), skill, eventFoodLevel, Fishing.fishermansDietRankLevel1, Fishing.fishermansDietMaxLevel, rankChange);
     }
 
-    public void iceFishing(Fish hook, Block block) {
+    public boolean iceFishing(Fish hook, Block block) {
+        if (!canIceFish(block)) {
+            return false;
+        }
+
         // Make a hole
         block.setType(Material.STATIONARY_WATER);
 
-        for (int x = -1; x <= 1; x++) {
-            for (int z = -1; z <= 1; z++) {
-                Block relative = block.getRelative(x, 0, z);
+        for (BlockFace face : BlockFace.values()) {
+            Block relative = block.getRelative(face);
 
-                if (relative.getType() == Material.ICE) {
-                    relative.setType(Material.STATIONARY_WATER);
-                }
+            if (relative.getType() == Material.ICE) {
+                relative.setType(Material.STATIONARY_WATER);
             }
         }
 
         // Recast in the new spot
-        EventUtils.callFakeFishEvent(getPlayer(), hook);
+        return !EventUtils.callFakeFishEvent(getPlayer(), hook).isCancelled();
     }
 
     public void masterAngler(Fish hook) {
+        if (!canUseMasterAngler()) {
+            return;
+        }
+
         Player player = getPlayer();
         Location location = hook.getLocation();
         Biome biome = location.getBlock().getBiome();
@@ -325,7 +265,7 @@ public class FishingManager extends SkillManager {
 
             if (!event.isCancelled()) {
                 treasureDrop = event.getTreasure();
-                treasureXp = event.getXp();
+                treasureXp = event.getXpGained();
             }
             else {
                 treasureDrop = null;
@@ -357,10 +297,10 @@ public class FishingManager extends SkillManager {
      *
      * @param experience The amount of experience initially awarded by the event
      *
-     * @return the modified event damage
+     * @return the modified event experience
      */
-    public int handleVanillaXpBoost(int experience) {
-        return experience * getVanillaXpMultiplier();
+    public int vanillaXpBoost(int experience) {
+        return experience * (Permissions.vanillaXpBoost(getPlayer(), skill) ? getVanillaXpMultiplier() : 1);
     }
 
     public Location getHookLocation() {
@@ -370,73 +310,101 @@ public class FishingManager extends SkillManager {
     /**
      * Handle the Shake ability
      *
-     * @param target The {@link LivingEntity} affected by the ability
+     * @param entity The {@link Entity} affected by the ability
      */
-    public void shakeCheck(LivingEntity target) {
+    public void shake(Fish hook, Entity entity) {
+        if (!canShake(entity)) {
+            return;
+        }
+
         fishingTries--; // Because autoclicking to shake is OK.
 
-        if (getShakeProbability() > Misc.getRandom().nextInt(getActivationChance())) {
-            List<ShakeTreasure> possibleDrops = Fishing.findPossibleDrops(target);
+        LivingEntity target = (LivingEntity) entity;
+        List<ShakeTreasure> possibleDrops = Fishing.findPossibleDrops(target);
 
-            if (possibleDrops == null || possibleDrops.isEmpty()) {
-                return;
-            }
-
-            ItemStack drop = Fishing.chooseDrop(possibleDrops);
-
-            // It's possible that chooseDrop returns null if the sum of probability in possibleDrops is inferior than 100
-            if (drop == null) {
-                return;
-            }
-
-            // Extra processing depending on the mob and drop type
-            switch (target.getType()) {
-                case SHEEP:
-                    Sheep sheep = (Sheep) target;
-
-                    if (drop.getType() == Material.WOOL) {
-                        if (sheep.isSheared()) {
-                            return;
-                        }
-
-                        drop = new Wool(sheep.getColor()).toItemStack(drop.getAmount());
-                        sheep.setSheared(true);
-                    }
-                    break;
-
-                case SKELETON:
-                    if (((Skeleton) target).getSkeletonType() == SkeletonType.WITHER) {
-                        switch (drop.getType()) {
-                            case SKULL_ITEM:
-                                drop.setDurability((short) 1);
-                                break;
-
-                            case ARROW:
-                                drop.setType(Material.COAL);
-                                break;
-
-                            default:
-                                break;
-                        }
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-
-            McMMOPlayerShakeEvent event = new McMMOPlayerShakeEvent(getPlayer(), drop);
-
-            drop = event.getDrop();
-
-            if (event.isCancelled() || drop == null) {
-                return;
-            }
-
-            Misc.dropItem(target.getLocation(), drop);
-            CombatUtils.dealDamage(target, Math.max(target.getMaxHealth() / 4, 1)); // Make it so you can shake a mob no more than 4 times.
-            applyXpGain(ExperienceConfig.getInstance().getFishingShakeXP());
+        if (possibleDrops == null || possibleDrops.isEmpty()) {
+            return;
         }
+
+        ItemStack drop = Fishing.chooseDrop(possibleDrops);
+
+        // It's possible that chooseDrop returns null if the sum of probability in possibleDrops is inferior than 100
+        if (drop == null) {
+            return;
+        }
+
+        // Extra processing depending on the mob and drop type
+        switch (target.getType()) {
+            case SHEEP:
+                Sheep sheep = (Sheep) target;
+                drop = new Wool(sheep.getColor()).toItemStack(drop.getAmount());
+                sheep.setSheared(true);
+
+            case SKELETON:
+                if (((Skeleton) target).getSkeletonType() == SkeletonType.WITHER) {
+                    switch (drop.getType()) {
+                        case SKULL_ITEM:
+                            drop.setDurability((short) 1);
+                            break;
+
+                        case ARROW:
+                            drop.setType(Material.COAL);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+                break;
+
+            default:
+                break;
+        }
+
+        McMMOPlayerShakeEvent event = new McMMOPlayerShakeEvent(getPlayer(), hook, drop, target, Math.max(target.getMaxHealth() / 4, 1)); // TODO: Config option for shake damage
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) {
+            return;
+        }
+
+        Misc.dropItem(target.getLocation(), event.getDrop());
+        CombatUtils.dealDamage(target, event.getDamage());
+        applyXpGain(ExperienceConfig.getInstance().getFishingShakeXP());
+    }
+
+    /**
+     * Gets the loot tier
+     *
+     * @return the loot tier
+     */
+    public int getLootTier() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.toNumerical();
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * Gets the Shake Mob probability
+     *
+     * @return Shake Mob probability
+     */
+    public double getShakeProbability() {
+        int skillLevel = getSkillLevel();
+
+        for (Tier tier : Tier.values()) {
+            if (skillLevel >= tier.getLevel()) {
+                return tier.getShakeChance();
+            }
+        }
+
+        return 0.0;
     }
 
     /**
@@ -615,5 +583,35 @@ public class FishingManager extends SkillManager {
         }
 
         return 0;
+    }
+
+    private boolean canShake(Entity target) {
+        return target.isValid() && target instanceof LivingEntity && getSkillLevel() >= Tier.ONE.getLevel() && Permissions.shake(getPlayer()) && getShakeProbability() > Misc.getRandom().nextInt(getActivationChance());
+    }
+
+    private boolean canUseMasterAngler() {
+        return getSkillLevel() >= AdvancedConfig.getInstance().getMasterAnglerUnlockLevel() && Permissions.masterAngler(getPlayer());
+    }
+
+    private boolean canIceFish(Block block) {
+        if (getSkillLevel() < AdvancedConfig.getInstance().getIceFishingUnlockLevel() || block.getType() != Material.ICE) {
+            return false;
+        }
+
+        // Make sure this is a body of water, not just a block of ice.
+        Biome biome = block.getBiome();
+        boolean isFrozenBiome = (biome == Biome.FROZEN_OCEAN || biome == Biome.FROZEN_RIVER || biome == Biome.TAIGA || biome == Biome.TAIGA_HILLS || biome == Biome.ICE_PLAINS || biome == Biome.ICE_MOUNTAINS);
+
+        if (!isFrozenBiome || (block.getRelative(BlockFace.DOWN, 3).getType() != Material.STATIONARY_WATER)) {
+            return false;
+        }
+
+        Player player = getPlayer();
+
+        if (!Permissions.iceFishing(player)) {
+            return false;
+        }
+
+        return EventUtils.simulateBlockBreak(block, player, false);
     }
 }

@@ -7,7 +7,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -212,24 +211,15 @@ public class PlayerListener implements Listener {
 
         switch (event.getState()) {
             case FISHING:
-                if (!Permissions.krakenBypass(player)) {
-                    event.setCancelled(fishingManager.exploitPrevention());
-                }
+                event.setCancelled(fishingManager.exploitPrevention());
                 return;
 
             case CAUGHT_FISH:
-                if (Permissions.vanillaXpBoost(player, SkillType.FISHING)) {
-                    event.setExpToDrop(fishingManager.handleVanillaXpBoost(event.getExpToDrop()));
-                }
+                event.setExpToDrop(fishingManager.vanillaXpBoost(event.getExpToDrop()));
                 return;
 
             case IN_GROUND:
-                Block block = player.getTargetBlock(null, 100);
-
-                if (fishingManager.canIceFish(block)) {
-                    event.setCancelled(true);
-                    fishingManager.iceFishing(event.getHook(), block);
-                }
+                event.setCancelled(fishingManager.iceFishing(event.getHook(), player.getTargetBlock(null, 100)));
                 return;
 
             default:
@@ -258,9 +248,7 @@ public class PlayerListener implements Listener {
 
         switch (event.getState()) {
             case FISHING:
-                if (fishingManager.canMasterAngler()) {
-                    fishingManager.masterAngler(event.getHook());
-                }
+                fishingManager.masterAngler(event.getHook());
                 return;
 
             case CAUGHT_FISH:
@@ -268,9 +256,7 @@ public class PlayerListener implements Listener {
                 return;
 
             case CAUGHT_ENTITY:
-                if (fishingManager.canShake(caught)) {
-                    fishingManager.shakeCheck((LivingEntity) caught);
-                }
+                fishingManager.shake(event.getHook(), caught);
                 return;
 
             default:

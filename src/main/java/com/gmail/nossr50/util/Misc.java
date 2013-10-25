@@ -174,7 +174,7 @@ public final class Misc {
      * @param itemStack The item to drop
      */
     public static void dropItem(Location location, ItemStack itemStack) {
-        if (itemStack.getType() == Material.AIR) {
+        if (itemStack == null || itemStack.getType() == Material.AIR) {
             return;
         }
 
