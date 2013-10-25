@@ -6,9 +6,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
-import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
-import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
+import com.gmail.nossr50.events.abilities.McMMOPlayerAbilityActivateEvent;
+import com.gmail.nossr50.events.experience.levels.McMMOPlayerLevelUpEvent;
+import com.gmail.nossr50.events.experience.xp.McMMOPlayerXpGainEvent;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 
 public class ScoreboardsListener implements Listener {

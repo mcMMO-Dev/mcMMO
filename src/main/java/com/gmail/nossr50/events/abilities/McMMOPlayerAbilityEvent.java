@@ -8,6 +8,7 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public abstract class McMMOPlayerAbilityEvent extends PlayerEvent {
+    private SkillType skill;
     private AbilityType ability;
     private boolean useParticleEffects;
 
@@ -28,6 +29,11 @@ public abstract class McMMOPlayerAbilityEvent extends PlayerEvent {
         super(player);
         this.ability = ability;
         this.useParticleEffects = useParticleEffects;
+    }
+
+    @Deprecated
+    public SkillType getSkill() {
+        return skill;
     }
 
     public AbilityType getAbility() {
