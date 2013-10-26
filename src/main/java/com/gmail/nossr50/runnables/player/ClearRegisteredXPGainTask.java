@@ -10,7 +10,7 @@ public class ClearRegisteredXPGainTask extends BukkitRunnable {
     @Override
     public void run() {
         for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
-            mcMMOPlayer.getProfile().removeXpGainsOlderThan(ExperienceConfig.getInstance().getDeminishedReturnsTimeInterval() * 60 * 1000);
+            mcMMOPlayer.getProfile().removeXpGainsOlderThan(ExperienceConfig.getInstance().getDiminishedReturnsTimeInterval() * 60 * 1000);
         }
     }
 }

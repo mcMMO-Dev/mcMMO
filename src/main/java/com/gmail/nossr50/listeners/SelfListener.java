@@ -44,7 +44,7 @@ public class SelfListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerXpGain(McMMOPlayerXpGainEvent event) {
-        int threshold = ExperienceConfig.getInstance().getDeminishedReturnsThreshold();
+        int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold();
 
         if (threshold <= 0) {
             // Diminished returns is turned off
