@@ -310,11 +310,9 @@ public class PlayerProfile {
     /**
      * Remove experience gains older than a given time
      * This is used for diminished XP returns
-     *
-     * @param age Age in milliseconds that gains older than should be removed
      */
     public void purgeExpiredXpGains() {
-        SkillXpGain gain = null;
+        SkillXpGain gain;
         while ((gain = gainedSkillsXp.poll()) != null) {
             rollingSkillsXp.put(gain.getSkill(), getRegisteredXpGain(gain.getSkill()) - gain.getXp());
         }

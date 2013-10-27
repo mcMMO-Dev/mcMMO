@@ -53,7 +53,8 @@ public class SelfListener implements Listener {
 
         final float rawXp = event.getRawXpGained();
         if (rawXp < 0) {
-            return; // Don't calculate for XP subtraction
+            // Don't calculate for XP subtraction
+            return;
         }
 
         Player player = event.getPlayer();
