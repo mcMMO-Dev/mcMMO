@@ -1,12 +1,10 @@
 package com.gmail.nossr50.datatypes.player;
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.DelayQueue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -36,8 +34,8 @@ public class PlayerProfile {
     private final Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
     private final Map<AbilityType, Integer> abilityDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
 
-    // Store previous XP gains for diminished returns
-    private HashMap<SkillType, LinkedList<SkillXpGain>> gainedSkillsXp = new HashMap<SkillType, LinkedList<SkillXpGain>>();
+    // Store previous XP gains for deminished returns
+    private DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<SkillXpGain>();
     private HashMap<SkillType, Float> rollingSkillsXp = new HashMap<SkillType, Float>();
 
     @Deprecated
@@ -304,15 +302,8 @@ public class PlayerProfile {
      * @param skillType Skill being used
      * @param xp Experience amount to add
      */
-    public void registeredXpGain(SkillType skillType, float xp) {
-        LinkedList<SkillXpGain> gains = gainedSkillsXp.get(skillType);
-
-        if (gains == null) {
-            gains = new LinkedList<SkillXpGain>(); // Maybe add an initial capacity?
-        }
-        gains.addLast(new SkillXpGain(System.currentTimeMillis(), xp));
-
-        gainedSkillsXp.put(skillType, gains);
+    public void registerXpGain(SkillType skillType, float xp) {
+        gainedSkillsXp.add(new SkillXpGain(skillType, xp));
         rollingSkillsXp.put(skillType, getRegisteredXpGain(skillType) + xp);
     }
 
@@ -322,28 +313,10 @@ public class PlayerProfile {
      *
      * @param age Age in milliseconds that gains older than should be removed
      */
-    public void removeXpGainsOlderThan(long age) {
-        long now = System.currentTimeMillis();
-
-        Iterator<Entry<SkillType, LinkedList<SkillXpGain>>> iterator = gainedSkillsXp.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Entry<SkillType, LinkedList<SkillXpGain>> skillGains = iterator.next();
-
-            float xp = 0;
-            // Because we are using a LinkedList and addLast ordering is guaranteed, so we loop through and remove things that are too old, and stop immediately once we find a young'n
-            Iterator<SkillXpGain> gainsIterator = skillGains.getValue().iterator();
-            while (gainsIterator.hasNext()) {
-                SkillXpGain gain = gainsIterator.next();
-
-                if (now - gain.getTime() >= age) {
-                    gainsIterator.remove();
-                    xp += gain.getXp();
-                }
-                else {
-                    break;
-                }
-            }
-            rollingSkillsXp.put(skillGains.getKey(), rollingSkillsXp.get(skillGains.getKey()) - xp);
+    public void purgeExpiredXpGains() {
+        SkillXpGain gain = null;
+        while ((gain = gainedSkillsXp.poll()) != null) {
+            rollingSkillsXp.put(gain.getSkill(), getRegisteredXpGain(gain.getSkill()) - gain.getXp());
         }
     }
 
