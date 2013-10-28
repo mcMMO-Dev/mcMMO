@@ -23,26 +23,28 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 
 public class MctopCommand implements TabExecutor {
-    private SkillType skill;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        SkillType skill = null;
+
         switch (args.length) {
             case 0:
-                display(1, sender, command);
+                display(1, skill, sender, command);
                 return true;
 
             case 1:
                 if (StringUtils.isInt(args[0])) {
-                    display(Math.abs(Integer.parseInt(args[0])), sender, command);
+                    display(Math.abs(Integer.parseInt(args[0])), skill, sender, command);
                     return true;
                 }
 
-                if (!extractSkill(sender, args[0])) {
+                skill = extractSkill(sender, args[0]);
+
+                if (skill == null) {
                     return true;
                 }
 
-                display(1, sender, command);
+                display(1, skill, sender, command);
                 return true;
 
             case 2:
@@ -50,11 +52,13 @@ public class MctopCommand implements TabExecutor {
                     return true;
                 }
 
-                if (!extractSkill(sender, args[0])) {
+                skill = extractSkill(sender, args[0]);
+
+                if (skill == null) {
                     return true;
                 }
 
-                display(Math.abs(Integer.parseInt(args[1])), sender, command);
+                display(Math.abs(Integer.parseInt(args[1])), skill, sender, command);
                 return true;
 
             default:
@@ -72,7 +76,7 @@ public class MctopCommand implements TabExecutor {
         }
     }
 
-    private void display(int page, CommandSender sender, Command command) {
+    private void display(int page, SkillType skill, CommandSender sender, Command command) {
         if (skill != null && !Permissions.mctop(sender, skill)) {
             sender.sendMessage(command.getPermissionMessage());
             return;
@@ -99,17 +103,17 @@ public class MctopCommand implements TabExecutor {
         new MctopCommandAsyncTask(page, skill, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
     }
 
-    private boolean extractSkill(CommandSender sender, String skillName) {
+    private SkillType extractSkill(CommandSender sender, String skillName) {
         if (CommandUtils.isInvalidSkill(sender, skillName)) {
-            return false;
+            return null;
         }
 
-        skill = SkillType.getSkill(skillName);
+        SkillType skill = SkillType.getSkill(skillName);
 
         if (CommandUtils.isChildSkill(sender, skill)) {
-            return false;
+            return null;
         }
 
-        return true;
+        return skill;
     }
 }
