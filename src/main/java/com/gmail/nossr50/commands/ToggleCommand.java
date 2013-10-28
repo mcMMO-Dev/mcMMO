@@ -11,10 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableList;
 
 public abstract class ToggleCommand implements TabExecutor {
@@ -46,18 +45,14 @@ public abstract class ToggleCommand implements TabExecutor {
                     return true;
                 }
 
-                String playerName = Misc.getMatchedPlayerName(args[0]);
-                mcMMOPlayer = UserManager.getPlayer(playerName);
+                mcMMOPlayer = UserManager.getPlayer(args[0], true);
 
-                if (!CommandUtils.checkPlayerExistence(sender, playerName, mcMMOPlayer)) {
+                if (mcMMOPlayer == null) {
+                    player.sendMessage(LocaleLoader.getString("Commands.Offline"));
                     return true;
                 }
 
                 player = mcMMOPlayer.getPlayer();
-
-                if (CommandUtils.isOffline(sender, player)) {
-                    return true;
-                }
 
                 applyCommandAction();
                 sendSuccessMessage(sender);
