@@ -25,7 +25,6 @@ import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ScoreboardWrapper {
 
@@ -427,8 +426,8 @@ public class ScoreboardWrapper {
                     // Special-Case: Mining has two abilities, both with cooldowns
                     Score cooldownSB = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(AbilityType.SUPER_BREAKER));
                     Score cooldownBM = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(AbilityType.BLAST_MINING));
-                    int secondsSB = Math.max(SkillUtils.calculateTimeLeft(AbilityType.SUPER_BREAKER, profile, player), 0);
-                    int secondsBM = Math.max(SkillUtils.calculateTimeLeft(AbilityType.BLAST_MINING, profile, player), 0);
+                    int secondsSB = Math.max(mcMMOPlayer.calculateTimeRemaining(AbilityType.SUPER_BREAKER), 0);
+                    int secondsBM = Math.max(mcMMOPlayer.calculateTimeRemaining(AbilityType.BLAST_MINING), 0);
 
                     cooldownSB.setScore(secondsSB);
                     cooldownBM.setScore(secondsBM);
@@ -438,7 +437,7 @@ public class ScoreboardWrapper {
                 else {
                     AbilityType ability = targetSkill.getAbility();
                     Score cooldown = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(ability));
-                    int seconds = Math.max(SkillUtils.calculateTimeLeft(ability, profile, player), 0);
+                    int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
                     cooldown.setScore(seconds);
 
@@ -458,7 +457,7 @@ public class ScoreboardWrapper {
             boolean anyCooldownsActive = false;
 
             for (AbilityType ability : AbilityType.NORMAL_ABILITIES) {
-                int seconds = Math.max(SkillUtils.calculateTimeLeft(ability, profile, player), 0);
+                int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
                 if (seconds != 0) {
                     anyCooldownsActive = true;

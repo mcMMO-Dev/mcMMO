@@ -854,7 +854,7 @@ public class McMMOPlayer {
             return;
         }
 
-        int timeRemaining = SkillUtils.calculateTimeLeft(ability, profile, player);
+        int timeRemaining = calculateTimeRemaining(ability);
 
         if (timeRemaining > 0) {
             /*
@@ -924,7 +924,7 @@ public class McMMOPlayer {
          */
         if (ability.getPermissions(player) && tool.inHand(inHand) && !getToolPreparationMode(tool)) {
             if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
-                int timeRemaining = SkillUtils.calculateTimeLeft(ability, profile, player);
+                int timeRemaining = calculateTimeRemaining(ability);
 
                 if (!getAbilityMode(ability) && timeRemaining > 0) {
                     player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
@@ -940,5 +940,17 @@ public class McMMOPlayer {
             setToolPreparationMode(tool, true);
             new ToolLowerTask(this, tool).runTaskLaterAsynchronously(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
         }
+    }
+
+    /**
+     * Calculate the time remaining until the ability's cooldown expires.
+     *
+     * @param ability AbilityType whose cooldown to check
+     *
+     * @return the number of seconds remaining before the cooldown expires
+     */
+    public int calculateTimeRemaining(AbilityType ability) {
+        long deactivatedTimestamp = profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR;
+        return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
 }

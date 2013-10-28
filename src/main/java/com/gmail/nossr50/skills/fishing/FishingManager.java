@@ -472,7 +472,6 @@ public class FishingManager extends SkillManager {
         }
 
         ItemStack treasureDrop = treasure.getDrop();
-
         short maxDurability = treasureDrop.getType().getMaxDurability();
 
         if (maxDurability > 0) {

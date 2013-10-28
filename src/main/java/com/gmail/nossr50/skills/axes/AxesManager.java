@@ -104,7 +104,7 @@ public class AxesManager extends SkillManager {
                 short maxDurability = mcMMO.getRepairableManager().isRepairable(armorType) ? mcMMO.getRepairableManager().getRepairable(armorType).getMaximumDurability() : armorType.getMaxDurability();
                 double maxDurabilityDamage = maxDurability * Axes.impactMaxDurabilityModifier;
 
-                armor.setDurability((short) (Math.min(modifiedDurabilityDamage, maxDurabilityDamage) + armor.getDurability()));
+                SkillUtils.handleDurabilityChange(armor, (int) Math.min(modifiedDurabilityDamage, maxDurabilityDamage));
             }
         }
     }

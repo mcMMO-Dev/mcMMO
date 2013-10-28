@@ -19,6 +19,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public final class Woodcutting {
     public static int    doubleDropsMaxLevel  = AdvancedConfig.getInstance().getWoodcuttingDoubleDropMaxLevel();
@@ -227,12 +228,8 @@ public final class Woodcutting {
             }
         }
 
-        short finalDurability = (short) (inHand.getDurability() + durabilityLoss);
-        short maxDurability = inHandMaterial.getMaxDurability();
-        boolean overMax = (finalDurability >= maxDurability);
-
-        inHand.setDurability(overMax ? maxDurability : finalDurability);
-        return !overMax;
+        SkillUtils.handleDurabilityChange(inHand, durabilityLoss);
+        return (inHand.getDurability() < inHandMaterial.getMaxDurability());
     }
 
     /**

@@ -14,7 +14,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -286,12 +285,10 @@ public class MiningManager extends SkillManager {
     }
 
     private boolean blastMiningCooldownOver() {
-        Player player = getPlayer();
-        PlayerProfile profile = getProfile();
-        int timeRemaining = SkillUtils.calculateTimeLeft(AbilityType.BLAST_MINING, profile, player);
+        int timeRemaining = mcMMOPlayer.calculateTimeRemaining(AbilityType.BLAST_MINING);
 
         if (timeRemaining > 0) {
-            player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
+            getPlayer().sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
             return false;
         }
 
