@@ -23,6 +23,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 
 public class ScoreboardManager {
     static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<String, ScoreboardWrapper>();
@@ -55,13 +56,21 @@ public class ScoreboardManager {
         ImmutableMap.Builder<AbilityType, OfflinePlayer> abilityLabelSkillBuilder = ImmutableMap.builder();
 
         if (Config.getInstance().getScoreboardRainbows()) {
-            List<ChatColor> colors = new ArrayList<ChatColor>();
-
-            for (ChatColor color : ChatColor.values()) {
-                if (color.isColor() && color != ChatColor.BLACK) {
-                    colors.add(color);
-                }
-            }
+            // Everything but black, gray, gold
+            List<ChatColor> colors = Lists.newArrayList(
+                    ChatColor.WHITE,
+                    ChatColor.YELLOW,
+                    ChatColor.LIGHT_PURPLE,
+                    ChatColor.RED,
+                    ChatColor.AQUA,
+                    ChatColor.GREEN,
+                    ChatColor.DARK_GRAY,
+                    ChatColor.BLUE,
+                    ChatColor.DARK_PURPLE,
+                    ChatColor.DARK_RED,
+                    ChatColor.DARK_AQUA,
+                    ChatColor.DARK_GREEN,
+                    ChatColor.DARK_BLUE);
 
             Collections.shuffle(colors, Misc.getRandom());
 
