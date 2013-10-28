@@ -38,7 +38,7 @@ public class PtpAcceptCommand implements CommandExecutor {
         Player target = mcMMOPlayer.getPtpRequest();
         mcMMOPlayer.removePtpRequest();
 
-        if (!PtpCommand.canTeleport(sender, player, target.getName())) {
+        if (!PtpCommand.canTeleport(player, target.getName())) {
             return true;
         }
 
