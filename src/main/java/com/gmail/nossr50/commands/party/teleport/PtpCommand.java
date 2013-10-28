@@ -88,7 +88,7 @@ public class PtpCommand implements TabExecutor {
                     }
                 }
 
-                sendTeleportRequest(sender, player, Misc.getMatchedPlayerName(args[0]));
+                sendTeleportRequest(player, Misc.getMatchedPlayerName(args[0]));
                 return true;
 
             default:
@@ -113,8 +113,8 @@ public class PtpCommand implements TabExecutor {
         }
     }
 
-    private void sendTeleportRequest(CommandSender sender, Player player, String targetName) {
-        if (!canTeleport(sender, player, targetName)) {
+    private void sendTeleportRequest(Player player, String targetName) {
+        if (!canTeleport(player, targetName)) {
             return;
         }
 
@@ -132,19 +132,20 @@ public class PtpCommand implements TabExecutor {
         target.sendMessage(LocaleLoader.getString("Commands.ptp.Request2", Config.getInstance().getPTPCommandTimeout()));
     }
 
-    protected static boolean canTeleport(CommandSender sender, Player player, String targetName) {
-        mcMMOTarget = UserManager.getPlayer(targetName);
+    protected static boolean canTeleport(Player player, String targetName) {
+        target = mcMMO.p.getServer().getPlayerExact(targetName);
 
-        if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
+        if (target == null) {
+            player.sendMessage(LocaleLoader.getString("Commands.Offline"));
             return false;
         }
-
-        target = mcMMOTarget.getPlayer();
 
         if (player.equals(target)) {
             player.sendMessage(LocaleLoader.getString("Party.Teleport.Self"));
             return false;
         }
+
+        mcMMOTarget = UserManager.getPlayer(target);
 
         if (!PartyManager.inSameParty(player, target)) {
             player.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetName));
