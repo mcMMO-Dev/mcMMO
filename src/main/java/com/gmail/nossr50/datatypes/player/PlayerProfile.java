@@ -151,7 +151,7 @@ public class PlayerProfile {
      * Xp Functions
      */
 
-    protected int getSkillLevel(SkillType skillType) {
+    public int getSkillLevel(SkillType skillType) {
         return skillType.isChildSkill() ? getChildSkillLevel(skillType) : skills.get(skillType);
     }
 
