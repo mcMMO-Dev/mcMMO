@@ -710,54 +710,6 @@ public class McMMOPlayer {
         return ptpRecord;
     }
 
-//    public boolean getPtpEnabled() {
-//        return ptpEnabled;
-//    }
-//
-//    public void togglePtpUse() {
-//        ptpEnabled = !ptpEnabled;
-//    }
-//
-//    public Player getPtpRequest() {
-//        return ptpRequest;
-//    }
-//
-//    public void setPtpRequest(Player ptpRequest) {
-//        this.ptpRequest = ptpRequest;
-//    }
-//
-//    public boolean hasPtpRequest() {
-//        return (ptpRequest != null);
-//    }
-//
-//    public void removePtpRequest() {
-//        ptpRequest = null;
-//    }
-//
-//    public boolean getPtpConfirmRequired() {
-//        return ptpConfirmRequired;
-//    }
-//
-//    public void togglePtpConfirmRequired() {
-//        ptpConfirmRequired = !ptpConfirmRequired;
-//    }
-//
-//    public int getPtpLastUse() {
-//        return ptpLastUse;
-//    }
-//
-//    public void actualizePtpLastUse() {
-//        ptpLastUse = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-//    }
-//
-//    public long getPtpTimeout() {
-//        return ptpTimeout;
-//    }
-//
-//    public void actualizePtpTimeout() {
-//        ptpTimeout = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-//    }
-
     public int getItemShareModifier() {
         if (itemShareModifier < 10) {
             setItemShareModifier(10);
