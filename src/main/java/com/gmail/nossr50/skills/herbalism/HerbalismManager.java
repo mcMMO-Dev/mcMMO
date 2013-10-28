@@ -43,7 +43,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canBlockCheck() {
-        return !(Config.getInstance().getHerbalismAFKDisabled() && getPlayer().isInsideVehicle());
+        return !(Config.getInstance().getHerbalismPreventAFK() && getPlayer().isInsideVehicle());
     }
 
     public boolean canGreenThumbBlock(BlockState blockState) {

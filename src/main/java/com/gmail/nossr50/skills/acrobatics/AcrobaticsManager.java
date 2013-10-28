@@ -123,10 +123,20 @@ public class AcrobaticsManager extends SkillManager {
         return damage;
     }
 
+    /**
+     * Check if the player is "farming" Acrobatics XP using
+     * exploits in the game.
+     *
+     * @return true if exploits are detected, false otherwise
+     */
     public boolean exploitPrevention() {
+        if (!Config.getInstance().getAcrobaticsPreventAFK()) {
+            return false;
+        }
+
         Player player = getPlayer();
 
-        if (player.getItemInHand().getType() == Material.ENDER_PEARL || Config.getInstance().getAcrobaticsAFKDisabled() || player.isInsideVehicle()) {
+        if (player.getItemInHand().getType() == Material.ENDER_PEARL || player.isInsideVehicle()) {
             return true;
         }
 
