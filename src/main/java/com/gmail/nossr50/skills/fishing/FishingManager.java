@@ -454,6 +454,11 @@ public class FishingManager extends SkillManager {
                 }
 
                 List<FishingTreasure> fishingTreasures = TreasureConfig.getInstance().fishingRewards.get(rarity);
+
+                if (fishingTreasures.isEmpty()) {
+                    return null;
+                }
+
                 treasure = fishingTreasures.get(Misc.getRandom().nextInt(fishingTreasures.size()));
                 break;
             }
