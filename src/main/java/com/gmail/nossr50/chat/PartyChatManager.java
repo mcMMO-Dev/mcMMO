@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
+import com.gmail.nossr50.locale.LocaleLoader;
 
 public class PartyChatManager extends ChatManager {
     private Party party;
@@ -35,6 +36,13 @@ public class PartyChatManager extends ChatManager {
 
         for (Player member : party.getOnlineMembers()) {
             member.sendMessage(message);
+        }
+
+        if (party.getAlly() != null) {
+            for (Player member : party.getAlly().getOnlineMembers()) {
+                String allyPrefix = LocaleLoader.formatString(Config.getInstance().getPartyChatPrefixAlly());
+                member.sendMessage(allyPrefix + message);
+            }
         }
 
         plugin.getLogger().info("[P]<" + party.getName() + ">" + message);

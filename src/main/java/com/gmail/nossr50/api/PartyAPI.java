@@ -174,4 +174,17 @@ public final class PartyAPI {
     public static List<Player> getOnlineMembers(Player player) {
         return PartyManager.getOnlineMembers(player);
     }
+
+    public static boolean hasAlly(String partyName) {
+        return PartyManager.getParty(partyName).getAlly() != null;
+    }
+
+    public static String getAllyName(String partyName) {
+        Party ally = PartyManager.getParty(partyName).getAlly();
+        if (ally != null) {
+            return ally.getName();
+        }
+
+        return null;
+    }
 }

@@ -16,6 +16,7 @@ Version 1.4.08-dev
  + Added automatic cleanup of backups folder.
  + Added bypass permission for finding Fishing traps
  + Added level threshold settings to hardcore modes. When a players skill level is below this threshold, they will not lose any stats
+ + Added party alliances, two parties can now team up. Allies share party chat and cannot harm each other.
  = Fixed bug where LeafBlower permissions were ignored
  = Fixed bug with toggle commands not properly displaying the success message.
  = Fixed IllegalArgumentException caused by an empty Fishing treasure category

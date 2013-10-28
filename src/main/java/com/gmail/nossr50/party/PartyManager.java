@@ -16,6 +16,7 @@ import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.events.party.McMMOPartyAllianceChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -87,6 +88,17 @@ public final class PartyManager {
         }
 
         return firstParty.equals(secondParty);
+    }
+
+    public static boolean areAllies(Player firstPlayer, Player secondPlayer) {
+        Party firstParty = UserManager.getPlayer(firstPlayer).getParty();
+        Party secondParty = UserManager.getPlayer(secondPlayer).getParty();
+
+        if (firstParty == null || secondParty == null || firstParty.getAlly() == null || secondParty.getAlly() == null) {
+            return false;
+        }
+
+        return firstParty.equals(secondParty.getAlly()) && secondParty.equals(firstParty.getAlly());
     }
 
     /**
@@ -318,9 +330,69 @@ public final class PartyManager {
             return;
         }
 
-        mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Invite.Accepted", invite.getName()));
+        mcMMOPlayer.getPlayer().sendMessage(LocaleLoader.getString("Commands.Party.Invite.Accepted", invite.getName()));
         mcMMOPlayer.removePartyInvite();
         addToParty(mcMMOPlayer, invite);
+    }
+
+    /**
+     * Accept a party alliance invitation
+     *
+     * @param mcMMOPlayer The player who accepts the alliance invite
+     */
+    public static void acceptAllianceInvite(McMMOPlayer mcMMOPlayer) {
+        Party invite = mcMMOPlayer.getPartyAllianceInvite();
+        Player player = mcMMOPlayer.getPlayer();
+
+        // Check if the party still exists, it might have been disbanded
+        if (!parties.contains(invite)) {
+            player.sendMessage(LocaleLoader.getString("Party.Disband"));
+            return;
+        }
+
+        if (!handlePartyChangeAllianceEvent(player, mcMMOPlayer.getParty().getName(), invite.getName(), McMMOPartyAllianceChangeEvent.EventReason.FORMED_ALLIANCE)) {
+            return;
+        }
+
+        player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Invite.Accepted", invite.getName()));
+        mcMMOPlayer.removePartyAllianceInvite();
+
+        createAlliance(mcMMOPlayer.getParty(), invite);
+    }
+
+    public static void createAlliance(Party firstParty, Party secondParty) {
+        firstParty.setAlly(secondParty);
+        secondParty.setAlly(firstParty);
+
+        for (Player member : firstParty.getOnlineMembers()) {
+            member.sendMessage(LocaleLoader.getString("Party.Alliance.Formed", secondParty.getName()));
+        }
+
+        for (Player member : secondParty.getOnlineMembers()) {
+            member.sendMessage(LocaleLoader.getString("Party.Alliance.Formed", firstParty.getName()));
+        }
+    }
+
+    public static boolean disbandAlliance(Player player, Party firstParty, Party secondParty){
+        if (!handlePartyChangeAllianceEvent(player, firstParty.getName(), secondParty.getName(), McMMOPartyAllianceChangeEvent.EventReason.DISBAND_ALLIANCE)) {
+            return false;
+        }
+
+        PartyManager.disbandAlliance(firstParty, secondParty);
+        return true;
+    }
+
+    private static void disbandAlliance(Party firstParty, Party secondParty) {
+        firstParty.setAlly(null);
+        secondParty.setAlly(null);
+
+        for (Player member : firstParty.getOnlineMembers()) {
+            member.sendMessage(LocaleLoader.getString("Party.Alliance.Disband", secondParty.getName()));
+        }
+
+        for (Player member : secondParty.getOnlineMembers()) {
+            member.sendMessage(LocaleLoader.getString("Party.Alliance.Disband", firstParty.getName()));
+        }
     }
 
     /**
@@ -406,12 +478,19 @@ public final class PartyManager {
 
         YamlConfiguration partiesFile = YamlConfiguration.loadConfiguration(partyFile);
 
+        ArrayList<Party> hasAlly = new ArrayList<Party>();
+
         for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
             Party party = new Party(partyName);
 
             party.setLeader(partiesFile.getString(partyName + ".Leader"));
             party.setPassword(partiesFile.getString(partyName + ".Password"));
             party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
+
+            if (partiesFile.getString(partyName + ".Ally") != null) {
+                hasAlly.add(party);
+            }
+
             party.setXpShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ExpShareMode", "NONE")));
             party.setItemShareMode(ShareMode.getShareMode(partiesFile.getString(partyName + ".ItemShareMode", "NONE")));
 
@@ -427,6 +506,10 @@ public final class PartyManager {
             }
 
             parties.add(party);
+        }
+
+        for (Party party : hasAlly) {
+            party.setAlly(getParty(partiesFile.getString(party.getName() + ".Ally")));
         }
     }
 
@@ -446,6 +529,7 @@ public final class PartyManager {
             partiesFile.set(partyName + ".Leader", party.getLeader());
             partiesFile.set(partyName + ".Password", party.getPassword());
             partiesFile.set(partyName + ".Locked", party.isLocked());
+            partiesFile.set(partyName + ".Ally", (party.getAlly() != null) ? party.getAlly().getName() : "");
             partiesFile.set(partyName + ".ExpShareMode", party.getXpShareMode().toString());
             partiesFile.set(partyName + ".ItemShareMode", party.getItemShareMode().toString());
 
@@ -483,6 +567,22 @@ public final class PartyManager {
      */
     public static boolean handlePartyChangeEvent(Player player, String oldPartyName, String newPartyName, EventReason reason) {
         McMMOPartyChangeEvent event = new McMMOPartyChangeEvent(player, oldPartyName, newPartyName, reason);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return !event.isCancelled();
+    }
+
+    /**
+     * Handle party alliance change event.
+     *
+     * @param player The player changing party alliances
+     * @param oldAllyName The name of the old ally
+     * @param newAllyName The name of the new ally
+     * @param reason The reason for changing allies
+     * @return true if the change event was successful, false otherwise
+     */
+    public static boolean handlePartyChangeAllianceEvent(Player player, String oldAllyName, String newAllyName, McMMOPartyAllianceChangeEvent.EventReason reason) {
+        McMMOPartyAllianceChangeEvent event = new McMMOPartyAllianceChangeEvent(player, oldAllyName, newAllyName, reason);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return !event.isCancelled();

@@ -15,6 +15,7 @@ public class Party {
     private String name;
     private String password;
     private boolean locked;
+    private Party ally;
 
     private ShareMode xpShareMode   = ShareMode.NONE;
     private ShareMode itemShareMode = ShareMode.NONE;
@@ -83,6 +84,10 @@ public class Party {
         return locked;
     }
 
+    public Party getAlly() {
+        return ally;
+    }
+
     public List<String> getItemShareCategories() {
         List<String> shareCategories = new ArrayList<String>();
 
@@ -109,6 +114,10 @@ public class Party {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public void setAlly(Party ally) {
+        this.ally = ally;
     }
 
     public void setXpShareMode(ShareMode xpShareMode) {

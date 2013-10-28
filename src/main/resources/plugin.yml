@@ -938,6 +938,7 @@ permissions:
             mcmmo.commands.party.rename: true
             mcmmo.commands.party.teleport: true
             mcmmo.commands.party.unlock: true
+            mcmmo.commands.party.alliance: true
     mcmmo.commands.party:
         description: Allows access to the party command
     mcmmo.commands.party.accept:
@@ -980,6 +981,8 @@ permissions:
             mcmmo.commands.ptp: true
     mcmmo.commands.party.unlock:
         description: Allows access to the party unlock command
+    mcmmo.commands.party.alliance:
+        description: Allows access to the party alliance command
     mcmmo.commands.ptp.*:
         default: false
         description: Implies access to all mcmmo.commands.ptp permissions.

@@ -18,7 +18,8 @@ public enum PartySubcommandType {
     PASSWORD,
     RENAME,
     TELEPORT,
-    CHAT;
+    CHAT,
+    ALLIANCE;
 
     public static PartySubcommandType getSubcommand(String commandName) {
         for (PartySubcommandType command : values()) {
@@ -41,6 +42,9 @@ public enum PartySubcommandType {
         }
         else if (commandName.equalsIgnoreCase("shareitem") || commandName.equalsIgnoreCase("shareitems")) {
             return ITEMSHARE;
+        }
+        else if (commandName.equalsIgnoreCase("ally")) {
+            return ALLIANCE;
         }
 
         return null;

@@ -14,6 +14,7 @@ import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
+import com.gmail.nossr50.commands.party.alliance.PartyAllianceCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -56,6 +57,7 @@ public class PartyCommand implements TabExecutor {
     private CommandExecutor partyHelpCommand           = new PartyHelpCommand();
     private CommandExecutor partyTeleportCommand       = mcMMO.p.getCommand("ptp").getExecutor();
     private CommandExecutor partyChatCommand           = new PartyChatCommand();
+    private CommandExecutor partyAllianceCommand       = new PartyAllianceCommand();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -150,6 +152,8 @@ public class PartyCommand implements TabExecutor {
                 return partyChangePasswordCommand.onCommand(sender, command, label, args);
             case RENAME:
                 return partyRenameCommand.onCommand(sender, command, label, args);
+            case ALLIANCE:
+                return partyAllianceCommand.onCommand(sender, command, label, args);
             default:
                 break;
         }

@@ -93,6 +93,10 @@ public class PartyInfoCommand implements CommandExecutor {
     private void displayPartyHeader(Player player, Party party) {
         player.sendMessage(LocaleLoader.getString("Commands.Party.Header"));
         player.sendMessage(LocaleLoader.getString("Commands.Party.Status", party.getName(), LocaleLoader.getString("Party.Status." + (party.isLocked() ? "Locked" : "Unlocked"))));
+
+        if (party.getAlly() != null) {
+            player.sendMessage(LocaleLoader.getString("Commands.Party.Status.Alliance", party.getAlly().getName()));
+        }
     }
 
     private void displayMemberInfo(Player player, McMMOPlayer mcMMOPlayer, Party party) {
