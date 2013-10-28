@@ -16,7 +16,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public final class ParticleEffectUtils {
 
@@ -80,11 +79,7 @@ public final class ParticleEffectUtils {
         }
     }
 
-    public static void runescapeModeCelebration(Player player, SkillType skill) {
-        fireworkParticleShower(player, skill.getRunescapeModeColor());
-    }
-
-    private static void fireworkParticleShower(Player player, Color color) {
+    public static void fireworkParticleShower(Player player, Color color) {
         Location location = player.getLocation();
         location.setY(location.getY() + (player.isInsideVehicle() ? 1.0 : -1.0));
         location.setPitch(-90);

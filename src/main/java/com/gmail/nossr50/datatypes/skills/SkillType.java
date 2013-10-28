@@ -27,6 +27,7 @@ import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 
 import com.google.common.collect.ImmutableList;
 
@@ -179,10 +180,6 @@ public enum SkillType {
         }
     }
 
-    public Color getRunescapeModeColor() {
-        return runescapeColor;
-    }
-
     public static SkillType byAbility(AbilityType ability) {
         for (SkillType type : values()) {
             if (type.getAbility() == ability) {
@@ -199,5 +196,9 @@ public enum SkillType {
 
     public boolean getPermissions(Player player) {
         return Permissions.skillEnabled(player, this);
+    }
+
+    public void celebrateLevelUp(Player player) {
+        ParticleEffectUtils.fireworkParticleShower(player, runescapeColor);
     }
 }

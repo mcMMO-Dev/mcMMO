@@ -55,13 +55,6 @@ public class McMMOPlayer {
     private Player        player;
     private PlayerProfile profile;
 
-    /*
-     * Since SkillManager isn't a "polymorphic type" we may prefer to have one field for each of our
-     * class inheriting from SkillManager. This would also prevent the need for casting.
-     * However, by using the map and the loop in the constructor
-     * we make sure that all class inheriting from SkillManager are instanced.
-     * Which solution is better, I let you decide. - bm01
-     */
     private final Map<SkillType, SkillManager> skillManagers = new HashMap<SkillType, SkillManager>();
 
     private Party   party;
