@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Color;
+import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -24,6 +25,7 @@ import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 
 import com.google.common.collect.ImmutableList;
@@ -70,7 +72,7 @@ public enum SkillType {
                 nonChildSkills.add(skill);
             }
 
-            names.add(skill.getSkillName());
+            names.add(skill.getName());
         }
 
         Collections.sort(names);
@@ -191,7 +193,11 @@ public enum SkillType {
         return null;
     }
 
-    public String getSkillName() {
+    public String getName() {
         return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? StringUtils.getCapitalized(this.toString()) : StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
+    }
+
+    public boolean getPermissions(Player player) {
+        return Permissions.skillEnabled(player, this);
     }
 }

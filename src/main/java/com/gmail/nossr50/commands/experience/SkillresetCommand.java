@@ -121,6 +121,6 @@ public class SkillresetCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageSkill() {
-        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getSkillName()));
+        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getName()));
     }
 }

@@ -60,7 +60,7 @@ public final class CommandRegistrationManager {
     private static void registerSkillCommands() {
         for (SkillType skill : SkillType.values()) {
             String commandName = skill.toString().toLowerCase();
-            String localizedName = skill.getSkillName().toLowerCase();
+            String localizedName = skill.getName().toLowerCase();
 
             PluginCommand command;
 
@@ -385,7 +385,8 @@ public final class CommandRegistrationManager {
         command.setDescription("Change the current mcMMO scoreboard being displayed"); //TODO: Localize
         command.setPermission("mcmmo.commands.mcscoreboard");
         command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcscoreboard", "<CLEAR | KEEP | TIME>"));
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcscoreboard", "<CLEAR | KEEP>"));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.2", "mcscoreboard", "time", "<seconds>"));
         command.setExecutor(new McscoreboardCommand());
     }
 

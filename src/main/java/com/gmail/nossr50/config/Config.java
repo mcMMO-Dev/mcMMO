@@ -85,12 +85,6 @@ public class Config extends AutoUpdateConfigLoader {
             reason.add("Either Board or Print in Scoreboard.Types.Inspect must be true!");
         }
 
-        /* Skill.Print setting removed, as I can't think of a good use for it
-        if (!(getSkillUseChat() || getSkillUseBoard())) {
-            reason.add("Either Board or Print in Scoreboard.Commands.Skill must be true!");
-        }
-        // */
-
         /* Database Purging */
         if (getPurgeInterval() < -1) {
             reason.add("Database_Purging.Purge_Interval should be greater than, or equal to -1!");
@@ -258,7 +252,6 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getCooldownUseBoard() { return config.getBoolean("Scoreboard.Types.Cooldown.Board", true); }
     public int getCooldownScoreboardTime() { return config.getInt("Scoreboard.Types.Cooldown.Display_Time", 41); }
 
-    // public boolean getSkillUseChat() { return config.getBoolean("Scoreboard.Types.Skill.Print", false); }
     public boolean getSkillUseBoard() { return config.getBoolean("Scoreboard.Types.Skill.Board", true); }
     public int getSkillScoreboardTime() { return config.getInt("Scoreboard.Types.Skill.Display_Time", 30); }
     public boolean getSkillLevelUpBoard() { return config.getBoolean("Scoreboard.Types.Skill.LevelUp_Board", true); }
@@ -364,8 +357,8 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getAbilitiesEnabled() { return config.getBoolean("Abilities.Enabled", true); }
     public boolean getAbilitiesOnlyActivateWhenSneaking() { return config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false); }
 
-    public int getCooldown(AbilityType ability) { return config.getInt("Abilities.Cooldowns." + ability.getConfigString()); }
-    public int getMaxLength(AbilityType ability) { return config.getInt("Abilities.Max_Seconds." + ability.getConfigString()); }
+    public int getCooldown(AbilityType ability) { return config.getInt("Abilities.Cooldowns." + ability.toString()); }
+    public int getMaxLength(AbilityType ability) { return config.getInt("Abilities.Max_Seconds." + ability.toString()); }
 
     /* Durability Settings */
     public int getAbilityToolDamage() { return config.getInt("Abilities.Tools.Durability_Loss", 1); }

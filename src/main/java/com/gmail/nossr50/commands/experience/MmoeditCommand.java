@@ -39,6 +39,6 @@ public class MmoeditCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageSkill() {
-        player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", skill.getSkillName(), value));
+        player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", skill.getName(), value));
     }
 }

@@ -23,27 +23,26 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 
 public class MctopCommand implements TabExecutor {
+    private SkillType skill;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        SkillType skill;
-
         switch (args.length) {
             case 0:
-                display(1, null, sender, command);
+                display(1, sender, command);
                 return true;
 
             case 1:
                 if (StringUtils.isInt(args[0])) {
-                    display(Math.abs(Integer.parseInt(args[0])), null, sender, command);
+                    display(Math.abs(Integer.parseInt(args[0])), sender, command);
                     return true;
                 }
 
-                if ((skill = extractSkill(sender, args[0])) == null) {
+                if (!extractSkill(sender, args[0])) {
                     return true;
                 }
 
-                display(1, skill, sender, command);
+                display(1, sender, command);
                 return true;
 
             case 2:
@@ -51,11 +50,11 @@ public class MctopCommand implements TabExecutor {
                     return true;
                 }
 
-                if ((skill = extractSkill(sender, args[0])) == null) {
+                if (!extractSkill(sender, args[0])) {
                     return true;
                 }
 
-                display(Math.abs(Integer.parseInt(args[1])), skill, sender, command);
+                display(Math.abs(Integer.parseInt(args[1])), sender, command);
                 return true;
 
             default:
@@ -73,19 +72,21 @@ public class MctopCommand implements TabExecutor {
         }
     }
 
-    private void display(int page, SkillType skill, CommandSender sender, Command command) {
+    private void display(int page, CommandSender sender, Command command) {
         if (skill != null && !Permissions.mctop(sender, skill)) {
             sender.sendMessage(command.getPermissionMessage());
             return;
         }
 
         if (sender instanceof Player) {
-            McMMOPlayer mcpl = UserManager.getPlayer(sender.getName());
-            if (mcpl.getDatabaseATS() + Misc.PLAYER_DATABASE_COOLDOWN_MILLIS > System.currentTimeMillis()) {
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+
+            if (mcMMOPlayer.getDatabaseATS() + Misc.PLAYER_DATABASE_COOLDOWN_MILLIS > System.currentTimeMillis()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Database.Cooldown"));
                 return;
             }
-            mcpl.actualizeDatabaseATS();
+
+            mcMMOPlayer.actualizeDatabaseATS();
         }
 
         display(page, skill, sender);
@@ -98,16 +99,17 @@ public class MctopCommand implements TabExecutor {
         new MctopCommandAsyncTask(page, skill, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
     }
 
-    private SkillType extractSkill(CommandSender sender, String skillName) {
+    private boolean extractSkill(CommandSender sender, String skillName) {
         if (CommandUtils.isInvalidSkill(sender, skillName)) {
-            return null;
-        }
-        SkillType skill = SkillType.getSkill(skillName);
-
-        if (skill != null && CommandUtils.isChildSkill(sender, skill)) {
-            return null;
+            return false;
         }
 
-        return skill;
+        skill = SkillType.getSkill(skillName);
+
+        if (CommandUtils.isChildSkill(sender, skill)) {
+            return false;
+        }
+
+        return true;
     }
 }

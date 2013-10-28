@@ -49,9 +49,10 @@ public class McrankCommand implements TabExecutor {
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName, true);
 
                 if (mcMMOPlayer != null) {
-                    playerName = mcMMOPlayer.getPlayer().getName();
+                    Player player = mcMMOPlayer.getPlayer();
+                    playerName = player.getName();
 
-                    if (CommandUtils.tooFar(sender, mcMMOPlayer.getPlayer(), Permissions.mcrankFar(sender))) {
+                    if (CommandUtils.tooFar(sender, player, Permissions.mcrankFar(sender))) {
                         return true;
                     }
                 }
@@ -80,16 +81,19 @@ public class McrankCommand implements TabExecutor {
 
     private void display(CommandSender sender, String playerName) {
         if (sender instanceof Player) {
-            McMMOPlayer mcpl = UserManager.getPlayer(sender.getName());
-            if (mcpl.getDatabaseATS() + Misc.PLAYER_DATABASE_COOLDOWN_MILLIS > System.currentTimeMillis()) {
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
+
+            if (mcMMOPlayer.getDatabaseATS() + Misc.PLAYER_DATABASE_COOLDOWN_MILLIS > System.currentTimeMillis()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Database.Cooldown"));
                 return;
             }
-            mcpl.actualizeDatabaseATS();
+
+            mcMMOPlayer.actualizeDatabaseATS();
         }
 
         boolean useBoard = (sender instanceof Player) && (Config.getInstance().getRankUseBoard());
         boolean useChat = useBoard ? Config.getInstance().getRankUseChat() : true;
+
         new McrankCommandAsyncTask(playerName, sender, useBoard, useChat).runTaskAsynchronously(mcMMO.p);
     }
 }

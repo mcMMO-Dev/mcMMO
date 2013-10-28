@@ -543,7 +543,7 @@ public class McMMOPlayer {
         int powerLevel = 0;
 
         for (SkillType type : SkillType.NON_CHILD_SKILLS) {
-            if (Permissions.skillEnabled(player, type)) {
+            if (type.getPermissions(player)) {
                 powerLevel += profile.getSkillLevel(type);
             }
         }
@@ -566,7 +566,7 @@ public class McMMOPlayer {
             Set<SkillType> parentSkills = FamilyTree.getParents(skillType);
 
             for (SkillType parentSkill : parentSkills) {
-                if (Permissions.skillEnabled(player, parentSkill)) {
+                if (parentSkill.getPermissions(player)) {
                     beginXpGain(parentSkill, xp / parentSkills.size());
                 }
             }
@@ -601,7 +601,7 @@ public class McMMOPlayer {
      * @param xp Experience amount to add
      */
     public void applyXpGain(SkillType skillType, float xp) {
-        if (!Permissions.skillEnabled(player, skillType)) {
+        if (!skillType.getPermissions(player)) {
             return;
         }
 

@@ -3,6 +3,8 @@ package com.gmail.nossr50.util;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
+import com.gmail.nossr50.datatypes.skills.AbilityType;
+
 public class StringUtils {
     /**
      * Gets a capitalized version of the target string.
@@ -20,6 +22,10 @@ public class StringUtils {
 
     public static String getPrettyEntityTypeString(EntityType entity) {
         return createPrettyEnumString(entity.toString());
+    }
+
+    public static String getPrettyAbilityString(AbilityType ability) {
+        return createPrettyEnumString(ability.toString());
     }
 
     private static String createPrettyEnumString(String baseString) {

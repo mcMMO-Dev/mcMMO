@@ -2,10 +2,8 @@ package com.gmail.nossr50.util.scoreboards;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,7 +23,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -34,14 +31,14 @@ public class ScoreboardWrapper {
 
     // Initialization variables
     public final String playerName;
-    private final Scoreboard board;
+    private final Scoreboard scoreboard;
     private boolean tippedKeep = false;
     private boolean tippedClear = false;
 
     // Internal usage variables (should exist)
     private SidebarType sidebarType;
-    private Objective sidebarObj;
-    private Objective powerObj;
+    private Objective sidebarObjective;
+    private Objective powerObjective;
 
     // Parameter variables (May be null / invalid)
     private Scoreboard oldBoard = null;
@@ -50,30 +47,32 @@ public class ScoreboardWrapper {
     private PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
 
-    private ScoreboardWrapper(String playerName, Scoreboard s) {
+    private ScoreboardWrapper(String playerName, Scoreboard scoreboard) {
         this.playerName = playerName;
-        board = s;
+        this.scoreboard = scoreboard;
         sidebarType = SidebarType.NONE;
-        sidebarObj = board.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
-        powerObj = board.registerNewObjective(ScoreboardManager.POWER_OBJECTIVE, "dummy");
+        sidebarObjective = this.scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
+        powerObjective = this.scoreboard.registerNewObjective(ScoreboardManager.POWER_OBJECTIVE, "dummy");
+
         if (Config.getInstance().getPowerLevelTagsEnabled()) {
-            powerObj.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
-            powerObj.setDisplaySlot(DisplaySlot.BELOW_NAME);
-            for (McMMOPlayer mcpl : UserManager.getPlayers()) {
-                powerObj.getScore(mcpl.getPlayer()).setScore(mcpl.getPowerLevel());
+            powerObjective.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
+            powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+
+            for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
+                powerObjective.getScore(mcMMOPlayer.getPlayer()).setScore(mcMMOPlayer.getPowerLevel());
             }
         }
     }
 
-    public static ScoreboardWrapper create(Player p) {
-        return new ScoreboardWrapper(p.getName(), mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
+    public static ScoreboardWrapper create(Player player) {
+        return new ScoreboardWrapper(player.getName(), mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
     }
 
     public BukkitTask updateTask = null;
     private class ScoreboardQuickUpdate extends BukkitRunnable {
         @Override
         public void run() {
-            ScoreboardWrapper.this.updateSidebar();
+            updateSidebar();
             updateTask = null;
         }
     }
@@ -82,7 +81,7 @@ public class ScoreboardWrapper {
     private class ScoreboardChangeTask extends BukkitRunnable {
         @Override
         public void run() {
-            ScoreboardWrapper.this.tryRevertBoard();
+            tryRevertBoard();
             revertTask = null;
         }
     }
@@ -91,13 +90,12 @@ public class ScoreboardWrapper {
     private class ScoreboardCooldownTask extends BukkitRunnable {
         @Override
         public void run() {
-            ScoreboardWrapper wrapper = ScoreboardWrapper.this;
             // Stop updating if it's no longer something displaying cooldowns
-            if (wrapper.isBoardShown() && (wrapper.isSkillScoreboard() || wrapper.isCooldownScoreboard())) {
-                wrapper.doSidebarUpdateSoon();
+            if (isBoardShown() && (isSkillScoreboard() || isCooldownScoreboard())) {
+                doSidebarUpdateSoon();
             }
             else {
-                wrapper.stopCooldownUpdating();
+                stopCooldownUpdating();
             }
         }
     }
@@ -122,7 +120,9 @@ public class ScoreboardWrapper {
         if (cooldownTask != null) {
             try {
                 cooldownTask.cancel();
-            } catch (Throwable ignored) {}
+            }
+            catch (Throwable ignored) {}
+
             cooldownTask = null;
         }
     }
@@ -143,29 +143,29 @@ public class ScoreboardWrapper {
      * Set the old scoreboard, for use in reverting.
      */
     public void setOldScoreboard() {
-        Player player = Bukkit.getPlayerExact(playerName);
+        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+
         if (player == null) {
             ScoreboardManager.cleanup(this);
             return;
         }
 
-        Scoreboard old = player.getScoreboard();
-        if (old == board) { // Already displaying it
-            if (oldBoard == null) {
+        Scoreboard oldBoard = player.getScoreboard();
+
+        if (oldBoard == scoreboard) { // Already displaying it
+            if (this.oldBoard == null) {
                 // (Shouldn't happen) Use failsafe value - we're already displaying our board, but we don't have the one we should revert to
-                oldBoard = Bukkit.getScoreboardManager().getMainScoreboard();
-            }
-            else {
-                // Do nothing, we already have a prev board
+                this.oldBoard = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard();
             }
         }
         else {
-            oldBoard = old;
+            this.oldBoard = oldBoard;
         }
     }
 
     public void showBoardWithNoRevert() {
-        Player player = Bukkit.getPlayerExact(playerName);
+        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+
         if (player == null) {
             ScoreboardManager.cleanup(this);
             return;
@@ -174,12 +174,14 @@ public class ScoreboardWrapper {
         if (revertTask != null) {
             revertTask.cancel();
         }
-        player.setScoreboard(board);
+
+        player.setScoreboard(scoreboard);
         revertTask = null;
     }
 
     public void showBoardAndScheduleRevert(int ticks) {
-        Player player = Bukkit.getPlayerExact(playerName);
+        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+
         if (player == null) {
             ScoreboardManager.cleanup(this);
             return;
@@ -188,7 +190,8 @@ public class ScoreboardWrapper {
         if (revertTask != null) {
             revertTask.cancel();
         }
-        player.setScoreboard(board);
+
+        player.setScoreboard(scoreboard);
         revertTask = new ScoreboardChangeTask().runTaskLater(mcMMO.p, ticks);
 
         // TODO is there any way to do the time that looks acceptable?
@@ -204,14 +207,15 @@ public class ScoreboardWrapper {
     }
 
     public void tryRevertBoard() {
-        Player player = Bukkit.getPlayerExact(playerName);
+        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+
         if (player == null) {
             ScoreboardManager.cleanup(this);
             return;
         }
 
         if (oldBoard != null) {
-            if (player.getScoreboard() == board) {
+            if (player.getScoreboard() == scoreboard) {
                 player.setScoreboard(oldBoard);
                 oldBoard = null;
             }
@@ -219,14 +223,9 @@ public class ScoreboardWrapper {
                 mcMMO.p.debug("Not reverting scoreboard for " + playerName + " - scoreboard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
             }
         }
-        else {
-            // Was already reverted
-        }
 
-        if (revertTask != null) {
-            revertTask.cancel();
-            revertTask = null;
-        }
+        cancelRevert();
+
         sidebarType = SidebarType.NONE;
         targetPlayer = null;
         targetSkill = null;
@@ -235,19 +234,22 @@ public class ScoreboardWrapper {
     }
 
     public boolean isBoardShown() {
-        Player player = Bukkit.getPlayerExact(playerName);
+        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+
         if (player == null) {
             ScoreboardManager.cleanup(this);
             return false;
         }
 
-        return player.getScoreboard() == board;
+        return player.getScoreboard() == scoreboard;
     }
 
     public void cancelRevert() {
-        if (revertTask != null) {
-            revertTask.cancel();
+        if (revertTask == null) {
+            return;
         }
+
+        revertTask.cancel();
         revertTask = null;
     }
 
@@ -358,17 +360,18 @@ public class ScoreboardWrapper {
 
     // Setup for after a board type change
     protected void loadObjective(String displayName) {
-        sidebarObj.unregister();
-        sidebarObj = board.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
+        sidebarObjective.unregister();
+        sidebarObjective = scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
 
         if (displayName.length() > 32) {
             displayName = displayName.substring(0, 32);
         }
-        sidebarObj.setDisplayName(displayName);
+
+        sidebarObjective.setDisplayName(displayName);
 
         updateSidebar();
         // Do last! Minimize packets!
-        sidebarObj.setDisplaySlot(DisplaySlot.SIDEBAR);
+        sidebarObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
     }
 
     /**
@@ -377,21 +380,24 @@ public class ScoreboardWrapper {
     private void updateSidebar() {
         try {
             updateTask.cancel();
-        } catch (Throwable ignored) {} // catch NullPointerException and IllegalStateException and any Error; don't care
+        }
+        catch (Throwable ignored) {} // catch NullPointerException and IllegalStateException and any Error; don't care
+
         updateTask = null;
 
         if (sidebarType == SidebarType.NONE) {
             return;
         }
 
-        Player bukkitPlayer = Bukkit.getPlayerExact(playerName);
-        if (bukkitPlayer == null) {
+        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
+
+        if (player == null) {
             ScoreboardManager.cleanup(this);
             return;
         }
 
-        McMMOPlayer mcPlayer = UserManager.getPlayer(bukkitPlayer);
-        PlayerProfile profile = mcPlayer.getProfile();
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        PlayerProfile profile = mcMMOPlayer.getProfile();
 
         switch (sidebarType) {
         case NONE:
@@ -399,65 +405,66 @@ public class ScoreboardWrapper {
 
         case SKILL_BOARD:
             Validate.notNull(targetSkill);
+
             if (!targetSkill.isChildSkill()) {
                 int currentXP = profile.getSkillXpLevel(targetSkill);
-                sidebarObj.getScore(ScoreboardManager.LABEL_CURRENT_XP).setScore(currentXP);
-                sidebarObj.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(profile.getXpToLevel(targetSkill) - currentXP);
+
+                sidebarObjective.getScore(ScoreboardManager.LABEL_CURRENT_XP).setScore(currentXP);
+                sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(profile.getXpToLevel(targetSkill) - currentXP);
             }
             else {
-                Set<SkillType> parents = FamilyTree.getParents(targetSkill);
-                for (SkillType parentSkill : parents) {
-                    sidebarObj.getScore(ScoreboardManager.skillLabels.get(parentSkill)).setScore(profile.getSkillLevel(parentSkill));
+                for (SkillType parentSkill : FamilyTree.getParents(targetSkill)) {
+                    sidebarObjective.getScore(ScoreboardManager.skillLabels.get(parentSkill)).setScore(profile.getSkillLevel(parentSkill));
                 }
             }
-            sidebarObj.getScore(ScoreboardManager.LABEL_LEVEL).setScore(profile.getSkillLevel(targetSkill));
+
+            sidebarObjective.getScore(ScoreboardManager.LABEL_LEVEL).setScore(profile.getSkillLevel(targetSkill));
+
             if (targetSkill.getAbility() != null) {
-                if (targetSkill != SkillType.MINING) {
-                    AbilityType ab = targetSkill.getAbility();
-                    Score cooldown = sidebarObj.getScore(ScoreboardManager.abilityLabelsSkill.get(ab));
-                    int seconds = SkillUtils.calculateTimeLeft(ab, profile, bukkitPlayer);
-                    seconds = (seconds <= 0) ? 0 : seconds;
-                    if (seconds == 0) {
-                        cooldown.setScore(0);
-                        stopCooldownUpdating();
-                    }
-                    else {
-                        cooldown.setScore(seconds);
-                        startCooldownUpdating();
-                    }
-                } else {
+                boolean stopUpdating;
+
+                if (targetSkill == SkillType.MINING) {
                     // Special-Case: Mining has two abilities, both with cooldowns
-                    AbilityType sb = AbilityType.SUPER_BREAKER;
-                    AbilityType bm = AbilityType.BLAST_MINING;
-                    Score cooldownSB = sidebarObj.getScore(ScoreboardManager.abilityLabelsSkill.get(sb));
-                    Score cooldownBM = sidebarObj.getScore(ScoreboardManager.abilityLabelsSkill.get(bm));
-                    int secondsSB = SkillUtils.calculateTimeLeft(sb, profile, bukkitPlayer);
-                    int secondsBM = SkillUtils.calculateTimeLeft(bm, profile, bukkitPlayer);
-                    secondsSB = (secondsSB <= 0) ? 0 : secondsSB;
-                    secondsBM = (secondsBM <= 0) ? 0 : secondsBM;
-                    if (secondsSB == 0 && secondsBM == 0) {
-                        cooldownSB.setScore(0);
-                        cooldownBM.setScore(0);
-                        stopCooldownUpdating();
-                    }
-                    else {
-                        cooldownSB.setScore(secondsSB);
-                        cooldownBM.setScore(secondsBM);
-                        startCooldownUpdating();
-                    }
+                    Score cooldownSB = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(AbilityType.SUPER_BREAKER));
+                    Score cooldownBM = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(AbilityType.BLAST_MINING));
+                    int secondsSB = Math.max(SkillUtils.calculateTimeLeft(AbilityType.SUPER_BREAKER, profile, player), 0);
+                    int secondsBM = Math.max(SkillUtils.calculateTimeLeft(AbilityType.BLAST_MINING, profile, player), 0);
+
+                    cooldownSB.setScore(secondsSB);
+                    cooldownBM.setScore(secondsBM);
+
+                    stopUpdating = (secondsSB == 0 && secondsBM == 0);
+                }
+                else {
+                    AbilityType ability = targetSkill.getAbility();
+                    Score cooldown = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(ability));
+                    int seconds = Math.max(SkillUtils.calculateTimeLeft(ability, profile, player), 0);
+
+                    cooldown.setScore(seconds);
+
+                    stopUpdating = seconds == 0;
+                }
+
+                if (stopUpdating) {
+                    stopCooldownUpdating();
+                }
+                else {
+                    startCooldownUpdating();
                 }
             }
             break;
 
         case COOLDOWNS_BOARD:
             boolean anyCooldownsActive = false;
+
             for (AbilityType ability : AbilityType.NORMAL_ABILITIES) {
-                int seconds = SkillUtils.calculateTimeLeft(ability, profile, bukkitPlayer);
-                seconds = (seconds <= 0) ? 0 : seconds;
+                int seconds = Math.max(SkillUtils.calculateTimeLeft(ability, profile, player), 0);
+
                 if (seconds != 0) {
                     anyCooldownsActive = true;
                 }
-                sidebarObj.getScore(ScoreboardManager.abilityLabelsColored.get(ability)).setScore(seconds);
+
+                sidebarObjective.getScore(ScoreboardManager.abilityLabelsColored.get(ability)).setScore(seconds);
             }
 
             if (anyCooldownsActive) {
@@ -470,30 +477,35 @@ public class ScoreboardWrapper {
 
         case STATS_BOARD:
             // Select the profile to read from
-            PlayerProfile prof;
+            PlayerProfile newProfile;
+
             if (targetProfile != null) {
-                prof = targetProfile; // offline
+                newProfile = targetProfile; // offline
             }
             else if (targetPlayer == null) {
-                prof = profile; // self
+                newProfile = profile; // self
             }
             else {
-                prof = UserManager.getPlayer(targetPlayer).getProfile(); // online
+                newProfile = UserManager.getPlayer(targetPlayer).getProfile(); // online
             }
+
             // Calculate power level here
             int powerLevel = 0;
             for (SkillType skill : SkillType.values()) { // Include child skills, but not in power level
-                int level = prof.getSkillLevel(skill);
+                int level = newProfile.getSkillLevel(skill);
+
                 if (!skill.isChildSkill())
                     powerLevel += level;
 
                 // TODO: Verify that this is what we want - calculated in power level but not displayed
-                if (!Permissions.skillEnabled(bukkitPlayer, skill)) {
+                if (!skill.getPermissions(player)) {
                     continue;
                 }
-                sidebarObj.getScore(ScoreboardManager.skillLabels.get(skill)).setScore(level);
+
+                sidebarObjective.getScore(ScoreboardManager.skillLabels.get(skill)).setScore(level);
             }
-            sidebarObj.getScore(ScoreboardManager.LABEL_POWER_LEVEL).setScore(powerLevel);
+
+            sidebarObjective.getScore(ScoreboardManager.LABEL_POWER_LEVEL).setScore(powerLevel);
             break;
 
         case RANK_BOARD:
@@ -504,40 +516,47 @@ public class ScoreboardWrapper {
              */
             break;
 
+        default:
+            break;
         }
     }
 
     public void acceptRankData(Map<SkillType, Integer> rankData) {
         Integer rank;
-        Player bukkitPlayer = Bukkit.getPlayerExact(playerName);
+        Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
         for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
-            if (!Permissions.skillEnabled(bukkitPlayer, skill)) {
+            if (!skill.getPermissions(player)) {
                 continue;
             }
 
             rank = rankData.get(skill);
+
             if (rank != null) {
-                sidebarObj.getScore(ScoreboardManager.skillLabels.get(skill)).setScore(rank);
+                sidebarObjective.getScore(ScoreboardManager.skillLabels.get(skill)).setScore(rank);
             }
         }
+
         rank = rankData.get(null);
+
         if (rank != null) {
-            sidebarObj.getScore(ScoreboardManager.LABEL_POWER_LEVEL).setScore(rank);
+            sidebarObjective.getScore(ScoreboardManager.LABEL_POWER_LEVEL).setScore(rank);
         }
     }
 
     public void acceptLeaderboardData(List<PlayerStat> leaderboardData) {
         for (PlayerStat stat : leaderboardData) {
-            String statname = stat.name;
-            if (statname.equals(playerName)) {
-                statname = ChatColor.GOLD + "--You--";
+            String name = stat.name;
+
+            if (name.equals(playerName)) {
+                name = ChatColor.GOLD + "--You--";
             }
-            sidebarObj.getScore(Bukkit.getOfflinePlayer(statname)).setScore(stat.statVal);
+
+            sidebarObjective.getScore(mcMMO.p.getServer().getOfflinePlayer(name)).setScore(stat.statVal);
         }
     }
 
-    public void updatePowerLevel(Player leveledPlayer, int newPowerLevel) {
-        powerObj.getScore(leveledPlayer).setScore(newPowerLevel);
+    public void updatePowerLevel(Player player, int newPowerLevel) {
+        powerObjective.getScore(player).setScore(newPowerLevel);
     }
 }

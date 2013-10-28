@@ -204,7 +204,7 @@ public class PlayerListener implements Listener {
     public void onPlayerFishHighest(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player) || !Permissions.skillEnabled(player, SkillType.FISHING)) {
+        if (Misc.isNPCEntity(player) || !SkillType.FISHING.getPermissions(player)) {
             return;
         }
 
@@ -249,7 +249,7 @@ public class PlayerListener implements Listener {
     public void onPlayerFishMonitor(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player) || !Permissions.skillEnabled(player, SkillType.FISHING)) {
+        if (Misc.isNPCEntity(player) || !SkillType.FISHING.getPermissions(player)) {
             return;
         }
 
@@ -421,7 +421,7 @@ public class PlayerListener implements Listener {
 
                 if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
-                    if (type == Repair.repairAnvilMaterial && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
+                    if (type == Repair.repairAnvilMaterial && SkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
                         event.setCancelled(true);
 
@@ -460,7 +460,7 @@ public class PlayerListener implements Listener {
 
                 if ((Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() && player.isSneaking()) || !Config.getInstance().getAbilitiesOnlyActivateWhenSneaking()) {
                     /* REPAIR CHECKS */
-                    if (type == Repair.repairAnvilMaterial && Permissions.skillEnabled(player, SkillType.REPAIR) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
+                    if (type == Repair.repairAnvilMaterial && SkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
 
                         // Cancel repairing an enchanted item
@@ -658,7 +658,7 @@ public class PlayerListener implements Listener {
             // Do these ACTUALLY have to be lower case to work properly?
             for (SkillType skill : SkillType.values()) {
                 String skillName = skill.toString().toLowerCase();
-                String localizedName = skill.getSkillName().toLowerCase();
+                String localizedName = skill.getName().toLowerCase();
 
                 if (lowerCaseCommand.equals(localizedName)) {
                     event.setMessage(message.replace(command, skillName));

@@ -1,14 +1,11 @@
 package com.gmail.nossr50.util.scoreboards;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -48,88 +45,82 @@ public class ScoreboardManager {
     static final OfflinePlayer LABEL_ABILITY_COOLDOWN = getOfflinePlayer(LocaleLoader.getString("Scoreboard.Misc.Cooldown"));
     static final OfflinePlayer LABEL_OVERALL = getOfflinePlayer(LocaleLoader.getString("Scoreboard.Misc.Overall"));
 
-    static final Map<SkillType, OfflinePlayer> skillLabels;
+    static final Map<SkillType, OfflinePlayer>   skillLabels;
     static final Map<AbilityType, OfflinePlayer> abilityLabelsColored;
     static final Map<AbilityType, OfflinePlayer> abilityLabelsSkill;
+
     static {
-        ImmutableMap.Builder<SkillType, OfflinePlayer> b = ImmutableMap.builder();
-        ImmutableMap.Builder<AbilityType, OfflinePlayer> c = ImmutableMap.builder();
-        ImmutableMap.Builder<AbilityType, OfflinePlayer> d = ImmutableMap.builder();
+        ImmutableMap.Builder<SkillType, OfflinePlayer> skillLabelBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<AbilityType, OfflinePlayer> abilityLabelBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<AbilityType, OfflinePlayer> abilityLabelSkillBuilder = ImmutableMap.builder();
+
         if (Config.getInstance().getScoreboardRainbows()) {
-            Random shuffler = new Random(Bukkit.getWorlds().get(0).getSeed());
-            List<ChatColor> colors = Arrays.asList(
-                    ChatColor.WHITE,
-                    ChatColor.YELLOW,
-                    ChatColor.LIGHT_PURPLE,
-                    ChatColor.RED,
-                    ChatColor.AQUA,
-                    ChatColor.GREEN,
-                    ChatColor.DARK_GRAY,
-                    ChatColor.BLUE,
-                    ChatColor.DARK_PURPLE,
-                    ChatColor.DARK_RED,
-                    ChatColor.DARK_AQUA,
-                    ChatColor.DARK_GREEN,
-                    ChatColor.DARK_BLUE
-            );
-            Collections.shuffle(colors, shuffler);
+            List<ChatColor> colors = new ArrayList<ChatColor>();
+
+            for (ChatColor color : ChatColor.values()) {
+                if (color.isColor()) {
+                    colors.add(color);
+                }
+            }
+
+            Collections.shuffle(colors, Misc.getRandom());
+
             int i = 0;
             for (SkillType type : SkillType.values()) {
                 // Include child skills
-                b.put(type, getOfflinePlayer(colors.get(i) + type.getSkillName()));
+                skillLabelBuilder.put(type, getOfflinePlayer(colors.get(i) + type.getName()));
+
                 if (type.getAbility() != null) {
-                    // the toString is the properly formatted verison for abilities
-                    c.put(type.getAbility(), getOfflinePlayer(colors.get(i) + type.getAbility().getAbilityName()));
+                    abilityLabelBuilder.put(type.getAbility(), getOfflinePlayer(colors.get(i) + type.getAbility().getName()));
+
                     if (type == SkillType.MINING) {
-                        c.put(AbilityType.BLAST_MINING, getOfflinePlayer(colors.get(i) + AbilityType.BLAST_MINING.getAbilityName()));
+                        abilityLabelBuilder.put(AbilityType.BLAST_MINING, getOfflinePlayer(colors.get(i) + AbilityType.BLAST_MINING.getName()));
                     }
                 }
+
                 if (++i == colors.size()) i = 0;
             }
         }
         else {
             for (SkillType type : SkillType.values()) {
                 // Include child skills
-                b.put(type, getOfflinePlayer(ChatColor.GREEN + type.getSkillName()));
+                skillLabelBuilder.put(type, getOfflinePlayer(ChatColor.GREEN + type.getName()));
+
                 if (type.getAbility() != null) {
-                    // the toString is the properly formatted verison for abilities
-                    c.put(type.getAbility(), getOfflinePlayerDots(ChatColor.AQUA + type.getAbility().getAbilityName()));
+                    abilityLabelBuilder.put(type.getAbility(), getOfflinePlayerDots(ChatColor.AQUA + type.getAbility().getName()));
+
                     if (type == SkillType.MINING) {
-                        c.put(AbilityType.BLAST_MINING, getOfflinePlayerDots(ChatColor.AQUA + AbilityType.BLAST_MINING.getAbilityName()));
+                        abilityLabelBuilder.put(AbilityType.BLAST_MINING, getOfflinePlayerDots(ChatColor.AQUA + AbilityType.BLAST_MINING.getName()));
                     }
                 }
             }
         }
 
         for (AbilityType type : AbilityType.NORMAL_ABILITIES) {
-            if (type == AbilityType.BLAST_MINING) {
-                // Special-case: get a different color
-                d.put(AbilityType.BLAST_MINING, getOfflinePlayerDots(ChatColor.BLUE + AbilityType.BLAST_MINING.getAbilityName()));
-            }
-            else {
-                d.put(type, getOfflinePlayerDots(ChatColor.AQUA + type.getAbilityName()));
-            }
+            abilityLabelSkillBuilder.put(type, getOfflinePlayerDots((type == AbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA) + type.getName()));
         }
 
-        skillLabels = b.build();
-        abilityLabelsColored = c.build();
-        abilityLabelsSkill = d.build();
+        skillLabels = skillLabelBuilder.build();
+        abilityLabelsColored = abilityLabelBuilder.build();
+        abilityLabelsSkill = abilityLabelSkillBuilder.build();
     }
 
     private static List<String> dirtyPowerLevels = new ArrayList<String>();
 
     private static OfflinePlayer getOfflinePlayer(String name) {
-        if (name.length() > 16) {
-            name = name.substring(0, 16);
-        }
-        return Bukkit.getOfflinePlayer(name);
+        return getOfflinePlayer(name, false);
     }
 
     private static OfflinePlayer getOfflinePlayerDots(String name) {
+        return getOfflinePlayer(name, true);
+    }
+
+    private static OfflinePlayer getOfflinePlayer(String name, boolean useDots) {
         if (name.length() > 16) {
-            name = name.substring(0, 16 - 2) + "..";
+            name = useDots ? name.substring(0, 14) + ".." : name.substring(0, 16);
         }
-        return Bukkit.getOfflinePlayer(name);
+
+        return mcMMO.p.getServer().getOfflinePlayer(name);
     }
 
     public enum SidebarType {
@@ -144,14 +135,15 @@ public class ScoreboardManager {
     // **** Listener call-ins **** //
 
     // Called by PlayerJoinEvent listener
-    public static void setupPlayer(Player p) {
-        PLAYER_SCOREBOARDS.put(p.getName(), ScoreboardWrapper.create(p));
-        dirtyPowerLevels.add(p.getName());
+    public static void setupPlayer(Player player) {
+        PLAYER_SCOREBOARDS.put(player.getName(), ScoreboardWrapper.create(player));
+        dirtyPowerLevels.add(player.getName());
     }
 
     // Called by PlayerQuitEvent listener
-    public static void teardownPlayer(Player p) {
-        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.remove(p.getName());
+    public static void teardownPlayer(Player player) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.remove(player.getName());
+
         if (wrapper.revertTask != null) {
             wrapper.revertTask.cancel();
         }
@@ -159,14 +151,15 @@ public class ScoreboardManager {
 
     // Called in onDisable()
     public static void teardownAll() {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            teardownPlayer(p);
+        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
+            teardownPlayer(player);
         }
     }
 
     // Called by ScoreboardWrapper when its Player logs off and an action tries to be performed
     public static void cleanup(ScoreboardWrapper wrapper) {
         PLAYER_SCOREBOARDS.remove(wrapper.playerName);
+
         if (wrapper.revertTask != null) {
             wrapper.revertTask.cancel();
         }
@@ -175,16 +168,18 @@ public class ScoreboardManager {
     // Called by internal level-up event listener
     public static void handleLevelUp(Player player, SkillType skill) {
         // Selfboards
-        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
-        if ((wrapper.isSkillScoreboard() && wrapper.targetSkill == skill) || (wrapper.isStatsScoreboard()) && wrapper.isBoardShown()) {
-            wrapper.doSidebarUpdateSoon();
+        ScoreboardWrapper selfboardWrapper = PLAYER_SCOREBOARDS.get(player.getName());
+
+        if ((selfboardWrapper.isSkillScoreboard() && selfboardWrapper.targetSkill == skill) || (selfboardWrapper.isStatsScoreboard()) && selfboardWrapper.isBoardShown()) {
+            selfboardWrapper.doSidebarUpdateSoon();
         }
 
         // Otherboards
         String playerName = player.getName();
-        for (ScoreboardWrapper w : PLAYER_SCOREBOARDS.values()) {
-            if (w.isStatsScoreboard() && playerName.equals(w.targetPlayer) && wrapper.isBoardShown()) {
-                wrapper.doSidebarUpdateSoon();
+
+        for (ScoreboardWrapper wrapper : PLAYER_SCOREBOARDS.values()) {
+            if (wrapper.isStatsScoreboard() && playerName.equals(wrapper.targetPlayer) && selfboardWrapper.isBoardShown()) {
+                selfboardWrapper.doSidebarUpdateSoon();
             }
         }
 
@@ -201,6 +196,7 @@ public class ScoreboardManager {
     public static void handleXp(Player player, SkillType skill) {
         // Selfboards
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+
         if (wrapper.isSkillScoreboard() && wrapper.targetSkill == skill && wrapper.isBoardShown()) {
             wrapper.doSidebarUpdateSoon();
         }
@@ -210,6 +206,7 @@ public class ScoreboardManager {
     public static void cooldownUpdate(Player player, SkillType skill) {
         // Selfboards
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
+
         if ((wrapper.isCooldownScoreboard() || wrapper.isSkillScoreboard() && wrapper.targetSkill == skill) && wrapper.isBoardShown()) {
             wrapper.doSidebarUpdateSoon();
         }
@@ -267,8 +264,8 @@ public class ScoreboardManager {
         changeScoreboard(wrapper, Config.getInstance().getCooldownScoreboardTime());
     }
 
-    public static void showPlayerRankScoreboard(Player bukkitPlayer, Map<SkillType, Integer> rank) {
-        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(bukkitPlayer.getName());
+    public static void showPlayerRankScoreboard(Player player, Map<SkillType, Integer> rank) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
         wrapper.setOldScoreboard();
         wrapper.setTypeSelfRank();
@@ -277,8 +274,8 @@ public class ScoreboardManager {
         changeScoreboard(wrapper, Config.getInstance().getRankScoreboardTime());
     }
 
-    public static void showPlayerRankScoreboardOthers(Player bukkitPlayer, String targetName, Map<SkillType, Integer> rank) {
-        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(bukkitPlayer.getName());
+    public static void showPlayerRankScoreboardOthers(Player player, String targetName, Map<SkillType, Integer> rank) {
+        ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
         wrapper.setOldScoreboard();
         wrapper.setTypeInspectRank(targetName);
@@ -314,24 +311,28 @@ public class ScoreboardManager {
      */
     public static boolean powerLevelHeartbeat() {
         Objective mainObjective = getPowerLevelObjective();
+
         if (mainObjective == null) {
             return false; // indicates
         }
 
-        if (!dirtyPowerLevels.isEmpty())
+        if (!dirtyPowerLevels.isEmpty()) {
             mcMMO.p.getLogger().info(dirtyPowerLevels.toString());
+        }
+
         for (String playerName : dirtyPowerLevels) {
-            McMMOPlayer mcpl = UserManager.getPlayer(playerName);
-            Player player = mcpl.getPlayer();
-            int power = mcpl.getPowerLevel();
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
+            Player player = mcMMOPlayer.getPlayer();
+            int power = mcMMOPlayer.getPowerLevel();
 
             mainObjective.getScore(player).setScore(power);
+
             for (ScoreboardWrapper wrapper : PLAYER_SCOREBOARDS.values()) {
                 wrapper.updatePowerLevel(player, power);
             }
         }
-        dirtyPowerLevels.clear();
 
+        dirtyPowerLevels.clear();
         return true;
     }
 
@@ -345,21 +346,25 @@ public class ScoreboardManager {
      */
     public static Objective getPowerLevelObjective() {
         if (!Config.getInstance().getPowerLevelTagsEnabled()) {
-            Objective obj = Bukkit.getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
-            if (obj != null) {
-                obj.unregister();
+            Objective objective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
+
+            if (objective != null) {
+                objective.unregister();
                 mcMMO.p.debug("Removed leftover scoreboard objects from Power Level Tags.");
             }
+
             return null;
         }
 
-        Objective powerObj = Bukkit.getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
-        if (powerObj == null) {
-            powerObj = Bukkit.getScoreboardManager().getMainScoreboard().registerNewObjective(POWER_OBJECTIVE, "dummy");
-            powerObj.setDisplayName(TAG_POWER_LEVEL);
-            powerObj.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        Objective powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
+
+        if (powerObjective == null) {
+            powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().registerNewObjective(POWER_OBJECTIVE, "dummy");
+            powerObjective.setDisplayName(TAG_POWER_LEVEL);
+            powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         }
-        return powerObj;
+
+        return powerObjective;
     }
 
     private static void changeScoreboard(ScoreboardWrapper wrapper, int displayTime) {

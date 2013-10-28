@@ -12,28 +12,28 @@ import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 
 public class ScoreboardsListener implements Listener {
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        ScoreboardManager.setupPlayer(e.getPlayer());
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent e) {
-        ScoreboardManager.teardownPlayer(e.getPlayer());
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerJoin(PlayerJoinEvent event) {
+        ScoreboardManager.setupPlayer(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerLevelUp(McMMOPlayerLevelUpEvent e) {
-        ScoreboardManager.handleLevelUp(e.getPlayer(), e.getSkill());
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        ScoreboardManager.teardownPlayer(event.getPlayer());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerXp(McMMOPlayerXpGainEvent e) {
-        ScoreboardManager.handleXp(e.getPlayer(), e.getSkill());
+    public void onPlayerLevelUp(McMMOPlayerLevelUpEvent event) {
+        ScoreboardManager.handleLevelUp(event.getPlayer(), event.getSkill());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onAbility(McMMOPlayerAbilityActivateEvent e) {
-        ScoreboardManager.cooldownUpdate(e.getPlayer(), e.getSkill());
+    public void onPlayerXp(McMMOPlayerXpGainEvent event) {
+        ScoreboardManager.handleXp(event.getPlayer(), event.getSkill());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onAbility(McMMOPlayerAbilityActivateEvent event) {
+        ScoreboardManager.cooldownUpdate(event.getPlayer(), event.getSkill());
     }
 }

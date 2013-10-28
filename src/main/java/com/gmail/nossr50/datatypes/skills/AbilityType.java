@@ -17,7 +17,6 @@ import com.google.common.collect.ImmutableList;
 
 public enum AbilityType {
     BERSERK(
-            "Unarmed.Skills.Berserk.Name",
             "Unarmed.Skills.Berserk.On",
             "Unarmed.Skills.Berserk.Off",
             "Unarmed.Skills.Berserk.Other.On",
@@ -25,7 +24,6 @@ public enum AbilityType {
             "Unarmed.Skills.Berserk.Other.Off"),
 
     SUPER_BREAKER(
-            "Mining.Skills.SuperBreaker.Name",
             "Mining.Skills.SuperBreaker.On",
             "Mining.Skills.SuperBreaker.Off",
             "Mining.Skills.SuperBreaker.Other.On",
@@ -33,7 +31,6 @@ public enum AbilityType {
             "Mining.Skills.SuperBreaker.Other.Off"),
 
     GIGA_DRILL_BREAKER(
-            "Excavation.Skills.GigaDrillBreaker.Name",
             "Excavation.Skills.GigaDrillBreaker.On",
             "Excavation.Skills.GigaDrillBreaker.Off",
             "Excavation.Skills.GigaDrillBreaker.Other.On",
@@ -41,7 +38,6 @@ public enum AbilityType {
             "Excavation.Skills.GigaDrillBreaker.Other.Off"),
 
     GREEN_TERRA(
-            "Herbalism.Skills.GTe.Name",
             "Herbalism.Skills.GTe.On",
             "Herbalism.Skills.GTe.Off",
             "Herbalism.Skills.GTe.Other.On",
@@ -49,7 +45,6 @@ public enum AbilityType {
             "Herbalism.Skills.GTe.Other.Off"),
 
     SKULL_SPLITTER(
-            "Axes.Skills.SS.Name",
             "Axes.Skills.SS.On",
             "Axes.Skills.SS.Off",
             "Axes.Skills.SS.Other.On",
@@ -57,7 +52,6 @@ public enum AbilityType {
             "Axes.Skills.SS.Other.Off"),
 
     TREE_FELLER(
-            "Woodcutting.Skills.TreeFeller.Name",
             "Woodcutting.Skills.TreeFeller.On",
             "Woodcutting.Skills.TreeFeller.Off",
             "Woodcutting.Skills.TreeFeller.Other.On",
@@ -65,7 +59,6 @@ public enum AbilityType {
             "Woodcutting.Skills.TreeFeller.Other.Off"),
 
     SERRATED_STRIKES(
-            "Swords.Skills.SS.Name",
             "Swords.Skills.SS.On",
             "Swords.Skills.SS.Off",
             "Swords.Skills.SS.Other.On",
@@ -76,7 +69,6 @@ public enum AbilityType {
      * Has cooldown - but has to share a skill with Super Breaker, so needs special treatment
      */
     BLAST_MINING(
-            "Mining.Blast.Name",
             null,
             null,
             "Mining.Blast.Other.On",
@@ -86,26 +78,13 @@ public enum AbilityType {
     /**
      * No cooldown - always active
      */
-    LEAF_BLOWER(
-            null,
-            null,
-            null,
-            null,
-            null,
-            null),
+    LEAF_BLOWER,
 
     /**
      * Not a first-class Ability - part of Berserk
      */
-    BLOCK_CRACKER(
-            null,
-            null,
-            null,
-            null,
-            null,
-            null);
+    BLOCK_CRACKER;
 
-    private String abilityName;
     private String abilityOn;
     private String abilityOff;
     private String abilityPlayer;
@@ -115,31 +94,18 @@ public enum AbilityType {
     /**
      * Those abilities that have a cooldown saved to the database.
      */
-    public static final List<AbilityType> NORMAL_ABILITIES;
+    public static final List<AbilityType> NORMAL_ABILITIES = ImmutableList.of(BERSERK, BLAST_MINING, GIGA_DRILL_BREAKER, GREEN_TERRA, SERRATED_STRIKES, SKULL_SPLITTER, SUPER_BREAKER, TREE_FELLER);
+
     /**
      * Those abilities that do not have a cooldown saved to the database.
      */
-    public static final List<AbilityType> NON_NORMAL_ABILITIES;
+    public static final List<AbilityType> NON_NORMAL_ABILITIES = ImmutableList.of(BLOCK_CRACKER, LEAF_BLOWER);
 
-    static {
-        NORMAL_ABILITIES = ImmutableList.of(
-                BERSERK,
-                SUPER_BREAKER,
-                GIGA_DRILL_BREAKER,
-                GREEN_TERRA,
-                SKULL_SPLITTER,
-                TREE_FELLER,
-                SERRATED_STRIKES,
-                BLAST_MINING
-                );
-        NON_NORMAL_ABILITIES = ImmutableList.of(
-                LEAF_BLOWER,
-                BLOCK_CRACKER
-                );
+    private AbilityType() {
+        this(null, null, null, null, null);
     }
 
-    private AbilityType(String abilityName, String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
-        this.abilityName = abilityName;
+    private AbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
         this.abilityOn = abilityOn;
         this.abilityOff = abilityOff;
         this.abilityPlayer = abilityPlayer;
@@ -153,17 +119,6 @@ public enum AbilityType {
 
     public int getMaxLength() {
         return Config.getInstance().getMaxLength(this);
-    }
-
-    /**
-     * May return null
-     * @return ability name, or null if unavailable
-     */
-    public String getAbilityName() {
-        if (this.abilityName == null) {
-            return null;
-        }
-        return LocaleLoader.getString(this.abilityName);
     }
 
     public String getAbilityOn() {
@@ -186,9 +141,8 @@ public enum AbilityType {
         return LocaleLoader.getString(this.abilityRefresh);
     }
 
-    public String getConfigString() {
-        // If toString() changes, place old code here to not break config.yml
-        return this.toString();
+    public String getName() {
+        return StringUtils.getPrettyAbilityString(this);
     }
 
     @Override

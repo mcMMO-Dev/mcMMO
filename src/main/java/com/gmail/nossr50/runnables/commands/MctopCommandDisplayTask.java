@@ -22,7 +22,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
     private final int page;
     private final boolean useBoard, useChat;
 
-    /*package-private*/ MctopCommandDisplayTask(List<PlayerStat> userStats, int page, SkillType skill, CommandSender sender, boolean useBoard, boolean useChat) {
+    MctopCommandDisplayTask(List<PlayerStat> userStats, int page, SkillType skill, CommandSender sender, boolean useBoard, boolean useChat) {
         this.userStats = userStats;
         this.page = page;
         this.skill = skill;
@@ -36,9 +36,11 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
         if (useBoard) {
             displayBoard();
         }
+
         if (useChat) {
             displayChat();
         }
+
         sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
     }
 
@@ -47,7 +49,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getSkillName()));
+            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName()));
         }
 
         int place = (page * 10) - 9;

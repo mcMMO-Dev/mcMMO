@@ -28,8 +28,12 @@ public class McstatsCommand implements TabExecutor {
 
                 if (Config.getInstance().getStatsUseBoard()) {
                     ScoreboardManager.enablePlayerStatsScoreboard(player);
-                    if (!Config.getInstance().getStatsUseChat()) return true;
+
+                    if (!Config.getInstance().getStatsUseChat()) {
+                        return true;
+                    }
                 }
+
                 player.sendMessage(LocaleLoader.getString("Stats.Own.Stats"));
                 player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
 

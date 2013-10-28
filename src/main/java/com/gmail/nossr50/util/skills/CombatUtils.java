@@ -224,7 +224,7 @@ public final class CombatUtils {
                     return;
                 }
 
-                if (Permissions.skillEnabled(player, SkillType.SWORDS)) {
+                if (SkillType.SWORDS.getPermissions(player)) {
                     processSwordCombat(target, player, event.getDamage());
                 }
             }
@@ -233,7 +233,7 @@ public final class CombatUtils {
                     return;
                 }
 
-                if (Permissions.skillEnabled(player, SkillType.AXES)) {
+                if (SkillType.AXES.getPermissions(player)) {
                     processAxeCombat(target, player, event);
                 }
             }
@@ -242,7 +242,7 @@ public final class CombatUtils {
                     return;
                 }
 
-                if (Permissions.skillEnabled(player, SkillType.UNARMED)) {
+                if (SkillType.UNARMED.getPermissions(player)) {
                     processUnarmedCombat(target, player, event);
                 }
             }
@@ -260,7 +260,7 @@ public final class CombatUtils {
             if (tamer != null && tamer instanceof Player && shouldProcessSkill(target, SkillType.TAMING)) {
                 Player master = (Player) tamer;
 
-                if (!Misc.isNPCEntity(master) && Permissions.skillEnabled(master, SkillType.TAMING)) {
+                if (!Misc.isNPCEntity(master) && SkillType.TAMING.getPermissions(master)) {
                     processTamingCombat(target, master, wolf, event);
                 }
             }
@@ -272,7 +272,7 @@ public final class CombatUtils {
             if (shooter != null && shooter instanceof Player && shouldProcessSkill(target, SkillType.ARCHERY)) {
                 Player player = (Player) shooter;
 
-                if (!Misc.isNPCEntity(player) && Permissions.skillEnabled(player, SkillType.ARCHERY)) {
+                if (!Misc.isNPCEntity(player) && SkillType.ARCHERY.getPermissions(player)) {
                     processArcheryCombat(target, player, event, arrow);
                 }
             }

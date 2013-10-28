@@ -3,7 +3,6 @@ package com.gmail.nossr50.util.commands;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,7 +13,6 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -98,9 +96,10 @@ public final class CommandUtils {
             return true;
         }
 
-        OfflinePlayer player = Bukkit.getOfflinePlayer(playerName);
-        if (!player.hasPlayedBefore()) {
-            sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
+        PlayerProfile profile = new PlayerProfile(playerName, false);
+
+        if (unloadedProfile(sender, profile)) {
+            return false;
         }
 
         sender.sendMessage(LocaleLoader.getString("Commands.DoesNotExist"));
@@ -208,7 +207,7 @@ public final class CommandUtils {
         displayData.add(header);
 
         for (SkillType skill : skillGroup) {
-            if (Permissions.skillEnabled(inspect, skill)) {
+            if (skill.getPermissions(inspect)) {
                 displayData.add(displaySkill(profile, skill));
             }
         }

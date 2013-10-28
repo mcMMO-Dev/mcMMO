@@ -91,7 +91,7 @@ public class InventoryListener implements Listener {
 
         Player player = Misc.getPlayerFromFurnace(furnaceBlock);
 
-        if (Misc.isNPCEntity(player) || !Permissions.skillEnabled(player, SkillType.SMELTING)) {
+        if (Misc.isNPCEntity(player) || !SkillType.SMELTING.getPermissions(player)) {
             return;
         }
 

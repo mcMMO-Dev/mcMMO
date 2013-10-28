@@ -45,7 +45,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     public SkillCommand(SkillType skill) {
         this.skill = skill;
-        skillName = skill.getSkillName();
+        skillName = skill.getName();
         skillGuideCommand = new SkillGuideCommand(skill);
     }
 
@@ -77,7 +77,6 @@ public abstract class SkillCommand implements TabExecutor {
                     player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
                     player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
                     player.sendMessage(LocaleLoader.getString("Effects.Level", (int) skillValue, profile.getSkillXpLevel(skill), profile.getXpToLevel(skill)));
-
                 }
                 else {
                     player.sendMessage(LocaleLoader.getString("Skills.Header", skillName + " " + LocaleLoader.getString("Skills.Child")));
@@ -88,7 +87,7 @@ public abstract class SkillCommand implements TabExecutor {
                     Set<SkillType> parents = FamilyTree.getParents(skill);
 
                     for (SkillType parent : parents) {
-                        player.sendMessage(parent.getSkillName() + " - " + LocaleLoader.getString("Effects.Level", profile.getSkillLevel(parent), profile.getSkillXpLevel(parent), profile.getXpToLevel(parent)));
+                        player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", profile.getSkillLevel(parent), profile.getSkillXpLevel(parent), profile.getXpToLevel(parent)));
                     }
                 }
 

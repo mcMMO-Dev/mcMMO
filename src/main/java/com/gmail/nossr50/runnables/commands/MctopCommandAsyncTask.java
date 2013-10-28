@@ -20,7 +20,11 @@ public class MctopCommandAsyncTask extends BukkitRunnable {
     public MctopCommandAsyncTask(int page, SkillType skill, CommandSender sender, boolean useBoard, boolean useChat) {
         Validate.isTrue(useBoard || useChat, "Attempted to start a rank retrieval with both board and chat off");
         Validate.notNull(sender, "Attempted to start a rank retrieval with no recipient");
-        if (useBoard) Validate.isTrue(sender instanceof Player, "Attempted to start a rank retrieval displaying scoreboard to a non-player");
+
+        if (useBoard) {
+            Validate.isTrue(sender instanceof Player, "Attempted to start a rank retrieval displaying scoreboard to a non-player");
+        }
+
         this.page = page;
         this.skill = skill;
         this.sender = sender;

@@ -156,19 +156,19 @@ public class BlockListener implements Listener {
              * We don't check the block store here because herbalism has too many unusual edge cases.
              * Instead, we check it inside the drops handler.
              */
-            if (Permissions.skillEnabled(player, SkillType.HERBALISM)) {
+            if (SkillType.HERBALISM.getPermissions(player)) {
                 herbalismManager.herbalismBlockCheck(blockState);
             }
         }
 
         /* MINING */
-        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && Permissions.skillEnabled(player, SkillType.MINING) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && SkillType.MINING.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             MiningManager miningManager = mcMMOPlayer.getMiningManager();
             miningManager.miningBlockCheck(blockState);
         }
 
         /* WOOD CUTTING */
-        else if (BlockUtils.isLog(blockState) && Permissions.skillEnabled(player, SkillType.WOODCUTTING) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.isLog(blockState) && SkillType.WOODCUTTING.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             WoodcuttingManager woodcuttingManager = mcMMOPlayer.getWoodcuttingManager();
 
             if (woodcuttingManager.canUseTreeFeller(heldItem)) {
@@ -180,7 +180,7 @@ public class BlockListener implements Listener {
         }
 
         /* EXCAVATION */
-        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && Permissions.skillEnabled(player, SkillType.EXCAVATION) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && SkillType.EXCAVATION.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             ExcavationManager excavationManager = mcMMOPlayer.getExcavationManager();
             excavationManager.excavationBlockCheck(blockState);
 

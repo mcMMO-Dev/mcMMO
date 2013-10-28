@@ -18,7 +18,11 @@ public class McrankCommandAsyncTask extends BukkitRunnable {
     public McrankCommandAsyncTask(String playerName, CommandSender sender, boolean useBoard, boolean useChat) {
         Validate.isTrue(useBoard || useChat, "Attempted to start a rank retrieval with both board and chat off");
         Validate.notNull(sender, "Attempted to start a rank retrieval with no recipient");
-        if (useBoard) Validate.isTrue(sender instanceof Player, "Attempted to start a rank retrieval displaying scoreboard to a non-player");
+
+        if (useBoard) {
+            Validate.isTrue(sender instanceof Player, "Attempted to start a rank retrieval displaying scoreboard to a non-player");
+        }
+
         this.playerName = playerName;
         this.sender = sender;
         this.useBoard = useBoard;
