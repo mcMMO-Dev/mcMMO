@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.4.08-dev
+ + Added the possibility to gain experience when using Fishing "Shake"
 
 Version 1.4.07
  + Added XP boost to Acrobatics when wearing Boots of Feather Falling

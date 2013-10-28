@@ -75,6 +75,7 @@ Experience:
         FeatherFall_Multiplier: 2.0
     Fishing:
         Base: 800
+        Shake: 50
     Excavation:
         Clay: 40
         Dirt: 40

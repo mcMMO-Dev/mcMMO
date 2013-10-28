@@ -102,6 +102,10 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
             reason.add("Experience.Fishing.Base should be greater than 0!");
         }
 
+        if (getFishingShakeXP() <= 0) {
+            reason.add("Experience.Fishing.Shake should be greater than 0!");
+        }
+
         /* Repair */
         if (getRepairXPBase() <= 0) {
             reason.add("Experience.Repair.Base should be greater than 0!");
@@ -197,6 +201,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
 
     /* Fishing */
     public int getFishingBaseXP() { return config.getInt("Experience.Fishing.Base", 800); }
+    public int getFishingShakeXP() { return config.getInt("Experience.Fishing.Shake", 50); }
 
     /* Repair */
     public double getRepairXPBase() { return config.getDouble("Experience.Repair.Base", 1000.0); }
