@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -37,7 +36,6 @@ import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
-import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
@@ -77,13 +75,7 @@ public class McMMOPlayer {
     private boolean displaySkillNotifications = true;
 
     private boolean abilityUse = true;
-    private boolean placedRepairAnvil;
-    private int     lastRepairClick;
-    private boolean placedSalvageAnvil;
-    private int     lastSalvageClick;
     private boolean godMode;
-
-    private Location hookLocation;
 
     private final Map<AbilityType, Boolean> abilityMode     = new HashMap<AbilityType, Boolean>();
     private final Map<AbilityType, Boolean> abilityInformed = new HashMap<AbilityType, Boolean>();
@@ -435,68 +427,6 @@ public class McMMOPlayer {
     }
 
     /*
-     * Repair Anvil Placement
-     */
-
-    public boolean getPlacedAnvil(Material anvilType) {
-        if (anvilType == Repair.repairAnvilMaterial) {
-            return placedRepairAnvil;
-        }
-
-        if (anvilType == Repair.salvageAnvilMaterial) {
-            return placedSalvageAnvil;
-        }
-
-        return true;
-    }
-
-    public void togglePlacedAnvil(Material anvilType) {
-        if (anvilType == Repair.repairAnvilMaterial) {
-            placedRepairAnvil = !placedRepairAnvil;
-        }
-
-        if (anvilType == Repair.salvageAnvilMaterial) {
-            placedSalvageAnvil = !placedSalvageAnvil;
-        }
-    }
-
-    /*
-     * Repair Anvil Usage
-     */
-
-    public int getLastAnvilUse(Material anvilType) {
-        if (anvilType == Repair.repairAnvilMaterial) {
-            return lastRepairClick;
-        }
-
-        if (anvilType == Repair.salvageAnvilMaterial) {
-            return lastSalvageClick;
-        }
-
-        return 0;
-    }
-
-    public void setLastAnvilUse(Material anvilType, int value) {
-        if (anvilType == Repair.repairAnvilMaterial) {
-            lastRepairClick = value;
-        }
-
-        if (anvilType == Repair.salvageAnvilMaterial) {
-            lastSalvageClick = value;
-        }
-    }
-
-    public void actualizeLastAnvilUse(Material anvilType) {
-        if (anvilType == Repair.repairAnvilMaterial) {
-            lastRepairClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-        }
-
-        if (anvilType == Repair.salvageAnvilMaterial) {
-            lastSalvageClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-        }
-    }
-
-    /*
      * God Mode
      */
 
@@ -506,18 +436,6 @@ public class McMMOPlayer {
 
     public void toggleGodMode() {
         godMode = !godMode;
-    }
-
-    /*
-     * Fishing: Master Angler
-     */
-
-    public Location getHookLocation() {
-        return hookLocation;
-    }
-
-    public void setHookLocation(Location hookLocation) {
-        this.hookLocation = hookLocation;
     }
 
     /*

@@ -25,10 +25,14 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class RepairManager extends SkillManager {
+    private boolean placedRepairAnvil;
+    private int     lastRepairClick;
+    private boolean placedSalvageAnvil;
+    private int     lastSalvageClick;
+
     public RepairManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.REPAIR);
     }
@@ -41,14 +45,14 @@ public class RepairManager extends SkillManager {
     public void placedAnvilCheck(Material anvilType) {
         Player player = getPlayer();
 
-        if (mcMMOPlayer.getPlacedAnvil(anvilType)) {
+        if (getPlacedAnvil(anvilType)) {
             return;
         }
 
         player.sendMessage(Repair.getAnvilMessage(anvilType));
 
         player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-        mcMMOPlayer.togglePlacedAnvil(anvilType);
+        togglePlacedAnvil(anvilType);
     }
 
     public void handleRepair(ItemStack item) {
@@ -176,8 +180,7 @@ public class RepairManager extends SkillManager {
      */
     public boolean checkConfirmation(Material anvilType, boolean actualize) {
         Player player = getPlayer();
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        long lastUse = mcMMOPlayer.getLastAnvilUse(anvilType);
+        long lastUse = getLastAnvilUse(anvilType);
 
         if (!SkillUtils.cooldownExpired(lastUse, 3) || !Config.getInstance().getRepairConfirmRequired()) {
             return true;
@@ -187,7 +190,7 @@ public class RepairManager extends SkillManager {
             return false;
         }
 
-        mcMMOPlayer.actualizeLastAnvilUse(anvilType);
+        actualizeLastAnvilUse(anvilType);
 
         if (anvilType == Repair.repairAnvilMaterial) {
             player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Repair.Pretty.Name")));
@@ -346,6 +349,68 @@ public class RepairManager extends SkillManager {
         }
         else {
             player.sendMessage(LocaleLoader.getString("Repair.Arcane.Perfect"));
+        }
+    }
+
+    /*
+     * Repair Anvil Placement
+     */
+
+    public boolean getPlacedAnvil(Material anvilType) {
+        if (anvilType == Repair.repairAnvilMaterial) {
+            return placedRepairAnvil;
+        }
+
+        if (anvilType == Repair.salvageAnvilMaterial) {
+            return placedSalvageAnvil;
+        }
+
+        return true;
+    }
+
+    public void togglePlacedAnvil(Material anvilType) {
+        if (anvilType == Repair.repairAnvilMaterial) {
+            placedRepairAnvil = !placedRepairAnvil;
+        }
+
+        if (anvilType == Repair.salvageAnvilMaterial) {
+            placedSalvageAnvil = !placedSalvageAnvil;
+        }
+    }
+
+    /*
+     * Repair Anvil Usage
+     */
+
+    public int getLastAnvilUse(Material anvilType) {
+        if (anvilType == Repair.repairAnvilMaterial) {
+            return lastRepairClick;
+        }
+
+        if (anvilType == Repair.salvageAnvilMaterial) {
+            return lastSalvageClick;
+        }
+
+        return 0;
+    }
+
+    public void setLastAnvilUse(Material anvilType, int value) {
+        if (anvilType == Repair.repairAnvilMaterial) {
+            lastRepairClick = value;
+        }
+
+        if (anvilType == Repair.salvageAnvilMaterial) {
+            lastSalvageClick = value;
+        }
+    }
+
+    public void actualizeLastAnvilUse(Material anvilType) {
+        if (anvilType == Repair.repairAnvilMaterial) {
+            lastRepairClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+        }
+
+        if (anvilType == Repair.salvageAnvilMaterial) {
+            lastSalvageClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
         }
     }
 }

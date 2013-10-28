@@ -84,7 +84,11 @@ public class FishingCommand extends SkillCommand {
         // MASTER ANGLER
         if (canMasterAngler) {
             double rawBiteChance = 1.0 / (isStorming ? 300 : 500);
-            Location location = (mcMMOPlayer.getHookLocation() != null) ? mcMMOPlayer.getHookLocation() : player.getLocation();
+            Location location = mcMMOPlayer.getFishingManager().getHookLocation();
+
+            if (location == null) {
+                location = player.getLocation();
+            }
 
             Biome biome = location.getBlock().getBiome();
 

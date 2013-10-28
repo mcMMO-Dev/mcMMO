@@ -465,7 +465,7 @@ public class PlayerListener implements Listener {
 
                         // Cancel repairing an enchanted item
                         if (repairManager.checkConfirmation(type, false) && Config.getInstance().getRepairConfirmRequired()) {
-                            mcMMOPlayer.setLastAnvilUse(Repair.repairAnvilMaterial, 0);
+                            repairManager.setLastAnvilUse(Repair.repairAnvilMaterial, 0);
                             player.sendMessage(LocaleLoader.getString("Skills.Cancelled", LocaleLoader.getString("Repair.Pretty.Name")));
                         }
                     }
@@ -475,7 +475,7 @@ public class PlayerListener implements Listener {
 
                         // Cancel salvaging an enchanted item
                         if (repairManager.checkConfirmation(type, false) && Config.getInstance().getRepairConfirmRequired()) {
-                            mcMMOPlayer.setLastAnvilUse(Repair.salvageAnvilMaterial, 0);
+                            repairManager.setLastAnvilUse(Repair.salvageAnvilMaterial, 0);
                             player.sendMessage(LocaleLoader.getString("Skills.Cancelled", LocaleLoader.getString("Salvage.Pretty.Name")));
                         }
                     }

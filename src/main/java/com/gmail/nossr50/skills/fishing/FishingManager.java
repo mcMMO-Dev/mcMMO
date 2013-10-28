@@ -67,6 +67,7 @@ public class FishingManager extends SkillManager {
     private long fishingTimestamp = 0L;
     private Location fishingTarget;
     private Item fishingCatch;
+    private Location hookLocation;
 
     public FishingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.FISHING);
@@ -281,7 +282,7 @@ public class FishingManager extends SkillManager {
         Biome biome = location.getBlock().getBiome();
         double biteChance = hook.getBiteChance();
 
-        mcMMOPlayer.setHookLocation(location);
+        hookLocation = location;
 
         if (biome == Biome.RIVER || biome == Biome.OCEAN) {
             biteChance = biteChance * AdvancedConfig.getInstance().getMasterAnglerBiomeModifier();
@@ -360,6 +361,10 @@ public class FishingManager extends SkillManager {
      */
     public int handleVanillaXpBoost(int experience) {
         return experience * getVanillaXpMultiplier();
+    }
+
+    public Location getHookLocation() {
+        return hookLocation;
     }
 
     /**
