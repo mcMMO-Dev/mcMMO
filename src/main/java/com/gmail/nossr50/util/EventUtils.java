@@ -105,7 +105,7 @@ public class EventUtils {
         teleportingPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Player", targetPlayer.getName()));
         targetPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Target", teleportingPlayer.getName()));
 
-        mcMMOPlayer.actualizePtpLastUse();
+        mcMMOPlayer.getPartyTeleportRecord().actualizeLastUse();
     }
 
     public static boolean handleXpGainEvent(Player player, SkillType skill, float xpGained) {

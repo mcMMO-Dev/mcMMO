@@ -3,9 +3,8 @@ package com.gmail.nossr50.commands.party.teleport;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
@@ -18,17 +17,16 @@ public class PtpToggleCommand implements CommandExecutor {
             return true;
         }
 
-        Player player = (Player) sender;
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        PartyTeleportRecord ptpRecord = UserManager.getPlayer(sender.getName()).getPartyTeleportRecord();
 
-        if (mcMMOPlayer.getPtpEnabled()) {
-            player.sendMessage(LocaleLoader.getString("Commands.ptp.Disabled"));
+        if (ptpRecord.isEnabled()) {
+            sender.sendMessage(LocaleLoader.getString("Commands.ptp.Disabled"));
         }
         else {
-            player.sendMessage(LocaleLoader.getString("Commands.ptp.Enabled"));
+            sender.sendMessage(LocaleLoader.getString("Commands.ptp.Enabled"));
         }
 
-        mcMMOPlayer.togglePtpUse();
+        ptpRecord.toggleEnabled();
         return true;
     }
 }

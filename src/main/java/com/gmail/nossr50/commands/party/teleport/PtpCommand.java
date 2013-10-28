@@ -13,6 +13,7 @@ import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
@@ -77,7 +78,7 @@ public class PtpCommand implements TabExecutor {
                 }
 
                 int ptpCooldown = Config.getInstance().getPTPCommandCooldown();
-                long ptpLastUse = mcMMOPlayer.getPtpLastUse();
+                long ptpLastUse = mcMMOPlayer.getPartyTeleportRecord().getLastUse();
 
                 if (ptpCooldown > 0) {
                     int timeRemaining = SkillUtils.calculateTimeLeft(ptpLastUse * Misc.TIME_CONVERSION_FACTOR, ptpCooldown, player);
@@ -118,13 +119,15 @@ public class PtpCommand implements TabExecutor {
             return;
         }
 
-        if (!mcMMOTarget.getPtpConfirmRequired()) {
+        PartyTeleportRecord ptpRecord = mcMMOTarget.getPartyTeleportRecord();
+
+        if (!ptpRecord.isConfirmRequired()) {
             handleTeleportWarmup(player, target);
             return;
         }
 
-        mcMMOTarget.setPtpRequest(player);
-        mcMMOTarget.actualizePtpTimeout();
+        ptpRecord.setRequestor(player);
+        ptpRecord.actualizeTimeout();
 
         player.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));
 
@@ -151,7 +154,7 @@ public class PtpCommand implements TabExecutor {
             return false;
         }
 
-        if (!mcMMOTarget.getPtpEnabled()) {
+        if (!mcMMOTarget.getPartyTeleportRecord().isEnabled()) {
             player.sendMessage(LocaleLoader.getString("Party.Teleport.Disabled", targetName));
             return false;
         }

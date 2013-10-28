@@ -19,6 +19,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
@@ -69,11 +70,7 @@ public class McMMOPlayer {
     private Party   invite;
     private int     itemShareModifier;
 
-    private Player  ptpRequest;
-    private boolean ptpEnabled = true;
-    private boolean ptpConfirmRequired = Config.getInstance().getPTPCommandConfirmRequired();
-    private long    ptpTimeout;
-    private int     ptpLastUse;
+    private PartyTeleportRecord ptpRecord;
 
     private boolean partyChatMode;
     private boolean adminChatMode;
@@ -109,6 +106,7 @@ public class McMMOPlayer {
         this.player = player;
         profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, true);
         party = PartyManager.getPlayerParty(playerName);
+        ptpRecord = new PartyTeleportRecord();
 
         /*
          * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
@@ -708,53 +706,57 @@ public class McMMOPlayer {
         invite = null;
     }
 
-    public boolean getPtpEnabled() {
-        return ptpEnabled;
+    public PartyTeleportRecord getPartyTeleportRecord() {
+        return ptpRecord;
     }
 
-    public void togglePtpUse() {
-        ptpEnabled = !ptpEnabled;
-    }
-
-    public Player getPtpRequest() {
-        return ptpRequest;
-    }
-
-    public void setPtpRequest(Player ptpRequest) {
-        this.ptpRequest = ptpRequest;
-    }
-
-    public boolean hasPtpRequest() {
-        return (ptpRequest != null);
-    }
-
-    public void removePtpRequest() {
-        ptpRequest = null;
-    }
-
-    public boolean getPtpConfirmRequired() {
-        return ptpConfirmRequired;
-    }
-
-    public void togglePtpConfirmRequired() {
-        ptpConfirmRequired = !ptpConfirmRequired;
-    }
-
-    public int getPtpLastUse() {
-        return ptpLastUse;
-    }
-
-    public void actualizePtpLastUse() {
-        ptpLastUse = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-    }
-
-    public long getPtpTimeout() {
-        return ptpTimeout;
-    }
-
-    public void actualizePtpTimeout() {
-        ptpTimeout = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-    }
+//    public boolean getPtpEnabled() {
+//        return ptpEnabled;
+//    }
+//
+//    public void togglePtpUse() {
+//        ptpEnabled = !ptpEnabled;
+//    }
+//
+//    public Player getPtpRequest() {
+//        return ptpRequest;
+//    }
+//
+//    public void setPtpRequest(Player ptpRequest) {
+//        this.ptpRequest = ptpRequest;
+//    }
+//
+//    public boolean hasPtpRequest() {
+//        return (ptpRequest != null);
+//    }
+//
+//    public void removePtpRequest() {
+//        ptpRequest = null;
+//    }
+//
+//    public boolean getPtpConfirmRequired() {
+//        return ptpConfirmRequired;
+//    }
+//
+//    public void togglePtpConfirmRequired() {
+//        ptpConfirmRequired = !ptpConfirmRequired;
+//    }
+//
+//    public int getPtpLastUse() {
+//        return ptpLastUse;
+//    }
+//
+//    public void actualizePtpLastUse() {
+//        ptpLastUse = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+//    }
+//
+//    public long getPtpTimeout() {
+//        return ptpTimeout;
+//    }
+//
+//    public void actualizePtpTimeout() {
+//        ptpTimeout = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+//    }
 
     public int getItemShareModifier() {
         if (itemShareModifier < 10) {
