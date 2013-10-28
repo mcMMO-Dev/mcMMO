@@ -96,9 +96,7 @@ public final class CommandUtils {
             return true;
         }
 
-        PlayerProfile profile = new PlayerProfile(playerName, false);
-
-        if (unloadedProfile(sender, profile)) {
+        if (unloadedProfile(sender, mcMMOPlayer.getProfile())) {
             return false;
         }
 

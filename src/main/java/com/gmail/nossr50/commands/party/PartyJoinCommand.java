@@ -14,25 +14,22 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyJoinCommand implements CommandExecutor {
-    private McMMOPlayer mcMMOTarget;
-    private Player target;
-    private Party targetParty;
-
     private McMMOPlayer mcMMOPlayer;
     private Player player;
+    private Party targetParty;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
             case 3:
+                player = (Player) sender;
+                mcMMOPlayer = UserManager.getPlayer(player);
+
                 // Verify target exists and is in a different party than the player
                 if (!canJoinParty(sender, args[1])) {
                     return true;
                 }
-
-                mcMMOPlayer = UserManager.getPlayer((Player) sender);
-                player = mcMMOPlayer.getPlayer();
 
                 String password = getPassword(args);
 
@@ -67,25 +64,21 @@ public class PartyJoinCommand implements CommandExecutor {
     }
 
     private boolean canJoinParty(CommandSender sender, String targetName) {
-        targetName = Misc.getMatchedPlayerName(targetName);
-        mcMMOTarget = UserManager.getPlayer(targetName);
-
-        if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
+        // Short-circuit for joining your own party
+        if (sender.getName().equalsIgnoreCase(targetName)) {
+            sender.sendMessage(LocaleLoader.getString("Party.Join.Self"));
             return false;
         }
 
-        target = mcMMOTarget.getPlayer();
+        targetParty = PartyManager.getPlayerParty(targetName);
 
-        if (!mcMMOTarget.inParty()) {
+        if (targetParty == null) {
             sender.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", targetName));
             return false;
         }
 
-        player = (Player) sender;
-        mcMMOPlayer = UserManager.getPlayer(player);
-        targetParty = mcMMOTarget.getParty();
-
-        if (player.equals(target) || (mcMMOPlayer.inParty() && mcMMOPlayer.getParty().equals(targetParty))) {
+        // Can't join your own party
+        if (mcMMOPlayer.inParty() && mcMMOPlayer.getParty().equals(targetParty)) {
             sender.sendMessage(LocaleLoader.getString("Party.Join.Self"));
             return false;
         }
