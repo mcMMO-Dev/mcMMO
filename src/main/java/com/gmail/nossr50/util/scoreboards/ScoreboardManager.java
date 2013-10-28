@@ -58,7 +58,7 @@ public class ScoreboardManager {
             List<ChatColor> colors = new ArrayList<ChatColor>();
 
             for (ChatColor color : ChatColor.values()) {
-                if (color.isColor()) {
+                if (color.isColor() && color != ChatColor.BLACK) {
                     colors.add(color);
                 }
             }
