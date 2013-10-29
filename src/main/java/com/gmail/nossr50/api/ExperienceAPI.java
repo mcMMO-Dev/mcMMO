@@ -582,18 +582,7 @@ public final class ExperienceAPI {
     private static void addOfflineXP(String playerName, SkillType skill, int XP) {
         PlayerProfile profile = getOfflineProfile(playerName);
 
-        if (skill.isChildSkill()) {
-            Set<SkillType> parentSkills = FamilyTree.getParents(skill);
-
-            for (SkillType parentSkill : parentSkills) {
-                profile.setSkillXpLevel(parentSkill, profile.getSkillLevel(parentSkill) + (XP / parentSkills.size()));
-            }
-
-            profile.save();
-            return;
-        }
-
-        profile.setSkillXpLevel(skill, profile.getSkillXpLevel(skill) + XP);
+        profile.addExperience(skill, XP);
         profile.save();
     }
 

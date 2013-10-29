@@ -13,8 +13,7 @@ import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public class FormulaManager {
-    private static String formulaFilePath = mcMMO.getFlatFileDirectory() + "formula.yml";
-    private static File formulaFile = new File(formulaFilePath);
+    private static File formulaFile = new File(mcMMO.getFlatFileDirectory() + "formula.yml");
 
     // Experience needed to reach a level, cached values to improve conversion speed
     private final Map<Integer, Integer> experienceNeededLinear = new HashMap<Integer, Integer>();
@@ -115,7 +114,6 @@ public class FormulaManager {
         double exponent = ExperienceConfig.getInstance().getExponent(formulaType);
 
         switch (formulaType) {
-            case UNKNOWN:
             case LINEAR:
                 if (!experienceNeededLinear.containsKey(level)) {
                     experience = (int) Math.floor(base + level * multiplier);
@@ -146,21 +144,14 @@ public class FormulaManager {
             return;
         }
 
-        YamlConfiguration formulasFile = YamlConfiguration.loadConfiguration(formulaFile);
-
-        previousFormula = FormulaType.getFormulaType(formulasFile.getString("Previous_Formula", "UNKNOWN"));
+        previousFormula = FormulaType.getFormulaType(YamlConfiguration.loadConfiguration(formulaFile).getString("Previous_Formula", "UNKNOWN"));
     }
 
     /**
      * Save formula file.
      */
     public void saveFormula() {
-        if (formulaFile.exists()) {
-            formulaFile.delete();
-        }
-
         YamlConfiguration formulasFile = new YamlConfiguration();
-
         formulasFile.set("Previous_Formula", previousFormula.toString());
 
         try {

@@ -139,14 +139,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + ", herbalism = ?, excavation = ?, swords = ?"
                     + ", axes = ?, blast_mining = ? WHERE user_id = ?",
                 userId,
-                profile.getSkillDATS(AbilityType.SUPER_BREAKER),
-                profile.getSkillDATS(AbilityType.TREE_FELLER),
-                profile.getSkillDATS(AbilityType.BERSERK),
-                profile.getSkillDATS(AbilityType.GREEN_TERRA),
-                profile.getSkillDATS(AbilityType.GIGA_DRILL_BREAKER),
-                profile.getSkillDATS(AbilityType.SERRATED_STRIKES),
-                profile.getSkillDATS(AbilityType.SKULL_SPLITTER),
-                profile.getSkillDATS(AbilityType.BLAST_MINING));
+                profile.getAbilityDATS(AbilityType.SUPER_BREAKER),
+                profile.getAbilityDATS(AbilityType.TREE_FELLER),
+                profile.getAbilityDATS(AbilityType.BERSERK),
+                profile.getAbilityDATS(AbilityType.GREEN_TERRA),
+                profile.getAbilityDATS(AbilityType.GIGA_DRILL_BREAKER),
+                profile.getAbilityDATS(AbilityType.SERRATED_STRIKES),
+                profile.getAbilityDATS(AbilityType.SKULL_SPLITTER),
+                profile.getAbilityDATS(AbilityType.BLAST_MINING));
         success &= saveIntegers(
                 "UPDATE " + tablePrefix + "skills SET "
                     + " taming = ?, mining = ?, repair = ?, woodcutting = ?"

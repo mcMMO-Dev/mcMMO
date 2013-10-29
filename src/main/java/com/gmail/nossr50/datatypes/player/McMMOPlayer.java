@@ -538,31 +538,29 @@ public class McMMOPlayer {
      * @param skillType The skill to check
      */
     private void checkXp(SkillType skillType) {
+        if (profile.getSkillXpLevelRaw(skillType) < profile.getXpToLevel(skillType)) {
+            return;
+        }
+
         int levelsGained = 0;
         float xpRemoved = 0;
 
-        if (profile.getSkillXpLevelRaw(skillType) >= profile.getXpToLevel(skillType)) {
-            while (profile.getSkillXpLevelRaw(skillType) >= profile.getXpToLevel(skillType)) {
-                if ((skillType.getMaxLevel() >= profile.getSkillLevel(skillType) + 1) && (Config.getInstance().getPowerLevelCap() >= getPowerLevel() + 1)) {
-                    int xp = profile.getXpToLevel(skillType);
-                    xpRemoved += xp;
-
-                    profile.removeXp(skillType, xp);
-                    levelsGained++;
-                    profile.skillUp(skillType, 1);
-                }
-                else {
-                    profile.addLevels(skillType, 0); // This seems kinda pointless... why do we have this again?
-                }
+        while (profile.getSkillXpLevelRaw(skillType) >= profile.getXpToLevel(skillType)) {
+            if (hasReachedLevelCap(skillType)) {
+                profile.setSkillXpLevel(skillType, 0);
+                break;
             }
 
-            if (!EventUtils.handleLevelChangeEvent(player, skillType, levelsGained, xpRemoved, true)) {
-                return;
-            }
-
-            player.playSound(player.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
-            player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(skillType.toString()) + ".Skillup", levelsGained, profile.getSkillLevel(skillType)));
+            xpRemoved += profile.levelUp(skillType);
+            levelsGained++;
         }
+
+        if (!EventUtils.handleLevelChangeEvent(player, skillType, levelsGained, xpRemoved, true)) {
+            return;
+        }
+
+        player.playSound(player.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+        player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(skillType.toString()) + ".Skillup", levelsGained, profile.getSkillLevel(skillType)));
     }
 
     /*
@@ -749,7 +747,7 @@ public class McMMOPlayer {
         SkillUtils.sendSkillMessage(player, ability.getAbilityPlayer(player));
 
         // Enable the ability
-        profile.setSkillDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
+        profile.setAbilityDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
         setAbilityMode(ability, true);
 
         if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
@@ -815,7 +813,11 @@ public class McMMOPlayer {
      * @return the number of seconds remaining before the cooldown expires
      */
     public int calculateTimeRemaining(AbilityType ability) {
-        long deactivatedTimestamp = profile.getSkillDATS(ability) * Misc.TIME_CONVERSION_FACTOR;
+        long deactivatedTimestamp = profile.getAbilityDATS(ability) * Misc.TIME_CONVERSION_FACTOR;
         return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
+    }
+
+    private boolean hasReachedLevelCap(SkillType skill) {
+        return (skill.getMaxLevel() < profile.getSkillLevel(skill) + 1) || (Config.getInstance().getPowerLevelCap() < getPowerLevel() + 1);
     }
 }
