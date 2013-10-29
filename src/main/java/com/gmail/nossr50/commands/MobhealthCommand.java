@@ -11,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.datatypes.MobHealthbarType;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -39,11 +38,9 @@ public class MobhealthCommand implements TabExecutor {
 
         switch (args.length) {
             case 1:
-                PlayerProfile playerProfile = UserManager.getPlayer((Player) sender).getProfile();
-
                 try {
                     MobHealthbarType type = MobHealthbarType.valueOf(args[0].toUpperCase().trim());
-                    playerProfile.setMobHealthbarType(type);
+                    UserManager.getPlayer((Player) sender).getProfile().setMobHealthbarType(type);
                     sender.sendMessage(LocaleLoader.getString("Commands.Healthbars.Changed." + type.name()));
                     return true;
                 }

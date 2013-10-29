@@ -184,7 +184,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getXP(Player player, String skillType) {
-        return UserManager.getPlayer(player).getProfile().getSkillXpLevel(getNonChildSkillType(skillType));
+        return UserManager.getPlayer(player).getSkillXpLevel(getNonChildSkillType(skillType));
     }
 
     /**
@@ -217,7 +217,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static float getXPRaw(Player player, String skillType) {
-        return UserManager.getPlayer(player).getProfile().getSkillXpLevelRaw(getNonChildSkillType(skillType));
+        return UserManager.getPlayer(player).getSkillXpLevelRaw(getNonChildSkillType(skillType));
     }
 
     /**
@@ -250,7 +250,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getXPToNextLevel(Player player, String skillType) {
-        return UserManager.getPlayer(player).getProfile().getXpToLevel(getNonChildSkillType(skillType));
+        return UserManager.getPlayer(player).getXpToLevel(getNonChildSkillType(skillType));
     }
 
     /**
@@ -323,7 +323,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      */
     public static void addLevel(Player player, String skillType, int levels) {
-        UserManager.getPlayer(player).getProfile().addLevels(getSkillType(skillType), levels);
+        UserManager.getPlayer(player).addLevels(getSkillType(skillType), levels);
     }
 
     /**
@@ -369,7 +369,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      */
     public static int getLevel(Player player, String skillType) {
-        return UserManager.getPlayer(player).getProfile().getSkillLevel(getSkillType(skillType));
+        return UserManager.getPlayer(player).getSkillLevel(getSkillType(skillType));
     }
 
     /**
@@ -492,7 +492,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      */
     public static void setLevel(Player player, String skillType, int skillLevel) {
-        UserManager.getPlayer(player).getProfile().modifySkill(getSkillType(skillType), skillLevel);
+        UserManager.getPlayer(player).modifySkill(getSkillType(skillType), skillLevel);
     }
 
     /**
@@ -524,7 +524,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static void setXP(Player player, String skillType, int newValue) {
-        UserManager.getPlayer(player).getProfile().setSkillXpLevel(getNonChildSkillType(skillType), newValue);
+        UserManager.getPlayer(player).setSkillXpLevel(getNonChildSkillType(skillType), newValue);
     }
 
     /**
@@ -557,7 +557,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static void removeXP(Player player, String skillType, int xp) {
-        UserManager.getPlayer(player).getProfile().removeXp(getNonChildSkillType(skillType), xp);
+        UserManager.getPlayer(player).removeXp(getNonChildSkillType(skillType), xp);
     }
 
     /**
@@ -582,7 +582,7 @@ public final class ExperienceAPI {
     private static void addOfflineXP(String playerName, SkillType skill, int XP) {
         PlayerProfile profile = getOfflineProfile(playerName);
 
-        profile.addExperience(skill, XP);
+        profile.addXp(skill, XP);
         profile.save();
     }
 

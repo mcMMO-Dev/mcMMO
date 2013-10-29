@@ -47,16 +47,13 @@ public class PlayerProfile {
         this.loaded = isLoaded;
     }
 
-    /**
-     * Calling this constructor is considered loading the profile.
-     */
-    public PlayerProfile(String playerName, Map<SkillType, Integer> argSkills, Map<SkillType, Float> argSkillsXp, Map<AbilityType, Integer> argSkillsDats, MobHealthbarType mobHealthbarType) {
+    public PlayerProfile(String playerName, Map<SkillType, Integer> levelData, Map<SkillType, Float> xpData, Map<AbilityType, Integer> cooldownData, MobHealthbarType mobHealthbarType) {
         this.playerName = playerName;
         this.mobHealthbarType = mobHealthbarType;
 
-        skills.putAll(argSkills);
-        skillsXp.putAll(argSkillsXp);
-        abilityDATS.putAll(argSkillsDats);
+        skills.putAll(levelData);
+        skillsXp.putAll(xpData);
+        abilityDATS.putAll(cooldownData);
 
         loaded = true;
     }
@@ -113,7 +110,7 @@ public class PlayerProfile {
      * @param ability The {@link AbilityType} to set the DATS for
      * @param DATS the DATS of the ability
      */
-    public void setAbilityDATS(AbilityType ability, long DATS) {
+    protected void setAbilityDATS(AbilityType ability, long DATS) {
         changed = true;
 
         abilityDATS.put(ability, (int) (DATS * .001D));
@@ -122,7 +119,7 @@ public class PlayerProfile {
     /**
      * Reset all ability cooldowns.
      */
-    public void resetCooldowns() {
+    protected void resetCooldowns() {
         changed = true;
 
         for (AbilityType ability : abilityDATS.keySet()) {
@@ -156,7 +153,7 @@ public class PlayerProfile {
         skillsXp.put(skill, xpLevel);
     }
 
-    public float levelUp(SkillType skill) {
+    protected float levelUp(SkillType skill) {
         float xpRemoved = getXpToLevel(skill);
 
         changed = true;
@@ -214,21 +211,21 @@ public class PlayerProfile {
      * Add Experience to a skill.
      *
      * @param skill Type of skill to add experience to
-     * @param experience Number of experience to add
+     * @param xp Number of experience to add
      */
-    public void addExperience(SkillType skill, float experience) {
+    public void addXp(SkillType skill, float xp) {
         changed = true;
 
         if (skill.isChildSkill()) {
             Set<SkillType> parentSkills = FamilyTree.getParents(skill);
-            float dividedXP = (experience / parentSkills.size());
+            float dividedXP = (xp / parentSkills.size());
 
             for (SkillType parentSkill : parentSkills) {
                 skillsXp.put(parentSkill, skillsXp.get(parentSkill) + dividedXP);
             }
         }
         else {
-            skillsXp.put(skill, skillsXp.get(skill) + experience);
+            skillsXp.put(skill, skillsXp.get(skill) + xp);
         }
     }
 

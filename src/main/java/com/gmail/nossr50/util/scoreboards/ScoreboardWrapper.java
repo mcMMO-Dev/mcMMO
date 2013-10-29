@@ -396,7 +396,6 @@ public class ScoreboardWrapper {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        PlayerProfile profile = mcMMOPlayer.getProfile();
 
         switch (sidebarType) {
         case NONE:
@@ -406,18 +405,18 @@ public class ScoreboardWrapper {
             Validate.notNull(targetSkill);
 
             if (!targetSkill.isChildSkill()) {
-                int currentXP = profile.getSkillXpLevel(targetSkill);
+                int currentXP = mcMMOPlayer.getSkillXpLevel(targetSkill);
 
                 sidebarObjective.getScore(ScoreboardManager.LABEL_CURRENT_XP).setScore(currentXP);
-                sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(profile.getXpToLevel(targetSkill) - currentXP);
+                sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(mcMMOPlayer.getXpToLevel(targetSkill) - currentXP);
             }
             else {
                 for (SkillType parentSkill : FamilyTree.getParents(targetSkill)) {
-                    sidebarObjective.getScore(ScoreboardManager.skillLabels.get(parentSkill)).setScore(profile.getSkillLevel(parentSkill));
+                    sidebarObjective.getScore(ScoreboardManager.skillLabels.get(parentSkill)).setScore(mcMMOPlayer.getSkillLevel(parentSkill));
                 }
             }
 
-            sidebarObjective.getScore(ScoreboardManager.LABEL_LEVEL).setScore(profile.getSkillLevel(targetSkill));
+            sidebarObjective.getScore(ScoreboardManager.LABEL_LEVEL).setScore(mcMMOPlayer.getSkillLevel(targetSkill));
 
             if (targetSkill.getAbility() != null) {
                 boolean stopUpdating;
@@ -482,7 +481,7 @@ public class ScoreboardWrapper {
                 newProfile = targetProfile; // offline
             }
             else if (targetPlayer == null) {
-                newProfile = profile; // self
+                newProfile = mcMMOPlayer.getProfile(); // self
             }
             else {
                 newProfile = UserManager.getPlayer(targetPlayer).getProfile(); // online

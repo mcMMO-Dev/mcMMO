@@ -70,7 +70,7 @@ public final class HardcoreManager {
             totalLevelsStolen += levelsStolen;
 
             killerProfile.modifySkill(skillType, killerSkillLevel + levelsStolen);
-            killerProfile.addExperience(skillType, xpStolen);
+            killerProfile.addXp(skillType, xpStolen);
 
             victimProfile.modifySkill(skillType, victimSkillLevel - levelsStolen);
             victimProfile.removeXp(skillType, xpStolen);

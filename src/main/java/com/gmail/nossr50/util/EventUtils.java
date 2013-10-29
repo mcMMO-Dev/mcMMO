@@ -59,7 +59,7 @@ public class EventUtils {
             PlayerProfile profile = UserManager.getPlayer(player).getProfile();
 
             profile.modifySkill(skill, profile.getSkillLevel(skill) - (isLevelUp ? levelsChanged : -levelsChanged));
-            profile.addExperience(skill, xpRemoved);
+            profile.addXp(skill, xpRemoved);
         }
 
         return !isCancelled;
@@ -115,7 +115,7 @@ public class EventUtils {
         boolean isCancelled = event.isCancelled();
 
         if (!isCancelled) {
-            UserManager.getPlayer(player).getProfile().addExperience(skill, event.getRawXpGained());
+            UserManager.getPlayer(player).addXp(skill, event.getRawXpGained());
         }
 
         return !isCancelled;

@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.child.FamilyTree;
@@ -31,7 +30,6 @@ public abstract class SkillCommand implements TabExecutor {
     protected String skillName;
 
     protected Player player;
-    protected PlayerProfile profile;
     protected McMMOPlayer mcMMOPlayer;
 
     protected float skillValue;
@@ -60,9 +58,7 @@ public abstract class SkillCommand implements TabExecutor {
 
         switch (args.length) {
             case 0:
-                profile = mcMMOPlayer.getProfile();
-
-                skillValue = profile.getSkillLevel(skill);
+                skillValue = mcMMOPlayer.getSkillLevel(skill);
                 isLucky = Permissions.lucky(sender, skill);
                 hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
 
@@ -76,7 +72,7 @@ public abstract class SkillCommand implements TabExecutor {
                 if (!skill.isChildSkill()) {
                     player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
                     player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
-                    player.sendMessage(LocaleLoader.getString("Effects.Level", (int) skillValue, profile.getSkillXpLevel(skill), profile.getXpToLevel(skill)));
+                    player.sendMessage(LocaleLoader.getString("Effects.Level", (int) skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
                 }
                 else {
                     player.sendMessage(LocaleLoader.getString("Skills.Header", skillName + " " + LocaleLoader.getString("Skills.Child")));
@@ -87,7 +83,7 @@ public abstract class SkillCommand implements TabExecutor {
                     Set<SkillType> parents = FamilyTree.getParents(skill);
 
                     for (SkillType parent : parents) {
-                        player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", profile.getSkillLevel(parent), profile.getSkillXpLevel(parent), profile.getXpToLevel(parent)));
+                        player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
                     }
                 }
 

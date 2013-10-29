@@ -396,6 +396,6 @@ public class HerbalismManager extends SkillManager {
     }
 
     private byte getGreenThumbStage() {
-        return (byte) Math.min(Math.min(getProfile().getSkillLevel(skill), Herbalism.greenThumbStageMaxLevel) / Herbalism.greenThumbStageChangeLevel, 4);
+        return (byte) Math.min(Math.min(getSkillLevel(), Herbalism.greenThumbStageMaxLevel) / Herbalism.greenThumbStageChangeLevel, 4);
     }
 }

@@ -17,7 +17,7 @@ public abstract class McMMOPlayerSkillEvent extends PlayerEvent {
     protected McMMOPlayerSkillEvent(Player player, SkillType skill) {
         super(player);
         this.skill = skill;
-        this.skillLevel = UserManager.getPlayer(player).getProfile().getSkillLevel(skill);
+        this.skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
     }
 
     /**

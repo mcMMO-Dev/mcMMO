@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.skills.PerksUtils;
 
@@ -26,12 +25,8 @@ public abstract class SkillManager {
         return mcMMOPlayer.getPlayer();
     }
 
-    public PlayerProfile getProfile() {
-        return mcMMOPlayer.getProfile();
-    }
-
     public int getSkillLevel() {
-        return mcMMOPlayer.getProfile().getSkillLevel(skill);
+        return mcMMOPlayer.getSkillLevel(skill);
     }
 
     public int getActivationChance() {

@@ -50,34 +50,34 @@ public final class AbilityAPI {
     }
 
     public static void resetCooldowns(Player player) {
-        UserManager.getPlayer(player).getProfile().resetCooldowns();
+        UserManager.getPlayer(player).resetCooldowns();
     }
 
     public static void setBerserkCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).getProfile().setAbilityDATS(AbilityType.BERSERK, cooldown);
+        UserManager.getPlayer(player).setAbilityDATS(AbilityType.BERSERK, cooldown);
     }
 
     public static void setGigaDrillBreakerCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).getProfile().setAbilityDATS(AbilityType.GIGA_DRILL_BREAKER, cooldown);
+        UserManager.getPlayer(player).setAbilityDATS(AbilityType.GIGA_DRILL_BREAKER, cooldown);
     }
 
     public static void setGreenTerraCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).getProfile().setAbilityDATS(AbilityType.GREEN_TERRA, cooldown);
+        UserManager.getPlayer(player).setAbilityDATS(AbilityType.GREEN_TERRA, cooldown);
     }
 
     public static void setSerratedStrikesCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).getProfile().setAbilityDATS(AbilityType.SERRATED_STRIKES, cooldown);
+        UserManager.getPlayer(player).setAbilityDATS(AbilityType.SERRATED_STRIKES, cooldown);
     }
 
     public static void setSkullSplitterCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).getProfile().setAbilityDATS(AbilityType.SKULL_SPLITTER, cooldown);
+        UserManager.getPlayer(player).setAbilityDATS(AbilityType.SKULL_SPLITTER, cooldown);
     }
 
     public static void setSuperBreakerCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).getProfile().setAbilityDATS(AbilityType.SUPER_BREAKER, cooldown);
+        UserManager.getPlayer(player).setAbilityDATS(AbilityType.SUPER_BREAKER, cooldown);
     }
 
     public static void setTreeFellerCooldown(Player player, long cooldown) {
-        UserManager.getPlayer(player).getProfile().setAbilityDATS(AbilityType.TREE_FELLER, cooldown);
+        UserManager.getPlayer(player).setAbilityDATS(AbilityType.TREE_FELLER, cooldown);
     }
 }

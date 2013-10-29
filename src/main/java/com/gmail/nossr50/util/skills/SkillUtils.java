@@ -26,7 +26,7 @@ import com.gmail.nossr50.util.player.UserManager;
 
 public class SkillUtils {
     public static int handleFoodSkills(Player player, SkillType skill, int eventFoodLevel, int baseLevel, int maxLevel, int rankChange) {
-        int skillLevel = UserManager.getPlayer(player).getProfile().getSkillLevel(skill);
+        int skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
 
         int currentFoodLevel = player.getFoodLevel();
         int foodChange = eventFoodLevel - currentFoodLevel;
@@ -124,7 +124,7 @@ public class SkillUtils {
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             SkillType skill = mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER) ? SkillType.MINING : SkillType.EXCAVATION;
-            int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getProfile().getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+            int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
             player.addPotionEffect(abilityBuff, true);
@@ -178,7 +178,7 @@ public class SkillUtils {
     }
 
     public static boolean activationSuccessful(Player player, SkillType skill, double maxChance, int maxLevel) {
-        return activationSuccessful(UserManager.getPlayer(player).getProfile().getSkillLevel(skill), PerksUtils.handleLuckyPerks(player, skill), maxChance, maxLevel);
+        return activationSuccessful(UserManager.getPlayer(player).getSkillLevel(skill), PerksUtils.handleLuckyPerks(player, skill), maxChance, maxLevel);
     }
 
     public static boolean activationSuccessful(int skillLevel, int activationChance, double maxChance, int maxLevel) {

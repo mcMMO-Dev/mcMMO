@@ -454,7 +454,7 @@ public class McMMOPlayer {
 
         for (SkillType type : SkillType.NON_CHILD_SKILLS) {
             if (type.getPermissions(player)) {
-                powerLevel += profile.getSkillLevel(type);
+                powerLevel += getSkillLevel(type);
             }
         }
 
@@ -536,16 +536,16 @@ public class McMMOPlayer {
      * @param skillType The skill to check
      */
     private void checkXp(SkillType skillType) {
-        if (profile.getSkillXpLevelRaw(skillType) < profile.getXpToLevel(skillType)) {
+        if (getSkillXpLevelRaw(skillType) < getXpToLevel(skillType)) {
             return;
         }
 
         int levelsGained = 0;
         float xpRemoved = 0;
 
-        while (profile.getSkillXpLevelRaw(skillType) >= profile.getXpToLevel(skillType)) {
+        while (getSkillXpLevelRaw(skillType) >= getXpToLevel(skillType)) {
             if (hasReachedLevelCap(skillType)) {
-                profile.setSkillXpLevel(skillType, 0);
+                setSkillXpLevel(skillType, 0);
                 break;
             }
 
@@ -558,7 +558,7 @@ public class McMMOPlayer {
         }
 
         player.playSound(player.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
-        player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(skillType.toString()) + ".Skillup", levelsGained, profile.getSkillLevel(skillType)));
+        player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(skillType.toString()) + ".Skillup", levelsGained, getSkillLevel(skillType)));
     }
 
     /*
@@ -669,7 +669,7 @@ public class McMMOPlayer {
      * @return Modified experience
      */
     private float modifyXpGain(SkillType skillType, float xp) {
-        if (player.getGameMode() == GameMode.CREATIVE || (skillType.getMaxLevel() <= profile.getSkillLevel(skillType)) || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
+        if (player.getGameMode() == GameMode.CREATIVE || (skillType.getMaxLevel() <= getSkillLevel(skillType)) || (Config.getInstance().getPowerLevelCap() <= getPowerLevel())) {
             return 0;
         }
 
@@ -733,7 +733,7 @@ public class McMMOPlayer {
             return;
         }
 
-        int ticks = PerksUtils.handleActivationPerks(player, 2 + (profile.getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), ability.getMaxLength());
+        int ticks = PerksUtils.handleActivationPerks(player, 2 + (getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), ability.getMaxLength());
 
         // Notify people that ability has been activated
         ParticleEffectUtils.playAbilityEnabledEffect(player);
@@ -816,6 +816,53 @@ public class McMMOPlayer {
     }
 
     private boolean hasReachedLevelCap(SkillType skill) {
-        return (skill.getMaxLevel() < profile.getSkillLevel(skill) + 1) || (Config.getInstance().getPowerLevelCap() < getPowerLevel() + 1);
+        return (skill.getMaxLevel() < getSkillLevel(skill) + 1) || (Config.getInstance().getPowerLevelCap() < getPowerLevel() + 1);
+    }
+
+    /*
+     * These functions are wrapped from PlayerProfile so that we don't always have to store it alongside the McMMOPlayer object.
+     */
+    public int getSkillLevel(SkillType skill) {
+        return profile.getSkillLevel(skill);
+    }
+
+    public float getSkillXpLevelRaw(SkillType skill) {
+        return profile.getSkillXpLevelRaw(skill);
+    }
+
+    public int getSkillXpLevel(SkillType skill) {
+        return profile.getSkillXpLevel(skill);
+    }
+
+    public void setSkillXpLevel(SkillType skill, float xpLevel) {
+        profile.setSkillXpLevel(skill, xpLevel);
+    }
+
+    public int getXpToLevel(SkillType skill) {
+        return profile.getXpToLevel(skill);
+    }
+
+    public void removeXp(SkillType skill, int xp) {
+        profile.removeXp(skill, xp);
+    }
+
+    public void modifySkill(SkillType skill, int level) {
+        profile.modifySkill(skill, level);
+    }
+
+    public void addLevels(SkillType skill, int levels) {
+        profile.addLevels(skill, levels);
+    }
+
+    public void addXp(SkillType skill, float xp) {
+        profile.addXp(skill, xp);
+    }
+
+    public void setAbilityDATS(AbilityType ability, long DATS) {
+        profile.setAbilityDATS(ability, DATS);
+    }
+
+    public void resetCooldowns() {
+        profile.resetCooldowns();
     }
 }
