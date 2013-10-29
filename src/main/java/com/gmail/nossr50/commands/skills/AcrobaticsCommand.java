@@ -1,5 +1,10 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.entity.Player;
+
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.acrobatics.Acrobatics;
@@ -22,75 +27,71 @@ public class AcrobaticsCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations() {
+    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
         // DODGE
         if (canDodge) {
-            String[] dodgeStrings = calculateAbilityDisplayValues(Acrobatics.dodgeMaxBonusLevel, Acrobatics.dodgeMaxChance);
+            String[] dodgeStrings = calculateAbilityDisplayValues(skillValue, Acrobatics.dodgeMaxBonusLevel, Acrobatics.dodgeMaxChance, isLucky);
             dodgeChance = dodgeStrings[0];
             dodgeChanceLucky = dodgeStrings[1];
         }
 
         // ROLL
         if (canRoll) {
-            String[] rollStrings = calculateAbilityDisplayValues(Acrobatics.rollMaxBonusLevel, Acrobatics.rollMaxChance);
+            String[] rollStrings = calculateAbilityDisplayValues(skillValue, Acrobatics.rollMaxBonusLevel, Acrobatics.rollMaxChance, isLucky);
             rollChance = rollStrings[0];
             rollChanceLucky = rollStrings[1];
         }
 
         // GRACEFUL ROLL
         if (canGracefulRoll) {
-            String[] gracefulRollStrings = calculateAbilityDisplayValues(Acrobatics.gracefulRollMaxBonusLevel, Acrobatics.gracefulRollMaxChance);
+            String[] gracefulRollStrings = calculateAbilityDisplayValues(skillValue, Acrobatics.gracefulRollMaxBonusLevel, Acrobatics.gracefulRollMaxChance, isLucky);
             gracefulRollChance = gracefulRollStrings[0];
             gracefulRollChanceLucky = gracefulRollStrings[1];
         }
     }
 
     @Override
-    protected void permissionsCheck() {
+    protected void permissionsCheck(Player player) {
         canDodge = Permissions.dodge(player);
         canRoll = Permissions.roll(player);
         canGracefulRoll = Permissions.gracefulRoll(player);
     }
 
     @Override
-    protected boolean effectsHeaderPermissions() {
-        return canDodge || canGracefulRoll || canRoll;
-    }
-
-    @Override
-    protected void effectsDisplay() {
-        luckyEffectsDisplay();
+    protected List<String> effectsDisplay() {
+        List<String> messages = new ArrayList<String>();
 
         if (canRoll) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Acrobatics.Effect.0"), LocaleLoader.getString("Acrobatics.Effect.1")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Acrobatics.Effect.0"), LocaleLoader.getString("Acrobatics.Effect.1")));
         }
 
         if (canGracefulRoll) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Acrobatics.Effect.2"), LocaleLoader.getString("Acrobatics.Effect.3")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Acrobatics.Effect.2"), LocaleLoader.getString("Acrobatics.Effect.3")));
         }
 
         if (canDodge) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Acrobatics.Effect.4"), LocaleLoader.getString("Acrobatics.Effect.5")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Acrobatics.Effect.4"), LocaleLoader.getString("Acrobatics.Effect.5")));
         }
+
+        return messages;
     }
 
     @Override
-    protected boolean statsHeaderPermissions() {
-        return canDodge || canGracefulRoll || canRoll;
-    }
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+        List<String> messages = new ArrayList<String>();
 
-    @Override
-    protected void statsDisplay() {
         if (canRoll) {
-            player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Chance", rollChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", rollChanceLucky) : ""));
+            messages.add(LocaleLoader.getString("Acrobatics.Roll.Chance", rollChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", rollChanceLucky) : ""));
         }
 
         if (canGracefulRoll) {
-            player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.GraceChance", gracefulRollChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", gracefulRollChanceLucky) : ""));
+            messages.add(LocaleLoader.getString("Acrobatics.Roll.GraceChance", gracefulRollChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", gracefulRollChanceLucky) : ""));
         }
 
         if (canDodge) {
-            player.sendMessage(LocaleLoader.getString("Acrobatics.DodgeChance", dodgeChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dodgeChanceLucky) : ""));
+            messages.add(LocaleLoader.getString("Acrobatics.DodgeChance", dodgeChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", dodgeChanceLucky) : ""));
         }
+
+        return messages;
     }
 }

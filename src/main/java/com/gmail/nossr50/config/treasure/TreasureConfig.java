@@ -68,6 +68,7 @@ public class TreasureConfig extends ConfigLoader {
     private TreasureConfig() {
         super("treasures.yml");
         loadKeys();
+        validate();
     }
 
     public static TreasureConfig getInstance() {
@@ -76,6 +77,43 @@ public class TreasureConfig extends ConfigLoader {
         }
 
         return instance;
+    }
+
+    @Override
+    protected boolean validateKeys() {
+        // Validate all the settings!
+        List<String> reason = new ArrayList<String>();
+
+        for (String tier : config.getConfigurationSection("Enchantment_Drop_Rates").getKeys(false)) {
+            double totalEnchantDropRate = 0;
+            double totalItemDropRate = 0;
+
+            for (Rarity rarity : Rarity.values()) {
+                double enchantDropRate = config.getDouble("Enchantment_Drop_Rates." + tier + "." + rarity.toString());
+                double itemDropRate = config.getDouble("Item_Drop_Rates." + tier + "." + rarity.toString());
+
+                if ((enchantDropRate < 0.0 || enchantDropRate > 100.0) && rarity != Rarity.TRAP && rarity != Rarity.RECORD) {
+                    reason.add("The enchant drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
+                }
+
+                if (itemDropRate < 0.0 || itemDropRate > 100.0) {
+                    reason.add("The item drop rate for " + tier + " items that are " + rarity.toString() + "should be between 0.0 and 100.0!");
+                }
+
+                totalEnchantDropRate += enchantDropRate;
+                totalItemDropRate += itemDropRate;
+            }
+
+            if (totalEnchantDropRate < 0 || totalEnchantDropRate > 100.0) {
+                reason.add("The total enchant drop rate for " + tier + " should be between 0.0 and 100.0!");
+            }
+
+            if (totalItemDropRate < 0 || totalItemDropRate > 100.0) {
+                reason.add("The total item drop rate for " + tier + " should be between 0.0 and 100.0!");
+            }
+        }
+
+        return noErrorsInConfig(reason);
     }
 
     @Override

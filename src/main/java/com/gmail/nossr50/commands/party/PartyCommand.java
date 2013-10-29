@@ -24,9 +24,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 
 public class PartyCommand implements TabExecutor {
-    private McMMOPlayer mcMMOPlayer;
-    private Player player;
-
     private static final List<String> PARTY_SUBCOMMANDS;
     private static final List<String> EXPSHARE_COMPLETIONS = ImmutableList.of("none", "equal");
     private static final List<String> ITEMSHARE_COMPLETIONS = ImmutableList.of("none", "equal", "random", "loot", "mining", "herbalism", "woodcutting", "misc");
@@ -71,13 +68,13 @@ public class PartyCommand implements TabExecutor {
             return true;
         }
 
-        player = (Player) sender;
-        mcMMOPlayer = UserManager.getPlayer(player);
+        Player player = (Player) sender;
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         if (args.length < 1) {
             if (!mcMMOPlayer.inParty()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-                return printUsage();
+                return printUsage(player);
             }
 
             return partyInfoCommand.onCommand(sender, command, label, args);
@@ -86,7 +83,7 @@ public class PartyCommand implements TabExecutor {
         PartySubcommandType subcommand = PartySubcommandType.getSubcommand(args[0]);
 
         if (subcommand == null) {
-            return printUsage();
+            return printUsage(player);
         }
 
         // Can't use this for lock/unlock since they're handled by the same command
@@ -111,7 +108,7 @@ public class PartyCommand implements TabExecutor {
         // Party member commands
         if (!mcMMOPlayer.inParty()) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-            return printUsage();
+            return printUsage(player);
         }
 
         switch (subcommand) {
@@ -211,7 +208,7 @@ public class PartyCommand implements TabExecutor {
         }
     }
 
-    private boolean printUsage() {
+    private boolean printUsage(Player player) {
         player.sendMessage(LocaleLoader.getString("Party.Help.0", "/party join"));
         player.sendMessage(LocaleLoader.getString("Party.Help.1", "/party create"));
         player.sendMessage(LocaleLoader.getString("Party.Help.2", "/party ?"));

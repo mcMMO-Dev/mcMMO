@@ -1,5 +1,10 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.entity.Player;
+
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.axes.Axes;
@@ -24,7 +29,7 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations() {
+    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
         // IMPACT
         if (canImpact) {
             impactDamage = 1 + (skillValue / Axes.impactIncreaseLevel);
@@ -32,14 +37,14 @@ public class AxesCommand extends SkillCommand {
 
         // SKULL SPLITTER
         if (canSkullSplitter) {
-            String[] skullSplitterStrings = calculateLengthDisplayValues();
+            String[] skullSplitterStrings = calculateLengthDisplayValues(player, skillValue);
             skullSplitterLength = skullSplitterStrings[0];
             skullSplitterLengthEndurance = skullSplitterStrings[1];
         }
 
         // CRITICAL STRIKES
         if (canCritical) {
-            String[] criticalStrikeStrings = calculateAbilityDisplayValues(Axes.criticalHitMaxBonusLevel, Axes.criticalHitMaxChance);
+            String[] criticalStrikeStrings = calculateAbilityDisplayValues(skillValue, Axes.criticalHitMaxBonusLevel, Axes.criticalHitMaxChance, isLucky);
             critChance = criticalStrikeStrings[0];
             critChanceLucky = criticalStrikeStrings[1];
         }
@@ -51,7 +56,7 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected void permissionsCheck() {
+    protected void permissionsCheck(Player player) {
         canSkullSplitter = Permissions.skullSplitter(player);
         canCritical = Permissions.criticalStrikes(player);
         canBonusDamage = Permissions.bonusDamage(player, skill);
@@ -60,60 +65,56 @@ public class AxesCommand extends SkillCommand {
     }
 
     @Override
-    protected boolean effectsHeaderPermissions() {
-        return canSkullSplitter || canCritical || canBonusDamage || canImpact || canGreaterImpact;
-    }
-
-    @Override
-    protected void effectsDisplay() {
-        luckyEffectsDisplay();
+    protected List<String> effectsDisplay() {
+        List<String> messages = new ArrayList<String>();
 
         if (canSkullSplitter) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Axes.Effect.0"), LocaleLoader.getString("Axes.Effect.1")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Axes.Effect.0"), LocaleLoader.getString("Axes.Effect.1")));
         }
 
         if (canCritical) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Axes.Effect.2"), LocaleLoader.getString("Axes.Effect.3")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Axes.Effect.2"), LocaleLoader.getString("Axes.Effect.3")));
         }
 
         if (canBonusDamage) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Axes.Effect.4"), LocaleLoader.getString("Axes.Effect.5")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Axes.Effect.4"), LocaleLoader.getString("Axes.Effect.5")));
         }
 
         if (canImpact) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Axes.Effect.6"), LocaleLoader.getString("Axes.Effect.7")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Axes.Effect.6"), LocaleLoader.getString("Axes.Effect.7")));
         }
 
         if (canGreaterImpact) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Axes.Effect.8"), LocaleLoader.getString("Axes.Effect.9")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Axes.Effect.8"), LocaleLoader.getString("Axes.Effect.9")));
         }
+
+        return messages;
     }
 
     @Override
-    protected boolean statsHeaderPermissions() {
-        return canSkullSplitter || canCritical || canBonusDamage || canImpact || canGreaterImpact;
-    }
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+        List<String> messages = new ArrayList<String>();
 
-    @Override
-    protected void statsDisplay() {
         if (canBonusDamage) {
-            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.0"), LocaleLoader.getString("Axes.Ability.Bonus.1", bonusDamage)));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.0"), LocaleLoader.getString("Axes.Ability.Bonus.1", bonusDamage)));
         }
 
         if (canImpact) {
-            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.2"), LocaleLoader.getString("Axes.Ability.Bonus.3", impactDamage)));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.2"), LocaleLoader.getString("Axes.Ability.Bonus.3", impactDamage)));
         }
 
         if (canGreaterImpact) {
-            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.4"), LocaleLoader.getString("Axes.Ability.Bonus.5", Axes.greaterImpactBonusDamage)));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Axes.Ability.Bonus.4"), LocaleLoader.getString("Axes.Ability.Bonus.5", Axes.greaterImpactBonusDamage)));
         }
 
         if (canCritical) {
-            player.sendMessage(LocaleLoader.getString("Axes.Combat.CritChance", critChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", critChanceLucky) : ""));
+            messages.add(LocaleLoader.getString("Axes.Combat.CritChance", critChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", critChanceLucky) : ""));
         }
 
         if (canSkullSplitter) {
-            player.sendMessage(LocaleLoader.getString("Axes.Combat.SS.Length", skullSplitterLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", skullSplitterLengthEndurance) : ""));
+            messages.add(LocaleLoader.getString("Axes.Combat.SS.Length", skullSplitterLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", skullSplitterLengthEndurance) : ""));
         }
+
+        return messages;
     }
 }

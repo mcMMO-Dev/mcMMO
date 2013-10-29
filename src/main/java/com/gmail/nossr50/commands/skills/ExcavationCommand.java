@@ -1,5 +1,10 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.entity.Player;
+
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
@@ -16,48 +21,44 @@ public class ExcavationCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations() {
+    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
         // GIGA DRILL BREAKER
         if (canGigaDrill) {
-            String gigaDrillStrings[] = calculateLengthDisplayValues();
+            String gigaDrillStrings[] = calculateLengthDisplayValues(player, skillValue);
             gigaDrillBreakerLength = gigaDrillStrings[0];
             gigaDrillBreakerLengthEndurance = gigaDrillStrings[1];
         }
     }
 
     @Override
-    protected void permissionsCheck() {
+    protected void permissionsCheck(Player player) {
         canGigaDrill = Permissions.gigaDrillBreaker(player);
         canTreasureHunt = Permissions.excavationTreasureHunter(player);
     }
 
     @Override
-    protected boolean effectsHeaderPermissions() {
-        return canGigaDrill || canTreasureHunt;
-    }
-
-    @Override
-    protected void effectsDisplay() {
-        luckyEffectsDisplay();
+    protected List<String> effectsDisplay() {
+        List<String> messages = new ArrayList<String>();
 
         if (canGigaDrill) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Excavation.Effect.0"), LocaleLoader.getString("Excavation.Effect.1")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Excavation.Effect.0"), LocaleLoader.getString("Excavation.Effect.1")));
         }
 
         if (canTreasureHunt) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Excavation.Effect.2"), LocaleLoader.getString("Excavation.Effect.3")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Excavation.Effect.2"), LocaleLoader.getString("Excavation.Effect.3")));
         }
+
+        return messages;
     }
 
     @Override
-    protected boolean statsHeaderPermissions() {
-        return canGigaDrill;
-    }
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+        List<String> messages = new ArrayList<String>();
 
-    @Override
-    protected void statsDisplay() {
         if (canGigaDrill) {
-            player.sendMessage(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
+            messages.add(LocaleLoader.getString("Excavation.Effect.Length", gigaDrillBreakerLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", gigaDrillBreakerLengthEndurance) : ""));
         }
+
+        return messages;
     }
 }

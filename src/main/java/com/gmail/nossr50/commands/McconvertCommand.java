@@ -1,4 +1,4 @@
-package com.gmail.nossr50.commands.database;
+package com.gmail.nossr50.commands;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,6 +11,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.commands.database.ConvertDatabaseCommand;
 import com.gmail.nossr50.commands.experience.ConvertExperienceCommand;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
@@ -23,22 +24,16 @@ public class McconvertCommand implements TabExecutor {
     private static final List<String> DATABASE_TYPES;
     private static final List<String> SUBCOMMANDS = ImmutableList.of("database", "experience");
 
-    private CommandExecutor databaseConvertCommand   = new ConvertDatabaseCommand();
+    private CommandExecutor databaseConvertCommand = new ConvertDatabaseCommand();
     private CommandExecutor experienceConvertCommand = new ConvertExperienceCommand();
 
     static {
         ArrayList<String> formulaTypes = new ArrayList<String>();
+        ArrayList<String> databaseTypes = new ArrayList<String>();
 
         for (FormulaType type : FormulaType.values()) {
             formulaTypes.add(type.toString());
         }
-
-        Collections.sort(formulaTypes);
-        FORMULA_TYPES = ImmutableList.copyOf(formulaTypes);
-    }
-
-    static {
-        ArrayList<String> databaseTypes = new ArrayList<String>();
 
         for (DatabaseType type : DatabaseType.values()) {
             databaseTypes.add(type.toString());
@@ -51,8 +46,12 @@ public class McconvertCommand implements TabExecutor {
             databaseTypes.add(DatabaseManagerFactory.getCustomDatabaseManagerClass().getName());
         }
 
+        Collections.sort(formulaTypes);
         Collections.sort(databaseTypes);
+
+        FORMULA_TYPES = ImmutableList.copyOf(formulaTypes);
         DATABASE_TYPES = ImmutableList.copyOf(databaseTypes);
+
     }
 
     @Override

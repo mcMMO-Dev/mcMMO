@@ -21,9 +21,8 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 
 public abstract class ChatCommand implements TabExecutor {
-    protected ChatMode chatMode;
+    private ChatMode chatMode;
     protected ChatManager chatManager;
-    private McMMOPlayer mcMMOPlayer;
 
     public ChatCommand(ChatMode chatMode) {
         this.chatMode = chatMode;
@@ -32,19 +31,21 @@ public abstract class ChatCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        McMMOPlayer mcMMOPlayer;
+
         switch (args.length) {
             case 0:
                 if (CommandUtils.noConsoleUsage(sender)) {
                     return true;
                 }
 
-                mcMMOPlayer = UserManager.getPlayer((Player) sender);
+                mcMMOPlayer = UserManager.getPlayer(sender.getName());
 
-                if (chatMode.isEnabled(mcMMOPlayer)) {
-                    disableChatMode(sender);
+                if (mcMMOPlayer.isChatEnabled(chatMode)) {
+                    disableChatMode(mcMMOPlayer, sender);
                 }
                 else {
-                    enableChatMode(sender);
+                    enableChatMode(mcMMOPlayer, sender);
                 }
 
                 return true;
@@ -55,9 +56,7 @@ public abstract class ChatCommand implements TabExecutor {
                         return true;
                     }
 
-                    mcMMOPlayer = UserManager.getPlayer((Player) sender);
-
-                    enableChatMode(sender);
+                    enableChatMode(UserManager.getPlayer(sender.getName()), sender);
                     return true;
                 }
 
@@ -66,9 +65,7 @@ public abstract class ChatCommand implements TabExecutor {
                         return true;
                     }
 
-                    mcMMOPlayer = UserManager.getPlayer((Player) sender);
-
-                    disableChatMode(sender);
+                    disableChatMode(UserManager.getPlayer(sender.getName()), sender);
                     return true;
                 }
 
@@ -108,23 +105,23 @@ public abstract class ChatCommand implements TabExecutor {
 
     protected abstract void handleChatSending(CommandSender sender, String[] args);
 
-    private void enableChatMode(CommandSender sender) {
+    private void enableChatMode(McMMOPlayer mcMMOPlayer, CommandSender sender) {
         if (chatMode == ChatMode.PARTY && mcMMOPlayer.getParty() == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
             return;
         }
 
-        chatMode.enable(mcMMOPlayer);
+        mcMMOPlayer.enableChat(chatMode);
         sender.sendMessage(chatMode.getEnabledMessage());
     }
 
-    private void disableChatMode(CommandSender sender) {
+    private void disableChatMode(McMMOPlayer mcMMOPlayer, CommandSender sender) {
         if (chatMode == ChatMode.PARTY && mcMMOPlayer.getParty() == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
             return;
         }
 
-        chatMode.disable(mcMMOPlayer);
+        mcMMOPlayer.disableChat(chatMode);
         sender.sendMessage(chatMode.getDisabledMessage());
     }
 }

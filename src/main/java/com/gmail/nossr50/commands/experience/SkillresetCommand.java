@@ -1,10 +1,18 @@
 package com.gmail.nossr50.commands.experience;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.EventUtils;
@@ -12,18 +20,11 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+import com.google.common.collect.ImmutableList;
 
-public class SkillresetCommand extends ExperienceCommand {
-    private CommandSender sender;
-    private Command command;
-    private int argsLength;
-
+public class SkillresetCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        this.command = command;
-        this.sender = sender;
-        argsLength = args.length;
-
         switch (args.length) {
             case 1:
                 if (CommandUtils.noConsoleUsage(sender)) {
@@ -35,15 +36,11 @@ public class SkillresetCommand extends ExperienceCommand {
                     return true;
                 }
 
-                if (isInvalidSkill(sender, args[0])) {
+                if (CommandUtils.isInvalidSkill(sender, args[0])) {
                     return true;
                 }
 
-                player = (Player) sender;
-                mcMMOPlayer = UserManager.getPlayer(player);
-                profile = mcMMOPlayer.getProfile();
-
-                editValues();
+                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), SkillType.getSkill(args[0]), args.length, sender, command);
                 return true;
 
             case 2:
@@ -52,32 +49,30 @@ public class SkillresetCommand extends ExperienceCommand {
                     return true;
                 }
 
-                if (isInvalidSkill(sender, args[1])) {
+                if (CommandUtils.isInvalidSkill(sender, args[1])) {
                     return true;
                 }
 
+                SkillType skill = SkillType.getSkill(args[1]);
+
                 String playerName = Misc.getMatchedPlayerName(args[0]);
-                mcMMOPlayer = UserManager.getPlayer(playerName, true);
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName, true);
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false);
+                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false);
 
                     if (CommandUtils.unloadedProfile(sender, profile)) {
                         return true;
                     }
 
-                    editValues();
-                    profile.save(); // Since this is a temporary profile, we save it here.
+                    editValues(null, profile, skill, args.length, sender, command);
                 }
                 else {
-                    profile = mcMMOPlayer.getProfile();
-                    player = mcMMOPlayer.getPlayer();
-
-                    editValues();
+                    editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill, args.length, sender, command);
                 }
 
-                handleSenderMessage(sender, playerName);
+                ExperienceCommand.handleSenderMessage(sender, playerName, skill);
                 return true;
 
             default:
@@ -86,17 +81,38 @@ public class SkillresetCommand extends ExperienceCommand {
     }
 
     @Override
-    protected boolean permissionsCheckSelf(CommandSender sender) {
-        return false;
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        switch (args.length) {
+            case 1:
+                Set<String> playerNames = UserManager.getPlayerNames();
+                return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
+            case 2:
+                return StringUtil.copyPartialMatches(args[1], SkillType.SKILL_NAMES, new ArrayList<String>(SkillType.SKILL_NAMES.size()));
+            default:
+                return ImmutableList.of();
+        }
     }
 
-    @Override
-    protected boolean permissionsCheckOthers(CommandSender sender) {
-        return false;
+    private void editValues(Player player, PlayerProfile profile, SkillType skill, int argsLength, CommandSender sender, Command command) {
+        if (skill == null) {
+            for (SkillType skillType : SkillType.values()) {
+                handleCommand(player, profile, skillType, argsLength, sender, command);
+            }
+
+            if (player != null) {
+                player.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
+            }
+        }
+        else {
+            handleCommand(player, profile, skill, argsLength, sender, command);
+
+            if (player != null) {
+                player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getName()));
+            }
+        }
     }
 
-    @Override
-    protected void handleCommand(SkillType skill) {
+    private void handleCommand(Player player, PlayerProfile profile, SkillType skill, int argsLength, CommandSender sender, Command command) {
         if (argsLength == 1 && !Permissions.skillreset(sender, skill) || (argsLength == 2 && !Permissions.skillresetOthers(sender, skill))) {
             sender.sendMessage(command.getPermissionMessage());
             return;
@@ -108,19 +124,10 @@ public class SkillresetCommand extends ExperienceCommand {
         profile.modifySkill(skill, 0);
 
         if (player == null) {
+            profile.save();
             return;
         }
 
         EventUtils.handleLevelChangeEvent(player, skill, levelsRemoved, xpRemoved, false);
-    }
-
-    @Override
-    protected void handlePlayerMessageAll() {
-        player.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
-    }
-
-    @Override
-    protected void handlePlayerMessageSkill() {
-        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getName()));
     }
 }

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.datatypes.chat;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public enum ChatMode {
@@ -13,51 +12,6 @@ public enum ChatMode {
     private ChatMode(String enabledMessage, String disabledMessage) {
         this.enabledMessage  = enabledMessage;
         this.disabledMessage = disabledMessage;
-    }
-
-    public boolean isEnabled(McMMOPlayer mcMMOPlayer) {
-        switch (this) {
-            case ADMIN:
-                return mcMMOPlayer.getAdminChatMode();
-
-            case PARTY:
-                return mcMMOPlayer.getPartyChatMode();
-
-            default:
-                return false;
-        }
-    }
-
-    public void disable(McMMOPlayer mcMMOPlayer) {
-        switch (this) {
-            case ADMIN:
-                mcMMOPlayer.setAdminChat(false);
-                return;
-
-            case PARTY:
-                mcMMOPlayer.setPartyChat(false);
-                return;
-
-            default:
-                return;
-        }
-    }
-
-    public void enable(McMMOPlayer mcMMOPlayer) {
-        switch (this) {
-            case ADMIN:
-                mcMMOPlayer.setAdminChat(true);
-                mcMMOPlayer.setPartyChat(false);
-                return;
-
-            case PARTY:
-                mcMMOPlayer.setPartyChat(true);
-                mcMMOPlayer.setAdminChat(false);
-                return;
-
-            default:
-                return;
-        }
     }
 
     public String getEnabledMessage() {

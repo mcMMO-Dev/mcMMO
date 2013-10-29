@@ -1,5 +1,7 @@
 package com.gmail.nossr50.commands.hardcore;
 
+import org.bukkit.command.CommandSender;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -8,18 +10,18 @@ import com.gmail.nossr50.util.Permissions;
 
 public class VampirismCommand extends HardcoreModeCommand {
     @Override
-    protected boolean checkTogglePermissions() {
+    protected boolean checkTogglePermissions(CommandSender sender) {
         return Permissions.vampirismToggle(sender);
     }
 
     @Override
-    protected boolean checkModifyPermissions() {
+    protected boolean checkModifyPermissions(CommandSender sender) {
         return Permissions.vampirismModify(sender);
     }
 
     @Override
-    protected boolean checkEnabled(String skill) {
-        if (skill.equalsIgnoreCase("ALL")) {
+    protected boolean checkEnabled(SkillType skill) {
+        if (skill == null) {
             for (SkillType skillType : SkillType.values()) {
                 if (!skillType.getHardcoreVampirismEnabled()) {
                     return false;
@@ -29,35 +31,35 @@ public class VampirismCommand extends HardcoreModeCommand {
             return true;
         }
 
-        return SkillType.getSkill(skill).getHardcoreVampirismEnabled();
+        return skill.getHardcoreVampirismEnabled();
     }
 
     @Override
-    protected void enable(String skill) {
-        toggle(true);
+    protected void enable(SkillType skill) {
+        toggle(true, skill);
     }
 
     @Override
-    protected void disable(String skill) {
-        toggle(false);
+    protected void disable(SkillType skill) {
+        toggle(false, skill);
     }
 
     @Override
-    protected void modify() {
-        Config.getInstance().setHardcoreVampirismStatLeechPercentage(newPercent);
-        sender.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.PercentageChanged", percent.format(newPercent / 100D)));
+    protected void modify(CommandSender sender, double newPercentage) {
+        Config.getInstance().setHardcoreVampirismStatLeechPercentage(newPercentage);
+        sender.sendMessage(LocaleLoader.getString("Hardcore.Vampirism.PercentageChanged", percent.format(newPercentage / 100.0D)));
     }
 
-    private void toggle(boolean enable) {
-        if (skill.equalsIgnoreCase("ALL")) {
+    private void toggle(boolean enable, SkillType skill) {
+        if (skill == null) {
             for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
                 skillType.setHardcoreVampirismEnabled(enable);
             }
         }
         else {
-            SkillType.getSkill(skill).setHardcoreVampirismEnabled(enable);
+            skill.setHardcoreVampirismEnabled(enable);
         }
 
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.Vampirism.Name"), skill));
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.Vampirism.Name"), (skill == null ? "all skills" : skill)));
     }
 }

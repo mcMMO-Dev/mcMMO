@@ -15,19 +15,21 @@ import com.google.common.collect.ImmutableList;
 public class MmoshowdbCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length != 0) {
-            return false;
+        switch (args.length) {
+            case 0:
+                Class<?> clazz = DatabaseManagerFactory.getCustomDatabaseManagerClass();
+
+                if (clazz != null) {
+                    sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", clazz.getName()));
+                    return true;
+                }
+
+                sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", (Config.getInstance().getUseMySQL() ? "sql" : "flatfile")));
+                return true;
+
+            default:
+                return false;
         }
-
-        Class<?> clazz = DatabaseManagerFactory.getCustomDatabaseManagerClass();
-
-        if (clazz != null) {
-            sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", clazz.getName()));
-            return true;
-        }
-
-        sender.sendMessage(LocaleLoader.getString("Commands.mmoshowdb", (Config.getInstance().getUseMySQL() ? "sql" : "flatfile")));
-        return true;
     }
 
     @Override

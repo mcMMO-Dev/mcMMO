@@ -16,6 +16,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
@@ -641,28 +642,67 @@ public class McMMOPlayer {
      * Chat modes
      */
 
-    public boolean getAdminChatMode() {
-        return adminChatMode;
+    public boolean isChatEnabled(ChatMode mode) {
+        switch (mode) {
+            case ADMIN:
+                return adminChatMode;
+
+            case PARTY:
+                return partyChatMode;
+
+            default:
+                return false;
+        }
     }
 
-    public void setAdminChat(boolean enabled) {
-        adminChatMode = enabled;
+    public void disableChat(ChatMode mode) {
+        switch (mode) {
+            case ADMIN:
+                adminChatMode = false;
+                return;
+
+            case PARTY:
+                partyChatMode = false;
+                return;
+
+            default:
+                return;
+        }
     }
 
-    public void toggleAdminChat() {
-        adminChatMode = !adminChatMode;
+    public void enableChat(ChatMode mode) {
+        switch (mode) {
+            case ADMIN:
+                adminChatMode = true;
+                partyChatMode = false;
+                return;
+
+            case PARTY:
+                partyChatMode = true;
+                adminChatMode = false;
+                return;
+
+            default:
+                return;
+        }
+
     }
 
-    public boolean getPartyChatMode() {
-        return partyChatMode;
-    }
+    public void toggleChat(ChatMode mode) {
+        switch (mode) {
+            case ADMIN:
+                adminChatMode = !adminChatMode;
+                partyChatMode = adminChatMode ? false : partyChatMode;
+                return;
 
-    public void setPartyChat(boolean enabled) {
-        partyChatMode = enabled;
-    }
+            case PARTY:
+                partyChatMode = !partyChatMode;
+                adminChatMode = partyChatMode ? false : adminChatMode;
+                return;
 
-    public void togglePartyChat() {
-        partyChatMode = !partyChatMode;
+            default:
+                return;
+        }
     }
 
     public boolean isUsingUnarmed() {

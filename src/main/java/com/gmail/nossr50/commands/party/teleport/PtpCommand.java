@@ -28,9 +28,6 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 import com.google.common.collect.ImmutableList;
 
 public class PtpCommand implements TabExecutor {
-    private static Player target;
-    private static McMMOPlayer mcMMOTarget;
-
     public static final List<String> TELEPORT_SUBCOMMANDS = ImmutableList.of("toggle", "accept", "acceptany", "acceptall");
 
     private CommandExecutor ptpToggleCommand = new PtpToggleCommand();
@@ -119,6 +116,9 @@ public class PtpCommand implements TabExecutor {
             return;
         }
 
+        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName);
+        Player target = mcMMOTarget.getPlayer();
+
         PartyTeleportRecord ptpRecord = mcMMOTarget.getPartyTeleportRecord();
 
         if (!ptpRecord.isConfirmRequired()) {
@@ -136,13 +136,13 @@ public class PtpCommand implements TabExecutor {
     }
 
     protected static boolean canTeleport(CommandSender sender, Player player, String targetName) {
-        mcMMOTarget = UserManager.getPlayer(targetName);
+        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName);
 
         if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
             return false;
         }
 
-        target = mcMMOTarget.getPlayer();
+        Player target = mcMMOTarget.getPlayer();
 
         if (player.equals(target)) {
             player.sendMessage(LocaleLoader.getString("Party.Teleport.Self"));
@@ -169,7 +169,7 @@ public class PtpCommand implements TabExecutor {
 
     protected static void handleTeleportWarmup(Player teleportingPlayer, Player targetPlayer) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
-        mcMMOTarget = UserManager.getPlayer(targetPlayer);
+        McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetPlayer);
 
         long warmup = Config.getInstance().getPTPCommandWarmup();
 

@@ -1,5 +1,10 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.entity.Player;
+
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
@@ -27,24 +32,24 @@ public class UnarmedCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations() {
+    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
         // BERSERK
         if (canBerserk) {
-            String[] berserkStrings = calculateLengthDisplayValues();
+            String[] berserkStrings = calculateLengthDisplayValues(player, skillValue);
             berserkLength = berserkStrings[0];
             berserkLengthEndurance = berserkStrings[1];
         }
 
         // DISARM
         if (canDisarm) {
-            String[] disarmStrings = calculateAbilityDisplayValues(Unarmed.disarmMaxBonusLevel, Unarmed.disarmMaxChance);
+            String[] disarmStrings = calculateAbilityDisplayValues(skillValue, Unarmed.disarmMaxBonusLevel, Unarmed.disarmMaxChance, isLucky);
             disarmChance = disarmStrings[0];
             disarmChanceLucky = disarmStrings[1];
         }
 
         // DEFLECT
         if (canDeflect) {
-            String[] deflectStrings = calculateAbilityDisplayValues(Unarmed.deflectMaxBonusLevel, Unarmed.deflectMaxChance);
+            String[] deflectStrings = calculateAbilityDisplayValues(skillValue, Unarmed.deflectMaxBonusLevel, Unarmed.deflectMaxChance, isLucky);
             deflectChance = deflectStrings[0];
             deflectChanceLucky = deflectStrings[1];
         }
@@ -56,14 +61,14 @@ public class UnarmedCommand extends SkillCommand {
 
         // IRON GRIP
         if (canIronGrip) {
-            String[] ironGripStrings = calculateAbilityDisplayValues(Unarmed.ironGripMaxBonusLevel, Unarmed.ironGripMaxChance);
+            String[] ironGripStrings = calculateAbilityDisplayValues(skillValue, Unarmed.ironGripMaxBonusLevel, Unarmed.ironGripMaxChance, isLucky);
             ironGripChance = ironGripStrings[0];
             ironGripChanceLucky = ironGripStrings[1];
         }
     }
 
     @Override
-    protected void permissionsCheck() {
+    protected void permissionsCheck(Player player) {
         canBerserk = Permissions.berserk(player);
         canBonusDamage = Permissions.bonusDamage(player, skill);
         canDeflect = Permissions.arrowDeflect(player);
@@ -72,60 +77,56 @@ public class UnarmedCommand extends SkillCommand {
     }
 
     @Override
-    protected boolean effectsHeaderPermissions() {
-        return canBerserk || canBonusDamage || canDeflect || canDisarm || canIronGrip;
-    }
-
-    @Override
-    protected void effectsDisplay() {
-        luckyEffectsDisplay();
+    protected List<String> effectsDisplay() {
+        List<String> messages = new ArrayList<String>();
 
         if (canBerserk) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.0"), LocaleLoader.getString("Unarmed.Effect.1")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.0"), LocaleLoader.getString("Unarmed.Effect.1")));
         }
 
         if (canDisarm) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.2"), LocaleLoader.getString("Unarmed.Effect.3")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.2"), LocaleLoader.getString("Unarmed.Effect.3")));
         }
 
         if (canBonusDamage) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.4"), LocaleLoader.getString("Unarmed.Effect.5")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.4"), LocaleLoader.getString("Unarmed.Effect.5")));
         }
 
         if (canDeflect) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.6"), LocaleLoader.getString("Unarmed.Effect.7")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.6"), LocaleLoader.getString("Unarmed.Effect.7")));
         }
 
         if (canIronGrip) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.8"), LocaleLoader.getString("Unarmed.Effect.9")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.8"), LocaleLoader.getString("Unarmed.Effect.9")));
         }
+
+        return messages;
     }
 
     @Override
-    protected boolean statsHeaderPermissions() {
-        return canBerserk || canBonusDamage || canDeflect || canDisarm || canIronGrip;
-    }
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+        List<String> messages = new ArrayList<String>();
 
-    @Override
-    protected void statsDisplay() {
         if (canBonusDamage) {
-            player.sendMessage(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Unarmed.Ability.Bonus.0"), LocaleLoader.getString("Unarmed.Ability.Bonus.1", ironArmBonus)));
+            messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Unarmed.Ability.Bonus.0"), LocaleLoader.getString("Unarmed.Ability.Bonus.1", ironArmBonus)));
         }
 
         if (canDeflect) {
-            player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", deflectChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", deflectChanceLucky) : ""));
+            messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.ArrowDeflect", deflectChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", deflectChanceLucky) : ""));
         }
 
         if (canDisarm) {
-            player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", disarmChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", disarmChanceLucky) : ""));
+            messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.Disarm", disarmChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", disarmChanceLucky) : ""));
         }
 
         if (canIronGrip) {
-            player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
+            messages.add(LocaleLoader.getString("Unarmed.Ability.Chance.IronGrip", ironGripChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", ironGripChanceLucky) : ""));
         }
 
         if (canBerserk) {
-            player.sendMessage(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", berserkLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
+            messages.add(LocaleLoader.getString("Unarmed.Ability.Berserk.Length", berserkLength) + (hasEndurance ? LocaleLoader.getString("Perks.ActivationTime.Bonus", berserkLengthEndurance) : ""));
         }
+
+        return messages;
     }
 }

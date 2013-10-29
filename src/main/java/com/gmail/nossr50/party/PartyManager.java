@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.ShareMode;
@@ -494,7 +495,7 @@ public final class PartyManager {
      */
     public static void processPartyLeaving(McMMOPlayer mcMMOPlayer) {
         mcMMOPlayer.removeParty();
-        mcMMOPlayer.setPartyChat(false);
+        mcMMOPlayer.disableChat(ChatMode.PARTY);
         mcMMOPlayer.setItemShareModifier(10);
     }
 

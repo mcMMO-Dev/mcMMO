@@ -15,8 +15,6 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyItemShareCommand implements CommandExecutor {
-    private Party playerParty;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!Config.getInstance().getItemShareEnabled()) {
@@ -24,9 +22,10 @@ public class PartyItemShareCommand implements CommandExecutor {
             return true;
         }
 
+        Party party = UserManager.getPlayer((Player) sender).getParty();
+
         switch (args.length) {
             case 2:
-                playerParty = UserManager.getPlayer((Player) sender).getParty();
                 ShareMode mode = ShareMode.getShareMode(args[1].toUpperCase());
 
                 if (mode == null) {
@@ -34,11 +33,10 @@ public class PartyItemShareCommand implements CommandExecutor {
                     return true;
                 }
 
-                handleChangingShareMode(mode);
+                handleChangingShareMode(party, mode);
                 return true;
 
             case 3:
-                playerParty = UserManager.getPlayer((Player) sender).getParty();
                 boolean toggle = false;
 
                 if (CommandUtils.shouldEnableToggle(args[2])) {
@@ -53,7 +51,7 @@ public class PartyItemShareCommand implements CommandExecutor {
                 }
 
                 try {
-                    handleToggleItemShareCategory(ItemShareType.valueOf(args[1].toUpperCase()), toggle);
+                    handleToggleItemShareCategory(party, ItemShareType.valueOf(args[1].toUpperCase()), toggle);
                 }
                 catch (IllegalArgumentException ex) {
                     sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "itemshare", "<loot | mining | herbalism | woodcutting | misc> <true | false>"));
@@ -68,22 +66,22 @@ public class PartyItemShareCommand implements CommandExecutor {
         }
     }
 
-    private void handleChangingShareMode(ShareMode mode) {
-        playerParty.setItemShareMode(mode);
+    private void handleChangingShareMode(Party party, ShareMode mode) {
+        party.setItemShareMode(mode);
 
         String changeModeMessage = LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Item"), LocaleLoader.getString("Party.ShareMode." + StringUtils.getCapitalized(mode.toString())));
 
-        for (Player member : playerParty.getOnlineMembers()) {
+        for (Player member : party.getOnlineMembers()) {
             member.sendMessage(changeModeMessage);
         }
     }
 
-    private void handleToggleItemShareCategory(ItemShareType type, boolean toggle) {
-        playerParty.setSharingDrops(type, toggle);
+    private void handleToggleItemShareCategory(Party party, ItemShareType type, boolean toggle) {
+        party.setSharingDrops(type, toggle);
 
         String toggleMessage = LocaleLoader.getString("Commands.Party.ToggleShareCategory", StringUtils.getCapitalized(type.toString()), toggle ? "enabled" : "disabled");
 
-        for (Player member : playerParty.getOnlineMembers()) {
+        for (Player member : party.getOnlineMembers()) {
             member.sendMessage(toggleMessage);
         }
     }

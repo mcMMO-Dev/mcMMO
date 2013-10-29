@@ -628,11 +628,11 @@ public class PlayerListener implements Listener {
 
         ChatManager chatManager = null;
 
-        if (mcMMOPlayer.getPartyChatMode()) {
+        if (mcMMOPlayer.isChatEnabled(ChatMode.PARTY)) {
             Party party = mcMMOPlayer.getParty();
 
             if (party == null) {
-                mcMMOPlayer.togglePartyChat();
+                mcMMOPlayer.disableChat(ChatMode.PARTY);
                 player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
                 return;
             }
@@ -640,7 +640,7 @@ public class PlayerListener implements Listener {
             chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.PARTY);
             ((PartyChatManager) chatManager).setParty(party);
         }
-        else if (mcMMOPlayer.getAdminChatMode()) {
+        else if (mcMMOPlayer.isChatEnabled(ChatMode.ADMIN)) {
             chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.ADMIN);
         }
 

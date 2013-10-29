@@ -18,11 +18,7 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.google.common.collect.ImmutableList;
 
 public class XprateCommand implements TabExecutor {
-    private double originalRate;
-
-    public XprateCommand() {
-        originalRate = ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier();
-    }
+    private final double ORIGINAL_XP_RATE = ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -42,7 +38,7 @@ public class XprateCommand implements TabExecutor {
                     mcMMO.p.toggleXpEventEnabled();
                 }
 
-                ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(originalRate);
+                ExperienceConfig.getInstance().setExperienceGainsGlobalMultiplier(ORIGINAL_XP_RATE);
                 return true;
 
             case 2:

@@ -17,31 +17,22 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.google.common.collect.ImmutableList;
 
 public abstract class HardcoreModeCommand implements TabExecutor {
-    protected CommandSender sender;
-    protected double newPercent;
-    protected DecimalFormat percent;
-    protected String skill;
-
-    public HardcoreModeCommand() {
-        percent = new DecimalFormat("##0.00%");
-    }
+    protected final DecimalFormat percent = new DecimalFormat("##0.00%");
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 0:
-                this.sender = sender;
-
-                if (!checkTogglePermissions()) {
+                if (!checkTogglePermissions(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
 
-                if (checkEnabled("ALL")) {
-                    disable("ALL");
+                if (checkEnabled(null)) {
+                    disable(null);
                 }
                 else {
-                    enable("ALL");
+                    enable(null);
                 }
 
                 return true;
@@ -53,7 +44,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                         return true;
                     }
 
-                    enable("ALL");
+                    enable(null);
                     return true;
                 }
 
@@ -63,11 +54,11 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                         return true;
                     }
 
-                    disable("ALL");
+                    disable(null);
                     return true;
                 }
 
-                if (isInvalidPercentage(sender, args[0])) {
+                if (CommandUtils.isInvalidDouble(sender, args[0])) {
                     return true;
                 }
 
@@ -76,16 +67,20 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                     return true;
                 }
 
-                modify();
+                modify(sender, Double.parseDouble(args[0]));
                 return true;
 
 
             case 2:
-                if (!args[0].equalsIgnoreCase("ALL") && CommandUtils.isChildSkill(sender, SkillType.getSkill(args[0]))) {
+                if (CommandUtils.isInvalidSkill(sender, args[0])) {
                     return true;
                 }
 
-                skill = args[0];
+                SkillType skill = SkillType.getSkill(args[0]);
+
+                if (!CommandUtils.isChildSkill(sender, skill)) {
+                    return true;
+                }
 
                 if (CommandUtils.shouldEnableToggle(args[1])) {
                     if (!Permissions.hardcoreToggle(sender)) {
@@ -103,7 +98,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                         return true;
                     }
 
-                    disable(skill);
+                    enable(skill);
                     return true;
                 }
 
@@ -128,19 +123,10 @@ public abstract class HardcoreModeCommand implements TabExecutor {
         }
     }
 
-    protected abstract boolean checkTogglePermissions();
-    protected abstract boolean checkModifyPermissions();
-    protected abstract boolean checkEnabled(String skill);
-    protected abstract void enable(String skill);
-    protected abstract void disable(String skill);
-    protected abstract void modify();
-
-    private boolean isInvalidPercentage(CommandSender sender, String value) {
-        if (CommandUtils.isInvalidDouble(sender, value)) {
-            return true;
-        }
-
-        newPercent = Double.parseDouble(value);
-        return false;
-    }
+    protected abstract boolean checkTogglePermissions(CommandSender sender);
+    protected abstract boolean checkModifyPermissions(CommandSender sender);
+    protected abstract boolean checkEnabled(SkillType skill);
+    protected abstract void enable(SkillType skill);
+    protected abstract void disable(SkillType skill);
+    protected abstract void modify(CommandSender sender, double newPercentage);
 }

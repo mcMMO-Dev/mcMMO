@@ -167,7 +167,10 @@ public enum SkillType {
             }
         }
 
-        mcMMO.p.getLogger().warning("[Debug] Invalid mcMMO skill (" + skillName + ")");
+        if (!skillName.equalsIgnoreCase("all")) {
+            mcMMO.p.getLogger().warning("Invalid mcMMO skill (" + skillName + ")"); //TODO: Localize
+        }
+
         return null;
     }
 

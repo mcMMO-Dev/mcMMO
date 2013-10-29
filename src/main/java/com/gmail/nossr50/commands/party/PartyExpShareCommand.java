@@ -14,8 +14,6 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyExpShareCommand implements CommandExecutor {
-    private Party playerParty;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!Config.getInstance().getExpShareEnabled()) {
@@ -25,13 +23,13 @@ public class PartyExpShareCommand implements CommandExecutor {
 
         switch (args.length) {
             case 2:
-                playerParty = UserManager.getPlayer((Player) sender).getParty();
+                Party party = UserManager.getPlayer((Player) sender).getParty();
 
                 if (args[1].equalsIgnoreCase("none") || CommandUtils.shouldDisableToggle(args[1])) {
-                    handleChangingShareMode(ShareMode.NONE);
+                    handleChangingShareMode(party, ShareMode.NONE);
                 }
                 else if (args[1].equalsIgnoreCase("equal") || args[1].equalsIgnoreCase("even") || CommandUtils.shouldEnableToggle(args[1])) {
-                    handleChangingShareMode(ShareMode.EQUAL);
+                    handleChangingShareMode(party, ShareMode.EQUAL);
                 }
                 else {
                     sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "expshare", "<NONE | EQUAL>"));
@@ -45,12 +43,12 @@ public class PartyExpShareCommand implements CommandExecutor {
         }
     }
 
-    private void handleChangingShareMode(ShareMode mode) {
-        playerParty.setXpShareMode(mode);
+    private void handleChangingShareMode(Party party, ShareMode mode) {
+        party.setXpShareMode(mode);
 
         String changeModeMessage = LocaleLoader.getString("Commands.Party.SetSharing", LocaleLoader.getString("Party.ShareType.Exp"), LocaleLoader.getString("Party.ShareMode." + StringUtils.getCapitalized(mode.toString())));
 
-        for (Player member : playerParty.getOnlineMembers()) {
+        for (Player member : party.getOnlineMembers()) {
             member.sendMessage(changeModeMessage);
         }
     }

@@ -12,19 +12,15 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyLockCommand implements CommandExecutor {
-    private Party playerParty;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        playerParty = UserManager.getPlayer((Player) sender).getParty();
-
         switch (args.length) {
             case 1:
                 if (args[0].equalsIgnoreCase("lock")) {
-                    lockParty(sender, command.getPermissionMessage());
+                    togglePartyLock(sender, true);
                 }
                 else if (args[0].equalsIgnoreCase("unlock")) {
-                    unlockParty(sender, command.getPermissionMessage());
+                    togglePartyLock(sender, false);
                 }
 
                 return true;
@@ -36,10 +32,10 @@ public class PartyLockCommand implements CommandExecutor {
                 }
 
                 if (CommandUtils.shouldEnableToggle(args[1])) {
-                    lockParty(sender, command.getPermissionMessage());
+                    togglePartyLock(sender, true);
                 }
                 else if (CommandUtils.shouldDisableToggle(args[1])) {
-                    unlockParty(sender, command.getPermissionMessage());
+                    togglePartyLock(sender, false);
                 }
                 else {
                     sendUsageStrings(sender);
@@ -53,44 +49,25 @@ public class PartyLockCommand implements CommandExecutor {
         }
     }
 
-    /**
-     * Handle locking a party.
-     */
-    private void lockParty(CommandSender sender, String permissionMessage) {
-        if (!Permissions.partySubcommand(sender, PartySubcommandType.LOCK)) {
-            sender.sendMessage(permissionMessage);
-            return;
-        }
-
-        if (playerParty.isLocked()) {
-            sender.sendMessage(LocaleLoader.getString("Party.IsLocked"));
-            return;
-        }
-
-        playerParty.setLocked(true);
-        sender.sendMessage(LocaleLoader.getString("Party.Locked"));
-    }
-
-    /**
-     * Handle unlocking a party.
-     */
-    private void unlockParty(CommandSender sender, String permissionMessage) {
-        if (!Permissions.partySubcommand(sender, PartySubcommandType.UNLOCK)) {
-            sender.sendMessage(permissionMessage);
-            return;
-        }
-
-        if (!playerParty.isLocked()) {
-            sender.sendMessage(LocaleLoader.getString("Party.IsntLocked"));
-            return;
-        }
-
-        playerParty.setLocked(false);
-        sender.sendMessage(LocaleLoader.getString("Party.Unlocked"));
-    }
-
     private void sendUsageStrings(CommandSender sender) {
         sender.sendMessage(LocaleLoader.getString("Commands.Usage.2", "party", "lock", "[on|off]"));
         sender.sendMessage(LocaleLoader.getString("Commands.Usage.1", "party", "unlock"));
+    }
+
+    private void togglePartyLock(CommandSender sender, boolean lock) {
+        Party party = UserManager.getPlayer((Player) sender).getParty();
+
+        if (!Permissions.partySubcommand(sender, lock ? PartySubcommandType.LOCK : PartySubcommandType.UNLOCK)) {
+            sender.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
+            return;
+        }
+
+        if (lock ? party.isLocked() : !party.isLocked()) {
+            sender.sendMessage(LocaleLoader.getString("Party." + (lock ? "IsLocked" : "IsntLocked")));
+            return;
+        }
+
+        party.setLocked(lock);
+        sender.sendMessage(LocaleLoader.getString("Party." + (lock ? "Locked" : "Unlocked")));
     }
 }

@@ -15,13 +15,11 @@ public class SkillGuideCommand implements CommandExecutor {
     private String header;
     private ArrayList<String> guide;
 
-    private String invalidPage;
+    private String invalidPage = LocaleLoader.getString("Guides.Page.Invalid");
 
-    public SkillGuideCommand(SkillType skillType) {
-        header = LocaleLoader.getString("Guides.Header", skillType.getName());
-        guide = getGuide(skillType);
-
-        invalidPage = LocaleLoader.getString("Guides.Page.Invalid");
+    public SkillGuideCommand(SkillType skill) {
+        header = LocaleLoader.getString("Guides.Header", skill.getName());
+        guide = getGuide(skill);
     }
 
     @Override
@@ -68,8 +66,8 @@ public class SkillGuideCommand implements CommandExecutor {
         }
     }
 
-    private ArrayList<String> grabPageContents(int pagenum) {
-        int pageIndexStart = 8 * (pagenum - 1); // Determine what string to start at
+    private ArrayList<String> grabPageContents(int page) {
+        int pageIndexStart = 8 * (page - 1); // Determine what string to start at
         ArrayList<String> allStrings = new ArrayList<String>();
 
         allStrings.add(header);
@@ -84,15 +82,15 @@ public class SkillGuideCommand implements CommandExecutor {
             }
         }
 
-        allStrings.add("Page " + pagenum + " of " + getTotalPageNumber());
+        allStrings.add("Page " + page + " of " + getTotalPageNumber());
         return allStrings;
     }
 
-    private ArrayList<String> getGuide(SkillType skillType) {
+    private ArrayList<String> getGuide(SkillType skill) {
         ArrayList<String> guide = new ArrayList<String>();
 
         for (int i = 0; i < 10; i++) {
-            String[] section = LocaleLoader.getString("Guides." + StringUtils.getCapitalized(skillType.toString()) + ".Section." + i).split("\n");
+            String[] section = LocaleLoader.getString("Guides." + StringUtils.getCapitalized(skill.toString()) + ".Section." + i).split("\n");
 
             if (section[0].startsWith("!")) {
                 break;

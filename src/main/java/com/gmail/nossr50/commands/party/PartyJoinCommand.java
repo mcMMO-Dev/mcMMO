@@ -14,25 +14,33 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyJoinCommand implements CommandExecutor {
-    private McMMOPlayer mcMMOTarget;
-    private Player target;
-    private Party targetParty;
-
-    private McMMOPlayer mcMMOPlayer;
-    private Player player;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
             case 3:
-                // Verify target exists and is in a different party than the player
-                if (!canJoinParty(sender, args[1])) {
+                String targetName = Misc.getMatchedPlayerName(args[1]);
+                McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName);
+
+                if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
                     return true;
                 }
 
-                mcMMOPlayer = UserManager.getPlayer((Player) sender);
-                player = mcMMOPlayer.getPlayer();
+                Player target = mcMMOTarget.getPlayer();
+
+                if (!mcMMOTarget.inParty()) {
+                    sender.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", targetName));
+                    return true;
+                }
+
+                Player player = (Player) sender;
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                Party targetParty = mcMMOTarget.getParty();
+
+                if (player.equals(target) || (mcMMOPlayer.inParty() && mcMMOPlayer.getParty().equals(targetParty))) {
+                    sender.sendMessage(LocaleLoader.getString("Party.Join.Self"));
+                    return true;
+                }
 
                 String password = getPassword(args);
 
@@ -64,32 +72,5 @@ public class PartyJoinCommand implements CommandExecutor {
         }
 
         return null;
-    }
-
-    private boolean canJoinParty(CommandSender sender, String targetName) {
-        targetName = Misc.getMatchedPlayerName(targetName);
-        mcMMOTarget = UserManager.getPlayer(targetName);
-
-        if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
-            return false;
-        }
-
-        target = mcMMOTarget.getPlayer();
-
-        if (!mcMMOTarget.inParty()) {
-            sender.sendMessage(LocaleLoader.getString("Party.PlayerNotInParty", targetName));
-            return false;
-        }
-
-        player = (Player) sender;
-        mcMMOPlayer = UserManager.getPlayer(player);
-        targetParty = mcMMOTarget.getParty();
-
-        if (player.equals(target) || (mcMMOPlayer.inParty() && mcMMOPlayer.getParty().equals(targetParty))) {
-            sender.sendMessage(LocaleLoader.getString("Party.Join.Self"));
-            return false;
-        }
-
-        return true;
     }
 }

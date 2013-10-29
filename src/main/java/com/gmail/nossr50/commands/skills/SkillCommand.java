@@ -27,14 +27,7 @@ import com.google.common.collect.ImmutableList;
 
 public abstract class SkillCommand implements TabExecutor {
     protected SkillType skill;
-    protected String skillName;
-
-    protected Player player;
-    protected McMMOPlayer mcMMOPlayer;
-
-    protected float skillValue;
-    protected boolean isLucky;
-    protected boolean hasEndurance;
+    private String skillName;
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
     protected DecimalFormat decimal = new DecimalFormat("##0.00");
@@ -53,17 +46,17 @@ public abstract class SkillCommand implements TabExecutor {
             return true;
         }
 
-        player = (Player) sender;
-        mcMMOPlayer = UserManager.getPlayer(player);
-
         switch (args.length) {
             case 0:
-                skillValue = mcMMOPlayer.getSkillLevel(skill);
-                isLucky = Permissions.lucky(sender, skill);
-                hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
+                Player player = (Player) sender;
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-                permissionsCheck();
-                dataCalculations();
+                boolean isLucky = Permissions.lucky(player, skill);
+                boolean hasEndurance = (PerksUtils.handleActivationPerks(player, 0, 0) != 0);
+                float skillValue = mcMMOPlayer.getSkillLevel(skill);
+
+                permissionsCheck(player);
+                dataCalculations(player, skillValue, isLucky);
 
                 if (Config.getInstance().getSkillUseBoard()) {
                     ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
@@ -87,17 +80,30 @@ public abstract class SkillCommand implements TabExecutor {
                     }
                 }
 
-                if (effectsHeaderPermissions()) {
+                List<String> effectMessages = effectsDisplay();
+
+                if (!effectMessages.isEmpty()) {
                     player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.Effects")));
+
+                    if (isLucky) {
+                        String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
+                        player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Lucky.Name"), LocaleLoader.getString("Perks.Lucky.Desc", skillName)));
+                    }
+
+                    for (String message : effectMessages) {
+                        player.sendMessage(message);
+                    }
                 }
 
-                effectsDisplay();
+                List<String> statsMessages = statsDisplay(player, skillValue, hasEndurance, isLucky);
 
-                if (statsHeaderPermissions()) {
+                if (!statsMessages.isEmpty()) {
                     player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Commands.Stats.Self")));
-                }
 
-                statsDisplay();
+                    for (String message : statsMessages) {
+                        player.sendMessage(message);
+                    }
+                }
 
                 player.sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase()));
                 return true;
@@ -117,11 +123,11 @@ public abstract class SkillCommand implements TabExecutor {
         }
     }
 
-    protected int calculateRank(int maxLevel, int rankChangeLevel) {
+    protected int calculateRank(float skillValue, int maxLevel, int rankChangeLevel) {
         return Math.min((int) skillValue, maxLevel) / rankChangeLevel;
     }
 
-    protected String[] calculateAbilityDisplayValues(double chance) {
+    protected String[] calculateAbilityDisplayValues(double chance, boolean isLucky) {
         String[] displayValues = new String[2];
 
         displayValues[0] = percent.format(Math.min(chance, 100.0D) / 100.0D);
@@ -130,11 +136,11 @@ public abstract class SkillCommand implements TabExecutor {
         return displayValues;
     }
 
-    protected String[] calculateAbilityDisplayValues(int maxBonusLevel, double maxChance) {
-        return calculateAbilityDisplayValues((maxChance / maxBonusLevel) * Math.min(skillValue, maxBonusLevel));
+    protected String[] calculateAbilityDisplayValues(float skillValue, int maxBonusLevel, double maxChance, boolean isLucky) {
+        return calculateAbilityDisplayValues((maxChance / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
     }
 
-    protected String[] calculateLengthDisplayValues() {
+    protected String[] calculateLengthDisplayValues(Player player, float skillValue) {
         int maxLength = skill.getAbility().getMaxLength();
         int length = 2 + (int) (skillValue / AdvancedConfig.getInstance().getAbilityLength());
         int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
@@ -146,22 +152,11 @@ public abstract class SkillCommand implements TabExecutor {
         return new String[] { String.valueOf(length), String.valueOf(enduranceLength) };
     }
 
-    protected void luckyEffectsDisplay() {
-        if (isLucky) {
-            String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Lucky.Name"), LocaleLoader.getString("Perks.Lucky.Desc", skillName)));
-        }
-    }
+    protected abstract void dataCalculations(Player player, float skillValue, boolean isLucky);
 
-    protected abstract void dataCalculations();
+    protected abstract void permissionsCheck(Player player);
 
-    protected abstract void permissionsCheck();
+    protected abstract List<String> effectsDisplay();
 
-    protected abstract boolean effectsHeaderPermissions();
-
-    protected abstract void effectsDisplay();
-
-    protected abstract boolean statsHeaderPermissions();
-
-    protected abstract void statsDisplay();
+    protected abstract List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky);
 }

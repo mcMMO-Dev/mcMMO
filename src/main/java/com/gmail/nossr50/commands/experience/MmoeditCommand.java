@@ -1,7 +1,9 @@
 package com.gmail.nossr50.commands.experience;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.EventUtils;
@@ -19,13 +21,18 @@ public class MmoeditCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handleCommand(SkillType skill) {
+    protected void handleCommand(Player player, PlayerProfile profile, SkillType skill, int value) {
         int skillLevel = profile.getSkillLevel(skill);
         float xpRemoved = profile.getSkillXpLevelRaw(skill);
 
         profile.modifySkill(skill, value);
 
-        if (player == null || value == skillLevel) {
+        if (player == null) {
+            profile.save();
+            return;
+        }
+
+        if (value == skillLevel) {
             return;
         }
 
@@ -33,12 +40,12 @@ public class MmoeditCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handlePlayerMessageAll() {
+    protected void handlePlayerMessageAll(Player player, int value) {
         player.sendMessage(LocaleLoader.getString("Commands.mmoedit.AllSkills.1", value));
     }
 
     @Override
-    protected void handlePlayerMessageSkill() {
+    protected void handlePlayerMessageSkill(Player player, int value, SkillType skill) {
         player.sendMessage(LocaleLoader.getString("Commands.mmoedit.Modified.1", skill.getName(), value));
     }
 }

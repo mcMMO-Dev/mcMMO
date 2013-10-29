@@ -26,7 +26,7 @@ public final class CommandUtils {
     private CommandUtils() {}
 
     public static boolean isChildSkill(CommandSender sender, SkillType skill) {
-        if (!skill.isChildSkill()) {
+        if (skill == null || !skill.isChildSkill()) {
             return false;
         }
 
@@ -134,7 +134,7 @@ public final class CommandUtils {
     }
 
     public static boolean isInvalidSkill(CommandSender sender, String skillName) {
-        if (SkillUtils.isSkill(skillName)) {
+        if (skillName.equalsIgnoreCase("all") || SkillUtils.isSkill(skillName)) {
             return false;
         }
 

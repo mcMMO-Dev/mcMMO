@@ -1,11 +1,17 @@
 package com.gmail.nossr50.commands.skills;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.entity.Player;
+
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.smelting.Smelting;
 import com.gmail.nossr50.skills.smelting.Smelting.Tier;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 
 public class SmeltingCommand extends SkillCommand {
     private String burnTimeModifier;
@@ -24,7 +30,7 @@ public class SmeltingCommand extends SkillCommand {
     }
 
     @Override
-    protected void dataCalculations() {
+    protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
         // FUEL EFFICIENCY
         if (canFuelEfficiency) {
             burnTimeModifier = decimal.format(1 + ((skillValue / Smelting.burnModifierMaxLevel) * Smelting.burnTimeMultiplier));
@@ -32,21 +38,21 @@ public class SmeltingCommand extends SkillCommand {
 
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = calculateAbilityDisplayValues(Smelting.secondSmeltMaxLevel, Smelting.secondSmeltMaxChance);
+            String[] secondSmeltStrings = calculateAbilityDisplayValues(skillValue, Smelting.secondSmeltMaxLevel, Smelting.secondSmeltMaxChance, isLucky);
             secondSmeltChance = secondSmeltStrings[0];
             secondSmeltChanceLucky = secondSmeltStrings[1];
         }
 
         // FLUX MINING
         if (canFluxMine) {
-            String[] fluxMiningStrings = calculateAbilityDisplayValues(Smelting.fluxMiningChance);
+            String[] fluxMiningStrings = calculateAbilityDisplayValues(Smelting.fluxMiningChance, isLucky);
             fluxMiningChance = fluxMiningStrings[0];
             fluxMiningChanceLucky = fluxMiningStrings[1];
         }
     }
 
     @Override
-    protected void permissionsCheck() {
+    protected void permissionsCheck(Player player) {
         canFuelEfficiency = Permissions.fuelEfficiency(player);
         canSecondSmelt = Permissions.doubleDrops(player, skill);
         canFluxMine = Permissions.fluxMining(player);
@@ -54,64 +60,60 @@ public class SmeltingCommand extends SkillCommand {
     }
 
     @Override
-    protected boolean effectsHeaderPermissions() {
-        return canFluxMine || canFuelEfficiency || canSecondSmelt || canVanillaXPBoost;
-    }
-
-    @Override
-    protected void effectsDisplay() {
-        luckyEffectsDisplay();
+    protected List<String> effectsDisplay() {
+        List<String> messages = new ArrayList<String>();
 
         if (canFuelEfficiency) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Smelting.Effect.0"), LocaleLoader.getString("Smelting.Effect.1")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Smelting.Effect.0"), LocaleLoader.getString("Smelting.Effect.1")));
         }
 
         if (canSecondSmelt) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Smelting.Effect.2"), LocaleLoader.getString("Smelting.Effect.3")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Smelting.Effect.2"), LocaleLoader.getString("Smelting.Effect.3")));
         }
 
         if (canVanillaXPBoost) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Smelting.Effect.4"), LocaleLoader.getString("Smelting.Effect.5")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Smelting.Effect.4"), LocaleLoader.getString("Smelting.Effect.5")));
         }
 
         if (canFluxMine) {
-            player.sendMessage(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Smelting.Effect.6"), LocaleLoader.getString("Smelting.Effect.7")));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Smelting.Effect.6"), LocaleLoader.getString("Smelting.Effect.7")));
         }
+
+        return messages;
     }
 
     @Override
-    protected boolean statsHeaderPermissions() {
-        return canFluxMine || canFuelEfficiency || canSecondSmelt || canVanillaXPBoost;
-    }
+    protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
+        List<String> messages = new ArrayList<String>();
 
-    @Override
-    protected void statsDisplay() {
         if (canFuelEfficiency) {
-            player.sendMessage(LocaleLoader.getString("Smelting.Ability.FuelEfficiency", burnTimeModifier));
+            messages.add(LocaleLoader.getString("Smelting.Ability.FuelEfficiency", burnTimeModifier));
         }
 
         if (canSecondSmelt) {
-            player.sendMessage(LocaleLoader.getString("Smelting.Ability.SecondSmelt", secondSmeltChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", secondSmeltChanceLucky) : ""));
+            messages.add(LocaleLoader.getString("Smelting.Ability.SecondSmelt", secondSmeltChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", secondSmeltChanceLucky) : ""));
         }
 
         if (canVanillaXPBoost) {
             int unlockLevel = AdvancedConfig.getInstance().getSmeltingRankLevel(Tier.ONE);
 
             if (skillValue < unlockLevel) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Smelting.Ability.Locked.0", unlockLevel)));
+                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Smelting.Ability.Locked.0", unlockLevel)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Smelting.Ability.VanillaXPBoost", mcMMOPlayer.getSmeltingManager().getVanillaXpMultiplier()));
+                messages.add(LocaleLoader.getString("Smelting.Ability.VanillaXPBoost", UserManager.getPlayer(player).getSmeltingManager().getVanillaXpMultiplier()));
             }
         }
 
         if (canFluxMine) {
             if (skillValue < Smelting.fluxMiningUnlockLevel) {
-                player.sendMessage(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Smelting.Ability.Locked.1", Smelting.fluxMiningUnlockLevel)));
+                messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Smelting.Ability.Locked.1", Smelting.fluxMiningUnlockLevel)));
             }
             else {
-                player.sendMessage(LocaleLoader.getString("Smelting.Ability.FluxMining", fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", fluxMiningChanceLucky) : ""));
+                messages.add(LocaleLoader.getString("Smelting.Ability.FluxMining", fluxMiningChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", fluxMiningChanceLucky) : ""));
             }
         }
+
+        return messages;
     }
 }

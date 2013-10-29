@@ -22,14 +22,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 
 public abstract class ExperienceCommand implements TabExecutor {
-    protected McMMOPlayer mcMMOPlayer;
-    protected Player player;
-    protected PlayerProfile profile;
-
-    protected boolean allSkills;
-    protected SkillType skill;
-    protected int value;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
@@ -47,12 +39,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                player = (Player) sender;
-                mcMMOPlayer = UserManager.getPlayer(player);
-                profile = mcMMOPlayer.getProfile();
-
-                editValues();
-                cleanUp();
+                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), SkillType.getSkill(args[0]), Integer.parseInt(args[1]));
                 return true;
 
             case 3:
@@ -65,28 +52,27 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
+                SkillType skill = SkillType.getSkill(args[1]);
+                int value = Integer.parseInt(args[2]);
+
                 String playerName = Misc.getMatchedPlayerName(args[0]);
-                mcMMOPlayer = UserManager.getPlayer(playerName, true);
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName, true);
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false);
+                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false);
 
                     if (CommandUtils.unloadedProfile(sender, profile)) {
                         return true;
                     }
 
-                    editValues();
-                    profile.save(); // Since this is a temporary profile, we save it here.
+                    editValues(null, profile, skill, value);
                 }
                 else {
-                    profile = mcMMOPlayer.getProfile();
-                    player = mcMMOPlayer.getPlayer();
-                    editValues();
+                    editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill, value);
                 }
 
-                handleSenderMessage(sender, playerName);
-                cleanUp();
+                handleSenderMessage(sender, playerName, skill);
                 return true;
 
             default:
@@ -109,42 +95,20 @@ public abstract class ExperienceCommand implements TabExecutor {
 
     protected abstract boolean permissionsCheckSelf(CommandSender sender);
     protected abstract boolean permissionsCheckOthers(CommandSender sender);
-    protected abstract void handleCommand(SkillType skill);
-    protected abstract void handlePlayerMessageAll();
-    protected abstract void handlePlayerMessageSkill();
+    protected abstract void handleCommand(Player player, PlayerProfile profile, SkillType skill, int value);
+    protected abstract void handlePlayerMessageAll(Player player, int value);
+    protected abstract void handlePlayerMessageSkill(Player player, int value, SkillType skill);
 
     private boolean validateArguments(CommandSender sender, String skillName, String value) {
-        if (isInvalidInteger(sender, value) || isInvalidSkill(sender, skillName)) {
+        if (CommandUtils.isInvalidInteger(sender, value) || CommandUtils.isInvalidSkill(sender, skillName)) {
             return false;
         }
 
         return true;
     }
 
-    private boolean isInvalidInteger(CommandSender sender, String value) {
-        if (CommandUtils.isInvalidInteger(sender, value)) {
-            return true;
-        }
-
-        this.value = Integer.parseInt(value);
-        return false;
-    }
-
-    protected boolean isInvalidSkill(CommandSender sender, String skillName) {
-        if (skillName.equalsIgnoreCase("all")) {
-            allSkills = true;
-            return false;
-        }
-        else if (CommandUtils.isInvalidSkill(sender, skillName)) {
-            return true;
-        }
-
-        skill = SkillType.getSkill(skillName);
-        return false;
-    }
-
-    protected void handleSenderMessage(CommandSender sender, String playerName) {
-        if (allSkills) {
+    protected static void handleSenderMessage(CommandSender sender, String playerName, SkillType skill) {
+        if (skill == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
         else {
@@ -152,27 +116,22 @@ public abstract class ExperienceCommand implements TabExecutor {
         }
     }
 
-    protected void editValues() {
-        if (allSkills) {
+    protected void editValues(Player player, PlayerProfile profile, SkillType skill, int value) {
+        if (skill == null) {
             for (SkillType skillType : SkillType.values()) {
-                handleCommand(skillType);
+                handleCommand(player, profile, skillType, value);
             }
 
             if (player != null) {
-                handlePlayerMessageAll();
+                handlePlayerMessageAll(player, value);
             }
         }
         else {
-            handleCommand(skill);
+            handleCommand(player, profile, skill, value);
 
             if (player != null) {
-                handlePlayerMessageSkill();
+                handlePlayerMessageSkill(player, value, skill);
             }
         }
-    }
-
-    private void cleanUp() {
-        allSkills = false;
-        player = null;
     }
 }
