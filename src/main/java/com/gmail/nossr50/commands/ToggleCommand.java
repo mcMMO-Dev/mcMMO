@@ -7,7 +7,6 @@ import java.util.Set;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -18,9 +17,6 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 
 public abstract class ToggleCommand implements TabExecutor {
-    protected McMMOPlayer mcMMOPlayer;
-    protected Player player;
-
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
@@ -34,10 +30,7 @@ public abstract class ToggleCommand implements TabExecutor {
                     return true;
                 }
 
-                player = (Player) sender;
-                mcMMOPlayer = UserManager.getPlayer(player);
-
-                applyCommandAction();
+                applyCommandAction(UserManager.getPlayer(sender.getName()));
                 return true;
 
             case 1:
@@ -47,20 +40,18 @@ public abstract class ToggleCommand implements TabExecutor {
                 }
 
                 String playerName = Misc.getMatchedPlayerName(args[0]);
-                mcMMOPlayer = UserManager.getPlayer(playerName);
+                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
 
                 if (!CommandUtils.checkPlayerExistence(sender, playerName, mcMMOPlayer)) {
                     return true;
                 }
 
-                player = mcMMOPlayer.getPlayer();
-
-                if (CommandUtils.isOffline(sender, player)) {
+                if (CommandUtils.isOffline(sender, mcMMOPlayer.getPlayer())) {
                     return true;
                 }
 
-                applyCommandAction();
-                sendSuccessMessage(sender);
+                applyCommandAction(mcMMOPlayer);
+                sendSuccessMessage(sender, playerName);
                 return true;
 
             default:
@@ -81,6 +72,6 @@ public abstract class ToggleCommand implements TabExecutor {
 
     protected abstract boolean hasOtherPermission(CommandSender sender);
     protected abstract boolean hasSelfPermission(CommandSender sender);
-    protected abstract void applyCommandAction();
-    protected abstract void sendSuccessMessage(CommandSender sender);
+    protected abstract void applyCommandAction(McMMOPlayer mcMMOPlayer);
+    protected abstract void sendSuccessMessage(CommandSender sender, String playerName);
 }
