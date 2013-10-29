@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -463,20 +464,19 @@ public class McMMOPlayer {
     /**
      * Begins an experience gain. The amount will be affected by skill modifiers, global rate, perks, and may be shared with the party
      *
-     * @param skillType Skill being used
+     * @param skill Skill being used
      * @param xp Experience amount to process
      */
-    public void beginXpGain(SkillType skillType, float xp) {
-        if (xp == 0) {
-            return;
-        }
+    public void beginXpGain(SkillType skill, float xp) {
+        Validate.isTrue(xp > 0, "XP gained should be greater than zero.");
 
-        if (skillType.isChildSkill()) {
-            Set<SkillType> parentSkills = FamilyTree.getParents(skillType);
+        if (skill.isChildSkill()) {
+            Set<SkillType> parentSkills = FamilyTree.getParents(skill);
+            float splitXp = xp / parentSkills.size();
 
             for (SkillType parentSkill : parentSkills) {
                 if (parentSkill.getPermissions(player)) {
-                    beginXpGain(parentSkill, xp / parentSkills.size());
+                    beginXpGain(parentSkill, splitXp);
                 }
             }
 
@@ -484,23 +484,21 @@ public class McMMOPlayer {
         }
 
         // Return if the experience has been shared
-        if (party != null && ShareHandler.handleXpShare(xp, this, skillType)) {
+        if (party != null && ShareHandler.handleXpShare(xp, this, skill)) {
             return;
         }
 
-        beginUnsharedXpGain(skillType, xp);
+        beginUnsharedXpGain(skill, xp);
     }
 
     /**
      * Begins an experience gain. The amount will be affected by skill modifiers, global rate and perks
      *
-     * @param skillType Skill being used
+     * @param skill Skill being used
      * @param xp Experience amount to process
      */
-    public void beginUnsharedXpGain(SkillType skillType, float xp) {
-        xp = modifyXpGain(skillType, xp);
-
-        applyXpGain(skillType, xp);
+    public void beginUnsharedXpGain(SkillType skill, float xp) {
+        applyXpGain(skill, modifyXpGain(skill, xp));
     }
 
     /**
