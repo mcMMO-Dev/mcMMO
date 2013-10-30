@@ -21,6 +21,7 @@ public class ZipLibrary {
     private static File FlatFileDirectory = new File(mcMMO.getFlatFileDirectory());
     private static File ModFileDirectory = new File(mcMMO.getModDirectory());
     private static File ConfigFile = new File(mcMMO.getMainDirectory() + "config.yml");
+    private static File ExperienceFile = new File(mcMMO.getMainDirectory() + "experience.yml");
     private static File TreasuresFile = new File(mcMMO.getMainDirectory() + "treasures.yml");
     private static File AdvancedConfigFile = new File(mcMMO.getMainDirectory() + "advanced.yml");
     private static File RepairFile = new File(mcMMO.getMainDirectory() + "repair.vanilla.yml");
@@ -50,6 +51,7 @@ public class ZipLibrary {
 
         sources.add(FlatFileDirectory);
         sources.add(ConfigFile);
+        sources.add(ExperienceFile);
         sources.add(TreasuresFile);
         sources.add(AdvancedConfigFile);
         sources.add(RepairFile);
