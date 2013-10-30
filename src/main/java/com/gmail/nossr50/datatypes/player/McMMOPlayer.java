@@ -468,7 +468,11 @@ public class McMMOPlayer {
      * @param xp Experience amount to process
      */
     public void beginXpGain(SkillType skill, float xp) {
-        Validate.isTrue(xp > 0, "XP gained should be greater than zero.");
+        Validate.isTrue(xp >= 0.0, "XP gained should be greater than or equal to zero.");
+
+        if (xp <= 0.0) {
+            return;
+		}
 
         if (skill.isChildSkill()) {
             Set<SkillType> parentSkills = FamilyTree.getParents(skill);
