@@ -57,7 +57,7 @@ public class Repair {
         return "";
     }
 
-    protected static Material getSalvagedItem(ItemStack inHand) {
+    protected static Material getRepairAndSalvageItem(ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
         }
@@ -84,7 +84,7 @@ public class Repair {
         }
     }
 
-    protected static int getSalvagedAmount(ItemStack inHand) {
+    public static int getRepairAndSalvageQuantities(ItemStack inHand) {
         // Temporary workaround until they get their stuff fixed.
         if (mcMMO.isMCPCEnabled()) {
             if (ItemUtils.isPickaxe(inHand) || ItemUtils.isAxe(inHand) || ItemUtils.isBow(inHand) || inHand.getType() == Material.BUCKET) {
@@ -113,11 +113,7 @@ public class Repair {
             }
         }
 
-        return getRepairAndSalvageQuantities(inHand, getSalvagedItem(inHand), (byte) -1);
-    }
-
-    public static int getRepairAndSalvageQuantities(ItemStack item) {
-        return getRepairAndSalvageQuantities(item, null, (byte) -1);
+        return getRepairAndSalvageQuantities(inHand, getRepairAndSalvageItem(inHand), (byte) -1);
     }
 
     public static int getRepairAndSalvageQuantities(ItemStack item, Material repairMaterial, byte repairMetadata) {
