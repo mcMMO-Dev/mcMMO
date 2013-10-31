@@ -7,6 +7,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -55,8 +56,8 @@ public final class ModUtils {
         return CustomBlockConfig.getInstance().getCustomBlock(blockState.getData());
     }
 
-    public static CustomBlock getCustomSmeltingBlock(ItemStack smelting) {
-        return CustomBlockConfig.getInstance().getCustomBlock(smelting.getData());
+    public static CustomBlock getCustomBlock(MaterialData data) {
+        return CustomBlockConfig.getInstance().getCustomBlock(data);
     }
 
     /**
@@ -129,24 +130,8 @@ public final class ModUtils {
         return customBlocksEnabled && CustomBlockConfig.getInstance().isCustomLog(blockState.getData());
     }
 
-    /**
-     * Check if a custom block is an ore block.
-     *
-     * @param blockState The BlockState of the block to check
-     * @return true if the block represents an ore, false otherwise
-     */
-    public static boolean isCustomOreBlock(BlockState blockState) {
-        return customBlocksEnabled && CustomBlockConfig.getInstance().isCustomOre(blockState.getData());
-    }
-
-    /**
-     * Check if a custom block is an ore block.
-     *
-     * @param item The ItemStack of the block to check
-     * @return true if the block represents an ore, false otherwise
-     */
-    public static boolean isCustomOreBlock(ItemStack item) {
-        return customBlocksEnabled && CustomBlockConfig.getInstance().isCustomOre(item.getData());
+    public static boolean isCustomOre(MaterialData data) {
+        return customBlocksEnabled && CustomBlockConfig.getInstance().isCustomOre(data);
     }
 
     /**

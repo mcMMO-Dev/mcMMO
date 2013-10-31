@@ -75,21 +75,7 @@ public final class BlockUtils {
      * @return true if the block is an ore, false otherwise
      */
     public static boolean isOre(BlockState blockState) {
-        switch (blockState.getType()) {
-            case COAL_ORE:
-            case DIAMOND_ORE:
-            case GLOWING_REDSTONE_ORE:
-            case GOLD_ORE:
-            case IRON_ORE:
-            case LAPIS_ORE:
-            case QUARTZ_ORE:
-            case REDSTONE_ORE:
-            case EMERALD_ORE:
-                return true;
-
-            default:
-                return ModUtils.isCustomOreBlock(blockState);
-        }
+        return MaterialUtils.isOre(blockState.getData());
     }
 
     /**

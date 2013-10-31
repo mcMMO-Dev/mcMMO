@@ -1,27 +1,23 @@
 package com.gmail.nossr50.util;
 
-import java.util.List;
-
 import org.bukkit.ChatColor;
-import org.bukkit.CoalType;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.Coal;
 import org.bukkit.material.Dye;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
-import com.gmail.nossr50.config.mods.CustomBlockConfig;
 import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 
-public class ItemUtils {
+public final class ItemUtils {
+    private ItemUtils() {}
 
     /**
      * Checks if the item is a bow.
@@ -509,21 +505,7 @@ public class ItemUtils {
             return false;
         }
 
-        switch (item.getType()) {
-            case COAL_ORE:
-            case DIAMOND_ORE:
-            case GLOWING_REDSTONE_ORE:
-            case GOLD_ORE:
-            case IRON_ORE:
-            case LAPIS_ORE:
-            case REDSTONE_ORE:
-            case EMERALD_ORE:
-            case QUARTZ_ORE:
-                return true;
-
-            default:
-                return Config.getInstance().getBlockModsEnabled() && CustomBlockConfig.getInstance().isCustomOre(item.getData());
-        }
+        return MaterialUtils.isOre(item.getData());
     }
 
     public static boolean isSmelted(ItemStack item) {
@@ -531,32 +513,13 @@ public class ItemUtils {
             return false;
         }
 
-        switch (item.getType()) {
-            case COAL:
-                return ((Coal) item.getData()).getType() == CoalType.COAL;
-
-            case DIAMOND:
-            case REDSTONE:
-            case GOLD_INGOT:
-            case IRON_INGOT:
-            case EMERALD:
-            case QUARTZ:
-                return true;
-
-            case INK_SACK:
-                return ((Dye) item.getData()).getColor() == DyeColor.BLUE;
-
-            default:
-                List<Recipe> recipeList = mcMMO.p.getServer().getRecipesFor(item);
-
-                for (Recipe recipe : recipeList) {
-                    if (recipe instanceof FurnaceRecipe) {
-                        return Config.getInstance().getBlockModsEnabled() && CustomBlockConfig.getInstance().isCustomOre(((FurnaceRecipe) recipe).getInput().getData());
-                    }
-                }
-
-                return false;
+        for (Recipe recipe : mcMMO.p.getServer().getRecipesFor(item)) {
+            if (recipe instanceof FurnaceRecipe) {
+                return MaterialUtils.isOre(((FurnaceRecipe) recipe).getInput().getData());
+            }
         }
+
+        return false;
     }
 
     /**
