@@ -193,8 +193,9 @@ public final class CombatUtils {
      */
     public static void processCombatAttack(EntityDamageByEntityEvent event, Entity attacker, LivingEntity target) {
         Entity damager = event.getDamager();
+        EntityType entityType = damager.getType();
 
-        if (attacker instanceof Player && damager.getType() == EntityType.PLAYER) {
+        if (attacker instanceof Player && entityType == EntityType.PLAYER) {
             Player player = (Player) attacker;
 
             if (Misc.isNPCEntity(player)) {
@@ -220,7 +221,7 @@ public final class CombatUtils {
             }
 
             if (ItemUtils.isSword(heldItem)) {
-                if (!shouldProcessSkill(target, SkillType.SWORDS)) {
+                if (!SkillType.SWORDS.shouldProcess(target)) {
                     return;
                 }
 
@@ -229,7 +230,7 @@ public final class CombatUtils {
                 }
             }
             else if (ItemUtils.isAxe(heldItem)) {
-                if (!shouldProcessSkill(target, SkillType.AXES)) {
+                if (!SkillType.AXES.shouldProcess(target)) {
                     return;
                 }
 
@@ -238,7 +239,7 @@ public final class CombatUtils {
                 }
             }
             else if (heldItem.getType() == Material.AIR) {
-                if (!shouldProcessSkill(target, SkillType.UNARMED)) {
+                if (!SkillType.UNARMED.shouldProcess(target)) {
                     return;
                 }
 
@@ -248,16 +249,11 @@ public final class CombatUtils {
             }
         }
 
-        /* Temporary fix for MCPC+
-         * 
-         * This will be reverted back to the switch statement once the fix is addressed on their end.
-         */
-
-        else if (damager.getType() == EntityType.WOLF) {
+        else if (entityType == EntityType.WOLF) {
             Wolf wolf = (Wolf) damager;
             AnimalTamer tamer = wolf.getOwner();
 
-            if (tamer != null && tamer instanceof Player && shouldProcessSkill(target, SkillType.TAMING)) {
+            if (tamer != null && tamer instanceof Player && SkillType.TAMING.shouldProcess(target)) {
                 Player master = (Player) tamer;
 
                 if (!Misc.isNPCEntity(master) && SkillType.TAMING.getPermissions(master)) {
@@ -265,11 +261,11 @@ public final class CombatUtils {
                 }
             }
         }
-        else if (damager.getType() == EntityType.ARROW) {
+        else if (entityType == EntityType.ARROW) {
             Arrow arrow = (Arrow) damager;
             LivingEntity shooter = arrow.getShooter();
 
-            if (shooter != null && shooter instanceof Player && shouldProcessSkill(target, SkillType.ARCHERY)) {
+            if (shooter != null && shooter instanceof Player && SkillType.ARCHERY.shouldProcess(target)) {
                 Player player = (Player) shooter;
 
                 if (!Misc.isNPCEntity(player) && SkillType.ARCHERY.getPermissions(player)) {
@@ -277,49 +273,6 @@ public final class CombatUtils {
                 }
             }
         }
-
-//        switch (damager.getType()) {
-//            case WOLF:
-//                Wolf wolf = (Wolf) damager;
-//                AnimalTamer tamer = wolf.getOwner();
-//
-//                if (tamer == null || !(tamer instanceof Player) || !shouldProcessSkill(target, SkillType.TAMING)) {
-//                    break;
-//                }
-//
-//                Player master = (Player) tamer;
-//
-//                if (Misc.isNPCEntity(master)) {
-//                    break;
-//                }
-//
-//                if (Permissions.skillEnabled(master, SkillType.TAMING)) {
-//                    processTamingCombat(target, master, wolf, event);
-//                }
-//
-//                break;
-//
-//            case ARROW:
-//                LivingEntity shooter = ((Arrow) damager).getShooter();
-//
-//                if (shooter == null || !(shooter instanceof Player) || !shouldProcessSkill(target, SkillType.ARCHERY)) {
-//                    break;
-//                }
-//
-//                Player player = (Player) shooter;
-//
-//                if (Misc.isNPCEntity(player)) {
-//                    break;
-//                }
-//
-//                if (Permissions.skillEnabled(player, SkillType.ARCHERY)) {
-//                    processArcheryCombat(target, player, event, damager);
-//                }
-//                break;
-//
-//            default:
-//                break;
-//        }
 
         if (target instanceof Player) {
             if (Misc.isNPCEntity(target)) {
@@ -335,7 +288,7 @@ public final class CombatUtils {
             }
 
             if (ItemUtils.isSword(player.getItemInHand())) {
-                if (!shouldProcessSkill(target, SkillType.SWORDS)) {
+                if (!SkillType.SWORDS.shouldProcess(target)) {
                     return;
                 }
 
@@ -608,10 +561,6 @@ public final class CombatUtils {
         }
 
         return false;
-    }
-
-    public static boolean shouldProcessSkill(Entity target, SkillType skill) {
-        return (target instanceof Player || (target instanceof Tameable && ((Tameable) target).isTamed())) ? skill.getPVPEnabled() : skill.getPVEEnabled();
     }
 
     public static double callFakeDamageEvent(Entity attacker, Entity target, double damage) {

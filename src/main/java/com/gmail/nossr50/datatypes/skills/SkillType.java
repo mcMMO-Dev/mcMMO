@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Color;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -200,5 +202,9 @@ public enum SkillType {
 
     public void celebrateLevelUp(Player player) {
         ParticleEffectUtils.fireworkParticleShower(player, runescapeColor);
+    }
+
+    public boolean shouldProcess(Entity target) {
+        return (target instanceof Player || (target instanceof Tameable && ((Tameable) target).isTamed())) ? getPVPEnabled() : getPVEEnabled();
     }
 }

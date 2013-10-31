@@ -15,7 +15,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
@@ -37,7 +36,7 @@ public class AcrobaticsManager extends SkillManager {
                 return false;
             }
 
-            return CombatUtils.shouldProcessSkill(damager, skill);
+            return skill.shouldProcess(damager);
         }
 
         return false;
