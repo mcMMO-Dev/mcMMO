@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Server;
@@ -51,6 +50,8 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+
+import org.apache.commons.lang.Validate;
 
 public class McMMOPlayer {
     private Player        player;
@@ -472,7 +473,7 @@ public class McMMOPlayer {
 
         if (xp <= 0.0) {
             return;
-		}
+        }
 
         if (skill.isChildSkill()) {
             Set<SkillType> parentSkills = FamilyTree.getParents(skill);

@@ -2,6 +2,7 @@ package com.gmail.nossr50.commands;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -11,6 +12,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+
 import com.google.common.collect.ImmutableList;
 
 public class McscoreboardCommand implements TabExecutor {
