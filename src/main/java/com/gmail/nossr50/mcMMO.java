@@ -117,6 +117,12 @@ public class mcMMO extends JavaPlugin {
             getLogger().setFilter(new LogFilter(this));
             metadataValue = new FixedMetadataValue(this, true);
 
+            mcpcEnabled = getServer().getName().equals("MCPC+");
+            combatTagEnabled = getServer().getPluginManager().getPlugin("CombatTag") != null;
+            healthBarPluginEnabled = getServer().getPluginManager().getPlugin("HealthBar") != null;
+            noCheatPlusPluginEnabled = getServer().getPluginManager().getPlugin("NoCheatPlus") != null;
+            compatNoCheatPlusPluginEnabled = getServer().getPluginManager().getPlugin("CompatNoCheatPlus") != null;
+
             setupFilePaths();
 
             loadConfigFiles();
@@ -124,12 +130,6 @@ public class mcMMO extends JavaPlugin {
             if (!noErrorsInConfigFiles) {
                 return;
             }
-
-            mcpcEnabled = getServer().getName().equals("MCPC+");
-            combatTagEnabled = getServer().getPluginManager().getPlugin("CombatTag") != null;
-            healthBarPluginEnabled = getServer().getPluginManager().getPlugin("HealthBar") != null;
-            noCheatPlusPluginEnabled = getServer().getPluginManager().getPlugin("NoCheatPlus") != null;
-            compatNoCheatPlusPluginEnabled = getServer().getPluginManager().getPlugin("CompatNoCheatPlus") != null;
 
             if (mcpcEnabled) {
                 checkModConfigs();
