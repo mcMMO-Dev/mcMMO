@@ -83,7 +83,7 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceSmeltEvent(FurnaceSmeltEvent event) {
         Block furnaceBlock = event.getBlock();
-        ItemStack smelting = Misc.getSmeltingFromFurnace(furnaceBlock);
+        ItemStack smelting = event.getSource();
 
         if (!ItemUtils.isSmeltable(smelting)) {
             return;
@@ -95,7 +95,7 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        event.setResult(UserManager.getPlayer(player).getSmeltingManager().smeltProcessing(smelting.getType(), event.getResult()));
+        event.setResult(UserManager.getPlayer(player).getSmeltingManager().smeltProcessing(smelting, event.getResult()));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

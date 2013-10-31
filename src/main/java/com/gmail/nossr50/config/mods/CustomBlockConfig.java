@@ -92,9 +92,11 @@ public class CustomBlockConfig extends ConfigLoader {
             }
 
             int xp = config.getInt(skillType + "." + blockName + ".XP_Gain");
+            int smeltingXp = 0;
 
             if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
                 customOres.add(blockMaterialData);
+                smeltingXp = config.getInt(skillType + "." + blockName + ".Smelting_XP_Gain", xp / 10);
             }
             else if (skillType.equals("Woodcutting")) {
                 if (config.getBoolean(skillType + "." + blockName + ".Is_Log")) {
@@ -106,7 +108,7 @@ public class CustomBlockConfig extends ConfigLoader {
                 }
             }
 
-            customBlockMap.put(blockMaterialData, new CustomBlock(xp, config.getBoolean(skillType + "." + blockName + ".Double_Drops_Enabled")));
+            customBlockMap.put(blockMaterialData, new CustomBlock(xp, config.getBoolean(skillType + "." + blockName + ".Double_Drops_Enabled"), smeltingXp));
         }
     }
 

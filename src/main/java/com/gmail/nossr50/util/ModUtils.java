@@ -19,11 +19,9 @@ import com.gmail.nossr50.datatypes.mods.CustomTool;
 
 
 public final class ModUtils {
-    private static Config configInstance = Config.getInstance();
-
-    private static boolean customToolsEnabled    = configInstance.getToolModsEnabled();
-    private static boolean customBlocksEnabled   = configInstance.getBlockModsEnabled();
-    private static boolean customEntitiesEnabled = configInstance.getEntityModsEnabled();
+    private static boolean customToolsEnabled    = Config.getInstance().getToolModsEnabled();
+    private static boolean customBlocksEnabled   = Config.getInstance().getBlockModsEnabled();
+    private static boolean customEntitiesEnabled = Config.getInstance().getEntityModsEnabled();
 
     private ModUtils() {}
 
@@ -55,6 +53,10 @@ public final class ModUtils {
      */
     public static CustomBlock getCustomBlock(BlockState blockState) {
         return CustomBlockConfig.getInstance().getCustomBlock(blockState.getData());
+    }
+
+    public static CustomBlock getCustomSmeltingBlock(ItemStack smelting) {
+        return CustomBlockConfig.getInstance().getCustomBlock(smelting.getData());
     }
 
     /**
@@ -135,6 +137,16 @@ public final class ModUtils {
      */
     public static boolean isCustomOreBlock(BlockState blockState) {
         return customBlocksEnabled && CustomBlockConfig.getInstance().isCustomOre(blockState.getData());
+    }
+
+    /**
+     * Check if a custom block is an ore block.
+     *
+     * @param item The ItemStack of the block to check
+     * @return true if the block represents an ore, false otherwise
+     */
+    public static boolean isCustomOreBlock(ItemStack item) {
+        return customBlocksEnabled && CustomBlockConfig.getInstance().isCustomOre(item.getData());
     }
 
     /**

@@ -1,10 +1,12 @@
 package com.gmail.nossr50.skills.smelting;
 
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.util.ModUtils;
 
 public class Smelting {
     // The order of the values is extremely important, a few methods depend on it to work properly
@@ -46,11 +48,13 @@ public class Smelting {
     public static int    fluxMiningUnlockLevel = AdvancedConfig.getInstance().getFluxMiningUnlockLevel();
     public static double fluxMiningChance      = AdvancedConfig.getInstance().getFluxMiningChance();
 
-    protected static int getResourceXp(Material resourceType) {
-        int xp = ExperienceConfig.getInstance().getXp(SkillType.SMELTING, resourceType);
+    protected static int getResourceXp(ItemStack smelting) {
+        Material resourceType = smelting.getType();
 
-        if (resourceType == Material.GLOWING_REDSTONE_ORE) {
-            xp = ExperienceConfig.getInstance().getXp(SkillType.SMELTING, Material.REDSTONE_ORE);
+        int xp = ExperienceConfig.getInstance().getXp(SkillType.SMELTING, resourceType != Material.GLOWING_REDSTONE_ORE ? resourceType : Material.REDSTONE_ORE);
+
+        if (xp == 0 && ModUtils.isCustomOreBlock(smelting)) {
+            xp = ModUtils.getCustomSmeltingBlock(smelting).getSmeltingXpGain();
         }
 
         return xp;

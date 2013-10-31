@@ -81,10 +81,10 @@ public class SmeltingManager extends SkillManager {
         return (int) (burnTime * burnModifier);
     }
 
-    public ItemStack smeltProcessing(Material resourceType, ItemStack result) {
+    public ItemStack smeltProcessing(ItemStack smelting, ItemStack result) {
         Player player = getPlayer();
 
-        applyXpGain(Smelting.getResourceXp(resourceType));
+        applyXpGain(Smelting.getResourceXp(smelting));
 
         if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Smelting.secondSmeltMaxChance, Smelting.secondSmeltMaxLevel)) {
             ItemStack newResult = result.clone();

@@ -10,9 +10,11 @@ Key:
 Version 1.4.08-dev
  + Added the possibility to gain experience when using Fishing "Shake"
  + Added config options to disable various sound effects
+ + Smelting now works with custom ores - add smelting XP value to blocks.yml, or it will default to 1/10th of normal XP.
  = Fixed bug with toggle commands not properly displaying the success message.
  = Fixed IllegalArgumentException caused by an empty Fishing treasure category
  = Fixed bug with Salvage not reading the config value for the anvil material.
+ = Fixed exploit where you could receive smelting XP for improper items
 
 Version 1.4.07
  + Added XP boost to Acrobatics when wearing Boots of Feather Falling

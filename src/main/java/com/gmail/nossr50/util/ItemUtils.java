@@ -1,14 +1,22 @@
 package com.gmail.nossr50.util;
 
+import java.util.List;
+
 import org.bukkit.ChatColor;
+import org.bukkit.CoalType;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Coal;
 import org.bukkit.material.Dye;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
+import com.gmail.nossr50.config.mods.CustomBlockConfig;
 import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -514,7 +522,7 @@ public class ItemUtils {
                 return true;
 
             default:
-                return false;
+                return Config.getInstance().getBlockModsEnabled() && CustomBlockConfig.getInstance().isCustomOre(item.getData());
         }
     }
 
@@ -525,6 +533,8 @@ public class ItemUtils {
 
         switch (item.getType()) {
             case COAL:
+                return ((Coal) item.getData()).getType() == CoalType.COAL;
+
             case DIAMOND:
             case REDSTONE:
             case GOLD_INGOT:
@@ -537,6 +547,14 @@ public class ItemUtils {
                 return ((Dye) item.getData()).getColor() == DyeColor.BLUE;
 
             default:
+                List<Recipe> recipeList = mcMMO.p.getServer().getRecipesFor(item);
+
+                for (Recipe recipe : recipeList) {
+                    if (recipe instanceof FurnaceRecipe) {
+                        return Config.getInstance().getBlockModsEnabled() && CustomBlockConfig.getInstance().isCustomOre(((FurnaceRecipe) recipe).getInput().getData());
+                    }
+                }
+
                 return false;
         }
     }

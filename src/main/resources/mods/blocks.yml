@@ -28,10 +28,12 @@ Mining:
         XP_Gain: 99
         Double_Drops_Enabled: true
         Is_Ore: true
+        Smelting_XP_Gain: 9
     Block_2|0:
         XP_Gain: 99
         Double_Drops_Enabled: true
         Is_Ore: true
+        Smelting_XP_Gain: 9
 
 #
 #  Settings for Custom Woodcutting Blocks

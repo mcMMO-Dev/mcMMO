@@ -22,15 +22,10 @@ public class Mining {
      */
     protected static int getBlockXp(BlockState blockState) {
         Material blockType = blockState.getType();
-        int xp = ExperienceConfig.getInstance().getXp(SkillType.MINING, blockType);
+        int xp = ExperienceConfig.getInstance().getXp(SkillType.MINING, blockType != Material.GLOWING_REDSTONE_ORE ? blockType : Material.REDSTONE_ORE);
 
-        if (xp == 0) {
-            if (blockType == Material.GLOWING_REDSTONE_ORE) {
-                xp = ExperienceConfig.getInstance().getXp(SkillType.MINING, Material.REDSTONE_ORE);
-            }
-            else if (ModUtils.isCustomMiningBlock(blockState)) {
-                xp = ModUtils.getCustomBlock(blockState).getXpGain();
-            }
+        if (xp == 0 && ModUtils.isCustomMiningBlock(blockState)) {
+            xp = ModUtils.getCustomBlock(blockState).getXpGain();
         }
 
         return xp;
