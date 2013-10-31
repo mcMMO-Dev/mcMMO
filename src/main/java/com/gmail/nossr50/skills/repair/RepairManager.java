@@ -49,9 +49,14 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        player.sendMessage(Repair.getAnvilMessage(anvilType));
+        if (Repair.anvilMessagesEnabled) {
+            player.sendMessage(Repair.getAnvilMessage(anvilType));
+        }
 
-        player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+        if (Config.getInstance().getRepairAnvilPlaceSoundsEnabled()) {
+            player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+        }
+
         togglePlacedAnvil(anvilType);
     }
 
@@ -141,7 +146,9 @@ public class RepairManager extends SkillManager {
         applyXpGain((float) ((getPercentageRepaired(startDurability, newDurability, repairable.getMaximumDurability()) * repairable.getXpMultiplier()) * ExperienceConfig.getInstance().getRepairXPBase() * ExperienceConfig.getInstance().getRepairXP(repairable.getRepairMaterialType())));
 
         // BWONG BWONG BWONG
-        player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+        if (Config.getInstance().getRepairAnvilUseSoundsEnabled()) {
+            player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+        }
 
         // Repair the item!
         item.setDurability(newDurability);
@@ -165,7 +172,10 @@ public class RepairManager extends SkillManager {
 
             Misc.dropItems(location, new ItemStack(Repair.getRepairAndSalvageItem(item)), Repair.getRepairAndSalvageQuantities(item) * item.getAmount());
 
-            player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+            if (Config.getInstance().getRepairAnvilUseSoundsEnabled()) {
+                player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+            }
+
             player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
         }
         else {

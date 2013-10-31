@@ -134,10 +134,15 @@ public final class ChimaeraWing {
         player.updateInventory();
         mcMMOPlayer.actualizeChimeraWingLastUse();
         mcMMOPlayer.setTeleportCommenceLocation(null);
+
         if (Config.getInstance().getStatsTrackingEnabled()) {
             MetricsManager.chimeraWingUsed();
         }
-        player.playSound(location, Sound.BAT_TAKEOFF, Misc.BAT_VOLUME, Misc.BAT_PITCH);
+
+        if (Config.getInstance().getChimaeraSoundEnabled()) {
+            player.playSound(location, Sound.BAT_TAKEOFF, Misc.BAT_VOLUME, Misc.BAT_PITCH);
+        }
+        
         player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
     }
 

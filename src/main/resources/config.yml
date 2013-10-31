@@ -26,6 +26,8 @@ General:
     Verbose_Logging: false
     # Should mcMMO over-write configs to update, or make new ones ending in .new?
     Config_Update_Overwrite: true
+    # Play level-up sounds
+    LevelUp_Sounds: true
 
 #
 #  Settings for the mcMMO scoreboards
@@ -170,6 +172,7 @@ Items:
         Use_Cost: 1
         Recipe_Cost: 5
         Item_Name: FEATHER
+        Sound_Enabled: true
 
 #
 #  Settings for Parties
@@ -257,6 +260,8 @@ Skills:
     Repair:
         Level_Cap: 0
         Anvil_Messages: true
+        Anvil_Placed_Sounds: true
+        Anvil_Use_Sounds: true
         Anvil_Material: IRON_BLOCK
         Salvage_Anvil_Material: GOLD_BLOCK
         Salvage_tools: true
@@ -291,6 +296,7 @@ Skills:
         Block_Cracker:
             SmoothBrick_To_CrackedBrick: true
     Woodcutting:
+        Tree_Feller_Sounds: true
         Level_Cap: 0
 
 #
