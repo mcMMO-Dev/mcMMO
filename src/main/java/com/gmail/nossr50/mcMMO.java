@@ -223,8 +223,6 @@ public class mcMMO extends JavaPlugin {
                     getLogger().severe(e.toString());
                 }
             }
-
-            new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
         }
 
         debug("Was disabled."); // How informative!
@@ -401,6 +399,9 @@ public class mcMMO extends JavaPlugin {
         // Periodic save timer (Saves every 10 minutes by default)
         long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
+
+        // Cleanup the backups folder
+        new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
 
         // Bleed timer (Runs every two seconds)
         new BleedTimerTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
