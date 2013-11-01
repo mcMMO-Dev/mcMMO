@@ -193,8 +193,8 @@ public class ScoreboardManager {
             }
         }
 
-        if (Config.getInstance().getPowerLevelTagsEnabled()) {
-            dirtyPowerLevels.add(player.getName());
+        if (Config.getInstance().getPowerLevelTagsEnabled() && !dirtyPowerLevels.contains(playerName)) {
+            dirtyPowerLevels.add(playerName);
         }
 
         if (Config.getInstance().getSkillLevelUpBoard()) {
@@ -326,12 +326,13 @@ public class ScoreboardManager {
             return false; // indicates
         }
 
-        if (!dirtyPowerLevels.isEmpty()) {
-            mcMMO.p.getLogger().info(dirtyPowerLevels.toString());
-        }
-
         for (String playerName : dirtyPowerLevels) {
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName, true);
+
+            if (mcMMOPlayer == null) {
+                continue;
+            }
+
             Player player = mcMMOPlayer.getPlayer();
             int power = mcMMOPlayer.getPowerLevel();
 
