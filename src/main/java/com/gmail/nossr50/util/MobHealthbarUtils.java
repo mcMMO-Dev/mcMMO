@@ -160,7 +160,7 @@ public final class MobHealthbarUtils {
      * @param livingEntity The {@link LivingEntity} of the livingEntity to check
      * @return true if the livingEntity is a boss, false otherwise
      */
-    public static boolean isBoss(LivingEntity livingEntity) {
+    private static boolean isBoss(LivingEntity livingEntity) {
         switch (livingEntity.getType()) {
             case ENDER_DRAGON:
             case WITHER:
