@@ -90,6 +90,10 @@ public final class UserManager {
         return retrieveMcMMOPlayer(player.getName(), false);
     }
 
+    public static McMMOPlayer getPlayer(OfflinePlayer player, boolean offlineValid) {
+        return retrieveMcMMOPlayer(player.getName(), offlineValid);
+    }
+
     public static McMMOPlayer getPlayer(String playerName, boolean offlineValid) {
         return retrieveMcMMOPlayer(playerName, offlineValid);
     }

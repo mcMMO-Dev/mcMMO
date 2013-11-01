@@ -618,7 +618,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player, true);
         ChatManager chatManager = null;
 
         if (mcMMOPlayer.getPartyChatMode()) {
