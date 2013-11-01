@@ -32,6 +32,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.metrics.MetricsManager;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.SaveTimerTask;
+import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
@@ -222,6 +223,8 @@ public class mcMMO extends JavaPlugin {
                     getLogger().severe(e.toString());
                 }
             }
+
+            new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
         }
 
         debug("Was disabled."); // How informative!

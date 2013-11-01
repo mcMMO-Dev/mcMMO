@@ -19,8 +19,6 @@ General:
     Prefer_Beta: false
     # Allow mcMMO to inform other plugins of damage being dealt
     Event_Callback: true
-    # Allow mcMMO to create zip backups for flatfile data on shutdown.
-    Generate_Backups: true
     Power_Level_Cap: 0
     # Should mcMMO print out debug messages?
     Verbose_Logging: false
@@ -100,6 +98,18 @@ Database_Purging:
     # Any user who hasn't connected in this many months will be purged from the database
     # To never purge old users, set to -1
     Old_User_Cutoff: 6
+
+#
+#  Settings for Backups
+###
+Backups:
+    # Allow mcMMO to create zip backups for config files and flatfile data on shutdown.
+    Enabled: true
+
+    Keep:
+        Last_24_Hours: true
+        Daily_Last_Week: true
+        Weekly_Past_Months: true
 
 #
 #  Settings for using a mySQL database

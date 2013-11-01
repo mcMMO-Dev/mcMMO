@@ -206,7 +206,6 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getUpdateCheckEnabled() { return config.getBoolean("General.Update_Check", true); }
     public boolean getPreferBeta() { return config.getBoolean("General.Prefer_Beta", false); }
     public boolean getEventCallbackEnabled() { return config.getBoolean("General.Event_Callback", true); }
-    public boolean getBackupsEnabled() { return config.getBoolean("General.Generate_Backups", true); }
     public boolean getVerboseLoggingEnabled() { return config.getBoolean("General.Verbose_Logging", false); }
     public boolean getConfigOverwriteEnabled() { return config.getBoolean("General.Config_Update_Overwrite", true); }
 
@@ -267,6 +266,12 @@ public class Config extends AutoUpdateConfigLoader {
     /* Database Purging */
     public int getPurgeInterval() { return config.getInt("Database_Purging.Purge_Interval", -1); }
     public int getOldUsersCutoff() { return config.getInt("Database_Purging.Old_User_Cutoff", 6); }
+
+    /* Backups */
+    public boolean getBackupsEnabled() { return config.getBoolean("Backups.Enabled", true); }
+    public boolean getKeepLast24Hours() { return config.getBoolean("Backups.Keep.Last_24_Hours", true); }
+    public boolean getKeepDailyLastWeek() { return config.getBoolean("Backups.Keep.Daily_Last_Week", true); }
+    public boolean getKeepWeeklyPastMonth() { return config.getBoolean("Backups.Keep.Weekly_Past_Months", true); }
 
     /* mySQL */
     public boolean getUseMySQL() { return config.getBoolean("MySQL.Enabled", false); }
