@@ -1,6 +1,5 @@
 package com.gmail.nossr50.util;
 
-
 import java.io.File;
 
 import org.bukkit.block.BlockState;
@@ -17,7 +16,6 @@ import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.mods.CustomEntity;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
-
 
 public final class ModUtils {
     private static boolean customToolsEnabled    = Config.getInstance().getToolModsEnabled();
