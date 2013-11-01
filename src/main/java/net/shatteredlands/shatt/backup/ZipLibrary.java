@@ -16,24 +16,24 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 
 public class ZipLibrary {
-    private static String BackupDirectory = mcMMO.getMainDirectory() + "backup" + File.separator;
-    private static File BackupDir = new File(BackupDirectory);
-    private static File FlatFileDirectory = new File(mcMMO.getFlatFileDirectory());
-    private static File ModFileDirectory = new File(mcMMO.getModDirectory());
-    private static File ConfigFile = new File(mcMMO.getMainDirectory() + "config.yml");
-    private static File ExperienceFile = new File(mcMMO.getMainDirectory() + "experience.yml");
-    private static File TreasuresFile = new File(mcMMO.getMainDirectory() + "treasures.yml");
-    private static File AdvancedConfigFile = new File(mcMMO.getMainDirectory() + "advanced.yml");
-    private static File RepairFile = new File(mcMMO.getMainDirectory() + "repair.vanilla.yml");
+    private static String BACKUP_DIRECTORY = mcMMO.getMainDirectory() + "backup" + File.separator;
+    private static File BACKUP_DIR = new File(BACKUP_DIRECTORY);
+    private static File FLAT_FILE_DIRECTORY = new File(mcMMO.getFlatFileDirectory());
+    private static File MOD_FILE_DIRECTORY = new File(mcMMO.getModDirectory());
+    private static File CONFIG_FILE = new File(mcMMO.getMainDirectory() + "config.yml");
+    private static File EXPERIENCE_FILE = new File(mcMMO.getMainDirectory() + "experience.yml");
+    private static File TREASURE_FILE = new File(mcMMO.getMainDirectory() + "treasures.yml");
+    private static File ADVANCED_FILE = new File(mcMMO.getMainDirectory() + "advanced.yml");
+    private static File REPAIR_FILE = new File(mcMMO.getMainDirectory() + "repair.vanilla.yml");
 
-    public static void mcMMObackup() throws IOException {
+    public static void mcMMOBackup() throws IOException {
         if (Config.getInstance().getUseMySQL()) {
             mcMMO.p.debug("This server is running in SQL Mode.");
             mcMMO.p.debug("Only config files will be backed up.");
         }
 
         try {
-            if (BackupDir.mkdir()) {
+            if (BACKUP_DIR.mkdir()) {
                 mcMMO.p.debug("Created Backup Directory.");
             }
         }
@@ -44,20 +44,20 @@ public class ZipLibrary {
         // Generate the proper date for the backup filename
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss");
-        File fileZip = new File(BackupDirectory + File.separator + dateFormat.format(date) + ".zip");
+        File fileZip = new File(BACKUP_DIRECTORY + File.separator + dateFormat.format(date) + ".zip");
 
         // Create the Source List, and add directories/etc to the file.
         List<File> sources = new ArrayList<File>();
 
-        sources.add(FlatFileDirectory);
-        sources.add(ConfigFile);
-        sources.add(ExperienceFile);
-        sources.add(TreasuresFile);
-        sources.add(AdvancedConfigFile);
-        sources.add(RepairFile);
+        sources.add(FLAT_FILE_DIRECTORY);
+        sources.add(CONFIG_FILE);
+        sources.add(EXPERIENCE_FILE);
+        sources.add(TREASURE_FILE);
+        sources.add(ADVANCED_FILE);
+        sources.add(REPAIR_FILE);
 
-        if (ModFileDirectory.exists()) {
-            sources.add(ModFileDirectory);
+        if (MOD_FILE_DIRECTORY.exists()) {
+            sources.add(MOD_FILE_DIRECTORY);
         }
 
         // Actually do something
@@ -121,7 +121,7 @@ public class ZipLibrary {
 
         FileInputStream fis = new FileInputStream(file);
         byte[] buffer = new byte[4092];
-        int byteCount = 0;
+        int byteCount;
 
         while ((byteCount = fis.read(buffer)) != -1) {
             zos.write(buffer, 0, byteCount);

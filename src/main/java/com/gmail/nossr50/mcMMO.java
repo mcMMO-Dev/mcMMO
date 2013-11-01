@@ -209,7 +209,7 @@ public class mcMMO extends JavaPlugin {
         if (Config.getInstance().getBackupsEnabled()) {
             // Remove other tasks BEFORE starting the Backup, or we just cancel it straight away.
             try {
-                ZipLibrary.mcMMObackup();
+                ZipLibrary.mcMMOBackup();
             }
             catch (IOException e) {
                 getLogger().severe(e.toString());
