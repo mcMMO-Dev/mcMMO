@@ -635,7 +635,7 @@ permissions:
             mcmmo.bypass.arcanebypass: true
             mcmmo.bypass.hardcoremode: true
             mcmmo.bypass.kraken: true
-            mcmmo.bypass.fishingTraps: true
+            mcmmo.bypass.fishingtraps: true
             mcmmo.commands.inspect.far: true
             mcmmo.commands.inspect.hidden: true
             mcmmo.commands.inspect.offline: true
@@ -648,7 +648,7 @@ permissions:
     mcmmo.bypass.kraken:
         default: false
         description: Allows user to bypass the effects of the exploit prevention when Fishing
-    mcmmo.bypass.fishingTraps:
+    mcmmo.bypass.fishingtraps:
         default: false
         description: Allows user to bypass finding traps when Fishing
     mcmmo.bypass.inspect.distance:
