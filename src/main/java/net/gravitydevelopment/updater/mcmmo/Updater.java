@@ -441,7 +441,7 @@ public class Updater {
             }
 
             // Check release vs. beta & dev
-            if (newTokens.length == 0 && oldTokens.length == 2 && oldVersion == newVersion) {
+            if (newTokens.length == 1 && oldTokens.length == 3 && oldVersion == newVersion) {
                 return true;
             }
 
@@ -465,11 +465,14 @@ public class Updater {
                 return false;
             }
 
-            if (oldTokens.length == 2 && !version.contains("beta") && !version.contains("dev")) {
+            if (oldTokens.length == 3 && !version.contains("beta") && !version.contains("dev")) {
                 plugin.getLogger().warning("Could not get information about this mcMMO version; perhaps you are running a custom one?");
                 result = UpdateResult.FAIL_NOVERSION;
                 return false;
             }
+
+            result = UpdateResult.NO_UPDATE;
+            return false;
         }
 
         return true;
