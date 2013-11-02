@@ -489,6 +489,10 @@ public class FishingManager extends SkillManager {
     private void handleTraps() {
         Player player = getPlayer();
 
+        if (Permissions.trapsBypass(player)) {
+            return;
+        }
+
         if (Misc.getRandom().nextBoolean()) {
             player.sendMessage(LocaleLoader.getString("Fishing.Ability.TH.Boom"));
 
