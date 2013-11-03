@@ -26,6 +26,10 @@ public class CleanBackupsTask extends BukkitRunnable {
         int amountTotal = 0;
         int amountDeleted = 0;
 
+        if (BACKUP_DIR.listFiles() == null) {
+            return;
+        }
+
         // Check files in backup folder from oldest to newest
         for (File file : BACKUP_DIR.listFiles()) {
             if (!file.isFile()) {
