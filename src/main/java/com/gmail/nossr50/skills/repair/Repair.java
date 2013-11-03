@@ -108,6 +108,10 @@ public class Repair {
             }
         }
 
+        if (quantity <= 0) {
+            return 2;
+        }
+
         return quantity;
     }
 }
