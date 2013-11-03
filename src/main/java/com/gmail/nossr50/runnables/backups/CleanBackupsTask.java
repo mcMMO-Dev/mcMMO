@@ -75,7 +75,7 @@ public class CleanBackupsTask extends BukkitRunnable {
             return;
         }
 
-        mcMMO.p.getLogger().info("Cleaning backup files... (" + amountDeleted + "/" + amountTotal + ")");
+        mcMMO.p.getLogger().info("Cleaned backup files. Deleted " + amountDeleted + " of " + amountTotal + " files.");
 
         for (File file : toDelete) {
             mcMMO.p.debug("Deleted: " + file.getName());
