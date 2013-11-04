@@ -292,7 +292,7 @@ public class FishingManager extends SkillManager {
             biteChance = biteChance * AdvancedConfig.getInstance().getMasterAnglerBoatModifier();
         }
 
-        hook.setBiteChance(biteChance);
+        hook.setBiteChance(Math.min(biteChance, 1.0));
     }
 
     /**
