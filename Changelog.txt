@@ -17,6 +17,7 @@ Version 1.4.08-dev
  = Fixed IllegalArgumentException caused by an empty Fishing treasure category
  = Fixed bug with Salvage not reading the config value for the anvil material.
  = Fixed exploit where you could receive smelting XP for improper items
+ = Fixed bug where the Unbreaking enchantment was ignored when using "Super Breaker" or "Giga Drill Breaker"
 
 Version 1.4.07
  + Added XP boost to Acrobatics when wearing Boots of Feather Falling

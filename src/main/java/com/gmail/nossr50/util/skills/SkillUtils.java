@@ -167,6 +167,15 @@ public class SkillUtils {
         }
     }
 
+    public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier, boolean handleUnbreaking) {
+        if (handleUnbreaking) {
+            double modifier = 1 / (itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1);
+            durabilityModifier = (int) (durabilityModifier * modifier);
+        }
+
+        handleDurabilityChange(itemStack, durabilityModifier);
+    }
+
     /**
      * Modify the durability of an ItemStack.
      *

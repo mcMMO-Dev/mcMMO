@@ -55,6 +55,6 @@ public class ExcavationManager extends SkillManager {
         excavationBlockCheck(blockState);
         excavationBlockCheck(blockState);
 
-        SkillUtils.handleDurabilityChange(getPlayer().getItemInHand(), Config.getInstance().getAbilityToolDamage());
+        SkillUtils.handleDurabilityChange(getPlayer().getItemInHand(), Config.getInstance().getAbilityToolDamage(), true);
     }
 }
