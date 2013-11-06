@@ -5,10 +5,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
 
@@ -213,23 +211,16 @@ public final class Woodcutting {
      * @return True if the tool can sustain the durability loss
      */
     protected static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand) {
-        Material inHandMaterial = inHand.getType();
-
-        if (inHandMaterial == Material.AIR) {
-            return false;
-        }
-
         short durabilityLoss = 0;
-        int unbreakingLevel = inHand.getEnchantmentLevel(Enchantment.DURABILITY);
 
         for (BlockState blockState : treeFellerBlocks) {
-            if (BlockUtils.isLog(blockState) && Misc.getRandom().nextInt(unbreakingLevel + 1) == 0) {
+            if (BlockUtils.isLog(blockState)) {
                 durabilityLoss += Config.getInstance().getAbilityToolDamage();
             }
         }
 
         SkillUtils.handleDurabilityChange(inHand, durabilityLoss);
-        return (inHand.getDurability() < inHandMaterial.getMaxDurability());
+        return (inHand.getDurability() < inHand.getType().getMaxDurability());
     }
 
     /**

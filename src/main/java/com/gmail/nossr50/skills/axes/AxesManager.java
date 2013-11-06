@@ -1,12 +1,9 @@
 package com.gmail.nossr50.skills.axes;
 
-import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -98,13 +95,7 @@ public class AxesManager extends SkillManager {
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
             if (ItemUtils.isArmor(armor) && Axes.impactChance > Misc.getRandom().nextInt(getActivationChance())) {
-                Material armorType = armor.getType();
-                double durabilityModifier = 1 / (armor.getEnchantmentLevel(Enchantment.DURABILITY) + 1); // Modifier to simulate the durability enchantment behavior
-                double modifiedDurabilityDamage = durabilityDamage * durabilityModifier;
-                short maxDurability = mcMMO.getRepairableManager().isRepairable(armorType) ? mcMMO.getRepairableManager().getRepairable(armorType).getMaximumDurability() : armorType.getMaxDurability();
-                double maxDurabilityDamage = maxDurability * Axes.impactMaxDurabilityModifier;
-
-                SkillUtils.handleDurabilityChange(armor, (int) Math.min(modifiedDurabilityDamage, maxDurabilityDamage));
+                SkillUtils.handleDurabilityChange(armor, durabilityDamage, Axes.impactMaxDurabilityModifier);
             }
         }
     }

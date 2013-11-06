@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
@@ -167,23 +168,23 @@ public class SkillUtils {
         }
     }
 
-    public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier, boolean handleUnbreaking) {
-        if (handleUnbreaking) {
-            double modifier = 1 / (itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1);
-            durabilityModifier = (int) (durabilityModifier * modifier);
-        }
-
-        handleDurabilityChange(itemStack, durabilityModifier);
+    public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier) {
+        handleDurabilityChange(itemStack, durabilityModifier, 1.0);
     }
 
     /**
      * Modify the durability of an ItemStack.
      *
      * @param itemStack The ItemStack which durability should be modified
-     * @return the itemStack with modified durability
+     * @param durabilityModifier the amount to modify the durability by
+     * @param maxDamageModifier the amount to adjust the max damage by
      */
-    public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier) {
-        itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, itemStack.getType().getMaxDurability()));
+    public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier, double maxDamageModifier) {
+        Material type = itemStack.getType();
+        short maxDurability = mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability();
+        durabilityModifier = (int) Math.min(durabilityModifier / itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1, maxDurability * maxDamageModifier);
+
+        itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
     }
 
     public static boolean activationSuccessful(Player player, SkillType skill, double maxChance, int maxLevel) {
