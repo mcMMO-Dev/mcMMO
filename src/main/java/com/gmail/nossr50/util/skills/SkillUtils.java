@@ -182,7 +182,7 @@ public class SkillUtils {
     public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier, double maxDamageModifier) {
         Material type = itemStack.getType();
         short maxDurability = mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability();
-        durabilityModifier = (int) Math.min(durabilityModifier / itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1, maxDurability * maxDamageModifier);
+        durabilityModifier = (int) Math.min(durabilityModifier / (itemStack.getEnchantmentLevel(Enchantment.DURABILITY) + 1), maxDurability * maxDamageModifier);
 
         itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
     }
