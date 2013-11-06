@@ -405,9 +405,7 @@ public class FishingManager extends SkillManager {
                     break;
 
                 case SKELETON:
-                    Skeleton skeleton = (Skeleton) target;
-
-                    if (skeleton.getSkeletonType() == SkeletonType.WITHER) {
+                    if (((Skeleton) target).getSkeletonType() == SkeletonType.WITHER) {
                         switch (drop.getType()) {
                             case SKULL_ITEM:
                                 drop.setDurability((short) 1);
