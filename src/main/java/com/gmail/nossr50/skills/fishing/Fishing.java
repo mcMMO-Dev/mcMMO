@@ -145,7 +145,7 @@ public final class Fishing {
             cumulatedProbability += treasure.getDropChance();
 
             if (dropProbability < cumulatedProbability) {
-                return treasure.getDrop();
+                return treasure.getDrop().clone();
             }
         }
 
