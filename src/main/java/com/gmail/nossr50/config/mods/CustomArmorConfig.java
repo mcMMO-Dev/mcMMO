@@ -111,7 +111,7 @@ public class CustomArmorConfig extends ConfigLoader {
                     durability = (short) config.getInt(armorType + "." + armorName + ".Durability", 70);
                 }
 
-                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, repairQuantity, 0, durability, RepairItemType.ARMOR, RepairMaterialType.OTHER, 1.0));
+                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, 0, repairQuantity, durability, RepairItemType.ARMOR, RepairMaterialType.OTHER, 1.0));
             }
 
             materialList.add(armorMaterial);
