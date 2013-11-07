@@ -399,7 +399,7 @@ public class FishingManager extends SkillManager {
                             return;
                         }
 
-                        drop.setData(new Wool(sheep.getColor()));
+                        drop = new Wool(sheep.getColor()).toItemStack(drop.getAmount());
                         sheep.setSheared(true);
                     }
                     break;
@@ -474,7 +474,7 @@ public class FishingManager extends SkillManager {
             return null;
         }
 
-        ItemStack treasureDrop = treasure.getDrop();
+        ItemStack treasureDrop = treasure.getDrop().clone();
         short maxDurability = treasureDrop.getType().getMaxDurability();
 
         if (maxDurability > 0) {
