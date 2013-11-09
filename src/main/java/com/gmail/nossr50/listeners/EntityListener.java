@@ -232,7 +232,7 @@ public class EntityListener implements Listener {
 
             switch (cause) {
                 case FALL:
-                    if (!Config.getInstance().getPreventXPAfterTeleport() || SkillUtils.calculateTimeLeft((long) mcMMOPlayer.getTeleportATS() * Misc.TIME_CONVERSION_FACTOR, 5, player) > 0) {
+                    if (Config.getInstance().getPreventXPAfterTeleport() && SkillUtils.calculateTimeLeft((long) mcMMOPlayer.getTeleportATS() * Misc.TIME_CONVERSION_FACTOR, 5, player) > 0) {
                         return;
                     }
 
