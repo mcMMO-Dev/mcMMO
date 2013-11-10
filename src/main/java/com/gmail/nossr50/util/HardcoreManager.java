@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -37,6 +38,14 @@ public final class HardcoreManager {
 
             playerProfile.modifySkill(skillType, playerSkillLevel - levelsLost);
             playerProfile.removeXp(skillType, xpLost);
+
+            if (playerProfile.getSkillXpLevel(skillType) < 0) {
+                playerProfile.setSkillXpLevel(skillType, 0);
+            }
+
+            if (playerProfile.getSkillLevel(skillType) < 0) {
+                playerProfile.modifySkill(skillType, 0);
+            }
         }
 
         player.sendMessage(LocaleLoader.getString("Hardcore.DeathStatLoss.PlayerDeath", totalLevelsLost));
@@ -45,7 +54,8 @@ public final class HardcoreManager {
     public static void invokeVampirism(Player killer, Player victim) {
         double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
 
-        PlayerProfile killerProfile = UserManager.getPlayer(killer).getProfile();
+        McMMOPlayer killerPlayer = UserManager.getPlayer(killer);
+        PlayerProfile killerProfile = killerPlayer.getProfile();
         PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
         int totalLevelsStolen = 0;
 
@@ -69,11 +79,19 @@ public final class HardcoreManager {
 
             totalLevelsStolen += levelsStolen;
 
-            killerProfile.modifySkill(skillType, killerSkillLevel + levelsStolen);
-            killerProfile.addXp(skillType, xpStolen);
+            killerPlayer.addLevels(skillType, levelsStolen);
+            killerPlayer.beginUnsharedXpGain(skillType, xpStolen);
 
             victimProfile.modifySkill(skillType, victimSkillLevel - levelsStolen);
             victimProfile.removeXp(skillType, xpStolen);
+
+            if (victimProfile.getSkillXpLevel(skillType) < 0) {
+                victimProfile.setSkillXpLevel(skillType, 0);
+            }
+
+            if (victimProfile.getSkillLevel(skillType) < 0) {
+                victimProfile.modifySkill(skillType, 0);
+            }
         }
 
         if (totalLevelsStolen > 0) {
