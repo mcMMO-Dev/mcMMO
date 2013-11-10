@@ -241,7 +241,7 @@ public class TamingManager extends SkillManager {
                     entity.setHealth(entity.getMaxHealth());
                     horse.setColor(Horse.Color.values()[Misc.getRandom().nextInt(Horse.Color.values().length)]);
                     horse.setStyle(Horse.Style.values()[Misc.getRandom().nextInt(Horse.Style.values().length)]);
-                    horse.setJumpStrength(Math.min(Math.min(Misc.getRandom().nextDouble(), Misc.getRandom().nextDouble()) * 2, AdvancedConfig.getInstance().getMaxHorseJumpStrength());
+                    horse.setJumpStrength(Math.min(Math.min(Misc.getRandom().nextDouble(), Misc.getRandom().nextDouble()) * 2, AdvancedConfig.getInstance().getMaxHorseJumpStrength()));
                     //TODO: setSpeed, once available
                     break;
 
