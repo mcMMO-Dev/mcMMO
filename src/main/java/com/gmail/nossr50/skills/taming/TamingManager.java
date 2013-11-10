@@ -11,6 +11,7 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -240,7 +241,7 @@ public class TamingManager extends SkillManager {
                     entity.setHealth(entity.getMaxHealth());
                     horse.setColor(Horse.Color.values()[Misc.getRandom().nextInt(Horse.Color.values().length)]);
                     horse.setStyle(Horse.Style.values()[Misc.getRandom().nextInt(Horse.Style.values().length)]);
-                    horse.setJumpStrength(Misc.getRandom().nextDouble() * 2);
+                    horse.setJumpStrength(Math.min(Math.min(Misc.getRandom().nextDouble(), Misc.getRandom().nextDouble()) * 2, AdvancedConfig.getInstance().getMaxHorseJumpStrength());
                     //TODO: setSpeed, once available
                     break;
 

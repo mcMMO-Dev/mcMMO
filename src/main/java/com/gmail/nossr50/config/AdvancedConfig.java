@@ -526,6 +526,9 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Taming.SharpenedClaws.Bonus should be at least 1!");
         }
 
+        if (getMaxHorseJumpStrength() < 0 || getMaxHorseJumpStrength() > 2) {
+            reason.add("Skills.Taming.CallOfTheWild.MaxHorseJumpStrength should be between 0 and 2!");
+        }
 
         /* UNARMED */
         if (getDisarmChanceMax() < 1) {
@@ -763,6 +766,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     public int getSharpenedClawsUnlock() { return config.getInt("Skills.Taming.SharpenedClaws.UnlockLevel", 750); }
     public double getSharpenedClawsBonus() { return config.getDouble("Skills.Taming.SharpenedClaws.Bonus", 2.0D); }
+
+    public double getMaxHorseJumpStrength() { return config.getDouble("Skills.Taming.CallOfTheWild.MaxHorseJumpStrength", 2.0D); }
 
     /* UNARMED */
     public double getDisarmChanceMax() { return config.getDouble("Skills.Unarmed.Disarm.ChanceMax", 33.0D); }

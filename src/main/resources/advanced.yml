@@ -447,6 +447,10 @@ Skills:
             # Bonus: This bonus will get added to the damage caused
             UnlockLevel: 750
             Bonus: 2.0
+
+        CallOfTheWild:
+            # MaxHorseJumpStrength: The maximum jump strength a summoned horse can have
+            MaxHorseJumpStrength: 2.0
     #
     #  Settings for Unarmed
     ###
