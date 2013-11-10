@@ -140,12 +140,19 @@ public class PlayerListener implements Listener {
 
         Player killer = killedPlayer.getKiller();
 
-        if (killer != null && vampirismEnabled) {
-            HardcoreManager.invokeVampirism(killer, killedPlayer);
-        }
 
-        if (statLossEnabled) {
-            HardcoreManager.invokeStatPenalty(killedPlayer);
+        if (statLossEnabled || (killer != null && vampirismEnabled)) {
+            if (EventUtils.callDeathPenaltyEvent(killedPlayer).isCancelled()) {
+                return;
+            }
+
+            if (killer != null && vampirismEnabled) {
+                HardcoreManager.invokeVampirism(killer, killedPlayer);
+            }
+
+            if (statLossEnabled) {
+                HardcoreManager.invokeStatPenalty(killedPlayer);
+            }
         }
     }
 
@@ -628,7 +635,7 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player, true);
-        
+
         if (mcMMOPlayer == null) {
             mcMMO.p.debug(player.getName() + "is chatting, but is currently not logged in to the server.");
             mcMMO.p.debug("Party & Admin chat will not work properly for this player.");

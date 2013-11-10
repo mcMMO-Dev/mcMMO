@@ -14,10 +14,6 @@ public final class HardcoreManager {
     public static void invokeStatPenalty(Player player) {
         double statLossPercentage = Config.getInstance().getHardcoreDeathStatPenaltyPercentage();
 
-        if (EventUtils.callDeathPenaltyEvent(player).isCancelled()) {
-            return;
-        }
-
         PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
         int totalLevelsLost = 0;
 
@@ -48,10 +44,6 @@ public final class HardcoreManager {
 
     public static void invokeVampirism(Player killer, Player victim) {
         double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
-
-        if (EventUtils.callDeathPenaltyEvent(victim).isCancelled()) {
-            return;
-        }
 
         PlayerProfile killerProfile = UserManager.getPlayer(killer).getProfile();
         PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
