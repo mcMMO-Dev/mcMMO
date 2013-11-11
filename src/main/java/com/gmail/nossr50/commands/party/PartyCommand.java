@@ -26,7 +26,7 @@ import com.google.common.collect.ImmutableList;
 
 public class PartyCommand implements TabExecutor {
     private static final List<String> PARTY_SUBCOMMANDS;
-    private static final List<String> EXPSHARE_COMPLETIONS = ImmutableList.of("none", "equal");
+    private static final List<String> XPSHARE_COMPLETIONS = ImmutableList.of("none", "equal");
     private static final List<String> ITEMSHARE_COMPLETIONS = ImmutableList.of("none", "equal", "random", "loot", "mining", "herbalism", "woodcutting", "misc");
 
     static {
@@ -44,7 +44,7 @@ public class PartyCommand implements TabExecutor {
     private CommandExecutor partyAcceptCommand         = new PartyAcceptCommand();
     private CommandExecutor partyCreateCommand         = new PartyCreateCommand();
     private CommandExecutor partyQuitCommand           = new PartyQuitCommand();
-    private CommandExecutor partyExpShareCommand       = new PartyExpShareCommand();
+    private CommandExecutor partyXpShareCommand        = new PartyXpShareCommand();
     private CommandExecutor partyItemShareCommand      = new PartyItemShareCommand();
     private CommandExecutor partyInviteCommand         = new PartyInviteCommand();
     private CommandExecutor partyKickCommand           = new PartyKickCommand();
@@ -135,8 +135,8 @@ public class PartyCommand implements TabExecutor {
         }
 
         switch (subcommand) {
-            case EXPSHARE:
-                return partyExpShareCommand.onCommand(sender, command, label, args);
+            case XPSHARE:
+                return partyXpShareCommand.onCommand(sender, command, label, args);
             case ITEMSHARE:
                 return partyItemShareCommand.onCommand(sender, command, label, args);
             case KICK:
@@ -180,8 +180,8 @@ public class PartyCommand implements TabExecutor {
                     case OWNER:
                         Set<String> playerNames = UserManager.getPlayerNames();
                         return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<String>(playerNames.size()));
-                    case EXPSHARE:
-                        return StringUtil.copyPartialMatches(args[1], EXPSHARE_COMPLETIONS, new ArrayList<String>(EXPSHARE_COMPLETIONS.size()));
+                    case XPSHARE:
+                        return StringUtil.copyPartialMatches(args[1], XPSHARE_COMPLETIONS, new ArrayList<String>(XPSHARE_COMPLETIONS.size()));
                     case ITEMSHARE:
                         return StringUtil.copyPartialMatches(args[1], ITEMSHARE_COMPLETIONS, new ArrayList<String>(ITEMSHARE_COMPLETIONS.size()));
                     case LOCK:

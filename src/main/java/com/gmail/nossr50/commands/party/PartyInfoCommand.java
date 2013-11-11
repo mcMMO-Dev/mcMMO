@@ -1,5 +1,8 @@
 package com.gmail.nossr50.commands.party;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,6 +12,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -26,7 +30,8 @@ public class PartyInfoCommand implements CommandExecutor {
                 Party party = mcMMOPlayer.getParty();
 
                 displayPartyHeader(player, party);
-                displayShareModeInfo(party, player);
+                displayShareModeInfo(player, party);
+                displayPartyFeatures(player, party);
                 displayMemberInfo(player, mcMMOPlayer, party);
                 return true;
 
@@ -36,31 +41,56 @@ public class PartyInfoCommand implements CommandExecutor {
         }
     }
 
-    private String createMembersList(Party party) {
-        StringBuilder memberList = new StringBuilder();
+    private void displayPartyHeader(Player player, Party party) {
+        player.sendMessage(LocaleLoader.getString("Commands.Party.Header"));
 
-        for (String memberName : party.getMembers()) {
-            Player member = mcMMO.p.getServer().getPlayerExact(memberName);
+        StringBuilder status = new StringBuilder();
+        status.append(LocaleLoader.getString("Commands.Party.Status", party.getName(), LocaleLoader.getString("Party.Status." + (party.isLocked() ? "Locked" : "Unlocked")), party.getLevel()));
 
-            if (party.getLeader().equalsIgnoreCase(memberName)) {
-                memberList.append(ChatColor.GOLD);
-            }
-            else if (member != null) {
-                memberList.append(ChatColor.WHITE);
-            }
-            else {
-                memberList.append(ChatColor.GRAY);
-            }
-
-            memberList.append(memberName).append(" ");
+        if (!party.hasReachedLevelCap()) {
+            status.append(" (" + party.getXpToLevelPercentage() + ")");
         }
 
-        return memberList.toString();
+        player.sendMessage(status.toString());
     }
 
-    private void displayShareModeInfo(Party party, Player player) {
-        boolean xpShareEnabled = Config.getInstance().getExpShareEnabled();
-        boolean itemShareEnabled = Config.getInstance().getItemShareEnabled();
+    private void displayPartyFeatures(Player player, Party party) {
+        player.sendMessage(LocaleLoader.getString("Commands.Party.Features.Header"));
+
+        List<String> unlockedPartyFeatures = new ArrayList<String>();
+        List<String> lockedPartyFeatures = new ArrayList<String>();
+
+        for (PartyFeature partyFeature : PartyFeature.values()) {
+            if (!partyFeature.hasPermission(player)) {
+                continue;
+            }
+
+            if (isUnlockedFeature(party, partyFeature)) {
+                unlockedPartyFeatures.add(partyFeature.getLocaleString());
+            }
+            else {
+                lockedPartyFeatures.add(partyFeature.getFeatureLockedLocaleString());
+            }
+        }
+
+        player.sendMessage(LocaleLoader.getString("Commands.Party.UnlockedFeatures", unlockedPartyFeatures.isEmpty() ? "None" : unlockedPartyFeatures));
+
+        for (String message : lockedPartyFeatures) {
+            player.sendMessage(message);
+        }
+    }
+
+    private boolean isUnlockedFeature(Party party, PartyFeature partyFeature) {
+        if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(partyFeature)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private void displayShareModeInfo(Player player, Party party) {
+        boolean xpShareEnabled = isUnlockedFeature(party, PartyFeature.XP_SHARE);
+        boolean itemShareEnabled = isUnlockedFeature(party, PartyFeature.ITEM_SHARE);
         boolean itemSharingActive = (party.getItemShareMode() != ShareMode.NONE);
 
         if (!xpShareEnabled && !itemShareEnabled) {
@@ -90,21 +120,38 @@ public class PartyInfoCommand implements CommandExecutor {
         }
     }
 
-    private void displayPartyHeader(Player player, Party party) {
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Header"));
-        player.sendMessage(LocaleLoader.getString("Commands.Party.Status", party.getName(), LocaleLoader.getString("Party.Status." + (party.isLocked() ? "Locked" : "Unlocked"))));
-
-        if (party.getAlly() != null) {
-            player.sendMessage(LocaleLoader.getString("Commands.Party.Status.Alliance", party.getAlly().getName()));
-        }
-    }
-
     private void displayMemberInfo(Player player, McMMOPlayer mcMMOPlayer, Party party) {
-        int membersNear = PartyManager.getNearMembers(mcMMOPlayer).size();
+        List<Player> nearMembers = PartyManager.getNearMembers(mcMMOPlayer);
         int membersOnline = party.getOnlineMembers().size() - 1;
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.Members.Header"));
-        player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", membersNear, membersOnline));
-        player.sendMessage(createMembersList(party));
+        player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", nearMembers.size(), membersOnline));
+        player.sendMessage(createMembersList(party, nearMembers));
+    }
+
+    private String createMembersList(Party party, List<Player> nearMembers) {
+        StringBuilder memberList = new StringBuilder();
+
+        for (String memberName : party.getMembers()) {
+            Player member = mcMMO.p.getServer().getPlayerExact(memberName);
+
+            if (!nearMembers.contains(member)) {
+                memberList.append(ChatColor.ITALIC);
+            }
+
+            if (party.getLeader().equalsIgnoreCase(memberName)) {
+                memberList.append(ChatColor.GOLD);
+            }
+            else if (member != null) {
+                memberList.append(ChatColor.WHITE);
+            }
+            else {
+                memberList.append(ChatColor.GRAY);
+            }
+
+            memberList.append(memberName).append(ChatColor.RESET).append(" ");
+        }
+
+        return memberList.toString();
     }
 }

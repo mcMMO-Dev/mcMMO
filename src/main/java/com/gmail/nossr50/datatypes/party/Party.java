@@ -1,12 +1,21 @@
 package com.gmail.nossr50.datatypes.party;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.experience.FormulaType;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.Misc;
 
 public class Party {
     private final LinkedHashSet<String> members = new LinkedHashSet<String>();
@@ -16,6 +25,8 @@ public class Party {
     private String password;
     private boolean locked;
     private Party ally;
+    private int level;
+    private float xp;
 
     private ShareMode xpShareMode   = ShareMode.NONE;
     private ShareMode itemShareMode = ShareMode.NONE;
@@ -34,6 +45,7 @@ public class Party {
         this.leader = leader;
         this.name = name;
         this.locked = true;
+        this.level = 0;
     }
 
     public Party(String leader, String name, String password) {
@@ -41,6 +53,7 @@ public class Party {
         this.name = name;
         this.password = password;
         this.locked = true;
+        this.level = 0;
     }
 
     public Party(String leader, String name, String password, boolean locked) {
@@ -48,6 +61,7 @@ public class Party {
         this.name = name;
         this.password = password;
         this.locked = locked;
+        this.level = 0;
     }
 
     public LinkedHashSet<String> getMembers() {
@@ -118,6 +132,93 @@ public class Party {
 
     public void setAlly(Party ally) {
         this.ally = ally;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public float getXp() {
+        return xp;
+    }
+
+    public void setXp(float xp) {
+        this.xp = xp;
+    }
+
+    public void addXp(float xp) {
+        setXp(getXp() + xp);
+    }
+
+    protected float levelUp() {
+        float xpRemoved = getXpToLevel();
+
+        setLevel(getLevel() + 1);
+        setXp(getXp() - xpRemoved);
+
+        return xpRemoved;
+    }
+
+    public int getXpToLevel() {
+        FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
+        return (mcMMO.getFormulaManager().getCachedXpToLevel(level, formulaType)) * (getOnlineMembers().size() + Config.getInstance().getPartyXpCurveMultiplier());
+    }
+
+    public String getXpToLevelPercentage() {
+        DecimalFormat percent = new DecimalFormat("##0.00%");
+        return percent.format( this.getXp() / getXpToLevel());
+    }
+
+    /**
+     * Applies an experience gain
+     *
+     * @param xp Experience amount to add
+     */
+    public void applyXpGain(float xp) {
+        if (!EventUtils.handlePartyXpGainEvent(this, xp)) {
+            return;
+        }
+
+        if (getXp() < getXpToLevel()) {
+            return;
+        }
+
+        int levelsGained = 0;
+        float xpRemoved = 0;
+
+        while (getXp() >= getXpToLevel()) {
+            if (hasReachedLevelCap()) {
+                setXp(0);
+                return;
+            }
+
+            xpRemoved += levelUp();
+            levelsGained++;
+        }
+
+        if (!EventUtils.handlePartyLevelChangeEvent(this, levelsGained, xpRemoved)) {
+            return;
+        }
+
+        if (!Config.getInstance().getPartyInformAllMembers()) {
+            Player leader = mcMMO.p.getServer().getPlayer(this.leader);
+            leader.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
+
+            if (Config.getInstance().getLevelUpSoundsEnabled()) {
+                leader.playSound(leader.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+            }
+            return;
+        }
+
+        PartyManager.informPartyMembersLevelUp(this, levelsGained, getLevel());
+    }
+
+    public boolean hasReachedLevelCap() {
+        return Config.getInstance().getPartyLevelCap() < getLevel() + 1;
     }
 
     public void setXpShareMode(ShareMode xpShareMode) {

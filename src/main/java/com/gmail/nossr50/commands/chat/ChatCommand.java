@@ -9,6 +9,8 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.chat.ChatManagerFactory;
@@ -108,6 +110,11 @@ public abstract class ChatCommand implements TabExecutor {
     private void enableChatMode(McMMOPlayer mcMMOPlayer, CommandSender sender) {
         if (chatMode == ChatMode.PARTY && mcMMOPlayer.getParty() == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+            return;
+        }
+
+        if (chatMode == ChatMode.PARTY && (mcMMOPlayer.getParty().getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT))) {
+            sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.1"));
             return;
         }
 

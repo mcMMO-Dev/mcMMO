@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
+import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 
@@ -30,7 +31,7 @@ public class StringUtils {
     }
 
     public static String getPrettySecondaryAbilityString(SecondaryAbility secondaryAbility) {
-        switch(secondaryAbility) {
+        switch (secondaryAbility) {
             case HERBALISM_DOUBLE_DROPS:
             case MINING_DOUBLE_DROPS:
             case WOODCUTTING_DOUBLE_DROPS:
@@ -44,6 +45,10 @@ public class StringUtils {
             default:
                 return createPrettyEnumString(secondaryAbility.toString());
         }
+    }
+
+    public static String getPrettyPartyFeatureString(PartyFeature partyFeature) {
+        return createPrettyEnumString(partyFeature.toString());
     }
 
     private static String createPrettyEnumString(String baseString) {
@@ -125,4 +130,5 @@ public class StringUtils {
             return false;
         }
     }
+
 }

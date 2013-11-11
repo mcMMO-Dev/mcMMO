@@ -6,6 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 import org.bukkit.OfflinePlayer;
+import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -486,6 +487,8 @@ public final class PartyManager {
             party.setLeader(partiesFile.getString(partyName + ".Leader"));
             party.setPassword(partiesFile.getString(partyName + ".Password"));
             party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
+            party.setLevel(partiesFile.getInt(partyName + ".Level"));
+            party.setXp(partiesFile.getInt(partyName + ".Xp"));
 
             if (partiesFile.getString(partyName + ".Ally") != null) {
                 hasAlly.add(party);
@@ -529,6 +532,8 @@ public final class PartyManager {
             partiesFile.set(partyName + ".Leader", party.getLeader());
             partiesFile.set(partyName + ".Password", party.getPassword());
             partiesFile.set(partyName + ".Locked", party.isLocked());
+            partiesFile.set(partyName + ".Level", party.getLevel());
+            partiesFile.set(partyName + ".Xp", (int) party.getXp());
             partiesFile.set(partyName + ".Ally", (party.getAlly() != null) ? party.getAlly().getName() : "");
             partiesFile.set(partyName + ".ExpShareMode", party.getXpShareMode().toString());
             partiesFile.set(partyName + ".ItemShareMode", party.getItemShareMode().toString());
@@ -597,6 +602,24 @@ public final class PartyManager {
         mcMMOPlayer.removeParty();
         mcMMOPlayer.disableChat(ChatMode.PARTY);
         mcMMOPlayer.setItemShareModifier(10);
+    }
+
+    /**
+     * Notify party members when the party levels up.
+     *
+     * @param party The concerned party
+     * @param levelsGained The amount of levels gained
+     * @param level The current party level
+     */
+    public static void informPartyMembersLevelUp(Party party, int levelsGained, int level) {
+        boolean levelUpSoundsEnabled = Config.getInstance().getLevelUpSoundsEnabled();
+        for (Player member : party.getOnlineMembers()) {
+            member.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, level));
+
+            if (levelUpSoundsEnabled) {
+                member.playSound(member.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+            }
+        }
     }
 
     /**

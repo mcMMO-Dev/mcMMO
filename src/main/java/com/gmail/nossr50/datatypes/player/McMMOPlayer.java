@@ -514,6 +514,14 @@ public class McMMOPlayer {
      */
     public void beginUnsharedXpGain(SkillType skill, float xp) {
         applyXpGain(skill, modifyXpGain(skill, xp));
+
+        if (party == null) {
+            return;
+        }
+
+        if (!Config.getInstance().getPartyXpNearMembersNeeded() || !PartyManager.getNearMembers(this).isEmpty()) {
+            party.applyXpGain(modifyXpGain(skill, xp));
+        }
     }
 
     /**

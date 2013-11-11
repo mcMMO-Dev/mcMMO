@@ -11,6 +11,8 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
@@ -40,6 +42,15 @@ public class PtpCommand implements TabExecutor {
             return true;
         }
 
+        Player player = (Player) sender;
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        Party party = mcMMOPlayer.getParty();
+
+        if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.TELEPORT)) {
+            sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.2"));
+            return true;
+        }
+
         switch (args.length) {
             case 1:
                 if (args[0].equalsIgnoreCase("toggle")) {
@@ -49,9 +60,6 @@ public class PtpCommand implements TabExecutor {
                 if (args[0].equalsIgnoreCase("acceptany") || args[0].equalsIgnoreCase("acceptall")) {
                     return ptpAcceptAnyCommand.onCommand(sender, command, label, args);
                 }
-
-                Player player = (Player) sender;
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
                 long recentlyHurt = mcMMOPlayer.getRecentlyHurt();
                 int hurtCooldown = Config.getInstance().getPTPCommandRecentlyHurtCooldown();

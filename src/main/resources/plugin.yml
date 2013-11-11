@@ -924,7 +924,7 @@ permissions:
             mcmmo.commands.party.chat: true
             mcmmo.commands.party.create: true
             mcmmo.commands.party.disband: true
-            mcmmo.commands.party.expshare: true
+            mcmmo.commands.party.xpshare: true
             mcmmo.commands.party.help: true
             mcmmo.commands.party.info: true
             mcmmo.commands.party.invite: true
@@ -951,8 +951,8 @@ permissions:
         description: Allows access to the party create command
     mcmmo.commands.party.disband:
         description: Allows access to the party disband command
-    mcmmo.commands.party.expshare:
-        description: Allows access to the party expshare command
+    mcmmo.commands.party.xpshare:
+        description: Allows access to the party xpshare command
     mcmmo.commands.party.help:
         description: Allows access to the party help command
     mcmmo.commands.party.info:

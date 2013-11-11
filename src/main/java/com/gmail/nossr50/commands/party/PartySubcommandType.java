@@ -7,7 +7,7 @@ public enum PartySubcommandType {
     HELP,
     INFO,
     QUIT,
-    EXPSHARE,
+    XPSHARE,
     ITEMSHARE,
     INVITE,
     KICK,
@@ -38,7 +38,7 @@ public enum PartySubcommandType {
             return OWNER;
         }
         else if (commandName.equalsIgnoreCase("xpshare") || commandName.equalsIgnoreCase("shareexp") || commandName.equalsIgnoreCase("sharexp")) {
-            return EXPSHARE;
+            return XPSHARE;
         }
         else if (commandName.equalsIgnoreCase("shareitem") || commandName.equalsIgnoreCase("shareitems")) {
             return ITEMSHARE;

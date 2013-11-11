@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
@@ -17,12 +18,12 @@ import com.gmail.nossr50.util.player.UserManager;
 public class PartyItemShareCommand implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!Config.getInstance().getItemShareEnabled()) {
-            sender.sendMessage(LocaleLoader.getString("Party.ItemShare.Disabled"));
+        Party party = UserManager.getPlayer((Player) sender).getParty();
+
+        if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.ITEM_SHARE)) {
+            sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.4"));
             return true;
         }
-
-        Party party = UserManager.getPlayer((Player) sender).getParty();
 
         switch (args.length) {
             case 2:
