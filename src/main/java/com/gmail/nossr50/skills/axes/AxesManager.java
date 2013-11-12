@@ -92,18 +92,14 @@ public class AxesManager extends SkillManager {
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
             if (ItemUtils.isArmor(armor) && Axes.impactChance > Misc.getRandom().nextInt(getActivationChance())) {
-//<<<<<<< HEAD
                 SkillUtils.handleDurabilityChange(armor, durabilityDamage, Axes.impactMaxDurabilityModifier);
-//=======
-//                event = new McMMOPlayerImpactEvent(player, armor, calculateImpactDurabilityDamage(durabilityDamage, armor));
-//                mcMMO.p.getServer().getPluginManager().callEvent(event);
-//
-//                if (event.isCancelled()) {
-//                    continue;
-//                }
-//
-//                armor.setDurability((short) (event.getDurabilityDamage() + armor.getDurability()));
-//>>>>>>> Axe events.
+
+                event = new McMMOPlayerImpactEvent(player, armor);
+                mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+                if (event.isCancelled()) {
+                    continue;
+                }
             }
         }
     }
