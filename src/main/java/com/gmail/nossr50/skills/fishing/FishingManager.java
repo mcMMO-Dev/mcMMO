@@ -481,6 +481,8 @@ public class FishingManager extends SkillManager {
             treasureDrop.setDurability((short) (Misc.getRandom().nextInt(maxDurability)));
         }
 
+        treasure.setDrop(treasureDrop);
+
         return treasure;
     }
 
