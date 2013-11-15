@@ -132,6 +132,10 @@ public final class Permissions {
     public static boolean gracefulRoll(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.acrobatics.gracefulroll"); }
     public static boolean roll(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.acrobatics.roll"); }
 
+    /* ALCHEMY */
+    public static boolean catalysis(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.alchemy.catalysis"); }
+    public static boolean concoctions(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.alchemy.concoctions"); }
+
     /* ARCHERY */
     public static boolean arrowRetrieval(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.archery.trackarrows"); }
     public static boolean daze(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.archery.daze"); }

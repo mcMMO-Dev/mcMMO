@@ -35,6 +35,7 @@ import com.gmail.nossr50.commands.player.McrankCommand;
 import com.gmail.nossr50.commands.player.McstatsCommand;
 import com.gmail.nossr50.commands.player.MctopCommand;
 import com.gmail.nossr50.commands.skills.AcrobaticsCommand;
+import com.gmail.nossr50.commands.skills.AlchemyCommand;
 import com.gmail.nossr50.commands.skills.ArcheryCommand;
 import com.gmail.nossr50.commands.skills.AxesCommand;
 import com.gmail.nossr50.commands.skills.ExcavationCommand;
@@ -74,6 +75,10 @@ public final class CommandRegistrationManager {
             switch (skill) {
                 case ACROBATICS:
                     command.setExecutor(new AcrobaticsCommand());
+                    break;
+
+                case ALCHEMY:
+                    command.setExecutor(new AlchemyCommand());
                     break;
 
                 case ARCHERY:
@@ -325,9 +330,9 @@ public final class CommandRegistrationManager {
         PluginCommand command = mcMMO.p.getCommand("party");
         command.setDescription(LocaleLoader.getString("Commands.Description.party"));
         command.setPermission("mcmmo.commands.party;mcmmo.commands.party.accept;mcmmo.commands.party.create;mcmmo.commands.party.disband;" +
-                              "mcmmo.commands.party.expshare;mcmmo.commands.party.invite;mcmmo.commands.party.itemshare;mcmmo.commands.party.join;" +
-                              "mcmmo.commands.party.kick;mcmmo.commands.party.lock;mcmmo.commands.party.owner;mcmmo.commands.party.password;" +
-                              "mcmmo.commands.party.quit;mcmmo.commands.party.rename;mcmmo.commands.party.unlock");
+                "mcmmo.commands.party.expshare;mcmmo.commands.party.invite;mcmmo.commands.party.itemshare;mcmmo.commands.party.join;" +
+                "mcmmo.commands.party.kick;mcmmo.commands.party.lock;mcmmo.commands.party.owner;mcmmo.commands.party.password;" +
+                "mcmmo.commands.party.quit;mcmmo.commands.party.rename;mcmmo.commands.party.unlock");
         command.setPermissionMessage(permissionsMessage);
         command.setExecutor(new PartyCommand());
     }

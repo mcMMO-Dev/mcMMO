@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.repair.ArcaneForging;
@@ -74,6 +75,38 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
         if (getGracefulRollDamageThreshold() < 0) {
             reason.add("Skills.Acrobatics.GracefulRoll.DamageThreshold should be at least 0!");
+        }
+
+        /* ALCHEMY */
+        if (getCatalysisUnlockLevel() < 0) {
+            reason.add("Skills.Alchemy.Catalysis.UnlockLevel should be at least 0!");
+        }
+        
+        if (getCatalysisMaxBonusLevel() <= getCatalysisUnlockLevel()) {
+            reason.add("Skills.Alchemy.Catalysis.MaxBonusLevel should be greater than Skills.Alchemy.Catalysis.UnlockLevel!");
+        }
+        
+        if (getCatalysisMinSpeed() <= 0) {
+            reason.add("Skills.Alchemy.Catalysis.MinSpeed must be greater than 0!");
+        }
+        
+        if (getCatalysisMaxSpeed() < getCatalysisMinSpeed()) {
+            reason.add("Skills.Alchemy.Catalysis.MaxSpeed should be at least Skills.Alchemy.Catalysis.MinSpeed!");
+        }
+
+        List<Alchemy.Tier> alchemyTierList = Arrays.asList(Alchemy.Tier.values());
+        for (Alchemy.Tier tier : alchemyTierList) {
+            if (getConcoctionsTierLevel(tier) < 0) {
+                reason.add("Skills.Alchemy.Rank_Levels.Rank_" + tier.toNumerical() + " should be at least 0!");
+            }
+            
+            if (tier != Alchemy.Tier.FIVE) {
+                Alchemy.Tier nextTier = alchemyTierList.get(alchemyTierList.indexOf(tier) - 1);
+                
+                if (getConcoctionsTierLevel(tier) >= getConcoctionsTierLevel(nextTier)) {
+                    reason.add("Skills.Alchemy.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than Skills.Alchemy.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
+                }
+            }
         }
 
         /* ARCHERY */
@@ -623,6 +656,14 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getGracefulRollChanceMax() { return config.getDouble("Skills.Acrobatics.GracefulRoll.ChanceMax", 100.0D); }
     public int getGracefulRollMaxBonusLevel() { return config.getInt("Skills.Acrobatics.GracefulRoll.MaxBonusLevel", 500); }
     public double getGracefulRollDamageThreshold() { return config.getDouble("Skills.Acrobatics.GracefulRoll.DamageThreshold", 14.0D); }
+
+    /* ALCHEMY */
+    public int    getCatalysisUnlockLevel() { return config.getInt("Skills.Alchemy.Catalysis.UnlockLevel", 100); }
+    public int    getCatalysisMaxBonusLevel() { return config.getInt("Skills.Alchemy.Catalysis.MaxBonusLevel", 1000); }
+    public double getCatalysisMinSpeed() { return config.getDouble("Skills.Alchemy.Catalysis.MinSpeed", 1.0D); }
+    public double getCatalysisMaxSpeed() { return config.getDouble("Skills.Alchemy.Catalysis.MaxSpeed", 4.0D); }
+    
+    public int getConcoctionsTierLevel(Alchemy.Tier tier) { return config.getInt("Skills.Alchemy.Rank_Levels.Rank_" + tier.toNumerical()); }
 
     /* ARCHERY */
     public int getSkillShotIncreaseLevel() { return config.getInt("Skills.Archery.SkillShot.IncreaseLevel", 50); }

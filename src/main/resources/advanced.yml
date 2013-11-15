@@ -48,6 +48,27 @@ Skills:
             MaxBonusLevel: 500
             DamageThreshold: 14.0
     #
+    #  Settings for Alchemy
+    ###
+    Alchemy:
+        Catalysis:
+            # UnlockLevel: Alchemy level when the Catalysis ability unlocks
+            # MaxBonusLevel: Maximum bonus level of Catalysis, when a player reaches this level his brewing speed will be <MaxSpeed>
+            # MinSpeed: Minimum brewing speed allowed when at <UnlockLevel> or lower
+            # MaxSpeed: Maximum brewing speed allowed when at <MaxBonusLevel> or higher
+            UnlockLevel: 100
+            MaxBonusLevel: 1000
+            MinSpeed: 1.0
+            MaxSpeed: 4.0
+            
+        # Rank_Levels: Alchemy level where rank gets unlocked
+        Rank_Levels:
+            Rank_1: 0
+            Rank_2: 200
+            Rank_3: 400
+            Rank_4: 600
+            Rank_5: 800
+    #
     #  Settings for Archery
     ###
     Archery:

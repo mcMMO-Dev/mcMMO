@@ -152,7 +152,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
                     + ", unarmed = ?, herbalism = ?, excavation = ?"
                     + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                    + ", fishing = ? WHERE user_id = ?",
+                    + ", fishing = ?, alchemy = ? WHERE user_id = ?",
                 profile.getSkillLevel(SkillType.TAMING),
                 profile.getSkillLevel(SkillType.MINING),
                 profile.getSkillLevel(SkillType.REPAIR),
@@ -165,13 +165,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 profile.getSkillLevel(SkillType.AXES),
                 profile.getSkillLevel(SkillType.ACROBATICS),
                 profile.getSkillLevel(SkillType.FISHING),
+                profile.getSkillLevel(SkillType.ALCHEMY),
                 userId);
         success &= saveIntegers(
                 "UPDATE " + tablePrefix + "experience SET "
                     + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
                     + ", unarmed = ?, herbalism = ?, excavation = ?"
                     + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                    + ", fishing = ? WHERE user_id = ?",
+                    + ", fishing = ?, alchemy = ? WHERE user_id = ?",
                 profile.getSkillXpLevel(SkillType.TAMING),
                 profile.getSkillXpLevel(SkillType.MINING),
                 profile.getSkillXpLevel(SkillType.REPAIR),
@@ -184,6 +185,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 profile.getSkillXpLevel(SkillType.AXES),
                 profile.getSkillXpLevel(SkillType.ACROBATICS),
                 profile.getSkillXpLevel(SkillType.FISHING),
+                profile.getSkillXpLevel(SkillType.ALCHEMY),
                 userId);
         return success;
     }
@@ -192,7 +194,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         List<PlayerStat> stats = new ArrayList<PlayerStat>();
 
         if (checkConnected()) {
-            String query = skill == null ? "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing" : skill.name().toLowerCase();
+            String query = skill == null ? "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy" : skill.name().toLowerCase();
             ResultSet resultSet = null;
             PreparedStatement statement = null;
 
@@ -271,9 +273,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
 
                 String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
-                        "WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > 0 " +
-                        "AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > " +
-                        "(SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing " +
+                        "WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy > 0 " +
+                        "AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy > " +
+                        "(SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy " +
                         "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = ?)";
 
                 PreparedStatement statement = connection.prepareStatement(sql);
@@ -286,11 +288,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
                 statement.close();
 
-                sql = "SELECT user, taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing " +
+                sql = "SELECT user, taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy " +
                         "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
-                        "WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing > 0 " +
-                        "AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing = " +
-                        "(SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing " +
+                        "WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy > 0 " +
+                        "AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy = " +
+                        "(SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy " +
                         "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = ?) ORDER BY user";
 
                 statement = connection.prepareStatement(sql);
@@ -362,7 +364,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, "
                     + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, "
                     + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
-                    + "h.mobhealthbar "
+                    + "h.mobhealthbar, s.alchemy, e.alchemy "
                     + "FROM " + tablePrefix + "users u "
                     + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
                     + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
@@ -438,7 +440,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, "
                     + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, "
                     + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
-                    + "h.mobhealthbar "
+                    + "h.mobhealthbar, s.alchemy, e.alchemy "
                     + "FROM " + tablePrefix + "users u "
                     + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
                     + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
@@ -687,6 +689,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)) "
                 + "DEFAULT CHARSET=latin1;");
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
@@ -703,6 +706,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
+                + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
                 + "PRIMARY KEY (`user_id`)) "
                 + "DEFAULT CHARSET=latin1;");
 
@@ -728,6 +732,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 sql = "SELECT * FROM `" + tablePrefix + "experience` ORDER BY `" + tablePrefix + "experience`.`fishing` ASC LIMIT 0 , 30";
                 break;
 
+            case ALCHEMY:
+                sql = "SELECT * FROM `" + tablePrefix + "experience` ORDER BY `" + tablePrefix + "experience`.`alchemy` ASC LIMIT 0 , 30";
+                break;
+                
             case INDEX:
                 if (read("SHOW INDEX FROM " + tablePrefix + "skills").size() != 13 && checkConnected()) {
                     mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
@@ -830,6 +838,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     write("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "' ;");
                     break;
 
+                case ALCHEMY:
+                    mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Alchemy...");
+                    write("ALTER TABLE `"+tablePrefix + "skills` ADD `alchemy` int(10) NOT NULL DEFAULT '0' ;");
+                    write("ALTER TABLE `"+tablePrefix + "experience` ADD `alchemy` int(10) NOT NULL DEFAULT '0' ;");
+                    break;
+                    
                 default:
                     break;
             }
@@ -1199,6 +1213,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skills.put(SkillType.AXES, result.getInt(OFFSET_SKILLS + 10));
         skills.put(SkillType.ACROBATICS, result.getInt(OFFSET_SKILLS + 11));
         skills.put(SkillType.FISHING, result.getInt(OFFSET_SKILLS + 12));
+        skills.put(SkillType.ALCHEMY, result.getInt(OFFSET_SKILLS + 13));
 
         skillsXp.put(SkillType.TAMING, result.getFloat(OFFSET_XP + 1));
         skillsXp.put(SkillType.MINING, result.getFloat(OFFSET_XP + 2));
@@ -1212,6 +1227,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skillsXp.put(SkillType.AXES, result.getFloat(OFFSET_XP + 10));
         skillsXp.put(SkillType.ACROBATICS, result.getFloat(OFFSET_XP + 11));
         skillsXp.put(SkillType.FISHING, result.getFloat(OFFSET_XP + 12));
+        skillsXp.put(SkillType.ALCHEMY, result.getFloat(OFFSET_XP + 13));
 
         // Taming - Unused - result.getInt(OFFSET_DATS + 1)
         skillsDATS.put(AbilityType.SUPER_BREAKER, result.getInt(OFFSET_DATS + 2));

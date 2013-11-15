@@ -28,9 +28,12 @@ import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.potion.PotionEffect;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -588,6 +591,25 @@ public class EntityListener implements Listener {
         // So we can make some assumptions here, about our casting and our check
         if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire((Player) tameable.getOwner()))) {
             event.setCancelled(true);
+        }
+    }
+
+    /**
+     * Handle PotionSplash events in order to fix broken Splash Potion of Saturation.
+     * 
+     * @param event The event to process
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPotionSplash(PotionSplashEvent event) {
+        for (PotionEffect effect : ((PotionMeta) event.getEntity().getItem().getItemMeta()).getCustomEffects()) {
+            // (effect.getType() == PotionEffectType.SATURATION) is seemingly broken, so we use deprecated method for now.
+            if (effect.getType().getId() == 23) {
+                for (LivingEntity entity : event.getAffectedEntities()) {
+                    int duration = (int) (effect.getDuration() * event.getIntensity(entity));
+                    entity.addPotionEffect(new PotionEffect(effect.getType(), duration, effect.getAmplifier(), effect.isAmbient()));
+                }
+            }
+            return;
         }
     }
 }

@@ -8,6 +8,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.BrewingStand;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,6 +31,7 @@ import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.runnables.StickyPistonTrackerTask;
+import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
@@ -132,6 +134,11 @@ public class BlockListener implements Listener {
 
         if (!BlockUtils.shouldBeWatched(blockState)) {
             return;
+        }
+
+        /* ALCHEMY - Cancel any brew in progress for that BrewingStand */
+        if (blockState instanceof BrewingStand && Alchemy.brewingStandMap.containsKey(event.getBlock())) {
+            Alchemy.brewingStandMap.get(event.getBlock()).cancel();
         }
 
         Player player = event.getPlayer();

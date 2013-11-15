@@ -399,6 +399,10 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getDodgeLightningDisabled() { return config.getBoolean("Skills.Acrobatics.Prevent_Dodge_Lightning", false); }
     public boolean getPreventXPAfterTeleport() { return config.getBoolean("Skills.Acrobatics.Prevent_XP_After_Teleport", true); }
 
+    /* Alchemy */
+    public boolean getEnabledForHoppers() { return config.getBoolean("Skills.Alchemy.Enabled_for_Hoppers", true); }
+    public boolean getPreventHopperTransfer() { return config.getBoolean("Skills.Alchemy.Prevent_Hopper_Transfer", false); }
+
     /* Fishing */
     public boolean getFishingDropsEnabled() { return config.getBoolean("Skills.Fishing.Drops_Enabled", true); }
 
