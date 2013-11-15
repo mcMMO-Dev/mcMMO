@@ -11,7 +11,7 @@ description: >
   in order to evaluate and balance the mechanics of mcMMO in every update.
 
 author: nossr50
-authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking]
+authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking, EasyMFnE]
 website: http://dev.bukkit.org/server-mods/mcmmo/
 
 main: com.gmail.nossr50.mcMMO
@@ -89,6 +89,8 @@ commands:
         description: Detailed mcMMO skill info
     smelting:
         description: Detailed mcMMO skill info
+    alchemy:
+        description: Detailed mcMMO skill info
     adminchat:
         aliases: [ac, a]
         description: Toggle Admin chat or send admin chat messages
@@ -139,6 +141,7 @@ permissions:
         description: Implies all mcmmo.ability permissions.
         children:
             mcmmo.ability.acrobatics.all: true
+            mcmmo.ability.alchemy.all: true
             mcmmo.ability.archery.all: true
             mcmmo.ability.axes.all: true
             mcmmo.ability.excavation.all: true
@@ -168,6 +171,20 @@ permissions:
         description: Allows access to the Graceful Roll ability
     mcmmo.ability.acrobatics.roll:
         description: Allows access to the Roll ability
+    mcmmo.ability.alchemy.*:
+        default: false
+        description: Allows access to all Alchemy abilities
+        children:
+            mcmmo.ability.alchemy.all: true
+    mcmmo.ability.alchemy.all:
+        description: Allows access to all Alchemy abilities
+        children:
+            mcmmo.ability.alchemy.catalysis: true
+            mcmmo.ability.alchemy.concoctions: true
+    mcmmo.ability.alchemy.catalysis:
+        description: Allows access to the Catalysis ability
+    mcmmo.ability.alchemy.concoctions:
+        description: Allows access to the Concoctions ability
     mcmmo.ability.archery.*:
         default: false
         description: Allows access to all Archery abilities
@@ -626,6 +643,7 @@ permissions:
         description: Implies all default mcmmo.commands permissions.
         children:
             mcmmo.commands.acrobatics: true
+            mcmmo.commands.alchemy: true
             mcmmo.commands.archery: true
             mcmmo.commands.axes: true
             mcmmo.commands.excavation: true
@@ -695,6 +713,8 @@ permissions:
         description: Allows access to the addxp command
     mcmmo.commands.addxp.others:
         description: Allows access to the addxp command for other players
+    mcmmo.commands.alchemy:
+        description: Allows access to the alchemy command
     mcmmo.commands.archery:
         description: Allows access to the archery command
     mcmmo.commands.axes:
@@ -833,6 +853,7 @@ permissions:
         children:
             mcmmo.commands.mctop: true
             mcmmo.commands.mctop.acrobatics: true
+            mcmmo.commands.mctop.alchemy: true
             mcmmo.commands.mctop.archery: true
             mcmmo.commands.mctop.axes: true
             mcmmo.commands.mctop.excavation: true
@@ -849,6 +870,8 @@ permissions:
         description: Allows access to the mctop command
     mcmmo.commands.mctop.acrobatics:
         description: Allows access to the mctop command for acrobatics
+    mcmmo.commands.mctop.alchemy:
+        description: Allows access to the mctop command for alchemy
     mcmmo.commands.mctop.archery:
         description: Allows access to the mctop command for archery
     mcmmo.commands.mctop.axes:
@@ -1001,6 +1024,7 @@ permissions:
         children:
             mcmmo.commands.skillreset: true
             mcmmo.commands.skillreset.acrobatics: true
+            mcmmo.commands.skillreset.alchemy: true
             mcmmo.commands.skillreset.archery: true
             mcmmo.commands.skillreset.axes: true
             mcmmo.commands.skillreset.excavation: true
@@ -1018,6 +1042,8 @@ permissions:
         description: Allows access to the skillreset command
     mcmmo.commands.skillreset.acrobatics:
         description: Allows access to the skillreset command for acrobatics
+    mcmmo.commands.skillreset.alchemy:
+        description: Allows access to the skillreset command for alchemy
     mcmmo.commands.skillreset.archery:
         description: Allows access to the skillreset command for archery
     mcmmo.commands.skillreset.axes:
@@ -1040,6 +1066,7 @@ permissions:
         children:
             mcmmo.commands.skillreset.others: true
             mcmmo.commands.skillreset.others.acrobatics: true
+            mcmmo.commands.skillreset.others.alchemy: true
             mcmmo.commands.skillreset.others.archery: true
             mcmmo.commands.skillreset.others.axes: true
             mcmmo.commands.skillreset.others.excavation: true
@@ -1056,6 +1083,8 @@ permissions:
         description: Allows access to the skillreset command for other players
     mcmmo.commands.skillreset.others.acrobatics:
         description: Allows access to the skillreset command for acrobatics for other players
+    mcmmo.commands.skillreset.others.alchemy:
+        description: Allows access to the skillreset command for alchemy for other players
     mcmmo.commands.skillreset.others.archery:
         description: Allows access to the skillreset command for archery for other players
     mcmmo.commands.skillreset.others.axes:
@@ -1246,6 +1275,7 @@ permissions:
         description: Gives all abilities & skills a 33.3% better chance to activate.
         children:
             mcmmo.perks.lucky.acrobatics: true
+            mcmmo.perks.lucky.alchemy: true
             mcmmo.perks.lucky.archery: true
             mcmmo.perks.lucky.axes: true
             mcmmo.perks.lucky.excavation: true
@@ -1261,6 +1291,9 @@ permissions:
     mcmmo.perks.lucky.acrobatics:
         default: false
         description: Gives Acrobatics abilities & skills a 33.3% better chance to activate.
+    mcmmo.perks.lucky.alchemy:
+        default: false
+        description: Gives Alchemy abilities & skills a 33.3% better chance to activate.
     mcmmo.perks.lucky.archery:
         default: false
         description: Gives Archery abilities & skills a 33.3% better chance to activate.
@@ -1326,6 +1359,7 @@ permissions:
         description: Mulitplies incoming XP by 2.5
         children:
             mcmmo.perks.xp.150percentboost.acrobatics: true
+            mcmmo.perks.xp.150percentboost.alchemy: true
             mcmmo.perks.xp.150percentboost.archery: true
             mcmmo.perks.xp.150percentboost.axes: true
             mcmmo.perks.xp.150percentboost.excavation: true
@@ -1341,6 +1375,9 @@ permissions:
     mcmmo.perks.xp.150percentboost.acrobatics:
         default: false
         description: Multiplies incoming Acrobatics XP by 2.5
+    mcmmo.perks.xp.150percentboost.alchemy:
+        default: false
+        description: Multiplies incoming Alchemy XP by 2.5
     mcmmo.perks.xp.150percentboost.archery:
         default: false
         description: Multiplies incoming Archery XP by 2.5
@@ -1392,6 +1429,7 @@ permissions:
         description: Mulitplies incoming XP by 1.5
         children:
             mcmmo.perks.xp.50percentboost.acrobatics: true
+            mcmmo.perks.xp.50percentboost.alchemy: true
             mcmmo.perks.xp.50percentboost.archery: true
             mcmmo.perks.xp.50percentboost.axes: true
             mcmmo.perks.xp.50percentboost.excavation: true
@@ -1405,6 +1443,9 @@ permissions:
             mcmmo.perks.xp.50percentboost.unarmed: true
             mcmmo.perks.xp.50percentboost.woodcutting: true
     mcmmo.perks.xp.50percentboost.acrobatics:
+        default: false
+        description: Multiplies incoming Acrobatics XP by 1.5
+    mcmmo.perks.xp.50percentboost.alchemy:
         default: false
         description: Multiplies incoming Acrobatics XP by 1.5
     mcmmo.perks.xp.50percentboost.archery:
@@ -1458,6 +1499,7 @@ permissions:
         description: Doubles incoming XP
         children:
             mcmmo.perks.xp.double.acrobatics: true
+            mcmmo.perks.xp.double.alchemy: true
             mcmmo.perks.xp.double.archery: true
             mcmmo.perks.xp.double.axes: true
             mcmmo.perks.xp.double.excavation: true
@@ -1473,6 +1515,9 @@ permissions:
     mcmmo.perks.xp.double.acrobatics:
         default: false
         description: Doubles incoming Acrobatics XP
+    mcmmo.perks.xp.double.alchemy:
+        default: false
+        description: Doubles incoming Alchemy XP
     mcmmo.perks.xp.double.archery:
         default: false
         description: Doubles incoming Archery XP
@@ -1524,6 +1569,7 @@ permissions:
         description: Quadruples incoming XP
         children:
             mcmmo.perks.xp.quadruple.acrobatics: true
+            mcmmo.perks.xp.quadruple.alchemy: true
             mcmmo.perks.xp.quadruple.archery: true
             mcmmo.perks.xp.quadruple.axes: true
             mcmmo.perks.xp.quadruple.excavation: true
@@ -1539,6 +1585,9 @@ permissions:
     mcmmo.perks.xp.quadruple.acrobatics:
         default: false
         description: Quadruples incoming Acrobatics XP
+    mcmmo.perks.xp.quadruple.alchemy:
+        default: false
+        description: Quadruples incoming Alchemy XP
     mcmmo.perks.xp.quadruple.archery:
         default: false
         description: Quadruples incoming Archery XP
@@ -1590,6 +1639,7 @@ permissions:
         description: Triples incoming XP
         children:
             mcmmo.perks.xp.triple.acrobatics: true
+            mcmmo.perks.xp.triple.alchemy: true
             mcmmo.perks.xp.triple.archery: true
             mcmmo.perks.xp.triple.axes: true
             mcmmo.perks.xp.triple.excavation: true
@@ -1603,6 +1653,9 @@ permissions:
             mcmmo.perks.xp.triple.unarmed: true
             mcmmo.perks.xp.triple.woodcutting: true
     mcmmo.perks.xp.triple.acrobatics:
+        default: false
+        description: Triples incoming Acrobatics XP
+    mcmmo.perks.xp.triple.alchemy:
         default: false
         description: Triples incoming Acrobatics XP
     mcmmo.perks.xp.triple.archery:
@@ -1656,6 +1709,7 @@ permissions:
         description: Implies all mcmmo.skills permissions.
         children:
             mcmmo.skills.acrobatics: true
+            mcmmo.skills.alchemy: true
             mcmmo.skills.archery: true
             mcmmo.skills.axes: true
             mcmmo.skills.excavation: true
@@ -1673,6 +1727,11 @@ permissions:
         children:
             mcmmo.ability.acrobatics.all: true
             mcmmo.commands.acrobatics: true
+    mcmmo.skills.alchemy:
+        description: Allows access to the Alchemy skill
+        children:
+            mcmmo.ability.alchemy.all: true
+            mcmmo.commands.alchemy: true
     mcmmo.skills.archery:
         description: Allows access to the Archery skill
         children:

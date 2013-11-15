@@ -52,6 +52,7 @@ Experience_Formula:
         Axes: 1.0
         Repair: 1.0
         Fishing: 1.0
+        Alchemy: 1.0
 
 #
 #  Settings for XP conversion with '/mcconvert experience'
@@ -73,6 +74,8 @@ Experience:
 
         # FeatherFall_Multiplier: Multiply Acrobatics XP by this value when wearing boots with the Feather Fall enchant
         FeatherFall_Multiplier: 2.0
+    Alchemy:
+        Potion: 120
     Fishing:
         Base: 800
         Shake: 50

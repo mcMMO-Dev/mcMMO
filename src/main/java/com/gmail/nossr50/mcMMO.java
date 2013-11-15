@@ -19,6 +19,7 @@ import com.gmail.nossr50.config.mods.CustomBlockConfig;
 import com.gmail.nossr50.config.mods.CustomEntityConfig;
 import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.config.repair.RepairConfigManager;
+import com.gmail.nossr50.config.potion.PotionConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
@@ -38,6 +39,7 @@ import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
+import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.child.ChildConfig;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
@@ -198,6 +200,7 @@ public class mcMMO extends JavaPlugin {
     @Override
     public void onDisable() {
         try {
+            Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
             PartyManager.saveParties(); // Save our parties
             ScoreboardManager.teardownAll();
@@ -358,6 +361,7 @@ public class mcMMO extends JavaPlugin {
         TreasureConfig.getInstance();
         HiddenConfig.getInstance();
         AdvancedConfig.getInstance();
+        PotionConfig.getInstance();
         new ChildConfig();
 
         List<Repairable> repairables = new ArrayList<Repairable>();

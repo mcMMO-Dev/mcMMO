@@ -2,8 +2,10 @@ package com.gmail.nossr50.listeners;
 
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.BrewingStand;
 import org.bukkit.block.Furnace;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -16,16 +18,21 @@ import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.PlayerUpdateInventoryTask;
+import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -127,6 +134,48 @@ public class InventoryListener implements Listener {
         }
 
         event.setExpToDrop(UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(event.getExpToDrop()));
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onAlchemyClickEvent(InventoryClickEvent event) {
+        if (event.getInventory().getType() != InventoryType.BREWING || !(event.getInventory().getHolder() instanceof BrewingStand)) {
+            return;
+        }
+
+        if (!(event.getWhoClicked() instanceof Player) || Misc.isNPCEntity(event.getWhoClicked()) || !Permissions.concoctions(event.getWhoClicked())) {
+            return;
+        }
+
+        AlchemyPotionBrewer.handleInventoryClick(event);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onAlchemyDragEvent(InventoryDragEvent event) {
+        if (event.getInventory().getType() != InventoryType.BREWING || !(event.getInventory().getHolder() instanceof BrewingStand)) {
+            return;
+        }
+
+        if (!(event.getWhoClicked() instanceof Player) || Misc.isNPCEntity(event.getWhoClicked()) || !Permissions.concoctions(event.getWhoClicked())) {
+            return;
+        }
+
+        AlchemyPotionBrewer.handleInventoryDrag(event);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onAlchemyMoveItemEvent(InventoryMoveItemEvent event) {
+        if (event.getDestination().getType() != InventoryType.BREWING || !(event.getDestination().getHolder() instanceof BrewingStand)) {
+            return;
+        }
+
+        if (Config.getInstance().getPreventHopperTransfer()  && event.getItem() != null && event.getItem().getType() != Material.POTION) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (Config.getInstance().getEnabledForHoppers()) {
+            AlchemyPotionBrewer.handleInventoryMoveItem(event);
+        }
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

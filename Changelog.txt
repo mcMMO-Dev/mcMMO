@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.4.08-dev
+ + Added new Skill - Alchemy!
  + Added SecondaryAbilityType enum, and new SecondaryAbilityWeightedActivationCheckEvent, fired when a secondary ability checkes its activation chances
  + Added the possibility to gain experience when using Fishing "Shake"
  + Added config options to disable various sound effects

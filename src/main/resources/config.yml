@@ -251,6 +251,12 @@ Skills:
         Prevent_Dodge_Lightning: false
         Prevent_XP_After_Teleport: true
         Level_Cap: 0
+    Alchemy:
+        # Allow Hoppers to transfer ingredients and brew Rank 1 Alchemy potions
+        Enabled_for_Hoppers: true
+        # Prevent Hoppers from transferring ingredients into Brewing Stands
+        Prevent_Hopper_Transfer: false
+        Level_Cap: 0
     Archery:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
