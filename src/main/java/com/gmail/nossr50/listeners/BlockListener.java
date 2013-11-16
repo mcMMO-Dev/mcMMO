@@ -138,7 +138,7 @@ public class BlockListener implements Listener {
 
         /* ALCHEMY - Cancel any brew in progress for that BrewingStand */
         if (blockState instanceof BrewingStand && Alchemy.brewingStandMap.containsKey(event.getBlock())) {
-            Alchemy.brewingStandMap.get(event.getBlock()).cancel();
+            Alchemy.brewingStandMap.get(event.getBlock()).cancelBrew();
         }
 
         Player player = event.getPlayer();

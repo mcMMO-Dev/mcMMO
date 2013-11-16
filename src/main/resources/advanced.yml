@@ -64,10 +64,13 @@ Skills:
         # Rank_Levels: Alchemy level where rank gets unlocked
         Rank_Levels:
             Rank_1: 0
-            Rank_2: 200
-            Rank_3: 400
-            Rank_4: 600
-            Rank_5: 800
+            Rank_2: 125
+            Rank_3: 250
+            Rank_4: 375
+            Rank_5: 500
+            Rank_6: 625
+            Rank_7: 750
+            Rank_8: 875
     #
     #  Settings for Archery
     ###

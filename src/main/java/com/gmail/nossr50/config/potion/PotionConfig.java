@@ -23,6 +23,9 @@ public class PotionConfig extends ConfigLoader {
     public List<ItemStack> concoctionsIngredientsTierThree = new ArrayList<ItemStack>();
     public List<ItemStack> concoctionsIngredientsTierFour = new ArrayList<ItemStack>();
     public List<ItemStack> concoctionsIngredientsTierFive = new ArrayList<ItemStack>();
+    public List<ItemStack> concoctionsIngredientsTierSix = new ArrayList<ItemStack>();
+    public List<ItemStack> concoctionsIngredientsTierSeven = new ArrayList<ItemStack>();
+    public List<ItemStack> concoctionsIngredientsTierEight = new ArrayList<ItemStack>();
 
     public Map<Short, AlchemyPotion> potionMap = new HashMap<Short, AlchemyPotion>();
 
@@ -53,11 +56,17 @@ public class PotionConfig extends ConfigLoader {
         loadConcoctionsTier(concoctionsIngredientsTierThree, concoctionSection.getStringList("Tier_Three_Ingredients"));
         loadConcoctionsTier(concoctionsIngredientsTierFour, concoctionSection.getStringList("Tier_Four_Ingredients"));
         loadConcoctionsTier(concoctionsIngredientsTierFive, concoctionSection.getStringList("Tier_Five_Ingredients"));
+        loadConcoctionsTier(concoctionsIngredientsTierSix, concoctionSection.getStringList("Tier_Six_Ingredients"));
+        loadConcoctionsTier(concoctionsIngredientsTierSeven, concoctionSection.getStringList("Tier_Seven_Ingredients"));
+        loadConcoctionsTier(concoctionsIngredientsTierEight, concoctionSection.getStringList("Tier_Eight_Ingredients"));
         
         concoctionsIngredientsTierTwo.addAll(concoctionsIngredientsTierOne);
         concoctionsIngredientsTierThree.addAll(concoctionsIngredientsTierTwo);
         concoctionsIngredientsTierFour.addAll(concoctionsIngredientsTierThree);
         concoctionsIngredientsTierFive.addAll(concoctionsIngredientsTierFour);
+        concoctionsIngredientsTierSix.addAll(concoctionsIngredientsTierFive);
+        concoctionsIngredientsTierSeven.addAll(concoctionsIngredientsTierSix);
+        concoctionsIngredientsTierEight.addAll(concoctionsIngredientsTierSeven);
     }
 
     private void loadConcoctionsTier(List<ItemStack> ingredientList, List<String> ingredientStrings) {

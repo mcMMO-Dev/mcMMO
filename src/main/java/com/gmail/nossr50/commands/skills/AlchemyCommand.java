@@ -17,7 +17,8 @@ public class AlchemyCommand extends SkillCommand {
     private String brewSpeedLucky;
 
     private int    tier;
-    private String ingredients;
+    private int    ingredientCount;
+    private String ingredientList;
 
     private boolean canCatalysis;
     private boolean canConcoctions;
@@ -37,17 +38,18 @@ public class AlchemyCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
-        // DODGE
+        // CATALYSIS
         if (canCatalysis) {
             String[] catalysisStrings = calculateAbilityDisplayValues(player, skillValue, isLucky);
             brewSpeed = catalysisStrings[0];
             brewSpeedLucky = catalysisStrings[1];
         }
 
-        // ROLL
+        // CONCOCTIONS
         if (canConcoctions) {
             tier = UserManager.getPlayer(player).getAlchemyManager().getTier();
-            ingredients = UserManager.getPlayer(player).getAlchemyManager().getIngredientList();
+            ingredientCount = UserManager.getPlayer(player).getAlchemyManager().getIngredients().size();
+            ingredientList = UserManager.getPlayer(player).getAlchemyManager().getIngredientList();
         }
     }
 
@@ -88,8 +90,8 @@ public class AlchemyCommand extends SkillCommand {
         }
 
         if (canConcoctions) {
-            messages.add(LocaleLoader.getString("Alchemy.Concoctions.Rank", tier, Tier.FIVE.toNumerical()));
-            messages.add(LocaleLoader.getString("Alchemy.Concoctions.Ingredients", ingredients));
+            messages.add(LocaleLoader.getString("Alchemy.Concoctions.Rank", tier, Tier.values().length));
+            messages.add(LocaleLoader.getString("Alchemy.Concoctions.Ingredients", ingredientCount, ingredientList));
         }
 
         return messages;

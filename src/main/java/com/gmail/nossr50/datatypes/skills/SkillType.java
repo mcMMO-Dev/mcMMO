@@ -31,6 +31,7 @@ import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+
 import com.google.common.collect.ImmutableList;
 
 public enum SkillType {

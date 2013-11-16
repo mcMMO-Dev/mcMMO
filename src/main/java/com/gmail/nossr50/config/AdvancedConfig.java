@@ -100,7 +100,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
                 reason.add("Skills.Alchemy.Rank_Levels.Rank_" + tier.toNumerical() + " should be at least 0!");
             }
             
-            if (tier != Alchemy.Tier.FIVE) {
+            if (tier != Alchemy.Tier.fromNumerical(Alchemy.Tier.values().length)) {
                 Alchemy.Tier nextTier = alchemyTierList.get(alchemyTierList.indexOf(tier) - 1);
                 
                 if (getConcoctionsTierLevel(tier) >= getConcoctionsTierLevel(nextTier)) {

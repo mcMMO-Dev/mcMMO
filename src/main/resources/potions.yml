@@ -23,15 +23,18 @@ Concoctions:
     Tier_Three_Ingredients:
         - QUARTZ
         - RED_MUSHROOM
-        - ROTTEN_FLESH
     Tier_Four_Ingredients:
         - APPLE
+        - ROTTEN_FLESH
+    Tier_Five_Ingredients:
         - BROWN_MUSHROOM
         - 'INK_SACK:0'
-    Tier_Five_Ingredients:
-        - 'GOLDEN_APPLE:0'
+    Tier_Six_Ingredients:
         - 'LONG_GRASS:2'
+    Tier_Seven_Ingredients:
         - POISONOUS_POTATO
+    Tier_Eight_Ingredients:
+        - 'GOLDEN_APPLE:0'
 
 #
 # Settings for Potions
@@ -43,6 +46,17 @@ Concoctions:
 #           <INGREDIENT>: <NEW_DV>      The ingredient used, and resultant potion's new data value
 #       Effects:                        List of strings for the potion's effects (section is optional)
 #           - "<POTION_EFFECT> [EFFECT_TIER] [DURATION_TICKS]"
+#
+#   DataValues - These potions follow the normal data value pattern except for bits 8-12:
+#       Bits 0-3: Liquid Color (http://minecraft.gamepedia.com/Data_values#Potions)
+#       Bit 4: (Unused)
+#       Bit 5: Power
+#       Bit 6: Extended
+#       Bit 7: (Unused)
+#       Bits 8-12: Custom Status Effect (http://minecraft.gamepedia.com/Data_values#Status_effects)
+#       Bit 13: Can become splash
+#       Bit 14: Splash
+#       Bit 15: (Unused)
 ###
 Potions:
 
@@ -50,16 +64,16 @@ Potions:
 
     0: # Water Bottle
         Children:
-            BLAZE_POWDER: 128           # Mundane Potion
+            BLAZE_POWDER: 8192          # Mundane Potion
             FERMENTED_SPIDER_EYE: 4616  # Potion of Weakness
-            GHAST_TEAR: 128             # Mundane Potion
+            GHAST_TEAR: 8192            # Mundane Potion
             GLOWSTONE_DUST: 32          # Thick Potion
-            MAGMA_CREAM: 128            # Mundane Potion
+            MAGMA_CREAM: 8192           # Mundane Potion
             NETHER_STALK: 16            # Awkward Potion
             REDSTONE: 64                # Mundane Potion Extended
-            SPECKLED_MELON: 128         # Mundane Potion
-            SPIDER_EYE: 128             # Mundane Potion
-            SUGAR: 128                  # Mundane Potion
+            SPECKLED_MELON: 8192        # Mundane Potion
+            SPIDER_EYE: 8192            # Mundane Potion
+            SUGAR: 8192                 # Mundane Potion
 
     16: # Awkward Potion
         Children:
@@ -93,7 +107,7 @@ Potions:
         Children:
             FERMENTED_SPIDER_EYE: 4680
 
-    128: # Mundane Potion
+    8192: # Mundane Potion
         Children:
             FERMENTED_SPIDER_EYE: 4616
             SULPHUR: 16384
@@ -611,11 +625,11 @@ Potions:
     19725: # Splash Potion of Water Breathing
         Effects: ["WATER_BREATHING 0 2700"]
         Children:
-            REDSTONE: 19776
+            REDSTONE: 19789
     19789: # Splash Potion of Water Breathing Extended
         Effects: ["WATER_BREATHING 0 7200"]
         Children:
-            GLOWSTONE_DUST: 19712
+            GLOWSTONE_DUST: 19725
 
     19982: # Splash Potion of Invisibility
         Effects: ["INVISIBILITY 0 2700"]

@@ -44,6 +44,12 @@ public class AlchemyManager extends SkillManager {
 
     public List<ItemStack> getIngredients() {
         switch (Alchemy.Tier.fromNumerical(getTier())) {
+            case EIGHT:
+                return PotionConfig.getInstance().concoctionsIngredientsTierEight;
+            case SEVEN:
+                return PotionConfig.getInstance().concoctionsIngredientsTierSeven;
+            case SIX:
+                return PotionConfig.getInstance().concoctionsIngredientsTierSix;
             case FIVE:
                 return PotionConfig.getInstance().concoctionsIngredientsTierFive;
             case FOUR:
