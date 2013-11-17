@@ -13,6 +13,7 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
+
 import com.google.common.collect.ImmutableMap;
 
 public class PlayerProfile {
