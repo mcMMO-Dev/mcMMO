@@ -83,7 +83,7 @@ public class CustomBlockConfig extends ConfigLoader {
                 continue;
             }
 
-            byte blockData = Byte.valueOf(blockInfo[1]);
+            byte blockData = (blockInfo.length == 1) ? Byte.valueOf(blockInfo[1]) : 0;
             MaterialData blockMaterialData = new MaterialData(blockMaterial, blockData);
             blockList.add(blockMaterialData);
 
