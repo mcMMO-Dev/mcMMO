@@ -224,7 +224,6 @@ public final class AlchemyPotionBrewer {
         Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, new PlayerUpdateInventoryTask(player));
     }
 
-    @SuppressWarnings("deprecation")
     public static void handleInventoryClick(InventoryClickEvent event) {
         Player player = event.getWhoClicked() instanceof Player ? (Player) event.getWhoClicked() : null;
         BrewingStand brewingStand = (BrewingStand) event.getInventory().getHolder();

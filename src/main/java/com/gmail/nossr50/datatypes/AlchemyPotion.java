@@ -10,22 +10,22 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 
 public class AlchemyPotion {
-    private short data_value;
+    private short dataValue;
     private String name;
     private List<String> lore;
     private List<PotionEffect> effects;
     private Map<ItemStack, Short> children;
 
-    public AlchemyPotion(short data_value, String name, List<String> lore, List<PotionEffect> effects, Map<ItemStack, Short> children) {
-        this.setDataValue(data_value);
-        this.setLore(lore);
-        this.setName(name);
-        this.setEffects(effects);
-        this.setChildren(children);
+    public AlchemyPotion(short dataValue, String name, List<String> lore, List<PotionEffect> effects, Map<ItemStack, Short> children) {
+        this.dataValue = dataValue;
+        this.lore = lore;
+        this.name = name;
+        this.effects = effects;
+        this.children = children;
     }
 
     public String toString() {
-        return "AlchemyPotion{" + data_value + "," + name + ",Effects[" + effects.size() + "], Children[" + children.size() + "]}";
+        return "AlchemyPotion{" + dataValue + "," + name + ",Effects[" + effects.size() + "], Children[" + children.size() + "]}";
     }
 
     public ItemStack toItemStack() {
@@ -49,11 +49,11 @@ public class AlchemyPotion {
     }
 
     public short getDataValue() {
-        return data_value;
+        return dataValue;
     }
 
     public void setDataValue(short data_value) {
-        this.data_value = data_value;
+        this.dataValue = data_value;
     }
 
     public String getName() {

@@ -15,7 +15,7 @@ public class McMMOPlayerBrewEvent extends McMMOPlayerSkillEvent implements Cance
 
     public McMMOPlayerBrewEvent(Player player, Block brewingStand) {
         super(player, SkillType.ALCHEMY);
-        this.setBrewingStandBlock(brewingStand);
+        this.brewingStand = brewingStand;
         cancelled = false;
     }
 
@@ -31,10 +31,6 @@ public class McMMOPlayerBrewEvent extends McMMOPlayerSkillEvent implements Cance
         return brewingStand;
     }
 
-    public void setBrewingStandBlock(Block brewingStand) {
-        this.brewingStand = brewingStand;
-    }
-    
     public BrewingStand getBrewingStand() {
         return brewingStand.getState() instanceof BrewingStand ? (BrewingStand) brewingStand.getState() : null;
     }

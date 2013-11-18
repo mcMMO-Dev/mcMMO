@@ -13,7 +13,7 @@ public class McMMOPlayerCatalysisEvent extends McMMOPlayerSkillEvent implements 
 
     public McMMOPlayerCatalysisEvent(Player player, double speed) {
         super(player, SkillType.ALCHEMY);
-        this.setSpeed(speed);
+        this.speed = speed;
         cancelled = false;
     }
 
