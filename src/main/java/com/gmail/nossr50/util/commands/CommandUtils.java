@@ -134,7 +134,7 @@ public final class CommandUtils {
     }
 
     public static boolean isInvalidSkill(CommandSender sender, String skillName) {
-        if (skillName.equalsIgnoreCase("all") || SkillUtils.isSkill(skillName)) {
+        if (SkillUtils.isSkill(skillName)) {
             return false;
         }
 
