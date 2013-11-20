@@ -52,7 +52,12 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                SkillType skill = SkillType.getSkill(args[1]);
+                SkillType skill;
+                if (args[1].equalsIgnoreCase("all")) {
+                    skill = null;
+                } else {
+                    skill = SkillType.getSkill(args[1]);
+                }
                 int value = Integer.parseInt(args[2]);
 
                 String playerName = Misc.getMatchedPlayerName(args[0]);
@@ -100,7 +105,7 @@ public abstract class ExperienceCommand implements TabExecutor {
     protected abstract void handlePlayerMessageSkill(Player player, int value, SkillType skill);
 
     private boolean validateArguments(CommandSender sender, String skillName, String value) {
-        if (CommandUtils.isInvalidInteger(sender, value) || CommandUtils.isInvalidSkill(sender, skillName)) {
+        if (CommandUtils.isInvalidInteger(sender, value) || (!skillName.equalsIgnoreCase("all") && CommandUtils.isInvalidSkill(sender, skillName))) {
             return false;
         }
 

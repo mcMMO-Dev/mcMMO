@@ -22,6 +22,10 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.google.common.collect.ImmutableList;
 
+/**
+ * This class mirrors the structure of ExperienceCommand, except the
+ * value/quantity argument is removed.
+ */
 public class SkillresetCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -31,29 +35,35 @@ public class SkillresetCommand implements TabExecutor {
                     return true;
                 }
 
-                if (!Permissions.skillreset(sender)) {
+                if (!permissionsCheckSelf(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
 
-                if (CommandUtils.isInvalidSkill(sender, args[0])) {
+                if (!validateArguments(sender, args[0])) {
                     return true;
                 }
 
-                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), SkillType.getSkill(args[0]), args.length, sender, command);
+                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), SkillType.getSkill(args[0]));
                 return true;
 
             case 2:
-                if (!Permissions.skillresetOthers(sender)) {
+                if (!permissionsCheckOthers(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
                     return true;
                 }
 
-                if (CommandUtils.isInvalidSkill(sender, args[1])) {
+                if (!validateArguments(sender, args[1])) {
                     return true;
                 }
 
-                SkillType skill = SkillType.getSkill(args[1]);
+                SkillType skill;
+                if (args[1].equalsIgnoreCase("all")) {
+                    skill = null;
+                }
+                else {
+                    skill = SkillType.getSkill(args[1]);
+                }
 
                 String playerName = Misc.getMatchedPlayerName(args[0]);
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName, true);
@@ -66,13 +76,13 @@ public class SkillresetCommand implements TabExecutor {
                         return true;
                     }
 
-                    editValues(null, profile, skill, args.length, sender, command);
+                    editValues(null, profile, skill);
                 }
                 else {
-                    editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill, args.length, sender, command);
+                    editValues(mcMMOPlayer.getPlayer(), mcMMOPlayer.getProfile(), skill);
                 }
 
-                ExperienceCommand.handleSenderMessage(sender, playerName, skill);
+                handleSenderMessage(sender, playerName, skill);
                 return true;
 
             default:
@@ -93,31 +103,7 @@ public class SkillresetCommand implements TabExecutor {
         }
     }
 
-    private void editValues(Player player, PlayerProfile profile, SkillType skill, int argsLength, CommandSender sender, Command command) {
-        if (skill == null) {
-            for (SkillType skillType : SkillType.values()) {
-                handleCommand(player, profile, skillType, argsLength, sender, command);
-            }
-
-            if (player != null) {
-                player.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
-            }
-        }
-        else {
-            handleCommand(player, profile, skill, argsLength, sender, command);
-
-            if (player != null) {
-                player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getName()));
-            }
-        }
-    }
-
-    private void handleCommand(Player player, PlayerProfile profile, SkillType skill, int argsLength, CommandSender sender, Command command) {
-        if (argsLength == 1 && !Permissions.skillreset(sender, skill) || (argsLength == 2 && !Permissions.skillresetOthers(sender, skill))) {
-            sender.sendMessage(command.getPermissionMessage());
-            return;
-        }
-
+    protected void handleCommand(Player player, PlayerProfile profile, SkillType skill) {
         int levelsRemoved = profile.getSkillLevel(skill);
         float xpRemoved = profile.getSkillXpLevelRaw(skill);
 
@@ -129,5 +115,57 @@ public class SkillresetCommand implements TabExecutor {
         }
 
         EventUtils.handleLevelChangeEvent(player, skill, levelsRemoved, xpRemoved, false);
+    }
+
+    protected boolean permissionsCheckSelf(CommandSender sender) {
+        return Permissions.skillreset(sender);
+    }
+
+    protected boolean permissionsCheckOthers(CommandSender sender) {
+        return Permissions.skillresetOthers(sender);
+    }
+
+    protected void handlePlayerMessageAll(Player player) {
+        player.sendMessage(LocaleLoader.getString("Commands.Reset.All"));
+    }
+
+    protected void handlePlayerMessageSkill(Player player, SkillType skill) {
+        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getName()));
+    }
+
+    private boolean validateArguments(CommandSender sender, String skillName) {
+        if (CommandUtils.isInvalidSkill(sender, skillName) && !skillName.equalsIgnoreCase("all")) {
+            return false;
+        }
+
+        return true;
+    }
+
+    protected static void handleSenderMessage(CommandSender sender, String playerName, SkillType skill) {
+        if (skill == null) {
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
+        }
+        else {
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+        }
+    }
+
+    protected void editValues(Player player, PlayerProfile profile, SkillType skill) {
+        if (skill == null) {
+            for (SkillType skillType : SkillType.values()) {
+                handleCommand(player, profile, skillType);
+            }
+
+            if (player != null) {
+                handlePlayerMessageAll(player);
+            }
+        }
+        else {
+            handleCommand(player, profile, skill);
+
+            if (player != null) {
+                handlePlayerMessageSkill(player, skill);
+            }
+        }
     }
 }
