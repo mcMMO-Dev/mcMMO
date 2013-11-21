@@ -15,6 +15,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
+import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
@@ -35,6 +36,7 @@ import com.google.common.collect.ImmutableList;
 
 public enum SkillType {
     ACROBATICS(AcrobaticsManager.class, Color.WHITE),
+    ALCHEMY(AlchemyManager.class, Color.FUCHSIA),
     ARCHERY(ArcheryManager.class, Color.MAROON),
     AXES(AxesManager.class, Color.AQUA, AbilityType.SKULL_SPLITTER, ToolType.AXE),
     EXCAVATION(ExcavationManager.class, Color.fromRGB(139, 69, 19), AbilityType.GIGA_DRILL_BREAKER, ToolType.SHOVEL),
@@ -60,7 +62,7 @@ public enum SkillType {
 
     public static final List<SkillType> COMBAT_SKILLS = ImmutableList.of(ARCHERY, AXES, SWORDS, TAMING, UNARMED);
     public static final List<SkillType> GATHERING_SKILLS = ImmutableList.of(EXCAVATION, FISHING, HERBALISM, MINING, WOODCUTTING);
-    public static final List<SkillType> MISC_SKILLS = ImmutableList.of(ACROBATICS, REPAIR, SMELTING);
+    public static final List<SkillType> MISC_SKILLS = ImmutableList.of(ACROBATICS, ALCHEMY, REPAIR, SMELTING);
 
     static {
         List<SkillType> childSkills = new ArrayList<SkillType>();

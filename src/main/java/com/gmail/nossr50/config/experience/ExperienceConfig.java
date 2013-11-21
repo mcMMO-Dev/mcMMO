@@ -76,6 +76,11 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
          * XP SETTINGS
          */
 
+        /* Alchemy */
+        if (getPotionXP() <= 0) {
+            reason.add("Experience.Alchemy.Potion should be greater than 0!");
+        }
+
         /* Combat XP Multipliers */
         if (getAnimalsXP() < 0) {
             reason.add("Experience.Combat.Multiplier.Animals should be at least 0!");
@@ -198,6 +203,9 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public int getFallXPModifier() { return config.getInt("Experience.Acrobatics.Fall", 120); }
 
     public double getFeatherFallXPModifier() { return config.getDouble("Experience.Acrobatics.FeatherFall_Multiplier", 2.0); }
+
+    /* Alchemy */
+    public double getPotionXP() { return config.getDouble("Experience.Alchemy.Potion", 150D); }
 
     /* Fishing */
     public int getFishingBaseXP() { return config.getInt("Experience.Fishing.Base", 800); }

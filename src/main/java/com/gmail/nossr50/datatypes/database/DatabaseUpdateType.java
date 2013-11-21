@@ -7,6 +7,7 @@ public enum DatabaseUpdateType {
     MOB_HEALTHBARS,
     PARTY_NAMES,
     KILL_ORPHANS,
-    DROPPED_SPOUT
+    DROPPED_SPOUT,
+    ALCHEMY
     ;
 }

@@ -30,6 +30,7 @@ import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
+import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.skills.archery.ArcheryManager;
 import com.gmail.nossr50.skills.axes.AxesManager;
 import com.gmail.nossr50.skills.child.FamilyTree;
@@ -187,6 +188,10 @@ public class McMMOPlayer {
 
     public AcrobaticsManager getAcrobaticsManager() {
         return (AcrobaticsManager) skillManagers.get(SkillType.ACROBATICS);
+    }
+
+    public AlchemyManager getAlchemyManager() {
+        return (AlchemyManager) skillManagers.get(SkillType.ALCHEMY);
     }
 
     public ArcheryManager getArcheryManager() {

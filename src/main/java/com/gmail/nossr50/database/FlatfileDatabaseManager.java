@@ -265,6 +265,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
                         MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
                         writer.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
+                        writer.append(profile.getSkillLevel(SkillType.ALCHEMY)).append(":");
+                        writer.append(profile.getSkillXpLevel(SkillType.ALCHEMY)).append(":");
                         writer.append("\r\n");
                     }
                 }
@@ -354,7 +356,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out.append("0:"); // Blast Mining
                 out.append(String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)).append(":"); // LastLogin
                 out.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":"); // Mob Healthbar HUD
-
+                out.append("0:"); // Alchemy
+                out.append("0:"); // AlchemyXp
+                
                 // Add more in the same format as the line above
 
                 out.newLine();
@@ -503,6 +507,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         List<PlayerStat> unarmed = new ArrayList<PlayerStat>();
         List<PlayerStat> taming = new ArrayList<PlayerStat>();
         List<PlayerStat> fishing = new ArrayList<PlayerStat>();
+        List<PlayerStat> alchemy = new ArrayList<PlayerStat>();
 
         BufferedReader in = null;
         String playerName = null;
@@ -520,6 +525,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     Map<SkillType, Integer> skills = getSkillMapFromLine(data);
 
                     powerLevel += putStat(acrobatics, playerName, skills.get(SkillType.ACROBATICS));
+                    powerLevel += putStat(alchemy, playerName, skills.get(SkillType.ALCHEMY));
                     powerLevel += putStat(archery, playerName, skills.get(SkillType.ARCHERY));
                     powerLevel += putStat(axes, playerName, skills.get(SkillType.AXES));
                     powerLevel += putStat(excavation, playerName, skills.get(SkillType.EXCAVATION));
@@ -557,6 +563,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         Collections.sort(acrobatics, c);
         Collections.sort(taming, c);
         Collections.sort(fishing, c);
+        Collections.sort(alchemy, c);
         Collections.sort(powerLevels, c);
 
         playerStatHash.put(SkillType.MINING, mining);
@@ -571,6 +578,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         playerStatHash.put(SkillType.ACROBATICS, acrobatics);
         playerStatHash.put(SkillType.TAMING, taming);
         playerStatHash.put(SkillType.FISHING, fishing);
+        playerStatHash.put(SkillType.ALCHEMY, alchemy);
     }
 
     /**
@@ -623,7 +631,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         // If they're valid, rewrite them to the file.
-                        if (character.length > 38) {
+                        if (character.length > 40) {
                             writer.append(line).append("\r\n");
                             continue;
                         }
@@ -673,6 +681,15 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             newLine.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":");
                             if (oldVersion == null) {
                                 oldVersion = "1.4.06";
+                            }
+                        }
+                        if (character.length <= 40) {
+                            // Addition of Alchemy
+                            // Version 1.4.08
+                            newLine.append("0").append(":");
+                            newLine.append("0").append(":");
+                            if (oldVersion == null) {
+                                oldVersion = "1.4.08";
                             }
                         }
 
@@ -771,6 +788,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         skillsXp.put(SkillType.AXES, (float) Integer.valueOf(character[21]));
         skillsXp.put(SkillType.ACROBATICS, (float) Integer.valueOf(character[22]));
         skillsXp.put(SkillType.FISHING, (float) Integer.valueOf(character[35]));
+        skillsXp.put(SkillType.ALCHEMY, (float) Integer.valueOf(character[40]));
 
         // Taming - Unused
         skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(character[32]));
@@ -810,6 +828,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         skills.put(SkillType.AXES, Integer.valueOf(character[13]));
         skills.put(SkillType.ACROBATICS, Integer.valueOf(character[14]));
         skills.put(SkillType.FISHING, Integer.valueOf(character[34]));
+        skills.put(SkillType.ALCHEMY, Integer.valueOf(character[39]));
 
         return skills;
     }

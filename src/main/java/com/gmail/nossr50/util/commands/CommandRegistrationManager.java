@@ -35,6 +35,7 @@ import com.gmail.nossr50.commands.player.McrankCommand;
 import com.gmail.nossr50.commands.player.McstatsCommand;
 import com.gmail.nossr50.commands.player.MctopCommand;
 import com.gmail.nossr50.commands.skills.AcrobaticsCommand;
+import com.gmail.nossr50.commands.skills.AlchemyCommand;
 import com.gmail.nossr50.commands.skills.ArcheryCommand;
 import com.gmail.nossr50.commands.skills.AxesCommand;
 import com.gmail.nossr50.commands.skills.ExcavationCommand;
@@ -74,6 +75,10 @@ public final class CommandRegistrationManager {
             switch (skill) {
                 case ACROBATICS:
                     command.setExecutor(new AcrobaticsCommand());
+                    break;
+
+                case ALCHEMY:
+                    command.setExecutor(new AlchemyCommand());
                     break;
 
                 case ARCHERY:
