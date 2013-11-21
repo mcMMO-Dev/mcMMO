@@ -14,6 +14,8 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 
+import com.google.common.collect.ImmutableMap;
+
 public class PlayerProfile {
     private final String playerName;
     private boolean loaded;
@@ -63,7 +65,7 @@ public class PlayerProfile {
             return;
         }
 
-        changed = !mcMMO.getDatabaseManager().saveUser(this);
+        changed = !mcMMO.getDatabaseManager().saveUser(new PlayerProfile(playerName, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType));
 
         if (changed) {
             mcMMO.p.getLogger().warning("PlayerProfile for " + playerName + " failed to save");
