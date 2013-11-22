@@ -19,9 +19,7 @@ public class Taming {
     public static double fastFoodServiceActivationChance = AdvancedConfig.getInstance().getFastFoodChance();
 
     public static int    goreBleedTicks    = AdvancedConfig.getInstance().getGoreBleedTicks();
-    public static int    goreMaxBonusLevel = AdvancedConfig.getInstance().getGoreMaxBonusLevel();
     public static double goreModifier      = AdvancedConfig.getInstance().getGoreModifier();
-    public static double goreMaxChance     = AdvancedConfig.getInstance().getGoreChanceMax();
 
     public static int    sharpenedClawsUnlockLevel = AdvancedConfig.getInstance().getSharpenedClawsUnlock();
     public static double sharpenedClawsBonusDamage = AdvancedConfig.getInstance().getSharpenedClawsBonus();

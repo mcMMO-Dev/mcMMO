@@ -14,7 +14,9 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.SkillManager;
@@ -30,35 +32,35 @@ public class TamingManager extends SkillManager {
     }
 
     public boolean canUseThickFur() {
-        return getSkillLevel() >= Taming.thickFurUnlockLevel && Permissions.thickFur(getPlayer());
+        return getSkillLevel() >= Taming.thickFurUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.THICK_FUR);
     }
 
     public boolean canUseEnvironmentallyAware() {
-        return getSkillLevel() >= Taming.environmentallyAwareUnlockLevel && Permissions.environmentallyAware(getPlayer());
+        return getSkillLevel() >= Taming.environmentallyAwareUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.ENVIROMENTALLY_AWARE);
     }
 
     public boolean canUseShockProof() {
-        return getSkillLevel() >= Taming.shockProofUnlockLevel && Permissions.shockProof(getPlayer());
+        return getSkillLevel() >= Taming.shockProofUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.SHOCK_PROOF);
     }
 
     public boolean canUseHolyHound() {
-        return getSkillLevel() >= Taming.holyHoundUnlockLevel && Permissions.holyHound(getPlayer());
+        return getSkillLevel() >= Taming.holyHoundUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.HOLY_HOUND);
     }
 
     public boolean canUseFastFoodService() {
-        return getSkillLevel() >= Taming.fastFoodServiceUnlockLevel && Permissions.fastFoodService(getPlayer());
+        return getSkillLevel() >= Taming.fastFoodServiceUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.FAST_FOOD);
     }
 
     public boolean canUseSharpenedClaws() {
-        return getSkillLevel() >= Taming.sharpenedClawsUnlockLevel && Permissions.sharpenedClaws(getPlayer());
+        return getSkillLevel() >= Taming.sharpenedClawsUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.SHARPENED_CLAWS);
     }
 
     public boolean canUseGore() {
-        return Permissions.gore(getPlayer());
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.GORE);
     }
 
     public boolean canUseBeastLore() {
-        return Permissions.beastLore(getPlayer());
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.BEAST_LORE);
     }
 
     /**
@@ -92,7 +94,10 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, double damage) {
-        if (Taming.fastFoodServiceActivationChance > Misc.getRandom().nextInt(getActivationChance())) {
+        double chance = Taming.fastFoodServiceActivationChance / activationChance;
+        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(getPlayer(), SecondaryAbilityType.FAST_FOOD, chance);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+        if ((event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance)) {
 
             double health = wolf.getHealth();
             double maxHealth = wolf.getMaxHealth();
@@ -112,7 +117,7 @@ public class TamingManager extends SkillManager {
      * @param wolf The wolf using the ability
      */
     public double gore(LivingEntity target, double damage, Wolf wolf) {
-        if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Taming.goreMaxChance, Taming.goreMaxBonusLevel)) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbilityType.GORE, getPlayer(), getSkillLevel(), activationChance)) {
             return 0;
         }
 

@@ -456,7 +456,7 @@ public class ScoreboardWrapper {
         case COOLDOWNS_BOARD:
             boolean anyCooldownsActive = false;
 
-            for (AbilityType ability : AbilityType.NORMAL_ABILITIES) {
+            for (AbilityType ability : AbilityType.values()) {
                 int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
                 if (seconds != 0) {

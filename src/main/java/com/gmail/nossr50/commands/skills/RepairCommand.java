@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.repair.ArcaneForging;
@@ -65,7 +66,7 @@ public class RepairCommand extends SkillCommand {
 
         // SUPER REPAIR
         if (canSuperRepair) {
-            String[] superRepairStrings = calculateAbilityDisplayValues(skillValue, Repair.superRepairMaxBonusLevel, Repair.superRepairMaxChance, isLucky);
+            String[] superRepairStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.SUPER_REPAIR, isLucky);
             superRepairChance = superRepairStrings[0];
             superRepairChanceLucky = superRepairStrings[1];
         }
@@ -73,10 +74,10 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSuperRepair = Permissions.superRepair(player);
-        canMasterRepair = Permissions.repairMastery(player);
-        canArcaneForge = Permissions.arcaneForging(player);
-        canSalvage = Permissions.salvage(player);
+        canSuperRepair = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.SUPER_REPAIR);
+        canMasterRepair = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.REPAIR_MASTERY);
+        canArcaneForge = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.ARCANE_FORGING);
+        canSalvage = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.SALVAGE);
         canRepairDiamond = Permissions.repairDiamond(player);
         canRepairGold = Permissions.repairGold(player);
         canRepairIron = Permissions.repairIron(player);

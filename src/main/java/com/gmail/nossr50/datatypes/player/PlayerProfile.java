@@ -34,7 +34,7 @@ public class PlayerProfile {
 
         mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
 
-        for (AbilityType abilityType : AbilityType.NORMAL_ABILITIES) {
+        for (AbilityType abilityType : AbilityType.values()) {
             abilityDATS.put(abilityType, 0);
         }
 

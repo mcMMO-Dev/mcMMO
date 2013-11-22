@@ -20,9 +20,6 @@ import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public final class Woodcutting {
-    public static int    doubleDropsMaxLevel  = AdvancedConfig.getInstance().getWoodcuttingDoubleDropMaxLevel();
-    public static double doubleDropsMaxChance = AdvancedConfig.getInstance().getWoodcuttingDoubleDropChance();
-
     public static int leafBlowerUnlockLevel = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
     public static int treeFellerThreshold = Config.getInstance().getTreeFellerThreshold();
 

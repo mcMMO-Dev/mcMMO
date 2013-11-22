@@ -17,18 +17,6 @@ public class Herbalism {
     public static int greenThumbStageChangeLevel = AdvancedConfig.getInstance().getGreenThumbStageChange();
     public static int greenThumbStageMaxLevel    = greenThumbStageChangeLevel * 4;
 
-    public static int    greenThumbMaxLevel  = AdvancedConfig.getInstance().getGreenThumbMaxLevel();
-    public static double greenThumbMaxChance = AdvancedConfig.getInstance().getGreenThumbChanceMax();
-
-    public static int    doubleDropsMaxLevel  = AdvancedConfig.getInstance().getHerbalismDoubleDropsMaxLevel();
-    public static double doubleDropsMaxChance = AdvancedConfig.getInstance().getHerbalismDoubleDropsChanceMax();
-
-    public static int    hylianLuckMaxLevel  = AdvancedConfig.getInstance().getHylianLuckMaxLevel();
-    public static double hylianLuckMaxChance = AdvancedConfig.getInstance().getHylianLuckChanceMax();
-
-    public static int    shroomThumbMaxLevel  = AdvancedConfig.getInstance().getShroomThumbMaxLevel();
-    public static double shroomThumbMaxChance = AdvancedConfig.getInstance().getShroomThumbChanceMax();
-
     /**
      * Convert blocks affected by the Green Thumb & Green Terra abilities.
      *

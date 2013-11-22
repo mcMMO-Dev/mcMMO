@@ -106,7 +106,7 @@ public class ScoreboardManager {
             }
         }
 
-        for (AbilityType type : AbilityType.NORMAL_ABILITIES) {
+        for (AbilityType type : AbilityType.values()) {
             abilityLabelSkillBuilder.put(type, getOfflinePlayerDots((type == AbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA) + type.getName()));
         }
 

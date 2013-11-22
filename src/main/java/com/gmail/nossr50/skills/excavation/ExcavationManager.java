@@ -7,6 +7,7 @@ import org.bukkit.block.BlockState;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.skills.SkillManager;
@@ -27,7 +28,7 @@ public class ExcavationManager extends SkillManager {
     public void excavationBlockCheck(BlockState blockState) {
         int xp = Excavation.getBlockXP(blockState);
 
-        if (Permissions.excavationTreasureHunter(getPlayer())) {
+        if (Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.EXCAVATION_TREASURE_HUNTER)) {
             List<ExcavationTreasure> treasures = Excavation.getTreasures(blockState);
 
             if (!treasures.isEmpty()) {
@@ -35,7 +36,7 @@ public class ExcavationManager extends SkillManager {
                 Location location = blockState.getLocation();
 
                 for (ExcavationTreasure treasure : treasures) {
-                    if (skillLevel >= treasure.getDropLevel() && SkillUtils.treasureDropSuccessful(treasure.getDropChance(), activationChance)) {
+                    if (skillLevel >= treasure.getDropLevel() && SkillUtils.treasureDropSuccessful(getPlayer(), treasure.getDropChance(), activationChance)) {
                         xp += treasure.getXp();
                         Misc.dropItem(location, treasure.getDrop());
                     }

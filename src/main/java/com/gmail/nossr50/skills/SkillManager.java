@@ -29,10 +29,6 @@ public abstract class SkillManager {
         return mcMMOPlayer.getSkillLevel(skill);
     }
 
-    public int getActivationChance() {
-        return activationChance;
-    }
-
     public void applyXpGain(float xp) {
         mcMMOPlayer.beginXpGain(skill, xp);
     }

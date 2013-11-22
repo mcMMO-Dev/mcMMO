@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.child.FamilyTree;
@@ -136,8 +137,10 @@ public abstract class SkillCommand implements TabExecutor {
         return displayValues;
     }
 
-    protected String[] calculateAbilityDisplayValues(float skillValue, int maxBonusLevel, double maxChance, boolean isLucky) {
-        return calculateAbilityDisplayValues((maxChance / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
+    protected String[] calculateAbilityDisplayValues(float skillValue, SecondaryAbilityType skillAbility, boolean isLucky) {
+        int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(skillAbility);
+
+        return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(skillAbility) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
     }
 
     protected String[] calculateLengthDisplayValues(Player player, float skillValue) {

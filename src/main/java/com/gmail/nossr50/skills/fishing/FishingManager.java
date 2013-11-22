@@ -41,6 +41,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.treasure.EnchantmentTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
@@ -48,6 +49,7 @@ import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
+import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.skills.KrakenAttackTask;
 import com.gmail.nossr50.skills.SkillManager;
@@ -74,11 +76,11 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean canShake(Entity target) {
-        return target instanceof LivingEntity && getSkillLevel() >= Tier.ONE.getLevel() && Permissions.shake(getPlayer());
+        return target instanceof LivingEntity && getSkillLevel() >= Tier.ONE.getLevel() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.SHAKE);
     }
 
     public boolean canMasterAngler() {
-        return getSkillLevel() >= AdvancedConfig.getInstance().getMasterAnglerUnlockLevel() && Permissions.masterAngler(getPlayer());
+        return getSkillLevel() >= AdvancedConfig.getInstance().getMasterAnglerUnlockLevel() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.MASTER_ANGLER);
     }
 
     public boolean unleashTheKraken() {
@@ -205,7 +207,7 @@ public class FishingManager extends SkillManager {
 
         Player player = getPlayer();
 
-        if (!Permissions.iceFishing(player)) {
+        if (!Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.ICE_FISHING)) {
             return false;
         }
 
@@ -306,7 +308,7 @@ public class FishingManager extends SkillManager {
         Player player = getPlayer();
         FishingTreasure treasure = null;
 
-        if (Config.getInstance().getFishingDropsEnabled() && Permissions.fishingTreasureHunter(player)) {
+        if (Config.getInstance().getFishingDropsEnabled() && Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.FISHING_TREASURE_HUNTER)) {
             treasure = getFishingTreasure();
             this.fishingCatch = null;
         }
@@ -317,7 +319,7 @@ public class FishingManager extends SkillManager {
             ItemStack treasureDrop = treasure.getDrop().clone(); // Not cloning is bad, m'kay?
             Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
 
-            if (Permissions.magicHunter(player) && ItemUtils.isEnchantable(treasureDrop)) {
+            if (Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.MAGIC_HUNTER) && ItemUtils.isEnchantable(treasureDrop)) {
                 enchants = handleMagicHunter(treasureDrop);
             }
 
@@ -375,7 +377,9 @@ public class FishingManager extends SkillManager {
     public void shakeCheck(LivingEntity target) {
         fishingTries--; // Because autoclicking to shake is OK.
 
-        if (getShakeProbability() > Misc.getRandom().nextInt(getActivationChance())) {
+        SecondaryAbilityWeightedActivationCheckEvent activationEvent = new SecondaryAbilityWeightedActivationCheckEvent(getPlayer(), SecondaryAbilityType.SHAKE, getShakeProbability() / activationChance);
+        mcMMO.p.getServer().getPluginManager().callEvent(activationEvent);
+        if ((activationEvent.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance)) {
             List<ShakeTreasure> possibleDrops = Fishing.findPossibleDrops(target);
 
             if (possibleDrops == null || possibleDrops.isEmpty()) {
@@ -425,11 +429,11 @@ public class FishingManager extends SkillManager {
                     break;
             }
 
-            McMMOPlayerShakeEvent event = new McMMOPlayerShakeEvent(getPlayer(), drop);
+            McMMOPlayerShakeEvent shakeEvent = new McMMOPlayerShakeEvent(getPlayer(), drop);
 
-            drop = event.getDrop();
+            drop = shakeEvent.getDrop();
 
-            if (event.isCancelled() || drop == null) {
+            if (shakeEvent.isCancelled() || drop == null) {
                 return;
             }
 

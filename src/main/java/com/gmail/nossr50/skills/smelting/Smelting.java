@@ -43,9 +43,6 @@ public class Smelting {
     public static int    burnModifierMaxLevel = AdvancedConfig.getInstance().getBurnModifierMaxLevel();
     public static double burnTimeMultiplier   = AdvancedConfig.getInstance().getBurnTimeMultiplier();
 
-    public static int    secondSmeltMaxLevel  = AdvancedConfig.getInstance().getSecondSmeltMaxLevel();
-    public static double secondSmeltMaxChance = AdvancedConfig.getInstance().getSecondSmeltMaxChance();
-
     public static int    fluxMiningUnlockLevel = AdvancedConfig.getInstance().getFluxMiningUnlockLevel();
     public static double fluxMiningChance      = AdvancedConfig.getInstance().getFluxMiningChance();
 

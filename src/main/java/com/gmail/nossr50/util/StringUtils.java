@@ -4,6 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
 import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 
 public class StringUtils {
     /**
@@ -26,6 +27,23 @@ public class StringUtils {
 
     public static String getPrettyAbilityString(AbilityType ability) {
         return createPrettyEnumString(ability.toString());
+    }
+
+    public static String getPrettySecondaryAbilityString(SecondaryAbilityType secondaryAbility) {
+        switch(secondaryAbility) {
+            case HERBALISM_DOUBLE_DROPS:
+            case MINING_DOUBLE_DROPS:
+            case WOODCUTTING_DOUBLE_DROPS:
+                return "DoubleDrops";
+            case FISHING_TREASURE_HUNTER:
+            case EXCAVATION_TREASURE_HUNTER:
+                return "TreasureHunter";
+            case GREEN_THUMB_BLOCK:
+            case GREEN_THUMB_PLANT:
+                return "GreenThumb";
+            default:
+                return createPrettyEnumString(secondaryAbility.toString());
+        }
     }
 
     private static String createPrettyEnumString(String baseString) {

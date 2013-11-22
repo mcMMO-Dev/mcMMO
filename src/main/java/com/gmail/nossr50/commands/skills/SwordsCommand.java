@@ -5,14 +5,16 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.util.Permissions;
 
 public class SwordsCommand extends SkillCommand {
-    private String counterAttackChance;
-    private String counterAttackChanceLucky;
+    private String counterChance;
+    private String counterChanceLucky;
     private int bleedLength;
     private String bleedChance;
     private String bleedChanceLucky;
@@ -38,25 +40,25 @@ public class SwordsCommand extends SkillCommand {
 
         // BLEED
         if (canBleed) {
-            bleedLength = (skillValue >= Swords.bleedMaxBonusLevel) ? Swords.bleedMaxTicks : Swords.bleedBaseTicks;
+            bleedLength = (skillValue >= AdvancedConfig.getInstance().getMaxBonusLevel(SecondaryAbilityType.BLEED)) ? Swords.bleedMaxTicks : Swords.bleedBaseTicks;
 
-            String[] bleedStrings = calculateAbilityDisplayValues(skillValue, Swords.bleedMaxBonusLevel, Swords.bleedMaxChance, isLucky);
+            String[] bleedStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.BLEED, isLucky);
             bleedChance = bleedStrings[0];
             bleedChanceLucky = bleedStrings[1];
         }
 
-        // COUNTER ATTACK
+        // COUNTER
         if (canCounter) {
-            String[] counterAttackStrings = calculateAbilityDisplayValues(skillValue, Swords.counterAttackMaxBonusLevel, Swords.counterAttackMaxChance, isLucky);
-            counterAttackChance = counterAttackStrings[0];
-            counterAttackChanceLucky = counterAttackStrings[1];
+            String[] counterStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.COUNTER, isLucky);
+            counterChance = counterStrings[0];
+            counterChanceLucky = counterStrings[1];
         }
     }
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBleed = Permissions.bleed(player);
-        canCounter = Permissions.counterAttack(player);
+        canBleed = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.BLEED);
+        canCounter = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.COUNTER);
         canSerratedStrike = Permissions.serratedStrikes(player);
     }
 
@@ -85,7 +87,7 @@ public class SwordsCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         if (canCounter) {
-            messages.add(LocaleLoader.getString("Swords.Combat.Counter.Chance", counterAttackChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", counterAttackChanceLucky) : ""));
+            messages.add(LocaleLoader.getString("Swords.Combat.Counter.Chance", counterChance) + (isLucky ? LocaleLoader.getString("Perks.Lucky.Bonus", counterChanceLucky) : ""));
         }
 
         if (canBleed) {

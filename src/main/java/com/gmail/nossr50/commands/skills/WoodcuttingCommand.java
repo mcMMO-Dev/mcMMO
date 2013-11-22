@@ -6,9 +6,9 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.woodcutting.Woodcutting;
 import com.gmail.nossr50.util.Permissions;
 
 public class WoodcuttingCommand extends SkillCommand {
@@ -36,7 +36,7 @@ public class WoodcuttingCommand extends SkillCommand {
 
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, Woodcutting.doubleDropsMaxLevel, Woodcutting.doubleDropsMaxChance, isLucky);
+            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.WOODCUTTING_DOUBLE_DROPS, isLucky);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
@@ -45,8 +45,8 @@ public class WoodcuttingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canTreeFell = Permissions.treeFeller(player);
-        canDoubleDrop = Permissions.doubleDrops(player, skill) && !skill.getDoubleDropsDisabled();
-        canLeafBlow = Permissions.leafBlower(player);
+        canDoubleDrop = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.WOODCUTTING_DOUBLE_DROPS) && !skill.getDoubleDropsDisabled();
+        canLeafBlow = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.LEAF_BLOWER);
     }
 
     @Override

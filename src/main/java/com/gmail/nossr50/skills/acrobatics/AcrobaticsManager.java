@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
@@ -27,11 +28,11 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     public boolean canRoll() {
-        return !exploitPrevention() && Permissions.roll(getPlayer());
+        return !exploitPrevention() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.ROLL);
     }
 
     public boolean canDodge(Entity damager) {
-        if (Permissions.dodge(getPlayer())) {
+        if (Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.DODGE)) {
             if (damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) {
                 return false;
             }
@@ -52,7 +53,7 @@ public class AcrobaticsManager extends SkillManager {
         double modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
         Player player = getPlayer();
 
-        if (!isFatal(modifiedDamage) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Acrobatics.dodgeMaxChance, Acrobatics.dodgeMaxBonusLevel)) {
+        if (!isFatal(modifiedDamage) && SkillUtils.activationSuccessful(SecondaryAbilityType.DODGE, player, getSkillLevel(), activationChance)) {
             ParticleEffectUtils.playDodgeEffect(player);
 
             if (mcMMOPlayer.useChatNotifications()) {
@@ -79,13 +80,13 @@ public class AcrobaticsManager extends SkillManager {
     public double rollCheck(double damage) {
         Player player = getPlayer();
 
-        if (player.isSneaking() && Permissions.gracefulRoll(player)) {
+        if (player.isSneaking() && Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.GRACEFUL_ROLL)) {
             return gracefulRollCheck(damage);
         }
 
         double modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.rollThreshold);
 
-        if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.rollMaxChance, Acrobatics.rollMaxBonusLevel)) {
+        if (!isFatal(modifiedDamage) && SkillUtils.activationSuccessful(SecondaryAbilityType.ROLL, player, getSkillLevel(), activationChance)) {
             player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
             applyXpGain(calculateRollXP(damage, true));
 
@@ -109,7 +110,7 @@ public class AcrobaticsManager extends SkillManager {
     private double gracefulRollCheck(double damage) {
         double modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
 
-        if (!isFatal(modifiedDamage) && isSuccessfulRoll(Acrobatics.gracefulRollMaxChance, Acrobatics.gracefulRollMaxBonusLevel)) {
+        if (!isFatal(modifiedDamage) && SkillUtils.activationSuccessful(SecondaryAbilityType.GRACEFUL_ROLL, getPlayer(), getSkillLevel(), activationChance)) {
             getPlayer().sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
             applyXpGain(calculateRollXP(damage, true));
 
@@ -147,10 +148,6 @@ public class AcrobaticsManager extends SkillManager {
         lastFallLocation = fallLocation;
 
         return fallTries > Config.getInstance().getAcrobaticsAFKMaxTries();
-    }
-
-    private boolean isSuccessfulRoll(double maxChance, int maxLevel) {
-        return (maxChance / maxLevel) * Math.min(getSkillLevel(), maxLevel) > Misc.getRandom().nextInt(activationChance);
     }
 
     private boolean isFatal(double damage) {

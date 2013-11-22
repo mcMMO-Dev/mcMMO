@@ -80,19 +80,17 @@ Skills:
     #  Settings for Axes
     ###
     Axes:
-        DamageIncrease:
+        AxeMastery:
             # MaxBonus: Maximum bonus damage when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Level where <MaxBonus> is reached
             MaxBonus: 4.0
             MaxBonusLevel: 200
 
-        AxesCritical:
+        CriticalHit:
             # ChanceMax: Maximum chance of causing a critical hit when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Level where <ChanceMax> of causing critical hits is reached
             ChanceMax: 37.50
             MaxBonusLevel: 750
-
-        AxesCritical:
             # Damage modifier of critical hits for PVP / PVE, when causing a critical hit the damage gets multiplied by the modifier
             PVP_Modifier: 1.5
             PVE_Modifier: 2.0

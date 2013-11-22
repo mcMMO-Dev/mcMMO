@@ -175,14 +175,14 @@ permissions:
     mcmmo.ability.archery.all:
         description: Allows access to all Archery abilities
         children:
-            mcmmo.ability.archery.bonusdamage: true
+            mcmmo.ability.archery.skillshot: true
             mcmmo.ability.archery.daze: true
-            mcmmo.ability.archery.trackarrows: true
-    mcmmo.ability.archery.bonusdamage:
-        description: Allows bonus damage from Archery
+            mcmmo.ability.archery.retrieve: true
+    mcmmo.ability.archery.skillshot:
+        description: Allows bonus damage from the Archery SkillShot ability
     mcmmo.ability.archery.daze:
         description: Allows access to the Daze ability
-    mcmmo.ability.archery.trackarrows:
+    mcmmo.ability.archery.retrieve:
         description: Allows tracking & retrieval of arrows
     mcmmo.ability.axes.*:
         default: false
@@ -192,48 +192,21 @@ permissions:
     mcmmo.ability.axes.all:
         description: Allows access to all Axes abilities
         children:
-            mcmmo.ability.axes.bonusdamage: true
+            mcmmo.ability.axes.axemastery: true
             mcmmo.ability.axes.criticalhit: true
             mcmmo.ability.axes.greaterimpact: true
-            mcmmo.ability.axes.impact: true
+            mcmmo.ability.axes.armorimpact: true
             mcmmo.ability.axes.skullsplitter: true
-    mcmmo.ability.axes.bonusdamage:
+    mcmmo.ability.axes.axemastery:
         description: Allows bonus damage from Axes
     mcmmo.ability.axes.criticalhit:
         description: Allows access to the Critical Hit ability
     mcmmo.ability.axes.greaterimpact:
         description: Allows access to the Greater Impact ability
-    mcmmo.ability.axes.impact:
+    mcmmo.ability.axes.armorimpact:
         description: Allows access to the Impact ability
     mcmmo.ability.axes.skullsplitter:
         description: Allows access to the Skull Splitter ability
-    mcmmo.ability.blastmining.*:
-        default: false
-        description: Allows access to all Blast Mining abilities
-        children:
-            mcmmo.ability.blastmining.all: true
-    mcmmo.ability.blastmining.all:
-        default: false
-        description: Allows access to all Blast Mining abilities
-        children:
-            mcmmo.ability.blastmining.biggerbombs: true
-            mcmmo.ability.blastmining.demolitionsexpertise: true
-            mcmmo.ability.blastmining.detonate: true
-    mcmmo.ability.blastmining.biggerbombs:
-        default: false
-        description: Allows access to the Bigger Bombs ability
-        children:
-            mcmmo.ability.mining.blastmining.biggerbombs: true
-    mcmmo.ability.blastmining.demolitionsexpertise:
-        default: false
-        description: Allows access to the Demolitions Expertise ability
-        children:
-            mcmmo.ability.mining.blastmining.demolitionsexpertise: true
-    mcmmo.ability.blastmining.detonate:
-        default: false
-        description: Allows for remote TNT detonation
-        children:
-            mcmmo.ability.mining.blastmining.detonate: true
     mcmmo.ability.excavation.*:
         default: false
         description: Allows access to all Excavation abilities
@@ -243,10 +216,10 @@ permissions:
         description: Allows access to all Excavation abilities
         children:
             mcmmo.ability.excavation.gigadrillbreaker: true
-            mcmmo.ability.excavation.treasures: true
+            mcmmo.ability.excavation.treasurehunter: true
     mcmmo.ability.excavation.gigadrillbreaker:
         description: Allows access to the Giga Drill Breaker ability
-    mcmmo.ability.excavation.treasures:
+    mcmmo.ability.excavation.treasurehunter:
         description: Allows treasure drops from Excavation
     mcmmo.ability.fishing.*:
         default: false
@@ -258,22 +231,22 @@ permissions:
         children:
             mcmmo.ability.fishing.fishermansdiet: true
             mcmmo.ability.fishing.icefishing: true
-            mcmmo.ability.fishing.magic: true
+            mcmmo.ability.fishing.magichunter: true
             mcmmo.ability.fishing.masterangler: true
-            mcmmo.ability.fishing.shakemob: true
-            mcmmo.ability.fishing.treasures: true
+            mcmmo.ability.fishing.shake: true
+            mcmmo.ability.fishing.treasurehunter: true
             mcmmo.ability.fishing.vanillaxpboost: true
     mcmmo.ability.fishing.fishermansdiet:
         description: Allows access to the Fishermans's Diet ability
     mcmmo.ability.fishing.icefishing:
         description: Allows access to the Ice Fishing ability
-    mcmmo.ability.fishing.magic:
+    mcmmo.ability.fishing.magichunter:
         description: Allows enchanted drops from Fishing
     mcmmo.ability.fishing.masterangler:
         description: Allows access to the Master Angler ability
-    mcmmo.ability.fishing.shakemob:
+    mcmmo.ability.fishing.shake:
         description: Allows access to the Shake Mob ability
-    mcmmo.ability.fishing.treasures:
+    mcmmo.ability.fishing.treasurehunter:
         description: Allows treasure drops from Fishing
     mcmmo.ability.fishing.vanillaxpboost:
         description: Allows vanilla XP boost from Fishing
@@ -350,36 +323,6 @@ permissions:
         description: Allows access to the Green Thumb ability for netherwart
     mcmmo.ability.herbalism.greenthumb.plants.potato:
         description: Allows access to the Green Thumb ability for potatoes
-    mcmmo.ability.herbalism.greenthumbblocks:
-        default: false
-        description: Allows access to all Green Thumb abilities for blocks
-        children:
-            mcmmo.ability.herbalism.greenthumb.blocks.all: true
-    mcmmo.ability.herbalism.greenthumbcarrots:
-        default: false
-        description: Allows access to the Green Thumb ability for carrots
-        children:
-            mcmmo.ability.herbalism.greenthumb.plants.carrot: true
-    mcmmo.ability.herbalism.greenthumbcocoa:
-        default: false
-        description: Allows access to the Green Thumb ability for cocoa
-        children:
-            mcmmo.ability.herbalism.greenthumb.plants.cocoa: true
-    mcmmo.ability.herbalism.greenthumbnetherwart:
-        default: false
-        description: Allows access to the Green Thumb ability for netherwart
-        children:
-            mcmmo.ability.herbalism.greenthumb.plants.netherwarts: true
-    mcmmo.ability.herbalism.greenthumbpotatoes:
-        default: false
-        description: Allows access to the Green Thumb ability for potatoes
-        children:
-            mcmmo.ability.herbalism.greenthumb.plants.potato: true
-    mcmmo.ability.herbalism.greenthumbwheat:
-        default: false
-        description: Allows access to the Green Thumb ability for wheat
-        children:
-            mcmmo.ability.herbalism.greenthumb.plants.crops: true
     mcmmo.ability.herbalism.hylianluck:
         description: Allows access to the Hylian Luck ability
     mcmmo.ability.herbalism.shroomthumb:
@@ -455,7 +398,7 @@ permissions:
         description: Allows ability to repair items of material type OTHER
     mcmmo.ability.repair.otherrepair:
         description: Allows ability to repair items of type OTHER
-    mcmmo.ability.repair.repairbonus:
+    mcmmo.ability.repair.superrepair:
         description: Allows access to Super Repair bonus
     mcmmo.ability.repair.repairmastery:
         description: Allows access to Repair Mastery
@@ -477,21 +420,16 @@ permissions:
     mcmmo.ability.smelting.all:
         description: Allows access to all Smelting abilities
         children:
-            mcmmo.ability.smelting.doubledrops: true
+            mcmmo.ability.smelting.secondsmelt: true
             mcmmo.ability.smelting.fluxmining: true
             mcmmo.ability.smelting.fuelefficiency: true
             mcmmo.ability.smelting.vanillaxpboost: true
-    mcmmo.ability.smelting.doubledrops:
-        description: Allows access to the Second Smelt ability
     mcmmo.ability.smelting.fluxmining:
         description: Allows access to the Flux Mining ability
     mcmmo.ability.smelting.fuelefficiency:
         description: Allows access to the Fuel Efficiency ability
     mcmmo.ability.smelting.secondsmelt:
-        default: false
         description: Allows access to the Second Smelt ability
-        children:
-            mcmmo.ability.smelting.doubledrops: true
     mcmmo.ability.smelting.vanillaxpboost:
         description: Allows vanilla XP boost from Smelting
     mcmmo.ability.swords.*:
@@ -503,11 +441,11 @@ permissions:
         description: Allows access to all Swords abilities
         children:
             mcmmo.ability.swords.bleed: true
-            mcmmo.ability.swords.counterattack: true
+            mcmmo.ability.swords.counter: true
             mcmmo.ability.swords.serratedstrikes: true
     mcmmo.ability.swords.bleed:
         description: Allows access to the Bleed ability
-    mcmmo.ability.swords.counterattack:
+    mcmmo.ability.swords.counter:
         description: Allows access to the Counter Attack ability
     mcmmo.ability.swords.serratedstrikes:
         description: Allows access to the Serrated Strikes ability
@@ -522,7 +460,7 @@ permissions:
             mcmmo.ability.taming.beastlore: true
             mcmmo.ability.taming.callofthewild.all: true
             mcmmo.ability.taming.environmentallyaware: true
-            mcmmo.ability.taming.fastfoodservice: true
+            mcmmo.ability.taming.fastfood: true
             mcmmo.ability.taming.gore: true
             mcmmo.ability.taming.holyhound: true
             mcmmo.ability.taming.sharpenedclaws: true
@@ -555,14 +493,9 @@ permissions:
         description: Allows players to rename pets with Call of the Wild
     mcmmo.ability.taming.callofthewild.wolf:
         description: Allows players to summon Wolves with Call of the Wild
-    mcmmo.ability.taming.callofthewild_renamepets:
-        default: false
-        description: Pets spawned with Call of the Wild will have custom names
-        children:
-            mcmmo.ability.taming.callofthewild.renamepets: true
     mcmmo.ability.taming.environmentallyaware:
         description: Allows access to the Environmentally Aware ability
-    mcmmo.ability.taming.fastfoodservice:
+    mcmmo.ability.taming.fastfood:
         description: Allows access to the Fast Food Service ability
     mcmmo.ability.taming.gore:
         description: Allows access to the Gore ability
@@ -584,7 +517,7 @@ permissions:
         children:
             mcmmo.ability.unarmed.berserk: true
             mcmmo.ability.unarmed.blockcracker: true
-            mcmmo.ability.unarmed.bonusdamage: true
+            mcmmo.ability.unarmed.ironarm: true
             mcmmo.ability.unarmed.deflect: true
             mcmmo.ability.unarmed.disarm: true
             mcmmo.ability.unarmed.irongrip: true
@@ -592,8 +525,8 @@ permissions:
         description: Allows access to the Berserker ability
     mcmmo.ability.unarmed.blockcracker:
         description: Allows access to the Block Cracker ability
-    mcmmo.ability.unarmed.bonusdamage:
-        description: Allows bonus damage from Unarmed
+    mcmmo.ability.unarmed.ironarm:
+        description: Allows bonus damage from the Iron Arm ability
     mcmmo.ability.unarmed.deflect:
         description: Allows access to the Deflect ability
     mcmmo.ability.unarmed.disarm:
@@ -1843,3 +1776,128 @@ permissions:
     mcmmo.tools.updatecheck:
         default: false
         description: Notifies admins if there is a new version of mcMMO available
+    mcmmo.ability.fishing.shakemob:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.fishing.shake: true
+    mcmmo.ability.axes.impact:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.axes.armorimpact: true
+    mcmmo.ability.taming.fastfoodservice:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.taming.fastfood: true
+    mcmmo.ability.archery.trackarrows:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.archery.retrieve: true
+    mcmmo.ability.repair.repairbonus:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.repair.superrepair: true
+    mcmmo.ability.swords.counterattack:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.swords.counter: true
+    mcmmo.ability.archery.bonusdamage:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.archery.skillshot: true
+    mcmmo.ability.excavation.treasures:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.excavation.treasurehunter: true
+    mcmmo.ability.fishing.treasures:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.fishing.treasurehunter: true
+    mcmmo.ability.fishing.magic:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.fishing.magichunter: true
+    mcmmo.ability.unarmed.bonusdamage:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.unarmed.ironarm: true
+    mcmmo.ability.axes.bonusdamage:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.axes.axemastery: true
+    mcmmo.ability.smelting.doubledrops:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.smelting.secondsmelt: true
+    mcmmo.ability.taming.callofthewild_renamepets:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.taming.callofthewild.renamepets: true
+    mcmmo.ability.blastmining.*:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.mining.blastmining.*: true
+    mcmmo.ability.blastmining.all:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.mining.blastmining.all: true
+    mcmmo.ability.blastmining.biggerbombs:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.mining.blastmining.biggerbombs: true
+    mcmmo.ability.blastmining.demolitionsexpertise:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.mining.blastmining.demolitionsexpertise: true
+    mcmmo.ability.blastmining.detonate:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.mining.blastmining.detonate: true
+    mcmmo.ability.herbalism.greenthumbblocks:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.herbalism.greenthumb.blocks.all: true
+    mcmmo.ability.herbalism.greenthumbcarrots:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.herbalism.greenthumb.plants.carrot: true
+    mcmmo.ability.herbalism.greenthumbcocoa:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.herbalism.greenthumb.plants.cocoa: true
+    mcmmo.ability.herbalism.greenthumbnetherwart:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.herbalism.greenthumb.plants.netherwarts: true
+    mcmmo.ability.herbalism.greenthumbpotatoes:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.herbalism.greenthumb.plants.potato: true
+    mcmmo.ability.herbalism.greenthumbwheat:
+        default: false
+        description: deprecated
+        children:
+            mcmmo.ability.herbalism.greenthumb.plants.crops: true

@@ -11,6 +11,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
@@ -26,15 +27,15 @@ public class ArcheryManager extends SkillManager {
     }
 
     public boolean canDaze(LivingEntity target) {
-        return target instanceof Player && Permissions.daze(getPlayer());
+        return target instanceof Player && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.DAZE);
     }
 
     public boolean canSkillShot() {
-        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.bonusDamage(getPlayer(), skill);
+        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.SKILL_SHOT);
     }
 
-    public boolean canTrackArrows() {
-        return Permissions.arrowRetrieval(getPlayer());
+    public boolean canRetrieveArrows() {
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.RETRIEVE);
     }
 
     /**
@@ -59,8 +60,8 @@ public class ArcheryManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} damaged by the arrow
      */
-    public void trackArrows(LivingEntity target) {
-        if (SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.retrieveMaxChance, Archery.retrieveMaxBonusLevel)) {
+    public void retrieveArrows(LivingEntity target) {
+        if (SkillUtils.activationSuccessful(SecondaryAbilityType.RETRIEVE, getPlayer(), getSkillLevel(), activationChance)) {
             Archery.incrementTrackerValue(target);
         }
     }
@@ -72,7 +73,7 @@ public class ArcheryManager extends SkillManager {
      * @param arrow The {@link Arrow} that was fired
      */
     public double daze(Player defender, Arrow arrow) {
-        if (!SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Archery.dazeMaxBonus, Archery.dazeMaxBonusLevel)) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbilityType.DAZE, getPlayer(), getSkillLevel(), activationChance)) {
             return 0;
         }
 

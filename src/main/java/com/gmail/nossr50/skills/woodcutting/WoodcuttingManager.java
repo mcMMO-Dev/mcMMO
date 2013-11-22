@@ -14,6 +14,7 @@ import org.bukkit.material.Tree;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
@@ -32,7 +33,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public boolean canUseLeafBlower(ItemStack heldItem) {
-        return getSkillLevel() >= Woodcutting.leafBlowerUnlockLevel && ItemUtils.isAxe(heldItem);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.LEAF_BLOWER) && getSkillLevel() >= Woodcutting.leafBlowerUnlockLevel && ItemUtils.isAxe(heldItem);
     }
 
     public boolean canUseTreeFeller(ItemStack heldItem) {
@@ -40,7 +41,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     protected boolean canGetDoubleDrops() {
-        return Permissions.doubleDrops(getPlayer(), skill) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Woodcutting.doubleDropsMaxChance, Woodcutting.doubleDropsMaxLevel);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.WOODCUTTING_DOUBLE_DROPS) && SkillUtils.activationSuccessful(SecondaryAbilityType.WOODCUTTING_DOUBLE_DROPS, getPlayer(), getSkillLevel(), activationChance);
     }
 
     /**

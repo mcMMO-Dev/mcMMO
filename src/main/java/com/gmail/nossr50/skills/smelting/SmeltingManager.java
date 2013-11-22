@@ -8,10 +8,11 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.smelting.Smelting.Tier;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
@@ -24,11 +25,11 @@ public class SmeltingManager extends SkillManager {
     }
 
     public boolean canUseFluxMining(BlockState blockState) {
-        return getSkillLevel() >= Smelting.fluxMiningUnlockLevel && BlockUtils.affectedByFluxMining(blockState) && Permissions.fluxMining(getPlayer()) && !mcMMO.getPlaceStore().isTrue(blockState);
+        return getSkillLevel() >= Smelting.fluxMiningUnlockLevel && BlockUtils.affectedByFluxMining(blockState) && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.FLUX_MINING) && !mcMMO.getPlaceStore().isTrue(blockState);
     }
 
-    public boolean isDoubleDropSuccessful() {
-        return Permissions.doubleDrops(getPlayer(), skill) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Mining.doubleDropsMaxChance, Mining.doubleDropsMaxLevel);
+    public boolean isSecondSmeltSuccessful() {
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.SECOND_SMELT) && SkillUtils.activationSuccessful(SecondaryAbilityType.SECOND_SMELT, getPlayer(), getSkillLevel(), activationChance);
     }
 
     /**
@@ -40,7 +41,9 @@ public class SmeltingManager extends SkillManager {
     public boolean processFluxMining(BlockState blockState) {
         Player player = getPlayer();
 
-        if (Smelting.fluxMiningChance > Misc.getRandom().nextInt(getActivationChance())) {
+        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(getPlayer(), SecondaryAbilityType.FLUX_MINING, Smelting.fluxMiningChance / activationChance);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+        if ((event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance)) {
             ItemStack item = null;
 
             switch (blockState.getType()) {
@@ -60,7 +63,7 @@ public class SmeltingManager extends SkillManager {
                 return false;
             }
 
-            Misc.dropItems(blockState.getLocation(), item, isDoubleDropSuccessful() ? 2 : 1);
+            Misc.dropItems(blockState.getLocation(), item, isSecondSmeltSuccessful() ? 2 : 1);
 
             blockState.setType(Material.AIR);
             player.sendMessage(LocaleLoader.getString("Smelting.FluxMining.Success"));
@@ -82,11 +85,9 @@ public class SmeltingManager extends SkillManager {
     }
 
     public ItemStack smeltProcessing(ItemStack smelting, ItemStack result) {
-        Player player = getPlayer();
-
         applyXpGain(Smelting.getResourceXp(smelting));
 
-        if (Permissions.doubleDrops(player, skill) && SkillUtils.activationSuccessful(getSkillLevel(), getActivationChance(), Smelting.secondSmeltMaxChance, Smelting.secondSmeltMaxLevel)) {
+        if (isSecondSmeltSuccessful()) {
             ItemStack newResult = result.clone();
 
             newResult.setAmount(result.getAmount() + 1);

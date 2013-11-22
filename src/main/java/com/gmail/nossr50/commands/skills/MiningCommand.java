@@ -6,10 +6,10 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.mining.BlastMining.Tier;
-import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
@@ -48,7 +48,7 @@ public class MiningCommand extends SkillCommand {
 
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, Mining.doubleDropsMaxLevel, Mining.doubleDropsMaxChance, isLucky);
+            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.MINING_DOUBLE_DROPS, isLucky);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
@@ -71,7 +71,7 @@ public class MiningCommand extends SkillCommand {
         canBiggerBombs = Permissions.biggerBombs(player);
         canBlast = Permissions.remoteDetonation(player);
         canDemoExpert = Permissions.demolitionsExpertise(player);
-        canDoubleDrop = Permissions.doubleDrops(player, skill) && !skill.getDoubleDropsDisabled();
+        canDoubleDrop = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.MINING_DOUBLE_DROPS) && !skill.getDoubleDropsDisabled();
         canSuperBreaker = Permissions.superBreaker(player);
     }
 

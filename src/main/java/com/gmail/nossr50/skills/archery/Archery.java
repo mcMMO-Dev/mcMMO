@@ -16,17 +16,12 @@ import com.gmail.nossr50.util.Misc;
 public class Archery {
     private static List<TrackedEntity> trackedEntities = new ArrayList<TrackedEntity>();
 
-    public static int    retrieveMaxBonusLevel = AdvancedConfig.getInstance().getRetrieveMaxBonusLevel();
-    public static double retrieveMaxChance     = AdvancedConfig.getInstance().getRetrieveChanceMax();
-
     public static int    skillShotIncreaseLevel      = AdvancedConfig.getInstance().getSkillShotIncreaseLevel();
     public static double skillShotIncreasePercentage = AdvancedConfig.getInstance().getSkillShotIncreasePercentage();
     public static double skillShotMaxBonusPercentage = AdvancedConfig.getInstance().getSkillShotBonusMax();
     public static double skillShotMaxBonusDamage     = AdvancedConfig.getInstance().getSkillShotDamageMax();
 
-    public static int    dazeMaxBonusLevel = AdvancedConfig.getInstance().getDazeMaxBonusLevel();
     public static double dazeModifier      = AdvancedConfig.getInstance().getDazeModifier();
-    public static double dazeMaxBonus      = AdvancedConfig.getInstance().getDazeBonusMax();
 
     public static final double DISTANCE_XP_MULTIPLIER = 0.025;
 

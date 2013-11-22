@@ -176,8 +176,8 @@ public final class CombatUtils {
             finalDamage += archeryManager.daze((Player) target, arrow);
         }
 
-        if (!arrow.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canTrackArrows()) {
-            archeryManager.trackArrows(target);
+        if (!arrow.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canRetrieveArrows()) {
+            archeryManager.retrieveArrows(target);
         }
 
         archeryManager.distanceXpBonus(target, arrow);

@@ -1,20 +1,14 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import java.util.List;
-
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-
-import com.google.common.collect.ImmutableList;
 
 public enum AbilityType {
     BERSERK(
@@ -75,36 +69,13 @@ public enum AbilityType {
             "Mining.Blast.Other.On",
             "Mining.Blast.Refresh",
             null),
-
-    /**
-     * No cooldown - always active
-     */
-    LEAF_BLOWER,
-
-    /**
-     * Not a first-class Ability - part of Berserk
-     */
-    BLOCK_CRACKER;
+    ;
 
     private String abilityOn;
     private String abilityOff;
     private String abilityPlayer;
     private String abilityRefresh;
     private String abilityPlayerOff;
-
-    /**
-     * Those abilities that have a cooldown saved to the database.
-     */
-    public static final List<AbilityType> NORMAL_ABILITIES = ImmutableList.of(BERSERK, BLAST_MINING, GIGA_DRILL_BREAKER, GREEN_TERRA, SERRATED_STRIKES, SKULL_SPLITTER, SUPER_BREAKER, TREE_FELLER);
-
-    /**
-     * Those abilities that do not have a cooldown saved to the database.
-     */
-    public static final List<AbilityType> NON_NORMAL_ABILITIES = ImmutableList.of(BLOCK_CRACKER, LEAF_BLOWER);
-
-    private AbilityType() {
-        this(null, null, null, null, null);
-    }
 
     private AbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
         this.abilityOn = abilityOn;
@@ -181,17 +152,11 @@ public enum AbilityType {
             case BLAST_MINING:
                 return Permissions.remoteDetonation(player);
 
-            case BLOCK_CRACKER:
-                return Permissions.blockCracker(player);
-
             case GIGA_DRILL_BREAKER:
                 return Permissions.gigaDrillBreaker(player);
 
             case GREEN_TERRA:
                 return Permissions.greenTerra(player);
-
-            case LEAF_BLOWER:
-                return Permissions.leafBlower(player);
 
             case SERRATED_STRIKES:
                 return Permissions.serratedStrikes(player);
@@ -221,42 +186,17 @@ public enum AbilityType {
             case BERSERK:
                 return (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW);
 
-            case BLOCK_CRACKER:
-                return BlockUtils.affectedByBlockCracker(blockState);
-
             case GIGA_DRILL_BREAKER:
                 return BlockUtils.affectedByGigaDrillBreaker(blockState);
 
             case GREEN_TERRA:
                 return BlockUtils.canMakeMossy(blockState);
 
-            case LEAF_BLOWER:
-                return BlockUtils.isLeaves(blockState);
-
             case SUPER_BREAKER:
                 return BlockUtils.affectedBySuperBreaker(blockState);
 
             case TREE_FELLER:
                 return BlockUtils.isLog(blockState);
-
-            default:
-                return false;
-        }
-    }
-
-    /**
-     * Check to see if ability should be triggered.
-     *
-     * @param player The player using the ability
-     * @param block The block modified by the ability
-     * @return true if the ability should activate, false otherwise
-     */
-    public boolean triggerCheck(Player player, Block block) {
-        switch (this) {
-            case BERSERK:
-            case BLOCK_CRACKER:
-            case LEAF_BLOWER:
-                return blockCheck(block.getState()) && EventUtils.simulateBlockBreak(block, player, true);
 
             default:
                 return false;

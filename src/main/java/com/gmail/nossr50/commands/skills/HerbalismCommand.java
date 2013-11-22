@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
@@ -55,28 +56,28 @@ public class HerbalismCommand extends SkillCommand {
         if (canGreenThumbBlocks || canGreenThumbPlants) {
             greenThumbStage = calculateRank(skillValue, Herbalism.greenThumbStageMaxLevel, Herbalism.greenThumbStageChangeLevel);
 
-            String[] greenThumbStrings = calculateAbilityDisplayValues(skillValue, Herbalism.greenThumbMaxLevel, Herbalism.greenThumbMaxChance, isLucky);
+            String[] greenThumbStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.GREEN_THUMB_PLANT, isLucky);
             greenThumbChance = greenThumbStrings[0];
             greenThumbChanceLucky = greenThumbStrings[1];
         }
 
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, Herbalism.doubleDropsMaxLevel, Herbalism.doubleDropsMaxChance, isLucky);
+            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.HERBALISM_DOUBLE_DROPS, isLucky);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
 
         // HYLIAN LUCK
         if (hasHylianLuck) {
-            String[] hylianLuckStrings = calculateAbilityDisplayValues(skillValue, Herbalism.hylianLuckMaxLevel, Herbalism.hylianLuckMaxChance, isLucky);
+            String[] hylianLuckStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.HYLIAN_LUCK, isLucky);
             hylianLuckChance = hylianLuckStrings[0];
             hylianLuckChanceLucky = hylianLuckStrings[1];
         }
 
         // SHROOM THUMB
         if (canShroomThumb) {
-            String[] shroomThumbStrings = calculateAbilityDisplayValues(skillValue, Herbalism.shroomThumbMaxLevel, Herbalism.shroomThumbMaxChance, isLucky);
+            String[] shroomThumbStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.SHROOM_THUMB, isLucky);
             shroomThumbChance = shroomThumbStrings[0];
             shroomThumbChanceLucky = shroomThumbStrings[1];
         }
@@ -84,13 +85,13 @@ public class HerbalismCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        hasHylianLuck = Permissions.hylianLuck(player);
+        hasHylianLuck = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.HYLIAN_LUCK);
         canGreenTerra = Permissions.greenTerra(player);
         canGreenThumbPlants = Permissions.greenThumbPlant(player, Material.CROPS) || Permissions.greenThumbPlant(player, Material.CARROT) || Permissions.greenThumbPlant(player, Material.POTATO) || Permissions.greenThumbPlant(player, Material.NETHER_WARTS) || Permissions.greenThumbPlant(player, Material.COCOA);
         canGreenThumbBlocks = Permissions.greenThumbBlock(player, Material.DIRT) || Permissions.greenThumbBlock(player, Material.COBBLESTONE) || Permissions.greenThumbBlock(player, Material.COBBLE_WALL) || Permissions.greenThumbBlock(player, Material.SMOOTH_BRICK);
-        canFarmersDiet = Permissions.farmersDiet(player);
-        canDoubleDrop = Permissions.doubleDrops(player, skill) && !skill.getDoubleDropsDisabled();
-        canShroomThumb = Permissions.shroomThumb(player);
+        canFarmersDiet = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.FARMERS_DIET);
+        canDoubleDrop = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.HERBALISM_DOUBLE_DROPS) && !skill.getDoubleDropsDisabled();
+        canShroomThumb = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.SHROOM_THUMB);
     }
 
     @Override

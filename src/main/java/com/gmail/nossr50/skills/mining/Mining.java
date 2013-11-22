@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -12,8 +11,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.ModUtils;
 
 public class Mining {
-    public static int    doubleDropsMaxLevel  = AdvancedConfig.getInstance().getMiningDoubleDropMaxLevel();
-    public static double doubleDropsMaxChance = AdvancedConfig.getInstance().getMiningDoubleDropChance();
 
     /**
      * Calculate XP gain for Mining.

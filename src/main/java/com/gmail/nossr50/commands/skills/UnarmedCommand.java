@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
@@ -23,7 +24,7 @@ public class UnarmedCommand extends SkillCommand {
 
     private boolean canBerserk;
     private boolean canDisarm;
-    private boolean canBonusDamage;
+    private boolean canIronArm;
     private boolean canDeflect;
     private boolean canIronGrip;
 
@@ -42,26 +43,26 @@ public class UnarmedCommand extends SkillCommand {
 
         // DISARM
         if (canDisarm) {
-            String[] disarmStrings = calculateAbilityDisplayValues(skillValue, Unarmed.disarmMaxBonusLevel, Unarmed.disarmMaxChance, isLucky);
+            String[] disarmStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.DISARM, isLucky);
             disarmChance = disarmStrings[0];
             disarmChanceLucky = disarmStrings[1];
         }
 
         // DEFLECT
         if (canDeflect) {
-            String[] deflectStrings = calculateAbilityDisplayValues(skillValue, Unarmed.deflectMaxBonusLevel, Unarmed.deflectMaxChance, isLucky);
+            String[] deflectStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.DEFLECT, isLucky);
             deflectChance = deflectStrings[0];
             deflectChanceLucky = deflectStrings[1];
         }
 
         // IRON ARM
-        if (canBonusDamage) {
+        if (canIronArm) {
             ironArmBonus = Math.min(3 + ((int) skillValue / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
         }
 
         // IRON GRIP
         if (canIronGrip) {
-            String[] ironGripStrings = calculateAbilityDisplayValues(skillValue, Unarmed.ironGripMaxBonusLevel, Unarmed.ironGripMaxChance, isLucky);
+            String[] ironGripStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.IRON_GRIP, isLucky);
             ironGripChance = ironGripStrings[0];
             ironGripChanceLucky = ironGripStrings[1];
         }
@@ -70,10 +71,11 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canBerserk = Permissions.berserk(player);
-        canBonusDamage = Permissions.bonusDamage(player, skill);
-        canDeflect = Permissions.arrowDeflect(player);
-        canDisarm = Permissions.disarm(player);
-        canIronGrip = Permissions.ironGrip(player);
+        canIronArm = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.IRON_ARM);
+        canDeflect = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.DEFLECT);
+        canDisarm = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.DISARM);
+        canIronGrip = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.IRON_GRIP);
+        // TODO: Apparently we forgot about block cracker?
     }
 
     @Override
@@ -83,12 +85,13 @@ public class UnarmedCommand extends SkillCommand {
         if (canBerserk) {
             messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.0"), LocaleLoader.getString("Unarmed.Effect.1")));
         }
+        // TODO: Apparently we forgot about block cracker?
 
         if (canDisarm) {
             messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.2"), LocaleLoader.getString("Unarmed.Effect.3")));
         }
 
-        if (canBonusDamage) {
+        if (canIronArm) {
             messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Unarmed.Effect.4"), LocaleLoader.getString("Unarmed.Effect.5")));
         }
 
@@ -107,7 +110,7 @@ public class UnarmedCommand extends SkillCommand {
     protected List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky) {
         List<String> messages = new ArrayList<String>();
 
-        if (canBonusDamage) {
+        if (canIronArm) {
             messages.add(LocaleLoader.getString("Ability.Generic.Template", LocaleLoader.getString("Unarmed.Ability.Bonus.0"), LocaleLoader.getString("Unarmed.Ability.Bonus.1", ironArmBonus)));
         }
 
