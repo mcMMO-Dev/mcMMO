@@ -16,7 +16,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
@@ -274,12 +274,12 @@ public class RepairManager extends SkillManager {
     private short repairCalculate(short durability, int repairAmount) {
         Player player = getPlayer();
 
-        if (Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.REPAIR_MASTERY)) {
+        if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.REPAIR_MASTERY)) {
             double bonus = repairAmount * Math.min((((Repair.repairMasteryMaxBonus / Repair.repairMasteryMaxBonusLevel) * getSkillLevel()) / 100.0D), Repair.repairMasteryMaxBonus / 100.0D);
             repairAmount += bonus;
         }
 
-        if (Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.SUPER_REPAIR) && checkPlayerProcRepair()) {
+        if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SUPER_REPAIR) && checkPlayerProcRepair()) {
             repairAmount *= 2.0D;
         }
 
@@ -296,7 +296,7 @@ public class RepairManager extends SkillManager {
      * @return true if bonus granted, false otherwise
      */
     private boolean checkPlayerProcRepair() {
-        if (SkillUtils.activationSuccessful(SecondaryAbilityType.SUPER_REPAIR, getPlayer(), getSkillLevel(), activationChance)) {
+        if (SkillUtils.activationSuccessful(SecondaryAbility.SUPER_REPAIR, getPlayer(), getSkillLevel(), activationChance)) {
             getPlayer().sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;
         }
@@ -323,7 +323,7 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (getArcaneForgingRank() == 0 || !Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.ARCANE_FORGING)) {
+        if (getArcaneForgingRank() == 0 || !Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ARCANE_FORGING)) {
             for (Enchantment enchant : enchants.keySet()) {
                 item.removeEnchantment(enchant);
             }

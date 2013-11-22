@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -28,11 +28,11 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseBleed() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.BLEED);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.BLEED);
     }
 
     public boolean canUseCounterAttack(Entity target) {
-        return target instanceof LivingEntity && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.COUNTER);
+        return target instanceof LivingEntity && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.COUNTER);
     }
 
     public boolean canUseSerratedStrike() {
@@ -45,9 +45,9 @@ public class SwordsManager extends SkillManager {
      * @param target The defending entity
      */
     public void bleedCheck(LivingEntity target) {
-        if (SkillUtils.activationSuccessful(SecondaryAbilityType.BLEED, getPlayer(), getSkillLevel(), activationChance)) {
+        if (SkillUtils.activationSuccessful(SecondaryAbility.BLEED, getPlayer(), getSkillLevel(), activationChance)) {
 
-            if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SecondaryAbilityType.BLEED)) {
+            if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SecondaryAbility.BLEED)) {
                 BleedTimerTask.add(target, Swords.bleedMaxTicks);
             }
             else {
@@ -79,7 +79,7 @@ public class SwordsManager extends SkillManager {
             return;
         }
 
-        if (SkillUtils.activationSuccessful(SecondaryAbilityType.COUNTER, getPlayer(), getSkillLevel(), activationChance)) {
+        if (SkillUtils.activationSuccessful(SecondaryAbility.COUNTER, getPlayer(), getSkillLevel(), activationChance)) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier);
 
             getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));

@@ -6,7 +6,7 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.smelting.Smelting;
@@ -39,7 +39,7 @@ public class SmeltingCommand extends SkillCommand {
 
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.SECOND_SMELT, isLucky);
+            String[] secondSmeltStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.SECOND_SMELT, isLucky);
             secondSmeltChance = secondSmeltStrings[0];
             secondSmeltChanceLucky = secondSmeltStrings[1];
         }
@@ -54,9 +54,9 @@ public class SmeltingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canFuelEfficiency = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.FUEL_EFFICIENCY);
-        canSecondSmelt = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.SECOND_SMELT);
-        canFluxMine = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.FLUX_MINING);
+        canFuelEfficiency = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FUEL_EFFICIENCY);
+        canSecondSmelt = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SECOND_SMELT);
+        canFluxMine = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FLUX_MINING);
         canVanillaXPBoost = Permissions.vanillaXpBoost(player, skill);
     }
 

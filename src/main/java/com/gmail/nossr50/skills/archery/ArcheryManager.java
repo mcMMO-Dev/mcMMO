@@ -11,7 +11,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
@@ -27,15 +27,15 @@ public class ArcheryManager extends SkillManager {
     }
 
     public boolean canDaze(LivingEntity target) {
-        return target instanceof Player && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.DAZE);
+        return target instanceof Player && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.DAZE);
     }
 
     public boolean canSkillShot() {
-        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.SKILL_SHOT);
+        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.SKILL_SHOT);
     }
 
     public boolean canRetrieveArrows() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbilityType.RETRIEVE);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.RETRIEVE);
     }
 
     /**
@@ -61,7 +61,7 @@ public class ArcheryManager extends SkillManager {
      * @param target The {@link LivingEntity} damaged by the arrow
      */
     public void retrieveArrows(LivingEntity target) {
-        if (SkillUtils.activationSuccessful(SecondaryAbilityType.RETRIEVE, getPlayer(), getSkillLevel(), activationChance)) {
+        if (SkillUtils.activationSuccessful(SecondaryAbility.RETRIEVE, getPlayer(), getSkillLevel(), activationChance)) {
             Archery.incrementTrackerValue(target);
         }
     }
@@ -73,7 +73,7 @@ public class ArcheryManager extends SkillManager {
      * @param arrow The {@link Arrow} that was fired
      */
     public double daze(Player defender, Arrow arrow) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbilityType.DAZE, getPlayer(), getSkillLevel(), activationChance)) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.DAZE, getPlayer(), getSkillLevel(), activationChance)) {
             return 0;
         }
 

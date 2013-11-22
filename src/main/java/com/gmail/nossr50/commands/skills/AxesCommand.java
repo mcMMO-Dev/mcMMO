@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.axes.Axes;
@@ -45,7 +45,7 @@ public class AxesCommand extends SkillCommand {
 
         // CRITICAL HIT
         if (canCritical) {
-            String[] criticalHitStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.CRITICAL_HIT, isLucky);
+            String[] criticalHitStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.CRITICAL_HIT, isLucky);
             critChance = criticalHitStrings[0];
             critChanceLucky = criticalHitStrings[1];
         }
@@ -59,10 +59,10 @@ public class AxesCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canSkullSplitter = Permissions.skullSplitter(player);
-        canCritical = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.CRITICAL_HIT);
-        canAxeMastery = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.AXE_MASTERY);
-        canImpact = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.ARMOR_IMPACT);
-        canGreaterImpact = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.GREATER_IMPACT);
+        canCritical = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.CRITICAL_HIT);
+        canAxeMastery = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.AXE_MASTERY);
+        canImpact = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ARMOR_IMPACT);
+        canGreaterImpact = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.GREATER_IMPACT);
     }
 
     @Override

@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
 
 import com.gmail.nossr50.datatypes.skills.AbilityType;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 
 public class StringUtils {
     /**
@@ -29,7 +29,7 @@ public class StringUtils {
         return createPrettyEnumString(ability.toString());
     }
 
-    public static String getPrettySecondaryAbilityString(SecondaryAbilityType secondaryAbility) {
+    public static String getPrettySecondaryAbilityString(SecondaryAbility secondaryAbility) {
         switch(secondaryAbility) {
             case HERBALISM_DOUBLE_DROPS:
             case MINING_DOUBLE_DROPS:

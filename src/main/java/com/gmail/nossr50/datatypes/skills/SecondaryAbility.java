@@ -1,6 +1,6 @@
 package com.gmail.nossr50.datatypes.skills;
 
-public enum SecondaryAbilityType {
+public enum SecondaryAbility {
     /* ACROBATICS */
     DODGE,
     GRACEFUL_ROLL,

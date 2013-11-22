@@ -17,7 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.util.ItemUtils;
@@ -74,7 +74,7 @@ public class InventoryListener implements Listener {
 
         Player player = Misc.getPlayerFromFurnace(furnaceBlock);
 
-        if (Misc.isNPCEntity(player) || !Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.FUEL_EFFICIENCY)) {
+        if (Misc.isNPCEntity(player) || !Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FUEL_EFFICIENCY)) {
             return;
         }
 

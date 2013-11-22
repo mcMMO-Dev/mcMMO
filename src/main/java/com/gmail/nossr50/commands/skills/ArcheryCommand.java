@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.archery.Archery;
@@ -36,14 +36,14 @@ public class ArcheryCommand extends SkillCommand {
 
         // DAZE
         if (canDaze) {
-            String[] dazeStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.DAZE, isLucky);
+            String[] dazeStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.DAZE, isLucky);
             dazeChance = dazeStrings[0];
             dazeChanceLucky = dazeStrings[1];
         }
 
         // RETRIEVE
         if (canRetrieve) {
-            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.RETRIEVE, isLucky);
+            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.RETRIEVE, isLucky);
             retrieveChance = retrieveStrings[0];
             retrieveChanceLucky = retrieveStrings[1];
         }
@@ -51,9 +51,9 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSkillShot = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.SKILL_SHOT);
-        canDaze = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.DAZE);
-        canRetrieve = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.RETRIEVE);
+        canSkillShot = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SKILL_SHOT);
+        canDaze = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.DAZE);
+        canRetrieve = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.RETRIEVE);
     }
 
     @Override

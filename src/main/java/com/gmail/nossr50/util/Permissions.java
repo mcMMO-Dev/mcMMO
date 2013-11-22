@@ -11,7 +11,7 @@ import org.bukkit.plugin.PluginManager;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.party.PartySubcommandType;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public final class Permissions {
@@ -125,7 +125,7 @@ public final class Permissions {
 
     public static boolean skillEnabled(Permissible permissible, SkillType skill) {return permissible.hasPermission("mcmmo.skills." + skill.toString().toLowerCase()); }
     public static boolean vanillaXpBoost(Permissible permissible, SkillType skill) { return permissible.hasPermission("mcmmo.ability." + skill.toString().toLowerCase() + ".vanillaxpboost"); }
-    public static boolean secondaryAbilityEnabled(Permissible permissible, SecondaryAbilityType skillAbility) { return permissible.hasPermission("mcmmo.ability." + SkillType.bySecondaryAbility(skillAbility).toString().toLowerCase() + "." + StringUtils.getPrettySecondaryAbilityString(skillAbility).replace("_", "").toLowerCase()); }
+    public static boolean secondaryAbilityEnabled(Permissible permissible, SecondaryAbility skillAbility) { return permissible.hasPermission("mcmmo.ability." + SkillType.bySecondaryAbility(skillAbility).toString().toLowerCase() + "." + StringUtils.getPrettySecondaryAbilityString(skillAbility).replace("_", "").toLowerCase()); }
 
     /* AXES */
     public static boolean skullSplitter(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.axes.skullsplitter"); }

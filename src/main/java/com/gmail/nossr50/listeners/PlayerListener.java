@@ -36,7 +36,7 @@ import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.ShareHandler;
@@ -433,7 +433,7 @@ public class PlayerListener implements Listener {
                         }
                     }
                     /* SALVAGE CHECKS */
-                    else if (type == Repair.salvageAnvilMaterial && Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.SALVAGE) && Repair.isSalvageable(heldItem)) {
+                    else if (type == Repair.salvageAnvilMaterial && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SALVAGE) && Repair.isSalvageable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
                         event.setCancelled(true);
 
@@ -471,7 +471,7 @@ public class PlayerListener implements Listener {
                         }
                     }
                     /* SALVAGE CHECKS */
-                    else if (type == Repair.salvageAnvilMaterial && Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.SALVAGE) && Repair.isSalvageable(heldItem)) {
+                    else if (type == Repair.salvageAnvilMaterial && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SALVAGE) && Repair.isSalvageable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
 
                         // Cancel salvaging an enchanted item

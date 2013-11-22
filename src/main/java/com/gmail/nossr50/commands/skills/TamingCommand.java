@@ -7,7 +7,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.taming.Taming;
@@ -34,7 +34,7 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
         if (canGore) {
-            String[] goreStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbilityType.GORE, isLucky);
+            String[] goreStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.GORE, isLucky);
             goreChance = goreStrings[0];
             goreChanceLucky = goreStrings[1];
         }
@@ -42,15 +42,15 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBeastLore = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.BEAST_LORE);
+        canBeastLore = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.BEAST_LORE);
         canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
-        canEnvironmentallyAware = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.ENVIROMENTALLY_AWARE);
-        canFastFood = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.FAST_FOOD);
-        canGore = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.GORE);
-        canSharpenedClaws = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.SHARPENED_CLAWS);
-        canShockProof = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.SHOCK_PROOF);
-        canThickFur = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.THICK_FUR);
-        canHolyHound = Permissions.secondaryAbilityEnabled(player, SecondaryAbilityType.HOLY_HOUND);
+        canEnvironmentallyAware = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ENVIROMENTALLY_AWARE);
+        canFastFood = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FAST_FOOD);
+        canGore = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.GORE);
+        canSharpenedClaws = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHARPENED_CLAWS);
+        canShockProof = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHOCK_PROOF);
+        canThickFur = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.THICK_FUR);
+        canHolyHound = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.HOLY_HOUND);
     }
 
     @Override
