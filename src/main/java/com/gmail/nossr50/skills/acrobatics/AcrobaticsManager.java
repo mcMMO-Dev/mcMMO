@@ -151,7 +151,7 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     private boolean isFatal(double damage) {
-        return getPlayer().getHealth() - damage < 1;
+        return getPlayer().getHealth() - damage <= 0;
     }
 
     private float calculateRollXP(double damage, boolean isRoll) {
