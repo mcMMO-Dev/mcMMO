@@ -34,13 +34,13 @@ public class StringUtils {
             case HERBALISM_DOUBLE_DROPS:
             case MINING_DOUBLE_DROPS:
             case WOODCUTTING_DOUBLE_DROPS:
-                return "DoubleDrops";
+                return "Double Drops";
             case FISHING_TREASURE_HUNTER:
             case EXCAVATION_TREASURE_HUNTER:
-                return "TreasureHunter";
+                return "Treasure Hunter";
             case GREEN_THUMB_BLOCK:
             case GREEN_THUMB_PLANT:
-                return "GreenThumb";
+                return "Green Thumb";
             default:
                 return createPrettyEnumString(secondaryAbility.toString());
         }
