@@ -209,6 +209,7 @@ public final class Woodcutting {
      */
     protected static boolean handleDurabilityLoss(Set<BlockState> treeFellerBlocks, ItemStack inHand) {
         short durabilityLoss = 0;
+        Material type = inHand.getType();
 
         for (BlockState blockState : treeFellerBlocks) {
             if (BlockUtils.isLog(blockState)) {
@@ -217,7 +218,7 @@ public final class Woodcutting {
         }
 
         SkillUtils.handleDurabilityChange(inHand, durabilityLoss);
-        return (inHand.getDurability() < inHand.getType().getMaxDurability());
+        return (inHand.getDurability() < (mcMMO.getRepairableManager().isRepairable(type) ? mcMMO.getRepairableManager().getRepairable(type).getMaximumDurability() : type.getMaxDurability()));
     }
 
     /**
