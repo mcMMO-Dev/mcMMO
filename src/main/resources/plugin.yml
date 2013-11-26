@@ -107,6 +107,7 @@ commands:
         aliases: [mcmobhealth]
         description: Change the style of the mob healthbar
     mcscoreboard:
+        aliases: [mcsb]
         description: Manage your mcMMO Scoreboard
     kraken:
         aliases: [mckraken]
