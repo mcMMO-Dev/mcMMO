@@ -10,6 +10,7 @@ import org.bukkit.Server;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
@@ -87,11 +88,13 @@ public class McMMOPlayer {
     private Location teleportCommence;
 
     private boolean isUsingUnarmed;
+    private final FixedMetadataValue playerMetadata;
 
     public McMMOPlayer(Player player) {
         String playerName = player.getName();
 
         this.player = player;
+        playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
         profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, true);
         party = PartyManager.getPlayerParty(playerName);
         ptpRecord = new PartyTeleportRecord();
@@ -912,5 +915,9 @@ public class McMMOPlayer {
 
     public void resetCooldowns() {
         profile.resetCooldowns();
+    }
+
+    public FixedMetadataValue getPlayerMetadata() {
+        return playerMetadata;
     }
 }

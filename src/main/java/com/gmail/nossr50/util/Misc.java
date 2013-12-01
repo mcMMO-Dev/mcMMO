@@ -14,6 +14,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.NPC;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryEvent;
@@ -172,10 +173,11 @@ public final class Misc {
      *
      * @param location The location to drop the item at
      * @param itemStack The item to drop
+     * @return Dropped Item entity or null if invalid or cancelled
      */
-    public static void dropItem(Location location, ItemStack itemStack) {
+    public static Item dropItem(Location location, ItemStack itemStack) {
         if (itemStack.getType() == Material.AIR) {
-            return;
+            return null;
         }
 
         // We can't get the item until we spawn it and we want to make it cancellable, so we have a custom event.
@@ -183,10 +185,10 @@ public final class Misc {
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled()) {
-            return;
+            return null;
         }
 
-        location.getWorld().dropItemNaturally(location, itemStack);
+        return location.getWorld().dropItemNaturally(location, itemStack);
     }
 
     public static void profileCleanup(String playerName) {

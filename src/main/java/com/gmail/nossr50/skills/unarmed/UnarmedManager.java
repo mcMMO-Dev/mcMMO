@@ -2,12 +2,14 @@ package com.gmail.nossr50.skills.unarmed;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.SmoothBrick;
-
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
@@ -18,6 +20,7 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
@@ -87,7 +90,11 @@ public class UnarmedManager extends SkillManager {
                 return;
             }
 
-            Misc.dropItem(defender.getLocation(), defender.getItemInHand());
+            Item item = Misc.dropItem(defender.getLocation(), defender.getItemInHand());
+
+            if (item != null && AdvancedConfig.getInstance().getDisarmProtected()) {
+                item.setMetadata(mcMMO.disarmedItemKey, UserManager.getPlayer(defender).getPlayerMetadata());
+            }
 
             defender.setItemInHand(new ItemStack(Material.AIR));
             defender.sendMessage(LocaleLoader.getString("Skills.Disarmed"));

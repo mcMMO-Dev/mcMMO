@@ -456,8 +456,10 @@ Skills:
         Disarm:
             # ChanceMax: Maximum chance of disarming other players
             # MaxBonusLevel: Level when the maximum chance to disarm is reached
+            # AntiTheft: Determines if only the disarmed player can retrieve disarmed items
             ChanceMax: 33.0
             MaxBonusLevel: 1000
+            AntiTheft: false
 
         Deflect:
             # ChanceMax: Maximum chance of deflecting arrows

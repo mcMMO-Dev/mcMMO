@@ -44,7 +44,7 @@ public class InventoryListener implements Listener {
         Block furnaceBlock = Misc.processInventoryOpenorCloseEvent(event);
 
         if (furnaceBlock != null && !furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
-            furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, new FixedMetadataValue(plugin, player.getName()));
+            furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer((Player) player).getPlayerMetadata());
         }
     }
 

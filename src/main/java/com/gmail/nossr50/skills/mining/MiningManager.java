@@ -9,8 +9,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
-import org.bukkit.metadata.FixedMetadataValue;
-
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -105,7 +103,7 @@ public class MiningManager extends SkillManager {
         SkillUtils.sendSkillMessage(player, AbilityType.BLAST_MINING.getAbilityPlayer(player));
         player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
-        tnt.setMetadata(mcMMO.tntMetadataKey, new FixedMetadataValue(mcMMO.p, player.getName()));
+        tnt.setMetadata(mcMMO.tntMetadataKey, mcMMOPlayer.getPlayerMetadata());
         tnt.setFuseTicks(0);
         targetBlock.setType(Material.AIR);
 

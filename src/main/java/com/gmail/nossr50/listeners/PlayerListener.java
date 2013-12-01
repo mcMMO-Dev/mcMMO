@@ -300,6 +300,14 @@ public class PlayerListener implements Listener {
         Item drop = event.getItem();
         ItemStack dropStack = drop.getItemStack();
 
+        if (drop.hasMetadata(mcMMO.disarmedItemKey)) {
+            if (!player.getName().equals(drop.getMetadata(mcMMO.disarmedItemKey).get(0).value())) {
+                event.setCancelled(true);
+            }
+
+            return;
+        }
+
         if (!drop.hasMetadata(mcMMO.droppedItemKey) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
             event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
 

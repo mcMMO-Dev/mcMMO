@@ -741,6 +741,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getIronArmMinBonus() { return config.getDouble("Skills.Unarmed.IronArm.BonusMin", 3.0D); }
     public double getIronArmMaxBonus() { return config.getDouble("Skills.Unarmed.IronArm.BonusMax", 8.0D); }
     public int getIronArmIncreaseLevel() { return config.getInt("Skills.Unarmed.IronArm.IncreaseLevel", 50); }
+    public boolean getDisarmProtected() { return config.getBoolean("Skills.Unarmed.Disarm.AntiTheft", false); }
 
     /* WOODCUTTING */
     public int getLeafBlowUnlockLevel() { return config.getInt("Skills.Woodcutting.LeafBlower.UnlockLevel", 100); }
