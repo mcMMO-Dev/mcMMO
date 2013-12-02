@@ -16,7 +16,7 @@ public final class PerksUtils {
             cooldown *= 0.5;
         }
         else if (Permissions.thirdedCooldowns(player)) {
-            cooldown *= (1.0 / 3.0);
+            cooldown *= (2.0 / 3.0);
         }
         else if (Permissions.quarteredCooldowns(player)) {
             cooldown *= 0.75;
