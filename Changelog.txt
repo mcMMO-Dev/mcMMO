@@ -8,6 +8,13 @@ Key:
   - Removal
 
 Version 1.5.00-dev
+ + Added Hardened Clay, Stained Clay, and Packed Ice to Mining blocks
+ + Added Acacia and Dark Oak to Woodcutting blocks
+ + Added Salmon, Clownfish, and Pufferfish to Fishing XP
+ + Added new flowers and grasses to Herbalism XP
+ ! Fishing XP now depends on the type of fish.
+ ! Woodcutting XP in experience.yml now uses the tree species names. Oak is now Generic, and Spruce is now Redwood.
+ ! Red_Rose was replaced by Poppy, and so the key in experience.yml has been updated accordingly.
  - Removed deprecated permission nodes
 
 Version 1.4.08-dev

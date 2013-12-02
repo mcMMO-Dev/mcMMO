@@ -148,7 +148,12 @@ public class HerbalismManager extends SkillManager {
                 processGreenThumbPlants(blockState, greenTerra);
             }
 
-            xp = ExperienceConfig.getInstance().getXp(skill, material);
+            if (material == Material.DOUBLE_PLANT || material == Material.RED_ROSE || material == Material.LONG_GRASS) {
+                xp = ExperienceConfig.getInstance().getFlowerAndGrassXp(blockState.getData());
+            }
+            else {
+                xp = ExperienceConfig.getInstance().getXp(skill, material);
+            }
 
             if (Config.getInstance().getDoubleDropsEnabled(skill, material) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.HERBALISM_DOUBLE_DROPS)) {
                 drops = blockState.getBlock().getDrops();

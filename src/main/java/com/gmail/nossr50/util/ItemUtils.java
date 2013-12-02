@@ -1,12 +1,14 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.ChatColor;
+import org.bukkit.CoalType;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Coal;
 import org.bukkit.material.Dye;
 
 import com.gmail.nossr50.mcMMO;
@@ -590,6 +592,8 @@ public final class ItemUtils {
             case PUMPKIN_SEEDS:
             case WATER_LILY:
             case VINE:
+            case LONG_GRASS:
+            case DOUBLE_PLANT:
                 return true;
 
             case INK_SACK:
@@ -618,7 +622,6 @@ public final class ItemUtils {
             case PORK:
             case GRILLED_PORK:
             case WOOL:
-            case RED_ROSE: // Not sure we should include this, as it will also trigger from herbalism
             case IRON_INGOT:
             case SNOW_BALL:
             case BLAZE_ROD:
@@ -631,11 +634,16 @@ public final class ItemUtils {
             case ARROW:
             case SLIME_BALL:
             case NETHER_STAR:
-            case COAL: // Not sure we should include this, as it will also trigger when mining
             case ROTTEN_FLESH:
             case GOLD_NUGGET:
             case EGG:
                 return true;
+
+            case COAL: // Not sure we should include this, as it will also trigger when mining
+                return (((Coal) item.getData()).getType() == CoalType.COAL);
+
+            case RED_ROSE: // Not sure we should include this, as it will also trigger from herbalism
+                return (item.getData().getData() == 0x0);
 
             default:
                 return false;
@@ -651,7 +659,9 @@ public final class ItemUtils {
     public static boolean isWoodcuttingDrop(ItemStack item) {
         switch (item.getType()) {
             case LOG:
+            case LOG_2:
             case LEAVES:
+            case LEAVES_2:
             case SAPLING:
             case APPLE:
                 return true;
