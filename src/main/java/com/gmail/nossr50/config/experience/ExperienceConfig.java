@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.entity.EntityType;
+import org.bukkit.material.LongGrass;
+import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.AutoUpdateConfigLoader;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
@@ -103,9 +106,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         }
 
         /* Fishing */
-        if (getFishingBaseXP() <= 0) {
-            reason.add("Experience.Fishing.Base should be greater than 0!");
-        }
+        // TODO: Add validation for each fish type once enum is available.
 
         if (getFishingShakeXP() <= 0) {
             reason.add("Experience.Fishing.Shake should be greater than 0!");
@@ -126,20 +127,12 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         }
 
         /* Woodcutting */
-        if (getWoodcuttingXPOak() <= 0) {
-            reason.add("Experience.Woodcutting.Oak should be greater than 0!");
-        }
+        for (TreeSpecies species : TreeSpecies.values()) {
+            String key = "Experience.Woodcutting." + StringUtils.getPrettyTreeSpeciesString(species).replace(" ", "_");
 
-        if (getWoodcuttingXPBirch() <= 0) {
-            reason.add("Experience.Woodcutting.Birch should be greater than 0!");
-        }
-
-        if (getWoodcuttingXPSpruce() <= 0) {
-            reason.add("Experience.Woodcutting.Spruce should be greater than 0!");
-        }
-
-        if (getWoodcuttingXPJungle() <= 0) {
-            reason.add("Experience.Woodcutting.Jungle should be greater than 0!");
+            if (config.getInt(key) <= 0) {
+                reason.add(key + " should be greater than 0!");
+            }
         }
 
         if (getWoodcuttingXPHugeBrownMushroom() <= 0) {
@@ -211,8 +204,107 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public double getPotionXP() { return config.getDouble("Experience.Alchemy.Potion", 150D); }
 
     /* Fishing */
-    public int getFishingBaseXP() { return config.getInt("Experience.Fishing.Base", 800); }
+    public int getFishXp(MaterialData data) {
+        switch (data.getData()) {
+            case 0x0:
+                return config.getInt("Experience.Fishing.Raw_Fish", 800);
+
+            case 0x1:
+                return config.getInt("Experience.Fishing.Raw_Salmon", 800);
+
+            case 0x2:
+                return config.getInt("Experience.Fishing.Clownfish", 800);
+
+            case 0x3:
+                return config.getInt("Experience.Fishing.Pufferfish", 800);
+
+            default:
+                return 0;
+        }
+    }
+
     public int getFishingShakeXP() { return config.getInt("Experience.Fishing.Shake", 50); }
+
+    /* Herbalism */
+    public int getFlowerAndGrassXp(MaterialData data) {
+        Material type = data.getItemType();
+
+        if (type == Material.RED_ROSE) {
+            switch (data.getData()) {
+                case 0x0:
+                    return config.getInt("Experience.Herbalism.Poppy", 100);
+
+                case 0x1:
+                    return config.getInt("Experience.Herbalism.Blue_Orchid", 150);
+
+                case 0x2:
+                    return config.getInt("Experience.Herbalism.Allium", 300);
+
+                case 0x3:
+                    return config.getInt("Experience.Herbalism.Azure_Bluet", 150);
+
+                case 0x4:
+                    return config.getInt("Experience.Herbalism.Red_Tulip", 150);
+
+                case 0x5:
+                    return config.getInt("Experience.Herbalism.Orange_Tulip", 150);
+
+                case 0x6:
+                    return config.getInt("Experience.Herbalism.White_Tulip", 150);
+
+                case 0x7:
+                    return config.getInt("Experience.Herbalism.Pink_Tulip", 150);
+
+                case 0x8:
+                    return config.getInt("Experience.Herbalism.Oxeye_Daisy", 150);
+
+                default:
+                    return 0;
+            }
+
+        }
+        else if (type == Material.LONG_GRASS) {
+            switch (((LongGrass) data).getSpecies()) {
+                case DEAD:
+                    return config.getInt("Experience.Herbalism.Dead_Bush", 100);
+
+                case FERN_LIKE:
+                    return config.getInt("Experience.Herbalism.Small_Fern", 100);
+
+                case NORMAL:
+                    return config.getInt("Experience.Herbalism.Small_Grass", 100);
+
+                default:
+                    return 0;
+            }
+        }
+        else if (type == Material.DOUBLE_PLANT) {
+            switch (data.getData()) {
+                case 0x0:
+                    return config.getInt("Experience.Herbalism.Sunflower", 50);
+
+                case 0x1:
+                    return config.getInt("Experience.Herbalism.Lilac", 50);
+
+                case 0x2:
+                    return config.getInt("Experience.Herbalism.Tall_Grass", 50);
+
+                case 0x3:
+                    return config.getInt("Experience.Herbalism.Tall_Fern", 50);
+
+                case 0x4:
+                    return config.getInt("Experience.Herbalism.Rose_Bush", 50);
+
+                case 0x5:
+                    return config.getInt("Experience.Herbalism.Peony", 50);
+
+                default:
+                    return 0;
+            }
+        }
+
+        return 0;
+    }
 
     /* Repair */
     public double getRepairXPBase() { return config.getDouble("Experience.Repair.Base", 1000.0); }
@@ -224,10 +316,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public int getTamingXPOcelot() { return config.getInt("Experience.Taming.Animal_Taming.Ocelot", 500); }
 
     /* Woodcutting */
-    public int getWoodcuttingXPOak() { return config.getInt("Experience.Woodcutting.Oak", 70); }
-    public int getWoodcuttingXPBirch() { return config.getInt("Experience.Woodcutting.Birch", 90); }
-    public int getWoodcuttingXPSpruce() { return config.getInt("Experience.Woodcutting.Spruce", 80); }
-    public int getWoodcuttingXPJungle() { return config.getInt("Experience.Woodcutting.Jungle", 100); }
+    public int getWoodcuttingTreeXP(TreeSpecies species) { return config.getInt("Experience.Woodcutting." + StringUtils.getPrettyTreeSpeciesString(species).replace(" ", "_")); }
     public int getWoodcuttingXPHugeBrownMushroom() { return config.getInt("Experience.Woodcutting.Huge_Mushroom_Brown", 70); }
     public int getWoodcuttingXPHugeRedMushroom() { return config.getInt("Experience.Woodcutting.Huge_Mushroom_Red", 70); }
 }

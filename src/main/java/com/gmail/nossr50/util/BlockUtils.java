@@ -112,7 +112,9 @@ public final class BlockUtils {
         switch (blockState.getType()) {
             case BROWN_MUSHROOM:
             case CACTUS:
+            case DOUBLE_PLANT:
             case MELON_BLOCK:
+            case LONG_GRASS:
             case PUMPKIN:
             case RED_MUSHROOM:
             case RED_ROSE:
@@ -150,10 +152,13 @@ public final class BlockUtils {
         switch (blockState.getType()) {
             case ENDER_STONE:
             case GLOWSTONE:
+            case HARD_CLAY:
             case MOSSY_COBBLESTONE:
             case NETHERRACK:
             case OBSIDIAN:
+            case PACKED_ICE:
             case SANDSTONE:
+            case STAINED_CLAY:
             case STONE:
                 return true;
 
@@ -195,6 +200,7 @@ public final class BlockUtils {
     public static boolean isLog(BlockState blockState) {
         switch (blockState.getType()) {
             case LOG:
+            case LOG_2:
             case HUGE_MUSHROOM_1:
             case HUGE_MUSHROOM_2:
                 return true;
@@ -213,6 +219,7 @@ public final class BlockUtils {
     public static boolean isLeaves(BlockState blockState) {
         switch (blockState.getType()) {
             case LEAVES:
+            case LEAVES_2:
                 return true;
 
             default:
@@ -275,7 +282,7 @@ public final class BlockUtils {
      * Determine if a given block can be made into Mycelium
      *
      * @param blockState The {@link BlockState} of the block to check
-     * @return true if the block can be made in Mycelium, false otherwise
+     * @return true if the block can be made into Mycelium, false otherwise
      */
     public static boolean canMakeShroomy(BlockState blockState) {
         switch (blockState.getType()) {

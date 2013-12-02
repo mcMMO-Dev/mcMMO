@@ -304,6 +304,7 @@ public class FishingManager extends SkillManager {
      */
     public void handleFishing(Item fishingCatch) {
         this.fishingCatch = fishingCatch;
+        int fishXp = ExperienceConfig.getInstance().getFishXp(fishingCatch.getItemStack().getData());
         int treasureXp = 0;
         Player player = getPlayer();
         FishingTreasure treasure = null;
@@ -351,7 +352,7 @@ public class FishingManager extends SkillManager {
             }
         }
 
-        applyXpGain(ExperienceConfig.getInstance().getFishingBaseXP() + treasureXp);
+        applyXpGain(fishXp + treasureXp);
     }
 
     /**

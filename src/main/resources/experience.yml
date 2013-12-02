@@ -82,7 +82,10 @@ Experience:
     Alchemy:
         Potion: 120
     Fishing:
-        Base: 800
+        Raw_Fish: 800
+        Raw_Salmon: 800
+        Clownfish: 800
+        Pufferfish: 800
         Shake: 50
     Excavation:
         Clay: 40
@@ -95,27 +98,46 @@ Experience:
         Snow_Block: 40
         Soul_Sand: 40
     Woodcutting:
-        Oak: 70
-        Spruce: 80
+        Acacia: 90
         Birch: 90
+        Dark_Oak: 90
+        Generic: 70
         Jungle: 100
+        Redwood: 80
         Huge_Mushroom_Red: 70
         Huge_Mushroom_Brown: 70
     Herbalism:
+        Allium: 300
+        Azure_Bluet: 150
+        Blue_Orchid: 150
         Brown_Mushroom: 150
         Cactus: 30
         Carrot: 50
         Cocoa: 30
         Crops: 50
+        Dead_Bush: 100
+        Lilac: 50
         Melon_Block: 20
         Nether_Warts: 50
+        Orange_Tulip: 150
+        Oxeye_Daisy: 150
+        Peony: 50
+        Pink_Tulip: 150
+        Poppy: 100
         Potato: 50
         Pumpkin: 20
         Red_Mushroom: 150
-        Red_Rose: 100
+        Red_Tulip: 150
+        Rose_Bush: 50
+        Small_Fern: 100
+        Small_Grass: 100
         Sugar_Cane_Block: 30
+        Sunflower: 50
+        Tall_Grass: 50
+        Tall_Fern: 50
         Vine: 10
         Water_Lily: 100
+        White_Tulip: 150
         Yellow_Flower: 100
     Mining:
         Coal_Ore: 100
@@ -124,14 +146,17 @@ Experience:
         Ender_Stone: 150
         Glowstone: 30
         Gold_Ore: 350
+        Hard_Clay: 30
         Iron_Ore: 250
         Lapis_Ore: 400
         Mossy_Cobblestone: 30
         Netherrack: 30
         Obsidian: 150
+        Packed_Ice: 50
         Quartz_Ore: 250
         Redstone_Ore: 150
         Sandstone: 30
+        Stained_Clay: 50
         Stone: 30
     Repair:
         Base: 1000.0
