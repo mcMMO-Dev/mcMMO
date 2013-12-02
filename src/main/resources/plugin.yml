@@ -602,16 +602,6 @@ permissions:
     mcmmo.bypass.fishingtraps:
         default: false
         description: Allows user to bypass finding traps when Fishing
-    mcmmo.bypass.inspect.distance:
-        default: false
-        description: Allows user to bypass Inspect's distance requirements
-        children:
-            mcmmo.commands.inspect.far: true
-    mcmmo.bypass.inspect.offline:
-        default: false
-        description: Allows user to bypass Inspect's offline player requirements
-        children:
-            mcmmo.commands.inspect.offline: true
     mcmmo.chat.*:
         default: false
         description: Implies all mcmmo.chat permissions. (Warning, contains adminchat)
@@ -698,11 +688,6 @@ permissions:
             mcmmo.commands.skillreset.all: true
             mcmmo.commands.vampirism.all: true
             mcmmo.commands.xprate.all: true
-    mcmmo.commands.ability:
-        default: false
-        description: Allows access to the mcability command
-        children:
-            mcmmo.commands.mcability: true
     mcmmo.commands.acrobatics:
         description: Allows access to the acrobatics command
     mcmmo.commands.addlevels:
@@ -771,11 +756,6 @@ permissions:
         description: Allows access to the mcability command
     mcmmo.commands.mcability.others:
         description: Allows access to the mcability command for other players
-    mcmmo.commands.mcc:
-        default: false
-        description: Allows access to the mcmmo help command
-        children:
-            mcmmo.commands.mcmmo.help: true
     mcmmo.commands.mcconvert.*:
         default: false
         description: Allows access to the mcconvert commands
@@ -902,11 +882,6 @@ permissions:
         description: Allows access to the mmoedit command
     mcmmo.commands.mmoedit.others:
         description: Allows access to the mmoedit command for other players
-    mcmmo.commands.mmoupdate:
-        default: false
-        description: Allows access to the mcconvert database command
-        children:
-            mcmmo.commands.mcconvert.database: true
     mcmmo.commands.mmoshowdb:
         description: Allows access to the mmoshowdb command
     mcmmo.commands.mobhealth:
@@ -1184,7 +1159,7 @@ permissions:
             mcmmo.chat.adminchat: true
             mcmmo.commands.defaultsop: true
             mcmmo.item.all: true
-            mcmmo.tools.updatecheck: true
+            mcmmo.tools.all: true
     mcmmo.item.*:
         default: false
         description: Implies all mcmmo.item permissions
@@ -1946,163 +1921,7 @@ permissions:
         default: false
         description: Implies all mcmmo.tools permissions.
         children:
-            mcmmo.tools.mcgod: true
-            mcmmo.tools.mcrefresh: true
-            mcmmo.tools.mcremove: true
-            mcmmo.tools.mmoedit: true
             mcmmo.tools.updatecheck: true
-    mcmmo.tools.mcgod:
-        default: false
-        description: Allows access to mcgod command
-        children:
-            mcmmo.commands.mcgod: true
-    mcmmo.tools.mcrefresh:
-        default: false
-        description: Allows access to mcrefresh command
-        children:
-            mcmmo.commands.mcrefresh: true
-            mcmmo.commands.mcrefresh.others: true
-    mcmmo.tools.mcremove:
-        default: false
-        decription: Allows access to mcremove and mcpurge command
-        children:
-            mcmmo.commands.mcremove: true
-    mcmmo.tools.mmoedit:
-        default: false
-        description: Allows access to mmoedit command
-        children:
-            mcmmo.commands.addlevels: true
-            mcmmo.commands.addlevels.others: true
-            mcmmo.commands.addxp: true
-            mcmmo.commands.addxp.others: true
-            mcmmo.commands.mcpurge: true
-            mcmmo.commands.mmoedit: true
-            mcmmo.commands.mmoedit.others: true
     mcmmo.tools.updatecheck:
         default: false
         description: Notifies admins if there is a new version of mcMMO available
-    mcmmo.ability.fishing.shakemob:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.fishing.shake: true
-    mcmmo.ability.axes.impact:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.axes.armorimpact: true
-    mcmmo.ability.taming.fastfoodservice:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.taming.fastfood: true
-    mcmmo.ability.archery.trackarrows:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.archery.retrieve: true
-    mcmmo.ability.repair.repairbonus:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.repair.superrepair: true
-    mcmmo.ability.swords.counterattack:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.swords.counter: true
-    mcmmo.ability.archery.bonusdamage:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.archery.skillshot: true
-    mcmmo.ability.excavation.treasures:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.excavation.treasurehunter: true
-    mcmmo.ability.fishing.treasures:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.fishing.treasurehunter: true
-    mcmmo.ability.fishing.magic:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.fishing.magichunter: true
-    mcmmo.ability.unarmed.bonusdamage:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.unarmed.ironarm: true
-    mcmmo.ability.axes.bonusdamage:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.axes.axemastery: true
-    mcmmo.ability.smelting.doubledrops:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.smelting.secondsmelt: true
-    mcmmo.ability.taming.callofthewild_renamepets:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.taming.callofthewild.renamepets: true
-    mcmmo.ability.blastmining.*:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.mining.blastmining.*: true
-    mcmmo.ability.blastmining.all:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.mining.blastmining.all: true
-    mcmmo.ability.blastmining.biggerbombs:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.mining.blastmining.biggerbombs: true
-    mcmmo.ability.blastmining.demolitionsexpertise:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.mining.blastmining.demolitionsexpertise: true
-    mcmmo.ability.blastmining.detonate:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.mining.blastmining.detonate: true
-    mcmmo.ability.herbalism.greenthumbblocks:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.herbalism.greenthumb.blocks.all: true
-    mcmmo.ability.herbalism.greenthumbcarrots:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.herbalism.greenthumb.plants.carrot: true
-    mcmmo.ability.herbalism.greenthumbcocoa:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.herbalism.greenthumb.plants.cocoa: true
-    mcmmo.ability.herbalism.greenthumbnetherwart:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.herbalism.greenthumb.plants.netherwarts: true
-    mcmmo.ability.herbalism.greenthumbpotatoes:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.herbalism.greenthumb.plants.potato: true
-    mcmmo.ability.herbalism.greenthumbwheat:
-        default: false
-        description: deprecated
-        children:
-            mcmmo.ability.herbalism.greenthumb.plants.crops: true
