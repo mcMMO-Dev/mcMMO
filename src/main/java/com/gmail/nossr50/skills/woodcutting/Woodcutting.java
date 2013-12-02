@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.inventory.ItemStack;
@@ -55,28 +56,14 @@ public final class Woodcutting {
             return mcMMO.getModManager().getBlock(blockState).getXpGain();
         }
 
-        switch (((Tree) blockState.getData()).getSpecies()) {
-            case GENERIC:
-                return ExperienceConfig.getInstance().getWoodcuttingXPOak();
+        TreeSpecies species = ((Tree) blockState.getData()).getSpecies();
+        int xp = ExperienceConfig.getInstance().getWoodcuttingTreeXP(species);
 
-            case REDWOOD:
-                return ExperienceConfig.getInstance().getWoodcuttingXPSpruce();
-
-            case BIRCH:
-                return ExperienceConfig.getInstance().getWoodcuttingXPBirch();
-
-            case JUNGLE:
-                int xp = ExperienceConfig.getInstance().getWoodcuttingXPJungle();
-
-                if (experienceGainMethod == ExperienceGainMethod.TREE_FELLER) {
-                    xp *= 0.5;
-                }
-
-                return xp;
-
-            default:
-                return 0;
+        if (species == TreeSpecies.JUNGLE && experienceGainMethod == ExperienceGainMethod.TREE_FELLER) {
+            xp *= 0.5;
         }
+
+        return xp;
     }
 
     /**

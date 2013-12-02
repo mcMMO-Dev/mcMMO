@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.entity.EntityType;
 
 import com.gmail.nossr50.datatypes.party.PartyFeature;
@@ -28,6 +29,10 @@ public class StringUtils {
 
     public static String getPrettyAbilityString(AbilityType ability) {
         return createPrettyEnumString(ability.toString());
+    }
+
+    public static String getPrettyTreeSpeciesString(TreeSpecies species) {
+        return createPrettyEnumString(species.toString());
     }
 
     public static String getPrettySecondaryAbilityString(SecondaryAbility secondaryAbility) {

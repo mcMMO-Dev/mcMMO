@@ -39,11 +39,13 @@ public class Mining {
         switch (blockType) {
             case ENDER_STONE:
             case GOLD_ORE:
+            case HARD_CLAY:
             case IRON_ORE:
             case MOSSY_COBBLESTONE:
             case NETHERRACK:
             case OBSIDIAN:
             case SANDSTONE:
+            case STAINED_CLAY:
                 handleMiningDrops(blockState);
                 return;
 
@@ -55,12 +57,13 @@ public class Mining {
 
             case COAL_ORE:
             case DIAMOND_ORE:
-            case REDSTONE_ORE:
+            case EMERALD_ORE:
             case GLOWSTONE:
             case LAPIS_ORE:
-            case STONE:
-            case EMERALD_ORE:
+            case PACKED_ICE:
             case QUARTZ_ORE:
+            case REDSTONE_ORE:
+            case STONE:
                 Misc.dropItem(blockState.getLocation(), new ItemStack(blockType));
                 return;
 
@@ -82,17 +85,20 @@ public class Mining {
             case COAL_ORE:
             case DIAMOND_ORE:
             case EMERALD_ORE:
-            case GLOWSTONE:
-            case LAPIS_ORE:
-            case STONE:
             case ENDER_STONE:
+            case GLOWSTONE:
             case GOLD_ORE:
+            case HARD_CLAY:
             case IRON_ORE:
+            case LAPIS_ORE:
             case MOSSY_COBBLESTONE:
             case NETHERRACK:
             case OBSIDIAN:
+            case PACKED_ICE:
             case REDSTONE_ORE:
             case SANDSTONE:
+            case STAINED_CLAY:
+            case STONE:
             case QUARTZ_ORE:
                 Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
                 return;
