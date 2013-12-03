@@ -22,6 +22,7 @@ Version 1.4.08-dev
  = Fixed bug where the Unbreaking enchantment was ignored when using "Super Breaker" or "Giga Drill Breaker"
  = Fixed bug which prevented players from gaining Acrobatics XP when the setting 'Prevent_XP_After_Teleport' was set to false
  = Fixed bug where cooldown donor perks were reducing more than expected
+ = Fixed bug where disabling hardcore mode for specific skills didn't work
  ! Updated localization files
  ! Changed AxesCritical to CriticalHit in config file
  ! Changed several secondary ability permissions(deprecated versions still exist)
