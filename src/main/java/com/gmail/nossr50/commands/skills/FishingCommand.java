@@ -99,9 +99,7 @@ public class FishingCommand extends SkillCommand {
                 location = player.getLocation();
             }
 
-            Biome biome = location.getBlock().getBiome();
-
-            if (biome == Biome.RIVER || biome == Biome.OCEAN) {
+            if (Fishing.masterAnglerBiomes.contains(location.getBlock().getBiome())) {
                 rawBiteChance = rawBiteChance * AdvancedConfig.getInstance().getMasterAnglerBiomeModifier();
             }
 
