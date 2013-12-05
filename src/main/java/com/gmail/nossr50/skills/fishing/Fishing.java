@@ -1,9 +1,12 @@
 package com.gmail.nossr50.skills.fishing;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
@@ -55,6 +58,13 @@ public final class Fishing {
     public static int fishermansDietMaxLevel   = fishermansDietRankLevel1 * 5;
 
     public static final double STORM_MODIFIER = 0.909;
+
+    public static Set<Biome> masterAnglerBiomes = EnumSet.of(Biome.RIVER, Biome.OCEAN, Biome.DEEP_OCEAN);
+    public static Set<Biome> iceFishingBiomes = EnumSet.of(
+            Biome.FROZEN_OCEAN, Biome.FROZEN_RIVER,
+            Biome.TAIGA, Biome.TAIGA_HILLS, Biome.TAIGA_MOUNTAINS,
+            Biome.ICE_PLAINS, Biome.ICE_MOUNTAINS, Biome.ICE_PLAINS_SPIKES,
+            Biome.COLD_TAIGA, Biome.COLD_TAIGA_HILLS, Biome.COLD_TAIGA_MOUNTAINS);
 
     private Fishing() {}
 
