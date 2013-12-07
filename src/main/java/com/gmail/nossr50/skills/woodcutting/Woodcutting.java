@@ -163,7 +163,7 @@ public final class Woodcutting {
      * once the JIT has optimized the function (use the ability about 4 times
      * before taking measurements).
      */
-    protected static void processTree(BlockState blockState, LinkedHashSet<BlockState> treeFellerBlocks) {
+    protected static void processTree(BlockState blockState, Set<BlockState> treeFellerBlocks) {
         List<BlockState> futureCenterBlocks = new ArrayList<BlockState>();
 
         // Check the block up and take different behavior (smaller search) if it's a log
@@ -239,11 +239,11 @@ public final class Woodcutting {
             return false;
         }
 
+        // Without this check Tree Feller propagates through leaves until the threshold is hit
         if (treeFellerBlocks.size() > treeFellerThreshold) {
             treeFellerReachedThreshold = true;
         }
 
-        // Without this check Tree Feller propagates through leaves until the threshold is hit
         if (BlockUtils.isLog(blockState)) {
             treeFellerBlocks.add(blockState);
             futureCenterBlocks.add(blockState);

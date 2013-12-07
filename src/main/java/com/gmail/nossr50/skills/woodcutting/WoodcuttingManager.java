@@ -1,6 +1,6 @@
 package com.gmail.nossr50.skills.woodcutting;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.Material;
@@ -73,7 +73,7 @@ public class WoodcuttingManager extends SkillManager {
      */
     public void processTreeFeller(BlockState blockState) {
         Player player = getPlayer();
-        LinkedHashSet<BlockState> treeFellerBlocks = new LinkedHashSet<BlockState>();
+        Set<BlockState> treeFellerBlocks = new HashSet<BlockState>();
 
         Woodcutting.treeFellerReachedThreshold = false;
 
