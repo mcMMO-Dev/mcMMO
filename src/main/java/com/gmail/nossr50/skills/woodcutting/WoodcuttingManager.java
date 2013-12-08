@@ -153,7 +153,7 @@ public class WoodcuttingManager extends SkillManager {
                         break;
 
                     case LEAVES:
-                        Misc.randomDropItems(blockState.getLocation(), block.getDrops(), 10.0);
+                        Misc.dropItems(blockState.getLocation(), block.getDrops());
                         break;
 
                     default:
