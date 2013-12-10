@@ -21,7 +21,8 @@ public interface DatabaseManager {
     public void purgePowerlessUsers();
 
     /**
-     * Purge users who haven't logged on in over a certain time frame from the database.
+     * Purge users who haven't logged on in over a certain time frame from the
+     * database.
      */
     public void purgeOldUsers();
 
@@ -42,13 +43,13 @@ public interface DatabaseManager {
     public boolean saveUser(PlayerProfile profile);
 
     /**
-    * Retrieve leaderboard info.
-    *
-    * @param skillName The skill to retrieve info on
-    * @param pageNumber Which page in the leaderboards to retrieve
-    * @param statsPerPage The number of stats per page
-    * @return the requested leaderboard information
-    */
+     * Retrieve leaderboard info.
+     *
+     * @param skillName The skill to retrieve info on
+     * @param pageNumber Which page in the leaderboards to retrieve
+     * @param statsPerPage The number of stats per page
+     * @return the requested leaderboard information
+     */
     public List<PlayerStat> readLeaderboard(SkillType skill, int pageNumber, int statsPerPage);
 
     /**
@@ -74,9 +75,9 @@ public interface DatabaseManager {
      *
      * @param playerName The name of the player to load from the database
      * @param createNew Whether to create a new record if the player is not
-     *          found
+     *            found
      * @return The player's data, or an unloaded PlayerProfile if not found
-     *          and createNew is false
+     *         and createNew is false
      */
     public PlayerProfile loadPlayerProfile(String playerName, boolean createNew);
 
@@ -96,9 +97,17 @@ public interface DatabaseManager {
     public void convertUsers(DatabaseManager destination);
 
     /**
-     * Retrieve the type of database in use. Custom databases should return CUSTOM.
+     * Retrieve the type of database in use. Custom databases should return
+     * CUSTOM.
      *
      * @return The type of database
      */
     public DatabaseType getDatabaseType();
+
+    /**
+     * Used for database conversion. If this is set to true, profiles may not
+     * be loaded from the database. This method will be called before and
+     * after database imports.
+     */
+    public void setLoadingDisabled(boolean state);
 }

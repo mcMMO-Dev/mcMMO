@@ -35,11 +35,16 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     private final long UPDATE_WAIT_TIME = 600000L; // 10 minutes
     private final File usersFile;
     private static final Object fileWritingLock = new Object();
+    private volatile boolean converting = false;
 
     protected FlatfileDatabaseManager() {
         usersFile = new File(mcMMO.getUsersFilePath());
         checkStructure();
         updateLeaderboards();
+    }
+
+    public void setLoadingDisabled(boolean state) {
+        converting = state;
     }
 
     public void purgePowerlessUsers() {
@@ -369,6 +374,10 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
+        if (converting) {
+            return new PlayerProfile(playerName, false);
+        }
+
         BufferedReader in = null;
         String usersFilePath = mcMMO.getUsersFilePath();
 

@@ -49,10 +49,17 @@ public final class SQLDatabaseManager implements DatabaseManager {
     // How many connection attempts have failed
     private int reconnectAttempt = 0;
 
+    // If we're importing users, do not allow creation of profiles
+    private volatile boolean converting = false;
+
     protected SQLDatabaseManager() {
         checkStructure();
 
         new SQLDatabaseKeepaliveTask(this).runTaskTimerAsynchronously(mcMMO.p, 10, 60L * 60 * Misc.TICK_CONVERSION_FACTOR);
+    }
+
+    public void setLoadingDisabled(boolean state) {
+        converting = state;
     }
 
     public void purgePowerlessUsers() {
@@ -346,12 +353,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
+        if (converting) {
+            return new PlayerProfile(playerName, false); // return unloaded profile during database conversion
+        }
+
         return loadPlayerProfile(playerName, create, true);
     }
 
     private PlayerProfile loadPlayerProfile(String playerName, boolean create, boolean retry) {
         if (!checkConnected()) {
-            return new PlayerProfile(playerName, false); // return fake profile if not connected
+            return new PlayerProfile(playerName, false); // return unloaded profile if not connected
         }
 
         PreparedStatement statement = null;

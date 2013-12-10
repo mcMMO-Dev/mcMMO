@@ -3,13 +3,10 @@ package com.gmail.nossr50.commands.database;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
-import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.database.DatabaseConversionTask;
 import com.gmail.nossr50.util.player.UserManager;
@@ -52,17 +49,6 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Commands.mcconvert.Database.Start", previousType.toString(), newType.toString()));
 
                 UserManager.saveAll();
-                UserManager.clearAll();
-
-                for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-                    PlayerProfile profile = oldDatabase.loadPlayerProfile(player.getName(), false);
-
-                    if (profile.isLoaded()) {
-                        mcMMO.getDatabaseManager().saveUser(profile);
-                    }
-
-                    UserManager.addUser(player);
-                }
 
                 new DatabaseConversionTask(oldDatabase, sender, previousType.toString(), newType.toString()).runTaskAsynchronously(mcMMO.p);
                 return true;
