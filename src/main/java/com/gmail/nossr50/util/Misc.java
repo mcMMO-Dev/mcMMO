@@ -203,7 +203,7 @@ public final class Misc {
 
     public static void printProgress(int convertedUsers, int progressInterval, long startMillis) {
         if ((convertedUsers % progressInterval) == 0) {
-            mcMMO.p.getLogger().info(String.format("Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / ((System.currentTimeMillis() - startMillis) / TIME_CONVERSION_FACTOR)));
+            mcMMO.p.getLogger().info(String.format("Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / (double) ((System.currentTimeMillis() - startMillis) / TIME_CONVERSION_FACTOR)));
         }
     }
 
