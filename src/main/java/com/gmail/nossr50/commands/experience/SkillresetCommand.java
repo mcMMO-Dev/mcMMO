@@ -152,7 +152,7 @@ public class SkillresetCommand implements TabExecutor {
 
     protected void editValues(Player player, PlayerProfile profile, SkillType skill) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.values()) {
+            for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
                 handleCommand(player, profile, skillType);
             }
 

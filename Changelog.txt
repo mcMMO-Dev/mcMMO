@@ -25,6 +25,7 @@ Version 1.4.08-dev
  = Fixed bug where disabling hardcore mode for specific skills didn't work
  = Fixed bug which caused the backup cleanup to delete old backups while it should have kept those
  = Fixed bug where party chat broke if the display name contained special characters
+ = Fixed bug where `/addlevels all` and `/skillreset all` didn't work
  ! Updated localization files
  ! Changed AxesCritical to CriticalHit in config file
  ! Changed several secondary ability permissions(deprecated versions still exist)

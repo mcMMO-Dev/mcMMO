@@ -24,6 +24,8 @@ import com.google.common.collect.ImmutableList;
 public abstract class ExperienceCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        SkillType skill;
+
         switch (args.length) {
             case 2:
                 if (CommandUtils.noConsoleUsage(sender)) {
@@ -39,7 +41,13 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), SkillType.getSkill(args[0]), Integer.parseInt(args[1]));
+                skill = SkillType.getSkill(args[0]);
+
+                if (args[1].equalsIgnoreCase("all")) {
+                    skill = null;
+                }
+
+                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill, Integer.parseInt(args[1]));
                 return true;
 
             case 3:
@@ -52,12 +60,12 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                SkillType skill;
+                skill = SkillType.getSkill(args[1]);
+
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
-                } else {
-                    skill = SkillType.getSkill(args[1]);
                 }
+
                 int value = Integer.parseInt(args[2]);
 
                 String playerName = Misc.getMatchedPlayerName(args[0]);
@@ -123,7 +131,7 @@ public abstract class ExperienceCommand implements TabExecutor {
 
     protected void editValues(Player player, PlayerProfile profile, SkillType skill, int value) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.values()) {
+            for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
                 handleCommand(player, profile, skillType, value);
             }
 
