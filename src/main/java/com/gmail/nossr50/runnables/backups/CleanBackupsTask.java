@@ -33,17 +33,16 @@ public class CleanBackupsTask extends BukkitRunnable {
 
         // Check files in backup folder from oldest to newest
         for (File file : BACKUP_DIR.listFiles()) {
-            if (!file.isFile()) {
+            if (!file.isFile() || file.isDirectory()) {
                 continue;
             }
 
             amountTotal++;
             String fileName = file.getName();
-            fileName = fileName.split("[.]")[0];
 
-            Date date = getDate(fileName);
+            Date date = getDate(fileName.split("[.]")[0]);
 
-            if (date == null) {
+            if (!fileName.contains(".zip") || date == null) {
                 mcMMO.p.debug("Could not determine date for file: " + fileName);
                 continue;
             }
