@@ -1,7 +1,5 @@
 package com.gmail.nossr50.skills.repair;
 
-import java.util.List;
-
 import org.bukkit.Material;
 
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -12,5 +10,4 @@ public class Repair {
     public static double repairMasteryMaxBonus      = AdvancedConfig.getInstance().getRepairMasteryMaxBonus();
 
     public static Material anvilMaterial  = Config.getInstance().getRepairAnvilMaterial();
-    public static boolean  anvilMessagesEnabled = Config.getInstance().getRepairAnvilMessagesEnabled();
 }

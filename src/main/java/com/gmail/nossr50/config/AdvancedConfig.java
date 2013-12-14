@@ -767,8 +767,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /* REPAIR */
     public double getRepairMasteryMaxBonus() { return config.getDouble("Skills.Repair.RepairMastery.MaxBonusPercentage", 200.0D); }
     public int getRepairMasteryMaxLevel() { return config.getInt("Skills.Repair.RepairMastery.MaxBonusLevel", 1000); }
-    public double getSuperRepairChanceMax() { return config.getDouble("Skills.Repair.SuperRepair.ChanceMax", 100.0D); }
-    public int getSuperRepairMaxLevel() { return config.getInt("Skills.Repair.SuperRepair.MaxBonusLevel", 1000); }
 
     /* Arcane Forging */
     public int getArcaneForgingRankLevel(ArcaneForging.Tier tier) { return config.getInt("Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + tier.toNumerical()); }
@@ -789,8 +787,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public boolean getArcaneSalvageEnchantLossEnabled() { return config.getBoolean("Skills.Salvage.ArcaneSalvage.EnchantLossEnabled", true); }
 
     public int getArcaneSalvageRankLevel(Salvage.Tier tier) { return config.getInt("Skills.Salvage.ArcaneSalvage.Rank_Levels.Rank_" + tier.toNumerical()); }
-    public int getArcaneSalvageExtractFullEnchantsChance(Salvage.Tier tier) { return config.getInt("Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + tier.toNumerical()); }
-    public int getArcaneSalvageExtractPartialEnchantsChance(Salvage.Tier tier) { return config.getInt("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + tier.toNumerical()); }
+    public double getArcaneSalvageExtractFullEnchantsChance(Salvage.Tier tier) { return config.getDouble("Skills.Salvage.ArcaneSalvage.ExtractFullEnchant.Rank_" + tier.toNumerical()); }
+    public double getArcaneSalvageExtractPartialEnchantsChance(Salvage.Tier tier) { return config.getDouble("Skills.Salvage.ArcaneSalvage.ExtractPartialEnchant.Rank_" + tier.toNumerical()); }
 
     /* SMELTING */
     public int getBurnModifierMaxLevel() { return config.getInt("Skills.Smelting.FuelEfficiency.MaxBonusLevel", 1000); }

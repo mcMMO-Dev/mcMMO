@@ -314,10 +314,6 @@ Skills:
             ChanceMax: 100.0
             MaxBonusLevel: 1000
 
-        Salvage:
-            # UnlockLevel: Level when Salvage become available
-            UnlockLevel: 600
-
         ArcaneForging:
             May_Lose_Enchants: true
             Rank_Levels:

@@ -256,25 +256,31 @@ public class SkillUtils {
     }
 
     public static int getRepairAndSalvageQuantities(ItemStack item, Material repairMaterial, byte repairMetadata) {
+        // Workaround for Bukkit bug where damaged items would not return any recipes
+        item = item.clone();
+        item.setDurability((short) 0);
+
         int quantity = 0;
         MaterialData repairData = repairMaterial != null ? new MaterialData(repairMaterial, repairMetadata) : null;
         List<Recipe> recipes = mcMMO.p.getServer().getRecipesFor(item);
 
-        if (!recipes.isEmpty()) {
-            Recipe recipe = recipes.get(0);
+        if (recipes.isEmpty()) {
+            return quantity;
+        }
 
-            if (recipe instanceof ShapelessRecipe) {
-                for (ItemStack ingredient : ((ShapelessRecipe) recipe).getIngredientList()) {
-                    if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getData().equals(repairData))) {
-                        quantity += ingredient.getAmount();
-                    }
+        Recipe recipe = recipes.get(0);
+
+        if (recipe instanceof ShapelessRecipe) {
+            for (ItemStack ingredient : ((ShapelessRecipe) recipe).getIngredientList()) {
+                if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getData().equals(repairData))) {
+                    quantity += ingredient.getAmount();
                 }
             }
-            else if (recipe instanceof ShapedRecipe) {
-                for (ItemStack ingredient : ((ShapedRecipe) recipe).getIngredientMap().values()) {
-                    if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getData().equals(repairData))) {
-                        quantity += ingredient.getAmount();
-                    }
+        }
+        else if (recipe instanceof ShapedRecipe) {
+            for (ItemStack ingredient : ((ShapedRecipe) recipe).getIngredientMap().values()) {
+                if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getData().equals(repairData))) {
+                    quantity += ingredient.getAmount();
                 }
             }
         }

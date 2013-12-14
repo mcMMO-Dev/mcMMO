@@ -1,12 +1,11 @@
-package com.gmail.nossr50.skills.repair.repairables;
+package com.gmail.nossr50.skills.salvage.salvageables;
 
 import org.bukkit.Material;
 
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 
-
-public interface Repairable {
+public interface Salvageable {
     /**
      * Gets the type of this repairable item
      *
@@ -19,37 +18,37 @@ public interface Repairable {
      *
      * @return the id of the repair material
      */
-    public Material getRepairMaterial();
+    public Material getSalvageMaterial();
 
     /**
      * Gets the metadata byte value of the material used to repair this item
      *
      * @return the byte metadata of the repair material
      */
-    public byte getRepairMaterialMetadata();
+    public byte getSalvageMaterialMetadata();
 
     /**
      * Gets the RepairItemType value for this repairable item
      *
      * @return the RepairItemType for this repairable
      */
-    public ItemType getRepairItemType();
+    public ItemType getSalvageItemType();
 
     /**
      * Gets the RepairMaterialType value for this repairable item
      *
      * @return the RepairMaterialType for this repairable
      */
-    public MaterialType getRepairMaterialType();
+    public MaterialType getSalvageMaterialType();
 
     /**
-     * Gets the minimum quantity of repair materials ignoring all other repair bonuses
+     * Gets the maximum quantity of salvage materials ignoring all other salvage bonuses
      *
      * This is typically set to the number of items needed to create that item, for example 5 for helmets or 2 for swords
      *
-     * @return the minimum number of items
+     * @return the maximum number of items
      */
-    public int getMinimumQuantity();
+    public int getMaximumQuantity();
 
     /**
      * Gets the maximum durability of this item before it breaks
@@ -65,7 +64,7 @@ public interface Repairable {
      *
      * @return the base repair durability
      */
-    public short getBaseRepairDurability();
+    public short getBaseSalvageDurability();
 
     /**
      * Gets the minimum repair level needed to repair this item
