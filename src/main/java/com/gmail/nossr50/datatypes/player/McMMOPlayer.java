@@ -75,6 +75,9 @@ public class McMMOPlayer {
     private boolean abilityUse = true;
     private boolean godMode;
 
+    private Sound recentSound;
+    private int   lastSound;
+
     private final Map<AbilityType, Boolean> abilityMode     = new HashMap<AbilityType, Boolean>();
     private final Map<AbilityType, Boolean> abilityInformed = new HashMap<AbilityType, Boolean>();
 
@@ -440,6 +443,50 @@ public class McMMOPlayer {
 
     public void toggleGodMode() {
         godMode = !godMode;
+    }
+
+    /*
+     * Sounds
+     */
+
+    /**
+     * Play a sound at the players location.
+     * Sound will only get played if it's different
+     * compared to the previously played sound or if the cooldown has expired.
+     *
+     * @param sound    The Sound to play
+     * @param volume   Volume of the sound
+     * @param pitch    Pitch of the sound
+     * @param cooldown Cooldown time between sounds
+     */
+    public void playSound(Sound sound, float volume, float pitch, int cooldown) {
+        if (getRecentSound() == sound && !SkillUtils.cooldownExpired(getLastSound(), 1)) {
+            return;
+        }
+
+        setRecentSound(sound);
+        actualizeLastSound();
+        player.playSound(player.getLocation(), sound, volume, pitch);
+    }
+
+    public void playSound(Sound sound, float volume, float pitch) {
+        playSound(sound, volume, pitch, 1);
+    }
+
+    public Sound getRecentSound() {
+        return recentSound;
+    }
+
+    public void setRecentSound(Sound recentSound) {
+        this.recentSound = recentSound;
+    }
+
+    public int getLastSound() {
+        return lastSound;
+    }
+
+    public void actualizeLastSound() {
+        lastSound = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 
     /*

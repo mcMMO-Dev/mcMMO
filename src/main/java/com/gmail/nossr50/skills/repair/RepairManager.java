@@ -148,7 +148,7 @@ public class RepairManager extends SkillManager {
 
         // BWONG BWONG BWONG
         if (Config.getInstance().getRepairAnvilUseSoundsEnabled()) {
-            player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+            mcMMOPlayer.playSound(Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
         }
 
         // Repair the item!
