@@ -468,9 +468,10 @@ public class Config extends AutoUpdateConfigLoader {
 
     /* Salvage */
     public boolean getSalvageAnvilMessagesEnabled() { return config.getBoolean("Skills.Salvage.Anvil_Messages", true); }
-    public Material getSalvageAnvilMaterial() { return Material.matchMaterial(config.getString("Skills.Repair.Salvage_Anvil_ID", "GOLD_BLOCK")); }
-    public boolean getSalvageTools() { return config.getBoolean("Skills.Salvage.Salvage_tools", true); }
-    public boolean getSalvageArmor() { return config.getBoolean("Skills.Salvage.Salvage_armor", true); }
+    public boolean getSalvageAnvilPlaceSoundsEnabled() { return config.getBoolean("Skills.Salvage.Anvil_Placed_Sounds", true); }
+    public boolean getSalvageAnvilUseSoundsEnabled() { return config.getBoolean("Skills.Salvage.Anvil_Use_Sounds", true); }
+    public Material getSalvageAnvilMaterial() { return Material.matchMaterial(config.getString("Skills.Salvage.Anvil_Material", "GOLD_BLOCK")); }
+    public boolean getSalvageConfirmRequired() { return config.getBoolean("Skills.Salvage.Confirm_Required", true); }
 
     /* Unarmed */
     public boolean getUnarmedBlockCrackerSmoothbrickToCracked() { return config.getBoolean("Skills.Unarmed.Block_Cracker.SmoothBrick_To_CrackedBrick", true); }

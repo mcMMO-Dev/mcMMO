@@ -314,9 +314,11 @@ Skills:
     Salvage:
         Level_Cap: 0
         Anvil_Messages: true
-        Salvage_Anvil_Material: GOLD_BLOCK
-        Salvage_tools: true
-        Salvage_armor: true
+        Anvil_Placed_Sounds: true
+        Anvil_Use_Sounds: true
+        Anvil_Material: GOLD_BLOCK
+        # Ask for a confirmation when a player tries to salvage an enchanted item
+        Confirm_Required: true
     Smelting:
         Level_Cap: 0
     Swords:

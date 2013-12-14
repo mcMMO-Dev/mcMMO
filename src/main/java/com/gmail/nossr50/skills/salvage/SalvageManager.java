@@ -11,14 +11,20 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.material.MaterialData;
 
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.salvage.Salvage.Tier;
+import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SalvageManager extends SkillManager {
     private boolean placedAnvil;
@@ -30,20 +36,23 @@ public class SalvageManager extends SkillManager {
 
     /**
      * Handles notifications for placing an anvil.
-     *
-     * @param anvilType The {@link Material} of the anvil block
      */
-    public void placedAnvilCheck(Material anvilType) {
+    public void placedAnvilCheck() {
         Player player = getPlayer();
 
-        if (getPlacedAnvil(anvilType)) {
+        if (getPlacedAnvil()) {
             return;
         }
 
-        player.sendMessage(LocaleLoader.getString("Salvage.Listener.Anvil"));
+        if (Config.getInstance().getSalvageAnvilMessagesEnabled()) {
+            player.sendMessage(LocaleLoader.getString("Salvage.Listener.Anvil"));
+        }
 
-        player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-        togglePlacedAnvil(anvilType);
+        if (Config.getInstance().getSalvageAnvilPlaceSoundsEnabled()) {
+            player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+        }
+
+        togglePlacedAnvil();
     }
 
     public void handleSalvage(Location location, ItemStack item) {
@@ -53,20 +62,43 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        if (item.getDurability() != 0 && (getSkillLevel() < Salvage.advancedSalvageUnlockLevel || !Permissions.advancedSalvage(player))) {
-            player.sendMessage(LocaleLoader.getString("Salvage.Skills.AdeptDamaged"));
+        Salvageable salvageable = mcMMO.getSalvageableManager().getSalvageable(item.getType());
+
+        // Permissions checks on material and item types
+        if (!Permissions.salvageItemType(player, salvageable.getSalvageItemType())) {
+            player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
             return;
         }
 
-        int salvageableAmount = Salvage.calculateSalvageableAmount(item.getDurability(), item.getType().getMaxDurability(), Salvage.getSalvagedAmount(item));
+        if (!Permissions.salvageMaterialType(player, salvageable.getSalvageMaterialType())) {
+            player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
+            return;
+        }
+
+        int skillLevel = getSkillLevel();
+        int minimumSalvageableLevel = salvageable.getMinimumLevel();
+
+        // Level check
+        if (skillLevel < minimumSalvageableLevel) {
+            player.sendMessage(LocaleLoader.getString("Salvage.Skills.Adept.Level", minimumSalvageableLevel, StringUtils.getPrettyItemString(item.getType())));
+            return;
+        }
+
+        if (item.getDurability() != 0 && (getSkillLevel() < Salvage.advancedSalvageUnlockLevel || !Permissions.advancedSalvage(player))) {
+            player.sendMessage(LocaleLoader.getString("Salvage.Skills.Adept.Damaged"));
+            return;
+        }
+
+        byte salvageMaterialMetadata = salvageable.getSalvageMaterialMetadata();
+
+        int salvageableAmount = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
 
         if (salvageableAmount == 0) {
             player.sendMessage(LocaleLoader.getString("Salvage.Skills.TooDamaged"));
             return;
         }
 
-        double salvagePercentage = Math.min((((Salvage.salvageMaxPercentage / Salvage.salvageMaxPercentageLevel) * getSkillLevel()) / 100.0D), Salvage.salvageMaxPercentage / 100.0D);
-        salvageableAmount = Math.max((int) (salvageableAmount * salvagePercentage), 1); // Always get at least something back, if you're capable of repairing it.
+        salvageableAmount = Math.max((int) (salvageableAmount * getMaxSalvagePercentage()), 1); // Always get at least something back, if you're capable of salvaging it.
 
         player.setItemInHand(new ItemStack(Material.AIR));
         location.add(0, 1, 0);
@@ -81,10 +113,19 @@ public class SalvageManager extends SkillManager {
             }
         }
 
-        Misc.dropItems(location, new ItemStack(Salvage.getSalvagedItem(item)), salvageableAmount);
+        Misc.dropItems(location, new MaterialData(salvageable.getSalvageMaterial(), salvageMaterialMetadata).toItemStack(salvageableAmount), 1);
 
-        player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-        player.sendMessage(LocaleLoader.getString("Repair.Skills.SalvageSuccess"));
+        // BWONG BWONG BWONG - CLUNK!
+        if (Config.getInstance().getSalvageAnvilUseSoundsEnabled()) {
+            player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+            player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1.0F, 1.0F);
+        }
+
+        player.sendMessage(LocaleLoader.getString("Salvage.Skills.Success"));
+    }
+
+    public double getMaxSalvagePercentage() {
+        return Math.min((((Salvage.salvageMaxPercentage / Salvage.salvageMaxPercentageLevel) * getSkillLevel()) / 100.0D), Salvage.salvageMaxPercentage / 100.0D);
     }
 
     /**
@@ -174,45 +215,56 @@ public class SalvageManager extends SkillManager {
         return book;
     }
 
+    /**
+     * Check if the player has tried to use an Anvil before.
+     * @param actualize
+     *
+     * @return true if the player has confirmed using an Anvil
+     */
+    public boolean checkConfirmation(boolean actualize) {
+        Player player = getPlayer();
+        long lastUse = getLastAnvilUse();
+
+        if (!SkillUtils.cooldownExpired(lastUse, 3) || !Config.getInstance().getSalvageConfirmRequired()) {
+            return true;
+        }
+
+        if (!actualize) {
+            return false;
+        }
+
+        actualizeLastAnvilUse();
+
+        player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Salvage.Pretty.Name")));
+
+        return false;
+    }
+
     /*
      * Salvage Anvil Placement
      */
 
-    public boolean getPlacedAnvil(Material anvilType) {
-        if (anvilType == Salvage.anvilMaterial) {
-            return placedAnvil;
-        }
-
-        return true;
+    public boolean getPlacedAnvil() {
+        return placedAnvil;
     }
 
-    public void togglePlacedAnvil(Material anvilType) {
-        if (anvilType == Salvage.anvilMaterial) {
-            placedAnvil = !placedAnvil;
-        }
+    public void togglePlacedAnvil() {
+        placedAnvil = !placedAnvil;
     }
 
     /*
      * Salvage Anvil Usage
      */
 
-    public int getLastAnvilUse(Material anvilType) {
-        if (anvilType == Salvage.anvilMaterial) {
-            return lastClick;
-        }
-
-        return 0;
+    public int getLastAnvilUse() {
+        return lastClick;
     }
 
-    public void setLastAnvilUse(Material anvilType, int value) {
-        if (anvilType == Salvage.anvilMaterial) {
-            lastClick = value;
-        }
+    public void setLastAnvilUse(int value) {
+        lastClick = value;
     }
 
-    public void actualizeLastAnvilUse(Material anvilType) {
-        if (anvilType == Salvage.anvilMaterial) {
-            lastClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-        }
+    public void actualizeLastAnvilUse() {
+        lastClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 }

@@ -22,7 +22,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.repair.ArcaneForging.Tier;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
-import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -30,8 +29,8 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class RepairManager extends SkillManager {
-    private boolean placedRepairAnvil;
-    private int     lastRepairClick;
+    private boolean placedAnvil;
+    private int     lastClick;
 
     public RepairManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.REPAIR);
@@ -39,23 +38,23 @@ public class RepairManager extends SkillManager {
 
     /**
      * Handles notifications for placing an anvil.
-     *
-     * @param anvilType The {@link Material} of the anvil block
      */
-    public void placedAnvilCheck(Material anvilType) {
+    public void placedAnvilCheck() {
         Player player = getPlayer();
 
-        if (getPlacedAnvil(anvilType)) {
+        if (getPlacedAnvil()) {
             return;
         }
 
-        player.sendMessage(LocaleLoader.getString("Repair.Listener.Anvil"));
+        if (Config.getInstance().getRepairAnvilMessagesEnabled()) {
+            player.sendMessage(LocaleLoader.getString("Repair.Listener.Anvil"));
+        }
 
         if (Config.getInstance().getRepairAnvilPlaceSoundsEnabled()) {
             player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
         }
 
-        togglePlacedAnvil(anvilType);
+        togglePlacedAnvil();
     }
 
     public void handleRepair(ItemStack item) {
@@ -63,12 +62,12 @@ public class RepairManager extends SkillManager {
         Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
 
         // Permissions checks on material and item types
-        if (!repairable.getRepairItemType().getPermissions(player)) {
+        if (!Permissions.repairMaterialType(player, repairable.getRepairMaterialType())) {
             player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
             return;
         }
 
-        if (!repairable.getRepairMaterialType().getPermissions(player)) {
+        if (!Permissions.repairMaterialType(player, repairable.getRepairMaterialType())) {
             player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
             return;
         }
@@ -161,9 +160,9 @@ public class RepairManager extends SkillManager {
      *
      * @return true if the player has confirmed using an Anvil
      */
-    public boolean checkConfirmation(Material anvilType, boolean actualize) {
+    public boolean checkConfirmation(boolean actualize) {
         Player player = getPlayer();
-        long lastUse = getLastAnvilUse(anvilType);
+        long lastUse = getLastAnvilUse();
 
         if (!SkillUtils.cooldownExpired(lastUse, 3) || !Config.getInstance().getRepairConfirmRequired()) {
             return true;
@@ -173,14 +172,8 @@ public class RepairManager extends SkillManager {
             return false;
         }
 
-        actualizeLastAnvilUse(anvilType);
-
-        if (anvilType == Repair.anvilMaterial) {
-            player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Repair.Pretty.Name")));
-        }
-        else if (anvilType == Salvage.anvilMaterial) {
-            player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Salvage.Pretty.Name")));
-        }
+        actualizeLastAnvilUse();
+        player.sendMessage(LocaleLoader.getString("Skills.ConfirmOrCancel", LocaleLoader.getString("Repair.Pretty.Name")));
 
         return false;
     }
@@ -339,41 +332,27 @@ public class RepairManager extends SkillManager {
      * Repair Anvil Placement
      */
 
-    public boolean getPlacedAnvil(Material anvilType) {
-        if (anvilType == Repair.anvilMaterial) {
-            return placedRepairAnvil;
-        }
-
-        return true;
+    public boolean getPlacedAnvil() {
+        return placedAnvil;
     }
 
-    public void togglePlacedAnvil(Material anvilType) {
-        if (anvilType == Repair.anvilMaterial) {
-            placedRepairAnvil = !placedRepairAnvil;
-        }
+    public void togglePlacedAnvil() {
+        placedAnvil = !placedAnvil;
     }
 
     /*
      * Repair Anvil Usage
      */
 
-    public int getLastAnvilUse(Material anvilType) {
-        if (anvilType == Repair.anvilMaterial) {
-            return lastRepairClick;
-        }
-
-        return 0;
+    public int getLastAnvilUse() {
+        return lastClick;
     }
 
-    public void setLastAnvilUse(Material anvilType, int value) {
-        if (anvilType == Repair.anvilMaterial) {
-            lastRepairClick = value;
-        }
+    public void setLastAnvilUse(int value) {
+        lastClick = value;
     }
 
-    public void actualizeLastAnvilUse(Material anvilType) {
-        if (anvilType == Repair.anvilMaterial) {
-            lastRepairClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-        }
+    public void actualizeLastAnvilUse() {
+        lastClick = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
     }
 }

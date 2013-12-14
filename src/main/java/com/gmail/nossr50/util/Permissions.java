@@ -11,6 +11,8 @@ import org.bukkit.plugin.PluginManager;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.party.PartySubcommandType;
+import com.gmail.nossr50.datatypes.skills.ItemType;
+import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 
@@ -162,23 +164,15 @@ public final class Permissions {
     public static boolean superBreaker(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.mining.superbreaker"); }
 
     /* REPAIR */
-
-    public static boolean repairArmor(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.armorrepair"); }
-    public static boolean repairTools(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.toolrepair"); }
-    public static boolean repairOtherItems(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.otherrepair"); }
-
-    public static boolean repairDiamond(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.diamondrepair"); }
-    public static boolean repairGold(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.goldrepair"); }
-    public static boolean repairIron(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.ironrepair"); }
-    public static boolean repairLeather(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.leatherrepair"); }
-    public static boolean repairOtherMaterials(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.othermaterialrepair"); }
-    public static boolean repairString(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.stringrepair"); }
-    public static boolean repairStone(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.stonerepair"); }
-    public static boolean repairWood(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.repair.woodrepair"); }
+    public static boolean repairItemType(Permissible permissible, ItemType repairItemType) { return permissible.hasPermission("mcmmo.ability.repair." + repairItemType.toString().toLowerCase() + "repair"); }
+    public static boolean repairMaterialType(Permissible permissible, MaterialType repairMaterialType) { return permissible.hasPermission("mcmmo.ability.repair." + repairMaterialType.toString().toLowerCase() + "repair"); }
 
     /* SALVAGE */
     public static boolean advancedSalvage(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.salvage.advancedsalvage"); }
     public static boolean arcaneSalvage(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.salvage.arcanesalvage"); }
+
+    public static boolean salvageItemType(Permissible permissible, ItemType salvageItemType) { return permissible.hasPermission("mcmmo.ability.salvage." + salvageItemType.toString().toLowerCase() + "salvage"); }
+    public static boolean salvageMaterialType(Permissible permissible, MaterialType salvageMaterialType) { return permissible.hasPermission("mcmmo.ability.salvage." + salvageMaterialType.toString().toLowerCase() + "salvage"); }
 
     /* SMELTING */
     public static boolean fluxMining(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.smelting.fluxmining"); }
