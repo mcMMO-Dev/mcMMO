@@ -561,6 +561,7 @@ public class EntityListener implements Listener {
             return;
         }
 
+        entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
         UserManager.getPlayer(player).getTamingManager().awardTamingXP(entity);
     }
 
