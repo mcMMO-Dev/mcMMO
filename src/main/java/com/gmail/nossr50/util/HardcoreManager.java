@@ -14,6 +14,7 @@ public final class HardcoreManager {
 
     public static void invokeStatPenalty(Player player) {
         double statLossPercentage = Config.getInstance().getHardcoreDeathStatPenaltyPercentage();
+        int levelThreshold = Config.getInstance().getHardcoreDeathStatPenaltyLevelThreshold();
 
         PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
         int totalLevelsLost = 0;
@@ -26,7 +27,7 @@ public final class HardcoreManager {
             int playerSkillLevel = playerProfile.getSkillLevel(skillType);
             int playerSkillXpLevel = playerProfile.getSkillXpLevel(skillType);
 
-            if (playerSkillLevel <= 0) {
+            if (playerSkillLevel <= 0 || playerSkillLevel <= levelThreshold) {
                 continue;
             }
 
@@ -53,6 +54,7 @@ public final class HardcoreManager {
 
     public static void invokeVampirism(Player killer, Player victim) {
         double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
+        int levelThreshold = Config.getInstance().getHardcoreVampirismLevelThreshold();
 
         McMMOPlayer killerPlayer = UserManager.getPlayer(killer);
         PlayerProfile killerProfile = killerPlayer.getProfile();
@@ -67,7 +69,7 @@ public final class HardcoreManager {
             int killerSkillLevel = killerProfile.getSkillLevel(skillType);
             int victimSkillLevel = victimProfile.getSkillLevel(skillType);
 
-            if (victimSkillLevel <= 0 || victimSkillLevel < killerSkillLevel / 2) {
+            if (victimSkillLevel <= 0 || victimSkillLevel < killerSkillLevel / 2 || victimSkillLevel <= levelThreshold) {
                 continue;
             }
 

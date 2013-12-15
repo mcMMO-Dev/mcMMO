@@ -302,11 +302,15 @@ public class Config extends AutoUpdateConfigLoader {
     public double getHardcoreDeathStatPenaltyPercentage() { return config.getDouble("Hardcore.Death_Stat_Loss.Penalty_Percentage", 75.0D); }
     public void setHardcoreDeathStatPenaltyPercentage(double value) { config.set("Hardcore.Death_Stat_Loss.Penalty_Percentage", value); }
 
+    public int getHardcoreDeathStatPenaltyLevelThreshold() { return config.getInt("Hardcore.Death_Stat_Loss.Level_Threshold", 0); }
+
     public boolean getHardcoreVampirismEnabled(SkillType skillType) { return config.getBoolean("Hardcore.Vampirism.Enabled." + StringUtils.getCapitalized(skillType.toString()), false); }
     public void setHardcoreVampirismEnabled(SkillType skillType, boolean enabled) { config.set("Hardcore.Vampirism.Enabled." + StringUtils.getCapitalized(skillType.toString()), enabled); }
 
     public double getHardcoreVampirismStatLeechPercentage() { return config.getDouble("Hardcore.Vampirism.Leech_Percentage", 5.0D); }
     public void setHardcoreVampirismStatLeechPercentage(double value) { config.set("Hardcore.Vampirism.Leech_Percentage", value); }
+
+    public int getHardcoreVampirismLevelThreshold() { return config.getInt("Hardcore.Vampirism.Level_Threshold", 0); }
 
     /* SMP Mods */
     public boolean getToolModsEnabled() { return config.getBoolean("Mods.Tool_Mods_Enabled", false); }

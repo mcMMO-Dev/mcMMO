@@ -131,6 +131,8 @@ MySQL:
 Hardcore:
     Death_Stat_Loss:
         Penalty_Percentage: 75.0
+        # Players will not lose stats when their level is below the Level_Threshold
+        Level_Threshold: 0
         Enabled:
             Acrobatics: false
             Archery: false
@@ -146,6 +148,7 @@ Hardcore:
             Woodcutting: false
     Vampirism:
         Leech_Percentage: 5.0
+        Level_Threshold: 0
         Enabled:
             Acrobatics: false
             Archery: false
