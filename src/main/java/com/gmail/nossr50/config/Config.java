@@ -109,7 +109,7 @@ public class Config extends AutoUpdateConfigLoader {
         }
 
         if (getChimaeraRecipeCost() < 1 || getChimaeraRecipeCost() > 9) {
-            reason.add("Items.Chimaera_Wing.Recipe_Cost only accepts values from 1 to 64!");
+            reason.add("Items.Chimaera_Wing.Recipe_Cost only accepts values from 1 to 9!");
         }
 
         if (getChimaeraItem() == null) {
