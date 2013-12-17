@@ -1,0 +1,44 @@
+# Config created by Dragyn
+# Created For Railcraft_1.6.2-8.1.0.0 
+#
+#
+#  Settings for Boots
+###
+Boots:
+    X7758:
+        Repairable: true
+        Repair_Material: X7796
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500       
+#
+#  Settings for Chestplates
+###
+Chestplates:
+    X7761:
+        Repairable: true
+        Repair_Material: X7796
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500        
+#
+#  Settings for Helmets
+###
+Helmets:
+    X7759:
+        Repairable: true
+        Repair_Material: X7796
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500       
+#
+#  Settings for Leggings
+###
+Leggings:
+    X7760:
+        Repairable: true
+        Repair_Material: X7796
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+        

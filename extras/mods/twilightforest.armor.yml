@@ -1,0 +1,134 @@
+# Config created by Dragyn
+# Created For twilightforest-1.20.3 
+#
+#
+#  Settings for Boots
+###
+Boots:  
+    # Ironwood
+    X27978:
+        Repairable: true
+        Repair_Material: X27974
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+    # Fiery
+    X27995:
+        Repairable: true
+        Repair_Material: X27991
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+    # Stealeaf
+    X28002:
+        Repairable: true
+        Repair_Material: X27998
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+    # Knightmetal
+    X28037:
+        Repairable: true
+        Repair_Material: X28032
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+        
+#
+#  Settings for Chestplates
+###
+Chestplates:
+    # Ironwood
+    X27976:
+        Repairable: true
+        Repair_Material: X27974
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+    # Fiery
+    X27993:
+        Repairable: true
+        Repair_Material: X27991
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+    # Stealeaf
+    X28000:
+        Repairable: true
+        Repair_Material: X27998
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+    # Knightmetal
+    X28035:
+        Repairable: true
+        Repair_Material: X28032
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+
+#
+#  Settings for Helmets
+###
+Helmets:
+    # Ironwood
+    X27975:
+        Repairable: true
+        Repair_Material: X27974
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+    # Fiery
+    X27992:
+        Repairable: true
+        Repair_Material: X27991
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+    # Stealeaf
+    X27999:
+        Repairable: true
+        Repair_Material: X27998
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+    # Knightmetal
+    X28034:
+        Repairable: true
+        Repair_Material: X28032
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+
+#
+#  Settings for Leggings
+###
+Leggings:
+    # Ironwood
+    X27977:
+        Repairable: true
+        Repair_Material: X27974
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+    # Fiery
+    X27994:
+        Repairable: true
+        Repair_Material: X27991
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+    # Stealeaf
+    X28001:
+        Repairable: true
+        Repair_Material: X27998
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
+    # Knightmetal
+    X28036:
+        Repairable: true
+        Repair_Material: X28032
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 2
+        Durability: 500
