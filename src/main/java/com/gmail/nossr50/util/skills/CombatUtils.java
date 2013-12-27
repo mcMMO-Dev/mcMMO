@@ -302,7 +302,7 @@ public final class CombatUtils {
         else if (attacker instanceof Player) {
             Player player = (Player) attacker;
 
-            if (Misc.isNPCEntity(player)) {
+            if (Misc.isNPCEntity(player) || Misc.isNPCEntity(target)) {
                 return;
             }
 
