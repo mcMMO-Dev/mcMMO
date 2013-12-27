@@ -105,11 +105,6 @@ public class PlayerListener implements Listener {
         }
 
         Player player = event.getEntity();
-
-        if (Misc.isNPCEntity(player)) {
-            return;
-        }
-
         event.setDeathMessage(MobHealthbarUtils.fixDeathMessage(deathMessage, player));
     }
 
