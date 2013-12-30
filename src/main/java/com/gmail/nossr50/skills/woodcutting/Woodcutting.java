@@ -75,35 +75,8 @@ public final class Woodcutting {
         if (mcMMO.getModManager().isCustomLog(blockState) && mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) {
             Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
         }
-        else {
-            switch (((Tree) blockState.getData()).getSpecies()) {
-                case GENERIC:
-                    if (Config.getInstance().getOakDoubleDropsEnabled()) {
-                        Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
-                    }
-                    return;
-
-                case REDWOOD:
-                    if (Config.getInstance().getSpruceDoubleDropsEnabled()) {
-                        Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
-                    }
-                    return;
-
-                case BIRCH:
-                    if (Config.getInstance().getBirchDoubleDropsEnabled()) {
-                        Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
-                    }
-                    return;
-
-                case JUNGLE:
-                    if (Config.getInstance().getJungleDoubleDropsEnabled()) {
-                        Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
-                    }
-                    return;
-
-                default:
-                    return;
-            }
+        else if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(((Tree) blockState.getData()).getSpecies())) {
+            Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
         }
     }
 

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 
@@ -475,10 +476,7 @@ public class Config extends AutoUpdateConfigLoader {
     public double getTamingCOTWRange() { return config.getDouble("Skills.Taming.Call_Of_The_Wild.Range", 40.0D); }
 
     /* Woodcutting */
-    public boolean getOakDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Oak", true); }
-    public boolean getBirchDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Birch", true); }
-    public boolean getSpruceDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Spruce", true); }
-    public boolean getJungleDoubleDropsEnabled() { return config.getBoolean("Double_Drops.Woodcutting.Jungle", true); }
+    public boolean getWoodcuttingDoubleDropsEnabled(TreeSpecies species) { return config.getBoolean("Double_Drops.Woodcutting." + StringUtils.getPrettyTreeSpeciesString(species).replace(" ", "_")); }
     public boolean getTreeFellerSoundsEnabled() { return config.getBoolean("Skills.Woodcutting.Tree_Feller_Sounds", true); }
 
     /* AFK Leveling */
