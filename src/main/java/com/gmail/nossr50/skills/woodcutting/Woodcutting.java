@@ -56,7 +56,12 @@ public final class Woodcutting {
             return mcMMO.getModManager().getBlock(blockState).getXpGain();
         }
 
-        TreeSpecies species = ((Tree) blockState.getData()).getSpecies();
+        //TODO Remove this workaround when casting to Tree works again
+        TreeSpecies species = TreeSpecies.GENERIC;
+        if (blockState.getData() instanceof Tree) {
+            species = ((Tree) blockState.getData()).getSpecies();
+        }
+
         int xp = ExperienceConfig.getInstance().getWoodcuttingTreeXP(species);
 
         if (species == TreeSpecies.JUNGLE && experienceGainMethod == ExperienceGainMethod.TREE_FELLER) {
@@ -75,8 +80,16 @@ public final class Woodcutting {
         if (mcMMO.getModManager().isCustomLog(blockState) && mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) {
             Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
         }
-        else if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(((Tree) blockState.getData()).getSpecies())) {
-            Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
+        else {
+            //TODO Remove this workaround when casting to Tree works again
+            TreeSpecies species = TreeSpecies.GENERIC;
+            if (blockState.getData() instanceof Tree) {
+                species = ((Tree) blockState.getData()).getSpecies();
+            }
+
+            if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(species)) {
+                Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
+            }
         }
     }
 

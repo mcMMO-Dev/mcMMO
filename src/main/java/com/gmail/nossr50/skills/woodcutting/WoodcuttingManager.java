@@ -140,11 +140,15 @@ public class WoodcuttingManager extends SkillManager {
                 Misc.dropItems(blockState.getLocation(), block.getDrops());
             }
             else {
-                Tree tree = (Tree) blockState.getData();
-                tree.setDirection(BlockFace.UP);
+                //TODO Remove this workaround when casting to Tree works again
+                if (blockState.getData() instanceof Tree) {
+                    Tree tree = (Tree) blockState.getData();
+                    tree.setDirection(BlockFace.UP);
+                }
 
                 switch (material) {
                     case LOG:
+                    case LOG_2:
                         if (canGetDoubleDrops()) {
                             Woodcutting.checkForDoubleDrop(blockState);
                         }
@@ -153,6 +157,7 @@ public class WoodcuttingManager extends SkillManager {
                         break;
 
                     case LEAVES:
+                    case LEAVES_2:
                         Misc.dropItems(blockState.getLocation(), block.getDrops());
                         break;
 
