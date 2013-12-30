@@ -373,10 +373,12 @@ Double_Drops:
         Sandstone: true
         Stone: true
     Woodcutting:
-        Oak: true
+        Acacia: true
         Birch: true
-        Spruce: true
+        Dark_Oak: true
+        Generic: true
         Jungle: true
+        Redwood: true
 
 #
 #  Settings for commands
