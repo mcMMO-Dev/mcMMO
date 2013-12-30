@@ -16,7 +16,8 @@ Concoctions:
         - SPIDER_EYE
         - SUGAR
         - SULPHUR
-        - WATER_LILY                        # TODO: 'RAW_FISH:3' (Minecraft 1.7)
+        - WATER_LILY
+        - 'RAW_FISH:3'
     Tier_Two_Ingredients:
         - CARROT_ITEM
         - SLIME_BALL
@@ -97,7 +98,7 @@ Potions:
             SPIDER_EYE: 4868            # Potion of Poison
             SUGAR: 258                  # Potion of Swiftness
             WATER_LILY: 3341            # Potion of Water Breathing (Minecraft 1.6)
-            # 'RAW_FISH:3': 3341          # TODO: Potion of Water Breathing (Minecraft 1.7)
+            'RAW_FISH:3': 3341          # Potion of Water Breathing (Minecraft 1.7)
 
     32: # Thick Potion
         Children:

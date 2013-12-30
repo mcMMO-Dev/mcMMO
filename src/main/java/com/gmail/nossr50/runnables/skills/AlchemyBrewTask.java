@@ -6,6 +6,7 @@ import org.bukkit.block.BrewingStand;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.skills.alchemy.McMMOPlayerBrewEvent;
@@ -32,7 +33,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
         brewSpeed = DEFAULT_BREW_SPEED;
         brewTimer = DEFAULT_BREW_TICKS;
         
-        if (player != null && !Misc.isNPCEntity(player) && Permissions.catalysis(player)) {
+        if (player != null && !Misc.isNPCEntity(player) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.CATALYSIS)) {
             double catalysis = UserManager.getPlayer(player).getAlchemyManager().getBrewSpeed();
             
             if (Permissions.lucky(player, SkillType.ALCHEMY)) {

@@ -8,7 +8,7 @@ import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 
 public class McMMOPlayerCatalysisEvent extends McMMOPlayerSkillEvent implements Cancellable {
     private double speed;
-    
+
     private boolean cancelled;
 
     public McMMOPlayerCatalysisEvent(Player player, double speed) {

@@ -6,9 +6,11 @@ import java.util.List;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.alchemy.Alchemy.Tier;
+import com.gmail.nossr50.skills.alchemy.AlchemyManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -27,11 +29,12 @@ public class AlchemyCommand extends SkillCommand {
         super(SkillType.ALCHEMY);
     }
 
-    protected String[] calculateAbilityDisplayValues(Player player, float skillValue, boolean isLucky) {
+    protected String[] calculateAbilityDisplayValues(Player player, boolean isLucky) {
+        AlchemyManager alchemyManager = UserManager.getPlayer(player).getAlchemyManager();
         String[] displayValues = new String[2];
 
-        displayValues[0] = decimal.format(UserManager.getPlayer(player).getAlchemyManager().getBrewSpeed()) + "x";
-        displayValues[1] = isLucky ? decimal.format(UserManager.getPlayer(player).getAlchemyManager().getBrewSpeedLucky()) + "x" : null;
+        displayValues[0] = decimal.format(alchemyManager.getBrewSpeed()) + "x";
+        displayValues[1] = isLucky ? decimal.format(alchemyManager.getBrewSpeedLucky()) + "x" : null;
 
         return displayValues;
     }
@@ -40,29 +43,30 @@ public class AlchemyCommand extends SkillCommand {
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
         // CATALYSIS
         if (canCatalysis) {
-            String[] catalysisStrings = calculateAbilityDisplayValues(player, skillValue, isLucky);
+            String[] catalysisStrings = calculateAbilityDisplayValues(player, isLucky);
             brewSpeed = catalysisStrings[0];
             brewSpeedLucky = catalysisStrings[1];
         }
 
         // CONCOCTIONS
         if (canConcoctions) {
-            tier = UserManager.getPlayer(player).getAlchemyManager().getTier();
-            ingredientCount = UserManager.getPlayer(player).getAlchemyManager().getIngredients().size();
-            ingredientList = UserManager.getPlayer(player).getAlchemyManager().getIngredientList();
+            AlchemyManager alchemyManager = UserManager.getPlayer(player).getAlchemyManager();
+            tier = alchemyManager.getTier();
+            ingredientCount = alchemyManager.getIngredients().size();
+            ingredientList = alchemyManager.getIngredientList();
         }
     }
 
     @Override
     protected void permissionsCheck(Player player) {
-        canCatalysis = Permissions.catalysis(player);
-        canConcoctions = Permissions.concoctions(player);
+        canCatalysis = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.CATALYSIS);
+        canConcoctions = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.CONCOCTIONS);
     }
 
     @Override
     protected List<String> effectsDisplay() {
         List<String> messages = new ArrayList<String>();
-        
+
         if (canCatalysis) {
             messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Alchemy.Effect.0"), LocaleLoader.getString("Alchemy.Effect.1")));
         }
@@ -70,7 +74,7 @@ public class AlchemyCommand extends SkillCommand {
         if (canConcoctions) {
             messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Alchemy.Effect.2"), LocaleLoader.getString("Alchemy.Effect.3")));
         }
-        
+
         return messages;
     }
 

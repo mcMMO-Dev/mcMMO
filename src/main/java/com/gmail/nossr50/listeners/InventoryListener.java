@@ -136,8 +136,8 @@ public class InventoryListener implements Listener {
         event.setExpToDrop(UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(event.getExpToDrop()));
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onAlchemyClickEvent(InventoryClickEvent event) {
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onInventoryClickEventNormal(InventoryClickEvent event) {
         if (event.getInventory().getType() != InventoryType.BREWING || !(event.getInventory().getHolder() instanceof BrewingStand)) {
             return;
         }
@@ -149,8 +149,8 @@ public class InventoryListener implements Listener {
         AlchemyPotionBrewer.handleInventoryClick(event);
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onAlchemyDragEvent(InventoryDragEvent event) {
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onInventoryDragEvent(InventoryDragEvent event) {
         if (event.getInventory().getType() != InventoryType.BREWING || !(event.getInventory().getHolder() instanceof BrewingStand)) {
             return;
         }
@@ -162,13 +162,13 @@ public class InventoryListener implements Listener {
         AlchemyPotionBrewer.handleInventoryDrag(event);
     }
 
-    @EventHandler(ignoreCancelled = true)
-    public void onAlchemyMoveItemEvent(InventoryMoveItemEvent event) {
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    public void onInventoryMoveItemEvent(InventoryMoveItemEvent event) {
         if (event.getDestination().getType() != InventoryType.BREWING || !(event.getDestination().getHolder() instanceof BrewingStand)) {
             return;
         }
 
-        if (Config.getInstance().getPreventHopperTransfer()  && event.getItem() != null && event.getItem().getType() != Material.POTION) {
+        if (Config.getInstance().getPreventHopperTransfer() && event.getItem() != null && event.getItem().getType() != Material.POTION) {
             event.setCancelled(true);
             return;
         }

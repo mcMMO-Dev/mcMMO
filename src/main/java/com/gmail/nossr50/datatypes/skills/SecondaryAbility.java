@@ -6,6 +6,10 @@ public enum SecondaryAbility {
     GRACEFUL_ROLL,
     ROLL,
 
+    /* ALCHEMY */
+    CATALYSIS,
+    CONCOCTIONS,
+
     /* ARCHERY */
     DAZE,
     RETRIEVE,

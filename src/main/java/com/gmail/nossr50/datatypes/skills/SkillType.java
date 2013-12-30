@@ -36,7 +36,7 @@ import com.google.common.collect.ImmutableList;
 
 public enum SkillType {
     ACROBATICS(AcrobaticsManager.class, Color.WHITE, ImmutableList.of(SecondaryAbility.DODGE, SecondaryAbility.GRACEFUL_ROLL, SecondaryAbility.ROLL)),
-    ALCHEMY(AlchemyManager.class, Color.FUCHSIA, null),
+    ALCHEMY(AlchemyManager.class, Color.FUCHSIA, ImmutableList.of(SecondaryAbility.CATALYSIS, SecondaryAbility.CONCOCTIONS)),
     ARCHERY(ArcheryManager.class, Color.MAROON, ImmutableList.of(SecondaryAbility.DAZE, SecondaryAbility.RETRIEVE, SecondaryAbility.SKILL_SHOT)),
     AXES(AxesManager.class, Color.AQUA, AbilityType.SKULL_SPLITTER, ToolType.AXE, ImmutableList.of(SecondaryAbility.ARMOR_IMPACT, SecondaryAbility.AXE_MASTERY, SecondaryAbility.CRITICAL_HIT, SecondaryAbility.GREATER_IMPACT)),
     EXCAVATION(ExcavationManager.class, Color.fromRGB(139, 69, 19), AbilityType.GIGA_DRILL_BREAKER, ToolType.SHOVEL, ImmutableList.of(SecondaryAbility.EXCAVATION_TREASURE_HUNTER)),

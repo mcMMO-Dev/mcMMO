@@ -598,20 +598,21 @@ public class EntityListener implements Listener {
 
     /**
      * Handle PotionSplash events in order to fix broken Splash Potion of Saturation.
-     * 
+     *
      * @param event The event to process
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPotionSplash(PotionSplashEvent event) {
         for (PotionEffect effect : ((PotionMeta) event.getEntity().getItem().getItemMeta()).getCustomEffects()) {
-            // (effect.getType() == PotionEffectType.SATURATION) is seemingly broken, so we use deprecated method for now.
-            if (effect.getType().getId() == 23) {
-                for (LivingEntity entity : event.getAffectedEntities()) {
-                    int duration = (int) (effect.getDuration() * event.getIntensity(entity));
-                    entity.addPotionEffect(new PotionEffect(effect.getType(), duration, effect.getAmplifier(), effect.isAmbient()));
-                }
+            // (effect.getType() != PotionEffectType.SATURATION) is seemingly broken, so we use deprecated method for now.
+            if (effect.getType().getId() != 23) {
+                return;
             }
-            return;
+
+            for (LivingEntity entity : event.getAffectedEntities()) {
+                int duration = (int) (effect.getDuration() * event.getIntensity(entity));
+                entity.addPotionEffect(new PotionEffect(effect.getType(), duration, effect.getAmplifier(), effect.isAmbient()));
+            }
         }
     }
 }

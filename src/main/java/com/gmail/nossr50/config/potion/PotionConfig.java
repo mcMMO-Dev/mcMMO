@@ -41,7 +41,7 @@ public class PotionConfig extends ConfigLoader {
 
         return instance;
     }
-    
+
     @Override
     protected void loadKeys() {
         loadConcoctions();
@@ -59,7 +59,7 @@ public class PotionConfig extends ConfigLoader {
         loadConcoctionsTier(concoctionsIngredientsTierSix, concoctionSection.getStringList("Tier_Six_Ingredients"));
         loadConcoctionsTier(concoctionsIngredientsTierSeven, concoctionSection.getStringList("Tier_Seven_Ingredients"));
         loadConcoctionsTier(concoctionsIngredientsTierEight, concoctionSection.getStringList("Tier_Eight_Ingredients"));
-        
+
         concoctionsIngredientsTierTwo.addAll(concoctionsIngredientsTierOne);
         concoctionsIngredientsTierThree.addAll(concoctionsIngredientsTierTwo);
         concoctionsIngredientsTierFour.addAll(concoctionsIngredientsTierThree);
@@ -73,7 +73,7 @@ public class PotionConfig extends ConfigLoader {
         if (ingredientStrings != null && ingredientStrings.size() > 0) {
             for (String ingredientString : ingredientStrings) {
                 ItemStack ingredient = loadIngredient(ingredientString);
-                
+
                 if (ingredient != null) {
                     ingredientList.add(ingredient);
                 }
@@ -91,7 +91,7 @@ public class PotionConfig extends ConfigLoader {
 
         for (String dataValue : potionSection.getKeys(false)) {
             AlchemyPotion potion = loadPotion(potionSection.getConfigurationSection(dataValue));
-            
+
             if (potion != null) {
                 potionMap.put(potion.getDataValue(), potion);
                 pass++;
@@ -100,30 +100,31 @@ public class PotionConfig extends ConfigLoader {
                 fail++;
             }
         }
-        
-        mcMMO.p.getLogger().info("Loaded " + pass + " Alchemy potions, skipped " + fail + ".");
+
+        mcMMO.p.debug("Loaded " + pass + " Alchemy potions, skipped " + fail + ".");
     }
 
     /**
      * Parse a ConfigurationSection representing a AlchemyPotion.
      * Returns null if input cannot be parsed.
-     * 
+     *
      * @param potion_section ConfigurationSection to be parsed.
+     *
      * @return Parsed AlchemyPotion.
      */
     private AlchemyPotion loadPotion(ConfigurationSection potion_section) {
         try {
             short dataValue = Short.parseShort(potion_section.getName());
-            
+
             String name = potion_section.getString("Name");
-            
+
             List<String> lore = new ArrayList<String>();
             if (potion_section.contains("Lore")) {
                 for (String line : potion_section.getStringList("Lore")) {
                     lore.add(line);
                 }
             }
-            
+
             List<PotionEffect> effects = new ArrayList<PotionEffect>();
             if (potion_section.contains("Effects")) {
                 for (String effect : potion_section.getStringList("Effects")) {
@@ -167,22 +168,25 @@ public class PotionConfig extends ConfigLoader {
      * Parse a string representation of an ingredient.
      * Format: '&lt;MATERIAL&gt;[:data]'
      * Returns null if input cannot be parsed.
-     * 
+     *
      * @param ingredient String representing an ingredient.
+     *
      * @return Parsed ingredient.
      */
     private ItemStack loadIngredient(String ingredient) {
         if (ingredient == null || ingredient.isEmpty()) {
             return null;
         }
+
         String[] parts = ingredient.split(":");
-        
+
         Material material = parts.length > 0 ? Material.getMaterial(parts[0]) : null;
         short data = parts.length > 1 ? Short.parseShort(parts[1]) : 0;
-        
+
         if (material != null) {
             return new ItemStack(material, 1, data);
         }
+
         return null;
     }
 }

@@ -31,12 +31,15 @@ mcMMO is currently developed by a team of individuals from all over the world.
 (https://github.com/t00thpick1)
 [![riking](https://1.gravatar.com/avatar/aca9f37e569ac3a63929920035a91ba4.png)]
 (https://github.com/riking)
+
+### Special thanks
 [![EasyMFnE](https://www.gravatar.com/avatar/99c9a1fa3bbf957791ceac7b45daadb0.png)]
 (https://github.com/EasyMFnE)
+Added the Alchemy skill
 
 ## Compiling
 
-mcMMO uses Maven 3 to manage dependancies, packaging, and shading of necessary classes; Maven 3 is required to compile mcMMO.
+mcMMO uses Maven 3 to manage dependencies, packaging, and shading of necessary classes; Maven 3 is required to compile mcMMO.
 
 The typical command used to build mcMMO is: `mvn clean package install`
 

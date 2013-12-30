@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.potion.PotionConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Permissions;
@@ -20,7 +21,11 @@ public class AlchemyManager extends SkillManager {
     }
 
     public boolean canCatalysis() {
-        return Permissions.catalysis(getPlayer());
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.CATALYSIS);
+    }
+
+    public boolean canConcoctions() {
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.CONCOCTIONS);
     }
 
     public boolean canUseIngredient(ItemStack item) {
@@ -66,21 +71,28 @@ public class AlchemyManager extends SkillManager {
     public String getIngredientList() {
         String list = "";
         for (ItemStack ingredient : getIngredients()) {
-            list += ", " + StringUtils.getPrettyItemString(ingredient.getType()) + (ingredient.getDurability() != 0 ? ":" + ingredient.getDurability() : "");
+            String string = StringUtils.getPrettyItemString(ingredient.getType()) + (ingredient.getDurability() != 0 ? ":" + ingredient.getDurability() : "");
+            if (string.equals("LONG_GRASS:2")) {
+                string = "Fern";
+            }
+            else if (string.equals("RAW_FISH:3")) {
+                string = "Pufferfish";
+            }
+
+            list += ", " + string;
         }
         return list.substring(2);
     }
 
-    public double getBrewSpeed() { 
+    public double getBrewSpeed() {
         return Alchemy.calculateBrewSpeed(getSkillLevel());
     }
-    
+
     public double getBrewSpeedLucky() {
         return LUCKY_MODIFIER * Alchemy.calculateBrewSpeed(getSkillLevel());
     }
-    
+
     public void handlePotionBrewSuccesses(int amount) {
         applyXpGain((float) (ExperienceConfig.getInstance().getPotionXP() * amount));
     }
-
 }

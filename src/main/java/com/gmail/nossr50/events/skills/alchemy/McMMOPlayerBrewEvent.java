@@ -10,7 +10,7 @@ import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 
 public class McMMOPlayerBrewEvent extends McMMOPlayerSkillEvent implements Cancellable {
     private Block brewingStand;
-    
+
     private boolean cancelled;
 
     public McMMOPlayerBrewEvent(Player player, Block brewingStand) {
