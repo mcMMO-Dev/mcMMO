@@ -7,10 +7,13 @@ import java.util.Set;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.spout.huds.HudType;
+import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -22,7 +25,9 @@ public class PlayerProfile {
     private boolean changed;
 
     /* HUDs */
+    private HudType hudType;
     private MobHealthbarType mobHealthbarType;
+    private McMMOHud spoutHud;
 
     /* Skill Data */
     private final Map<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>();   // Skill & Level
@@ -32,6 +37,7 @@ public class PlayerProfile {
     public PlayerProfile(String playerName) {
         this.playerName = playerName;
 
+        hudType = mcMMO.isSpoutEnabled() ? SpoutConfig.getInstance().getDefaultHudType() : HudType.DISABLED;
         mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
 
         for (AbilityType abilityType : AbilityType.values()) {
@@ -49,8 +55,10 @@ public class PlayerProfile {
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(String playerName, Map<SkillType, Integer> levelData, Map<SkillType, Float> xpData, Map<AbilityType, Integer> cooldownData, MobHealthbarType mobHealthbarType) {
+    public PlayerProfile(String playerName, Map<SkillType, Integer> levelData, Map<SkillType, Float> xpData, Map<AbilityType, Integer> cooldownData, HudType hudType, MobHealthbarType mobHealthbarType) {
         this.playerName = playerName;
+
+        this.hudType = hudType;
         this.mobHealthbarType = mobHealthbarType;
 
         skills.putAll(levelData);
@@ -65,7 +73,7 @@ public class PlayerProfile {
             return;
         }
 
-        changed = !mcMMO.getDatabaseManager().saveUser(new PlayerProfile(playerName, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType));
+        changed = !mcMMO.getDatabaseManager().saveUser(new PlayerProfile(playerName, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), hudType, mobHealthbarType));
 
         if (changed) {
             mcMMO.p.getLogger().warning("PlayerProfile for " + playerName + " failed to save");
@@ -78,6 +86,26 @@ public class PlayerProfile {
 
     public boolean isLoaded() {
         return loaded;
+    }
+
+    /*
+     * HUD Stuff
+     */
+
+    public HudType getHudType() {
+        return hudType;
+    }
+
+    public McMMOHud getSpoutHud() {
+        return spoutHud;
+    }
+
+    public void setSpoutHud(McMMOHud spoutHud) {
+        this.spoutHud = spoutHud;
+    }
+
+    public void setHudType(HudType hudType) {
+        this.hudType = hudType;
     }
 
     /*

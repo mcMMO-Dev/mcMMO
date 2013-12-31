@@ -23,6 +23,38 @@
                 </includes>
             </resource>
             <resource>
+                <targetPath>resources</targetPath>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/resources/xpbar/</directory>
+                <includes>
+                    <include>xpbar*.png</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>resources</targetPath>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/resources/healthbar/</directory>
+                <includes>
+                    <include>health*.png</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>resources</targetPath>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/resources/skillicon/</directory>
+                <includes>
+                    <include>*.png</include>
+                </includes>
+            </resource>
+            <resource>
+                <targetPath>resources</targetPath>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/resources/sound/</directory>
+                <includes>
+                    <include>*.wav</include>
+                </includes>
+            </resource>
+            <resource>
                 <targetPath>com/gmail/nossr50/locale</targetPath>
                 <filtering>true</filtering>
                 <directory>${basedir}/src/main/resources/locale/</directory>
@@ -113,6 +145,18 @@
             <url>http://repo.md-5.net/content/repositories/releases/</url>
         </repository>
         <repository>
+            <id>sonatype-nexus-releases</id>
+            <url>https://oss.sonatype.org/content/repositories/releases</url>
+        </repository>
+        <repository>
+            <id>sonatype-nexus-snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
             <id>Plugin MetricsExtension</id>
             <url>http://repo.turt2live.com</url>
         </repository>
@@ -124,6 +168,11 @@
             <version>1.6.4-R2.0</version>
             <type>jar</type>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spoutcraft</groupId>
+            <artifactId>spoutcraftplugin</artifactId>
+            <version>LATEST</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

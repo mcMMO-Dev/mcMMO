@@ -5,7 +5,7 @@
 Our latest development builds are available ~~[here](http://ci.mcmmo.info)~~. Unfortunately, the mcMMO site is down; a temporary dev build location is hosted [here](http://ci.ecocitycraft.com/job/mcMMO/).
 
 ### Brief Description
-The goal of mcMMO is to take core Minecraft game mechanics and expand them into add an extensive and quality RPG experience. Everything in mcMMO has been carefully thought out and is constantly being improved upon. Currently, mcMMO adds fourteen unique skills to train and level in. Each of these skills is highly customizable through our configuration files, allowing server admins to tweak mcMMO to best suit the needs of his or her server. Know that the mcMMO team is dedicated to providing an ever-evolving experience, and that we carefully read all feedback and bug reports in order to evaluate and balance the mechanics of mcMMO in every update.
+The goal of mcMMO is to take core Minecraft game mechanics and expand them into add an extensive and quality RPG experience. Everything in mcMMO has been carefully thought out and is constantly being improved upon. Currently, mcMMO adds thirteen unique skills to train and level in. Each of these skills is highly customizable through our configuration files, allowing server admins to tweak mcMMO to best suit the needs of his or her server. Additionally, when run in conjuction with SpoutPlugin, mcMMO also has a custom XP bar to allow for easy tracking of progress towards leveling up. Know that the mcMMO team is dedicated to providing an ever-evolving experience, and that we carefully read all feedback and bug reports in order to evaluate and balance the mechanics of mcMMO in every update.
 
 ## About the Team
 
@@ -47,5 +47,6 @@ Required Libraries:
 * JUnit
 * EMetrics
 * Bukkit
+* SpoutPlugin API
 
 http://dev.bukkit.org/server-mods/mcmmo for more up to date information.

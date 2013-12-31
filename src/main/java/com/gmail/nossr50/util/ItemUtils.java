@@ -10,7 +10,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Dye;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.api.SpoutToolsAPI;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
+import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public final class ItemUtils {
@@ -52,7 +54,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomSword(type);
+                return mcMMO.getModManager().isCustomSword(type) || SpoutToolsAPI.isSpoutTool(item, ToolType.SWORD);
         }
     }
 
@@ -74,7 +76,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomHoe(type);
+                return mcMMO.getModManager().isCustomHoe(type) || SpoutToolsAPI.isSpoutTool(item, ToolType.HOE);
         }
     }
 
@@ -96,7 +98,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomShovel(type);
+                    return mcMMO.getModManager().isCustomShovel(type) || SpoutToolsAPI.isSpoutTool(item, ToolType.SHOVEL);
         }
     }
 
@@ -118,7 +120,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomAxe(type);
+                return mcMMO.getModManager().isCustomAxe(type) || SpoutToolsAPI.isSpoutTool(item, ToolType.AXE);
         }
     }
 
@@ -140,7 +142,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return mcMMO.getModManager().isCustomPickaxe(type);
+                return mcMMO.getModManager().isCustomPickaxe(type) || SpoutToolsAPI.isSpoutTool(item, ToolType.PICKAXE);
         }
     }
 

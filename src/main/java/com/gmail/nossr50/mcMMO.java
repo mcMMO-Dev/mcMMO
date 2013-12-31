@@ -5,11 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.nossr50.config.mods.ArmorConfigManager;
-import com.gmail.nossr50.config.mods.BlockConfigManager;
-import com.gmail.nossr50.config.mods.EntityConfigManager;
-import com.gmail.nossr50.config.mods.ToolConfigManager;
-import com.gmail.nossr50.util.ModManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -19,8 +14,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.config.mods.ArmorConfigManager;
+import com.gmail.nossr50.config.mods.BlockConfigManager;
+import com.gmail.nossr50.config.mods.EntityConfigManager;
+import com.gmail.nossr50.config.mods.ToolConfigManager;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.config.skills.repair.RepairConfigManager;
+import com.gmail.nossr50.config.spout.SpoutConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
@@ -29,6 +29,7 @@ import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.SelfListener;
+import com.gmail.nossr50.listeners.SpoutListener;
 import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.metrics.MetricsManager;
@@ -48,6 +49,7 @@ import com.gmail.nossr50.util.ChimaeraWing;
 import com.gmail.nossr50.util.HolidayManager;
 import com.gmail.nossr50.util.LogFilter;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.ModManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
@@ -55,6 +57,7 @@ import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.util.spout.SpoutUtils;
 
 import net.gravitydevelopment.updater.mcmmo.Updater;
 import net.gravitydevelopment.updater.mcmmo.Updater.UpdateResult;
@@ -85,6 +88,7 @@ public class mcMMO extends JavaPlugin {
     private boolean updateAvailable;
 
     /* Plugin Checks */
+    private static boolean spoutEnabled;
     private static boolean combatTagEnabled;
     private static boolean healthBarPluginEnabled;
     private static boolean noCheatPlusPluginEnabled;
@@ -125,6 +129,7 @@ public class mcMMO extends JavaPlugin {
             getLogger().setFilter(new LogFilter(this));
             metadataValue = new FixedMetadataValue(this, true);
 
+            setupSpout();
             mcpcEnabled = getServer().getName().equals("MCPC+");
             combatTagEnabled = getServer().getPluginManager().getPlugin("CombatTag") != null;
             healthBarPluginEnabled = getServer().getPluginManager().getPlugin("HealthBar") != null;
@@ -307,6 +312,10 @@ public class mcMMO extends JavaPlugin {
         mcMMO.databaseManager = databaseManager;
     }
 
+    public static boolean isSpoutEnabled() {
+        return spoutEnabled;
+    }
+
     public static boolean isCombatTagEnabled() {
         return combatTagEnabled;
     }
@@ -433,6 +442,19 @@ public class mcMMO extends JavaPlugin {
         repairables.addAll(modManager.getLoadedRepairables());
         repairableManager = new SimpleRepairableManager(repairables.size());
         repairableManager.registerRepairables(repairables);
+    }
+
+    private void setupSpout() {
+        if (!getServer().getPluginManager().isPluginEnabled("Spout")) {
+            return;
+        }
+
+        spoutEnabled = true;
+
+        SpoutConfig.getInstance();
+        getServer().getPluginManager().registerEvents(new SpoutListener(), this);
+        SpoutUtils.preCacheFiles();
+        SpoutUtils.reloadSpoutPlayers(); // Handle spout players after a /reload
     }
 
     private void registerEvents() {

@@ -25,6 +25,7 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.spout.huds.HudType;
 import com.gmail.nossr50.util.Misc;
 
 public final class FlatfileDatabaseManager implements DatabaseManager {
@@ -258,7 +259,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         writer.append((int) profile.getAbilityDATS(AbilityType.SERRATED_STRIKES)).append(":");
                         writer.append((int) profile.getAbilityDATS(AbilityType.SKULL_SPLITTER)).append(":");
                         writer.append((int) profile.getAbilityDATS(AbilityType.SUPER_BREAKER)).append(":");
-                        writer.append(":");
+                        HudType hudType = profile.getHudType();
+                        writer.append(hudType == null ? "STANDARD" : hudType.toString()).append(":");
                         writer.append(profile.getSkillLevel(SkillType.FISHING)).append(":");
                         writer.append(profile.getSkillXpLevel(SkillType.FISHING)).append(":");
                         writer.append((int) profile.getAbilityDATS(AbilityType.BLAST_MINING)).append(":");
@@ -771,6 +773,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         Map<SkillType, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
         Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
         Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
+        HudType hudType;
         MobHealthbarType mobHealthbarType;
 
         // TODO on updates, put new values in a try{} ?
@@ -803,13 +806,20 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(character[36]));
 
         try {
+            hudType = HudType.valueOf(character[33]);
+        }
+        catch (Exception e) {
+            hudType = HudType.STANDARD; // Shouldn't happen unless database is being tampered with
+        }
+
+        try {
             mobHealthbarType = MobHealthbarType.valueOf(character[38]);
         }
         catch (Exception e) {
             mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
         }
 
-        return new PlayerProfile(character[0], skills, skillsXp, skillsDATS, mobHealthbarType);
+        return new PlayerProfile(character[0], skills, skillsXp, skillsDATS, hudType, mobHealthbarType);
     }
 
     private Map<SkillType, Integer> getSkillMapFromLine(String[] character) {

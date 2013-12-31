@@ -24,6 +24,7 @@ import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
+import com.gmail.nossr50.datatypes.spout.huds.McMMOHud;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
@@ -52,6 +53,7 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.spout.SpoutUtils;
 
 import org.apache.commons.lang.Validate;
 
@@ -88,6 +90,7 @@ public class McMMOPlayer {
     private int chimeraWingLastUse;
     private Location teleportCommence;
 
+    private boolean isSpoutPlayer;
     private boolean isUsingUnarmed;
     private final FixedMetadataValue playerMetadata;
 
@@ -403,6 +406,17 @@ public class McMMOPlayer {
     }
 
     /*
+     * Spout support
+     */
+    public boolean isSpoutPlayer() {
+        return isSpoutPlayer;
+    }
+
+    public void setIsSpoutPlayer(boolean isSpoutPlayer) {
+        this.isSpoutPlayer = isSpoutPlayer;
+    }
+
+    /*
      * Exploit Prevention
      */
 
@@ -548,6 +562,12 @@ public class McMMOPlayer {
             return;
         }
 
+        McMMOHud spoutHud = profile.getSpoutHud();
+
+        if (spoutHud != null) {
+            spoutHud.setLastGained(skillType);
+        }
+
         isUsingUnarmed = (skillType == SkillType.UNARMED);
         checkXp(skillType);
     }
@@ -579,11 +599,20 @@ public class McMMOPlayer {
             return;
         }
 
-        if (Config.getInstance().getLevelUpSoundsEnabled()) {
-            player.playSound(player.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+        if (this.isSpoutPlayer) {
+            SpoutUtils.processLevelup(this, skillType, levelsGained);
+        }
+        else {
+            if (Config.getInstance().getLevelUpSoundsEnabled()) {
+                player.playSound(player.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+            }
+
+            player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(skillType.toString()) + ".Skillup", levelsGained, getSkillLevel(skillType)));
         }
 
-        player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(skillType.toString()) + ".Skillup", levelsGained, getSkillLevel(skillType)));
+        if (this.isSpoutPlayer) {
+            SpoutUtils.processXpGain(player, profile);
+        }
     }
 
     /*

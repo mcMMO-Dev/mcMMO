@@ -48,6 +48,18 @@ public class Repair {
         return "";
     }
 
+    public static String[] getSpoutAnvilMessages(Material type) {
+        if (type == repairAnvilMaterial) {
+            return new String[]{LocaleLoader.getString("Repair.AnvilPlaced.Spout1"), LocaleLoader.getString("Repair.AnvilPlaced.Spout2")};
+        }
+
+        if (type == salvageAnvilMaterial) {
+            return new String[]{"[mcMMO] Anvil Placed", "Right click to salvage!"};
+        }
+
+        return new String[]{"", ""};
+    }
+
     protected static Material getRepairAndSalvageItem(ItemStack inHand) {
         if (ItemUtils.isDiamondTool(inHand) || ItemUtils.isDiamondArmor(inHand)) {
             return Material.DIAMOND;
