@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.woodcutting;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
