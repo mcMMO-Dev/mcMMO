@@ -9,19 +9,12 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Furnace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.NPC;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryEvent;
-import org.bukkit.inventory.FurnaceInventory;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.MetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -217,52 +210,6 @@ public final class Misc {
                 player.getWorld().refreshChunk(x, z);
             }
         }
-    }
-
-    public static Block processInventoryOpenorCloseEvent(InventoryEvent event) {
-        Inventory inventory = event.getInventory();
-
-        if (!(inventory instanceof FurnaceInventory)) {
-            return null;
-        }
-
-        Furnace furnace = (Furnace) inventory.getHolder();
-
-        if (furnace == null || furnace.getBurnTime() != 0) {
-            return null;
-        }
-
-        return furnace.getBlock();
-    }
-
-    public static Player getPlayerFromFurnace(Block furnaceBlock) {
-        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
-
-        if (metadata.isEmpty()) {
-            return null;
-        }
-
-        return mcMMO.p.getServer().getPlayerExact(metadata.get(0).asString());
-    }
-
-    public static ItemStack getSmeltingFromFurnace(Block furnaceBlock) {
-        BlockState furnaceState = furnaceBlock.getState();
-
-        if (!(furnaceState instanceof Furnace)) {
-            return null;
-        }
-
-        return ((Furnace) furnaceState).getInventory().getSmelting();
-    }
-
-    public static ItemStack getResultFromFurnace(Block furnaceBlock) {
-        BlockState furnaceState = furnaceBlock.getState();
-
-        if (!(furnaceState instanceof Furnace)) {
-            return null;
-        }
-
-        return ((Furnace) furnaceState).getInventory().getResult();
     }
 
     /**

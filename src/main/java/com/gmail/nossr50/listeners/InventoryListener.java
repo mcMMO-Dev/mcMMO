@@ -1,6 +1,10 @@
 package com.gmail.nossr50.listeners;
 
+import java.util.List;
+
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Furnace;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,7 +17,10 @@ import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.FurnaceInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.MetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
@@ -34,44 +41,49 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
+        Block furnaceBlock = processInventoryOpenorCloseEvent(event.getInventory());
+
+        if (furnaceBlock == null || furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
+            return;
+        }
+
         HumanEntity player = event.getPlayer();
 
         if (Misc.isNPCEntity(player)) {
             return;
         }
 
-        Block furnaceBlock = Misc.processInventoryOpenorCloseEvent(event);
-
-        if (furnaceBlock != null && !furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
-            furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer((Player) player).getPlayerMetadata());
-        }
+        furnaceBlock.setMetadata(mcMMO.furnaceMetadataKey, UserManager.getPlayer((Player) player).getPlayerMetadata());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent event) {
+        Block furnaceBlock = processInventoryOpenorCloseEvent(event.getInventory());
+
+        if (furnaceBlock == null || furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
+            return;
+        }
+
         HumanEntity player = event.getPlayer();
 
         if (Misc.isNPCEntity(player)) {
             return;
         }
 
-        Block furnaceBlock = Misc.processInventoryOpenorCloseEvent(event);
-
-        if (furnaceBlock != null && furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
-            furnaceBlock.removeMetadata(mcMMO.furnaceMetadataKey, plugin);
-        }
+        furnaceBlock.removeMetadata(mcMMO.furnaceMetadataKey, plugin);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceBurnEvent(FurnaceBurnEvent event) {
         Block furnaceBlock = event.getBlock();
-        ItemStack smelting = Misc.getSmeltingFromFurnace(furnaceBlock);
+        BlockState furnaceState = furnaceBlock.getState();
+        ItemStack smelting = furnaceState instanceof Furnace ? ((Furnace) furnaceState).getInventory().getSmelting() : null;
 
         if (!ItemUtils.isSmeltable(smelting)) {
             return;
         }
 
-        Player player = Misc.getPlayerFromFurnace(furnaceBlock);
+        Player player = getPlayerFromFurnace(furnaceBlock);
 
         if (Misc.isNPCEntity(player) || !Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FUEL_EFFICIENCY)) {
             return;
@@ -89,7 +101,7 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        Player player = Misc.getPlayerFromFurnace(furnaceBlock);
+        Player player = getPlayerFromFurnace(furnaceBlock);
 
         if (Misc.isNPCEntity(player) || !SkillType.SMELTING.getPermissions(player)) {
             return;
@@ -101,13 +113,14 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
         Block furnaceBlock = event.getBlock();
-        ItemStack result = Misc.getResultFromFurnace(furnaceBlock);
+        BlockState furnaceState = furnaceBlock.getState();
+        ItemStack result = furnaceState instanceof Furnace ? ((Furnace) furnaceState).getInventory().getResult() : null;
 
         if (!ItemUtils.isSmelted(result)) {
             return;
         }
 
-        Player player = Misc.getPlayerFromFurnace(furnaceBlock);
+        Player player = getPlayerFromFurnace(furnaceBlock);
 
         if (Misc.isNPCEntity(player) || !Permissions.vanillaXpBoost(player, SkillType.SMELTING)) {
             return;
@@ -136,5 +149,29 @@ public class InventoryListener implements Listener {
         }
 
         new PlayerUpdateInventoryTask((Player) whoClicked).runTaskLater(plugin, 0);
+    }
+
+    private Block processInventoryOpenorCloseEvent(Inventory inventory) {
+        if (!(inventory instanceof FurnaceInventory)) {
+            return null;
+        }
+
+        Furnace furnace = (Furnace) inventory.getHolder();
+
+        if (furnace == null || furnace.getBurnTime() != 0) {
+            return null;
+        }
+
+        return furnace.getBlock();
+    }
+
+    private Player getPlayerFromFurnace(Block furnaceBlock) {
+        List<MetadataValue> metadata = furnaceBlock.getMetadata(mcMMO.furnaceMetadataKey);
+
+        if (metadata.isEmpty()) {
+            return null;
+        }
+
+        return plugin.getServer().getPlayerExact(metadata.get(0).asString());
     }
 }
