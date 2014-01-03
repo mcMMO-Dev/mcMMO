@@ -355,7 +355,7 @@ public final class CombatUtils {
      * @param type The type of skill being used
      */
     public static void applyAbilityAoE(Player attacker, LivingEntity target, double damage, SkillType type) {
-        int numberOfTargets = Misc.getTier(attacker.getItemInHand()); // The higher the weapon tier, the more targets you hit
+        int numberOfTargets = getTier(attacker.getItemInHand()); // The higher the weapon tier, the more targets you hit
         double damageAmount = Math.max(damage, 1);
 
         for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
@@ -580,5 +580,36 @@ public final class CombatUtils {
         }
 
         return damage;
+    }
+
+    /**
+     * Get the upgrade tier of the item in hand.
+     *
+     * @param inHand The item to check the tier of
+     * @return the tier of the item
+     */
+    private static int getTier(ItemStack inHand) {
+        int tier = 0;
+
+        if (ItemUtils.isWoodTool(inHand)) {
+            tier = 1;
+        }
+        else if (ItemUtils.isStoneTool(inHand)) {
+            tier = 2;
+        }
+        else if (ItemUtils.isIronTool(inHand)) {
+            tier = 3;
+        }
+        else if (ItemUtils.isGoldTool(inHand)) {
+            tier = 1;
+        }
+        else if (ItemUtils.isDiamondTool(inHand)) {
+            tier = 4;
+        }
+        else if (ModUtils.isCustomTool(inHand)) {
+            tier = ModUtils.getToolFromItemStack(inHand).getTier();
+        }
+
+        return tier;
     }
 }

@@ -1,14 +1,10 @@
 package com.gmail.nossr50.util;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Random;
 
-import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
@@ -17,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -58,37 +53,6 @@ public final class Misc {
 
     public static boolean isNPCEntity(Entity entity) {
         return (entity == null || entity.hasMetadata("NPC") || entity instanceof NPC || (mcMMO.isCombatTagEnabled() && entity instanceof HumanEntity && ((HumanEntity) entity).getName().contains("PvpLogger")) || entity.getClass().getName().equalsIgnoreCase("cofh.entity.PlayerFake"));
-    }
-
-    /**
-     * Get the upgrade tier of the item in hand.
-     *
-     * @param inHand The item to check the tier of
-     * @return the tier of the item
-     */
-    public static int getTier(ItemStack inHand) {
-        int tier = 0;
-
-        if (ItemUtils.isWoodTool(inHand)) {
-            tier = 1;
-        }
-        else if (ItemUtils.isStoneTool(inHand)) {
-            tier = 2;
-        }
-        else if (ItemUtils.isIronTool(inHand)) {
-            tier = 3;
-        }
-        else if (ItemUtils.isGoldTool(inHand)) {
-            tier = 1;
-        }
-        else if (ItemUtils.isDiamondTool(inHand)) {
-            tier = 4;
-        }
-        else if (ModUtils.isCustomTool(inHand)) {
-            tier = ModUtils.getToolFromItemStack(inHand).getTier();
-        }
-
-        return tier;
     }
 
     /**
@@ -198,74 +162,6 @@ public final class Misc {
         if ((convertedUsers % progressInterval) == 0) {
             mcMMO.p.getLogger().info(String.format("Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / (double) ((System.currentTimeMillis() - startMillis) / TIME_CONVERSION_FACTOR)));
         }
-    }
-
-    public static void resendChunkRadiusAt(Player player, int radius) {
-        Chunk chunk = player.getLocation().getChunk();
-        int chunkX = chunk.getX();
-        int chunkZ = chunk.getZ();
-
-        for (int x = chunkX - radius; x < chunkX + radius; x++) {
-            for (int z = chunkZ - radius; z < chunkZ + radius; z++) {
-                player.getWorld().refreshChunk(x, z);
-            }
-        }
-    }
-
-    /**
-     * Attempts to match any player names with the given name, and returns a list of all possibly matches.
-     *
-     * This list is not sorted in any particular order.
-     * If an exact match is found, the returned list will only contain a single result.
-     *
-     * @param partialName Name to match
-     * @return List of all possible names
-     */
-    public static List<String> matchPlayer(String partialName) {
-        List<String> matchedPlayers = new ArrayList<String>();
-
-        for (OfflinePlayer offlinePlayer : mcMMO.p.getServer().getOfflinePlayers()) {
-            String playerName = offlinePlayer.getName();
-
-            if (partialName.equalsIgnoreCase(playerName)) {
-                // Exact match
-                matchedPlayers.clear();
-                matchedPlayers.add(playerName);
-                break;
-            }
-            if (playerName.toLowerCase().contains(partialName.toLowerCase())) {
-                // Partial match
-                matchedPlayers.add(playerName);
-            }
-        }
-
-        return matchedPlayers;
-    }
-
-    /**
-     * Get a matched player name if one was found in the database.
-     *
-     * @param partialName Name to match
-     *
-     * @return Matched name or {@code partialName} if no match was found
-     */
-    public static String getMatchedPlayerName(String partialName) {
-        if (Config.getInstance().getMatchOfflinePlayers()) {
-            List<String> matches = matchPlayer(partialName);
-
-            if (matches.size() == 1) {
-                partialName = matches.get(0);
-            }
-
-        }
-        else {
-            Player player = mcMMO.p.getServer().getPlayer(partialName);
-            if (player != null) {
-                partialName = player.getName();
-            }
-        }
-
-        return partialName;
     }
 
     public static Random getRandom() {

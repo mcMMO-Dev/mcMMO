@@ -1,5 +1,7 @@
 package com.gmail.nossr50.runnables.skills;
 
+import org.bukkit.Chunk;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -38,7 +40,7 @@ public class AbilityDisableTask extends BukkitRunnable {
 
             case BERSERK:
                 if (HiddenConfig.getInstance().resendChunksAfterBlockAbility()) {
-                    Misc.resendChunkRadiusAt(player, 1);
+                    resendChunkRadiusAt(player, 1);
                 }
                 // Fallthrough
 
@@ -59,5 +61,19 @@ public class AbilityDisableTask extends BukkitRunnable {
 
         SkillUtils.sendSkillMessage(player, ability.getAbilityPlayerOff(player));
         new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLaterAsynchronously(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
+    }
+
+    private void resendChunkRadiusAt(Player player, int radius) {
+        Chunk chunk = player.getLocation().getChunk();
+        World world = player.getWorld();
+
+        int chunkX = chunk.getX();
+        int chunkZ = chunk.getZ();
+
+        for (int x = chunkX - radius; x < chunkX + radius; x++) {
+            for (int z = chunkZ - radius; z < chunkZ + radius; z++) {
+                world.refreshChunk(x, z);
+            }
+        }
     }
 }

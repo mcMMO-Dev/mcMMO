@@ -11,7 +11,6 @@ import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -22,7 +21,7 @@ public class McremoveCommand implements TabExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 1:
-                String playerName = Misc.getMatchedPlayerName(args[0]);
+                String playerName = CommandUtils.getMatchedPlayerName(args[0]);
 
                 if (UserManager.getPlayer(playerName, true) == null && CommandUtils.unloadedProfile(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false))) {
                     return true;

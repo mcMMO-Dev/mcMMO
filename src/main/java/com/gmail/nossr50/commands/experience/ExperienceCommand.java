@@ -15,7 +15,6 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -68,7 +67,7 @@ public abstract class ExperienceCommand implements TabExecutor {
 
                 int value = Integer.parseInt(args[2]);
 
-                String playerName = Misc.getMatchedPlayerName(args[0]);
+                String playerName = CommandUtils.getMatchedPlayerName(args[0]);
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName, true);
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.

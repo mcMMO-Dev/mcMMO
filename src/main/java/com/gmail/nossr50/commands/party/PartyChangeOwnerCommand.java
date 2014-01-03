@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyChangeOwnerCommand implements CommandExecutor {
@@ -17,7 +17,7 @@ public class PartyChangeOwnerCommand implements CommandExecutor {
         switch (args.length) {
             case 2:
                 Party playerParty = UserManager.getPlayer((Player) sender).getParty();
-                String targetName = Misc.getMatchedPlayerName(args[1]);
+                String targetName = CommandUtils.getMatchedPlayerName(args[1]);
 
                 if (!playerParty.getMembers().contains(targetName)) {
                     sender.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetName));

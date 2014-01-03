@@ -10,7 +10,6 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -40,7 +39,7 @@ public class KrakenCommand implements TabExecutor {
                     return true;
                 }
 
-                String playerName = Misc.getMatchedPlayerName(args[0]);
+                String playerName = CommandUtils.getMatchedPlayerName(args[0]);
                 McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName);
 
                 if (!CommandUtils.checkPlayerExistence(sender, playerName, mcMMOPlayer)) {

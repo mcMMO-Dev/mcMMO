@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -18,7 +17,7 @@ public class PartyInviteCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         switch (args.length) {
             case 2:
-                String targetName = Misc.getMatchedPlayerName(args[1]);
+                String targetName = CommandUtils.getMatchedPlayerName(args[1]);
                 McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName, true);
 
                 if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {

@@ -86,7 +86,7 @@ public class PtpCommand implements TabExecutor {
                     }
                 }
 
-                sendTeleportRequest(sender, player, Misc.getMatchedPlayerName(args[0]));
+                sendTeleportRequest(sender, player, CommandUtils.getMatchedPlayerName(args[0]));
                 return true;
 
             default:
