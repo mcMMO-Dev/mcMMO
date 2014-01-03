@@ -64,7 +64,7 @@ public final class Misc {
     }
 
     public static boolean isNPCEntity(Entity entity) {
-        return (entity == null || entity.hasMetadata("NPC") || entity instanceof NPC || (mcMMO.isCombatTagEnabled() && entity instanceof HumanEntity && ((HumanEntity) entity).getName().contains("PvpLogger")));
+        return (entity == null || entity.hasMetadata("NPC") || entity instanceof NPC || (mcMMO.isCombatTagEnabled() && entity instanceof HumanEntity && ((HumanEntity) entity).getName().contains("PvpLogger")) || entity.getClass().getName().equalsIgnoreCase("cofh.entity.PlayerFake"));
     }
 
     /**
