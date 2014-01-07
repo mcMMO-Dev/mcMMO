@@ -41,16 +41,16 @@ Scoreboard:
     Rainbows: false
 
     # Settings for each type of scoreboard
+    # Print: Should the command output be printed in chat?
+    # Board: Should the command output be displayed in the scoreboard sidebar?
+    # Display_Time: Amount of time (seconds) to display in the sidebar before clearing.
+    # To display permanently, use "/mcscoreboard keep" or set to -1
     Types:
         # Settings for /mcrank
         # The sub-options (Print, Board, Display_Time) are the same for each type.
         Rank:
-            # Should the command output be printed in chat?
             Print: false
-            # Should the command output be displayed in the scoreboard sidebar?
             Board: true
-            # Amount of time (seconds) to display in the sidebar before clearing.
-            # To display permanently, use "/mcscoreboard keep" or set to -1
             Display_Time: 15
         # Settings for /mctop
         Top:
@@ -377,13 +377,9 @@ Commands:
         World_Based_Permissions: false
     partychat:
         Chat_Prefix_Format: '[[GREEN]]([[WHITE]]{0}[[GREEN]])'
-
-        # Allow mcMMO to use player display names in party chat instead of their usernames
         Use_Display_Names: true
     adminchat:
         Chat_Prefix_Format: '[[AQUA]][[[WHITE]]{0}[[AQUA]]]'
-
-        # Allow mcMMO to use player display names in admin chat instead of their usernames
         Use_Display_Names: true
 
 #
