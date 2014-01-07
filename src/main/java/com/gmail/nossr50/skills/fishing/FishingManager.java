@@ -445,6 +445,8 @@ public class FishingManager extends SkillManager {
      */
     private FishingTreasure getFishingTreasure() {
         double diceRoll = Misc.getRandom().nextDouble() * 100;
+        diceRoll -= getPlayer().getItemInHand().getEnchantmentLevel(Enchantment.LUCK);
+
         FishingTreasure treasure = null;
 
         for (Rarity rarity : Rarity.values()) {
