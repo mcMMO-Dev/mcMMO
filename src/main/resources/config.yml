@@ -101,9 +101,9 @@ Database_Purging:
 
 #
 #  Settings for Backups
+#  Allow mcMMO to create zip backups for config files and flatfile data on shutdown.
 ###
 Backups:
-    # Allow mcMMO to create zip backups for config files and flatfile data on shutdown.
     Enabled: true
 
     Keep:
@@ -127,11 +127,11 @@ MySQL:
 
 #
 #  Settings for Hardcore mode
+#  Players will not lose stats when their level is below the Level_Threshold
 ###
 Hardcore:
     Death_Stat_Loss:
         Penalty_Percentage: 75.0
-        # Players will not lose stats when their level is below the Level_Threshold
         Level_Threshold: 0
         Enabled:
             Acrobatics: false
