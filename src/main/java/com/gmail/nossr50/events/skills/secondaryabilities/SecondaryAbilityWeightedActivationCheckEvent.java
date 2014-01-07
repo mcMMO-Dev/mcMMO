@@ -1,6 +1,7 @@
 package com.gmail.nossr50.events.skills.secondaryabilities;
 
 import org.bukkit.entity.Player;
+
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 
 public class SecondaryAbilityWeightedActivationCheckEvent extends SecondaryAbilityEvent {

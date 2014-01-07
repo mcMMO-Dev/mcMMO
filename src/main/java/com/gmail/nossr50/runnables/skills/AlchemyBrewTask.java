@@ -6,8 +6,8 @@ import org.bukkit.block.BrewingStand;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.skills.alchemy.McMMOPlayerBrewEvent;
 import com.gmail.nossr50.events.skills.alchemy.McMMOPlayerCatalysisEvent;
