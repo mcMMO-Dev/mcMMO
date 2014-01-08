@@ -31,6 +31,7 @@ Version 1.4.08-dev
  ! Updated localization files
  ! Changed AxesCritical to CriticalHit in config file
  ! Changed several secondary ability permissions(deprecated versions still exist)
+ - Removed /stats alias for /mcstats
 
 Version 1.4.07
  + Added XP boost to Acrobatics when wearing Boots of Feather Falling
