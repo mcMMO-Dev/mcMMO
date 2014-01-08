@@ -424,7 +424,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
                     reason.add("Skills.Smelting.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than Skills.Smelting.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
                 }
 
-                if (getSmeltingVanillaXPBoostMultiplier(tier) > getSmeltingRankLevel(nextTier)) {
+                if (getSmeltingVanillaXPBoostMultiplier(tier) > getSmeltingVanillaXPBoostMultiplier(nextTier)) {
                     reason.add("Skills.Smelting.VanillaXPMultiplier.Rank_" + tier.toNumerical() + " should be less than or equal to Skills.Smelting.VanillaXPMultiplier.Rank_" + nextTier.toNumerical() + "!");
                 }
             }
