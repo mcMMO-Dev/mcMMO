@@ -154,7 +154,7 @@ public class ScoreboardManager {
     public static void teardownPlayer(Player player) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.remove(player.getName());
 
-        if (wrapper.revertTask != null) {
+        if (wrapper != null && wrapper.revertTask != null) {
             wrapper.revertTask.cancel();
         }
     }
