@@ -370,7 +370,7 @@ Commands:
         Cooldown: 120
         Warmup: 5
         RecentlyHurt_Cooldown: 60
-        Confirm_Required: true
+        Accept_Required: true
         Request_Timeout: 300
         # If true, require players to have a mcmmo.commands.ptp.world.[WorldName] permission
         # to teleport to, from, or within any given world.
