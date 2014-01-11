@@ -85,9 +85,9 @@ Scoreboard:
             LevelUp_Time: 5
 
 Mob_Healthbar:
-    # Default display for mob health bars - HEARTS, BAR, or DISABLED
+    # Display_Type: Default display for mob health bars - HEARTS, BAR, or DISABLED
+    # Display_Time: Amount of time (in seconds) to display. To display permanently, set to -1
     Display_Type: HEARTS
-    # Amount of time (in seconds) to display. To display permanently, set to -1
     Display_Time: 3
 
 Database_Purging:
