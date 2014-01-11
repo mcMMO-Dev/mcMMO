@@ -9,9 +9,9 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class PtpAcceptCommand implements CommandExecutor {
     @Override
@@ -29,7 +29,7 @@ public class PtpAcceptCommand implements CommandExecutor {
             return true;
         }
 
-        if ((ptpRecord.getTimeout() + Config.getInstance().getPTPCommandTimeout()) * Misc.TIME_CONVERSION_FACTOR < System.currentTimeMillis()) {
+        if (SkillUtils.cooldownExpired(ptpRecord.getTimeout(), Config.getInstance().getPTPCommandTimeout())) {
             ptpRecord.removeRequest();
             player.sendMessage(LocaleLoader.getString("Commands.ptp.RequestExpired"));
             return true;

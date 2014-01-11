@@ -28,6 +28,7 @@ Version 1.4.08-dev
  = Fixed bug where party chat broke if the display name contained special characters
  = Fixed bug where `/addlevels all` and `/skillreset all` didn't work
  = Fixed bug which made it possible to gain XP by taming the same horse multiple times, if a player "untamed" that horse
+ = Fixed bug where the /ptp request expiration time was checked wrongly - preventing players from using the command
  ! Updated localization files
  ! Changed AxesCritical to CriticalHit in config file
  ! Changed several secondary ability permissions(deprecated versions still exist)
