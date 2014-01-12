@@ -30,6 +30,7 @@ Version 1.4.08-dev
  = Fixed bug which made it possible to gain XP by taming the same horse multiple times, if a player "untamed" that horse
  = Fixed bug where the /ptp request expiration time was checked wrongly - preventing players from using the command
  ! Updated localization files
+ ! Changed the appearance of /mcmmo commands
  ! Changed AxesCritical to CriticalHit in config file
  ! Changed several secondary ability permissions(deprecated versions still exist)
  ! Changed /ptp config setting, Commands.ptp.Confirm_Required is now Commands.ptp.Accept.Required
