@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -29,8 +30,9 @@ import com.gmail.nossr50.mcMMO;
 import com.google.common.collect.ImmutableList;
 
 public final class HolidayManager {
-    static String anniversaryFilePath = mcMMO.getFlatFileDirectory() + "anniversary";
     private static ArrayList<String> hasCelebrated;
+    private static int CURRENT_YEAR;
+    private static int START_YEAR = 2011;
 
     private static final List<Color> ALL_COLORS;
     private static final List<ChatColor> ALL_CHAT_COLORS;
@@ -63,11 +65,11 @@ public final class HolidayManager {
         CHAT_FORMATS = ImmutableList.copyOf(chatFormats);
     }
 
-    private HolidayManager() {}
-
     // This gets called onEnable
-    public static void createAnniversaryFile() {
-        File anniversaryFile = new File(anniversaryFilePath);
+    public HolidayManager() {
+        CURRENT_YEAR = Calendar.getInstance().get(Calendar.YEAR);
+
+        File anniversaryFile = new File(mcMMO.getFlatFileDirectory(), "anniversary." + CURRENT_YEAR + ".yml");
 
         if (!anniversaryFile.exists()) {
             try {
@@ -82,7 +84,7 @@ public final class HolidayManager {
 
         try {
             hasCelebrated.clear();
-            BufferedReader reader = new BufferedReader(new FileReader(anniversaryFilePath));
+            BufferedReader reader = new BufferedReader(new FileReader(anniversaryFile.getPath()));
             String line = reader.readLine();
 
             while (line != null) {
@@ -95,10 +97,45 @@ public final class HolidayManager {
         catch (Exception ex) {
             mcMMO.p.getLogger().severe(ex.toString());
         }
+
+        cleanupFiles();
+    }
+
+    private void cleanupFiles() {
+        File FlatFileDir = new File(mcMMO.getFlatFileDirectory());
+        File legacy = new File(FlatFileDir, "anniversary.yml");
+        List<File> toDelete = new ArrayList<File>();
+
+        if (legacy.exists()) {
+            toDelete.add(legacy);
+        }
+
+        Pattern pattern = Pattern.compile("anniversary\\.(?:.+)\\.yml");
+
+        for (String fileName : FlatFileDir.list()) {
+            if (!pattern.matcher(fileName).matches() || fileName.equals("anniversary." + CURRENT_YEAR + ".yml")) {
+                continue;
+            }
+
+            File file = new File(FlatFileDir, fileName);
+
+            if (file.isDirectory()) {
+                continue;
+            }
+
+            toDelete.add(file);
+        }
+
+        for (File file : toDelete) {
+            mcMMO.p.debug("Deleted: " + file.getName());
+            file.delete();
+        }
     }
 
     // This gets called onDisable
-    public static void saveAnniversaryFiles() {
+    public void saveAnniversaryFiles() {
+        String anniversaryFilePath = mcMMO.getFlatFileDirectory() + "anniversary." + CURRENT_YEAR + ".yml";
+
         try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(anniversaryFilePath));
             for (String player : hasCelebrated) {
@@ -113,14 +150,10 @@ public final class HolidayManager {
     }
 
     // This gets called from /mcmmo command
-    public static void anniversaryCheck(final CommandSender sender) {
-        GregorianCalendar anniversaryStart = new GregorianCalendar(2014, Calendar.FEBRUARY, 3);
-        GregorianCalendar anniversaryEnd = new GregorianCalendar(2014, Calendar.FEBRUARY, 6);
+    public void anniversaryCheck(final CommandSender sender) {
+        GregorianCalendar anniversaryStart = new GregorianCalendar(CURRENT_YEAR, Calendar.FEBRUARY, 3);
+        GregorianCalendar anniversaryEnd = new GregorianCalendar(CURRENT_YEAR, Calendar.FEBRUARY, 6);
         GregorianCalendar day = new GregorianCalendar();
-
-        if (hasCelebrated == null) {
-            createAnniversaryFile();
-        }
 
         if (hasCelebrated.contains(sender.getName())) {
             return;
@@ -130,7 +163,7 @@ public final class HolidayManager {
             return;
         }
 
-        sender.sendMessage(ChatColor.BLUE + "Happy 3 Year Anniversary!  In honor of all of");
+        sender.sendMessage(ChatColor.BLUE + "Happy " + (CURRENT_YEAR - START_YEAR) + " Year Anniversary!  In honor of all of");
         sender.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, here's a firework show!");
         if (sender instanceof Player) {
             final int firework_amount = 10;
@@ -186,11 +219,11 @@ public final class HolidayManager {
         hasCelebrated.add(sender.getName());
     }
 
-    private static boolean getDateRange(Date date, Date start, Date end) {
+    private boolean getDateRange(Date date, Date start, Date end) {
         return !(date.before(start) || date.after(end));
     }
 
-    private static void spawnFireworks(Player player) {
+    private void spawnFireworks(Player player) {
         int power = (int) (Misc.getRandom().nextDouble() * 3) + 1;
         Type fireworkType = Type.values()[Misc.getRandom().nextInt(Type.values().length)];
         double varX = Misc.getRandom().nextGaussian() * 3;

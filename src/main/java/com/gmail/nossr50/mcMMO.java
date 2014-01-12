@@ -43,6 +43,7 @@ import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableManager;
 import com.gmail.nossr50.skills.repair.repairables.SimpleRepairableManager;
 import com.gmail.nossr50.util.ChimaeraWing;
+import com.gmail.nossr50.util.HolidayManager;
 import com.gmail.nossr50.util.LogFilter;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
@@ -64,6 +65,7 @@ public class mcMMO extends JavaPlugin {
     private static RepairableManager repairableManager;
     private static DatabaseManager   databaseManager;
     private static FormulaManager    formulaManager;
+    private static HolidayManager    holidayManager;
 
     /* File Paths */
     private static String mainDirectory;
@@ -154,6 +156,7 @@ public class mcMMO extends JavaPlugin {
             PartyManager.loadParties();
 
             formulaManager = new FormulaManager();
+            holidayManager = new HolidayManager();
 
             for (Player player : getServer().getOnlinePlayers()) {
                 UserManager.addUser(player); // In case of reload add all users back into UserManager
@@ -199,6 +202,7 @@ public class mcMMO extends JavaPlugin {
             PartyManager.saveParties(); // Save our parties
             ScoreboardManager.teardownAll();
             formulaManager.saveFormula();
+            holidayManager.saveAnniversaryFiles();
             placeStore.saveAll();       // Save our metadata
             placeStore.cleanUp();       // Cleanup empty metadata stores
         }
@@ -267,6 +271,10 @@ public class mcMMO extends JavaPlugin {
 
     public static FormulaManager getFormulaManager() {
         return formulaManager;
+    }
+
+    public static HolidayManager getHolidayManager() {
+        return holidayManager;
     }
 
     public static ChunkManager getPlaceStore() {
