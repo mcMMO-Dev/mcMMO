@@ -170,7 +170,7 @@ public class ScoreboardManager {
     public static void cleanup(ScoreboardWrapper wrapper) {
         PLAYER_SCOREBOARDS.remove(wrapper.playerName);
 
-        if (wrapper.revertTask != null) {
+        if (wrapper != null && wrapper.revertTask != null) {
             wrapper.revertTask.cancel();
         }
     }
@@ -207,7 +207,7 @@ public class ScoreboardManager {
         // Selfboards
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
-        if (wrapper.isSkillScoreboard() && wrapper.targetSkill == skill && wrapper.isBoardShown()) {
+        if (wrapper != null && wrapper.isSkillScoreboard() && wrapper.targetSkill == skill && wrapper.isBoardShown()) {
             wrapper.doSidebarUpdateSoon();
         }
     }
@@ -217,7 +217,7 @@ public class ScoreboardManager {
         // Selfboards
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
-        if ((wrapper.isCooldownScoreboard() || wrapper.isSkillScoreboard() && wrapper.targetSkill == skill) && wrapper.isBoardShown()) {
+        if (wrapper != null && (wrapper.isCooldownScoreboard() || wrapper.isSkillScoreboard() && wrapper.targetSkill == skill) && wrapper.isBoardShown()) {
             wrapper.doSidebarUpdateSoon();
         }
     }
