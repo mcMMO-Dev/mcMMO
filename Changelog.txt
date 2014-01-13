@@ -29,6 +29,7 @@ Version 1.4.08-dev
  = Fixed bug where `/addlevels all` and `/skillreset all` didn't work
  = Fixed bug which made it possible to gain XP by taming the same horse multiple times, if a player "untamed" that horse
  = Fixed bug where the /ptp request expiration time was checked wrongly - preventing players from using the command
+ = Fixed bug where Hylian Luck was broken
  ! Updated localization files
  ! Changed the appearance of /mcmmo commands
  ! Changed AxesCritical to CriticalHit in config file

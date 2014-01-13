@@ -232,7 +232,7 @@ public class HerbalismManager extends SkillManager {
 
         Player player = getPlayer();
 
-        if (treasures.isEmpty() || EventUtils.simulateBlockBreak(blockState.getBlock(), player, false)) {
+        if (treasures.isEmpty() || !EventUtils.simulateBlockBreak(blockState.getBlock(), player, false)) {
             return false;
         }
 
