@@ -159,7 +159,7 @@ public class FishingCommand extends SkillCommand {
         List<String> messages = new ArrayList<String>();
 
         if (canTreasureHunt) {
-            messages.add(LocaleLoader.getString("Fishing.Ability.Rank", lootTier, Tier.EIGHT.toNumerical()));
+            messages.add(LocaleLoader.getString("Fishing.Ability.Rank", lootTier, Tier.values().length));
             messages.add(LocaleLoader.getString("Fishing.Ability.TH.DropRate", trapTreasure, commonTreasure, uncommonTreasure, rareTreasure, epicTreasure, legendaryTreasure, recordTreasure));
         }
 

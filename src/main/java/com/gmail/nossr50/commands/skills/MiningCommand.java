@@ -121,7 +121,7 @@ public class MiningCommand extends SkillCommand {
                 messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.0", unlockLevel)));
             }
             else {
-                messages.add(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, Tier.EIGHT.toNumerical(), LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
+                messages.add(LocaleLoader.getString("Mining.Blast.Rank", blastMiningRank, Tier.values().length, LocaleLoader.getString("Mining.Blast.Effect", oreBonus, debrisReduction, bonusTNTDrops)));
             }
         }
 

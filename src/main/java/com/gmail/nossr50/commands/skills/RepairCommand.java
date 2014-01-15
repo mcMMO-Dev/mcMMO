@@ -148,7 +148,7 @@ public class RepairCommand extends SkillCommand {
         if (canArcaneForge) {
             RepairManager repairManager = UserManager.getPlayer(player).getRepairManager();
 
-            messages.add(LocaleLoader.getString("Repair.Arcane.Rank", repairManager.getArcaneForgingRank(), Tier.EIGHT.toNumerical()));
+            messages.add(LocaleLoader.getString("Repair.Arcane.Rank", repairManager.getArcaneForgingRank(), Tier.values().length));
 
             if (ArcaneForging.arcaneForgingEnchantLoss) {
                 messages.add(LocaleLoader.getString("Repair.Arcane.Chance.Success", (arcaneBypass ? 100 : repairManager.getKeepEnchantChance())));
