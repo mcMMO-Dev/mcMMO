@@ -135,6 +135,7 @@ Hardcore:
         Level_Threshold: 0
         Enabled:
             Acrobatics: false
+            Alchemy: false
             Archery: false
             Axes: false
             Excavation: false
@@ -151,6 +152,7 @@ Hardcore:
         Level_Threshold: 0
         Enabled:
             Acrobatics: false
+            Alchemy: false
             Archery: false
             Axes: false
             Excavation: false
