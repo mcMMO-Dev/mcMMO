@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -284,6 +285,36 @@ public class Party {
             default:
                 return;
         }
+    }
+
+    public String createMembersList(String playerName, List<Player> nearMembers) {
+        StringBuilder memberList = new StringBuilder();
+
+        for (String memberName : this.getMembers()) {
+            Player member = mcMMO.p.getServer().getPlayerExact(memberName);
+
+            if (this.getLeader().equalsIgnoreCase(memberName)) {
+                memberList.append(ChatColor.GOLD);
+
+                if (member == null) {
+                    memberName = memberName.substring(0, 1) + ChatColor.GRAY + ChatColor.ITALIC + "" + memberName.substring(1);
+                }
+            }
+            else if (member != null) {
+                memberList.append(ChatColor.WHITE);
+            }
+            else {
+                memberList.append(ChatColor.GRAY);
+            }
+
+            if (!nearMembers.contains(member) && !playerName.equalsIgnoreCase(memberName)) {
+                memberList.append(ChatColor.ITALIC + "");
+            }
+
+            memberList.append(memberName).append(ChatColor.RESET).append(" ");
+        }
+
+        return memberList.toString();
     }
 
     @Override

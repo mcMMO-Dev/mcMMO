@@ -9,7 +9,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
@@ -126,32 +125,6 @@ public class PartyInfoCommand implements CommandExecutor {
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.Members.Header"));
         player.sendMessage(LocaleLoader.getString("Commands.Party.MembersNear", nearMembers.size(), membersOnline));
-        player.sendMessage(createMembersList(party, nearMembers));
-    }
-
-    private String createMembersList(Party party, List<Player> nearMembers) {
-        StringBuilder memberList = new StringBuilder();
-
-        for (String memberName : party.getMembers()) {
-            Player member = mcMMO.p.getServer().getPlayerExact(memberName);
-
-            if (!nearMembers.contains(member)) {
-                memberList.append(ChatColor.ITALIC);
-            }
-
-            if (party.getLeader().equalsIgnoreCase(memberName)) {
-                memberList.append(ChatColor.GOLD);
-            }
-            else if (member != null) {
-                memberList.append(ChatColor.WHITE);
-            }
-            else {
-                memberList.append(ChatColor.GRAY);
-            }
-
-            memberList.append(memberName).append(ChatColor.RESET).append(" ");
-        }
-
-        return memberList.toString();
+        player.sendMessage(party.createMembersList(player.getName(), nearMembers));
     }
 }

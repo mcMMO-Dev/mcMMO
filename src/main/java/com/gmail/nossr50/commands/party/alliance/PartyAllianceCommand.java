@@ -13,12 +13,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -61,7 +60,7 @@ public class PartyAllianceCommand implements TabExecutor {
                 targetParty = playerParty.getAlly();
 
                 displayPartyHeader();
-                displayMemberInfo();
+                displayMemberInfo(mcMMOPlayer);
                 return true;
 
             case 2:
@@ -91,7 +90,7 @@ public class PartyAllianceCommand implements TabExecutor {
                 targetParty = playerParty.getAlly();
 
                 displayPartyHeader();
-                displayMemberInfo();
+                displayMemberInfo(mcMMOPlayer);
                 return true;
 
             default:
@@ -127,32 +126,11 @@ public class PartyAllianceCommand implements TabExecutor {
         player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Ally", playerParty.getName(), targetParty.getName()));
     }
 
-    private void displayMemberInfo() {
+    private void displayMemberInfo(McMMOPlayer mcMMOPlayer) {
+        List<Player> nearMembers = PartyManager.getNearMembers(mcMMOPlayer);
         player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.Members.Header"));
-        player.sendMessage(createMembersList(playerParty));
+        player.sendMessage(playerParty.createMembersList(player.getName(), nearMembers));
         player.sendMessage(ChatColor.DARK_GRAY + "----------------------------");
-        player.sendMessage(createMembersList(targetParty));
-    }
-
-    private String createMembersList(Party party) {
-        StringBuilder memberList = new StringBuilder();
-
-        for (String memberName : party.getMembers()) {
-            Player member = mcMMO.p.getServer().getPlayerExact(memberName);
-
-            if (party.getLeader().equalsIgnoreCase(memberName)) {
-                memberList.append(ChatColor.GOLD);
-            }
-            else if (member != null) {
-                memberList.append(ChatColor.WHITE);
-            }
-            else {
-                memberList.append(ChatColor.GRAY);
-            }
-
-            memberList.append(memberName).append(" ");
-        }
-
-        return memberList.toString();
+        player.sendMessage(targetParty.createMembersList(player.getName(), nearMembers));
     }
 }
