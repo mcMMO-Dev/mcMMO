@@ -239,12 +239,12 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Fishing.FishermansDiet.RankChange should be at least 1!");
         }
 
-        if (getIceFishingUnlockLevel() < 1) {
-            reason.add("Skills.Fishing.IceFishing.UnlockLevel should be at least 1!");
+        if (getIceFishingUnlockLevel() < 0) {
+            reason.add("Skills.Fishing.IceFishing.UnlockLevel should be at least 0!");
         }
 
-        if (getMasterAnglerUnlockLevel() < 1) {
-            reason.add("Skills.Fishing.MasterAngler.UnlockLevel should be at least 1!");
+        if (getMasterAnglerUnlockLevel() < 0) {
+            reason.add("Skills.Fishing.MasterAngler.UnlockLevel should be at least 0!");
         }
 
         if (getMasterAnglerBoatModifier() < 1) {
@@ -378,8 +378,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Repair.SuperRepair.MaxBonusLevel should be at least 1!");
         }
 
-        if (getSalvageUnlockLevel() < 1) {
-            reason.add("Skills.Repair.Salvage.UnlockLevel should be at least 1!");
+        if (getSalvageUnlockLevel() < 0) {
+            reason.add("Skills.Repair.Salvage.UnlockLevel should be at least 0!");
         }
 
         List<ArcaneForging.Tier> arcaneForgingTierList = Arrays.asList(ArcaneForging.Tier.values());
@@ -431,8 +431,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Smelting.SecondSmelt.ChanceMax should be at least 1!");
         }
 
-        if (getFluxMiningUnlockLevel() < 1) {
-            reason.add("Skills.Smelting.FluxMining.UnlockLevel should be at least 1!");
+        if (getFluxMiningUnlockLevel() < 0) {
+            reason.add("Skills.Smelting.FluxMining.UnlockLevel should be at least 0!");
         }
 
         if (getFluxMiningChance() < 1) {
@@ -522,40 +522,40 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Taming.Gore.Modifier should be at least 1!");
         }
 
-        if (getFastFoodUnlock() < 1) {
-            reason.add("Skills.Taming.FastFood.UnlockLevel should be at least 1!");
+        if (getFastFoodUnlock() < 0) {
+            reason.add("Skills.Taming.FastFood.UnlockLevel should be at least 0!");
         }
 
         if (getFastFoodChance() < 1) {
             reason.add("Skills.Taming.FastFood.Chance should be at least 1!");
         }
 
-        if (getEnviromentallyAwareUnlock() < 1) {
-            reason.add("Skills.Taming.EnvironmentallyAware.UnlockLevel should be at least 1!");
+        if (getEnviromentallyAwareUnlock() < 0) {
+            reason.add("Skills.Taming.EnvironmentallyAware.UnlockLevel should be at least 0!");
         }
 
-        if (getThickFurUnlock() < 1) {
-            reason.add("Skills.Taming.ThickFur.UnlockLevel should be at least 1!");
+        if (getThickFurUnlock() < 0) {
+            reason.add("Skills.Taming.ThickFur.UnlockLevel should be at least 0!");
         }
 
         if (getThickFurModifier() < 1) {
             reason.add("Skills.Taming.ThickFur.Modifier should be at least 1!");
         }
 
-        if (getHolyHoundUnlock() < 1) {
-            reason.add("Skills.Taming.HolyHound.UnlockLevel should be at least 1!");
+        if (getHolyHoundUnlock() < 0) {
+            reason.add("Skills.Taming.HolyHound.UnlockLevel should be at least 0!");
         }
 
-        if (getShockProofUnlock() < 1) {
-            reason.add("Skills.Taming.ShockProof.UnlockLevel should be at least 1!");
+        if (getShockProofUnlock() < 0) {
+            reason.add("Skills.Taming.ShockProof.UnlockLevel should be at least 0!");
         }
 
         if (getShockProofModifier() < 1) {
             reason.add("Skills.Taming.ShockProof.Modifier should be at least 1!");
         }
 
-        if (getSharpenedClawsUnlock() < 1) {
-            reason.add("Skills.Taming.SharpenedClaws.UnlockLevel should be at least 1!");
+        if (getSharpenedClawsUnlock() < 0) {
+            reason.add("Skills.Taming.SharpenedClaws.UnlockLevel should be at least 0!");
         }
 
         if (getSharpenedClawsBonus() < 1) {
@@ -608,8 +608,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         /* WOODCUTTING */
-        if (getLeafBlowUnlockLevel() < 1) {
-            reason.add("Skills.Woodcutting.LeafBlower.UnlockLevel should be at least 1!");
+        if (getLeafBlowUnlockLevel() < 0) {
+            reason.add("Skills.Woodcutting.LeafBlower.UnlockLevel should be at least 0!");
         }
 
         if (getMaxChance(SecondaryAbility.WOODCUTTING_DOUBLE_DROPS) < 1) {
