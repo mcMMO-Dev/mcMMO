@@ -211,7 +211,9 @@ public class mcMMO extends JavaPlugin {
         }
         catch (NullPointerException e) {}
 
+        debug("Canceling all tasks...");
         getServer().getScheduler().cancelTasks(this); // This removes our tasks
+        debug("Unregister all events...");
         HandlerList.unregisterAll(this); // Cancel event registrations
 
         if (Config.getInstance().getBackupsEnabled()) {

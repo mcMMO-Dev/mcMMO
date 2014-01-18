@@ -526,6 +526,7 @@ public final class PartyManager {
 
         YamlConfiguration partiesFile = new YamlConfiguration();
 
+        mcMMO.p.debug("Saving Parties... (" + parties.size() + ")");
         for (Party party : parties) {
             String partyName = party.getName();
 

@@ -57,6 +57,7 @@ public final class UserManager {
      * Save all users.
      */
     public static void saveAll() {
+        mcMMO.p.debug("Saving mcMMOPlayers... (" + players.size() + ")");
         for (McMMOPlayer mcMMOPlayer : players.values()) {
             mcMMOPlayer.getProfile().save();
         }

@@ -161,7 +161,9 @@ public class ScoreboardManager {
 
     // Called in onDisable()
     public static void teardownAll() {
-        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
+        Player[] onlinePlayers = mcMMO.p.getServer().getOnlinePlayers();
+        mcMMO.p.debug("Tearing down scoreboards... (" + onlinePlayers.length + ")");
+        for (Player player : onlinePlayers) {
             teardownPlayer(player);
         }
     }

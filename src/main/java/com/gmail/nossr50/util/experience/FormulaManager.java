@@ -151,6 +151,7 @@ public class FormulaManager {
      * Save formula file.
      */
     public void saveFormula() {
+        mcMMO.p.debug("Saving previous XP formula type...");
         YamlConfiguration formulasFile = new YamlConfiguration();
         formulasFile.set("Previous_Formula", previousFormula.toString());
 

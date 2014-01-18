@@ -134,6 +134,7 @@ public final class HolidayManager {
 
     // This gets called onDisable
     public void saveAnniversaryFiles() {
+        mcMMO.p.debug("Saving anniversary files...");
         String anniversaryFilePath = mcMMO.getFlatFileDirectory() + "anniversary." + CURRENT_YEAR + ".yml";
 
         try {
