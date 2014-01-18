@@ -207,10 +207,12 @@ public class Party {
 
         if (!Config.getInstance().getPartyInformAllMembers()) {
             Player leader = mcMMO.p.getServer().getPlayer(this.leader);
-            leader.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
+            if (leader != null) {
+                leader.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
 
-            if (Config.getInstance().getLevelUpSoundsEnabled()) {
-                leader.playSound(leader.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+                if (Config.getInstance().getLevelUpSoundsEnabled()) {
+                    leader.playSound(leader.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+                }
             }
             return;
         }
