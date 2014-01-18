@@ -109,6 +109,7 @@ public final class Permissions {
     public static boolean doubleXp(Permissible permissible, SkillType skill) { return permissible.hasPermission("mcmmo.perks.xp.double." + skill.toString().toLowerCase()); }
     public static boolean oneAndOneHalfXp(Permissible permissible, SkillType skill) { return permissible.hasPermission("mcmmo.perks.xp.50percentboost." + skill.toString().toLowerCase()); }
     public static boolean oneAndOneTenthXp(Permissible permissible, SkillType skill) { return permissible.hasPermission("mcmmo.perks.xp.10percentboost." + skill.toString().toLowerCase()); }
+    public static boolean customXpBoost(Permissible permissible, SkillType skill) { return permissible.hasPermission("mcmmo.perks.xp.customboost." + skill.toString().toLowerCase()); }
 
     /* ACTIVATION PERKS */
     public static boolean twelveSecondActivationBoost(Permissible permissible) { return permissible.hasPermission("mcmmo.perks.activationtime.twelveseconds"); }

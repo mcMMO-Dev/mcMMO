@@ -179,6 +179,9 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     /* Skill modifiers */
     public double getFormulaSkillModifier(SkillType skill) { return config.getDouble("Experience_Formula.Modifier." + StringUtils.getCapitalized(skill.toString())); }
 
+    /* Custom XP perk */
+    public double getCustomXpPerkBoost() { return config.getDouble("Experience_Formula.Custom_XP_Perk.Boost", 1.25); }
+
     /* Conversion */
     public double getExpModifier() { return config.getDouble("Conversion.Exp_Modifier", 1); }
 

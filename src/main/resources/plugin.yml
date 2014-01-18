@@ -1345,6 +1345,7 @@ permissions:
             mcmmo.perks.xp.150percentboost.all: true
             mcmmo.perks.xp.50percentboost.all: true
             mcmmo.perks.xp.10percentboost.all: true
+            mcmmo.perks.xp.customboost.all: true
             mcmmo.perks.xp.double.all: true
             mcmmo.perks.xp.quadruple.all: true
             mcmmo.perks.xp.triple.all: true
@@ -1558,6 +1559,76 @@ permissions:
     mcmmo.perks.xp.10percentboost.woodcutting:
         default: false
         description: Multiplies incoming Woodcutting XP by 1.1
+    mcmmo.perks.xp.customboost.*:
+        default: false
+        description: Mulitplies incoming XP by the boost amount defined in the experience config
+        children:
+            mcmmo.perks.xp.customboost.all: true
+    mcmmo.perks.xp.customboost:
+        default: false
+        description: Mulitplies incoming XP by the boost amount defined in the experience config
+        children:
+            mcmmo.perks.xp.customboost.all: true
+    mcmmo.perks.xp.customboost.all:
+        default: false
+        description: Mulitplies incoming XP by the boost amount defined in the experience config
+        children:
+            mcmmo.perks.xp.customboost.acrobatics: true
+            mcmmo.perks.xp.customboost.alchemy: true
+            mcmmo.perks.xp.customboost.archery: true
+            mcmmo.perks.xp.customboost.axes: true
+            mcmmo.perks.xp.customboost.excavation: true
+            mcmmo.perks.xp.customboost.fishing: true
+            mcmmo.perks.xp.customboost.herbalism: true
+            mcmmo.perks.xp.customboost.mining: true
+            mcmmo.perks.xp.customboost.repair: true
+            mcmmo.perks.xp.customboost.smelting: true
+            mcmmo.perks.xp.customboost.swords: true
+            mcmmo.perks.xp.customboost.taming: true
+            mcmmo.perks.xp.customboost.unarmed: true
+            mcmmo.perks.xp.customboost.woodcutting: true
+    mcmmo.perks.xp.customboost.acrobatics:
+        default: false
+        description: Multiplies incoming Acrobatics XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.alchemy:
+        default: false
+        description: Multiplies incoming Acrobatics XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.archery:
+        default: false
+        description: Multiplies incoming Archery XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.axes:
+        default: false
+        description: Multiplies incoming Axes XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.excavation:
+        default: false
+        description: Multiplies incoming Excavation XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.fishing:
+        default: false
+        description: Multiplies incoming Fishing XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.herbalism:
+        default: false
+        description: Multiplies incoming Herbalism XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.mining:
+        default: false
+        description: Multiplies incoming Mining XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.repair:
+        default: false
+        description: Multiplies incoming Repair XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.smelting:
+        default: false
+        description: Multiplies incoming Smelting XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.swords:
+        default: false
+        description: Multiplies incoming Swords XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.taming:
+        default: false
+        description: Multiplies incoming Taming XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.unarmed:
+        default: false
+        description: Multiplies incoming Unarmed XP by the boost amount defined in the experience config
+    mcmmo.perks.xp.customboost.woodcutting:
+        default: false
+        description: Multiplies incoming Woodcutting XP by the boost amount defined in the experience config
     mcmmo.perks.xp.double.*:
         default: false
         description: Doubles incoming XP
