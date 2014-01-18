@@ -1351,17 +1351,17 @@ permissions:
             mcmmo.perks.xp.triple.all: true
     mcmmo.perks.xp.150percentboost.*:
         default: false
-        description: Mulitplies incoming XP by 2.5
+        description: Multiplies incoming XP by 2.5
         children:
             mcmmo.perks.xp.150percentboost.all: true
     mcmmo.perks.xp.150percentboost:
         default: false
-        description: Mulitplies incoming XP by 2.5
+        description: Multiplies incoming XP by 2.5
         children:
             mcmmo.perks.xp.150percentboost.all: true
     mcmmo.perks.xp.150percentboost.all:
         default: false
-        description: Mulitplies incoming XP by 2.5
+        description: Multiplies incoming XP by 2.5
         children:
             mcmmo.perks.xp.150percentboost.acrobatics: true
             mcmmo.perks.xp.150percentboost.alchemy: true
@@ -1421,17 +1421,17 @@ permissions:
         description: Multiplies incoming Woodcutting XP by 2.5
     mcmmo.perks.xp.50percentboost.*:
         default: false
-        description: Mulitplies incoming XP by 1.5
+        description: Multiplies incoming XP by 1.5
         children:
             mcmmo.perks.xp.50percentboost.all: true
     mcmmo.perks.xp.50percentboost:
         default: false
-        description: Mulitplies incoming XP by 1.5
+        description: Multiplies incoming XP by 1.5
         children:
             mcmmo.perks.xp.50percentboost.all: true
     mcmmo.perks.xp.50percentboost.all:
         default: false
-        description: Mulitplies incoming XP by 1.5
+        description: Multiplies incoming XP by 1.5
         children:
             mcmmo.perks.xp.50percentboost.acrobatics: true
             mcmmo.perks.xp.50percentboost.alchemy: true
@@ -1491,17 +1491,17 @@ permissions:
         description: Multiplies incoming Woodcutting XP by 1.5
     mcmmo.perks.xp.10percentboost.*:
         default: false
-        description: Mulitplies incoming XP by 1.1
+        description: Multiplies incoming XP by 1.1
         children:
             mcmmo.perks.xp.10percentboost.all: true
     mcmmo.perks.xp.10percentboost:
         default: false
-        description: Mulitplies incoming XP by 1.1
+        description: Multiplies incoming XP by 1.1
         children:
             mcmmo.perks.xp.10percentboost.all: true
     mcmmo.perks.xp.10percentboost.all:
         default: false
-        description: Mulitplies incoming XP by 1.1
+        description: Multiplies incoming XP by 1.1
         children:
             mcmmo.perks.xp.10percentboost.acrobatics: true
             mcmmo.perks.xp.10percentboost.alchemy: true
@@ -1561,17 +1561,17 @@ permissions:
         description: Multiplies incoming Woodcutting XP by 1.1
     mcmmo.perks.xp.customboost.*:
         default: false
-        description: Mulitplies incoming XP by the boost amount defined in the experience config
+        description: Multiplies incoming XP by the boost amount defined in the experience config
         children:
             mcmmo.perks.xp.customboost.all: true
     mcmmo.perks.xp.customboost:
         default: false
-        description: Mulitplies incoming XP by the boost amount defined in the experience config
+        description: Multiplies incoming XP by the boost amount defined in the experience config
         children:
             mcmmo.perks.xp.customboost.all: true
     mcmmo.perks.xp.customboost.all:
         default: false
-        description: Mulitplies incoming XP by the boost amount defined in the experience config
+        description: Multiplies incoming XP by the boost amount defined in the experience config
         children:
             mcmmo.perks.xp.customboost.acrobatics: true
             mcmmo.perks.xp.customboost.alchemy: true
