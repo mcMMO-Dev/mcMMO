@@ -58,7 +58,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (brewingStand.getType() != Material.BREWING_STAND) {
+        if (player == null || !player.isValid() || brewingStand.getType() != Material.BREWING_STAND) {
             if (Alchemy.brewingStandMap.containsKey(brewingStand)) {
                 Alchemy.brewingStandMap.remove(brewingStand);
             }
