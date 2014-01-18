@@ -90,6 +90,10 @@ public final class CommandUtils {
      */
     public static boolean checkPlayerExistence(CommandSender sender, String playerName, McMMOPlayer mcMMOPlayer) {
         if (mcMMOPlayer != null) {
+            if (CommandUtils.hidden(sender, mcMMOPlayer.getPlayer(), false)) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Offline"));
+                return false;
+            }
             return true;
         }
 
