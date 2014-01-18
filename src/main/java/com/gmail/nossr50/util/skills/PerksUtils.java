@@ -59,6 +59,9 @@ public final class PerksUtils {
         else if (Permissions.oneAndOneHalfXp(player, skill)) {
             xp *= 1.5;
         }
+        else if (Permissions.oneAndOneTenthXp(player, skill)) {
+            xp *= 1.1;
+        }
 
         return xp;
     }

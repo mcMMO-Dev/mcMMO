@@ -1344,6 +1344,7 @@ permissions:
         children:
             mcmmo.perks.xp.150percentboost.all: true
             mcmmo.perks.xp.50percentboost.all: true
+            mcmmo.perks.xp.10percentboost.all: true
             mcmmo.perks.xp.double.all: true
             mcmmo.perks.xp.quadruple.all: true
             mcmmo.perks.xp.triple.all: true
@@ -1426,7 +1427,7 @@ permissions:
         default: false
         description: Mulitplies incoming XP by 1.5
         children:
-            mcmmo.perks.xp.150percentboost.all: true
+            mcmmo.perks.xp.50percentboost.all: true
     mcmmo.perks.xp.50percentboost.all:
         default: false
         description: Mulitplies incoming XP by 1.5
@@ -1487,6 +1488,76 @@ permissions:
     mcmmo.perks.xp.50percentboost.woodcutting:
         default: false
         description: Multiplies incoming Woodcutting XP by 1.5
+    mcmmo.perks.xp.10percentboost.*:
+        default: false
+        description: Mulitplies incoming XP by 1.1
+        children:
+            mcmmo.perks.xp.10percentboost.all: true
+    mcmmo.perks.xp.10percentboost:
+        default: false
+        description: Mulitplies incoming XP by 1.1
+        children:
+            mcmmo.perks.xp.10percentboost.all: true
+    mcmmo.perks.xp.10percentboost.all:
+        default: false
+        description: Mulitplies incoming XP by 1.1
+        children:
+            mcmmo.perks.xp.10percentboost.acrobatics: true
+            mcmmo.perks.xp.10percentboost.alchemy: true
+            mcmmo.perks.xp.10percentboost.archery: true
+            mcmmo.perks.xp.10percentboost.axes: true
+            mcmmo.perks.xp.10percentboost.excavation: true
+            mcmmo.perks.xp.10percentboost.fishing: true
+            mcmmo.perks.xp.10percentboost.herbalism: true
+            mcmmo.perks.xp.10percentboost.mining: true
+            mcmmo.perks.xp.10percentboost.repair: true
+            mcmmo.perks.xp.10percentboost.smelting: true
+            mcmmo.perks.xp.10percentboost.swords: true
+            mcmmo.perks.xp.10percentboost.taming: true
+            mcmmo.perks.xp.10percentboost.unarmed: true
+            mcmmo.perks.xp.10percentboost.woodcutting: true
+    mcmmo.perks.xp.10percentboost.acrobatics:
+        default: false
+        description: Multiplies incoming Acrobatics XP by 1.1
+    mcmmo.perks.xp.10percentboost.alchemy:
+        default: false
+        description: Multiplies incoming Acrobatics XP by 1.1
+    mcmmo.perks.xp.10percentboost.archery:
+        default: false
+        description: Multiplies incoming Archery XP by 1.1
+    mcmmo.perks.xp.10percentboost.axes:
+        default: false
+        description: Multiplies incoming Axes XP by 1.1
+    mcmmo.perks.xp.10percentboost.excavation:
+        default: false
+        description: Multiplies incoming Excavation XP by 1.1
+    mcmmo.perks.xp.10percentboost.fishing:
+        default: false
+        description: Multiplies incoming Fishing XP by 1.1
+    mcmmo.perks.xp.10percentboost.herbalism:
+        default: false
+        description: Multiplies incoming Herbalism XP by 1.1
+    mcmmo.perks.xp.10percentboost.mining:
+        default: false
+        description: Multiplies incoming Mining XP by 1.1
+    mcmmo.perks.xp.10percentboost.repair:
+        default: false
+        description: Multiplies incoming Repair XP by 1.1
+    mcmmo.perks.xp.10percentboost.smelting:
+        default: false
+        description: Multiplies incoming Smelting XP by 1.1
+    mcmmo.perks.xp.10percentboost.swords:
+        default: false
+        description: Multiplies incoming Swords XP by 1.1
+    mcmmo.perks.xp.10percentboost.taming:
+        default: false
+        description: Multiplies incoming Taming XP by 1.1
+    mcmmo.perks.xp.10percentboost.unarmed:
+        default: false
+        description: Multiplies incoming Unarmed XP by 1.1
+    mcmmo.perks.xp.10percentboost.woodcutting:
+        default: false
+        description: Multiplies incoming Woodcutting XP by 1.1
     mcmmo.perks.xp.double.*:
         default: false
         description: Doubles incoming XP
