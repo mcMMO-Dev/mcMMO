@@ -101,6 +101,12 @@ public final class AlchemyPotionBrewer {
         }
 
         switch (UserManager.getPlayer(player).getAlchemyManager().getTier()) {
+            case 8:
+                return PotionConfig.getInstance().concoctionsIngredientsTierEight;
+            case 7:
+                return PotionConfig.getInstance().concoctionsIngredientsTierSeven;
+            case 6:
+                return PotionConfig.getInstance().concoctionsIngredientsTierSix;
             case 5:
                 return PotionConfig.getInstance().concoctionsIngredientsTierFive;
             case 4:
