@@ -106,8 +106,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             if (tier != Alchemy.Tier.fromNumerical(Alchemy.Tier.values().length)) {
                 Alchemy.Tier nextTier = alchemyTierList.get(alchemyTierList.indexOf(tier) - 1);
 
-                if (getConcoctionsTierLevel(tier) >= getConcoctionsTierLevel(nextTier)) {
-                    reason.add("Skills.Alchemy.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than Skills.Alchemy.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
+                if (getConcoctionsTierLevel(tier) > getConcoctionsTierLevel(nextTier)) {
+                    reason.add("Skills.Alchemy.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than or equal to Skills.Alchemy.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
                 }
             }
         }
@@ -221,8 +221,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             if (tier != Fishing.Tier.EIGHT) {
                 Fishing.Tier nextTier = fishingTierList.get(fishingTierList.indexOf(tier) - 1);
 
-                if (getFishingTierLevel(tier) >= getFishingTierLevel(nextTier)) {
-                    reason.add("Skills.Fishing.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than Skills.Fishing.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
+                if (getFishingTierLevel(tier) > getFishingTierLevel(nextTier)) {
+                    reason.add("Skills.Fishing.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than or equal to Skills.Fishing.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
                 }
 
                 if (getShakeChance(tier) > getShakeChance(nextTier)) {
@@ -335,8 +335,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             if (tier != BlastMining.Tier.EIGHT) {
                 BlastMining.Tier nextTier = blastMiningTierList.get(blastMiningTierList.indexOf(tier) - 1);
 
-                if (getBlastMiningRankLevel(tier) >= getBlastMiningRankLevel(nextTier)) {
-                    reason.add("Skills.Mining.BlastMining.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than Skills.Mining.BlastMining.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
+                if (getBlastMiningRankLevel(tier) > getBlastMiningRankLevel(nextTier)) {
+                    reason.add("Skills.Mining.BlastMining.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than or equal to Skills.Mining.BlastMining.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
                 }
 
                 if (getBlastDamageDecrease(tier) > getBlastDamageDecrease(nextTier)) {
@@ -400,8 +400,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             if (tier != ArcaneForging.Tier.EIGHT) {
                 ArcaneForging.Tier nextTier = arcaneForgingTierList.get(arcaneForgingTierList.indexOf(tier) - 1);
 
-                if (getArcaneForgingRankLevel(tier) >= getArcaneForgingRankLevel(nextTier)) {
-                    reason.add("Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
+                if (getArcaneForgingRankLevel(tier) > getArcaneForgingRankLevel(nextTier)) {
+                    reason.add("Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than or equal to Skills.Repair.ArcaneForging.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
                 }
 
                 if (getArcaneForgingDowngradeChance(nextTier) > getArcaneForgingDowngradeChance(tier)) {
@@ -453,8 +453,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             if (tier != Smelting.Tier.EIGHT) {
                 Smelting.Tier nextTier = smeltingTierList.get(smeltingTierList.indexOf(tier) - 1);
 
-                if (getSmeltingRankLevel(tier) >= getSmeltingRankLevel(nextTier)) {
-                    reason.add("Skills.Smelting.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than Skills.Smelting.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
+                if (getSmeltingRankLevel(tier) > getSmeltingRankLevel(nextTier)) {
+                    reason.add("Skills.Smelting.Rank_Levels.Rank_" + tier.toNumerical() + " should be less than or equal to Skills.Smelting.Rank_Levels.Rank_" + nextTier.toNumerical() + "!");
                 }
 
                 if (getSmeltingVanillaXPBoostMultiplier(tier) > getSmeltingVanillaXPBoostMultiplier(nextTier)) {

@@ -40,6 +40,7 @@ Version 1.4.08-dev
  ! Changed several secondary ability permissions(deprecated versions still exist)
  ! Changed /ptp config setting, Commands.ptp.Confirm_Required is now Commands.ptp.Accept.Required
  ! Changed config validation for UnlockLevels, they can now also be 0
+ ! Changed config validation for Rank_Levels, successive Ranks can now be less than or equal to each other
  - Removed /stats alias for /mcstats
 
 Version 1.4.07
