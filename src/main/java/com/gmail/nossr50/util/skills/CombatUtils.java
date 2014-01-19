@@ -439,6 +439,7 @@ public final class CombatUtils {
                     case BLAZE:
                     case CAVE_SPIDER:
                     case CREEPER:
+                    case ENDER_DRAGON:
                     case ENDERMAN:
                     case GHAST:
                     case GIANT:
@@ -447,6 +448,8 @@ public final class CombatUtils {
                     case SILVERFISH:
                     case SLIME:
                     case SPIDER:
+                    case WITCH:
+                    case WITHER:
                     case ZOMBIE:
                         baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                         break;
