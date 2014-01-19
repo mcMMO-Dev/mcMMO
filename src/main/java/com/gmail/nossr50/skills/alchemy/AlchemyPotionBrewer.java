@@ -354,10 +354,5 @@ public final class AlchemyPotionBrewer {
 
             return;
         }
-        else {
-            event.setCancelled(true);
-
-            return;
-        }
     }
 }
