@@ -61,7 +61,6 @@ public final class LocaleLoader {
             string = formatter.format(messageArguments);
         }
 
-        string.replaceAll("\'", "''");
         string = addColors(string);
 
         return string;

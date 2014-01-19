@@ -172,7 +172,7 @@ public class ScoreboardManager {
     public static void cleanup(ScoreboardWrapper wrapper) {
         PLAYER_SCOREBOARDS.remove(wrapper.playerName);
 
-        if (wrapper != null && wrapper.revertTask != null) {
+        if (wrapper.revertTask != null) {
             wrapper.revertTask.cancel();
         }
     }

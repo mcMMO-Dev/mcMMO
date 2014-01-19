@@ -521,7 +521,10 @@ public final class PartyManager {
      */
     public static void saveParties() {
         if (partyFile.exists()) {
-            partyFile.delete();
+            if (!partyFile.delete()) {
+                mcMMO.p.getLogger().warning("Could not delete party file. Party saving failed!");
+                return;
+            }
         }
 
         YamlConfiguration partiesFile = new YamlConfiguration();

@@ -69,7 +69,8 @@ public class AlchemyManager extends SkillManager {
     }
 
     public String getIngredientList() {
-        String list = "";
+        StringBuilder list = new StringBuilder();
+
         for (ItemStack ingredient : getIngredients()) {
             String string = StringUtils.getPrettyItemString(ingredient.getType()) + (ingredient.getDurability() != 0 ? ":" + ingredient.getDurability() : "");
             if (string.equals("Long Grass:2")) {
@@ -79,7 +80,7 @@ public class AlchemyManager extends SkillManager {
                 string = "Pufferfish";
             }
 
-            list += ", " + string;
+            list.append(", " + string);
         }
         return list.substring(2);
     }

@@ -328,11 +328,15 @@ public class mcMMO extends JavaPlugin {
         File oldModPath = new File(mainDirectory + "ModConfigs" + File.separator);
 
         if (oldFlatfilePath.exists()) {
-            oldFlatfilePath.renameTo(new File(flatFileDirectory));
+            if (!oldFlatfilePath.renameTo(new File(flatFileDirectory))) {
+                getLogger().warning("Failed to rename FlatFileStuff to flatfile !");
+            }
         }
 
         if (oldModPath.exists()) {
-            oldModPath.renameTo(new File(modDirectory));
+            if (!oldModPath.renameTo(new File(modDirectory))) {
+                getLogger().warning("Failed to rename ModConfigs to mods !");
+            }
         }
     }
 
@@ -422,7 +426,7 @@ public class mcMMO extends JavaPlugin {
         new BleedTimerTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
 
         // Old & Powerless User remover
-        long purgeIntervalTicks = Config.getInstance().getPurgeInterval() * 60 * 60 * Misc.TICK_CONVERSION_FACTOR;
+        long purgeIntervalTicks = Config.getInstance().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
         if (purgeIntervalTicks == 0) {
             new UserPurgeTask().runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
@@ -432,7 +436,7 @@ public class mcMMO extends JavaPlugin {
         }
 
         // Automatically remove old members from parties
-        long kickIntervalTicks = Config.getInstance().getAutoPartyKickInterval() * 60 * 60 * Misc.TICK_CONVERSION_FACTOR;
+        long kickIntervalTicks = Config.getInstance().getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
         if (kickIntervalTicks == 0) {
             new PartyAutoKickTask().runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.

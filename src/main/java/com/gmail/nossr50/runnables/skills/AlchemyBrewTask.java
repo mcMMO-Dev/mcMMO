@@ -18,8 +18,8 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class AlchemyBrewTask extends BukkitRunnable {
-    private final double DEFAULT_BREW_SPEED = 1.0;
-    private final int    DEFAULT_BREW_TICKS = 400;
+    private static double DEFAULT_BREW_SPEED = 1.0;
+    private static int    DEFAULT_BREW_TICKS = 400;
 
     private Block brewingStand;
     private double brewSpeed;
