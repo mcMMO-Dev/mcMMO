@@ -33,6 +33,7 @@ public class AlchemyBrewCheckTask extends BukkitRunnable {
                 Alchemy.brewingStandMap.get(brewingStand).cancelBrew();
             }
         }
+
         if (!Alchemy.brewingStandMap.containsKey(brewingStand) && AlchemyPotionBrewer.isValidBrew(player, newInventory)) {
             Alchemy.brewingStandMap.put(brewingStand, new AlchemyBrewTask(brewingStand, player));
         }

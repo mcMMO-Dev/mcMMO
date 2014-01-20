@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables.skills;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BrewingStand;
@@ -42,7 +41,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
             }
 
             McMMOPlayerCatalysisEvent event = new McMMOPlayerCatalysisEvent(player, catalysis);
-            Bukkit.getPluginManager().callEvent(event);
+            mcMMO.p.getServer().getPluginManager().callEvent(event);
             if (!event.isCancelled()) {
                 brewSpeed = catalysis;
             }
@@ -82,7 +81,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
 
     private void finish() {
         McMMOPlayerBrewEvent event = new McMMOPlayerBrewEvent(player, brewingStand);
-        Bukkit.getPluginManager().callEvent(event);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (!event.isCancelled()) {
             AlchemyPotionBrewer.finishBrewing(brewingStand, player, false);

@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.alchemy;
 
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BrewingStand;
@@ -219,22 +218,6 @@ public final class AlchemyPotionBrewer {
         return false;
     }
 
-    private static void scheduleCheck(Player player, BrewingStand brewingStand) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, new AlchemyBrewCheckTask(player, brewingStand));
-    }
-
-    private static void scheduleUpdate(Inventory inventory) {
-        for (HumanEntity humanEntity : inventory.getViewers()) {
-            if (humanEntity instanceof Player) {
-                scheduleUpdate((Player) humanEntity);
-            }
-        }
-    }
-
-    private static void scheduleUpdate(Player player) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(mcMMO.p, new PlayerUpdateInventoryTask(player));
-    }
-
     public static void handleInventoryClick(InventoryClickEvent event) {
         Player player = event.getWhoClicked() instanceof Player ? (Player) event.getWhoClicked() : null;
         BrewingStand brewingStand = (BrewingStand) event.getInventory().getHolder();
@@ -353,6 +336,18 @@ public final class AlchemyPotionBrewer {
             scheduleCheck(player, brewingStand);
 
             return;
+        }
+    }
+
+    private static void scheduleCheck(Player player, BrewingStand brewingStand) {
+        new AlchemyBrewCheckTask(player, brewingStand).runTask(mcMMO.p);
+    }
+
+    private static void scheduleUpdate(Inventory inventory) {
+        for (HumanEntity humanEntity : inventory.getViewers()) {
+            if (humanEntity instanceof Player) {
+                new PlayerUpdateInventoryTask((Player) humanEntity).runTask(mcMMO.p);
+            }
         }
     }
 }
