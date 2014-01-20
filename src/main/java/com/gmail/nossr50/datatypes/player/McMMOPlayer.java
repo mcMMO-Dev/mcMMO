@@ -725,12 +725,12 @@ public class McMMOPlayer {
         switch (mode) {
             case ADMIN:
                 adminChatMode = !adminChatMode;
-                partyChatMode = adminChatMode ? false : partyChatMode;
+                partyChatMode = !adminChatMode && partyChatMode;
                 return;
 
             case PARTY:
                 partyChatMode = !partyChatMode;
-                adminChatMode = partyChatMode ? false : adminChatMode;
+                adminChatMode = !partyChatMode && adminChatMode;
                 return;
 
             default:

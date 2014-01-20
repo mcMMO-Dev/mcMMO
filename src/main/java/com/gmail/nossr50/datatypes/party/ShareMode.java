@@ -22,4 +22,4 @@ public enum ShareMode {
             return null;
         }
     }
-};
+}

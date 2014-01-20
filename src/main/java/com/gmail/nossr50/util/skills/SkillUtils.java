@@ -204,7 +204,7 @@ public class SkillUtils {
         return (event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance);
     }
 
-    public static boolean treasureDropSuccessful(Player player, double dropChance, int activationChance) {;
+    public static boolean treasureDropSuccessful(Player player, double dropChance, int activationChance) {
         SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, SecondaryAbility.EXCAVATION_TREASURE_HUNTER, dropChance / activationChance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
         return (event.getChance() * activationChance) > (Misc.getRandom().nextDouble() * activationChance);

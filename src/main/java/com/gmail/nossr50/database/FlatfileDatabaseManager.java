@@ -56,7 +56,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             try {
                 in = new BufferedReader(new FileReader(usersFilePath));
                 StringBuilder writer = new StringBuilder();
-                String line = "";
+                String line;
 
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
@@ -111,7 +111,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             try {
                 in = new BufferedReader(new FileReader(usersFilePath));
                 StringBuilder writer = new StringBuilder();
-                String line = "";
+                String line;
 
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
@@ -173,7 +173,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             try {
                 in = new BufferedReader(new FileReader(usersFilePath));
                 StringBuilder writer = new StringBuilder();
-                String line = "";
+                String line;
 
                 while ((line = in.readLine()) != null) {
                     // Write out the same file but when we get to the player we want to remove, we skip his line.
@@ -390,8 +390,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         continue;
                     }
 
-                    PlayerProfile p = loadFromLine(character);
-                    return p;
+                    return loadFromLine(character);
                 }
 
                 // Didn't find the player, create a new one
@@ -515,7 +514,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         synchronized (fileWritingLock) {
             try {
                 in = new BufferedReader(new FileReader(usersFilePath));
-                String line = "";
+                String line;
 
                 while ((line = in.readLine()) != null) {
                     String[] data = line.split(":");
@@ -594,7 +593,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 try {
                     in = new BufferedReader(new FileReader(usersFilePath));
                     StringBuilder writer = new StringBuilder();
-                    String line = "";
+                    String line;
                     HashSet<String> players = new HashSet<String>();
 
                     while ((line = in.readLine()) != null) {

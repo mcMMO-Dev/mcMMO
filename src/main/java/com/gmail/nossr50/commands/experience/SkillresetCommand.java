@@ -134,11 +134,7 @@ public class SkillresetCommand implements TabExecutor {
     }
 
     private boolean validateArguments(CommandSender sender, String skillName) {
-        if (CommandUtils.isInvalidSkill(sender, skillName) && !skillName.equalsIgnoreCase("all")) {
-            return false;
-        }
-
-        return true;
+        return !(CommandUtils.isInvalidSkill(sender, skillName) && !skillName.equalsIgnoreCase("all"));
     }
 
     protected static void handleSenderMessage(CommandSender sender, String playerName, SkillType skill) {

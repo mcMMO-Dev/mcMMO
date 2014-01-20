@@ -26,9 +26,7 @@ public class Unarmed {
         if (inventory.containsAtLeast(dropStack, 1)) {
             int nextSlot = 0;
 
-            for (Iterator<ItemStack> iterator = inventory.iterator(); iterator.hasNext();) {
-                ItemStack itemstack = iterator.next();
-
+            for (ItemStack itemstack: inventory) {
                 if (dropStack.isSimilar(itemstack)) {
                     int itemAmount = itemstack.getAmount();
                     int itemMax = itemstack.getMaxStackSize();
@@ -71,7 +69,8 @@ public class Unarmed {
 
                 nextSlot++;
             }
-        } else if (firstEmpty != -1) {
+        }
+        else if (firstEmpty != -1) {
             drop.remove();
             dropStack.setAmount(dropAmount);
             inventory.setItem(firstEmpty, dropStack);

@@ -13,9 +13,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class TeleportationWarmup extends BukkitRunnable {
-    private static Player teleportingPlayer;
     private McMMOPlayer mcMMOPlayer;
-    private static Player targetPlayer;
     private McMMOPlayer mcMMOTarget;
 
     public TeleportationWarmup(McMMOPlayer mcMMOPlayer, McMMOPlayer mcMMOTarget) {
@@ -25,12 +23,8 @@ public class TeleportationWarmup extends BukkitRunnable {
 
     @Override
     public void run() {
-        checkPartyTeleport();
-    }
-
-    private void checkPartyTeleport() {
-        teleportingPlayer = mcMMOPlayer.getPlayer();
-        targetPlayer = mcMMOTarget.getPlayer();
+        Player teleportingPlayer = mcMMOPlayer.getPlayer();
+        Player targetPlayer = mcMMOTarget.getPlayer();
         Location previousLocation = mcMMOPlayer.getTeleportCommenceLocation();
         Location newLocation = mcMMOPlayer.getPlayer().getLocation();
         long recentlyHurt = mcMMOPlayer.getRecentlyHurt();

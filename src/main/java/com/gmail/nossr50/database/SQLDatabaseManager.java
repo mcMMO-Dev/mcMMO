@@ -195,7 +195,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         if (checkConnected()) {
             String query = skill == null ? "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy" : skill.name().toLowerCase();
-            ResultSet resultSet = null;
+            ResultSet resultSet;
             PreparedStatement statement = null;
 
             try {
@@ -448,16 +448,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
                     + "WHERE u.user = ?");
             List<String> usernames = getStoredUsers();
-            ResultSet result = null;
+            ResultSet resultSet;
             int convertedUsers = 0;
             long startMillis = System.currentTimeMillis();
             for (String playerName : usernames) {
                 statement.setString(1, playerName);
                 try {
-                    result = statement.executeQuery();
-                    result.next();
-                    destination.saveUser(loadFromResult(playerName, result));
-                    result.close();
+                    resultSet = statement.executeQuery();
+                    resultSet.next();
+                    destination.saveUser(loadFromResult(playerName, resultSet));
+                    resultSet.close();
                 }
                 catch (SQLException e) {
                     // Ignore
@@ -798,7 +798,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 break;
         }
 
-        ResultSet resultSet = null;
+        ResultSet resultSet;
         HashMap<Integer, ArrayList<String>> rows = new HashMap<Integer, ArrayList<String>>();
         PreparedStatement statement = null;
 
@@ -984,7 +984,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         int result = -1;
 
         if (checkConnected()) {
-            ResultSet resultSet = null;
+            ResultSet resultSet;
 
             try {
                 resultSet = statement.executeQuery();

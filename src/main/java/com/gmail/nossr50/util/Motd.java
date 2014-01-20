@@ -12,7 +12,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.skills.PerksUtils;
 
 public final class Motd {
-    private static final String perkPrefix = LocaleLoader.getString("MOTD.PerksPrefix");
+    public static final String PERK_PREFIX = LocaleLoader.getString("MOTD.PerksPrefix") + " ";
     private static final PluginDescriptionFile pluginDescription = mcMMO.p.getDescription();
 
     private Motd() {}
@@ -101,7 +101,7 @@ public final class Motd {
 
         if (cooldownReduction > 0.0) {
             DecimalFormat percent = new DecimalFormat("##0.00%");
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Cooldowns.Name"), LocaleLoader.getString("Perks.Cooldowns.Desc", percent.format(cooldownReduction))));
+            player.sendMessage(PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Cooldowns.Name"), LocaleLoader.getString("Perks.Cooldowns.Desc", percent.format(cooldownReduction))));
         }
     }
 
@@ -114,7 +114,7 @@ public final class Motd {
         int perkAmount = PerksUtils.handleActivationPerks(player, 0, 0);
 
         if (perkAmount > 0) {
-            player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.ActivationTime.Name"), LocaleLoader.getString("Perks.ActivationTime.Desc", perkAmount)));
+            player.sendMessage(PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.ActivationTime.Name"), LocaleLoader.getString("Perks.ActivationTime.Desc", perkAmount)));
         }
     }
 
@@ -126,7 +126,7 @@ public final class Motd {
     public static void displayLuckyPerks(Player player) {
         for (SkillType skill : SkillType.values()) {
             if (Permissions.lucky(player, skill)) {
-                player.sendMessage(perkPrefix + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Lucky.Name"), LocaleLoader.getString("Perks.Lucky.Desc.Login")));
+                player.sendMessage(PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Lucky.Name"), LocaleLoader.getString("Perks.Lucky.Desc.Login")));
                 return;
             }
         }

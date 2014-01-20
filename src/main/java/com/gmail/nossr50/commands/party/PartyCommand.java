@@ -1,9 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -220,13 +217,7 @@ public class PartyCommand implements TabExecutor {
     }
 
     private String[] extractArgs(String[] args) {
-        String[] newArgs = new String[args.length - 1];
-
-        for (int i = 1; i < args.length; i++) {
-            newArgs[i - 1] = args[i];
-        }
-
-        return newArgs;
+        return Arrays.copyOfRange(args, 1, args.length - 1);
     }
 
     private boolean isItemShareCategory(String category) {

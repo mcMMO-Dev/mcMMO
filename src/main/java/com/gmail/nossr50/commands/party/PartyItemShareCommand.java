@@ -38,7 +38,7 @@ public class PartyItemShareCommand implements CommandExecutor {
                 return true;
 
             case 3:
-                boolean toggle = false;
+                boolean toggle;
 
                 if (CommandUtils.shouldEnableToggle(args[2])) {
                     toggle = true;

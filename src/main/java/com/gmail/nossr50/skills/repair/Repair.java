@@ -33,15 +33,7 @@ public class Repair {
      * @return true if the item is salvageable, false otherwise
      */
     public static boolean isSalvageable(ItemStack item) {
-        if (Config.getInstance().getSalvageTools() && ItemUtils.isMinecraftTool(item)) {
-            return true;
-        }
-
-        if (Config.getInstance().getSalvageArmor() && !ItemUtils.isChainmailArmor(item) && ItemUtils.isMinecraftArmor(item)) {
-            return true;
-        }
-
-        return false;
+        return (Config.getInstance().getSalvageTools() && ItemUtils.isMinecraftTool(item)) || (Config.getInstance().getSalvageArmor() && !ItemUtils.isChainmailArmor(item) && ItemUtils.isMinecraftArmor(item));
     }
 
     public static String getAnvilMessage(Material type) {

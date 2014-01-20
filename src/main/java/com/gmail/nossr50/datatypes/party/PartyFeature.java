@@ -45,10 +45,7 @@ public enum PartyFeature {
                 return false;
         }
 
-        if (Permissions.partySubcommand(player, partySubCommandType)) {
-            return true;
-        }
 
-        return false;
+        return Permissions.partySubcommand(player, partySubCommandType);
     }
 }

@@ -47,7 +47,7 @@ public class PartyInfoCommand implements CommandExecutor {
         status.append(LocaleLoader.getString("Commands.Party.Status", party.getName(), LocaleLoader.getString("Party.Status." + (party.isLocked() ? "Locked" : "Unlocked")), party.getLevel()));
 
         if (!party.hasReachedLevelCap()) {
-            status.append(" (" + party.getXpToLevelPercentage() + ")");
+            status.append(" (").append(party.getXpToLevelPercentage()).append(")");
         }
 
         player.sendMessage(status.toString());
@@ -80,11 +80,7 @@ public class PartyInfoCommand implements CommandExecutor {
     }
 
     private boolean isUnlockedFeature(Party party, PartyFeature partyFeature) {
-        if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(partyFeature)) {
-            return false;
-        }
-
-        return true;
+        return party.getLevel() >= Config.getInstance().getPartyFeatureUnlockLevel(partyFeature);
     }
 
     private void displayShareModeInfo(Player player, Party party) {

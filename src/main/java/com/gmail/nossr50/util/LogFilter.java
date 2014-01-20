@@ -15,10 +15,6 @@ public class LogFilter implements Filter {
 
     @Override
     public boolean isLoggable(LogRecord record) {
-        if (record.getMessage().contains("[Debug]") && !debug) {
-            return false;
-        }
-
-        return true;
+        return !(record.getMessage().contains("[Debug]") && !debug);
     }
 }

@@ -28,7 +28,7 @@ public class BleedTimerTask extends BukkitRunnable {
                 continue;
             }
 
-            int damage = 0;
+            int damage;
 
             if (entity instanceof Player) {
                 damage = 1;

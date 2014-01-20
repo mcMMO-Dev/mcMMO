@@ -310,7 +310,7 @@ public class Party {
             }
 
             if (!nearMembers.contains(member) && !playerName.equalsIgnoreCase(memberName)) {
-                memberList.append(ChatColor.ITALIC + "");
+                memberList.append(ChatColor.ITALIC).append("");
             }
 
             memberList.append(memberName).append(ChatColor.RESET).append(" ");

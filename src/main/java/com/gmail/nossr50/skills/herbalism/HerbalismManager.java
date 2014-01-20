@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.herbalism;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -134,7 +133,7 @@ public class HerbalismManager extends SkillManager {
 
         Collection<ItemStack> drops = null;
         int amount = 1;
-        int xp = 0;
+        int xp;
         boolean greenTerra = mcMMOPlayer.getAbilityMode(skill.getAbility());
 
         if (ModUtils.isCustomHerbalismBlock(blockState)) {
@@ -203,7 +202,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        List<HylianTreasure> treasures = new ArrayList<HylianTreasure>();
+        List<HylianTreasure> treasures;
 
         switch (blockState.getType()) {
             case DEAD_BUSH:

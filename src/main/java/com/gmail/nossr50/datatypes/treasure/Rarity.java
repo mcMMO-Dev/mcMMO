@@ -17,4 +17,4 @@ public enum Rarity {
             return COMMON;
         }
     }
-};
+}

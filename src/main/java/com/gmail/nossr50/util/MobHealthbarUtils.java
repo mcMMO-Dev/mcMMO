@@ -96,9 +96,9 @@ public final class MobHealthbarUtils {
         double currentHealth = Math.max(entity.getHealth() - damage, 0);
         double healthPercentage = (currentHealth / maxHealth) * 100.0D;
 
-        int fullDisplay = 0;
+        int fullDisplay;
         ChatColor color = ChatColor.BLACK;
-        String symbol = "";
+        String symbol;
 
         switch (profile.getMobHealthbarType()) {
             case HEARTS:

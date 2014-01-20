@@ -79,7 +79,8 @@ public class MetricsManager {
 
                 if (version.contains("-")) {
                     String majorVersion = version.substring(0, version.indexOf("-"));
-                    String subVersion = "";
+                    String subVersion;
+
                     if (isOfficialBuild) {
                         int startIndex = version.indexOf("-");
                         if (version.substring(startIndex + 1).contains("-")) {
@@ -95,9 +96,6 @@ public class MetricsManager {
 
                     version = majorVersion + "~=~" + subVersion;
                     haveVersionInformation = true;
-                }
-                else {
-                    haveVersionInformation = false;
                 }
 
                 if (haveVersionInformation) {

@@ -70,36 +70,6 @@ public class StringUtils {
     }
 
     /**
-     * Gets the int represented by this string.
-     *
-     * @param string The string to parse
-     * @return the int represented by this string
-     */
-    public static int getInt(String string) {
-        try {
-            return Integer.parseInt(string);
-        }
-        catch (NumberFormatException nFE) {
-            return 0;
-        }
-    }
-
-    /**
-     * Gets the long represented by this string.
-     *
-     * @param string The string to parse
-     * @return the long represented by this string
-     */
-    public static long getLong(String string) {
-        try {
-            return Long.parseLong(string);
-        }
-        catch (NumberFormatException nFE) {
-            return 0;
-        }
-    }
-
-    /**
      * Determine if a string represents an Integer
      *
      * @param string String to check

@@ -112,11 +112,7 @@ public abstract class ExperienceCommand implements TabExecutor {
     protected abstract void handlePlayerMessageSkill(Player player, int value, SkillType skill);
 
     private boolean validateArguments(CommandSender sender, String skillName, String value) {
-        if (CommandUtils.isInvalidInteger(sender, value) || (!skillName.equalsIgnoreCase("all") && CommandUtils.isInvalidSkill(sender, skillName))) {
-            return false;
-        }
-
-        return true;
+        return !(CommandUtils.isInvalidInteger(sender, value) || (!skillName.equalsIgnoreCase("all") && CommandUtils.isInvalidSkill(sender, skillName)));
     }
 
     protected static void handleSenderMessage(CommandSender sender, String playerName, SkillType skill) {

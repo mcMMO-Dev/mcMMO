@@ -13,4 +13,4 @@ public enum FormulaType {
             return UNKNOWN;
         }
     }
-};
+}
