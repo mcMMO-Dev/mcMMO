@@ -1197,9 +1197,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
         MobHealthbarType mobHealthbarType;
 
         final int OFFSET_SKILLS = 0; // TODO update these numbers when the query changes (a new skill is added)
-        final int OFFSET_XP = 12;
-        final int OFFSET_DATS = 24;
-        final int OFFSET_OTHER = 36;
+        final int OFFSET_XP = 13;
+        final int OFFSET_DATS = 26;
+        final int OFFSET_OTHER = 38;
 
         skills.put(SkillType.TAMING, result.getInt(OFFSET_SKILLS + 1));
         skills.put(SkillType.MINING, result.getInt(OFFSET_SKILLS + 2));
