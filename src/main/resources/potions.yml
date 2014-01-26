@@ -357,7 +357,7 @@ Potions:
             GLOWSTONE_DUST: 4384
             REDSTONE: 4416
             SULPHUR: 20736
-    4284: # Potion of Hunger II
+    4384: # Potion of Hunger II
         Effects: ["HUNGER 1 450"]
         Children:
             REDSTONE: 4416
