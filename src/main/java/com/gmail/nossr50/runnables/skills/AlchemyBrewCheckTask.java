@@ -15,18 +15,19 @@ public class AlchemyBrewCheckTask extends BukkitRunnable {
     private final static int INGREDIENT_SLOT = 3;
 
     private Player player;
-    private Block brewingStand;
+    private BrewingStand brewingStand;
     private ItemStack[] oldInventory;
 
     public AlchemyBrewCheckTask(Player player, BrewingStand brewingStand) {
         this.player = player;
-        this.brewingStand = brewingStand.getBlock();
+        this.brewingStand = brewingStand;
         this.oldInventory = Arrays.copyOfRange(brewingStand.getInventory().getContents(), 0, 4);
     }
 
     @Override
     public void run() {
-        ItemStack[] newInventory = Arrays.copyOfRange(((BrewingStand) brewingStand.getState()).getInventory().getContents(), 0, 4);
+        Block block = brewingStand.getBlock();
+        ItemStack[] newInventory = Arrays.copyOfRange(((BrewingStand) block.getState()).getInventory().getContents(), 0, 4);
 
         if (Alchemy.brewingStandMap.containsKey(brewingStand)) {
             if (oldInventory[INGREDIENT_SLOT] == null || newInventory[INGREDIENT_SLOT] == null || !oldInventory[INGREDIENT_SLOT].isSimilar(newInventory[INGREDIENT_SLOT]) || !AlchemyPotionBrewer.isValidBrew(player, newInventory)) {

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.runnables.skills;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -21,12 +21,12 @@ public class AlchemyBrewTask extends BukkitRunnable {
     private static double DEFAULT_BREW_SPEED = 1.0;
     private static int    DEFAULT_BREW_TICKS = 400;
 
-    private Block brewingStand;
+    private BlockState brewingStand;
     private double brewSpeed;
     private double brewTimer;
     private Player player;
 
-    public AlchemyBrewTask(Block brewingStand, Player player) {
+    public AlchemyBrewTask(BlockState brewingStand, Player player) {
         this.brewingStand = brewingStand;
         this.player = player;
 
@@ -75,7 +75,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
             finish();
         }
         else {
-            ((BrewingStand) brewingStand.getState()).setBrewingTime((int) brewTimer);
+            ((BrewingStand) brewingStand).setBrewingTime((int) brewTimer);
         }
     }
 
@@ -100,7 +100,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
     public void cancelBrew() {
         this.cancel();
 
-        ((BrewingStand) brewingStand.getState()).setBrewingTime(-1);
+        ((BrewingStand) brewingStand).setBrewingTime(-1);
         Alchemy.brewingStandMap.remove(brewingStand);
     }
 }

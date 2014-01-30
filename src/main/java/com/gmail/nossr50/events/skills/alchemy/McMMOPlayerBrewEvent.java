@@ -1,6 +1,7 @@
 package com.gmail.nossr50.events.skills.alchemy;
 
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -9,11 +10,11 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 
 public class McMMOPlayerBrewEvent extends McMMOPlayerSkillEvent implements Cancellable {
-    private Block brewingStand;
+    private BlockState brewingStand;
 
     private boolean cancelled;
 
-    public McMMOPlayerBrewEvent(Player player, Block brewingStand) {
+    public McMMOPlayerBrewEvent(Player player, BlockState brewingStand) {
         super(player, SkillType.ALCHEMY);
         this.brewingStand = brewingStand;
         cancelled = false;
@@ -28,10 +29,10 @@ public class McMMOPlayerBrewEvent extends McMMOPlayerSkillEvent implements Cance
     }
 
     public Block getBrewingStandBlock() {
-        return brewingStand;
+        return brewingStand.getBlock();
     }
 
     public BrewingStand getBrewingStand() {
-        return brewingStand.getState() instanceof BrewingStand ? (BrewingStand) brewingStand.getState() : null;
+        return (BrewingStand) brewingStand;
     }
 }

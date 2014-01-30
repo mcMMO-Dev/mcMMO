@@ -3,7 +3,7 @@ package com.gmail.nossr50.skills.alchemy;
 import java.util.List;
 
 import org.bukkit.Material;
-import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -119,12 +119,12 @@ public final class AlchemyPotionBrewer {
         }
     }
 
-    public static void finishBrewing(Block brewingStand, Player player, boolean forced) {
-        if (!(brewingStand.getState() instanceof BrewingStand)) {
+    public static void finishBrewing(BlockState brewingStand, Player player, boolean forced) {
+        if (!(brewingStand instanceof BrewingStand)) {
             return;
         }
 
-        BrewerInventory inventory = ((BrewingStand) brewingStand.getState()).getInventory();
+        BrewerInventory inventory = ((BrewingStand) brewingStand).getInventory();
         ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
 
         if (!removeIngredient(inventory, player)) {
