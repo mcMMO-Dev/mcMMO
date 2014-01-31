@@ -41,6 +41,9 @@ public class Excavation {
             case SOUL_SAND:
                 return TreasureConfig.getInstance().excavationFromSoulSand;
 
+            case SNOW:
+                return TreasureConfig.getInstance().excavationFromSnow;
+
             default:
                 return new ArrayList<ExcavationTreasure>();
         }

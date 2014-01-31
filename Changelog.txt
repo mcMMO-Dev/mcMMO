@@ -35,6 +35,7 @@ Version 1.4.08-dev
  = Fixed bug which made it possible to gain XP by taming the same horse multiple times, if a player "untamed" that horse
  = Fixed bug where the /ptp request expiration time was checked wrongly - preventing players from using the command
  = Fixed bug where Hylian Luck was broken
+ = Fixed bug where Snow would never drop treasures
  ! Changed party system. Parties now have XP and Levels. Party features such as party teleport and party chat have to be unlocked before they can be used by the party members
  ! Changed appearance of party member list. Gold = party leader, White = online, Gray = offline, Italic = not nearby
  ! Updated localization files
