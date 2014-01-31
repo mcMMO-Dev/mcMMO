@@ -16,6 +16,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.projectiles.ProjectileSource;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -262,10 +263,10 @@ public final class CombatUtils {
         }
         else if (entityType == EntityType.ARROW) {
             Arrow arrow = (Arrow) damager;
-            LivingEntity shooter = arrow.getShooter();
+            ProjectileSource projectileSource = arrow.getShooter();
 
-            if (shooter != null && shooter instanceof Player && SkillType.ARCHERY.shouldProcess(target)) {
-                Player player = (Player) shooter;
+            if (projectileSource != null && projectileSource instanceof Player && SkillType.ARCHERY.shouldProcess(target)) {
+                Player player = (Player) projectileSource;
 
                 if (!Misc.isNPCEntity(player) && SkillType.ARCHERY.getPermissions(player)) {
                     processArcheryCombat(target, player, event, arrow);
