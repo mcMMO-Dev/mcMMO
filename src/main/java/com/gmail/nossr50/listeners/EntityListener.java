@@ -34,6 +34,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.projectiles.ProjectileSource;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -160,7 +161,11 @@ public class EntityListener implements Listener {
         }
 
         if (attacker instanceof Projectile) {
-            attacker = ((Projectile) attacker).getShooter();
+            ProjectileSource projectileSource = ((Projectile) attacker).getShooter();
+
+            if (projectileSource instanceof LivingEntity) {
+                attacker = (LivingEntity) projectileSource;
+            }
         }
         else if (attacker instanceof Tameable) {
             AnimalTamer animalTamer = ((Tameable) attacker).getOwner();
