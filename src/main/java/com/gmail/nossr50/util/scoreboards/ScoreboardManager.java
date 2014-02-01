@@ -342,6 +342,10 @@ public class ScoreboardManager {
 
             for (ScoreboardWrapper wrapper : PLAYER_SCOREBOARDS.values()) {
                 wrapper.updatePowerLevel(player, power);
+
+                if (mcMMOPlayer.getNameTag() != null) {
+                    wrapper.updatePowerLevel(mcMMO.p.getServer().getOfflinePlayer(mcMMOPlayer.getNameTag()), power);
+                }
             }
         }
 

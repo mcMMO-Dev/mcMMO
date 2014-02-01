@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
@@ -557,5 +558,9 @@ public class ScoreboardWrapper {
 
     public void updatePowerLevel(Player player, int newPowerLevel) {
         powerObjective.getScore(player).setScore(newPowerLevel);
+    }
+
+    public void updatePowerLevel(OfflinePlayer offlinePlayer, int newPowerLevel) {
+        powerObjective.getScore(offlinePlayer).setScore(newPowerLevel);
     }
 }

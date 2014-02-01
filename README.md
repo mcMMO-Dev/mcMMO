@@ -47,5 +47,6 @@ Required Libraries:
 * JUnit
 * EMetrics
 * Bukkit
+* TagAPI
 
 http://dev.bukkit.org/server-mods/mcmmo for more up to date information.

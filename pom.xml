@@ -116,6 +116,10 @@
             <id>Plugin MetricsExtension</id>
             <url>http://repo.turt2live.com</url>
         </repository>
+        <repository>
+            <id>TagAPI</id>
+            <url>http://repo.kitteh.org/content/repositories/public/</url>
+        </repository>
     </repositories>
     <dependencies>
         <dependency>
@@ -135,6 +139,12 @@
             <groupId>com.turt2live.metrics</groupId>
             <artifactId>MetricsExtension</artifactId>
             <version>0.0.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.kitteh</groupId>
+            <artifactId>tagapi</artifactId>
+            <version>LATEST</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <distributionManagement>
