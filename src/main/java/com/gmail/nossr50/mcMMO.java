@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.config.mods.ArmorConfigManager;
+import com.gmail.nossr50.config.mods.BlockConfigManager;
+import com.gmail.nossr50.config.mods.EntityConfigManager;
+import com.gmail.nossr50.config.mods.ToolConfigManager;
+import com.gmail.nossr50.util.ModManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -14,10 +19,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
-import com.gmail.nossr50.config.mods.CustomArmorConfig;
-import com.gmail.nossr50.config.mods.CustomBlockConfig;
-import com.gmail.nossr50.config.mods.CustomEntityConfig;
-import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.config.potion.PotionConfig;
 import com.gmail.nossr50.config.repair.RepairConfigManager;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
@@ -65,6 +66,7 @@ public class mcMMO extends JavaPlugin {
     /* Managers */
     private static ChunkManager      placeStore;
     private static RepairableManager repairableManager;
+    private static ModManager        modManager;
     private static DatabaseManager   databaseManager;
     private static FormulaManager    formulaManager;
     private static HolidayManager    holidayManager;
@@ -130,6 +132,8 @@ public class mcMMO extends JavaPlugin {
             compatNoCheatPlusPluginEnabled = getServer().getPluginManager().getPlugin("CompatNoCheatPlus") != null;
 
             setupFilePaths();
+
+            modManager = new ModManager();
 
             loadConfigFiles();
 
@@ -294,6 +298,10 @@ public class mcMMO extends JavaPlugin {
         return databaseManager;
     }
 
+    public static ModManager getModManager() {
+        return modManager;
+    }
+
     @Deprecated
     public static void setDatabaseManager(DatabaseManager databaseManager) {
         mcMMO.databaseManager = databaseManager;
@@ -329,13 +337,42 @@ public class mcMMO extends JavaPlugin {
 
         if (oldFlatfilePath.exists()) {
             if (!oldFlatfilePath.renameTo(new File(flatFileDirectory))) {
-                getLogger().warning("Failed to rename FlatFileStuff to flatfile !");
+                getLogger().warning("Failed to rename FlatFileStuff to flatfile!");
             }
         }
 
         if (oldModPath.exists()) {
             if (!oldModPath.renameTo(new File(modDirectory))) {
-                getLogger().warning("Failed to rename ModConfigs to mods !");
+                getLogger().warning("Failed to rename ModConfigs to mods!");
+            }
+        }
+
+        File oldArmorFile    = new File(modDirectory + "armor.yml");
+        File oldBlocksFile   = new File(modDirectory + "blocks.yml");
+        File oldEntitiesFile = new File(modDirectory + "entities.yml");
+        File oldToolsFile    = new File(modDirectory + "tools.yml");
+
+        if (oldArmorFile.exists()) {
+            if (!oldArmorFile.renameTo(new File(modDirectory + "armor.default.yml"))) {
+                getLogger().warning("Failed to rename armor.yml to armor.default.yml!");
+            }
+        }
+
+        if (oldBlocksFile.exists()) {
+            if (!oldBlocksFile.renameTo(new File(modDirectory + "blocks.default.yml"))) {
+                getLogger().warning("Failed to rename blocks.yml to blocks.default.yml!");
+            }
+        }
+
+        if (oldEntitiesFile.exists()) {
+            if (!oldEntitiesFile.renameTo(new File(modDirectory + "entities.default.yml"))) {
+                getLogger().warning("Failed to rename entities.yml to entities.default.yml!");
+            }
+        }
+
+        if (oldToolsFile.exists()) {
+            if (!oldToolsFile.renameTo(new File(modDirectory + "tools.default.yml"))) {
+                getLogger().warning("Failed to rename tools.yml to tools.default.yml!");
             }
         }
     }
@@ -373,24 +410,24 @@ public class mcMMO extends JavaPlugin {
         List<Repairable> repairables = new ArrayList<Repairable>();
 
         if (Config.getInstance().getToolModsEnabled()) {
-            repairables.addAll(CustomToolConfig.getInstance().getLoadedRepairables());
+            new ToolConfigManager(this);
         }
 
         if (Config.getInstance().getArmorModsEnabled()) {
-            repairables.addAll(CustomArmorConfig.getInstance().getLoadedRepairables());
+            new ArmorConfigManager(this);
         }
 
         if (Config.getInstance().getBlockModsEnabled()) {
-            CustomBlockConfig.getInstance();
+            new BlockConfigManager(this);
         }
 
         if (Config.getInstance().getEntityModsEnabled()) {
-            CustomEntityConfig.getInstance();
+            new EntityConfigManager(this);
         }
 
         // Load repair configs, make manager, and register them at this time
-        RepairConfigManager rManager = new RepairConfigManager(this);
-        repairables.addAll(rManager.getLoadedRepairables());
+        repairables.addAll(new RepairConfigManager(this).getLoadedRepairables());
+        repairables.addAll(modManager.getLoadedRepairables());
         repairableManager = new SimpleRepairableManager(repairables.size());
         repairableManager.registerRepairables(repairables);
     }

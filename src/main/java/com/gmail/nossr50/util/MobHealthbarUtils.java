@@ -167,7 +167,7 @@ public final class MobHealthbarUtils {
                 return true;
 
             default:
-                return ModUtils.isCustomBossEntity(livingEntity);
+                return false;
         }
     }
 }

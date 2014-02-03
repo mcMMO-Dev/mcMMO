@@ -9,11 +9,9 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 
 public class RepairConfigManager {
-    private List<Repairable> repairables;
+    private final List<Repairable> repairables = new ArrayList<Repairable>();
 
     public RepairConfigManager(mcMMO plugin) {
-        repairables = new ArrayList<Repairable>();
-
         Pattern pattern = Pattern.compile("repair\\.(?:.+)\\.yml");
         File dataFolder = plugin.getDataFolder();
         File vanilla = new File(dataFolder, "repair.vanilla.yml");
@@ -34,19 +32,11 @@ public class RepairConfigManager {
             }
 
             RepairConfig rConfig = new RepairConfig(fileName);
-            List<Repairable> rConfigRepairables = rConfig.getLoadedRepairables();
-
-            if (rConfigRepairables != null) {
-                repairables.addAll(rConfigRepairables);
-            }
+            repairables.addAll(rConfig.getLoadedRepairables());
         }
     }
 
     public List<Repairable> getLoadedRepairables() {
-        if (repairables == null) {
-            return new ArrayList<Repairable>();
-        }
-
         return repairables;
     }
 }

@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.smelting;
 
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
@@ -7,7 +8,6 @@ import org.bukkit.material.MaterialData;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.util.ModUtils;
 
 public class Smelting {
     // The order of the values is extremely important, a few methods depend on it to work properly
@@ -50,6 +50,6 @@ public class Smelting {
         MaterialData data = smelting.getData();
         Material resourceType = smelting.getType();
 
-        return ModUtils.isCustomOre(data) ? ModUtils.getCustomBlock(data).getSmeltingXpGain() : ExperienceConfig.getInstance().getXp(SkillType.SMELTING, resourceType != Material.GLOWING_REDSTONE_ORE ? resourceType : Material.REDSTONE_ORE);
+        return mcMMO.getModManager().isCustomOre(data) ? mcMMO.getModManager().getBlock(data).getSmeltingXpGain() : ExperienceConfig.getInstance().getXp(SkillType.SMELTING, resourceType != Material.GLOWING_REDSTONE_ORE ? resourceType : Material.REDSTONE_ORE);
     }
 }

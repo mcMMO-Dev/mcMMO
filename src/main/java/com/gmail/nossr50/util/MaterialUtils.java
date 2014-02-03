@@ -1,5 +1,6 @@
 package com.gmail.nossr50.util;
 
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.material.MaterialData;
 
 public final class MaterialUtils {
@@ -19,7 +20,7 @@ public final class MaterialUtils {
                 return true;
 
             default:
-                return ModUtils.isCustomOre(data);
+                return mcMMO.getModManager().isCustomOre(data);
         }
     }
 }

@@ -10,9 +10,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Dye;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.mods.CustomArmorConfig;
-import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
 
@@ -33,7 +30,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().isCustomBow(type));
+                return mcMMO.getModManager().isCustomBow(type);
         }
     }
 
@@ -55,7 +52,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().isCustomSword(type));
+                return mcMMO.getModManager().isCustomSword(type);
         }
     }
 
@@ -77,7 +74,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().isCustomHoe(type));
+                return mcMMO.getModManager().isCustomHoe(type);
         }
     }
 
@@ -99,7 +96,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().isCustomShovel(type));
+                return mcMMO.getModManager().isCustomShovel(type);
         }
     }
 
@@ -121,7 +118,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().isCustomAxe(type));
+                return mcMMO.getModManager().isCustomAxe(type);
         }
     }
 
@@ -143,7 +140,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return (Config.getInstance().getToolModsEnabled() && CustomToolConfig.getInstance().isCustomPickaxe(type));
+                return mcMMO.getModManager().isCustomPickaxe(type);
         }
     }
 
@@ -165,7 +162,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().isCustomHelmet(type);
+                return mcMMO.getModManager().isCustomHelmet(type);
         }
     }
 
@@ -187,7 +184,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().isCustomChestplate(type);
+                return mcMMO.getModManager().isCustomChestplate(type);
         }
     }
 
@@ -209,7 +206,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().isCustomLeggings(type);
+                return mcMMO.getModManager().isCustomLeggings(type);
         }
     }
 
@@ -231,7 +228,7 @@ public final class ItemUtils {
                 return true;
 
             default:
-                return Config.getInstance().getArmorModsEnabled() && CustomArmorConfig.getInstance().isCustomBoots(type);
+                return mcMMO.getModManager().isCustomBoots(type);
         }
     }
 

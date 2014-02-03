@@ -16,7 +16,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public final class Woodcutting {
@@ -52,8 +51,8 @@ public final class Woodcutting {
                 break;
         }
 
-        if (ModUtils.isCustomLogBlock(blockState)) {
-            return ModUtils.getCustomBlock(blockState).getXpGain();
+        if (mcMMO.getModManager().isCustomLog(blockState)) {
+            return mcMMO.getModManager().getBlock(blockState).getXpGain();
         }
 
         switch (((Tree) blockState.getData()).getSpecies()) {
@@ -86,7 +85,7 @@ public final class Woodcutting {
      * @param blockState Block being broken
      */
     protected static void checkForDoubleDrop(BlockState blockState) {
-        if (ModUtils.isCustomLogBlock(blockState) && ModUtils.getCustomBlock(blockState).isDoubleDropEnabled()) {
+        if (mcMMO.getModManager().isCustomLog(blockState) && mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) {
             Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
         }
         else {

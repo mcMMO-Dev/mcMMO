@@ -18,46 +18,26 @@ import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 
 public class CustomToolConfig extends ConfigLoader {
-    private static CustomToolConfig instance;
-
     private boolean needsUpdate = false;
 
-    private List<Repairable> repairables;
+    public List<Material> customAxes     = new ArrayList<Material>();
+    public List<Material> customBows     = new ArrayList<Material>();
+    public List<Material> customHoes     = new ArrayList<Material>();
+    public List<Material> customPickaxes = new ArrayList<Material>();
+    public List<Material> customShovels  = new ArrayList<Material>();
+    public List<Material> customSwords   = new ArrayList<Material>();
 
-    private List<Material> customAxes     = new ArrayList<Material>();
-    private List<Material> customBows     = new ArrayList<Material>();
-    private List<Material> customHoes     = new ArrayList<Material>();
-    private List<Material> customPickaxes = new ArrayList<Material>();
-    private List<Material> customShovels  = new ArrayList<Material>();
-    private List<Material> customSwords   = new ArrayList<Material>();
+    public HashMap<Material, CustomTool> customToolMap = new HashMap<Material, CustomTool>();
 
-    private HashMap<Material, CustomTool> customToolMap = new HashMap<Material, CustomTool>();
+    public List<Repairable> repairables = new ArrayList<Repairable>();
 
-    private CustomToolConfig() {
-        super("mods", "tools.yml");
+    protected CustomToolConfig(String fileName) {
+        super("mods", fileName);
         loadKeys();
-    }
-
-    public static CustomToolConfig getInstance() {
-        if (instance == null) {
-            instance = new CustomToolConfig();
-        }
-
-        return instance;
-    }
-
-    public List<Repairable> getLoadedRepairables() {
-        if (repairables == null) {
-            return new ArrayList<Repairable>();
-        }
-
-        return repairables;
     }
 
     @Override
     protected void loadKeys() {
-        repairables = new ArrayList<Repairable>();
-
         loadTool("Axes", customAxes);
         loadTool("Bows", customBows);
         loadTool("Hoes", customHoes);
@@ -131,37 +111,5 @@ public class CustomToolConfig extends ConfigLoader {
             materialList.add(toolMaterial);
             customToolMap.put(toolMaterial, tool);
         }
-    }
-
-    public boolean isCustomAxe(Material material) {
-        return customAxes.contains(material);
-    }
-
-    public boolean isCustomBow(Material material) {
-        return customBows.contains(material);
-    }
-
-    public boolean isCustomHoe(Material material) {
-        return customHoes.contains(material);
-    }
-
-    public boolean isCustomPickaxe(Material material) {
-        return customPickaxes.contains(material);
-    }
-
-    public boolean isCustomShovel(Material material) {
-        return customShovels.contains(material);
-    }
-
-    public boolean isCustomSword(Material material) {
-        return customSwords.contains(material);
-    }
-
-    public boolean isCustomTool(Material material) {
-        return customToolMap.containsKey(material);
-    }
-
-    public CustomTool getCustomTool(Material material) {
-        return customToolMap.get(material);
     }
 }

@@ -13,32 +13,21 @@ import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 
 public class CustomBlockConfig extends ConfigLoader {
-    private static CustomBlockConfig instance;
-
     private boolean needsUpdate = false;
 
-    private List<MaterialData> customExcavationBlocks  = new ArrayList<MaterialData>();
-    private List<MaterialData> customHerbalismBlocks   = new ArrayList<MaterialData>();
-    private List<MaterialData> customMiningBlocks      = new ArrayList<MaterialData>();
-    private List<MaterialData> customWoodcuttingBlocks = new ArrayList<MaterialData>();
-    private List<MaterialData> customOres              = new ArrayList<MaterialData>();
-    private List<MaterialData> customLogs              = new ArrayList<MaterialData>();
-    private List<MaterialData> customLeaves            = new ArrayList<MaterialData>();
-    private List<MaterialData> customAbilityBlocks     = new ArrayList<MaterialData>();
+    public List<MaterialData> customExcavationBlocks  = new ArrayList<MaterialData>();
+    public List<MaterialData> customHerbalismBlocks   = new ArrayList<MaterialData>();
+    public List<MaterialData> customMiningBlocks      = new ArrayList<MaterialData>();
+    public List<MaterialData> customOres              = new ArrayList<MaterialData>();
+    public List<MaterialData> customLogs              = new ArrayList<MaterialData>();
+    public List<MaterialData> customLeaves            = new ArrayList<MaterialData>();
+    public List<MaterialData> customAbilityBlocks     = new ArrayList<MaterialData>();
 
-    private HashMap<MaterialData, CustomBlock> customBlockMap = new HashMap<MaterialData, CustomBlock>();
+    public HashMap<MaterialData, CustomBlock> customBlockMap = new HashMap<MaterialData, CustomBlock>();
 
-    public CustomBlockConfig() {
-        super("mods", "blocks.yml");
+    protected CustomBlockConfig(String fileName) {
+        super("mods", fileName);
         loadKeys();
-    }
-
-    public static CustomBlockConfig getInstance() {
-        if (instance == null) {
-            instance = new CustomBlockConfig();
-        }
-
-        return instance;
     }
 
     @Override
@@ -46,7 +35,7 @@ public class CustomBlockConfig extends ConfigLoader {
         loadBlocks("Excavation", customExcavationBlocks);
         loadBlocks("Herbalism", customHerbalismBlocks);
         loadBlocks("Mining", customMiningBlocks);
-        loadBlocks("Woodcutting", customWoodcuttingBlocks);
+        loadBlocks("Woodcutting", null);
         loadBlocks("Ability_Blocks", customAbilityBlocks);
 
         if (needsUpdate) {
@@ -85,7 +74,10 @@ public class CustomBlockConfig extends ConfigLoader {
 
             byte blockData = (blockInfo.length == 2) ? Byte.valueOf(blockInfo[1]) : 0;
             MaterialData blockMaterialData = new MaterialData(blockMaterial, blockData);
-            blockList.add(blockMaterialData);
+
+            if (blockList != null) {
+                blockList.add(blockMaterialData);
+            }
 
             if (skillType.equals("Ability_Blocks")) {
                 continue;
@@ -110,41 +102,5 @@ public class CustomBlockConfig extends ConfigLoader {
 
             customBlockMap.put(blockMaterialData, new CustomBlock(xp, config.getBoolean(skillType + "." + blockName + ".Double_Drops_Enabled"), smeltingXp));
         }
-    }
-
-    public CustomBlock getCustomBlock(MaterialData data) {
-        return customBlockMap.get(data);
-    }
-
-    public boolean isCustomOre(MaterialData data) {
-        return customOres.contains(data);
-    }
-
-    public boolean isCustomLog(MaterialData data) {
-        return customLogs.contains(data);
-    }
-
-    public boolean isCustomLeaf(MaterialData data) {
-        return customLeaves.contains(data);
-    }
-
-    public boolean isCustomAbilityBlock(MaterialData data) {
-        return customAbilityBlocks.contains(data);
-    }
-
-    public boolean isCustomExcavationBlock(MaterialData data) {
-        return customExcavationBlocks.contains(data);
-    }
-
-    public boolean isCustomHerbalismBlock(MaterialData data) {
-        return customHerbalismBlocks.contains(data);
-    }
-
-    public boolean isCustomMiningBlock(MaterialData data) {
-        return customMiningBlocks.contains(data);
-    }
-
-    public boolean isCustomWoodcuttingBlock(MaterialData data) {
-        return customWoodcuttingBlocks.contains(data);
     }
 }

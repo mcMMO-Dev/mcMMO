@@ -16,42 +16,22 @@ import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.skills.repair.repairables.RepairableFactory;
 
 public class CustomArmorConfig extends ConfigLoader {
-    private static CustomArmorConfig instance;
-
     private boolean needsUpdate = false;
 
-    private List<Repairable> repairables;
+    public List<Material> customBoots       = new ArrayList<Material>();
+    public List<Material> customChestplates = new ArrayList<Material>();
+    public List<Material> customHelmets     = new ArrayList<Material>();
+    public List<Material> customLeggings    = new ArrayList<Material>();
 
-    private List<Material> customBoots       = new ArrayList<Material>();
-    private List<Material> customChestplates = new ArrayList<Material>();
-    private List<Material> customHelmets     = new ArrayList<Material>();
-    private List<Material> customLeggings    = new ArrayList<Material>();
+    public List<Repairable> repairables = new ArrayList<Repairable>();
 
-    public CustomArmorConfig() {
-        super("mods", "armor.yml");
+    protected CustomArmorConfig(String fileName) {
+        super("mods", fileName);
         loadKeys();
-    }
-
-    public static CustomArmorConfig getInstance() {
-        if (instance == null) {
-            instance = new CustomArmorConfig();
-        }
-
-        return instance;
-    }
-
-    public List<Repairable> getLoadedRepairables() {
-        if (repairables == null) {
-            return new ArrayList<Repairable>();
-        }
-
-        return repairables;
     }
 
     @Override
     protected void loadKeys() {
-        repairables = new ArrayList<Repairable>();
-
         loadArmor("Boots", customBoots);
         loadArmor("Chestplates", customChestplates);
         loadArmor("Helmets", customHelmets);
@@ -116,21 +96,5 @@ public class CustomArmorConfig extends ConfigLoader {
 
             materialList.add(armorMaterial);
         }
-    }
-
-    public boolean isCustomBoots(Material material) {
-        return customBoots.contains(material);
-    }
-
-    public boolean isCustomChestplate(Material material) {
-        return customChestplates.contains(material);
-    }
-
-    public boolean isCustomHelmet(Material material) {
-        return customHelmets.contains(material);
-    }
-
-    public boolean isCustomLeggings(Material material) {
-        return customLeggings.contains(material);
     }
 }

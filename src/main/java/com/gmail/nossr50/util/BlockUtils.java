@@ -2,6 +2,7 @@ package com.gmail.nossr50.util;
 
 import java.util.HashSet;
 
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.NetherWartsState;
@@ -64,7 +65,7 @@ public final class BlockUtils {
                 return false;
 
             default:
-                return !isMcMMOAnvil(blockState) && !ModUtils.isCustomAbilityBlock(blockState);
+                return !isMcMMOAnvil(blockState) && !mcMMO.getModManager().isCustomAbilityBlock(blockState);
         }
     }
 
@@ -135,7 +136,7 @@ public final class BlockUtils {
                 return ((CocoaPlant) blockState.getData()).getSize() == CocoaPlantSize.LARGE;
 
             default:
-                return ModUtils.isCustomHerbalismBlock(blockState);
+                return mcMMO.getModManager().isCustomHerbalismBlock(blockState);
         }
     }
 
@@ -157,7 +158,7 @@ public final class BlockUtils {
                 return true;
 
             default:
-                return isOre(blockState) || ModUtils.isCustomMiningBlock(blockState);
+                return isOre(blockState) || mcMMO.getModManager().isCustomMiningBlock(blockState);
         }
     }
 
@@ -181,7 +182,7 @@ public final class BlockUtils {
                 return true;
 
             default:
-                return ModUtils.isCustomExcavationBlock(blockState);
+                return mcMMO.getModManager().isCustomExcavationBlock(blockState);
         }
     }
 
@@ -199,7 +200,7 @@ public final class BlockUtils {
                 return true;
 
             default:
-                return ModUtils.isCustomLogBlock(blockState);
+                return mcMMO.getModManager().isCustomLog(blockState);
         }
     }
 
@@ -215,7 +216,7 @@ public final class BlockUtils {
                 return true;
 
             default:
-                return ModUtils.isCustomLeafBlock(blockState);
+                return mcMMO.getModManager().isCustomLeaf(blockState);
         }
     }
 

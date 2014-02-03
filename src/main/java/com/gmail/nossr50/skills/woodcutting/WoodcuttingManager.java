@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.woodcutting;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -22,7 +23,6 @@ import com.gmail.nossr50.skills.woodcutting.Woodcutting.ExperienceGainMethod;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -126,18 +126,18 @@ public class WoodcuttingManager extends SkillManager {
                 xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
                 Misc.dropItems(blockState.getLocation(), block.getDrops());
             }
-            else if (ModUtils.isCustomLogBlock(blockState)) {
+            else if (mcMMO.getModManager().isCustomLog(blockState)) {
                 if (canGetDoubleDrops()) {
                     Woodcutting.checkForDoubleDrop(blockState);
                 }
 
-                CustomBlock customBlock = ModUtils.getCustomBlock(blockState);
+                CustomBlock customBlock = mcMMO.getModManager().getBlock(blockState);
                 xp = customBlock.getXpGain();
 
                 Misc.dropItems(blockState.getLocation(), block.getDrops());
             }
-            else if (ModUtils.isCustomLeafBlock(blockState)) {
-                Misc.randomDropItems(blockState.getLocation(), block.getDrops(), 10.0);
+            else if (mcMMO.getModManager().isCustomLeaf(blockState)) {
+                Misc.dropItems(blockState.getLocation(), block.getDrops());
             }
             else {
                 Tree tree = (Tree) blockState.getData();

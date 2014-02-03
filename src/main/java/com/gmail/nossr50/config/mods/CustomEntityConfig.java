@@ -3,7 +3,6 @@ package com.gmail.nossr50.config.mods;
 import java.util.HashMap;
 
 import org.bukkit.Material;
-import org.bukkit.entity.Entity;
 import org.bukkit.material.MaterialData;
 
 import com.gmail.nossr50.config.ConfigLoader;
@@ -12,22 +11,12 @@ import com.gmail.nossr50.datatypes.mods.CustomEntity;
 import org.apache.commons.lang.ClassUtils;
 
 public class CustomEntityConfig extends ConfigLoader {
-    private static CustomEntityConfig instance;
+    public HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();
+    public HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<String, CustomEntity>();
 
-    private HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();
-    private HashMap<String, CustomEntity> customEntityTypeMap  = new HashMap<String, CustomEntity>();
-
-    public CustomEntityConfig() {
-        super("mods", "entities.yml");
+    protected CustomEntityConfig(String fileName) {
+        super("mods", fileName);
         loadKeys();
-    }
-
-    public static CustomEntityConfig getInstance() {
-        if (instance == null) {
-            instance = new CustomEntityConfig();
-        }
-
-        return instance;
     }
 
     @Override
@@ -70,48 +59,5 @@ public class CustomEntityConfig extends ConfigLoader {
             customEntityTypeMap.put(entityTypeName, entity);
             customEntityClassMap.put(clazz == null ? null : clazz.getName(), entity);
         }
-    }
-
-    public boolean isCustomEntity(Entity entity) {
-        if (customEntityTypeMap.containsKey(entity.getType().toString())) {
-            return true;
-        }
-
-        try {
-            return customEntityClassMap.containsKey(((Class<?>) entity.getClass().getDeclaredField("entityClass").get(entity)).getName());
-        }
-        catch (Exception e) {
-            if (e instanceof NoSuchFieldException || e instanceof IllegalArgumentException || e instanceof IllegalAccessException) {
-                return customEntityClassMap.containsKey(entity.getClass().getName());
-            }
-
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public CustomEntity getCustomEntity(Entity entity) {
-        CustomEntity customEntity = customEntityTypeMap.get(entity.getType().toString());
-
-        if (customEntity == null) {
-            try {
-                customEntity = customEntityClassMap.get(((Class<?>) entity.getClass().getDeclaredField("entityClass").get(entity)).getName());
-            }
-            catch (Exception e) {
-                if (e instanceof NoSuchFieldException || e instanceof IllegalArgumentException || e instanceof IllegalAccessException) {
-                    customEntity = customEntityClassMap.get(entity.getClass().getName());
-                }
-                else {
-                    e.printStackTrace();
-                }
-            }
-        }
-
-        return customEntity;
-    }
-
-    public void addEntity(CustomEntity customEntity, String className, String entityName) {
-        customEntityTypeMap.put(entityName, customEntity);
-        customEntityClassMap.put(className, customEntity);
     }
 }

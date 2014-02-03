@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.mining;
 
+import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.inventory.ItemStack;
@@ -8,7 +9,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModUtils;
 
 public class Mining {
 
@@ -21,8 +21,8 @@ public class Mining {
         Material blockType = blockState.getType();
         int xp = ExperienceConfig.getInstance().getXp(SkillType.MINING, blockType != Material.GLOWING_REDSTONE_ORE ? blockType : Material.REDSTONE_ORE);
 
-        if (xp == 0 && ModUtils.isCustomMiningBlock(blockState)) {
-            xp = ModUtils.getCustomBlock(blockState).getXpGain();
+        if (xp == 0 && mcMMO.getModManager().isCustomMiningBlock(blockState)) {
+            xp = mcMMO.getModManager().getBlock(blockState).getXpGain();
         }
 
         return xp;
@@ -65,7 +65,7 @@ public class Mining {
                 return;
 
             default:
-                if (ModUtils.isCustomMiningBlock(blockState)) {
+                if (mcMMO.getModManager().isCustomMiningBlock(blockState)) {
                     Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack(1));
                 }
                 return;
@@ -104,7 +104,7 @@ public class Mining {
                 return;
 
             default:
-                if (ModUtils.isCustomMiningBlock(blockState)) {
+                if (mcMMO.getModManager().isCustomMiningBlock(blockState)) {
                     Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
                 }
                 return;

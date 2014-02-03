@@ -47,7 +47,6 @@ import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
@@ -757,7 +756,7 @@ public class McMMOPlayer {
         xp = (float) (xp / skillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
         if (Config.getInstance().getToolModsEnabled()) {
-            CustomTool tool = ModUtils.getToolFromItemStack(player.getItemInHand());
+            CustomTool tool = mcMMO.getModManager().getTool(player.getItemInHand());
 
             if (tool != null) {
                 xp *= tool.getXpMultiplier();
@@ -843,7 +842,7 @@ public class McMMOPlayer {
 
         ItemStack inHand = player.getItemInHand();
 
-        if (ModUtils.isCustomTool(inHand) && !ModUtils.getToolFromItemStack(inHand).isAbilityEnabled()) {
+        if (mcMMO.getModManager().isCustomTool(inHand) && !mcMMO.getModManager().getTool(inHand).isAbilityEnabled()) {
             return;
         }
 

@@ -32,7 +32,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -136,8 +135,8 @@ public class HerbalismManager extends SkillManager {
         int xp;
         boolean greenTerra = mcMMOPlayer.getAbilityMode(skill.getAbility());
 
-        if (ModUtils.isCustomHerbalismBlock(blockState)) {
-            CustomBlock customBlock = ModUtils.getCustomBlock(blockState);
+        if (mcMMO.getModManager().isCustomHerbalismBlock(blockState)) {
+            CustomBlock customBlock = mcMMO.getModManager().getBlock(blockState);
             xp = customBlock.getXpGain();
 
             if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.HERBALISM_DOUBLE_DROPS) && customBlock.isDoubleDropEnabled()) {
