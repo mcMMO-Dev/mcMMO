@@ -1,4 +1,4 @@
-package com.gmail.nossr50.datatypes;
+package com.gmail.nossr50.datatypes.skills.alchemy;
 
 import java.util.List;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.gmail.nossr50.config.potion;
+package com.gmail.nossr50.config.skills.alchemy;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,7 +13,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.datatypes.AlchemyPotion;
+import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 
 public class PotionConfig extends ConfigLoader {
     private static PotionConfig instance;
