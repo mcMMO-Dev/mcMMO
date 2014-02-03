@@ -15,7 +15,7 @@ public class PrimitiveChunkStore implements ChunkStore {
     transient private boolean dirty = false;
     /** X, Z, Y */
     public boolean[][][] store;
-    private static final int CURRENT_VERSION = 7;
+    private static final int CURRENT_VERSION = 8;
     private static final int MAGIC_NUMBER = 0xEA5EDEBB;
     private int cx;
     private int cz;
@@ -130,6 +130,16 @@ public class PrimitiveChunkStore implements ChunkStore {
 
         if (fileVersionNumber < 5) {
             fixArray();
+            dirty = true;
+        }
+
+        if (fileVersionNumber == 7 && cx < 0) {
+            cx--;
+            dirty = true;
+        }
+
+        if (fileVersionNumber == 7 && cz < 0) {
+            cz--;
             dirty = true;
         }
     }

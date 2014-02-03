@@ -20,6 +20,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionZDirectory;
 
 public class HashChunkManager implements ChunkManager {
+    private static final int FILE_VERSION = 1;
     private HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>> regionFiles = new HashMap<UUID, HashMap<Long, McMMOSimpleRegionFile>>();
     public HashMap<String, ChunkStore> store = new HashMap<String, ChunkStore>();
     public ArrayList<BlockStoreConversionZDirectory> converters = new ArrayList<BlockStoreConversionZDirectory>();
@@ -120,7 +121,21 @@ public class HashChunkManager implements ChunkManager {
         McMMOSimpleRegionFile regionFile = worldRegions.get(key2);
 
         if (regionFile == null) {
-            File file = new File(directory, "mcmmo_" + rx + "_" + rz + "_.mcm");
+            // Pre-Versioned files in negative chunks were being saved/tracked with incorrect chunk numbers
+            int xLegacy = (x < -1) ? (x + 1) >> 5 : rx;
+            int zLegacy = (z < -1) ? (z + 1) >> 5 : rz;
+            File legacy = new File(directory, "mcmmo_" + xLegacy + "_" + zLegacy + "_.mcm");
+            File file = new File(directory, "mcmmo_" + rx + "_" + rz + "_.v" + FILE_VERSION + ".mcm");
+            // If the legacy file exists, rename it and the loading will convert it properly
+            if (legacy.isFile()) {
+                // The center 4 chunks are unusable so we don't preserve them
+                if (!((rx == 0 || rx == -1) && (rz == 0 || rz == -1))) {
+                    if (!legacy.renameTo(file)) {
+                        mcMMO.p.debug(String.format("Lost Legacy ChunkStore for %d %d", rx, rz));
+                    }
+                }
+                legacy.delete();
+            }
             regionFile = new McMMOSimpleRegionFile(file, rx, rz);
             worldRegions.put(key2, regionFile);
         }
@@ -293,8 +308,8 @@ public class HashChunkManager implements ChunkManager {
             return false;
         }
 
-        int cx = x / 16;
-        int cz = z / 16;
+        int cx = (x < 0 ? x - 16 : x) >> 4 << 4;
+        int cz = (z < 0 ? z - 16 : z) >> 4 << 4;
         String key = world.getName() + "," + cx + "," + cz;
 
         if (!store.containsKey(key)) {
@@ -336,8 +351,8 @@ public class HashChunkManager implements ChunkManager {
             return;
         }
 
-        int cx = x / 16;
-        int cz = z / 16;
+        int cx = (x < 0 ? x - 16 : x) >> 4 << 4;
+        int cz = (z < 0 ? z - 16 : z) >> 4 << 4;
 
         int ix = Math.abs(x) % 16;
         int iz = Math.abs(z) % 16;
@@ -382,8 +397,8 @@ public class HashChunkManager implements ChunkManager {
             return;
         }
 
-        int cx = x / 16;
-        int cz = z / 16;
+        int cx = (x < 0 ? x - 16 : x) >> 4 << 4;
+        int cz = (z < 0 ? z - 16 : z) >> 4 << 4;
 
         int ix = Math.abs(x) % 16;
         int iz = Math.abs(z) % 16;
