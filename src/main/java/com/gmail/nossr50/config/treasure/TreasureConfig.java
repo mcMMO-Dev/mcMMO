@@ -35,6 +35,8 @@ public class TreasureConfig extends ConfigLoader {
     public List<ExcavationTreasure> excavationFromMycel     = new ArrayList<ExcavationTreasure>();
     public List<ExcavationTreasure> excavationFromSoulSand  = new ArrayList<ExcavationTreasure>();
     public List<ExcavationTreasure> excavationFromSnow      = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromRedSand   = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromPodzol    = new ArrayList<ExcavationTreasure>();
 
     public List<HylianTreasure> hylianFromBushes  = new ArrayList<HylianTreasure>();
     public List<HylianTreasure> hylianFromFlowers = new ArrayList<HylianTreasure>();
@@ -370,6 +372,14 @@ public class TreasureConfig extends ConfigLoader {
 
                     if (dropList.contains("Snow")) {
                         excavationFromSnow.add(excavationTreasure);
+                    }
+
+                    if (dropList.contains("Red_Sand")) {
+                        excavationFromRedSand.add(excavationTreasure);
+                    }
+
+                    if (dropList.contains("Podzol")) {
+                        excavationFromPodzol.add(excavationTreasure);
                     }
                 }
                 else if (isHylian) {

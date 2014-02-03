@@ -446,7 +446,7 @@ Excavation:
         XP: 3000
         Drop_Chance: 0.05
         Drop_Level: 750
-        Drops_From: [Dirt, Grass, Sand, Gravel, Clay, Mycelium, Soul_Sand]
+        Drops_From: [Dirt, Podzol, Grass, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand]
     SULPHUR:
         Amount: 1
         XP: 30
@@ -488,13 +488,13 @@ Excavation:
         XP: 80
         Drop_Chance: 0.5
         Drop_Level: 500
-        Drops_From: [Dirt, Grass, Mycelium]
+        Drops_From: [Dirt, Podzol, Grass, Mycelium]
     BROWN_MUSHROOM:
         Amount: 1
         XP: 80
         Drop_Chance: 0.5
         Drop_Level: 500
-        Drops_From: [Dirt, Grass, Mycelium]
+        Drops_From: [Dirt, Podzol, Grass, Mycelium]
     EGG:
         Amount: 1
         XP: 100
@@ -506,7 +506,7 @@ Excavation:
         XP: 80
         Drop_Chance: 0.5
         Drop_Level: 650
-        Drops_From: [Sand]
+        Drops_From: [Sand, Red_Sand]
     WATCH:
         Amount: 1
         XP: 100
@@ -530,43 +530,43 @@ Excavation:
         XP: 80
         Drop_Chance: 5.0
         Drop_Level: 25
-        Drops_From: [Dirt, Grass, Sand, Mycelium]
+        Drops_From: [Dirt, Podzol, Grass, Sand, Red_Sand, Mycelium]
     GOLD_RECORD:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
         Drop_Level: 250
-        Drops_From: [Dirt, Grass, Sand, Gravel, Clay, Mycelium, Soul_Sand]
+        Drops_From: [Dirt, Podzol, Grass, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand]
     GREEN_RECORD:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
         Drop_Level: 250
-        Drops_From: [Dirt, Grass, Sand, Gravel, Clay, Mycelium, Soul_Sand]
+        Drops_From: [Dirt, Podzol, Grass, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand]
     DIAMOND:
         Amount: 1
         XP: 1000
         Drop_Chance: 0.13
         Drop_Level: 350
-        Drops_From: [Dirt, Grass, Sand, Gravel, Clay, Mycelium, Soul_Sand]
+        Drops_From: [Dirt, Podzol, Grass, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand]
     INK_SACK_BROWN:
         Amount: 1
         XP: 100
         Drop_Chance: 1.33
         Drop_Level: 350
-        Drops_From: [Dirt, Grass, Mycelium]
+        Drops_From: [Dirt, Podzol, Grass, Mycelium]
     QUARTZ:
         Amount: 1
         XP: 100
         Drop_Chance: 0.5
         Drop_Level: 850
-        Drops_From: [Dirt, Sand, Gravel, Mycelium, Soul_Sand]
+        Drops_From: [Dirt, Podzol, Sand, Red_Sand, Gravel, Mycelium, Soul_Sand]
     NAME_TAG:
         Amount: 1
         XP: 3000
         Drop_Chance: 0.05
         Drop_Level: 250
-        Drops_From: [Dirt, Grass, Sand, Gravel, Clay, Mycelium, Soul_Sand]
+        Drops_From: [Dirt, Podzol, Grass, Sand, Red_Sand, Gravel, Clay, Mycelium, Soul_Sand]
 #
 #  Settings for Hylian Luck
 ###
