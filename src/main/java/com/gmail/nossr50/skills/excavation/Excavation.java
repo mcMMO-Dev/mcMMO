@@ -21,13 +21,13 @@ public class Excavation {
     protected static List<ExcavationTreasure> getTreasures(BlockState blockState) {
         switch (blockState.getType()) {
             case DIRT:
-                return TreasureConfig.getInstance().excavationFromDirt;
+                return blockState.getRawData() == 0x2 ? TreasureConfig.getInstance().excavationFromPodzol : TreasureConfig.getInstance().excavationFromDirt;
 
             case GRASS:
                 return TreasureConfig.getInstance().excavationFromGrass;
 
             case SAND:
-                return TreasureConfig.getInstance().excavationFromSand;
+                return blockState.getRawData() == 0x1 ? TreasureConfig.getInstance().excavationFromRedSand : TreasureConfig.getInstance().excavationFromSand;
 
             case GRAVEL:
                 return TreasureConfig.getInstance().excavationFromGravel;

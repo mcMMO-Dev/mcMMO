@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.5.00-dev
+ + Added Podzol & Red Sand to Excavation
  + Added Hardened Clay, Stained Clay, and Packed Ice to Mining blocks
  + Added Acacia and Dark Oak to Woodcutting blocks
  + Added Salmon, Clownfish, and Pufferfish to Fishing XP
