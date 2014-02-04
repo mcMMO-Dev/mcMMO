@@ -28,7 +28,6 @@ import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
-import com.gmail.nossr50.listeners.ScoreboardsListener;
 import com.gmail.nossr50.listeners.SelfListener;
 import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -441,7 +440,6 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(new EntityListener(this), this);
         pluginManager.registerEvents(new InventoryListener(this), this);
         pluginManager.registerEvents(new SelfListener(), this);
-        pluginManager.registerEvents(new ScoreboardsListener(), this);
         pluginManager.registerEvents(new WorldListener(this), this);
     }
 

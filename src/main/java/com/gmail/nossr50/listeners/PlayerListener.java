@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -353,6 +354,7 @@ public class PlayerListener implements Listener {
         BleedTimerTask.bleedOut(player);
         mcMMOPlayer.getProfile().save();
         UserManager.remove(player.getName());
+        ScoreboardManager.teardownPlayer(player);
     }
 
     /**
@@ -373,6 +375,7 @@ public class PlayerListener implements Listener {
         }
 
         UserManager.addUser(player).actualizeRespawnATS();
+        ScoreboardManager.setupPlayer(player);
 
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
             Motd.displayAll(player);
