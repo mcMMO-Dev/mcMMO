@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
 
 public class EntityConfigManager {
     public EntityConfigManager(mcMMO plugin) {
-        Pattern pattern = Pattern.compile("entities\\.(?:.+)\\.yml");
+        Pattern middlePattern = Pattern.compile("entities\\.(?:.+)\\.yml");
+        Pattern startPattern = Pattern.compile("(?:.+)\\.entities\\.yml");
         File dataFolder = new File(mcMMO.getModDirectory());
         File vanilla = new File(dataFolder, "entities.default.yml");
         ModManager modManager = mcMMO.getModManager();
@@ -18,7 +19,7 @@ public class EntityConfigManager {
         }
 
         for (String fileName : dataFolder.list()) {
-            if (!pattern.matcher(fileName).matches()) {
+            if (!middlePattern.matcher(fileName).matches() && !startPattern.matcher(fileName).matches()) {
                 continue;
             }
 

@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
 
 public class ArmorConfigManager {
     public ArmorConfigManager(mcMMO plugin) {
-        Pattern pattern = Pattern.compile("armor\\.(?:.+)\\.yml");
+        Pattern middlePattern = Pattern.compile("armor\\.(?:.+)\\.yml");
+        Pattern startPattern = Pattern.compile("(?:.+)\\.armor\\.yml");
         File dataFolder = new File(mcMMO.getModDirectory());
         File vanilla = new File(dataFolder, "armor.default.yml");
         ModManager modManager = mcMMO.getModManager();
@@ -18,7 +19,7 @@ public class ArmorConfigManager {
         }
 
         for (String fileName : dataFolder.list()) {
-            if (!pattern.matcher(fileName).matches()) {
+            if (!middlePattern.matcher(fileName).matches() && !startPattern.matcher(fileName).matches()) {
                 continue;
             }
 

@@ -8,7 +8,8 @@ import java.util.regex.Pattern;
 
 public class ToolConfigManager {
     public ToolConfigManager(mcMMO plugin) {
-        Pattern pattern = Pattern.compile("tools\\.(?:.+)\\.yml");
+        Pattern middlePattern = Pattern.compile("tools\\.(?:.+)\\.yml");
+        Pattern startPattern = Pattern.compile("(?:.+)\\.tools\\.yml");
         File dataFolder = new File(mcMMO.getModDirectory());
         File vanilla = new File(dataFolder, "tools.default.yml");
         ModManager modManager = mcMMO.getModManager();
@@ -18,7 +19,7 @@ public class ToolConfigManager {
         }
 
         for (String fileName : dataFolder.list()) {
-            if (!pattern.matcher(fileName).matches()) {
+            if (!middlePattern.matcher(fileName).matches() && !startPattern.matcher(fileName).matches()) {
                 continue;
             }
 
