@@ -376,7 +376,7 @@ public class Config extends AutoUpdateConfigLoader {
     public int getPTPCommandWarmup() { return config.getInt("Commands.ptp.Warmup", 5); }
     public int getPTPCommandRecentlyHurtCooldown() { return config.getInt("Commands.ptp.RecentlyHurt_Cooldown", 60); }
     public int getPTPCommandTimeout() { return config.getInt("Commands.ptp.Request_Timeout", 300); }
-    public boolean getPTPCommandConfirmRequired() { return config.getBoolean("Commands.ptp.Confirm_Required", true); }
+    public boolean getPTPCommandConfirmRequired() { return config.getBoolean("Commands.ptp.Accept_Required", true); }
     public boolean getPTPCommandWorldPermissions() { return config.getBoolean("Commands.ptp.World_Based_Permissions", false); }
 
     /* Inspect command distance */
