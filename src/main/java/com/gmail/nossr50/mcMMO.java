@@ -111,6 +111,7 @@ public class mcMMO extends JavaPlugin {
     public final static String arrowDistanceKey    = "mcMMO: Arrow Distance";
     public final static String customDamageKey     = "mcMMO: Custom Damage";
     public final static String disarmedItemKey     = "mcMMO: Disarmed Item";
+    public final static String playerDataKey       = "mcMMO: Player Data";
 
     public static FixedMetadataValue metadataValue;
 

@@ -1,6 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -59,6 +58,7 @@ import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class PlayerListener implements Listener {
@@ -81,7 +81,7 @@ public class PlayerListener implements Listener {
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player) || !Config.getInstance().getPreventXPAfterTeleport() || event.getFrom().equals(event.getTo())) {
+        if (!UserManager.hasPlayerDataKey(player) || !Config.getInstance().getPreventXPAfterTeleport() || event.getFrom().equals(event.getTo())) {
             return;
         }
 
@@ -130,7 +130,7 @@ public class PlayerListener implements Listener {
 
         Player killedPlayer = event.getEntity();
 
-        if (Misc.isNPCEntity(killedPlayer) || Permissions.hardcoreBypass(killedPlayer)) {
+        if (!killedPlayer.hasMetadata(mcMMO.playerDataKey) || Permissions.hardcoreBypass(killedPlayer)) {
             return;
         }
 
@@ -165,7 +165,7 @@ public class PlayerListener implements Listener {
     public void onPlayerWorldChange(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
@@ -208,7 +208,7 @@ public class PlayerListener implements Listener {
     public void onPlayerFishHighest(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player) || !SkillType.FISHING.getPermissions(player)) {
+        if (!UserManager.hasPlayerDataKey(player) || !SkillType.FISHING.getPermissions(player)) {
             return;
         }
 
@@ -253,7 +253,7 @@ public class PlayerListener implements Listener {
     public void onPlayerFishMonitor(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player) || !SkillType.FISHING.getPermissions(player)) {
+        if (!UserManager.hasPlayerDataKey(player) || !SkillType.FISHING.getPermissions(player)) {
             return;
         }
 
@@ -294,7 +294,7 @@ public class PlayerListener implements Listener {
     public void onPlayerPickupItem(PlayerPickupItemEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
@@ -344,7 +344,7 @@ public class PlayerListener implements Listener {
     public void onPlayerQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
@@ -353,7 +353,7 @@ public class PlayerListener implements Listener {
         mcMMOPlayer.resetAbilityMode();
         BleedTimerTask.bleedOut(player);
         mcMMOPlayer.getProfile().save();
-        UserManager.remove(player.getName());
+        UserManager.remove(player);
         ScoreboardManager.teardownPlayer(player);
     }
 
@@ -374,7 +374,8 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        UserManager.addUser(player).actualizeRespawnATS();
+        McMMOPlayer mcMMOPlayer = UserManager.addUser(player);
+        mcMMOPlayer.actualizeRespawnATS();
         ScoreboardManager.setupPlayer(player);
 
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
@@ -404,7 +405,7 @@ public class PlayerListener implements Listener {
     public void onPlayerRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
@@ -420,7 +421,7 @@ public class PlayerListener implements Listener {
     public void onPlayerInteractLowest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
+        if (!UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
@@ -511,7 +512,7 @@ public class PlayerListener implements Listener {
     public void onPlayerInteractMonitor(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player) || player.getGameMode() == GameMode.CREATIVE) {
+        if (!UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 

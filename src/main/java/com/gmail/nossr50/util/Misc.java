@@ -149,11 +149,10 @@ public final class Misc {
     }
 
     public static void profileCleanup(String playerName) {
-        UserManager.remove(playerName);
-
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
         if (player != null) {
+            UserManager.remove(player);
             UserManager.addUser(player);
         }
     }

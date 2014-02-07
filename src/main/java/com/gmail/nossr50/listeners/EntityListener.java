@@ -143,7 +143,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (Misc.isNPCEntity(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
+        if (!UserManager.hasPlayerDataKey(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
             return;
         }
 
@@ -424,7 +424,7 @@ public class EntityListener implements Listener {
         // We can make this assumption because we (should) be the only ones using this exact metadata
         Player player = plugin.getServer().getPlayerExact(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
-        if (Misc.isNPCEntity(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
@@ -451,7 +451,7 @@ public class EntityListener implements Listener {
         // We can make this assumption because we (should) be the only ones using this exact metadata
         Player player = plugin.getServer().getPlayerExact(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
-        if (Misc.isNPCEntity(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
@@ -494,7 +494,7 @@ public class EntityListener implements Listener {
 
         Player player = (Player) entity;
 
-        if (Misc.isNPCEntity(player)) {
+        if (!UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
@@ -560,7 +560,7 @@ public class EntityListener implements Listener {
         Player player = (Player) event.getOwner();
         LivingEntity entity = event.getEntity();
 
-        if (Misc.isNPCEntity(player) || Misc.isNPCEntity(entity) || entity.hasMetadata(mcMMO.entityMetadataKey)) {
+        if (!UserManager.hasPlayerDataKey(player) || Misc.isNPCEntity(entity) || entity.hasMetadata(mcMMO.entityMetadataKey)) {
             return;
         }
 
