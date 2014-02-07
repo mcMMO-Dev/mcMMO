@@ -230,6 +230,7 @@ public final class AlchemyPotionBrewer {
 
             return;
         }
+
         if (event.isShiftClick()) {
             if (event.getSlotType() == SlotType.FUEL) {
                 scheduleCheck(player, brewingStand);
@@ -256,6 +257,10 @@ public final class AlchemyPotionBrewer {
         }
         else if (event.getRawSlot() == INGREDIENT_SLOT) {
             if (isEmpty(cursor) && isEmpty(clicked)) {
+                if (event.getClick() == ClickType.NUMBER_KEY) {
+                    scheduleCheck(player, brewingStand);
+                    return;
+                }
                 return;
             }
             else if (isEmpty(cursor)) {
