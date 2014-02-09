@@ -20,7 +20,7 @@ public class PartyHelpCommand implements CommandExecutor {
                 sender.sendMessage(LocaleLoader.getString("Party.Help.7", "/party leader"));
                 sender.sendMessage(LocaleLoader.getString("Party.Help.8", "/party disband"));
                 sender.sendMessage(LocaleLoader.getString("Party.Help.9", "/party itemshare"));
-                sender.sendMessage(LocaleLoader.getString("Party.Help.10", "/party expshare"));
+                sender.sendMessage(LocaleLoader.getString("Party.Help.10", "/party xpshare"));
                 return true;
 
             default:
