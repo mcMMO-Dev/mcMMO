@@ -374,6 +374,9 @@ public class mcMMO extends JavaPlugin {
                 getLogger().warning("Failed to rename tools.yml to tools.default.yml!");
             }
         }
+
+        File currentFlatfilePath = new File(flatFileDirectory);
+        currentFlatfilePath.mkdirs();
     }
 
     private void checkForUpdates() {
