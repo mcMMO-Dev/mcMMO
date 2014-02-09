@@ -23,6 +23,11 @@ public class PartyAllianceAcceptCommand implements CommandExecutor {
                     return true;
                 }
 
+                if (mcMMOPlayer.getParty().getAlly() != null) {
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.Alliance.AlreadyAllies"));
+                    return true;
+                }
+
                 PartyManager.acceptAllianceInvite(mcMMOPlayer);
                 return true;
 
