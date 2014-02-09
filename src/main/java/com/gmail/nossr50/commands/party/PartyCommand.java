@@ -217,7 +217,7 @@ public class PartyCommand implements TabExecutor {
     }
 
     private String[] extractArgs(String[] args) {
-        return Arrays.copyOfRange(args, 1, args.length - 1);
+        return Arrays.copyOfRange(args, 1, args.length);
     }
 
     private boolean isItemShareCategory(String category) {
