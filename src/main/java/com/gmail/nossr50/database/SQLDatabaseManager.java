@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.apache.tomcat.jdbc.pool.DataSource;
-import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
@@ -29,6 +27,9 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
+
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy";
@@ -329,9 +330,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             success = (statement.executeUpdate() != 0);
             statement.close();
 
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ? WHERE user_id = ?");
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ?, scoreboardtips = ? WHERE user_id = ?");
             statement.setString(1, profile.getMobHealthbarType() == null ? Config.getInstance().getMobHealthbarDefault().name() : profile.getMobHealthbarType().name());
-            statement.setInt(2, id);
+            statement.setInt(2, profile.getScoreboardTipsShown());
+            statement.setInt(3, id);
             success = (statement.executeUpdate() != 0);
             statement.close();
         }
@@ -640,7 +642,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
                             + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
                             + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
-                            + "h.mobhealthbar, u.uuid "
+                            + "h.mobhealthbar, h.scoreboardtips, u.uuid "
                             + "FROM " + tablePrefix + "users u "
                             + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
                             + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
@@ -729,7 +731,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
                             + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
                             + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
-                            + "h.mobhealthbar, u.uuid "
+                            + "h.mobhealthbar, h.scoreboardtips, u.uuid "
                             + "FROM " + tablePrefix + "users u "
                             + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
                             + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
@@ -965,6 +967,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
                         + "`user_id` int(10) unsigned NOT NULL,"
                         + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
+                        + "`scoreboardtips` int(10) NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
                 createStatement.close();
@@ -1165,6 +1168,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     checkUpgradeAddUUIDs(statement);
                     return;
 
+                case ADD_SCOREBOARD_TIPS:
+                    checkUpgradeAddScoreboardTips(statement);
+                    return;
+
                 default:
                     break;
 
@@ -1206,9 +1213,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.execute();
             statement.close();
 
-            statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + "huds (user_id, mobhealthbar) VALUES (?, ?)");
+            statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + "huds (user_id, mobhealthbar, scoreboardtips) VALUES (?, ?, ?)");
             statement.setInt(1, id);
             statement.setString(2, Config.getInstance().getMobHealthbarDefault().name());
+            statement.setInt(3, 0);
             statement.execute();
             statement.close();
         }
@@ -1233,6 +1241,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Map<AbilityType, Integer> skillsDATS = new EnumMap<AbilityType, Integer>(AbilityType.class); // Ability & Cooldown
         MobHealthbarType mobHealthbarType;
         UUID uuid;
+        int scoreboardTipsShown;
 
         final int OFFSET_SKILLS = 0; // TODO update these numbers when the query
         // changes (a new skill is added)
@@ -1282,10 +1291,17 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skillsDATS.put(AbilityType.BLAST_MINING, result.getInt(OFFSET_DATS + 12));
 
         try {
-            mobHealthbarType = MobHealthbarType.valueOf(result.getString(OFFSET_OTHER + 2));
+            mobHealthbarType = MobHealthbarType.valueOf(result.getString(OFFSET_OTHER + 1));
         }
         catch (Exception e) {
             mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
+        }
+
+        try {
+            scoreboardTipsShown = result.getInt(OFFSET_OTHER + 2);
+        }
+        catch (Exception e) {
+            scoreboardTipsShown = 0;
         }
 
         try {
@@ -1295,7 +1311,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             uuid = null;
         }
 
-        return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS, mobHealthbarType);
+        return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown);
     }
 
     private void printErrors(SQLException ex) {
@@ -1349,6 +1365,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
         catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for mob healthbars...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "'");
+        }
+    }
+
+    private void checkUpgradeAddScoreboardTips(final Statement statement) throws SQLException {
+        try {
+            statement.executeQuery("SELECT `scoreboardtips` FROM `" + tablePrefix + "huds` LIMIT 1");
+        }
+        catch (SQLException ex) {
+            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for scoreboard tips...");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` ADD `scoreboardtips` int(10) NOT NULL DEFAULT '0' ;");
         }
     }
 

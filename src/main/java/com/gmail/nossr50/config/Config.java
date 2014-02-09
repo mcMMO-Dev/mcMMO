@@ -280,6 +280,7 @@ public class Config extends AutoUpdateConfigLoader {
     /* Scoreboards */
     public boolean getPowerLevelTagsEnabled() { return config.getBoolean("Scoreboard.Power_Level_Tags", false); }
     public boolean getAllowKeepBoard() { return config.getBoolean("Scoreboard.Allow_Keep", true); }
+    public int getTipsAmount() { return config.getInt("Scoreboard.Tips_Amount", 5); }
     public boolean getShowStatsAfterLogin() { return config.getBoolean("Scoreboard.Show_Stats_After_Login", false); }
     public boolean getScoreboardRainbows() { return config.getBoolean("Scoreboard.Rainbows", false); }
     public boolean getShowAbilityNames() { return config.getBoolean("Scoreboard.Ability_Names", true); }

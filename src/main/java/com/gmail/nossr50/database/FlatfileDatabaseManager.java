@@ -320,6 +320,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         writer.append(profile.getSkillLevel(SkillType.ALCHEMY)).append(":");
                         writer.append(profile.getSkillXpLevel(SkillType.ALCHEMY)).append(":");
                         writer.append(uuid.toString()).append(":");
+                        writer.append(profile.getScoreboardTipsShown()).append(":");
                         writer.append("\r\n");
                     }
                 }
@@ -426,7 +427,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out.append("0:"); // Alchemy
                 out.append("0:"); // AlchemyXp
                 out.append(uuid != null ? uuid.toString() : "NULL").append(":"); // UUID
-
+                out.append("0:"); // Scoreboard tips shown
                 // Add more in the same format as the line above
 
                 out.newLine();
@@ -952,6 +953,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 oldVersion = "1.5.01";
                             }
                         }
+                        if (character.length <= 42) {
+                            // Addition of scoreboard tips auto disable
+                            // Version 1.5.02
+                            newLine.append("0").append(":");
+                            if (oldVersion == null) {
+                                oldVersion = "1.5.02";
+                            }
+                        }
 
                         // Remove any blanks that shouldn't be there, and validate the other fields
                         String[] newCharacter = newLine.toString().split(":");
@@ -1087,6 +1096,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         Map<SkillType, Float>     skillsXp   = new EnumMap<SkillType, Float>(SkillType.class);     // Skill & XP
         Map<AbilityType, Integer> skillsDATS = new EnumMap<AbilityType, Integer>(AbilityType.class); // Ability & Cooldown
         MobHealthbarType mobHealthbarType;
+        int scoreboardTipsShown;
 
         // TODO on updates, put new values in a try{} ?
 
@@ -1131,8 +1141,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         catch (Exception e) {
             uuid = null;
         }
+        try {
+            scoreboardTipsShown = Integer.valueOf(character[41]);
+        }
+        catch (Exception e) {
+            scoreboardTipsShown = 0;
+        }
 
-        return new PlayerProfile(character[0], uuid, skills, skillsXp, skillsDATS, mobHealthbarType);
+        return new PlayerProfile(character[0], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown);
     }
 
     private Map<SkillType, Integer> getSkillMapFromLine(String[] character) {

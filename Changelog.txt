@@ -12,6 +12,7 @@ Version 1.5.02-dev
  = Fixed bug where no Mining XP was granted when Flux Mining was successful
  = Fixed bug where MobHealthbarTypes were not saved between server restarts
  ! Changed Flux Mining mechanics. In order to use the ability, you need to infuse a pickaxe with furnace powers first.
+ ! Scoreboard tips are only shown a couple of times to the player, instead of once per login session
 
 Version 1.5.01
  + Added new child skill; Salvage

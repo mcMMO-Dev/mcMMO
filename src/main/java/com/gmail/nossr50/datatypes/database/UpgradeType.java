@@ -9,5 +9,6 @@ public enum UpgradeType {
     DROP_SPOUT,
     ADD_ALCHEMY,
     ADD_UUIDS,
-    ADD_UUIDS_PARTY;
+    ADD_UUIDS_PARTY,
+    ADD_SCOREBOARD_TIPS;
 }

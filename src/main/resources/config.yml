@@ -45,6 +45,10 @@ Scoreboard:
     # Show the /mcstats scoreboard automatically after logging in
     Show_Stats_After_Login: false
 
+    # Show scoreboard tips 5 times. Tips are only displayed once for every login session.
+    # Set to 0 to never show these tips.
+    Tips_Amount: 5
+
     # Add some more color on the board :-)
     Rainbows: false
 
