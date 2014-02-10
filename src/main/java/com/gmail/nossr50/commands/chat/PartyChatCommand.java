@@ -4,8 +4,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.chat.PartyChatManager;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
@@ -25,6 +27,11 @@ public class PartyChatCommand extends ChatCommand {
 
             if (party == null) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+                return;
+            }
+
+            if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.CHAT)) {
+                sender.sendMessage(LocaleLoader.getString("Party.Feature.Disabled.1"));
                 return;
             }
 
