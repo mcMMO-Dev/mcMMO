@@ -170,7 +170,7 @@ public final class PartyManager {
      */
     public static Party getParty(String partyName) {
         for (Party party : parties) {
-            if (party.getName().equals(partyName)) {
+            if (party.getName().equalsIgnoreCase(partyName)) {
                 return party;
             }
         }
