@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.gmail.nossr50.skills.alchemy.Alchemy;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -18,16 +19,16 @@ import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 public class PotionConfig extends ConfigLoader {
     private static PotionConfig instance;
 
-    public List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<ItemStack>();
-    public List<ItemStack> concoctionsIngredientsTierTwo = new ArrayList<ItemStack>();
-    public List<ItemStack> concoctionsIngredientsTierThree = new ArrayList<ItemStack>();
-    public List<ItemStack> concoctionsIngredientsTierFour = new ArrayList<ItemStack>();
-    public List<ItemStack> concoctionsIngredientsTierFive = new ArrayList<ItemStack>();
-    public List<ItemStack> concoctionsIngredientsTierSix = new ArrayList<ItemStack>();
-    public List<ItemStack> concoctionsIngredientsTierSeven = new ArrayList<ItemStack>();
-    public List<ItemStack> concoctionsIngredientsTierEight = new ArrayList<ItemStack>();
+    private List<ItemStack> concoctionsIngredientsTierOne = new ArrayList<ItemStack>();
+    private List<ItemStack> concoctionsIngredientsTierTwo = new ArrayList<ItemStack>();
+    private List<ItemStack> concoctionsIngredientsTierThree = new ArrayList<ItemStack>();
+    private List<ItemStack> concoctionsIngredientsTierFour = new ArrayList<ItemStack>();
+    private List<ItemStack> concoctionsIngredientsTierFive = new ArrayList<ItemStack>();
+    private List<ItemStack> concoctionsIngredientsTierSix = new ArrayList<ItemStack>();
+    private List<ItemStack> concoctionsIngredientsTierSeven = new ArrayList<ItemStack>();
+    private List<ItemStack> concoctionsIngredientsTierEight = new ArrayList<ItemStack>();
 
-    public Map<Short, AlchemyPotion> potionMap = new HashMap<Short, AlchemyPotion>();
+    private Map<Short, AlchemyPotion> potionMap = new HashMap<Short, AlchemyPotion>();
 
     private PotionConfig() {
         super("potions.yml");
@@ -188,5 +189,35 @@ public class PotionConfig extends ConfigLoader {
         }
 
         return null;
+    }
+
+    public List<ItemStack> getIngredients(int tier) {
+        switch (tier) {
+            case 8:
+                return concoctionsIngredientsTierEight;
+            case 7:
+                return concoctionsIngredientsTierSeven;
+            case 6:
+                return concoctionsIngredientsTierSix;
+            case 5:
+                return concoctionsIngredientsTierFive;
+            case 4:
+                return concoctionsIngredientsTierFour;
+            case 3:
+                return concoctionsIngredientsTierThree;
+            case 2:
+                return concoctionsIngredientsTierTwo;
+            case 1:
+            default:
+                return concoctionsIngredientsTierOne;
+        }
+    }
+
+    public boolean isValidPotion(ItemStack item) {
+        return potionMap.containsKey(item.getDurability());
+    }
+
+    public AlchemyPotion getPotion(short durability) {
+        return potionMap.get(durability);
     }
 }

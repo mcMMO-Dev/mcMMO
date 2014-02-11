@@ -28,10 +28,6 @@ public class AlchemyPotion {
         return "AlchemyPotion{" + dataValue + "," + name + ",Effects[" + effects.size() + "], Children[" + children.size() + "]}";
     }
 
-    public ItemStack toItemStack() {
-        return toItemStack(1);
-    }
-
     public ItemStack toItemStack(int amount) {
         ItemStack potion = new ItemStack(Material.POTION, amount, this.getDataValue());
         PotionMeta meta = (PotionMeta) potion.getItemMeta();

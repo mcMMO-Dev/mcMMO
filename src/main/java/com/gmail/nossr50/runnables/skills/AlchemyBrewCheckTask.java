@@ -12,8 +12,6 @@ import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 
 public class AlchemyBrewCheckTask extends BukkitRunnable {
-    private final static int INGREDIENT_SLOT = 3;
-
     private Player player;
     private BrewingStand brewingStand;
     private ItemStack[] oldInventory;
@@ -30,7 +28,7 @@ public class AlchemyBrewCheckTask extends BukkitRunnable {
         ItemStack[] newInventory = Arrays.copyOfRange(((BrewingStand) block.getState()).getInventory().getContents(), 0, 4);
 
         if (Alchemy.brewingStandMap.containsKey(brewingStand)) {
-            if (oldInventory[INGREDIENT_SLOT] == null || newInventory[INGREDIENT_SLOT] == null || !oldInventory[INGREDIENT_SLOT].isSimilar(newInventory[INGREDIENT_SLOT]) || !AlchemyPotionBrewer.isValidBrew(player, newInventory)) {
+            if (oldInventory[Alchemy.INGREDIENT_SLOT] == null || newInventory[Alchemy.INGREDIENT_SLOT] == null || !oldInventory[Alchemy.INGREDIENT_SLOT].isSimilar(newInventory[Alchemy.INGREDIENT_SLOT]) || !AlchemyPotionBrewer.isValidBrew(player, newInventory)) {
                 Alchemy.brewingStandMap.get(brewingStand).cancelBrew();
             }
         }
@@ -39,5 +37,4 @@ public class AlchemyBrewCheckTask extends BukkitRunnable {
             Alchemy.brewingStandMap.put(brewingStand, new AlchemyBrewTask(brewingStand, player));
         }
     }
-
 }

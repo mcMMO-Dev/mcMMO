@@ -2,15 +2,14 @@ package com.gmail.nossr50.skills.alchemy;
 
 import java.util.List;
 
+import com.gmail.nossr50.util.Permissions;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 
 public class AlchemyManager extends SkillManager {
@@ -18,23 +17,6 @@ public class AlchemyManager extends SkillManager {
 
     public AlchemyManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.ALCHEMY);
-    }
-
-    public boolean canCatalysis() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.CATALYSIS);
-    }
-
-    public boolean canConcoctions() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.CONCOCTIONS);
-    }
-
-    public boolean canUseIngredient(ItemStack item) {
-        for (ItemStack ingredient : getIngredients()) {
-            if (item.isSimilar(ingredient)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public int getTier() {
@@ -48,31 +30,17 @@ public class AlchemyManager extends SkillManager {
     }
 
     public List<ItemStack> getIngredients() {
-        switch (Alchemy.Tier.fromNumerical(getTier())) {
-            case EIGHT:
-                return PotionConfig.getInstance().concoctionsIngredientsTierEight;
-            case SEVEN:
-                return PotionConfig.getInstance().concoctionsIngredientsTierSeven;
-            case SIX:
-                return PotionConfig.getInstance().concoctionsIngredientsTierSix;
-            case FIVE:
-                return PotionConfig.getInstance().concoctionsIngredientsTierFive;
-            case FOUR:
-                return PotionConfig.getInstance().concoctionsIngredientsTierFour;
-            case THREE:
-                return PotionConfig.getInstance().concoctionsIngredientsTierThree;
-            case TWO:
-                return PotionConfig.getInstance().concoctionsIngredientsTierTwo;
-            default:
-                return PotionConfig.getInstance().concoctionsIngredientsTierOne;
-        }
+        return PotionConfig.getInstance().getIngredients(getTier());
     }
 
     public String getIngredientList() {
         StringBuilder list = new StringBuilder();
 
         for (ItemStack ingredient : getIngredients()) {
-            String string = StringUtils.getPrettyItemString(ingredient.getType()) + (ingredient.getDurability() != 0 ? ":" + ingredient.getDurability() : "");
+            short durability = ingredient.getDurability();
+
+            String string = StringUtils.getPrettyItemString(ingredient.getType()) + (durability != 0 ? ":" + durability : "");
+
             if (string.equals("Long Grass:2")) {
                 string = "Fern";
             }
@@ -80,17 +48,20 @@ public class AlchemyManager extends SkillManager {
                 string = "Pufferfish";
             }
 
-            list.append(", " + string);
+            list.append(", ").append(string);
         }
+
         return list.substring(2);
     }
 
-    public double getBrewSpeed() {
-        return Alchemy.calculateBrewSpeed(getSkillLevel());
-    }
+    public double calculateBrewSpeed(boolean isLucky) {
+        int skillLevel = getSkillLevel();
 
-    public double getBrewSpeedLucky() {
-        return LUCKY_MODIFIER * Alchemy.calculateBrewSpeed(getSkillLevel());
+        if (skillLevel < Alchemy.catalysisUnlockLevel) {
+            return Alchemy.catalysisMinSpeed;
+        }
+
+        return Math.min(Alchemy.catalysisMaxSpeed, Alchemy.catalysisMinSpeed + (Alchemy.catalysisMaxSpeed - Alchemy.catalysisMinSpeed) * (skillLevel - Alchemy.catalysisUnlockLevel) / (Alchemy.catalysisMaxBonusLevel - Alchemy.catalysisUnlockLevel)) * (isLucky ? LUCKY_MODIFIER : 1.0);
     }
 
     public void handlePotionBrewSuccesses(int amount) {

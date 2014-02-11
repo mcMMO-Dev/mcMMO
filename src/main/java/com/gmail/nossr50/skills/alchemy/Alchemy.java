@@ -44,6 +44,8 @@ public final class Alchemy {
         }
     }
 
+    public static final int INGREDIENT_SLOT = 3;
+
     public static int    catalysisUnlockLevel   = AdvancedConfig.getInstance().getCatalysisUnlockLevel();
     public static int    catalysisMaxBonusLevel = AdvancedConfig.getInstance().getCatalysisMaxBonusLevel();
     public static double catalysisMinSpeed      = AdvancedConfig.getInstance().getCatalysisMinSpeed();
@@ -54,25 +56,11 @@ public final class Alchemy {
     private Alchemy() {}
 
     /**
-     * Calculate base brewing speed, given a skill level and ignoring all perks.
-     *
-     * @param skillLevel Skill level used for calculation.
-     *
-     * @return Base brewing speed for the level.
-     */
-    public static double calculateBrewSpeed(int skillLevel) {
-        if (skillLevel < catalysisUnlockLevel) {
-            return catalysisMinSpeed;
-        }
-
-        return Math.min(catalysisMaxSpeed, catalysisMinSpeed + (catalysisMaxSpeed - catalysisMinSpeed) * (skillLevel - catalysisUnlockLevel) / (catalysisMaxBonusLevel - catalysisUnlockLevel));
-    }
-
-    /**
      * Finish all active brews.  Used upon Disable to prevent vanilla potions from being brewed upon next Enable.
      */
     public static void finishAllBrews() {
         mcMMO.p.debug("Completing " + brewingStandMap.size() + " unfinished Alchemy brews.");
+
         for (AlchemyBrewTask alchemyBrewTask : brewingStandMap.values()) {
             alchemyBrewTask.finishImmediately();
         }

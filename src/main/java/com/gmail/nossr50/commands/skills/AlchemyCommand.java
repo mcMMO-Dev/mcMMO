@@ -33,8 +33,8 @@ public class AlchemyCommand extends SkillCommand {
         AlchemyManager alchemyManager = UserManager.getPlayer(player).getAlchemyManager();
         String[] displayValues = new String[2];
 
-        displayValues[0] = decimal.format(alchemyManager.getBrewSpeed()) + "x";
-        displayValues[1] = isLucky ? decimal.format(alchemyManager.getBrewSpeedLucky()) + "x" : null;
+        displayValues[0] = decimal.format(alchemyManager.calculateBrewSpeed(false)) + "x";
+        displayValues[1] = isLucky ? decimal.format(alchemyManager.calculateBrewSpeed(true)) + "x" : null;
 
         return displayValues;
     }

@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceExtractEvent;
@@ -22,8 +23,10 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.MetadataValue;
 
@@ -32,6 +35,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.PlayerUpdateInventoryTask;
+import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.alchemy.AlchemyPotionBrewer;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
@@ -138,43 +142,166 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryClickEventNormal(InventoryClickEvent event) {
-        if (event.getInventory().getType() != InventoryType.BREWING || !(event.getInventory().getHolder() instanceof BrewingStand)) {
+        Inventory inventory = event.getInventory();
+
+        if (!(inventory instanceof BrewerInventory)) {
             return;
         }
 
-        if (!(event.getWhoClicked() instanceof Player) || Misc.isNPCEntity(event.getWhoClicked()) || !Permissions.concoctions(event.getWhoClicked())) {
+        InventoryHolder holder = inventory.getHolder();
+
+        if (!(holder instanceof BrewingStand)) {
             return;
         }
 
-        AlchemyPotionBrewer.handleInventoryClick(event);
+        HumanEntity whoClicked = event.getWhoClicked();
+
+        if (Misc.isNPCEntity(whoClicked) || !(whoClicked instanceof Player) || !Permissions.secondaryAbilityEnabled(whoClicked, SecondaryAbility.CONCOCTIONS)) {
+            return;
+        }
+
+        Player player = (Player) whoClicked;
+        BrewingStand stand = (BrewingStand) holder;
+        ItemStack clicked = event.getCurrentItem();
+
+        if (clicked != null && clicked.getType() == Material.POTION) {
+            AlchemyPotionBrewer.scheduleCheck(player, stand);
+            return;
+        }
+
+        ClickType click = event.getClick();
+        InventoryType.SlotType slot = event.getSlotType();
+
+        if (click.isShiftClick()) {
+            switch (slot) {
+                case FUEL:
+                    AlchemyPotionBrewer.scheduleCheck(player, stand);
+                    return;
+                case CONTAINER:
+                case QUICKBAR:
+                    if (!AlchemyPotionBrewer.isValidIngredient(player, clicked)) {
+                        return;
+                    }
+
+                    AlchemyPotionBrewer.transferItems(event.getView(), event.getRawSlot(), Alchemy.INGREDIENT_SLOT, click);
+                    event.setCancelled(true);
+                    AlchemyPotionBrewer.scheduleUpdate(inventory);
+                    AlchemyPotionBrewer.scheduleCheck(player, stand);
+                    return;
+                default:
+                    return;
+            }
+        }
+        else if (slot == InventoryType.SlotType.FUEL) {
+            ItemStack cursor = event.getCursor();
+            boolean emptyClicked = AlchemyPotionBrewer.isEmpty(clicked);
+
+            if (AlchemyPotionBrewer.isEmpty(cursor)) {
+                if (emptyClicked) {
+                    if (click == ClickType.NUMBER_KEY) {
+                        AlchemyPotionBrewer.scheduleCheck(player, stand);
+                        return;
+                    }
+                }
+
+                AlchemyPotionBrewer.scheduleCheck(player, stand);
+            }
+            else if (emptyClicked) {
+                if (AlchemyPotionBrewer.isValidIngredient(player, cursor)) {
+                    int amount = cursor.getAmount();
+
+                    if (click == ClickType.LEFT || (click == ClickType.RIGHT && amount == 1)) {
+                        event.setCancelled(true);
+                        event.setCurrentItem(cursor.clone());
+                        event.setCursor(null);
+
+                        AlchemyPotionBrewer.scheduleUpdate(inventory);
+                        AlchemyPotionBrewer.scheduleCheck(player, stand);
+                    }
+                    else if (click == ClickType.RIGHT) {
+                        event.setCancelled(true);
+
+                        ItemStack one = cursor.clone();
+                        one.setAmount(1);
+
+                        ItemStack rest = cursor.clone();
+                        rest.setAmount(amount - 1);
+
+                        event.setCurrentItem(one);
+                        event.setCursor(rest);
+
+                        AlchemyPotionBrewer.scheduleUpdate(inventory);
+                        AlchemyPotionBrewer.scheduleCheck(player, stand);
+                    }
+                }
+            }
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryDragEvent(InventoryDragEvent event) {
-        if (event.getInventory().getType() != InventoryType.BREWING || !(event.getInventory().getHolder() instanceof BrewingStand)) {
+        Inventory inventory = event.getInventory();
+
+        if (!(inventory instanceof BrewerInventory)) {
             return;
         }
 
-        if (!(event.getWhoClicked() instanceof Player) || Misc.isNPCEntity(event.getWhoClicked()) || !Permissions.concoctions(event.getWhoClicked())) {
+        InventoryHolder holder = inventory.getHolder();
+
+        if (!(holder instanceof BrewingStand)) {
             return;
         }
 
-        AlchemyPotionBrewer.handleInventoryDrag(event);
+        HumanEntity whoClicked = event.getWhoClicked();
+
+        if (Misc.isNPCEntity(whoClicked) || !(whoClicked instanceof Player) || !Permissions.secondaryAbilityEnabled(whoClicked, SecondaryAbility.CONCOCTIONS)) {
+            return;
+        }
+
+        if (!event.getInventorySlots().contains(Alchemy.INGREDIENT_SLOT)) {
+            return;
+        }
+
+        ItemStack cursor = event.getCursor();
+        ItemStack ingredient = ((BrewerInventory) inventory).getIngredient();
+
+        if (AlchemyPotionBrewer.isEmpty(ingredient) || ingredient.isSimilar(cursor)) {
+            Player player = (Player) whoClicked;
+
+            if (AlchemyPotionBrewer.isValidIngredient(player, cursor)) {
+                // Not handled: dragging custom ingredients over ingredient slot (does not trigger any event)
+                AlchemyPotionBrewer.scheduleCheck(player, (BrewingStand) holder);
+                return;
+            }
+
+            event.setCancelled(true);
+            AlchemyPotionBrewer.scheduleUpdate(inventory);
+        }
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onInventoryMoveItemEvent(InventoryMoveItemEvent event) {
-        if (event.getDestination().getType() != InventoryType.BREWING || !(event.getDestination().getHolder() instanceof BrewingStand)) {
+        Inventory inventory = event.getDestination();
+
+        if (!(inventory instanceof BrewerInventory)) {
             return;
         }
 
-        if (Config.getInstance().getPreventHopperTransfer() && event.getItem() != null && event.getItem().getType() != Material.POTION) {
+        InventoryHolder holder = inventory.getHolder();
+
+        if (!(holder instanceof BrewingStand)) {
+            return;
+        }
+
+        ItemStack item = event.getItem();
+
+        if (Config.getInstance().getPreventHopperTransfer() && item.getType() != Material.POTION) {
             event.setCancelled(true);
             return;
         }
 
-        if (Config.getInstance().getEnabledForHoppers()) {
-            AlchemyPotionBrewer.handleInventoryMoveItem(event);
+        if (Config.getInstance().getEnabledForHoppers() && AlchemyPotionBrewer.isValidIngredient(null, item)) {
+            AlchemyPotionBrewer.scheduleCheck(null, (BrewingStand) holder);
         }
     }
 
