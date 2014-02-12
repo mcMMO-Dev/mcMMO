@@ -126,10 +126,10 @@ public final class AlchemyPotionBrewer {
         boolean success = false;
 
         if (click.isLeftClick()) {
-            success = transferOneItem(view, fromSlot, toSlot);
+            success = transferItems(view, fromSlot, toSlot);
         }
         else if (click.isRightClick()) {
-            success = transferItems(view, fromSlot, toSlot);
+            success = transferOneItem(view, fromSlot, toSlot);
         }
 
         return success;
