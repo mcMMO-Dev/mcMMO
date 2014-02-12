@@ -295,9 +295,9 @@ Potions:
         Effects: ["FIRE_RESISTANCE 0 3600"]
         Children:
             FERMENTED_SPIDER_EYE: 8202
-            REDSTONE: 3139
+            REDSTONE: 8259
             SULPHUR: 16387
-    3139: # Potion of Fire Resistance Extended
+    8259: # Potion of Fire Resistance Extended
         Effects: ["FIRE_RESISTANCE 0 9600"]
         Children:
             FERMENTED_SPIDER_EYE: 8266
@@ -307,23 +307,23 @@ Potions:
     8205: # Potion of Water Breathing
         Effects: ["WATER_BREATHING 0 3600"]
         Children:
-            REDSTONE: 3405
+            REDSTONE: 8269
             SULPHUR: 16397
-    3405: # Potion of Water Breathing Extended
+    8269: # Potion of Water Breathing Extended
         Effects: ["WATER_BREATHING 0 9600"]
         Children:
             GLOWSTONE_DUST: 8205
             SULPHUR: 16461
 
-    3598: # Potion of Invisibility
+    8206: # Potion of Invisibility
         Effects: ["INVISIBILITY 0 3600"]
         Children:
-            REDSTONE: 3662
+            REDSTONE: 8270
             SULPHUR: 16398
-    3662: # Potion of Invisibility Extended
+    8270: # Potion of Invisibility Extended
         Effects: ["INVISIBILITY 0 9600"]
         Children:
-            GLOWSTONE_DUST: 3598
+            GLOWSTONE_DUST: 8206
             SULPHUR: 16462
 
     3840: # Potion of Blindness
@@ -340,13 +340,13 @@ Potions:
     8198: # Potion of Night Vision
         Effects: ["NIGHT_VISION 0 3600"]
         Children:
-            FERMENTED_SPIDER_EYE: 3598
-            REDSTONE: 4166
+            FERMENTED_SPIDER_EYE: 8206
+            REDSTONE: 8262
             SULPHUR: 16390
-    4166: # Potion of Night Vision Extended
+    8262: # Potion of Night Vision Extended
         Effects: ["NIGHT_VISION 0 9600"]
         Children:
-            FERMENTED_SPIDER_EYE: 3662
+            FERMENTED_SPIDER_EYE: 8270
             GLOWSTONE_DUST: 8198
             SULPHUR: 16454
 
