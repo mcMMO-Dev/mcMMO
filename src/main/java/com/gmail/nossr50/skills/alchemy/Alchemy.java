@@ -1,6 +1,8 @@
 package com.gmail.nossr50.skills.alchemy;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.bukkit.block.BlockState;
@@ -61,7 +63,13 @@ public final class Alchemy {
     public static void finishAllBrews() {
         mcMMO.p.debug("Completing " + brewingStandMap.size() + " unfinished Alchemy brews.");
 
+        List<AlchemyBrewTask> toFinish = new ArrayList<AlchemyBrewTask>();
+
         for (AlchemyBrewTask alchemyBrewTask : brewingStandMap.values()) {
+            toFinish.add(alchemyBrewTask);
+        }
+
+        for (AlchemyBrewTask alchemyBrewTask : toFinish) {
             alchemyBrewTask.finishImmediately();
         }
     }
