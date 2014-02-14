@@ -116,38 +116,33 @@ Potions:
     ### DRINKABLE POTIONS ######################################################
 
     8194: # Potion of Swiftness
-        Effects: ["SPEED 0 3600"]        
         Children:
             FERMENTED_SPIDER_EYE: 8202
             GLOWSTONE_DUST: 8226
             REDSTONE: 8258
             SULPHUR: 16386
     8226: # Potion of Swiftness II
-        Effects: ["SPEED 1 1800"]        
         Children:
             FERMENTED_SPIDER_EYE: 8266
             REDSTONE: 8258
             SULPHUR: 16418
     8258: # Potion of Swiftness Extended
-        Effects: ["SPEED 0 9600"]        
         Children:
             FERMENTED_SPIDER_EYE: 8202
             GLOWSTONE_DUST: 8226
             SULPHUR: 16450
 
     8202: # Potion of Slowness
-        Effects: ["SLOW 0 1800"]        
         Children:
             REDSTONE: 8266
             SULPHUR: 16394
     8266: # Potion of Slowness Extended
-        Effects: ["SLOW 0 4800"]        
         Children:
             GLOWSTONE_DUST: 8202
             SULPHUR: 16458
 
     768: # Potion of Haste
-        Effects: ["FAST_DIGGING 0 3600"]        
+        Effects: ["FAST_DIGGING 0 3600"]
         Children:
             GLOWSTONE_DUST: 800
             REDSTONE: 832
@@ -160,7 +155,7 @@ Potions:
             SULPHUR: 17184
 
     832: # Potion of Haste Extended
-        Effects: ["FAST_DIGGING 0 9600"]        
+        Effects: ["FAST_DIGGING 0 9600"]
         Children:
             GLOWSTONE_DUST: 800
             SULPHUR: 17216
@@ -183,45 +178,38 @@ Potions:
             SULPHUR: 17472
 
     8201: # Potion of Strength
-        Effects: ["INCREASE_DAMAGE 0 3600"]
         Children:
             FERMENTED_SPIDER_EYE: 8200
             GLOWSTONE_DUST: 8233
             REDSTONE: 8265
             SULPHUR: 16393
     8233: # Potion of Strength II
-        Effects: ["INCREASE_DAMAGE 1 1800"]
         Children:
             FERMENTED_SPIDER_EYE: 8200
             REDSTONE: 8265
             SULPHUR: 16425
     8265: # Potion of Strength Extended
-        Effects: ["INCREASE_DAMAGE 0 9600"]
         Children:
             FERMENTED_SPIDER_EYE: 8264
             GLOWSTONE_DUST: 8233
             SULPHUR: 16457
 
     8197: # Potion of Healing
-        Effects: ["HEAL 0"]
         Children:
             FERMENTED_SPIDER_EYE: 8204
             GLOWSTONE_DUST: 8229
             SULPHUR: 16389
     8229: # Potion of Healing II
-        Effects: ["HEAL 1"]
         Children:
             FERMENTED_SPIDER_EYE: 8236
             REDSTONE: 8197
             SULPHUR: 16421
 
     8204: # Potion of Harming
-        Effects: ["HARM 0"]
         Children:
             GLOWSTONE_DUST: 8236
             SULPHUR: 16396
     8236: # Potion of Harming II
-        Effects: ["HARM 1"]
         Children:
             REDSTONE: 8204
             SULPHUR: 16428
@@ -255,20 +243,17 @@ Potions:
             SULPHUR: 18752
 
     8193: # Potion of Regeneration
-        Effects: ["REGENERATION 0 900"]
         Children:
             FERMENTED_SPIDER_EYE: 8200
             GLOWSTONE_DUST: 8225
             REDSTONE: 8257
             SULPHUR: 16385
     8225: # Potion of Regeneration II
-        Effects: ["REGENERATION 1 450"]
         Children:
             FERMENTED_SPIDER_EYE: 8200
             REDSTONE: 8257
             SULPHUR: 16417
     8257: # Potion of Regeneration Extended
-        Effects: ["REGENERATION 0 2400"]
         Children:
             FERMENTED_SPIDER_EYE: 8264
             GLOWSTONE_DUST: 8225
@@ -292,36 +277,30 @@ Potions:
             SULPHUR: 19264
 
     8195: # Potion of Fire Resistance
-        Effects: ["FIRE_RESISTANCE 0 3600"]
         Children:
             FERMENTED_SPIDER_EYE: 8202
             REDSTONE: 8259
             SULPHUR: 16387
     8259: # Potion of Fire Resistance Extended
-        Effects: ["FIRE_RESISTANCE 0 9600"]
         Children:
             FERMENTED_SPIDER_EYE: 8266
             GLOWSTONE_DUST: 8195
             SULPHUR: 16451
 
     8205: # Potion of Water Breathing
-        Effects: ["WATER_BREATHING 0 3600"]
         Children:
             REDSTONE: 8269
             SULPHUR: 16397
     8269: # Potion of Water Breathing Extended
-        Effects: ["WATER_BREATHING 0 9600"]
         Children:
             GLOWSTONE_DUST: 8205
             SULPHUR: 16461
 
     8206: # Potion of Invisibility
-        Effects: ["INVISIBILITY 0 3600"]
         Children:
             REDSTONE: 8270
             SULPHUR: 16398
     8270: # Potion of Invisibility Extended
-        Effects: ["INVISIBILITY 0 9600"]
         Children:
             GLOWSTONE_DUST: 8206
             SULPHUR: 16462
@@ -338,13 +317,11 @@ Potions:
             SULPHUR: 20288
 
     8198: # Potion of Night Vision
-        Effects: ["NIGHT_VISION 0 3600"]
         Children:
             FERMENTED_SPIDER_EYE: 8206
             REDSTONE: 8262
             SULPHUR: 16390
     8262: # Potion of Night Vision Extended
-        Effects: ["NIGHT_VISION 0 9600"]
         Children:
             FERMENTED_SPIDER_EYE: 8270
             GLOWSTONE_DUST: 8198
@@ -368,31 +345,26 @@ Potions:
             SULPHUR: 20800
 
     8200: # Potion of Weakness
-        Effects: ["WEAKNESS 0 1800"]
         Children:
             REDSTONE: 8264
             SULPHUR: 16392
     8264: # Potion of Weakness Extended
-        Effects: ["WEAKNESS 0 4800"]
         Children:
             GLOWSTONE_DUST: 8200
             SULPHUR: 16456
 
     8196: # Potion of Poison
-        Effects: ["POISON 0 900"]
         Children:
             FERMENTED_SPIDER_EYE: 8204
             GLOWSTONE_DUST: 8228
             REDSTONE: 8260
             SULPHUR: 16388
     8228: # Potion of Poison II
-        Effects: ["POISON 1 450"]
         Children:
             FERMENTED_SPIDER_EYE: 8236
             REDSTONE: 8260
             SULPHUR: 16452
     8260: # Potion of Poison Extended
-        Effects: ["POISON 0 2400"]
         Children:
             FERMENTED_SPIDER_EYE: 8204
             GLOWSTONE_DUST: 8228
@@ -467,28 +439,23 @@ Potions:
             FERMENTED_SPIDER_EYE: 16392
 
     16386: # Splash Potion of Swiftness
-        Effects: ["SPEED 0 2700"]
         Children:
             FERMENTED_SPIDER_EYE: 16394
             GLOWSTONE_DUST: 16418
             REDSTONE: 16450
     16418: # Splash Potion of Swiftness II
-        Effects: ["SPEED 1 1350"]
         Children:
             FERMENTED_SPIDER_EYE: 16394
             REDSTONE: 16450
     16450: # Splash Potion of Swiftness Extended
-        Effects: ["SPEED 0 7200"]
         Children:
             FERMENTED_SPIDER_EYE: 16394
             GLOWSTONE_DUST: 16418
 
     16394: # Splash Potion of Slowness
-        Effects: ["SLOW 0 1350"]
         Children:
             REDSTONE: 16458
     16458: # Splash Potion of Slowness Extended
-        Effects: ["SLOW 0 3600"]
         Children:
             GLOWSTONE_DUST: 16394
 
@@ -521,39 +488,32 @@ Potions:
             GLOWSTONE_DUST: 17440
 
     16393: # Splash Potion of Strength
-        Effects: ["INCREASE_DAMAGE 0 2700"]
         Children:
             FERMENTED_SPIDER_EYE: 16392
             GLOWSTONE_DUST: 16425
             REDSTONE: 16457
     16425: # Splash Potion of Strength II
-        Effects: ["INCREASE_DAMAGE 1 1350"]
         Children:
             FERMENTED_SPIDER_EYE: 16392
             REDSTONE: 16457
     16457: # Splash Potion of Strength Extended
-        Effects: ["INCREASE_DAMAGE 0 7200"]
         Children:
             FERMENTED_SPIDER_EYE: 16456
             GLOWSTONE_DUST: 16425
 
     16389: # Splash Potion of Healing
-        Effects: ["HEAL 0"]
         Children:
             FERMENTED_SPIDER_EYE: 16396
             GLOWSTONE_DUST: 16421
     16421: # Splash Potion of Healing II
-        Effects: ["HEAL 1"]
         Children:
             FERMENTED_SPIDER_EYE: 16428
             REDSTONE: 16389
 
     16396: # Splash Potion of Harming
-        Effects: ["HARM 0"]
         Children:
             GLOWSTONE_DUST: 16428
     16428: # Splash Potion of Harming II
-        Effects: ["HARM 1"]
         Children:
             REDSTONE: 16396
 
@@ -581,18 +541,15 @@ Potions:
             GLOWSTONE_DUST: 18688
 
     16385: # Splash Potion of Regeneration
-        Effects: ["REGENERATION 0 675"]
         Children:
             FERMENTED_SPIDER_EYE: 16392
             GLOWSTONE_DUST: 16417
             REDSTONE: 16449
     16417: # Splash Potion of Regeneration II
-        Effects: ["REGENERATION 1 338"]
         Children:
             FERMENTED_SPIDER_EYE: 16392
             REDSTONE: 16449
     16449: # Splash Potion of Regeneration Extended
-        Effects: ["REGENERATION 0 1800"]
         Children:
             FERMENTED_SPIDER_EYE: 16456
             GLOWSTONE_DUST: 16417
@@ -612,31 +569,25 @@ Potions:
             GLOWSTONE_DUST: 19232
 
     16387: # Splash Potion of Fire Resistance
-        Effects: ["FIRE_RESISTANCE 0 2700"]
         Children:
             FERMENTED_SPIDER_EYE: 16394
             REDSTONE: 16451
     16451: # Splash Potion of Fire Resistance Extended
-        Effects: ["FIRE_RESISTANCE 0 7200"]
         Children:
             FERMENTED_SPIDER_EYE: 16458
             GLOWSTONE_DUST: 16387
 
     16397: # Splash Potion of Water Breathing
-        Effects: ["WATER_BREATHING 0 2700"]
         Children:
             REDSTONE: 16461
     16461: # Splash Potion of Water Breathing Extended
-        Effects: ["WATER_BREATHING 0 7200"]
         Children:
             GLOWSTONE_DUST: 16397
 
     16398: # Splash Potion of Invisibility
-        Effects: ["INVISIBILITY 0 2700"]
         Children:
             REDSTONE: 16462
     16462: # Splash Potion of Invisibility Extended
-        Effects: ["INVISIBILITY 0 7200"]
         Children:
             GLOWSTONE_DUST: 16398
 
@@ -650,12 +601,10 @@ Potions:
             GLOWSTONE_DUST: 20224
 
     16390: # Splash Potion of Night Vision
-        Effects: ["NIGHT_VISION 0 2700"]
         Children:
             FERMENTED_SPIDER_EYE: 16398
             REDSTONE: 16454
     16454: # Splash Potion of Night Vision Extended
-        Effects: ["NIGHT_VISION 0 7200"]
         Children:
             FERMENTED_SPIDER_EYE: 16462
             GLOWSTONE_DUST: 16390
@@ -675,27 +624,22 @@ Potions:
             GLOWSTONE_DUST: 20768
 
     16392: # Splash Potion of Weakness
-        Effects: ["WEAKNESS 0 1350"]
         Children:
             REDSTONE: 16456
     16456: # Splash Potion of Weakness Extended
-        Effects: ["WEAKNESS 0 3600"]
         Children:
             GLOWSTONE_DUST: 16392
 
     16388: # Splash Potion of Poison
-        Effects: ["POISON 0 675"]
         Children:
             FERMENTED_SPIDER_EYE: 16396
             GLOWSTONE_DUST: 16452
             REDSTONE: 16452
     16452: # Splash Potion of Poison II
-        Effects: ["POISON 1 338"]
         Children:
             FERMENTED_SPIDER_EYE: 16428
             REDSTONE: 16452
     16452: # Splash Potion of Poison Extended
-        Effects: ["POISON 0 1800"]
         Children:
             FERMENTED_SPIDER_EYE: 16396
             GLOWSTONE_DUST: 16452
