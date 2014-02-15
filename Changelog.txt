@@ -18,6 +18,7 @@ Version 1.5.00-dev
  ! Woodcutting XP in experience.yml and Woodcutting double drops in config.yml now use the tree species names. Oak is now Generic, and Spruce is now Redwood.
  ! Red_Rose was replaced by Poppy, and so the key in experience.yml has been updated accordingly.
  - Removed deprecated permission nodes
+ - Removed "Treasure found!" message
 
 Version 1.4.08-dev
  + Added a new skill; Alchemy. Special thanks to EasyMFnE for creating this!
