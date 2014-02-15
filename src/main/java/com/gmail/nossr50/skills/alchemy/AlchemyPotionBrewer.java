@@ -101,18 +101,20 @@ public final class AlchemyPotionBrewer {
         }
 
         for (int i = 0; i < 3; i++) {
-            ItemStack item = inventory.getItem(i);
+            ItemStack item = inventory.getItem(i).clone();
 
-            if (!isEmpty(item) && PotionConfig.getInstance().isValidPotion(item)) {
-                AlchemyPotion input = PotionConfig.getInstance().getPotion(item.getDurability());
-                AlchemyPotion output = PotionConfig.getInstance().getPotion(input.getChildDataValue(ingredient));
+            if (isEmpty(item) || !PotionConfig.getInstance().isValidPotion(item)) {
+                continue;
+            }
 
-                if (output != null) {
-                    inventory.setItem(i, output.toItemStack(item.getAmount()).clone());
+            AlchemyPotion input = PotionConfig.getInstance().getPotion(item.getDurability());
+            AlchemyPotion output = PotionConfig.getInstance().getPotion(input.getChildDataValue(ingredient));
 
-                    if (player != null) {
-                        UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(1);
-                    }
+            if (output != null) {
+                inventory.setItem(i, output.toItemStack(item.getAmount()).clone());
+
+                if (player != null) {
+                    UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(1);
                 }
             }
         }
