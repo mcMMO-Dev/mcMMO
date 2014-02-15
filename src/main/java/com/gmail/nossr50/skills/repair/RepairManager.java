@@ -90,7 +90,15 @@ public class RepairManager extends SkillManager {
         Material repairMaterial = repairable.getRepairMaterial();
         byte repairMaterialMetadata = repairable.getRepairMaterialMetadata();
         ItemStack toRemove = new MaterialData(repairMaterial, repairMaterialMetadata).toItemStack(1);
+        
+        short startDurability = item.getDurability();
 
+        // Do not repair if at full durability
+        if (startDurability <= 0) {
+            player.sendMessage(LocaleLoader.getString("Repair.Skills.FullDurability"));
+            return;
+        }
+        
         // Check if they have the proper material to repair with
         if (!inventory.contains(repairMaterial)) {
             String message = LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(repairMaterial));
@@ -100,14 +108,6 @@ public class RepairManager extends SkillManager {
             }
 
             player.sendMessage(message);
-            return;
-        }
-
-        short startDurability = item.getDurability();
-
-        // Do not repair if at full durability
-        if (startDurability <= 0) {
-            player.sendMessage(LocaleLoader.getString("Repair.Skills.FullDurability"));
             return;
         }
 
