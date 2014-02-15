@@ -163,8 +163,9 @@ public class InventoryListener implements Listener {
         Player player = (Player) whoClicked;
         BrewingStand stand = (BrewingStand) holder;
         ItemStack clicked = event.getCurrentItem();
+        ItemStack cursor = event.getCursor();
 
-        if (clicked != null && clicked.getType() == Material.POTION) {
+        if ((clicked != null && clicked.getType() == Material.POTION) || (cursor != null && cursor.getType() == Material.POTION)) {
             AlchemyPotionBrewer.scheduleCheck(player, stand);
             return;
         }
@@ -193,7 +194,6 @@ public class InventoryListener implements Listener {
             }
         }
         else if (slot == InventoryType.SlotType.FUEL) {
-            ItemStack cursor = event.getCursor();
             boolean emptyClicked = AlchemyPotionBrewer.isEmpty(clicked);
 
             if (AlchemyPotionBrewer.isEmpty(cursor)) {
