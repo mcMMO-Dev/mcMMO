@@ -115,7 +115,7 @@ Experience:
         Carrot: 50
         Cocoa: 30
         Crops: 50
-        Dead_Bush: 100
+        Dead_Bush: 30
         Lilac: 50
         Melon_Block: 20
         Nether_Warts: 50
@@ -129,8 +129,8 @@ Experience:
         Red_Mushroom: 150
         Red_Tulip: 150
         Rose_Bush: 50
-        Small_Fern: 100
-        Small_Grass: 100
+        Small_Fern: 10
+        Small_Grass: 10
         Sugar_Cane_Block: 30
         Sunflower: 50
         Tall_Grass: 50
