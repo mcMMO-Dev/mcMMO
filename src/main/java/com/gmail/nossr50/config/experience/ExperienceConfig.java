@@ -266,13 +266,13 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         else if (type == Material.LONG_GRASS) {
             switch (((LongGrass) data).getSpecies()) {
                 case DEAD:
-                    return config.getInt("Experience.Herbalism.Dead_Bush", 100);
+                    return config.getInt("Experience.Herbalism.Dead_Bush", 30);
 
                 case FERN_LIKE:
-                    return config.getInt("Experience.Herbalism.Small_Fern", 100);
+                    return config.getInt("Experience.Herbalism.Small_Fern", 10);
 
                 case NORMAL:
-                    return config.getInt("Experience.Herbalism.Small_Grass", 100);
+                    return config.getInt("Experience.Herbalism.Small_Grass", 10);
 
                 default:
                     return 0;
