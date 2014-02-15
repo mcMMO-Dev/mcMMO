@@ -222,6 +222,13 @@ public class PlayerListener implements Listener {
                 return;
 
             case CAUGHT_FISH:
+                //TODO Update to new API once available! Waiting for case CAUGHT_TREASURE:
+                Item fishingCatch = (Item) event.getCaught();
+
+                if (Config.getInstance().getFishingOverrideTreasures() && fishingCatch.getItemStack().getType() != Material.RAW_FISH) {
+                    fishingCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
+                }
+
                 if (Permissions.vanillaXpBoost(player, SkillType.FISHING)) {
                     event.setExpToDrop(fishingManager.handleVanillaXpBoost(event.getExpToDrop()));
                 }
