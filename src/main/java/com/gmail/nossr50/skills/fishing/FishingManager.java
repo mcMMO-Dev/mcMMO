@@ -309,8 +309,6 @@ public class FishingManager extends SkillManager {
         }
 
         if (treasure != null) {
-            player.sendMessage(LocaleLoader.getString("Fishing.Ability.TH.ItemFound"));
-
             ItemStack treasureDrop = treasure.getDrop().clone(); // Not cloning is bad, m'kay?
             Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
 
