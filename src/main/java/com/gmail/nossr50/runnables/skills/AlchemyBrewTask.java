@@ -1,5 +1,6 @@
 package com.gmail.nossr50.runnables.skills;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
@@ -22,12 +23,14 @@ public class AlchemyBrewTask extends BukkitRunnable {
     private static int    DEFAULT_BREW_TICKS = 400;
 
     private BlockState brewingStand;
+    private Location location;
     private double brewSpeed;
     private double brewTimer;
     private Player player;
 
     public AlchemyBrewTask(BlockState brewingStand, Player player) {
         this.brewingStand = brewingStand;
+        this.location = brewingStand.getLocation();
         this.player = player;
 
         brewSpeed = DEFAULT_BREW_SPEED;
@@ -44,19 +47,19 @@ public class AlchemyBrewTask extends BukkitRunnable {
             }
         }
 
-        if (Alchemy.brewingStandMap.containsKey(brewingStand)) {
-            Alchemy.brewingStandMap.get(brewingStand).cancel();
+        if (Alchemy.brewingStandMap.containsKey(location)) {
+            Alchemy.brewingStandMap.get(location).cancel();
         }
 
-        Alchemy.brewingStandMap.put(brewingStand, this);
+        Alchemy.brewingStandMap.put(location, this);
         this.runTaskTimer(mcMMO.p, 1, 1);
     }
 
     @Override
     public void run() {
         if (player == null || !player.isValid() || brewingStand == null || brewingStand.getType() != Material.BREWING_STAND) {
-            if (Alchemy.brewingStandMap.containsKey(brewingStand)) {
-                Alchemy.brewingStandMap.remove(brewingStand);
+            if (Alchemy.brewingStandMap.containsKey(location)) {
+                Alchemy.brewingStandMap.remove(location);
             }
 
             this.cancel();
@@ -84,20 +87,20 @@ public class AlchemyBrewTask extends BukkitRunnable {
             AlchemyPotionBrewer.finishBrewing(brewingStand, player, false);
         }
 
-        Alchemy.brewingStandMap.remove(brewingStand);
+        Alchemy.brewingStandMap.remove(location);
     }
 
     public void finishImmediately() {
         this.cancel();
 
         AlchemyPotionBrewer.finishBrewing(brewingStand, player, true);
-        Alchemy.brewingStandMap.remove(brewingStand);
+        Alchemy.brewingStandMap.remove(location);
     }
 
     public void cancelBrew() {
         this.cancel();
 
         ((BrewingStand) brewingStand).setBrewingTime(-1);
-        Alchemy.brewingStandMap.remove(brewingStand);
+        Alchemy.brewingStandMap.remove(location);
     }
 }

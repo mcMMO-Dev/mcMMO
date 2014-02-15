@@ -197,11 +197,9 @@ public class InventoryListener implements Listener {
             boolean emptyClicked = AlchemyPotionBrewer.isEmpty(clicked);
 
             if (AlchemyPotionBrewer.isEmpty(cursor)) {
-                if (emptyClicked) {
-                    if (click == ClickType.NUMBER_KEY) {
-                        AlchemyPotionBrewer.scheduleCheck(player, stand);
-                        return;
-                    }
+                if (emptyClicked && click == ClickType.NUMBER_KEY) {
+                    AlchemyPotionBrewer.scheduleCheck(player, stand);
+                    return;
                 }
 
                 AlchemyPotionBrewer.scheduleCheck(player, stand);

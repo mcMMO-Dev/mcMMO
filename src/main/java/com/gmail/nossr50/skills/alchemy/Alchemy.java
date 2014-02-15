@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.bukkit.block.BlockState;
+import org.bukkit.Location;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -53,7 +53,7 @@ public final class Alchemy {
     public static double catalysisMinSpeed      = AdvancedConfig.getInstance().getCatalysisMinSpeed();
     public static double catalysisMaxSpeed      = AdvancedConfig.getInstance().getCatalysisMaxSpeed();
 
-    public static Map<BlockState, AlchemyBrewTask> brewingStandMap = new HashMap<BlockState, AlchemyBrewTask>();
+    public static Map<Location, AlchemyBrewTask> brewingStandMap = new HashMap<Location, AlchemyBrewTask>();
 
     private Alchemy() {}
 
