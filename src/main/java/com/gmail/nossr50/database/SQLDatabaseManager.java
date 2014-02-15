@@ -22,8 +22,8 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.runnables.database.SQLDatabaseKeepaliveTask;
 import com.gmail.nossr50.datatypes.spout.huds.HudType;
+import com.gmail.nossr50.runnables.database.SQLDatabaseKeepaliveTask;
 import com.gmail.nossr50.runnables.database.SQLReconnectTask;
 import com.gmail.nossr50.util.Misc;
 

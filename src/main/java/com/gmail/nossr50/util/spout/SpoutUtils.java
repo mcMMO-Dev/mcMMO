@@ -23,7 +23,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.spout.SpoutCraftEnableEvent;

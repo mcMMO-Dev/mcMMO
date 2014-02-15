@@ -13,10 +13,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
-import org.getspout.spout.player.SpoutCraftPlayer;
-import org.getspout.spoutapi.SpoutServer;
-import org.getspout.spoutapi.player.SpoutPlayer;
-
 public abstract class SpoutCommand implements TabExecutor {
     protected PlayerProfile playerProfile;
     protected McMMOHud spoutHud;
