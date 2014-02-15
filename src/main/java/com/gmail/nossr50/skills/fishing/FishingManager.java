@@ -342,6 +342,10 @@ public class FishingManager extends SkillManager {
                     player.sendMessage(LocaleLoader.getString("Fishing.Ability.TH.MagicFound"));
                 }
 
+                if (Config.getInstance().getFishingExtraFish()) {
+                    Misc.dropItem(player.getEyeLocation(), fishingCatch.getItemStack());
+                }
+
                 fishingCatch.setItemStack(treasureDrop);
             }
         }
