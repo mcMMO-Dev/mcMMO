@@ -451,6 +451,7 @@ public class Config extends AutoUpdateConfigLoader {
 
     /* Fishing */
     public boolean getFishingDropsEnabled() { return config.getBoolean("Skills.Fishing.Drops_Enabled", true); }
+    public boolean getFishingExtraFish() { return config.getBoolean("Skills.Fishing.Extra_Fish", true); }
 
     /* Mining */
     public Material getDetonatorItem() { return Material.matchMaterial(config.getString("Skills.Mining.Detonator_Name", "FLINT_AND_STEEL")); }

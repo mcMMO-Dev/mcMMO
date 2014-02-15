@@ -7,6 +7,8 @@ Key:
   ! Change
   - Removal
 
+Version 1.5.00-dev
+
 Version 1.4.08
  + Added a new skill; Alchemy. Special thanks to EasyMFnE for creating this!
  + Added SecondaryAbilityType enum, and new SecondaryAbilityWeightedActivationCheckEvent, fired when a secondary ability checkes its activation chances

@@ -287,8 +287,10 @@ Skills:
     Excavation:
         Level_Cap: 0
     Fishing:
-        Drops_Enabled: true
         Level_Cap: 0
+        Drops_Enabled: true
+        # Always catch fish, even when treasure is found
+        Extra_Fish: false
     Herbalism:
         Level_Cap: 0
         Prevent_AFK_Leveling: true
