@@ -14,6 +14,7 @@ Version 1.5.00-dev
  + Added Salmon, Clownfish, and Pufferfish to Fishing XP
  + Added new flowers and grasses to Herbalism XP
  + Added option to config.yml which allows players to always catch fish, even when a treasure is found
+ + Added option to config.yml to override vanilla Minecraft treasures
  ! Fishing XP now depends on the type of fish.
  ! Woodcutting XP in experience.yml and Woodcutting double drops in config.yml now use the tree species names. Oak is now Generic, and Spruce is now Redwood.
  ! Red_Rose was replaced by Poppy, and so the key in experience.yml has been updated accordingly.

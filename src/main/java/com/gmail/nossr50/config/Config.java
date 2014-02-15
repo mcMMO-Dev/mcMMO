@@ -452,6 +452,7 @@ public class Config extends AutoUpdateConfigLoader {
 
     /* Fishing */
     public boolean getFishingDropsEnabled() { return config.getBoolean("Skills.Fishing.Drops_Enabled", true); }
+    public boolean getFishingOverrideTreasures() { return config.getBoolean("Skills.Fishing.Override_Vanilla_Treasures", true); }
     public boolean getFishingExtraFish() { return config.getBoolean("Skills.Fishing.Extra_Fish", true); }
 
     /* Mining */
