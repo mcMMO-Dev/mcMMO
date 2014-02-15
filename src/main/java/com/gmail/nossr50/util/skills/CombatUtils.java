@@ -197,7 +197,7 @@ public final class CombatUtils {
         if (attacker instanceof Player && entityType == EntityType.PLAYER) {
             Player player = (Player) attacker;
 
-            if (Misc.isNPCEntity(player)) {
+            if (!UserManager.hasPlayerDataKey(player)) {
                 return;
             }
 

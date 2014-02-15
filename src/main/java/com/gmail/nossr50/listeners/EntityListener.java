@@ -143,7 +143,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (!UserManager.hasPlayerDataKey(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
+        if (Misc.isNPCEntity(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
             return;
         }
 
