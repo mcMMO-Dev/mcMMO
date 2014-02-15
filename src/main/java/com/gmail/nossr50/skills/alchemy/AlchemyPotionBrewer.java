@@ -103,7 +103,7 @@ public final class AlchemyPotionBrewer {
         for (int i = 0; i < 3; i++) {
             ItemStack item = inventory.getItem(i).clone();
 
-            if (isEmpty(item) || !PotionConfig.getInstance().isValidPotion(item)) {
+            if (isEmpty(item) || item.getType() == Material.GLASS_BOTTLE || !PotionConfig.getInstance().isValidPotion(item)) {
                 continue;
             }
 
