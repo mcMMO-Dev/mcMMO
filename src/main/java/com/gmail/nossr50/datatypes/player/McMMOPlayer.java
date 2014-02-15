@@ -975,6 +975,14 @@ public class McMMOPlayer {
         profile.resetCooldowns();
     }
 
+    public McMMOHud getSpoutHud() {
+        return profile.getSpoutHud();
+    }
+
+    public void setSpoutHud(McMMOHud spoutHud) {
+        profile.setSpoutHud(spoutHud);
+    }
+
     public FixedMetadataValue getPlayerMetadata() {
         return playerMetadata;
     }

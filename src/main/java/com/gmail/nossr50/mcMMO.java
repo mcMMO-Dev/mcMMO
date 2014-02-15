@@ -129,7 +129,7 @@ public class mcMMO extends JavaPlugin {
             getLogger().setFilter(new LogFilter(this));
             metadataValue = new FixedMetadataValue(this, true);
 
-            setupSpout();
+            spoutEnabled = getServer().getPluginManager().getPlugin("Spout") != null;
             mcpcEnabled = getServer().getName().equals("MCPC+");
             combatTagEnabled = getServer().getPluginManager().getPlugin("CombatTag") != null;
             healthBarPluginEnabled = getServer().getPluginManager().getPlugin("HealthBar") != null;
@@ -137,6 +137,10 @@ public class mcMMO extends JavaPlugin {
             compatNoCheatPlusPluginEnabled = getServer().getPluginManager().getPlugin("CompatNoCheatPlus") != null;
 
             setupFilePaths();
+
+            if (spoutEnabled) {
+                setupSpout();
+            }
 
             modManager = new ModManager();
 
@@ -445,12 +449,6 @@ public class mcMMO extends JavaPlugin {
     }
 
     private void setupSpout() {
-        if (!getServer().getPluginManager().isPluginEnabled("Spout")) {
-            return;
-        }
-
-        spoutEnabled = true;
-
         SpoutConfig.getInstance();
         getServer().getPluginManager().registerEvents(new SpoutListener(), this);
         SpoutUtils.preCacheFiles();

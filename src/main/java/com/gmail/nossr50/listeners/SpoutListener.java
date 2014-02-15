@@ -39,7 +39,7 @@ public class SpoutListener implements Listener {
             spoutPlayer.setTitle(LocaleLoader.getString("Spout.Title", spoutPlayer.getTitle(), mcMMOPlayer.getPowerLevel()));
         }
 
-        mcMMOPlayer.getProfile().setSpoutHud(new McMMOHud(mcMMOPlayer)); // Setup Party HUD stuff
+        mcMMOPlayer.setSpoutHud(new McMMOHud(mcMMOPlayer)); // Setup Party HUD stuff
     }
 
     /**
@@ -66,7 +66,7 @@ public class SpoutListener implements Listener {
         if (event.getScreen() instanceof McMMOMenu) {
             SpoutPlayer spoutPlayer = event.getPlayer();
 
-            UserManager.getPlayer(spoutPlayer).getProfile().getSpoutHud().onMenuClose();
+            UserManager.getPlayer(spoutPlayer).getSpoutHud().onMenuClose();
             spoutPlayer.getMainScreen().setDirty(true);
         }
     }
@@ -77,7 +77,7 @@ public class SpoutListener implements Listener {
      * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onKeyPressedEvent(KeyPressedEvent event) {
+    public void onKeyPressed(KeyPressedEvent event) {
         SpoutPlayer spoutPlayer = event.getPlayer();
 
         if (spoutPlayer.getMainScreen().getActivePopup() != null || event.getScreenType() != ScreenType.GAME_SCREEN) {
@@ -85,7 +85,7 @@ public class SpoutListener implements Listener {
         }
 
         if (event.getKey() == SpoutConfig.getInstance().getMenuKey()) {
-            McMMOHud spoutHud = UserManager.getPlayer(spoutPlayer).getProfile().getSpoutHud();
+            McMMOHud spoutHud = UserManager.getPlayer(spoutPlayer).getSpoutHud();
 
             if (!spoutHud.isMenuOpened()) {
                 spoutHud.openMenu();
