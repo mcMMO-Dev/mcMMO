@@ -1,10 +1,10 @@
 package com.gmail.nossr50.config.mods;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.util.ModManager;
-
 import java.io.File;
 import java.util.regex.Pattern;
+
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.ModManager;
 
 public class ToolConfigManager {
     public ToolConfigManager(mcMMO plugin) {
@@ -15,7 +15,7 @@ public class ToolConfigManager {
         ModManager modManager = mcMMO.getModManager();
 
         if (!vanilla.exists()) {
-            plugin.saveResource(plugin.getDataFolder().getName() + File.separator + "tools.default.yml", false);
+            plugin.saveResource(vanilla.getParentFile().getName() + File.separator + "tools.default.yml", false);
         }
 
         for (String fileName : dataFolder.list()) {
