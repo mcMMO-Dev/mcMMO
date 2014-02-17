@@ -34,7 +34,9 @@ public final class Motd {
      * @param version Plugin version
      */
     public static void displayVersion(Player player, String version) {
-        player.sendMessage(LocaleLoader.getString("MOTD.Version", version));
+        if (Permissions.showversion(player)) {
+            player.sendMessage(LocaleLoader.getString("MOTD.Version", version));
+        }
     }
 
     /**

@@ -1937,6 +1937,9 @@ permissions:
         children:
             mcmmo.ability.woodcutting.all: true
             mcmmo.commands.woodcutting: true
+    mcmmo.showversion:
+        default: true
+        description: Show mcMMO version number in /mcmmo and motd
     mcmmo.tools.*:
         default: false
         description: Implies all mcmmo.tools permissions.
