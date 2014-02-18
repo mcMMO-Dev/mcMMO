@@ -363,7 +363,7 @@ Potions:
         Children:
             FERMENTED_SPIDER_EYE: 8236
             REDSTONE: 8260
-            SULPHUR: 16452
+            SULPHUR: 16420
     8260: # Potion of Poison Extended
         Children:
             FERMENTED_SPIDER_EYE: 8204
@@ -633,16 +633,16 @@ Potions:
     16388: # Splash Potion of Poison
         Children:
             FERMENTED_SPIDER_EYE: 16396
-            GLOWSTONE_DUST: 16452
+            GLOWSTONE_DUST: 16420
             REDSTONE: 16452
-    16452: # Splash Potion of Poison II
+    16420: # Splash Potion of Poison II
         Children:
             FERMENTED_SPIDER_EYE: 16428
             REDSTONE: 16452
     16452: # Splash Potion of Poison Extended
         Children:
             FERMENTED_SPIDER_EYE: 16396
-            GLOWSTONE_DUST: 16452
+            GLOWSTONE_DUST: 16420
 
     21504: # Splash Potion of Decay
         Effects: ["WITHER 0 338"]
