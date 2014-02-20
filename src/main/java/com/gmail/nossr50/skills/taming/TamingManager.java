@@ -260,7 +260,7 @@ public class TamingManager extends SkillManager {
             }
         }
 
-        player.setItemInHand(new ItemStack(heldItem.getType(), heldItemAmount - summonAmount));
+        player.setItemInHand(heldItemAmount == summonAmount ? null : new ItemStack(heldItem.getType(), heldItemAmount - summonAmount));
         player.sendMessage(LocaleLoader.getString("Taming.Summon.Complete"));
     }
 

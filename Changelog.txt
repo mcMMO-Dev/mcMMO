@@ -21,6 +21,7 @@ Version 1.4.08-dev
  + Added new experience bonus perk 'mcmmo.perks.xp.customboost.<skillname>' multiplies incoming XP by the boost amount defined in the experience config
  + Added Ender Dragon, Wither, and Witch to combat experience multipliers - they do not give XP by default
  + Added support for multiple mod config files, naming can be done as either armor.<modname>.yml or <modname>.armor.yml
+ = Fixed exploit involving Call of The Wild.
  = Fixed bug where LeafBlower permissions were ignored
  = Fixed bug with toggle commands not properly displaying the success message.
  = Fixed IllegalArgumentException caused by an empty Fishing treasure category
