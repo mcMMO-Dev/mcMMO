@@ -97,6 +97,10 @@ public class RepairConfig extends ConfigLoader {
             short maximumDurability = (itemMaterial != null ? itemMaterial.getMaxDurability() : (short) config.getInt("Repairables." + key + ".MaximumDurability"));
 
             if (maximumDurability <= 0) {
+                maximumDurability = (short) config.getInt("Repairables." + key + ".MaximumDurability");
+            }
+
+            if (maximumDurability <= 0) {
                 reason.add("Maximum durability of " + key + " must be greater than 0!");
             }
 
