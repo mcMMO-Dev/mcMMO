@@ -604,7 +604,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                         // Length checks depend on last character being ':'
                         if (line.charAt(line.length() - 1) != ':') {
-                            line = line + ":";
+                            line = line.concat(":");
                         }
                         String[] character = line.split(":");
 
@@ -621,12 +621,23 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                         String oldVersion = null;
 
+                        if (character.length <= 33) {
+                            // Introduction of HUDType
+                            // Version 1.1.06
+                            // commit 78f79213cdd7190cd11ae54526f3b4ea42078e8a
+                            line = line.concat(" :");
+                            character = line.split(":");
+                            oldVersion = "1.1.06";
+                        }
+
                         if (!character[33].isEmpty()) {
                             // Removal of Spout Support
                             // Version 1.4.07-dev2
                             // commit 7bac0e2ca5143bce84dc160617fed97f0b1cb968
                             line = line.replace(character[33], "");
-                            oldVersion = "1.4.07";
+                            if (oldVersion == null) {
+                                oldVersion = "1.4.07";
+                            }
                         }
 
                         // If they're valid, rewrite them to the file.
@@ -637,13 +648,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                         StringBuilder newLine = new StringBuilder(line);
 
-                        if (character.length <= 33) {
-                            // Introduction of HUDType
-                            // Version 1.1.06
-                            // commit 78f79213cdd7190cd11ae54526f3b4ea42078e8a
-                            newLine.append(":");
-                            oldVersion = "1.1.06";
-                        }
                         if (character.length <= 35) {
                             // Introduction of Fishing
                             // Version 1.2.00
