@@ -23,6 +23,8 @@ import java.util.zip.ZipFile;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
+import com.gmail.nossr50.config.Config;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -440,14 +442,14 @@ public class Updater {
                 return true;
             }
 
-            // Check release vs. beta & dev
+            // Check release vs. beta & SNAPSHOT
             if (newTokens.length == 1 && oldTokens.length == 3 && oldVersion == newVersion) {
                 return true;
             }
 
-            // Check beta vs. dev
-            if (version.contains("dev") && title.contains("beta")) {
-                if (Integer.parseInt(oldTokens[1].substring(3)) <= Integer.parseInt(newTokens[1].substring(4))) {
+            // Check beta vs. SNAPSHOT
+            if (version.contains("SNAPSHOT") && title.contains("beta")) {
+                if (Integer.parseInt(oldTokens[1].substring(8)) <= Integer.parseInt(newTokens[1].substring(4))) {
                     return true;
                 }
 
@@ -465,7 +467,7 @@ public class Updater {
                 return false;
             }
 
-            if (oldTokens.length == 3 && !version.contains("beta") && !version.contains("dev")) {
+            if (oldTokens.length == 3 && !version.contains("beta") && !version.contains("SNAPSHOT")) {
                 plugin.getLogger().warning("Could not get information about this mcMMO version; perhaps you are running a custom one?");
                 result = UpdateResult.FAIL_NOVERSION;
                 return false;
@@ -519,7 +521,11 @@ public class Updater {
                 this.plugin.getLogger().warning("If you have not recently modified your configuration and this is the first time you are seeing this message, the site may be experiencing temporary downtime.");
                 this.result = UpdateResult.FAIL_DBO;
             }
-            e.printStackTrace();
+
+            if (Config.getInstance().getVerboseLoggingEnabled()) {
+                e.printStackTrace();
+            }
+
             return false;
         }
     }
