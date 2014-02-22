@@ -61,6 +61,9 @@ public class DatabaseManagerFactory {
             case FLATFILE:
                 return new FlatfileDatabaseManager();
 
+            case SERIALIZED:
+                return new SerializedDatabaseManager();
+
             case SQL:
                 return new SQLDatabaseManager();
 
