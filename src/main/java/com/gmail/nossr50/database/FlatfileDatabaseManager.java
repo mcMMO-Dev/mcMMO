@@ -15,6 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.ArrayUtils;
+
 import org.bukkit.OfflinePlayer;
 
 import com.gmail.nossr50.mcMMO;
@@ -26,6 +28,7 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.StringUtils;
 
 public final class FlatfileDatabaseManager implements DatabaseManager {
     private final HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
@@ -641,7 +644,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         // If they're valid, rewrite them to the file.
-                        if (character.length > 40) {
+                        if (character.length == 41) {
                             writer.append(line).append("\r\n");
                             continue;
                         }
@@ -686,7 +689,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 oldVersion = "1.4.06";
                             }
                         }
-                        if (character.length <= 40) {
+                        if (character.length <= 39) {
                             // Addition of Alchemy
                             // Version 1.4.08
                             newLine.append("0").append(":");
@@ -694,6 +697,46 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             if (oldVersion == null) {
                                 oldVersion = "1.4.08";
                             }
+                        }
+
+                        // Remove any blanks that shouldn't be there, and validate the other fields
+                        String[] newCharacter = newLine.toString().split(":");
+                        boolean corrupted = false;
+
+                        for (int i = 0; i < newCharacter.length; i++) {
+                            if (newCharacter[i].isEmpty() && !(i == 2 || i == 3 || i == 23 || i == 33)) {
+                                corrupted = true;
+
+                                if (newCharacter.length != 41) {
+                                    newCharacter = (String[]) ArrayUtils.remove(newCharacter, i);
+                                }
+                                else {
+                                    if (i == 37) {
+                                        newCharacter[i] = String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+                                    }
+                                    else if (i == 38) {
+                                        newCharacter[i] = Config.getInstance().getMobHealthbarDefault().toString();
+                                    }
+                                    else {
+                                        newCharacter[i] = "0";
+                                    }
+                                }
+                            }
+
+                            if (StringUtils.isInt(newCharacter[i]) && i == 38) {
+                                corrupted = true;
+                                newCharacter[i] = Config.getInstance().getMobHealthbarDefault().toString();
+                            }
+
+                            if (!StringUtils.isInt(newCharacter[i]) && !(i == 0 || i == 2 || i == 3 || i == 23 || i == 33 || i == 38)) {
+                                corrupted = true;
+                                newCharacter[i] = "0";
+                            }
+                        }
+
+                        if (corrupted) {
+                            mcMMO.p.debug("Updating corrupted database line for player " + newCharacter[0]);
+                            newLine = new StringBuilder(org.apache.commons.lang.StringUtils.join(newCharacter, ":"));
                         }
 
                         if (oldVersion != null) {
