@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 
 import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
 
@@ -32,6 +33,7 @@ public class TagListener implements Listener {
 
         if (colorlessTag.equals(player.getName()) && (mcMMOPlayer.getNameTag() == null || !mcMMOPlayer.getNameTag().equals(tag))) {
             mcMMOPlayer.setNameTag(tag);
+            ScoreboardManager.tagUpdate(player);
         }
 
         /*

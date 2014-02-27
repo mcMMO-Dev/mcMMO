@@ -224,6 +224,15 @@ public class ScoreboardManager {
         }
     }
 
+    // Called by internal TagAPI event listener
+    public static void tagUpdate(Player player) {
+        String playerName = player.getName();
+
+        if (Config.getInstance().getPowerLevelTagsEnabled() && !dirtyPowerLevels.contains(playerName)) {
+            dirtyPowerLevels.add(playerName);
+        }
+    }
+
     // **** Setup methods **** //
 
     public static void enablePlayerSkillScoreboard(Player player, SkillType skill) {
