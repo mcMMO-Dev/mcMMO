@@ -1,7 +1,6 @@
 package com.gmail.nossr50.listeners;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -18,7 +17,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.blockmeta.conversion.BlockStoreConversionMain;
 
 public class WorldListener implements Listener {
-    private final ArrayList<BlockStoreConversionMain> converters = new ArrayList<BlockStoreConversionMain>();
     private final mcMMO plugin;
 
     public WorldListener(final mcMMO plugin) {
@@ -56,9 +54,7 @@ public class WorldListener implements Listener {
 
         plugin.getLogger().info("Converting block storage for " + world.getName() + " to a new format.");
 
-        BlockStoreConversionMain converter = new BlockStoreConversionMain(world);
-        converter.run();
-        converters.add(converter);
+        new BlockStoreConversionMain(world).run();
     }
 
     /**

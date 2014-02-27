@@ -124,25 +124,24 @@ public final class AlchemyPotionBrewer {
         }
     }
 
-    public static boolean transferItems(InventoryView view, int fromSlot, int toSlot, ClickType click) {
+    public static boolean transferItems(InventoryView view, int fromSlot, ClickType click) {
         boolean success = false;
 
         if (click.isLeftClick()) {
-            success = transferItems(view, fromSlot, toSlot);
+            success = transferItems(view, fromSlot);
         }
         else if (click.isRightClick()) {
-            success = transferOneItem(view, fromSlot, toSlot);
+            success = transferOneItem(view, fromSlot);
         }
 
         return success;
     }
 
-    private static boolean transferOneItem(InventoryView view, int fromSlot, int toSlot) {
+    private static boolean transferOneItem(InventoryView view, int fromSlot) {
         ItemStack from = view.getItem(fromSlot).clone();
-        ItemStack to = view.getItem(toSlot).clone();
-        boolean emptyFrom = isEmpty(from);
+        ItemStack to = view.getItem(Alchemy.INGREDIENT_SLOT).clone();
 
-        if (emptyFrom) {
+        if (isEmpty(from)) {
             return false;
         }
 
@@ -162,8 +161,8 @@ public final class AlchemyPotionBrewer {
             }
 
             from.setAmount(fromAmount - 1);
-            view.setItem(toSlot, emptyTo ? null : to);
-            view.setItem(fromSlot, emptyFrom ? null : from);
+            view.setItem(Alchemy.INGREDIENT_SLOT, emptyTo ? null : to);
+            view.setItem(fromSlot, from);
 
             return true;
         }
@@ -174,15 +173,15 @@ public final class AlchemyPotionBrewer {
     /**
      * Transfer items between two ItemStacks, returning the leftover status
      */
-    private static boolean transferItems(InventoryView view, int fromSlot, int toSlot) {
+    private static boolean transferItems(InventoryView view, int fromSlot) {
         ItemStack from = view.getItem(fromSlot).clone();
-        ItemStack to = view.getItem(toSlot).clone();
+        ItemStack to = view.getItem(Alchemy.INGREDIENT_SLOT).clone();
 
         if (isEmpty(from)) {
             return false;
         }
         else if (isEmpty(to)) {
-            view.setItem(toSlot, from);
+            view.setItem(Alchemy.INGREDIENT_SLOT, from);
             view.setItem(fromSlot, null);
 
             return true;
@@ -196,7 +195,7 @@ public final class AlchemyPotionBrewer {
                 int left = fromAmount + toAmount - maxSize;
 
                 to.setAmount(maxSize);
-                view.setItem(toSlot, to);
+                view.setItem(Alchemy.INGREDIENT_SLOT, to);
 
                 from.setAmount(left);
                 view.setItem(fromSlot, from);
@@ -206,7 +205,7 @@ public final class AlchemyPotionBrewer {
 
             to.setAmount(fromAmount + toAmount);
             view.setItem(fromSlot, null);
-            view.setItem(toSlot, to);
+            view.setItem(Alchemy.INGREDIENT_SLOT, to);
 
             return true;
         }

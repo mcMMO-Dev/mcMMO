@@ -3,6 +3,7 @@ package com.gmail.nossr50.listeners;
 import java.util.List;
 
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -132,14 +133,15 @@ public class BlockListener implements Listener {
         }
 
         BlockState blockState = event.getBlock().getState();
+        Location location = blockState.getLocation();
 
         if (!BlockUtils.shouldBeWatched(blockState)) {
             return;
         }
 
         /* ALCHEMY - Cancel any brew in progress for that BrewingStand */
-        if (blockState instanceof BrewingStand && Alchemy.brewingStandMap.containsKey(event.getBlock())) {
-            Alchemy.brewingStandMap.get(event.getBlock()).cancelBrew();
+        if (blockState instanceof BrewingStand && Alchemy.brewingStandMap.containsKey(location)) {
+            Alchemy.brewingStandMap.get(location).cancelBrew();
         }
 
         Player player = event.getPlayer();

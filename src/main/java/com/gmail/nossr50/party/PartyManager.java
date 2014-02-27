@@ -460,16 +460,6 @@ public final class PartyManager {
     }
 
     /**
-     * Check if a string is a valid party name.
-     *
-     * @param partyName The party name to check
-     * @return true if this is a valid party, false otherwise
-     */
-    public static boolean isParty(String partyName) {
-        return getParty(partyName) != null;
-    }
-
-    /**
      * Load party file.
      */
     public static void loadParties() {

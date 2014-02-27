@@ -17,10 +17,6 @@ public abstract class SkillManager {
         this.skill = skill;
     }
 
-    public McMMOPlayer getMcMMOPlayer() {
-        return mcMMOPlayer;
-    }
-
     public Player getPlayer() {
         return mcMMOPlayer.getPlayer();
     }

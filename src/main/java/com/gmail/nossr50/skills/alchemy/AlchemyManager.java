@@ -2,7 +2,6 @@ package com.gmail.nossr50.skills.alchemy;
 
 import java.util.List;
 
-import com.gmail.nossr50.util.Permissions;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.experience.ExperienceConfig;

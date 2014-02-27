@@ -66,7 +66,7 @@ public class SkillresetCommand implements TabExecutor {
                 }
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
-                McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName, true);
+                McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {

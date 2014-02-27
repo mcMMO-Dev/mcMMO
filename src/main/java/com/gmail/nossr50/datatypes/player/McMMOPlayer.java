@@ -79,7 +79,6 @@ public class McMMOPlayer {
     private final Map<AbilityType, Boolean> abilityInformed = new HashMap<AbilityType, Boolean>();
 
     private final Map<ToolType, Boolean> toolMode = new HashMap<ToolType, Boolean>();
-    private final Map<ToolType, Integer> toolATS  = new HashMap<ToolType, Integer>();
 
     private int recentlyHurt;
     private int respawnATS;
@@ -122,7 +121,6 @@ public class McMMOPlayer {
 
         for (ToolType toolType : ToolType.values()) {
             toolMode.put(toolType, false);
-            toolATS.put(toolType, 0);
         }
 
         if (!profile.isLoaded()) {
@@ -338,28 +336,6 @@ public class McMMOPlayer {
      */
     public void setToolPreparationMode(ToolType tool, boolean isPrepared) {
         toolMode.put(tool, isPrepared);
-    }
-
-    /**
-     * Get the current prep ATS of a tool.
-     *
-     * @param tool Tool to get the ATS for
-     * @return the ATS for the tool
-     */
-    public long getToolPreparationATS(ToolType tool) {
-        return toolATS.get(tool);
-    }
-
-    /**
-     * Set the current prep ATS of a tool.
-     *
-     * @param tool Tool to set the ATS for
-     * @param ATS the ATS of the tool
-     */
-    public void setToolPreparationATS(ToolType tool, long ATS) {
-        int startTime = (int) (ATS / Misc.TIME_CONVERSION_FACTOR);
-
-        toolATS.put(tool, startTime);
     }
 
     /*
@@ -592,10 +568,6 @@ public class McMMOPlayer {
 
     public Player getPlayer() {
         return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 
     public PlayerProfile getProfile() {
@@ -877,7 +849,6 @@ public class McMMOPlayer {
                 player.sendMessage(tool.getRaiseTool());
             }
 
-            setToolPreparationATS(tool, System.currentTimeMillis());
             setToolPreparationMode(tool, true);
             new ToolLowerTask(this, tool).runTaskLaterAsynchronously(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
         }

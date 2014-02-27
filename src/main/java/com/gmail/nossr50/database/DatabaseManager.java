@@ -44,7 +44,7 @@ public interface DatabaseManager {
     /**
     * Retrieve leaderboard info.
     *
-    * @param skillName The skill to retrieve info on
+    * @param skill The skill to retrieve info on
     * @param pageNumber Which page in the leaderboards to retrieve
     * @param statsPerPage The number of stats per page
     * @return the requested leaderboard information

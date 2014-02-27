@@ -329,7 +329,7 @@ public class ScoreboardManager {
         }
 
         for (String playerName : dirtyPowerLevels) {
-            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(playerName, true);
+            McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(playerName);
 
             if (mcMMOPlayer == null) {
                 continue;

@@ -633,7 +633,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player, true);
+        McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(player);
 
         if (mcMMOPlayer == null) {
             mcMMO.p.debug(player.getName() + "is chatting, but is currently not logged in to the server.");

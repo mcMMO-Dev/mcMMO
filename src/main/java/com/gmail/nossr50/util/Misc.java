@@ -64,11 +64,7 @@ public final class Misc {
      * @return true if the distance between {@code first} and {@code second} is less than {@code maxDistance}, false otherwise
      */
     public static boolean isNear(Location first, Location second, double maxDistance) {
-        if (first.getWorld() != second.getWorld()) {
-            return false;
-        }
-
-        return first.distanceSquared(second) < (maxDistance * maxDistance) || maxDistance == 0;
+        return (first.getWorld() == second.getWorld()) && (first.distanceSquared(second) < (maxDistance * maxDistance) || maxDistance == 0);
     }
 
     public static void dropItems(Location location, Collection<ItemStack> drops) {
@@ -87,41 +83,6 @@ public final class Misc {
     public static void dropItems(Location location, ItemStack is, int quantity) {
         for (int i = 0; i < quantity; i++) {
             dropItem(location, is);
-        }
-    }
-
-    /**
-     * Randomly drop an item at a given location.
-     *
-     * @param location The location to drop the items at
-     * @param is The item to drop
-     * @param chance The percentage chance for the item to drop
-     */
-    public static void randomDropItem(Location location, ItemStack is, double chance) {
-        if (random.nextInt(100) < chance) {
-            dropItem(location, is);
-        }
-    }
-
-    /**
-     * Drop items with random quantity at a given location.
-     *
-     * @param location The location to drop the items at
-     * @param is The item to drop
-     * @param quantity The amount of items to drop
-     */
-    public static void randomDropItems(Location location, ItemStack is, int quantity) {
-        int dropCount = random.nextInt(quantity + 1);
-
-        if (dropCount > 0) {
-            is.setAmount(dropCount);
-            dropItem(location, is);
-        }
-    }
-
-    public static void randomDropItems(Location location, Collection<ItemStack> drops, double chance) {
-        for (ItemStack item : drops) {
-            randomDropItem(location, item, chance);
         }
     }
 

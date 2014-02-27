@@ -54,8 +54,6 @@ public final class Fishing {
     public static int fishermansDietRankLevel2 = fishermansDietRankLevel1 * 2;
     public static int fishermansDietMaxLevel   = fishermansDietRankLevel1 * 5;
 
-    public static final double STORM_MODIFIER = 0.909;
-
     private Fishing() {}
 
     /**

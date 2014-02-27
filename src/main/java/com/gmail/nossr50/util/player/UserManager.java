@@ -90,28 +90,16 @@ public final class UserManager {
         return retrieveMcMMOPlayer(playerName, false);
     }
 
-    /**
-     * Get the McMMOPlayer of a player.
-     *
-     * @param player The player whose McMMOPlayer to retrieve
-     * @return the player's McMMOPlayer object
-     */
-    public static McMMOPlayer getPlayer(OfflinePlayer player) {
+    public static McMMOPlayer getOfflinePlayer(OfflinePlayer player) {
         if (player instanceof Player) {
             return getPlayer((Player) player);
         }
-        return retrieveMcMMOPlayer(player.getName(), false);
+
+        return retrieveMcMMOPlayer(player.getName(), true);
     }
 
-    public static McMMOPlayer getPlayer(OfflinePlayer player, boolean offlineValid) {
-        if (player instanceof Player) {
-            return getPlayer((Player) player);
-        }
-        return retrieveMcMMOPlayer(player.getName(), offlineValid);
-    }
-
-    public static McMMOPlayer getPlayer(String playerName, boolean offlineValid) {
-        return retrieveMcMMOPlayer(playerName, offlineValid);
+    public static McMMOPlayer getOfflinePlayer(String playerName) {
+        return retrieveMcMMOPlayer(playerName, true);
     }
 
     public static McMMOPlayer getPlayer(Player player) {
@@ -133,10 +121,6 @@ public final class UserManager {
     }
 
     public static boolean hasPlayerDataKey(Entity entity) {
-        if (entity == null) {
-            return false;
-        }
-
-        return entity.hasMetadata(mcMMO.playerDataKey);
+        return entity != null && entity.hasMetadata(mcMMO.playerDataKey);
     }
 }

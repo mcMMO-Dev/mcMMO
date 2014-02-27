@@ -43,9 +43,7 @@ public final class ExperienceAPI {
     public static boolean isNonChildSkill(String skillType) {
         SkillType skill = SkillType.getSkill(skillType);
 
-        if (skill == null) return false;
-
-        return !skill.isChildSkill();
+        return skill != null && !skill.isChildSkill();
     }
 
     @Deprecated

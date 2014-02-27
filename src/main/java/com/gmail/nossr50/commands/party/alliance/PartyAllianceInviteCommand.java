@@ -18,7 +18,7 @@ public class PartyAllianceInviteCommand implements CommandExecutor {
         switch (args.length) {
             case 3:
                 String targetName = CommandUtils.getMatchedPlayerName(args[2]);
-                McMMOPlayer mcMMOTarget = UserManager.getPlayer(targetName, true);
+                McMMOPlayer mcMMOTarget = UserManager.getOfflinePlayer(targetName);
 
                 if (!CommandUtils.checkPlayerExistence(sender, targetName, mcMMOTarget)) {
                     return false;

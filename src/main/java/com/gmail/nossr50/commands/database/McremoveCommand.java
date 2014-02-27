@@ -23,7 +23,7 @@ public class McremoveCommand implements TabExecutor {
             case 1:
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
 
-                if (UserManager.getPlayer(playerName, true) == null && CommandUtils.unloadedProfile(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false))) {
+                if (UserManager.getOfflinePlayer(playerName) == null && CommandUtils.unloadedProfile(sender, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false))) {
                     return true;
                 }
 

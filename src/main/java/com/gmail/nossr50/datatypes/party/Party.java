@@ -337,9 +337,4 @@ public class Party {
 
         return this.getName().equals(other.getName());
     }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
 }

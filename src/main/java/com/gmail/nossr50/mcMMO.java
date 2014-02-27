@@ -87,9 +87,6 @@ public class mcMMO extends JavaPlugin {
     /* Plugin Checks */
     private static boolean combatTagEnabled;
     private static boolean healthBarPluginEnabled;
-    private static boolean noCheatPlusPluginEnabled;
-    private static boolean compatNoCheatPlusPluginEnabled;
-    private static boolean mcpcEnabled;
 
     // Config Validation Check
     public boolean noErrorsInConfigFiles = true;
@@ -125,11 +122,9 @@ public class mcMMO extends JavaPlugin {
             getLogger().setFilter(new LogFilter(this));
             metadataValue = new FixedMetadataValue(this, true);
 
-            mcpcEnabled = getServer().getName().equals("MCPC+");
-            combatTagEnabled = getServer().getPluginManager().getPlugin("CombatTag") != null;
-            healthBarPluginEnabled = getServer().getPluginManager().getPlugin("HealthBar") != null;
-            noCheatPlusPluginEnabled = getServer().getPluginManager().getPlugin("NoCheatPlus") != null;
-            compatNoCheatPlusPluginEnabled = getServer().getPluginManager().getPlugin("CompatNoCheatPlus") != null;
+            PluginManager pluginManager = getServer().getPluginManager();
+            combatTagEnabled = pluginManager.getPlugin("CombatTag") != null;
+            healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
 
             setupFilePaths();
 
@@ -141,7 +136,7 @@ public class mcMMO extends JavaPlugin {
                 return;
             }
 
-            if (mcpcEnabled) {
+            if (getServer().getName().equals("MCPC+")) {
                 checkModConfigs();
             }
 
@@ -149,7 +144,7 @@ public class mcMMO extends JavaPlugin {
                 getLogger().info("HealthBar plugin found, mcMMO's healthbars are automatically disabled.");
             }
 
-            if (noCheatPlusPluginEnabled && !compatNoCheatPlusPluginEnabled) {
+            if (pluginManager.getPlugin("NoCheatPlus") != null && pluginManager.getPlugin("CompatNoCheatPlus") == null) {
                 getLogger().warning("NoCheatPlus plugin found, but CompatNoCheatPlus was not found!");
                 getLogger().warning("mcMMO will not work properly alongside NoCheatPlus without CompatNoCheatPlus");
             }
@@ -313,10 +308,6 @@ public class mcMMO extends JavaPlugin {
 
     public static boolean isHealthBarPluginEnabled() {
         return healthBarPluginEnabled;
-    }
-
-    public static boolean isMCPCEnabled() {
-        return mcpcEnabled;
     }
 
     /**

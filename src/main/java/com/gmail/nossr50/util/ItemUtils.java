@@ -498,11 +498,7 @@ public final class ItemUtils {
     }
 
     public static boolean isSmeltable(ItemStack item) {
-        if (item == null) {
-            return false;
-        }
-
-        return MaterialUtils.isOre(item.getData());
+        return item != null && MaterialUtils.isOre(item.getData());
     }
 
     public static boolean isSmelted(ItemStack item) {

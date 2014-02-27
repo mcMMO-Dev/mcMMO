@@ -799,7 +799,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         ResultSet resultSet;
-        HashMap<Integer, ArrayList<String>> rows = new HashMap<Integer, ArrayList<String>>();
         PreparedStatement statement = null;
 
         try {
@@ -811,13 +810,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                ArrayList<String> column = new ArrayList<String>();
-
-                for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-                    column.add(resultSet.getString(i));
-                }
-
-                rows.put(resultSet.getRow(), column);
+                // No reason to do anything here... we're just trying to catch exceptions
             }
         }
         catch (SQLException ex) {

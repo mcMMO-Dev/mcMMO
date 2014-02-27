@@ -51,7 +51,6 @@ public class FishingCommand extends SkillCommand {
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
         FishingManager fishingManager = UserManager.getPlayer(player).getFishingManager();
-        boolean isStorming = player.getWorld().hasStorm();
 
         // TREASURE HUNTER
         if (canTreasureHunt) {
@@ -70,7 +69,7 @@ public class FishingCommand extends SkillCommand {
             double totalEnchantChance = 0;
 
             for (Rarity rarity : Rarity.values()) {
-                if (rarity != Rarity.TRAP || rarity != Rarity.RECORD) {
+                if (rarity != Rarity.TRAP && rarity != Rarity.RECORD) {
                     totalEnchantChance += TreasureConfig.getInstance().getEnchantmentDropRate(lootTier, rarity);
                 }
             }
@@ -92,7 +91,7 @@ public class FishingCommand extends SkillCommand {
 
         // MASTER ANGLER
         if (canMasterAngler) {
-            double rawBiteChance = 1.0 / (isStorming ? 300 : 500);
+            double rawBiteChance = 1.0 / (player.getWorld().hasStorm() ? 300 : 500);
             Location location = fishingManager.getHookLocation();
 
             if (location == null) {

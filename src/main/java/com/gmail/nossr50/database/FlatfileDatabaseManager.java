@@ -814,7 +814,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
     }
 
-    private PlayerProfile loadFromLine(String[] character) throws Exception {
+    private PlayerProfile loadFromLine(String[] character) {
         Map<SkillType, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
         Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
         Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown

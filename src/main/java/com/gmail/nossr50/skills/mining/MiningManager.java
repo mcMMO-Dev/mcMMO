@@ -115,8 +115,8 @@ public class MiningManager extends SkillManager {
     /**
      * Handler for explosion drops and XP gain.
      *
-     * @param yield
-     * @param blockList
+     * @param yield The % of blocks to drop
+     * @param blockList The list of blocks to drop
      */
     public void blastMiningDropProcessing(float yield, List<Block> blockList) {
         List<BlockState> ores = new ArrayList<BlockState>();
