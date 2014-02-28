@@ -174,6 +174,10 @@ public class EntityListener implements Listener {
             Player defendingPlayer = (Player) defender;
             Player attackingPlayer = (Player) attacker;
 
+            if (!UserManager.hasPlayerDataKey(defendingPlayer) || !UserManager.hasPlayerDataKey(attackingPlayer)) {
+                return;
+            }
+
             // We want to make sure we're not gaining XP or applying abilities when we hit ourselves
             if (defendingPlayer.equals(attackingPlayer)) {
                 return;
@@ -226,6 +230,11 @@ public class EntityListener implements Listener {
 
         if (livingEntity instanceof Player) {
             Player player = (Player) entity;
+
+            if (!UserManager.hasPlayerDataKey(player)) {
+                return;
+            }
+
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
             /* Check for invincibility */
