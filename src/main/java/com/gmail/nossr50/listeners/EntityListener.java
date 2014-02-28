@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -566,6 +567,10 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityTame(EntityTameEvent event) {
+        if (event instanceof FakeEntityTameEvent) {
+            return;
+        }
+
         Player player = (Player) event.getOwner();
         LivingEntity entity = event.getEntity();
 

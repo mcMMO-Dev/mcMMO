@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.taming;
 
+import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
@@ -225,6 +226,14 @@ public class TamingManager extends SkillManager {
 
         for (int i = 0; i < amount; i++) {
             LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), type);
+
+            FakeEntityTameEvent event = new FakeEntityTameEvent(entity, player);
+            mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+            if (event.isCancelled()) {
+                continue;
+            }
+
             entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
             ((Tameable) entity).setOwner(player);
             entity.setRemoveWhenFarAway(false);
