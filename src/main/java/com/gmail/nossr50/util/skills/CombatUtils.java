@@ -506,7 +506,7 @@ public final class CombatUtils {
                 return false;
             }
 
-            if (PartyManager.inSameParty(player, defender) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
+            if ((PartyManager.inSameParty(player, defender) || PartyManager.areAllies(player, defender)) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
                 return false;
             }
 
@@ -558,7 +558,7 @@ public final class CombatUtils {
             if (tamer instanceof Player) {
                 Player owner = (Player) tamer;
 
-                return (owner == attacker || PartyManager.inSameParty(attacker, owner));
+                return (owner == attacker || PartyManager.inSameParty(attacker, owner) || PartyManager.areAllies(attacker, owner));
             }
         }
 
