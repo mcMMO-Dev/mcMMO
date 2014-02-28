@@ -225,9 +225,9 @@ public class TamingManager extends SkillManager {
 
         for (int i = 0; i < amount; i++) {
             LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(player.getLocation(), type);
-
             entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
             ((Tameable) entity).setOwner(player);
+            entity.setRemoveWhenFarAway(false);
 
             switch (type) {
                 case OCELOT:
