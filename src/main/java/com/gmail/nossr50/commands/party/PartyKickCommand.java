@@ -11,6 +11,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class PartyKickCommand implements CommandExecutor {
@@ -19,12 +20,14 @@ public class PartyKickCommand implements CommandExecutor {
         switch (args.length) {
             case 2:
                 Party playerParty = UserManager.getPlayer((Player) sender).getParty();
-                OfflinePlayer target = mcMMO.p.getServer().getOfflinePlayer(args[1]);
+                String targetName = CommandUtils.getMatchedPlayerName(args[1]);
 
-                if (!playerParty.getMembers().contains(target.getName())) {
-                    sender.sendMessage(LocaleLoader.getString("Party.NotInYourParty", target.getName()));
+                if (!playerParty.getMembers().contains(targetName)) {
+                    sender.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetName));
                     return true;
                 }
+
+                OfflinePlayer target = mcMMO.p.getServer().getOfflinePlayer(targetName);
 
                 if (target.isOnline()) {
                     Player onlineTarget = target.getPlayer();
