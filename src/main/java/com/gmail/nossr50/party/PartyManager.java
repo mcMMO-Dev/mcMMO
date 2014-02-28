@@ -260,6 +260,11 @@ public final class PartyManager {
             processPartyLeaving(UserManager.getPlayer(member));
         }
 
+        // Disband the alliance between the disbanded party and it's ally
+        if (party.getAlly() != null) {
+            party.getAlly().setAlly(null);
+        }
+
         parties.remove(party);
     }
 
