@@ -14,7 +14,7 @@ import org.kitteh.tag.AsyncPlayerReceiveNameTagEvent;
 
 public class TagListener implements Listener {
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onAsyncPlayerReceiveNameTag(AsyncPlayerReceiveNameTagEvent event) {
         Player player = event.getNamedPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player, true);
