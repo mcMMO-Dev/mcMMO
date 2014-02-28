@@ -2,8 +2,6 @@ package com.gmail.nossr50.util.player;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Entity;
@@ -58,16 +56,6 @@ public final class UserManager {
         for (Player player : onlinePlayers) {
             getPlayer(player).getProfile().save();
         }
-    }
-
-    public static Set<String> getPlayerNames() {
-        Set<String> playerNames = new HashSet<String>();
-
-        for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-            playerNames.add(player.getName());
-        }
-
-        return playerNames;
     }
 
     public static Collection<McMMOPlayer> getPlayers() {

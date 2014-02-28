@@ -220,6 +220,19 @@ public final class CommandUtils {
         }
     }
 
+    public static List<String> getOnlinePlayerNames(CommandSender sender) {
+        Player player = sender instanceof Player ? (Player) sender : null;
+        List<String> onlinePlayerNames = new ArrayList<String>();
+
+        for (Player onlinePlayer : mcMMO.p.getServer().getOnlinePlayers()) {
+            if (player != null && player.canSee(onlinePlayer)) {
+                onlinePlayerNames.add(onlinePlayer.getName());
+            }
+        }
+
+        return onlinePlayerNames;
+    }
+
     /**
      * Get a matched player name if one was found in the database.
      *

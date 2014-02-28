@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands.party.alliance;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -111,7 +110,7 @@ public class PartyAllianceCommand implements TabExecutor {
                 List<String> matches = StringUtil.copyPartialMatches(args[0], ALLIANCE_SUBCOMMANDS, new ArrayList<String>(ALLIANCE_SUBCOMMANDS.size()));
 
                 if (matches.size() == 0) {
-                    Set<String> playerNames = UserManager.getPlayerNames();
+                    List<String> playerNames = CommandUtils.getOnlinePlayerNames(commandSender);
                     return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
                 }
 

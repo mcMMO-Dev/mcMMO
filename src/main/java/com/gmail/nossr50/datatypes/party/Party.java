@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
@@ -81,6 +82,19 @@ public class Party {
         }
 
         return onlineMembers;
+    }
+
+    public List<String> getOnlinePlayerNames(CommandSender sender) {
+        Player player = sender instanceof Player ? (Player) sender : null;
+        List<String> onlinePlayerNames = new ArrayList<String>();
+
+        for (Player onlinePlayer : getOnlineMembers()) {
+            if (player != null && player.canSee(onlinePlayer)) {
+                onlinePlayerNames.add(onlinePlayer.getName());
+            }
+        }
+
+        return onlinePlayerNames;
     }
 
     public String getName() {

@@ -2,7 +2,6 @@ package com.gmail.nossr50.commands.party.teleport;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -11,10 +10,10 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -109,7 +108,10 @@ public class PtpCommand implements TabExecutor {
                 List<String> matches = StringUtil.copyPartialMatches(args[0], TELEPORT_SUBCOMMANDS, new ArrayList<String>(TELEPORT_SUBCOMMANDS.size()));
 
                 if (matches.size() == 0) {
-                    Set<String> playerNames = UserManager.getPlayerNames();
+                    Player player = (Player) sender;
+                    Party party = UserManager.getPlayer(player).getParty();
+
+                    List<String> playerNames = party.getOnlinePlayerNames(player);
                     return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
                 }
 
