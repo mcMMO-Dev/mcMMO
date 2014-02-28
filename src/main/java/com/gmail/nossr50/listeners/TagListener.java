@@ -17,7 +17,7 @@ public class TagListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onAsyncPlayerReceiveNameTag(AsyncPlayerReceiveNameTagEvent event) {
         Player player = event.getNamedPlayer();
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player, true);
 
         if (mcMMOPlayer == null) {
             return;

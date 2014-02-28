@@ -2,6 +2,7 @@ package com.gmail.nossr50;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,10 +10,17 @@ import com.gmail.nossr50.config.mods.ArmorConfigManager;
 import com.gmail.nossr50.config.mods.BlockConfigManager;
 import com.gmail.nossr50.config.mods.EntityConfigManager;
 import com.gmail.nossr50.config.mods.ToolConfigManager;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.util.ModManager;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.EventException;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.EventExecutor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -29,7 +37,6 @@ import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.SelfListener;
-import com.gmail.nossr50.listeners.TagListener;
 import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.metrics.MetricsManager;
@@ -450,7 +457,49 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(new WorldListener(this), this);
 
         if (tagapiPluginEnabled) {
-            pluginManager.registerEvents(new TagListener(), this);
+            try {
+                final Class cls = Class.forName("org.kitteh.tag.AsyncPlayerReceiveNameTagEvent");
+
+                pluginManager.registerEvent(cls, new Listener() {}, EventPriority.MONITOR, new EventExecutor() {
+                            @Override
+                            public void execute(Listener listener, Event event) throws EventException {
+                                Object tagEvent = cls.cast(event);
+
+                                try {
+                                    Method method = cls.getDeclaredMethod("getNamedPlayer", new Class[0]);
+                                    Player player = (Player) method.invoke(tagEvent, null);
+
+                                    McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player, true);
+
+                                    if (mcMMOPlayer == null) {
+                                        return;
+                                    }
+
+                                    method = cls.getDeclaredMethod("getTag", new Class[0]);
+                                    String tag = (String) method.invoke(tagEvent, null);
+                                    String colorlessTag = ChatColor.stripColor(tag);
+
+                                    if (colorlessTag.equals(tag)) {
+                                        mcMMOPlayer.setNameTag(null);
+                                        return;
+                                    }
+
+                                    if (colorlessTag.equals(player.getName()) && (mcMMOPlayer.getNameTag() == null || !mcMMOPlayer.getNameTag().equals(tag))) {
+                                        mcMMOPlayer.setNameTag(tag);
+                                        ScoreboardManager.tagUpdate(player);
+                                    }
+                                }
+                                catch (Exception e) {
+                                    // If it passed the first check, it *shouldn't* throw another error here, but print it just to be safe.
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, this, true);
+            }
+            catch (Exception e) {
+                // If it passed the first check, it *shouldn't* throw another error here, but print it just to be safe.
+                e.printStackTrace();
+            }
         }
     }
 
