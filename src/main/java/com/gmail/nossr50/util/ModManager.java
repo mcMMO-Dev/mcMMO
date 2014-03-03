@@ -1,5 +1,18 @@
 package com.gmail.nossr50.util;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.bukkit.Material;
+import org.bukkit.block.BlockState;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
+
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomBlockConfig;
@@ -8,19 +21,7 @@ import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.mods.CustomEntity;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 public class ModManager {
     private List<Repairable> repairables = new ArrayList<Repairable>();

@@ -3,7 +3,6 @@ package com.gmail.nossr50.skills.woodcutting;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.gmail.nossr50.mcMMO;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;

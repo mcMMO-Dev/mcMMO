@@ -15,8 +15,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.ArrayUtils;
-
 import org.bukkit.OfflinePlayer;
 
 import com.gmail.nossr50.mcMMO;
@@ -29,6 +27,8 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
+
+import org.apache.commons.lang.ArrayUtils;
 
 public final class FlatfileDatabaseManager implements DatabaseManager {
     private final HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();

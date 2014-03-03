@@ -15,8 +15,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
-import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
+import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.runnables.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.runnables.skills.AlchemyBrewCheckTask;
 import com.gmail.nossr50.util.Permissions;

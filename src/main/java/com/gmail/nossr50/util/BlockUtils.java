@@ -2,7 +2,6 @@ package com.gmail.nossr50.util;
 
 import java.util.HashSet;
 
-import com.gmail.nossr50.mcMMO;
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.NetherWartsState;
@@ -13,6 +12,7 @@ import org.bukkit.material.Crops;
 import org.bukkit.material.NetherWarts;
 import org.bukkit.material.SmoothBrick;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
 
 public final class BlockUtils {
