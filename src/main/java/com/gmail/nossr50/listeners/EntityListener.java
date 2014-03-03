@@ -56,6 +56,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.potion.PotionEffectType;
 
 public class EntityListener implements Listener {
     private final mcMMO plugin;
@@ -614,9 +615,8 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPotionSplash(PotionSplashEvent event) {
-        for (PotionEffect effect : ((PotionMeta) event.getEntity().getItem().getItemMeta()).getCustomEffects()) {
-            // (effect.getType() != PotionEffectType.SATURATION) is seemingly broken, so we use deprecated method for now.
-            if (effect.getType().getId() != 23) {
+        for (PotionEffect effect : ((PotionMeta) event.getPotion().getItem().getItemMeta()).getCustomEffects()) {
+            if (!effect.getType().equals(PotionEffectType.SATURATION)) {
                 return;
             }
 
