@@ -54,7 +54,7 @@ public final class AlchemyPotionBrewer {
     }
 
     private static boolean removeIngredient(BrewerInventory inventory, Player player) {
-        ItemStack ingredient = inventory.getIngredient().clone();
+        ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
 
         if (isEmpty(ingredient) || !isValidIngredient(player, ingredient)) {
             return false;
