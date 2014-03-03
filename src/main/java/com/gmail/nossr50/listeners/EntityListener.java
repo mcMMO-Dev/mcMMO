@@ -189,6 +189,7 @@ public class EntityListener implements Listener {
         }
 
         CombatUtils.processCombatAttack(event, attacker, target);
+        CombatUtils.handleHealthbars(attacker, target, event.getDamage());
     }
 
     /**

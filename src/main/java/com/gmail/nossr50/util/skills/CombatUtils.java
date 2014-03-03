@@ -298,15 +298,6 @@ public final class CombatUtils {
                 }
             }
         }
-        else if (attacker instanceof Player) {
-            Player player = (Player) attacker;
-
-            if (Misc.isNPCEntity(player) || Misc.isNPCEntity(target)) {
-                return;
-            }
-
-            MobHealthbarUtils.handleMobHealthbars(player, target, event.getDamage());
-        }
     }
 
     /**
@@ -613,5 +604,19 @@ public final class CombatUtils {
         }
 
         return tier;
+    }
+
+    public static void handleHealthbars(Entity attacker, LivingEntity target, double damage) {
+        if (!(attacker instanceof Player)) {
+            return;
+        }
+
+        Player player = (Player) attacker;
+
+        if (Misc.isNPCEntity(player) || Misc.isNPCEntity(target)) {
+            return;
+        }
+
+        MobHealthbarUtils.handleMobHealthbars(player, target, damage);
     }
 }

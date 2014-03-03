@@ -21,6 +21,7 @@ Version 1.4.08-dev
  + Added new experience bonus perk 'mcmmo.perks.xp.customboost.<skillname>' multiplies incoming XP by the boost amount defined in the experience config
  + Added Ender Dragon, Wither, and Witch to combat experience multipliers - they do not give XP by default
  + Added support for multiple mod config files, naming can be done as either armor.<modname>.yml or <modname>.armor.yml
+ = Fixed bug where healthbars wouldn't display if skills were disabled
  = Fixed bug with Call of The Wild entities despawning
  = Fixed bug with updating (very) old user data.
  = Fixed bug with checking maximum durability of mod items.
