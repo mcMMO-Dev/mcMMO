@@ -45,7 +45,7 @@ public class ArcheryManager extends SkillManager {
      * @param damager The {@link Entity} who shot the arrow
      */
     public void distanceXpBonus(LivingEntity target, Entity damager) {
-        Location firedLocation = Archery.stringToLocation(damager.getMetadata(mcMMO.arrowDistanceKey).get(0).asString());
+        Location firedLocation = (Location) damager.getMetadata(mcMMO.arrowDistanceKey).get(0).value();
         Location targetLocation = target.getLocation();
 
         if (firedLocation.getWorld() != targetLocation.getWorld()) {
