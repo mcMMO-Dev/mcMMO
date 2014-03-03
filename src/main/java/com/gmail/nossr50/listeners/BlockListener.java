@@ -96,7 +96,7 @@ public class BlockListener implements Listener {
 
         Block movedBlock = event.getRetractLocation().getBlock();
 
-        if (movedBlock.getPistonMoveReaction() != PistonMoveReaction.MOVE || !mcMMO.getPlaceStore().isTrue(movedBlock)) {
+        if (!BlockUtils.shouldBeWatched(movedBlock.getState()) || movedBlock.getPistonMoveReaction() != PistonMoveReaction.MOVE || !mcMMO.getPlaceStore().isTrue(movedBlock)) {
             return;
         }
 

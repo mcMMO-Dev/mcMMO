@@ -1,19 +1,11 @@
 package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
+import com.gmail.nossr50.util.BlockUtils;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.TNTPrimed;
-import org.bukkit.entity.Tameable;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -100,21 +92,29 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
-        Entity entity = event.getEntity();
+        Block block = event.getBlock();
 
-        if (!(entity instanceof FallingBlock)) {
+        if (!BlockUtils.shouldBeWatched(block.getState())) {
             return;
         }
 
-        Block block = event.getBlock();
-        boolean isTracked = entity.hasMetadata(mcMMO.entityMetadataKey);
+        Entity entity = event.getEntity();
 
-        if (mcMMO.getPlaceStore().isTrue(block) && !isTracked) {
-            mcMMO.getPlaceStore().setFalse(block);
-            entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+        if (entity instanceof FallingBlock || entity instanceof Enderman) {
+            boolean isTracked = entity.hasMetadata(mcMMO.entityMetadataKey);
+
+            if (mcMMO.getPlaceStore().isTrue(block) && !isTracked) {
+                mcMMO.getPlaceStore().setFalse(block);
+                entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+            }
+            else if (isTracked) {
+                mcMMO.getPlaceStore().setTrue(block);
+            }
         }
-        else if (isTracked) {
-            mcMMO.getPlaceStore().setTrue(block);
+        else {
+            if (mcMMO.getPlaceStore().isTrue(block)) {
+                mcMMO.getPlaceStore().setFalse(block);
+            }
         }
     }
 
