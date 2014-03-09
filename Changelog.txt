@@ -53,6 +53,7 @@ Version 1.4.08-dev
  ! Changed config validation for UnlockLevels, they can now also be 0
  ! Changed config validation for Rank_Levels, successive Ranks can now be less than or equal to each other
  ! Changed default amount of XP gained from mining Quartz Ore. From 250 to 100 XP.
+ ! Changed Acrobatics config setting, Skills.Acrobatics.Prevent_XP_After_Teleport is now Skills.Acrobatics.XP_After_Teleport_Cooldown
  - Removed /stats alias for /mcstats
 
 Version 1.4.07

@@ -81,7 +81,7 @@ public class PlayerListener implements Listener {
     public void onPlayerTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player) || !Config.getInstance().getPreventXPAfterTeleport() || event.getFrom().equals(event.getTo())) {
+        if (!UserManager.hasPlayerDataKey(player) || Config.getInstance().getXPAfterTeleportCooldown() <= 0 || event.getFrom().equals(event.getTo())) {
             return;
         }
 

@@ -422,7 +422,7 @@ public class Config extends AutoUpdateConfigLoader {
 
     /* Acrobatics */
     public boolean getDodgeLightningDisabled() { return config.getBoolean("Skills.Acrobatics.Prevent_Dodge_Lightning", false); }
-    public boolean getPreventXPAfterTeleport() { return config.getBoolean("Skills.Acrobatics.Prevent_XP_After_Teleport", true); }
+    public int getXPAfterTeleportCooldown() { return config.getInt("Skills.Acrobatics.XP_After_Teleport_Cooldown", 5); }
 
     /* Alchemy */
     public boolean getEnabledForHoppers() { return config.getBoolean("Skills.Alchemy.Enabled_for_Hoppers", true); }
