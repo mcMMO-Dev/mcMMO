@@ -10,7 +10,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
-import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,6 +31,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
+import com.gmail.nossr50.runnables.StickyPistonTrackerTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -96,12 +96,8 @@ public class BlockListener implements Listener {
 
         Block movedBlock = event.getRetractLocation().getBlock();
 
-        if (!BlockUtils.shouldBeWatched(movedBlock.getState()) || movedBlock.getPistonMoveReaction() != PistonMoveReaction.MOVE || !mcMMO.getPlaceStore().isTrue(movedBlock)) {
-            return;
-        }
-
-        mcMMO.getPlaceStore().setFalse(movedBlock);
-        mcMMO.getPlaceStore().setTrue(event.getBlock().getRelative(event.getDirection()));
+        // Needed only because under some circumstances Minecraft doesn't move the block
+        new StickyPistonTrackerTask(event.getDirection(), movedBlock).runTaskLater(plugin, 2);
     }
 
     /**
