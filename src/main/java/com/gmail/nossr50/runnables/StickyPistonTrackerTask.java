@@ -10,10 +10,12 @@ import com.gmail.nossr50.util.BlockUtils;
 
 public class StickyPistonTrackerTask extends BukkitRunnable {
     private BlockFace direction;
+    private Block block;
     private Block movedBlock;
 
-    public StickyPistonTrackerTask(BlockFace direction, Block movedBlock) {
+    public StickyPistonTrackerTask(BlockFace direction, Block block, Block movedBlock) {
         this.direction = direction;
+        this.block = block;
         this.movedBlock = movedBlock;
     }
 
@@ -24,6 +26,6 @@ public class StickyPistonTrackerTask extends BukkitRunnable {
         }
 
         mcMMO.getPlaceStore().setFalse(movedBlock);
-        mcMMO.getPlaceStore().setTrue(movedBlock.getRelative(direction));
+        mcMMO.getPlaceStore().setTrue(block.getRelative(direction));
     }
 }

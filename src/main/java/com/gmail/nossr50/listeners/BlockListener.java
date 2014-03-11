@@ -97,7 +97,7 @@ public class BlockListener implements Listener {
         Block movedBlock = event.getRetractLocation().getBlock();
 
         // Needed only because under some circumstances Minecraft doesn't move the block
-        new StickyPistonTrackerTask(event.getDirection(), movedBlock).runTaskLater(plugin, 2);
+        new StickyPistonTrackerTask(event.getDirection(), event.getBlock(), movedBlock).runTaskLater(plugin, 2);
     }
 
     /**
