@@ -43,6 +43,7 @@ Version 1.4.08-dev
  = Fixed bug where Hylian Luck was broken
  = Fixed bug where Snow would never drop treasures
  = Fixed issues with commands giving away vanished players.
+ = Fixed bug where the Repair lucky perk would increase the Arcane Forging downgrade chance, instead of decreasing it
  ! Changed party system. Parties now have XP and Levels. Party features such as party teleport and party chat have to be unlocked before they can be used by the party members
  ! Changed appearance of party member list. Gold = party leader, White = online, Gray = offline, Italic = not nearby
  ! Updated localization files

@@ -340,7 +340,7 @@ public class RepairManager extends SkillManager {
             if (getKeepEnchantChance() > Misc.getRandom().nextInt(activationChance)) {
                 int enchantLevel = enchant.getValue();
 
-                if (ArcaneForging.arcaneForgingDowngrades && enchantLevel > 1 && getDowngradeEnchantChance() > Misc.getRandom().nextInt(activationChance)) {
+                if (ArcaneForging.arcaneForgingDowngrades && enchantLevel > 1 && Misc.getRandom().nextInt(activationChance) <= getDowngradeEnchantChance()) {
                     item.addUnsafeEnchantment(enchantment, enchantLevel - 1);
                     downgraded = true;
                 }
