@@ -5,11 +5,20 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
+import com.gmail.nossr50.datatypes.skills.SkillType;
+
 public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancellable {
+    private SkillType skill;
     private boolean cancelled;
 
+    @Deprecated
     public McMMOPlayerDeathPenaltyEvent(Player player) {
         super(player);
+    }
+
+    public McMMOPlayerDeathPenaltyEvent(Player player, SkillType skill) {
+        super(player);
+        this.skill = skill;
         this.cancelled = false;
     }
 
@@ -34,5 +43,9 @@ public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancell
 
     public static HandlerList getHandlerList() {
         return handlers;
+    }
+
+    public SkillType getSkill() {
+        return skill;
     }
 }

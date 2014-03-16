@@ -3,10 +3,8 @@ package com.gmail.nossr50.util;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -57,8 +55,7 @@ public final class HardcoreManager {
         double vampirismStatLeechPercentage = Config.getInstance().getHardcoreVampirismStatLeechPercentage();
         int levelThreshold = Config.getInstance().getHardcoreVampirismLevelThreshold();
 
-        McMMOPlayer killerPlayer = UserManager.getPlayer(killer);
-        PlayerProfile killerProfile = killerPlayer.getProfile();
+        PlayerProfile killerProfile = UserManager.getPlayer(killer).getProfile();
         PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
         int totalLevelsStolen = 0;
 
@@ -80,20 +77,8 @@ public final class HardcoreManager {
             int levelsStolen = (int) statsStolen;
             int xpStolen = (int) Math.floor(victimSkillXpLevel * (statsStolen - levelsStolen));
 
-            totalLevelsStolen += levelsStolen;
-
-            killerPlayer.addLevels(skillType, levelsStolen);
-            killerPlayer.beginUnsharedXpGain(skillType, xpStolen, XPGainReason.VAMPIRISM);
-
-            victimProfile.modifySkill(skillType, victimSkillLevel - levelsStolen);
-            victimProfile.removeXp(skillType, xpStolen);
-
-            if (victimProfile.getSkillXpLevel(skillType) < 0) {
-                victimProfile.setSkillXpLevel(skillType, 0);
-            }
-
-            if (victimProfile.getSkillLevel(skillType) < 0) {
-                victimProfile.modifySkill(skillType, 0);
+            if (EventUtils.handleVampirismEvent(killer, victim, skillType, levelsStolen, xpStolen)) {
+                totalLevelsStolen += levelsStolen;
             }
         }
 
