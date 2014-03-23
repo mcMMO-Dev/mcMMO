@@ -183,7 +183,10 @@ public class InventoryListener implements Listener {
                         return;
                     }
 
-                    AlchemyPotionBrewer.transferItems(event.getView(), event.getRawSlot(), click);
+                    if (!AlchemyPotionBrewer.transferItems(event.getView(), event.getRawSlot(), click)) {
+                        return;
+                    }
+
                     event.setCancelled(true);
                     AlchemyPotionBrewer.scheduleUpdate(inventory);
                     AlchemyPotionBrewer.scheduleCheck(player, stand);

@@ -161,7 +161,7 @@ public final class AlchemyPotionBrewer {
             }
 
             from.setAmount(fromAmount - 1);
-            view.setItem(Alchemy.INGREDIENT_SLOT, emptyTo ? null : to);
+            view.setItem(Alchemy.INGREDIENT_SLOT, to);
             view.setItem(fromSlot, from);
 
             return true;
