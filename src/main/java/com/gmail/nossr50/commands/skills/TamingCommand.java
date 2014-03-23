@@ -91,9 +91,9 @@ public class TamingCommand extends SkillCommand {
 
         if (canCallWild) {
             messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.12"), LocaleLoader.getString("Taming.Effect.13")));
-            messages.add(LocaleLoader.getString("Taming.Effect.14", Config.getInstance().getTamingCOTWOcelotCost()));
-            messages.add(LocaleLoader.getString("Taming.Effect.15", Config.getInstance().getTamingCOTWWolfCost()));
-            messages.add(LocaleLoader.getString("Taming.Effect.20", Config.getInstance().getTamingCOTWHorseCost()));
+            messages.add(LocaleLoader.getString("Taming.Effect.14", Config.getInstance().getTamingCOTWCost(EntityType.OCELOT)));
+            messages.add(LocaleLoader.getString("Taming.Effect.15", Config.getInstance().getTamingCOTWCost(EntityType.WOLF)));
+            messages.add(LocaleLoader.getString("Taming.Effect.20", Config.getInstance().getTamingCOTWCost(EntityType.HORSE)));
         }
 
         return messages;

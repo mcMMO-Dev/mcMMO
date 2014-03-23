@@ -6,6 +6,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -596,21 +597,14 @@ public class PlayerListener implements Listener {
                 Material type = heldItem.getType();
                 TamingManager tamingManager = mcMMOPlayer.getTamingManager();
 
-                switch (type) {
-                    case APPLE:
-                        tamingManager.summonHorse();
-                        break;
-
-                    case BONE:
-                        tamingManager.summonWolf();
-                        break;
-
-                    case RAW_FISH:
-                        tamingManager.summonOcelot();
-                        break;
-
-                    default:
-                        break;
+                if (type == Config.getInstance().getTamingCOTWMaterial(EntityType.WOLF)) {
+                    tamingManager.summonWolf();
+                }
+                else if (type == Config.getInstance().getTamingCOTWMaterial(EntityType.OCELOT)) {
+                    tamingManager.summonOcelot();
+                }
+                else if (type == Config.getInstance().getTamingCOTWMaterial(EntityType.HORSE)) {
+                    tamingManager.summonHorse();
                 }
 
                 break;

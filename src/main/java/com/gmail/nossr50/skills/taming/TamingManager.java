@@ -146,7 +146,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        callOfTheWild(EntityType.OCELOT, Config.getInstance().getTamingCOTWOcelotCost());
+        callOfTheWild(EntityType.OCELOT, Config.getInstance().getTamingCOTWCost(EntityType.OCELOT));
     }
 
     /**
@@ -157,7 +157,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        callOfTheWild(EntityType.WOLF, Config.getInstance().getTamingCOTWWolfCost());
+        callOfTheWild(EntityType.WOLF, Config.getInstance().getTamingCOTWCost(EntityType.WOLF));
     }
 
     /**
@@ -168,7 +168,7 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        callOfTheWild(EntityType.HORSE, Config.getInstance().getTamingCOTWHorseCost());
+        callOfTheWild(EntityType.HORSE, Config.getInstance().getTamingCOTWCost(EntityType.HORSE));
     }
 
     /**
