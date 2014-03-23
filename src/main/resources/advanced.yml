@@ -471,7 +471,9 @@ Skills:
             Bonus: 2.0
 
         CallOfTheWild:
+            # MinHorseJumpStrength: The minimum jump strength a summoned horse must have
             # MaxHorseJumpStrength: The maximum jump strength a summoned horse can have
+            MinHorseJumpStrength: 0.7
             MaxHorseJumpStrength: 2.0
     #
     #  Settings for Unarmed
