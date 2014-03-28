@@ -114,6 +114,9 @@ commands:
     kraken:
         aliases: [mckraken]
         description: Unleash the kraken!
+    mcfools:
+        aliases: [macho, jumping, throwing, wrecking, crafting, walking, swimming, falling, climbing, flying, diving, piggy]
+        description: Deploy jokes
 permissions:
     mcmmo.*:
         default: false

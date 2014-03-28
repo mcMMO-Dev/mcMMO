@@ -19,24 +19,55 @@ import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
+import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.commands.skills.AprilCommand;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 
 import com.google.common.collect.ImmutableList;
 
 public final class HolidayManager {
     private ArrayList<String> hasCelebrated;
     private int currentYear;
-    private final int startYear = 2011;
+    private static final int START_YEAR = 2011;
 
     private static final List<Color> ALL_COLORS;
     private static final List<ChatColor> ALL_CHAT_COLORS;
     private static final List<ChatColor> CHAT_FORMATS;
+
+    public enum FakeSkillType {
+        MACHO,
+        JUMPING,
+        THROWING,
+        WRECKING,
+        CRAFTING,
+        WALKING,
+        SWIMMING,
+        FALLING,
+        CLIMBING,
+        FLYING,
+        DIVING,
+        PIGGY,
+        UNKNOWN;
+
+        public static FakeSkillType getByName(String skillName) {
+            for (FakeSkillType type : values()) {
+                if (type.name().equalsIgnoreCase(skillName)) {
+                    return type;
+                }
+            }
+            return null;
+        }
+    }
 
     static {
         List<Color> colors = new ArrayList<Color>();
@@ -165,7 +196,7 @@ public final class HolidayManager {
             return;
         }
 
-        sender.sendMessage(ChatColor.BLUE + "Happy " + (currentYear - startYear) + " Year Anniversary!  In honor of all of");
+        sender.sendMessage(ChatColor.BLUE + "Happy " + (currentYear - START_YEAR) + " Year Anniversary!  In honor of all of");
         sender.sendMessage(ChatColor.BLUE + "nossr50's work and all the devs, here's a firework show!");
         if (sender instanceof Player) {
             final int firework_amount = 10;
@@ -221,11 +252,11 @@ public final class HolidayManager {
         hasCelebrated.add(sender.getName());
     }
 
-    private boolean getDateRange(Date date, Date start, Date end) {
+    public boolean getDateRange(Date date, Date start, Date end) {
         return !(date.before(start) || date.after(end));
     }
 
-    private void spawnFireworks(Player player) {
+    public void spawnFireworks(Player player) {
         int power = Misc.getRandom().nextInt(3) + 1;
         Type fireworkType = Type.values()[Misc.getRandom().nextInt(Type.values().length)];
         double varX = Misc.getRandom().nextGaussian() * 3;
@@ -253,5 +284,32 @@ public final class HolidayManager {
         }
 
         return ret.toString();
+    }
+
+    public boolean isAprilFirst() {
+        GregorianCalendar aprilFirst = new GregorianCalendar(currentYear, Calendar.APRIL, 1);
+        GregorianCalendar aprilSecond = new GregorianCalendar(currentYear, Calendar.APRIL, 2);
+        GregorianCalendar day = new GregorianCalendar();
+        return getDateRange(day.getTime(), aprilFirst.getTime(), aprilSecond.getTime());
+    }
+
+    public boolean nearingAprilFirst() {
+        GregorianCalendar start = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.MARCH, 28);
+        GregorianCalendar end = new GregorianCalendar(Calendar.getInstance().get(Calendar.YEAR), Calendar.APRIL, 2);
+        GregorianCalendar day = new GregorianCalendar();
+
+        return mcMMO.getHolidayManager().getDateRange(day.getTime(), start.getTime(), end.getTime());
+    }
+
+    public void levelUpApril(Player player, FakeSkillType fakeSkillType) {
+        int levelTotal = Misc.getRandom().nextInt(UserManager.getPlayer(player).getSkillLevel(SkillType.MINING)) + 1;
+        player.playSound(player.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+        player.sendMessage(ChatColor.YELLOW + StringUtils.getCapitalized(fakeSkillType.toString()) + " skill increased by 1. Total (" + levelTotal + ")");
+        ParticleEffectUtils.fireworkParticleShower(player, ALL_COLORS.get(Misc.getRandom().nextInt(ALL_COLORS.size())));
+    }
+
+    public void registerAprilCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mcfools");
+        command.setExecutor(new AprilCommand());
     }
 }

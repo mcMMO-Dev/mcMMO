@@ -32,6 +32,7 @@ import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.metrics.MetricsManager;
 import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.runnables.CheckDateTask;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
@@ -477,6 +478,10 @@ public class mcMMO extends JavaPlugin {
 
         // Update power level tag scoreboards
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);
+
+        if (getHolidayManager().nearingAprilFirst()) {
+            new CheckDateTask().runTaskTimer(this, 10L * Misc.TICK_CONVERSION_FACTOR, 1L * 60L * 60L * Misc.TICK_CONVERSION_FACTOR);
+        }
     }
 
     private void checkModConfigs() {
