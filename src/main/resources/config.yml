@@ -395,6 +395,10 @@ Commands:
         # If true, when using partial names in commands mcMMO will try to look for a match from
         # the offline players. Enabling this might slow the server down if there are a lot of offline players.
         Match_OfflinePlayers: false
+    Database:
+        # Database command cooldown in milliseconds, cannot be changed below the default value. (1750)
+        # Prevents players from spamming /mctop or /mcrank
+        Player_Cooldown: 1750
     mcmmo:
         Donate_Message: true
     inspect:
