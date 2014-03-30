@@ -84,7 +84,7 @@ public class WoodcuttingManager extends SkillManager {
         if (Woodcutting.treeFellerReachedThreshold) {
             Woodcutting.treeFellerReachedThreshold = false;
 
-            player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFellerThreshold"));
+            player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFeller.Threshold"));
             return;
         }
 
