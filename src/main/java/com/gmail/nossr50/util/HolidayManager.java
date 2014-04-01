@@ -10,8 +10,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.bukkit.ChatColor;
@@ -20,11 +22,13 @@ import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Sound;
+import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 
 import com.gmail.nossr50.mcMMO;
@@ -67,7 +71,44 @@ public final class HolidayManager {
             }
             return null;
         }
+
+        public static FakeSkillType getByStatistic(Statistic statistic) {
+            switch (statistic) {
+                case DAMAGE_TAKEN:
+                    return FakeSkillType.MACHO;
+                case JUMP:
+                    return FakeSkillType.JUMPING;
+                case DROP:
+                    return FakeSkillType.THROWING;
+                case MINE_BLOCK:
+                case BREAK_ITEM:
+                    return FakeSkillType.WRECKING;
+                case CRAFT_ITEM:
+                    return FakeSkillType.CRAFTING;
+                case WALK_ONE_CM:
+                    return FakeSkillType.WALKING;
+                case SWIM_ONE_CM:
+                    return FakeSkillType.SWIMMING;
+                case FALL_ONE_CM:
+                    return FakeSkillType.FALLING;
+                case CLIMB_ONE_CM:
+                    return FakeSkillType.CLIMBING;
+                case FLY_ONE_CM:
+                    return FakeSkillType.FLYING;
+                case DIVE_ONE_CM:
+                    return FakeSkillType.DIVING;
+                case PIG_ONE_CM:
+                    return FakeSkillType.PIGGY;
+                default:
+                    return FakeSkillType.UNKNOWN;
+            }
+        }
     }
+
+    public final Set<Statistic> movementStatistics = EnumSet.of(
+            Statistic.WALK_ONE_CM, Statistic.SWIM_ONE_CM, Statistic.FALL_ONE_CM,
+            Statistic.CLIMB_ONE_CM, Statistic.FLY_ONE_CM, Statistic.DIVE_ONE_CM,
+            Statistic.PIG_ONE_CM);
 
     static {
         List<Color> colors = new ArrayList<Color>();
@@ -299,6 +340,37 @@ public final class HolidayManager {
         GregorianCalendar day = new GregorianCalendar();
 
         return mcMMO.getHolidayManager().getDateRange(day.getTime(), start.getTime(), end.getTime());
+    }
+
+    public void handleStatisticEvent(PlayerStatisticIncrementEvent event) {Player player = event.getPlayer();
+        Statistic statistic = event.getStatistic();
+        int newValue = event.getNewValue();
+
+        int modifier;
+        switch (statistic) {
+            case DAMAGE_TAKEN:
+                modifier = 500;
+                break;
+            case JUMP:
+                modifier = 500;
+                break;
+            case DROP:
+                modifier = 200;
+                break;
+            case MINE_BLOCK:
+            case BREAK_ITEM:
+                modifier = 500;
+                break;
+            case CRAFT_ITEM:
+                modifier = 100;
+                break;
+            default:
+                return;
+        }
+
+        if (newValue % modifier == 0) {
+            mcMMO.p.getHolidayManager().levelUpApril(player, FakeSkillType.getByStatistic(statistic));
+        }
     }
 
     public void levelUpApril(Player player, FakeSkillType fakeSkillType) {

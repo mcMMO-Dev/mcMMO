@@ -2,6 +2,7 @@ package com.gmail.nossr50.runnables.skills;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
+import org.bukkit.Statistic;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -19,6 +20,7 @@ public class AprilTask extends BukkitRunnable {
         }
 
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
+            int random = Misc.getRandom().nextInt(40) + 11;
             int betterRandom = Misc.getRandom().nextInt(2000);
             if (betterRandom == 0) {
                 player.playSound(player.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
@@ -26,10 +28,9 @@ public class AprilTask extends BukkitRunnable {
                 fireworksShow(player);
             }
 
-            for (HolidayManager.FakeSkillType fakeSkillType : HolidayManager.FakeSkillType.values()) {
-                int random = Misc.getRandom().nextInt(250);
-                if (random == 0) {
-                    mcMMO.getHolidayManager().levelUpApril(player, fakeSkillType);
+            for (Statistic statistic : mcMMO.getHolidayManager().movementStatistics) {
+                if (player.getStatistic(statistic) > 0 && player.getStatistic(statistic) % random == 0) {
+                    mcMMO.getHolidayManager().levelUpApril(player, HolidayManager.FakeSkillType.getByStatistic(statistic));
                     break;
                 }
             }
