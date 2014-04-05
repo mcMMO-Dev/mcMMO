@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.5.01-dev
+ = Fixed bug where the Updater was running on the main thread.
 
 Version 1.5.00
  + Added Podzol & Red Sand to Excavation
