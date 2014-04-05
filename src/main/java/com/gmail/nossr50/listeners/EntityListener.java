@@ -31,6 +31,7 @@ import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
@@ -76,7 +77,9 @@ public class EntityListener implements Listener {
             return;
         }
 
-        if (event.getBow().containsEnchantment(Enchantment.ARROW_INFINITE)) {
+        ItemStack bow = event.getBow();
+
+        if (bow != null && bow.containsEnchantment(Enchantment.ARROW_INFINITE)) {
             projectile.setMetadata(mcMMO.infiniteArrowKey, mcMMO.metadataValue);
         }
 
