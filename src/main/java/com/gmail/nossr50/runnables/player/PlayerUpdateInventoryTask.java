@@ -1,4 +1,4 @@
-package com.gmail.nossr50.runnables;
+package com.gmail.nossr50.runnables.player;
 
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
