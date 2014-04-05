@@ -158,26 +158,29 @@ public class TreasureConfig extends ConfigLoader {
             // Validate all the things!
             List<String> reason = new ArrayList<String>();
 
+            String[] treasureInfo = treasureName.split("[|]");
+            String materialName = treasureInfo[0];
+
             /*
              * Material, Amount, and Data
              */
             Material material;
 
-            if (treasureName.contains("POTION")) {
+            if (materialName.contains("POTION")) {
                 material = Material.POTION;
             }
-            else if (treasureName.contains("INK_SACK")) {
+            else if (materialName.contains("INK_SACK")) {
                 material = Material.INK_SACK;
             }
             else {
-                material = Material.matchMaterial(treasureName);
+                material = Material.matchMaterial(materialName);
             }
 
             int amount = config.getInt(type + "." + treasureName + ".Amount");
-            int data = config.getInt(type + "." + treasureName + ".Data");
+            short data = (treasureInfo.length == 2) ? Byte.valueOf(treasureInfo[1]) : (short) config.getInt(type + "." + treasureName + ".Data");
 
             if (material == null) {
-                reason.add("Invalid material: " + treasureName);
+                reason.add("Invalid material: " + materialName);
             }
 
             if (amount <= 0) {
@@ -226,8 +229,8 @@ public class TreasureConfig extends ConfigLoader {
              */
             ItemStack item = null;
 
-            if (treasureName.contains("POTION")) {
-                String potionType = treasureName.substring(7);
+            if (materialName.contains("POTION")) {
+                String potionType = materialName.substring(7);
 
                 try {
                     item = new Potion(PotionType.valueOf(potionType.toUpperCase().trim())).toItemStack(amount);
@@ -236,8 +239,8 @@ public class TreasureConfig extends ConfigLoader {
                     reason.add("Invalid Potion_Type: " + potionType);
                 }
             }
-            else if (treasureName.contains("INK_SACK")) {
-                String color = treasureName.substring(9);
+            else if (materialName.contains("INK_SACK")) {
+                String color = materialName.substring(9);
 
                 try {
                     Dye dye = new Dye();
@@ -250,7 +253,7 @@ public class TreasureConfig extends ConfigLoader {
                 }
             }
             else if (material != null) {
-                item = new ItemStack(material, amount, (short) data);
+                item = new ItemStack(material, amount, data);
 
                 if (config.contains(type + "." + treasureName + ".Custom_Name")) {
                     ItemMeta itemMeta = item.getItemMeta();
