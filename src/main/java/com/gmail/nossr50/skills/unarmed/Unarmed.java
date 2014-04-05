@@ -69,6 +69,9 @@ public class Unarmed {
 
                 nextSlot++;
             }
+
+            // Inventory is full - cancel the item pickup
+            return false;
         }
         else if (firstEmpty != -1) {
             drop.remove();
