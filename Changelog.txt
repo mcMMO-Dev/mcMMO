@@ -9,6 +9,7 @@ Key:
 
 Version 1.5.01-dev
  = Fixed bug where the Updater was running on the main thread.
+ ! Vanished players no longer get hit by AoE effects
 
 Version 1.5.00
  + Added Podzol & Red Sand to Excavation
