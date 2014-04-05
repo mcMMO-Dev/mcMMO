@@ -502,6 +502,11 @@ public final class CombatUtils {
                 return false;
             }
 
+            // Vanished players should not be able to get hit by AoE effects
+            if (!player.canSee(defender)) {
+                return false;
+            }
+
             // It may seem a bit redundant but we need a check here to prevent bleed from being applied in applyAbilityAoE()
             if (callFakeDamageEvent(player, entity, 1.0) == 0) {
                 return false;
