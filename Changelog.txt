@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.5.01-dev
+ + Added new feature to Herbalism. Instantly-regrown crops are protected from being broken for 1 second
  + Added option to config.yml to show the /mcstats scoreboard automatically after logging in
  + Added support for `MATERIAL|data` format in treasures.yml
  = Fixed bug where the Updater was running on the main thread.
