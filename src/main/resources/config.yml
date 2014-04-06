@@ -37,6 +37,9 @@ Scoreboard:
     # Allow players to use "/mcscoreboard keep" to keep the scoreboard up
     Allow_Keep: true
 
+    # Show the /mcstats scoreboard automatically after logging in
+    Show_Stats_After_Login: false
+
     # Add some more color on the board :-)
     Rainbows: false
 
