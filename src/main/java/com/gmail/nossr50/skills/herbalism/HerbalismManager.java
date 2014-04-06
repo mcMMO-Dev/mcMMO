@@ -14,6 +14,7 @@ import org.bukkit.material.CocoaPlant;
 import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 import org.bukkit.material.Crops;
 import org.bukkit.material.NetherWarts;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -324,6 +325,8 @@ public class HerbalismManager extends SkillManager {
 
     private boolean handleBlockState(BlockState blockState, boolean greenTerra) {
         byte greenThumbStage = getGreenThumbStage();
+
+        blockState.setMetadata(mcMMO.greenThumbDataKey, new FixedMetadataValue(mcMMO.p, (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
 
         switch (blockState.getType()) {
             case CROPS:
