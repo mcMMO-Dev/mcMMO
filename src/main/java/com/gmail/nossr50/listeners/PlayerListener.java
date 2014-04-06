@@ -42,6 +42,7 @@ import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.ShareHandler;
+import com.gmail.nossr50.runnables.commands.McScoreboardKeepTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -398,6 +399,11 @@ public class PlayerListener implements Listener {
         if (Permissions.updateNotifications(player) && plugin.isUpdateAvailable()) {
             player.sendMessage(LocaleLoader.getString("UpdateChecker.Outdated"));
             player.sendMessage(LocaleLoader.getString("UpdateChecker.NewAvailable"));
+        }
+
+        if (Config.getInstance().getShowStatsAfterLogin()) {
+            ScoreboardManager.enablePlayerStatsScoreboard(player);
+            new McScoreboardKeepTask(player).runTaskLater(mcMMO.p, 1 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
 
