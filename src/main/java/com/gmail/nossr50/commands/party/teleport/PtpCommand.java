@@ -43,6 +43,12 @@ public class PtpCommand implements TabExecutor {
 
         Player player = (Player) sender;
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        if (!mcMMOPlayer.inParty()) {
+            sender.sendMessage(LocaleLoader.getString("Commands.Party.None"));
+            return true;
+        }
+
         Party party = mcMMOPlayer.getParty();
 
         if (party.getLevel() < Config.getInstance().getPartyFeatureUnlockLevel(PartyFeature.TELEPORT)) {
