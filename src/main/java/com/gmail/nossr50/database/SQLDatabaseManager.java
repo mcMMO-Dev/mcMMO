@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -123,7 +124,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         int userId = readId(profile.getPlayerName());
         if (userId == -1) {
-            newUser(profile.getPlayerName());
+            newUser(profile.getPlayerName(), profile.getUniqueId().toString());
             userId = readId(profile.getPlayerName());
             if (userId == -1) {
                 return false;
@@ -132,6 +133,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         boolean success = true;
         MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
 
+        success &= saveUniqueId(userId, profile.getUniqueId().toString());
         success &= saveLogin(userId, ((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
         success &= saveHuds(userId, (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()));
         success &= saveLongs(
@@ -317,7 +319,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return skills;
     }
 
-    public void newUser(String playerName) {
+    public void newUser(String playerName, String uuid) {
         if (!checkConnected()) {
             return;
         }
@@ -325,9 +327,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, lastlogin) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+            statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, uuid, lastlogin) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, playerName);
-            statement.setLong(2, System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+            statement.setString(2, uuid);
+            statement.setLong(3, System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
             statement.execute();
 
             int id = readId(playerName);
@@ -348,11 +351,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
+    @Deprecated
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
-        return loadPlayerProfile(playerName, create, true);
+        return loadPlayerProfile(playerName, "", create, true);
     }
 
-    private PlayerProfile loadPlayerProfile(String playerName, boolean create, boolean retry) {
+    private PlayerProfile loadPlayerProfile(String playerName, String uuid, boolean create, boolean retry) {
         if (!checkConnected()) {
             return new PlayerProfile(playerName, false); // return fake profile if not connected
         }
@@ -365,7 +369,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
                             + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
                             + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
-                            + "h.mobhealthbar "
+                            + "h.mobhealthbar, u.uuid "
                             + "FROM " + tablePrefix + "users u "
                             + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
                             + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
@@ -415,8 +419,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         if (id == -1) {
             // There is no such user
             if (create) {
-                newUser(playerName);
-                return loadPlayerProfile(playerName, false, false);
+                newUser(playerName, uuid);
+                return loadPlayerProfile(playerName, uuid, false, false);
             }
 
             // Return unloaded profile if can't create
@@ -425,7 +429,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         // There is such a user
         writeMissingRows(id);
         // Retry, and abort on re-failure
-        return loadPlayerProfile(playerName, create, false);
+        return loadPlayerProfile(playerName, uuid, create, false);
     }
 
     public void convertUsers(DatabaseManager destination) {
@@ -651,6 +655,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
                 + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                 + "`user` varchar(40) NOT NULL,"
+                + "`uuid` varchar(40) NOT NULL,"
                 + "`lastlogin` int(32) unsigned NOT NULL,"
                 + "PRIMARY KEY (`id`),"
                 + "UNIQUE KEY `user` (`user`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
@@ -852,6 +857,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         statement.executeQuery("ALTER TABLE `" + tablePrefix + "experience` ADD `alchemy` int(10) NOT NULL DEFAULT '0'");
                     }
                     break;
+
+                case ADD_UUIDS:
+                    write("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(50) NOT NULL DEFAULT '';");
+                    return;
 
                 default:
                     break;
@@ -1166,6 +1175,32 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return id;
     }
 
+    private boolean saveUniqueId(int id, String uuid) {
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET uuid = ? WHERE id = ?");
+            statement.setString(1, uuid);
+            statement.setInt(2, id);
+            statement.execute();
+            return true;
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+            return false;
+        }
+        finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+    }
+
     private boolean saveLogin(int id, long login) {
         PreparedStatement statement = null;
 
@@ -1223,6 +1258,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Map<SkillType, Float> skillsXp = new HashMap<SkillType, Float>();     // Skill & XP
         Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
         MobHealthbarType mobHealthbarType;
+        UUID uuid = null;
 
         final int OFFSET_SKILLS = 0; // TODO update these numbers when the query changes (a new skill is added)
         final int OFFSET_XP = 13;
@@ -1277,7 +1313,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
             mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
         }
 
-        return new PlayerProfile(playerName, skills, skillsXp, skillsDATS, mobHealthbarType);
+        try {
+            UUID.fromString(result.getString(OFFSET_OTHER + 3));
+        }
+        catch (Exception e) {
+        }
+
+        return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS, mobHealthbarType);
     }
 
     private void printErrors(SQLException ex) {

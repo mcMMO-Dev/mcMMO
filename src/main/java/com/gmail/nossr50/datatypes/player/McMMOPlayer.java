@@ -101,6 +101,10 @@ public class McMMOPlayer {
         party = PartyManager.getPlayerParty(playerName);
         ptpRecord = new PartyTeleportRecord();
 
+        if (!player.getUniqueId().equals(profile.getUniqueId())) {
+            profile.setUniqueId(player.getUniqueId());
+        }
+
         /*
          * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
          * but I actually have no idea about the performance impact, if there is any.
