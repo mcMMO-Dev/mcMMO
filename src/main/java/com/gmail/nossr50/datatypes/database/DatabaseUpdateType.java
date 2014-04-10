@@ -8,6 +8,7 @@ public enum DatabaseUpdateType {
     PARTY_NAMES,
     KILL_ORPHANS,
     DROPPED_SPOUT,
-    ALCHEMY
+    ALCHEMY,
+    UUID_UPDATE
     ;
 }

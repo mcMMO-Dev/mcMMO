@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
 
@@ -270,6 +271,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         writer.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
                         writer.append(profile.getSkillLevel(SkillType.ALCHEMY)).append(":");
                         writer.append(profile.getSkillXpLevel(SkillType.ALCHEMY)).append(":");
+                        UUID uuid = profile.getUniqueId();
+                        writer.append(uuid == null ? "" : uuid.toString()).append(":");
                         writer.append("\r\n");
                     }
                 }
@@ -312,7 +315,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return skills;
     }
 
-    public void newUser(String playerName) {
+    public void newUser(String playerName, String uuid) {
         BufferedWriter out = null;
         synchronized (fileWritingLock) {
             try {
@@ -361,7 +364,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":"); // Mob Healthbar HUD
                 out.append("0:"); // Alchemy
                 out.append("0:"); // AlchemyXp
-                
+                out.append(uuid).append(":"); // UUID
+
                 // Add more in the same format as the line above
 
                 out.newLine();
@@ -375,7 +379,12 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
     }
 
+    @Deprecated
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
+        return loadPlayerProfile(playerName, "", create);
+    }
+
+    public PlayerProfile loadPlayerProfile(String playerName, String uuid, boolean create) {
         BufferedReader in = null;
         String usersFilePath = mcMMO.getUsersFilePath();
 
@@ -398,7 +407,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 // Didn't find the player, create a new one
                 if (create) {
-                    newUser(playerName);
+                    newUser(playerName, uuid);
                     return new PlayerProfile(playerName, true);
                 }
             }
@@ -644,7 +653,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         // If they're valid, rewrite them to the file.
-                        if (character.length == 41) {
+                        if (character.length == 42) {
                             writer.append(line).append("\r\n");
                             continue;
                         }
@@ -696,6 +705,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             newLine.append("0").append(":");
                             if (oldVersion == null) {
                                 oldVersion = "1.4.08";
+                            }
+                        }
+                        if (character.length <= 41) {
+                            // Addition of UUIDs
+                            // Version 1.5.01
+                            newLine.append(":");
+                            if (oldVersion == null) {
+                                oldVersion = "1.5.01";
                             }
                         }
 
@@ -860,7 +877,15 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
         }
 
-        return new PlayerProfile(character[0], skills, skillsXp, skillsDATS, mobHealthbarType);
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(character[41]);
+        }
+        catch (Exception e) {
+            uuid = null;
+        }
+
+        return new PlayerProfile(character[0], uuid, skills, skillsXp, skillsDATS, mobHealthbarType);
     }
 
     private Map<SkillType, Integer> getSkillMapFromLine(String[] character) {
