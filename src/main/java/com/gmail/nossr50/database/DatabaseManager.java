@@ -67,7 +67,7 @@ public interface DatabaseManager {
      *
      * @param playerName The name of the player to be added to the database
      */
-    public void newUser(String playerName);
+    public void newUser(String playerName, String uuid);
 
     /**
      * Load a player from the database.
