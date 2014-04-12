@@ -637,7 +637,7 @@ public class PlayerListener implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        if (Misc.isNPCEntity(player)) {
+        if (Misc.isNPCEntity(player) || !UserManager.hasPlayerDataKey(player)) {
             return;
         }
 
