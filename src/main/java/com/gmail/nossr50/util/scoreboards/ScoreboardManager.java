@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -81,14 +80,16 @@ public class ScoreboardManager {
                 skillLabelBuilder.put(type, colors.get(i) + type.getName());
 
                 if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(),colors.get(i) + type.getAbility().getName());
+                    abilityLabelBuilder.put(type.getAbility(), colors.get(i) + type.getAbility().getName());
 
                     if (type == SkillType.MINING) {
                         abilityLabelBuilder.put(AbilityType.BLAST_MINING, colors.get(i) + AbilityType.BLAST_MINING.getName());
                     }
                 }
 
-                if (++i == colors.size()) i = 0;
+                if (++i == colors.size()) {
+                    i = 0;
+                }
             }
         }
         else {
@@ -335,7 +336,7 @@ public class ScoreboardManager {
 
     /**
      * Gets or creates the power level objective on the main scoreboard.
-     * <p>
+     * <p/>
      * If power levels are disabled, the objective is deleted and null is
      * returned.
      *
