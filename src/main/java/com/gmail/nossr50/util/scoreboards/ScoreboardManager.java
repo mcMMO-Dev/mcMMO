@@ -40,21 +40,21 @@ public class ScoreboardManager {
 
     static final String POWER_LEVEL = LocaleLoader.getString("Scoreboard.Misc.PowerLevel");
 
-    static final OfflinePlayer LABEL_POWER_LEVEL = getOfflinePlayer(POWER_LEVEL);
-    static final OfflinePlayer LABEL_LEVEL = getOfflinePlayer(LocaleLoader.getString("Scoreboard.Misc.Level"));
-    static final OfflinePlayer LABEL_CURRENT_XP = getOfflinePlayer(LocaleLoader.getString("Scoreboard.Misc.CurrentXP"));
-    static final OfflinePlayer LABEL_REMAINING_XP = getOfflinePlayer(LocaleLoader.getString("Scoreboard.Misc.RemainingXP"));
-    static final OfflinePlayer LABEL_ABILITY_COOLDOWN = getOfflinePlayer(LocaleLoader.getString("Scoreboard.Misc.Cooldown"));
-    static final OfflinePlayer LABEL_OVERALL = getOfflinePlayer(LocaleLoader.getString("Scoreboard.Misc.Overall"));
+    static final String LABEL_POWER_LEVEL = POWER_LEVEL;
+    static final String LABEL_LEVEL = LocaleLoader.getString("Scoreboard.Misc.Level");
+    static final String LABEL_CURRENT_XP = LocaleLoader.getString("Scoreboard.Misc.CurrentXP");
+    static final String LABEL_REMAINING_XP = LocaleLoader.getString("Scoreboard.Misc.RemainingXP");
+    static final String LABEL_ABILITY_COOLDOWN = LocaleLoader.getString("Scoreboard.Misc.Cooldown");
+    static final String LABEL_OVERALL = LocaleLoader.getString("Scoreboard.Misc.Overall");
 
-    static final Map<SkillType, OfflinePlayer>   skillLabels;
-    static final Map<AbilityType, OfflinePlayer> abilityLabelsColored;
-    static final Map<AbilityType, OfflinePlayer> abilityLabelsSkill;
+    static final Map<SkillType, String>   skillLabels;
+    static final Map<AbilityType, String> abilityLabelsColored;
+    static final Map<AbilityType, String> abilityLabelsSkill;
 
     static {
-        ImmutableMap.Builder<SkillType, OfflinePlayer> skillLabelBuilder = ImmutableMap.builder();
-        ImmutableMap.Builder<AbilityType, OfflinePlayer> abilityLabelBuilder = ImmutableMap.builder();
-        ImmutableMap.Builder<AbilityType, OfflinePlayer> abilityLabelSkillBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<SkillType, String> skillLabelBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<AbilityType, String> abilityLabelBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<AbilityType, String> abilityLabelSkillBuilder = ImmutableMap.builder();
 
         if (Config.getInstance().getScoreboardRainbows()) {
             // Everything but black, gray, gold
@@ -78,13 +78,13 @@ public class ScoreboardManager {
             int i = 0;
             for (SkillType type : SkillType.values()) {
                 // Include child skills
-                skillLabelBuilder.put(type, getOfflinePlayer(colors.get(i) + type.getName()));
+                skillLabelBuilder.put(type, colors.get(i) + type.getName());
 
                 if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), getOfflinePlayer(colors.get(i) + type.getAbility().getName()));
+                    abilityLabelBuilder.put(type.getAbility(),colors.get(i) + type.getAbility().getName());
 
                     if (type == SkillType.MINING) {
-                        abilityLabelBuilder.put(AbilityType.BLAST_MINING, getOfflinePlayer(colors.get(i) + AbilityType.BLAST_MINING.getName()));
+                        abilityLabelBuilder.put(AbilityType.BLAST_MINING, colors.get(i) + AbilityType.BLAST_MINING.getName());
                     }
                 }
 
@@ -94,20 +94,20 @@ public class ScoreboardManager {
         else {
             for (SkillType type : SkillType.values()) {
                 // Include child skills
-                skillLabelBuilder.put(type, getOfflinePlayer(ChatColor.GREEN + type.getName()));
+                skillLabelBuilder.put(type, ChatColor.GREEN + type.getName());
 
                 if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), getOfflinePlayerDots(ChatColor.AQUA + type.getAbility().getName()));
+                    abilityLabelBuilder.put(type.getAbility(), ChatColor.AQUA + type.getAbility().getName());
 
                     if (type == SkillType.MINING) {
-                        abilityLabelBuilder.put(AbilityType.BLAST_MINING, getOfflinePlayerDots(ChatColor.AQUA + AbilityType.BLAST_MINING.getName()));
+                        abilityLabelBuilder.put(AbilityType.BLAST_MINING, ChatColor.AQUA + AbilityType.BLAST_MINING.getName());
                     }
                 }
             }
         }
 
         for (AbilityType type : AbilityType.values()) {
-            abilityLabelSkillBuilder.put(type, getOfflinePlayerDots((type == AbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA) + type.getName()));
+            abilityLabelSkillBuilder.put(type, (type == AbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA) + type.getName());
         }
 
         skillLabels = skillLabelBuilder.build();
@@ -116,22 +116,6 @@ public class ScoreboardManager {
     }
 
     private static List<String> dirtyPowerLevels = new ArrayList<String>();
-
-    private static OfflinePlayer getOfflinePlayer(String name) {
-        return getOfflinePlayer(name, false);
-    }
-
-    private static OfflinePlayer getOfflinePlayerDots(String name) {
-        return getOfflinePlayer(name, true);
-    }
-
-    private static OfflinePlayer getOfflinePlayer(String name, boolean useDots) {
-        if (name.length() > 16) {
-            name = useDots ? name.substring(0, 14) + ".." : name.substring(0, 16);
-        }
-
-        return mcMMO.p.getServer().getOfflinePlayer(name);
-    }
 
     public enum SidebarType {
         NONE,
@@ -338,7 +322,7 @@ public class ScoreboardManager {
             Player player = mcMMOPlayer.getPlayer();
             int power = mcMMOPlayer.getPowerLevel();
 
-            mainObjective.getScore(player).setScore(power);
+            mainObjective.getScore(playerName).setScore(power);
 
             for (ScoreboardWrapper wrapper : PLAYER_SCOREBOARDS.values()) {
                 wrapper.updatePowerLevel(player, power);

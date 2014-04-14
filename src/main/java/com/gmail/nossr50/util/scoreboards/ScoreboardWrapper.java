@@ -59,7 +59,7 @@ public class ScoreboardWrapper {
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
             for (McMMOPlayer mcMMOPlayer : UserManager.getPlayers()) {
-                powerObjective.getScore(mcMMOPlayer.getPlayer()).setScore(mcMMOPlayer.getPowerLevel());
+                powerObjective.getScore(mcMMOPlayer.getProfile().getPlayerName()).setScore(mcMMOPlayer.getPowerLevel());
             }
         }
     }
@@ -274,7 +274,7 @@ public class ScoreboardWrapper {
         targetProfile = null;
         leaderboardPage = -1;
 
-        loadObjective(ScoreboardManager.skillLabels.get(skill).getName());
+        loadObjective(ScoreboardManager.skillLabels.get(skill));
     }
 
     public void setTypeSelfStats() {
@@ -355,7 +355,7 @@ public class ScoreboardWrapper {
 
         int endPosition = page * 15;
         int startPosition = endPosition - 14;
-        loadObjective(String.format("%s (%2d - %2d)", ScoreboardManager.skillLabels.get(skill).getName(), startPosition, endPosition));
+        loadObjective(String.format("%s (%2d - %2d)", ScoreboardManager.skillLabels.get(skill), startPosition, endPosition));
     }
 
     // Setup for after a board type change
@@ -551,11 +551,11 @@ public class ScoreboardWrapper {
                 name = ChatColor.GOLD + "--You--";
             }
 
-            sidebarObjective.getScore(mcMMO.p.getServer().getOfflinePlayer(name)).setScore(stat.statVal);
+            sidebarObjective.getScore(name).setScore(stat.statVal);
         }
     }
 
     public void updatePowerLevel(Player player, int newPowerLevel) {
-        powerObjective.getScore(player).setScore(newPowerLevel);
+        powerObjective.getScore(player.getName()).setScore(newPowerLevel);
     }
 }
