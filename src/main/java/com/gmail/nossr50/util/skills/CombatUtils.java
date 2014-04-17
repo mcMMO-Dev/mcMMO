@@ -283,7 +283,7 @@ public final class CombatUtils {
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
-            if (acrobaticsManager.canDodge(damager)) {
+            if (acrobaticsManager.canDodge(target)) {
                 event.setDamage(acrobaticsManager.dodgeCheck(event.getDamage()));
             }
 
