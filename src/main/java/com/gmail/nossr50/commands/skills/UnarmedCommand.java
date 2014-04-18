@@ -57,7 +57,7 @@ public class UnarmedCommand extends SkillCommand {
 
         // IRON ARM
         if (canIronArm) {
-            ironArmBonus = Math.min(3 + ((int) skillValue / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
+            ironArmBonus = Math.min(Unarmed.ironArmMinBonusDamage + ((int) skillValue / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
         }
 
         // IRON GRIP
