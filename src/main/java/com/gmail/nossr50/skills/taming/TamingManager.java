@@ -228,6 +228,25 @@ public class TamingManager extends SkillManager {
         }
     }
 
+    public void attackTarget(LivingEntity target) {
+        double range = 5;
+        Player player = getPlayer();
+
+        for (Entity entity : player.getNearbyEntities(range, range, range)) {
+            if (entity.getType() != EntityType.WOLF) {
+                continue;
+            }
+
+            Wolf wolf = (Wolf) entity;
+
+            if (!wolf.isTamed() || (wolf.getOwner() != player) || wolf.isSitting()) {
+                continue;
+            }
+
+            wolf.setTarget(target);
+        }
+    }
+
     /**
      * Handle the Call of the Wild ability.
      *

@@ -283,6 +283,12 @@ public final class CombatUtils {
                 if (!Misc.isNPCEntity(player) && SkillType.ARCHERY.getPermissions(player)) {
                     processArcheryCombat(target, player, event, arrow);
                 }
+
+                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntity(player) && SkillType.TAMING.getPermissions(player)) {
+                    McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+                    TamingManager tamingManager = mcMMOPlayer.getTamingManager();
+                    tamingManager.attackTarget(target);
+                }
             }
         }
 
