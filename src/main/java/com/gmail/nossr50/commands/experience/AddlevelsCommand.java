@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Permissions;
@@ -30,7 +31,7 @@ public class AddlevelsCommand extends ExperienceCommand {
             return;
         }
 
-        EventUtils.handleLevelChangeEvent(player, skill, value, xpRemoved, true);
+        EventUtils.handleLevelChangeEvent(player, skill, value, xpRemoved, true, XPGainReason.COMMAND);
     }
 
     @Override

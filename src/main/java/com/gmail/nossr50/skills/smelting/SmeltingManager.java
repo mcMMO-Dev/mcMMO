@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
@@ -85,7 +86,7 @@ public class SmeltingManager extends SkillManager {
     }
 
     public ItemStack smeltProcessing(ItemStack smelting, ItemStack result) {
-        applyXpGain(Smelting.getResourceXp(smelting));
+        applyXpGain(Smelting.getResourceXp(smelting), XPGainReason.PVE);
 
         if (isSecondSmeltSuccessful()) {
             ItemStack newResult = result.clone();

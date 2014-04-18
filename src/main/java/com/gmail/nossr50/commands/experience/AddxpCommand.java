@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
@@ -23,7 +24,7 @@ public class AddxpCommand extends ExperienceCommand {
     @Override
     protected void handleCommand(Player player, PlayerProfile profile, SkillType skill, int value) {
         if (player != null) {
-            UserManager.getPlayer(player).applyXpGain(skill, value);
+            UserManager.getPlayer(player).applyXpGain(skill, value, XPGainReason.COMMAND);
         }
         else {
             profile.addXp(skill, value);

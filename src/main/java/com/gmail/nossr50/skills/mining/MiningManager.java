@@ -10,6 +10,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -57,7 +58,7 @@ public class MiningManager extends SkillManager {
     public void miningBlockCheck(BlockState blockState) {
         Player player = getPlayer();
 
-        applyXpGain(Mining.getBlockXp(blockState));
+        applyXpGain(Mining.getBlockXp(blockState), XPGainReason.PVE);
 
         if (!Permissions.secondaryAbilityEnabled(player, SecondaryAbility.MINING_DOUBLE_DROPS)) {
             return;
@@ -164,7 +165,7 @@ public class MiningManager extends SkillManager {
             }
         }
 
-        applyXpGain(xp);
+        applyXpGain(xp, XPGainReason.PVE);
     }
 
     /**

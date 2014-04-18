@@ -5,6 +5,7 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -15,11 +16,21 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
     private boolean cancelled;
     protected SkillType skill;
     protected int skillLevel;
+    protected XPGainReason xpGainReason;
 
+    @Deprecated
     protected McMMOPlayerExperienceEvent(Player player, SkillType skill) {
         super(player);
         this.skill = skill;
         this.skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
+        this.xpGainReason = XPGainReason.UNKNOWN;
+    }
+
+    protected McMMOPlayerExperienceEvent(Player player, SkillType skill, XPGainReason xpGainReason) {
+        super(player);
+        this.skill = skill;
+        this.skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
+        this.xpGainReason = xpGainReason;
     }
 
     /**
@@ -34,6 +45,13 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
      */
     public int getSkillLevel() {
         return skillLevel;
+    }
+
+    /**
+     * @return The combat type involved in this event
+     */
+    public XPGainReason getXpGainReason() {
+        return xpGainReason;
     }
 
     /** Following are required for Cancellable **/

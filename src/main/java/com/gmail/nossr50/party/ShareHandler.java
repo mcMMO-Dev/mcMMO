@@ -13,6 +13,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -27,7 +28,7 @@ public final class ShareHandler {
      * @param skillType Skill being used
      * @return True is the xp has been shared
      */
-    public static boolean handleXpShare(float xp, McMMOPlayer mcMMOPlayer, SkillType skillType) {
+    public static boolean handleXpShare(float xp, McMMOPlayer mcMMOPlayer, SkillType skillType, XPGainReason xpGainReason) {
         Party party = mcMMOPlayer.getParty();
 
         if (party.getXpShareMode() != ShareMode.EQUAL) {
@@ -47,7 +48,7 @@ public final class ShareHandler {
         float splitXp = (float) (xp / partySize * shareBonus);
 
         for (Player member : nearMembers) {
-            UserManager.getPlayer(member).beginUnsharedXpGain(skillType, splitXp);
+            UserManager.getPlayer(member).beginUnsharedXpGain(skillType, splitXp, xpGainReason);
         }
 
         return true;
@@ -139,6 +140,18 @@ public final class ShareHandler {
 
             default:
                 return false;
+        }
+    }
+
+    public static XPGainReason getSharedXpGainReason(XPGainReason xpGainReason) {
+        if (xpGainReason == XPGainReason.PVE) {
+            return XPGainReason.SHARED_PVE;
+        }
+        else if (xpGainReason == XPGainReason.PVP) {
+            return XPGainReason.SHARED_PVP;
+        }
+        else {
+            return xpGainReason;
         }
     }
 

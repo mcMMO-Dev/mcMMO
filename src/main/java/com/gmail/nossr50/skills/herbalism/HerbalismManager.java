@@ -16,6 +16,7 @@ import org.bukkit.material.Crops;
 import org.bukkit.material.NetherWarts;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -166,7 +167,7 @@ public class HerbalismManager extends SkillManager {
             }
         }
 
-        applyXpGain(xp);
+        applyXpGain(xp, XPGainReason.PVE);
 
         if (drops == null) {
             return;

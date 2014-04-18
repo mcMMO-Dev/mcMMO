@@ -6,6 +6,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -82,7 +83,7 @@ public final class HardcoreManager {
             totalLevelsStolen += levelsStolen;
 
             killerPlayer.addLevels(skillType, levelsStolen);
-            killerPlayer.beginUnsharedXpGain(skillType, xpStolen);
+            killerPlayer.beginUnsharedXpGain(skillType, xpStolen, XPGainReason.VAMPIRISM);
 
             victimProfile.modifySkill(skillType, victimSkillLevel - levelsStolen);
             victimProfile.removeXp(skillType, xpStolen);

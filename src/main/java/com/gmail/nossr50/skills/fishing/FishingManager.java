@@ -34,6 +34,7 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
 import org.bukkit.util.Vector;
 
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
@@ -348,7 +349,7 @@ public class FishingManager extends SkillManager {
             }
         }
 
-        applyXpGain(fishXp + treasureXp);
+        applyXpGain(fishXp + treasureXp, XPGainReason.PVE);
     }
 
     /**
@@ -436,7 +437,7 @@ public class FishingManager extends SkillManager {
 
             Misc.dropItem(target.getLocation(), drop);
             CombatUtils.dealDamage(target, Math.max(target.getMaxHealth() / 4, 1)); // Make it so you can shake a mob no more than 4 times.
-            applyXpGain(ExperienceConfig.getInstance().getFishingShakeXP());
+            applyXpGain(ExperienceConfig.getInstance().getFishingShakeXP(), XPGainReason.PVE);
         }
     }
 
