@@ -9,6 +9,7 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -113,7 +114,7 @@ public class SkillresetCommand implements TabExecutor {
             return;
         }
 
-        EventUtils.handleLevelChangeEvent(player, skill, levelsRemoved, xpRemoved, false);
+        EventUtils.handleLevelChangeEvent(player, skill, levelsRemoved, xpRemoved, false, XPGainReason.COMMAND);
     }
 
     protected boolean permissionsCheckSelf(CommandSender sender) {

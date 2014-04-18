@@ -2,6 +2,7 @@ package com.gmail.nossr50.events.experience;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 
 /**
@@ -10,13 +11,25 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 public class McMMOPlayerLevelUpEvent extends McMMOPlayerLevelChangeEvent {
     private int levelsGained;
 
+    @Deprecated
     public McMMOPlayerLevelUpEvent(Player player, SkillType skill) {
-        super(player, skill);
+        super(player, skill, XPGainReason.UNKNOWN);
         this.levelsGained = 1;
     }
 
+    @Deprecated
     public McMMOPlayerLevelUpEvent(Player player, SkillType skill, int levelsGained) {
-        super(player, skill);
+        super(player, skill, XPGainReason.UNKNOWN);
+        this.levelsGained = levelsGained;
+    }
+
+    public McMMOPlayerLevelUpEvent(Player player, SkillType skill, XPGainReason xpGainReason) {
+        super(player, skill, xpGainReason);
+        this.levelsGained = 1;
+    }
+
+    public McMMOPlayerLevelUpEvent(Player player, SkillType skill, int levelsGained, XPGainReason xpGainReason) {
+        super(player, skill, xpGainReason);
         this.levelsGained = levelsGained;
     }
 

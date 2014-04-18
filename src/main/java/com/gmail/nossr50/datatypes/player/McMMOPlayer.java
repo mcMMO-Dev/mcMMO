@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
@@ -453,7 +454,7 @@ public class McMMOPlayer {
      * @param skill Skill being used
      * @param xp Experience amount to process
      */
-    public void beginXpGain(SkillType skill, float xp) {
+    public void beginXpGain(SkillType skill, float xp, XPGainReason xpGainReason) {
         Validate.isTrue(xp >= 0.0, "XP gained should be greater than or equal to zero.");
 
         if (xp <= 0.0) {
@@ -466,7 +467,7 @@ public class McMMOPlayer {
 
             for (SkillType parentSkill : parentSkills) {
                 if (parentSkill.getPermissions(player)) {
-                    beginXpGain(parentSkill, splitXp);
+                    beginXpGain(parentSkill, splitXp, xpGainReason);
                 }
             }
 
@@ -474,11 +475,11 @@ public class McMMOPlayer {
         }
 
         // Return if the experience has been shared
-        if (party != null && ShareHandler.handleXpShare(xp, this, skill)) {
+        if (party != null && ShareHandler.handleXpShare(xp, this, skill, ShareHandler.getSharedXpGainReason(xpGainReason))) {
             return;
         }
 
-        beginUnsharedXpGain(skill, xp);
+        beginUnsharedXpGain(skill, xp, xpGainReason);
     }
 
     /**
@@ -487,8 +488,8 @@ public class McMMOPlayer {
      * @param skill Skill being used
      * @param xp Experience amount to process
      */
-    public void beginUnsharedXpGain(SkillType skill, float xp) {
-        applyXpGain(skill, modifyXpGain(skill, xp));
+    public void beginUnsharedXpGain(SkillType skill, float xp, XPGainReason xpGainReason) {
+        applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason);
 
         if (party == null) {
             return;
@@ -505,7 +506,7 @@ public class McMMOPlayer {
      * @param skillType Skill being used
      * @param xp Experience amount to add
      */
-    public void applyXpGain(SkillType skillType, float xp) {
+    public void applyXpGain(SkillType skillType, float xp, XPGainReason xpGainReason) {
         if (!skillType.getPermissions(player)) {
             return;
         }
@@ -514,18 +515,18 @@ public class McMMOPlayer {
             Set<SkillType> parentSkills = FamilyTree.getParents(skillType);
 
             for (SkillType parentSkill : parentSkills) {
-                applyXpGain(parentSkill, xp / parentSkills.size());
+                applyXpGain(parentSkill, xp / parentSkills.size(), xpGainReason);
             }
 
             return;
         }
 
-        if (!EventUtils.handleXpGainEvent(player, skillType, xp)) {
+        if (!EventUtils.handleXpGainEvent(player, skillType, xp, xpGainReason)) {
             return;
         }
 
         isUsingUnarmed = (skillType == SkillType.UNARMED);
-        checkXp(skillType);
+        checkXp(skillType, xpGainReason);
     }
 
     /**
@@ -533,7 +534,7 @@ public class McMMOPlayer {
      *
      * @param skillType The skill to check
      */
-    private void checkXp(SkillType skillType) {
+    private void checkXp(SkillType skillType, XPGainReason xpGainReason) {
         if (getSkillXpLevelRaw(skillType) < getXpToLevel(skillType)) {
             return;
         }
@@ -551,7 +552,7 @@ public class McMMOPlayer {
             levelsGained++;
         }
 
-        if (!EventUtils.handleLevelChangeEvent(player, skillType, levelsGained, xpRemoved, true)) {
+        if (!EventUtils.handleLevelChangeEvent(player, skillType, levelsGained, xpRemoved, true, xpGainReason)) {
             return;
         }
 

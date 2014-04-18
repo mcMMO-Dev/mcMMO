@@ -22,6 +22,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -398,12 +399,14 @@ public final class CombatUtils {
      */
     private static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, SkillType skillType, double multiplier) {
         double baseXP = 0;
+        XPGainReason xpGainReason;
 
         if (target instanceof Player) {
             if (!ExperienceConfig.getInstance().getExperienceGainsPlayerVersusPlayerEnabled()) {
                 return;
             }
 
+            xpGainReason = XPGainReason.PVP;
             Player defender = (Player) target;
 
             if (defender.isOnline() && SkillUtils.cooldownExpired(mcMMOPlayer.getRespawnATS(), Misc.PLAYER_RESPAWN_COOLDOWN_SECONDS)) {
@@ -472,13 +475,15 @@ public final class CombatUtils {
                 baseXP *= ExperienceConfig.getInstance().getSpawnedMobXpMultiplier();
             }
 
+            xpGainReason = XPGainReason.PVE;
+
             baseXP *= 10;
         }
 
         baseXP *= multiplier;
 
         if (baseXP != 0) {
-            new AwardCombatXpTask(mcMMOPlayer, skillType, baseXP, target).runTaskLater(mcMMO.p, 0);
+            new AwardCombatXpTask(mcMMOPlayer, skillType, baseXP, target, xpGainReason).runTaskLater(mcMMO.p, 0);
         }
     }
 

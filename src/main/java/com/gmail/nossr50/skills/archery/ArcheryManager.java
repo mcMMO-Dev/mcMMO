@@ -52,7 +52,7 @@ public class ArcheryManager extends SkillManager {
             return;
         }
 
-        applyXpGain((int) (firedLocation.distanceSquared(targetLocation) * Archery.DISTANCE_XP_MULTIPLIER));
+        applyXpGain((int) (firedLocation.distanceSquared(targetLocation) * Archery.DISTANCE_XP_MULTIPLIER), getXPGainReason(target, damager));
     }
 
     /**

@@ -10,6 +10,7 @@ import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
 
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
@@ -72,15 +73,15 @@ public class TamingManager extends SkillManager {
     public void awardTamingXP(LivingEntity entity) {
         switch (entity.getType()) {
             case HORSE:
-                applyXpGain(Taming.horseXp);
+                applyXpGain(Taming.horseXp, XPGainReason.PVE);
                 return;
 
             case WOLF:
-                applyXpGain(Taming.wolfXp);
+                applyXpGain(Taming.wolfXp, XPGainReason.PVE);
                 return;
 
             case OCELOT:
-                applyXpGain(Taming.ocelotXp);
+                applyXpGain(Taming.ocelotXp, XPGainReason.PVE);
                 return;
 
             default:

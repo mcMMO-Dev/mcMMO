@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
 
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -63,7 +64,7 @@ public class WoodcuttingManager extends SkillManager {
                 }
         }
 
-        applyXpGain(xp);
+        applyXpGain(xp, XPGainReason.PVE);
     }
 
     /**
@@ -165,7 +166,7 @@ public class WoodcuttingManager extends SkillManager {
             blockState.update(true);
         }
 
-        applyXpGain(xp);
+        applyXpGain(xp, XPGainReason.PVE);
     }
 
 }
