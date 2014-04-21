@@ -182,6 +182,7 @@ public final class Permissions {
     public static boolean serratedStrikes(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.swords.serratedstrikes"); }
 
     /* TAMING */
+    public static boolean charge(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.charge"); }
     public static boolean callOfTheWild(Permissible permissible, EntityType type) { return permissible.hasPermission("mcmmo.ability.taming.callofthewild." + type.toString().toLowerCase()); }
     public static boolean renamePets(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.taming.callofthewild.renamepets"); }
 

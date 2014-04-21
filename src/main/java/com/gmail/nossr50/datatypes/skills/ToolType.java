@@ -8,6 +8,7 @@ import com.gmail.nossr50.util.ItemUtils;
 
 public enum ToolType {
     AXE(LocaleLoader.getString("Axes.Ability.Lower"), LocaleLoader.getString("Axes.Ability.Ready")),
+    BONE(LocaleLoader.getString("Taming.Ability.Lower"), LocaleLoader.getString("Taming.Ability.Ready")),
     FISTS(LocaleLoader.getString("Unarmed.Ability.Lower"), LocaleLoader.getString("Unarmed.Ability.Ready")),
     HOE(LocaleLoader.getString("Herbalism.Ability.Lower"), LocaleLoader.getString("Herbalism.Ability.Ready")),
     PICKAXE(LocaleLoader.getString("Mining.Ability.Lower"), LocaleLoader.getString("Mining.Ability.Ready")),
@@ -40,6 +41,9 @@ public enum ToolType {
         switch (this) {
             case AXE:
                 return ItemUtils.isAxe(itemStack);
+
+            case BONE:
+                return itemStack.getType() == Material.BONE;
 
             case FISTS:
                 return itemStack.getType() == Material.AIR;

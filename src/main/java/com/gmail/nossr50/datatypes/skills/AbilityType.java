@@ -60,6 +60,13 @@ public enum AbilityType {
             "Swords.Skills.SS.Refresh",
             "Swords.Skills.SS.Other.Off"),
 
+    CHARGE(
+            "Taming.Skills.Charge.On",
+            "Taming.Skills.Charge.Off",
+            "Taming.Skills.Charge.Other.On",
+            "Taming.Skills.Charge.Refresh",
+            "Taming.Skills.Charge.Other.Off"),
+
     /**
      * Has cooldown - but has to share a skill with Super Breaker, so needs special treatment
      */
@@ -151,6 +158,9 @@ public enum AbilityType {
 
             case BLAST_MINING:
                 return Permissions.remoteDetonation(player);
+
+            case CHARGE:
+                return Permissions.charge(player);
 
             case GIGA_DRILL_BREAKER:
                 return Permissions.gigaDrillBreaker(player);

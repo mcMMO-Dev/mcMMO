@@ -18,6 +18,7 @@ public class TamingCommand extends SkillCommand {
     private String goreChance;
     private String goreChanceLucky;
 
+    private boolean canCharge;
     private boolean canBeastLore;
     private boolean canGore;
     private boolean canSharpenedClaws;
@@ -43,6 +44,7 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
+        canCharge = Permissions.charge(player);
         canBeastLore = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.BEAST_LORE);
         canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
         canEnvironmentallyAware = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ENVIROMENTALLY_AWARE);
@@ -57,6 +59,10 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected List<String> effectsDisplay() {
         List<String> messages = new ArrayList<String>();
+
+        if (canCharge) {
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.20"), LocaleLoader.getString("Taming.Effect.21")));
+        }
 
         if (canBeastLore) {
             messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.0"), LocaleLoader.getString("Taming.Effect.1")));

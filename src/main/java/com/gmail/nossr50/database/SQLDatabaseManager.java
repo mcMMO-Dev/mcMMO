@@ -315,18 +315,19 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.close();
 
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "cooldowns SET "
-                    + "  mining = ?, woodcutting = ?, unarmed = ?"
+                    + " taming = ?, mining = ?, woodcutting = ?, unarmed = ?"
                     + ", herbalism = ?, excavation = ?, swords = ?"
                     + ", axes = ?, blast_mining = ? WHERE user_id = ?");
-            statement.setLong(1, profile.getAbilityDATS(AbilityType.SUPER_BREAKER));
-            statement.setLong(2, profile.getAbilityDATS(AbilityType.TREE_FELLER));
-            statement.setLong(3, profile.getAbilityDATS(AbilityType.BERSERK));
-            statement.setLong(4, profile.getAbilityDATS(AbilityType.GREEN_TERRA));
-            statement.setLong(5, profile.getAbilityDATS(AbilityType.GIGA_DRILL_BREAKER));
-            statement.setLong(6, profile.getAbilityDATS(AbilityType.SERRATED_STRIKES));
-            statement.setLong(7, profile.getAbilityDATS(AbilityType.SKULL_SPLITTER));
-            statement.setLong(8, profile.getAbilityDATS(AbilityType.BLAST_MINING));
-            statement.setInt(9, id);
+            statement.setLong(1, profile.getAbilityDATS(AbilityType.CHARGE));
+            statement.setLong(2, profile.getAbilityDATS(AbilityType.SUPER_BREAKER));
+            statement.setLong(3, profile.getAbilityDATS(AbilityType.TREE_FELLER));
+            statement.setLong(4, profile.getAbilityDATS(AbilityType.BERSERK));
+            statement.setLong(5, profile.getAbilityDATS(AbilityType.GREEN_TERRA));
+            statement.setLong(6, profile.getAbilityDATS(AbilityType.GIGA_DRILL_BREAKER));
+            statement.setLong(7, profile.getAbilityDATS(AbilityType.SERRATED_STRIKES));
+            statement.setLong(8, profile.getAbilityDATS(AbilityType.SKULL_SPLITTER));
+            statement.setLong(9, profile.getAbilityDATS(AbilityType.BLAST_MINING));
+            statement.setInt(10, id);
             success = (statement.executeUpdate() != 0);
             statement.close();
 
@@ -932,7 +933,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * Checks that the database structure is present and correct
      */
     private void checkStructure() {
-
         PreparedStatement statement = null;
         Statement createStatement = null;
         ResultSet resultSet = null;
@@ -1277,7 +1277,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skillsXp.put(SkillType.FISHING, result.getFloat(OFFSET_XP + 12));
         skillsXp.put(SkillType.ALCHEMY, result.getFloat(OFFSET_XP + 13));
 
-        // Taming - Unused - result.getInt(OFFSET_DATS + 1)
+        skillsDATS.put(AbilityType.CHARGE, result.getInt(OFFSET_DATS + 1));
         skillsDATS.put(AbilityType.SUPER_BREAKER, result.getInt(OFFSET_DATS + 2));
         // Repair - Unused - result.getInt(OFFSET_DATS + 3)
         skillsDATS.put(AbilityType.TREE_FELLER, result.getInt(OFFSET_DATS + 4));

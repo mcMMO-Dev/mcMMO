@@ -267,6 +267,7 @@ Abilities:
     Cooldowns:
         Berserk: 240
         Blast_Mining: 60
+        Charge: 240
         Giga_Drill_Breaker: 240
         Green_Terra: 240
         Serrated_Strikes: 240
@@ -276,6 +277,7 @@ Abilities:
     Max_Seconds:
         Berserk: 0
         Blast_Mining: 0
+        Charge: 0
         Giga_Drill_Breaker: 0
         Green_Terra: 0
         Serrated_Strikes: 0

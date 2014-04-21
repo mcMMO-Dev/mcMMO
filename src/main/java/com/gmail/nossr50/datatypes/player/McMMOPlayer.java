@@ -5,12 +5,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -31,6 +30,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
+import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
@@ -46,6 +46,7 @@ import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.swords.SwordsManager;
+import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
@@ -53,6 +54,8 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -739,6 +742,21 @@ public class McMMOPlayer {
             return;
         }
 
+        LivingEntity livingEntity = null;
+
+        if (ability == AbilityType.CHARGE) {
+            livingEntity = this.getTamingManager().getTarget(20);
+
+            if (!this.getTamingManager().isEntityTypeNearby(EntityType.WOLF, Taming.wolfCommandRange, true)) {
+                player.sendMessage(LocaleLoader.getString("Taming.Skills.Charge.NoneNearby"));
+                return;
+            }
+            else if (livingEntity == null) {
+                player.sendMessage(LocaleLoader.getString("Taming.Skills.Charge.NoTarget"));
+                return;
+            }
+        }
+
         if (EventUtils.callPlayerAbilityActivateEvent(player, skill).isCancelled()) {
             return;
         }
@@ -760,6 +778,10 @@ public class McMMOPlayer {
 
         if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
             SkillUtils.handleAbilitySpeedIncrease(player);
+        }
+
+        if (ability == AbilityType.CHARGE) {
+            this.getTamingManager().handleCharge(livingEntity);
         }
 
         new AbilityDisableTask(this, ability).runTaskLater(mcMMO.p, ticks * Misc.TICK_CONVERSION_FACTOR);
@@ -801,6 +823,11 @@ public class McMMOPlayer {
                     player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
                     return;
                 }
+            }
+
+            if (ability == AbilityType.CHARGE && !this.getTamingManager().isEntityTypeNearby(EntityType.WOLF, Taming.wolfCommandRange, true)) {
+                player.sendMessage(LocaleLoader.getString("Taming.Skills.Charge.NoneNearby"));
+                return;
             }
 
             if (Config.getInstance().getAbilityMessagesEnabled()) {

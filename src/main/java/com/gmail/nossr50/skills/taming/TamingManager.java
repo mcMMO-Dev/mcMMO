@@ -15,6 +15,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -208,6 +210,81 @@ public class TamingManager extends SkillManager {
         owner.sendMessage(LocaleLoader.getString("Taming.Listener.Wolf"));
     }
 
+    public void handleCharge(LivingEntity livingEntity) {
+        attackTarget(livingEntity, true);
+    }
+
+    public LivingEntity getTarget(double range) {
+        Player player = getPlayer();
+        LivingEntity target = null;
+
+        for (Entity entity : player.getNearbyEntities(range, range, range)) {
+            if (!(entity instanceof LivingEntity) || entity.getType() == EntityType.WOLF || entity.getType() == EntityType.CREEPER || entity.equals(player)) {
+                continue;
+            }
+
+            if (!player.hasLineOfSight(entity)) {
+                continue;
+            }
+
+            target = (LivingEntity) entity;
+            break;
+        }
+
+        return target;
+    }
+
+    /**
+     * Make nearby wolves owned by the player attack the target
+     *
+     * @param target The LivingEntity to attack
+     *
+     * @return true if the attack was successful, false otherwise
+     */
+    public boolean attackTarget(LivingEntity target, boolean charge) {
+        boolean success = false;
+
+        for (Entity entity : getNearbyEntities(EntityType.WOLF, Taming.wolfCommandRange, true)) {
+            Wolf wolf = (Wolf) entity;
+
+            if (charge) {
+                charge(wolf);
+            }
+
+            wolf.setTarget(target);
+            success = true;
+        }
+
+        return success;
+    }
+
+    public boolean attackTarget(LivingEntity target) {
+        return attackTarget(target, false);
+    }
+
+    public void charge(Wolf wolf) {
+        int duration = 0;
+        int amplifier = 0;
+
+        if (wolf.hasPotionEffect(PotionEffectType.SPEED)) {
+            for (PotionEffect effect : wolf.getActivePotionEffects()) {
+                if (effect.getType() != PotionEffectType.SPEED) {
+                    continue;
+                }
+
+                duration = effect.getDuration();
+                amplifier = effect.getAmplifier();
+                break;
+            }
+        }
+
+        int ticks = 20 * 5;
+
+        PotionEffect abilityBuff = new PotionEffect(PotionEffectType.SPEED, duration + ticks, amplifier + 3);
+        wolf.addPotionEffect(abilityBuff, true);
+        ParticleEffectUtils.playSmokeEffect(wolf);
+    }
+
     public void pummel(LivingEntity target, Wolf wolf) {
         double chance = 10 / activationChance;
         SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(getPlayer(), SecondaryAbility.PUMMEL, chance);
@@ -225,25 +302,6 @@ public class TamingManager extends SkillManager {
             if (UserManager.getPlayer(defender).useChatNotifications()) {
                 defender.sendMessage("Wolf pummeled at you");
             }
-        }
-    }
-
-    public void attackTarget(LivingEntity target) {
-        double range = 5;
-        Player player = getPlayer();
-
-        for (Entity entity : player.getNearbyEntities(range, range, range)) {
-            if (entity.getType() != EntityType.WOLF) {
-                continue;
-            }
-
-            Wolf wolf = (Wolf) entity;
-
-            if (!wolf.isTamed() || (wolf.getOwner() != player) || wolf.isSitting()) {
-                continue;
-            }
-
-            wolf.setTarget(target);
         }
     }
 
@@ -265,7 +323,8 @@ public class TamingManager extends SkillManager {
             return;
         }
 
-        if (!rangeCheck(type)) {
+        if (isEntityTypeNearby(type)) {
+            player.sendMessage(Taming.getCallOfTheWildFailureMessage(type));
             return;
         }
 
@@ -336,22 +395,41 @@ public class TamingManager extends SkillManager {
         player.playSound(location, Sound.FIREWORK_LARGE_BLAST2, 1F, 0.5F);
     }
 
-    private boolean rangeCheck(EntityType type) {
-        double range = Config.getInstance().getTamingCOTWRange();
+    public List<Entity> getNearbyEntities(EntityType type, double range, boolean wolfReady) {
+        List<Entity> nearbyEntities = new ArrayList<Entity>();
         Player player = getPlayer();
 
         if (range == 0) {
-            return true;
+            return nearbyEntities;
         }
 
         for (Entity entity : player.getNearbyEntities(range, range, range)) {
-            if (entity.getType() == type) {
-                player.sendMessage(Taming.getCallOfTheWildFailureMessage(type));
-                return false;
+            EntityType entityType = entity.getType();
+
+            if (entityType != type) {
+                continue;
             }
+
+            if (entityType == EntityType.WOLF && wolfReady) {
+                Wolf wolf = (Wolf) entity;
+
+                if (!wolf.isTamed() || (wolf.getOwner() != player) || wolf.isSitting()) {
+                    continue;
+                }
+            }
+
+            nearbyEntities.add(entity);
         }
 
-        return true;
+        return nearbyEntities;
+    }
+
+    public boolean isEntityTypeNearby(EntityType type) {
+        return isEntityTypeNearby(type, Config.getInstance().getTamingCOTWRange(), false);
+    }
+
+    public boolean isEntityTypeNearby(EntityType type, double range, boolean wolfReady) {
+        return !getNearbyEntities(type, range, wolfReady).isEmpty();
     }
 
     private boolean summonAmountCheck(EntityType entityType) {

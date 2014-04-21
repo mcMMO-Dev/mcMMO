@@ -536,6 +536,7 @@ permissions:
             mcmmo.ability.taming.sharpenedclaws: true
             mcmmo.ability.taming.shockproof: true
             mcmmo.ability.taming.thickfur: true
+            mcmmo.ability.taming.charge: true
             mcmmo.ability.taming.pummel: true
     mcmmo.ability.taming.beastlore:
         description: Allows access to the Beast Lore ability
@@ -578,6 +579,8 @@ permissions:
         description: Allows access to the Shock Proof ability
     mcmmo.ability.taming.thickfur:
         description: Allows access to the Thick Fur ability
+    mcmmo.ability.taming.charge:
+        description: Allows access to the Charge ability
     mcmmo.ability.taming.pummel:
         description: Allows access to the Pummel ability
     mcmmo.ability.unarmed.*:

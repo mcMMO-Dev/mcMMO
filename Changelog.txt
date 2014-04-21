@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.5.02-dev
+ + Added new active ability "Charge" to Taming!
  + Added option to config.yml for Chimaera Wings to stop using bed spawn points
  = Fixed bug where no Mining XP was granted when Flux Mining was successful
  = Fixed bug where MobHealthbarTypes were not saved between server restarts
