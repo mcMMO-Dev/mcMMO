@@ -12,7 +12,6 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.commands.party.alliance.PartyAllianceCommand;
 import com.gmail.nossr50.commands.party.teleport.PtpCommand;
@@ -56,7 +55,7 @@ public class PartyCommand implements TabExecutor {
     private CommandExecutor partyRenameCommand         = new PartyRenameCommand();
     private CommandExecutor partyInfoCommand           = new PartyInfoCommand();
     private CommandExecutor partyHelpCommand           = new PartyHelpCommand();
-    private CommandExecutor partyTeleportCommand       = mcMMO.p.getCommand("ptp").getExecutor();
+    private CommandExecutor partyTeleportCommand       = new PtpCommand();
     private CommandExecutor partyChatCommand           = new PartyChatCommand();
     private CommandExecutor partyAllianceCommand       = new PartyAllianceCommand();
 
