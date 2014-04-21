@@ -362,7 +362,8 @@ public class TamingManager extends SkillManager {
             return true;
         }
 
-        int summonAmount = summonedEntities.get(entityType).size();
+        List<TrackedTamingEntity> trackedEntities = getTrackedEntities(entityType);
+        int summonAmount = trackedEntities == null ? 0 : trackedEntities.size();
 
         if (summonAmount >= maxAmountSummons) {
             player.sendMessage(LocaleLoader.getString("Taming.Summon.Fail.TooMany", maxAmountSummons));
@@ -380,6 +381,10 @@ public class TamingManager extends SkillManager {
         }
 
         summonedEntities.get(livingEntity.getType()).add(trackedEntity);
+    }
+
+    protected static List<TrackedTamingEntity> getTrackedEntities(EntityType entityType) {
+        return summonedEntities.get(entityType);
     }
 
     protected static void removeFromTracker(TrackedTamingEntity trackedEntity) {

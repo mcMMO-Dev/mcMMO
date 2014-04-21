@@ -12,6 +12,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
 
 public class TamingCommand extends SkillCommand {
     private String goreChance;
@@ -91,9 +92,13 @@ public class TamingCommand extends SkillCommand {
 
         if (canCallWild) {
             messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Taming.Effect.12"), LocaleLoader.getString("Taming.Effect.13")));
-            messages.add(LocaleLoader.getString("Taming.Effect.14", Config.getInstance().getTamingCOTWCost(EntityType.OCELOT)));
-            messages.add(LocaleLoader.getString("Taming.Effect.15", Config.getInstance().getTamingCOTWCost(EntityType.WOLF)));
-            messages.add(LocaleLoader.getString("Taming.Effect.20", Config.getInstance().getTamingCOTWCost(EntityType.HORSE)));
+            int costOcelot = Config.getInstance().getTamingCOTWCost(EntityType.OCELOT);
+            String itemOcelot = StringUtils.getPrettyItemString(Config.getInstance().getTamingCOTWMaterial(EntityType.OCELOT));
+            int costWolf = Config.getInstance().getTamingCOTWCost(EntityType.WOLF);
+            String itemWolf = StringUtils.getPrettyItemString(Config.getInstance().getTamingCOTWMaterial(EntityType.WOLF));
+            int costHorse = Config.getInstance().getTamingCOTWCost(EntityType.HORSE);
+            String itemHorse = StringUtils.getPrettyItemString(Config.getInstance().getTamingCOTWMaterial(EntityType.HORSE));
+            messages.add(LocaleLoader.getString("Taming.Effect.14", costOcelot, itemOcelot, costWolf, itemWolf, costHorse, itemHorse));
         }
 
         return messages;
