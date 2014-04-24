@@ -34,7 +34,7 @@ mcMMO is currently developed by a team of individuals from all over the world.
 
 ### Special thanks
 [![EasyMFnE](https://www.gravatar.com/avatar/99c9a1fa3bbf957791ceac7b45daadb0.png)]
-(https://github.com/EasyMFnE)
+(https://github.com/EasyMFnE)  
 Added the Alchemy skill
 
 ## Compiling
