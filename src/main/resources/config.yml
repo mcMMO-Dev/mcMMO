@@ -277,7 +277,9 @@ Skills:
         # Allow Hoppers to transfer ingredients and brew Rank 1 Alchemy potions
         Enabled_for_Hoppers: true
         # Prevent Hoppers from transferring ingredients into Brewing Stands
-        Prevent_Hopper_Transfer: false
+        Prevent_Hopper_Transfer_Ingredients: false
+        # Prevent Hoppers from transferring bottles into Brewing Stands
+        Prevent_Hopper_Transfer_Bottles: false
         Level_Cap: 0
     Archery:
         Enabled_For_PVP: true
