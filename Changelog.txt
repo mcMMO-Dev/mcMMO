@@ -10,6 +10,7 @@ Key:
 Version 1.5.01-dev
  + Added new feature to Herbalism. Instantly-regrown crops are protected from being broken for 1 second
  + Added option to config.yml to show the /mcstats scoreboard automatically after logging in
+ + Added option to config.yml for Alchemy. Skills.Alchemy.Prevent_Hopper_Transfer_Bottles
  + Added support for `MATERIAL|data` format in treasures.yml
  + Added API to experience events to get XP gain reason
  = Fixed bug where the Updater was running on the main thread.
@@ -18,6 +19,7 @@ Version 1.5.01-dev
  = Fixed bug where dodge would check the wrong player skill level
  = Fixed bug which causes /party teleport to stop working
  ! Vanished players no longer get hit by AoE effects
+ ! Changed Alchemy config option 'Prevent_Hopper_Transfer' renamed to 'Prevent_Hopper_Transfer_Ingredients'
 
 Version 1.5.00
  + Added Podzol & Red Sand to Excavation

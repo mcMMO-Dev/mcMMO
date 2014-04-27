@@ -447,7 +447,8 @@ public class Config extends AutoUpdateConfigLoader {
 
     /* Alchemy */
     public boolean getEnabledForHoppers() { return config.getBoolean("Skills.Alchemy.Enabled_for_Hoppers", true); }
-    public boolean getPreventHopperTransfer() { return config.getBoolean("Skills.Alchemy.Prevent_Hopper_Transfer", false); }
+    public boolean getPreventHopperTransferIngredients() { return config.getBoolean("Skills.Alchemy.Prevent_Hopper_Transfer_Ingredients", false); }
+    public boolean getPreventHopperTransferBottles() { return config.getBoolean("Skills.Alchemy.Prevent_Hopper_Transfer_Bottles", false); }
 
     /* Fishing */
     public boolean getFishingDropsEnabled() { return config.getBoolean("Skills.Fishing.Drops_Enabled", true); }
