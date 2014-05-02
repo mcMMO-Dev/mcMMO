@@ -107,4 +107,8 @@ public class BleedTimerTask extends BukkitRunnable {
             bleedList.put(entity, Math.min(newTicks, MAX_BLEED_TICKS));
         }
     }
+
+    public static boolean isBleeding(LivingEntity entity) {
+        return bleedList.containsKey(entity);
+    }
 }

@@ -1,9 +1,11 @@
 package com.gmail.nossr50.api;
 
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.util.player.UserManager;
 
 public final class AbilityAPI {
@@ -79,5 +81,9 @@ public final class AbilityAPI {
 
     public static void setTreeFellerCooldown(Player player, long cooldown) {
         UserManager.getPlayer(player).setAbilityDATS(AbilityType.TREE_FELLER, cooldown);
+    }
+
+    public static boolean isBleeding(LivingEntity entity) {
+        return BleedTimerTask.isBleeding(entity);
     }
 }
