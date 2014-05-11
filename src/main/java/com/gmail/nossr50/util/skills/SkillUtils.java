@@ -24,8 +24,10 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
@@ -205,13 +207,25 @@ public class SkillUtils {
         double chance = (maxChance / maxLevel) * Math.min(skillLevel, maxLevel) / activationChance;
         SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, skillAbility, chance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
-        return (event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance);
+        return (event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance) && !event.isCancelled();
+    }
+
+    public static boolean activationSuccessful(SecondaryAbility skillAbility, Player player, double staticChance, int activationChance) {
+        double chance = staticChance / activationChance;
+        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, skillAbility, chance);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+        return (event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance) && !event.isCancelled();
+    }
+
+    public static boolean activationSuccessful(SecondaryAbility skillAbility, Player player) {
+        SecondaryAbilityEvent event = EventUtils.callSecondaryAbilityEvent(player, skillAbility);
+        return !event.isCancelled();
     }
 
     public static boolean treasureDropSuccessful(Player player, double dropChance, int activationChance) {
         SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, SecondaryAbility.EXCAVATION_TREASURE_HUNTER, dropChance / activationChance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
-        return (event.getChance() * activationChance) > (Misc.getRandom().nextDouble() * activationChance);
+        return (event.getChance() * activationChance) > (Misc.getRandom().nextDouble() * activationChance) && !event.isCancelled();
     }
 
     private static boolean isLocalizedSkill(String skillName) {

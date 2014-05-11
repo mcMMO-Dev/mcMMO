@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 
 public class SecondaryAbilityWeightedActivationCheckEvent extends SecondaryAbilityEvent {
-
     private double chance;
 
     public SecondaryAbilityWeightedActivationCheckEvent(Player player, SecondaryAbility ability, double chance) {

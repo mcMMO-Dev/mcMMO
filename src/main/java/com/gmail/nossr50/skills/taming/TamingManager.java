@@ -18,7 +18,6 @@ import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
-import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.SkillManager;
@@ -96,18 +95,16 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, double damage) {
-        double chance = Taming.fastFoodServiceActivationChance / activationChance;
-        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(getPlayer(), SecondaryAbility.FAST_FOOD, chance);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-        if ((event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance)) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.FAST_FOOD, getPlayer(), Taming.fastFoodServiceActivationChance, activationChance)) {
+            return;
+        }
 
-            double health = wolf.getHealth();
-            double maxHealth = wolf.getMaxHealth();
+        double health = wolf.getHealth();
+        double maxHealth = wolf.getMaxHealth();
 
-            if (health < maxHealth) {
-                double newHealth = health + damage;
-                wolf.setHealth(Math.min(newHealth, maxHealth));
-            }
+        if (health < maxHealth) {
+            double newHealth = health + damage;
+            wolf.setHealth(Math.min(newHealth, maxHealth));
         }
     }
 

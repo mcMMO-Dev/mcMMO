@@ -102,6 +102,10 @@ public class ArcheryManager extends SkillManager {
      * @param arrow The {@link Arrow} that was fired
      */
     public double skillShot(LivingEntity target, double damage, Arrow arrow) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.SKILL_SHOT, getPlayer())) {
+            return damage;
+        }
+
         double damageBonusPercent = Math.min(((getSkillLevel() / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage);
         double archeryBonus = Math.min(damage * damageBonusPercent, Archery.skillShotMaxBonusDamage);
 

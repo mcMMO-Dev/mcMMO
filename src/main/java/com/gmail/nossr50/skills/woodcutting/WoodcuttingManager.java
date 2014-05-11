@@ -173,5 +173,4 @@ public class WoodcuttingManager extends SkillManager {
 
         applyXpGain(xp, XPGainReason.PVE);
     }
-
 }

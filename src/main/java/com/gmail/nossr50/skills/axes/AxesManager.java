@@ -4,17 +4,14 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
-import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
@@ -56,6 +53,10 @@ public class AxesManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      */
     public double axeMastery(LivingEntity target) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.AXE_MASTERY, getPlayer())) {
+            return 0;
+        }
+
         double axeBonus = Math.min(getSkillLevel() / (Axes.axeMasteryMaxBonusLevel / Axes.axeMasteryMaxBonus), Axes.axeMasteryMaxBonus);
 
         return CombatUtils.callFakeDamageEvent(getPlayer(), target, axeBonus);
@@ -98,10 +99,7 @@ public class AxesManager extends SkillManager {
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
             if (ItemUtils.isArmor(armor)) {
-                double chance = Axes.impactChance / activationChance;
-                SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(getPlayer(), SecondaryAbility.ARMOR_IMPACT, chance);
-                mcMMO.p.getServer().getPluginManager().callEvent(event);
-                if ((event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance)) {
+                if (SkillUtils.activationSuccessful(SecondaryAbility.ARMOR_IMPACT, getPlayer(), Axes.impactChance, activationChance)) {
                     SkillUtils.handleDurabilityChange(armor, durabilityDamage, Axes.impactMaxDurabilityModifier);
                 }
             }
@@ -114,10 +112,7 @@ public class AxesManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      */
     public double greaterImpact(LivingEntity target) {
-        double chance = Axes.greaterImpactChance / activationChance;
-        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(getPlayer(), SecondaryAbility.GREATER_IMPACT, chance);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-        if ((event.getChance() * activationChance) <= Misc.getRandom().nextInt(activationChance)) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.GREATER_IMPACT, getPlayer(), Axes.greaterImpactChance, activationChance)) {
             return 0;
         }
 

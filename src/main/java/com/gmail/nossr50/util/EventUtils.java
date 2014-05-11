@@ -16,6 +16,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelChangeEvent;
@@ -35,6 +36,7 @@ import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEve
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerMagicHunterEvent;
 import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
+import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
@@ -42,6 +44,13 @@ import com.gmail.nossr50.util.player.UserManager;
 public class EventUtils {
     public static McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, SkillType skill) {
         McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, skill);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+
+    public static SecondaryAbilityEvent callSecondaryAbilityEvent(Player player, SecondaryAbility secondaryAbility) {
+        SecondaryAbilityEvent event = new SecondaryAbilityEvent(player, secondaryAbility);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;

@@ -60,6 +60,10 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean blockCrackerCheck(BlockState blockState) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.BLOCK_CRACKER, getPlayer())) {
+            return false;
+        }
+
         MaterialData data = blockState.getData();
 
         switch (blockState.getType()) {
@@ -135,6 +139,10 @@ public class UnarmedManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      */
     public double ironArm(LivingEntity target, Map<DamageModifier, Double> modifiers) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.IRON_ARM, getPlayer())) {
+            return 0;
+        }
+
         double unarmedBonus = Math.min(Unarmed.ironArmMinBonusDamage + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
 
         return CombatUtils.callFakeDamageEvent(getPlayer(), target, unarmedBonus, modifiers);
