@@ -115,9 +115,13 @@ public class PtpCommand implements TabExecutor {
 
                 if (matches.size() == 0) {
                     Player player = (Player) sender;
-                    Party party = UserManager.getPlayer(player).getParty();
+                    McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-                    List<String> playerNames = party.getOnlinePlayerNames(player);
+                    if (!mcMMOPlayer.inParty()) {
+                        return ImmutableList.of();
+                    }
+
+                    List<String> playerNames = mcMMOPlayer.getParty().getOnlinePlayerNames(player);
                     return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
                 }
 
