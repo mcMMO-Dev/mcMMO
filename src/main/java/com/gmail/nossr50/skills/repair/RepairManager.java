@@ -12,13 +12,13 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.material.MaterialData;
 
-import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.repair.ArcaneForging.Tier;
@@ -91,7 +91,7 @@ public class RepairManager extends SkillManager {
         Material repairMaterial = repairable.getRepairMaterial();
         byte repairMaterialMetadata = repairable.getRepairMaterialMetadata();
         ItemStack toRemove = new MaterialData(repairMaterial, repairMaterialMetadata).toItemStack(1);
-        
+
         short startDurability = item.getDurability();
 
         // Do not repair if at full durability
@@ -99,7 +99,7 @@ public class RepairManager extends SkillManager {
             player.sendMessage(LocaleLoader.getString("Repair.Skills.FullDurability"));
             return;
         }
-        
+
         // Check if they have the proper material to repair with
         if (!inventory.contains(repairMaterial)) {
             String message = LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(repairMaterial));

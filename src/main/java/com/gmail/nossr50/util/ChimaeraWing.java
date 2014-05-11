@@ -66,7 +66,7 @@ public final class ChimaeraWing {
         long lastTeleport = mcMMOPlayer.getChimeraWingLastUse();
         int cooldown = Config.getInstance().getChimaeraCooldown();
 
-        if (cooldown > 0 ) {
+        if (cooldown > 0) {
             int timeRemaining = SkillUtils.calculateTimeLeft(lastTeleport * Misc.TIME_CONVERSION_FACTOR, cooldown, player);
 
             if (timeRemaining > 0) {
@@ -142,7 +142,7 @@ public final class ChimaeraWing {
         if (Config.getInstance().getChimaeraSoundEnabled()) {
             player.playSound(location, Sound.BAT_TAKEOFF, Misc.BAT_VOLUME, Misc.BAT_PITCH);
         }
-        
+
         player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));
     }
 

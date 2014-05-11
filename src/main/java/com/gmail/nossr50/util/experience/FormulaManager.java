@@ -90,7 +90,7 @@ public class FormulaManager {
             experience -= experienceToNextLevel;
         }
 
-        return new int[]{newLevel, remainder};
+        return new int[]{ newLevel, remainder };
     }
 
     /**

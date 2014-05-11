@@ -9,6 +9,6 @@ import org.bukkit.event.entity.EntityTameEvent;
  */
 public class FakeEntityTameEvent extends EntityTameEvent {
     public FakeEntityTameEvent(LivingEntity entity, AnimalTamer owner) {
-        super (entity, owner);
+        super(entity, owner);
     }
 }
