@@ -1,5 +1,6 @@
 package com.gmail.nossr50.listeners;
 
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -124,6 +125,9 @@ public class EntityListener implements Listener {
             else if (isTracked) {
                 mcMMO.getPlaceStore().setTrue(block);
             }
+        }
+        else if ((block.getType() == Material.REDSTONE_ORE || block.getType() == Material.GLOWING_REDSTONE_ORE) && (event.getTo() == Material.REDSTONE_ORE || event.getTo() == Material.GLOWING_REDSTONE_ORE)) {
+            return;
         }
         else {
             if (mcMMO.getPlaceStore().isTrue(block)) {
