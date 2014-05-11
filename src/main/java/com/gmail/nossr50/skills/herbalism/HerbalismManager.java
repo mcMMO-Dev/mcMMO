@@ -16,7 +16,6 @@ import org.bukkit.material.Crops;
 import org.bukkit.material.NetherWarts;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -27,6 +26,7 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
@@ -115,8 +115,6 @@ public class HerbalismManager extends SkillManager {
     }
 
     /**
-     * 
-     *
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public void herbalismBlockCheck(BlockState blockState) {

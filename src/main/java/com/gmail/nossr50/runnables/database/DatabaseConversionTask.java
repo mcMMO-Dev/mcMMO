@@ -28,5 +28,5 @@ public class DatabaseConversionTask extends BukkitRunnable {
                 sender.sendMessage(message);
             }
         });
-   }
+    }
 }

@@ -29,7 +29,7 @@ public class HashChunkManager implements ChunkManager {
     public synchronized void closeAll() {
         for (UUID uid : regionFiles.keySet()) {
             HashMap<Long, McMMOSimpleRegionFile> worldRegions = regionFiles.get(uid);
-            for (Iterator<McMMOSimpleRegionFile> worldRegionIterator = worldRegions.values().iterator(); worldRegionIterator.hasNext();) {
+            for (Iterator<McMMOSimpleRegionFile> worldRegionIterator = worldRegions.values().iterator(); worldRegionIterator.hasNext(); ) {
                 McMMOSimpleRegionFile rf = worldRegionIterator.next();
                 if (rf != null) {
                     rf.close();

@@ -185,7 +185,7 @@ public class Party {
 
     public String getXpToLevelPercentage() {
         DecimalFormat percent = new DecimalFormat("##0.00%");
-        return percent.format( this.getXp() / getXpToLevel());
+        return percent.format(this.getXp() / getXpToLevel());
     }
 
     /**
