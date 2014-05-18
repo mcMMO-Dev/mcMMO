@@ -37,9 +37,8 @@ public interface DatabaseManager {
      * Save a user to the database.
      *
      * @param profile The profile of the player to save
-     * @return true if successful, false on failure
      */
-    public boolean saveUser(PlayerProfile profile);
+    public void saveUser(PlayerProfile profile);
 
     /**
     * Retrieve leaderboard info.
