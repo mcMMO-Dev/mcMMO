@@ -65,11 +65,8 @@ public class PlayerProfile {
             return;
         }
 
-        changed = !mcMMO.getDatabaseManager().saveUser(new PlayerProfile(playerName, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType));
-
-        if (changed) {
-            mcMMO.p.getLogger().warning("PlayerProfile for " + playerName + " failed to save");
-        }
+        mcMMO.getDatabaseManager().saveUser(new PlayerProfile(playerName, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType));
+        changed = false;
     }
 
     public String getPlayerName() {

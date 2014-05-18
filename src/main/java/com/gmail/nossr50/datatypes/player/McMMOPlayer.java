@@ -1,19 +1,5 @@
 package com.gmail.nossr50.datatypes.player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Server;
-import org.bukkit.Sound;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -26,6 +12,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
@@ -53,14 +40,27 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
-
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.logging.Level;
 import org.apache.commons.lang.Validate;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Server;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class McMMOPlayer {
     private Player        player;
-    private PlayerProfile profile;
+    private PlayerProfile playerProfile;
 
-    private final Map<SkillType, SkillManager> skillManagers = new HashMap<SkillType, SkillManager>();
+    private final ConcurrentHashMap<SkillType, SkillManager> skillManagers = new ConcurrentHashMap<SkillType, SkillManager>();
 
     private Party   party;
     private Party   invite;
@@ -91,43 +91,80 @@ public class McMMOPlayer {
     private boolean isUsingUnarmed;
     private final FixedMetadataValue playerMetadata;
 
-    public McMMOPlayer(Player player) {
-        String playerName = player.getName();
+    public interface Callback {
 
+        public void done(String playerName, PlayerProfile profile);
+    }
+
+    public Callback pendingCallback;
+    
+    public McMMOPlayer(Player player) {
+        final String playerName = player.getName();
+        
         this.player = player;
         playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
-        profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, true);
-        party = PartyManager.getPlayerParty(playerName);
-        ptpRecord = new PartyTeleportRecord();
 
-        /*
-         * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
-         * but I actually have no idea about the performance impact, if there is any.
-         * If in the future someone wants to remove this, don't forget to also remove what is in the SkillType enum. - bm01
-         */
-        try {
-            for (SkillType skillType : SkillType.values()) {
-                skillManagers.put(skillType, skillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(this));
+        //Fake the profile
+        playerProfile = new PlayerProfile(playerName, false);
+
+        pendingCallback = new Callback() {
+            public void done(String playerName, PlayerProfile p) {
+                playerProfile = p;
+                
+                party = PartyManager.getPlayerParty(playerName);
+                ptpRecord = new PartyTeleportRecord();
+                
+                /*
+                 * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
+                 * but I actually have no idea about the performance impact, if there is any.
+                 * If in the future someone wants to remove this, don't forget to also remove what is in the SkillType enum. - bm01
+                 */
+                try {
+                    for (SkillType skillType : SkillType.values()) {
+                        skillManagers.put(skillType, skillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(McMMOPlayer.this));
+                    }
+                } catch (IllegalAccessException e) {
+                    mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
+                    e.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
+                    e.printStackTrace();
+                } catch (InstantiationException e) {
+                    mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
+                    e.printStackTrace();
+                } catch (NoSuchMethodException e) {
+                    mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
+                    e.printStackTrace();
+                } catch (SecurityException e) {
+                    mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
+                    e.printStackTrace();
+                }
+
+                for (AbilityType abilityType : AbilityType.values()) {
+                    abilityMode.put(abilityType, false);
+                    abilityInformed.put(abilityType, true); // This is intended
+                }
+
+                for (ToolType toolType : ToolType.values()) {
+                    toolMode.put(toolType, false);
+                }
+
+                if (!playerProfile.isLoaded()) {
+                    mcMMO.p.getLogger().log(Level.WARNING, "Unable to load the PlayerProfile for {0}. Will retry over the next several seconds.", playerName);
+                    new RetryProfileLoadingTask().runTaskTimerAsynchronously(mcMMO.p, 11L, 31L);
+                }
             }
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
-        }
+        };
 
-        for (AbilityType abilityType : AbilityType.values()) {
-            abilityMode.put(abilityType, false);
-            abilityInformed.put(abilityType, true); // This is intended
-        }
-
-        for (ToolType toolType : ToolType.values()) {
-            toolMode.put(toolType, false);
-        }
-
-        if (!profile.isLoaded()) {
-            mcMMO.p.getLogger().warning("Unable to load the PlayerProfile for " + playerName + ". Will retry over the next several seconds.");
-            new RetryProfileLoadingTask().runTaskTimerAsynchronously(mcMMO.p, 11L, 31L);
-        }
+        mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new Runnable() {
+            @Override
+            public void run() {
+                pendingCallback.done(playerName, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, true));
+            }
+        });
     }
 
     private class RetryProfileLoadingTask extends BukkitRunnable {
@@ -184,7 +221,7 @@ public class McMMOPlayer {
         // No database access permitted
         @Override
         public void run() {
-            McMMOPlayer.this.profile = profile;
+            McMMOPlayer.this.playerProfile = profile;
         }
     }
 
@@ -548,7 +585,7 @@ public class McMMOPlayer {
                 break;
             }
 
-            xpRemoved += profile.levelUp(skillType);
+            xpRemoved += playerProfile.levelUp(skillType);
             levelsGained++;
         }
 
@@ -572,7 +609,7 @@ public class McMMOPlayer {
     }
 
     public PlayerProfile getProfile() {
-        return profile;
+        return playerProfile;
     }
 
     /*
@@ -798,7 +835,7 @@ public class McMMOPlayer {
         SkillUtils.sendSkillMessage(player, ability.getAbilityPlayer(player));
 
         // Enable the ability
-        profile.setAbilityDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
+        playerProfile.setAbilityDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
         setAbilityMode(ability, true);
 
         if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
@@ -863,7 +900,7 @@ public class McMMOPlayer {
      * @return the number of seconds remaining before the cooldown expires
      */
     public int calculateTimeRemaining(AbilityType ability) {
-        long deactivatedTimestamp = profile.getAbilityDATS(ability) * Misc.TIME_CONVERSION_FACTOR;
+        long deactivatedTimestamp = playerProfile.getAbilityDATS(ability) * Misc.TIME_CONVERSION_FACTOR;
         return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
 
@@ -875,47 +912,47 @@ public class McMMOPlayer {
      * These functions are wrapped from PlayerProfile so that we don't always have to store it alongside the McMMOPlayer object.
      */
     public int getSkillLevel(SkillType skill) {
-        return profile.getSkillLevel(skill);
+        return playerProfile.getSkillLevel(skill);
     }
 
     public float getSkillXpLevelRaw(SkillType skill) {
-        return profile.getSkillXpLevelRaw(skill);
+        return playerProfile.getSkillXpLevelRaw(skill);
     }
 
     public int getSkillXpLevel(SkillType skill) {
-        return profile.getSkillXpLevel(skill);
+        return playerProfile.getSkillXpLevel(skill);
     }
 
     public void setSkillXpLevel(SkillType skill, float xpLevel) {
-        profile.setSkillXpLevel(skill, xpLevel);
+        playerProfile.setSkillXpLevel(skill, xpLevel);
     }
 
     public int getXpToLevel(SkillType skill) {
-        return profile.getXpToLevel(skill);
+        return playerProfile.getXpToLevel(skill);
     }
 
     public void removeXp(SkillType skill, int xp) {
-        profile.removeXp(skill, xp);
+        playerProfile.removeXp(skill, xp);
     }
 
     public void modifySkill(SkillType skill, int level) {
-        profile.modifySkill(skill, level);
+        playerProfile.modifySkill(skill, level);
     }
 
     public void addLevels(SkillType skill, int levels) {
-        profile.addLevels(skill, levels);
+        playerProfile.addLevels(skill, levels);
     }
 
     public void addXp(SkillType skill, float xp) {
-        profile.addXp(skill, xp);
+        playerProfile.addXp(skill, xp);
     }
 
     public void setAbilityDATS(AbilityType ability, long DATS) {
-        profile.setAbilityDATS(ability, DATS);
+        playerProfile.setAbilityDATS(ability, DATS);
     }
 
     public void resetCooldowns() {
-        profile.resetCooldowns();
+        playerProfile.resetCooldowns();
     }
 
     public FixedMetadataValue getPlayerMetadata() {

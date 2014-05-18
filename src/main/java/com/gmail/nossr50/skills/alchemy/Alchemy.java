@@ -1,15 +1,16 @@
 package com.gmail.nossr50.skills.alchemy;
 
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.skills.AlchemyBrewTask;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import org.bukkit.Location;
-
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.runnables.skills.AlchemyBrewTask;
 
 public final class Alchemy {
     public enum Tier {
@@ -53,7 +54,7 @@ public final class Alchemy {
     public static double catalysisMinSpeed      = AdvancedConfig.getInstance().getCatalysisMinSpeed();
     public static double catalysisMaxSpeed      = AdvancedConfig.getInstance().getCatalysisMaxSpeed();
 
-    public static Map<Location, AlchemyBrewTask> brewingStandMap = new HashMap<Location, AlchemyBrewTask>();
+    public static ConcurrentMap<Location, AlchemyBrewTask> brewingStandMap = new ConcurrentHashMap<Location, AlchemyBrewTask>();
 
     private Alchemy() {}
 
