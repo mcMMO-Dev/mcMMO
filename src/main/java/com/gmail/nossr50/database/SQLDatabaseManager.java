@@ -116,13 +116,17 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public void saveUser(final PlayerProfile profile) {
-        if (!checkConnected()) {
+        if (profile == null || !profile.isLoaded()) {
             return;
         }
 
         mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new Runnable() {
             @Override
             public void run() {
+                if (!checkConnected()) {
+                    return;
+                }
+                
                 int userId = readId(profile.getPlayerName());
                 if (userId == -1) {
                     newUser(profile.getPlayerName());
@@ -355,7 +359,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return loadPlayerProfile(playerName, create, true);
     }
 
-
     private PlayerProfile loadPlayerProfile(String playerName, boolean create, boolean retry) {
 
         if (!checkConnected()) {
@@ -464,13 +467,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     resultSet.next();
                     destination.saveUser(loadFromResult(playerName, resultSet));
                     resultSet.close();
-                } catch (SQLException e) {
+                } 
+                catch (SQLException e) {
                     // Ignore
                 }
                 convertedUsers++;
                 Misc.printProgress(convertedUsers, progressInterval, startMillis);
             }
-        } catch (SQLException e) {
+        } 
+        catch (SQLException e) {
             printErrors(e);
         }
         finally {

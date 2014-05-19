@@ -407,7 +407,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    /**e
+    /**
      * Monitor PlayerRespawnEvents.
      * <p>
      * These events are monitored for the purpose of setting the
