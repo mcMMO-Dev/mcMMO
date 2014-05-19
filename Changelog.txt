@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.5.01-dev
+ + Added new child skill; Salvage
  + Added new feature to Herbalism. Instantly-regrown crops are protected from being broken for 1 second
  + Added option to config.yml to show the /mcstats scoreboard automatically after logging in
  + Added option to config.yml for Alchemy. Skills.Alchemy.Prevent_Hopper_Transfer_Bottles
@@ -21,6 +22,7 @@ Version 1.5.01-dev
  = Fixed bug which causes /party teleport to stop working
  ! Vanished players no longer get hit by AoE effects
  ! Changed Alchemy config option 'Prevent_Hopper_Transfer' renamed to 'Prevent_Hopper_Transfer_Ingredients'
+ - Removed salvage ability from Repair, salvage has it's own (child) skill now
 
 Version 1.5.00
  + Added Podzol & Red Sand to Excavation
