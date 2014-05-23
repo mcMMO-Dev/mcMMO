@@ -266,7 +266,7 @@ public class BlockListener implements Listener {
      * @param event The event to watch
      */
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onBlockBreakLower(BlockDamageEvent event) {
+    public void onBlockDamage(BlockDamageEvent event) {
         if (event instanceof FakeBlockDamageEvent) {
             return;
         }
