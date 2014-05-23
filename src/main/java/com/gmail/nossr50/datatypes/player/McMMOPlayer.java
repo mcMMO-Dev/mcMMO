@@ -110,6 +110,8 @@ public class McMMOPlayer {
         pendingCallback = new Callback() {
             @Override
             public void done(String playerName, PlayerProfile p) {
+                profile = p;
+                
                 party = PartyManager.getPlayerParty(playerName);
                 ptpRecord = new PartyTeleportRecord();
                 
@@ -160,9 +162,7 @@ public class McMMOPlayer {
                 if (!profile.isLoaded()) {
                     mcMMO.p.getLogger().log(Level.WARNING, "Unable to load the PlayerProfile for {0}. Will retry over the next several seconds.", playerName);
                     new RetryProfileLoadingTask().runTaskTimerAsynchronously(mcMMO.p, 11L, 31L);
-                } else {
-                    new ApplySuccessfulProfile(profile).runTask(mcMMO.p);
-                }
+                } 
             }
         };
 
