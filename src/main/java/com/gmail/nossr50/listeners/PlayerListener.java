@@ -345,9 +345,9 @@ public class PlayerListener implements Listener {
     /**
      * Monitor PlayerQuitEvents.
      * <p>
-     * These events are monitored for the purpose of resetting player
-     * variables and other garbage collection tasks that must take place when
-     * a player exits the server.
+     * These events are monitored for the purpose of resetting player variables
+     * and other garbage collection tasks that must take place when a player
+     * exits the server.
      *
      * @param event The event to monitor
      */

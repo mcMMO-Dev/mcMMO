@@ -206,88 +206,90 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return worked;
     }
 
-    public boolean saveUser(PlayerProfile profile) {
-        String playerName = profile.getPlayerName();
+    public void saveUser(final PlayerProfile profile) {
+        mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new Runnable() {
+            @Override
+            public void run() {
+                String playerName = profile.getPlayerName();
 
-        BufferedReader in = null;
-        FileWriter out = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
+                BufferedReader in = null;
+                FileWriter out = null;
+                String usersFilePath = mcMMO.getUsersFilePath();
 
-        synchronized (fileWritingLock) {
-            try {
-                // Open the file
-                in = new BufferedReader(new FileReader(usersFilePath));
-                StringBuilder writer = new StringBuilder();
-                String line;
+                synchronized (fileWritingLock) {
+                    try {
+                        // Open the file
+                        in = new BufferedReader(new FileReader(usersFilePath));
+                        StringBuilder writer = new StringBuilder();
+                        String line;
 
-                // While not at the end of the file
-                while ((line = in.readLine()) != null) {
-                    // Read the line in and copy it to the output it's not the player we want to edit
-                    if (!line.split(":")[0].equalsIgnoreCase(playerName)) {
-                        writer.append(line).append("\r\n");
-                    }
-                    else {
-                        // Otherwise write the new player information
-                        writer.append(playerName).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.MINING)).append(":");
-                        writer.append(":");
-                        writer.append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.MINING)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.WOODCUTTING)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.WOODCUTTING)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.REPAIR)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.UNARMED)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.HERBALISM)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.EXCAVATION)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.ARCHERY)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.SWORDS)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.AXES)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.ACROBATICS)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.REPAIR)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.UNARMED)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.HERBALISM)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.EXCAVATION)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.ARCHERY)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.SWORDS)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.AXES)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.ACROBATICS)).append(":");
-                        writer.append(":");
-                        writer.append(profile.getSkillLevel(SkillType.TAMING)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.TAMING)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.BERSERK)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.GIGA_DRILL_BREAKER)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.TREE_FELLER)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.GREEN_TERRA)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.SERRATED_STRIKES)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.SKULL_SPLITTER)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.SUPER_BREAKER)).append(":");
-                        writer.append(":");
-                        writer.append(profile.getSkillLevel(SkillType.FISHING)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.FISHING)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.BLAST_MINING)).append(":");
-                        writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
-                        MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
-                        writer.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.ALCHEMY)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.ALCHEMY)).append(":");
-                        writer.append("\r\n");
+                        // While not at the end of the file
+                        while ((line = in.readLine()) != null) {
+                            // Read the line in and copy it to the output it's not the player we want to edit
+                            if (!line.split(":")[0].equalsIgnoreCase(playerName)) {
+                                writer.append(line).append("\r\n");
+                            } else {
+                                // Otherwise write the new player information
+                                writer.append(playerName).append(":");
+                                writer.append(profile.getSkillLevel(SkillType.MINING)).append(":");
+                                writer.append(":");
+                                writer.append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.MINING)).append(":");
+                                writer.append(profile.getSkillLevel(SkillType.WOODCUTTING)).append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.WOODCUTTING)).append(":");
+                                writer.append(profile.getSkillLevel(SkillType.REPAIR)).append(":");
+                                writer.append(profile.getSkillLevel(SkillType.UNARMED)).append(":");
+                                writer.append(profile.getSkillLevel(SkillType.HERBALISM)).append(":");
+                                writer.append(profile.getSkillLevel(SkillType.EXCAVATION)).append(":");
+                                writer.append(profile.getSkillLevel(SkillType.ARCHERY)).append(":");
+                                writer.append(profile.getSkillLevel(SkillType.SWORDS)).append(":");
+                                writer.append(profile.getSkillLevel(SkillType.AXES)).append(":");
+                                writer.append(profile.getSkillLevel(SkillType.ACROBATICS)).append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.REPAIR)).append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.UNARMED)).append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.HERBALISM)).append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.EXCAVATION)).append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.ARCHERY)).append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.SWORDS)).append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.AXES)).append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.ACROBATICS)).append(":");
+                                writer.append(":");
+                                writer.append(profile.getSkillLevel(SkillType.TAMING)).append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.TAMING)).append(":");
+                                writer.append((int) profile.getAbilityDATS(AbilityType.BERSERK)).append(":");
+                                writer.append((int) profile.getAbilityDATS(AbilityType.GIGA_DRILL_BREAKER)).append(":");
+                                writer.append((int) profile.getAbilityDATS(AbilityType.TREE_FELLER)).append(":");
+                                writer.append((int) profile.getAbilityDATS(AbilityType.GREEN_TERRA)).append(":");
+                                writer.append((int) profile.getAbilityDATS(AbilityType.SERRATED_STRIKES)).append(":");
+                                writer.append((int) profile.getAbilityDATS(AbilityType.SKULL_SPLITTER)).append(":");
+                                writer.append((int) profile.getAbilityDATS(AbilityType.SUPER_BREAKER)).append(":");
+                                writer.append(":");
+                                writer.append(profile.getSkillLevel(SkillType.FISHING)).append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.FISHING)).append(":");
+                                writer.append((int) profile.getAbilityDATS(AbilityType.BLAST_MINING)).append(":");
+                                writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
+                                MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
+                                writer.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
+                                writer.append(profile.getSkillLevel(SkillType.ALCHEMY)).append(":");
+                                writer.append(profile.getSkillXpLevel(SkillType.ALCHEMY)).append(":");
+                                writer.append("\r\n");
+                            }
+                        }
+
+                        // Write the new file
+                        out = new FileWriter(usersFilePath);
+                        out.write(writer.toString());
+                        return;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        return;
+                    } finally {
+                        tryClose(in);
+                        tryClose(out);
                     }
                 }
-
-                // Write the new file
-                out = new FileWriter(usersFilePath);
-                out.write(writer.toString());
-                return true;
             }
-            catch (Exception e) {
-                e.printStackTrace();
-                return false;
-            }
-            finally {
-                tryClose(in);
-                tryClose(out);
-            }
-        }
+        });
     }
 
     public List<PlayerStat> readLeaderboard(SkillType skill, int pageNumber, int statsPerPage) {

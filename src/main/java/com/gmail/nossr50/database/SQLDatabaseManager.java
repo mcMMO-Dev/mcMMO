@@ -115,79 +115,87 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return success;
     }
 
-    public boolean saveUser(PlayerProfile profile) {
-        if (!checkConnected()) {
-            return false;
+    public void saveUser(final PlayerProfile profile) {
+        if (profile == null || !profile.isLoaded()) {
+            return;
         }
 
-        int userId = readId(profile.getPlayerName());
-        if (userId == -1) {
-            newUser(profile.getPlayerName());
-            userId = readId(profile.getPlayerName());
-            if (userId == -1) {
-                return false;
+        mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new Runnable() {
+            @Override
+            public void run() {
+                if (!checkConnected()) {
+                    return;
+                }
+                
+                int userId = readId(profile.getPlayerName());
+                if (userId == -1) {
+                    newUser(profile.getPlayerName());
+                    userId = readId(profile.getPlayerName());
+                    if (userId == -1) {
+                        return;
+                    }
+                }
+                MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
+
+                saveLogin(userId, ((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
+                saveHuds(userId, (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()));
+                saveLongs(
+                        "UPDATE " + tablePrefix + "cooldowns SET "
+                        + "  mining = ?, woodcutting = ?, unarmed = ?"
+                        + ", herbalism = ?, excavation = ?, swords = ?"
+                        + ", axes = ?, blast_mining = ? WHERE user_id = ?",
+                        userId,
+                        profile.getAbilityDATS(AbilityType.SUPER_BREAKER),
+                        profile.getAbilityDATS(AbilityType.TREE_FELLER),
+                        profile.getAbilityDATS(AbilityType.BERSERK),
+                        profile.getAbilityDATS(AbilityType.GREEN_TERRA),
+                        profile.getAbilityDATS(AbilityType.GIGA_DRILL_BREAKER),
+                        profile.getAbilityDATS(AbilityType.SERRATED_STRIKES),
+                        profile.getAbilityDATS(AbilityType.SKULL_SPLITTER),
+                        profile.getAbilityDATS(AbilityType.BLAST_MINING));
+                saveIntegers(
+                        "UPDATE " + tablePrefix + "skills SET "
+                        + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
+                        + ", unarmed = ?, herbalism = ?, excavation = ?"
+                        + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
+                        + ", fishing = ?, alchemy = ? WHERE user_id = ?",
+                        profile.getSkillLevel(SkillType.TAMING),
+                        profile.getSkillLevel(SkillType.MINING),
+                        profile.getSkillLevel(SkillType.REPAIR),
+                        profile.getSkillLevel(SkillType.WOODCUTTING),
+                        profile.getSkillLevel(SkillType.UNARMED),
+                        profile.getSkillLevel(SkillType.HERBALISM),
+                        profile.getSkillLevel(SkillType.EXCAVATION),
+                        profile.getSkillLevel(SkillType.ARCHERY),
+                        profile.getSkillLevel(SkillType.SWORDS),
+                        profile.getSkillLevel(SkillType.AXES),
+                        profile.getSkillLevel(SkillType.ACROBATICS),
+                        profile.getSkillLevel(SkillType.FISHING),
+                        profile.getSkillLevel(SkillType.ALCHEMY),
+                        userId);
+                saveIntegers(
+                        "UPDATE " + tablePrefix + "experience SET "
+                        + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
+                        + ", unarmed = ?, herbalism = ?, excavation = ?"
+                        + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
+                        + ", fishing = ?, alchemy = ? WHERE user_id = ?",
+                        profile.getSkillXpLevel(SkillType.TAMING),
+                        profile.getSkillXpLevel(SkillType.MINING),
+                        profile.getSkillXpLevel(SkillType.REPAIR),
+                        profile.getSkillXpLevel(SkillType.WOODCUTTING),
+                        profile.getSkillXpLevel(SkillType.UNARMED),
+                        profile.getSkillXpLevel(SkillType.HERBALISM),
+                        profile.getSkillXpLevel(SkillType.EXCAVATION),
+                        profile.getSkillXpLevel(SkillType.ARCHERY),
+                        profile.getSkillXpLevel(SkillType.SWORDS),
+                        profile.getSkillXpLevel(SkillType.AXES),
+                        profile.getSkillXpLevel(SkillType.ACROBATICS),
+                        profile.getSkillXpLevel(SkillType.FISHING),
+                        profile.getSkillXpLevel(SkillType.ALCHEMY),
+                        userId);
+                return;
             }
-        }
-        boolean success = true;
-        MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
-
-        success &= saveLogin(userId, ((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
-        success &= saveHuds(userId, (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()));
-        success &= saveLongs(
-                "UPDATE " + tablePrefix + "cooldowns SET "
-                    + "  mining = ?, woodcutting = ?, unarmed = ?"
-                    + ", herbalism = ?, excavation = ?, swords = ?"
-                    + ", axes = ?, blast_mining = ? WHERE user_id = ?",
-                userId,
-                profile.getAbilityDATS(AbilityType.SUPER_BREAKER),
-                profile.getAbilityDATS(AbilityType.TREE_FELLER),
-                profile.getAbilityDATS(AbilityType.BERSERK),
-                profile.getAbilityDATS(AbilityType.GREEN_TERRA),
-                profile.getAbilityDATS(AbilityType.GIGA_DRILL_BREAKER),
-                profile.getAbilityDATS(AbilityType.SERRATED_STRIKES),
-                profile.getAbilityDATS(AbilityType.SKULL_SPLITTER),
-                profile.getAbilityDATS(AbilityType.BLAST_MINING));
-        success &= saveIntegers(
-                "UPDATE " + tablePrefix + "skills SET "
-                    + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                    + ", unarmed = ?, herbalism = ?, excavation = ?"
-                    + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                    + ", fishing = ?, alchemy = ? WHERE user_id = ?",
-                profile.getSkillLevel(SkillType.TAMING),
-                profile.getSkillLevel(SkillType.MINING),
-                profile.getSkillLevel(SkillType.REPAIR),
-                profile.getSkillLevel(SkillType.WOODCUTTING),
-                profile.getSkillLevel(SkillType.UNARMED),
-                profile.getSkillLevel(SkillType.HERBALISM),
-                profile.getSkillLevel(SkillType.EXCAVATION),
-                profile.getSkillLevel(SkillType.ARCHERY),
-                profile.getSkillLevel(SkillType.SWORDS),
-                profile.getSkillLevel(SkillType.AXES),
-                profile.getSkillLevel(SkillType.ACROBATICS),
-                profile.getSkillLevel(SkillType.FISHING),
-                profile.getSkillLevel(SkillType.ALCHEMY),
-                userId);
-        success &= saveIntegers(
-                "UPDATE " + tablePrefix + "experience SET "
-                    + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                    + ", unarmed = ?, herbalism = ?, excavation = ?"
-                    + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                    + ", fishing = ?, alchemy = ? WHERE user_id = ?",
-                profile.getSkillXpLevel(SkillType.TAMING),
-                profile.getSkillXpLevel(SkillType.MINING),
-                profile.getSkillXpLevel(SkillType.REPAIR),
-                profile.getSkillXpLevel(SkillType.WOODCUTTING),
-                profile.getSkillXpLevel(SkillType.UNARMED),
-                profile.getSkillXpLevel(SkillType.HERBALISM),
-                profile.getSkillXpLevel(SkillType.EXCAVATION),
-                profile.getSkillXpLevel(SkillType.ARCHERY),
-                profile.getSkillXpLevel(SkillType.SWORDS),
-                profile.getSkillXpLevel(SkillType.AXES),
-                profile.getSkillXpLevel(SkillType.ACROBATICS),
-                profile.getSkillXpLevel(SkillType.FISHING),
-                profile.getSkillXpLevel(SkillType.ALCHEMY),
-                userId);
-        return success;
+        });
     }
 
     public List<PlayerStat> readLeaderboard(SkillType skill, int pageNumber, int statsPerPage) {
@@ -352,6 +360,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadPlayerProfile(String playerName, boolean create, boolean retry) {
+
         if (!checkConnected()) {
             return new PlayerProfile(playerName, false); // return fake profile if not connected
         }
@@ -458,14 +467,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     resultSet.next();
                     destination.saveUser(loadFromResult(playerName, resultSet));
                     resultSet.close();
-                }
+                } 
                 catch (SQLException e) {
                     // Ignore
                 }
                 convertedUsers++;
                 Misc.printProgress(convertedUsers, progressInterval, startMillis);
             }
-        }
+        } 
         catch (SQLException e) {
             printErrors(e);
         }
