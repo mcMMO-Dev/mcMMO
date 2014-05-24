@@ -5,6 +5,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 
 public class PlayerProfileSaveTask extends BukkitRunnable {
+
     private PlayerProfile playerProfile;
 
     public PlayerProfileSaveTask(PlayerProfile playerProfile) {
@@ -13,6 +14,9 @@ public class PlayerProfileSaveTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        playerProfile.save();
+        if (playerProfile != null && playerProfile.isLoaded()) {
+            playerProfile.save();
+        }
+        cancel();
     }
 }

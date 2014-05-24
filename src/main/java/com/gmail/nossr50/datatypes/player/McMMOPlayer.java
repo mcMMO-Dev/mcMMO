@@ -98,8 +98,6 @@ public class McMMOPlayer {
         public void done(String playerName, PlayerProfile profile);
     }
 
-    public Callback pendingCallback;
-
     public McMMOPlayer(Player player) {
         final String playerName = player.getName();
 
@@ -116,7 +114,7 @@ public class McMMOPlayer {
             this.toolMode.put(toolType, false);
         }
 
-        pendingCallback = new Callback() {
+        SQLThread.pending.put(playerName, new Callback() {
             @Override
             public void done(String playerName, PlayerProfile p) {
                 profile = p;
@@ -161,13 +159,6 @@ public class McMMOPlayer {
                     mcMMO.p.getLogger().log(Level.WARNING, "Unable to load the PlayerProfile for {0}. Will retry over the next several seconds.", playerName);
                     new RetryProfileLoadingTask().runTaskTimerAsynchronously(mcMMO.p, 11L, 31L);
                 } 
-            }
-        };
-
-        mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new Runnable() {
-            @Override
-            public void run() {
-                pendingCallback.done(playerName, mcMMO.getDatabaseManager().loadPlayerProfile(playerName, true));
             }
         });
     }
