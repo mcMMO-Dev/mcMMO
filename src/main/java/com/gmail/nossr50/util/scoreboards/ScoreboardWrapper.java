@@ -494,12 +494,10 @@ public class ScoreboardWrapper {
 
                 // Calculate power level here
                 int powerLevel = 0;
-                for (SkillType skill : SkillType.values()) { // Include child skills, but not in power level
+                for (SkillType skill : SkillType.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
                     int level = newProfile.getSkillLevel(skill);
-
-                    if (!skill.isChildSkill()) {
-                        powerLevel += level;
-                    }
+                    
+                    powerLevel += level;
 
                     // TODO: Verify that this is what we want - calculated in power level but not displayed
                     if (!skill.getPermissions(player)) {

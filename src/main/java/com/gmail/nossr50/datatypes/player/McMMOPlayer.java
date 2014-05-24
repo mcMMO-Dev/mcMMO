@@ -99,22 +99,30 @@ public class McMMOPlayer {
     }
 
     public Callback pendingCallback;
-    
+
     public McMMOPlayer(Player player) {
         final String playerName = player.getName();
-        
+
         this.player = player;
-        
-        playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
+        this.playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
+        this.ptpRecord = new PartyTeleportRecord();
+
+        for (AbilityType abilityType : AbilityType.values()) {
+            this.abilityMode.put(abilityType, false);
+            this.abilityInformed.put(abilityType, true); // This is intended
+        }
+
+        for (ToolType toolType : ToolType.values()) {
+            this.toolMode.put(toolType, false);
+        }
 
         pendingCallback = new Callback() {
             @Override
             public void done(String playerName, PlayerProfile p) {
                 profile = p;
-                
+
                 party = PartyManager.getPlayerParty(playerName);
-                ptpRecord = new PartyTeleportRecord();
-                
+
                 /*
                  * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
                  * but I actually have no idea about the performance impact, if there is any.
@@ -124,8 +132,7 @@ public class McMMOPlayer {
                     for (SkillType skillType : SkillType.values()) {
                         skillManagers.put(skillType, skillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(McMMOPlayer.this));
                     }
-                } 
-                catch (IllegalAccessException e) {
+                } catch (IllegalAccessException e) {
                     mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
                     e.printStackTrace();
                 } 
@@ -148,15 +155,6 @@ public class McMMOPlayer {
                 catch (InvocationTargetException e) {
                     mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
                     e.printStackTrace();
-                }
-
-                for (AbilityType abilityType : AbilityType.values()) {
-                    abilityMode.put(abilityType, false);
-                    abilityInformed.put(abilityType, true); // This is intended
-                }
-
-                for (ToolType toolType : ToolType.values()) {
-                    toolMode.put(toolType, false);
                 }
 
                 if (!profile.isLoaded()) {
