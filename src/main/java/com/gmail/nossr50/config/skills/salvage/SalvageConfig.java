@@ -123,10 +123,10 @@ public class SalvageConfig extends ConfigLoader {
             }
 
             // Maximum Quantity
-            int maximumQuantity = (itemMaterial != null ? SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), salvageMaterial, salvageMetadata) : config.getInt("Salvageables." + key + ".MaximumQuantity", 2));
+            int maximumQuantity = config.getInt("Salvageables." + key + ".MaximumQuantity", -1);
 
             if (maximumQuantity <= 0 && itemMaterial != null) {
-                maximumQuantity = config.getInt("Salvageables." + key + ".MaximumQuantity", 2);
+                maximumQuantity = SkillUtils.getRepairAndSalvageQuantities(new ItemStack(itemMaterial), salvageMaterial, salvageMetadata);
             }
 
             if (maximumQuantity <= 0) {
