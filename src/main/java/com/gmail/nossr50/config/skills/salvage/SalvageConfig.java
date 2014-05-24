@@ -42,41 +42,41 @@ public class SalvageConfig extends ConfigLoader {
                 reason.add("Invalid material: " + key);
             }
 
-            // Repair Material Type
+            // Salvage Material Type
             MaterialType salvageMaterialType = MaterialType.OTHER;
-            String repairMaterialTypeString = config.getString("Salvageables." + key + ".MaterialType", "OTHER");
+            String salvageMaterialTypeString = config.getString("Salvageables." + key + ".MaterialType", "OTHER");
 
             if (!config.contains("Salvageables." + key + ".MaterialType") && itemMaterial != null) {
-                ItemStack repairItem = new ItemStack(itemMaterial);
+                ItemStack salvageItem = new ItemStack(itemMaterial);
 
-                if (ItemUtils.isWoodTool(repairItem)) {
+                if (ItemUtils.isWoodTool(salvageItem)) {
                     salvageMaterialType = MaterialType.WOOD;
                 }
-                else if (ItemUtils.isStoneTool(repairItem)) {
+                else if (ItemUtils.isStoneTool(salvageItem)) {
                     salvageMaterialType = MaterialType.STONE;
                 }
-                else if (ItemUtils.isStringTool(repairItem)) {
+                else if (ItemUtils.isStringTool(salvageItem)) {
                     salvageMaterialType = MaterialType.STRING;
                 }
-                else if (ItemUtils.isLeatherArmor(repairItem)) {
+                else if (ItemUtils.isLeatherArmor(salvageItem)) {
                     salvageMaterialType = MaterialType.LEATHER;
                 }
-                else if (ItemUtils.isIronArmor(repairItem) || ItemUtils.isIronTool(repairItem)) {
+                else if (ItemUtils.isIronArmor(salvageItem) || ItemUtils.isIronTool(salvageItem)) {
                     salvageMaterialType = MaterialType.IRON;
                 }
-                else if (ItemUtils.isGoldArmor(repairItem) || ItemUtils.isGoldTool(repairItem)) {
+                else if (ItemUtils.isGoldArmor(salvageItem) || ItemUtils.isGoldTool(salvageItem)) {
                     salvageMaterialType = MaterialType.GOLD;
                 }
-                else if (ItemUtils.isDiamondArmor(repairItem) || ItemUtils.isDiamondTool(repairItem)) {
+                else if (ItemUtils.isDiamondArmor(salvageItem) || ItemUtils.isDiamondTool(salvageItem)) {
                     salvageMaterialType = MaterialType.DIAMOND;
                 }
             }
             else {
                 try {
-                    salvageMaterialType = MaterialType.valueOf(repairMaterialTypeString);
+                    salvageMaterialType = MaterialType.valueOf(salvageMaterialTypeString);
                 }
                 catch (IllegalArgumentException ex) {
-                    reason.add(key + " has an invalid MaterialType of " + repairMaterialTypeString);
+                    reason.add(key + " has an invalid MaterialType of " + salvageMaterialTypeString);
                 }
             }
 
