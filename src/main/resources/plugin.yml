@@ -401,7 +401,6 @@ permissions:
             mcmmo.ability.repair.otherrepair: true
             mcmmo.ability.repair.repairbonus: true
             mcmmo.ability.repair.repairmastery: true
-            mcmmo.ability.repair.salvage: true
             mcmmo.ability.repair.stonerepair: true
             mcmmo.ability.repair.stringrepair: true
             mcmmo.ability.repair.toolrepair: true
@@ -426,8 +425,6 @@ permissions:
         description: Allows access to Super Repair bonus
     mcmmo.ability.repair.repairmastery:
         description: Allows access to Repair Mastery
-    mcmmo.ability.repair.salvage:
-        description: Allows access to the Salvage ability
     mcmmo.ability.repair.stonerepair:
         description: Allows ability to repair Stone tools
     mcmmo.ability.repair.stringrepair:
@@ -446,10 +443,43 @@ permissions:
         children:
             mcmmo.ability.salvage.advancedsalvage: true
             mcmmo.ability.salvage.arcanesalvage: true
+            mcmmo.ability.salvage.armorsalvage: true
+            mcmmo.ability.salvage.diamondsalvage: true
+            mcmmo.ability.salvage.goldsalvage: true
+            mcmmo.ability.salvage.ironsalvage: true
+            mcmmo.ability.salvage.leathersalvage: true
+            mcmmo.ability.salvage.othermaterialsalvage: true
+            mcmmo.ability.salvage.othersalvage: true
+            mcmmo.ability.salvage.stonesalvage: true
+            mcmmo.ability.salvage.stringsalvage: true
+            mcmmo.ability.salvage.toolsalvage: true
+            mcmmo.ability.salvage.woodsalvage: true
     mcmmo.ability.salvage.advancedsalvage:
         description: Allows access to the Advanced Salvage ability
     mcmmo.ability.salvage.arcanesalvage:
         description: Allows access to the Arcane Salvage ability
+    mcmmo.ability.salvage.armorsalvage:
+        description: Allows ability to salvage armor
+    mcmmo.ability.salvage.diamondsalvage:
+        description: Allows ability to salvage Diamond tools & armor
+    mcmmo.ability.salvage.goldsalvage:
+        description: Allows ability to salvage Gold tools & armor
+    mcmmo.ability.salvage.ironsalvage:
+        description: Allows ability to salvage Iron tools & armor
+    mcmmo.ability.salvage.leathersalvage:
+        description: Allows ability to salvage Leather armor
+    mcmmo.ability.salvage.othermaterialsalvage:
+        description: Allows ability to salvage items of material type OTHER
+    mcmmo.ability.salvage.othersalvage:
+        description: Allows ability to salvage items of type OTHER
+    mcmmo.ability.salvage.stonesalvage:
+        description: Allows ability to salvage Stone tools
+    mcmmo.ability.salvage.stringsalvage:
+        description: Allows ability to salvage Bow and Fishing rod
+    mcmmo.ability.salvage.toolsalvage:
+        description: Allows ability to salvage tools
+    mcmmo.ability.salvage.woodsalvage:
+        description: Allows ability to salvage Wood tools
     mcmmo.ability.smelting.*:
         default: false
         description: Allows access to all Smelting abilities
