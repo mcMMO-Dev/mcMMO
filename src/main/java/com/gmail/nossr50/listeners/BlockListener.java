@@ -125,10 +125,10 @@ public class BlockListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (blockState.getType() == Repair.anvilMaterial) {
+        if (blockState.getType() == Repair.anvilMaterial && SkillType.REPAIR.getPermissions(player)) {
             mcMMOPlayer.getRepairManager().placedAnvilCheck();
         }
-        else if (blockState.getType() == Salvage.anvilMaterial) {
+        else if (blockState.getType() == Salvage.anvilMaterial && SkillType.SALVAGE.getPermissions(player)) {
             mcMMOPlayer.getSalvageManager().placedAnvilCheck();
         }
     }
