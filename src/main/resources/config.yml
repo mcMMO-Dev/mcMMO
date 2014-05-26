@@ -277,7 +277,9 @@ Skills:
         # Allow Hoppers to transfer ingredients and brew Rank 1 Alchemy potions
         Enabled_for_Hoppers: true
         # Prevent Hoppers from transferring ingredients into Brewing Stands
-        Prevent_Hopper_Transfer: false
+        Prevent_Hopper_Transfer_Ingredients: false
+        # Prevent Hoppers from transferring bottles into Brewing Stands
+        Prevent_Hopper_Transfer_Bottles: false
         Level_Cap: 0
     Archery:
         Enabled_For_PVP: true
@@ -307,10 +309,15 @@ Skills:
         Anvil_Placed_Sounds: true
         Anvil_Use_Sounds: true
         Anvil_Material: IRON_BLOCK
-        Salvage_Anvil_Material: GOLD_BLOCK
-        Salvage_tools: true
-        Salvage_armor: true
         # Ask for a confirmation when a player tries to repair an enchanted item
+        Confirm_Required: true
+    Salvage:
+        Level_Cap: 0
+        Anvil_Messages: true
+        Anvil_Placed_Sounds: true
+        Anvil_Use_Sounds: true
+        Anvil_Material: GOLD_BLOCK
+        # Ask for a confirmation when a player tries to salvage an enchanted item
         Confirm_Required: true
     Smelting:
         Level_Cap: 0

@@ -448,7 +448,8 @@ public class Config extends AutoUpdateConfigLoader {
 
     /* Alchemy */
     public boolean getEnabledForHoppers() { return config.getBoolean("Skills.Alchemy.Enabled_for_Hoppers", true); }
-    public boolean getPreventHopperTransfer() { return config.getBoolean("Skills.Alchemy.Prevent_Hopper_Transfer", false); }
+    public boolean getPreventHopperTransferIngredients() { return config.getBoolean("Skills.Alchemy.Prevent_Hopper_Transfer_Ingredients", false); }
+    public boolean getPreventHopperTransferBottles() { return config.getBoolean("Skills.Alchemy.Prevent_Hopper_Transfer_Bottles", false); }
 
     /* Fishing */
     public boolean getFishingDropsEnabled() { return config.getBoolean("Skills.Fishing.Drops_Enabled", true); }
@@ -463,10 +464,14 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getRepairAnvilPlaceSoundsEnabled() { return config.getBoolean("Skills.Repair.Anvil_Placed_Sounds", true); }
     public boolean getRepairAnvilUseSoundsEnabled() { return config.getBoolean("Skills.Repair.Anvil_Use_Sounds", true); }
     public Material getRepairAnvilMaterial() { return Material.matchMaterial(config.getString("Skills.Repair.Anvil_Material", "IRON_BLOCK")); }
-    public Material getSalvageAnvilMaterial() { return Material.matchMaterial(config.getString("Skills.Repair.Salvage_Anvil_Material", "GOLD_BLOCK")); }
-    public boolean getSalvageTools() { return config.getBoolean("Skills.Repair.Salvage_tools", true); }
-    public boolean getSalvageArmor() { return config.getBoolean("Skills.Repair.Salvage_armor", true); }
     public boolean getRepairConfirmRequired() { return config.getBoolean("Skills.Repair.Confirm_Required", true); }
+
+    /* Salvage */
+    public boolean getSalvageAnvilMessagesEnabled() { return config.getBoolean("Skills.Salvage.Anvil_Messages", true); }
+    public boolean getSalvageAnvilPlaceSoundsEnabled() { return config.getBoolean("Skills.Salvage.Anvil_Placed_Sounds", true); }
+    public boolean getSalvageAnvilUseSoundsEnabled() { return config.getBoolean("Skills.Salvage.Anvil_Use_Sounds", true); }
+    public Material getSalvageAnvilMaterial() { return Material.matchMaterial(config.getString("Skills.Salvage.Anvil_Material", "GOLD_BLOCK")); }
+    public boolean getSalvageConfirmRequired() { return config.getBoolean("Skills.Salvage.Confirm_Required", true); }
 
     /* Unarmed */
     public boolean getUnarmedBlockCrackerSmoothbrickToCracked() { return config.getBoolean("Skills.Unarmed.Block_Cracker.SmoothBrick_To_CrackedBrick", true); }

@@ -37,6 +37,8 @@ import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
+import com.gmail.nossr50.skills.repair.Repair;
+import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
 import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.BlockUtils;
@@ -121,8 +123,13 @@ public class BlockListener implements Listener {
             mcMMO.getPlaceStore().setTrue(blockState);
         }
 
-        if (BlockUtils.isMcMMOAnvil(blockState)) {
-            UserManager.getPlayer(player).getRepairManager().placedAnvilCheck(blockState.getType());
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+        if (blockState.getType() == Repair.anvilMaterial && SkillType.REPAIR.getPermissions(player)) {
+            mcMMOPlayer.getRepairManager().placedAnvilCheck();
+        }
+        else if (blockState.getType() == Salvage.anvilMaterial && SkillType.SALVAGE.getPermissions(player)) {
+            mcMMOPlayer.getSalvageManager().placedAnvilCheck();
         }
     }
 

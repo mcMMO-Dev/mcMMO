@@ -19,7 +19,7 @@ public class BleedTimerTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        for (Iterator<Entry<LivingEntity, Integer>> bleedIterator = bleedList.entrySet().iterator(); bleedIterator.hasNext();) {
+        for (Iterator<Entry<LivingEntity, Integer>> bleedIterator = bleedList.entrySet().iterator(); bleedIterator.hasNext(); ) {
             Entry<LivingEntity, Integer> entry = bleedIterator.next();
             LivingEntity entity = entry.getKey();
 
@@ -106,5 +106,9 @@ public class BleedTimerTask extends BukkitRunnable {
         else {
             bleedList.put(entity, Math.min(newTicks, MAX_BLEED_TICKS));
         }
+    }
+
+    public static boolean isBleeding(LivingEntity entity) {
+        return bleedList.containsKey(entity);
     }
 }

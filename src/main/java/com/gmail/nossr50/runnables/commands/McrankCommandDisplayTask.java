@@ -34,7 +34,7 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
             displayBoard();
         }
 
-        if (useChat){
+        if (useChat) {
             displayChat();
         }
     }

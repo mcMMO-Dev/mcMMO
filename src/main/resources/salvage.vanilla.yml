@@ -1,49 +1,49 @@
 #
-#  Repair configuration
+#  Salvage configuration
 #  Last updated on ${project.version}-b${BUILD_NUMBER}
 #
-# Any file named repair.*.yml in the mcmmmo folder will be loaded as a repair config
-# All repair configs have a main section titled "Repairables"
-# Afterwards, all sub-items are considered a Repairable to be loaded. The names of each subitem should be the exact material name.
-# The bare minimum of a Repairable is that it have a RepairMaterial and a MaximumDurability
+# Any file named salvage.*.yml in the mcmmmo folder will be loaded as a salvage config
+# All salvage configs have a main section titled "Salvageables"
+# Afterwards, all sub-items are considered a Salvageable to be loaded. The names of each subitem should be the exact material name.
+# The bare minimum of a Salvageable is that it has a minimumLevel and XpMultiplier.
 #
 # ItemType: This is the type of item to be repaired, this is only important to permissions.
 ## Valid values are ARMOR, TOOL, and OTHER.
 ## This defaults to OTHER.
 #
-# MaterialType: This is the type of the material of the item to be repaired, this is only important for permissions.
+# MaterialType: This is the type of the material of the item to be salvaged, this is only important for permissions.
 ## Valid values are STRING, LEATHER, WOOD, STONE, IRON, GOLD, DIAMOND, and OTHER
 ## This defaults to OTHER.
 #
-# RepairMaterial: This is the material name of the item used to repair this repairable.
-## This is required to be set.
+# SalvageMaterial: This is the material name of the item used to salvage this item.
+## This is required to be set for non craftable items, if not set mcMMO checks the crafting recipe to see which items
+## should be dropped when salvaging the item.
 #
-# RepairMaterialMetadata: This is the metadata of the item used to repair this repairable.
+# SalvageMaterialMetadata: This is the metadata of the item used to salvage this item.
 ## A value of -1 means to ignore all metadata when repairing.
 ## This defaults to -1
 #
 # MaximumDurability: This is the maximum durability of the item.
-## This is required to be set.
 #
-# MinimumLevel: This is the minimum repair level needed to repair this item.
+# MinimumLevel: This is the minimum repair level needed to salvage this item.
 ## Valid values are => 0
 ## This defaults to 0
 #
-# MinimumQuantity: This is the minimum number of items needed to repair this item ignoring all other repair bonuses.
-## This is typically the number of the repair material needed to create a new item, for example for a sword it is 2, for an axe it is 3
+# MaximumQuantity: This is the maximum number of items yield after salvaging the item, ignoring all other salvage bonuses.
+## This is typically the number of the salvage material needed to create a new item, for example for a sword it is 2, for an axe it is 3
 ## This defaults to 2
 #
 # XpMultiplier: This is the amount to multiply the xp bonus by.
 ## This defaults to 1
 #
 #
-# The following is the default repair config that ships with mcMMO, it contains all vanilla items that are repairable.
+# The following is the default salvage config that ships with mcMMO, it contains all vanilla items that are salvageable.
 #
 #
 ###
-Repairables:
+Salvageables:
     #
-    # Wooden repairables
+    # Wooden salvageables
     ###
     # Tools
     WOOD_SWORD:
@@ -62,7 +62,7 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: .25
     #
-    # Stone repairables
+    # Stone salvageables
     ###
     # Tools
     STONE_SWORD:
@@ -81,7 +81,7 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: .25
     #
-    # Iron repairables
+    # Iron salvageables
     ###
     # Tools
     IRON_SWORD:
@@ -119,7 +119,7 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: 2
     #
-    # Gold repairables
+    # Gold salvageables
     ###
     # Tools
     GOLD_SWORD:
@@ -151,7 +151,7 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: 4
     #
-    # Diamond repairables
+    # Diamond salvageables
     ###
     # Tools
     DIAMOND_SWORD:
@@ -183,7 +183,7 @@ Repairables:
         MinimumLevel: 50
         XpMultiplier: 6
     #
-    # Leather repairables
+    # Leather salvageables
     ###
     # Armor
     LEATHER_HELMET:
@@ -199,7 +199,7 @@ Repairables:
         MinimumLevel: 0
         XpMultiplier: 1
     #
-    # String repairables
+    # String salvageables
     ###
     # Tools
     FISHING_ROD:

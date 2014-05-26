@@ -176,7 +176,7 @@ public final class PartyAPI {
     }
 
     public static boolean hasAlly(String partyName) {
-        return PartyManager.getParty(partyName).getAlly() != null;
+        return getAllyName(partyName) != null;
     }
 
     public static String getAllyName(String partyName) {

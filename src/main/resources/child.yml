@@ -8,6 +8,9 @@
 #  WARNING: THIS IS NOT SUPPORTED, IF YOU DO SO YOU ARE RESPONSIBLE FOR THE ISSUES THAT MAY ARISE.  That said, watch out for circular dependencies, those are bad.
 #
 #####
+Salvage:
+    - Fishing
+    - Repair
 Smelting:
     - Mining
     - Repair

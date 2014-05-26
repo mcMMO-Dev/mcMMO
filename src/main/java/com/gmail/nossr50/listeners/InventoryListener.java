@@ -51,7 +51,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryOpen(InventoryOpenEvent event) {
-        Block furnaceBlock = processInventoryOpenorCloseEvent(event.getInventory());
+        Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
         if (furnaceBlock == null || furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
             return;
@@ -68,7 +68,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryClose(InventoryCloseEvent event) {
-        Block furnaceBlock = processInventoryOpenorCloseEvent(event.getInventory());
+        Block furnaceBlock = processInventoryOpenOrCloseEvent(event.getInventory());
 
         if (furnaceBlock == null || furnaceBlock.hasMetadata(mcMMO.furnaceMetadataKey)) {
             return;
@@ -295,7 +295,12 @@ public class InventoryListener implements Listener {
 
         ItemStack item = event.getItem();
 
-        if (Config.getInstance().getPreventHopperTransfer() && item.getType() != Material.POTION) {
+        if (Config.getInstance().getPreventHopperTransferIngredients() && item.getType() != Material.POTION) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if (Config.getInstance().getPreventHopperTransferBottles() && item.getType() == Material.POTION) {
             event.setCancelled(true);
             return;
         }
@@ -327,7 +332,7 @@ public class InventoryListener implements Listener {
         new PlayerUpdateInventoryTask((Player) whoClicked).runTaskLater(plugin, 0);
     }
 
-    private Block processInventoryOpenorCloseEvent(Inventory inventory) {
+    private Block processInventoryOpenOrCloseEvent(Inventory inventory) {
         if (!(inventory instanceof FurnaceInventory)) {
             return null;
         }

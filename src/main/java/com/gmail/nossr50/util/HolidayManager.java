@@ -342,7 +342,8 @@ public final class HolidayManager {
         return mcMMO.getHolidayManager().getDateRange(day.getTime(), start.getTime(), end.getTime());
     }
 
-    public void handleStatisticEvent(PlayerStatisticIncrementEvent event) {Player player = event.getPlayer();
+    public void handleStatisticEvent(PlayerStatisticIncrementEvent event) {
+        Player player = event.getPlayer();
         Statistic statistic = event.getStatistic();
         int newValue = event.getNewValue();
 
