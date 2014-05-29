@@ -104,7 +104,8 @@ public class McMMOPlayer {
         this.player = player;
         this.playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
         this.ptpRecord = new PartyTeleportRecord();
-
+        this.profile = new PlayerProfile(playerName, false);
+        
         for (AbilityType abilityType : AbilityType.values()) {
             this.abilityMode.put(abilityType, false);
             this.abilityInformed.put(abilityType, true); // This is intended
@@ -114,6 +115,20 @@ public class McMMOPlayer {
             this.toolMode.put(toolType, false);
         }
 
+        /*
+         * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
+         * but I actually have no idea about the performance impact, if there is any.
+         * If in the future someone wants to remove this, don't forget to also remove what is in the SkillType enum. - bm01
+         */
+        try {
+            for (SkillType skillType : SkillType.values()) {
+                skillManagers.put(skillType, skillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(McMMOPlayer.this));
+            }
+        } catch (Exception e) {
+            mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
+            e.printStackTrace();
+        }
+
         SQLThread.pending.put(playerName, new Callback() {
             @Override
             public void done(String playerName, PlayerProfile p) {
@@ -121,44 +136,10 @@ public class McMMOPlayer {
 
                 party = PartyManager.getPlayerParty(playerName);
 
-                /*
-                 * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
-                 * but I actually have no idea about the performance impact, if there is any.
-                 * If in the future someone wants to remove this, don't forget to also remove what is in the SkillType enum. - bm01
-                 */
-                try {
-                    for (SkillType skillType : SkillType.values()) {
-                        skillManagers.put(skillType, skillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(McMMOPlayer.this));
-                    }
-                } catch (IllegalAccessException e) {
-                    mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
-                    e.printStackTrace();
-                } 
-                catch (IllegalArgumentException e) {
-                    mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
-                    e.printStackTrace();
-                } 
-                catch (InstantiationException e) {
-                    mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
-                    e.printStackTrace();
-                } 
-                catch (NoSuchMethodException e) {
-                    mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
-                    e.printStackTrace();
-                } 
-                catch (SecurityException e) {
-                    mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
-                    e.printStackTrace();
-                } 
-                catch (InvocationTargetException e) {
-                    mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
-                    e.printStackTrace();
-                }
-
                 if (!profile.isLoaded()) {
                     mcMMO.p.getLogger().log(Level.WARNING, "Unable to load the PlayerProfile for {0}. Will retry over the next several seconds.", playerName);
                     new RetryProfileLoadingTask().runTaskTimerAsynchronously(mcMMO.p, 11L, 31L);
-                } 
+                }
             }
         });
     }
