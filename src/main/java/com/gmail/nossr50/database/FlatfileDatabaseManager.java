@@ -194,8 +194,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             }
             catch (Exception e) {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
-            }
-            finally {
+            } finally {
                 tryClose(in);
                 tryClose(out);
             }
@@ -207,6 +206,10 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     public void saveUser(final PlayerProfile profile) {
+        if (profile == null || !profile.isLoaded()) {
+            return;
+        }
+
         mcMMO.p.getServer().getScheduler().runTaskAsynchronously(mcMMO.p, new Runnable() {
             @Override
             public void run() {
