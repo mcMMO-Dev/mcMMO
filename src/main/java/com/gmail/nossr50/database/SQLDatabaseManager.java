@@ -519,21 +519,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
         if (exists) {
             try {
                 isClosed = connection.isClosed();
+                
+                if (!isClosed) {
+                    isValid = true;
+                }
             }
             catch (SQLException e) {
                 isClosed = true;
                 e.printStackTrace();
                 printErrors(e);
-            }
-
-            if (!isClosed) {
-                try {
-                    isValid = connection.isValid(VALID_TIMEOUT);
-                }
-                catch (SQLException e) {
-                    // Don't print stack trace because it's valid to lose idle connections to the server and have to restart them.
-                    isValid = false;
-                }
             }
         }
 
