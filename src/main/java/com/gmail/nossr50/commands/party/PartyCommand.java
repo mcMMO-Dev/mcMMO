@@ -14,7 +14,6 @@ import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.commands.party.alliance.PartyAllianceCommand;
-import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -55,7 +54,6 @@ public class PartyCommand implements TabExecutor {
     private CommandExecutor partyRenameCommand         = new PartyRenameCommand();
     private CommandExecutor partyInfoCommand           = new PartyInfoCommand();
     private CommandExecutor partyHelpCommand           = new PartyHelpCommand();
-    private CommandExecutor partyTeleportCommand       = new PtpCommand();
     private CommandExecutor partyChatCommand           = new PartyChatCommand();
     private CommandExecutor partyAllianceCommand       = new PartyAllianceCommand();
 
@@ -120,8 +118,6 @@ public class PartyCommand implements TabExecutor {
                 return partyQuitCommand.onCommand(sender, command, label, args);
             case INVITE:
                 return partyInviteCommand.onCommand(sender, command, label, args);
-            case TELEPORT:
-                return partyTeleportCommand.onCommand(sender, command, label, extractArgs(args));
             case CHAT:
                 return partyChatCommand.onCommand(sender, command, label, extractArgs(args));
             default:
@@ -189,18 +185,6 @@ public class PartyCommand implements TabExecutor {
                         return StringUtil.copyPartialMatches(args[1], CommandUtils.TRUE_FALSE_OPTIONS, new ArrayList<String>(CommandUtils.TRUE_FALSE_OPTIONS.size()));
                     case PASSWORD:
                         return StringUtil.copyPartialMatches(args[1], CommandUtils.RESET_OPTIONS, new ArrayList<String>(CommandUtils.RESET_OPTIONS.size()));
-                    case TELEPORT:
-                        List<String> matches = StringUtil.copyPartialMatches(args[1], PtpCommand.TELEPORT_SUBCOMMANDS, new ArrayList<String>(PtpCommand.TELEPORT_SUBCOMMANDS.size()));
-
-                        if (matches.size() == 0) {
-                            Player player = (Player) sender;
-                            Party party = UserManager.getPlayer(player).getParty();
-
-                            playerNames = party.getOnlinePlayerNames(player);
-                            return StringUtil.copyPartialMatches(args[1], playerNames, new ArrayList<String>(playerNames.size()));
-                        }
-
-                        return matches;
                     default:
                         return ImmutableList.of();
                 }

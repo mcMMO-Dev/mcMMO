@@ -28,7 +28,6 @@ import com.gmail.nossr50.commands.experience.SkillresetCommand;
 import com.gmail.nossr50.commands.hardcore.HardcoreCommand;
 import com.gmail.nossr50.commands.hardcore.VampirismCommand;
 import com.gmail.nossr50.commands.party.PartyCommand;
-import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.commands.player.InspectCommand;
 import com.gmail.nossr50.commands.player.MccooldownCommand;
 import com.gmail.nossr50.commands.player.McrankCommand;
@@ -337,16 +336,6 @@ public final class CommandRegistrationManager {
         command.setExecutor(new PartyCommand());
     }
 
-    private static void registerPtpCommand() {
-        PluginCommand command = mcMMO.p.getCommand("ptp");
-        command.setDescription(LocaleLoader.getString("Commands.Description.ptp"));
-        command.setPermission("mcmmo.commands.ptp"); // Only need the main one, not the individual ones for toggle/accept/acceptall
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "ptp", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "ptp", "<toggle|accept|acceptall>"));
-        command.setExecutor(new PtpCommand());
-    }
-
     private static void registerHardcoreCommand() {
         PluginCommand command = mcMMO.p.getCommand("hardcore");
         command.setDescription(LocaleLoader.getString("Commands.Description.hardcore"));
@@ -438,7 +427,6 @@ public final class CommandRegistrationManager {
 
         // Party Commands
         registerPartyCommand();
-        registerPtpCommand();
 
         // Player Commands
         registerInspectCommand();
