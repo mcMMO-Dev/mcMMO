@@ -29,7 +29,7 @@ public class MmoeditCommand extends ExperienceCommand {
         profile.modifySkill(skill, value);
 
         if (player == null) {
-            profile.save();
+            profile.scheduleAsyncSave();
             return;
         }
 

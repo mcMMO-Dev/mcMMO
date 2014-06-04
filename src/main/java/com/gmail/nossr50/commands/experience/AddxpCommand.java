@@ -28,7 +28,7 @@ public class AddxpCommand extends ExperienceCommand {
         }
         else {
             profile.addXp(skill, value);
-            profile.save();
+            profile.scheduleAsyncSave();
         }
     }
 

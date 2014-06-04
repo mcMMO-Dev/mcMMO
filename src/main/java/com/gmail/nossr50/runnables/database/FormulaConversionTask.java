@@ -41,7 +41,8 @@ public class FormulaConversionTask extends BukkitRunnable {
                 }
 
                 editValues(profile);
-                profile.save(); // Since this is a temporary profile, we save it here.
+                // Since this is a temporary profile, we save it here.
+                profile.scheduleAsyncSave();
             }
             else {
                 profile = mcMMOPlayer.getProfile();

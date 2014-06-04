@@ -110,7 +110,7 @@ public class SkillresetCommand implements TabExecutor {
         profile.modifySkill(skill, 0);
 
         if (player == null) {
-            profile.save();
+            profile.scheduleAsyncSave();
             return;
         }
 
