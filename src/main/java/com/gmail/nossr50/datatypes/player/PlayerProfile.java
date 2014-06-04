@@ -11,6 +11,7 @@ import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -19,7 +20,7 @@ import com.google.common.collect.ImmutableMap;
 public class PlayerProfile {
     private final String playerName;
     private boolean loaded;
-    private boolean changed;
+    private volatile boolean changed;
 
     /* HUDs */
     private MobHealthbarType mobHealthbarType;
@@ -60,12 +61,18 @@ public class PlayerProfile {
         loaded = true;
     }
 
+    public void scheduleAsyncSave() {
+        new PlayerProfileSaveTask(this).runTaskAsynchronously(mcMMO.p);
+    }
+
     public void save() {
         if (!changed || !loaded) {
             return;
         }
 
-        changed = !mcMMO.getDatabaseManager().saveUser(new PlayerProfile(playerName, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType));
+        // TODO should this part be synchronized?
+        PlayerProfile profileCopy = new PlayerProfile(playerName, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType);
+        changed = !mcMMO.getDatabaseManager().saveUser(profileCopy);
 
         if (changed) {
             mcMMO.p.getLogger().warning("PlayerProfile for " + playerName + " failed to save");

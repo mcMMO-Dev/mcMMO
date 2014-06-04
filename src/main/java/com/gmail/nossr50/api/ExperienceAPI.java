@@ -422,12 +422,12 @@ public final class ExperienceAPI {
                 profile.addLevels(parentSkill, (levels / parentSkills.size()));
             }
 
-            profile.save();
+            profile.scheduleAsyncSave();
             return;
         }
 
         profile.addLevels(skill, levels);
-        profile.save();
+        profile.scheduleAsyncSave();
     }
 
     /**
@@ -656,7 +656,7 @@ public final class ExperienceAPI {
         PlayerProfile profile = getOfflineProfile(playerName);
 
         profile.addXp(skill, XP);
-        profile.save();
+        profile.scheduleAsyncSave();
     }
 
     private static PlayerProfile getOfflineProfile(String playerName) {

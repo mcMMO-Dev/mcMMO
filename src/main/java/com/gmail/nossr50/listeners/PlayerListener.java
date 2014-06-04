@@ -355,7 +355,7 @@ public class PlayerListener implements Listener {
 
         mcMMOPlayer.resetAbilityMode();
         BleedTimerTask.bleedOut(player);
-        mcMMOPlayer.getProfile().save();
+        mcMMOPlayer.getProfile().scheduleAsyncSave();
         UserManager.remove(player);
         ScoreboardManager.teardownPlayer(player);
     }

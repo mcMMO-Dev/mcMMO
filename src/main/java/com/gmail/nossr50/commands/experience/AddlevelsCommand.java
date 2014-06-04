@@ -27,7 +27,7 @@ public class AddlevelsCommand extends ExperienceCommand {
         profile.addLevels(skill, value);
 
         if (player == null) {
-            profile.save();
+            profile.scheduleAsyncSave();
             return;
         }
 

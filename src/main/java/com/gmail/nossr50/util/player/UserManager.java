@@ -47,7 +47,7 @@ public final class UserManager {
     }
 
     /**
-     * Save all users.
+     * Save all users ON THIS THREAD.
      */
     public static void saveAll() {
         Player[] onlinePlayers = mcMMO.p.getServer().getOnlinePlayers();

@@ -205,6 +205,7 @@ public class mcMMO extends JavaPlugin {
         try {
             Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
+            UserManager.clearAll();
             PartyManager.saveParties(); // Save our parties
             ScoreboardManager.teardownAll();
             formulaManager.saveFormula();
