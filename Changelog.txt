@@ -7,7 +7,7 @@ Key:
   ! Change
   - Removal
 
-Version 1.5.01-dev
+Version 1.4.09-dev
  + Added new child skill; Salvage
  + Added new feature to Herbalism. Instantly-regrown crops are protected from being broken for 1 second
  + Added option to config.yml to show the /mcstats scoreboard automatically after logging in
@@ -25,21 +25,6 @@ Version 1.5.01-dev
  ! Vanished players no longer get hit by AoE effects
  ! Changed Alchemy config option 'Prevent_Hopper_Transfer' renamed to 'Prevent_Hopper_Transfer_Ingredients'
  - Removed salvage ability from Repair, salvage has it's own (child) skill now
-
-Version 1.5.00
- + Added Podzol & Red Sand to Excavation
- + Added Hardened Clay, Stained Clay, and Packed Ice to Mining blocks
- + Added Acacia and Dark Oak to Woodcutting blocks
- + Added Salmon, Clownfish, and Pufferfish to Fishing XP
- + Added new flowers and grasses to Herbalism XP
- + Added option to config.yml which allows players to always catch fish, even when a treasure is found
- + Added option to config.yml to override vanilla Minecraft treasures
- ! Fishing XP now depends on the type of fish.
- ! Woodcutting XP in experience.yml and Woodcutting double drops in config.yml now use the tree species names. Oak is now Generic, and Spruce is now Redwood.
- ! Red_Rose was replaced by Poppy, and so the key in experience.yml has been updated accordingly.
- - Removed deprecated permission nodes
- - Removed "Treasure found!" message
->>>>>>> f0ee708... Updater should not be running on the main thread
 
 Version 1.4.08
  + Added a new skill; Alchemy. Special thanks to EasyMFnE for creating this!
