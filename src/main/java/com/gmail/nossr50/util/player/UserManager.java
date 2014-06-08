@@ -59,10 +59,12 @@ public final class UserManager {
     }
 
     public static Collection<McMMOPlayer> getPlayers() {
-        Collection<McMMOPlayer> playerCollection  = new ArrayList<McMMOPlayer>();
+        Collection<McMMOPlayer> playerCollection = new ArrayList<McMMOPlayer>();
 
         for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-            playerCollection.add(getPlayer(player));
+            if (hasPlayerDataKey(player)) {
+                playerCollection.add(getPlayer(player));
+            }
         }
 
         return playerCollection;
