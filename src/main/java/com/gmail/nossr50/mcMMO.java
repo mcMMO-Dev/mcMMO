@@ -88,7 +88,6 @@ public class mcMMO extends JavaPlugin {
     private boolean updateAvailable;
 
     /* Plugin Checks */
-    private static boolean combatTagEnabled;
     private static boolean healthBarPluginEnabled;
 
     // Config Validation Check
@@ -127,7 +126,6 @@ public class mcMMO extends JavaPlugin {
             metadataValue = new FixedMetadataValue(this, true);
 
             PluginManager pluginManager = getServer().getPluginManager();
-            combatTagEnabled = pluginManager.getPlugin("CombatTag") != null;
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
 
             setupFilePaths();
@@ -313,10 +311,6 @@ public class mcMMO extends JavaPlugin {
     @Deprecated
     public static void setDatabaseManager(DatabaseManager databaseManager) {
         mcMMO.databaseManager = databaseManager;
-    }
-
-    public static boolean isCombatTagEnabled() {
-        return combatTagEnabled;
     }
 
     public static boolean isHealthBarPluginEnabled() {

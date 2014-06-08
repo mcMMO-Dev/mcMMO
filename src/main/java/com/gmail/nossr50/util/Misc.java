@@ -6,7 +6,6 @@ import java.util.Random;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.NPC;
 import org.bukkit.entity.Player;
@@ -51,7 +50,7 @@ public final class Misc {
     }
 
     public static boolean isNPCEntity(Entity entity) {
-        return (entity == null || entity.hasMetadata("NPC") || entity instanceof NPC || (mcMMO.isCombatTagEnabled() && entity instanceof HumanEntity && ((HumanEntity) entity).getName().contains("PvpLogger")) || entity.getClass().getName().equalsIgnoreCase("cofh.entity.PlayerFake"));
+        return (entity == null || entity.hasMetadata("NPC") || entity instanceof NPC || entity.getClass().getName().equalsIgnoreCase("cofh.entity.PlayerFake"));
     }
 
     /**
