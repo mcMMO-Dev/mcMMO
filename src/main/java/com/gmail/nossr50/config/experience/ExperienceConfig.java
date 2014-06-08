@@ -13,6 +13,7 @@ import com.gmail.nossr50.config.AutoUpdateConfigLoader;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.util.StringUtils;
 
 public class ExperienceConfig extends AutoUpdateConfigLoader {
@@ -80,8 +81,10 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
          */
 
         /* Alchemy */
-        if (getPotionXP() <= 0) {
-            reason.add("Experience.Alchemy.Potion should be greater than 0!");
+        for (PotionStage potionStage : PotionStage.values()) {
+            if (getPotionXP(potionStage) < 0) {
+                reason.add("Experience.Alchemy.Potion_Stage_" + potionStage.toNumerical() + " should be at least 0!");
+            }
         }
 
         /* Combat XP Multipliers */
@@ -201,7 +204,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public double getFeatherFallXPModifier() { return config.getDouble("Experience.Acrobatics.FeatherFall_Multiplier", 2.0); }
 
     /* Alchemy */
-    public double getPotionXP() { return config.getDouble("Experience.Alchemy.Potion", 150D); }
+    public double getPotionXP(PotionStage stage) { return config.getDouble("Experience.Alchemy.Potion_Stage_" + stage.toNumerical(), 10D); }
 
     /* Fishing */
     public int getFishXp(MaterialData data) {

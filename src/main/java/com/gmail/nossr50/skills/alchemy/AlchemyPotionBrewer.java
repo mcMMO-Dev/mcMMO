@@ -18,6 +18,7 @@ import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
+import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.runnables.skills.AlchemyBrewCheckTask;
 import com.gmail.nossr50.util.Permissions;
@@ -122,7 +123,8 @@ public final class AlchemyPotionBrewer {
                 inventory.setItem(i, output.toItemStack(item.getAmount()).clone());
 
                 if (player != null) {
-                    UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(1);
+                    PotionStage potionStage = PotionStage.getPotionStage(input, output);
+                    UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
                 }
             }
         }
