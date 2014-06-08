@@ -9,6 +9,7 @@ import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
+import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.StringUtils;
 
@@ -64,7 +65,7 @@ public class AlchemyManager extends SkillManager {
         return Math.min(Alchemy.catalysisMaxSpeed, Alchemy.catalysisMinSpeed + (Alchemy.catalysisMaxSpeed - Alchemy.catalysisMinSpeed) * (skillLevel - Alchemy.catalysisUnlockLevel) / (Alchemy.catalysisMaxBonusLevel - Alchemy.catalysisUnlockLevel)) * (isLucky ? LUCKY_MODIFIER : 1.0);
     }
 
-    public void handlePotionBrewSuccesses(int amount) {
-        applyXpGain((float) (ExperienceConfig.getInstance().getPotionXP() * amount), XPGainReason.PVE);
+    public void handlePotionBrewSuccesses(PotionStage potionStage, int amount) {
+        applyXpGain((float) (ExperienceConfig.getInstance().getPotionXP(potionStage) * amount), XPGainReason.PVE);
     }
 }

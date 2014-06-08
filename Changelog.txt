@@ -24,6 +24,7 @@ Version 1.5.01-dev
  ! Changed player data saving. Save tasks are now asynchronous
  ! Vanished players no longer get hit by AoE effects
  ! Changed Alchemy config option 'Prevent_Hopper_Transfer' renamed to 'Prevent_Hopper_Transfer_Ingredients'
+ ! Changed Alchemy XP distribution. XP is granted based on the stage of the potion.
  - Removed salvage ability from Repair, salvage has it's own (child) skill now
 
 Version 1.5.00

@@ -80,7 +80,17 @@ Experience:
         # FeatherFall_Multiplier: Multiply Acrobatics XP by this value when wearing boots with the Feather Fall enchant
         FeatherFall_Multiplier: 2.0
     Alchemy:
-        Potion: 120
+        # Alchemy potion stages are based on the number of ingredients added
+        # Potion_Stage_1 represents a base potion
+        # Potion_Stage_2 represents a base potion with one ingredient
+        # Potion_Stage_3 represents a base potion with one ingredient and one amplifier
+        # Potion_Stage_4 represents a base potion with one ingredient and two amplifiers
+        # Potion_Stage_5 represents a base potion with one ingredient where the amplifiers are swapped
+        Potion_Stage_1: 15
+        Potion_Stage_2: 30
+        Potion_Stage_3: 60
+        Potion_Stage_4: 120
+        Potion_Stage_5: 0
     Fishing:
         Raw_Fish: 800
         Raw_Salmon: 800
