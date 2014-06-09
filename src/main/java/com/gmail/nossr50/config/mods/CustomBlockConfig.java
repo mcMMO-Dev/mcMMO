@@ -68,7 +68,7 @@ public class CustomBlockConfig extends ConfigLoader {
             Material blockMaterial = Material.matchMaterial(blockInfo[0]);
 
             if (blockMaterial == null) {
-                plugin.getLogger().warning("Invalid material name. This item will be skipped. - " + blockInfo[0]);
+                plugin.getLogger().warning("Invalid material name. [" + blockInfo[0] + "] This item will be skipped. - " + blockName);
                 continue;
             }
 
@@ -76,11 +76,11 @@ public class CustomBlockConfig extends ConfigLoader {
                 String[] dataInfo = blockInfo[1].split("[-]");
 
                 if (dataInfo.length == 2) {
-                    byte startByte = Byte.valueOf(dataInfo[0]);
-                    byte endByte = Byte.valueOf(dataInfo[1]);
+                    byte startData = Byte.valueOf(dataInfo[0]);
+                    byte endData = Byte.valueOf(dataInfo[1]);
 
-                    for (byte i = startByte; i < endByte; i++) {
-                        MaterialData blockMaterialData = new MaterialData(blockMaterial, i);
+                    for (byte blockData = startData; blockData < endData; blockData++) {
+                        MaterialData blockMaterialData = new MaterialData(blockMaterial, blockData);
                         loadBlock(skillType, blockList, blockName, blockMaterialData);
                     }
 
