@@ -80,7 +80,7 @@ public class CustomBlockConfig extends ConfigLoader {
                     byte endData = Byte.valueOf(dataInfo[1]);
                     System.out.println(blockName + " Data range; [" + startData + " - " + endData + "]");
 
-                    for (byte blockData = startData; blockData < endData; blockData++) {
+                    for (byte blockData = startData; blockData <= endData; blockData++) {
                         MaterialData blockMaterialData = new MaterialData(blockMaterial, blockData);
                         loadBlock(skillType, blockList, blockName, blockMaterialData);
                     }
