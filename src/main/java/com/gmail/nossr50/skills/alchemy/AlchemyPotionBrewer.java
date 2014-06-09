@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.alchemy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Material;
@@ -17,8 +18,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.alchemy.AlchemyPotion;
-import com.gmail.nossr50.events.fake.FakeBrewEvent;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
+import com.gmail.nossr50.events.fake.FakeBrewEvent;
 import com.gmail.nossr50.runnables.player.PlayerUpdateInventoryTask;
 import com.gmail.nossr50.runnables.skills.AlchemyBrewCheckTask;
 import com.gmail.nossr50.util.Permissions;
@@ -102,12 +103,7 @@ public final class AlchemyPotionBrewer {
             return;
         }
 
-        FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
-            return;
-        }
+        List<AlchemyPotion> inputList = new ArrayList<AlchemyPotion>();
 
         for (int i = 0; i < 3; i++) {
             ItemStack item = inventory.getItem(i);
@@ -119,13 +115,26 @@ public final class AlchemyPotionBrewer {
             AlchemyPotion input = PotionConfig.getInstance().getPotion(item.getDurability());
             AlchemyPotion output = PotionConfig.getInstance().getPotion(input.getChildDataValue(ingredient));
 
+            inputList.add(input);
+
             if (output != null) {
                 inventory.setItem(i, output.toItemStack(item.getAmount()).clone());
+            }
+        }
 
-                if (player != null) {
-                    PotionStage potionStage = PotionStage.getPotionStage(input, output);
-                    UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
-                }
+        FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled() || inputList.isEmpty()) {
+            return;
+        }
+
+        for (AlchemyPotion input : inputList) {
+            AlchemyPotion output = PotionConfig.getInstance().getPotion(input.getChildDataValue(ingredient));
+
+            if (output != null && player != null) {
+                PotionStage potionStage = PotionStage.getPotionStage(input, output);
+                UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
             }
         }
 
