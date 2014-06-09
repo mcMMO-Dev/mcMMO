@@ -78,6 +78,7 @@ public class CustomBlockConfig extends ConfigLoader {
                 if (dataInfo.length == 2) {
                     byte startData = Byte.valueOf(dataInfo[0]);
                     byte endData = Byte.valueOf(dataInfo[1]);
+                    System.out.println(blockName + " Data range; [" + startData + " - " + endData + "]");
 
                     for (byte blockData = startData; blockData < endData; blockData++) {
                         MaterialData blockMaterialData = new MaterialData(blockMaterial, blockData);
@@ -96,6 +97,7 @@ public class CustomBlockConfig extends ConfigLoader {
     }
 
     private void loadBlock(String skillType, List<MaterialData> blockList, String blockName, MaterialData blockMaterialData) {
+        System.out.println("Loading block: " + blockMaterialData.getItemType() + " " + blockMaterialData.getData());
         if (blockList != null) {
             blockList.add(blockMaterialData);
         }
