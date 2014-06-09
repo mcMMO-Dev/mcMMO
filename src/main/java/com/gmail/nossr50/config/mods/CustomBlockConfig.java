@@ -68,39 +68,59 @@ public class CustomBlockConfig extends ConfigLoader {
             Material blockMaterial = Material.matchMaterial(blockInfo[0]);
 
             if (blockMaterial == null) {
-                plugin.getLogger().warning("Invalid material name. This item will be skipped. - " + blockInfo[0]);
+                plugin.getLogger().warning("Invalid material name. [" + blockInfo[0] + "] This item will be skipped. - " + blockName);
                 continue;
+            }
+
+            if (blockInfo.length == 2) {
+                String[] dataInfo = blockInfo[1].split("[-]");
+
+                if (dataInfo.length == 2) {
+                    byte startData = Byte.valueOf(dataInfo[0]);
+                    byte endData = Byte.valueOf(dataInfo[1]);
+
+                    for (byte blockData = startData; blockData <= endData; blockData++) {
+                        MaterialData blockMaterialData = new MaterialData(blockMaterial, blockData);
+                        loadBlock(skillType, blockList, blockName, blockMaterialData);
+                    }
+
+                    return;
+                }
             }
 
             byte blockData = (blockInfo.length == 2) ? Byte.valueOf(blockInfo[1]) : 0;
+
             MaterialData blockMaterialData = new MaterialData(blockMaterial, blockData);
-
-            if (blockList != null) {
-                blockList.add(blockMaterialData);
-            }
-
-            if (skillType.equals("Ability_Blocks")) {
-                continue;
-            }
-
-            int xp = config.getInt(skillType + "." + blockName + ".XP_Gain");
-            int smeltingXp = 0;
-
-            if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
-                customOres.add(blockMaterialData);
-                smeltingXp = config.getInt(skillType + "." + blockName + ".Smelting_XP_Gain", xp / 10);
-            }
-            else if (skillType.equals("Woodcutting")) {
-                if (config.getBoolean(skillType + "." + blockName + ".Is_Log")) {
-                    customLogs.add(blockMaterialData);
-                }
-                else {
-                    customLeaves.add(blockMaterialData);
-                    xp = 0; // Leaves don't grant XP
-                }
-            }
-
-            customBlockMap.put(blockMaterialData, new CustomBlock(xp, config.getBoolean(skillType + "." + blockName + ".Double_Drops_Enabled"), smeltingXp));
+            loadBlock(skillType, blockList, blockName, blockMaterialData);
         }
+    }
+
+    private void loadBlock(String skillType, List<MaterialData> blockList, String blockName, MaterialData blockMaterialData) {
+        if (blockList != null) {
+            blockList.add(blockMaterialData);
+        }
+
+        if (skillType.equals("Ability_Blocks")) {
+            return;
+        }
+
+        int xp = config.getInt(skillType + "." + blockName + ".XP_Gain");
+        int smeltingXp = 0;
+
+        if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
+            customOres.add(blockMaterialData);
+            smeltingXp = config.getInt(skillType + "." + blockName + ".Smelting_XP_Gain", xp / 10);
+        }
+        else if (skillType.equals("Woodcutting")) {
+            if (config.getBoolean(skillType + "." + blockName + ".Is_Log")) {
+                customLogs.add(blockMaterialData);
+            }
+            else {
+                customLeaves.add(blockMaterialData);
+                xp = 0; // Leaves don't grant XP
+            }
+        }
+
+        customBlockMap.put(blockMaterialData, new CustomBlock(xp, config.getBoolean(skillType + "." + blockName + ".Double_Drops_Enabled"), smeltingXp));
     }
 }
