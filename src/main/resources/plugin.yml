@@ -1954,6 +1954,11 @@ permissions:
         children:
             mcmmo.ability.repair.all: true
             mcmmo.commands.repair: true
+    mcmmo.skills.salvage:
+        description: Allows access to the Salvage skill
+        children:
+            mcmmo.ability.salvage.all: true
+            mcmmo.commands.salvage: true
     mcmmo.skills.smelting:
         description: Allows access to the Smelting skill
         children:
