@@ -63,6 +63,10 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+        if (!EventUtils.shouldProcessEvent(event.getBlock(), true)) {
+            return;
+        }
+
         List<Block> blocks = event.getBlocks();
         BlockFace direction = event.getDirection();
         Block futureEmptyBlock = event.getBlock().getRelative(direction); // Block that would be air after piston is finished
@@ -93,6 +97,10 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
+        if (!EventUtils.shouldProcessEvent(event.getBlock(), false)) {
+            return;
+        }
+
         if (!event.isSticky()) {
             return;
         }
