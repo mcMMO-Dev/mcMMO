@@ -138,7 +138,7 @@ public class mcMMO extends JavaPlugin {
                 return;
             }
 
-            if (getServer().getName().equals("MCPC+")) {
+            if (getServer().getName().equals("Cauldron") || getServer().getName().equals("MCPC+")) {
                 checkModConfigs();
             }
 
@@ -485,22 +485,22 @@ public class mcMMO extends JavaPlugin {
 
     private void checkModConfigs() {
         if (!Config.getInstance().getToolModsEnabled()) {
-            getLogger().info("MCPC+ implementation found, but the custom tool config for mcMMO is disabled!");
+            getLogger().warning("Cauldron implementation found, but the custom tool config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Tool_Mods_Enabled to TRUE in config.yml.");
         }
 
         if (!Config.getInstance().getArmorModsEnabled()) {
-            getLogger().info("MCPC+ implementation found, but the custom armor config for mcMMO is disabled!");
+            getLogger().warning("Cauldron implementation found, but the custom armor config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Armor_Mods_Enabled to TRUE in config.yml.");
         }
 
         if (!Config.getInstance().getBlockModsEnabled()) {
-            getLogger().info("MCPC+ implementation found, but the custom block config for mcMMO is disabled!");
+            getLogger().warning("Cauldron implementation found, but the custom block config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Block_Mods_Enabled to TRUE in config.yml.");
         }
 
         if (!Config.getInstance().getEntityModsEnabled()) {
-            getLogger().info("MCPC+ implementation found, but the custom entity config for mcMMO is disabled!");
+            getLogger().warning("Cauldron implementation found, but the custom entity config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Entity_Mods_Enabled to TRUE in config.yml.");
         }
     }
