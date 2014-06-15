@@ -15,7 +15,7 @@ Version 1.5.01-dev
  + Added support for `MATERIAL|data` format in treasures.yml
  + Added API to experience events to get XP gain reason
  + Added API to check if an entity is bleeding
- + Added option to tools.yml config files to set a pretty repair material name
+ + Added options to tools.yml and armor.yml config files to set a pretty repair material name
  + Added full support for repairables in tools.yml and armor.yml config files
  = Fixed bug where pistons would mess with the block tracking
  = Fixed bug where the Updater was running on the main thread.

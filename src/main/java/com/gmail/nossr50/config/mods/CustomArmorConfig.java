@@ -85,6 +85,7 @@ public class CustomArmorConfig extends ConfigLoader {
                     repairQuantity = config.getInt(armorType + "." + armorName + ".Repair_Material_Data_Quantity", 2);
                 }
 
+                String repairItemName = config.getString(armorType + "." + armorName + ".Repair_Material_Pretty_Name");
                 int repairMinimumLevel = config.getInt(armorType + "." + armorName + ".Repair_MinimumLevel", 0);
                 double repairXpMultiplier = config.getDouble(armorType + "." + armorName + ".Repair_XpMultiplier", 1);
 
@@ -94,7 +95,7 @@ public class CustomArmorConfig extends ConfigLoader {
                     durability = (short) config.getInt(armorType + "." + armorName + ".Durability", 70);
                 }
 
-                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, repairMinimumLevel, repairQuantity, durability, ItemType.ARMOR, MaterialType.OTHER, repairXpMultiplier));
+                repairables.add(RepairableFactory.getRepairable(armorMaterial, repairMaterial, repairData, repairItemName, repairMinimumLevel, repairQuantity, durability, ItemType.ARMOR, MaterialType.OTHER, repairXpMultiplier));
             }
 
             materialList.add(armorMaterial);

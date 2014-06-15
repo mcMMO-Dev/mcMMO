@@ -26,6 +26,10 @@
 ## Used in the feedback message when not enough repair materials are found.
 ## This defaults to the Repair_Material converted to string.
 #
+# Repair_Material_Pretty_Name: The pretty name of the repair material.
+## Used in the feedback message when not enough repair materials are found.
+## This defaults to the Repair_Material converted to string.
+#
 # Repair_MinimumLevel: This is the minimum repair level needed to repair this item.
 ## Valid values are => 0
 ## This defaults to 0
@@ -46,6 +50,7 @@ Boots:
         Repair_Material: REPAIR_MATERIAL_NAME
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
         Repair_MinimumLevel: 0
         Repair_XpMultiplier: 1.0
         Durability: 999
@@ -54,6 +59,7 @@ Boots:
         Repair_Material: REPAIR_MATERIAL_NAME
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
         Repair_MinimumLevel: 0
         Repair_XpMultiplier: 1.0
         Durability: 999
@@ -66,6 +72,7 @@ Chestplates:
         Repair_Material: REPAIR_MATERIAL_NAME
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
         Repair_MinimumLevel: 0
         Repair_XpMultiplier: 1.0
         Durability: 999
@@ -74,6 +81,7 @@ Chestplates:
         Repair_Material: REPAIR_MATERIAL_NAME
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
         Repair_MinimumLevel: 0
         Repair_XpMultiplier: 1.0
         Durability: 999
@@ -86,6 +94,7 @@ Helmets:
         Repair_Material: REPAIR_MATERIAL_NAME
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
         Repair_MinimumLevel: 0
         Repair_XpMultiplier: 1.0
         Durability: 999
@@ -94,6 +103,7 @@ Helmets:
         Repair_Material: REPAIR_MATERIAL_NAME
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
         Repair_MinimumLevel: 0
         Repair_XpMultiplier: 1.0
         Durability: 999
@@ -106,6 +116,7 @@ Leggings:
         Repair_Material: REPAIR_MATERIAL_NAME
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
         Repair_MinimumLevel: 0
         Repair_XpMultiplier: 1.0
         Durability: 999
@@ -114,6 +125,7 @@ Leggings:
         Repair_Material: REPAIR_MATERIAL_NAME
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
         Repair_MinimumLevel: 0
         Repair_XpMultiplier: 1.0
         Durability: 999
