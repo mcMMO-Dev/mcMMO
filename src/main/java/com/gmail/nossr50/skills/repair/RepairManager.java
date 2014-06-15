@@ -97,7 +97,8 @@ public class RepairManager extends SkillManager {
 
         // Check if they have the proper material to repair with
         if (!inventory.contains(repairMaterial)) {
-            String message = LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(repairMaterial));
+            String prettyName = repairable.getRepairMaterialPrettyName() == null ? StringUtils.getPrettyItemString(repairMaterial) : repairable.getRepairMaterialPrettyName();
+            String message = LocaleLoader.getString("Skills.NeedMore", prettyName);
 
             if (repairMaterialMetadata != (byte) -1 && !inventory.containsAtLeast(toRemove, 1)) {
                 message += ":" + repairMaterialMetadata;

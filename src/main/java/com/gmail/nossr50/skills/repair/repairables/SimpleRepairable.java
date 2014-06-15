@@ -11,14 +11,16 @@ public class SimpleRepairable implements Repairable {
     private final int minimumQuantity, minimumLevel;
     private final short maximumDurability, baseRepairDurability;
     private final byte repairMetadata;
+    private String repairMaterialPrettyName;
     private final ItemType repairItemType;
     private final MaterialType repairMaterialType;
     private final double xpMultiplier;
 
-    protected SimpleRepairable(Material type, Material repairMaterial, byte repairMetadata, int minimumLevel, int minimumQuantity, short maximumDurability, ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier) {
+    protected SimpleRepairable(Material type, Material repairMaterial, byte repairMetadata, String repairMaterialPrettyName, int minimumLevel, int minimumQuantity, short maximumDurability, ItemType repairItemType, MaterialType repairMaterialType, double xpMultiplier) {
         this.itemMaterial = type;
         this.repairMaterial = repairMaterial;
         this.repairMetadata = repairMetadata;
+        this.repairMaterialPrettyName = repairMaterialPrettyName;
         this.repairItemType = repairItemType;
         this.repairMaterialType = repairMaterialType;
         this.minimumLevel = minimumLevel;
@@ -41,6 +43,11 @@ public class SimpleRepairable implements Repairable {
     @Override
     public byte getRepairMaterialMetadata() {
         return repairMetadata;
+    }
+
+    @Override
+    public String getRepairMaterialPrettyName() {
+        return repairMaterialPrettyName;
     }
 
     @Override

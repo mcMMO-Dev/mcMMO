@@ -93,6 +93,7 @@ public class CustomToolConfig extends ConfigLoader {
                     repairQuantity = config.getInt(toolType + "." + toolName + ".Repair_Material_Data_Quantity", 2);
                 }
 
+                String repairItemName = config.getString(toolType + "." + toolName + ".Repair_Material_Pretty_Name");
                 int repairMinimumLevel = config.getInt(toolType + "." + toolName + ".Repair_MinimumLevel", 0);
                 double repairXpMultiplier = config.getDouble(toolType + "." + toolName + ".Repair_XpMultiplier", 1);
 
@@ -102,7 +103,7 @@ public class CustomToolConfig extends ConfigLoader {
                     durability = (short) config.getInt(toolType + "." + toolName + ".Durability", 60);
                 }
 
-                repairables.add(RepairableFactory.getRepairable(toolMaterial, repairMaterial, repairData, repairMinimumLevel, repairQuantity, durability, ItemType.TOOL, MaterialType.OTHER, repairXpMultiplier));
+                repairables.add(RepairableFactory.getRepairable(toolMaterial, repairMaterial, repairData, repairItemName, repairMinimumLevel, repairQuantity, durability, ItemType.TOOL, MaterialType.OTHER, repairXpMultiplier));
             }
 
             double multiplier = config.getDouble(toolType + "." + toolName + ".XP_Modifier", 1.0);
