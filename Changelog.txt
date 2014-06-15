@@ -15,6 +15,7 @@ Version 1.5.01-dev
  + Added support for `MATERIAL|data` format in treasures.yml
  + Added API to experience events to get XP gain reason
  + Added API to check if an entity is bleeding
+ + Added full support for repairables in tools.yml config files
  = Fixed bug where pistons would mess with the block tracking
  = Fixed bug where the Updater was running on the main thread.
  = Fixed bug when players would use /ptp without being in a party
