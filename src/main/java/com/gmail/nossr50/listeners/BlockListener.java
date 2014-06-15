@@ -31,6 +31,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
+import com.gmail.nossr50.runnables.PistonTrackerTask;
 import com.gmail.nossr50.runnables.StickyPistonTrackerTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
@@ -67,27 +68,23 @@ public class BlockListener implements Listener {
             return;
         }
 
-        List<Block> blocks = event.getBlocks();
         BlockFace direction = event.getDirection();
         Block futureEmptyBlock = event.getBlock().getRelative(direction); // Block that would be air after piston is finished
+
+        if (futureEmptyBlock.getType() == Material.AIR) {
+            return;
+        }
+
+        List<Block> blocks = event.getBlocks();
 
         for (Block b : blocks) {
             if (BlockUtils.shouldBeWatched(b.getState()) && mcMMO.getPlaceStore().isTrue(b)) {
                 b.getRelative(direction).setMetadata(mcMMO.blockMetadataKey, mcMMO.metadataValue);
-                if (b.equals(futureEmptyBlock) && futureEmptyBlock.getType() == Material.AIR) {
-                    mcMMO.getPlaceStore().setFalse(b);
-                }
             }
         }
 
-        for (Block b : blocks) {
-            Block nextBlock = b.getRelative(direction);
-
-            if (nextBlock.hasMetadata(mcMMO.blockMetadataKey)) {
-                mcMMO.getPlaceStore().setTrue(nextBlock);
-                nextBlock.removeMetadata(mcMMO.blockMetadataKey, plugin);
-            }
-        }
+        // Needed because blocks sometimes don't move when two pistons push towards each other
+        new PistonTrackerTask(blocks, direction, futureEmptyBlock).runTaskLater(plugin, 2);
     }
 
     /**

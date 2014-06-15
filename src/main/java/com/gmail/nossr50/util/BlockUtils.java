@@ -308,6 +308,12 @@ public final class BlockUtils {
         return type == Repair.anvilMaterial || type == Salvage.anvilMaterial;
     }
 
+    public static boolean isPistonPiece(BlockState blockState) {
+        Material type = blockState.getType();
+
+        return type == Material.PISTON_MOVING_PIECE || type == Material.AIR;
+    }
+
     /**
      * Get a HashSet containing every transparent block
      *
