@@ -13,10 +13,21 @@
 ## Valid values are > 0
 ## This defaults to 1.0.
 #
-# Repair_Material: This is the material name of the item used to repair this repairable.
+# Tier: The tier of the tool
+## Used to determine the capabilities of AoE abilities with certain skills
+## Valid values range from 1 to 4
+## This defaults to 1
+#
+# Ability_Enabled: Whether or not abilities are enabled with this tool
+## This defaults to true
+#
+# Repairable: Whether or not the item is repairable
+## This defaults to true
+#
+# Repair_Material: This is the material name of the item used to repair this tool.
 ## This is required to be set if you want to be able to repair the item.
 #
-# Repair_Material_Data_Value: This is the metadata of the item used to repair this repairable.
+# Repair_Material_Data_Value: This is the metadata of the item used to repair this tool.
 ## A value of -1 means to ignore all metadata when repairing.
 ## This defaults to -1
 #
