@@ -7,37 +7,37 @@ import com.gmail.nossr50.datatypes.skills.MaterialType;
 
 public interface Salvageable {
     /**
-     * Gets the type of this repairable item
+     * Gets the type of this salvageable item
      *
-     * @return the type of this repairable
+     * @return the type of this salvageable
      */
     public Material getItemMaterial();
 
     /**
-     * Gets the id of the material used to repair this item
+     * Gets the material of the items dropped when salvaging this item
      *
-     * @return the id of the repair material
+     * @return the material of the salvage drop
      */
     public Material getSalvageMaterial();
 
     /**
-     * Gets the metadata byte value of the material used to repair this item
+     * Gets the metadata byte value of the items dropped when salvaging this item
      *
-     * @return the byte metadata of the repair material
+     * @return the byte metadata of the salvage drop
      */
     public byte getSalvageMaterialMetadata();
 
     /**
-     * Gets the RepairItemType value for this repairable item
+     * Gets the ItemType value for this salvageable item
      *
-     * @return the RepairItemType for this repairable
+     * @return the ItemType for this salvageable
      */
     public ItemType getSalvageItemType();
 
     /**
-     * Gets the RepairMaterialType value for this repairable item
+     * Gets the MaterialType value for this salvageable item
      *
-     * @return the RepairMaterialType for this repairable
+     * @return the MaterialType for this salvageable
      */
     public MaterialType getSalvageMaterialType();
 
@@ -58,25 +58,25 @@ public interface Salvageable {
     public short getMaximumDurability();
 
     /**
-     * Gets the base repair durability on which to calculate bonuses.
+     * Gets the base salvage durability on which to calculate bonuses.
      *
      * This is actually the maximum durability divided by the minimum quantity
      *
-     * @return the base repair durability
+     * @return the base salvage durability
      */
     public short getBaseSalvageDurability();
 
     /**
-     * Gets the minimum repair level needed to repair this item
+     * Gets the minimum salvage level needed to salvage this item
      *
-     * @return the minimum level to repair this item, or 0 for no minimum
+     * @return the minimum level to salvage this item, or 0 for no minimum
      */
     public int getMinimumLevel();
 
     /**
-     * Gets the xpMultiplier for this repairable
+     * Gets the xpMultiplier for this salvageable
      *
-     * @return the xpMultiplier of this repairable
+     * @return the xpMultiplier of this salvageable
      */
     public double getXpMultiplier();
 }

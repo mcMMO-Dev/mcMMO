@@ -84,8 +84,6 @@ public class SalvageManager extends SkillManager {
             return;
         }
 
-        byte salvageMaterialMetadata = salvageable.getSalvageMaterialMetadata();
-
         int salvageableAmount = Salvage.calculateSalvageableAmount(item.getDurability(), salvageable.getMaximumDurability(), salvageable.getMaximumQuantity());
 
         if (salvageableAmount == 0) {
@@ -107,6 +105,8 @@ public class SalvageManager extends SkillManager {
                 Misc.dropItem(location, enchantBook);
             }
         }
+
+        byte salvageMaterialMetadata = (salvageable.getSalvageMaterialMetadata() != (byte) -1) ? salvageable.getSalvageMaterialMetadata() : 0;
 
         Misc.dropItems(location, new MaterialData(salvageable.getSalvageMaterial(), salvageMaterialMetadata).toItemStack(salvageableAmount), 1);
 
