@@ -259,13 +259,13 @@ public class TreasureConfig extends ConfigLoader {
 
                 if (config.contains(type + "." + treasureName + ".Custom_Name")) {
                     ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setDisplayName(config.getString(type + "." + treasureName + "Custom_Name"));
+                    itemMeta.setDisplayName(config.getString(type + "." + treasureName + ".Custom_Name"));
                     item.setItemMeta(itemMeta);
                 }
 
                 if (config.contains(type + "." + treasureName + ".Lore")) {
                     ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setLore(config.getStringList(type + "." + treasureName + "Custom_Name"));
+                    itemMeta.setLore(config.getStringList(type + "." + treasureName + ".Lore"));
                     item.setItemMeta(itemMeta);
                 }
             }
