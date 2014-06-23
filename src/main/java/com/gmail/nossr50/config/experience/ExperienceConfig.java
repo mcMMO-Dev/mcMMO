@@ -3,6 +3,7 @@ package com.gmail.nossr50.config.experience;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.GrassSpecies;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.entity.EntityType;
@@ -267,7 +268,12 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
 
         }
         else if (type == Material.LONG_GRASS) {
-            switch (((LongGrass) data).getSpecies()) {
+            GrassSpecies species = ((LongGrass) data).getSpecies();
+            if (species == null) {
+                return 0;
+            }
+
+            switch (species) {
                 case DEAD:
                     return config.getInt("Experience.Herbalism.Dead_Bush", 30);
 

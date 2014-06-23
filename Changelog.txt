@@ -26,6 +26,7 @@ Version 1.5.01-dev
  = Fixed bug where SaveTimerTask would produce an IndexOutOfBoundsException
  = Fixed bug where Alchemy would not fire BrewEvents
  = Fixed bug with setting custom names and lore in treasures config
+ = Fixed bug which would cause a NullPointerException with getFlowerAndGrassXp()
  ! Changed player data saving. Save tasks are now asynchronous
  ! Vanished players no longer get hit by AoE effects
  ! Changed Alchemy config option 'Prevent_Hopper_Transfer' renamed to 'Prevent_Hopper_Transfer_Ingredients'
