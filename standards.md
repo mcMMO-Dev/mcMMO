@@ -58,12 +58,13 @@ finally () {</pre>
                 break;
 
             case 2:</pre>
-* Whenever possible, check for a negative, rather than a positive
- * <pre>if (!something) {
-            // Do things
+* Prefer early returns over method indentation. Example:
+ * <pre>if (!precondition) {
+            // Possibly cleanup
+            return;
         }
 
-        // Do other things</pre>
+        // Continue with task</pre>
 * Java standard class and method naming, with exception to McMMO in a class name
  * <pre>thisIsAMethod()</pre>
  * <pre>ThisIsAClass</pre>
