@@ -11,6 +11,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 
+import com.google.common.collect.ImmutableList;
+
 public final class UserManager {
 
     private UserManager() {}
@@ -50,8 +52,8 @@ public final class UserManager {
      * Save all users ON THIS THREAD.
      */
     public static void saveAll() {
-        Player[] onlinePlayers = mcMMO.p.getServer().getOnlinePlayers();
-        mcMMO.p.debug("Saving mcMMOPlayers... (" + onlinePlayers.length + ")");
+        ImmutableList<Player> onlinePlayers = ImmutableList.copyOf(mcMMO.p.getServer().getOnlinePlayers());
+        mcMMO.p.debug("Saving mcMMOPlayers... (" + onlinePlayers.size() + ")");
 
         for (Player player : onlinePlayers) {
             getPlayer(player).getProfile().save();

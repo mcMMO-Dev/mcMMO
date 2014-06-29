@@ -22,6 +22,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
@@ -158,8 +159,8 @@ public class ScoreboardManager {
 
     // Called in onDisable()
     public static void teardownAll() {
-        Player[] onlinePlayers = mcMMO.p.getServer().getOnlinePlayers();
-        mcMMO.p.debug("Tearing down scoreboards... (" + onlinePlayers.length + ")");
+        ImmutableList<Player> onlinePlayers = ImmutableList.copyOf(mcMMO.p.getServer().getOnlinePlayers());
+        mcMMO.p.debug("Tearing down scoreboards... (" + onlinePlayers.size() + ")");
         for (Player player : onlinePlayers) {
             teardownPlayer(player);
         }
