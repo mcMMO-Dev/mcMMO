@@ -613,20 +613,14 @@ public final class CombatUtils {
     }
 
     public static double callFakeDamageEvent(Entity attacker, Entity target, DamageCause cause, Map<DamageModifier, Double> modifiers) {
-        double finalDamage = 0;
+        EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, modifiers) : new FakeEntityDamageByEntityEvent(attacker, target, cause, modifiers);
+        mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
 
-        if (Config.getInstance().getEventCallbackEnabled()) {
-            EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, modifiers) : new FakeEntityDamageByEntityEvent(attacker, target, cause, modifiers);
-            mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
-
-            if (damageEvent.isCancelled()) {
-                return 0;
-            }
-
-            finalDamage = damageEvent.getFinalDamage();
+        if (damageEvent.isCancelled()) {
+            return 0;
         }
 
-        return finalDamage;
+        return damageEvent.getFinalDamage();
     }
 
     public static Map<DamageModifier, Double> getModifiers(EntityDamageEvent event) {

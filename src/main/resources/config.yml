@@ -17,8 +17,6 @@ General:
     # Allow mcMMO to check if a new version is available
     Update_Check: true
     Prefer_Beta: false
-    # Allow mcMMO to inform other plugins of damage being dealt
-    Event_Callback: true
     Power_Level_Cap: 0
     # Should mcMMO print out debug messages?
     Verbose_Logging: false
