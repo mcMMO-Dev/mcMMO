@@ -24,7 +24,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -78,6 +77,7 @@ public final class CombatUtils {
     private static void processAxeCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
+        Map<DamageModifier, Double> modifiers = getModifiers(event);
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         AxesManager axesManager = mcMMOPlayer.getAxesManager();
@@ -87,7 +87,7 @@ public final class CombatUtils {
         }
 
         if (axesManager.canUseAxeMastery()) {
-            finalDamage += axesManager.axeMastery(target);
+            finalDamage += axesManager.axeMastery();
         }
 
         if (axesManager.canCriticalHit(target)) {
@@ -102,17 +102,16 @@ public final class CombatUtils {
         }
 
         if (axesManager.canUseSkullSplitter(target)) {
-            axesManager.skullSplitterCheck(target, initialDamage);
+            axesManager.skullSplitterCheck(target, initialDamage, modifiers);
         }
 
-        event.setDamage(finalDamage);
+        applyScaledModifiers(initialDamage, finalDamage, event);
         startGainXp(mcMMOPlayer, target, SkillType.AXES);
     }
 
     private static void processUnarmedCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
-        Map<DamageModifier, Double> modifiers = getModifiers(event);
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
@@ -122,18 +121,18 @@ public final class CombatUtils {
         }
 
         if (unarmedManager.canUseIronArm()) {
-            finalDamage += unarmedManager.ironArm(target, modifiers);
+            finalDamage += unarmedManager.ironArm();
         }
 
         if (unarmedManager.canUseBerserk()) {
-            finalDamage += unarmedManager.berserkDamage(target, initialDamage, modifiers);
+            finalDamage += unarmedManager.berserkDamage(initialDamage);
         }
 
         if (unarmedManager.canDisarm(target)) {
             unarmedManager.disarmCheck((Player) target);
         }
 
-        event.setDamage(finalDamage);
+        applyScaledModifiers(initialDamage, finalDamage, event);
         startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
     }
 
@@ -149,14 +148,14 @@ public final class CombatUtils {
         }
 
         if (tamingManager.canUseSharpenedClaws()) {
-            finalDamage += tamingManager.sharpenedClaws(target, wolf);
+            finalDamage += tamingManager.sharpenedClaws();
         }
 
         if (tamingManager.canUseGore()) {
-            finalDamage += tamingManager.gore(target, initialDamage, wolf);
+            finalDamage += tamingManager.gore(target, initialDamage);
         }
 
-        event.setDamage(finalDamage);
+        applyScaledModifiers(initialDamage, finalDamage, event);
         startGainXp(mcMMOPlayer, target, SkillType.TAMING);
     }
 
@@ -180,11 +179,11 @@ public final class CombatUtils {
         }
 
         if (archeryManager.canSkillShot()) {
-            finalDamage += archeryManager.skillShot(target, initialDamage, arrow);
+            finalDamage += archeryManager.skillShot(initialDamage);
         }
 
         if (archeryManager.canDaze(target)) {
-            finalDamage += archeryManager.daze((Player) target, arrow);
+            finalDamage += archeryManager.daze((Player) target);
         }
 
         if (!arrow.hasMetadata(mcMMO.infiniteArrowKey) && archeryManager.canRetrieveArrows()) {
@@ -193,7 +192,7 @@ public final class CombatUtils {
 
         archeryManager.distanceXpBonus(target, arrow);
 
-        event.setDamage(finalDamage);
+        applyScaledModifiers(initialDamage, finalDamage, event);
         startGainXp(mcMMOPlayer, target, SkillType.ARCHERY, arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble());
     }
 
@@ -237,7 +236,7 @@ public final class CombatUtils {
                 }
 
                 if (SkillType.SWORDS.getPermissions(player)) {
-                    processSwordCombat(target, player, event.getDamage());
+                    processSwordCombat(target, player, event);
                 }
             }
             else if (ItemUtils.isAxe(heldItem)) {
@@ -318,6 +317,7 @@ public final class CombatUtils {
      * @param target LivingEntity which to attempt to damage
      * @param damage Amount of damage to attempt to do
      */
+    @Deprecated
     public static void dealDamage(LivingEntity target, double damage) {
         dealDamage(target, damage, DamageCause.CUSTOM, null);
     }
@@ -357,6 +357,7 @@ public final class CombatUtils {
      * @param damage Amount of damage to attempt to do
      * @param attacker Player to pass to event as damager
      */
+    @Deprecated
     public static void dealDamage(LivingEntity target, double damage, DamageCause cause, Entity attacker) {
         if (target.isDead()) {
             return;
@@ -609,7 +610,7 @@ public final class CombatUtils {
     }
 
     public static double callFakeDamageEvent(Entity attacker, Entity target, double damage, Map<DamageModifier, Double> modifiers) {
-        return callFakeDamageEvent(attacker, target, DamageCause.ENTITY_ATTACK, scaleModifiers(damage, modifiers));
+        return callFakeDamageEvent(attacker, target, DamageCause.ENTITY_ATTACK, getScaledModifiers(damage, modifiers));
     }
 
     public static double callFakeDamageEvent(Entity attacker, Entity target, DamageCause cause, Map<DamageModifier, Double> modifiers) {
@@ -623,7 +624,7 @@ public final class CombatUtils {
         return damageEvent.getFinalDamage();
     }
 
-    public static Map<DamageModifier, Double> getModifiers(EntityDamageEvent event) {
+    private static Map<DamageModifier, Double> getModifiers(EntityDamageEvent event) {
         Map<DamageModifier, Double> modifiers = new HashMap<DamageModifier, Double>();
         for (DamageModifier modifier : DamageModifier.values()) {
             modifiers.put(modifier, event.getDamage(modifier));
@@ -632,7 +633,7 @@ public final class CombatUtils {
         return modifiers;
     }
 
-    public static Map<DamageModifier, Double> scaleModifiers(double damage, Map<DamageModifier, Double> modifiers) {
+    private static Map<DamageModifier, Double> getScaledModifiers(double damage, Map<DamageModifier, Double> modifiers) {
         Map<DamageModifier, Double> scaledModifiers = new HashMap<DamageModifier, Double>();
 
         for (DamageModifier modifier : DamageModifier.values()) {
@@ -645,6 +646,28 @@ public final class CombatUtils {
         }
 
         return scaledModifiers;
+    }
+
+    public static EntityDamageByEntityEvent applyScaledModifiers(double initialDamage, double finalDamage, EntityDamageByEntityEvent event) {
+        // No additional damage
+        if (initialDamage == finalDamage) {
+            return event;
+        }
+
+        for (DamageModifier modifier : DamageModifier.values()) {
+            if (!event.isApplicable(modifier)) {
+                continue;
+            }
+
+            if (modifier == DamageModifier.BASE) {
+                event.setDamage(modifier, finalDamage);
+                continue;
+            }
+
+            event.setDamage(modifier, finalDamage / initialDamage * event.getDamage(modifier));
+        }
+
+        return event;
     }
 
     /**

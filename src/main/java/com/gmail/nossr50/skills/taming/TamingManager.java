@@ -24,7 +24,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class TamingManager extends SkillManager {
@@ -113,9 +112,8 @@ public class TamingManager extends SkillManager {
      *
      * @param target The LivingEntity to apply Gore on
      * @param damage The initial damage
-     * @param wolf The wolf using the ability
      */
-    public double gore(LivingEntity target, double damage, Wolf wolf) {
+    public double gore(LivingEntity target, double damage) {
         if (!SkillUtils.activationSuccessful(SecondaryAbility.GORE, getPlayer(), getSkillLevel(), activationChance)) {
             return 0;
         }
@@ -129,11 +127,11 @@ public class TamingManager extends SkillManager {
         getPlayer().sendMessage(LocaleLoader.getString("Combat.Gore"));
 
         damage = (damage * Taming.goreModifier) - damage;
-        return CombatUtils.callFakeDamageEvent(wolf, target, damage);
+        return damage;
     }
 
-    public double sharpenedClaws(LivingEntity target, Wolf wolf) {
-        return CombatUtils.callFakeDamageEvent(wolf, target, Taming.sharpenedClawsBonusDamage);
+    public double sharpenedClaws() {
+        return Taming.sharpenedClawsBonusDamage;
     }
 
     /**

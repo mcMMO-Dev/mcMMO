@@ -19,7 +19,7 @@ public class Archery {
     public static double skillShotMaxBonusPercentage = AdvancedConfig.getInstance().getSkillShotBonusMax();
     public static double skillShotMaxBonusDamage     = AdvancedConfig.getInstance().getSkillShotDamageMax();
 
-    public static double dazeModifier      = AdvancedConfig.getInstance().getDazeModifier();
+    public static double dazeBonusDamage = AdvancedConfig.getInstance().getDazeBonusDamage();
 
     public static final double DISTANCE_XP_MULTIPLIER = 0.025;
 

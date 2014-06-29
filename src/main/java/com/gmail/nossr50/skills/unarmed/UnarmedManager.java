@@ -1,13 +1,10 @@
 package com.gmail.nossr50.skills.unarmed;
 
-import java.util.Map;
-
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.SmoothBrick;
@@ -25,7 +22,6 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class UnarmedManager extends SkillManager {
@@ -124,28 +120,23 @@ public class UnarmedManager extends SkillManager {
     /**
      * Handle the effects of the Berserk ability
      *
-     * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      */
-    public double berserkDamage(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
+    public double berserkDamage(double damage) {
         damage = (damage * Unarmed.berserkDamageModifier) - damage;
 
-        return CombatUtils.callFakeDamageEvent(getPlayer(), target, damage, modifiers);
+        return damage;
     }
 
     /**
      * Handle the effects of the Iron Arm ability
-     *
-     * @param target The {@link LivingEntity} being affected by the ability
      */
-    public double ironArm(LivingEntity target, Map<DamageModifier, Double> modifiers) {
+    public double ironArm() {
         if (!SkillUtils.activationSuccessful(SecondaryAbility.IRON_ARM, getPlayer())) {
             return 0;
         }
 
-        double unarmedBonus = Math.min(Unarmed.ironArmMinBonusDamage + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
-
-        return CombatUtils.callFakeDamageEvent(getPlayer(), target, unarmedBonus, modifiers);
+        return Math.min(Unarmed.ironArmMinBonusDamage + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
     }
 
     /**

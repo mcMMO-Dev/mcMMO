@@ -65,7 +65,7 @@ public class ArcheryCommand extends SkillCommand {
         }
 
         if (canDaze) {
-            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Archery.Effect.2"), LocaleLoader.getString("Archery.Effect.3", Archery.dazeModifier)));
+            messages.add(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Archery.Effect.2"), LocaleLoader.getString("Archery.Effect.3", Archery.dazeBonusDamage)));
         }
 
         if (canRetrieve) {

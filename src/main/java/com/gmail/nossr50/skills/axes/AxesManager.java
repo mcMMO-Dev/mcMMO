@@ -1,7 +1,10 @@
 package com.gmail.nossr50.skills.axes;
 
+import java.util.Map;
+
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -49,17 +52,13 @@ public class AxesManager extends SkillManager {
 
     /**
      * Handle the effects of the Axe Mastery ability
-     *
-     * @param target The {@link LivingEntity} being affected by the ability
      */
-    public double axeMastery(LivingEntity target) {
+    public double axeMastery() {
         if (!SkillUtils.activationSuccessful(SecondaryAbility.AXE_MASTERY, getPlayer())) {
             return 0;
         }
 
-        double axeBonus = Math.min(getSkillLevel() / (Axes.axeMasteryMaxBonusLevel / Axes.axeMasteryMaxBonus), Axes.axeMasteryMaxBonus);
-
-        return CombatUtils.callFakeDamageEvent(getPlayer(), target, axeBonus);
+        return Math.min(getSkillLevel() / (Axes.axeMasteryMaxBonusLevel / Axes.axeMasteryMaxBonus), Axes.axeMasteryMaxBonus);
     }
 
     /**
@@ -86,7 +85,7 @@ public class AxesManager extends SkillManager {
             damage = (damage * Axes.criticalHitPVEModifier) - damage;
         }
 
-        return CombatUtils.callFakeDamageEvent(player, target, damage);
+        return damage;
     }
 
     /**
@@ -133,7 +132,7 @@ public class AxesManager extends SkillManager {
             }
         }
 
-        return CombatUtils.callFakeDamageEvent(player, target, Axes.greaterImpactBonusDamage);
+        return Axes.greaterImpactBonusDamage;
     }
 
     /**
@@ -142,7 +141,7 @@ public class AxesManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      */
-    public void skullSplitterCheck(LivingEntity target, double damage) {
-        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Axes.skullSplitterModifier, skill);
+    public void skullSplitterCheck(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
+        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Axes.skullSplitterModifier, modifiers, skill);
     }
 }

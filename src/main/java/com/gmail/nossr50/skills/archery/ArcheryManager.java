@@ -1,11 +1,9 @@
 package com.gmail.nossr50.skills.archery;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -18,7 +16,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ArcheryManager extends SkillManager {
@@ -70,9 +67,8 @@ public class ArcheryManager extends SkillManager {
      * Handle the effects of the Daze ability
      *
      * @param defender The {@link Player} being affected by the ability
-     * @param arrow The {@link Arrow} that was fired
      */
-    public double daze(Player defender, Arrow arrow) {
+    public double daze(Player defender) {
         if (!SkillUtils.activationSuccessful(SecondaryAbility.DAZE, getPlayer(), getSkillLevel(), activationChance)) {
             return 0;
         }
@@ -91,24 +87,21 @@ public class ArcheryManager extends SkillManager {
             getPlayer().sendMessage(LocaleLoader.getString("Combat.TargetDazed"));
         }
 
-        return CombatUtils.callFakeDamageEvent(arrow, defender, DamageCause.PROJECTILE, Archery.dazeModifier);
+        return Archery.dazeBonusDamage;
     }
 
     /**
      * Handle the effects of the Skill Shot ability
      *
-     * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
-     * @param arrow The {@link Arrow} that was fired
      */
-    public double skillShot(LivingEntity target, double damage, Arrow arrow) {
+    public double skillShot(double damage) {
         if (!SkillUtils.activationSuccessful(SecondaryAbility.SKILL_SHOT, getPlayer())) {
             return damage;
         }
 
         double damageBonusPercent = Math.min(((getSkillLevel() / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage);
-        double archeryBonus = Math.min(damage * damageBonusPercent, Archery.skillShotMaxBonusDamage);
 
-        return CombatUtils.callFakeDamageEvent(arrow, target, DamageCause.PROJECTILE, archeryBonus);
+        return Math.min(damage * damageBonusPercent, Archery.skillShotMaxBonusDamage);
     }
 }

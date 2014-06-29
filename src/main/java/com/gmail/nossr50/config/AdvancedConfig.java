@@ -134,7 +134,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Acrobatics.Daze.MaxBonusLevel should be at least 1!");
         }
 
-        if (getDazeModifier() < 0) {
+        if (getDazeBonusDamage() < 0) {
             reason.add("Skills.Acrobatics.Daze.BonusDamage should be at least 0!");
         }
 
@@ -714,7 +714,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getSkillShotBonusMax() { return config.getDouble("Skills.Archery.SkillShot.MaxBonus", 2.0D); }
     public double getSkillShotDamageMax() { return config.getDouble("Skills.Archery.SkillShot.MaxDamage", 9.0D); }
 
-    public double getDazeModifier() { return config.getDouble("Skills.Archery.Daze.BonusDamage", 4.0D); }
+    public double getDazeBonusDamage() { return config.getDouble("Skills.Archery.Daze.BonusDamage", 4.0D); }
 
     public double getForceMultiplier() { return config.getDouble("Skills.Archery.ForceMultiplier", 2.0D); }
 
