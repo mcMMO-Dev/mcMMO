@@ -89,8 +89,6 @@ finally () {</pre>
  * protected
  * static protected
  * abstract protected
- * override private
  * private
  * static private
- * abstract private
 * No one-line if statements, they should all have brackets
