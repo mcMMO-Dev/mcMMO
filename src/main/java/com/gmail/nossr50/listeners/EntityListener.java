@@ -147,7 +147,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        double damage = event.getDamage();
+        double damage = event.getFinalDamage();
 
         if (damage <= 0) {
             return;
@@ -211,7 +211,7 @@ public class EntityListener implements Listener {
         }
 
         CombatUtils.processCombatAttack(event, attacker, target);
-        CombatUtils.handleHealthbars(attacker, target, event.getDamage());
+        CombatUtils.handleHealthbars(attacker, target, event.getFinalDamage());
     }
 
     /**
@@ -225,7 +225,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        double damage = event.getDamage();
+        double damage = event.getFinalDamage();
 
         if (damage <= 0) {
             return;
@@ -276,7 +276,7 @@ public class EntityListener implements Listener {
                     if (acrobaticsManager.canRoll()) {
                         event.setDamage(acrobaticsManager.rollCheck(event.getDamage()));
 
-                        if (event.getDamage() == 0) {
+                        if (event.getFinalDamage() == 0) {
                             event.setCancelled(true);
                             return;
                         }
@@ -289,7 +289,7 @@ public class EntityListener implements Listener {
                     if (miningManager.canUseDemolitionsExpertise()) {
                         event.setDamage(miningManager.processDemolitionsExpertise(event.getDamage()));
 
-                        if (event.getDamage() == 0) {
+                        if (event.getFinalDamage() == 0) {
                             event.setCancelled(true);
                             return;
                         }
@@ -300,7 +300,7 @@ public class EntityListener implements Listener {
                     break;
             }
 
-            if (event.getDamage() >= 1) {
+            if (event.getFinalDamage() >= 1) {
                 mcMMOPlayer.actualizeRecentlyHurt();
             }
         }
@@ -334,7 +334,7 @@ public class EntityListener implements Listener {
                         if (tamingManager.canUseThickFur()) {
                             event.setDamage(Taming.processThickFur(wolf, event.getDamage()));
 
-                            if (event.getDamage() == 0) {
+                            if (event.getFinalDamage() == 0) {
                                 event.setCancelled(true);
                             }
                         }
@@ -360,7 +360,7 @@ public class EntityListener implements Listener {
                         if (tamingManager.canUseShockProof()) {
                             event.setDamage(Taming.processShockProof(wolf, event.getDamage()));
 
-                            if (event.getDamage() == 0) {
+                            if (event.getFinalDamage() == 0) {
                                 event.setCancelled(true);
                             }
                         }

@@ -1,5 +1,9 @@
 package com.gmail.nossr50.util.skills;
 
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
@@ -15,6 +19,7 @@ import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
@@ -44,12 +49,16 @@ import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 
+import com.google.common.collect.ImmutableMap;
+
 public final class CombatUtils {
     private CombatUtils() {}
 
-    private static void processSwordCombat(LivingEntity target, Player player, double damage) {
+    private static void processSwordCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
+        double initialDamage = event.getDamage();
+        Map<DamageModifier, Double> modifiers = getModifiers(event);
 
         if (swordsManager.canActivateAbility()) {
             mcMMOPlayer.checkAbilityActivation(SkillType.SWORDS);
@@ -60,7 +69,7 @@ public final class CombatUtils {
         }
 
         if (swordsManager.canUseSerratedStrike()) {
-            swordsManager.serratedStrikes(target, damage);
+            swordsManager.serratedStrikes(target, initialDamage, modifiers);
         }
 
         startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
@@ -103,6 +112,7 @@ public final class CombatUtils {
     private static void processUnarmedCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
+        Map<DamageModifier, Double> modifiers = getModifiers(event);
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
@@ -112,11 +122,11 @@ public final class CombatUtils {
         }
 
         if (unarmedManager.canUseIronArm()) {
-            finalDamage += unarmedManager.ironArm(target);
+            finalDamage += unarmedManager.ironArm(target, modifiers);
         }
 
         if (unarmedManager.canUseBerserk()) {
-            finalDamage += unarmedManager.berserkDamage(target, initialDamage);
+            finalDamage += unarmedManager.berserkDamage(target, initialDamage, modifiers);
         }
 
         if (unarmedManager.canDisarm(target)) {
@@ -319,8 +329,25 @@ public final class CombatUtils {
      * @param damage Amount of damage to attempt to do
      * @param attacker Player to pass to event as damager
      */
+    @Deprecated
     public static void dealDamage(LivingEntity target, double damage, LivingEntity attacker) {
         dealDamage(target, damage, DamageCause.ENTITY_ATTACK, attacker);
+    }
+
+    /**
+     * Attempt to damage target for value dmg with reason ENTITY_ATTACK with damager attacker
+     *
+     * @param target LivingEntity which to attempt to damage
+     * @param damage Amount of damage to attempt to do
+     * @param attacker Player to pass to event as damager
+     */
+    public static void dealDamage(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, LivingEntity attacker) {
+        if (target.isDead()) {
+            return;
+        }
+
+        // Aren't we applying the damage twice????
+        target.damage(callFakeDamageEvent(attacker, target, damage, modifiers));
     }
 
     /**
@@ -346,7 +373,7 @@ public final class CombatUtils {
      * @param damage The initial damage amount
      * @param type The type of skill being used
      */
-    public static void applyAbilityAoE(Player attacker, LivingEntity target, double damage, SkillType type) {
+    public static void applyAbilityAoE(Player attacker, LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, SkillType type) {
         int numberOfTargets = getTier(attacker.getItemInHand()); // The higher the weapon tier, the more targets you hit
         double damageAmount = Math.max(damage, 1);
 
@@ -382,7 +409,7 @@ public final class CombatUtils {
                     break;
             }
 
-            dealDamage(livingEntity, damageAmount, attacker);
+            dealDamage(livingEntity, damageAmount, modifiers, attacker);
             numberOfTargets--;
         }
     }
@@ -567,23 +594,63 @@ public final class CombatUtils {
         return false;
     }
 
+    @Deprecated
     public static double callFakeDamageEvent(Entity attacker, Entity target, double damage) {
-        return callFakeDamageEvent(attacker, target, DamageCause.ENTITY_ATTACK, damage);
+        return callFakeDamageEvent(attacker, target, DamageCause.ENTITY_ATTACK, new EnumMap<DamageModifier, Double>(ImmutableMap.of(DamageModifier.BASE, damage)));
     }
 
-    public static double callFakeDamageEvent(Entity attacker, Entity target, DamageCause cause, double damage) {
+    @Deprecated
+    public static double callFakeDamageEvent(Entity attacker, Entity target, DamageCause damageCause, double damage) {
+        return callFakeDamageEvent(attacker, target, damageCause, new EnumMap<DamageModifier, Double>(ImmutableMap.of(DamageModifier.BASE, damage)));
+    }
+
+    public static double callFakeDamageEvent(Entity attacker, Entity target, Map<DamageModifier, Double> modifiers) {
+        return callFakeDamageEvent(attacker, target, DamageCause.ENTITY_ATTACK, modifiers);
+    }
+
+    public static double callFakeDamageEvent(Entity attacker, Entity target, double damage, Map<DamageModifier, Double> modifiers) {
+        return callFakeDamageEvent(attacker, target, DamageCause.ENTITY_ATTACK, scaleModifiers(damage, modifiers));
+    }
+
+    public static double callFakeDamageEvent(Entity attacker, Entity target, DamageCause cause, Map<DamageModifier, Double> modifiers) {
+        double finalDamage = 0;
+
         if (Config.getInstance().getEventCallbackEnabled()) {
-            EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, damage) : new FakeEntityDamageByEntityEvent(attacker, target, cause, damage);
+            EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, modifiers) : new FakeEntityDamageByEntityEvent(attacker, target, cause, modifiers);
             mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
 
             if (damageEvent.isCancelled()) {
                 return 0;
             }
 
-            damage = damageEvent.getDamage();
+            finalDamage = damageEvent.getFinalDamage();
         }
 
-        return damage;
+        return finalDamage;
+    }
+
+    public static Map<DamageModifier, Double> getModifiers(EntityDamageEvent event) {
+        Map<DamageModifier, Double> modifiers = new HashMap<DamageModifier, Double>();
+        for (DamageModifier modifier : DamageModifier.values()) {
+            modifiers.put(modifier, event.getDamage(modifier));
+        }
+
+        return modifiers;
+    }
+
+    public static Map<DamageModifier, Double> scaleModifiers(double damage, Map<DamageModifier, Double> modifiers) {
+        Map<DamageModifier, Double> scaledModifiers = new HashMap<DamageModifier, Double>();
+
+        for (DamageModifier modifier : DamageModifier.values()) {
+            if (modifier == DamageModifier.BASE) {
+                modifiers.put(modifier, damage);
+                continue;
+            }
+
+            scaledModifiers.put(modifier, damage * modifiers.get(modifier));
+        }
+
+        return scaledModifiers;
     }
 
     /**

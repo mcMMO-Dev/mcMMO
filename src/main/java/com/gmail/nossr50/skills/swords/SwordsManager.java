@@ -1,8 +1,11 @@
 package com.gmail.nossr50.skills.swords;
 
+import java.util.Map;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -96,8 +99,8 @@ public class SwordsManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      */
-    public void serratedStrikes(LivingEntity target, double damage) {
-        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, skill);
+    public void serratedStrikes(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
+        CombatUtils.applyAbilityAoE(getPlayer(), target, damage / Swords.serratedStrikesModifier, modifiers, skill);
         BleedTimerTask.add(target, Swords.serratedStrikesBleedTicks);
     }
 }

@@ -1,10 +1,13 @@
 package com.gmail.nossr50.skills.unarmed;
 
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.SmoothBrick;
@@ -120,10 +123,10 @@ public class UnarmedManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      * @param damage The amount of damage initially dealt by the event
      */
-    public double berserkDamage(LivingEntity target, double damage) {
+    public double berserkDamage(LivingEntity target, double damage, Map<DamageModifier, Double> modifiers) {
         damage = (damage * Unarmed.berserkDamageModifier) - damage;
 
-        return CombatUtils.callFakeDamageEvent(getPlayer(), target, damage);
+        return CombatUtils.callFakeDamageEvent(getPlayer(), target, damage, modifiers);
     }
 
     /**
@@ -131,10 +134,10 @@ public class UnarmedManager extends SkillManager {
      *
      * @param target The {@link LivingEntity} being affected by the ability
      */
-    public double ironArm(LivingEntity target) {
+    public double ironArm(LivingEntity target, Map<DamageModifier, Double> modifiers) {
         double unarmedBonus = Math.min(Unarmed.ironArmMinBonusDamage + (getSkillLevel() / Unarmed.ironArmIncreaseLevel), Unarmed.ironArmMaxBonusDamage);
 
-        return CombatUtils.callFakeDamageEvent(getPlayer(), target, unarmedBonus);
+        return CombatUtils.callFakeDamageEvent(getPlayer(), target, unarmedBonus, modifiers);
     }
 
     /**
