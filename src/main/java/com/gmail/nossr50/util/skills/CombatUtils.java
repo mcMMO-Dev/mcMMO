@@ -636,9 +636,9 @@ public final class CombatUtils {
     private static Map<DamageModifier, Double> getScaledModifiers(double damage, Map<DamageModifier, Double> modifiers) {
         Map<DamageModifier, Double> scaledModifiers = new HashMap<DamageModifier, Double>();
 
-        for (DamageModifier modifier : DamageModifier.values()) {
+        for (DamageModifier modifier : modifiers.keySet()) {
             if (modifier == DamageModifier.BASE) {
-                modifiers.put(modifier, damage);
+                scaledModifiers.put(modifier, damage);
                 continue;
             }
 
