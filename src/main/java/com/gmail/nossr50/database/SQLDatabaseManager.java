@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.bukkit.Bukkit;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
@@ -29,7 +31,8 @@ import com.gmail.nossr50.util.Misc;
 public final class SQLDatabaseManager implements DatabaseManager {
     private String connectionString;
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
-    private Connection connection = null;
+    private Connection primaryConnection = null;
+    private Connection secondaryConnection = null;
 
     // Scale waiting time by this much per failed attempt
     private final double SCALING_FACTOR = 40.0;
@@ -199,7 +202,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             PreparedStatement statement = null;
 
             try {
-                statement = connection.prepareStatement("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT ?, ?");
+                statement = getConnection().prepareStatement("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT ?, ?");
                 statement.setInt(1, (pageNumber * statsPerPage) - statsPerPage);
                 statement.setInt(2, statsPerPage);
                 resultSet = statement.executeQuery();
@@ -245,7 +248,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                                  "AND " + skillName + " > (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
                                  "WHERE user = ?)";
 
-                    PreparedStatement statement = connection.prepareStatement(sql);
+                    PreparedStatement statement = getConnection().prepareStatement(sql);
                     statement.setString(1, playerName);
                     resultSet = statement.executeQuery();
 
@@ -259,7 +262,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
                     statement.close();
 
-                    statement = connection.prepareStatement(sql);
+                    statement = getConnection().prepareStatement(sql);
                     resultSet = statement.executeQuery();
 
                     while (resultSet.next()) {
@@ -278,7 +281,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         "(SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy " +
                         "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = ?)";
 
-                PreparedStatement statement = connection.prepareStatement(sql);
+                PreparedStatement statement = getConnection().prepareStatement(sql);
                 statement.setString(1, playerName);
                 resultSet = statement.executeQuery();
 
@@ -295,7 +298,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         "(SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy " +
                         "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = ?) ORDER BY user";
 
-                statement = connection.prepareStatement(sql);
+                statement = getConnection().prepareStatement(sql);
                 statement.setString(1, playerName);
                 resultSet = statement.executeQuery();
 
@@ -324,7 +327,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, lastlogin) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+            statement = getConnection().prepareStatement("INSERT INTO " + tablePrefix + "users (user, lastlogin) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, playerName);
             statement.setLong(2, System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
             statement.execute();
@@ -359,7 +362,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement(
+            statement = getConnection().prepareStatement(
                     "SELECT "
                     + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
                     + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
@@ -435,7 +438,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement(
+            statement = getConnection().prepareStatement(
                     "SELECT "
                     + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
                     + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
@@ -500,6 +503,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public boolean checkConnected() {
         boolean isClosed = true;
         boolean isValid = false;
+        Connection connection = getConnection();
         boolean exists = (connection != null);
 
         // If we're waiting for server to recover then leave early
@@ -547,7 +551,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         // Try to connect again
-        connect();
+        if (Bukkit.isPrimaryThread()) {
+            connectPrimary();
+        } else {
+            connectSecondary();
+        }
 
         // Leave if connection is good
         try {
@@ -572,13 +580,47 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return false;
     }
 
+    private void connectSecondary() {
+        connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
+
+        try {
+            mcMMO.p.getLogger().info("Attempting connection to MySQL...");
+
+            // Force driver to load if not yet loaded
+            Class.forName("com.mysql.jdbc.Driver");
+            Properties connectionProperties = new Properties();
+            connectionProperties.put("user", Config.getInstance().getMySQLUserName());
+            connectionProperties.put("password", Config.getInstance().getMySQLUserPassword());
+            connectionProperties.put("autoReconnect", "false");
+            connectionProperties.put("maxReconnects", "0");
+            secondaryConnection = DriverManager.getConnection(connectionString, connectionProperties);
+
+            mcMMO.p.getLogger().info("Connection to MySQL was a success!");
+        }
+        catch (SQLException ex) {
+            secondaryConnection = null;
+
+            if (reconnectAttempt == 0 || reconnectAttempt >= 11) {
+                mcMMO.p.getLogger().severe("Connection to MySQL failed!");
+                printErrors(ex);
+            }
+        }
+        catch (ClassNotFoundException ex) {
+            secondaryConnection = null;
+
+            if (reconnectAttempt == 0 || reconnectAttempt >= 11) {
+                mcMMO.p.getLogger().severe("MySQL database driver not found!");
+            }
+        }
+    }
+
     public List<String> getStoredUsers() {
         ArrayList<String> users = new ArrayList<String>();
 
         if (checkConnected()) {
             Statement stmt = null;
             try {
-                stmt = connection.createStatement();
+                stmt = getConnection().createStatement();
                 ResultSet result = stmt.executeQuery("SELECT user FROM " + tablePrefix + "users");
                 while (result.next()) {
                     users.add(result.getString("user"));
@@ -603,10 +645,18 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return users;
     }
 
+    private Connection getConnection() {
+        if (Bukkit.isPrimaryThread()) {
+            return primaryConnection;
+        } else {
+            return secondaryConnection;
+        }
+    }
+
     /**
      * Attempt to connect to the mySQL database.
      */
-    private void connect() {
+    private void connectPrimary() {
         connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
 
         try {
@@ -619,12 +669,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connectionProperties.put("password", Config.getInstance().getMySQLUserPassword());
             connectionProperties.put("autoReconnect", "false");
             connectionProperties.put("maxReconnects", "0");
-            connection = DriverManager.getConnection(connectionString, connectionProperties);
+            primaryConnection = DriverManager.getConnection(connectionString, connectionProperties);
 
             mcMMO.p.getLogger().info("Connection to MySQL was a success!");
         }
         catch (SQLException ex) {
-            connection = null;
+            primaryConnection = null;
 
             if (reconnectAttempt == 0 || reconnectAttempt >= 11) {
                 mcMMO.p.getLogger().severe("Connection to MySQL failed!");
@@ -632,7 +682,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
         }
         catch (ClassNotFoundException ex) {
-            connection = null;
+            primaryConnection = null;
 
             if (reconnectAttempt == 0 || reconnectAttempt >= 11) {
                 mcMMO.p.getLogger().severe("MySQL database driver not found!");
@@ -806,7 +856,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 return;
             }
 
-            statement = connection.prepareStatement(sql);
+            statement = getConnection().prepareStatement(sql);
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -866,7 +916,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement(sql);
+            statement = getConnection().prepareStatement(sql);
             statement.executeUpdate();
             return true;
         }
@@ -901,7 +951,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             PreparedStatement statement = null;
 
             try {
-                statement = connection.prepareStatement(sql);
+                statement = getConnection().prepareStatement(sql);
                 rows = statement.executeUpdate();
             }
             catch (SQLException ex) {
@@ -936,7 +986,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             ResultSet resultSet;
 
             try {
-                statement = connection.prepareStatement(sql);
+                statement = getConnection().prepareStatement(sql);
                 resultSet = statement.executeQuery();
 
                 while (resultSet.next()) {
@@ -1008,22 +1058,22 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + "experience (user_id) VALUES (?)");
+            statement = getConnection().prepareStatement("INSERT IGNORE INTO " + tablePrefix + "experience (user_id) VALUES (?)");
             statement.setInt(1, id);
             statement.execute();
             statement.close();
 
-            statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + "skills (user_id) VALUES (?)");
+            statement = getConnection().prepareStatement("INSERT IGNORE INTO " + tablePrefix + "skills (user_id) VALUES (?)");
             statement.setInt(1, id);
             statement.execute();
             statement.close();
 
-            statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + "cooldowns (user_id) VALUES (?)");
+            statement = getConnection().prepareStatement("INSERT IGNORE INTO " + tablePrefix + "cooldowns (user_id) VALUES (?)");
             statement.setInt(1, id);
             statement.execute();
             statement.close();
 
-            statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + "huds (user_id, mobhealthbar) VALUES (? ,'" + Config.getInstance().getMobHealthbarDefault().name() + "')");
+            statement = getConnection().prepareStatement("INSERT IGNORE INTO " + tablePrefix + "huds (user_id, mobhealthbar) VALUES (? ,'" + Config.getInstance().getMobHealthbarDefault().name() + "')");
             statement.setInt(1, id);
             statement.execute();
             statement.close();
@@ -1053,7 +1103,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement(sql);
+            statement = getConnection().prepareStatement(sql);
             int i = 1;
 
             for (int arg : args) {
@@ -1083,7 +1133,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement(sql);
+            statement = getConnection().prepareStatement(sql);
             int i = 1;
 
             for (long arg : args) {
@@ -1120,7 +1170,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         int id = -1;
 
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT id FROM " + tablePrefix + "users WHERE user = ?");
+            PreparedStatement statement = getConnection().prepareStatement("SELECT id FROM " + tablePrefix + "users WHERE user = ?");
             statement.setString(1, playerName);
             id = readInt(statement);
         }
@@ -1135,7 +1185,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET lastlogin = ? WHERE id = ?");
+            statement = getConnection().prepareStatement("UPDATE " + tablePrefix + "users SET lastlogin = ? WHERE id = ?");
             statement.setLong(1, login);
             statement.setInt(2, id);
             statement.execute();
@@ -1161,7 +1211,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ? WHERE user_id = ?");
+            statement = getConnection().prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ? WHERE user_id = ?");
             statement.setString(1, mobHealthBar);
             statement.setInt(2, userId);
             statement.execute();
