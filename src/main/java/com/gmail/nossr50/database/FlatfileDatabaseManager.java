@@ -384,6 +384,10 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return loadPlayerProfile(playerName, "", create);
     }
 
+    public PlayerProfile loadPlayerProfile(UUID uuid, boolean create) {
+        return loadPlayerProfile("", uuid.toString(), create);
+    }
+
     public PlayerProfile loadPlayerProfile(String playerName, String uuid, boolean create) {
         BufferedReader in = null;
         String usersFilePath = mcMMO.getUsersFilePath();
