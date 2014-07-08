@@ -3,6 +3,7 @@ package com.gmail.nossr50.datatypes.player;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -138,6 +139,7 @@ public class McMMOPlayer {
     private class RetryProfileLoadingTask extends BukkitRunnable {
         private static final int MAX_TRIES = 5;
         private final String playerName = McMMOPlayer.this.player.getName();
+        private final UUID uniqueId = McMMOPlayer.this.player.getUniqueId();
         private int attempt = 0;
 
         // WARNING: ASYNC TASK
@@ -158,7 +160,7 @@ public class McMMOPlayer {
 
             // Increment attempt counter and try
             attempt++;
-            PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, true);
+            PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(uniqueId, true);
             // If successful, schedule the apply
             if (profile.isLoaded()) {
                 new ApplySuccessfulProfile(profile).runTask(mcMMO.p);
