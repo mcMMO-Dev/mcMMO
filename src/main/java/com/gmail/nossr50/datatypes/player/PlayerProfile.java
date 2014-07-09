@@ -32,6 +32,7 @@ public class PlayerProfile {
     private final Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
     private final Map<AbilityType, Integer> abilityDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
 
+    @Deprecated
     public PlayerProfile(String playerName) {
         this.playerName = playerName;
 
@@ -47,8 +48,30 @@ public class PlayerProfile {
         }
     }
 
+    public PlayerProfile(UUID uuid) {
+        this.uuid = uuid;
+        this.playerName = null;
+
+        mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
+
+        for (AbilityType abilityType : AbilityType.values()) {
+            abilityDATS.put(abilityType, 0);
+        }
+
+        for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
+            skills.put(skillType, 0);
+            skillsXp.put(skillType, 0F);
+        }
+    }
+
+    @Deprecated
     public PlayerProfile(String playerName, boolean isLoaded) {
         this(playerName);
+        this.loaded = isLoaded;
+    }
+
+    public PlayerProfile(String playerName, UUID uuid, boolean isLoaded) {
+        this(uuid);
         this.loaded = isLoaded;
     }
 
