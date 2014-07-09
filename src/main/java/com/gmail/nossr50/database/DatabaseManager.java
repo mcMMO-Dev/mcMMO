@@ -110,6 +110,8 @@ public interface DatabaseManager {
      */
     public void convertUsers(DatabaseManager destination);
 
+    public boolean saveUserUUID(String userName, UUID uuid);
+
     /**
      * Retrieve the type of database in use. Custom databases should return CUSTOM.
      *

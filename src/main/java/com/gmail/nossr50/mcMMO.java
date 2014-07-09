@@ -36,6 +36,7 @@ import com.gmail.nossr50.runnables.CheckDateTask;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.UpdaterResultAsyncTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
+import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
@@ -457,6 +458,9 @@ public class mcMMO extends JavaPlugin {
         // Periodic save timer (Saves every 10 minutes by default)
         long saveIntervalTicks = Config.getInstance().getSaveInterval() * 1200;
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
+
+        // Slowly update every entry in the database with UUIDs
+        new UUIDUpdateAsyncTask(this).runTaskTimerAsynchronously(this, 5 * Misc.TICK_CONVERSION_FACTOR, 30 * Misc.TICK_CONVERSION_FACTOR);
 
         // Cleanup the backups folder
         new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
