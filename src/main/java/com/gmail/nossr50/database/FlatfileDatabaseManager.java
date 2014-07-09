@@ -470,6 +470,46 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
     }
 
+    public boolean saveUserUUID(String userName, UUID uuid) {
+        boolean worked = false;
+
+        BufferedReader in = null;
+        FileWriter out = null;
+        String usersFilePath = mcMMO.getUsersFilePath();
+
+        synchronized (fileWritingLock) {
+            try {
+                in = new BufferedReader(new FileReader(usersFilePath));
+                StringBuilder writer = new StringBuilder();
+                String line;
+
+                while ((line = in.readLine()) != null) {
+                    // Write out the same file but when we get to the player we want to remove, we skip his line.
+                    if (!worked && line.split(":")[0].equalsIgnoreCase(userName)) {
+                        mcMMO.p.getLogger().info("User found, updating UUID...");
+                        line.split(":")[41] = uuid.toString();
+                        worked = true;
+                    }
+
+                    writer.append(line).append("\r\n");
+                }
+
+                out = new FileWriter(usersFilePath); // Write out the new file
+                out.write(writer.toString());
+            }
+            catch (Exception e) {
+                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+            }
+            finally {
+                tryClose(in);
+                tryClose(out);
+            }
+        }
+
+        System.out.println("Saving " + userName + " | uuid = " + uuid.toString());
+        return worked;
+    }
+
     public List<String> getStoredUsers() {
         ArrayList<String> users = new ArrayList<String>();
         BufferedReader in = null;

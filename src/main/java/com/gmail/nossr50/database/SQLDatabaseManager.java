@@ -490,6 +490,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     }
 
+    public boolean saveUserUUID(String userName, UUID uuid) {
+        return false;
+    }
+
     /**
     * Check connection status and re-establish if dead or stale.
     *
