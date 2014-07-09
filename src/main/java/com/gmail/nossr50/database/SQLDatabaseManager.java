@@ -618,7 +618,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connectionProperties.put("user", Config.getInstance().getMySQLUserName());
             connectionProperties.put("password", Config.getInstance().getMySQLUserPassword());
             connectionProperties.put("autoReconnect", "false");
-            connectionProperties.put("maxReconnects", "0");
             connection = DriverManager.getConnection(connectionString, connectionProperties);
 
             mcMMO.p.getLogger().info("Connection to MySQL was a success!");
