@@ -11,3 +11,8 @@ Options:
     EnchantmentBuffs: true
     # true to enable refreshing of chunks around a player at the end of Super Breaker, Giga Drill Breaker, and Berserk.  This should fix blocks being broken client side, but not server-side
     RefreshChunks: false
+
+    # The interval at which the server updates a couple of users to get their UUID, in seconds
+    UUIDConvertInterval: 30
+    # Amount of users to convert every interval
+    UUIDConvertAmount: 5

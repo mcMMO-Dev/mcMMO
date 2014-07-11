@@ -452,7 +452,8 @@ public class mcMMO extends JavaPlugin {
         new SaveTimerTask().runTaskTimer(this, saveIntervalTicks, saveIntervalTicks);
 
         // Slowly update every entry in the database with UUIDs
-        new UUIDUpdateAsyncTask(this).runTaskTimerAsynchronously(this, 5 * Misc.TICK_CONVERSION_FACTOR, 30 * Misc.TICK_CONVERSION_FACTOR);
+        int uuidConvertInterval = HiddenConfig.getInstance().getUUIDConvertInterval();
+        new UUIDUpdateAsyncTask(this).runTaskTimerAsynchronously(this, uuidConvertInterval * Misc.TICK_CONVERSION_FACTOR, uuidConvertInterval * Misc.TICK_CONVERSION_FACTOR);
 
         // Cleanup the backups folder
         new CleanBackupsTask().runTaskAsynchronously(mcMMO.p);
