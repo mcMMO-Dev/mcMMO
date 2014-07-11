@@ -614,7 +614,7 @@ public final class CombatUtils {
     }
 
     public static double callFakeDamageEvent(Entity attacker, Entity target, DamageCause cause, Map<DamageModifier, Double> modifiers) {
-        EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, modifiers) : new FakeEntityDamageByEntityEvent(attacker, target, cause, modifiers);
+        EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, modifiers, null) : new FakeEntityDamageByEntityEvent(attacker, target, cause, modifiers, null);
         mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
 
         if (damageEvent.isCancelled()) {
