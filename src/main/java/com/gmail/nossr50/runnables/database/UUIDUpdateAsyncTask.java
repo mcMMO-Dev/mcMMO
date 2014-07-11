@@ -12,7 +12,7 @@ import com.gmail.nossr50.util.Misc;
 
 public class UUIDUpdateAsyncTask extends BukkitRunnable {
     private mcMMO plugin;
-    private static final int MAX_LOOKUP = 5;
+    private static final int MAX_LOOKUP = HiddenConfig.getInstance().getUUIDConvertAmount();
 
     private DatabaseManager databaseManager;
     private List<String> userNames;
