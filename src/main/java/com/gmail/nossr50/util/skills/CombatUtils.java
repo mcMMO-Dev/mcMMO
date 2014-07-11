@@ -602,7 +602,14 @@ public final class CombatUtils {
 
     @Deprecated
     public static double callFakeDamageEvent(Entity attacker, Entity target, DamageCause damageCause, double damage) {
-        return callFakeDamageEvent(attacker, target, damageCause, new EnumMap<DamageModifier, Double>(ImmutableMap.of(DamageModifier.BASE, damage)));
+        EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, damageCause, damage) : new FakeEntityDamageByEntityEvent(attacker, target, damageCause, damage);
+        mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
+
+        if (damageEvent.isCancelled()) {
+            return 0;
+        }
+
+        return damageEvent.getFinalDamage();
     }
 
     public static double callFakeDamageEvent(Entity attacker, Entity target, Map<DamageModifier, Double> modifiers) {
@@ -614,7 +621,7 @@ public final class CombatUtils {
     }
 
     public static double callFakeDamageEvent(Entity attacker, Entity target, DamageCause cause, Map<DamageModifier, Double> modifiers) {
-        EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, modifiers, null) : new FakeEntityDamageByEntityEvent(attacker, target, cause, modifiers, null);
+        EntityDamageEvent damageEvent = attacker == null ? new FakeEntityDamageEvent(target, cause, modifiers) : new FakeEntityDamageByEntityEvent(attacker, target, cause, modifiers);
         mcMMO.p.getServer().getPluginManager().callEvent(damageEvent);
 
         if (damageEvent.isCancelled()) {
