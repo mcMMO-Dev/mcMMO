@@ -365,7 +365,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     private PlayerProfile loadPlayerProfile(String playerName, String uuid, boolean create, boolean retry) {
         if (!checkConnected()) {
-            return new PlayerProfile(playerName, false); // return fake profile if not connected
+            // return fake profile if not connected
+            if (uuid.isEmpty()) {
+                return new PlayerProfile(playerName, false);
+            }
+
+            return new PlayerProfile(playerName, UUID.fromString(uuid), false);
         }
 
         PreparedStatement statement = null;
@@ -1234,7 +1239,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
         Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
         MobHealthbarType mobHealthbarType;
-        UUID uuid = null;
+        UUID uuid;
 
         final int OFFSET_SKILLS = 0; // TODO update these numbers when the query changes (a new skill is added)
         final int OFFSET_XP = 13;
@@ -1290,9 +1295,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         try {
-            UUID.fromString(result.getString(OFFSET_OTHER + 3));
+            uuid = UUID.fromString(result.getString(OFFSET_OTHER + 3));
         }
         catch (Exception e) {
+            uuid = null;
         }
 
         return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS, mobHealthbarType);
