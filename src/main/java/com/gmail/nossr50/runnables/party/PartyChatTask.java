@@ -31,7 +31,7 @@ public class PartyChatTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (Config.getInstance().getPartyChatColorLeaderName() && senderName.equalsIgnoreCase(party.getLeader())) {
+        if (Config.getInstance().getPartyChatColorLeaderName() && senderName.equalsIgnoreCase(party.getLeader().getPlayerName())) {
             message = message.replaceFirst(Pattern.quote(displayName), ChatColor.GOLD + Matcher.quoteReplacement(displayName) + ChatColor.RESET);
         }
 

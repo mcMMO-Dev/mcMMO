@@ -36,7 +36,7 @@ public class PartyRenameCommand implements CommandExecutor {
                     return true;
                 }
 
-                String leaderName = playerParty.getLeader();
+                String leaderName = playerParty.getLeader().getPlayerName();
 
                 for (Player member : playerParty.getOnlineMembers()) {
                     if (!PartyManager.handlePartyChangeEvent(member, oldPartyName, newPartyName, EventReason.CHANGED_PARTIES)) {

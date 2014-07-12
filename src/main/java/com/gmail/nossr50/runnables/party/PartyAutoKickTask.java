@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -19,21 +20,21 @@ public class PartyAutoKickTask extends BukkitRunnable {
     @Override
     public void run() {
         HashMap<OfflinePlayer, Party> toRemove = new HashMap<OfflinePlayer, Party>();
-        List<String> processedPlayers = new ArrayList<String>();
+        List<UUID> processedPlayers = new ArrayList<UUID>();
 
         long currentTime = System.currentTimeMillis();
 
         for (Party party : PartyManager.getParties()) {
-            for (String memberName : party.getMembers()) {
-                OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberName);
-                boolean isProcessed = processedPlayers.contains(memberName);
+            for (UUID memberUniqueId : party.getMembers().keySet()) {
+                OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberUniqueId);
+                boolean isProcessed = processedPlayers.contains(memberUniqueId);
 
                 if ((!member.isOnline() && (currentTime - member.getLastPlayed() > KICK_TIME)) || isProcessed) {
                     toRemove.put(member, party);
                 }
 
                 if (!isProcessed) {
-                    processedPlayers.add(memberName);
+                    processedPlayers.add(memberUniqueId);
                 }
             }
         }
