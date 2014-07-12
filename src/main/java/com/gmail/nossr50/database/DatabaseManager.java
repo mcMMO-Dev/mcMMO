@@ -96,6 +96,18 @@ public interface DatabaseManager {
     public PlayerProfile loadPlayerProfile(UUID uuid, boolean createNew);
 
     /**
+     * Load a player from the database. Attempt to use uuid, fall back on playername
+     *
+     * @param playerName The name of the player to load from the database
+     * @param uuid The uuid of the player to load from the database
+     * @param createNew Whether to create a new record if the player is not
+     *          found
+     * @return The player's data, or an unloaded PlayerProfile if not found
+     *          and createNew is false
+     */
+    public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean createNew);
+
+    /**
      * Get all users currently stored in the database.
      *
      * @return list of playernames

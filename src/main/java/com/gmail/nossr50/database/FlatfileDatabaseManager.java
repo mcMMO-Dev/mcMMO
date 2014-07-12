@@ -209,6 +209,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
     public boolean saveUser(PlayerProfile profile) {
         String playerName = profile.getPlayerName();
+        UUID uuid = profile.getUniqueId();
 
         BufferedReader in = null;
         FileWriter out = null;
@@ -223,8 +224,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 // While not at the end of the file
                 while ((line = in.readLine()) != null) {
-                    // Read the line in and copy it to the output it's not the player we want to edit
-                    if (!line.split(":")[0].equalsIgnoreCase(playerName)) {
+                    // Read the line in and copy it to the output if it's not the player we want to edit
+                    String[] character = line.split(":");
+                    if (!character[41].equalsIgnoreCase(uuid.toString()) && !character[0].equalsIgnoreCase(playerName)) {
                         writer.append(line).append("\r\n");
                     }
                     else {
@@ -271,8 +273,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         writer.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
                         writer.append(profile.getSkillLevel(SkillType.ALCHEMY)).append(":");
                         writer.append(profile.getSkillXpLevel(SkillType.ALCHEMY)).append(":");
-                        UUID uuid = profile.getUniqueId();
-                        writer.append(uuid == null ? "" : uuid.toString()).append(":");
+                        writer.append(uuid.toString()).append(":");
                         writer.append("\r\n");
                     }
                 }
@@ -388,7 +389,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return loadPlayerProfile("", uuid.toString(), create);
     }
 
-    public PlayerProfile loadPlayerProfile(String playerName, String uuid, boolean create) {
+    public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create) {
+        return loadPlayerProfile(playerName, uuid.toString(), create);
+    }
+
+    private PlayerProfile loadPlayerProfile(String playerName, String uuid, boolean create) {
         BufferedReader in = null;
         String usersFilePath = mcMMO.getUsersFilePath();
 
@@ -402,7 +407,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     // Find if the line contains the player we want.
                     String[] character = line.split(":");
 
-                    if (!character[41].equalsIgnoreCase(uuid) || !character[0].equalsIgnoreCase(playerName)) {
+                    if (!character[41].equalsIgnoreCase(uuid) && !character[0].equalsIgnoreCase(playerName)) {
                         continue;
                     }
 
@@ -442,7 +447,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             return new PlayerProfile(playerName);
         }
 
-        return new PlayerProfile(UUID.fromString(uuid));
+        return new PlayerProfile(playerName, UUID.fromString(uuid));
     }
 
     public void convertUsers(DatabaseManager destination) {
