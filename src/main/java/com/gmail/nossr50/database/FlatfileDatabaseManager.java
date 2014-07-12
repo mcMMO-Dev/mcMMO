@@ -736,11 +736,15 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                         if (corrupted) {
                             mcMMO.p.debug("Updating corrupted database line for player " + newCharacter[0]);
-                            newLine = new StringBuilder(org.apache.commons.lang.StringUtils.join(newCharacter, ":"));
                         }
 
                         if (oldVersion != null) {
                             mcMMO.p.debug("Updating database line for player " + character[0] + " from before version " + oldVersion);
+                        }
+
+                        if (corrupted || oldVersion != null) {
+                            newLine = new StringBuilder(org.apache.commons.lang.StringUtils.join(newCharacter, ":"));
+                            newLine = newLine.append(":");
                         }
 
                         writer.append(newLine).append("\r\n");
