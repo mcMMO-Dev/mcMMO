@@ -134,7 +134,7 @@ public class PartyCommand implements TabExecutor {
         }
 
         // Party leader commands
-        if (!mcMMOPlayer.getParty().getLeader().equalsIgnoreCase(player.getName())) {
+        if (!mcMMOPlayer.getParty().getLeader().getUniqueId().equals(player.getUniqueId())) {
             sender.sendMessage(LocaleLoader.getString("Party.NotOwner"));
             return true;
         }

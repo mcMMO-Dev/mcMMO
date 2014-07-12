@@ -1,14 +1,17 @@
 package com.gmail.nossr50.api;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyLeader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -79,7 +82,7 @@ public final class PartyAPI {
         Party party = PartyManager.getParty(partyName);
 
         if (party == null) {
-            party = new Party(player.getName(), partyName);
+            party = new Party(new PartyLeader(player.getName(), player.getUniqueId()), partyName);
         }
 
         PartyManager.addToParty(UserManager.getPlayer(player), party);
@@ -105,7 +108,7 @@ public final class PartyAPI {
      * @return the leader of the party
      */
     public static String getPartyLeader(String partyName) {
-        return PartyManager.getPartyLeader(partyName);
+        return PartyManager.getPartyLeaderName(partyName);
     }
 
     /**
@@ -114,10 +117,11 @@ public final class PartyAPI {
      * This function is designed for API usage.
      *
      * @param partyName The name of the party to set the leader of
-     * @param player The player to set as leader
+     * @param playerName The playerName to set as leader
      */
-    public static void setPartyLeader(String partyName, String player) {
-        PartyManager.setPartyLeader(player, PartyManager.getParty(partyName));
+    @Deprecated
+    public static void setPartyLeader(String partyName, String playerName) {
+        PartyManager.setPartyLeader(mcMMO.p.getServer().getOfflinePlayer(playerName).getUniqueId(), PartyManager.getParty(partyName));
     }
 
     /**
@@ -132,8 +136,8 @@ public final class PartyAPI {
     public static List<OfflinePlayer> getOnlineAndOfflineMembers(Player player) {
         List<OfflinePlayer> members = new ArrayList<OfflinePlayer>();
 
-        for (String memberName : PartyManager.getAllMembers(player)) {
-            OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberName);
+        for (UUID memberUniqueId : PartyManager.getAllMembers(player).values()) {
+            OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberUniqueId);
             members.add(member);
         }
         return members;
@@ -147,7 +151,20 @@ public final class PartyAPI {
      * @param player The player to check
      * @return all the player names in the player's party
      */
+    @Deprecated
     public static LinkedHashSet<String> getMembers(Player player) {
+        return (LinkedHashSet<String>) PartyManager.getAllMembers(player).keySet();
+    }
+
+    /**
+     * Get a list of all player names and uuids in this player's party.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to check
+     * @return all the player names and uuids in the player's party
+     */
+    public static LinkedHashMap<String, UUID> getMembersMap(Player player) {
         return PartyManager.getAllMembers(player);
     }
 

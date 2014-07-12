@@ -2,8 +2,10 @@ package com.gmail.nossr50.party;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
@@ -15,6 +17,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.datatypes.party.PartyLeader;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.events.party.McMMOPartyAllianceChangeEvent;
@@ -132,10 +135,10 @@ public final class PartyManager {
      * @param player The player to check
      * @return all the players in the player's party
      */
-    public static LinkedHashSet<String> getAllMembers(Player player) {
+    public static LinkedHashMap<String, UUID> getAllMembers(Player player) {
         Party party = getParty(player);
 
-        return party == null ? new LinkedHashSet<String>() : party.getMembers();
+        return party == null ? new LinkedHashMap<String, UUID>() : party.getMembers();
     }
 
     /**
@@ -184,9 +187,33 @@ public final class PartyManager {
      * @param playerName The members name
      * @return the existing party, null otherwise
      */
+    @Deprecated
     public static Party getPlayerParty(String playerName) {
         for (Party party : parties) {
-            if (party.getMembers().contains(playerName)) {
+            if (party.getMembers().keySet().contains(playerName)) {
+                return party;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Retrieve a party by a members uuid
+     *
+     * @param uuid The members uuid
+     * @return the existing party, null otherwise
+     */
+    public static Party getPlayerParty(String playerName, UUID uuid) {
+        for (Party party : parties) {
+            LinkedHashMap<String, UUID> members = party.getMembers();
+            if (members.keySet().contains(playerName) || members.values().contains(uuid)) {
+
+                // Name changes
+                if (!members.get(playerName).equals(uuid)) {
+                    members.put(playerName, uuid);
+                }
+
                 return party;
             }
         }
@@ -222,7 +249,7 @@ public final class PartyManager {
      * @param party The party
      */
     public static void removeFromParty(OfflinePlayer player, Party party) {
-        LinkedHashSet<String> members = party.getMembers();
+        LinkedHashMap<String, UUID> members = party.getMembers();
         String playerName = player.getName();
 
         members.remove(playerName);
@@ -232,8 +259,8 @@ public final class PartyManager {
         }
         else {
             // If the leaving player was the party leader, appoint a new leader from the party members
-            if (party.getLeader().equalsIgnoreCase(playerName)) {
-                setPartyLeader(members.iterator().next(), party);
+            if (party.getLeader().getUniqueId().equals(player.getUniqueId())) {
+                setPartyLeader(members.values().iterator().next(), party);
             }
 
             informPartyMembersQuit(party, playerName);
@@ -279,7 +306,7 @@ public final class PartyManager {
         Player player = mcMMOPlayer.getPlayer();
         String playerName = player.getName();
 
-        Party party = new Party(playerName, partyName.replace(".", ""), password);
+        Party party = new Party(new PartyLeader(playerName, player.getUniqueId()), partyName.replace(".", ""), password);
 
         if (password != null) {
             player.sendMessage(LocaleLoader.getString("Party.Password.Set", password));
@@ -408,11 +435,12 @@ public final class PartyManager {
      * @param party The party
      */
     public static void addToParty(McMMOPlayer mcMMOPlayer, Party party) {
-        String playerName = mcMMOPlayer.getPlayer().getName();
+        Player player = mcMMOPlayer.getPlayer();
+        String playerName = player.getName();
 
         informPartyMembersJoin(party, playerName);
         mcMMOPlayer.setParty(party);
-        party.getMembers().add(playerName);
+        party.getMembers().put(player.getName(), player.getUniqueId());
     }
 
     /**
@@ -421,36 +449,37 @@ public final class PartyManager {
      * @param partyName The party name
      * @return the leader of the party
      */
-    public static String getPartyLeader(String partyName) {
+    public static String getPartyLeaderName(String partyName) {
         Party party = getParty(partyName);
 
-        return party == null ? null : party.getLeader();
+        return party == null ? null : party.getLeader().getPlayerName();
     }
 
     /**
      * Set the leader of a party.
      *
-     * @param playerName The name of the player to set as leader
+     * @param uuid The uuid of the player to set as leader
      * @param party The party
      */
-    public static void setPartyLeader(String playerName, Party party) {
-        String leaderName = party.getLeader();
+    public static void setPartyLeader(UUID uuid, Party party) {
+        OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(uuid);
+        UUID leaderUniqueId = party.getLeader().getUniqueId();
 
         for (Player member : party.getOnlineMembers()) {
-            String memberName = member.getName();
+            UUID memberUniqueId = member.getUniqueId();
 
-            if (memberName.equalsIgnoreCase(playerName)) {
+            if (memberUniqueId.equals(player.getUniqueId())) {
                 member.sendMessage(LocaleLoader.getString("Party.Owner.Player"));
             }
-            else if (memberName.equalsIgnoreCase(leaderName)) {
+            else if (memberUniqueId.equals(leaderUniqueId)) {
                 member.sendMessage(LocaleLoader.getString("Party.Owner.NotLeader"));
             }
             else {
-                member.sendMessage(LocaleLoader.getString("Party.Owner.New", playerName));
+                member.sendMessage(LocaleLoader.getString("Party.Owner.New", player.getName()));
             }
         }
 
-        party.setLeader(playerName);
+        party.setLeader(new PartyLeader(player.getName(), player.getUniqueId()));
     }
 
     /**
@@ -461,7 +490,7 @@ public final class PartyManager {
     public static boolean canInvite(McMMOPlayer mcMMOPlayer) {
         Party party = mcMMOPlayer.getParty();
 
-        return !party.isLocked() || party.getLeader().equalsIgnoreCase(mcMMOPlayer.getPlayer().getName());
+        return !party.isLocked() || party.getLeader().getUniqueId().equals(mcMMOPlayer.getPlayer().getUniqueId());
     }
 
     /**
@@ -479,7 +508,13 @@ public final class PartyManager {
         for (String partyName : partiesFile.getConfigurationSection("").getKeys(false)) {
             Party party = new Party(partyName);
 
-            party.setLeader(partiesFile.getString(partyName + ".Leader"));
+            String[] leaderSplit = partiesFile.getString(partyName + ".Leader").split("[|]");
+            UUID leaderUniqueId = null;
+            if (leaderSplit.length == 2) {
+                leaderUniqueId = UUID.fromString(leaderSplit[1]);
+            }
+            party.setLeader(new PartyLeader(leaderSplit[0], leaderUniqueId));
+
             party.setPassword(partiesFile.getString(partyName + ".Password"));
             party.setLocked(partiesFile.getBoolean(partyName + ".Locked"));
             party.setLevel(partiesFile.getInt(partyName + ".Level"));
@@ -496,18 +531,26 @@ public final class PartyManager {
                 party.setSharingDrops(itemShareType, partiesFile.getBoolean(partyName + ".ItemShareType." + itemShareType.toString(), true));
             }
 
-            List<String> memberNames = partiesFile.getStringList(partyName + ".Members");
-            LinkedHashSet<String> members = party.getMembers();
+            List<String> memberEntries = partiesFile.getStringList(partyName + ".Members");
+            LinkedHashMap<String, UUID> members = party.getMembers();
 
-            for (String memberName : memberNames) {
-                members.add(memberName);
+            for (String memberEntry : memberEntries) {
+                String[] memberSplit = memberEntry.split("[|]");
+
+                if (memberSplit.length != 2) {
+                    members.put(memberSplit[0], null);
+                    continue;
+                }
+
+                members.put(memberSplit[0], UUID.fromString(memberSplit[1]));
             }
 
             parties.add(party);
         }
+        mcMMO.p.debug("Loaded (" + parties.size() + ") Parties...");
 
         for (Party party : hasAlly) {
-            party.setAlly(getParty(partiesFile.getString(party.getName() + ".Ally")));
+            party.setAlly(PartyManager.getParty(partiesFile.getString(party.getName() + ".Ally")));
         }
     }
 
@@ -528,7 +571,8 @@ public final class PartyManager {
         for (Party party : parties) {
             String partyName = party.getName();
 
-            partiesFile.set(partyName + ".Leader", party.getLeader());
+            String partyLeader = party.getLeader().getPlayerName() + "|" + party.getLeader().getUniqueId().toString();
+            partiesFile.set(partyName + ".Leader", partyLeader);
             partiesFile.set(partyName + ".Password", party.getPassword());
             partiesFile.set(partyName + ".Locked", party.isLocked());
             partiesFile.set(partyName + ".Level", party.getLevel());
@@ -543,9 +587,11 @@ public final class PartyManager {
 
             List<String> memberNames = new ArrayList<String>();
 
-            for (String member : party.getMembers()) {
-                if (!memberNames.contains(member)) {
-                    memberNames.add(member);
+            for (Entry<String, UUID> memberEntry : party.getMembers().entrySet()) {
+                String memberName = memberEntry.getKey();
+                String memberUniqueId = memberEntry.getValue() == null ? "" : memberEntry.getValue().toString();
+                if (!memberNames.contains(memberName)) {
+                    memberNames.add(memberName + "|" + memberUniqueId);
                 }
             }
 

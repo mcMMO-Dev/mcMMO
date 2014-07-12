@@ -98,7 +98,7 @@ public class McMMOPlayer {
         this.player = player;
         playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
         this.profile = profile;
-        party = PartyManager.getPlayerParty(playerName);
+        party = PartyManager.getPlayerParty(playerName, uuid);
         ptpRecord = new PartyTeleportRecord();
 
         if (profile.getUniqueId() == null) {

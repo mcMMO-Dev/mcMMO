@@ -44,7 +44,7 @@ public class PartyAllianceInviteCommand implements CommandExecutor {
                     return true;
                 }
 
-                if (!mcMMOTarget.getParty().getLeader().equalsIgnoreCase(targetName)) {
+                if (!mcMMOTarget.getParty().getLeader().getUniqueId().equals(target.getUniqueId())) {
                     player.sendMessage(LocaleLoader.getString("Party.Target.NotOwner", targetName));
                     return true;
                 }

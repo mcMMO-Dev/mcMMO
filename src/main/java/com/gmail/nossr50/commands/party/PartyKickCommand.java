@@ -22,7 +22,7 @@ public class PartyKickCommand implements CommandExecutor {
                 Party playerParty = UserManager.getPlayer((Player) sender).getParty();
                 String targetName = CommandUtils.getMatchedPlayerName(args[1]);
 
-                if (!playerParty.getMembers().contains(targetName)) {
+                if (!playerParty.getMembers().keySet().contains(targetName)) {
                     sender.sendMessage(LocaleLoader.getString("Party.NotInYourParty", targetName));
                     return true;
                 }
