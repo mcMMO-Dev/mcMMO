@@ -95,15 +95,16 @@ public class McMMOPlayer {
 
     public McMMOPlayer(Player player) {
         String playerName = player.getName();
+        UUID uuid = player.getUniqueId();
 
         this.player = player;
         playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
-        profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, true);
+        profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, uuid, true);
         party = PartyManager.getPlayerParty(playerName);
         ptpRecord = new PartyTeleportRecord();
 
-        if (!player.getUniqueId().equals(profile.getUniqueId())) {
-            profile.setUniqueId(player.getUniqueId());
+        if (profile.getUniqueId() == null) {
+            profile.setUniqueId(uuid);
         }
 
         /*
