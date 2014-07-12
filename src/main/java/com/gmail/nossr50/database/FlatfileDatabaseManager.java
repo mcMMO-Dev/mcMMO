@@ -411,6 +411,12 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         continue;
                     }
 
+                    // Update playerName in database after name change
+                    if (!character[0].equalsIgnoreCase(playerName)) {
+                        mcMMO.p.debug("Name change detected: " + character[0] + " => " + playerName);
+                        character[0] = playerName;
+                    }
+
                     return loadFromLine(character);
                 }
 
