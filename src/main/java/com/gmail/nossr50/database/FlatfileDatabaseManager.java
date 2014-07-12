@@ -402,7 +402,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     // Find if the line contains the player we want.
                     String[] character = line.split(":");
 
-                    if (!character[0].equalsIgnoreCase(playerName)) {
+                    if (!character[41].equalsIgnoreCase(uuid) || !character[0].equalsIgnoreCase(playerName)) {
                         continue;
                     }
 
@@ -411,8 +411,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 // Didn't find the player, create a new one
                 if (create) {
+                    if (uuid.isEmpty()) {
+                        newUser(playerName, uuid);
+                        return new PlayerProfile(playerName, true);
+                    }
+
                     newUser(playerName, uuid);
-                    return new PlayerProfile(playerName, true);
+                    return new PlayerProfile(playerName, UUID.fromString(uuid), true);
                 }
             }
             catch (Exception e) {
@@ -433,7 +438,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
 
         // Return unloaded profile
-        return new PlayerProfile(playerName);
+        if (uuid.isEmpty()) {
+            return new PlayerProfile(playerName);
+        }
+
+        return new PlayerProfile(UUID.fromString(uuid));
     }
 
     public void convertUsers(DatabaseManager destination) {
@@ -484,10 +493,15 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 String line;
 
                 while ((line = in.readLine()) != null) {
-                    // Write out the same file but when we get to the player we want to remove, we skip his line.
-                    if (!worked && line.split(":")[0].equalsIgnoreCase(userName)) {
-                        mcMMO.p.getLogger().info("User found, updating UUID...");
-                        line.split(":")[41] = uuid.toString();
+                    String[] character = line.split(":");
+                    if (!worked && character[0].equalsIgnoreCase(userName)) {
+                        if (character.length < 42) {
+                            mcMMO.p.getLogger().severe("Could not update UUID for " + userName + "!");
+                            mcMMO.p.getLogger().severe("Database entry is invalid.");
+                            break;
+                        }
+
+                        line = line.replace(character[41], uuid.toString());
                         worked = true;
                     }
 
@@ -506,7 +520,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             }
         }
 
-        System.out.println("Saving " + userName + " | uuid = " + uuid.toString());
         return worked;
     }
 
@@ -650,6 +663,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     in = new BufferedReader(new FileReader(usersFilePath));
                     StringBuilder writer = new StringBuilder();
                     String line;
+                    HashSet<String> usernames = new HashSet<String>();
                     HashSet<String> players = new HashSet<String>();
 
                     while ((line = in.readLine()) != null) {
@@ -664,8 +678,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
                         String[] character = line.split(":");
 
+                        // Prevent the same username from being present multiple times
+                        if (!usernames.add(character[0])) {
+                            continue;
+                        }
+
                         // Prevent the same player from being present multiple times
-                        if (!players.add(character[0])) {
+                        if (character.length == 42 && (!character[41].isEmpty() && !players.add(character[41]))) {
                             continue;
                         }
 
@@ -754,7 +773,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         if (character.length <= 41) {
                             // Addition of UUIDs
                             // Version 1.5.01
-                            newLine.append(":");
+                            // Add a space because otherwise it gets removed
+                            newLine.append(" :");
                             if (oldVersion == null) {
                                 oldVersion = "1.5.01";
                             }
@@ -765,10 +785,10 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         boolean corrupted = false;
 
                         for (int i = 0; i < newCharacter.length; i++) {
-                            if (newCharacter[i].isEmpty() && !(i == 2 || i == 3 || i == 23 || i == 33)) {
+                            if (newCharacter[i].isEmpty() && !(i == 2 || i == 3 || i == 23 || i == 33 || i == 41)) {
                                 corrupted = true;
 
-                                if (newCharacter.length != 41) {
+                                if (newCharacter.length != 42) {
                                     newCharacter = (String[]) ArrayUtils.remove(newCharacter, i);
                                 }
                                 else {
@@ -789,7 +809,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                                 newCharacter[i] = Config.getInstance().getMobHealthbarDefault().toString();
                             }
 
-                            if (!StringUtils.isInt(newCharacter[i]) && !(i == 0 || i == 2 || i == 3 || i == 23 || i == 33 || i == 38)) {
+                            if (!StringUtils.isInt(newCharacter[i]) && !(i == 0 || i == 2 || i == 3 || i == 23 || i == 33 || i == 38 || i == 41)) {
                                 corrupted = true;
                                 newCharacter[i] = "0";
                             }
@@ -800,7 +820,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         if (oldVersion != null) {
-                            mcMMO.p.debug("Updating database line for player " + character[0] + " from before version " + oldVersion);
+                            mcMMO.p.debug("Updating database line from before version " + oldVersion + " for player " + character[0]);
                         }
 
                         if (corrupted || oldVersion != null) {
