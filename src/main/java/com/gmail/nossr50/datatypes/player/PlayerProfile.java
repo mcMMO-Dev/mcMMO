@@ -34,23 +34,12 @@ public class PlayerProfile {
 
     @Deprecated
     public PlayerProfile(String playerName) {
-        this.playerName = playerName;
-
-        mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
-
-        for (AbilityType abilityType : AbilityType.values()) {
-            abilityDATS.put(abilityType, 0);
-        }
-
-        for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
-            skills.put(skillType, 0);
-            skillsXp.put(skillType, 0F);
-        }
+        this(playerName, null);
     }
 
-    public PlayerProfile(UUID uuid) {
+    public PlayerProfile(String playerName, UUID uuid) {
         this.uuid = uuid;
-        this.playerName = null;
+        this.playerName = playerName;
 
         mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
 
@@ -71,7 +60,7 @@ public class PlayerProfile {
     }
 
     public PlayerProfile(String playerName, UUID uuid, boolean isLoaded) {
-        this(uuid);
+        this(playerName, uuid);
         this.loaded = isLoaded;
     }
 
@@ -101,7 +90,7 @@ public class PlayerProfile {
         changed = !mcMMO.getDatabaseManager().saveUser(profileCopy);
 
         if (changed) {
-            mcMMO.p.getLogger().warning("PlayerProfile for " + playerName + " failed to save");
+            mcMMO.p.getLogger().warning("PlayerProfile saving failed for player: " + playerName + " " + uuid);
         }
     }
 

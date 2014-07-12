@@ -360,6 +360,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return loadPlayerProfile("", uuid.toString(), create, true);
     }
 
+    public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create) {
+        return loadPlayerProfile(playerName, uuid.toString(), create, true);
+    }
+
     private PlayerProfile loadPlayerProfile(String playerName, String uuid, boolean create, boolean retry) {
         if (!checkConnected()) {
             return new PlayerProfile(playerName, false); // return fake profile if not connected
