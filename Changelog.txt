@@ -28,6 +28,7 @@ Version 1.5.01-dev
  = Fixed bug with setting custom names and lore in treasures config
  = Fixed bug which would cause a NullPointerException with getFlowerAndGrassXp()
  = Fixed bug which could cause and SQLException regarding the connection property 'maxReconnects'.
+ = Fixed bug where falling blocks were incorrectly tracked
  ! Changed SecondaryAbilityEvent to implement Cancellable and it now gets fired for damage related secondary abilities
  ! Changed the way mcMMO handles bonus damage, updated for the new damage event API
  ! Changed player data saving. Save tasks are now asynchronous
