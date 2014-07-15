@@ -1,7 +1,5 @@
 package com.gmail.nossr50.datatypes.skills.alchemy;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.Potion;
 
 public enum PotionStage {
@@ -41,11 +39,11 @@ public enum PotionStage {
     }
 
     private static boolean isWaterBottle(AlchemyPotion input) {
-        return input.getEffects().isEmpty();
+        return input.toPotion(1).getEffects().isEmpty();
     }
 
     public static PotionStage getPotionStage(AlchemyPotion alchemyPotion) {
-        Potion potion = Potion.fromItemStack(new ItemStack(Material.POTION, 1, alchemyPotion.getDataValue()));
+        Potion potion = alchemyPotion.toPotion(1);
 
         int stage = 1;
 

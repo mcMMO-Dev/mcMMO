@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 
 public class AlchemyPotion {
@@ -48,6 +49,10 @@ public class AlchemyPotion {
 
         potion.setItemMeta(meta);
         return potion;
+    }
+
+    public Potion toPotion(int amount) {
+        return Potion.fromItemStack(this.toItemStack(amount));
     }
 
     public short getDataValue() {
