@@ -39,7 +39,7 @@ public enum PotionStage {
     }
 
     private static boolean isWaterBottle(AlchemyPotion input) {
-        return input.toPotion(1).getEffects().isEmpty();
+        return input.getDataValue() == 0;
     }
 
     public static PotionStage getPotionStage(AlchemyPotion alchemyPotion) {
