@@ -45,6 +45,6 @@ public class PartyChatManager extends ChatManager {
             }
         }
 
-        plugin.getLogger().info("[P]<" + party.getName() + ">" + message);
+        plugin.getServer().getConsoleSender().sendMessage("[mcMMO] [P]<" + party.getName() + ">" + message);
     }
 }
