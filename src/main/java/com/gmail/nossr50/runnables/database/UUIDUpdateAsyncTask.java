@@ -13,15 +13,17 @@ import com.gmail.nossr50.util.Misc;
 public class UUIDUpdateAsyncTask extends BukkitRunnable {
     private mcMMO plugin;
     private static final int MAX_LOOKUP = HiddenConfig.getInstance().getUUIDConvertAmount();
+    private boolean conversionNeeded;
 
     private DatabaseManager databaseManager;
     private List<String> userNames;
     private int size;
-    int checkedUsers;
-    long startMillis;
+    private int checkedUsers;
+    private long startMillis;
 
     public UUIDUpdateAsyncTask(mcMMO plugin) {
         this.plugin = plugin;
+        this.conversionNeeded = !mcMMO.getConvertManager().isUUIDConversionCompleted();
 
         this.databaseManager = mcMMO.getDatabaseManager();
         this.userNames = databaseManager.getStoredUsers();
@@ -35,7 +37,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!conversionNeeded()) {
+        if (!conversionNeeded) {
             plugin.debug("No need to update database with UUIDs");
             this.cancel();
             return;
@@ -51,6 +53,8 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
             userNamesSection = userNames.subList(0, size);
             size = 0;
             this.cancel();
+            mcMMO.getConvertManager().setUUIDConversionCompleted(true);
+            plugin.debug("Database updated with UUIDs!");
         }
 
         for (String userName : userNamesSection) {
@@ -66,11 +70,5 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
         }
 
         Misc.printProgress(checkedUsers, DatabaseManager.progressInterval, startMillis);
-    }
-
-    private boolean conversionNeeded() {
-        plugin.debug("Checking if conversion is needed...");
-
-        return true;
     }
 }
