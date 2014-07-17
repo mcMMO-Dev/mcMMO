@@ -1,10 +1,11 @@
 package com.gmail.nossr50.util.uuid;
 
-import java.io.DataOutputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,54 +15,55 @@ import java.util.concurrent.Callable;
 import com.google.common.collect.ImmutableList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 
 public class UUIDFetcher implements Callable<Map<String, UUID>> {
-    private static final int MAX_SEARCH = 100;
-    private static final String PROFILE_URL = "https://api.mojang.com/profiles/page/";
-    private static final String AGENT = "minecraft";
+    private static final double PROFILES_PER_REQUEST = 100;
+    private static final String PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
     private final JSONParser jsonParser = new JSONParser();
     private final List<String> names;
+    private final boolean rateLimiting;
+
+    public UUIDFetcher(List<String> names, boolean rateLimiting) {
+        this.names = ImmutableList.copyOf(names);
+        this.rateLimiting = rateLimiting;
+    }
 
     public UUIDFetcher(List<String> names) {
-        this.names = ImmutableList.copyOf(names);
+        this(names, true);
     }
 
     public Map<String, UUID> call() throws Exception {
         Map<String, UUID> uuidMap = new HashMap<String, UUID>();
-        String body = buildBody(names);
-        for (int i = 1; i < MAX_SEARCH; i++) {
-            HttpURLConnection connection = createConnection(i);
+        int requests = (int) Math.ceil(names.size() / PROFILES_PER_REQUEST);
+        for (int i = 0; i < requests; i++) {
+            HttpURLConnection connection = createConnection();
+            String body = JSONArray.toJSONString(names.subList(i * 100, Math.min((i + 1) * 100, names.size())));
             writeBody(connection, body);
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
-            JSONArray array = (JSONArray) jsonObject.get("profiles");
-            Number count = (Number) jsonObject.get("size");
-
-            if (count.intValue() == 0) {
-                break;
-            }
-
+            JSONArray array = (JSONArray) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
             for (Object profile : array) {
                 JSONObject jsonProfile = (JSONObject) profile;
                 String id = (String) jsonProfile.get("id");
                 String name = (String) jsonProfile.get("name");
-                UUID uuid = UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
+                UUID uuid = UUIDFetcher.getUUID(id);
                 uuidMap.put(name, uuid);
+            }
+            if (rateLimiting && i != requests - 1) {
+                Thread.sleep(100L);
             }
         }
         return uuidMap;
     }
 
     private static void writeBody(HttpURLConnection connection, String body) throws Exception {
-        DataOutputStream writer = new DataOutputStream(connection.getOutputStream());
-        writer.write(body.getBytes());
-        writer.flush();
-        writer.close();
+        OutputStream stream = connection.getOutputStream();
+        stream.write(body.getBytes());
+        stream.flush();
+        stream.close();
     }
 
-    private static HttpURLConnection createConnection(int page) throws Exception {
-        URL url = new URL(PROFILE_URL + page);
+    private static HttpURLConnection createConnection() throws Exception {
+        URL url = new URL(PROFILE_URL);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
         connection.setRequestProperty("Content-Type", "application/json");
@@ -71,17 +73,28 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
         return connection;
     }
 
-    @SuppressWarnings("unchecked")
-    private static String buildBody(List<String> names) {
-        List<JSONObject> lookups = new ArrayList<JSONObject>();
+    private static UUID getUUID(String id) {
+        return UUID.fromString(id.substring(0, 8) + "-" + id.substring(8, 12) + "-" + id.substring(12, 16) + "-" + id.substring(16, 20) + "-" + id.substring(20, 32));
+    }
 
-        for (String name : names) {
-            JSONObject obj = new JSONObject();
-            obj.put("name", name);
-            obj.put("agent", AGENT);
-            lookups.add(obj);
+    public static byte[] toBytes(UUID uuid) {
+        ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[16]);
+        byteBuffer.putLong(uuid.getMostSignificantBits());
+        byteBuffer.putLong(uuid.getLeastSignificantBits());
+        return byteBuffer.array();
+    }
+
+    public static UUID fromBytes(byte[] array) {
+        if (array.length != 16) {
+            throw new IllegalArgumentException("Illegal byte array length: " + array.length);
         }
+        ByteBuffer byteBuffer = ByteBuffer.wrap(array);
+        long mostSignificant = byteBuffer.getLong();
+        long leastSignificant = byteBuffer.getLong();
+        return new UUID(mostSignificant, leastSignificant);
+    }
 
-        return JSONValue.toJSONString(lookups);
+    public static UUID getUUIDOf(String name) throws Exception {
+        return new UUIDFetcher(Arrays.asList(name)).call().get(name);
     }
 }
