@@ -13,10 +13,9 @@ import com.google.common.base.Functions;
  * Called when mcMMO applies damage due to special abilities.
  */
 public class FakeEntityDamageEvent extends EntityDamageEvent {
-    private static final EnumMap<DamageModifier, Function<? super Double, Double>> functionModifiers = getFunctionModifiers();
 
     public FakeEntityDamageEvent(Entity damagee, DamageCause cause, final Map<DamageModifier, Double> modifiers) {
-        super(damagee, cause, modifiers, functionModifiers);
+        super(damagee, cause, modifiers, getFunctionModifiers(modifiers));
     }
 
     @Deprecated
@@ -24,11 +23,11 @@ public class FakeEntityDamageEvent extends EntityDamageEvent {
         super(damagee, cause, damage);
     }
 
-    public static EnumMap<DamageModifier, Function<? super Double, Double>> getFunctionModifiers() {
+    public static EnumMap<DamageModifier, Function<? super Double, Double>> getFunctionModifiers(Map<DamageModifier, Double> modifiers) {
         EnumMap<DamageModifier, Function<? super Double, Double>> modifierFunctions = new EnumMap<DamageModifier, Function<? super Double, Double>>(DamageModifier.class);
         Function<? super Double, Double> ZERO = Functions.constant(-0.0);
 
-        for (DamageModifier modifier : DamageModifier.values()) {
+        for (DamageModifier modifier : modifiers.keySet()) {
             modifierFunctions.put(modifier, ZERO);
         }
 
