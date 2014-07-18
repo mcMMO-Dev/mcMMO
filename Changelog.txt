@@ -32,6 +32,7 @@ Version 1.5.01-dev
  = Fixed bug where falling blocks were incorrectly tracked
  = Fixed bug where items would get deleted when in Berserk with a full inventory
  = Fixed bug where the console would not correctly show party chat colors
+ = Fixed bug where party chat was using non thread safe methods
  ! Changed SecondaryAbilityEvent to implement Cancellable and it now gets fired for damage related secondary abilities
  ! Changed the way mcMMO handles bonus damage, updated for the new damage event API
  ! Changed player data saving. Save tasks are now asynchronous
