@@ -53,6 +53,7 @@ import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
+import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.skills.taming.TamingManager;
@@ -192,6 +193,11 @@ public class EntityListener implements Listener {
                 attacker = (Entity) animalTamer;
             }
         }
+        else if (attacker instanceof TNTPrimed && defender instanceof Player) {
+            if (BlastMining.processBlastMiningExplosion(event, (TNTPrimed) attacker, (Player) defender)) {
+                return;
+            }
+        }
 
         if (defender instanceof Player && attacker instanceof Player) {
             Player defendingPlayer = (Player) defender;
@@ -277,19 +283,6 @@ public class EntityListener implements Listener {
 
                     if (acrobaticsManager.canRoll()) {
                         event.setDamage(acrobaticsManager.rollCheck(event.getDamage()));
-
-                        if (event.getFinalDamage() == 0) {
-                            event.setCancelled(true);
-                            return;
-                        }
-                    }
-                    break;
-
-                case BLOCK_EXPLOSION:
-                    MiningManager miningManager = mcMMOPlayer.getMiningManager();
-
-                    if (miningManager.canUseDemolitionsExpertise()) {
-                        event.setDamage(miningManager.processDemolitionsExpertise(event.getDamage()));
 
                         if (event.getFinalDamage() == 0) {
                             event.setCancelled(true);

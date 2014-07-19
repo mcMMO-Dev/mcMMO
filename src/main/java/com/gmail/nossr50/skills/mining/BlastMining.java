@@ -4,9 +4,15 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.TNTPrimed;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.util.player.UserManager;
 
 public class BlastMining {
     // The order of the values is extremely important, a few methods depend on it to work properly
@@ -83,5 +89,33 @@ public class BlastMining {
         }
 
         return 0;
+    }
+
+    public static boolean processBlastMiningExplosion(EntityDamageByEntityEvent event, TNTPrimed tnt, Player defender) {
+        if (!tnt.hasMetadata(mcMMO.tntMetadataKey) || !UserManager.hasPlayerDataKey(defender)) {
+            return false;
+        }
+
+        // We can make this assumption because we (should) be the only ones using this exact metadata
+        Player player = mcMMO.p.getServer().getPlayerExact(tnt.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
+
+        if (!player.equals(defender)) {
+            return false;
+        }
+
+        MiningManager miningManager =  UserManager.getPlayer(defender).getMiningManager();
+
+        if (!miningManager.canUseDemolitionsExpertise()) {
+            return false;
+        }
+
+        event.setDamage(DamageModifier.BASE, miningManager.processDemolitionsExpertise(event.getDamage()));
+
+        if (event.getFinalDamage() == 0) {
+            event.setCancelled(true);
+            return false;
+        }
+
+        return true;
     }
 }
