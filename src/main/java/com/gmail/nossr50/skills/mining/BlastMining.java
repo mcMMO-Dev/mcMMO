@@ -1,5 +1,8 @@
 package com.gmail.nossr50.skills.mining;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Material;
 
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -55,4 +58,30 @@ public class BlastMining {
     public static Material detonator = Config.getInstance().getDetonatorItem();
 
     public final static int MAXIMUM_REMOTE_DETONATION_DISTANCE = 100;
+
+    public static int getDemolitionExpertUnlockLevel() {
+        List<Tier> tierList = Arrays.asList(Tier.values());
+        for (Tier tier : tierList) {
+            if (tier.getBlastDamageDecrease() > 0) {
+                continue;
+            }
+
+            return tier == Tier.EIGHT ? tier.getLevel() : tierList.get(tierList.indexOf(tier) - 1).getLevel();
+        }
+
+        return 0;
+    }
+
+    public static int getBiggerBombsUnlockLevel() {
+        List<Tier> tierList = Arrays.asList(Tier.values());
+        for (Tier tier : tierList) {
+            if (tier.getBlastRadiusModifier() > 1.0) {
+                continue;
+            }
+
+            return tier == Tier.EIGHT ? tier.getLevel() : tierList.get(tierList.indexOf(tier) - 1).getLevel();
+        }
+
+        return 0;
+    }
 }

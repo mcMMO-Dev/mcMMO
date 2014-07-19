@@ -33,7 +33,7 @@ public class MiningManager extends SkillManager {
     }
 
     public boolean canUseDemolitionsExpertise() {
-        return getSkillLevel() >= BlastMining.Tier.FOUR.getLevel() && Permissions.demolitionsExpertise(getPlayer());
+        return getSkillLevel() >= BlastMining.getDemolitionExpertUnlockLevel() && Permissions.demolitionsExpertise(getPlayer());
     }
 
     public boolean canDetonate() {
@@ -47,7 +47,7 @@ public class MiningManager extends SkillManager {
     }
 
     public boolean canUseBiggerBombs() {
-        return getSkillLevel() >= BlastMining.Tier.TWO.getLevel() && Permissions.biggerBombs(getPlayer());
+        return getSkillLevel() >= BlastMining.getBiggerBombsUnlockLevel() && Permissions.biggerBombs(getPlayer());
     }
 
     /**

@@ -9,6 +9,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.mining.BlastMining.Tier;
 import com.gmail.nossr50.skills.mining.MiningManager;
 import com.gmail.nossr50.util.Permissions;
@@ -126,7 +127,7 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canBiggerBombs) {
-            int unlockLevel = AdvancedConfig.getInstance().getBlastMiningRankLevel(Tier.TWO);
+            int unlockLevel = BlastMining.getBiggerBombsUnlockLevel();
 
             if (skillValue < unlockLevel) {
                 messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.1", unlockLevel)));
@@ -137,7 +138,7 @@ public class MiningCommand extends SkillCommand {
         }
 
         if (canDemoExpert) {
-            int unlockLevel = AdvancedConfig.getInstance().getBlastMiningRankLevel(Tier.FOUR);
+            int unlockLevel = BlastMining.getDemolitionExpertUnlockLevel();
 
             if (skillValue < unlockLevel) {
                 messages.add(LocaleLoader.getString("Ability.Generic.Template.Lock", LocaleLoader.getString("Mining.Ability.Locked.2", unlockLevel)));
