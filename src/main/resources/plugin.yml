@@ -41,6 +41,8 @@ commands:
         aliases: [mccooldowns]
     mcgod:
         description: Toggle mcMMO god-mode on/off
+    mcimport:
+        description: Import mod config files
     mcstats:
         aliases: [stats]
         description: Shows your mcMMO stats and xp
@@ -727,6 +729,7 @@ permissions:
             mcmmo.commands.mcconvert.all: true
             mcmmo.commands.mcgod: true
             mcmmo.commands.mcgod.others: true
+            mcmmo.commands.mcimport: true
             mcmmo.commands.mcpurge: true
             mcmmo.commands.mcrank.others.all: true
             mcmmo.commands.mcrefresh: true
@@ -845,6 +848,8 @@ permissions:
         description: Allows access to the mcnotify command
     mcmmo.commands.mcpurge:
         description: Allows access to the mcpurge command
+    mcmmo.commands.mcimport:
+        description: Allows access to the mcimport command
     mcmmo.commands.mcrank:
         description: Allows access to the mcrank command
     mcmmo.commands.mcrank.others.*:

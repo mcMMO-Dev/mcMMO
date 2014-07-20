@@ -18,6 +18,7 @@ Version 1.5.01-dev
  + Added options to tools.yml and armor.yml config files to set a pretty repair material name
  + Added full support for repairables in tools.yml and armor.yml config files
  + Added new API class SkillAPI used to get a list of valid skill names
+ + Added magical mod config file import command, for Cauldron 1.7+. Check wiki for usage
  = Fixed bug where pistons would mess with the block tracking
  = Fixed bug where the Updater was running on the main thread.
  = Fixed bug when players would use /ptp without being in a party

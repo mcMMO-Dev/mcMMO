@@ -7,6 +7,7 @@ import org.bukkit.command.PluginCommand;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.KrakenCommand;
+import com.gmail.nossr50.commands.McImportCommand;
 import com.gmail.nossr50.commands.McabilityCommand;
 import com.gmail.nossr50.commands.McconvertCommand;
 import com.gmail.nossr50.commands.McgodCommand;
@@ -409,8 +410,18 @@ public final class CommandRegistrationManager {
         command.setExecutor(new KrakenCommand());
     }
 
+    private static void registerMcImportCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mcimport");
+        command.setDescription("Import mod config files"); //TODO: Localize
+        command.setPermission("mcmmo.commands.mcimport");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mcimport"));
+        command.setExecutor(new McImportCommand());
+    }
+
     public static void registerCommands() {
         // Generic Commands
+        registerMcImportCommand();
         registerKrakenCommand();
         registerMcabilityCommand();
         registerMcgodCommand();
