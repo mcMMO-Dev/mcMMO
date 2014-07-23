@@ -1,0 +1,8 @@
+# WARNING: DO NOT MODIFY THIS CONFIG
+add_fishing: false
+add_blast_mining_cooldown: false
+add_sql_indexes: false
+add_mob_healthbars: false
+drop_sql_party_names: false
+drop_spout: false
+add_alchemy: false
