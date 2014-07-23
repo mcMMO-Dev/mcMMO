@@ -621,7 +621,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         // Problem, nothing was returned
     }
 
-    public boolean saveUserUUIDs(Map<String,UUID> player_info) {
+    public boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs) {
         if (!checkConnected()) {
             // return false
             return false;
@@ -633,7 +633,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try {
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET uuid = ? WHERE user = ?");
 
-            for (Map.Entry<String,UUID> entry : player_info.entrySet()) {
+            for (Map.Entry<String, UUID> entry : fetchedUUIDs.entrySet()) {
                 statement.setString(1, entry.getValue().toString());
                 statement.setString(2, entry.getKey());
 
@@ -1051,11 +1051,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
                         resultSet = statement.executeQuery("SELECT `user` FROM `" + tablePrefix + "users`");
 
-                        while(resultSet.next()) {
+                        while (resultSet.next()) {
                             names.add(resultSet.getString("user"));
                         }
 
-                        new UUIDUpdateAsyncTask(mcMMO.p,names).runTaskAsynchronously(mcMMO.p);
+                        new UUIDUpdateAsyncTask(mcMMO.p, names).runTaskAsynchronously(mcMMO.p);
 
                         return;
                     }

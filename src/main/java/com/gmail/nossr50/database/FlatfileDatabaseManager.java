@@ -542,8 +542,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return worked;
     }
 
-    public boolean saveUserUUIDs(Map<String, UUID> user_data) {
-
+    public boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs) {
         BufferedReader in = null;
         FileWriter out = null;
         String usersFilePath = mcMMO.getUsersFilePath();
@@ -554,16 +553,16 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 StringBuilder writer = new StringBuilder();
                 String line;
 
-                while (((line = in.readLine()) != null) && !user_data.isEmpty()) {
+                while (((line = in.readLine()) != null) && !fetchedUUIDs.isEmpty()) {
                     String[] character = line.split(":");
-                    if (user_data.containsKey(character[0])) {
+                    if (fetchedUUIDs.containsKey(character[0])) {
                         if (character.length < 42) {
                             mcMMO.p.getLogger().severe("Could not update UUID for " + character[0] + "!");
                             mcMMO.p.getLogger().severe("Database entry is invalid.");
                             return false;
                         }
 
-                        line = line.replace(character[41], user_data.remove(character[0]).toString());
+                        line = line.replace(character[41], fetchedUUIDs.remove(character[0]).toString());
                     }
 
                     writer.append(line).append("\r\n");
