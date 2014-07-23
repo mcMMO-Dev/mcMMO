@@ -501,7 +501,38 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public boolean saveUserUUID(String userName, UUID uuid) {
-        return false;
+        if (!checkConnected()) {
+            // return false
+            return false;
+        }
+
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(
+                    "UPDATE `" + tablePrefix + "users` SET "
+                            + "  uuid = ? WHERE user = ?");
+            statement.setString(1, uuid.toString());
+            statement.setString(2, userName);
+            statement.execute();
+            return true;
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+            return false;
+        }
+        finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+
+        // Problem, nothing was returned
     }
 
     /**
