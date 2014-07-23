@@ -473,8 +473,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
                             + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
                             + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
-                            + "WHERE u.user = ?");
-            statement.setString(1, playerName);
+                            + "WHERE u.UUID = ?");
+            statement.setString(1, uuid);
 
             ResultSet result = statement.executeQuery();
 
