@@ -38,7 +38,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
         plugin.getLogger().info("Starting to check and update UUIDs, total amount of users: " + size);
 
         List<String> userNamesSection;
-        Map<String,UUID> fetchedUUIDs = new HashMap<String,UUID>();
+        Map<String, UUID> fetchedUUIDs = new HashMap<String, UUID>();
 
         while (size != 0) {
             if (size > MAX_LOOKUP) {
@@ -51,7 +51,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
             }
 
             try {
-                 fetchedUUIDs.putAll(new UUIDFetcher(userNamesSection).call());
+                fetchedUUIDs.putAll(new UUIDFetcher(userNamesSection).call());
             }
             catch (Exception e) {
                 plugin.getLogger().severe("Unable to fetch UUIDs!");
@@ -59,9 +59,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
             }
 
             checkedUsers += userNamesSection.size();
-
             userNamesSection.clear();
-
             size = userNames.size();
 
             Misc.printProgress(checkedUsers, DatabaseManager.progressInterval, startMillis);
