@@ -27,6 +27,7 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.upgrade.UpgradeType;
 
 import org.apache.commons.lang.ArrayUtils;
 
@@ -762,6 +763,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     tryClose(out);
                 }
             }
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_FISHING);
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_BLAST_MINING_COOLDOWN);
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_SQL_INDEXES);
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_MOB_HEALTHBARS);
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_SQL_PARTY_NAMES);
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_SPOUT);
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_ALCHEMY);
             return;
         }
 

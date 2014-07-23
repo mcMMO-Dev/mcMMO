@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -17,7 +18,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
-import com.gmail.nossr50.datatypes.database.DatabaseUpdateType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -25,6 +25,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.database.SQLDatabaseKeepaliveTask;
 import com.gmail.nossr50.runnables.database.SQLReconnectTask;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.upgrade.UpgradeType;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private String connectionString;
@@ -709,144 +710,174 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 + "PRIMARY KEY (`user_id`)) "
                 + "DEFAULT CHARSET=latin1;");
 
-        for (DatabaseUpdateType updateType : DatabaseUpdateType.values()) {
+        for (UpgradeType updateType : UpgradeType.values()) {
             checkDatabaseStructure(updateType);
         }
+
+        mcMMO.p.getLogger().info("Killing orphans");
+        write("DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "experience`.`user_id` = `u`.`id`)");
+        write("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "huds`.`user_id` = `u`.`id`)");
+        write("DELETE FROM `" + tablePrefix + "cooldowns` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "cooldowns`.`user_id` = `u`.`id`)");
+        write("DELETE FROM `" + tablePrefix + "skills` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "skills`.`user_id` = `u`.`id`)");
     }
 
     /**
-     * Check database structure for missing values.
+     * Check database structure for necessary upgrades.
      *
-     * @param update Type of data to check updates for
+     * @param upgrade Upgrade to attempt to apply
      */
-    private void checkDatabaseStructure(DatabaseUpdateType update) {
-        String sql = "";
-
-        switch (update) {
-            case BLAST_MINING:
-                sql = "SELECT * FROM `" + tablePrefix + "cooldowns` ORDER BY `" + tablePrefix + "cooldowns`.`blast_mining` ASC LIMIT 0 , 30";
-                break;
-
-            case FISHING:
-                sql = "SELECT * FROM `" + tablePrefix + "experience` ORDER BY `" + tablePrefix + "experience`.`fishing` ASC LIMIT 0 , 30";
-                break;
-
-            case ALCHEMY:
-                sql = "SELECT * FROM `" + tablePrefix + "experience` ORDER BY `" + tablePrefix + "experience`.`alchemy` ASC LIMIT 0 , 30";
-                break;
-                
-            case INDEX:
-                if (read("SHOW INDEX FROM " + tablePrefix + "skills").size() != 13 && checkConnected()) {
-                    mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
-                    write("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_taming` (`taming`) USING BTREE, "
-                            + "ADD INDEX `idx_mining` (`mining`) USING BTREE, "
-                            + "ADD INDEX `idx_woodcutting` (`woodcutting`) USING BTREE, "
-                            + "ADD INDEX `idx_repair` (`repair`) USING BTREE, "
-                            + "ADD INDEX `idx_unarmed` (`unarmed`) USING BTREE, "
-                            + "ADD INDEX `idx_herbalism` (`herbalism`) USING BTREE, "
-                            + "ADD INDEX `idx_excavation` (`excavation`) USING BTREE, "
-                            + "ADD INDEX `idx_archery` (`archery`) USING BTREE, "
-                            + "ADD INDEX `idx_swords` (`swords`) USING BTREE, "
-                            + "ADD INDEX `idx_axes` (`axes`) USING BTREE, "
-                            + "ADD INDEX `idx_acrobatics` (`acrobatics`) USING BTREE, "
-                            + "ADD INDEX `idx_fishing` (`fishing`) USING BTREE;");
-                }
-                return;
-
-            case MOB_HEALTHBARS:
-                sql = "SELECT * FROM `" + tablePrefix + "huds` ORDER BY `" + tablePrefix + "huds`.`mobhealthbar` ASC LIMIT 0 , 30";
-                break;
-
-            case PARTY_NAMES:
-                write("ALTER TABLE `" + tablePrefix + "users` DROP COLUMN `party` ;");
-                return;
-
-            case DROPPED_SPOUT:
-                write("ALTER TABLE `" + tablePrefix + "huds` DROP COLUMN `hudtype` ;");
-                return;
-
-            case KILL_ORPHANS:
-                mcMMO.p.getLogger().info("Killing orphans");
-                write(
-                        "DELETE FROM " + tablePrefix + "experience " +
-                         "WHERE NOT EXISTS (SELECT * FROM " +
-                         tablePrefix + "users u WHERE " +
-                         tablePrefix + "experience.user_id = u.id);"
-                         );
-                write(
-                        "DELETE FROM " + tablePrefix + "huds " +
-                         "WHERE NOT EXISTS (SELECT * FROM " +
-                         tablePrefix + "users u WHERE " +
-                         tablePrefix + "huds.user_id = u.id);"
-                         );
-                write(
-                        "DELETE FROM " + tablePrefix + "cooldowns " +
-                         "WHERE NOT EXISTS (SELECT * FROM " +
-                         tablePrefix + "users u WHERE " +
-                         tablePrefix + "cooldowns.user_id = u.id);"
-                         );
-                write(
-                        "DELETE FROM " + tablePrefix + "skills " +
-                         "WHERE NOT EXISTS (SELECT * FROM " +
-                         tablePrefix + "users u WHERE " +
-                         tablePrefix + "skills.user_id = u.id);"
-                         );
-                return;
-
-            default:
-                break;
+    private void checkDatabaseStructure(UpgradeType upgrade) {
+        if (!checkConnected()) {
+            return;
         }
 
-        ResultSet resultSet;
-        PreparedStatement statement = null;
+        if(!mcMMO.getUpgradeManager().shouldUpgrade(upgrade)) {
+            mcMMO.p.debug("Skipping " + upgrade.name() + " upgrade (unneeded)");
+            return;
+        }
+
+        Statement statement = null;
+        ResultSet resultSet = null;
 
         try {
-            if (!checkConnected()) {
-                return;
-            }
+            statement = connection.createStatement();
 
-            statement = connection.prepareStatement(sql);
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                // No reason to do anything here... we're just trying to catch exceptions
-            }
-        }
-        catch (SQLException ex) {
-            switch (update) {
-                case BLAST_MINING:
-                    mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Blast Mining...");
-                    write("ALTER TABLE `"+tablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0' ;");
+            switch (upgrade) {
+                case ADD_FISHING:
+                    try {
+                        statement.executeQuery("SELECT `fishing` FROM `" + tablePrefix + "skills` LIMIT 1");
+                    }
+                    catch (SQLException ex) {
+                        mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
+                        statement.executeQuery("ALTER TABLE `" + tablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0'");
+                        statement.executeQuery("ALTER TABLE `" + tablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0'");
+                    }
                     break;
 
-                case FISHING:
-                    mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
-                    write("ALTER TABLE `"+tablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
-                    write("ALTER TABLE `"+tablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0' ;");
+                case ADD_BLAST_MINING_COOLDOWN:
+                    try {
+                        statement.executeQuery("SELECT `blast_mining` FROM `" + tablePrefix + "cooldowns` LIMIT 1");
+                    }
+                    catch (SQLException ex) {
+                        mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Blast Mining...");
+                        statement.executeQuery("ALTER TABLE `"+tablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0'");
+                    }
                     break;
 
-                case MOB_HEALTHBARS:
-                    mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for mob healthbars...");
-                    write("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "' ;");
+                case ADD_SQL_INDEXES:
+                    resultSet = statement.executeQuery("SHOW INDEX FROM `" + tablePrefix + "skills` WHERE `Key_name` LIKE 'idx\\_%'");
+                    resultSet.last();
+
+                    if (resultSet.getRow() != SkillType.NON_CHILD_SKILLS.size()) {
+                        mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
+
+                        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
+                            String skill_name = skill.name().toLowerCase();
+
+                            try {
+                                statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_" + skill_name + "` (`" + skill_name + "`) USING BTREE");
+                            }
+                            catch (SQLException ex) {
+                                // Ignore
+                            }
+                        }
+                    }
                     break;
 
-                case ALCHEMY:
-                    mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Alchemy...");
-                    write("ALTER TABLE `"+tablePrefix + "skills` ADD `alchemy` int(10) NOT NULL DEFAULT '0' ;");
-                    write("ALTER TABLE `"+tablePrefix + "experience` ADD `alchemy` int(10) NOT NULL DEFAULT '0' ;");
+                case ADD_MOB_HEALTHBARS:
+                    try {
+                        statement.executeQuery("SELECT `mobhealthbar` FROM `" + tablePrefix + "huds` LIMIT 1");
+                    }
+                    catch (SQLException ex) {
+                        mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for mob healthbars...");
+                        statement.executeQuery("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "'");
+                    }
                     break;
-                    
+
+                case DROP_SQL_PARTY_NAMES:
+                    try {
+                        resultSet = statement.executeQuery("SELECT * FROM `" + tablePrefix + "users` LIMIT 1");
+
+                        ResultSetMetaData rsmeta = resultSet.getMetaData();
+                        boolean column_exists = false;
+
+                        for (int i = 1; i <= rsmeta.getColumnCount(); i++) {
+                            if(rsmeta.getColumnName(i).equalsIgnoreCase("party")) {
+                                column_exists = true;
+                                break;
+                            }
+                        }
+
+                        if (column_exists) {
+                            mcMMO.p.getLogger().info("Removing party name from users table...");
+                            statement.executeQuery("ALTER TABLE `" + tablePrefix + "users` DROP COLUMN `party`");
+                        }
+                    }
+                    catch (SQLException ex) {
+                        // Ignore
+                    }
+                    break;
+
+                case DROP_SPOUT:
+                    try {
+                        resultSet = statement.executeQuery("SELECT * FROM `" + tablePrefix + "huds` LIMIT 1");
+
+                        ResultSetMetaData rsmeta = resultSet.getMetaData();
+                        boolean column_exists = false;
+
+                        for (int i = 1; i <= rsmeta.getColumnCount(); i++) {
+                            if(rsmeta.getColumnName(i).equalsIgnoreCase("hudtype")) {
+                                column_exists = true;
+                                break;
+                            }
+                        }
+
+                        if (column_exists) {
+                            mcMMO.p.getLogger().info("Removing Spout HUD type from huds table...");
+                            statement.executeQuery("ALTER TABLE `" + tablePrefix + "huds` DROP COLUMN `hudtype`");
+                        }
+                    }
+                    catch (SQLException ex) {
+                        // Ignore
+                    }
+                    break;
+
+                case ADD_ALCHEMY:
+                    try {
+                        statement.executeQuery("SELECT `alchemy` FROM `" + tablePrefix + "skills` LIMIT 1");
+                    }
+                    catch (SQLException ex) {
+                        mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Alchemy...");
+                        statement.executeQuery("ALTER TABLE `" + tablePrefix + "skills` ADD `alchemy` int(10) NOT NULL DEFAULT '0'");
+                        statement.executeQuery("ALTER TABLE `" + tablePrefix + "experience` ADD `alchemy` int(10) NOT NULL DEFAULT '0'");
+                    }
+                    break;
+
                 default:
                     break;
+
             }
+
+            mcMMO.getUpgradeManager().setUpgradeCompleted(upgrade);
+        }
+        catch (SQLException ex) {
+
         }
         finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
             if (statement != null) {
                 try {
                     statement.close();
                 }
                 catch (SQLException e) {
-                    // Ignore the error, we're leaving
+                    // Ignore
                 }
             }
         }

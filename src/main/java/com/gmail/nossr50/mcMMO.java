@@ -60,6 +60,7 @@ import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import com.gmail.nossr50.util.upgrade.UpgradeManager;
 
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
@@ -72,6 +73,7 @@ public class mcMMO extends JavaPlugin {
     private static DatabaseManager    databaseManager;
     private static FormulaManager     formulaManager;
     private static HolidayManager     holidayManager;
+    private static UpgradeManager     upgradeManager;
 
     /* File Paths */
     private static String mainDirectory;
@@ -128,6 +130,8 @@ public class mcMMO extends JavaPlugin {
 
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
+
+            upgradeManager = new UpgradeManager();
 
             setupFilePaths();
 
@@ -307,6 +311,10 @@ public class mcMMO extends JavaPlugin {
 
     public static ModManager getModManager() {
         return modManager;
+    }
+
+    public static UpgradeManager getUpgradeManager() {
+        return upgradeManager;
     }
 
     @Deprecated
