@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.database.DatabaseManager;
+import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.util.Misc;
 
