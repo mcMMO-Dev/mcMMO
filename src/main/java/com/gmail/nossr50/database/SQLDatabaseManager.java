@@ -351,6 +351,91 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
+    /**
+     * This is a fallback method to provide the old way of getting a PlayerProfile
+     * in case there is no UUID match found
+     */
+    private PlayerProfile loadPlayerNameProfile(String playerName, String uuid, boolean create, boolean retry) {
+        if (!checkConnected()) {
+            // return fake profile if not connected
+            if (uuid.isEmpty()) {
+                return new PlayerProfile(playerName, false);
+            }
+
+            return new PlayerProfile(playerName, UUID.fromString(uuid), false);
+        }
+
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement(
+                    "SELECT "
+                            + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
+                            + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
+                            + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
+                            + "h.mobhealthbar, u.uuid "
+                            + "FROM " + tablePrefix + "users u "
+                            + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
+                            + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
+                            + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
+                            + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
+                            + "WHERE u.user = ?");
+            statement.setString(1, playerName);
+
+            ResultSet result = statement.executeQuery();
+
+            if (result.next()) {
+                try {
+                    PlayerProfile ret = loadFromResult(playerName, result);
+                    result.close();
+                    return ret;
+                }
+                catch (SQLException e) {
+                }
+            }
+            result.close();
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+
+        // Problem, nothing was returned
+
+        // Quit if this is second time around
+        if (!retry) {
+            return new PlayerProfile(playerName, false);
+        }
+
+        // First, read User Id - this is to check for orphans
+
+        int id = readId(playerName);
+
+        if (id == -1) {
+            // There is no such user
+            if (create) {
+                newUser(playerName, uuid);
+                return loadPlayerNameProfile(playerName, uuid, false, false);
+            }
+
+            // Return unloaded profile if can't create
+            return new PlayerProfile(playerName, false);
+        }
+        // There is such a user
+        writeMissingRows(id);
+        // Retry, and abort on re-failure
+        return loadPlayerNameProfile(playerName, uuid, create, false);
+    }
+
     @Deprecated
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
         return loadPlayerProfile(playerName, "", create, true);
@@ -420,9 +505,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         // Problem, nothing was returned
 
-        // Quit if this is second time around
+        // Retry the old fashioned way if this is second time around
         if (!retry) {
-            return new PlayerProfile(playerName, false);
+            return loadPlayerNameProfile(playerName, uuid, create, true);
         }
 
         // First, read User Id - this is to check for orphans
