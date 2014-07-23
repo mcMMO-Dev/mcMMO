@@ -15,4 +15,4 @@ Options:
     # The interval at which the server updates a couple of users to get their UUID, in seconds
     UUIDConvertInterval: 30
     # Amount of users to convert every interval
-    UUIDConvertAmount: 5
+    UUIDConvertAmount: 100
