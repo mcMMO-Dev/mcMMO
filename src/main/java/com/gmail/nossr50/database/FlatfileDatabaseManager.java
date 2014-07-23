@@ -27,6 +27,7 @@ import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 
@@ -45,6 +46,12 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         usersFile = new File(mcMMO.getUsersFilePath());
         checkStructure();
         updateLeaderboards();
+
+        if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS)) {
+            List<String> storedUsers = getStoredUsers();
+            System.out.println("storedUsers.size() " + storedUsers.size());
+            new UUIDUpdateAsyncTask(mcMMO.p, storedUsers).runTaskAsynchronously(mcMMO.p);
+        }
     }
 
     public void purgePowerlessUsers() {
