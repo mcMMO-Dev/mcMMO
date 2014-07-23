@@ -535,6 +535,48 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return worked;
     }
 
+    public boolean saveUserUUIDs(Map<String, UUID> user_data) {
+
+        BufferedReader in = null;
+        FileWriter out = null;
+        String usersFilePath = mcMMO.getUsersFilePath();
+
+        synchronized (fileWritingLock) {
+            try {
+                in = new BufferedReader(new FileReader(usersFilePath));
+                StringBuilder writer = new StringBuilder();
+                String line;
+
+                while (((line = in.readLine()) != null) && !user_data.isEmpty()) {
+                    String[] character = line.split(":");
+                    if (user_data.containsKey(character[0])) {
+                        if (character.length < 42) {
+                            mcMMO.p.getLogger().severe("Could not update UUID for " + character[0] + "!");
+                            mcMMO.p.getLogger().severe("Database entry is invalid.");
+                            return false;
+                        }
+
+                        line = line.replace(character[41], user_data.remove(character[0]).toString());
+                    }
+
+                    writer.append(line).append("\r\n");
+                }
+
+                out = new FileWriter(usersFilePath); // Write out the new file
+                out.write(writer.toString());
+            }
+            catch (Exception e) {
+                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+            }
+            finally {
+                tryClose(in);
+                tryClose(out);
+            }
+        }
+
+        return true;
+    }
+
     public List<String> getStoredUsers() {
         ArrayList<String> users = new ArrayList<String>();
         BufferedReader in = null;
