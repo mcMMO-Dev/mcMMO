@@ -1,0 +1,9 @@
+# WARNING: DO NOT MODIFY THIS CONFIG
+Upgrades_Finished:
+    ADD_FISHING: false
+    ADD_BLAST_MINING_COOLDOWN: false
+    ADD_SQL_INDEXES: false
+    ADD_MOB_HEALTHBARS: false
+    DROP_SQL_PARTY_NAMES: false
+    DROP_SPOUT: false
+    ADD_ALCHEMY: false
