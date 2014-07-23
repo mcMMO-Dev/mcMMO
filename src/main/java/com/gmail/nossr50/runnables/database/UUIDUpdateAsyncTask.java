@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.database.DatabaseManager;
@@ -23,7 +24,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
 
     public UUIDUpdateAsyncTask(mcMMO plugin) {
         this.plugin = plugin;
-        this.conversionNeeded = !mcMMO.getConvertManager().isUUIDConversionCompleted();
+        this.conversionNeeded = !mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS);
 
         this.databaseManager = mcMMO.getDatabaseManager();
         this.userNames = databaseManager.getStoredUsers();
@@ -53,7 +54,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
             userNamesSection = userNames.subList(0, size);
             size = 0;
             this.cancel();
-            mcMMO.getConvertManager().setUUIDConversionCompleted(true);
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);
             plugin.debug("Database updated with UUIDs!");
         }
 

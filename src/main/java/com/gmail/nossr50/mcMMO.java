@@ -62,7 +62,6 @@ import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
-import com.gmail.nossr50.util.uuid.ConvertManager;
 
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
@@ -74,7 +73,6 @@ public class mcMMO extends JavaPlugin {
     private static ModManager         modManager;
     private static DatabaseManager    databaseManager;
     private static FormulaManager     formulaManager;
-    private static ConvertManager     convertManager;
     private static HolidayManager     holidayManager;
     private static UpgradeManager     upgradeManager;
 
@@ -167,7 +165,6 @@ public class mcMMO extends JavaPlugin {
             PartyManager.loadParties();
 
             formulaManager = new FormulaManager();
-            convertManager = new ConvertManager();
             holidayManager = new HolidayManager();
 
             for (Player player : getServer().getOnlinePlayers()) {
@@ -216,7 +213,6 @@ public class mcMMO extends JavaPlugin {
             PartyManager.saveParties(); // Save our parties
             ScoreboardManager.teardownAll();
             formulaManager.saveFormula();
-            convertManager.save();
             holidayManager.saveAnniversaryFiles();
             placeStore.saveAll();       // Save our metadata
             placeStore.cleanUp();       // Cleanup empty metadata stores
@@ -292,10 +288,6 @@ public class mcMMO extends JavaPlugin {
 
     public static FormulaManager getFormulaManager() {
         return formulaManager;
-    }
-
-    public static ConvertManager getConvertManager() {
-        return convertManager;
     }
 
     public static HolidayManager getHolidayManager() {
