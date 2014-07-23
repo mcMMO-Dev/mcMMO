@@ -26,6 +26,7 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.database.SQLDatabaseKeepaliveTask;
 import com.gmail.nossr50.runnables.database.SQLReconnectTask;
+import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 
 public final class SQLDatabaseManager implements DatabaseManager {
@@ -543,7 +544,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
                             + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
                             + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
-                            + "h.mobhealthbar "
+                            + "h.mobhealthbar, u.uuid "
                             + "FROM " + tablePrefix + "users u "
                             + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
                             + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
@@ -618,6 +619,52 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         // Problem, nothing was returned
+    }
+
+    public boolean saveUserUUIDs(Map<String,UUID> player_info) {
+        if (!checkConnected()) {
+            // return false
+            return false;
+        }
+
+        PreparedStatement statement = null;
+        int count = 0;
+
+        try {
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET uuid = ? WHERE user = ?");
+
+            for (Map.Entry<String,UUID> entry : player_info.entrySet()) {
+                statement.setString(1, entry.getValue().toString());
+                statement.setString(2, entry.getKey());
+
+                count++;
+
+                if ((count % 500) == 0) {
+                    statement.executeBatch();
+                    count = 0;
+                }
+            }
+
+            if (count != 0) {
+                statement.executeBatch();
+            }
+
+            return true;
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+            return false;
+        }
+        finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
     }
 
     /**
@@ -788,7 +835,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
                 + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                 + "`user` varchar(40) NOT NULL,"
-                + "`uuid` varchar(40) NOT NULL,"
+                + "`uuid` varchar(36) NOT NULL DEFAULT '',"
                 + "`lastlogin` int(32) unsigned NOT NULL,"
                 + "PRIMARY KEY (`id`),"
                 + "UNIQUE KEY `user` (`user`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
@@ -992,8 +1039,27 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     break;
 
                 case ADD_UUIDS:
-                    write("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(50) NOT NULL DEFAULT '';");
-                    return;
+                    try {
+                        statement.executeQuery("SELECT `uuid` FROM `" + tablePrefix + "users` LIMIT 1");
+                    }
+                    catch (SQLException ex) {
+                        mcMMO.p.getLogger().info("Adding UUIDs to mcMMO MySQL user table...");
+
+                        statement.executeQuery("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(36) NOT NULL DEFAULT ''");
+
+                        final List<String> names = new ArrayList<String>();
+
+                        resultSet = statement.executeQuery("SELECT `user` FROM `" + tablePrefix + "users`");
+
+                        while(resultSet.next()) {
+                            names.add(resultSet.getString("user"));
+                        }
+
+                        new UUIDUpdateAsyncTask(mcMMO.p,names).runTaskAsynchronously(mcMMO.p);
+
+                        return;
+                    }
+                    break;
 
                 default:
                     break;
