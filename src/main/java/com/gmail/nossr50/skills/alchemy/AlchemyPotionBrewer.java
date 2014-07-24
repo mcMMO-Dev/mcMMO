@@ -134,7 +134,10 @@ public final class AlchemyPotionBrewer {
 
             if (output != null && player != null) {
                 PotionStage potionStage = PotionStage.getPotionStage(input, output);
-                UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
+
+                if (UserManager.hasPlayerDataKey(player)) {
+                    UserManager.getPlayer(player).getAlchemyManager().handlePotionBrewSuccesses(potionStage, 1);
+                }
             }
         }
 
