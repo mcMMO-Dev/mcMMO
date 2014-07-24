@@ -26,6 +26,7 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.database.SQLDatabaseKeepaliveTask;
 import com.gmail.nossr50.runnables.database.SQLReconnectTask;
+import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 
 public final class SQLDatabaseManager implements DatabaseManager {
@@ -543,7 +544,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
                             + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
                             + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
-                            + "h.mobhealthbar "
+                            + "h.mobhealthbar, u.uuid "
                             + "FROM " + tablePrefix + "users u "
                             + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
                             + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
@@ -618,6 +619,53 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         // Problem, nothing was returned
+    }
+
+    public boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs) {
+        if (!checkConnected()) {
+            return false;
+        }
+
+        PreparedStatement statement = null;
+        int count = 0;
+
+        try {
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET uuid = ? WHERE user = ?");
+
+            for (Map.Entry<String, UUID> entry : fetchedUUIDs.entrySet()) {
+                statement.setString(1, entry.getValue().toString());
+                statement.setString(2, entry.getKey());
+
+                statement.addBatch();
+
+                count++;
+
+                if ((count % 500) == 0) {
+                    statement.executeBatch();
+                    count = 0;
+                }
+            }
+
+            if (count != 0) {
+                statement.executeBatch();
+            }
+
+            return true;
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+            return false;
+        }
+        finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
     }
 
     /**
@@ -788,7 +836,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
                 + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                 + "`user` varchar(40) NOT NULL,"
-                + "`uuid` varchar(40) NOT NULL,"
+                + "`uuid` varchar(36) NOT NULL DEFAULT '',"
                 + "`lastlogin` int(32) unsigned NOT NULL,"
                 + "PRIMARY KEY (`id`),"
                 + "UNIQUE KEY `user` (`user`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
@@ -875,124 +923,41 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         Statement statement = null;
-        ResultSet resultSet = null;
 
         try {
             statement = connection.createStatement();
 
             switch (upgrade) {
                 case ADD_FISHING:
-                    try {
-                        statement.executeQuery("SELECT `fishing` FROM `" + tablePrefix + "skills` LIMIT 1");
-                    }
-                    catch (SQLException ex) {
-                        mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
-                        statement.executeQuery("ALTER TABLE `" + tablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0'");
-                        statement.executeQuery("ALTER TABLE `" + tablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0'");
-                    }
+                    checkUpgradeAddFishing(statement);
                     break;
 
                 case ADD_BLAST_MINING_COOLDOWN:
-                    try {
-                        statement.executeQuery("SELECT `blast_mining` FROM `" + tablePrefix + "cooldowns` LIMIT 1");
-                    }
-                    catch (SQLException ex) {
-                        mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Blast Mining...");
-                        statement.executeQuery("ALTER TABLE `" + tablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0'");
-                    }
+                    checkUpgradeAddBlastMiningCooldown(statement);
                     break;
 
                 case ADD_SQL_INDEXES:
-                    resultSet = statement.executeQuery("SHOW INDEX FROM `" + tablePrefix + "skills` WHERE `Key_name` LIKE 'idx\\_%'");
-                    resultSet.last();
-
-                    if (resultSet.getRow() != SkillType.NON_CHILD_SKILLS.size()) {
-                        mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
-
-                        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
-                            String skill_name = skill.name().toLowerCase();
-
-                            try {
-                                statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_" + skill_name + "` (`" + skill_name + "`) USING BTREE");
-                            }
-                            catch (SQLException ex) {
-                                // Ignore
-                            }
-                        }
-                    }
+                    checkUpgradeAddSQLIndexes(statement);
                     break;
 
                 case ADD_MOB_HEALTHBARS:
-                    try {
-                        statement.executeQuery("SELECT `mobhealthbar` FROM `" + tablePrefix + "huds` LIMIT 1");
-                    }
-                    catch (SQLException ex) {
-                        mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for mob healthbars...");
-                        statement.executeQuery("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "'");
-                    }
+                    checkUpgradeAddMobHealthbars(statement);
                     break;
 
                 case DROP_SQL_PARTY_NAMES:
-                    try {
-                        resultSet = statement.executeQuery("SELECT * FROM `" + tablePrefix + "users` LIMIT 1");
-
-                        ResultSetMetaData rsmeta = resultSet.getMetaData();
-                        boolean column_exists = false;
-
-                        for (int i = 1; i <= rsmeta.getColumnCount(); i++) {
-                            if (rsmeta.getColumnName(i).equalsIgnoreCase("party")) {
-                                column_exists = true;
-                                break;
-                            }
-                        }
-
-                        if (column_exists) {
-                            mcMMO.p.getLogger().info("Removing party name from users table...");
-                            statement.executeQuery("ALTER TABLE `" + tablePrefix + "users` DROP COLUMN `party`");
-                        }
-                    }
-                    catch (SQLException ex) {
-                        // Ignore
-                    }
+                    checkUpgradeDropPartyNames(statement);
                     break;
 
                 case DROP_SPOUT:
-                    try {
-                        resultSet = statement.executeQuery("SELECT * FROM `" + tablePrefix + "huds` LIMIT 1");
-
-                        ResultSetMetaData rsmeta = resultSet.getMetaData();
-                        boolean column_exists = false;
-
-                        for (int i = 1; i <= rsmeta.getColumnCount(); i++) {
-                            if (rsmeta.getColumnName(i).equalsIgnoreCase("hudtype")) {
-                                column_exists = true;
-                                break;
-                            }
-                        }
-
-                        if (column_exists) {
-                            mcMMO.p.getLogger().info("Removing Spout HUD type from huds table...");
-                            statement.executeQuery("ALTER TABLE `" + tablePrefix + "huds` DROP COLUMN `hudtype`");
-                        }
-                    }
-                    catch (SQLException ex) {
-                        // Ignore
-                    }
+                    checkUpgradeDropSpout(statement);
                     break;
 
                 case ADD_ALCHEMY:
-                    try {
-                        statement.executeQuery("SELECT `alchemy` FROM `" + tablePrefix + "skills` LIMIT 1");
-                    }
-                    catch (SQLException ex) {
-                        mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Alchemy...");
-                        statement.executeQuery("ALTER TABLE `" + tablePrefix + "skills` ADD `alchemy` int(10) NOT NULL DEFAULT '0'");
-                        statement.executeQuery("ALTER TABLE `" + tablePrefix + "experience` ADD `alchemy` int(10) NOT NULL DEFAULT '0'");
-                    }
+                    checkUpgradeAddAlchemy(statement);
                     break;
 
                 case ADD_UUIDS:
-                    write("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(50) NOT NULL DEFAULT '';");
+                    checkUpgradeAddUUIDs(statement);
                     return;
 
                 default:
@@ -1003,17 +968,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             mcMMO.getUpgradeManager().setUpgradeCompleted(upgrade);
         }
         catch (SQLException ex) {
-
+            printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
             if (statement != null) {
                 try {
                     statement.close();
@@ -1464,5 +1421,220 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     public DatabaseType getDatabaseType() {
         return DatabaseType.SQL;
+    }
+
+    private void checkUpgradeAddAlchemy(final Statement statement) throws SQLException {
+        try {
+            statement.executeQuery("SELECT `alchemy` FROM `" + tablePrefix + "skills` LIMIT 1");
+        }
+        catch (SQLException ex) {
+            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Alchemy...");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD `alchemy` int(10) NOT NULL DEFAULT '0'");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "experience` ADD `alchemy` int(10) NOT NULL DEFAULT '0'");
+        }
+    }
+
+    private void checkUpgradeAddBlastMiningCooldown(final Statement statement) throws SQLException {
+        try {
+            statement.executeQuery("SELECT `blast_mining` FROM `" + tablePrefix + "cooldowns` LIMIT 1");
+        }
+        catch (SQLException ex) {
+            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Blast Mining...");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0'");
+        }
+    }
+
+    private void checkUpgradeAddFishing(final Statement statement) throws SQLException {
+        try {
+            statement.executeQuery("SELECT `fishing` FROM `" + tablePrefix + "skills` LIMIT 1");
+        }
+        catch (SQLException ex) {
+            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0'");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0'");
+        }
+    }
+
+    private void checkUpgradeAddMobHealthbars(final Statement statement) throws SQLException {
+        try {
+            statement.executeQuery("SELECT `mobhealthbar` FROM `" + tablePrefix + "huds` LIMIT 1");
+        }
+        catch (SQLException ex) {
+            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for mob healthbars...");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "'");
+        }
+    }
+
+    private void checkUpgradeAddSQLIndexes(final Statement statement) throws SQLException {
+        ResultSet resultSet = null;
+
+        try {
+            resultSet = statement.executeQuery("SHOW INDEX FROM `" + tablePrefix + "skills` WHERE `Key_name` LIKE 'idx\\_%'");
+            resultSet.last();
+
+            if (resultSet.getRow() != SkillType.NON_CHILD_SKILLS.size()) {
+                mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
+
+                for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
+                    String skill_name = skill.name().toLowerCase();
+
+                    try {
+                        statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_" + skill_name + "` (`" + skill_name + "`) USING BTREE");
+                    }
+                    catch (SQLException ex) {
+                        // Ignore
+                    }
+                }
+            }
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+    }
+
+    private void checkUpgradeAddUUIDs(final Statement statement) {
+        List<String> names = new ArrayList<String>();
+        ResultSet resultSet = null;
+
+        try {
+            resultSet = statement.executeQuery("SELECT * FROM `" + tablePrefix + "users` LIMIT 1");
+
+            ResultSetMetaData rsmeta = resultSet.getMetaData();
+            boolean column_exists = false;
+
+            for (int i = 1; i <= rsmeta.getColumnCount(); i++) {
+                if (rsmeta.getColumnName(i).equalsIgnoreCase("uuid")) {
+                    column_exists = true;
+                    break;
+                }
+            }
+
+            if (!column_exists) {
+                mcMMO.p.getLogger().info("Adding UUIDs to mcMMO MySQL user table...");
+                statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(36) NOT NULL DEFAULT ''");
+            }
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+
+        try {
+
+            resultSet = statement.executeQuery("SELECT `user` FROM `" + tablePrefix + "users` WHERE `uuid` = ''");
+
+            while (resultSet.next()) {
+                names.add(resultSet.getString("user"));
+            }
+
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+
+        if (!names.isEmpty()) {
+            new UUIDUpdateAsyncTask(mcMMO.p, names).runTaskAsynchronously(mcMMO.p);
+        }
+    }
+
+    private void checkUpgradeDropPartyNames(final Statement statement) {
+        ResultSet resultSet = null;
+
+        try {
+            resultSet = statement.executeQuery("SELECT * FROM `" + tablePrefix + "users` LIMIT 1");
+
+            ResultSetMetaData rsmeta = resultSet.getMetaData();
+            boolean column_exists = false;
+
+            for (int i = 1; i <= rsmeta.getColumnCount(); i++) {
+                if (rsmeta.getColumnName(i).equalsIgnoreCase("party")) {
+                    column_exists = true;
+                    break;
+                }
+            }
+
+            if (column_exists) {
+                mcMMO.p.getLogger().info("Removing party name from users table...");
+                statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` DROP COLUMN `party`");
+            }
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+    }
+
+    private void checkUpgradeDropSpout(final Statement statement) {
+        ResultSet resultSet = null;
+
+        try {
+            resultSet = statement.executeQuery("SELECT * FROM `" + tablePrefix + "huds` LIMIT 1");
+
+            ResultSetMetaData rsmeta = resultSet.getMetaData();
+            boolean column_exists = false;
+
+            for (int i = 1; i <= rsmeta.getColumnCount(); i++) {
+                if (rsmeta.getColumnName(i).equalsIgnoreCase("hudtype")) {
+                    column_exists = true;
+                    break;
+                }
+            }
+
+            if (column_exists) {
+                mcMMO.p.getLogger().info("Removing Spout HUD type from huds table...");
+                statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` DROP COLUMN `hudtype`");
+            }
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
     }
 }

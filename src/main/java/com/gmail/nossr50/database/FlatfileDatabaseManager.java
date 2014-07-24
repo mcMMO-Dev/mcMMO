@@ -27,6 +27,7 @@ import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 
@@ -45,6 +46,12 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         usersFile = new File(mcMMO.getUsersFilePath());
         checkStructure();
         updateLeaderboards();
+
+        if (mcMMO.getUpgradeManager().shouldUpgrade(UpgradeType.ADD_UUIDS)) {
+            List<String> storedUsers = getStoredUsers();
+            System.out.println("storedUsers.size() " + storedUsers.size());
+            new UUIDUpdateAsyncTask(mcMMO.p, storedUsers).runTaskAsynchronously(mcMMO.p);
+        }
     }
 
     public void purgePowerlessUsers() {
@@ -533,6 +540,47 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
 
         return worked;
+    }
+
+    public boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs) {
+        BufferedReader in = null;
+        FileWriter out = null;
+        String usersFilePath = mcMMO.getUsersFilePath();
+
+        synchronized (fileWritingLock) {
+            try {
+                in = new BufferedReader(new FileReader(usersFilePath));
+                StringBuilder writer = new StringBuilder();
+                String line;
+
+                while (((line = in.readLine()) != null) && !fetchedUUIDs.isEmpty()) {
+                    String[] character = line.split(":");
+                    if (fetchedUUIDs.containsKey(character[0])) {
+                        if (character.length < 42) {
+                            mcMMO.p.getLogger().severe("Could not update UUID for " + character[0] + "!");
+                            mcMMO.p.getLogger().severe("Database entry is invalid.");
+                            return false;
+                        }
+
+                        line = line.replace(character[41], fetchedUUIDs.remove(character[0]).toString());
+                    }
+
+                    writer.append(line).append("\r\n");
+                }
+
+                out = new FileWriter(usersFilePath); // Write out the new file
+                out.write(writer.toString());
+            }
+            catch (Exception e) {
+                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+            }
+            finally {
+                tryClose(in);
+                tryClose(out);
+            }
+        }
+
+        return true;
     }
 
     public List<String> getStoredUsers() {

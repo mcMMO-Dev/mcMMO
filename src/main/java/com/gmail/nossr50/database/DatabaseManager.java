@@ -124,6 +124,8 @@ public interface DatabaseManager {
 
     public boolean saveUserUUID(String userName, UUID uuid);
 
+    public boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs);
+
     /**
      * Retrieve the type of database in use. Custom databases should return CUSTOM.
      *
