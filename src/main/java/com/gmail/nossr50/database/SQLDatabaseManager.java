@@ -481,9 +481,21 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             if (result.next()) {
                 try {
-                    PlayerProfile ret = loadFromResult(playerName, result);
+                    PlayerProfile profile = loadFromResult(playerName, result);
                     result.close();
-                    return ret;
+
+                    if (!playerName.isEmpty() && !profile.getPlayerName().isEmpty()) {
+                        statement = connection.prepareStatement(
+                                "UPDATE `" + tablePrefix + "users` "
+                                        + "SET user = ? "
+                                        + "WHERE UUID = ?");
+                        statement.setString(1, playerName);
+                        statement.setString(2, uuid);
+                        result = statement.executeQuery();
+                        result.close();
+                    }
+
+                    return profile;
                 }
                 catch (SQLException e) {
                 }
