@@ -475,7 +475,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = connectionPool.getConnection(VALID_TIMEOUT);
-            newUser(connection,playerName,uuid);
+            newUser(connection, playerName, uuid);
         } catch (SQLException ex) {
             printErrors(ex);
         } finally {
@@ -506,7 +506,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 return;
             }
 
-            writeMissingRows(connection,resultSet.getInt(1));
+            writeMissingRows(connection, resultSet.getInt(1));
         } catch (SQLException ex) {
             printErrors(ex);
         } finally {
@@ -537,7 +537,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = connectionPool.getConnection(VALID_TIMEOUT);
-            int id = getUserID(connection,playerName);
+            int id = getUserID(connection, playerName);
 
             if (id == -1) {
                 // There is no such user
@@ -550,7 +550,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 return new PlayerProfile(playerName, false);
             }
             // There is such a user
-            writeMissingRows(connection,id);
+            writeMissingRows(connection, id);
 
             statement = connection.prepareStatement(
                     "SELECT "
@@ -626,7 +626,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = connectionPool.getConnection(VALID_TIMEOUT);
-            int id = getUserID(connection,playerName);
+            int id = getUserID(connection, playerName);
 
             if (id == -1) {
                 // There is no such user
@@ -639,7 +639,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 return new PlayerProfile(playerName, false);
             }
             // There is such a user
-            writeMissingRows(connection,id);
+            writeMissingRows(connection, id);
             
             statement = connection.prepareStatement(
                     "SELECT "
@@ -963,7 +963,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "DEFAULT CHARSET=latin1;");
 
             for (UpgradeType updateType : UpgradeType.values()) {
-                checkDatabaseStructure(connection,updateType);
+                checkDatabaseStructure(connection, updateType);
             }
 
             mcMMO.p.getLogger().info("Killing orphans");
@@ -1289,7 +1289,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         try {
-            resultSet = statement.executeQuery("SELECT `user` FROM `" + tablePrefix + "users` WHERE `uuid` = ''");
+            resultSet = statement.executeQuery("SELECT `user` FROM `" + tablePrefix + "users` WHERE `uuid` IS NULL");
 
             while (resultSet.next()) {
                 names.add(resultSet.getString("user"));
