@@ -1294,15 +1294,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
-        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); // Skill
-                                                                            // &
-                                                                            // Level
-        Map<SkillType, Float> skillsXp = new HashMap<SkillType, Float>(); // Skill
-                                                                          // &
-                                                                          // XP
-        Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability
-                                                                                    // &
-                                                                                    // Cooldown
+        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); // Skill & Level
+        Map<SkillType, Float> skillsXp = new HashMap<SkillType, Float>(); // Skill & XP
+        Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
         MobHealthbarType mobHealthbarType;
         UUID uuid;
 
