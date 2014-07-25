@@ -35,6 +35,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
     // How long to wait when checking if connection is valid (default 3 seconds)
     private final int VALID_TIMEOUT = 3;
 
+    private final Map<UUID, Integer> cachedUserIDs = new HashMap<UUID, Integer>();
+    private final Map<String, Integer> cachedUserIDsByName = new HashMap<String, Integer>();
+
     private ConnectionPool connectionPool;
 
     protected SQLDatabaseManager() {
@@ -62,120 +65,271 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public void purgePowerlessUsers() {
         mcMMO.p.getLogger().info("Purging powerless users...");
 
-        Collection<ArrayList<String>> usernames = read("SELECT u.user FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0").values();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        List<String> usernames = new ArrayList<String>();
 
-        write("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
-                "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
-                "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
-                "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
-                "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
-                "WHERE (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
+        try {
+            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT u.user FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
 
-        processPurge(usernames);
+            while (resultSet.next()) {
+                usernames.add(resultSet.getString("user"));
+            }
+
+            resultSet.close();
+
+            statement.executeQuery("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
+                    "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
+                    "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
+                    "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
+                    "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
+                    "WHERE (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
+
+        } catch (SQLException ex) {
+            printErrors(ex);
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+
+        if(!usernames.isEmpty()) {
+            processPurge(usernames);
+        }
+
         mcMMO.p.getLogger().info("Purged " + usernames.size() + " users from the database.");
     }
 
     public void purgeOldUsers() {
-        long currentTime = System.currentTimeMillis();
-
         mcMMO.p.getLogger().info("Purging old users...");
 
-        Collection<ArrayList<String>> usernames = read("SELECT user FROM " + tablePrefix + "users WHERE ((" + currentTime + " - lastlogin * " + Misc.TIME_CONVERSION_FACTOR + ") > " + PURGE_TIME + ")").values();
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        List<String> usernames = new ArrayList<String>();
 
-        write("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
-                "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
-                "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
-                "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
-                "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
-                "WHERE ((" + currentTime + " - lastlogin * " + Misc.TIME_CONVERSION_FACTOR + ") > " + PURGE_TIME + ")");
+        try {
+            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT user FROM " + tablePrefix + "users WHERE ((NOW() - lastlogin * " + Misc.TIME_CONVERSION_FACTOR + ") > " + PURGE_TIME + ")");
 
-        processPurge(usernames);
+            while (resultSet.next()) {
+                usernames.add(resultSet.getString("user"));
+            }
+
+            resultSet.close();
+
+            statement.executeQuery("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
+                    "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
+                    "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
+                    "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
+                    "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
+                    "WHERE ((NOW() - lastlogin * " + Misc.TIME_CONVERSION_FACTOR + ") > " + PURGE_TIME + ")");
+
+        } catch (SQLException ex) {
+            printErrors(ex);
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+
+        if(!usernames.isEmpty()) {
+            processPurge(usernames);
+        }
+
         mcMMO.p.getLogger().info("Purged " + usernames.size() + " users from the database.");
     }
 
     public boolean removeUser(String playerName) {
-        boolean success = update("DELETE FROM u, e, h, s, c " +
-                "USING " + tablePrefix + "users u " +
-                "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
-                "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
-                "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
-                "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
-                "WHERE u.user = '" + playerName + "'") != 0;
+        boolean success = false;
+        Connection connection = null;
+        PreparedStatement statement = null;
 
-        Misc.profileCleanup(playerName);
+        try {
+            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            statement = connection.prepareStatement("DELETE FROM u, e, h, s, c " +
+                    "USING " + tablePrefix + "users u " +
+                    "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
+                    "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
+                    "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
+                    "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
+                    "WHERE u.user = ?");
+
+            statement.setString(1, playerName);
+
+            success = statement.executeUpdate() != 0;
+
+        } catch (SQLException ex) {
+            printErrors(ex);
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+
+        if(success) {
+            Misc.profileCleanup(playerName);
+        }
 
         return success;
     }
 
     public boolean saveUser(PlayerProfile profile) {
-        int userId = readId(profile.getPlayerName());
-        if (userId == -1) {
-            newUser(profile.getPlayerName(), profile.getUniqueId().toString());
-            userId = readId(profile.getPlayerName());
-            if (userId == -1) {
-                return false;
-            }
-        }
         boolean success = true;
-        MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
+        PreparedStatement statement = null;
+        Connection connection = null;
 
-        success &= saveUniqueId(userId, profile.getUniqueId().toString());
-        success &= saveLogin(userId, ((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
-        success &= saveHuds(userId, (mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()));
-        success &= saveLongs(
-                "UPDATE " + tablePrefix + "cooldowns SET "
+        try {
+            connection = connectionPool.getConnection(VALID_TIMEOUT);
+
+            int id = getUserID(connection, profile.getUniqueId());
+
+            if(id == -1) {
+                newUser(profile.getPlayerName(), profile.getUniqueId().toString());
+                id = getUserID(connection, profile.getUniqueId());
+                if(id == -1) {
+                    return false;
+                }
+            }
+
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET lastlogin = UNIX_TIMESTAMP() WHERE uuid = ?");
+            statement.setString(1, profile.getUniqueId().toString());
+            success &= (statement.executeUpdate() != 0);
+            statement.close();
+
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "skills SET "
+                        + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
+                        + ", unarmed = ?, herbalism = ?, excavation = ?"
+                        + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
+                        + ", fishing = ?, alchemy = ? WHERE user_id = ?");
+            statement.setInt(1, profile.getSkillLevel(SkillType.TAMING));
+            statement.setInt(2, profile.getSkillLevel(SkillType.MINING));
+            statement.setInt(3, profile.getSkillLevel(SkillType.REPAIR));
+            statement.setInt(4, profile.getSkillLevel(SkillType.WOODCUTTING));
+            statement.setInt(5, profile.getSkillLevel(SkillType.UNARMED));
+            statement.setInt(6, profile.getSkillLevel(SkillType.HERBALISM));
+            statement.setInt(7, profile.getSkillLevel(SkillType.EXCAVATION));
+            statement.setInt(8, profile.getSkillLevel(SkillType.ARCHERY));
+            statement.setInt(9, profile.getSkillLevel(SkillType.SWORDS));
+            statement.setInt(10, profile.getSkillLevel(SkillType.AXES));
+            statement.setInt(11, profile.getSkillLevel(SkillType.ACROBATICS));
+            statement.setInt(12, profile.getSkillLevel(SkillType.FISHING));
+            statement.setInt(13, profile.getSkillLevel(SkillType.ALCHEMY));
+            statement.setInt(14, id);
+            success &= (statement.executeUpdate() != 0);
+            statement.close();
+
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "experience SET "
+                        + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
+                        + ", unarmed = ?, herbalism = ?, excavation = ?"
+                        + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
+                        + ", fishing = ?, alchemy = ? WHERE user_id = ?");
+            statement.setInt(1, profile.getSkillXpLevel(SkillType.TAMING));
+            statement.setInt(2, profile.getSkillXpLevel(SkillType.MINING));
+            statement.setInt(3, profile.getSkillXpLevel(SkillType.REPAIR));
+            statement.setInt(4, profile.getSkillXpLevel(SkillType.WOODCUTTING));
+            statement.setInt(5, profile.getSkillXpLevel(SkillType.UNARMED));
+            statement.setInt(6, profile.getSkillXpLevel(SkillType.HERBALISM));
+            statement.setInt(7, profile.getSkillXpLevel(SkillType.EXCAVATION));
+            statement.setInt(8, profile.getSkillXpLevel(SkillType.ARCHERY));
+            statement.setInt(9, profile.getSkillXpLevel(SkillType.SWORDS));
+            statement.setInt(10, profile.getSkillXpLevel(SkillType.AXES));
+            statement.setInt(11, profile.getSkillXpLevel(SkillType.ACROBATICS));
+            statement.setInt(12, profile.getSkillXpLevel(SkillType.FISHING));
+            statement.setInt(13, profile.getSkillXpLevel(SkillType.ALCHEMY));
+            statement.setInt(14, id);
+            success &= (statement.executeUpdate() != 0);
+            statement.close();
+
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "cooldowns SET "
                         + "  mining = ?, woodcutting = ?, unarmed = ?"
                         + ", herbalism = ?, excavation = ?, swords = ?"
-                        + ", axes = ?, blast_mining = ? WHERE user_id = ?",
-                userId,
-                profile.getAbilityDATS(AbilityType.SUPER_BREAKER),
-                profile.getAbilityDATS(AbilityType.TREE_FELLER),
-                profile.getAbilityDATS(AbilityType.BERSERK),
-                profile.getAbilityDATS(AbilityType.GREEN_TERRA),
-                profile.getAbilityDATS(AbilityType.GIGA_DRILL_BREAKER),
-                profile.getAbilityDATS(AbilityType.SERRATED_STRIKES),
-                profile.getAbilityDATS(AbilityType.SKULL_SPLITTER),
-                profile.getAbilityDATS(AbilityType.BLAST_MINING));
-        success &= saveIntegers(
-                "UPDATE " + tablePrefix + "skills SET "
-                        + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                        + ", unarmed = ?, herbalism = ?, excavation = ?"
-                        + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                        + ", fishing = ?, alchemy = ? WHERE user_id = ?",
-                profile.getSkillLevel(SkillType.TAMING),
-                profile.getSkillLevel(SkillType.MINING),
-                profile.getSkillLevel(SkillType.REPAIR),
-                profile.getSkillLevel(SkillType.WOODCUTTING),
-                profile.getSkillLevel(SkillType.UNARMED),
-                profile.getSkillLevel(SkillType.HERBALISM),
-                profile.getSkillLevel(SkillType.EXCAVATION),
-                profile.getSkillLevel(SkillType.ARCHERY),
-                profile.getSkillLevel(SkillType.SWORDS),
-                profile.getSkillLevel(SkillType.AXES),
-                profile.getSkillLevel(SkillType.ACROBATICS),
-                profile.getSkillLevel(SkillType.FISHING),
-                profile.getSkillLevel(SkillType.ALCHEMY),
-                userId);
-        success &= saveIntegers(
-                "UPDATE " + tablePrefix + "experience SET "
-                        + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                        + ", unarmed = ?, herbalism = ?, excavation = ?"
-                        + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                        + ", fishing = ?, alchemy = ? WHERE user_id = ?",
-                profile.getSkillXpLevel(SkillType.TAMING),
-                profile.getSkillXpLevel(SkillType.MINING),
-                profile.getSkillXpLevel(SkillType.REPAIR),
-                profile.getSkillXpLevel(SkillType.WOODCUTTING),
-                profile.getSkillXpLevel(SkillType.UNARMED),
-                profile.getSkillXpLevel(SkillType.HERBALISM),
-                profile.getSkillXpLevel(SkillType.EXCAVATION),
-                profile.getSkillXpLevel(SkillType.ARCHERY),
-                profile.getSkillXpLevel(SkillType.SWORDS),
-                profile.getSkillXpLevel(SkillType.AXES),
-                profile.getSkillXpLevel(SkillType.ACROBATICS),
-                profile.getSkillXpLevel(SkillType.FISHING),
-                profile.getSkillXpLevel(SkillType.ALCHEMY),
-                userId);
+                        + ", axes = ?, blast_mining = ? WHERE user_id = ?");
+            statement.setLong(1, profile.getAbilityDATS(AbilityType.SUPER_BREAKER));
+            statement.setLong(2, profile.getAbilityDATS(AbilityType.TREE_FELLER));
+            statement.setLong(3, profile.getAbilityDATS(AbilityType.BERSERK));
+            statement.setLong(4, profile.getAbilityDATS(AbilityType.GREEN_TERRA));
+            statement.setLong(5, profile.getAbilityDATS(AbilityType.GIGA_DRILL_BREAKER));
+            statement.setLong(6, profile.getAbilityDATS(AbilityType.SERRATED_STRIKES));
+            statement.setLong(7, profile.getAbilityDATS(AbilityType.SKULL_SPLITTER));
+            statement.setLong(8, profile.getAbilityDATS(AbilityType.BLAST_MINING));
+            statement.setInt(9, id);
+            success = (statement.executeUpdate() != 0);
+
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ? WHERE user_id = ?");
+            statement.setString(1, profile.getMobHealthbarType() == null ? Config.getInstance().getMobHealthbarDefault().name() : profile.getMobHealthbarType().name());
+            statement.setInt(2, id);
+            success = (statement.executeUpdate() != 0);
+        } catch (SQLException ex) {
+            printErrors(ex);
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+
         return success;
     }
 
@@ -317,32 +471,55 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public void newUser(String playerName, String uuid) {
-        PreparedStatement statement = null;
         Connection connection = null;
 
         try {
             connection = connectionPool.getConnection(VALID_TIMEOUT);
-            statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, uuid, lastlogin) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, playerName);
-            statement.setString(2, uuid);
-            statement.setLong(3, System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-            statement.execute();
-
-            int id = readId(playerName);
-            writeMissingRows(id);
+            newUser(connection,playerName,uuid);
         } catch (SQLException ex) {
             printErrors(ex);
         } finally {
-            if (statement != null) {
+            if (connection != null) {
                 try {
-                    statement.close();
+                    connection.close();
                 } catch (SQLException e) {
                     // Ignore
                 }
             }
-            if (connection != null) {
+        }
+    }
+
+    private void newUser(Connection connection, String playerName, String uuid) {
+        ResultSet resultSet = null;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, uuid, lastlogin) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, playerName);
+            statement.setString(2, uuid);
+            statement.setLong(3, System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+            statement.executeUpdate();
+
+            resultSet = statement.getGeneratedKeys();
+
+            if(!resultSet.next()) {
+                return;
+            }
+
+            writeMissingRows(connection,resultSet.getInt(1));
+        } catch (SQLException ex) {
+            printErrors(ex);
+        } finally {
+            if (resultSet != null) {
                 try {
-                    connection.close();
+                    resultSet.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
                 } catch (SQLException e) {
                     // Ignore
                 }
@@ -360,6 +537,21 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = connectionPool.getConnection(VALID_TIMEOUT);
+            int id = getUserID(connection,playerName);
+
+            if (id == -1) {
+                // There is no such user
+                if (create) {
+                    newUser(playerName, uuid);
+                    return loadPlayerNameProfile(playerName, uuid, false, false);
+                }
+
+                // Return unloaded profile if can't create
+                return new PlayerProfile(playerName, false);
+            }
+            // There is such a user
+            writeMissingRows(connection,id);
+
             statement = connection.prepareStatement(
                     "SELECT "
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
@@ -411,22 +603,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
             return new PlayerProfile(playerName, false);
         }
 
-        // First, read User Id - this is to check for orphans
-
-        int id = readId(playerName);
-
-        if (id == -1) {
-            // There is no such user
-            if (create) {
-                newUser(playerName, uuid);
-                return loadPlayerNameProfile(playerName, uuid, false, false);
-            }
-
-            // Return unloaded profile if can't create
-            return new PlayerProfile(playerName, false);
-        }
-        // There is such a user
-        writeMissingRows(id);
         // Retry, and abort on re-failure
         return loadPlayerNameProfile(playerName, uuid, create, false);
     }
@@ -450,6 +626,21 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = connectionPool.getConnection(VALID_TIMEOUT);
+            int id = getUserID(connection,playerName);
+
+            if (id == -1) {
+                // There is no such user
+                if (create) {
+                    newUser(playerName, uuid);
+                    return loadPlayerNameProfile(playerName, uuid, false, false);
+                }
+
+                // Return unloaded profile if can't create
+                return new PlayerProfile(playerName, false);
+            }
+            // There is such a user
+            writeMissingRows(connection,id);
+            
             statement = connection.prepareStatement(
                     "SELECT "
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
@@ -514,22 +705,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
             return loadPlayerNameProfile(playerName, uuid, create, true);
         }
 
-        // First, read User Id - this is to check for orphans
-
-        int id = readId(playerName);
-
-        if (id == -1) {
-            // There is no such user
-            if (create) {
-                newUser(playerName, uuid);
-                return loadPlayerProfile(playerName, uuid, false, false);
-            }
-
-            // Return unloaded profile if can't create
-            return new PlayerProfile(playerName, false);
-        }
-        // There is such a user
-        writeMissingRows(id);
         // Retry, and abort on re-failure
         return loadPlayerProfile(playerName, uuid, create, false);
     }
@@ -716,78 +891,105 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * Checks that the database structure is present and correct
      */
     private void checkStructure() {
-        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
-                + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
-                + "`user` varchar(40) NOT NULL,"
-                + "`uuid` varchar(36) NOT NULL DEFAULT '',"
-                + "`lastlogin` int(32) unsigned NOT NULL,"
-                + "PRIMARY KEY (`id`),"
-                + "UNIQUE KEY `user` (`user`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
-        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
-                + "`user_id` int(10) unsigned NOT NULL,"
-                + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
-                + "PRIMARY KEY (`user_id`)) "
-                + "DEFAULT CHARSET=latin1;");
-        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
-                + "`user_id` int(10) unsigned NOT NULL,"
-                + "`taming` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "`mining` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "`woodcutting` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "`repair` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "`unarmed` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "`herbalism` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "`excavation` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "`archery` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "`swords` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`)) "
-                + "DEFAULT CHARSET=latin1;");
-        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
-                + "`user_id` int(10) unsigned NOT NULL,"
-                + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`)) "
-                + "DEFAULT CHARSET=latin1;");
-        write("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
-                + "`user_id` int(10) unsigned NOT NULL,"
-                + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
-                + "PRIMARY KEY (`user_id`)) "
-                + "DEFAULT CHARSET=latin1;");
 
-        for (UpgradeType updateType : UpgradeType.values()) {
-            checkDatabaseStructure(updateType);
+        Statement statement = null;
+        Connection connection = null;
+
+        try {
+            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            statement = connection.createStatement();
+
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
+                    + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
+                    + "`user` varchar(40) NOT NULL,"
+                    + "`uuid` varchar(36) NOT NULL DEFAULT '',"
+                    + "`lastlogin` int(32) unsigned NOT NULL,"
+                    + "PRIMARY KEY (`id`),"
+                    + "UNIQUE KEY `user` (`user`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
+                    + "`user_id` int(10) unsigned NOT NULL,"
+                    + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
+                    + "PRIMARY KEY (`user_id`)) "
+                    + "DEFAULT CHARSET=latin1;");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
+                    + "`user_id` int(10) unsigned NOT NULL,"
+                    + "`taming` int(32) unsigned NOT NULL DEFAULT '0',"
+                    + "`mining` int(32) unsigned NOT NULL DEFAULT '0',"
+                    + "`woodcutting` int(32) unsigned NOT NULL DEFAULT '0',"
+                    + "`repair` int(32) unsigned NOT NULL DEFAULT '0',"
+                    + "`unarmed` int(32) unsigned NOT NULL DEFAULT '0',"
+                    + "`herbalism` int(32) unsigned NOT NULL DEFAULT '0',"
+                    + "`excavation` int(32) unsigned NOT NULL DEFAULT '0',"
+                    + "`archery` int(32) unsigned NOT NULL DEFAULT '0',"
+                    + "`swords` int(32) unsigned NOT NULL DEFAULT '0',"
+                    + "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
+                    + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
+                    + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
+                    + "PRIMARY KEY (`user_id`)) "
+                    + "DEFAULT CHARSET=latin1;");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
+                    + "`user_id` int(10) unsigned NOT NULL,"
+                    + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "PRIMARY KEY (`user_id`)) "
+                    + "DEFAULT CHARSET=latin1;");
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
+                    + "`user_id` int(10) unsigned NOT NULL,"
+                    + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
+                    + "PRIMARY KEY (`user_id`)) "
+                    + "DEFAULT CHARSET=latin1;");
+
+            for (UpgradeType updateType : UpgradeType.values()) {
+                checkDatabaseStructure(connection,updateType);
+            }
+
+            mcMMO.p.getLogger().info("Killing orphans");
+            statement.executeUpdate("DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "experience`.`user_id` = `u`.`id`)");
+            statement.executeUpdate("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "huds`.`user_id` = `u`.`id`)");
+            statement.executeUpdate("DELETE FROM `" + tablePrefix + "cooldowns` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "cooldowns`.`user_id` = `u`.`id`)");
+            statement.executeUpdate("DELETE FROM `" + tablePrefix + "skills` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "skills`.`user_id` = `u`.`id`)");
+        } catch (SQLException ex) {
+            printErrors(ex);
+        } finally {
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
         }
 
-        mcMMO.p.getLogger().info("Killing orphans");
-        write("DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "experience`.`user_id` = `u`.`id`)");
-        write("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "huds`.`user_id` = `u`.`id`)");
-        write("DELETE FROM `" + tablePrefix + "cooldowns` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "cooldowns`.`user_id` = `u`.`id`)");
-        write("DELETE FROM `" + tablePrefix + "skills` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "skills`.`user_id` = `u`.`id`)");
     }
 
     /**
@@ -796,7 +998,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * @param upgrade
      *            Upgrade to attempt to apply
      */
-    private void checkDatabaseStructure(UpgradeType upgrade) {
+    private void checkDatabaseStructure(Connection connection, UpgradeType upgrade) {
         if (!mcMMO.getUpgradeManager().shouldUpgrade(upgrade)) {
             mcMMO.p.debug("Skipping " + upgrade.name() + " upgrade (unneeded)");
             return;
@@ -804,10 +1006,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         Statement statement = null;
 
-        Connection connection = null;
-
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
             statement = connection.createStatement();
 
             switch (upgrade) {
@@ -859,189 +1058,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     // Ignore
                 }
             }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
         }
     }
 
-    /**
-     * Attempt to write the SQL query.
-     * 
-     * @param sql
-     *            Query to write.
-     * 
-     * @return true if the query was successfully written, false otherwise.
-     */
-    private boolean write(String sql) {
-        PreparedStatement statement = null;
-        Connection connection = null;
-
-        try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
-            statement = connection.prepareStatement(sql);
-            statement.executeUpdate();
-            return true;
-        } catch (SQLException ex) {
-            if (!sql.contains("DROP COLUMN")) {
-                printErrors(ex);
-            }
-            return false;
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-        }
-    }
-
-    /**
-     * Returns the number of rows affected by either a DELETE or UPDATE query
-     * 
-     * @param sql
-     *            SQL query to execute
-     * 
-     * @return the number of rows affected
-     */
-    private int update(String sql) {
-        int rows = 0;
-
-        PreparedStatement statement = null;
-        Connection connection = null;
-
-        try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
-            statement = connection.prepareStatement(sql);
-            rows = statement.executeUpdate();
-        } catch (SQLException ex) {
-            printErrors(ex);
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-        }
-
-        return rows;
-    }
-
-    /**
-     * Read SQL query.
-     * 
-     * @param sql
-     *            SQL query to read
-     * 
-     * @return the rows in this SQL query
-     */
-    private HashMap<Integer, ArrayList<String>> read(String sql) {
-        HashMap<Integer, ArrayList<String>> rows = new HashMap<Integer, ArrayList<String>>();
-
-        PreparedStatement statement = null;
-        ResultSet resultSet;
-
-        Connection connection = null;
-
-        try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
-            statement = connection.prepareStatement(sql);
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                ArrayList<String> column = new ArrayList<String>();
-
-                for (int i = 1; i <= resultSet.getMetaData().getColumnCount(); i++) {
-                    column.add(resultSet.getString(i));
-                }
-
-                rows.put(resultSet.getRow(), column);
-            }
-        } catch (SQLException ex) {
-            printErrors(ex);
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-        }
-
-        return rows;
-    }
-
-    /**
-     * Get the Integer. Only return first row / first field.
-     * 
-     * @param statement
-     *            SQL query to execute
-     * 
-     * @return the value in the first row / first field
-     */
-    private int readInt(PreparedStatement statement) {
-        int result = -1;
-
-        ResultSet resultSet;
-
-        try {
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                result = resultSet.getInt(1);
-            }
-        } catch (SQLException ex) {
-            printErrors(ex);
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-        }
-
-        return result;
-    }
-
-    private void writeMissingRows(int id) {
+    private void writeMissingRows(Connection connection, int id) {
         PreparedStatement statement = null;
 
-        Connection connection = null;
-
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
             statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + "experience (user_id) VALUES (?)");
             statement.setInt(1, id);
             statement.execute();
@@ -1057,8 +1080,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.execute();
             statement.close();
 
-            statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + "huds (user_id, mobhealthbar) VALUES (? ,'" + Config.getInstance().getMobHealthbarDefault().name() + "')");
+            statement = connection.prepareStatement("INSERT IGNORE INTO " + tablePrefix + "huds (user_id, mobhealthbar) VALUES (?, ?)");
             statement.setInt(1, id);
+            statement.setString(2, Config.getInstance().getMobHealthbarDefault().name());
             statement.execute();
             statement.close();
         } catch (SQLException ex) {
@@ -1071,225 +1095,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     // Ignore
                 }
             }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
         }
     }
 
-    private void processPurge(Collection<ArrayList<String>> usernames) {
-        for (ArrayList<String> user : usernames) {
-            Misc.profileCleanup(user.get(0));
-        }
-    }
-
-    private boolean saveIntegers(String sql, int... args) {
-        PreparedStatement statement = null;
-        Connection connection = null;
-
-        try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
-            statement = connection.prepareStatement(sql);
-            int i = 1;
-
-            for (int arg : args) {
-                statement.setInt(i++, arg);
-            }
-
-            statement.execute();
-            return true;
-        } catch (SQLException ex) {
-            printErrors(ex);
-            return false;
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-        }
-    }
-
-    private boolean saveLongs(String sql, int id, long... args) {
-        PreparedStatement statement = null;
-
-        Connection connection = null;
-
-        try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
-            statement = connection.prepareStatement(sql);
-            int i = 1;
-
-            for (long arg : args) {
-                statement.setLong(i++, arg);
-            }
-
-            statement.setInt(i++, id);
-            statement.execute();
-            return true;
-        } catch (SQLException ex) {
-            printErrors(ex);
-            return false;
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-        }
-    }
-
-    /**
-     * Retrieve the database id for a player
-     * 
-     * @param playerName
-     *            The name of the user to retrieve the id for
-     * 
-     * @return the requested id or -1 if not found
-     */
-    private int readId(String playerName) {
-        int id = -1;
-
-        Connection connection = null;
-
-        try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
-            PreparedStatement statement = connection.prepareStatement("SELECT id FROM " + tablePrefix + "users WHERE user = ?");
-            statement.setString(1, playerName);
-            id = readInt(statement);
-        } catch (SQLException ex) {
-            printErrors(ex);
-        } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-        }
-
-        return id;
-    }
-
-    private boolean saveUniqueId(int id, String uuid) {
-        PreparedStatement statement = null;
-
-        Connection connection = null;
-
-        try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET uuid = ? WHERE id = ?");
-            statement.setString(1, uuid);
-            statement.setInt(2, id);
-            statement.execute();
-            return true;
-        } catch (SQLException ex) {
-            printErrors(ex);
-            return false;
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-        }
-    }
-
-    private boolean saveLogin(int id, long login) {
-        PreparedStatement statement = null;
-
-        Connection connection = null;
-
-        try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET lastlogin = ? WHERE id = ?");
-            statement.setLong(1, login);
-            statement.setInt(2, id);
-            statement.execute();
-            return true;
-        } catch (SQLException ex) {
-            printErrors(ex);
-            return false;
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-        }
-    }
-
-    private boolean saveHuds(int userId, String mobHealthBar) {
-        PreparedStatement statement = null;
-
-        Connection connection = null;
-
-        try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ? WHERE user_id = ?");
-            statement.setString(1, mobHealthBar);
-            statement.setInt(2, userId);
-            statement.execute();
-            return true;
-        } catch (SQLException ex) {
-            printErrors(ex);
-            return false;
-        } finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    // Ignore
-                }
-            }
+    private void processPurge(Collection<String> usernames) {
+        for (String user : usernames) {
+            Misc.profileCleanup(user);
         }
     }
 
@@ -1563,5 +1374,97 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
             }
         }
+    }
+
+    private int getUserID(final Connection connection, final String playerName) {
+        Integer id = cachedUserIDsByName.get(playerName.toLowerCase());
+        if(id != null) {
+            return id;
+        }
+
+        ResultSet resultSet = null;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT id, uuid FROM " + tablePrefix + "users WHERE user = ?");
+            statement.setString(1, playerName);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                id = resultSet.getInt("id");
+
+                cachedUserIDsByName.put(playerName.toLowerCase(), id);
+
+                try {
+                    cachedUserIDs.put(UUID.fromString(resultSet.getString("uuid")), id);
+                } catch (Exception e) {
+                    
+                }
+
+                return id;
+            }
+        } catch (SQLException ex) {
+            printErrors(ex);
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+
+        return -1;
+    }
+
+    private int getUserID(final Connection connection, final UUID uuid) {
+        if(cachedUserIDs.containsKey(uuid)) {
+            return cachedUserIDs.get(uuid);
+        }
+
+        ResultSet resultSet = null;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT id, user FROM " + tablePrefix + "users WHERE uuid = ?");
+            statement.setString(1, uuid.toString());
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
+
+                cachedUserIDs.put(uuid, id);
+                cachedUserIDsByName.put(resultSet.getString("user").toLowerCase(), id);
+
+                return id;
+            }
+        } catch (SQLException ex) {
+            printErrors(ex);
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+
+        return -1;
     }
 }
