@@ -902,7 +902,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
                     + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                     + "`user` varchar(40) NOT NULL,"
-                    + "`uuid` varchar(36) NOT NULL DEFAULT '',"
+                    + "`uuid` varchar(36) NULL DEFAULT NULL,"
                     + "`lastlogin` int(32) unsigned NOT NULL,"
                     + "PRIMARY KEY (`id`),"
                     + "UNIQUE KEY `user` (`user`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
@@ -1273,7 +1273,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             if (!column_exists) {
                 mcMMO.p.getLogger().info("Adding UUIDs to mcMMO MySQL user table...");
-                statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(36) NOT NULL DEFAULT ''");
+                statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(36) NULL DEFAULT NULL");
+                statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD UNIQUE INDEX `idx_uuid` (`uuid`) USING BTREE");
             }
         } catch (SQLException ex) {
             printErrors(ex);
