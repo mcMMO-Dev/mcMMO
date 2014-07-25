@@ -1,8 +1,6 @@
 package com.gmail.nossr50.database;
 
 import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
@@ -44,9 +42,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             // Force driver to load if not yet loaded
-            Class c = Class.forName("com.mysql.jdbc.Driver");
-            Driver driver = (Driver) c.newInstance();
-            DriverManager.registerDriver(driver);
+            Class.forName("com.mysql.jdbc.Driver");
             Properties connectionProperties = new Properties();
             connectionProperties.put("user", Config.getInstance().getMySQLUserName());
             connectionProperties.put("password", Config.getInstance().getMySQLUserPassword());
@@ -55,15 +51,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connectionPool.init(); // Init first connection
             connectionPool.registerShutdownHook(); // Auto release when done
         } catch (ClassNotFoundException e) {
-            // TODO tft do something here
-            e.printStackTrace();
-        } catch (SQLException e) {
-            // TODO tft do something here
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            // TODO tft do something here
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
             // TODO tft do something here
             e.printStackTrace();
         }
