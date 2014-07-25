@@ -76,6 +76,7 @@
                     <artifactSet>
                         <includes>
                             <include>com.turt2live.metrics:MetricsExtension</include>
+                            <include>commons-logging:commons-logging</include>
                             <include>net.snaq:dbpool</include>
                         </includes>
                     </artifactSet>
@@ -83,6 +84,10 @@
                         <relocation>
                             <pattern>com.turt2live.metrics</pattern>
                             <shadedPattern>com.gmail.nossr50.metrics.mcstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.apache.commons.logging</pattern>
+                            <shadedPattern>com.gmail.nossr50.commons.logging</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>net.snaq</pattern>
