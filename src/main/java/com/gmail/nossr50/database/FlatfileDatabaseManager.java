@@ -1041,4 +1041,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     public DatabaseType getDatabaseType() {
         return DatabaseType.FLATFILE;
     }
+
+    @Override
+    public void onDisable() { }
 }

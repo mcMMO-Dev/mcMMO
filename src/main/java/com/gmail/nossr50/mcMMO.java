@@ -242,6 +242,7 @@ public class mcMMO extends JavaPlugin {
             }
         }
 
+        databaseManager.onDisable();
         debug("Was disabled."); // How informative!
     }
 

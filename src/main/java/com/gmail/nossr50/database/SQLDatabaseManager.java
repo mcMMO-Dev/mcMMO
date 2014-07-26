@@ -29,6 +29,7 @@ import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 
 public final class SQLDatabaseManager implements DatabaseManager {
+    private static final String ALL_QUERY_VERSION = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy";
     private String connectionString;
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
@@ -50,9 +51,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connectionProperties.put("user", Config.getInstance().getMySQLUserName());
             connectionProperties.put("password", Config.getInstance().getMySQLUserPassword());
             connectionProperties.put("autoReconnect", "false");
-            connectionPool = new ConnectionPool("mcMMO-Pool", 1 /*Minimum of one*/, 10 /*max pool size Configurable?*/, 10/*max num connections Configurable?*/, 0 /* idle timeout of connections */, connectionString, connectionProperties);
+            connectionPool = new ConnectionPool("mcMMO-Pool",
+                    1 /*Minimum of one*/,
+                    10 /*max pool size */,      // TODO Configurable?
+                    10 /*max num connections*/, // TODO Configurable?
+                    0 /* idle timeout of connections */,
+                    connectionString,
+                    connectionProperties);
             connectionPool.init(); // Init first connection
-            connectionPool.registerShutdownHook(); // Auto release when done
+            connectionPool.registerShutdownHook(); // Auto release on jvm exit  just in case
         } catch (ClassNotFoundException e) {
             // TODO tft do something here
             e.printStackTrace();
@@ -81,13 +88,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             resultSet.close();
 
-            statement.executeQuery("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
+            statement.executeUpdate("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
                     "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
                     "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
                     "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
                     "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
                     "WHERE (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
-
         } catch (SQLException ex) {
             printErrors(ex);
         } finally {
@@ -140,13 +146,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             resultSet.close();
 
-            statement.executeQuery("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
+            statement.executeUpdate("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
                     "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
                     "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
                     "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
                     "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
                     "WHERE ((NOW() - lastlogin * " + Misc.TIME_CONVERSION_FACTOR + ") > " + PURGE_TIME + ")");
-
         } catch (SQLException ex) {
             printErrors(ex);
         } finally {
@@ -198,7 +203,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setString(1, playerName);
 
             success = statement.executeUpdate() != 0;
-
         } catch (SQLException ex) {
             printErrors(ex);
         } finally {
@@ -306,6 +310,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setLong(8, profile.getAbilityDATS(AbilityType.BLAST_MINING));
             statement.setInt(9, id);
             success = (statement.executeUpdate() != 0);
+            statement.close();
 
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ? WHERE user_id = ?");
             statement.setString(1, profile.getMobHealthbarType() == null ? Config.getInstance().getMobHealthbarDefault().name() : profile.getMobHealthbarType().name());
@@ -336,8 +341,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public List<PlayerStat> readLeaderboard(SkillType skill, int pageNumber, int statsPerPage) {
         List<PlayerStat> stats = new ArrayList<PlayerStat>();
 
-        String query = skill == null ? "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy" : skill.name().toLowerCase();
-        ResultSet resultSet;
+        String query = skill == null ? ALL_QUERY_VERSION : skill.name().toLowerCase();
+        ResultSet resultSet = null;
         PreparedStatement statement = null;
         Connection connection = null;
 
@@ -360,6 +365,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
         } catch (SQLException ex) {
             printErrors(ex);
         } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
             if (statement != null) {
                 try {
                     statement.close();
@@ -382,7 +394,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public Map<SkillType, Integer> readRank(String playerName) {
         Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();
 
-        ResultSet resultSet;
+        ResultSet resultSet = null;
+        PreparedStatement statement = null;
         Connection connection = null;
 
         try {
@@ -393,7 +406,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         "AND " + skillName + " > (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
                         "WHERE user = ?)";
 
-                PreparedStatement statement = connection.prepareStatement(sql);
+                statement = connection.prepareStatement(sql);
                 statement.setString(1, playerName);
                 resultSet = statement.executeQuery();
 
@@ -405,6 +418,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         "AND " + skillName + " = (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
                         "WHERE user = '" + playerName + "') ORDER BY user";
 
+                resultSet.close();
                 statement.close();
 
                 statement = connection.prepareStatement(sql);
@@ -417,16 +431,17 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     }
                 }
 
+                resultSet.close();
                 statement.close();
             }
 
             String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
-                    "WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy > 0 " +
-                    "AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy > " +
-                    "(SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy " +
+                    "WHERE " + ALL_QUERY_VERSION + " > 0 " +
+                    "AND " + ALL_QUERY_VERSION + " > " +
+                    "(SELECT " + ALL_QUERY_VERSION + " " +
                     "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = ?)";
 
-            PreparedStatement statement = connection.prepareStatement(sql);
+            statement = connection.prepareStatement(sql);
             statement.setString(1, playerName);
             resultSet = statement.executeQuery();
 
@@ -434,13 +449,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             int rank = resultSet.getInt("rank");
 
+            resultSet.close();
             statement.close();
 
-            sql = "SELECT user, taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy " +
+            sql = "SELECT user, " + ALL_QUERY_VERSION + " " +
                     "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
-                    "WHERE taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy > 0 " +
-                    "AND taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy = " +
-                    "(SELECT taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy " +
+                    "WHERE " + ALL_QUERY_VERSION + " > 0 " +
+                    "AND " + ALL_QUERY_VERSION + " = " +
+                    "(SELECT " + ALL_QUERY_VERSION + " " +
                     "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = ?) ORDER BY user";
 
             statement = connection.prepareStatement(sql);
@@ -454,10 +470,25 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
             }
 
+            resultSet.close();
             statement.close();
         } catch (SQLException ex) {
             printErrors(ex);
         } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
             if (connection != null) {
                 try {
                     connection.close();
@@ -534,6 +565,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private PlayerProfile loadPlayerNameProfile(String playerName, String uuid, boolean create, boolean retry) {
         PreparedStatement statement = null;
         Connection connection = null;
+        ResultSet resultSet = null;
 
         try {
             connection = connectionPool.getConnection(VALID_TIMEOUT);
@@ -566,20 +598,25 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "WHERE u.user = ?");
             statement.setString(1, playerName);
 
-            ResultSet result = statement.executeQuery();
+            resultSet = statement.executeQuery();
 
-            if (result.next()) {
+            if (resultSet.next()) {
                 try {
-                    PlayerProfile ret = loadFromResult(playerName, result);
-                    result.close();
+                    PlayerProfile ret = loadFromResult(playerName, resultSet);
                     return ret;
                 } catch (SQLException e) {
                 }
             }
-            result.close();
         } catch (SQLException ex) {
             printErrors(ex);
         } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
             if (statement != null) {
                 try {
                     statement.close();
@@ -623,6 +660,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private PlayerProfile loadPlayerProfile(String playerName, String uuid, boolean create, boolean retry) {
         PreparedStatement statement = null;
         Connection connection = null;
+        ResultSet resultSet = null;
 
         try {
             connection = connectionPool.getConnection(VALID_TIMEOUT);
@@ -655,12 +693,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "WHERE u.UUID = ?");
             statement.setString(1, uuid);
 
-            ResultSet result = statement.executeQuery();
+            resultSet = statement.executeQuery();
 
-            if (result.next()) {
+            if (resultSet.next()) {
                 try {
-                    PlayerProfile profile = loadFromResult(playerName, result);
-                    result.close();
+                    PlayerProfile profile = loadFromResult(playerName, resultSet);
+                    resultSet.close();
                     statement.close();
 
                     if (!playerName.isEmpty() && !profile.getPlayerName().isEmpty()) {
@@ -670,18 +708,25 @@ public final class SQLDatabaseManager implements DatabaseManager {
                                         + "WHERE UUID = ?");
                         statement.setString(1, playerName);
                         statement.setString(2, uuid);
-                        result = statement.executeQuery();
-                        result.close();
+                        statement.executeUpdate();
+                        statement.close();
                     }
 
                     return profile;
                 } catch (SQLException e) {
                 }
             }
-            result.close();
+            resultSet.close();
         } catch (SQLException ex) {
             printErrors(ex);
         } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
             if (statement != null) {
                 try {
                     statement.close();
@@ -712,6 +757,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public void convertUsers(DatabaseManager destination) {
         PreparedStatement statement = null;
         Connection connection = null;
+        ResultSet resultSet = null;
 
         try {
             connection = connectionPool.getConnection(VALID_TIMEOUT);
@@ -728,7 +774,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
                             + "WHERE u.user = ?");
             List<String> usernames = getStoredUsers();
-            ResultSet resultSet;
             int convertedUsers = 0;
             long startMillis = System.currentTimeMillis();
             for (String playerName : usernames) {
@@ -747,6 +792,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
         } catch (SQLException e) {
             printErrors(e);
         } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
             if (statement != null) {
                 try {
                     statement.close();
@@ -797,8 +849,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
             }
         }
-
-        // Problem, nothing was returned
     }
 
     public boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs) {
@@ -854,23 +904,30 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public List<String> getStoredUsers() {
         ArrayList<String> users = new ArrayList<String>();
 
-        Statement stmt = null;
+        Statement statement = null;
         Connection connection = null;
+        ResultSet resultSet = null;
 
         try {
             connection = connectionPool.getConnection(VALID_TIMEOUT);
-            stmt = connection.createStatement();
-            ResultSet result = stmt.executeQuery("SELECT user FROM " + tablePrefix + "users");
-            while (result.next()) {
-                users.add(result.getString("user"));
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT user FROM " + tablePrefix + "users");
+            while (resultSet.next()) {
+                users.add(resultSet.getString("user"));
             }
-            result.close();
         } catch (SQLException e) {
             printErrors(e);
         } finally {
-            if (stmt != null) {
+            if (resultSet != null) {
                 try {
-                    stmt.close();
+                    resultSet.close();
+                } catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (statement != null) {
+                try {
+                    statement.close();
                 } catch (SQLException e) {
                     // Ignore
                 }
@@ -1467,5 +1524,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         return -1;
+    }
+
+    @Override
+    public void onDisable() {
+        connectionPool.release();
     }
 }

@@ -132,4 +132,9 @@ public interface DatabaseManager {
      * @return The type of database
      */
     public DatabaseType getDatabaseType();
+
+    /**
+     * Called when the plugin disables
+     */
+    public void onDisable();
 }
