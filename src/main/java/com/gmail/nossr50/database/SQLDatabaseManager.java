@@ -688,11 +688,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     @Deprecated
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
-        return loadPlayerProfile(playerName, "", create, true);
+        return loadPlayerProfile(playerName, "", false, true);
     }
 
-    public PlayerProfile loadPlayerProfile(UUID uuid, boolean create) {
-        return loadPlayerProfile("", uuid.toString(), create, true);
+    public PlayerProfile loadPlayerProfile(UUID uuid) {
+        return loadPlayerProfile("", uuid.toString(), false, true);
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create) {

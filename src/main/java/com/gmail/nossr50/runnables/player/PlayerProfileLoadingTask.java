@@ -41,7 +41,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
         // Increment attempt counter and try
         attempt++;
-        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player.getUniqueId(), true);
+        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player.getName(), player.getUniqueId(), true);
         // If successful, schedule the apply
         if (profile.isLoaded()) {
             new ApplySuccessfulProfile(profile).runTask(mcMMO.p);

@@ -388,11 +388,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
     @Deprecated
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
-        return loadPlayerProfile(playerName, "", create);
+        return loadPlayerProfile(playerName, "", false);
     }
 
-    public PlayerProfile loadPlayerProfile(UUID uuid, boolean create) {
-        return loadPlayerProfile("", uuid.toString(), create);
+    public PlayerProfile loadPlayerProfile(UUID uuid) {
+        return loadPlayerProfile("", uuid.toString(), false);
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create) {
