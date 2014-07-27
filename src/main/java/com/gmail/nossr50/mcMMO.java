@@ -167,7 +167,7 @@ public class mcMMO extends JavaPlugin {
             holidayManager = new HolidayManager();
 
             for (Player player : getServer().getOnlinePlayers()) {
-                UserManager.addUser(player); // In case of reload add all users back into UserManager
+                UserManager.track(player); // In case of reload add all users back into UserManager
                 ScoreboardManager.setupPlayer(player);
             }
 

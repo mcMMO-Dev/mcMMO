@@ -112,7 +112,7 @@ public final class Misc {
 
         if (player != null) {
             UserManager.remove(player);
-            UserManager.addUser(player);
+            UserManager.track(player);
         }
     }
 

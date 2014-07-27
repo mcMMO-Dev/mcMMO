@@ -61,7 +61,7 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                         mcMMO.getDatabaseManager().saveUser(profile);
                     }
 
-                    UserManager.addUser(player);
+                    UserManager.track(player);
                 }
 
                 new DatabaseConversionTask(oldDatabase, sender, previousType.toString(), newType.toString()).runTaskAsynchronously(mcMMO.p);

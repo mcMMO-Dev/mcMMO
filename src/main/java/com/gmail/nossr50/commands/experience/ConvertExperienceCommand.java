@@ -37,7 +37,7 @@ public class ConvertExperienceCommand implements CommandExecutor {
                 new FormulaConversionTask(sender, newType).runTaskLater(mcMMO.p, 1);
 
                 for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-                    UserManager.addUser(player);
+                    UserManager.track(player);
                 }
 
                 return true;
