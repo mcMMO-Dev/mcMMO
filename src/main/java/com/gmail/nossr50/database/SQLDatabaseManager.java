@@ -1029,7 +1029,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "`uuid` varchar(36) NULL DEFAULT NULL,"
                     + "`lastlogin` int(32) unsigned NOT NULL,"
                     + "PRIMARY KEY (`id`),"
-                    + "UNIQUE KEY `user` (`user`)"
+                    + "UNIQUE KEY `user` (`user`),"
                     + "UNIQUE KEY `uuid` (`uuid`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
                     + "`user_id` int(10) unsigned NOT NULL,"
