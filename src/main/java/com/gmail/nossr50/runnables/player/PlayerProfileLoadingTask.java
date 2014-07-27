@@ -1,10 +1,7 @@
 package com.gmail.nossr50.runnables.player;
 
-import java.util.UUID;
-
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
@@ -39,7 +36,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
         // Send the message that we're doing the recovery
         if (attempt == 0) {
-            player.sendMessage(LocaleLoader.getString("Profile.Loading.Starting"));
+            player.sendMessage(LocaleLoader.getString("Profile.Loading.Start"));
         }
 
         // Increment attempt counter and try
