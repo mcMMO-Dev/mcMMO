@@ -14,8 +14,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 
-import snaq.db.ConnectionPool;
-
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
@@ -27,6 +25,8 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
+
+import snaq.db.ConnectionPool;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy";
@@ -60,7 +60,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     connectionProperties);
             connectionPool.init(); // Init first connection
             connectionPool.registerShutdownHook(); // Auto release on jvm exit  just in case
-        } catch (ClassNotFoundException e) {
+        }
+        catch (ClassNotFoundException e) {
             // TODO tft do something here
             e.printStackTrace();
         }
@@ -94,33 +95,38 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
                     "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
                     "WHERE (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
         }
 
-        if(!usernames.isEmpty()) {
+        if (!usernames.isEmpty()) {
             processPurge(usernames);
         }
 
@@ -152,33 +158,38 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
                     "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
                     "WHERE ((NOW() - lastlogin * " + Misc.TIME_CONVERSION_FACTOR + ") > " + PURGE_TIME + ")");
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
         }
 
-        if(!usernames.isEmpty()) {
+        if (!usernames.isEmpty()) {
             processPurge(usernames);
         }
 
@@ -203,26 +214,30 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setString(1, playerName);
 
             success = statement.executeUpdate() != 0;
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
         }
 
-        if(success) {
+        if (success) {
             Misc.profileCleanup(playerName);
         }
 
@@ -239,10 +254,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             int id = getUserID(connection, profile.getUniqueId());
 
-            if(id == -1) {
+            if (id == -1) {
                 newUser(profile.getPlayerName(), profile.getUniqueId().toString());
                 id = getUserID(connection, profile.getUniqueId());
-                if(id == -1) {
+                if (id == -1) {
                     return false;
                 }
             }
@@ -253,10 +268,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.close();
 
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "skills SET "
-                        + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                        + ", unarmed = ?, herbalism = ?, excavation = ?"
-                        + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                        + ", fishing = ?, alchemy = ? WHERE user_id = ?");
+                    + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
+                    + ", unarmed = ?, herbalism = ?, excavation = ?"
+                    + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
+                    + ", fishing = ?, alchemy = ? WHERE user_id = ?");
             statement.setInt(1, profile.getSkillLevel(SkillType.TAMING));
             statement.setInt(2, profile.getSkillLevel(SkillType.MINING));
             statement.setInt(3, profile.getSkillLevel(SkillType.REPAIR));
@@ -275,10 +290,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.close();
 
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "experience SET "
-                        + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                        + ", unarmed = ?, herbalism = ?, excavation = ?"
-                        + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                        + ", fishing = ?, alchemy = ? WHERE user_id = ?");
+                    + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
+                    + ", unarmed = ?, herbalism = ?, excavation = ?"
+                    + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
+                    + ", fishing = ?, alchemy = ? WHERE user_id = ?");
             statement.setInt(1, profile.getSkillXpLevel(SkillType.TAMING));
             statement.setInt(2, profile.getSkillXpLevel(SkillType.MINING));
             statement.setInt(3, profile.getSkillXpLevel(SkillType.REPAIR));
@@ -297,9 +312,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.close();
 
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "cooldowns SET "
-                        + "  mining = ?, woodcutting = ?, unarmed = ?"
-                        + ", herbalism = ?, excavation = ?, swords = ?"
-                        + ", axes = ?, blast_mining = ? WHERE user_id = ?");
+                    + "  mining = ?, woodcutting = ?, unarmed = ?"
+                    + ", herbalism = ?, excavation = ?, swords = ?"
+                    + ", axes = ?, blast_mining = ? WHERE user_id = ?");
             statement.setLong(1, profile.getAbilityDATS(AbilityType.SUPER_BREAKER));
             statement.setLong(2, profile.getAbilityDATS(AbilityType.TREE_FELLER));
             statement.setLong(3, profile.getAbilityDATS(AbilityType.BERSERK));
@@ -316,20 +331,24 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setString(1, profile.getMobHealthbarType() == null ? Config.getInstance().getMobHealthbarDefault().name() : profile.getMobHealthbarType().name());
             statement.setInt(2, id);
             success = (statement.executeUpdate() != 0);
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -362,27 +381,32 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
                 stats.add(new PlayerStat(column.get(1), Integer.valueOf(column.get(0))));
             }
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -472,27 +496,32 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             resultSet.close();
             statement.close();
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -507,13 +536,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try {
             connection = connectionPool.getConnection(VALID_TIMEOUT);
             newUser(connection, playerName, uuid);
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -533,25 +565,29 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             resultSet = statement.getGeneratedKeys();
 
-            if(!resultSet.next()) {
+            if (!resultSet.next()) {
                 return;
             }
 
             writeMissingRows(connection, resultSet.getInt(1));
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -604,30 +640,36 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 try {
                     PlayerProfile ret = loadFromResult(playerName, resultSet);
                     return ret;
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                 }
             }
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -678,7 +720,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
             // There is such a user
             writeMissingRows(connection, id);
-            
+
             statement = connection.prepareStatement(
                     "SELECT "
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
@@ -713,31 +755,37 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     }
 
                     return profile;
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                 }
             }
             resultSet.close();
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -783,33 +831,39 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     resultSet.next();
                     destination.saveUser(loadFromResult(playerName, resultSet));
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
                 convertedUsers++;
                 Misc.printProgress(convertedUsers, progressInterval, startMillis);
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             printErrors(e);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -830,21 +884,25 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setString(2, userName);
             statement.execute();
             return true;
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
             return false;
-        } finally {
+        }
+        finally {
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -880,21 +938,25 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             return true;
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
             return false;
-        } finally {
+        }
+        finally {
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -915,27 +977,32 @@ public final class SQLDatabaseManager implements DatabaseManager {
             while (resultSet.next()) {
                 users.add(resultSet.getString("user"));
             }
-        } catch (SQLException e) {
+        }
+        catch (SQLException e) {
             printErrors(e);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -1029,20 +1096,24 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.executeUpdate("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "huds`.`user_id` = `u`.`id`)");
             statement.executeUpdate("DELETE FROM `" + tablePrefix + "cooldowns` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "cooldowns`.`user_id` = `u`.`id`)");
             statement.executeUpdate("DELETE FROM `" + tablePrefix + "skills` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "skills`.`user_id` = `u`.`id`)");
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -1052,9 +1123,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     /**
      * Check database structure for necessary upgrades.
-     * 
-     * @param upgrade
-     *            Upgrade to attempt to apply
+     *
+     * @param upgrade Upgrade to attempt to apply
      */
     private void checkDatabaseStructure(Connection connection, UpgradeType upgrade) {
         if (!mcMMO.getUpgradeManager().shouldUpgrade(upgrade)) {
@@ -1106,13 +1176,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             mcMMO.getUpgradeManager().setUpgradeCompleted(upgrade);
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -1143,13 +1216,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setString(2, Config.getInstance().getMobHealthbarDefault().name());
             statement.execute();
             statement.close();
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -1170,7 +1246,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         UUID uuid;
 
         final int OFFSET_SKILLS = 0; // TODO update these numbers when the query
-                                     // changes (a new skill is added)
+        // changes (a new skill is added)
         final int OFFSET_XP = 13;
         final int OFFSET_DATS = 26;
         final int OFFSET_OTHER = 38;
@@ -1218,13 +1294,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             mobHealthbarType = MobHealthbarType.valueOf(result.getString(OFFSET_OTHER + 2));
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
         }
 
         try {
             uuid = UUID.fromString(result.getString(OFFSET_OTHER + 3));
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             uuid = null;
         }
 
@@ -1244,7 +1322,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private void checkUpgradeAddAlchemy(final Statement statement) throws SQLException {
         try {
             statement.executeQuery("SELECT `alchemy` FROM `" + tablePrefix + "skills` LIMIT 1");
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Alchemy...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD `alchemy` int(10) NOT NULL DEFAULT '0'");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "experience` ADD `alchemy` int(10) NOT NULL DEFAULT '0'");
@@ -1254,7 +1333,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private void checkUpgradeAddBlastMiningCooldown(final Statement statement) throws SQLException {
         try {
             statement.executeQuery("SELECT `blast_mining` FROM `" + tablePrefix + "cooldowns` LIMIT 1");
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Blast Mining...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0'");
         }
@@ -1263,7 +1343,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private void checkUpgradeAddFishing(final Statement statement) throws SQLException {
         try {
             statement.executeQuery("SELECT `fishing` FROM `" + tablePrefix + "skills` LIMIT 1");
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD `fishing` int(10) NOT NULL DEFAULT '0'");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "experience` ADD `fishing` int(10) NOT NULL DEFAULT '0'");
@@ -1273,7 +1354,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private void checkUpgradeAddMobHealthbars(final Statement statement) throws SQLException {
         try {
             statement.executeQuery("SELECT `mobhealthbar` FROM `" + tablePrefix + "huds` LIMIT 1");
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for mob healthbars...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` ADD `mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "'");
         }
@@ -1294,18 +1376,22 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
                     try {
                         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_" + skill_name + "` (`" + skill_name + "`) USING BTREE");
-                    } catch (SQLException ex) {
+                    }
+                    catch (SQLException ex) {
                         // Ignore
                     }
                 }
             }
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -1334,13 +1420,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD `uuid` varchar(36) NULL DEFAULT NULL");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` ADD UNIQUE INDEX `uuid` (`uuid`) USING BTREE");
             }
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -1352,13 +1441,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
             while (resultSet.next()) {
                 names.add(resultSet.getString("user"));
             }
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -1389,13 +1481,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().info("Removing party name from users table...");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "users` DROP COLUMN `party`");
             }
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -1422,13 +1517,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().info("Removing Spout HUD type from huds table...");
                 statement.executeUpdate("ALTER TABLE `" + tablePrefix + "huds` DROP COLUMN `hudtype`");
             }
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -1437,7 +1535,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     private int getUserID(final Connection connection, final String playerName) {
         Integer id = cachedUserIDsByName.get(playerName.toLowerCase());
-        if(id != null) {
+        if (id != null) {
             return id;
         }
 
@@ -1456,26 +1554,31 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
                 try {
                     cachedUserIDs.put(UUID.fromString(resultSet.getString("uuid")), id);
-                } catch (Exception e) {
-                    
+                }
+                catch (Exception e) {
+
                 }
 
                 return id;
             }
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
@@ -1485,7 +1588,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private int getUserID(final Connection connection, final UUID uuid) {
-        if(cachedUserIDs.containsKey(uuid)) {
+        if (cachedUserIDs.containsKey(uuid)) {
             return cachedUserIDs.get(uuid);
         }
 
@@ -1505,20 +1608,24 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
                 return id;
             }
-        } catch (SQLException ex) {
+        }
+        catch (SQLException ex) {
             printErrors(ex);
-        } finally {
+        }
+        finally {
             if (resultSet != null) {
                 try {
                     resultSet.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (SQLException e) {
+                }
+                catch (SQLException e) {
                     // Ignore
                 }
             }
