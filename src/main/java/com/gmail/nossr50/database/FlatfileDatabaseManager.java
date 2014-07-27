@@ -98,8 +98,22 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
             }
             finally {
-                tryClose(in);
-                tryClose(out);
+                if (in != null) {
+                    try {
+                        in.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
             }
         }
 
@@ -164,8 +178,22 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
             }
             finally {
-                tryClose(in);
-                tryClose(out);
+                if (in != null) {
+                    try {
+                        in.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
             }
         }
 
@@ -203,8 +231,22 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
             }
             finally {
-                tryClose(in);
-                tryClose(out);
+                if (in != null) {
+                    try {
+                        in.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
             }
         }
 
@@ -294,8 +336,22 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 return false;
             }
             finally {
-                tryClose(in);
-                tryClose(out);
+                if (in != null) {
+                    try {
+                        in.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
             }
         }
     }
@@ -381,7 +437,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 e.printStackTrace();
             }
             finally {
-                tryClose(out);
+                if (out != null) {
+                    try {
+                        out.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
             }
         }
     }
@@ -448,7 +511,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         in.close();
                     }
                     catch (IOException e) {
-                        e.printStackTrace();
+                        // Ignore
                     }
                 }
             }
@@ -491,7 +554,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 e.printStackTrace();
             }
             finally {
-                tryClose(in);
+                if (in != null) {
+                    try {
+                        in.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
             }
         }
     }
@@ -532,8 +602,22 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
             }
             finally {
-                tryClose(in);
-                tryClose(out);
+                if (in != null) {
+                    try {
+                        in.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
             }
         }
 
@@ -573,8 +657,22 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
             }
             finally {
-                tryClose(in);
-                tryClose(out);
+                if (in != null) {
+                    try {
+                        in.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
             }
         }
 
@@ -601,7 +699,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 e.printStackTrace();
             }
             finally {
-                tryClose(in);
+                if (in != null) {
+                    try {
+                        in.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
             }
         }
         return users;
@@ -671,7 +776,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " during user " + playerName + " (Are you sure you formatted it correctly?) " + e.toString());
             }
             finally {
-                tryClose(in);
+                if (in != null) {
+                    try {
+                        in.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
             }
         }
 
@@ -897,8 +1009,22 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
                 }
                 finally {
-                    tryClose(in);
-                    tryClose(out);
+                    if (in != null) {
+                        try {
+                            in.close();
+                        }
+                        catch (IOException e) {
+                            // Ignore
+                        }
+                    }
+                    if (out != null) {
+                        try {
+                            out.close();
+                        }
+                        catch (IOException e) {
+                            // Ignore
+                        }
+                    }
                 }
             }
 
@@ -917,18 +1043,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         try {
             mcMMO.p.debug("Creating mcmmo.users file...");
             new File(mcMMO.getUsersFilePath()).createNewFile();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void tryClose(Closeable c) {
-        if (c == null) {
-            return;
-        }
-        try {
-            c.close();
         }
         catch (IOException e) {
             e.printStackTrace();

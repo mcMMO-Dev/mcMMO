@@ -33,8 +33,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private String connectionString;
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
-    // How long to wait when checking if connection is valid (default 3 seconds)
-    private final int VALID_TIMEOUT = 3;
+    private final int POOL_FETCH_TIMEOUT = 0; // How long a method will wait for a connection.  Since none are on main thread, we can safely say wait for as long as you like.
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<UUID, Integer>();
     private final Map<String, Integer> cachedUserIDsByName = new HashMap<String, Integer>();
@@ -62,7 +61,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connectionPool.registerShutdownHook(); // Auto release on jvm exit  just in case
         }
         catch (ClassNotFoundException e) {
-            // TODO tft do something here
+            // TODO tft do something here  everything will blow up
             e.printStackTrace();
         }
 
@@ -79,7 +78,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         List<String> usernames = new ArrayList<String>();
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT u.user FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
 
@@ -142,7 +141,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         List<String> usernames = new ArrayList<String>();
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT user FROM " + tablePrefix + "users WHERE ((NOW() - lastlogin * " + Misc.TIME_CONVERSION_FACTOR + ") > " + PURGE_TIME + ")");
 
@@ -202,7 +201,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.prepareStatement("DELETE FROM u, e, h, s, c " +
                     "USING " + tablePrefix + "users u " +
                     "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
@@ -250,7 +249,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
 
             int id = getUserID(connection, profile.getUniqueId());
 
@@ -366,7 +365,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.prepareStatement("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT ?, ?");
             statement.setInt(1, (pageNumber * statsPerPage) - statsPerPage);
             statement.setInt(2, statsPerPage);
@@ -423,7 +422,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
                 String skillName = skillType.name().toLowerCase();
                 String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
@@ -534,7 +533,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             newUser(connection, playerName, uuid);
         }
         catch (SQLException ex) {
@@ -604,7 +603,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         ResultSet resultSet = null;
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             int id = getUserID(connection, playerName);
 
             if (id == -1) {
@@ -705,7 +704,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         ResultSet resultSet = null;
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             int id = getUserID(connection, playerName);
 
             if (id == -1) {
@@ -808,7 +807,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         ResultSet resultSet = null;
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.prepareStatement(
                     "SELECT "
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
@@ -876,7 +875,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.prepareStatement(
                     "UPDATE `" + tablePrefix + "users` SET "
                             + "  uuid = ? WHERE user = ?");
@@ -916,7 +915,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET uuid = ? WHERE user = ?");
 
             for (Map.Entry<String, UUID> entry : fetchedUUIDs.entrySet()) {
@@ -971,7 +970,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         ResultSet resultSet = null;
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT user FROM " + tablePrefix + "users");
             while (resultSet.next()) {
@@ -1020,7 +1019,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(VALID_TIMEOUT);
+            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.createStatement();
 
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
