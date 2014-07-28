@@ -52,8 +52,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connectionProperties.put("autoReconnect", "false");
             connectionPool = new ConnectionPool("mcMMO-Pool",
                     1 /*Minimum of one*/,
-                    10 /*max pool size */,      // TODO Configurable?
-                    10 /*max num connections*/, // TODO Configurable?
+                    Config.getInstance().getMySQLMaxPoolSize() /*max pool size */,
+                    Config.getInstance().getMySQLMaxConnections() /*max num connections*/,
                     0 /* idle timeout of connections */,
                     connectionString,
                     connectionProperties);
