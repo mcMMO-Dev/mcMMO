@@ -1,6 +1,6 @@
 package com.gmail.nossr50.datatypes.player;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -17,6 +17,7 @@ import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
 
 import com.google.common.collect.ImmutableMap;
+import java.util.EnumMap;
 
 public class PlayerProfile {
     private final String playerName;
@@ -28,9 +29,9 @@ public class PlayerProfile {
     private MobHealthbarType mobHealthbarType;
 
     /* Skill Data */
-    private final Map<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>();   // Skill & Level
-    private final Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
-    private final Map<AbilityType, Integer> abilityDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
+    private final Map<SkillType, Integer>   skills     = new EnumMap<SkillType, Integer>(SkillType.class);   // Skill & Level
+    private final Map<SkillType, Float>     skillsXp   = new EnumMap<SkillType, Float>(SkillType.class);     // Skill & XP
+    private final Map<AbilityType, Integer> abilityDATS = new EnumMap<AbilityType, Integer>(AbilityType.class); // Ability & Cooldown
 
     @Deprecated
     public PlayerProfile(String playerName) {
