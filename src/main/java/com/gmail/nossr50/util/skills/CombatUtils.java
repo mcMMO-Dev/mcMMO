@@ -1,7 +1,6 @@
 package com.gmail.nossr50.util.skills;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.Material;
@@ -632,7 +631,7 @@ public final class CombatUtils {
     }
 
     private static Map<DamageModifier, Double> getModifiers(EntityDamageEvent event) {
-        Map<DamageModifier, Double> modifiers = new HashMap<DamageModifier, Double>();
+        Map<DamageModifier, Double> modifiers = new EnumMap<DamageModifier, Double>(DamageModifier.class);
         for (DamageModifier modifier : DamageModifier.values()) {
             modifiers.put(modifier, event.getDamage(modifier));
         }
@@ -641,7 +640,7 @@ public final class CombatUtils {
     }
 
     private static Map<DamageModifier, Double> getScaledModifiers(double damage, Map<DamageModifier, Double> modifiers) {
-        Map<DamageModifier, Double> scaledModifiers = new HashMap<DamageModifier, Double>();
+        Map<DamageModifier, Double> scaledModifiers = new EnumMap<DamageModifier, Double>(DamageModifier.class);
 
         for (DamageModifier modifier : modifiers.keySet()) {
             if (modifier == DamageModifier.BASE) {

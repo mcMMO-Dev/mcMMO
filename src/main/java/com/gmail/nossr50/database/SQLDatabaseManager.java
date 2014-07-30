@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,6 @@ import snaq.db.ConnectionPool;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy";
-    private String connectionString;
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
     private final int POOL_FETCH_TIMEOUT = 0; // How long a method will wait for a connection.  Since none are on main thread, we can safely say wait for as long as you like.
@@ -41,8 +41,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private ConnectionPool connectionPool;
 
     protected SQLDatabaseManager() {
-        connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
-
         try {
             // Force driver to load if not yet loaded
             Class.forName("com.mysql.jdbc.Driver");
@@ -50,12 +48,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connectionProperties.put("user", Config.getInstance().getMySQLUserName());
             connectionProperties.put("password", Config.getInstance().getMySQLUserPassword());
             connectionProperties.put("autoReconnect", "false");
+            connectionProperties.put("cachePrepStmts", "true");
+            connectionProperties.put("prepStmtCacheSize", "64");
+            connectionProperties.put("prepStmtCacheSqlLimit", "2048");
+            connectionProperties.put("useServerPrepStmts", "true");
             connectionPool = new ConnectionPool("mcMMO-Pool",
                     1 /*Minimum of one*/,
                     Config.getInstance().getMySQLMaxPoolSize() /*max pool size */,
                     Config.getInstance().getMySQLMaxConnections() /*max num connections*/,
                     0 /* idle timeout of connections */,
-                    connectionString,
+                    "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName(),
                     connectionProperties);
             connectionPool.init(); // Init first connection
             connectionPool.registerShutdownHook(); // Auto release on jvm exit  just in case
@@ -415,7 +417,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public Map<SkillType, Integer> readRank(String playerName) {
-        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();
+        Map<SkillType, Integer> skills = new EnumMap<SkillType, Integer>(SkillType.class);
 
         ResultSet resultSet = null;
         PreparedStatement statement = null;
@@ -1238,9 +1240,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
-        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); // Skill & Level
-        Map<SkillType, Float> skillsXp = new HashMap<SkillType, Float>(); // Skill & XP
-        Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
+        Map<SkillType, Integer> skills = new EnumMap<SkillType, Integer>(SkillType.class); // Skill & Level
+        Map<SkillType, Float> skillsXp = new EnumMap<SkillType, Float>(SkillType.class); // Skill & XP
+        Map<AbilityType, Integer> skillsDATS = new EnumMap<AbilityType, Integer>(AbilityType.class); // Ability & Cooldown
         MobHealthbarType mobHealthbarType;
         UUID uuid;
 

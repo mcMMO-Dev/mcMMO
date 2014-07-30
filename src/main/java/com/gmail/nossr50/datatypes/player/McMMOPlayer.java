@@ -1,6 +1,6 @@
 package com.gmail.nossr50.datatypes.player;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -62,7 +62,7 @@ public class McMMOPlayer {
     private Player        player;
     private PlayerProfile profile;
 
-    private final Map<SkillType, SkillManager> skillManagers = new HashMap<SkillType, SkillManager>();
+    private final Map<SkillType, SkillManager> skillManagers = new EnumMap<SkillType, SkillManager>(SkillType.class);
 
     private Party   party;
     private Party   invite;
@@ -78,10 +78,10 @@ public class McMMOPlayer {
     private boolean abilityUse = true;
     private boolean godMode;
 
-    private final Map<AbilityType, Boolean> abilityMode     = new HashMap<AbilityType, Boolean>();
-    private final Map<AbilityType, Boolean> abilityInformed = new HashMap<AbilityType, Boolean>();
+    private final Map<AbilityType, Boolean> abilityMode     = new EnumMap<AbilityType, Boolean>(AbilityType.class);
+    private final Map<AbilityType, Boolean> abilityInformed = new EnumMap<AbilityType, Boolean>(AbilityType.class);
 
-    private final Map<ToolType, Boolean> toolMode = new HashMap<ToolType, Boolean>();
+    private final Map<ToolType, Boolean> toolMode = new EnumMap<ToolType, Boolean>(ToolType.class);
 
     private int recentlyHurt;
     private int respawnATS;
