@@ -90,7 +90,7 @@ public class CustomToolConfig extends ConfigLoader {
                 int repairQuantity = SkillUtils.getRepairAndSalvageQuantities(new ItemStack(toolMaterial), repairMaterial, repairData);
 
                 if (repairQuantity == 0) {
-                    repairQuantity = config.getInt(toolType + "." + toolName + ".Repair_Material_Data_Quantity", 2);
+                    repairQuantity = config.getInt(toolType + "." + toolName + ".Repair_Material_Quantity", 2);
                 }
 
                 String repairItemName = config.getString(toolType + "." + toolName + ".Repair_Material_Pretty_Name");

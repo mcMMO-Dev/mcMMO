@@ -35,6 +35,7 @@ Version 1.5.01-dev
  = Fixed bug where party chat was using non thread safe methods
  = Fixed bug where Blast Mining unlock levels could be to high in certain occasions
  = Fixed bug where Blast Minings ability "Demolition Expert" would not work
+ = Fixed bug where Repair_Material_Quantity wasn't read in mod config files
  ! Changed SecondaryAbilityEvent to implement Cancellable and it now gets fired for damage related secondary abilities
  ! Changed the way mcMMO handles bonus damage, updated for the new damage event API
  ! Changed player data saving. Save tasks are now asynchronous
