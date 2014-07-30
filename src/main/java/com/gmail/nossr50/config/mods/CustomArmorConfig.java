@@ -72,7 +72,7 @@ public class CustomArmorConfig extends ConfigLoader {
             boolean repairable = config.getBoolean(armorType + "." + armorName + ".Repairable");
             Material repairMaterial = Material.matchMaterial(config.getString(armorType + "." + armorName + ".Repair_Material", ""));
 
-            if (repairMaterial == null) {
+            if (repairable && (repairMaterial == null)) {
                 plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable. - " + armorName);
                 repairable = false;
             }

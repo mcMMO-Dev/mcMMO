@@ -80,7 +80,7 @@ public class CustomToolConfig extends ConfigLoader {
             boolean repairable = config.getBoolean(toolType + "." + toolName + ".Repairable");
             Material repairMaterial = Material.matchMaterial(config.getString(toolType + "." + toolName + ".Repair_Material", ""));
 
-            if (repairMaterial == null) {
+            if (repairable && (repairMaterial == null)) {
                 plugin.getLogger().warning("Incomplete repair information. This item will be unrepairable. - " + toolName);
                 repairable = false;
             }
