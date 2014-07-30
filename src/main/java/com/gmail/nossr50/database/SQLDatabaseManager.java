@@ -30,7 +30,6 @@ import snaq.db.ConnectionPool;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy";
-    private String connectionString;
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
     private final int POOL_FETCH_TIMEOUT = 0; // How long a method will wait for a connection.  Since none are on main thread, we can safely say wait for as long as you like.
@@ -40,30 +39,31 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     private ConnectionPool connectionPool;
 
-    protected SQLDatabaseManager() {
-        connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
+    protected SQLDatabaseManager() throws ClassNotFoundException {
+        String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
 
         try {
             // Force driver to load if not yet loaded
             Class.forName("com.mysql.jdbc.Driver");
-            Properties connectionProperties = new Properties();
-            connectionProperties.put("user", Config.getInstance().getMySQLUserName());
-            connectionProperties.put("password", Config.getInstance().getMySQLUserPassword());
-            connectionProperties.put("autoReconnect", "false");
-            connectionPool = new ConnectionPool("mcMMO-Pool",
-                    1 /*Minimum of one*/,
-                    Config.getInstance().getMySQLMaxPoolSize() /*max pool size */,
-                    Config.getInstance().getMySQLMaxConnections() /*max num connections*/,
-                    0 /* idle timeout of connections */,
-                    connectionString,
-                    connectionProperties);
-            connectionPool.init(); // Init first connection
-            connectionPool.registerShutdownHook(); // Auto release on jvm exit  just in case
         }
         catch (ClassNotFoundException e) {
-            // TODO tft do something here  everything will blow up
             e.printStackTrace();
+            throw e; // aborts onEnable()
         }
+
+        Properties connectionProperties = new Properties();
+        connectionProperties.put("user", Config.getInstance().getMySQLUserName());
+        connectionProperties.put("password", Config.getInstance().getMySQLUserPassword());
+        connectionProperties.put("autoReconnect", "false");
+        connectionPool = new ConnectionPool("mcMMO-Pool",
+                1 /*Minimum of one*/,
+                Config.getInstance().getMySQLMaxPoolSize() /*max pool size */,
+                Config.getInstance().getMySQLMaxConnections() /*max num connections*/,
+                0 /* idle timeout of connections */,
+                connectionString,
+                connectionProperties);
+        connectionPool.init(); // Init first connection
+        connectionPool.registerShutdownHook(); // Auto release on jvm exit  just in case
 
         checkStructure();
 
