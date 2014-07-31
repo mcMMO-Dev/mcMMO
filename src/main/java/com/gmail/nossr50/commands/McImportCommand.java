@@ -329,7 +329,7 @@ public class McImportCommand implements CommandExecutor {
 
         Material material = Material.matchMaterial(materialName);
         short durability = (material == null) ? (short) 9999 : material.getMaxDurability();
-        skillContents.add("    " + "    " + "Durability: " + durability);
+        skillContents.add("    " + "    " + "Durability: " + ((durability > 0) ? durability : (short) 9999));
     }
 
     private HashMap<String, ArrayList<String>> getConfigSectionsUnknown(String modName, HashMap<String, ArrayList<String>> materialNames) {
