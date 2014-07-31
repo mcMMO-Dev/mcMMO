@@ -168,7 +168,7 @@ public class mcMMO extends JavaPlugin {
             holidayManager = new HolidayManager();
 
             for (Player player : getServer().getOnlinePlayers()) {
-                new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                new PlayerProfileLoadingTask(player).runTaskTimerAsynchronously(mcMMO.p, 1, 20); // 1 Tick delay to ensure the player is marked as online before we begin loading
             }
 
             debug("Version " + getDescription().getVersion() + " is enabled!");

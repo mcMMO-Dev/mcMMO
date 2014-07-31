@@ -387,7 +387,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        new PlayerProfileLoadingTask(player).runTaskLaterAsynchronously(mcMMO.p, 1); // 1 Tick delay to ensure the player is marked as online before we begin loading
+        new PlayerProfileLoadingTask(player).runTaskTimerAsynchronously(mcMMO.p, 1, 20); // 1 Tick delay to ensure the player is marked as online before we begin loading
 
         if (Config.getInstance().getMOTDEnabled() && Permissions.motd(player)) {
             Motd.displayAll(player);
