@@ -2,7 +2,6 @@ package com.gmail.nossr50.database;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -10,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -367,7 +367,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     public Map<SkillType, Integer> readRank(String playerName) {
         updateLeaderboards();
 
-        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();
+        Map<SkillType, Integer> skills = new EnumMap<SkillType, Integer>(SkillType.class);
 
         for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
             skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
@@ -1081,8 +1081,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
     private PlayerProfile loadFromLine(String[] character) {
         Map<SkillType, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
-        Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
-        Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
+        Map<SkillType, Float>     skillsXp   = new EnumMap<SkillType, Float>(SkillType.class);     // Skill & XP
+        Map<AbilityType, Integer> skillsDATS = new EnumMap<AbilityType, Integer>(AbilityType.class); // Ability & Cooldown
         MobHealthbarType mobHealthbarType;
 
         // TODO on updates, put new values in a try{} ?
@@ -1133,7 +1133,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     private Map<SkillType, Integer> getSkillMapFromLine(String[] character) {
-        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();   // Skill & Level
+        Map<SkillType, Integer> skills = new EnumMap<SkillType, Integer>(SkillType.class);   // Skill & Level
 
         skills.put(SkillType.TAMING, Integer.valueOf(character[24]));
         skills.put(SkillType.MINING, Integer.valueOf(character[1]));
