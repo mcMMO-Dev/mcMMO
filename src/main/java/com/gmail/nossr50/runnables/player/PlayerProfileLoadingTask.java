@@ -32,14 +32,16 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
     @Override
     public void run() {
         lock.lock();
+
         if (this.cancelled) {
             return;
         }
+
         // Quit if they logged out
         if (!player.isOnline()) {
             mcMMO.p.getLogger().info("Aborting profile loading recovery for " + player.getName() + " - player logged out");
             this.cancel();
-            cancelled  = true;
+            cancelled = true;
             lock.unlock();
             return;
         }
@@ -63,8 +65,8 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
         // If we've failed five times, give up
         if (attempt >= MAX_TRIES) {
-            mcMMO.p.getLogger().severe("Giving up on attempting to load the PlayerProfile for " + player.getName() );
-            mcMMO.p.getServer().broadcast(LocaleLoader.getString("Profile.Loading.AdminFailureNotice", player.getName() ), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
+            mcMMO.p.getLogger().severe("Giving up on attempting to load the PlayerProfile for " + player.getName());
+            mcMMO.p.getServer().broadcast(LocaleLoader.getString("Profile.Loading.AdminFailureNotice", player.getName()), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
             player.sendMessage(LocaleLoader.getString("Profile.Loading.Failure").split("\n"));
             this.cancel();
             cancelled = true;
@@ -89,11 +91,13 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
                 mcMMO.p.getLogger().info("Aborting profile loading recovery for " + player.getName() + " - player logged out");
                 return;
             }
+
             McMMOPlayer mcMMOPlayer = new McMMOPlayer(player, profile);
             UserManager.track(mcMMOPlayer);
             player.sendMessage(LocaleLoader.getString("Profile.Loading.Success"));
             mcMMOPlayer.actualizeRespawnATS();
             ScoreboardManager.setupPlayer(player);
+
             if (Config.getInstance().getShowStatsAfterLogin()) {
                 ScoreboardManager.enablePlayerStatsScoreboard(player);
                 new McScoreboardKeepTask(player).runTaskLater(mcMMO.p, 1 * Misc.TICK_CONVERSION_FACTOR);
