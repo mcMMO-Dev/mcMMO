@@ -10,6 +10,8 @@
 General:
     Locale: en_US
     MOTD_Enabled: true
+    # Send a message to the player when his profile was successfully loaded
+    Show_Profile_Loaded: false
     # Amount of time (in minutes) to wait between saves of player information
     Save_Interval: 10
     # Allow mcMMO to report on basic anonymous usage

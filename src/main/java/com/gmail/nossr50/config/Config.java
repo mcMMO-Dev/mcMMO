@@ -232,6 +232,7 @@ public class Config extends AutoUpdateConfigLoader {
     /* General Settings */
     public String getLocale() { return config.getString("General.Locale", "en_us"); }
     public boolean getMOTDEnabled() { return config.getBoolean("General.MOTD_Enabled", true); }
+    public boolean getShowProfileLoadedMessage() { return config.getBoolean("General.Show_Profile_Loaded", true); }
     public boolean getDonateMessageEnabled() { return config.getBoolean("Commands.mcmmo.Donate_Message", true); }
     public int getSaveInterval() { return config.getInt("General.Save_Interval", 10); }
     public boolean getStatsTrackingEnabled() { return config.getBoolean("General.Stats_Tracking", true); }
