@@ -1,186 +1,181 @@
-# Config created by Dragyn
-# Created For twilightforest-1.20.3 
-#
-#
-#  Settings for Axes
-###
+# Config wrote by Dragyn, updated by M1cr0man
+# Up to date as of Twilight Forest 1.20.5
 Axes:
     # Ironwood
     X27982:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X27974
+        Repair_Material_Pretty_Name: "Ironwood Ingot"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 512
     # Steeleaf
-    X31989:
-        XP_Modifer: 1.0
+    X28006:
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X27998
+        Repair_Material_Pretty_Name: "Steeleaf"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 131
     # Knightmetal
     X28040:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X28032
+        Repair_Material_Pretty_Name: "Knightmetal Ingot"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 512
     # Minotaur
-    X31984:
-        XP_Modifer: 1.0
+    X28008:
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
-        Repairable: true
-        Repair_Material: X264
-        Repair_Material_Data_Value: 0
-        Repair_Material_Quantity: 2
-        Durability: 500
+        Repairable: false
+        Durability: 1561
 
-
-#
-#  Settings for Hoes
-###
 Hoes:
     # Ironwood
     X27983:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X27974
+        Repair_Material_Pretty_Name: "Ironwood Ingot"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 512
     # Steeleaf
-    X31988:
-        XP_Modifer: 1.0
+    X28007:
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X27998
+        Repair_Material_Pretty_Name: "Steeleaf"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 131
 
-#
-#  Settings for Pickaxes
-###
 Pickaxes:
     # Ironwood
     X27981:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X27974
+        Repair_Material_Pretty_Name: "Ironwood Ingot"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 512
     # Fiery
     X27997:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X27991
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 1024
     # Steeleaf
     X28005:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X27998
+        Repair_Material_Pretty_Name: "Steeleaf"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 131
     # Knightmetal
     X28039:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X28032
+        Repair_Material_Pretty_Name: "Knightmetal Ingot"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
-#
-#  Settings for Shovels
-###
+        Durability: 512
+
 Shovels:
     # Ironwood
     X27980:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X27974
+        Repair_Material_Pretty_Name: "Ironwood Ingot"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 512
     # Steeleaf
     X28004:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X27998
+        Repair_Material_Pretty_Name: "Steeleaf"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
-#
-#  Settings for Swords
-###
+        Durability: 131
+
 Swords:
     # Ironwood
     X27979:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X27974
+        Repair_Material_Pretty_Name: "Ironwood Ingot"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 512
     # Fiery
     X27996:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X27991
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 1024
     # Steeleaf
     X28003:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X27998
+        Repair_Material_Pretty_Name: "Steeleaf"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 131
     # Knightmetal
     X28038:
-        XP_Modifer: 1.0
+        XP_Modifier: 1.0
         Ability_Enabled: true
         Tier: 1
         Repairable: true
         Repair_Material: X28032
+        Repair_Material_Pretty_Name: "Knightmetal Ingot"
         Repair_Material_Data_Value: 0
         Repair_Material_Quantity: 2
-        Durability: 500
+        Durability: 512
