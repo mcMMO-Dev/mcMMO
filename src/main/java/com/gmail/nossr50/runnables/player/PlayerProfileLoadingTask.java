@@ -47,7 +47,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         }
 
         // Send the message that we're doing the recovery
-        if (attempt > 0) {
+        if (attempt == 0) {
             player.sendMessage(LocaleLoader.getString("Profile.Loading.Start"));
         }
 
@@ -94,12 +94,9 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
 
             McMMOPlayer mcMMOPlayer = new McMMOPlayer(player, profile);
             UserManager.track(mcMMOPlayer);
+            player.sendMessage(LocaleLoader.getString("Profile.Loading.Success"));
             mcMMOPlayer.actualizeRespawnATS();
             ScoreboardManager.setupPlayer(player);
-
-            if (attempt > 0) {
-                player.sendMessage(LocaleLoader.getString("Profile.Loading.Success"));
-            }
 
             if (Config.getInstance().getShowStatsAfterLogin()) {
                 ScoreboardManager.enablePlayerStatsScoreboard(player);
