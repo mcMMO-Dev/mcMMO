@@ -51,6 +51,8 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
             player.sendMessage(LocaleLoader.getString("Profile.Loading.Start"));
         }
 
+        // Increment attempt counter and try
+        attempt++;
         PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player.getName(), player.getUniqueId(), true);
         // If successful, schedule the apply
         if (profile.isLoaded()) {
@@ -60,9 +62,6 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
             lock.unlock();
             return;
         }
-
-        // Increment attempt counter and try
-        attempt++;
 
         // If we've failed five times, give up
         if (attempt >= MAX_TRIES) {
