@@ -40,7 +40,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     private ConnectionPool connectionPool;
 
-    protected SQLDatabaseManager() throws ClassNotFoundException {
+    protected SQLDatabaseManager() {
         String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
 
         try {
@@ -49,7 +49,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
         catch (ClassNotFoundException e) {
             e.printStackTrace();
-            throw e; // aborts onEnable()
+            return;
+            //throw e; // aborts onEnable()  Riking if you want to do this, fully implement it.
         }
 
         Properties connectionProperties = new Properties();
