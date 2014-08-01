@@ -737,7 +737,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
                             + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
                             + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
-                            + "WHERE u.UUID = ?");
+                            + "WHERE u.uuid = ?");
             statement.setString(1, uuid);
 
             resultSet = statement.executeQuery();
@@ -752,7 +752,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         statement = connection.prepareStatement(
                                 "UPDATE `" + tablePrefix + "users` "
                                         + "SET user = ? "
-                                        + "WHERE UUID = ?");
+                                        + "WHERE uuid = ?");
                         statement.setString(1, playerName);
                         statement.setString(2, uuid);
                         statement.executeUpdate();
