@@ -9,6 +9,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.database.FormulaConversionTask;
+import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class ConvertExperienceCommand implements CommandExecutor {
@@ -37,7 +38,7 @@ public class ConvertExperienceCommand implements CommandExecutor {
                 new FormulaConversionTask(sender, newType).runTaskLater(mcMMO.p, 1);
 
                 for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-                    UserManager.addUser(player);
+                    new PlayerProfileLoadingTask(player).runTaskTimerAsynchronously(mcMMO.p, 1, 20); // 1 Tick delay to ensure the player is marked as online before we begin loading
                 }
 
                 return true;

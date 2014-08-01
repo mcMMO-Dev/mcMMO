@@ -18,16 +18,12 @@ public final class UserManager {
     private UserManager() {}
 
     /**
-     * Add a new user.
+     * Track a new user.
      *
-     * @param player The player to create a user record for
-     * @return the player's {@link McMMOPlayer} object
+     * @param mcMMOPlayer the player profile to start tracking
      */
-    public static McMMOPlayer addUser(Player player) {
-        McMMOPlayer mcMMOPlayer = new McMMOPlayer(player);
-        player.setMetadata(mcMMO.playerDataKey, new FixedMetadataValue(mcMMO.p, mcMMOPlayer));
-
-        return mcMMOPlayer;
+    public static void track(McMMOPlayer mcMMOPlayer) {
+        mcMMOPlayer.getPlayer().setMetadata(mcMMO.playerDataKey, new FixedMetadataValue(mcMMO.p, mcMMOPlayer));
     }
 
     /**

@@ -232,6 +232,7 @@ public class Config extends AutoUpdateConfigLoader {
     /* General Settings */
     public String getLocale() { return config.getString("General.Locale", "en_us"); }
     public boolean getMOTDEnabled() { return config.getBoolean("General.MOTD_Enabled", true); }
+    public boolean getShowProfileLoadedMessage() { return config.getBoolean("General.Show_Profile_Loaded", true); }
     public boolean getDonateMessageEnabled() { return config.getBoolean("Commands.mcmmo.Donate_Message", true); }
     public int getSaveInterval() { return config.getInt("General.Save_Interval", 10); }
     public boolean getStatsTrackingEnabled() { return config.getBoolean("General.Stats_Tracking", true); }
@@ -313,6 +314,8 @@ public class Config extends AutoUpdateConfigLoader {
     public int getMySQLServerPort() { return config.getInt("MySQL.Server.Port", 3306); }
     public String getMySQLServerName() { return config.getString("MySQL.Server.Address", "localhost"); }
     public String getMySQLUserPassword() { return getStringIncludingInts("MySQL.Database.User_Password"); }
+    public int getMySQLMaxConnections() { return config.getInt("MySQL.Database.MaxConnections"); }
+    public int getMySQLMaxPoolSize() { return config.getInt("MySQL.Database.MaxPoolSize"); }
 
     private String getStringIncludingInts(String key) {
         String str = config.getString(key);

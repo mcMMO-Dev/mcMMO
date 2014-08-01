@@ -10,6 +10,8 @@
 General:
     Locale: en_US
     MOTD_Enabled: true
+    # Send a message to the player when his profile was successfully loaded
+    Show_Profile_Loaded: false
     # Amount of time (in minutes) to wait between saves of player information
     Save_Interval: 10
     # Allow mcMMO to report on basic anonymous usage
@@ -122,6 +124,12 @@ MySQL:
         User_Password: UserPassword
         Name: DataBaseName
         TablePrefix: mcmmo_
+        # This setting is the max simultaneous mysql connections allowed at a time, needs to be
+        # high enough to support multiple player logins in quick succession
+        MaxConnections: 30
+        # This setting is the max size of the pool of cached connections that we hold available
+        # at any given time
+        MaxPoolSize: 20
     Server:
         Port: 3306
         Address: localhost

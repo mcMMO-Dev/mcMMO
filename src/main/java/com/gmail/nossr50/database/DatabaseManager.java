@@ -73,7 +73,7 @@ public interface DatabaseManager {
     /**
      * Load a player from the database.
      *
-     * @deprecated replaced by {@link #loadPlayerProfile(UUID uuid, boolean createNew)}
+     * @deprecated replaced by {@link #loadPlayerProfile(String playerName, UUID uuid, boolean createNew)}
      *
      * @param playerName The name of the player to load from the database
      * @param createNew Whether to create a new record if the player is not
@@ -88,12 +88,9 @@ public interface DatabaseManager {
      * Load a player from the database.
      *
      * @param uuid The uuid of the player to load from the database
-     * @param createNew Whether to create a new record if the player is not
-     *          found
      * @return The player's data, or an unloaded PlayerProfile if not found
-     *          and createNew is false
      */
-    public PlayerProfile loadPlayerProfile(UUID uuid, boolean createNew);
+    public PlayerProfile loadPlayerProfile(UUID uuid);
 
     /**
      * Load a player from the database. Attempt to use uuid, fall back on playername
@@ -132,4 +129,9 @@ public interface DatabaseManager {
      * @return The type of database
      */
     public DatabaseType getDatabaseType();
+
+    /**
+     * Called when the plugin disables
+     */
+    public void onDisable();
 }

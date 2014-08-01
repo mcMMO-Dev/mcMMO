@@ -38,6 +38,7 @@ import com.gmail.nossr50.runnables.UpdaterResultAsyncTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
+import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
@@ -167,8 +168,7 @@ public class mcMMO extends JavaPlugin {
             holidayManager = new HolidayManager();
 
             for (Player player : getServer().getOnlinePlayers()) {
-                UserManager.addUser(player); // In case of reload add all users back into UserManager
-                ScoreboardManager.setupPlayer(player);
+                new PlayerProfileLoadingTask(player).runTaskTimerAsynchronously(mcMMO.p, 1, 20); // 1 Tick delay to ensure the player is marked as online before we begin loading
             }
 
             debug("Version " + getDescription().getVersion() + " is enabled!");
@@ -242,6 +242,7 @@ public class mcMMO extends JavaPlugin {
             }
         }
 
+        databaseManager.onDisable();
         debug("Was disabled."); // How informative!
     }
 

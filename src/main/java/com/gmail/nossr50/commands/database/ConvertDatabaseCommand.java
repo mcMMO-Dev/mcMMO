@@ -12,6 +12,7 @@ import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.database.DatabaseConversionTask;
+import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.util.player.UserManager;
 
 public class ConvertDatabaseCommand implements CommandExecutor {
@@ -55,13 +56,13 @@ public class ConvertDatabaseCommand implements CommandExecutor {
                 UserManager.clearAll();
 
                 for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-                    PlayerProfile profile = oldDatabase.loadPlayerProfile(player.getUniqueId(), false);
+                    PlayerProfile profile = oldDatabase.loadPlayerProfile(player.getUniqueId());
 
                     if (profile.isLoaded()) {
                         mcMMO.getDatabaseManager().saveUser(profile);
                     }
 
-                    UserManager.addUser(player);
+                    new PlayerProfileLoadingTask(player).runTaskTimerAsynchronously(mcMMO.p, 1, 20); // 1 Tick delay to ensure the player is marked as online before we begin loading
                 }
 
                 new DatabaseConversionTask(oldDatabase, sender, previousType.toString(), newType.toString()).runTaskAsynchronously(mcMMO.p);
