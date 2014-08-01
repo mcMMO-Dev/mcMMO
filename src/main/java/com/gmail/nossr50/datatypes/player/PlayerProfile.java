@@ -3,6 +3,7 @@ package com.gmail.nossr50.datatypes.player;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -19,6 +20,7 @@ import com.google.common.collect.ImmutableMap;
 
 public class PlayerProfile {
     private final String playerName;
+    private UUID uuid;
     private boolean loaded;
     private volatile boolean changed;
 
@@ -30,7 +32,13 @@ public class PlayerProfile {
     private final Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
     private final Map<AbilityType, Integer> abilityDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
 
+    @Deprecated
     public PlayerProfile(String playerName) {
+        this(playerName, null);
+    }
+
+    public PlayerProfile(String playerName, UUID uuid) {
+        this.uuid = uuid;
         this.playerName = playerName;
 
         mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
@@ -45,13 +53,20 @@ public class PlayerProfile {
         }
     }
 
+    @Deprecated
     public PlayerProfile(String playerName, boolean isLoaded) {
         this(playerName);
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(String playerName, Map<SkillType, Integer> levelData, Map<SkillType, Float> xpData, Map<AbilityType, Integer> cooldownData, MobHealthbarType mobHealthbarType) {
+    public PlayerProfile(String playerName, UUID uuid, boolean isLoaded) {
+        this(playerName, uuid);
+        this.loaded = isLoaded;
+    }
+
+    public PlayerProfile(String playerName, UUID uuid, Map<SkillType, Integer> levelData, Map<SkillType, Float> xpData, Map<AbilityType, Integer> cooldownData, MobHealthbarType mobHealthbarType) {
         this.playerName = playerName;
+        this.uuid = uuid;
         this.mobHealthbarType = mobHealthbarType;
 
         skills.putAll(levelData);
@@ -71,16 +86,26 @@ public class PlayerProfile {
         }
 
         // TODO should this part be synchronized?
-        PlayerProfile profileCopy = new PlayerProfile(playerName, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType);
+        PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType);
         changed = !mcMMO.getDatabaseManager().saveUser(profileCopy);
 
         if (changed) {
-            mcMMO.p.getLogger().warning("PlayerProfile for " + playerName + " failed to save");
+            mcMMO.p.getLogger().warning("PlayerProfile saving failed for player: " + playerName + " " + uuid);
         }
     }
 
     public String getPlayerName() {
         return playerName;
+    }
+
+    public UUID getUniqueId() {
+        return uuid;
+    }
+
+    public void setUniqueId(UUID uuid) {
+        changed = true;
+
+        this.uuid = uuid;
     }
 
     public boolean isLoaded() {

@@ -12,6 +12,7 @@ public class HiddenConfig {
     private static int conversionRate;
     private static boolean useEnchantmentBuffs;
     private static boolean resendChunksAfterBlockAbility;
+    private static int uuidConvertAmount;
 
     public HiddenConfig(String fileName) {
         HiddenConfig.fileName = fileName;
@@ -33,6 +34,7 @@ public class HiddenConfig {
             conversionRate = config.getInt("Options.ConversionRate", 1);
             useEnchantmentBuffs = config.getBoolean("Options.EnchantmentBuffs", true);
             resendChunksAfterBlockAbility = config.getBoolean("Options.RefreshChunks", false);
+            uuidConvertAmount = config.getInt("Options.UUIDConvertAmount", 5);
         }
     }
 
@@ -50,5 +52,9 @@ public class HiddenConfig {
 
     public boolean resendChunksAfterBlockAbility() {
         return resendChunksAfterBlockAbility;
+    }
+
+    public int getUUIDConvertAmount() {
+        return uuidConvertAmount;
     }
 }

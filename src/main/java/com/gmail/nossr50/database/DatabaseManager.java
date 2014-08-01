@@ -2,6 +2,7 @@ package com.gmail.nossr50.database;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
@@ -67,10 +68,12 @@ public interface DatabaseManager {
      *
      * @param playerName The name of the player to be added to the database
      */
-    public void newUser(String playerName);
+    public void newUser(String playerName, String uuid);
 
     /**
      * Load a player from the database.
+     *
+     * @deprecated replaced by {@link #loadPlayerProfile(UUID uuid, boolean createNew)}
      *
      * @param playerName The name of the player to load from the database
      * @param createNew Whether to create a new record if the player is not
@@ -78,7 +81,31 @@ public interface DatabaseManager {
      * @return The player's data, or an unloaded PlayerProfile if not found
      *          and createNew is false
      */
+    @Deprecated
     public PlayerProfile loadPlayerProfile(String playerName, boolean createNew);
+
+    /**
+     * Load a player from the database.
+     *
+     * @param uuid The uuid of the player to load from the database
+     * @param createNew Whether to create a new record if the player is not
+     *          found
+     * @return The player's data, or an unloaded PlayerProfile if not found
+     *          and createNew is false
+     */
+    public PlayerProfile loadPlayerProfile(UUID uuid, boolean createNew);
+
+    /**
+     * Load a player from the database. Attempt to use uuid, fall back on playername
+     *
+     * @param playerName The name of the player to load from the database
+     * @param uuid The uuid of the player to load from the database
+     * @param createNew Whether to create a new record if the player is not
+     *          found
+     * @return The player's data, or an unloaded PlayerProfile if not found
+     *          and createNew is false
+     */
+    public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean createNew);
 
     /**
      * Get all users currently stored in the database.
@@ -94,6 +121,10 @@ public interface DatabaseManager {
      * @param destination The DatabaseManager to save to
      */
     public void convertUsers(DatabaseManager destination);
+
+    public boolean saveUserUUID(String userName, UUID uuid);
+
+    public boolean saveUserUUIDs(Map<String, UUID> fetchedUUIDs);
 
     /**
      * Retrieve the type of database in use. Custom databases should return CUSTOM.
