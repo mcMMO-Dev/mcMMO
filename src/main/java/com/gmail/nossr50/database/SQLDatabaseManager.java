@@ -1404,7 +1404,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
         }
 
-        new GetUUIDUpdatesRequired().runTaskAsynchronously(mcMMO.p);
+        new GetUUIDUpdatesRequired().runTaskLaterAsynchronously(mcMMO.p, 100); // wait until after first purge
     }
 
     private class GetUUIDUpdatesRequired extends BukkitRunnable {
