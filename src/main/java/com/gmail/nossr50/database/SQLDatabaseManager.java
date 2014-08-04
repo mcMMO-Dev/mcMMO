@@ -421,7 +421,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public Map<SkillType, Integer> readRank(String playerName) {
-        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>(SkillType.class);
+        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();
 
         ResultSet resultSet = null;
         PreparedStatement statement = null;
