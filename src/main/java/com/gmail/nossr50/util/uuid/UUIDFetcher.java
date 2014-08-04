@@ -18,7 +18,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 public class UUIDFetcher implements Callable<Map<String, UUID>> {
-    private static final double PROFILES_PER_REQUEST = 100;
+    private static final int PROFILES_PER_REQUEST = 100;
+    private static final long RATE_LIMIT = 100L;
     private static final String PROFILE_URL = "https://api.mojang.com/profiles/minecraft";
     private final JSONParser jsonParser = new JSONParser();
     private final List<String> names;
@@ -38,7 +39,7 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
         int requests = (int) Math.ceil(names.size() / PROFILES_PER_REQUEST);
         for (int i = 0; i < requests; i++) {
             HttpURLConnection connection = createConnection();
-            String body = JSONArray.toJSONString(names.subList(i * 100, Math.min((i + 1) * 100, names.size())));
+            String body = JSONArray.toJSONString(names.subList(i * PROFILES_PER_REQUEST, Math.min((i + 1) * PROFILES_PER_REQUEST, names.size())));
             writeBody(connection, body);
             JSONArray array = (JSONArray) jsonParser.parse(new InputStreamReader(connection.getInputStream()));
             for (Object profile : array) {
@@ -49,7 +50,7 @@ public class UUIDFetcher implements Callable<Map<String, UUID>> {
                 uuidMap.put(name, uuid);
             }
             if (rateLimiting && i != requests - 1) {
-                Thread.sleep(100L);
+                Thread.sleep(RATE_LIMIT);
             }
         }
         return uuidMap;
