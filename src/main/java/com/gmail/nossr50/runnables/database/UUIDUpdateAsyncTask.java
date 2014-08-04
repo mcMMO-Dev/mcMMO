@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -54,7 +55,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
                 fetchedUUIDs.putAll(new UUIDFetcher(userNamesSection).call());
             }
             catch (Exception e) {
-                plugin.getLogger().severe("Unable to fetch UUIDs!");
+                plugin.getLogger().log(Level.SEVERE, "Unable to fetch UUIDs!", e);
                 return;
             }
 
