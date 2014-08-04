@@ -7,7 +7,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +30,7 @@ import snaq.db.ConnectionPool;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy";
+    private static final String S_ALL_QUERY_STRING = "s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing+s.alchemy";
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
     private final int POOL_FETCH_TIMEOUT = 0; // How long a method will wait for a connection.  Since none are on main thread, we can safely say wait for as long as you like.
@@ -80,39 +80,23 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         Connection connection = null;
         Statement statement = null;
-        ResultSet resultSet = null;
         List<String> usernames = new ArrayList<String>();
 
         try {
             connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT u.user FROM " + tablePrefix + "skills AS s, " + tablePrefix + "users AS u WHERE s.user_id = u.id AND (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
-
-            while (resultSet.next()) {
-                usernames.add(resultSet.getString("user"));
-            }
-
-            resultSet.close();
 
             statement.executeUpdate("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
                     "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
                     "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
                     "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
                     "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
-                    "WHERE (s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing) = 0");
+                    "WHERE (" + S_ALL_QUERY_STRING + ") = 0");
         }
         catch (SQLException ex) {
             printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
             if (statement != null) {
                 try {
                     statement.close();
@@ -131,10 +115,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
         }
 
-        if (!usernames.isEmpty()) {
-            processPurge(usernames);
-        }
-
         mcMMO.p.getLogger().info("Purged " + usernames.size() + " users from the database.");
     }
 
@@ -143,19 +123,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         Connection connection = null;
         Statement statement = null;
-        ResultSet resultSet = null;
         List<String> usernames = new ArrayList<String>();
 
         try {
             connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.createStatement();
-            resultSet = statement.executeQuery("SELECT user FROM " + tablePrefix + "users WHERE ((NOW() - lastlogin * " + Misc.TIME_CONVERSION_FACTOR + ") > " + PURGE_TIME + ")");
-
-            while (resultSet.next()) {
-                usernames.add(resultSet.getString("user"));
-            }
-
-            resultSet.close();
 
             statement.executeUpdate("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
                     "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
@@ -168,14 +140,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
             if (statement != null) {
                 try {
                     statement.close();
@@ -192,10 +156,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     // Ignore
                 }
             }
-        }
-
-        if (!usernames.isEmpty()) {
-            processPurge(usernames);
         }
 
         mcMMO.p.getLogger().info("Purged " + usernames.size() + " users from the database.");
@@ -1234,12 +1194,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     // Ignore
                 }
             }
-        }
-    }
-
-    private void processPurge(Collection<String> usernames) {
-        for (String user : usernames) {
-            Misc.profileCleanup(user);
         }
     }
 

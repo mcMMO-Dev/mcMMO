@@ -469,10 +469,10 @@ public class mcMMO extends JavaPlugin {
         long purgeIntervalTicks = Config.getInstance().getPurgeInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
         if (purgeIntervalTicks == 0) {
-            new UserPurgeTask().runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
+            new UserPurgeTask().runTaskLaterAsynchronously(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
         }
         else if (purgeIntervalTicks > 0) {
-            new UserPurgeTask().runTaskTimer(this, purgeIntervalTicks, purgeIntervalTicks);
+            new UserPurgeTask().runTaskTimerAsynchronously(this, purgeIntervalTicks, purgeIntervalTicks);
         }
 
         // Automatically remove old members from parties
