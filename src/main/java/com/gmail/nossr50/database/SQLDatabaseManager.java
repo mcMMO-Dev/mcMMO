@@ -13,6 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
+import java.util.concurrent.locks.ReentrantLock;
+
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -39,6 +42,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private final Map<String, Integer> cachedUserIDsByName = new HashMap<String, Integer>();
 
     private ConnectionPool connectionPool;
+
+    private ReentrantLock massUpdateLock = new ReentrantLock();
 
     protected SQLDatabaseManager() {
         String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
@@ -76,6 +81,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     public void purgePowerlessUsers() {
+        massUpdateLock.lock();
         mcMMO.p.getLogger().info("Purging powerless users...");
 
         Connection connection = null;
@@ -113,12 +119,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     // Ignore
                 }
             }
+            massUpdateLock.unlock();
         }
 
         mcMMO.p.getLogger().info("Purged " + purged + " users from the database.");
     }
 
     public void purgeOldUsers() {
+        massUpdateLock.lock();
         mcMMO.p.getLogger().info("Purging old users...");
 
         Connection connection = null;
@@ -156,6 +164,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     // Ignore
                 }
             }
+            massUpdateLock.unlock();
         }
 
         mcMMO.p.getLogger().info("Purged " + purged + " users from the database.");
@@ -1360,7 +1369,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private void checkUpgradeAddUUIDs(final Statement statement) {
-        List<String> names = new ArrayList<String>();
         ResultSet resultSet = null;
 
         try {
@@ -1396,29 +1404,57 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
         }
 
-        try {
-            resultSet = statement.executeQuery("SELECT `user` FROM `" + tablePrefix + "users` WHERE `uuid` IS NULL");
+        new GetUUIDUpdatesRequired().runTaskAsynchronously(mcMMO.p);
+    }
 
-            while (resultSet.next()) {
-                names.add(resultSet.getString("user"));
-            }
-        }
-        catch (SQLException ex) {
-            printErrors(ex);
-        }
-        finally {
-            if (resultSet != null) {
+    private class GetUUIDUpdatesRequired extends BukkitRunnable {
+        public void run() {
+            massUpdateLock.lock();
+            List<String> names = new ArrayList<String>();
+            Connection connection = null;
+            Statement statement = null;
+            ResultSet resultSet = null;
+            try {
                 try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-        }
+                    connection = connectionPool.getConnection();
+                    statement = connection.createStatement();
+                    resultSet = statement.executeQuery("SELECT `user` FROM `" + tablePrefix + "users` WHERE `uuid` IS NULL");
 
-        if (!names.isEmpty()) {
-            new UUIDUpdateAsyncTask(mcMMO.p, names).runTaskAsynchronously(mcMMO.p);
+                    while (resultSet.next()) {
+                        names.add(resultSet.getString("user"));
+                    }
+                } catch (SQLException ex) {
+                    printErrors(ex);
+                } finally {
+                    if (resultSet != null) {
+                        try {
+                            resultSet.close();
+                        } catch (SQLException e) {
+                            // Ignore
+                        }
+                    }
+                    if (statement != null) {
+                        try {
+                            statement.close();
+                        } catch (SQLException e) {
+                            // Ignore
+                        }
+                    }
+                    if (connection != null) {
+                        try {
+                            connection.close();
+                        } catch (SQLException e) {
+                            // Ignore
+                        }
+                    }
+                }
+
+                if (!names.isEmpty()) {
+                    new UUIDUpdateAsyncTask(mcMMO.p, names).run();;
+                }
+            } finally {
+                massUpdateLock.unlock();
+            }
         }
     }
 
