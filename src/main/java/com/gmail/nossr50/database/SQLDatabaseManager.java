@@ -80,13 +80,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         Connection connection = null;
         Statement statement = null;
-        List<String> usernames = new ArrayList<String>();
+        int purged = 0;
 
         try {
             connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.createStatement();
 
-            statement.executeUpdate("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
+            purged = statement.executeUpdate("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
                     "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
                     "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
                     "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
@@ -115,7 +115,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
         }
 
-        mcMMO.p.getLogger().info("Purged " + usernames.size() + " users from the database.");
+        mcMMO.p.getLogger().info("Purged " + purged + " users from the database.");
     }
 
     public void purgeOldUsers() {
@@ -123,13 +123,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         Connection connection = null;
         Statement statement = null;
-        List<String> usernames = new ArrayList<String>();
+        int purged = 0;
 
         try {
             connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
             statement = connection.createStatement();
 
-            statement.executeUpdate("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
+            purged = statement.executeUpdate("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
                     "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
                     "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
                     "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
@@ -158,7 +158,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
         }
 
-        mcMMO.p.getLogger().info("Purged " + usernames.size() + " users from the database.");
+        mcMMO.p.getLogger().info("Purged " + purged + " users from the database.");
     }
 
     public boolean removeUser(String playerName) {
