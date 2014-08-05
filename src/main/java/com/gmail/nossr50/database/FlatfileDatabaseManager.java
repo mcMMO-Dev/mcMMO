@@ -367,7 +367,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     public Map<SkillType, Integer> readRank(String playerName) {
         updateLeaderboards();
 
-        Map<SkillType, Integer> skills = new EnumMap<SkillType, Integer>(SkillType.class);
+        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();
 
         for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
             skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
