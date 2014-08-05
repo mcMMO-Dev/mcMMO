@@ -113,7 +113,7 @@ public final class Misc {
 
         if (player != null) {
             UserManager.remove(player);
-            new PlayerProfileLoadingTask(player).runTaskTimerAsynchronously(mcMMO.p, 1, 20); // 1 Tick delay to ensure the player is marked as online before we begin loading
+            new PlayerProfileLoadingTask(player).runTaskTimerAsynchronously(mcMMO.p, 1, 100); // 1 Tick delay to ensure the player is marked as online before we begin loading
         }
     }
 

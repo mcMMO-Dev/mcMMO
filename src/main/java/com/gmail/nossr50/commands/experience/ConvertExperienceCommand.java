@@ -38,7 +38,7 @@ public class ConvertExperienceCommand implements CommandExecutor {
                 new FormulaConversionTask(sender, newType).runTaskLater(mcMMO.p, 1);
 
                 for (Player player : mcMMO.p.getServer().getOnlinePlayers()) {
-                    new PlayerProfileLoadingTask(player).runTaskTimerAsynchronously(mcMMO.p, 1, 20); // 1 Tick delay to ensure the player is marked as online before we begin loading
+                    new PlayerProfileLoadingTask(player).runTaskTimerAsynchronously(mcMMO.p, 1, 100); // 1 Tick delay to ensure the player is marked as online before we begin loading
                 }
 
                 return true;
