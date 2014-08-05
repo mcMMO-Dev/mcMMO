@@ -33,43 +33,43 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
     public void run() {
         lock.lock();
 
-        if (this.cancelled) {
-            return;
-        }
+        try {
+            if (this.cancelled) {
+                return;
+            }
 
-        // Quit if they logged out
-        if (!player.isOnline()) {
-            mcMMO.p.getLogger().info("Aborting profile loading recovery for " + player.getName() + " - player logged out");
-            this.cancel();
-            cancelled = true;
+            // Quit if they logged out
+            if (!player.isOnline()) {
+                mcMMO.p.getLogger().info("Aborting profile loading recovery for " + player.getName() + " - player logged out");
+                this.cancel();
+                cancelled = true;
+                return;
+            }
+
+            // Increment attempt counter and try
+            attempt++;
+
+            PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player.getName(), player.getUniqueId(), true);
+            // If successful, schedule the apply
+            if (profile.isLoaded()) {
+                new ApplySuccessfulProfile(profile).runTask(mcMMO.p);
+                this.cancel();
+                cancelled = true;
+                return;
+            }
+
+            // If we've failed five times, give up
+            if (attempt >= MAX_TRIES) {
+                mcMMO.p.getLogger().severe("Giving up on attempting to load the PlayerProfile for " + player.getName());
+                mcMMO.p.getServer().broadcast(LocaleLoader.getString("Profile.Loading.AdminFailureNotice", player.getName()), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
+                player.sendMessage(LocaleLoader.getString("Profile.Loading.Failure").split("\n"));
+                this.cancel();
+                cancelled = true;
+                return;
+            }
+        } finally {
             lock.unlock();
-            return;
         }
-
-        // Increment attempt counter and try
-        attempt++;
-
-        PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player.getName(), player.getUniqueId(), true);
-        // If successful, schedule the apply
-        if (profile.isLoaded()) {
-            new ApplySuccessfulProfile(profile).runTask(mcMMO.p);
-            this.cancel();
-            cancelled = true;
-            lock.unlock();
-            return;
-        }
-
-        // If we've failed five times, give up
-        if (attempt >= MAX_TRIES) {
-            mcMMO.p.getLogger().severe("Giving up on attempting to load the PlayerProfile for " + player.getName());
-            mcMMO.p.getServer().broadcast(LocaleLoader.getString("Profile.Loading.AdminFailureNotice", player.getName()), Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
-            player.sendMessage(LocaleLoader.getString("Profile.Loading.Failure").split("\n"));
-            this.cancel();
-            cancelled = true;
-            lock.unlock();
-            return;
-        }
-        lock.unlock();
     }
 
     private class ApplySuccessfulProfile extends BukkitRunnable {
@@ -104,5 +104,3 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         }
     }
 }
-
-
