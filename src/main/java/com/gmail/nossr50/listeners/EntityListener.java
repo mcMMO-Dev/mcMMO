@@ -615,7 +615,7 @@ public class EntityListener implements Listener {
         Player player = (Player) target;
         Tameable tameable = (Tameable) entity;
 
-        if (!CombatUtils.isFriendlyPet(player, tameable)) {
+        if (!UserManager.hasPlayerDataKey(player) || !CombatUtils.isFriendlyPet(player, tameable)) {
             return;
         }
 
