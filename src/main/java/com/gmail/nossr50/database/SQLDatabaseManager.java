@@ -127,7 +127,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     public void purgeOldUsers() {
         massUpdateLock.lock();
-        mcMMO.p.getLogger().info("Purging old users...");
+        mcMMO.p.getLogger().info("Purging inactive users older than " + (PURGE_TIME / 2630000000L) + " months...");
 
         Connection connection = null;
         Statement statement = null;
