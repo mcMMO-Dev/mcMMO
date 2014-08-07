@@ -127,7 +127,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     public void purgeOldUsers() {
         massUpdateLock.lock();
-        mcMMO.p.getLogger().info("Purging inactive users older than " + (PURGE_TIME / 2630000000L) + " months...");
+        mcMMO.p.getLogger().info("Purging inactive users older than " + (PURGE_TIME / 2630000L) + " months...");
 
         Connection connection = null;
         Statement statement = null;
@@ -142,7 +142,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
                     "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
                     "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
-                    "WHERE ((NOW() - lastlogin * " + Misc.TIME_CONVERSION_FACTOR + ") > " + PURGE_TIME + ")");
+                    "WHERE ((UNIX_TIMESTAMP() - lastlogin) > " + PURGE_TIME + ")");
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -229,7 +229,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             int id = getUserID(connection, profile.getUniqueId());
 
             if (id == -1) {
-                newUser(profile.getPlayerName(), profile.getUniqueId().toString());
+                newUser(profile.getPlayerName(), profile.getUniqueId());
                 id = getUserID(connection, profile.getUniqueId());
                 if (id == -1) {
                     return false;
@@ -504,7 +504,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return skills;
     }
 
-    public void newUser(String playerName, String uuid) {
+    public void newUser(String playerName, UUID uuid) {
         Connection connection = null;
 
         try {
@@ -526,14 +526,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void newUser(Connection connection, String playerName, String uuid) {
+    private void newUser(Connection connection, String playerName, UUID uuid) {
         ResultSet resultSet = null;
         PreparedStatement statement = null;
 
         try {
             statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, uuid, lastlogin) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, playerName);
-            statement.setString(2, uuid);
+            statement.setString(2, uuid.toString());
             statement.setLong(3, System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
             statement.executeUpdate();
 
@@ -572,7 +572,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
      * This is a fallback method to provide the old way of getting a
      * PlayerProfile in case there is no UUID match found
      */
-    private PlayerProfile loadPlayerNameProfile(String playerName, String uuid, boolean create, boolean retry) {
+    private PlayerProfile loadPlayerNameProfile(String playerName, UUID uuid, boolean create, boolean retry) {
         PreparedStatement statement = null;
         Connection connection = null;
         ResultSet resultSet = null;
@@ -605,7 +605,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
                             + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
                             + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
-                            + "WHERE u.user = ?");
+                            + "WHERE u.user = ? AND u.uuid = NULL");
             statement.setString(1, playerName);
 
             resultSet = statement.executeQuery();
@@ -613,6 +613,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if (resultSet.next()) {
                 try {
                     PlayerProfile ret = loadFromResult(playerName, resultSet);
+                    resultSet.close();
+                    statement.close();
+                    statement = connection.prepareStatement(
+                            "UPDATE `" + tablePrefix + "users` "
+                                    + "SET uuid = ? "
+                                    + "WHERE user = ?");
+                    statement.setString(1, uuid.toString());
+                    statement.setString(2, playerName);
+                    statement.executeUpdate();
+                    statement.close();
                     return ret;
                 }
                 catch (SQLException e) {
@@ -662,30 +672,29 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     @Deprecated
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
-        return loadPlayerProfile(playerName, "", false, true);
+        return loadPlayerProfile(playerName, null, false, true);
     }
 
     public PlayerProfile loadPlayerProfile(UUID uuid) {
-        return loadPlayerProfile("", uuid.toString(), false, true);
+        return loadPlayerProfile("", uuid, false, true);
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create) {
-        return loadPlayerProfile(playerName, uuid.toString(), create, true);
+        return loadPlayerProfile(playerName, uuid, create, true);
     }
 
-    private PlayerProfile loadPlayerProfile(String playerName, String uuid, boolean create, boolean retry) {
+    private PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create, boolean retry) {
         PreparedStatement statement = null;
         Connection connection = null;
         ResultSet resultSet = null;
 
         try {
             connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
-            int id = getUserID(connection, playerName);
+            int id = getUserID(connection, uuid);
 
             if (id == -1) {
                 // There is no such user
                 if (create) {
-                    newUser(playerName, uuid);
                     return loadPlayerNameProfile(playerName, uuid, false, false);
                 }
 
@@ -707,7 +716,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
                             + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
                             + "WHERE u.uuid = ?");
-            statement.setString(1, uuid);
+            statement.setString(1, uuid.toString());
 
             resultSet = statement.executeQuery();
 
@@ -723,7 +732,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                                         + "SET user = ? "
                                         + "WHERE uuid = ?");
                         statement.setString(1, playerName);
-                        statement.setString(2, uuid);
+                        statement.setString(2, uuid.toString());
                         statement.executeUpdate();
                         statement.close();
                     }
@@ -1278,7 +1287,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private void printErrors(SQLException ex) {
-        StackTraceElement element = ex.getStackTrace()[0];
+        StackTraceElement element = ex.getStackTrace()[ex.getStackTrace().length];
         mcMMO.p.getLogger().severe("Location: " + element.getMethodName() + " " + element.getLineNumber());
         mcMMO.p.getLogger().severe("SQLException: " + ex.getMessage());
         mcMMO.p.getLogger().severe("SQLState: " + ex.getSQLState());

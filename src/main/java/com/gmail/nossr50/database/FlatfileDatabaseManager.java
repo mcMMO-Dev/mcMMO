@@ -378,7 +378,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return skills;
     }
 
-    public void newUser(String playerName, String uuid) {
+    public void newUser(String playerName, UUID uuid) {
         BufferedWriter out = null;
         synchronized (fileWritingLock) {
             try {
@@ -427,7 +427,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":"); // Mob Healthbar HUD
                 out.append("0:"); // Alchemy
                 out.append("0:"); // AlchemyXp
-                out.append(uuid).append(":"); // UUID
+                out.append(uuid != null ? uuid.toString() : "").append(":"); // UUID
 
                 // Add more in the same format as the line above
 
@@ -451,18 +451,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
     @Deprecated
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
-        return loadPlayerProfile(playerName, "", false);
+        return loadPlayerProfile(playerName, null, false);
     }
 
     public PlayerProfile loadPlayerProfile(UUID uuid) {
-        return loadPlayerProfile("", uuid.toString(), false);
+        return loadPlayerProfile("", uuid, false);
     }
 
     public PlayerProfile loadPlayerProfile(String playerName, UUID uuid, boolean create) {
-        return loadPlayerProfile(playerName, uuid.toString(), create);
-    }
-
-    private PlayerProfile loadPlayerProfile(String playerName, String uuid, boolean create) {
         BufferedReader in = null;
         String usersFilePath = mcMMO.getUsersFilePath();
 
@@ -476,7 +472,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     // Find if the line contains the player we want.
                     String[] character = line.split(":");
 
-                    if (!character[41].equalsIgnoreCase(uuid) && !character[0].equalsIgnoreCase(playerName)) {
+                    if ((uuid == null || !character[41].equalsIgnoreCase(uuid.toString())) && !character[0].equalsIgnoreCase(playerName)) {
                         continue;
                     }
 
@@ -491,13 +487,13 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 // Didn't find the player, create a new one
                 if (create) {
-                    if (uuid.isEmpty()) {
+                    if (uuid == null) {
                         newUser(playerName, uuid);
                         return new PlayerProfile(playerName, true);
                     }
 
                     newUser(playerName, uuid);
-                    return new PlayerProfile(playerName, UUID.fromString(uuid), true);
+                    return new PlayerProfile(playerName, uuid, true);
                 }
             }
             catch (Exception e) {
@@ -518,11 +514,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
 
         // Return unloaded profile
-        if (uuid.isEmpty()) {
+        if (uuid == null) {
             return new PlayerProfile(playerName);
         }
 
-        return new PlayerProfile(playerName, UUID.fromString(uuid));
+        return new PlayerProfile(playerName, uuid);
     }
 
     public void convertUsers(DatabaseManager destination) {
