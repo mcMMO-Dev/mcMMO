@@ -39,7 +39,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private final int POOL_FETCH_TIMEOUT = 0; // How long a method will wait for a connection.  Since none are on main thread, we can safely say wait for as long as you like.
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<UUID, Integer>();
-    private final Map<String, Integer> cachedUserIDsByName = new HashMap<String, Integer>();
 
     private ConnectionPool connectionPool;
 
@@ -226,18 +225,18 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try {
             connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
 
-            int id = getUserID(connection, profile.getUniqueId());
+            int id = getUserID(connection, profile.getPlayerName(), profile.getUniqueId());
 
             if (id == -1) {
                 newUser(profile.getPlayerName(), profile.getUniqueId());
-                id = getUserID(connection, profile.getUniqueId());
+                id = getUserID(connection, profile.getPlayerName(), profile.getUniqueId());
                 if (id == -1) {
                     return false;
                 }
             }
 
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET lastlogin = UNIX_TIMESTAMP() WHERE uuid = ?");
-            statement.setString(1, profile.getUniqueId().toString());
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET lastlogin = UNIX_TIMESTAMP() WHERE id = ?");
+            statement.setInt(1, id);
             success &= (statement.executeUpdate() != 0);
             statement.close();
 
@@ -568,108 +567,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    /**
-     * This is a fallback method to provide the old way of getting a
-     * PlayerProfile in case there is no UUID match found
-     */
-    private PlayerProfile loadPlayerNameProfile(String playerName, UUID uuid, boolean create, boolean retry) {
-        PreparedStatement statement = null;
-        Connection connection = null;
-        ResultSet resultSet = null;
-
-        try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
-            int id = getUserID(connection, playerName);
-
-            if (id == -1) {
-                // There is no such user
-                if (create) {
-                    newUser(playerName, uuid);
-                    return loadPlayerNameProfile(playerName, uuid, false, false);
-                }
-
-                // Return unloaded profile if can't create
-                return new PlayerProfile(playerName, false);
-            }
-            // There is such a user
-            writeMissingRows(connection, id);
-
-            statement = connection.prepareStatement(
-                    "SELECT "
-                            + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
-                            + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
-                            + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
-                            + "h.mobhealthbar, u.uuid "
-                            + "FROM " + tablePrefix + "users u "
-                            + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
-                            + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
-                            + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
-                            + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
-                            + "WHERE u.user = ? AND u.uuid = NULL");
-            statement.setString(1, playerName);
-
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                try {
-                    PlayerProfile ret = loadFromResult(playerName, resultSet);
-                    resultSet.close();
-                    statement.close();
-                    statement = connection.prepareStatement(
-                            "UPDATE `" + tablePrefix + "users` "
-                                    + "SET uuid = ? "
-                                    + "WHERE user = ?");
-                    statement.setString(1, uuid.toString());
-                    statement.setString(2, playerName);
-                    statement.executeUpdate();
-                    statement.close();
-                    return ret;
-                }
-                catch (SQLException e) {
-                }
-            }
-        }
-        catch (SQLException ex) {
-            printErrors(ex);
-        }
-        finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-        }
-
-        // Problem, nothing was returned
-
-        // Quit if this is second time around
-        if (!retry) {
-            return new PlayerProfile(playerName, false);
-        }
-
-        // Retry, and abort on re-failure
-        return loadPlayerNameProfile(playerName, uuid, create, false);
-    }
-
     @Deprecated
     public PlayerProfile loadPlayerProfile(String playerName, boolean create) {
         return loadPlayerProfile(playerName, null, false, true);
@@ -690,12 +587,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
-            int id = getUserID(connection, uuid);
+            int id = getUserID(connection, playerName, uuid);
 
             if (id == -1) {
                 // There is no such user
                 if (create) {
-                    return loadPlayerNameProfile(playerName, uuid, false, false);
+                    newUser(connection, playerName, uuid);
+                    return loadPlayerProfile(playerName, uuid, false, false);
                 }
 
                 // Return unloaded profile if can't create
@@ -715,8 +613,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
                             + "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) "
                             + "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) "
-                            + "WHERE u.uuid = ?");
-            statement.setString(1, uuid.toString());
+                            + "WHERE u.id = ?");
+            statement.setInt(1, id);
 
             resultSet = statement.executeQuery();
 
@@ -729,10 +627,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     if (!playerName.isEmpty() && !profile.getPlayerName().isEmpty()) {
                         statement = connection.prepareStatement(
                                 "UPDATE `" + tablePrefix + "users` "
-                                        + "SET user = ? "
-                                        + "WHERE uuid = ?");
+                                        + "SET user = ?, uuid = ? "
+                                        + "WHERE id = ?");
                         statement.setString(1, playerName);
                         statement.setString(2, uuid.toString());
+                        statement.setInt(3, id);
                         statement.executeUpdate();
                         statement.close();
                     }
@@ -776,9 +675,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         // Problem, nothing was returned
 
-        // Retry the old fashioned way if this is second time around
+        // return unloaded profile
         if (!retry) {
-            return loadPlayerNameProfile(playerName, uuid, create, true);
+            return new PlayerProfile(playerName, false);
         }
 
         // Retry, and abort on re-failure
@@ -1539,61 +1438,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private int getUserID(final Connection connection, final String playerName) {
-        Integer id = cachedUserIDsByName.get(playerName.toLowerCase());
-        if (id != null) {
-            return id;
-        }
-
-        ResultSet resultSet = null;
-        PreparedStatement statement = null;
-
-        try {
-            statement = connection.prepareStatement("SELECT id, uuid FROM " + tablePrefix + "users WHERE user = ?");
-            statement.setString(1, playerName);
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                id = resultSet.getInt("id");
-
-                cachedUserIDsByName.put(playerName.toLowerCase(), id);
-
-                try {
-                    cachedUserIDs.put(UUID.fromString(resultSet.getString("uuid")), id);
-                }
-                catch (Exception e) {
-
-                }
-
-                return id;
-            }
-        }
-        catch (SQLException ex) {
-            printErrors(ex);
-        }
-        finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-        }
-
-        return -1;
-    }
-
-    private int getUserID(final Connection connection, final UUID uuid) {
+    private int getUserID(final Connection connection, final String playerName, final UUID uuid) {
         if (cachedUserIDs.containsKey(uuid)) {
             return cachedUserIDs.get(uuid);
         }
@@ -1602,15 +1447,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("SELECT id, user FROM " + tablePrefix + "users WHERE uuid = ?");
+            statement = connection.prepareStatement("SELECT id, user FROM " + tablePrefix + "users WHERE uuid = ? OR (uuid = null AND user = ?)");
             statement.setString(1, uuid.toString());
+            statement.setString(2, playerName);
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 int id = resultSet.getInt("id");
 
                 cachedUserIDs.put(uuid, id);
-                cachedUserIDsByName.put(resultSet.getString("user").toLowerCase(), id);
 
                 return id;
             }
