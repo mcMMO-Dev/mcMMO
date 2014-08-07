@@ -719,6 +719,10 @@ public final class CombatUtils {
             return;
         }
 
+        if (!player.hasMetadata(mcMMO.playerDataKey)) {
+            return;
+        }
+
         MobHealthbarUtils.handleMobHealthbars(player, target, damage);
     }
 }
