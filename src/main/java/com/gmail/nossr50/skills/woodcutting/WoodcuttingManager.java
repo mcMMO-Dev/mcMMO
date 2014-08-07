@@ -10,6 +10,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
+import org.bukkit.metadata.MetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
@@ -51,8 +52,11 @@ public class WoodcuttingManager extends SkillManager {
      * @param blockState Block being broken
      */
     public void woodcuttingBlockCheck(BlockState blockState) {
-    	if (blockState.getMetadata("unnatural").size() != 0)
-    		return;
+    	for (MetadataValue value : blockState.getMetadata("unnatural"))
+    	{
+    		if (value.getOwningPlugin().equals(mcMMO.p) && value.asBoolean()==true)
+	    		return;
+    	}
     	
         int xp = Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.DEFAULT);
 

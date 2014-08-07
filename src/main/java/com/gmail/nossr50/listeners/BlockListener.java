@@ -127,7 +127,7 @@ public class BlockListener implements Listener {
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockUtils.shouldBeWatched(blockState)) {
             mcMMO.getPlaceStore().setTrue(blockState);
-        	blockState.setMetadata("unnatural", new FixedMetadataValue(plugin, true));
+            blockState.setMetadata("mmo_bin", new FixedMetadataValue(plugin, true));
         }
         
 

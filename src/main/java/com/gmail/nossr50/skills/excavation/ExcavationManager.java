@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
+import org.bukkit.metadata.MetadataValue;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
@@ -27,8 +29,11 @@ public class ExcavationManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public void excavationBlockCheck(BlockState blockState) {
-    	if (blockState.getMetadata("unnatural").size() != 0)
-    		return;
+    	for (MetadataValue value : blockState.getMetadata("unnatural"))
+    	{
+    		if (value.getOwningPlugin().equals(mcMMO.p) && value.asBoolean()==true)
+	    		return;
+    	}
     	
         int xp = Excavation.getBlockXP(blockState);
 
