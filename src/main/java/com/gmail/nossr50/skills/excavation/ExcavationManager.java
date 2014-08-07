@@ -27,6 +27,9 @@ public class ExcavationManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public void excavationBlockCheck(BlockState blockState) {
+    	if (blockState.getMetadata("unnatural").size() != 0)
+    		return;
+    	
         int xp = Excavation.getBlockXP(blockState);
 
         if (Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.EXCAVATION_TREASURE_HUNTER)) {

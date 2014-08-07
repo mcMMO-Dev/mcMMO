@@ -56,6 +56,9 @@ public class MiningManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public void miningBlockCheck(BlockState blockState) {
+    	if (blockState.getMetadata("unnatural").size() != 0)
+    		return;
+    	
         Player player = getPlayer();
 
         applyXpGain(Mining.getBlockXp(blockState), XPGainReason.PVE);

@@ -21,6 +21,7 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -126,7 +127,9 @@ public class BlockListener implements Listener {
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockUtils.shouldBeWatched(blockState)) {
             mcMMO.getPlaceStore().setTrue(blockState);
+        	blockState.setMetadata("unnatural", new FixedMetadataValue(plugin, true));
         }
+        
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
