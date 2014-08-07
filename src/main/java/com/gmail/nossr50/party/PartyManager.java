@@ -254,6 +254,10 @@ public final class PartyManager {
 
         members.remove(playerName);
 
+        if (player.isOnline()) {
+            party.getOnlineMembers().remove(player.getPlayer());
+        }
+
         if (members.isEmpty()) {
             parties.remove(party);
         }
@@ -441,6 +445,7 @@ public final class PartyManager {
         informPartyMembersJoin(party, playerName);
         mcMMOPlayer.setParty(party);
         party.getMembers().put(player.getName(), player.getUniqueId());
+        party.getOnlineMembers().add(player);
     }
 
     /**

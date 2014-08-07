@@ -101,6 +101,10 @@ public class McMMOPlayer {
         party = PartyManager.getPlayerParty(playerName, uuid);
         ptpRecord = new PartyTeleportRecord();
 
+        if (inParty()) {
+            loginParty();
+        }
+
         if (profile.getUniqueId() == null) {
             profile.setUniqueId(uuid);
         }
@@ -575,6 +579,14 @@ public class McMMOPlayer {
 
     public void removePartyAllianceInvite() {
         allianceInvite = null;
+    }
+
+    public void loginParty() {
+        party.addOnlineMember(this.getPlayer());
+    }
+
+    public void logoutParty() {
+        party.removeOnlineMember(this.getPlayer());
     }
 
     public int getItemShareModifier() {

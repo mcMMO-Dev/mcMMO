@@ -367,6 +367,10 @@ public class PlayerListener implements Listener {
         mcMMOPlayer.getProfile().scheduleAsyncSave();
         UserManager.remove(player);
         ScoreboardManager.teardownPlayer(player);
+
+        if (mcMMOPlayer.inParty()) {
+            mcMMOPlayer.logoutParty();
+        }
     }
 
     /**
