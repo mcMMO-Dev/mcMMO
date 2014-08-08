@@ -23,6 +23,11 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         this.player = player;
     }
 
+    private PlayerProfileLoadingTask(Player player, int attempt) {
+        this.player = player;
+        this.attempt = attempt;
+    }
+
     // WARNING: ASYNC TASK
     // DO NOT MODIFY THE McMMOPLAYER FROM THIS CODE
     @Override
@@ -50,7 +55,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
             player.sendMessage(LocaleLoader.getString("Profile.Loading.Failure").split("\n"));
             return;
         }
-        this.runTaskLaterAsynchronously(mcMMO.p, 100 * attempt);
+        new PlayerProfileLoadingTask(player, attempt).runTaskLaterAsynchronously(mcMMO.p, 100 * attempt);
     }
 
     private class ApplySuccessfulProfile extends BukkitRunnable {
