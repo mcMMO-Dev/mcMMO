@@ -290,6 +290,9 @@ public final class CombatUtils {
             }
 
             Player player = (Player) target;
+            if (!UserManager.hasPlayerDataKey(player)) {
+                return;
+            }
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
 
