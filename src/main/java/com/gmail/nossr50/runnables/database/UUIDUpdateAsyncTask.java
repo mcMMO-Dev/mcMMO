@@ -18,6 +18,7 @@ import com.gmail.nossr50.util.uuid.UUIDFetcher;
 public class UUIDUpdateAsyncTask extends BukkitRunnable {
     private mcMMO plugin;
     private static final int MAX_LOOKUP = Math.max(HiddenConfig.getInstance().getUUIDConvertAmount(), 100);
+    private static final int BATCH_SIZE = 5000;
 
     private List<String> userNames;
     private int size;
@@ -64,9 +65,13 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
             size = userNames.size();
 
             Misc.printProgress(checkedUsers, DatabaseManager.progressInterval, startMillis);
+            if (fetchedUUIDs.size() > BATCH_SIZE) {
+                mcMMO.getDatabaseManager().saveUserUUIDs(fetchedUUIDs);
+                fetchedUUIDs = new HashMap<String, UUID>();
+            }
         }
 
-        if (mcMMO.getDatabaseManager().saveUserUUIDs(fetchedUUIDs)) {
+        if (fetchedUUIDs.size() == 0 || mcMMO.getDatabaseManager().saveUserUUIDs(fetchedUUIDs)) {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_UUIDS);
             plugin.getLogger().info("UUID upgrade completed!");
         }
