@@ -1449,7 +1449,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("SELECT id, user FROM " + tablePrefix + "users WHERE uuid = ? OR (uuid = null AND user = ?)");
+            statement = connection.prepareStatement("SELECT id, user FROM " + tablePrefix + "users WHERE uuid = ? OR (uuid IS NULL AND user = ?)");
             statement.setString(1, uuid.toString());
             statement.setString(2, playerName);
             resultSet = statement.executeQuery();
