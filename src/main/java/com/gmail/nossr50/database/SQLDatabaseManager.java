@@ -1489,6 +1489,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     @Override
     public void onDisable() {
+        mcMMO.p.debug("Releasing connection pool resource...");
         connectionPool.release();
     }
 }
