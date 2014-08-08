@@ -900,14 +900,22 @@ public final class SQLDatabaseManager implements DatabaseManager {
      */
     private void checkStructure() {
 
-        Statement statement = null;
+        PreparedStatement statement = null;
+        Statement createStatement = null;
+        ResultSet resultSet = null;
         Connection connection = null;
 
         try {
             connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
-            statement = connection.createStatement();
-
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
+            statement = connection.prepareStatement("SELECT table_name FROM INFORMATION_SCHEMA.TABLES"
+                    + " WHERE table_schema = ?"
+                    + " AND table_name = ?");
+            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(2, tablePrefix + "users");
+            resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                createStatement = connection.createStatement();
+                createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "users` ("
                     + "`id` int(10) unsigned NOT NULL AUTO_INCREMENT,"
                     + "`user` varchar(40) NOT NULL,"
                     + "`uuid` varchar(36) NULL DEFAULT NULL,"
@@ -915,79 +923,132 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "PRIMARY KEY (`id`),"
                     + "UNIQUE KEY `user` (`user`),"
                     + "UNIQUE KEY `uuid` (`uuid`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
-                    + "`user_id` int(10) unsigned NOT NULL,"
-                    + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
-                    + "PRIMARY KEY (`user_id`)) "
-                    + "DEFAULT CHARSET=latin1;");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
-                    + "`user_id` int(10) unsigned NOT NULL,"
-                    + "`taming` int(32) unsigned NOT NULL DEFAULT '0',"
-                    + "`mining` int(32) unsigned NOT NULL DEFAULT '0',"
-                    + "`woodcutting` int(32) unsigned NOT NULL DEFAULT '0',"
-                    + "`repair` int(32) unsigned NOT NULL DEFAULT '0',"
-                    + "`unarmed` int(32) unsigned NOT NULL DEFAULT '0',"
-                    + "`herbalism` int(32) unsigned NOT NULL DEFAULT '0',"
-                    + "`excavation` int(32) unsigned NOT NULL DEFAULT '0',"
-                    + "`archery` int(32) unsigned NOT NULL DEFAULT '0',"
-                    + "`swords` int(32) unsigned NOT NULL DEFAULT '0',"
-                    + "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
-                    + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
-                    + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
-                    + "PRIMARY KEY (`user_id`)) "
-                    + "DEFAULT CHARSET=latin1;");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
-                    + "`user_id` int(10) unsigned NOT NULL,"
-                    + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "PRIMARY KEY (`user_id`)) "
-                    + "DEFAULT CHARSET=latin1;");
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
-                    + "`user_id` int(10) unsigned NOT NULL,"
-                    + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
-                    + "PRIMARY KEY (`user_id`)) "
-                    + "DEFAULT CHARSET=latin1;");
+                createStatement.close();
+            }
+            resultSet.close();
+            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(2, tablePrefix + "huds");
+            resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                createStatement = connection.createStatement();
+                createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "huds` ("
+                        + "`user_id` int(10) unsigned NOT NULL,"
+                        + "`mobhealthbar` varchar(50) NOT NULL DEFAULT '" + Config.getInstance().getMobHealthbarDefault() + "',"
+                        + "PRIMARY KEY (`user_id`)) "
+                        + "DEFAULT CHARSET=latin1;");
+                createStatement.close();
+            }
+            resultSet.close();
+            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(2, tablePrefix + "cooldowns");
+            resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                createStatement = connection.createStatement();
+                createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
+                        + "`user_id` int(10) unsigned NOT NULL,"
+                        + "`taming` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`mining` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`woodcutting` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`repair` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`unarmed` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`herbalism` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`excavation` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`archery` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`swords` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "PRIMARY KEY (`user_id`)) "
+                        + "DEFAULT CHARSET=latin1;");
+                createStatement.close();
+            }
+            resultSet.close();
+            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(2, tablePrefix + "skills");
+            resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                createStatement = connection.createStatement();
+                createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
+                        + "`user_id` int(10) unsigned NOT NULL,"
+                        + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "PRIMARY KEY (`user_id`)) "
+                        + "DEFAULT CHARSET=latin1;");
+                createStatement.close();
+            }
+            resultSet.close();
+            statement.setString(1, Config.getInstance().getMySQLDatabaseName());
+            statement.setString(2, tablePrefix + "experience");
+            resultSet = statement.executeQuery();
+            if (!resultSet.next()) {
+                createStatement = connection.createStatement();
+                createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
+                        + "`user_id` int(10) unsigned NOT NULL,"
+                        + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "PRIMARY KEY (`user_id`)) "
+                        + "DEFAULT CHARSET=latin1;");
+                createStatement.close();
+            }
+            resultSet.close();
+            statement.close();
 
             for (UpgradeType updateType : UpgradeType.values()) {
                 checkDatabaseStructure(connection, updateType);
             }
 
             mcMMO.p.getLogger().info("Killing orphans");
-            statement.executeUpdate("DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "experience`.`user_id` = `u`.`id`)");
-            statement.executeUpdate("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "huds`.`user_id` = `u`.`id`)");
-            statement.executeUpdate("DELETE FROM `" + tablePrefix + "cooldowns` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "cooldowns`.`user_id` = `u`.`id`)");
-            statement.executeUpdate("DELETE FROM `" + tablePrefix + "skills` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "skills`.`user_id` = `u`.`id`)");
+            createStatement = connection.createStatement();
+            createStatement.executeUpdate("DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "experience`.`user_id` = `u`.`id`)");
+            createStatement.executeUpdate("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "huds`.`user_id` = `u`.`id`)");
+            createStatement.executeUpdate("DELETE FROM `" + tablePrefix + "cooldowns` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "cooldowns`.`user_id` = `u`.`id`)");
+            createStatement.executeUpdate("DELETE FROM `" + tablePrefix + "skills` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "users` `u` WHERE `" + tablePrefix + "skills`.`user_id` = `u`.`id`)");
         }
         catch (SQLException ex) {
             printErrors(ex);
         }
         finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
             if (statement != null) {
                 try {
                     statement.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+            if (createStatement != null) {
+                try {
+                    createStatement.close();
                 }
                 catch (SQLException e) {
                     // Ignore
