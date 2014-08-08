@@ -228,8 +228,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             int id = getUserID(connection, profile.getPlayerName(), profile.getUniqueId());
 
             if (id == -1) {
-                newUser(profile.getPlayerName(), profile.getUniqueId());
-                id = getUserID(connection, profile.getPlayerName(), profile.getUniqueId());
+                id = newUser(connection, profile.getPlayerName(), profile.getUniqueId());
                 if (id == -1) {
                     return false;
                 }
@@ -525,24 +524,24 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void newUser(Connection connection, String playerName, UUID uuid) {
+    private int newUser(Connection connection, String playerName, UUID uuid) {
         ResultSet resultSet = null;
         PreparedStatement statement = null;
 
         try {
-            statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, uuid, lastlogin) VALUES (?, ?, ?)", Statement.RETURN_GENERATED_KEYS);
+            statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, uuid, lastlogin) VALUES (?, ?, UNIX_TIMESTAMP())", Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, playerName);
             statement.setString(2, uuid.toString());
-            statement.setLong(3, System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
             statement.executeUpdate();
 
             resultSet = statement.getGeneratedKeys();
 
             if (!resultSet.next()) {
-                return;
+                return -1;
             }
 
             writeMissingRows(connection, resultSet.getInt(1));
+            return resultSet.getInt(1);
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -565,6 +564,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
             }
         }
+        return -1;
     }
 
     @Deprecated
@@ -592,12 +592,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if (id == -1) {
                 // There is no such user
                 if (create) {
-                    newUser(connection, playerName, uuid);
-                    return loadPlayerProfile(playerName, uuid, false, false);
+                    id = newUser(connection, playerName, uuid);
+                    create = false;
+                    if (id == -1) {
+                        return new PlayerProfile(playerName, false);
+                    }
+                } else {
+                    return new PlayerProfile(playerName, false);
                 }
-
-                // Return unloaded profile if can't create
-                return new PlayerProfile(playerName, false);
             }
             // There is such a user
             writeMissingRows(connection, id);
@@ -1186,7 +1188,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private void printErrors(SQLException ex) {
-        StackTraceElement element = ex.getStackTrace()[ex.getStackTrace().length];
+        StackTraceElement element = ex.getStackTrace()[ex.getStackTrace().length - 1];
         mcMMO.p.getLogger().severe("Location: " + element.getMethodName() + " " + element.getLineNumber());
         mcMMO.p.getLogger().severe("SQLException: " + ex.getMessage());
         mcMMO.p.getLogger().severe("SQLState: " + ex.getSQLState());
