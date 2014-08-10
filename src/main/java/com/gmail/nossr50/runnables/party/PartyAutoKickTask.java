@@ -25,7 +25,7 @@ public class PartyAutoKickTask extends BukkitRunnable {
         long currentTime = System.currentTimeMillis();
 
         for (Party party : PartyManager.getParties()) {
-            for (UUID memberUniqueId : party.getMembers().values()) {
+            for (UUID memberUniqueId : party.getMembers().keySet()) {
                 OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberUniqueId);
                 boolean isProcessed = processedPlayers.contains(memberUniqueId);
 

@@ -22,8 +22,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 
 public class Party {
-    //TODO use LinkedHashSet<PartyMember> and get rid of PartyLeader object
-    private final LinkedHashMap<String, UUID> members = new LinkedHashMap<String, UUID>();
+    private final LinkedHashMap<UUID, String> members = new LinkedHashMap<UUID, String>();
     private final List<Player> onlineMembers = new ArrayList<Player>();
 
     private PartyLeader leader;
@@ -70,7 +69,7 @@ public class Party {
         this.level = 0;
     }
 
-    public LinkedHashMap<String, UUID> getMembers() {
+    public LinkedHashMap<UUID, String> getMembers() {
         return members;
     }
 
@@ -317,9 +316,9 @@ public class Party {
     public String createMembersList(String playerName, List<Player> nearMembers) {
         StringBuilder memberList = new StringBuilder();
 
-        for (Entry<String, UUID> memberEntry : this.getMembers().entrySet()) {
-            String memberName = memberEntry.getKey();
-            UUID uuid = memberEntry.getValue();
+        for (Entry<UUID, String> memberEntry : this.getMembers().entrySet()) {
+            UUID uuid = memberEntry.getKey();
+            String memberName = memberEntry.getValue();
 
             Player member = mcMMO.p.getServer().getPlayer(uuid);
 

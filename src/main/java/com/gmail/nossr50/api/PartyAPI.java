@@ -82,7 +82,7 @@ public final class PartyAPI {
         Party party = PartyManager.getParty(partyName);
 
         if (party == null) {
-            party = new Party(new PartyLeader(player.getName(), player.getUniqueId()), partyName);
+            party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
         }
 
         PartyManager.addToParty(UserManager.getPlayer(player), party);
@@ -136,7 +136,7 @@ public final class PartyAPI {
     public static List<OfflinePlayer> getOnlineAndOfflineMembers(Player player) {
         List<OfflinePlayer> members = new ArrayList<OfflinePlayer>();
 
-        for (UUID memberUniqueId : PartyManager.getAllMembers(player).values()) {
+        for (UUID memberUniqueId : PartyManager.getAllMembers(player).keySet()) {
             OfflinePlayer member = mcMMO.p.getServer().getOfflinePlayer(memberUniqueId);
             members.add(member);
         }
@@ -153,7 +153,7 @@ public final class PartyAPI {
      */
     @Deprecated
     public static LinkedHashSet<String> getMembers(Player player) {
-        return (LinkedHashSet<String>) PartyManager.getAllMembers(player).keySet();
+        return (LinkedHashSet<String>) PartyManager.getAllMembers(player).values();
     }
 
     /**
@@ -164,7 +164,7 @@ public final class PartyAPI {
      * @param player The player to check
      * @return all the player names and uuids in the player's party
      */
-    public static LinkedHashMap<String, UUID> getMembersMap(Player player) {
+    public static LinkedHashMap<UUID, String> getMembersMap(Player player) {
         return PartyManager.getAllMembers(player);
     }
 

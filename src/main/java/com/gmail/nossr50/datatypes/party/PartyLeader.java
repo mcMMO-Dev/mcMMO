@@ -3,19 +3,19 @@ package com.gmail.nossr50.datatypes.party;
 import java.util.UUID;
 
 public class PartyLeader {
-    private String playerName;
     private UUID uuid;
+    private String playerName;
 
-    public PartyLeader(String playerName, UUID uuid) {
-        this.playerName = playerName;
+    public PartyLeader(UUID uuid, String playerName) {
         this.uuid = uuid;
-    }
-
-    public String getPlayerName() {
-        return playerName;
+        this.playerName = playerName;
     }
 
     public UUID getUniqueId() {
         return uuid;
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 }
