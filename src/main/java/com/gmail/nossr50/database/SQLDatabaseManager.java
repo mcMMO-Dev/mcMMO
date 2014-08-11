@@ -60,7 +60,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Properties connectionProperties = new Properties();
         connectionProperties.put("user", Config.getInstance().getMySQLUserName());
         connectionProperties.put("password", Config.getInstance().getMySQLUserPassword());
-        connectionProperties.put("autoReconnect", "false");
+        connectionProperties.put("autoReconnect", "true");
         connectionProperties.put("cachePrepStmts", "true");
         connectionProperties.put("prepStmtCacheSize", "64");
         connectionProperties.put("prepStmtCacheSqlLimit", "2048");
