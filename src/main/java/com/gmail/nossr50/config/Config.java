@@ -314,8 +314,8 @@ public class Config extends AutoUpdateConfigLoader {
     public int getMySQLServerPort() { return config.getInt("MySQL.Server.Port", 3306); }
     public String getMySQLServerName() { return config.getString("MySQL.Server.Address", "localhost"); }
     public String getMySQLUserPassword() { return getStringIncludingInts("MySQL.Database.User_Password"); }
-    public int getMySQLMaxConnections() { return config.getInt("MySQL.Database.MaxConnections"); }
-    public int getMySQLMaxPoolSize() { return config.getInt("MySQL.Database.MaxPoolSize"); }
+    public int getMySQLMaxConnections() { return config.getInt("MySQL.Database.MaxConnections", 30); }
+    public int getMySQLMaxPoolSize() { return config.getInt("MySQL.Database.MaxPoolSize", 20); }
 
     private String getStringIncludingInts(String key) {
         String str = config.getString(key);

@@ -36,7 +36,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private static final String S_ALL_QUERY_STRING = "s.taming+s.mining+s.woodcutting+s.repair+s.unarmed+s.herbalism+s.excavation+s.archery+s.swords+s.axes+s.acrobatics+s.fishing+s.alchemy";
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
-    private final int POOL_FETCH_TIMEOUT = 0; // How long a method will wait for a connection.  Since none are on main thread, we can safely say wait for as long as you like.
+    private final int POOL_FETCH_TIMEOUT = 360000;
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<UUID, Integer>();
 
@@ -88,7 +88,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         int purged = 0;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
             statement = connection.createStatement();
 
             purged = statement.executeUpdate("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
@@ -133,7 +133,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         int purged = 0;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
             statement = connection.createStatement();
 
             purged = statement.executeUpdate("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
@@ -175,7 +175,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
             statement = connection.prepareStatement("DELETE FROM u, e, h, s, c " +
                     "USING " + tablePrefix + "users u " +
                     "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
@@ -223,7 +223,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
 
             int id = getUserID(connection, profile.getPlayerName(), profile.getUniqueId());
 
@@ -338,7 +338,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
             statement = connection.prepareStatement("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT ?, ?");
             statement.setInt(1, (pageNumber * statsPerPage) - statsPerPage);
             statement.setInt(2, statsPerPage);
@@ -395,7 +395,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
             for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
                 String skillName = skillType.name().toLowerCase();
                 String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
@@ -506,7 +506,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
             newUser(connection, playerName, uuid);
         }
         catch (SQLException ex) {
@@ -586,7 +586,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         ResultSet resultSet = null;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
             int id = getUserID(connection, playerName, uuid);
 
             if (id == -1) {
@@ -692,7 +692,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         ResultSet resultSet = null;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
             statement = connection.prepareStatement(
                     "SELECT "
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
@@ -760,7 +760,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
             statement = connection.prepareStatement(
                     "UPDATE `" + tablePrefix + "users` SET "
                             + "  uuid = ? WHERE user = ?");
@@ -800,7 +800,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "users SET uuid = ? WHERE user = ?");
 
             for (Map.Entry<String, UUID> entry : fetchedUUIDs.entrySet()) {
@@ -855,7 +855,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         ResultSet resultSet = null;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
             statement = connection.createStatement();
             resultSet = statement.executeQuery("SELECT user FROM " + tablePrefix + "users");
             while (resultSet.next()) {
@@ -906,7 +906,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
 
         try {
-            connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+            connection = getConnection();
             statement = connection.prepareStatement("SELECT table_name FROM INFORMATION_SCHEMA.TABLES"
                     + " WHERE table_schema = ?"
                     + " AND table_name = ?");
@@ -1064,6 +1064,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
         }
 
+    }
+
+    private Connection getConnection() throws SQLException {
+        Connection connection = connectionPool.getConnection(POOL_FETCH_TIMEOUT);
+        if (connection == null) {
+            throw new RuntimeException("getConnection() timed out.  Increase max connections settings.");
+        }
+        return connection;
     }
 
     /**
@@ -1250,7 +1258,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     private void printErrors(SQLException ex) {
         StackTraceElement element = ex.getStackTrace()[ex.getStackTrace().length - 1];
-        mcMMO.p.getLogger().severe("Location: " + element.getMethodName() + " " + element.getLineNumber());
+        mcMMO.p.getLogger().severe("Location: " + element.getClassName() + " " + element.getMethodName() + " " + element.getLineNumber());
         mcMMO.p.getLogger().severe("SQLException: " + ex.getMessage());
         mcMMO.p.getLogger().severe("SQLState: " + ex.getSQLState());
         mcMMO.p.getLogger().severe("VendorError: " + ex.getErrorCode());
