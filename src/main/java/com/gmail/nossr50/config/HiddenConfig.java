@@ -6,16 +6,18 @@ import com.gmail.nossr50.mcMMO;
 
 public class HiddenConfig {
     private static HiddenConfig instance;
-    private static String fileName;
-    private static YamlConfiguration config;
-    private static boolean chunkletsEnabled;
-    private static int conversionRate;
-    private static boolean useEnchantmentBuffs;
-    private static boolean resendChunksAfterBlockAbility;
-    private static int uuidConvertAmount;
+    private String fileName;
+    private YamlConfiguration config;
+    private boolean chunkletsEnabled;
+    private int conversionRate;
+    private boolean useEnchantmentBuffs;
+    private boolean resendChunksAfterBlockAbility;
+    private int uuidConvertAmount;
+    private int mojangRateLimit;
+    private long mojangLimitPeriod;
 
     public HiddenConfig(String fileName) {
-        HiddenConfig.fileName = fileName;
+        this.fileName = fileName;
         load();
     }
 
@@ -35,6 +37,8 @@ public class HiddenConfig {
             useEnchantmentBuffs = config.getBoolean("Options.EnchantmentBuffs", true);
             resendChunksAfterBlockAbility = config.getBoolean("Options.RefreshChunks", false);
             uuidConvertAmount = config.getInt("Options.UUIDConvertAmount", 5);
+            mojangRateLimit = config.getInt("Options.MojangRateLimit", 50000);
+            mojangLimitPeriod = config.getLong("Options.MojangLimitPeriod", 600000);
         }
     }
 
@@ -56,5 +60,13 @@ public class HiddenConfig {
 
     public int getUUIDConvertAmount() {
         return uuidConvertAmount;
+    }
+
+    public int getMojangRateLimit() {
+        return mojangRateLimit;
+    }
+
+    public long getMojangLimitPeriod() {
+        return mojangLimitPeriod;
     }
 }

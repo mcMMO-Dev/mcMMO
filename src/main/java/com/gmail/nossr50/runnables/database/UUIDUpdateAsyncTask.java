@@ -18,6 +18,8 @@ import com.gmail.nossr50.util.uuid.UUIDFetcher;
 public class UUIDUpdateAsyncTask extends BukkitRunnable {
     private mcMMO plugin;
     private static final int MAX_LOOKUP = Math.max(HiddenConfig.getInstance().getUUIDConvertAmount(), 100);
+    private static final int RATE_LIMIT = HiddenConfig.getInstance().getMojangRateLimit();
+    private static final long LIMIT_PERIOD = HiddenConfig.getInstance().getMojangLimitPeriod();
     private static final int BATCH_SIZE = 5000;
 
     private List<String> userNames;
@@ -43,6 +45,16 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
         Map<String, UUID> fetchedUUIDs = new HashMap<String, UUID>();
 
         while (size != 0) {
+            if (checkedUsers + 100 > RATE_LIMIT) {
+                try {
+                    Thread.sleep(LIMIT_PERIOD);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                    return;
+                }
+                startMillis = System.currentTimeMillis();
+                checkedUsers = 0;
+            }
             if (size > MAX_LOOKUP) {
                 userNamesSection = userNames.subList(size - MAX_LOOKUP, size);
                 size -= MAX_LOOKUP;
