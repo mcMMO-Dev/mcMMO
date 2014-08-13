@@ -11,6 +11,7 @@ Version 1.5.01-dev
  + Added new child skill; Salvage
  + Added UUID support!
  + Added SQL connection pooling and async loading!
+ + Added the long awaited Diminished Returns feature
  + Added new feature to Herbalism. Instantly-regrown crops are protected from being broken for 1 second
  + Added option to config.yml to show the /mcstats scoreboard automatically after logging in
  + Added option to config.yml for Alchemy. Skills.Alchemy.Prevent_Hopper_Transfer_Bottles

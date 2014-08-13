@@ -63,9 +63,25 @@ Experience_Formula:
 # Settings for Diminished Returns
 ###
 Diminished_Returns:
+    Enabled: false
+
     # Limit the amount of experience a player can earn:
     # Threshold (amount of experience) per Time_Interval (in minutes)
-    Threshold: 20000
+    Threshold:
+        Swords: 20000
+        Taming: 20000
+        Acrobatics: 20000
+        Excavation: 20000
+        Herbalism: 20000
+        Unarmed: 20000
+        Woodcutting: 20000
+        Mining: 20000
+        Archery: 20000
+        Axes: 20000
+        Repair: 20000
+        Fishing: 20000
+        Alchemy: 20000
+
     Time_Interval: 10
 
 #

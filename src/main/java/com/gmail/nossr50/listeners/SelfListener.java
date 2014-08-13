@@ -44,7 +44,8 @@ public class SelfListener implements Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onPlayerXpGain(McMMOPlayerXpGainEvent event) {
-        int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold();
+        SkillType skillType = event.getSkill();
+        int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold(skillType);
 
         if (threshold <= 0) {
             // Diminished returns is turned off
@@ -59,7 +60,6 @@ public class SelfListener implements Listener {
 
         Player player = event.getPlayer();
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        SkillType skillType = event.getSkill();
 
         if (skillType.isChildSkill()) {
             return;

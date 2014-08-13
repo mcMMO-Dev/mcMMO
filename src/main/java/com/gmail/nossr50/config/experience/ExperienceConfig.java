@@ -180,7 +180,8 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public double getCustomXpPerkBoost() { return config.getDouble("Experience_Formula.Custom_XP_Perk.Boost", 1.25); }
 
     /* Deminished Returns */
-    public int getDiminishedReturnsThreshold() { return config.getInt("Diminished_Returns.Threshold", 20000); }
+    public boolean getDiminishedReturnsEnabled() { return config.getBoolean("Diminished_Returns.Enabled", false); }
+    public int getDiminishedReturnsThreshold(SkillType skill) { return config.getInt("Diminished_Returns.Threshold." + StringUtils.getCapitalized(skill.toString()), 20000); }
     public int getDiminishedReturnsTimeInterval() { return config.getInt("Diminished_Returns.Time_Interval", 10); }
 
     /* Conversion */
