@@ -413,7 +413,7 @@ public final class CombatUtils {
                     break;
             }
 
-            dealDamage(livingEntity, damageAmount, modifiers, attacker);
+            dealDamage(livingEntity, damageAmount, attacker);
             numberOfTargets--;
         }
     }
