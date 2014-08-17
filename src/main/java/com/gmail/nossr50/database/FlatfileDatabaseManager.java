@@ -86,7 +86,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     }
                     else {
                         purgedUsers++;
-                        Misc.profileCleanup(character[0]);
                     }
                 }
 
@@ -155,7 +154,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                     if (currentTime - lastPlayed > PURGE_TIME) {
                         removedPlayers++;
-                        Misc.profileCleanup(name);
                     }
                     else {
                         if (rewrite) {
@@ -637,10 +635,11 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         if (character.length < 42) {
                             mcMMO.p.getLogger().severe("Could not update UUID for " + character[0] + "!");
                             mcMMO.p.getLogger().severe("Database entry is invalid.");
-                            return false;
+                            continue;
                         }
 
-                        line = line.replace(character[41], fetchedUUIDs.remove(character[0]).toString());
+                        character[41] = fetchedUUIDs.remove(character[0]).toString();
+                        line = new StringBuilder(org.apache.commons.lang.StringUtils.join(character, ":")).append(":").toString();
                     }
 
                     writer.append(line).append("\r\n");
@@ -850,7 +849,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         // Prevent the same player from being present multiple times
-                        if (character.length == 42 && (!character[41].isEmpty() && !players.add(character[41]))) {
+                        if (character.length == 42 && (!character[41].isEmpty() && !character[41].equalsIgnoreCase(" ") && !players.add(character[41]))) {
                             continue;
                         }
 
