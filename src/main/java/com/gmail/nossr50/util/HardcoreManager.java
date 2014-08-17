@@ -1,5 +1,7 @@
 package com.gmail.nossr50.util;
 
+import java.util.HashMap;
+
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
@@ -18,6 +20,9 @@ public final class HardcoreManager {
         PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
         int totalLevelsLost = 0;
 
+        HashMap<String, Integer> levelChanged = new HashMap<String, Integer>();
+        HashMap<String, Float> experienceChanged = new HashMap<String, Float>();
+
         for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
             if (!skillType.getHardcoreStatLossEnabled()) {
                 break;
@@ -33,19 +38,14 @@ public final class HardcoreManager {
             double statsLost = playerSkillLevel * (statLossPercentage * 0.01D);
             int levelsLost = (int) statsLost;
             int xpLost = (int) Math.floor(playerSkillXpLevel * (statsLost - levelsLost));
+            levelChanged.put(skillType.toString(), levelsLost);
+            experienceChanged.put(skillType.toString(), (float) xpLost);
 
             totalLevelsLost += levelsLost;
+        }
 
-            playerProfile.modifySkill(skillType, playerSkillLevel - levelsLost);
-            playerProfile.removeXp(skillType, xpLost);
-
-            if (playerProfile.getSkillXpLevel(skillType) < 0) {
-                playerProfile.setSkillXpLevel(skillType, 0);
-            }
-
-            if (playerProfile.getSkillLevel(skillType) < 0) {
-                playerProfile.modifySkill(skillType, 0);
-            }
+        if (!EventUtils.handleStatsLossEvent(player, levelChanged, experienceChanged)) {
+            return;
         }
 
         player.sendMessage(LocaleLoader.getString("Hardcore.DeathStatLoss.PlayerDeath", totalLevelsLost));
@@ -58,6 +58,9 @@ public final class HardcoreManager {
         PlayerProfile killerProfile = UserManager.getPlayer(killer).getProfile();
         PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
         int totalLevelsStolen = 0;
+
+        HashMap<String, Integer> levelChanged = new HashMap<String, Integer>();
+        HashMap<String, Float> experienceChanged = new HashMap<String, Float>();
 
         for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
             if (!skillType.getHardcoreVampirismEnabled()) {
@@ -76,10 +79,14 @@ public final class HardcoreManager {
             double statsStolen = victimSkillLevel * (vampirismStatLeechPercentage * 0.01D);
             int levelsStolen = (int) statsStolen;
             int xpStolen = (int) Math.floor(victimSkillXpLevel * (statsStolen - levelsStolen));
+            levelChanged.put(skillType.toString(), levelsStolen);
+            experienceChanged.put(skillType.toString(), (float) xpStolen);
 
-            if (EventUtils.handleVampirismEvent(killer, victim, skillType, levelsStolen, xpStolen)) {
-                totalLevelsStolen += levelsStolen;
-            }
+            totalLevelsStolen += levelsStolen;
+        }
+
+        if (!EventUtils.handleVampirismEvent(killer, victim, levelChanged, experienceChanged)) {
+            return;
         }
 
         if (totalLevelsStolen > 0) {

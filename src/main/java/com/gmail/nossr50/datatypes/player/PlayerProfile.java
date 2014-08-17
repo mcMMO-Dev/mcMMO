@@ -214,6 +214,16 @@ public class PlayerProfile {
         skillsXp.put(skill, skillsXp.get(skill) - xp);
     }
 
+    public void removeXp(SkillType skill, float xp) {
+        if (skill.isChildSkill()) {
+            return;
+        }
+
+        changed = true;
+
+        skillsXp.put(skill, skillsXp.get(skill) - xp);
+    }
+
     /**
      * Modify a skill level.
      *

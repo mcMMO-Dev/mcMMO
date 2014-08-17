@@ -20,6 +20,7 @@ Version 1.5.01-dev
  + Added options to tools.yml and armor.yml config files to set a pretty repair material name
  + Added full support for repairables in tools.yml and armor.yml config files
  + Added new API class SkillAPI used to get a list of valid skill names
+ + Added new API events for hardcore features, McMMOPlayerPreDeathPenaltyEvent, McMMOPlayerStatLossEvent and McMMOPlayerVampirismEvent
  + Added magical mod config file import command, for Cauldron 1.7+. Check wiki for usage
  = Fixed bug where pistons would mess with the block tracking
  = Fixed bug where the Updater was running on the main thread.
@@ -47,6 +48,7 @@ Version 1.5.01-dev
  ! Changed Alchemy XP distribution. XP is granted based on the stage of the potion.
  ! Changed behavior of the Blast Mining ability "Demolition Expert"; now only decreases damage for the ability user
  ! Updated for new getOnlinePlayers() behavior
+ ! Changed McMMOPlayerDeathPenaltyEvent to get fired after hardcore penalty calculations, use McMMOPlayerPreDeathPenaltyEvent for old behavior
  - Removed salvage ability from Repair, salvage has it's own (child) skill now
 
 Version 1.5.00

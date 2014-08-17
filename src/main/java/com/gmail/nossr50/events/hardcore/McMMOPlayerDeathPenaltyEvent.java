@@ -1,25 +1,45 @@
 package com.gmail.nossr50.events.hardcore;
 
+import java.util.HashMap;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-import com.gmail.nossr50.datatypes.skills.SkillType;
-
 public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancellable {
-    private SkillType skill;
+    private HashMap<String, Integer> levelChanged;
+    private HashMap<String, Float> experienceChanged;
+
     private boolean cancelled;
+
+    public McMMOPlayerDeathPenaltyEvent(Player player, HashMap<String, Integer> levelChanged, HashMap<String, Float> experienceChanged) {
+        super(player);
+        this.levelChanged = levelChanged;
+        this.experienceChanged = experienceChanged;
+        this.cancelled = false;
+    }
 
     @Deprecated
     public McMMOPlayerDeathPenaltyEvent(Player player) {
         super(player);
+        this.cancelled = false;
     }
 
-    public McMMOPlayerDeathPenaltyEvent(Player player, SkillType skill) {
-        super(player);
-        this.skill = skill;
-        this.cancelled = false;
+    public HashMap<String, Integer> getLevelChanged() {
+        return levelChanged;
+    }
+
+    public void setLevelChanged(HashMap<String, Integer> levelChanged) {
+        this.levelChanged = levelChanged;
+    }
+
+    public HashMap<String, Float> getExperienceChanged() {
+        return experienceChanged;
+    }
+
+    public void setExperienceChanged(HashMap<String, Float> experienceChanged) {
+        this.experienceChanged = experienceChanged;
     }
 
     /** Following are required for Cancellable **/
@@ -43,9 +63,5 @@ public class McMMOPlayerDeathPenaltyEvent extends PlayerEvent implements Cancell
 
     public static HandlerList getHandlerList() {
         return handlers;
-    }
-
-    public SkillType getSkill() {
-        return skill;
     }
 }

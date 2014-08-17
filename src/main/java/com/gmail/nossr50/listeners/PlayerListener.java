@@ -141,7 +141,7 @@ public class PlayerListener implements Listener {
         Player killer = killedPlayer.getKiller();
 
         if (statLossEnabled || (killer != null && vampirismEnabled)) {
-            if (EventUtils.callDeathPenaltyEvent(killedPlayer, null).isCancelled()) {
+            if (EventUtils.callPreDeathPenaltyEvent(killedPlayer).isCancelled()) {
                 return;
             }
 
