@@ -133,7 +133,7 @@
             <artifactId>bukkit</artifactId>
             <version>LATEST</version>
             <type>jar</type>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
