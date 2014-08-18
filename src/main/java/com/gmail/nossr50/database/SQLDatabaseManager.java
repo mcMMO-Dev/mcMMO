@@ -91,12 +91,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connection = getConnection();
             statement = connection.createStatement();
 
-            purged = statement.executeUpdate("DELETE FROM u, e, h, s, c USING " + tablePrefix + "users u " +
-                    "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) " +
-                    "JOIN " + tablePrefix + "huds h ON (u.id = h.user_id) " +
-                    "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) " +
-                    "JOIN " + tablePrefix + "cooldowns c ON (u.id = c.user_id) " +
-                    "WHERE (" + S_ALL_QUERY_STRING + ") = 0");
+            purged = statement.executeUpdate("DELETE FROM " + tablePrefix + "skills WHERE "
+                    + "taming = 0 AND mining = 0 AND woodcutting = 0 AND repair = 0 "
+                    + "AND unarmed = 0 AND herbalism = 0 AND excavation = 0 AND "
+                    + "archery = 0 AND swords = 0 AND axes = 0 AND acrobatics = 0 "
+                    + "AND fishing = 0 AND alchemy = 0;");
+
+            statement.executeUpdate("DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "skills` `s` WHERE `" + tablePrefix + "experience`.`user_id` = `s`.`user_id`)");
+            statement.executeUpdate("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "skills` `s` WHERE `" + tablePrefix + "huds`.`user_id` = `s`.`user_id`)");
+            statement.executeUpdate("DELETE FROM `" + tablePrefix + "cooldowns` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "skills` `s` WHERE `" + tablePrefix + "cooldowns`.`user_id` = `s`.`user_id`)");
+            statement.executeUpdate("DELETE FROM `" + tablePrefix + "users` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "skills` `s` WHERE `" + tablePrefix + "users`.`id` = `s`.`user_id`)");
         }
         catch (SQLException ex) {
             printErrors(ex);
