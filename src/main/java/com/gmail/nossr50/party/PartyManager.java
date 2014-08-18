@@ -21,13 +21,13 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyLeader;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.events.party.McMMOPartyAllianceChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.uuid.UUIDFetcher;
 
 public final class PartyManager {
     private static String partiesFilePath = mcMMO.getFlatFileDirectory() + "parties.yml";
@@ -620,18 +620,14 @@ public final class PartyManager {
             Party party = new Party(partyName);
 
             String leaderName = partiesFile.getString(partyName + ".Leader");
+            PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(leaderName, false);
 
-            UUID leaderUniqueId = null;
-            try {
-                leaderUniqueId = UUIDFetcher.getUUIDOf(leaderName);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            if (leaderUniqueId == null) {
-                mcMMO.p.getLogger().warning("Could not fetch UUID for party leader " + leaderName + " in party " + partyName);
+            if (!profile.isLoaded()) {
+                mcMMO.p.getLogger().warning("Could not find UUID in database for party leader " + leaderName + " in party " + partyName);
                 continue;
             }
+
+            UUID leaderUniqueId = profile.getUniqueId();
 
             party.setLeader(new PartyLeader(leaderUniqueId, leaderName));
             party.setPassword(partiesFile.getString(partyName + ".Password"));
@@ -653,18 +649,14 @@ public final class PartyManager {
             LinkedHashMap<UUID, String> members = party.getMembers();
 
             for (String memberName : partiesFile.getStringList(partyName + ".Members")) {
-                UUID memberUniqueId = null;
+                PlayerProfile memberProfile = mcMMO.getDatabaseManager().loadPlayerProfile(memberName, false);
 
-                try {
-                    memberUniqueId = UUIDFetcher.getUUIDOf(memberName);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                if (memberUniqueId == null) {
-                    mcMMO.p.getLogger().warning("Could not fetch UUID for party member " + memberName + " in party " + partyName);
+                if (!memberProfile.isLoaded()) {
+                    mcMMO.p.getLogger().warning("Could not find UUID in database for party member " + memberName + " in party " + partyName);
                     continue;
                 }
+
+                UUID memberUniqueId = memberProfile.getUniqueId();
 
                 members.put(memberUniqueId, memberName);
             }
