@@ -849,7 +849,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         // Prevent the same player from being present multiple times
-                        if (character.length == 42 && (!character[41].isEmpty() && !character[41].equalsIgnoreCase(" ") && !players.add(character[41]))) {
+                        if (character.length == 42 && (!character[41].isEmpty() && !players.add(character[41]))) {
                             continue;
                         }
 
@@ -939,7 +939,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             // Addition of UUIDs
                             // Version 1.5.01
                             // Add a space because otherwise it gets removed
-                            newLine.append(" :");
+                            newLine.append(":");
                             if (oldVersion == null) {
                                 oldVersion = "1.5.01";
                             }
