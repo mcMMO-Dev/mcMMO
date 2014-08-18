@@ -11,7 +11,6 @@ public class HiddenConfig {
     private boolean chunkletsEnabled;
     private int conversionRate;
     private boolean useEnchantmentBuffs;
-    private boolean resendChunksAfterBlockAbility;
     private int uuidConvertAmount;
     private int mojangRateLimit;
     private long mojangLimitPeriod;
@@ -35,7 +34,6 @@ public class HiddenConfig {
             chunkletsEnabled = config.getBoolean("Options.Chunklets", true);
             conversionRate = config.getInt("Options.ConversionRate", 1);
             useEnchantmentBuffs = config.getBoolean("Options.EnchantmentBuffs", true);
-            resendChunksAfterBlockAbility = config.getBoolean("Options.RefreshChunks", false);
             uuidConvertAmount = config.getInt("Options.UUIDConvertAmount", 5);
             mojangRateLimit = config.getInt("Options.MojangRateLimit", 50000);
             mojangLimitPeriod = config.getLong("Options.MojangLimitPeriod", 600000);
@@ -52,10 +50,6 @@ public class HiddenConfig {
 
     public boolean useEnchantmentBuffs() {
         return useEnchantmentBuffs;
-    }
-
-    public boolean resendChunksAfterBlockAbility() {
-        return resendChunksAfterBlockAbility;
     }
 
     public int getUUIDConvertAmount() {

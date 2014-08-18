@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.util.EventUtils;
@@ -39,7 +39,7 @@ public class AbilityDisableTask extends BukkitRunnable {
                 // Fallthrough
 
             case BERSERK:
-                if (HiddenConfig.getInstance().resendChunksAfterBlockAbility()) {
+                if (Config.getInstance().getRefreshChunksEnabled()) {
                     resendChunkRadiusAt(player, 1);
                 }
                 // Fallthrough

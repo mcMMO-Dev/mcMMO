@@ -49,6 +49,7 @@ Version 1.5.01-dev
  ! Changed behavior of the Blast Mining ability "Demolition Expert"; now only decreases damage for the ability user
  ! Updated for new getOnlinePlayers() behavior
  ! Changed McMMOPlayerDeathPenaltyEvent to get fired after hardcore penalty calculations, use McMMOPlayerPreDeathPenaltyEvent for old behavior
+ ! Moved Refresh_Chunks setting from hidden.yml to config.yml
  - Removed salvage ability from Repair, salvage has it's own (child) skill now
 
 Version 1.5.00
