@@ -9,6 +9,7 @@ import org.bukkit.TreeSpecies;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
 
+import com.gmail.nossr50.database.SQLDatabaseManager.PoolIdentifier;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -39,6 +40,16 @@ public class Config extends AutoUpdateConfigLoader {
         /* General Settings */
         if (getSaveInterval() <= 0) {
             reason.add("General.Save_Interval should be greater than 0!");
+        }
+
+        /* MySQL Settings */
+        for (PoolIdentifier identifier : PoolIdentifier.values()) {
+            if (getMySQLMaxConnections(identifier) <= 0) {
+                reason.add("MySQL.Database.MaxConnections." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
+            }
+            if (getMySQLMaxPoolSize(identifier) <= 0) {
+                reason.add("MySQL.Database.MaxPoolSize." + StringUtils.getCapitalized(identifier.toString()) + " should be greater than 0!");
+            }
         }
 
         /* Mob Healthbar */
@@ -315,8 +326,8 @@ public class Config extends AutoUpdateConfigLoader {
     public int getMySQLServerPort() { return config.getInt("MySQL.Server.Port", 3306); }
     public String getMySQLServerName() { return config.getString("MySQL.Server.Address", "localhost"); }
     public String getMySQLUserPassword() { return getStringIncludingInts("MySQL.Database.User_Password"); }
-    public int getMySQLMaxConnections() { return config.getInt("MySQL.Database.MaxConnections", 30); }
-    public int getMySQLMaxPoolSize() { return config.getInt("MySQL.Database.MaxPoolSize", 20); }
+    public int getMySQLMaxConnections(PoolIdentifier identifier) { return config.getInt("MySQL.Database.MaxConnections." + StringUtils.getCapitalized(identifier.toString()), 30); }
+    public int getMySQLMaxPoolSize(PoolIdentifier identifier) { return config.getInt("MySQL.Database.MaxPoolSize." + StringUtils.getCapitalized(identifier.toString()), 10); }
 
     private String getStringIncludingInts(String key) {
         String str = config.getString(key);
