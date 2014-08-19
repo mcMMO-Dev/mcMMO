@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -60,6 +61,9 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
             // 12. Playername - skill value
             sender.sendMessage(String.format("%2d. %s%s - %s%s", place, ChatColor.GREEN, stat.name, ChatColor.WHITE, stat.statVal));
             place++;
+        }
+        if (sender instanceof Player) {
+            ((Player) sender).removeMetadata(mcMMO.databaseCommandKey, mcMMO.p);
         }
     }
 

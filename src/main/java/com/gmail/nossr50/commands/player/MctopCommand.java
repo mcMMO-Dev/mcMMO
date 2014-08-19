@@ -7,6 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
@@ -19,7 +20,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableList;
 
 public class MctopCommand implements TabExecutor {
@@ -89,6 +89,13 @@ public class MctopCommand implements TabExecutor {
             if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
                 sender.sendMessage(LocaleLoader.getString("Commands.Database.Cooldown"));
                 return;
+            }
+
+            if (((Player) sender).hasMetadata(mcMMO.databaseCommandKey)) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Database.Processing"));
+                return;
+            } else {
+                ((Player) sender).setMetadata(mcMMO.databaseCommandKey, new FixedMetadataValue(mcMMO.p, null));
             }
 
             mcMMOPlayer.actualizeDatabaseATS();
