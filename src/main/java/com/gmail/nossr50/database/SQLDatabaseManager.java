@@ -1291,7 +1291,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private void printErrors(SQLException ex) {
-        StackTraceElement element = ex.getStackTrace()[ex.getStackTrace().length - 1];
+        StackTraceElement element = ex.getStackTrace()[0];
         mcMMO.p.getLogger().severe("Location: " + element.getClassName() + " " + element.getMethodName() + " " + element.getLineNumber());
         mcMMO.p.getLogger().severe("SQLException: " + ex.getMessage());
         mcMMO.p.getLogger().severe("SQLState: " + ex.getSQLState());
