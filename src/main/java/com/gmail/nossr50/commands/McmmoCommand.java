@@ -27,7 +27,7 @@ public class McmmoCommand implements CommandExecutor {
 
                 if (Config.getInstance().getDonateMessageEnabled()) {
                     sender.sendMessage(LocaleLoader.getString("MOTD.Donate"));
-                    sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "gjmcferrin@gmail.com" + ChatColor.GOLD + " Paypal");
+                    sender.sendMessage(ChatColor.GOLD + " - " + ChatColor.GREEN + "tft_02@hotmail.com" + ChatColor.GOLD + " Paypal");
                 }
 
                 if (Permissions.showversion(sender)) {
