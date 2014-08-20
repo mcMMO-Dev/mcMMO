@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.MetadataValue;
 import org.bukkit.util.StringUtil;
 
 import com.gmail.nossr50.mcMMO;
@@ -19,6 +18,7 @@ import com.gmail.nossr50.runnables.commands.McrankCommandAsyncTask;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
+
 import com.google.common.collect.ImmutableList;
 
 public class McrankCommand implements TabExecutor {
@@ -35,6 +35,10 @@ public class McrankCommand implements TabExecutor {
                     return true;
                 }
 
+                if (!CommandUtils.hasPlayerDataKey(sender)) {
+                    return true;
+                }
+
                 display(sender, sender.getName());
 
                 return true;
@@ -42,6 +46,10 @@ public class McrankCommand implements TabExecutor {
             case 1:
                 if (!Permissions.mcrankOthers(sender)) {
                     sender.sendMessage(command.getPermissionMessage());
+                    return true;
+                }
+
+                if (!CommandUtils.hasPlayerDataKey(sender)) {
                     return true;
                 }
 

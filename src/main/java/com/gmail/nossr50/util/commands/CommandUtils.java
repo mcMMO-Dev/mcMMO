@@ -116,6 +116,29 @@ public final class CommandUtils {
         return true;
     }
 
+    public static boolean hasPlayerDataKey(CommandSender sender) {
+        if (sender == null || !(sender instanceof Player)) {
+            return false;
+        }
+
+        boolean hasPlayerDataKey = ((Player) sender).hasMetadata(mcMMO.playerDataKey);
+
+        if (!hasPlayerDataKey) {
+            sender.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));
+        }
+
+        return hasPlayerDataKey;
+    }
+
+    public static boolean isLoaded(CommandSender sender, PlayerProfile profile) {
+        if (profile.isLoaded()) {
+            return true;
+        }
+
+        sender.sendMessage(LocaleLoader.getString("Commands.NotLoaded"));
+        return false;
+    }
+
     public static boolean isInvalidInteger(CommandSender sender, String value) {
         if (StringUtils.isInt(value)) {
             return false;

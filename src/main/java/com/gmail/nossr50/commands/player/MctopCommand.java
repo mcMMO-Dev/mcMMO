@@ -83,6 +83,10 @@ public class MctopCommand implements TabExecutor {
         }
 
         if (sender instanceof Player) {
+            if (!CommandUtils.hasPlayerDataKey(sender)) {
+                return;
+            }
+
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(sender.getName());
             long cooldownMillis = Math.max(Config.getInstance().getDatabasePlayerCooldown(), 1750);
 

@@ -41,6 +41,10 @@ public abstract class ChatCommand implements TabExecutor {
                     return true;
                 }
 
+                if (!CommandUtils.hasPlayerDataKey(sender)) {
+                    return true;
+                }
+
                 mcMMOPlayer = UserManager.getPlayer(sender.getName());
 
                 if (mcMMOPlayer.isChatEnabled(chatMode)) {
@@ -53,6 +57,10 @@ public abstract class ChatCommand implements TabExecutor {
                 return true;
 
             case 1:
+                if (!CommandUtils.hasPlayerDataKey(sender)) {
+                    return true;
+                }
+
                 if (CommandUtils.shouldEnableToggle(args[0])) {
                     if (CommandUtils.noConsoleUsage(sender)) {
                         return true;

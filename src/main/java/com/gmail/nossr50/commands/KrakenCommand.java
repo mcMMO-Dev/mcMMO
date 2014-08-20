@@ -29,6 +29,10 @@ public class KrakenCommand implements TabExecutor {
                     return true;
                 }
 
+                if (!CommandUtils.hasPlayerDataKey(sender)) {
+                    return true;
+                }
+
                 UserManager.getPlayer(sender.getName()).getFishingManager().unleashTheKraken();
                 return true;
 

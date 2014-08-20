@@ -71,6 +71,11 @@ public class PartyCommand implements TabExecutor {
         }
 
         Player player = (Player) sender;
+
+        if (!UserManager.hasPlayerDataKey(player)) {
+            return true;
+        }
+
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         if (args.length < 1) {

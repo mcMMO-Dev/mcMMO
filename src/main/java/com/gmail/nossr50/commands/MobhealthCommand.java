@@ -37,6 +37,10 @@ public class MobhealthCommand implements TabExecutor {
             return true;
         }
 
+        if (!CommandUtils.hasPlayerDataKey(sender)) {
+            return true;
+        }
+
         switch (args.length) {
             case 1:
                 try {

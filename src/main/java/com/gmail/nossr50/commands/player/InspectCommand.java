@@ -34,6 +34,10 @@ public class InspectCommand implements TabExecutor {
                 if (mcMMOPlayer == null) {
                     PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false); // Temporary Profile
 
+                    if (!CommandUtils.isLoaded(sender, profile)) {
+                        return true;
+                    }
+
                     if (CommandUtils.inspectOffline(sender, profile, Permissions.inspectOffline(sender))) {
                         return true;
                     }

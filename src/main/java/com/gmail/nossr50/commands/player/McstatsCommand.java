@@ -22,6 +22,10 @@ public class McstatsCommand implements TabExecutor {
             return true;
         }
 
+        if (!CommandUtils.hasPlayerDataKey(sender)) {
+            return true;
+        }
+
         switch (args.length) {
             case 0:
                 Player player = (Player) sender;

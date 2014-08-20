@@ -28,6 +28,10 @@ public abstract class ToggleCommand implements TabExecutor {
                     return true;
                 }
 
+                if (!CommandUtils.hasPlayerDataKey(sender)) {
+                    return true;
+                }
+
                 applyCommandAction(UserManager.getPlayer(sender.getName()));
                 return true;
 
