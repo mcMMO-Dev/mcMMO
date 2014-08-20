@@ -207,6 +207,41 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     /* Alchemy */
     public double getPotionXP(PotionStage stage) { return config.getDouble("Experience.Alchemy.Potion_Stage_" + stage.toNumerical(), 10D); }
 
+    /* Excavation */
+    public int getDirtAndSandXp(MaterialData data) {
+        Material type = data.getItemType();
+
+        if (type == Material.DIRT) {
+            switch (data.getData()) {
+                case 0x0:
+                    return config.getInt("Experience.Excavation.Dirt", 40);
+
+                case 0x1:
+                    return config.getInt("Experience.Excavation.Coarse_Dirt", 40);
+
+                case 0x2:
+                    return config.getInt("Experience.Excavation.Podzol", 40);
+
+                default:
+                    return 0;
+            }
+        }
+        else if (type == Material.SAND) {
+            switch (data.getData()) {
+                case 0x0:
+                    return config.getInt("Experience.Excavation.Sand", 40);
+
+                case 0x1:
+                    return config.getInt("Experience.Excavation.Red_Sand", 40);
+
+                default:
+                    return 0;
+            }
+        }
+
+        return 0;
+    }
+
     /* Fishing */
     public int getFishXp(MaterialData data) {
         switch (data.getData()) {

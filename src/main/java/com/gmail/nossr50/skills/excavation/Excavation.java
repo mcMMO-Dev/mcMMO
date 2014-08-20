@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.excavation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 
 import com.gmail.nossr50.mcMMO;
@@ -50,7 +51,15 @@ public class Excavation {
     }
 
     protected static int getBlockXP(BlockState blockState) {
-        int xp = ExperienceConfig.getInstance().getXp(SkillType.EXCAVATION, blockState.getType());
+        Material material = blockState.getType();
+        int xp;
+
+        if (material == Material.DIRT || material == Material.SAND) {
+            xp = ExperienceConfig.getInstance().getDirtAndSandXp(blockState.getData());
+        }
+        else {
+            xp = ExperienceConfig.getInstance().getXp(SkillType.EXCAVATION, material);
+        }
 
         if (xp == 0 && mcMMO.getModManager().isCustomExcavationBlock(blockState)) {
             xp = mcMMO.getModManager().getBlock(blockState).getXpGain();

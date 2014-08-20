@@ -100,10 +100,13 @@ Experience:
     Excavation:
         Clay: 40
         Dirt: 40
+        Coarse_Dirt: 40
+        Podzol: 40
         Grass: 40
         Gravel: 40
         Mycel: 40
         Sand: 40
+        Red_Sand: 40
         Snow: 20
         Snow_Block: 40
         Soul_Sand: 40
