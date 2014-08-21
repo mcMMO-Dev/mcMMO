@@ -326,6 +326,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setString(1, profile.getMobHealthbarType() == null ? Config.getInstance().getMobHealthbarDefault().name() : profile.getMobHealthbarType().name());
             statement.setInt(2, id);
             success = (statement.executeUpdate() != 0);
+            statement.close();
         }
         catch (SQLException ex) {
             printErrors(ex);
