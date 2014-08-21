@@ -18,6 +18,7 @@ Version 1.5.01-dev
  + Added support for `MATERIAL|data` format in treasures.yml
  + Added API to experience events to get XP gain reason
  + Added API to check if an entity is bleeding
+ + Added API to ExperienceAPI to get the amount of XP needed for a level
  + Added options to tools.yml and armor.yml config files to set a pretty repair material name
  + Added full support for repairables in tools.yml and armor.yml config files
  + Added new API class SkillAPI used to get a list of valid skill names

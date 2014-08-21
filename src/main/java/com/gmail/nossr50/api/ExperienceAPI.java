@@ -5,6 +5,8 @@ import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.api.exceptions.InvalidFormulaTypeException;
+import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.api.exceptions.InvalidPlayerException;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
@@ -913,6 +915,33 @@ public final class ExperienceAPI {
         getOfflineProfile(uuid).removeXp(getNonChildSkillType(skillType), xp);
     }
 
+    /**
+     * Check how much XP is needed for a specific level with the selected level curve.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param level The level to get the amount of XP for
+     *
+     * @throws InvalidFormulaTypeException if the given formulaType is not valid
+     */
+    public static int getXpNeededToLevel(int level) {
+        return mcMMO.getFormulaManager().getCachedXpToLevel(level, ExperienceConfig.getInstance().getFormulaType());
+    }
+
+    /**
+     * Check how much XP is needed for a specific level with the provided level curve.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param level The level to get the amount of XP for
+     * @param formulaType The formula type to get the amount of XP for
+     *
+     * @throws InvalidFormulaTypeException if the given formulaType is not valid
+     */
+    public static int getXpNeededToLevel(int level, String formulaType) {
+        return mcMMO.getFormulaManager().getCachedXpToLevel(level, getFormulaType(formulaType));
+    }
+
     // Utility methods follow.
     private static void addOfflineXP(UUID playerUniqueId, SkillType skill, int XP) {
         PlayerProfile profile = getOfflineProfile(playerUniqueId);
@@ -979,5 +1008,15 @@ public final class ExperienceAPI {
         }
 
         return xpGainReason;
+    }
+
+    private static FormulaType getFormulaType(String formula) throws InvalidFormulaTypeException {
+        FormulaType formulaType = FormulaType.getFormulaType(formula);
+
+        if (formulaType == null) {
+            throw new InvalidFormulaTypeException();
+        }
+
+        return formulaType;
     }
 }
