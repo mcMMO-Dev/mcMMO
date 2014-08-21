@@ -425,7 +425,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 out.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":"); // Mob Healthbar HUD
                 out.append("0:"); // Alchemy
                 out.append("0:"); // AlchemyXp
-                out.append(uuid != null ? uuid.toString() : "").append(":"); // UUID
+                out.append(uuid != null ? uuid.toString() : "NULL").append(":"); // UUID
 
                 // Add more in the same format as the line above
 
@@ -470,7 +470,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     // Find if the line contains the player we want.
                     String[] character = line.split(":");
 
-                    if ((uuid == null || !character[41].equalsIgnoreCase(uuid.toString())) && !character[0].equalsIgnoreCase(playerName)) {
+                    if ((uuid == null || (!character[41].equalsIgnoreCase(uuid.toString()) && !character[41].equalsIgnoreCase("NULL"))) && !character[0].equalsIgnoreCase(playerName)) {
                         continue;
                     }
 
@@ -938,8 +938,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         if (character.length <= 41) {
                             // Addition of UUIDs
                             // Version 1.5.01
-                            // Add a space because otherwise it gets removed
-                            newLine.append(":");
+                            // Add a value because otherwise it gets removed
+                            newLine.append("NULL:");
                             if (oldVersion == null) {
                                 oldVersion = "1.5.01";
                             }
