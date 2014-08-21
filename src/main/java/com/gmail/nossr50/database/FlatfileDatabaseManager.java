@@ -470,7 +470,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     // Find if the line contains the player we want.
                     String[] character = line.split(":");
 
-                    if ((uuid == null || (!character[41].equalsIgnoreCase(uuid.toString()) && !character[41].equalsIgnoreCase("NULL"))) && !character[0].equalsIgnoreCase(playerName)) {
+                    if ((uuid != null && (!character[41].equalsIgnoreCase(uuid.toString()) && !character[41].equalsIgnoreCase("NULL"))) || (uuid == null && !character[0].equalsIgnoreCase(playerName))) {
                         continue;
                     }
 
