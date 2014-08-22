@@ -189,6 +189,10 @@ public class McMMOPlayer {
     public WoodcuttingManager getWoodcuttingManager() {
         return (WoodcuttingManager) skillManagers.get(SkillType.WOODCUTTING);
     }
+    
+    public SkillManager getSkillManager(SkillType skillType) {
+    	return skillManagers.get(skillType);
+    }
 
     /*
      * Abilities
