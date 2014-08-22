@@ -25,7 +25,9 @@ public final class HardcoreManager {
 
         for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
             if (!skillType.getHardcoreStatLossEnabled()) {
-                break;
+                levelChanged.put(skillType.toString(), 0);
+                experienceChanged.put(skillType.toString(), 0F);
+                continue;
             }
 
             int playerSkillLevel = playerProfile.getSkillLevel(skillType);
@@ -64,7 +66,9 @@ public final class HardcoreManager {
 
         for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
             if (!skillType.getHardcoreVampirismEnabled()) {
-                break;
+                levelChanged.put(skillType.toString(), 0);
+                experienceChanged.put(skillType.toString(), 0F);
+                continue;
             }
 
             int killerSkillLevel = killerProfile.getSkillLevel(skillType);
