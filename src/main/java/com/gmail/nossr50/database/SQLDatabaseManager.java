@@ -1613,7 +1613,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private class mcMMOValidator implements ConnectionValidator {
         @Override
         public boolean isValid(Connection connection) throws SQLException {
-            return connection instanceof CacheConnection && connection.isValid(10);
+            return connection instanceof CacheConnection && connection.isValid(0);
         }
         
     }
