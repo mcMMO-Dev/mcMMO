@@ -29,9 +29,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 
-import snaq.db.CacheConnection;
 import snaq.db.ConnectionPool;
-import snaq.db.ConnectionValidator;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy";
@@ -72,26 +70,23 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 0 /*No Minimum really needed*/,
                 Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.MISC) /*max pool size */,
                 Config.getInstance().getMySQLMaxConnections(PoolIdentifier.MISC) /*max num connections*/,
-                0 /* idle timeout of connections */,
+                400 /* idle timeout of connections */,
                 connectionString,
                 connectionProperties);
-        miscPool.setValidator(new mcMMOValidator());
         loadPool = new ConnectionPool("mcMMO-Load-Pool",
                 1 /*Minimum of one*/,
                 Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.LOAD) /*max pool size */,
                 Config.getInstance().getMySQLMaxConnections(PoolIdentifier.LOAD) /*max num connections*/,
-                0 /* idle timeout of connections */,
+                400 /* idle timeout of connections */,
                 connectionString,
                 connectionProperties);
-        loadPool.setValidator(new mcMMOValidator());
         savePool = new ConnectionPool("mcMMO-Save-Pool",
                 1 /*Minimum of one*/,
                 Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.SAVE) /*max pool size */,
                 Config.getInstance().getMySQLMaxConnections(PoolIdentifier.SAVE) /*max num connections*/,
-                0 /* idle timeout of connections */,
+                400 /* idle timeout of connections */,
                 connectionString,
                 connectionProperties);
-        savePool.setValidator(new mcMMOValidator());
         miscPool.init(); // Init first connection
         miscPool.registerShutdownHook(); // Auto release on jvm exit  just in case
         loadPool.init();
@@ -1608,13 +1603,5 @@ public final class SQLDatabaseManager implements DatabaseManager {
         MISC,
         LOAD,
         SAVE;
-    }
-
-    private class mcMMOValidator implements ConnectionValidator {
-        @Override
-        public boolean isValid(Connection connection) throws SQLException {
-            return connection instanceof CacheConnection && connection.isValid(0);
-        }
-        
     }
 }
