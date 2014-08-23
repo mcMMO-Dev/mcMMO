@@ -35,7 +35,7 @@ public class HerbalismCommand extends SkillCommand {
     private boolean canShroomThumb;
 
     public HerbalismCommand() {
-        super(SkillType.HERBALISM);
+        super(SkillType.herbalism);
     }
 
     @Override

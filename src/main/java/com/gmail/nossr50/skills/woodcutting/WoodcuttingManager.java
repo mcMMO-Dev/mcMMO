@@ -30,7 +30,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class WoodcuttingManager extends SkillManager {
     public WoodcuttingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.WOODCUTTING);
+        super(mcMMOPlayer, SkillType.woodcutting);
     }
 
     public boolean canUseLeafBlower(ItemStack heldItem) {

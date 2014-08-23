@@ -28,7 +28,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class TamingManager extends SkillManager {
     public TamingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.TAMING);
+        super(mcMMOPlayer, SkillType.taming);
     }
 
     public boolean canUseThickFur() {

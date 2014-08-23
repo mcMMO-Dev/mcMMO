@@ -32,7 +32,7 @@ public final class ExperienceAPI {
      * @return true if this is a valid mcMMO skill
      */
     public static boolean isValidSkillType(String skillType) {
-        return SkillType.getSkill(skillType) != null;
+        return SkillType.getSkillFromLocalized(skillType) != null;
     }
 
     /**
@@ -46,7 +46,7 @@ public final class ExperienceAPI {
      * @return true if this is a valid, non-child mcMMO skill
      */
     public static boolean isNonChildSkill(String skillType) {
-        SkillType skill = SkillType.getSkill(skillType);
+        SkillType skill = SkillType.getSkillFromLocalized(skillType);
 
         return skill != null && !skill.isChildSkill();
     }
@@ -644,7 +644,7 @@ public final class ExperienceAPI {
         int powerLevel = 0;
         PlayerProfile profile = getOfflineProfile(playerName);
 
-        for (SkillType type : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType type : SkillType.nonChildSkills) {
             powerLevel += profile.getSkillLevel(type);
         }
 
@@ -665,7 +665,7 @@ public final class ExperienceAPI {
         int powerLevel = 0;
         PlayerProfile profile = getOfflineProfile(uuid);
 
-        for (SkillType type : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType type : SkillType.nonChildSkills) {
             powerLevel += profile.getSkillLevel(type);
         }
 
@@ -981,7 +981,7 @@ public final class ExperienceAPI {
     }
 
     private static SkillType getSkillType(String skillType) throws InvalidSkillException {
-        SkillType skill = SkillType.getSkill(skillType);
+        SkillType skill = SkillType.getSkillFromLocalized(skillType);
 
         if (skill == null) {
             throw new InvalidSkillException();

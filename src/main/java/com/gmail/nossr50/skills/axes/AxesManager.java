@@ -23,7 +23,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class AxesManager extends SkillManager {
     public AxesManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.AXES);
+        super(mcMMOPlayer, SkillType.axes);
     }
 
     public boolean canUseAxeMastery() {

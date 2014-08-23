@@ -47,7 +47,7 @@ public class PlayerProfile {
             abilityDATS.put(abilityType, 0);
         }
 
-        for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType skillType : SkillType.nonChildSkills) {
             skills.put(skillType, 0);
             skillsXp.put(skillType, 0F);
         }

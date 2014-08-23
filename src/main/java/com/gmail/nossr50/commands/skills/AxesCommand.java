@@ -26,7 +26,7 @@ public class AxesCommand extends SkillCommand {
     private boolean canGreaterImpact;
 
     public AxesCommand() {
-        super(SkillType.AXES);
+        super(SkillType.axes);
     }
 
     @Override

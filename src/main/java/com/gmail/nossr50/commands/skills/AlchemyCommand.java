@@ -26,7 +26,7 @@ public class AlchemyCommand extends SkillCommand {
     private boolean canConcoctions;
 
     public AlchemyCommand() {
-        super(SkillType.ALCHEMY);
+        super(SkillType.alchemy);
     }
 
     protected String[] calculateAbilityDisplayValues(Player player, boolean isLucky) {

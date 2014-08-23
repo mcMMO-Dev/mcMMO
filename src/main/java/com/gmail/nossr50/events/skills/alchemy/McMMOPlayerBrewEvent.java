@@ -15,7 +15,7 @@ public class McMMOPlayerBrewEvent extends McMMOPlayerSkillEvent implements Cance
     private boolean cancelled;
 
     public McMMOPlayerBrewEvent(Player player, BlockState brewingStand) {
-        super(player, SkillType.ALCHEMY);
+        super(player, SkillType.alchemy);
         this.brewingStand = brewingStand;
         cancelled = false;
     }

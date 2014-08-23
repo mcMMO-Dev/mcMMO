@@ -22,7 +22,7 @@ public class WoodcuttingCommand extends SkillCommand {
     private boolean canDoubleDrop;
 
     public WoodcuttingCommand() {
-        super(SkillType.WOODCUTTING);
+        super(SkillType.woodcutting);
     }
 
     @Override

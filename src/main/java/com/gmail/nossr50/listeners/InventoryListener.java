@@ -113,7 +113,7 @@ public class InventoryListener implements Listener {
 
         Player player = getPlayerFromFurnace(furnaceBlock);
 
-        if (!UserManager.hasPlayerDataKey(player) || !SkillType.SMELTING.getPermissions(player)) {
+        if (!UserManager.hasPlayerDataKey(player) || !SkillType.smelting.getPermissions(player)) {
             return;
         }
 
@@ -132,7 +132,7 @@ public class InventoryListener implements Listener {
 
         Player player = getPlayerFromFurnace(furnaceBlock);
 
-        if (!UserManager.hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, SkillType.SMELTING)) {
+        if (!UserManager.hasPlayerDataKey(player) || !Permissions.vanillaXpBoost(player, SkillType.smelting)) {
             return;
         }
 

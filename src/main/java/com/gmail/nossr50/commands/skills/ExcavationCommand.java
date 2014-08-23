@@ -18,7 +18,7 @@ public class ExcavationCommand extends SkillCommand {
     private boolean canTreasureHunt;
 
     public ExcavationCommand() {
-        super(SkillType.EXCAVATION);
+        super(SkillType.excavation);
     }
 
     @Override

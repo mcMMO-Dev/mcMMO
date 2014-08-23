@@ -38,7 +38,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     public SkillCommand(SkillType skill) {
         this.skill = skill;
-        skillName = skill.getName();
+        skillName = skill.getLocalizedName();
         skillGuideCommand = new SkillGuideCommand(skill);
     }
 
@@ -82,7 +82,7 @@ public abstract class SkillCommand implements TabExecutor {
                     Set<SkillType> parents = FamilyTree.getParents(skill);
 
                     for (SkillType parent : parents) {
-                        player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
+                        player.sendMessage(parent.getLocalizedName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
                     }
                 }
 

@@ -61,9 +61,9 @@ public final class CommandRegistrationManager {
     private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
 
     private static void registerSkillCommands() {
-        for (SkillType skill : SkillType.values()) {
+        for (SkillType skill : SkillType.skillList) {
             String commandName = skill.toString().toLowerCase();
-            String localizedName = skill.getName().toLowerCase();
+            String localizedName = skill.getLocalizedName().toLowerCase();
 
             PluginCommand command;
 
@@ -74,70 +74,11 @@ public final class CommandRegistrationManager {
             command.setUsage(LocaleLoader.getString("Commands.Usage.0", localizedName));
             command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.2", localizedName, "?", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
 
-            switch (skill) {
-                case ACROBATICS:
-                    command.setExecutor(new AcrobaticsCommand());
-                    break;
-
-                case ALCHEMY:
-                    command.setExecutor(new AlchemyCommand());
-                    break;
-
-                case ARCHERY:
-                    command.setExecutor(new ArcheryCommand());
-                    break;
-
-                case AXES:
-                    command.setExecutor(new AxesCommand());
-                    break;
-
-                case EXCAVATION:
-                    command.setExecutor(new ExcavationCommand());
-                    break;
-
-                case FISHING:
-                    command.setExecutor(new FishingCommand());
-                    break;
-
-                case HERBALISM:
-                    command.setExecutor(new HerbalismCommand());
-                    break;
-
-                case MINING:
-                    command.setExecutor(new MiningCommand());
-                    break;
-
-                case REPAIR:
-                    command.setExecutor(new RepairCommand());
-                    break;
-
-                case SALVAGE:
-                    command.setExecutor(new SalvageCommand());
-                    break;
-
-                case SMELTING:
-                    command.setExecutor(new SmeltingCommand());
-                    break;
-
-                case SWORDS:
-                    command.setExecutor(new SwordsCommand());
-                    break;
-
-                case TAMING:
-                    command.setExecutor(new TamingCommand());
-                    break;
-
-                case UNARMED:
-                    command.setExecutor(new UnarmedCommand());
-                    break;
-
-                case WOODCUTTING:
-                    command.setExecutor(new WoodcuttingCommand());
-                    break;
-
-                default:
-                    break;
-            }
+            try {
+				command.setExecutor(skill.getCommandClass().newInstance());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
         }
     }
 

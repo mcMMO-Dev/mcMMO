@@ -181,7 +181,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printGatheringSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Gathering"), SkillType.GATHERING_SKILLS);
+        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Gathering"), SkillType.gatheringSkills);
     }
 
     public static void printGatheringSkills(Player player) {
@@ -195,7 +195,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printCombatSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Combat"), SkillType.COMBAT_SKILLS);
+        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Combat"), SkillType.combatSkills);
     }
 
     public static void printCombatSkills(Player player) {
@@ -209,7 +209,7 @@ public final class CommandUtils {
      * @param display The sender to display stats to
      */
     public static void printMiscSkills(Player inspect, CommandSender display) {
-        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Misc"), SkillType.MISC_SKILLS);
+        printGroupedSkillData(inspect, display, LocaleLoader.getString("Stats.Header.Misc"), SkillType.miscSkills);
     }
 
     public static void printMiscSkills(Player player) {

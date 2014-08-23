@@ -375,7 +375,7 @@ public final class HolidayManager {
     }
 
     public void levelUpApril(Player player, FakeSkillType fakeSkillType) {
-        int levelTotal = Misc.getRandom().nextInt(1 + UserManager.getPlayer(player).getSkillLevel(SkillType.MINING)) + 1;
+        int levelTotal = Misc.getRandom().nextInt(1 + UserManager.getPlayer(player).getSkillLevel(SkillType.mining)) + 1;
         player.playSound(player.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
         player.sendMessage(ChatColor.YELLOW + StringUtils.getCapitalized(fakeSkillType.toString()) + " skill increased by 1. Total (" + levelTotal + ")");
         ParticleEffectUtils.fireworkParticleShower(player, ALL_COLORS.get(Misc.getRandom().nextInt(ALL_COLORS.size())));

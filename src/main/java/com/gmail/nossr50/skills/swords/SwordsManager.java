@@ -23,7 +23,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SwordsManager extends SkillManager {
     public SwordsManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.SWORDS);
+        super(mcMMOPlayer, SkillType.swords);
     }
 
     public boolean canActivateAbility() {

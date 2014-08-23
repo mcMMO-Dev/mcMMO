@@ -28,7 +28,7 @@ public class TamingCommand extends SkillCommand {
     private boolean canHolyHound;
 
     public TamingCommand() {
-        super(SkillType.TAMING);
+        super(SkillType.taming);
     }
 
     @Override

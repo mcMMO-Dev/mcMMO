@@ -22,7 +22,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SmeltingManager extends SkillManager {
     public SmeltingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.SMELTING);
+        super(mcMMOPlayer, SkillType.smelting);
     }
 
     public boolean canUseFluxMining(BlockState blockState) {

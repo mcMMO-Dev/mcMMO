@@ -42,7 +42,7 @@ public class RepairCommand extends SkillCommand {
     private int stoneLevel;
 
     public RepairCommand() {
-        super(SkillType.REPAIR);
+        super(SkillType.repair);
     }
 
     @Override

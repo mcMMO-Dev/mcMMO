@@ -177,7 +177,7 @@ public class EventUtils {
             experienceChanged = event.getExperienceChanged();
             PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
 
-            for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
+            for (SkillType skillType : SkillType.nonChildSkills) {
                 String skillName = skillType.toString();
                 int playerSkillLevel = playerProfile.getSkillLevel(skillType);
 
@@ -215,7 +215,7 @@ public class EventUtils {
             McMMOPlayer killerPlayer = UserManager.getPlayer(killer);
             PlayerProfile victimProfile = UserManager.getPlayer(victim).getProfile();
 
-            for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
+            for (SkillType skillType : SkillType.nonChildSkills) {
                 String skillName = skillType.toString();
                 int victimSkillLevel = victimProfile.getSkillLevel(skillType);
 

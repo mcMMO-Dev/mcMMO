@@ -20,7 +20,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ArcheryManager extends SkillManager {
     public ArcheryManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.ARCHERY);
+        super(mcMMOPlayer, SkillType.archery);
     }
 
     public boolean canDaze(LivingEntity target) {

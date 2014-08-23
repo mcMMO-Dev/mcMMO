@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
@@ -689,8 +690,13 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getAbilityLength() { return config.getInt("Skills.General.Ability.IncreaseLevel", 50); }
     public int getEnchantBuff() { return config.getInt("Skills.General.Ability.EnchantBuff", 5); }
 
-    public int getMaxBonusLevel(SecondaryAbility skillAbility) { return config.getInt("Skills." + StringUtils.getCapitalized(SkillType.bySecondaryAbility(skillAbility).toString()) + "." + StringUtils.getPrettySecondaryAbilityString(skillAbility).replace(" ", "") + ".MaxBonusLevel"); }
-    public double getMaxChance(SecondaryAbility skillAbility) { return config.getDouble("Skills." + StringUtils.getCapitalized(SkillType.bySecondaryAbility(skillAbility).toString()) + "." + StringUtils.getPrettySecondaryAbilityString(skillAbility).replace(" ", "") + ".ChanceMax", 100.0D); }
+    public int getMaxBonusLevel(SecondaryAbility skillAbility) { 
+    	String skillAbilityString = "Skills." + StringUtils.getCapitalized(SkillType.bySecondaryAbility(skillAbility).toString()) + "." + StringUtils.getPrettySecondaryAbilityString(skillAbility).replace(" ", "") + ".MaxBonusLevel";
+    	return config.getInt(skillAbilityString);
+    }
+    public double getMaxChance(SecondaryAbility skillAbility) { return config.getDouble("Skills." + StringUtils.getCapitalized(
+    		SkillType.bySecondaryAbility(skillAbility).toString()
+    		) + "." + StringUtils.getPrettySecondaryAbilityString(skillAbility).replace(" ", "") + ".ChanceMax", 100.0D); }
 
     /* ACROBATICS */
     public double getDodgeDamageModifier() { return config.getDouble("Skills.Acrobatics.Dodge.DamageModifier", 2.0D); }

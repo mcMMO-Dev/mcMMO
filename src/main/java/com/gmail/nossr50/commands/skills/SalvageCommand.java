@@ -18,7 +18,7 @@ public class SalvageCommand extends SkillCommand {
     private boolean canArcaneSalvage;
 
     public SalvageCommand() {
-        super(SkillType.SALVAGE);
+        super(SkillType.salvage);
     }
 
     @Override

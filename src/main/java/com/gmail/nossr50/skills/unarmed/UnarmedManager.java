@@ -26,7 +26,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class UnarmedManager extends SkillManager {
     public UnarmedManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.UNARMED);
+        super(mcMMOPlayer, SkillType.unarmed);
     }
 
     public boolean canActivateAbility() {

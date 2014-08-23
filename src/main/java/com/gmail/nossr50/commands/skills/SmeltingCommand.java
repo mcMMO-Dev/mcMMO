@@ -27,7 +27,7 @@ public class SmeltingCommand extends SkillCommand {
     private boolean canVanillaXPBoost;
 
     public SmeltingCommand() {
-        super(SkillType.SMELTING);
+        super(SkillType.smelting);
     }
 
     @Override

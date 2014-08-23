@@ -44,7 +44,7 @@ public class FishingCommand extends SkillCommand {
     private boolean canIceFish;
 
     public FishingCommand() {
-        super(SkillType.FISHING);
+        super(SkillType.fishing);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class ArcheryCommand extends SkillCommand {
     private boolean canRetrieve;
 
     public ArcheryCommand() {
-        super(SkillType.ARCHERY);
+        super(SkillType.archery);
     }
 
     @Override

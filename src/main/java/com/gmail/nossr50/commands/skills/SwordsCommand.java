@@ -26,7 +26,7 @@ public class SwordsCommand extends SkillCommand {
     private boolean canBleed;
 
     public SwordsCommand() {
-        super(SkillType.SWORDS);
+        super(SkillType.swords);
     }
 
     @Override

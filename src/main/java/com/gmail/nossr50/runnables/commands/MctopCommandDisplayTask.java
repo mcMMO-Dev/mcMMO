@@ -50,7 +50,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
             sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName()));
+            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getLocalizedName()));
         }
 
         int place = (page * 10) - 9;

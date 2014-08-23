@@ -130,10 +130,10 @@ public class BlockListener implements Listener {
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
-        if (blockState.getType() == Repair.anvilMaterial && SkillType.REPAIR.getPermissions(player)) {
+        if (blockState.getType() == Repair.anvilMaterial && SkillType.repair.getPermissions(player)) {
             mcMMOPlayer.getRepairManager().placedAnvilCheck();
         }
-        else if (blockState.getType() == Salvage.anvilMaterial && SkillType.SALVAGE.getPermissions(player)) {
+        else if (blockState.getType() == Salvage.anvilMaterial && SkillType.salvage.getPermissions(player)) {
             mcMMOPlayer.getSalvageManager().placedAnvilCheck();
         }
     }
@@ -176,26 +176,26 @@ public class BlockListener implements Listener {
 
             /* Green Terra */
             if (herbalismManager.canActivateAbility()) {
-                mcMMOPlayer.checkAbilityActivation(SkillType.HERBALISM);
+                mcMMOPlayer.checkAbilityActivation(SkillType.herbalism);
             }
 
             /*
              * We don't check the block store here because herbalism has too many unusual edge cases.
              * Instead, we check it inside the drops handler.
              */
-            if (SkillType.HERBALISM.getPermissions(player)) {
+            if (SkillType.herbalism.getPermissions(player)) {
                 herbalismManager.herbalismBlockCheck(blockState);
             }
         }
 
         /* MINING */
-        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && SkillType.MINING.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.affectedBySuperBreaker(blockState) && ItemUtils.isPickaxe(heldItem) && SkillType.mining.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             MiningManager miningManager = mcMMOPlayer.getMiningManager();
             miningManager.miningBlockCheck(blockState);
         }
 
         /* WOOD CUTTING */
-        else if (BlockUtils.isLog(blockState) && ItemUtils.isAxe(heldItem) && SkillType.WOODCUTTING.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.isLog(blockState) && ItemUtils.isAxe(heldItem) && SkillType.woodcutting.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             WoodcuttingManager woodcuttingManager = mcMMOPlayer.getWoodcuttingManager();
 
             if (woodcuttingManager.canUseTreeFeller(heldItem)) {
@@ -207,7 +207,7 @@ public class BlockListener implements Listener {
         }
 
         /* EXCAVATION */
-        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && SkillType.EXCAVATION.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
+        else if (BlockUtils.affectedByGigaDrillBreaker(blockState) && ItemUtils.isShovel(heldItem) && SkillType.excavation.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             ExcavationManager excavationManager = mcMMOPlayer.getExcavationManager();
             excavationManager.excavationBlockCheck(blockState);
 
@@ -312,19 +312,19 @@ public class BlockListener implements Listener {
             }
 
             if (mcMMOPlayer.getToolPreparationMode(ToolType.HOE) && ItemUtils.isHoe(heldItem) && (BlockUtils.affectedByGreenTerra(blockState) || BlockUtils.canMakeMossy(blockState)) && Permissions.greenTerra(player)) {
-                mcMMOPlayer.checkAbilityActivation(SkillType.HERBALISM);
+                mcMMOPlayer.checkAbilityActivation(SkillType.herbalism);
             }
             else if (mcMMOPlayer.getToolPreparationMode(ToolType.AXE) && ItemUtils.isAxe(heldItem) && BlockUtils.isLog(blockState) && Permissions.treeFeller(player)) {
-                mcMMOPlayer.checkAbilityActivation(SkillType.WOODCUTTING);
+                mcMMOPlayer.checkAbilityActivation(SkillType.woodcutting);
             }
             else if (mcMMOPlayer.getToolPreparationMode(ToolType.PICKAXE) && ItemUtils.isPickaxe(heldItem) && BlockUtils.affectedBySuperBreaker(blockState) && Permissions.superBreaker(player)) {
-                mcMMOPlayer.checkAbilityActivation(SkillType.MINING);
+                mcMMOPlayer.checkAbilityActivation(SkillType.mining);
             }
             else if (mcMMOPlayer.getToolPreparationMode(ToolType.SHOVEL) && ItemUtils.isShovel(heldItem) && BlockUtils.affectedByGigaDrillBreaker(blockState) && Permissions.gigaDrillBreaker(player)) {
-                mcMMOPlayer.checkAbilityActivation(SkillType.EXCAVATION);
+                mcMMOPlayer.checkAbilityActivation(SkillType.excavation);
             }
             else if (mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && heldItem.getType() == Material.AIR && (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW || BlockUtils.affectedByBlockCracker(blockState) && Permissions.berserk(player))) {
-                mcMMOPlayer.checkAbilityActivation(SkillType.UNARMED);
+                mcMMOPlayer.checkAbilityActivation(SkillType.unarmed);
             }
         }
 

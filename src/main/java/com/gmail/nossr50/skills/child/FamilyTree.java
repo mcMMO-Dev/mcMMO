@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.child;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -22,7 +23,7 @@ public class FamilyTree {
         enforceNotChildSkill(parentSkill);
 
         if (!tree.containsKey(childSkill)) {
-            tree.put(childSkill, EnumSet.noneOf(SkillType.class));
+            tree.put(childSkill, new HashSet<SkillType>());
         }
 
         tree.get(childSkill).add(parentSkill);
@@ -41,13 +42,13 @@ public class FamilyTree {
 
     protected static void enforceChildSkill(SkillType skill) {
         if (!skill.isChildSkill()) {
-            throw new IllegalArgumentException(skill.name() + " is not a child skill!");
+            throw new IllegalArgumentException(skill.getName() + " is not a child skill!");
         }
     }
 
     protected static void enforceNotChildSkill(SkillType skill) {
         if (skill.isChildSkill()) {
-            throw new IllegalArgumentException(skill.name() + " is a child skill!");
+            throw new IllegalArgumentException(skill.getName() + " is a child skill!");
         }
     }
 }

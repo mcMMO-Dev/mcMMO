@@ -18,7 +18,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ExcavationManager extends SkillManager {
     public ExcavationManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.EXCAVATION);
+        super(mcMMOPlayer, SkillType.excavation);
     }
 
     /**

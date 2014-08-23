@@ -40,7 +40,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class HerbalismManager extends SkillManager {
     public HerbalismManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.HERBALISM);
+        super(mcMMOPlayer, SkillType.herbalism);
     }
 
     public boolean canBlockCheck() {

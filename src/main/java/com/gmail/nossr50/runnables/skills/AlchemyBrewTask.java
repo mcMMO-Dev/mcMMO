@@ -37,7 +37,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
         brewTimer = DEFAULT_BREW_TICKS;
 
         if (player != null && !Misc.isNPCEntity(player) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.CATALYSIS)) {
-            double catalysis = UserManager.getPlayer(player).getAlchemyManager().calculateBrewSpeed(Permissions.lucky(player, SkillType.ALCHEMY));
+            double catalysis = UserManager.getPlayer(player).getAlchemyManager().calculateBrewSpeed(Permissions.lucky(player, SkillType.alchemy));
 
             McMMOPlayerCatalysisEvent event = new McMMOPlayerCatalysisEvent(player, catalysis);
             mcMMO.p.getServer().getPluginManager().callEvent(event);

@@ -35,7 +35,7 @@ public class MiningCommand extends SkillCommand {
     private boolean canDemoExpert;
 
     public MiningCommand() {
-        super(SkillType.MINING);
+        super(SkillType.mining);
     }
 
     @Override

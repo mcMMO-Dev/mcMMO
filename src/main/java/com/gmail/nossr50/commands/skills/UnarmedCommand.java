@@ -29,7 +29,7 @@ public class UnarmedCommand extends SkillCommand {
     private boolean canIronGrip;
 
     public UnarmedCommand() {
-        super(SkillType.UNARMED);
+        super(SkillType.unarmed);
     }
 
     @Override

@@ -29,7 +29,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class MiningManager extends SkillManager {
     public MiningManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.MINING);
+        super(mcMMOPlayer, SkillType.mining);
     }
 
     public boolean canUseDemolitionsExpertise() {

@@ -76,7 +76,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                     return true;
                 }
 
-                SkillType skill = SkillType.getSkill(args[0]);
+                SkillType skill = SkillType.getSkillFromLocalized(args[0]);
 
                 if (!CommandUtils.isChildSkill(sender, skill)) {
                     return true;

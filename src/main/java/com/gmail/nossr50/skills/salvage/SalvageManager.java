@@ -30,7 +30,7 @@ public class SalvageManager extends SkillManager {
     private int     lastClick;
 
     public SalvageManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.SALVAGE);
+        super(mcMMOPlayer, SkillType.salvage);
     }
 
     /**

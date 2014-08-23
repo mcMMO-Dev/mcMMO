@@ -33,7 +33,7 @@ public class RepairManager extends SkillManager {
     private int     lastClick;
 
     public RepairManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.REPAIR);
+        super(mcMMOPlayer, SkillType.repair);
     }
 
     /**

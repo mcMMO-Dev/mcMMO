@@ -12,7 +12,7 @@ public class McMMOPlayerCatalysisEvent extends McMMOPlayerSkillEvent implements 
     private boolean cancelled;
 
     public McMMOPlayerCatalysisEvent(Player player, double speed) {
-        super(player, SkillType.ALCHEMY);
+        super(player, SkillType.alchemy);
         this.speed = speed;
         cancelled = false;
     }

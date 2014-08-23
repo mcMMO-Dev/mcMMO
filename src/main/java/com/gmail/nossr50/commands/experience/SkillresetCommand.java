@@ -44,7 +44,7 @@ public class SkillresetCommand implements TabExecutor {
                     return true;
                 }
 
-                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), SkillType.getSkill(args[0]));
+                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), SkillType.getSkillFromLocalized(args[0]));
                 return true;
 
             case 2:
@@ -62,7 +62,7 @@ public class SkillresetCommand implements TabExecutor {
                     skill = null;
                 }
                 else {
-                    skill = SkillType.getSkill(args[1]);
+                    skill = SkillType.getSkillFromLocalized(args[1]);
                 }
 
                 String playerName = CommandUtils.getMatchedPlayerName(args[0]);
@@ -97,7 +97,7 @@ public class SkillresetCommand implements TabExecutor {
                 List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], SkillType.SKILL_NAMES, new ArrayList<String>(SkillType.SKILL_NAMES.size()));
+                return StringUtil.copyPartialMatches(args[1], SkillType.skillNames, new ArrayList<String>(SkillType.skillNames.size()));
             default:
                 return ImmutableList.of();
         }
@@ -130,7 +130,7 @@ public class SkillresetCommand implements TabExecutor {
     }
 
     protected void handlePlayerMessageSkill(Player player, SkillType skill) {
-        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getName()));
+        player.sendMessage(LocaleLoader.getString("Commands.Reset.Single", skill.getLocalizedName()));
     }
 
     private boolean validateArguments(CommandSender sender, String skillName) {
@@ -142,13 +142,13 @@ public class SkillresetCommand implements TabExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getLocalizedName(), playerName));
         }
     }
 
     protected void editValues(Player player, PlayerProfile profile, SkillType skill) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
+            for (SkillType skillType : SkillType.nonChildSkills) {
                 handleCommand(player, profile, skillType);
             }
 

@@ -25,7 +25,7 @@ public class AcrobaticsManager extends SkillManager {
     Location lastFallLocation;
 
     public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.ACROBATICS);
+        super(mcMMOPlayer, SkillType.acrobatics);
     }
 
     public boolean canRoll() {

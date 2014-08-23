@@ -111,7 +111,7 @@ public class McMMOPlayer {
          * If in the future someone wants to remove this, don't forget to also remove what is in the SkillType enum. - bm01
          */
         try {
-            for (SkillType skillType : SkillType.values()) {
+            for (SkillType skillType : SkillType.skillList) {
                 skillManagers.put(skillType, skillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(this));
             }
         }
@@ -131,63 +131,63 @@ public class McMMOPlayer {
     }
 
     public AcrobaticsManager getAcrobaticsManager() {
-        return (AcrobaticsManager) skillManagers.get(SkillType.ACROBATICS);
+        return (AcrobaticsManager) skillManagers.get(SkillType.acrobatics);
     }
 
     public AlchemyManager getAlchemyManager() {
-        return (AlchemyManager) skillManagers.get(SkillType.ALCHEMY);
+        return (AlchemyManager) skillManagers.get(SkillType.alchemy);
     }
 
     public ArcheryManager getArcheryManager() {
-        return (ArcheryManager) skillManagers.get(SkillType.ARCHERY);
+        return (ArcheryManager) skillManagers.get(SkillType.archery);
     }
 
     public AxesManager getAxesManager() {
-        return (AxesManager) skillManagers.get(SkillType.AXES);
+        return (AxesManager) skillManagers.get(SkillType.axes);
     }
 
     public ExcavationManager getExcavationManager() {
-        return (ExcavationManager) skillManagers.get(SkillType.EXCAVATION);
+        return (ExcavationManager) skillManagers.get(SkillType.excavation);
     }
 
     public FishingManager getFishingManager() {
-        return (FishingManager) skillManagers.get(SkillType.FISHING);
+        return (FishingManager) skillManagers.get(SkillType.fishing);
     }
 
     public HerbalismManager getHerbalismManager() {
-        return (HerbalismManager) skillManagers.get(SkillType.HERBALISM);
+        return (HerbalismManager) skillManagers.get(SkillType.herbalism);
     }
 
     public MiningManager getMiningManager() {
-        return (MiningManager) skillManagers.get(SkillType.MINING);
+        return (MiningManager) skillManagers.get(SkillType.mining);
     }
 
     public RepairManager getRepairManager() {
-        return (RepairManager) skillManagers.get(SkillType.REPAIR);
+        return (RepairManager) skillManagers.get(SkillType.repair);
     }
 
     public SalvageManager getSalvageManager() {
-        return (SalvageManager) skillManagers.get(SkillType.SALVAGE);
+        return (SalvageManager) skillManagers.get(SkillType.salvage);
     }
 
     public SmeltingManager getSmeltingManager() {
-        return (SmeltingManager) skillManagers.get(SkillType.SMELTING);
+        return (SmeltingManager) skillManagers.get(SkillType.smelting);
     }
 
     public SwordsManager getSwordsManager() {
-        return (SwordsManager) skillManagers.get(SkillType.SWORDS);
+        return (SwordsManager) skillManagers.get(SkillType.swords);
     }
 
     public TamingManager getTamingManager() {
-        return (TamingManager) skillManagers.get(SkillType.TAMING);
+        return (TamingManager) skillManagers.get(SkillType.taming);
     }
 
     public UnarmedManager getUnarmedManager() {
-        return (UnarmedManager) skillManagers.get(SkillType.UNARMED);
+        return (UnarmedManager) skillManagers.get(SkillType.unarmed);
     }
 
     public WoodcuttingManager getWoodcuttingManager() {
-        return (WoodcuttingManager) skillManagers.get(SkillType.WOODCUTTING);
+        return (WoodcuttingManager) skillManagers.get(SkillType.woodcutting);
     }
     
     public SkillManager getSkillManager(SkillType skillType) {
@@ -389,7 +389,7 @@ public class McMMOPlayer {
     public int getPowerLevel() {
         int powerLevel = 0;
 
-        for (SkillType type : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType type : SkillType.nonChildSkills) {
             if (type.getPermissions(player)) {
                 powerLevel += getSkillLevel(type);
             }
@@ -475,7 +475,7 @@ public class McMMOPlayer {
             return;
         }
 
-        isUsingUnarmed = (skillType == SkillType.UNARMED);
+        isUsingUnarmed = (skillType == SkillType.unarmed);
         checkXp(skillType, xpGainReason);
     }
 
@@ -725,7 +725,7 @@ public class McMMOPlayer {
              * Axes and Woodcutting are odd because they share the same tool.
              * We show them the too tired message when they take action.
              */
-            if (skill == SkillType.WOODCUTTING || skill == SkillType.AXES) {
+            if (skill == SkillType.woodcutting || skill == SkillType.axes) {
                 player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
             }
 
@@ -787,7 +787,7 @@ public class McMMOPlayer {
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
         if (ability.getPermissions(player) && tool.inHand(inHand) && !getToolPreparationMode(tool)) {
-            if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
+            if (skill != SkillType.woodcutting && skill != SkillType.axes) {
                 int timeRemaining = calculateTimeRemaining(ability);
 
                 if (!getAbilityMode(ability) && timeRemaining > 0) {

@@ -22,7 +22,7 @@ public class HardcoreCommand extends HardcoreModeCommand {
     @Override
     protected boolean checkEnabled(SkillType skill) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.values()) {
+            for (SkillType skillType : SkillType.skillList) {
                 if (!skillType.getHardcoreStatLossEnabled()) {
                     return false;
                 }
@@ -52,7 +52,7 @@ public class HardcoreCommand extends HardcoreModeCommand {
 
     private void toggle(boolean enable, SkillType skill) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
+            for (SkillType skillType : SkillType.nonChildSkills) {
                 skillType.setHardcoreStatLossEnabled(enable);
             }
         }
@@ -60,6 +60,6 @@ public class HardcoreCommand extends HardcoreModeCommand {
             skill.setHardcoreStatLossEnabled(enable);
         }
 
-        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), (skill == null ? "all skills" : skill.getName())));
+        mcMMO.p.getServer().broadcastMessage(LocaleLoader.getString("Hardcore.Mode." + (enable ? "Enabled" : "Disabled"), LocaleLoader.getString("Hardcore.DeathStatLoss.Name"), (skill == null ? "all skills" : skill.getLocalizedName())));
     }
 }

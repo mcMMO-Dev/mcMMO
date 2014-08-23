@@ -426,7 +426,7 @@ public class ScoreboardWrapper {
                 if (targetSkill.getAbility() != null) {
                     boolean stopUpdating;
 
-                    if (targetSkill == SkillType.MINING) {
+                    if (targetSkill == SkillType.mining) {
                         // Special-Case: Mining has two abilities, both with cooldowns
                         Score cooldownSB = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(AbilityType.SUPER_BREAKER));
                         Score cooldownBM = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(AbilityType.BLAST_MINING));
@@ -494,7 +494,7 @@ public class ScoreboardWrapper {
 
                 // Calculate power level here
                 int powerLevel = 0;
-                for (SkillType skill : SkillType.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
+                for (SkillType skill : SkillType.nonChildSkills) { // Don't include child skills, makes the list too long
                     int level = newProfile.getSkillLevel(skill);
 
                     powerLevel += level;
@@ -527,7 +527,7 @@ public class ScoreboardWrapper {
         Integer rank;
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
-        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType skill : SkillType.nonChildSkills) {
             if (!skill.getPermissions(player)) {
                 continue;
             }

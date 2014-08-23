@@ -272,19 +272,19 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + ", unarmed = ?, herbalism = ?, excavation = ?"
                     + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
                     + ", fishing = ?, alchemy = ? WHERE user_id = ?");
-            statement.setInt(1, profile.getSkillLevel(SkillType.TAMING));
-            statement.setInt(2, profile.getSkillLevel(SkillType.MINING));
-            statement.setInt(3, profile.getSkillLevel(SkillType.REPAIR));
-            statement.setInt(4, profile.getSkillLevel(SkillType.WOODCUTTING));
-            statement.setInt(5, profile.getSkillLevel(SkillType.UNARMED));
-            statement.setInt(6, profile.getSkillLevel(SkillType.HERBALISM));
-            statement.setInt(7, profile.getSkillLevel(SkillType.EXCAVATION));
-            statement.setInt(8, profile.getSkillLevel(SkillType.ARCHERY));
-            statement.setInt(9, profile.getSkillLevel(SkillType.SWORDS));
-            statement.setInt(10, profile.getSkillLevel(SkillType.AXES));
-            statement.setInt(11, profile.getSkillLevel(SkillType.ACROBATICS));
-            statement.setInt(12, profile.getSkillLevel(SkillType.FISHING));
-            statement.setInt(13, profile.getSkillLevel(SkillType.ALCHEMY));
+            statement.setInt(1, profile.getSkillLevel(SkillType.taming));
+            statement.setInt(2, profile.getSkillLevel(SkillType.mining));
+            statement.setInt(3, profile.getSkillLevel(SkillType.repair));
+            statement.setInt(4, profile.getSkillLevel(SkillType.woodcutting));
+            statement.setInt(5, profile.getSkillLevel(SkillType.unarmed));
+            statement.setInt(6, profile.getSkillLevel(SkillType.herbalism));
+            statement.setInt(7, profile.getSkillLevel(SkillType.excavation));
+            statement.setInt(8, profile.getSkillLevel(SkillType.archery));
+            statement.setInt(9, profile.getSkillLevel(SkillType.swords));
+            statement.setInt(10, profile.getSkillLevel(SkillType.axes));
+            statement.setInt(11, profile.getSkillLevel(SkillType.acrobatics));
+            statement.setInt(12, profile.getSkillLevel(SkillType.fishing));
+            statement.setInt(13, profile.getSkillLevel(SkillType.alchemy));
             statement.setInt(14, id);
             success &= (statement.executeUpdate() != 0);
             statement.close();
@@ -294,19 +294,19 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + ", unarmed = ?, herbalism = ?, excavation = ?"
                     + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
                     + ", fishing = ?, alchemy = ? WHERE user_id = ?");
-            statement.setInt(1, profile.getSkillXpLevel(SkillType.TAMING));
-            statement.setInt(2, profile.getSkillXpLevel(SkillType.MINING));
-            statement.setInt(3, profile.getSkillXpLevel(SkillType.REPAIR));
-            statement.setInt(4, profile.getSkillXpLevel(SkillType.WOODCUTTING));
-            statement.setInt(5, profile.getSkillXpLevel(SkillType.UNARMED));
-            statement.setInt(6, profile.getSkillXpLevel(SkillType.HERBALISM));
-            statement.setInt(7, profile.getSkillXpLevel(SkillType.EXCAVATION));
-            statement.setInt(8, profile.getSkillXpLevel(SkillType.ARCHERY));
-            statement.setInt(9, profile.getSkillXpLevel(SkillType.SWORDS));
-            statement.setInt(10, profile.getSkillXpLevel(SkillType.AXES));
-            statement.setInt(11, profile.getSkillXpLevel(SkillType.ACROBATICS));
-            statement.setInt(12, profile.getSkillXpLevel(SkillType.FISHING));
-            statement.setInt(13, profile.getSkillXpLevel(SkillType.ALCHEMY));
+            statement.setInt(1, profile.getSkillXpLevel(SkillType.taming));
+            statement.setInt(2, profile.getSkillXpLevel(SkillType.mining));
+            statement.setInt(3, profile.getSkillXpLevel(SkillType.repair));
+            statement.setInt(4, profile.getSkillXpLevel(SkillType.woodcutting));
+            statement.setInt(5, profile.getSkillXpLevel(SkillType.unarmed));
+            statement.setInt(6, profile.getSkillXpLevel(SkillType.herbalism));
+            statement.setInt(7, profile.getSkillXpLevel(SkillType.excavation));
+            statement.setInt(8, profile.getSkillXpLevel(SkillType.archery));
+            statement.setInt(9, profile.getSkillXpLevel(SkillType.swords));
+            statement.setInt(10, profile.getSkillXpLevel(SkillType.axes));
+            statement.setInt(11, profile.getSkillXpLevel(SkillType.acrobatics));
+            statement.setInt(12, profile.getSkillXpLevel(SkillType.fishing));
+            statement.setInt(13, profile.getSkillXpLevel(SkillType.alchemy));
             statement.setInt(14, id);
             success &= (statement.executeUpdate() != 0);
             statement.close();
@@ -361,7 +361,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public List<PlayerStat> readLeaderboard(SkillType skill, int pageNumber, int statsPerPage) {
         List<PlayerStat> stats = new ArrayList<PlayerStat>();
 
-        String query = skill == null ? ALL_QUERY_VERSION : skill.name().toLowerCase();
+        String query = skill == null ? ALL_QUERY_VERSION : skill.getName().toLowerCase();
         ResultSet resultSet = null;
         PreparedStatement statement = null;
         Connection connection = null;
@@ -425,8 +425,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = getConnection(PoolIdentifier.MISC);
-            for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
-                String skillName = skillType.name().toLowerCase();
+            for (SkillType skillType : SkillType.nonChildSkills) {
+                String skillName = skillType.getName().toLowerCase();
                 String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
                         "AND " + skillName + " > (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
                         "WHERE user = ?)";
@@ -1226,8 +1226,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
-        Map<SkillType, Integer> skills = new EnumMap<SkillType, Integer>(SkillType.class); // Skill & Level
-        Map<SkillType, Float> skillsXp = new EnumMap<SkillType, Float>(SkillType.class); // Skill & XP
+        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); // Skill & Level
+        Map<SkillType, Float> skillsXp = new HashMap<SkillType, Float>(); // Skill & XP
         Map<AbilityType, Integer> skillsDATS = new EnumMap<AbilityType, Integer>(AbilityType.class); // Ability & Cooldown
         MobHealthbarType mobHealthbarType;
         UUID uuid;
@@ -1238,33 +1238,33 @@ public final class SQLDatabaseManager implements DatabaseManager {
         final int OFFSET_DATS = 26;
         final int OFFSET_OTHER = 38;
 
-        skills.put(SkillType.TAMING, result.getInt(OFFSET_SKILLS + 1));
-        skills.put(SkillType.MINING, result.getInt(OFFSET_SKILLS + 2));
-        skills.put(SkillType.REPAIR, result.getInt(OFFSET_SKILLS + 3));
-        skills.put(SkillType.WOODCUTTING, result.getInt(OFFSET_SKILLS + 4));
-        skills.put(SkillType.UNARMED, result.getInt(OFFSET_SKILLS + 5));
-        skills.put(SkillType.HERBALISM, result.getInt(OFFSET_SKILLS + 6));
-        skills.put(SkillType.EXCAVATION, result.getInt(OFFSET_SKILLS + 7));
-        skills.put(SkillType.ARCHERY, result.getInt(OFFSET_SKILLS + 8));
-        skills.put(SkillType.SWORDS, result.getInt(OFFSET_SKILLS + 9));
-        skills.put(SkillType.AXES, result.getInt(OFFSET_SKILLS + 10));
-        skills.put(SkillType.ACROBATICS, result.getInt(OFFSET_SKILLS + 11));
-        skills.put(SkillType.FISHING, result.getInt(OFFSET_SKILLS + 12));
-        skills.put(SkillType.ALCHEMY, result.getInt(OFFSET_SKILLS + 13));
+        skills.put(SkillType.taming, result.getInt(OFFSET_SKILLS + 1));
+        skills.put(SkillType.mining, result.getInt(OFFSET_SKILLS + 2));
+        skills.put(SkillType.repair, result.getInt(OFFSET_SKILLS + 3));
+        skills.put(SkillType.woodcutting, result.getInt(OFFSET_SKILLS + 4));
+        skills.put(SkillType.unarmed, result.getInt(OFFSET_SKILLS + 5));
+        skills.put(SkillType.herbalism, result.getInt(OFFSET_SKILLS + 6));
+        skills.put(SkillType.excavation, result.getInt(OFFSET_SKILLS + 7));
+        skills.put(SkillType.archery, result.getInt(OFFSET_SKILLS + 8));
+        skills.put(SkillType.swords, result.getInt(OFFSET_SKILLS + 9));
+        skills.put(SkillType.axes, result.getInt(OFFSET_SKILLS + 10));
+        skills.put(SkillType.acrobatics, result.getInt(OFFSET_SKILLS + 11));
+        skills.put(SkillType.fishing, result.getInt(OFFSET_SKILLS + 12));
+        skills.put(SkillType.alchemy, result.getInt(OFFSET_SKILLS + 13));
 
-        skillsXp.put(SkillType.TAMING, result.getFloat(OFFSET_XP + 1));
-        skillsXp.put(SkillType.MINING, result.getFloat(OFFSET_XP + 2));
-        skillsXp.put(SkillType.REPAIR, result.getFloat(OFFSET_XP + 3));
-        skillsXp.put(SkillType.WOODCUTTING, result.getFloat(OFFSET_XP + 4));
-        skillsXp.put(SkillType.UNARMED, result.getFloat(OFFSET_XP + 5));
-        skillsXp.put(SkillType.HERBALISM, result.getFloat(OFFSET_XP + 6));
-        skillsXp.put(SkillType.EXCAVATION, result.getFloat(OFFSET_XP + 7));
-        skillsXp.put(SkillType.ARCHERY, result.getFloat(OFFSET_XP + 8));
-        skillsXp.put(SkillType.SWORDS, result.getFloat(OFFSET_XP + 9));
-        skillsXp.put(SkillType.AXES, result.getFloat(OFFSET_XP + 10));
-        skillsXp.put(SkillType.ACROBATICS, result.getFloat(OFFSET_XP + 11));
-        skillsXp.put(SkillType.FISHING, result.getFloat(OFFSET_XP + 12));
-        skillsXp.put(SkillType.ALCHEMY, result.getFloat(OFFSET_XP + 13));
+        skillsXp.put(SkillType.taming, result.getFloat(OFFSET_XP + 1));
+        skillsXp.put(SkillType.mining, result.getFloat(OFFSET_XP + 2));
+        skillsXp.put(SkillType.repair, result.getFloat(OFFSET_XP + 3));
+        skillsXp.put(SkillType.woodcutting, result.getFloat(OFFSET_XP + 4));
+        skillsXp.put(SkillType.unarmed, result.getFloat(OFFSET_XP + 5));
+        skillsXp.put(SkillType.herbalism, result.getFloat(OFFSET_XP + 6));
+        skillsXp.put(SkillType.excavation, result.getFloat(OFFSET_XP + 7));
+        skillsXp.put(SkillType.archery, result.getFloat(OFFSET_XP + 8));
+        skillsXp.put(SkillType.swords, result.getFloat(OFFSET_XP + 9));
+        skillsXp.put(SkillType.axes, result.getFloat(OFFSET_XP + 10));
+        skillsXp.put(SkillType.acrobatics, result.getFloat(OFFSET_XP + 11));
+        skillsXp.put(SkillType.fishing, result.getFloat(OFFSET_XP + 12));
+        skillsXp.put(SkillType.alchemy, result.getFloat(OFFSET_XP + 13));
 
         // Taming - Unused - result.getInt(OFFSET_DATS + 1)
         skillsDATS.put(AbilityType.SUPER_BREAKER, result.getInt(OFFSET_DATS + 2));
@@ -1357,11 +1357,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet = statement.executeQuery("SHOW INDEX FROM `" + tablePrefix + "skills` WHERE `Key_name` LIKE 'idx\\_%'");
             resultSet.last();
 
-            if (resultSet.getRow() != SkillType.NON_CHILD_SKILLS.size()) {
+            if (resultSet.getRow() != SkillType.nonChildSkills.size()) {
                 mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
 
-                for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
-                    String skill_name = skill.name().toLowerCase();
+                for (SkillType skill : SkillType.nonChildSkills) {
+                    String skill_name = skill.getName().toLowerCase();
 
                     try {
                         statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_" + skill_name + "` (`" + skill_name + "`) USING BTREE");
