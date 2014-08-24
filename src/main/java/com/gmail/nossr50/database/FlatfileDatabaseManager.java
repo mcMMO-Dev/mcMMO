@@ -470,8 +470,22 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     // Find if the line contains the player we want.
                     String[] character = line.split(":");
 
-                    if ((uuid != null && (!character[41].equalsIgnoreCase(uuid.toString()) && !character[41].equalsIgnoreCase("NULL"))) || (uuid == null && !character[0].equalsIgnoreCase(playerName))) {
-                        continue;
+                    if (character[41].equalsIgnoreCase("NULL")) {
+                        //compare names because we don't have a valid uuid for that player even if input uuid is not null
+                        if (!character[0].equalsIgnoreCase(playerName)) {
+                            continue;
+                        }
+                    } else {
+                        //if input uuid is not null then we should compare uuids
+                        if (uuid != null) {
+                            if (!character[41].equalsIgnoreCase(uuid.toString()) {
+                                continue;
+                            }
+                        } else {
+                            if (!character[0].equalsIgnoreCase(playerName)) {
+                                continue;
+                            } 
+                        }
                     }
 
                     // Update playerName in database after name change
