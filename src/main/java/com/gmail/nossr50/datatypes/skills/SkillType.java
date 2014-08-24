@@ -101,25 +101,25 @@ public class SkillType {
     
     public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, ToolType tool, List<SecondaryAbility> secondaryAbilities) {
     	SkillType skill = new SkillType(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ability, tool, secondaryAbilities);
-    	skillList.add(skill);
+    	getSkillList().add(skill);
 		if(skill.isChild) {
-			childSkills.add(skill);
+			getChildSkills().add(skill);
 		}
 		else {
-			nonChildSkills.add(skill);
+			getNonChildSkills().add(skill);
 		}
 		switch(skill.skillUseType) {
 			case COMBAT:
-				combatSkills.add(skill);
+				getCombatSkills().add(skill);
 				break;
 			case GATHERING:
-				gatheringSkills.add(skill);
+				getGatheringSkills().add(skill);
 				break;
 			default:
-				miscSkills.add(skill);
+				getMiscSkills().add(skill);
 				break;
 		}
-		skillNames.add(skill.name);
+		getSkillNames().add(skill.name);
     	return skill;
     }
     
@@ -202,7 +202,7 @@ public class SkillType {
 
     public static SkillType getSkillFromLocalized(String skillName) {
         if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
-            for (SkillType type : skillList) {
+            for (SkillType type : getSkillList()) {
                 if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name) + ".SkillName"))) {
                     return type;
                 }
@@ -213,7 +213,7 @@ public class SkillType {
     }
     
     public static SkillType getSkill(String skillName) {
-        for (SkillType type : skillList) {
+        for (SkillType type : getSkillList()) {
             if (type.name.equalsIgnoreCase(skillName)) {
                 return type;
             }
@@ -231,7 +231,7 @@ public class SkillType {
     }
 
     public static SkillType bySecondaryAbility(SecondaryAbility skillAbility) {
-        for (SkillType type : skillList) {
+        for (SkillType type : getSkillList()) {
             if (type.getSkillAbilities().contains(skillAbility)) {
                 return type;
             }
@@ -240,7 +240,7 @@ public class SkillType {
     }
 
     public static SkillType byAbility(AbilityType ability) {
-        for (SkillType type : skillList) {
+        for (SkillType type : getSkillList()) {
             if (type.getAbility() == ability) {
                 return type;
             }
@@ -278,6 +278,34 @@ public class SkillType {
     
     public static void setUpSkillTypes()
     {
-    	Collections.sort(skillNames);
+    	Collections.sort(getSkillNames());
     }
+
+	public static List<String> getSkillNames() {
+		return skillNames;
+	}
+
+	public static List<SkillType> getSkillList() {
+		return skillList;
+	}
+
+	public static List<SkillType> getChildSkills() {
+		return childSkills;
+	}
+
+	public static List<SkillType> getNonChildSkills() {
+		return nonChildSkills;
+	}
+
+	public static List<SkillType> getCombatSkills() {
+		return combatSkills;
+	}
+
+	public static List<SkillType> getGatheringSkills() {
+		return gatheringSkills;
+	}
+
+	public static List<SkillType> getMiscSkills() {
+		return miscSkills;
+	}
 }

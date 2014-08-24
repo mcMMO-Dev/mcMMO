@@ -17,7 +17,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getSkills() {
-        return SkillType.skillNames;
+        return SkillType.getSkillNames();
     }
 
     /**
@@ -29,7 +29,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getNonChildSkills() {
-        return getStringListFromSkillList(SkillType.nonChildSkills);
+        return getStringListFromSkillList(SkillType.getNonChildSkills());
     }
 
     /**
@@ -41,7 +41,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getChildSkills() {
-        return getStringListFromSkillList(SkillType.childSkills);
+        return getStringListFromSkillList(SkillType.getChildSkills());
     }
 
     /**
@@ -53,7 +53,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getCombatSkills() {
-        return getStringListFromSkillList(SkillType.combatSkills);
+        return getStringListFromSkillList(SkillType.getCombatSkills());
     }
 
     /**
@@ -65,7 +65,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getGatheringSkills() {
-        return getStringListFromSkillList(SkillType.gatheringSkills);
+        return getStringListFromSkillList(SkillType.getGatheringSkills());
     }
 
     /**
@@ -77,7 +77,7 @@ public final class SkillAPI {
      * @return a list of strings with valid skill names
      */
     public static List<String> getMiscSkills() {
-        return getStringListFromSkillList(SkillType.miscSkills);
+        return getStringListFromSkillList(SkillType.getMiscSkills());
     }
 
     private static List<String> getStringListFromSkillList(List<SkillType> skillsTypes) {
