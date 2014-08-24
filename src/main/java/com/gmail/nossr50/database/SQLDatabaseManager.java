@@ -315,14 +315,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "  mining = ?, woodcutting = ?, unarmed = ?"
                     + ", herbalism = ?, excavation = ?, swords = ?"
                     + ", axes = ?, blast_mining = ? WHERE user_id = ?");
-            statement.setLong(1, profile.getAbilityDATS(AbilityType.SUPER_BREAKER));
-            statement.setLong(2, profile.getAbilityDATS(AbilityType.TREE_FELLER));
-            statement.setLong(3, profile.getAbilityDATS(AbilityType.BERSERK));
-            statement.setLong(4, profile.getAbilityDATS(AbilityType.GREEN_TERRA));
-            statement.setLong(5, profile.getAbilityDATS(AbilityType.GIGA_DRILL_BREAKER));
-            statement.setLong(6, profile.getAbilityDATS(AbilityType.SERRATED_STRIKES));
-            statement.setLong(7, profile.getAbilityDATS(AbilityType.SKULL_SPLITTER));
-            statement.setLong(8, profile.getAbilityDATS(AbilityType.BLAST_MINING));
+            statement.setLong(1, profile.getAbilityDATS(AbilityType.superBreaker));
+            statement.setLong(2, profile.getAbilityDATS(AbilityType.treeFeller));
+            statement.setLong(3, profile.getAbilityDATS(AbilityType.berserk));
+            statement.setLong(4, profile.getAbilityDATS(AbilityType.greenTerra));
+            statement.setLong(5, profile.getAbilityDATS(AbilityType.gigaDrillBreaker));
+            statement.setLong(6, profile.getAbilityDATS(AbilityType.serratedStrikes));
+            statement.setLong(7, profile.getAbilityDATS(AbilityType.skullSplitter));
+            statement.setLong(8, profile.getAbilityDATS(AbilityType.blastMining));
             statement.setInt(9, id);
             success = (statement.executeUpdate() != 0);
             statement.close();
@@ -425,7 +425,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = getConnection(PoolIdentifier.MISC);
-            for (SkillType skillType : SkillType.nonChildSkills) {
+            for (SkillType skillType : SkillType.getNonChildSkills()) {
                 String skillName = skillType.getName().toLowerCase();
                 String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE " + skillName + " > 0 " +
                         "AND " + skillName + " > (SELECT " + skillName + " FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
@@ -1228,7 +1228,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
         Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>(); // Skill & Level
         Map<SkillType, Float> skillsXp = new HashMap<SkillType, Float>(); // Skill & XP
-        Map<AbilityType, Integer> skillsDATS = new EnumMap<AbilityType, Integer>(AbilityType.class); // Ability & Cooldown
+        Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
         MobHealthbarType mobHealthbarType;
         UUID uuid;
 
@@ -1267,17 +1267,17 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skillsXp.put(SkillType.alchemy, result.getFloat(OFFSET_XP + 13));
 
         // Taming - Unused - result.getInt(OFFSET_DATS + 1)
-        skillsDATS.put(AbilityType.SUPER_BREAKER, result.getInt(OFFSET_DATS + 2));
+        skillsDATS.put(AbilityType.superBreaker, result.getInt(OFFSET_DATS + 2));
         // Repair - Unused - result.getInt(OFFSET_DATS + 3)
-        skillsDATS.put(AbilityType.TREE_FELLER, result.getInt(OFFSET_DATS + 4));
-        skillsDATS.put(AbilityType.BERSERK, result.getInt(OFFSET_DATS + 5));
-        skillsDATS.put(AbilityType.GREEN_TERRA, result.getInt(OFFSET_DATS + 6));
-        skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, result.getInt(OFFSET_DATS + 7));
+        skillsDATS.put(AbilityType.treeFeller, result.getInt(OFFSET_DATS + 4));
+        skillsDATS.put(AbilityType.berserk, result.getInt(OFFSET_DATS + 5));
+        skillsDATS.put(AbilityType.greenTerra, result.getInt(OFFSET_DATS + 6));
+        skillsDATS.put(AbilityType.gigaDrillBreaker, result.getInt(OFFSET_DATS + 7));
         // Archery - Unused - result.getInt(OFFSET_DATS + 8)
-        skillsDATS.put(AbilityType.SERRATED_STRIKES, result.getInt(OFFSET_DATS + 9));
-        skillsDATS.put(AbilityType.SKULL_SPLITTER, result.getInt(OFFSET_DATS + 10));
+        skillsDATS.put(AbilityType.serratedStrikes, result.getInt(OFFSET_DATS + 9));
+        skillsDATS.put(AbilityType.skullSplitter, result.getInt(OFFSET_DATS + 10));
         // Acrobatics - Unused - result.getInt(OFFSET_DATS + 11)
-        skillsDATS.put(AbilityType.BLAST_MINING, result.getInt(OFFSET_DATS + 12));
+        skillsDATS.put(AbilityType.blastMining, result.getInt(OFFSET_DATS + 12));
 
         try {
             mobHealthbarType = MobHealthbarType.valueOf(result.getString(OFFSET_OTHER + 2));
@@ -1357,10 +1357,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet = statement.executeQuery("SHOW INDEX FROM `" + tablePrefix + "skills` WHERE `Key_name` LIKE 'idx\\_%'");
             resultSet.last();
 
-            if (resultSet.getRow() != SkillType.nonChildSkills.size()) {
+            if (resultSet.getRow() != SkillType.getNonChildSkills().size()) {
                 mcMMO.p.getLogger().info("Indexing tables, this may take a while on larger databases");
 
-                for (SkillType skill : SkillType.nonChildSkills) {
+                for (SkillType skill : SkillType.getNonChildSkills()) {
                     String skill_name = skill.getName().toLowerCase();
 
                     try {

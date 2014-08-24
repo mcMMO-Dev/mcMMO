@@ -61,7 +61,7 @@ public final class CommandRegistrationManager {
     private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
 
     private static void registerSkillCommands() {
-        for (SkillType skill : SkillType.skillList) {
+        for (SkillType skill : SkillType.getSkillList()) {
             String commandName = skill.toString().toLowerCase();
             String localizedName = skill.getLocalizedName().toLowerCase();
 

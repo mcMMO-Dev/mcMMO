@@ -85,7 +85,7 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayXpPerks(Player player) {
-        for (SkillType skill : SkillType.skillList) {
+        for (SkillType skill : SkillType.getSkillList()) {
             if (PerksUtils.handleXpPerks(player, 1, skill) > 1) {
                 player.sendMessage(PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.XP.Name"), LocaleLoader.getString("Perks.XP.Desc")));
                 return;
@@ -126,7 +126,7 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayLuckyPerks(Player player) {
-        for (SkillType skill : SkillType.skillList) {
+        for (SkillType skill : SkillType.getSkillList()) {
             if (Permissions.lucky(player, skill)) {
                 player.sendMessage(PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Lucky.Name"), LocaleLoader.getString("Perks.Lucky.Desc.Login")));
                 return;

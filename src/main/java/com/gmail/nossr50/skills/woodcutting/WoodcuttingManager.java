@@ -38,7 +38,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public boolean canUseTreeFeller(ItemStack heldItem) {
-        return mcMMOPlayer.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(getPlayer()) && ItemUtils.isAxe(heldItem);
+        return mcMMOPlayer.getAbilityMode(AbilityType.treeFeller) && Permissions.treeFeller(getPlayer()) && ItemUtils.isAxe(heldItem);
     }
 
     protected boolean canGetDoubleDrops() {

@@ -43,7 +43,7 @@ public class AxesManager extends SkillManager {
     }
 
     public boolean canUseSkullSplitter(LivingEntity target) {
-        return target.isValid() && mcMMOPlayer.getAbilityMode(AbilityType.SKULL_SPLITTER) && Permissions.skullSplitter(getPlayer());
+        return target.isValid() && mcMMOPlayer.getAbilityMode(AbilityType.skullSplitter) && Permissions.skullSplitter(getPlayer());
     }
 
     public boolean canActivateAbility() {

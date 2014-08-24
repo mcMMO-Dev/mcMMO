@@ -22,7 +22,7 @@ public class ChildConfig extends AutoUpdateConfigLoader {
 
         FamilyTree.clearRegistrations(); // when reloading, need to clear statics
 
-        for (SkillType skill : SkillType.childSkills) {
+        for (SkillType skill : SkillType.getChildSkills()) {
             plugin.debug("Finding parents of " + skill.getLocalizedName());
 
             Set<SkillType> parentSkills = new HashSet<SkillType>();

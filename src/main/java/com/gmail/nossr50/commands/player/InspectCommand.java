@@ -53,17 +53,17 @@ public class InspectCommand implements TabExecutor {
                     sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
-                    for (SkillType skill : SkillType.gatheringSkills) {
+                    for (SkillType skill : SkillType.getGatheringSkills()) {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
-                    for (SkillType skill : SkillType.combatSkills) {
+                    for (SkillType skill : SkillType.getCombatSkills()) {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
-                    for (SkillType skill : SkillType.miscSkills) {
+                    for (SkillType skill : SkillType.getMiscSkills()) {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 

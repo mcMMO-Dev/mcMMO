@@ -111,7 +111,7 @@ public class McMMOPlayer {
          * If in the future someone wants to remove this, don't forget to also remove what is in the SkillType enum. - bm01
          */
         try {
-            for (SkillType skillType : SkillType.skillList) {
+            for (SkillType skillType : SkillType.getSkillList()) {
                 skillManagers.put(skillType, skillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(this));
             }
         }
@@ -120,7 +120,7 @@ public class McMMOPlayer {
             mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
         }
 
-        for (AbilityType abilityType : AbilityType.values()) {
+        for (AbilityType abilityType : AbilityType.getAbilities()) {
             abilityMode.put(abilityType, false);
             abilityInformed.put(abilityType, true); // This is intended
         }
@@ -202,7 +202,7 @@ public class McMMOPlayer {
      * Reset the mode of all abilities.
      */
     public void resetAbilityMode() {
-        for (AbilityType ability : AbilityType.values()) {
+        for (AbilityType ability : AbilityType.getAbilities()) {
             // Correctly disable and handle any special deactivate code
             new AbilityDisableTask(this, ability).run();
         }
@@ -389,7 +389,7 @@ public class McMMOPlayer {
     public int getPowerLevel() {
         int powerLevel = 0;
 
-        for (SkillType type : SkillType.nonChildSkills) {
+        for (SkillType type : SkillType.getNonChildSkills()) {
             if (type.getPermissions(player)) {
                 powerLevel += getSkillLevel(type);
             }
@@ -751,7 +751,7 @@ public class McMMOPlayer {
         profile.setAbilityDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
         setAbilityMode(ability, true);
 
-        if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
+        if (ability == AbilityType.superBreaker || ability == AbilityType.gigaDrillBreaker) {
             SkillUtils.handleAbilitySpeedIncrease(player);
         }
 
@@ -773,7 +773,7 @@ public class McMMOPlayer {
             return;
         }
 
-        for (AbilityType abilityType : AbilityType.values()) {
+        for (AbilityType abilityType : AbilityType.getAbilities()) {
             if (getAbilityMode(abilityType)) {
                 return;
             }

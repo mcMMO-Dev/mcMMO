@@ -22,7 +22,7 @@ public class HardcoreCommand extends HardcoreModeCommand {
     @Override
     protected boolean checkEnabled(SkillType skill) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.skillList) {
+            for (SkillType skillType : SkillType.getSkillList()) {
                 if (!skillType.getHardcoreStatLossEnabled()) {
                     return false;
                 }
@@ -52,7 +52,7 @@ public class HardcoreCommand extends HardcoreModeCommand {
 
     private void toggle(boolean enable, SkillType skill) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.nonChildSkills) {
+            for (SkillType skillType : SkillType.getNonChildSkills()) {
                 skillType.setHardcoreStatLossEnabled(enable);
             }
         }

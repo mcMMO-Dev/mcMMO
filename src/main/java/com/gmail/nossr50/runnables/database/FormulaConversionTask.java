@@ -59,7 +59,7 @@ public class FormulaConversionTask extends BukkitRunnable {
     private void editValues(PlayerProfile profile) {
         mcMMO.p.debug("========================================================================");
         mcMMO.p.debug("Conversion report for " + profile.getPlayerName() + ":");
-        for (SkillType skillType : SkillType.nonChildSkills) {
+        for (SkillType skillType : SkillType.getNonChildSkills()) {
             int oldLevel = profile.getSkillLevel(skillType);
             int oldXPLevel = profile.getSkillXpLevel(skillType);
             int totalOldXP = mcMMO.getFormulaManager().calculateTotalExperience(oldLevel, oldXPLevel);

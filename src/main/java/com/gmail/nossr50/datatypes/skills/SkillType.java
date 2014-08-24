@@ -57,32 +57,32 @@ public class SkillType {
 		MISC
 	}
 
-    public static List<String> skillNames = new ArrayList<String>();
-    public static List<SkillType> skillList = new ArrayList<SkillType>();
+    private static List<String> skillNames = new ArrayList<String>();
+    private static List<SkillType> skillList = new ArrayList<SkillType>();
 
-    public static List<SkillType> childSkills = new ArrayList<SkillType>();
-    public static List<SkillType> nonChildSkills = new ArrayList<SkillType>();
+    private static List<SkillType> childSkills = new ArrayList<SkillType>();
+    private static List<SkillType> nonChildSkills = new ArrayList<SkillType>();
 
-    public static List<SkillType> combatSkills = new ArrayList<SkillType>();
-    public static List<SkillType> gatheringSkills = new ArrayList<SkillType>();
-    public static List<SkillType> miscSkills = new ArrayList<SkillType>();
+    private static List<SkillType> combatSkills = new ArrayList<SkillType>();
+    private static List<SkillType> gatheringSkills = new ArrayList<SkillType>();
+    private static List<SkillType> miscSkills = new ArrayList<SkillType>();
     
 	
     public static final SkillType acrobatics 	= createSkill("ACROBATICS" , AcrobaticsManager.class	, AcrobaticsCommand.class	, false, Color.WHITE, SkillUseType.MISC, ImmutableList.of(SecondaryAbility.DODGE, SecondaryAbility.GRACEFUL_ROLL, SecondaryAbility.ROLL));
     public static final SkillType alchemy	 	= createSkill("ALCHEMY"	 , AlchemyManager.class		, AlchemyCommand.class		, false, Color.FUCHSIA, SkillUseType.MISC, ImmutableList.of(SecondaryAbility.CATALYSIS, SecondaryAbility.CONCOCTIONS));
     public static final SkillType archery		= createSkill("ARCHERY"	 , ArcheryManager.class		, ArcheryCommand.class		, false, Color.MAROON, SkillUseType.COMBAT, ImmutableList.of(SecondaryAbility.DAZE, SecondaryAbility.RETRIEVE, SecondaryAbility.SKILL_SHOT));
-    public static final SkillType axes	 		= createSkill("AXES"		 , AxesManager.class		, AxesCommand.class			, false, Color.AQUA, SkillUseType.COMBAT, AbilityType.SKULL_SPLITTER, ToolType.AXE, ImmutableList.of(SecondaryAbility.ARMOR_IMPACT, SecondaryAbility.AXE_MASTERY, SecondaryAbility.CRITICAL_HIT, SecondaryAbility.GREATER_IMPACT));
-    public static final SkillType excavation 	= createSkill("EXCAVATION" , ExcavationManager.class	, ExcavationCommand.class	, false, Color.fromRGB(139, 69, 19), SkillUseType.GATHERING, AbilityType.GIGA_DRILL_BREAKER, ToolType.SHOVEL, ImmutableList.of(SecondaryAbility.EXCAVATION_TREASURE_HUNTER));
+    public static final SkillType axes	 		= createSkill("AXES"		 , AxesManager.class		, AxesCommand.class			, false, Color.AQUA, SkillUseType.COMBAT, AbilityType.skullSplitter, ToolType.AXE, ImmutableList.of(SecondaryAbility.ARMOR_IMPACT, SecondaryAbility.AXE_MASTERY, SecondaryAbility.CRITICAL_HIT, SecondaryAbility.GREATER_IMPACT));
+    public static final SkillType excavation 	= createSkill("EXCAVATION" , ExcavationManager.class	, ExcavationCommand.class	, false, Color.fromRGB(139, 69, 19), SkillUseType.GATHERING, AbilityType.gigaDrillBreaker, ToolType.SHOVEL, ImmutableList.of(SecondaryAbility.EXCAVATION_TREASURE_HUNTER));
     public static final SkillType fishing	 	= createSkill("FISHING"	 , FishingManager.class		, FishingCommand.class		, false, Color.NAVY, SkillUseType.GATHERING, ImmutableList.of(SecondaryAbility.FISHERMANS_DIET, SecondaryAbility.FISHING_TREASURE_HUNTER, SecondaryAbility.ICE_FISHING, SecondaryAbility.MAGIC_HUNTER, SecondaryAbility.MASTER_ANGLER, SecondaryAbility.SHAKE));
-    public static final SkillType herbalism 	= createSkill("HERBALISM"  , HerbalismManager.class	, HerbalismCommand.class	, false, Color.GREEN, SkillUseType.GATHERING, AbilityType.GREEN_TERRA, ToolType.HOE, ImmutableList.of(SecondaryAbility.FARMERS_DIET, SecondaryAbility.GREEN_THUMB_PLANT, SecondaryAbility.GREEN_THUMB_BLOCK, SecondaryAbility.HERBALISM_DOUBLE_DROPS, SecondaryAbility.HYLIAN_LUCK, SecondaryAbility.SHROOM_THUMB));
-    public static final SkillType mining 		= createSkill("MINING"	 , MiningManager.class		, MiningCommand.class		, false, Color.GRAY, SkillUseType.GATHERING, AbilityType.SUPER_BREAKER, ToolType.PICKAXE, ImmutableList.of(SecondaryAbility.MINING_DOUBLE_DROPS));
+    public static final SkillType herbalism 	= createSkill("HERBALISM"  , HerbalismManager.class	, HerbalismCommand.class	, false, Color.GREEN, SkillUseType.GATHERING, AbilityType.greenTerra, ToolType.HOE, ImmutableList.of(SecondaryAbility.FARMERS_DIET, SecondaryAbility.GREEN_THUMB_PLANT, SecondaryAbility.GREEN_THUMB_BLOCK, SecondaryAbility.HERBALISM_DOUBLE_DROPS, SecondaryAbility.HYLIAN_LUCK, SecondaryAbility.SHROOM_THUMB));
+    public static final SkillType mining 		= createSkill("MINING"	 , MiningManager.class		, MiningCommand.class		, false, Color.GRAY, SkillUseType.GATHERING, AbilityType.superBreaker, ToolType.PICKAXE, ImmutableList.of(SecondaryAbility.MINING_DOUBLE_DROPS));
     public static final SkillType repair 		= createSkill("REPAIR"	 , RepairManager.class		, RepairCommand.class		, false, Color.SILVER, SkillUseType.MISC, ImmutableList.of(SecondaryAbility.ARCANE_FORGING, SecondaryAbility.REPAIR_MASTERY, SecondaryAbility.SUPER_REPAIR));
     public static final SkillType salvage	 	= createSkill("SALVAGE"	 , SalvageManager.class		, SalvageCommand.class		, true, Color.ORANGE, SkillUseType.MISC, ImmutableList.of(SecondaryAbility.ADVANCED_SALVAGE, SecondaryAbility.ARCANE_SALVAGE));
     public static final SkillType smelting	 	= createSkill("SMELTING"	 , SmeltingManager.class	, SmeltingCommand.class		, true, Color.YELLOW, SkillUseType.MISC, ImmutableList.of(SecondaryAbility.FLUX_MINING, SecondaryAbility.FUEL_EFFICIENCY, SecondaryAbility.SECOND_SMELT));
-    public static final SkillType swords 		= createSkill("SWORDS"	 , SwordsManager.class		, SwordsCommand.class		, false, Color.fromRGB(178, 34, 34), SkillUseType.COMBAT, AbilityType.SERRATED_STRIKES, ToolType.SWORD, ImmutableList.of(SecondaryAbility.BLEED, SecondaryAbility.COUNTER));
+    public static final SkillType swords 		= createSkill("SWORDS"	 , SwordsManager.class		, SwordsCommand.class		, false, Color.fromRGB(178, 34, 34), SkillUseType.COMBAT, AbilityType.serratedStrikes, ToolType.SWORD, ImmutableList.of(SecondaryAbility.BLEED, SecondaryAbility.COUNTER));
     public static final SkillType taming 		= createSkill("TAMING"	 , TamingManager.class		, TamingCommand.class		, false, Color.PURPLE, SkillUseType.COMBAT, ImmutableList.of(SecondaryAbility.BEAST_LORE, SecondaryAbility.CALL_OF_THE_WILD, SecondaryAbility.ENVIROMENTALLY_AWARE, SecondaryAbility.FAST_FOOD, SecondaryAbility.GORE, SecondaryAbility.HOLY_HOUND, SecondaryAbility.SHARPENED_CLAWS, SecondaryAbility.SHOCK_PROOF, SecondaryAbility.THICK_FUR));
-    public static final SkillType unarmed	 	= createSkill("UNARMED"	 , UnarmedManager.class		, UnarmedCommand.class		, false, Color.BLACK, SkillUseType.COMBAT, AbilityType.BERSERK, ToolType.FISTS, ImmutableList.of(SecondaryAbility.BLOCK_CRACKER, SecondaryAbility.DEFLECT, SecondaryAbility.DISARM, SecondaryAbility.IRON_ARM, SecondaryAbility.IRON_GRIP));
-    public static final SkillType woodcutting	= createSkill("WOODCUTTING", WoodcuttingManager.class	, WoodcuttingCommand.class	, false, Color.OLIVE, SkillUseType.GATHERING, AbilityType.TREE_FELLER, ToolType.AXE, ImmutableList.of(SecondaryAbility.LEAF_BLOWER, SecondaryAbility.WOODCUTTING_DOUBLE_DROPS));
+    public static final SkillType unarmed	 	= createSkill("UNARMED"	 , UnarmedManager.class		, UnarmedCommand.class		, false, Color.BLACK, SkillUseType.COMBAT, AbilityType.berserk, ToolType.FISTS, ImmutableList.of(SecondaryAbility.BLOCK_CRACKER, SecondaryAbility.DEFLECT, SecondaryAbility.DISARM, SecondaryAbility.IRON_ARM, SecondaryAbility.IRON_GRIP));
+    public static final SkillType woodcutting	= createSkill("WOODCUTTING", WoodcuttingManager.class	, WoodcuttingCommand.class	, false, Color.OLIVE, SkillUseType.GATHERING, AbilityType.treeFeller, ToolType.AXE, ImmutableList.of(SecondaryAbility.LEAF_BLOWER, SecondaryAbility.WOODCUTTING_DOUBLE_DROPS));
 
     
     private String name;

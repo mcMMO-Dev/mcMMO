@@ -101,16 +101,16 @@ public class MiningManager extends SkillManager {
 
         TNTPrimed tnt = player.getWorld().spawn(targetBlock.getLocation(), TNTPrimed.class);
 
-        SkillUtils.sendSkillMessage(player, AbilityType.BLAST_MINING.getAbilityPlayer(player));
+        SkillUtils.sendSkillMessage(player, AbilityType.blastMining.getAbilityPlayer(player));
         player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
         tnt.setMetadata(mcMMO.tntMetadataKey, mcMMOPlayer.getPlayerMetadata());
         tnt.setFuseTicks(0);
         targetBlock.setType(Material.AIR);
 
-        mcMMOPlayer.setAbilityDATS(AbilityType.BLAST_MINING, System.currentTimeMillis());
-        mcMMOPlayer.setAbilityInformed(AbilityType.BLAST_MINING, false);
-        new AbilityCooldownTask(mcMMOPlayer, AbilityType.BLAST_MINING).runTaskLaterAsynchronously(mcMMO.p, AbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
+        mcMMOPlayer.setAbilityDATS(AbilityType.blastMining, System.currentTimeMillis());
+        mcMMOPlayer.setAbilityInformed(AbilityType.blastMining, false);
+        new AbilityCooldownTask(mcMMOPlayer, AbilityType.blastMining).runTaskLaterAsynchronously(mcMMO.p, AbilityType.blastMining.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
     }
 
     /**
@@ -285,7 +285,7 @@ public class MiningManager extends SkillManager {
     }
 
     private boolean blastMiningCooldownOver() {
-        int timeRemaining = mcMMOPlayer.calculateTimeRemaining(AbilityType.BLAST_MINING);
+        int timeRemaining = mcMMOPlayer.calculateTimeRemaining(AbilityType.blastMining);
 
         if (timeRemaining > 0) {
             getPlayer().sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));

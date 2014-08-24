@@ -22,7 +22,7 @@ public class VampirismCommand extends HardcoreModeCommand {
     @Override
     protected boolean checkEnabled(SkillType skill) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.skillList) {
+            for (SkillType skillType : SkillType.getSkillList()) {
                 if (!skillType.getHardcoreVampirismEnabled()) {
                     return false;
                 }
@@ -52,7 +52,7 @@ public class VampirismCommand extends HardcoreModeCommand {
 
     private void toggle(boolean enable, SkillType skill) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.nonChildSkills) {
+            for (SkillType skillType : SkillType.getNonChildSkills()) {
                 skillType.setHardcoreVampirismEnabled(enable);
             }
         }

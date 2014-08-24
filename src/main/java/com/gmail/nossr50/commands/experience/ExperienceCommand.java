@@ -98,7 +98,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                 List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], SkillType.skillNames, new ArrayList<String>(SkillType.skillNames.size()));
+                return StringUtil.copyPartialMatches(args[1], SkillType.getSkillNames(), new ArrayList<String>(SkillType.getSkillNames().size()));
             default:
                 return ImmutableList.of();
         }
@@ -125,7 +125,7 @@ public abstract class ExperienceCommand implements TabExecutor {
 
     protected void editValues(Player player, PlayerProfile profile, SkillType skill, int value) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.nonChildSkills) {
+            for (SkillType skillType : SkillType.getNonChildSkills()) {
                 handleCommand(player, profile, skillType, value);
             }
 

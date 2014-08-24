@@ -303,17 +303,17 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         writer.append(":");
                         writer.append(profile.getSkillLevel(SkillType.taming)).append(":");
                         writer.append(profile.getSkillXpLevel(SkillType.taming)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.BERSERK)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.GIGA_DRILL_BREAKER)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.TREE_FELLER)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.GREEN_TERRA)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.SERRATED_STRIKES)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.SKULL_SPLITTER)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.SUPER_BREAKER)).append(":");
+                        writer.append((int) profile.getAbilityDATS(AbilityType.berserk)).append(":");
+                        writer.append((int) profile.getAbilityDATS(AbilityType.gigaDrillBreaker)).append(":");
+                        writer.append((int) profile.getAbilityDATS(AbilityType.treeFeller)).append(":");
+                        writer.append((int) profile.getAbilityDATS(AbilityType.greenTerra)).append(":");
+                        writer.append((int) profile.getAbilityDATS(AbilityType.serratedStrikes)).append(":");
+                        writer.append((int) profile.getAbilityDATS(AbilityType.skullSplitter)).append(":");
+                        writer.append((int) profile.getAbilityDATS(AbilityType.superBreaker)).append(":");
                         writer.append(":");
                         writer.append(profile.getSkillLevel(SkillType.fishing)).append(":");
                         writer.append(profile.getSkillXpLevel(SkillType.fishing)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.BLAST_MINING)).append(":");
+                        writer.append((int) profile.getAbilityDATS(AbilityType.blastMining)).append(":");
                         writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
                         MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
                         writer.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
@@ -367,7 +367,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
         Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();
 
-        for (SkillType skill : SkillType.nonChildSkills) {
+        for (SkillType skill : SkillType.getNonChildSkills()) {
             skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
         }
 
@@ -1077,7 +1077,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     private PlayerProfile loadFromLine(String[] character) {
         Map<SkillType, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
         Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
-        Map<AbilityType, Integer> skillsDATS = new EnumMap<AbilityType, Integer>(AbilityType.class); // Ability & Cooldown
+        Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
         MobHealthbarType mobHealthbarType;
 
         // TODO on updates, put new values in a try{} ?
@@ -1097,17 +1097,17 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         skillsXp.put(SkillType.alchemy, (float) Integer.valueOf(character[40]));
 
         // Taming - Unused
-        skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(character[32]));
+        skillsDATS.put(AbilityType.superBreaker, Integer.valueOf(character[32]));
         // Repair - Unused
-        skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(character[28]));
-        skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(character[26]));
-        skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(character[29]));
-        skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(character[27]));
+        skillsDATS.put(AbilityType.treeFeller, Integer.valueOf(character[28]));
+        skillsDATS.put(AbilityType.berserk, Integer.valueOf(character[26]));
+        skillsDATS.put(AbilityType.greenTerra, Integer.valueOf(character[29]));
+        skillsDATS.put(AbilityType.gigaDrillBreaker, Integer.valueOf(character[27]));
         // Archery - Unused
-        skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(character[30]));
-        skillsDATS.put(AbilityType.SKULL_SPLITTER, Integer.valueOf(character[31]));
+        skillsDATS.put(AbilityType.serratedStrikes, Integer.valueOf(character[30]));
+        skillsDATS.put(AbilityType.skullSplitter, Integer.valueOf(character[31]));
         // Acrobatics - Unused
-        skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(character[36]));
+        skillsDATS.put(AbilityType.blastMining, Integer.valueOf(character[36]));
 
         try {
             mobHealthbarType = MobHealthbarType.valueOf(character[38]);

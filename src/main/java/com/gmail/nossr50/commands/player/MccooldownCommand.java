@@ -45,7 +45,7 @@ public class MccooldownCommand implements TabExecutor {
                 player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Header"));
                 player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
 
-                for (AbilityType ability : AbilityType.values()) {
+                for (AbilityType ability : AbilityType.getAbilities()) {
                     if (!ability.getPermissions(player)) {
                         continue;
                     }

@@ -43,11 +43,11 @@ public class PlayerProfile {
 
         mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
 
-        for (AbilityType abilityType : AbilityType.values()) {
+        for (AbilityType abilityType : AbilityType.getAbilities()) {
             abilityDATS.put(abilityType, 0);
         }
 
-        for (SkillType skillType : SkillType.nonChildSkills) {
+        for (SkillType skillType : SkillType.getNonChildSkills()) {
             skills.put(skillType, 0);
             skillsXp.put(skillType, 0F);
         }

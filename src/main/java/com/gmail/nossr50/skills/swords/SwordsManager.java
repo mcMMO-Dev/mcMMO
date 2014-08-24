@@ -39,7 +39,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseSerratedStrike() {
-        return mcMMOPlayer.getAbilityMode(AbilityType.SERRATED_STRIKES) && Permissions.serratedStrikes(getPlayer());
+        return mcMMOPlayer.getAbilityMode(AbilityType.serratedStrikes) && Permissions.serratedStrikes(getPlayer());
     }
 
     /**

@@ -32,20 +32,13 @@ public class AbilityDisableTask extends BukkitRunnable {
 
         Player player = mcMMOPlayer.getPlayer();
 
-        switch (ability) {
-            case SUPER_BREAKER:
-            case GIGA_DRILL_BREAKER:
-                SkillUtils.handleAbilitySpeedDecrease(player);
-                // Fallthrough
-
-            case BERSERK:
-                if (Config.getInstance().getRefreshChunksEnabled()) {
-                    resendChunkRadiusAt(player, 1);
-                }
-                // Fallthrough
-
-            default:
-                break;
+        if(ability == AbilityType.superBreaker || ability == AbilityType.gigaDrillBreaker) {
+        	SkillUtils.handleAbilitySpeedDecrease(player);
+        }
+        else if(ability == AbilityType.berserk) {
+            if (Config.getInstance().getRefreshChunksEnabled()) {
+                resendChunkRadiusAt(player, 1);
+            }
         }
 
         EventUtils.callAbilityDeactivateEvent(player, ability);

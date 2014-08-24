@@ -1,5 +1,8 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import java.util.List;
+import java.util.ArrayList;
+
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -7,82 +10,118 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 
-public enum AbilityType {
-    BERSERK(
+public class AbilityType {
+	private static List<AbilityType> abilityTypes = new ArrayList<AbilityType>();
+	
+    public static final AbilityType berserk = new AbilityType(
+    		"BERSERK",
             "Unarmed.Skills.Berserk.On",
             "Unarmed.Skills.Berserk.Off",
             "Unarmed.Skills.Berserk.Other.On",
             "Unarmed.Skills.Berserk.Refresh",
-            "Unarmed.Skills.Berserk.Other.Off"),
+            "Unarmed.Skills.Berserk.Other.Off") {
+    	@Override
+    	public boolean blockCheck(BlockState blockState) {
+            return (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW);
+    	}
+    };
 
-    SUPER_BREAKER(
+    public static final AbilityType superBreaker = new AbilityType(
+    		"SUPER_BREAKER",
             "Mining.Skills.SuperBreaker.On",
             "Mining.Skills.SuperBreaker.Off",
             "Mining.Skills.SuperBreaker.Other.On",
             "Mining.Skills.SuperBreaker.Refresh",
-            "Mining.Skills.SuperBreaker.Other.Off"),
+            "Mining.Skills.SuperBreaker.Other.Off") {
+    	@Override
+    	public boolean blockCheck(BlockState blockState) {
+            return BlockUtils.affectedBySuperBreaker(blockState);
+    	}
+    };
 
-    GIGA_DRILL_BREAKER(
+    public static final AbilityType gigaDrillBreaker = new AbilityType(
+    		"GIGA_DRILL_BREAKER",
             "Excavation.Skills.GigaDrillBreaker.On",
             "Excavation.Skills.GigaDrillBreaker.Off",
             "Excavation.Skills.GigaDrillBreaker.Other.On",
             "Excavation.Skills.GigaDrillBreaker.Refresh",
-            "Excavation.Skills.GigaDrillBreaker.Other.Off"),
+            "Excavation.Skills.GigaDrillBreaker.Other.Off") {
+    	@Override
+    	public boolean blockCheck(BlockState blockState) {
+            return BlockUtils.affectedByGigaDrillBreaker(blockState);
+    	}
+    };
 
-    GREEN_TERRA(
+    public static final AbilityType greenTerra = new AbilityType(
+    		"GREEN_TERRA",
             "Herbalism.Skills.GTe.On",
             "Herbalism.Skills.GTe.Off",
             "Herbalism.Skills.GTe.Other.On",
             "Herbalism.Skills.GTe.Refresh",
-            "Herbalism.Skills.GTe.Other.Off"),
+            "Herbalism.Skills.GTe.Other.Off") {
+    	@Override
+    	public boolean blockCheck(BlockState blockState) {
+            return BlockUtils.canMakeMossy(blockState);
+    	}
+    };
 
-    SKULL_SPLITTER(
+    public static final AbilityType skullSplitter = new AbilityType(
+    		"SKULL_SPLITTER",
             "Axes.Skills.SS.On",
             "Axes.Skills.SS.Off",
             "Axes.Skills.SS.Other.On",
             "Axes.Skills.SS.Refresh",
-            "Axes.Skills.SS.Other.Off"),
+            "Axes.Skills.SS.Other.Off");
 
-    TREE_FELLER(
+    public static final AbilityType treeFeller = new AbilityType(
+    		"TREE_FELLER",
             "Woodcutting.Skills.TreeFeller.On",
             "Woodcutting.Skills.TreeFeller.Off",
             "Woodcutting.Skills.TreeFeller.Other.On",
             "Woodcutting.Skills.TreeFeller.Refresh",
-            "Woodcutting.Skills.TreeFeller.Other.Off"),
+            "Woodcutting.Skills.TreeFeller.Other.Off") {
+    	@Override
+    	public boolean blockCheck(BlockState blockState) {
+            return BlockUtils.isLog(blockState);
+    	}
+    };
 
-    SERRATED_STRIKES(
+    public static final AbilityType serratedStrikes = new AbilityType(
+    		"SERRATED_STRIKES",
             "Swords.Skills.SS.On",
             "Swords.Skills.SS.Off",
             "Swords.Skills.SS.Other.On",
             "Swords.Skills.SS.Refresh",
-            "Swords.Skills.SS.Other.Off"),
+            "Swords.Skills.SS.Other.Off");
 
     /**
      * Has cooldown - but has to share a skill with Super Breaker, so needs special treatment
      */
-    BLAST_MINING(
+    public static final AbilityType blastMining = new AbilityType(
+    		"BLAST_MINING",
             null,
             null,
             "Mining.Blast.Other.On",
             "Mining.Blast.Refresh",
-            null),
-    ;
+            null);
 
+    private String name;
     private String abilityOn;
     private String abilityOff;
     private String abilityPlayer;
     private String abilityRefresh;
     private String abilityPlayerOff;
 
-    private AbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
-        this.abilityOn = abilityOn;
+    private AbilityType(String name, String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
+        this.name = name;
+    	this.abilityOn = abilityOn;
         this.abilityOff = abilityOff;
         this.abilityPlayer = abilityPlayer;
         this.abilityRefresh = abilityRefresh;
         this.abilityPlayerOff = abilityPlayerOff;
+        abilityTypes.add(this);
     }
 
     public int getCooldown() {
@@ -119,7 +158,7 @@ public enum AbilityType {
 
     @Override
     public String toString() {
-        String baseString = name();
+        String baseString = name;
         String[] substrings = baseString.split("_");
         String formattedString = "";
 
@@ -145,34 +184,9 @@ public enum AbilityType {
      * @return true if the player has permissions, false otherwise
      */
     public boolean getPermissions(Player player) {
-        switch (this) {
-            case BERSERK:
-                return Permissions.berserk(player);
-
-            case BLAST_MINING:
-                return Permissions.remoteDetonation(player);
-
-            case GIGA_DRILL_BREAKER:
-                return Permissions.gigaDrillBreaker(player);
-
-            case GREEN_TERRA:
-                return Permissions.greenTerra(player);
-
-            case SERRATED_STRIKES:
-                return Permissions.serratedStrikes(player);
-
-            case SKULL_SPLITTER:
-                return Permissions.skullSplitter(player);
-
-            case SUPER_BREAKER:
-                return Permissions.superBreaker(player);
-
-            case TREE_FELLER:
-                return Permissions.treeFeller(player);
-
-            default:
-                return false;
-        }
+    	return player.hasPermission("mcmmo.ability." 
+    			+ SkillType.byAbility(this).getName().toLowerCase() 
+    			+ "." + name.replace("_", "").toLowerCase());
     }
 
     /**
@@ -182,24 +196,10 @@ public enum AbilityType {
      * @return true if the block is affected by this ability, false otherwise
      */
     public boolean blockCheck(BlockState blockState) {
-        switch (this) {
-            case BERSERK:
-                return (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW);
-
-            case GIGA_DRILL_BREAKER:
-                return BlockUtils.affectedByGigaDrillBreaker(blockState);
-
-            case GREEN_TERRA:
-                return BlockUtils.canMakeMossy(blockState);
-
-            case SUPER_BREAKER:
-                return BlockUtils.affectedBySuperBreaker(blockState);
-
-            case TREE_FELLER:
-                return BlockUtils.isLog(blockState);
-
-            default:
-                return false;
-        }
+        return false;
+    }
+    
+    public static List<AbilityType> getAbilities() {
+    	return abilityTypes;
     }
 }
