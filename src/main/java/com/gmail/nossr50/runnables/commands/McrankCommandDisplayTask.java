@@ -37,6 +37,7 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
         if (useChat) {
             displayChat();
         }
+        ((Player) sender).removeMetadata(mcMMO.databaseCommandKey, mcMMO.p);
     }
 
     private void displayChat() {
@@ -57,7 +58,6 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
 
         rank = skills.get(null);
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
-        player.removeMetadata(mcMMO.databaseCommandKey, mcMMO.p);
     }
 
     public void displayBoard() {

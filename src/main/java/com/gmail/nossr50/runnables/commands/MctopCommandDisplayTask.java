@@ -42,6 +42,9 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
             displayChat();
         }
 
+        if (sender instanceof Player) {
+            ((Player) sender).removeMetadata(mcMMO.databaseCommandKey, mcMMO.p);
+        }
         sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
     }
 
@@ -61,9 +64,6 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
             // 12. Playername - skill value
             sender.sendMessage(String.format("%2d. %s%s - %s%s", place, ChatColor.GREEN, stat.name, ChatColor.WHITE, stat.statVal));
             place++;
-        }
-        if (sender instanceof Player) {
-            ((Player) sender).removeMetadata(mcMMO.databaseCommandKey, mcMMO.p);
         }
     }
 
