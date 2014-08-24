@@ -60,7 +60,7 @@ public class MiningManager extends SkillManager {
 
         applyXpGain(Mining.getBlockXp(blockState), XPGainReason.PVE);
 
-        if (!Permissions.secondaryAbilityEnabled(player, SecondaryAbility.MINING_DOUBLE_DROPS)) {
+        if (!Permissions.secondaryAbilityEnabled(player, SecondaryAbility.miningDoubleDrops)) {
             return;
         }
 
@@ -77,7 +77,7 @@ public class MiningManager extends SkillManager {
         boolean silkTouch = player.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH);
 
         for (int i = mcMMOPlayer.getAbilityMode(skill.getAbility()) ? 2 : 1; i != 0; i--) {
-            if (SkillUtils.activationSuccessful(SecondaryAbility.MINING_DOUBLE_DROPS, getPlayer(), getSkillLevel(), activationChance)) {
+            if (SkillUtils.activationSuccessful(SecondaryAbility.miningDoubleDrops, getPlayer(), getSkillLevel(), activationChance)) {
                 if (silkTouch) {
                     Mining.handleSilkTouchDrops(blockState);
                 }

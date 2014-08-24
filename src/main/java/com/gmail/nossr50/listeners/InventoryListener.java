@@ -95,7 +95,7 @@ public class InventoryListener implements Listener {
 
         Player player = getPlayerFromFurnace(furnaceBlock);
 
-        if (!UserManager.hasPlayerDataKey(player) || !Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FUEL_EFFICIENCY)) {
+        if (!UserManager.hasPlayerDataKey(player) || !Permissions.secondaryAbilityEnabled(player, SecondaryAbility.fuelEfficiency)) {
             return;
         }
 
@@ -155,7 +155,7 @@ public class InventoryListener implements Listener {
 
         HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.secondaryAbilityEnabled(whoClicked, SecondaryAbility.CONCOCTIONS)) {
+        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.secondaryAbilityEnabled(whoClicked, SecondaryAbility.concoctions)) {
             return;
         }
 
@@ -254,7 +254,7 @@ public class InventoryListener implements Listener {
 
         HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.secondaryAbilityEnabled(whoClicked, SecondaryAbility.CONCOCTIONS)) {
+        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.secondaryAbilityEnabled(whoClicked, SecondaryAbility.concoctions)) {
             return;
         }
 

@@ -29,8 +29,8 @@ public class SalvageCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canAdvancedSalvage = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ADVANCED_SALVAGE);
-        canArcaneSalvage = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ARCANE_SALVAGE);
+        canAdvancedSalvage = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.advancedSalvage);
+        canArcaneSalvage = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.arcaneSalvage);
     }
 
     @Override

@@ -40,16 +40,16 @@ public class SwordsCommand extends SkillCommand {
 
         // BLEED
         if (canBleed) {
-            bleedLength = (skillValue >= AdvancedConfig.getInstance().getMaxBonusLevel(SecondaryAbility.BLEED)) ? Swords.bleedMaxTicks : Swords.bleedBaseTicks;
+            bleedLength = (skillValue >= AdvancedConfig.getInstance().getMaxBonusLevel(SecondaryAbility.bleed)) ? Swords.bleedMaxTicks : Swords.bleedBaseTicks;
 
-            String[] bleedStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.BLEED, isLucky);
+            String[] bleedStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.bleed, isLucky);
             bleedChance = bleedStrings[0];
             bleedChanceLucky = bleedStrings[1];
         }
 
         // COUNTER
         if (canCounter) {
-            String[] counterStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.COUNTER, isLucky);
+            String[] counterStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.counter, isLucky);
             counterChance = counterStrings[0];
             counterChanceLucky = counterStrings[1];
         }
@@ -57,8 +57,8 @@ public class SwordsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBleed = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.BLEED);
-        canCounter = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.COUNTER);
+        canBleed = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.bleed);
+        canCounter = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.counter);
         canSerratedStrike = Permissions.serratedStrikes(player);
     }
 

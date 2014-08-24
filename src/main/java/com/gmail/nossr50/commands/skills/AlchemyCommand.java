@@ -59,8 +59,8 @@ public class AlchemyCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canCatalysis = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.CATALYSIS);
-        canConcoctions = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.CONCOCTIONS);
+        canCatalysis = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.catalysis);
+        canConcoctions = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.concoctions);
     }
 
     @Override

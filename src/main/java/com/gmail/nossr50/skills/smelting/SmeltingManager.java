@@ -26,11 +26,11 @@ public class SmeltingManager extends SkillManager {
     }
 
     public boolean canUseFluxMining(BlockState blockState) {
-        return getSkillLevel() >= Smelting.fluxMiningUnlockLevel && BlockUtils.affectedByFluxMining(blockState) && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.FLUX_MINING) && !mcMMO.getPlaceStore().isTrue(blockState);
+        return getSkillLevel() >= Smelting.fluxMiningUnlockLevel && BlockUtils.affectedByFluxMining(blockState) && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.fluxMining) && !mcMMO.getPlaceStore().isTrue(blockState);
     }
 
     public boolean isSecondSmeltSuccessful() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.SECOND_SMELT) && SkillUtils.activationSuccessful(SecondaryAbility.SECOND_SMELT, getPlayer(), getSkillLevel(), activationChance);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.secondSmelt) && SkillUtils.activationSuccessful(SecondaryAbility.secondSmelt, getPlayer(), getSkillLevel(), activationChance);
     }
 
     /**
@@ -42,7 +42,7 @@ public class SmeltingManager extends SkillManager {
     public boolean processFluxMining(BlockState blockState) {
         Player player = getPlayer();
 
-        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(getPlayer(), SecondaryAbility.FLUX_MINING, Smelting.fluxMiningChance / activationChance);
+        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(getPlayer(), SecondaryAbility.fluxMining, Smelting.fluxMiningChance / activationChance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
         if ((event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance)) {
             ItemStack item = null;

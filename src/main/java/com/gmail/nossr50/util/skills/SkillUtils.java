@@ -223,7 +223,7 @@ public class SkillUtils {
     }
 
     public static boolean treasureDropSuccessful(Player player, double dropChance, int activationChance) {
-        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, SecondaryAbility.EXCAVATION_TREASURE_HUNTER, dropChance / activationChance);
+        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, SecondaryAbility.excavationTreasureHunter, dropChance / activationChance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
         return (event.getChance() * activationChance) > (Misc.getRandom().nextDouble() * activationChance) && !event.isCancelled();
     }

@@ -36,14 +36,14 @@ public class ArcheryCommand extends SkillCommand {
 
         // DAZE
         if (canDaze) {
-            String[] dazeStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.DAZE, isLucky);
+            String[] dazeStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.daze, isLucky);
             dazeChance = dazeStrings[0];
             dazeChanceLucky = dazeStrings[1];
         }
 
         // RETRIEVE
         if (canRetrieve) {
-            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.RETRIEVE, isLucky);
+            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.retrieve, isLucky);
             retrieveChance = retrieveStrings[0];
             retrieveChanceLucky = retrieveStrings[1];
         }
@@ -51,9 +51,9 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSkillShot = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SKILL_SHOT);
-        canDaze = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.DAZE);
-        canRetrieve = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.RETRIEVE);
+        canSkillShot = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.skillShot);
+        canDaze = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.daze);
+        canRetrieve = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.retrieve);
     }
 
     @Override

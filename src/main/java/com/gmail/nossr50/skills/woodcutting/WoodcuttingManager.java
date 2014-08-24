@@ -34,7 +34,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public boolean canUseLeafBlower(ItemStack heldItem) {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.LEAF_BLOWER) && getSkillLevel() >= Woodcutting.leafBlowerUnlockLevel && ItemUtils.isAxe(heldItem);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.leafBlower) && getSkillLevel() >= Woodcutting.leafBlowerUnlockLevel && ItemUtils.isAxe(heldItem);
     }
 
     public boolean canUseTreeFeller(ItemStack heldItem) {
@@ -42,7 +42,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     protected boolean canGetDoubleDrops() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.WOODCUTTING_DOUBLE_DROPS) && SkillUtils.activationSuccessful(SecondaryAbility.WOODCUTTING_DOUBLE_DROPS, getPlayer(), getSkillLevel(), activationChance);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.woodcuttingDoubleDrops) && SkillUtils.activationSuccessful(SecondaryAbility.woodcuttingDoubleDrops, getPlayer(), getSkillLevel(), activationChance);
     }
 
     /**

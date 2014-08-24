@@ -240,12 +240,12 @@ public class RepairManager extends SkillManager {
     private short repairCalculate(short durability, int repairAmount) {
         Player player = getPlayer();
 
-        if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.REPAIR_MASTERY)) {
+        if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.repairMastery)) {
             double bonus = repairAmount * Math.min((((Repair.repairMasteryMaxBonus / Repair.repairMasteryMaxBonusLevel) * getSkillLevel()) / 100.0D), Repair.repairMasteryMaxBonus / 100.0D);
             repairAmount += bonus;
         }
 
-        if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SUPER_REPAIR) && checkPlayerProcRepair()) {
+        if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.superRepair) && checkPlayerProcRepair()) {
             repairAmount *= 2.0D;
         }
 
@@ -262,7 +262,7 @@ public class RepairManager extends SkillManager {
      * @return true if bonus granted, false otherwise
      */
     private boolean checkPlayerProcRepair() {
-        if (SkillUtils.activationSuccessful(SecondaryAbility.SUPER_REPAIR, getPlayer(), getSkillLevel(), activationChance)) {
+        if (SkillUtils.activationSuccessful(SecondaryAbility.superRepair, getPlayer(), getSkillLevel(), activationChance)) {
             getPlayer().sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;
         }
@@ -289,7 +289,7 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (getArcaneForgingRank() == 0 || !Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ARCANE_FORGING)) {
+        if (getArcaneForgingRank() == 0 || !Permissions.secondaryAbilityEnabled(player, SecondaryAbility.arcaneForging)) {
             for (Enchantment enchant : enchants.keySet()) {
                 item.removeEnchantment(enchant);
             }

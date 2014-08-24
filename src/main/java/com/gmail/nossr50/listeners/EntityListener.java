@@ -545,7 +545,7 @@ public class EntityListener implements Listener {
             case GOLDEN_CARROT: /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
             case MUSHROOM_SOUP: /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
             case PUMPKIN_PIE:   /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
-                if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FARMERS_DIET)) {
+                if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.farmersDiet)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
                 }
                 return;
@@ -554,19 +554,19 @@ public class EntityListener implements Listener {
             case MELON:            /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
             case POISONOUS_POTATO: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
             case POTATO_ITEM:      /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FARMERS_DIET)) {
+                if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.farmersDiet)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
                 }
                 return;
 
             case COOKED_FISH: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-                if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FISHERMANS_DIET)) {
+                if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.fishermansDiet)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
                 }
                 return;
 
             case RAW_FISH:    /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FISHERMANS_DIET)) {
+                if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.fishermansDiet)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
                 }
                 return;

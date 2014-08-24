@@ -45,7 +45,7 @@ public class AxesCommand extends SkillCommand {
 
         // CRITICAL HIT
         if (canCritical) {
-            String[] criticalHitStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.CRITICAL_HIT, isLucky);
+            String[] criticalHitStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.criticalHit, isLucky);
             critChance = criticalHitStrings[0];
             critChanceLucky = criticalHitStrings[1];
         }
@@ -59,10 +59,10 @@ public class AxesCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canSkullSplitter = Permissions.skullSplitter(player);
-        canCritical = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.CRITICAL_HIT);
-        canAxeMastery = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.AXE_MASTERY);
-        canImpact = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ARMOR_IMPACT);
-        canGreaterImpact = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.GREATER_IMPACT);
+        canCritical = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.criticalHit);
+        canAxeMastery = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.axeMastery);
+        canImpact = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.armorImpact);
+        canGreaterImpact = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.greaterImpact);
     }
 
     @Override

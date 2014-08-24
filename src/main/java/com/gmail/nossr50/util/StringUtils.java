@@ -36,20 +36,20 @@ public class StringUtils {
     }
 
     public static String getPrettySecondaryAbilityString(SecondaryAbility secondaryAbility) {
-        switch (secondaryAbility) {
-            case HERBALISM_DOUBLE_DROPS:
-            case MINING_DOUBLE_DROPS:
-            case WOODCUTTING_DOUBLE_DROPS:
-                return "Double Drops";
-            case FISHING_TREASURE_HUNTER:
-            case EXCAVATION_TREASURE_HUNTER:
-                return "Treasure Hunter";
-            case GREEN_THUMB_BLOCK:
-            case GREEN_THUMB_PLANT:
-                return "Green Thumb";
-            default:
+//        switch (secondaryAbility) {
+//            case herbalismDoubleDrops:
+//            case miningDoubleDrops:
+//            case woodcuttingDoubleDrops:
+//                return "Double Drops";
+//            case fishingTreasureHunter:
+//            case excavationTreasureHunter:
+//                return "Treasure Hunter";
+//            case greenThumbBlock:
+//            case greenThumbPlant:
+//                return "Green Thumb";
+//            default:
                 return createPrettyEnumString(secondaryAbility.toString());
-        }
+//        }
     }
 
     public static String getPrettyPartyFeatureString(PartyFeature partyFeature) {

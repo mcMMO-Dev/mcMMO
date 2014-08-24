@@ -88,7 +88,7 @@ public final class AlchemyPotionBrewer {
     }
 
     private static List<ItemStack> getValidIngredients(Player player) {
-        return PotionConfig.getInstance().getIngredients((player == null || !Permissions.secondaryAbilityEnabled(player, SecondaryAbility.CONCOCTIONS)) ? 1 : UserManager.getPlayer(player).getAlchemyManager().getTier());
+        return PotionConfig.getInstance().getIngredients((player == null || !Permissions.secondaryAbilityEnabled(player, SecondaryAbility.concoctions)) ? 1 : UserManager.getPlayer(player).getAlchemyManager().getTier());
     }
 
     public static void finishBrewing(BlockState brewingStand, Player player, boolean forced) {
