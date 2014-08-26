@@ -475,7 +475,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         continue;
                     }
                     // If input uuid is not null then we should compare uuids
-                    else if ((uuid != null && !character[41].equalsIgnoreCase(uuid.toString())) || (!character[0].equalsIgnoreCase(playerName))) {
+                    else if ((uuid != null && !character[41].equalsIgnoreCase(uuid.toString())) || (uuid == null && !character[0].equalsIgnoreCase(playerName))) {
                         continue;
                     }
 
