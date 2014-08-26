@@ -155,6 +155,10 @@ public class AbilityType {
     public String getName() {
         return StringUtils.getPrettyAbilityString(this);
     }
+    
+    public String getUnprettyName() {
+    	return this.name;
+    }
 
     @Override
     public String toString() {
