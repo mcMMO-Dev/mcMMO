@@ -1,5 +1,7 @@
 package com.gmail.nossr50.util;
 
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.entity.EntityType;
@@ -105,5 +107,28 @@ public class StringUtils {
             return false;
         }
     }
+
+	public static String createStringFromListWithNoPrefixBeforeFirst(List<String> list, String prefix, String suffix) {
+		String toRet = "";
+		toRet = org.apache.commons.lang.StringUtils.join(list.toArray(), suffix + prefix) + suffix;
+		/*Iterator<String> itr = list.iterator();
+		if(itr.hasNext()) {
+			toRet += itr.next() + suffix;
+		}
+		while(itr.hasNext()) {
+			toRet += prefix + itr.next() + suffix;
+		}*/
+		return toRet;
+	}
+
+	public static String createStringFromList(List<String> list, String prefix, String suffix) {
+		String toRet = "";
+		toRet = prefix + createStringFromListWithNoPrefixBeforeFirst(list, prefix, suffix);
+		/*Iterator<String> itr = list.iterator();
+		while(itr.hasNext()) {
+			toRet += prefix + itr.next() + suffix;
+		}*/
+		return toRet;
+	}
 
 }

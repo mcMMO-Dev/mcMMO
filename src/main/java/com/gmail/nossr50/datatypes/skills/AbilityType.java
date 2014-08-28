@@ -14,6 +14,8 @@ import com.gmail.nossr50.util.StringUtils;
 
 public class AbilityType {
 	private static List<AbilityType> abilityTypes = new ArrayList<AbilityType>();
+	private static List<String> abilityNames = new ArrayList<String>();
+	private static List<String> lowerAbilityNames = new ArrayList<String>();
 	
     public static final AbilityType berserk = new AbilityType(
     		"BERSERK",
@@ -122,6 +124,8 @@ public class AbilityType {
         this.abilityRefresh = abilityRefresh;
         this.abilityPlayerOff = abilityPlayerOff;
         abilityTypes.add(this);
+        abilityNames.add(this.getUnprettyName());
+        lowerAbilityNames.add(this.getUnprettyName().toLowerCase());
     }
 
     public int getCooldown() {
@@ -205,5 +209,13 @@ public class AbilityType {
     
     public static List<AbilityType> getAbilities() {
     	return abilityTypes;
+    }
+    
+    public static List<String> getAbilitieNames() {
+    	return abilityNames;
+    }
+    
+    public static List<String> getLowerAbilitieNames() {
+    	return lowerAbilityNames;
     }
 }

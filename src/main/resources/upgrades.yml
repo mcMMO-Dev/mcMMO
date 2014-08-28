@@ -7,4 +7,5 @@ Upgrades_Finished:
     DROP_SQL_PARTY_NAMES: false
     DROP_SPOUT: false
     ADD_ALCHEMY: false
-	ADD_INDEX_NAMES: true
+	ADD_FLATFILE_INDEX_NAMES: false
+    CHANGE_SQL_COOLDOWN_NAMES: false

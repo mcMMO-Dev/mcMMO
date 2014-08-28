@@ -356,12 +356,12 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 // Add the player to the end
                 out.append("Player,").append(playerName).append(":");
-                for(String skill : SkillType.getSkillNames()) {
-                	out.append(skill).append("LVL,0:"); //Skill Levels
-                	out.append(skill).append("XP,0:"); //Skill XP
+                for(SkillType skill : SkillType.getNonChildSkills()) {
+                	out.append(skill.getName()).append("LVL,0:"); //Skill Levels
+                	out.append(skill.getName()).append("XP,0:"); //Skill XP
                 }
-                for(AbilityType ability : AbilityType.getAbilities()) {
-                	out.append(ability.getUnprettyName()).append(",0:"); //DATS
+                for(String ability : AbilityType.getAbilitieNames()) {
+                	out.append(ability).append(",0:"); //DATS
                 }
                 out.append("LastLogin,").append(String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)).append(":"); // LastLogin
                 out.append("MobHealthBar,").append(Config.getInstance().getMobHealthbarDefault().toString()).append(":"); // Mob Healthbar HUD
@@ -467,61 +467,6 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
         return new PlayerProfile(playerName, uuid);
     }
-    
-    /*private static String[] addNameToUser(String playerName, String uuid) {
-        String[] characterToRet = null;
-
-        BufferedReader in = null;
-        FileWriter out = null;
-        String usersFilePath = mcMMO.getUsersFilePath();
-
-        synchronized (fileWritingLock) {
-            try {
-                in = new BufferedReader(new FileReader(usersFilePath));
-                StringBuilder writer = new StringBuilder();
-                String line;
-
-                while ((line = in.readLine()) != null) {
-                    String[] character = line.split(":");
-                    int uuidIndex = getUUIDIndexFromLine(character);
-                    if(uuidIndex != -1) {
-						if (characterToRet == null && character[uuidIndex].equalsIgnoreCase(uuid)) {
-							line = line + "Player," + playerName + ":";
-							characterToRet = line.split(":");
-	                    }
-                    }
-
-                    writer.append(line).append("\r\n");
-                }
-
-                out = new FileWriter(usersFilePath); // Write out the new file
-                out.write(writer.toString());
-            }
-            catch (Exception e) {
-                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
-            }
-            finally {
-                if (in != null) {
-                    try {
-                        in.close();
-                    }
-                    catch (IOException e) {
-                        // Ignore
-                    }
-                }
-                if (out != null) {
-                    try {
-                        out.close();
-                    }
-                    catch (IOException e) {
-                        // Ignore
-                    }
-                }
-            }
-        }
-
-        return characterToRet;
-    }*/
 
     public void convertUsers(DatabaseManager destination) {
         BufferedReader in = null;
@@ -1006,7 +951,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_SQL_PARTY_NAMES);
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.DROP_SPOUT);
             mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_ALCHEMY);
-            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_INDEX_NAMES);
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.ADD_FLATFILE_INDEX_NAMES);
+            mcMMO.getUpgradeManager().setUpgradeCompleted(UpgradeType.CHANGE_SQL_COOLDOWN_NAMES);
             return;
         }
 

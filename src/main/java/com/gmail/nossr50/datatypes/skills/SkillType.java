@@ -58,6 +58,7 @@ public class SkillType {
 	}
 
     private static List<String> skillNames = new ArrayList<String>();
+    private static List<String> lowerSkillNames = new ArrayList<String>();
     private static List<SkillType> skillList = new ArrayList<SkillType>();
 
     private static List<SkillType> childSkills = new ArrayList<SkillType>();
@@ -278,11 +279,20 @@ public class SkillType {
     
     public static void setUpSkillTypes()
     {
-    	Collections.sort(getSkillNames());
+    	Collections.sort(skillNames);
+    	for(SkillType skill : nonChildSkills) {
+    		if(skill != null) {
+        		lowerSkillNames.add(skill.getName());
+    		}
+    	}
     }
 
 	public static List<String> getSkillNames() {
 		return skillNames;
+	}
+	
+	public static List<String> getLowerSkillNames() {
+		return lowerSkillNames;
 	}
 
 	public static List<SkillType> getSkillList() {

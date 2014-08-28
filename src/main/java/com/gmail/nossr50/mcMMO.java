@@ -24,6 +24,7 @@ import com.gmail.nossr50.config.skills.salvage.SalvageConfigManager;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
@@ -129,6 +130,8 @@ public class mcMMO extends JavaPlugin {
             p = this;
             getLogger().setFilter(new LogFilter(this));
             metadataValue = new FixedMetadataValue(this, true);
+            
+            SkillType.setUpSkillTypes();
 
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;

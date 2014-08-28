@@ -9,5 +9,6 @@ public enum UpgradeType {
     DROP_SPOUT,
     ADD_ALCHEMY,
     ADD_UUIDS,
-    ADD_INDEX_NAMES;
+    ADD_FLATFILE_INDEX_NAMES,
+    CHANGE_SQL_COOLDOWN_NAMES;
 }

@@ -7,7 +7,6 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,12 +28,9 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 
-import snaq.db.CacheConnection;
 import snaq.db.ConnectionPool;
-import snaq.db.ConnectionValidator;
 
 public final class SQLDatabaseManager implements DatabaseManager {
-    private static final String ALL_QUERY_VERSION = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy";
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
     private final int POOL_FETCH_TIMEOUT = 360000;
@@ -72,26 +68,23 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 0 /*No Minimum really needed*/,
                 Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.MISC) /*max pool size */,
                 Config.getInstance().getMySQLMaxConnections(PoolIdentifier.MISC) /*max num connections*/,
-                0 /* idle timeout of connections */,
+                400 /* idle timeout of connections */,
                 connectionString,
                 connectionProperties);
-        miscPool.setValidator(new mcMMOValidator());
         loadPool = new ConnectionPool("mcMMO-Load-Pool",
                 1 /*Minimum of one*/,
                 Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.LOAD) /*max pool size */,
                 Config.getInstance().getMySQLMaxConnections(PoolIdentifier.LOAD) /*max num connections*/,
-                0 /* idle timeout of connections */,
+                400 /* idle timeout of connections */,
                 connectionString,
                 connectionProperties);
-        loadPool.setValidator(new mcMMOValidator());
         savePool = new ConnectionPool("mcMMO-Save-Pool",
                 1 /*Minimum of one*/,
                 Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.SAVE) /*max pool size */,
                 Config.getInstance().getMySQLMaxConnections(PoolIdentifier.SAVE) /*max num connections*/,
-                0 /* idle timeout of connections */,
+                400 /* idle timeout of connections */,
                 connectionString,
                 connectionProperties);
-        savePool.setValidator(new mcMMOValidator());
         miscPool.init(); // Init first connection
         miscPool.registerShutdownHook(); // Auto release on jvm exit  just in case
         loadPool.init();
@@ -115,11 +108,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connection = getConnection(PoolIdentifier.MISC);
             statement = connection.createStatement();
 
-            purged = statement.executeUpdate("DELETE FROM " + tablePrefix + "skills WHERE "
-                    + "taming = 0 AND mining = 0 AND woodcutting = 0 AND repair = 0 "
-                    + "AND unarmed = 0 AND herbalism = 0 AND excavation = 0 AND "
-                    + "archery = 0 AND swords = 0 AND axes = 0 AND acrobatics = 0 "
-                    + "AND fishing = 0 AND alchemy = 0;");
+            String deleteFrom = "DELETE FROM " + tablePrefix + "skills WHERE ";
+            deleteFrom += com.gmail.nossr50.util.StringUtils.createStringFromListWithNoPrefixBeforeFirst(SkillType.getLowerSkillNames(), " AND ", " = 0");
+            deleteFrom += ";";
+            purged = statement.executeUpdate(deleteFrom);
 
             statement.executeUpdate("DELETE FROM `" + tablePrefix + "experience` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "skills` `s` WHERE `" + tablePrefix + "experience`.`user_id` = `s`.`user_id`)");
             statement.executeUpdate("DELETE FROM `" + tablePrefix + "huds` WHERE NOT EXISTS (SELECT * FROM `" + tablePrefix + "skills` `s` WHERE `" + tablePrefix + "huds`.`user_id` = `s`.`user_id`)");
@@ -267,63 +259,33 @@ public final class SQLDatabaseManager implements DatabaseManager {
             success &= (statement.executeUpdate() != 0);
             statement.close();
 
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "skills SET "
-                    + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                    + ", unarmed = ?, herbalism = ?, excavation = ?"
-                    + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                    + ", fishing = ?, alchemy = ? WHERE user_id = ?");
-            statement.setInt(1, profile.getSkillLevel(SkillType.taming));
-            statement.setInt(2, profile.getSkillLevel(SkillType.mining));
-            statement.setInt(3, profile.getSkillLevel(SkillType.repair));
-            statement.setInt(4, profile.getSkillLevel(SkillType.woodcutting));
-            statement.setInt(5, profile.getSkillLevel(SkillType.unarmed));
-            statement.setInt(6, profile.getSkillLevel(SkillType.herbalism));
-            statement.setInt(7, profile.getSkillLevel(SkillType.excavation));
-            statement.setInt(8, profile.getSkillLevel(SkillType.archery));
-            statement.setInt(9, profile.getSkillLevel(SkillType.swords));
-            statement.setInt(10, profile.getSkillLevel(SkillType.axes));
-            statement.setInt(11, profile.getSkillLevel(SkillType.acrobatics));
-            statement.setInt(12, profile.getSkillLevel(SkillType.fishing));
-            statement.setInt(13, profile.getSkillLevel(SkillType.alchemy));
-            statement.setInt(14, id);
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "skills SET   " 
+            		+ com.gmail.nossr50.util.StringUtils.createStringFromListWithNoPrefixBeforeFirst(SkillType.getLowerSkillNames(), ", ", " = ?")
+                    + " WHERE user_id = ?");
+            for(int i = 0; i < SkillType.getNonChildSkills().size(); i++) {
+            	statement.setInt(i + 1, profile.getSkillLevel(SkillType.getNonChildSkills().get(i)));
+            }
+            statement.setInt(SkillType.getNonChildSkills().size() + 1, id);
             success &= (statement.executeUpdate() != 0);
             statement.close();
 
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "experience SET "
-                    + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
-                    + ", unarmed = ?, herbalism = ?, excavation = ?"
-                    + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                    + ", fishing = ?, alchemy = ? WHERE user_id = ?");
-            statement.setInt(1, profile.getSkillXpLevel(SkillType.taming));
-            statement.setInt(2, profile.getSkillXpLevel(SkillType.mining));
-            statement.setInt(3, profile.getSkillXpLevel(SkillType.repair));
-            statement.setInt(4, profile.getSkillXpLevel(SkillType.woodcutting));
-            statement.setInt(5, profile.getSkillXpLevel(SkillType.unarmed));
-            statement.setInt(6, profile.getSkillXpLevel(SkillType.herbalism));
-            statement.setInt(7, profile.getSkillXpLevel(SkillType.excavation));
-            statement.setInt(8, profile.getSkillXpLevel(SkillType.archery));
-            statement.setInt(9, profile.getSkillXpLevel(SkillType.swords));
-            statement.setInt(10, profile.getSkillXpLevel(SkillType.axes));
-            statement.setInt(11, profile.getSkillXpLevel(SkillType.acrobatics));
-            statement.setInt(12, profile.getSkillXpLevel(SkillType.fishing));
-            statement.setInt(13, profile.getSkillXpLevel(SkillType.alchemy));
-            statement.setInt(14, id);
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "experience SET   " 
+            		+ com.gmail.nossr50.util.StringUtils.createStringFromListWithNoPrefixBeforeFirst(SkillType.getLowerSkillNames(), ", ", " = ?")
+                    + " WHERE user_id = ?");
+            for(int i = 0; i < SkillType.getNonChildSkills().size(); i++) {
+            	statement.setInt(i + 1, profile.getSkillXpLevel(SkillType.getNonChildSkills().get(i)));
+            }
+            statement.setInt(SkillType.getNonChildSkills().size() + 1, id);
             success &= (statement.executeUpdate() != 0);
             statement.close();
 
-            statement = connection.prepareStatement("UPDATE " + tablePrefix + "cooldowns SET "
-                    + "  mining = ?, woodcutting = ?, unarmed = ?"
-                    + ", herbalism = ?, excavation = ?, swords = ?"
-                    + ", axes = ?, blast_mining = ? WHERE user_id = ?");
-            statement.setLong(1, profile.getAbilityDATS(AbilityType.superBreaker));
-            statement.setLong(2, profile.getAbilityDATS(AbilityType.treeFeller));
-            statement.setLong(3, profile.getAbilityDATS(AbilityType.berserk));
-            statement.setLong(4, profile.getAbilityDATS(AbilityType.greenTerra));
-            statement.setLong(5, profile.getAbilityDATS(AbilityType.gigaDrillBreaker));
-            statement.setLong(6, profile.getAbilityDATS(AbilityType.serratedStrikes));
-            statement.setLong(7, profile.getAbilityDATS(AbilityType.skullSplitter));
-            statement.setLong(8, profile.getAbilityDATS(AbilityType.blastMining));
-            statement.setInt(9, id);
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "cooldowns SET   "
+            		+ com.gmail.nossr50.util.StringUtils.createStringFromListWithNoPrefixBeforeFirst(AbilityType.getLowerAbilitieNames(), ", ", " = ?")
+                    + " WHERE user_id = ?");
+            for(int i = 0; i < AbilityType.getAbilities().size(); i++) {
+            	statement.setLong(i + 1, profile.getAbilityDATS(AbilityType.getAbilities().get(i)));
+            }
+            statement.setInt(AbilityType.getAbilities().size() + 1, id);
             success = (statement.executeUpdate() != 0);
             statement.close();
 
@@ -361,7 +323,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public List<PlayerStat> readLeaderboard(SkillType skill, int pageNumber, int statsPerPage) {
         List<PlayerStat> stats = new ArrayList<PlayerStat>();
 
-        String query = skill == null ? ALL_QUERY_VERSION : skill.getName().toLowerCase();
+        String query = skill == null ? getAllQueryVersion() : skill.getName().toLowerCase();
         ResultSet resultSet = null;
         PreparedStatement statement = null;
         Connection connection = null;
@@ -461,9 +423,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
 
             String sql = "SELECT COUNT(*) AS rank FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
-                    "WHERE " + ALL_QUERY_VERSION + " > 0 " +
-                    "AND " + ALL_QUERY_VERSION + " > " +
-                    "(SELECT " + ALL_QUERY_VERSION + " " +
+                    "WHERE " + getAllQueryVersion() + " > 0 " +
+                    "AND " + getAllQueryVersion() + " > " +
+                    "(SELECT " + getAllQueryVersion() + " " +
                     "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = ?)";
 
             statement = connection.prepareStatement(sql);
@@ -477,11 +439,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
             resultSet.close();
             statement.close();
 
-            sql = "SELECT user, " + ALL_QUERY_VERSION + " " +
+            sql = "SELECT user, " + getAllQueryVersion() + " " +
                     "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id " +
-                    "WHERE " + ALL_QUERY_VERSION + " > 0 " +
-                    "AND " + ALL_QUERY_VERSION + " = " +
-                    "(SELECT " + ALL_QUERY_VERSION + " " +
+                    "WHERE " + getAllQueryVersion() + " > 0 " +
+                    "AND " + getAllQueryVersion() + " = " +
+                    "(SELECT " + getAllQueryVersion() + " " +
                     "FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON user_id = id WHERE user = ?) ORDER BY user";
 
             statement = connection.prepareStatement(sql);
@@ -635,9 +597,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
             statement = connection.prepareStatement(
                     "SELECT "
-                            + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
-                            + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
-                            + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
+            				+ com.gmail.nossr50.util.StringUtils.createStringFromList(SkillType.getLowerSkillNames(), "s.", ", ")
+            				+ com.gmail.nossr50.util.StringUtils.createStringFromList(SkillType.getLowerSkillNames(), "e.", ", ")
+            				+ com.gmail.nossr50.util.StringUtils.createStringFromList(AbilityType.getLowerAbilitieNames(), "c.", ", ")
                             + "h.mobhealthbar, u.uuid "
                             + "FROM " + tablePrefix + "users u "
                             + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
@@ -724,9 +686,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             connection = getConnection(PoolIdentifier.MISC);
             statement = connection.prepareStatement(
                     "SELECT "
-                            + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
-                            + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
-                            + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
+            				+ com.gmail.nossr50.util.StringUtils.createStringFromList(SkillType.getLowerSkillNames(), "s.", ", ")
+            				+ com.gmail.nossr50.util.StringUtils.createStringFromList(SkillType.getLowerSkillNames(), "e.", ", ")
+            				+ com.gmail.nossr50.util.StringUtils.createStringFromList(AbilityType.getLowerAbilitieNames(), "c.", ", ")
                             + "h.mobhealthbar, u.uuid "
                             + "FROM " + tablePrefix + "users u "
                             + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
@@ -975,18 +937,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 createStatement = connection.createStatement();
                 createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "cooldowns` ("
                         + "`user_id` int(10) unsigned NOT NULL,"
-                        + "`taming` int(32) unsigned NOT NULL DEFAULT '0',"
-                        + "`mining` int(32) unsigned NOT NULL DEFAULT '0',"
-                        + "`woodcutting` int(32) unsigned NOT NULL DEFAULT '0',"
-                        + "`repair` int(32) unsigned NOT NULL DEFAULT '0',"
-                        + "`unarmed` int(32) unsigned NOT NULL DEFAULT '0',"
-                        + "`herbalism` int(32) unsigned NOT NULL DEFAULT '0',"
-                        + "`excavation` int(32) unsigned NOT NULL DEFAULT '0',"
-                        + "`archery` int(32) unsigned NOT NULL DEFAULT '0',"
-                        + "`swords` int(32) unsigned NOT NULL DEFAULT '0',"
-                        + "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
-                        + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
-                        + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
+                		+ com.gmail.nossr50.util.StringUtils.createStringFromList(AbilityType.getLowerAbilitieNames(), "`", "` int(32) unsigned NOT NULL DEFAULT '0',")
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
                 createStatement.close();
@@ -999,19 +950,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 createStatement = connection.createStatement();
                 createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "skills` ("
                         + "`user_id` int(10) unsigned NOT NULL,"
-                        + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
+                		+ com.gmail.nossr50.util.StringUtils.createStringFromList(SkillType.getLowerSkillNames(), "`", "` int(10) unsigned NOT NULL DEFAULT '0',")
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
                 createStatement.close();
@@ -1024,19 +963,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 createStatement = connection.createStatement();
                 createStatement.executeUpdate("CREATE TABLE IF NOT EXISTS `" + tablePrefix + "experience` ("
                         + "`user_id` int(10) unsigned NOT NULL,"
-                        + "`taming` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`mining` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`woodcutting` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`repair` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`unarmed` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`herbalism` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`excavation` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`archery` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`swords` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`axes` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
-                        + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
+                		+ com.gmail.nossr50.util.StringUtils.createStringFromList(SkillType.getLowerSkillNames(), "`", "` int(10) unsigned NOT NULL DEFAULT '0',")
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
                 createStatement.close();
@@ -1162,6 +1089,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 case ADD_UUIDS:
                     checkUpgradeAddUUIDs(statement);
                     return;
+                    
+                case CHANGE_SQL_COOLDOWN_NAMES:
+                	checkUpgradeChangeCooldownNames(statement);
+                	break;
 
                 default:
                     break;
@@ -1231,63 +1162,34 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Map<AbilityType, Integer> skillsDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
         MobHealthbarType mobHealthbarType;
         UUID uuid;
+        
+        int skillOffset = 0;
+        int xpOffset = skillOffset + SkillType.getNonChildSkills().size();
+        int datsOffset = xpOffset + SkillType.getNonChildSkills().size();
+        int otherOffset = datsOffset + AbilityType.getAbilities().size();
 
-        final int OFFSET_SKILLS = 0; // TODO update these numbers when the query
-        // changes (a new skill is added)
-        final int OFFSET_XP = 13;
-        final int OFFSET_DATS = 26;
-        final int OFFSET_OTHER = 38;
+        SkillType skill;
+        for(int i = 0; i < SkillType.getNonChildSkills().size(); i++) {
+        	skill = SkillType.getNonChildSkills().get(i);
+        	skills.put(skill, result.getInt(skillOffset + i + 1));
+        	skillsXp.put(skill, result.getFloat(xpOffset + i + 1));
+        }
 
-        skills.put(SkillType.taming, result.getInt(OFFSET_SKILLS + 1));
-        skills.put(SkillType.mining, result.getInt(OFFSET_SKILLS + 2));
-        skills.put(SkillType.repair, result.getInt(OFFSET_SKILLS + 3));
-        skills.put(SkillType.woodcutting, result.getInt(OFFSET_SKILLS + 4));
-        skills.put(SkillType.unarmed, result.getInt(OFFSET_SKILLS + 5));
-        skills.put(SkillType.herbalism, result.getInt(OFFSET_SKILLS + 6));
-        skills.put(SkillType.excavation, result.getInt(OFFSET_SKILLS + 7));
-        skills.put(SkillType.archery, result.getInt(OFFSET_SKILLS + 8));
-        skills.put(SkillType.swords, result.getInt(OFFSET_SKILLS + 9));
-        skills.put(SkillType.axes, result.getInt(OFFSET_SKILLS + 10));
-        skills.put(SkillType.acrobatics, result.getInt(OFFSET_SKILLS + 11));
-        skills.put(SkillType.fishing, result.getInt(OFFSET_SKILLS + 12));
-        skills.put(SkillType.alchemy, result.getInt(OFFSET_SKILLS + 13));
-
-        skillsXp.put(SkillType.taming, result.getFloat(OFFSET_XP + 1));
-        skillsXp.put(SkillType.mining, result.getFloat(OFFSET_XP + 2));
-        skillsXp.put(SkillType.repair, result.getFloat(OFFSET_XP + 3));
-        skillsXp.put(SkillType.woodcutting, result.getFloat(OFFSET_XP + 4));
-        skillsXp.put(SkillType.unarmed, result.getFloat(OFFSET_XP + 5));
-        skillsXp.put(SkillType.herbalism, result.getFloat(OFFSET_XP + 6));
-        skillsXp.put(SkillType.excavation, result.getFloat(OFFSET_XP + 7));
-        skillsXp.put(SkillType.archery, result.getFloat(OFFSET_XP + 8));
-        skillsXp.put(SkillType.swords, result.getFloat(OFFSET_XP + 9));
-        skillsXp.put(SkillType.axes, result.getFloat(OFFSET_XP + 10));
-        skillsXp.put(SkillType.acrobatics, result.getFloat(OFFSET_XP + 11));
-        skillsXp.put(SkillType.fishing, result.getFloat(OFFSET_XP + 12));
-        skillsXp.put(SkillType.alchemy, result.getFloat(OFFSET_XP + 13));
-
-        // Taming - Unused - result.getInt(OFFSET_DATS + 1)
-        skillsDATS.put(AbilityType.superBreaker, result.getInt(OFFSET_DATS + 2));
-        // Repair - Unused - result.getInt(OFFSET_DATS + 3)
-        skillsDATS.put(AbilityType.treeFeller, result.getInt(OFFSET_DATS + 4));
-        skillsDATS.put(AbilityType.berserk, result.getInt(OFFSET_DATS + 5));
-        skillsDATS.put(AbilityType.greenTerra, result.getInt(OFFSET_DATS + 6));
-        skillsDATS.put(AbilityType.gigaDrillBreaker, result.getInt(OFFSET_DATS + 7));
-        // Archery - Unused - result.getInt(OFFSET_DATS + 8)
-        skillsDATS.put(AbilityType.serratedStrikes, result.getInt(OFFSET_DATS + 9));
-        skillsDATS.put(AbilityType.skullSplitter, result.getInt(OFFSET_DATS + 10));
-        // Acrobatics - Unused - result.getInt(OFFSET_DATS + 11)
-        skillsDATS.put(AbilityType.blastMining, result.getInt(OFFSET_DATS + 12));
+        AbilityType ability;
+        for(int i = 0; i < AbilityType.getAbilities().size(); i++) {
+        	ability = AbilityType.getAbilities().get(i);
+        	skillsDATS.put(ability, result.getInt(datsOffset + i + 1));
+        }
 
         try {
-            mobHealthbarType = MobHealthbarType.valueOf(result.getString(OFFSET_OTHER + 2));
+            mobHealthbarType = MobHealthbarType.valueOf(result.getString(otherOffset + 2));
         }
         catch (Exception e) {
             mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
         }
 
         try {
-            uuid = UUID.fromString(result.getString(OFFSET_OTHER + 3));
+            uuid = UUID.fromString(result.getString(otherOffset + 3));
         }
         catch (Exception e) {
             uuid = null;
@@ -1424,6 +1326,26 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
 
         new GetUUIDUpdatesRequired().runTaskLaterAsynchronously(mcMMO.p, 100); // wait until after first purge
+    }
+    
+    private void checkUpgradeChangeCooldownNames(final Statement statement) throws SQLException {
+        try {
+            statement.executeQuery("SELECT `" + AbilityType.getLowerAbilitieNames().get(0) + "` FROM `" + tablePrefix + "cooldowns` LIMIT 1");
+        }
+        catch (SQLException ex) {
+            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for changed MySQL ability cooldown names...");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` CHANGE `mining` `super_breaker` int(32) unsigned NOT NULL DEFAULT '0'");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` CHANGE `woodcutting` `tree_feller` int(32) unsigned NOT NULL DEFAULT '0'");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` CHANGE `unarmed` `berserk` int(32) unsigned NOT NULL DEFAULT '0'");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` CHANGE `herbalism` `green_terra` int(32) unsigned NOT NULL DEFAULT '0'");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` CHANGE `excavation` `giga_drill_breaker` int(32) unsigned NOT NULL DEFAULT '0'");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` CHANGE `swords` `serrated_strikes` int(32) unsigned NOT NULL DEFAULT '0'");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` CHANGE `axes` `skull_splitter` int(32) unsigned NOT NULL DEFAULT '0'");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` DROP `taming`");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` DROP `repair`");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` DROP `archery`");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` DROP `acrobatics`");
+        }
     }
 
     private class GetUUIDUpdatesRequired extends BukkitRunnable {
@@ -1596,7 +1518,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return -1;
     }
 
-    @Override
+	private static String getAllQueryVersion() {
+		return org.apache.commons.lang.StringUtils.join(SkillType.getLowerSkillNames(), '+');
+	}
+
+	@Override
     public void onDisable() {
         mcMMO.p.debug("Releasing connection pool resource...");
         miscPool.release();
@@ -1608,13 +1534,5 @@ public final class SQLDatabaseManager implements DatabaseManager {
         MISC,
         LOAD,
         SAVE;
-    }
-
-    private class mcMMOValidator implements ConnectionValidator {
-        @Override
-        public boolean isValid(Connection connection) throws SQLException {
-            return connection instanceof CacheConnection && connection.isValid(0);
-        }
-        
     }
 }
