@@ -1,6 +1,8 @@
 package com.gmail.nossr50.locale;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -12,6 +14,8 @@ import com.gmail.nossr50.config.Config;
 
 public final class LocaleLoader {
     private static final String BUNDLE_ROOT = "com.gmail.nossr50.locale.locale";
+    private static List<ResourceBundle> bundles = new ArrayList<ResourceBundle>();
+    private static List<ResourceBundle> defaultBundles = new ArrayList<ResourceBundle>();
     private static ResourceBundle bundle = null;
     private static ResourceBundle enBundle = null;
 
@@ -33,6 +37,16 @@ public final class LocaleLoader {
             initialize();
         }
 
+        for(ResourceBundle bundle : bundles) {
+        	if(bundle.containsKey(key)) {
+        		return getString(key, bundle, messageArguments);
+        	}
+        }
+        for(ResourceBundle bundle : defaultBundles) {
+        	if(bundle.containsKey(key)) {
+        		return getString(key, bundle, messageArguments);
+        	}
+        }
         try {
             return getString(key, bundle, messageArguments);
         }
@@ -75,20 +89,31 @@ public final class LocaleLoader {
 
     private static void initialize() {
         if (bundle == null) {
-            Locale.setDefault(new Locale("en", "US"));
-            Locale locale = null;
-            String[] myLocale = Config.getInstance().getLocale().split("[-_ ]");
-
-            if (myLocale.length == 1) {
-                locale = new Locale(myLocale[0]);
-            }
-            else if (myLocale.length >= 2) {
-                locale = new Locale(myLocale[0], myLocale[1]);
-            }
+            Locale locale = getLocalFromConfig();
 
             bundle = ResourceBundle.getBundle(BUNDLE_ROOT, locale);
             enBundle = ResourceBundle.getBundle(BUNDLE_ROOT, Locale.US);
         }
+    }
+
+	private static Locale getLocalFromConfig() {
+		Locale.setDefault(new Locale("en", "US"));
+		Locale locale = null;
+		String[] myLocale = Config.getInstance().getLocale().split("[-_ ]");
+
+		if (myLocale.length == 1) {
+		    locale = new Locale(myLocale[0]);
+		}
+		else if (myLocale.length >= 2) {
+		    locale = new Locale(myLocale[0], myLocale[1]);
+		}
+		return locale;
+	}
+    
+    public static void addResourceBundle(String bundleRoot, Locale defaultLocale) {
+    	Locale locale = getLocalFromConfig();
+    	bundles.add(ResourceBundle.getBundle(bundleRoot, locale));
+    	defaultBundles.add(ResourceBundle.getBundle(bundleRoot, defaultLocale));
     }
 
     private static String addColors(String input) {
