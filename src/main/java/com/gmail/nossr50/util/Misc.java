@@ -2,6 +2,7 @@ package com.gmail.nossr50.util;
 
 import java.util.Collection;
 import java.util.Random;
+import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,6 +16,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.util.player.UserManager;
+
+import com.google.common.collect.ImmutableSet;
 
 public final class Misc {
     private static Random random = new Random();
@@ -35,6 +38,8 @@ public final class Misc {
     public static final float GHAST_VOLUME     = 1.0F;
     public static final float LEVELUP_PITCH    = 0.5F;  // Reduced to differentiate between vanilla level-up
     public static final float LEVELUP_VOLUME   = 0.75F; // Use max volume always
+
+    public static final Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO", "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST", "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS", "MARICULTURE", "MINESTRAPPOLATION");
 
     private Misc() {};
 
@@ -121,6 +126,22 @@ public final class Misc {
         if ((convertedUsers % progressInterval) == 0) {
             mcMMO.p.getLogger().info(String.format("Conversion progress: %d users at %.2f users/second", convertedUsers, convertedUsers / (double) ((System.currentTimeMillis() - startMillis) / TIME_CONVERSION_FACTOR)));
         }
+    }
+
+    public static String getModName(String materialName) {
+        for (String mod : modNames) {
+            if (materialName.contains(mod)) {
+                return mod;
+            }
+        }
+
+        String[] materialSplit = materialName.split("_");
+
+        if (materialSplit.length > 1) {
+            return materialSplit[0].toLowerCase();
+        }
+
+        return "UnknownMods";
     }
 
     public static Random getRandom() {
