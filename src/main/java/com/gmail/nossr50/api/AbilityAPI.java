@@ -3,6 +3,7 @@ package com.gmail.nossr50.api;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
@@ -97,6 +98,12 @@ public final class AbilityAPI {
     }
     
     public static SecondaryAbility createSecondaryAbility(String name) {
-    	return new SecondaryAbility(name);
+    	return createSecondaryAbility(name, 0, 100);
+    }
+    
+    public static SecondaryAbility createSecondaryAbility(String name, int maxBonusLevel, double maxChance) {
+    	SecondaryAbility ability = new SecondaryAbility(name);
+    	AdvancedConfig.getInstance().createNewSkill(ability, maxBonusLevel, maxChance);
+    	return ability;
     }
 }

@@ -35,21 +35,6 @@ import com.gmail.nossr50.commands.player.MccooldownCommand;
 import com.gmail.nossr50.commands.player.McrankCommand;
 import com.gmail.nossr50.commands.player.McstatsCommand;
 import com.gmail.nossr50.commands.player.MctopCommand;
-import com.gmail.nossr50.commands.skills.AcrobaticsCommand;
-import com.gmail.nossr50.commands.skills.AlchemyCommand;
-import com.gmail.nossr50.commands.skills.ArcheryCommand;
-import com.gmail.nossr50.commands.skills.AxesCommand;
-import com.gmail.nossr50.commands.skills.ExcavationCommand;
-import com.gmail.nossr50.commands.skills.FishingCommand;
-import com.gmail.nossr50.commands.skills.HerbalismCommand;
-import com.gmail.nossr50.commands.skills.MiningCommand;
-import com.gmail.nossr50.commands.skills.RepairCommand;
-import com.gmail.nossr50.commands.skills.SalvageCommand;
-import com.gmail.nossr50.commands.skills.SmeltingCommand;
-import com.gmail.nossr50.commands.skills.SwordsCommand;
-import com.gmail.nossr50.commands.skills.TamingCommand;
-import com.gmail.nossr50.commands.skills.UnarmedCommand;
-import com.gmail.nossr50.commands.skills.WoodcuttingCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -62,24 +47,48 @@ public final class CommandRegistrationManager {
 
     private static void registerSkillCommands() {
         for (SkillType skill : SkillType.getSkillList()) {
-            String commandName = skill.toString().toLowerCase();
-            String localizedName = skill.getLocalizedName().toLowerCase();
-
-            PluginCommand command;
-
-            command = mcMMO.p.getCommand(commandName);
-            command.setDescription(LocaleLoader.getString("Commands.Description.Skill", StringUtils.getCapitalized(localizedName)));
-            command.setPermission("mcmmo.commands." + commandName);
-            command.setPermissionMessage(permissionsMessage);
-            command.setUsage(LocaleLoader.getString("Commands.Usage.0", localizedName));
-            command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.2", localizedName, "?", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
-
-            try {
-				command.setExecutor(skill.getCommandClass().newInstance());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+        	registerSkillCommand(skill);
         }
+    }
+    
+    public static void registerSkillCommand(SkillType skill) {
+        String commandName = skill.toString().toLowerCase();
+        String localizedName = skill.getLocalizedName().toLowerCase();
+
+        PluginCommand command;
+
+        command = mcMMO.p.getCommand(commandName);
+        command.setDescription(LocaleLoader.getString("Commands.Description.Skill", StringUtils.getCapitalized(localizedName)));
+        command.setPermission("mcmmo.commands." + commandName);
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", localizedName));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.2", localizedName, "?", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
+
+        try {
+			command.setExecutor(skill.getCommandClass().newInstance());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public static void registerSkillCommandAndPassSkillToConstructor(SkillType skill) {
+        String commandName = skill.toString().toLowerCase();
+        String localizedName = skill.getLocalizedName().toLowerCase();
+
+        PluginCommand command;
+
+        command = mcMMO.p.getCommand(commandName);
+        command.setDescription(LocaleLoader.getString("Commands.Description.Skill", StringUtils.getCapitalized(localizedName)));
+        command.setPermission("mcmmo.commands." + commandName);
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", localizedName));
+        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.2", localizedName, "?", "[" + LocaleLoader.getString("Commands.Usage.Page") + "]"));
+
+        try {
+			command.setExecutor(skill.getCommandClass().getDeclaredConstructor(SkillType.class).newInstance(skill));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
 
     private static void registerAddlevelsCommand() {

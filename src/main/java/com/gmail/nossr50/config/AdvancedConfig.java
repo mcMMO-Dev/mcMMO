@@ -1,10 +1,10 @@
 package com.gmail.nossr50.config;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
@@ -685,6 +685,17 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     @Override
     protected void loadKeys() {}
+    
+    public void createNewSkill(SecondaryAbility skillAbility, int maxBonusLevel, double maxChance) {
+    	String skillAbilityString = "Skills." + StringUtils.getCapitalized(SkillType.bySecondaryAbility(skillAbility).toString()) + "." + StringUtils.getPrettySecondaryAbilityString(skillAbility).replace(" ", "");
+    	config.set(skillAbilityString + ".MaxBonusLevel", maxBonusLevel);
+    	config.set(skillAbilityString + ".ChanceMax", maxChance);
+    	try {
+			config.save(getFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
 
     /* GENERAL */
     public int getAbilityLength() { return config.getInt("Skills.General.Ability.IncreaseLevel", 50); }
