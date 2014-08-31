@@ -595,6 +595,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             // There is such a user
             writeMissingRows(connection, id);
 
+            addNewSkills(connection);
+            
             statement = connection.prepareStatement(
                     "SELECT "
             				+ com.gmail.nossr50.util.StringUtils.createStringFromList(SkillType.getLowerSkillNames(), "s.", ", ")
@@ -1463,6 +1465,37 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if (resultSet != null) {
                 try {
                     resultSet.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
+    }
+    
+    private void addNewSkills(Connection connection) {
+        Statement statement = null;
+
+        try {
+            statement = connection.createStatement();
+            for (String skill : SkillType.getLowerSkillNames()) {
+                try {
+                    statement.executeQuery("SELECT `" + skill + "` FROM `" + tablePrefix + "skills` LIMIT 1");
+                }
+                catch (SQLException ex) {
+                    mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
+                    statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD `" + skill + "` int(10) NOT NULL DEFAULT '0'");
+                    statement.executeUpdate("ALTER TABLE `" + tablePrefix + "experience` ADD `" + skill + "` int(10) NOT NULL DEFAULT '0'");
+                }
+            }
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            if (statement != null) {
+                try {
+                    statement.close();
                 }
                 catch (SQLException e) {
                     // Ignore

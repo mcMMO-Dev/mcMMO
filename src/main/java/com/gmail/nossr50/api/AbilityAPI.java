@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -12,31 +13,35 @@ public final class AbilityAPI {
     private AbilityAPI() {}
 
     public static boolean berserkEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(AbilityType.berserk);
+        return abilityEnabled(player, AbilityType.berserk);
     }
 
     public static boolean gigaDrillBreakerEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(AbilityType.gigaDrillBreaker);
+        return abilityEnabled(player, AbilityType.gigaDrillBreaker);
     }
 
     public static boolean greenTerraEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(AbilityType.greenTerra);
+        return abilityEnabled(player, AbilityType.greenTerra);
     }
 
     public static boolean serratedStrikesEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(AbilityType.serratedStrikes);
+        return abilityEnabled(player, AbilityType.serratedStrikes);
     }
 
     public static boolean skullSplitterEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(AbilityType.skullSplitter);
+        return abilityEnabled(player, AbilityType.skullSplitter);
     }
 
     public static boolean superBreakerEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(AbilityType.superBreaker);
+        return abilityEnabled(player, AbilityType.superBreaker);
     }
 
     public static boolean treeFellerEnabled(Player player) {
-        return UserManager.getPlayer(player).getAbilityMode(AbilityType.treeFeller);
+        return abilityEnabled(player, AbilityType.treeFeller);
+    }
+    
+    public static boolean abilityEnabled(Player player, AbilityType ability) {
+    	return UserManager.getPlayer(player).getAbilityMode(ability);
     }
 
     public static boolean isAnyAbilityEnabled(Player player) {
@@ -82,8 +87,16 @@ public final class AbilityAPI {
     public static void setTreeFellerCooldown(Player player, long cooldown) {
         UserManager.getPlayer(player).setAbilityDATS(AbilityType.treeFeller, cooldown);
     }
+    
+    public static void setAbilityCooldown(Player player, AbilityType ability, long cooldown) {
+    	UserManager.getPlayer(player).setAbilityDATS(ability, cooldown);
+    }
 
     public static boolean isBleeding(LivingEntity entity) {
         return BleedTimerTask.isBleeding(entity);
+    }
+    
+    public static SecondaryAbility createSecondaryAbility(String name) {
+    	return new SecondaryAbility(name);
     }
 }

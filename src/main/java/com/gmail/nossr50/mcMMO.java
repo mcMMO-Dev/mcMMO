@@ -120,7 +120,7 @@ public class mcMMO extends JavaPlugin {
     public final static String databaseCommandKey  = "mcMMO: Processing Database Command";
 
     public static FixedMetadataValue metadataValue;
-
+    
     /**
      * Things to be run when the plugin is enabled.
      */

@@ -85,7 +85,7 @@ public class SecondaryAbility {
     
     private String name;
     
-    private SecondaryAbility(String name) {
+    public SecondaryAbility(String name) {
     	this.name = name;
     }
 
