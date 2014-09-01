@@ -89,14 +89,14 @@ public final class LocaleLoader {
 
     private static void initialize() {
         if (bundle == null) {
-            Locale locale = getLocalFromConfig();
+            Locale locale = getLocaleFromConfig();
 
             bundle = ResourceBundle.getBundle(BUNDLE_ROOT, locale);
             enBundle = ResourceBundle.getBundle(BUNDLE_ROOT, Locale.US);
         }
     }
 
-	private static Locale getLocalFromConfig() {
+	public static Locale getLocaleFromConfig() {
 		Locale.setDefault(new Locale("en", "US"));
 		Locale locale = null;
 		String[] myLocale = Config.getInstance().getLocale().split("[-_ ]");
@@ -111,9 +111,18 @@ public final class LocaleLoader {
 	}
     
     public static void addResourceBundle(String bundleRoot, Locale defaultLocale) {
-    	Locale locale = getLocalFromConfig();
+    	Locale locale = getLocaleFromConfig();
     	bundles.add(ResourceBundle.getBundle(bundleRoot, locale));
     	defaultBundles.add(ResourceBundle.getBundle(bundleRoot, defaultLocale));
+    }
+    
+    public static void addResourceBundle(ResourceBundle bundle, ResourceBundle defaultBundle) {
+    	if(bundle != null) {
+    		bundles.add(bundle);
+    	}
+    	if(defaultBundle != null) {
+    		defaultBundles.add(defaultBundle);
+    	}
     }
 
     private static String addColors(String input) {
