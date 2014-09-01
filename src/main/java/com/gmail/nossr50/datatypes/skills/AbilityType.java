@@ -108,6 +108,40 @@ public class AbilityType {
             "Mining.Blast.Other.On",
             "Mining.Blast.Refresh",
             null);
+    
+    static {
+    	abilityTypes.add(berserk);
+    	abilityNames.add(berserk.getUnprettyName());
+    	lowerAbilityNames.add(berserk.getUnprettyName().toLowerCase());
+    	
+    	abilityTypes.add(superBreaker);
+    	abilityNames.add(superBreaker.getUnprettyName());
+    	lowerAbilityNames.add(superBreaker.getUnprettyName().toLowerCase());
+    	
+    	abilityTypes.add(gigaDrillBreaker);
+    	abilityNames.add(gigaDrillBreaker.getUnprettyName());
+    	lowerAbilityNames.add(gigaDrillBreaker.getUnprettyName().toLowerCase());
+    	
+    	abilityTypes.add(greenTerra);
+    	abilityNames.add(greenTerra.getUnprettyName());
+    	lowerAbilityNames.add(greenTerra.getUnprettyName().toLowerCase());
+    	
+    	abilityTypes.add(skullSplitter);
+    	abilityNames.add(skullSplitter.getUnprettyName());
+    	lowerAbilityNames.add(skullSplitter.getUnprettyName().toLowerCase());
+    	
+    	abilityTypes.add(treeFeller);
+    	abilityNames.add(treeFeller.getUnprettyName());
+    	lowerAbilityNames.add(treeFeller.getUnprettyName().toLowerCase());
+    	
+    	abilityTypes.add(serratedStrikes);
+    	abilityNames.add(serratedStrikes.getUnprettyName());
+    	lowerAbilityNames.add(serratedStrikes.getUnprettyName().toLowerCase());
+    	
+    	abilityTypes.add(blastMining);
+    	abilityNames.add(blastMining.getUnprettyName());
+    	lowerAbilityNames.add(blastMining.getUnprettyName().toLowerCase());
+    }
 
     private String name;
     private String abilityOn;
@@ -123,9 +157,33 @@ public class AbilityType {
         this.abilityPlayer = abilityPlayer;
         this.abilityRefresh = abilityRefresh;
         this.abilityPlayerOff = abilityPlayerOff;
-        abilityTypes.add(this);
-        abilityNames.add(this.getUnprettyName());
-        lowerAbilityNames.add(this.getUnprettyName().toLowerCase());
+    }
+    
+    private AbilityType(String name, String skillName) {
+    	String capitalizedName = StringUtils.createPrettyStringWithSpacer(name, "");
+    	String capitalizedSkill = StringUtils.getCapitalized(skillName);
+    	this.name = name;
+    	this.abilityOn = capitalizedSkill + ".Skills." + capitalizedName + "On";
+    	this.abilityOff = capitalizedSkill + ".Skills." + capitalizedName + "Off";
+    	this.abilityPlayer = capitalizedSkill + ".Skills." + capitalizedName + "Other.On";
+    	this.abilityRefresh = capitalizedSkill + ".Skills." + capitalizedName + "Refresh";
+    	this.abilityPlayerOff = capitalizedSkill + ".Skills." + capitalizedName + "Other.Off";
+    }
+    
+    public static AbilityType createAbility(String name, String skillName, final Material... materials) {
+    	AbilityType ability = new AbilityType(name, skillName) {
+        	@Override
+        	public boolean blockCheck(BlockState blockState) {
+        		for(Material material : materials) {
+        			return blockState.getType() == material;
+        		}
+                return false;
+        	}
+        };
+    	abilityTypes.add(ability);
+    	abilityNames.add(ability.getUnprettyName());
+    	lowerAbilityNames.add(ability.getUnprettyName().toLowerCase());
+        return ability;
     }
 
     public int getCooldown() {

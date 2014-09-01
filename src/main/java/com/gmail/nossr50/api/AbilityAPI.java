@@ -1,5 +1,6 @@
 package com.gmail.nossr50.api;
 
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
@@ -95,6 +96,10 @@ public final class AbilityAPI {
 
     public static boolean isBleeding(LivingEntity entity) {
         return BleedTimerTask.isBleeding(entity);
+    }
+    
+    public static AbilityType createAbility(String name, String skillName, final Material... materials) {
+    	return AbilityType.createAbility(name, skillName, materials);
     }
     
     public static SecondaryAbility createSecondaryAbility(String name, String skillName) {

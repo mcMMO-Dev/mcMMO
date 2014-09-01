@@ -72,17 +72,6 @@ public class ToolType {
         return raiseTool;
     }
 
-    public static ToolType createToolType(String toolName, final Material material) {
-    	ToolType tool = new ToolType(toolName) {
-    		@Override
-    		public boolean inHand(ItemStack itemStack) {
-    			return itemStack.getType() == material;
-    		}
-    	};
-    	tools.add(tool);
-    	return tool;
-    }
-
     public static ToolType createToolType(String toolName, final Material... materials) {
     	ToolType tool = new ToolType(toolName) {
     		@Override
