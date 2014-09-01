@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Color;
+import org.bukkit.Material;
 
 import com.gmail.nossr50.commands.skills.SkillCommand;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -13,6 +14,7 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.skills.SkillType.SkillUseType;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.google.common.collect.ImmutableList;
 
@@ -107,22 +109,18 @@ public final class SkillAPI {
     	return skill;
     }
     
-    public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, ToolType tool, List<SecondaryAbility> secondaryAbilities) {
-    	SkillType skill = SkillType.createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ability, tool, secondaryAbilities);
+    public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, Material material, List<SecondaryAbility> secondaryAbilities) {
+    	SkillType skill = SkillType.createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ability, ToolType.createToolType(StringUtils.getCapitalized(name), material), secondaryAbilities);
     	CommandRegistrationManager.registerSkillCommandAndPassSkillToConstructor(skill);
     	return skill;
     }
     
     public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, SecondaryAbility... secondaryAbilities) {
-    	SkillType skill = SkillType.createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ImmutableList.copyOf(secondaryAbilities));
-    	CommandRegistrationManager.registerSkillCommandAndPassSkillToConstructor(skill);
-    	return skill;
+    	return createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ImmutableList.copyOf(secondaryAbilities));
     }
     
-    public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, ToolType tool, SecondaryAbility... secondaryAbilities) {
-    	SkillType skill = SkillType.createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ability, tool, ImmutableList.copyOf(secondaryAbilities));
-    	CommandRegistrationManager.registerSkillCommandAndPassSkillToConstructor(skill);
-    	return skill;
+    public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, Material material, SecondaryAbility... secondaryAbilities) {
+    	return createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ability, material, ImmutableList.copyOf(secondaryAbilities));
     }
     
     public static void loadNewSkills() {
