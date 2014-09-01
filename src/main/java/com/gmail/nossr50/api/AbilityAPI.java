@@ -97,13 +97,13 @@ public final class AbilityAPI {
         return BleedTimerTask.isBleeding(entity);
     }
     
-    public static SecondaryAbility createSecondaryAbility(String name) {
-    	return createSecondaryAbility(name, 0, 100);
+    public static SecondaryAbility createSecondaryAbility(String name, String skillName) {
+    	return createSecondaryAbility(name, skillName, 0, 100);
     }
     
-    public static SecondaryAbility createSecondaryAbility(String name, int maxBonusLevel, double maxChance) {
+    public static SecondaryAbility createSecondaryAbility(String name, String skillName, int maxBonusLevel, double maxChance) {
     	SecondaryAbility ability = new SecondaryAbility(name);
-    	AdvancedConfig.getInstance().createNewSkill(ability, maxBonusLevel, maxChance);
+    	AdvancedConfig.getInstance().createNewSkill(ability, skillName, maxBonusLevel, maxChance);
     	return ability;
     }
 }

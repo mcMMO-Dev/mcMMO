@@ -686,8 +686,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     @Override
     protected void loadKeys() {}
     
-    public void createNewSkill(SecondaryAbility skillAbility, int maxBonusLevel, double maxChance) {
-    	String skillAbilityString = "Skills." + StringUtils.getCapitalized(SkillType.bySecondaryAbility(skillAbility).toString()) + "." + StringUtils.getPrettySecondaryAbilityString(skillAbility).replace(" ", "");
+    public void createNewSkill(SecondaryAbility skillAbility, String skillName, int maxBonusLevel, double maxChance) {
+    	String skillAbilityString = "Skills." + StringUtils.getCapitalized(skillName) + "." + StringUtils.getPrettySecondaryAbilityString(skillAbility).replace(" ", "");
     	config.set(skillAbilityString + ".MaxBonusLevel", maxBonusLevel);
     	config.set(skillAbilityString + ".ChanceMax", maxChance);
     	try {
