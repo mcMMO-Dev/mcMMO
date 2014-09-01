@@ -26,6 +26,10 @@ General:
     Config_Update_Overwrite: true
     # Play level-up sounds
     LevelUp_Sounds: true
+    # Instead of asking Mojang for UUIDs, should mcMMO access a web caching service
+    # for player UUIDs? If enabled, mcMMO will use the web service. If disabled, mcMMO
+    # will use Mojang.
+    Use_UUID_Web_Cache: false
 
     # This should fix blocks being broken client side, but not server-side.
     # Enable to refresh the chunks around a player at the end of Super Breaker,

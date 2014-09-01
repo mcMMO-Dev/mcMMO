@@ -13,9 +13,10 @@ import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.uuid.UUIDFetcher;
+import com.gmail.nossr50.util.uuid.UUIDService;
 
 public class UUIDUpdateAsyncTask extends BukkitRunnable {
+
     private mcMMO plugin;
     private static final int MAX_LOOKUP = Math.max(HiddenConfig.getInstance().getUUIDConvertAmount(), 100);
     private static final int RATE_LIMIT = HiddenConfig.getInstance().getMojangRateLimit();
@@ -25,6 +26,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
     private List<String> userNames;
     private int size;
     private int checkedUsers;
+    private int fetchedUsers;
     private long startMillis;
 
     public UUIDUpdateAsyncTask(mcMMO plugin, List<String> userNames) {
@@ -32,12 +34,14 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
         this.userNames = userNames;
 
         this.checkedUsers = 0;
+        this.fetchedUsers = 0;
         this.startMillis = System.currentTimeMillis();
     }
 
     @Override
     public void run() {
         size = userNames.size();
+        UUIDService uuidService = null;
 
         plugin.getLogger().info("Starting to check and update UUIDs, total amount of users: " + size);
 
@@ -45,7 +49,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
         Map<String, UUID> fetchedUUIDs = new HashMap<String, UUID>();
 
         while (size != 0) {
-            if (checkedUsers + 100 > RATE_LIMIT) {
+            if (fetchedUsers + 100 > RATE_LIMIT) {
                 try {
                     Thread.sleep(LIMIT_PERIOD);
                 } catch (InterruptedException e) {
@@ -53,25 +57,27 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
                     return;
                 }
                 startMillis = System.currentTimeMillis();
-                checkedUsers = 0;
+                fetchedUsers = 0;
             }
             if (size > MAX_LOOKUP) {
                 userNamesSection = userNames.subList(size - MAX_LOOKUP, size);
                 size -= MAX_LOOKUP;
-            }
-            else {
+            } else {
                 userNamesSection = userNames.subList(0, size);
                 size = 0;
             }
 
             try {
-                fetchedUUIDs.putAll(new UUIDFetcher(userNamesSection).call());
-            }
-            catch (Exception e) {
+                if (uuidService == null) uuidService = new UUIDService(userNamesSection);
+                else uuidService.setList(userNamesSection);
+
+                fetchedUUIDs.putAll(uuidService.call());
+            } catch (Exception e) {
                 plugin.getLogger().log(Level.SEVERE, "Unable to fetch UUIDs!", e);
                 return;
             }
 
+            fetchedUsers += uuidService.getNumberFetched();
             checkedUsers += userNamesSection.size();
             userNamesSection.clear();
             size = userNames.size();

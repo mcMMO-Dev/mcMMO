@@ -78,6 +78,7 @@
                             <include>com.turt2live.metrics:MetricsExtension</include>
                             <include>commons-logging:commons-logging</include>
                             <include>net.snaq:dbpool</include>
+                            <include>com.turt2live:UUID-Library</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -92,6 +93,10 @@
                         <relocation>
                             <pattern>net.snaq</pattern>
                             <shadedPattern>com.gmail.nossr50.dbpool</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.turt2live.uuid</pattern>
+                            <shadedPattern>com.gmail.nossr50.uuid</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -123,7 +128,7 @@
             <url>http://repo.md-5.net/content/repositories/releases/</url>
         </repository>
         <repository>
-            <id>Plugin MetricsExtension</id>
+            <id>turt2live-repo</id>
             <url>http://repo.turt2live.com</url>
         </repository>
     </repositories>
@@ -150,6 +155,11 @@
             <groupId>net.snaq</groupId>
             <artifactId>dbpool</artifactId>
             <version>5.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.turt2live</groupId>
+            <artifactId>UUID-Library</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
         </dependency>
     </dependencies>
     <distributionManagement>
