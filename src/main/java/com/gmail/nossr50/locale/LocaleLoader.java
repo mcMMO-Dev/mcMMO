@@ -37,31 +37,27 @@ public final class LocaleLoader {
             initialize();
         }
 
-        for(ResourceBundle bundle : bundles) {
-        	if(bundle.containsKey(key)) {
-        		return getString(key, bundle, messageArguments);
+        for(ResourceBundle customBundle : bundles) {
+        	if(customBundle.containsKey(key)) {
+        		return getString(key, customBundle, messageArguments);
         	}
         }
-        for(ResourceBundle bundle : defaultBundles) {
-        	if(bundle.containsKey(key)) {
-        		return getString(key, bundle, messageArguments);
+        if(bundle.containsKey(key)) {
+        	return getString(key, bundle, messageArguments);
+        }
+        for(ResourceBundle defaultCustomBundle : defaultBundles) {
+        	if(defaultCustomBundle.containsKey(key)) {
+        		return getString(key, defaultCustomBundle, messageArguments);
         	}
         }
-        try {
-            return getString(key, bundle, messageArguments);
+        if(enBundle.containsKey(key)) {
+        	return getString(key, enBundle, messageArguments);
         }
-        catch (MissingResourceException ex) {
-            try {
-                return getString(key, enBundle, messageArguments);
-            }
-            catch (MissingResourceException ex2) {
-                if (!key.contains("Guides")) {
-                    mcMMO.p.getLogger().warning("Could not find locale string: " + key);
-                }
+        if (!key.contains("Guides")) {
+            mcMMO.p.getLogger().warning("Could not find locale string: " + key);
+        }
 
-                return '!' + key + '!';
-            }
-        }
+        return '!' + key + '!';
     }
 
     private static String getString(String key, ResourceBundle bundle, Object... messageArguments) throws MissingResourceException {
