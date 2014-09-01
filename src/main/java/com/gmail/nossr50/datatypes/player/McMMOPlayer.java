@@ -105,11 +105,6 @@ public class McMMOPlayer {
             profile.setUniqueId(uuid);
         }
 
-        /*
-         * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
-         * but I actually have no idea about the performance impact, if there is any.
-         * If in the future someone wants to remove this, don't forget to also remove what is in the SkillType enum. - bm01
-         */
         try {
             for (SkillType skillType : SkillType.getSkillList()) {
                 skillManagers.put(skillType, skillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(this));
@@ -125,7 +120,7 @@ public class McMMOPlayer {
             abilityInformed.put(abilityType, true); // This is intended
         }
 
-        for (ToolType toolType : ToolType.values()) {
+        for (ToolType toolType : ToolType.getToolList()) {
             toolMode.put(toolType, false);
         }
     }
@@ -274,7 +269,7 @@ public class McMMOPlayer {
      * Reset the prep modes of all tools.
      */
     public void resetToolPrepMode() {
-        for (ToolType tool : ToolType.values()) {
+        for (ToolType tool : ToolType.getToolList()) {
             setToolPreparationMode(tool, false);
         }
     }

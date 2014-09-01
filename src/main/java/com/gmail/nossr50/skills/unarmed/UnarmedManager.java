@@ -30,7 +30,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
+        return mcMMOPlayer.getToolPreparationMode(ToolType.fists) && Permissions.berserk(getPlayer());
     }
 
     public boolean canUseIronArm() {

@@ -47,7 +47,7 @@ public class AxesManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.AXE) && Permissions.skullSplitter(getPlayer());
+        return mcMMOPlayer.getToolPreparationMode(ToolType.axe) && Permissions.skullSplitter(getPlayer());
     }
 
     /**

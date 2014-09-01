@@ -27,7 +27,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.SWORD) && Permissions.serratedStrikes(getPlayer());
+        return mcMMOPlayer.getToolPreparationMode(ToolType.sword) && Permissions.serratedStrikes(getPlayer());
     }
 
     public boolean canUseBleed() {

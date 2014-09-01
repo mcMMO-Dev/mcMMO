@@ -1,18 +1,56 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.ItemUtils;
 
-public enum ToolType {
-    AXE(LocaleLoader.getString("Axes.Ability.Lower"), LocaleLoader.getString("Axes.Ability.Ready")),
-    FISTS(LocaleLoader.getString("Unarmed.Ability.Lower"), LocaleLoader.getString("Unarmed.Ability.Ready")),
-    HOE(LocaleLoader.getString("Herbalism.Ability.Lower"), LocaleLoader.getString("Herbalism.Ability.Ready")),
-    PICKAXE(LocaleLoader.getString("Mining.Ability.Lower"), LocaleLoader.getString("Mining.Ability.Ready")),
-    SHOVEL(LocaleLoader.getString("Excavation.Ability.Lower"), LocaleLoader.getString("Excavation.Ability.Ready")),
-    SWORD(LocaleLoader.getString("Swords.Ability.Lower"), LocaleLoader.getString("Swords.Ability.Ready"));
+public class ToolType {
+	private static List<ToolType> tools = new ArrayList<ToolType>();
+	
+	public static final ToolType axe = new ToolType("Axes") {
+		@Override
+		public boolean inHand(ItemStack itemStack) {
+			return ItemUtils.isAxe(itemStack);
+		}
+	};
+	public static final ToolType fists = createToolType("Unarmed", Material.AIR);
+	public static final ToolType hoe = new ToolType("Herbalism") {
+		@Override
+		public boolean inHand(ItemStack itemStack) {
+			return ItemUtils.isHoe(itemStack);
+		}
+	};
+	public static final ToolType pickaxe = new ToolType("Mining") {
+		@Override
+		public boolean inHand(ItemStack itemStack) {
+			return ItemUtils.isPickaxe(itemStack);
+		}
+	};
+	public static final ToolType shovel = new ToolType("Excavation") {
+		@Override
+		public boolean inHand(ItemStack itemStack) {
+			return ItemUtils.isShovel(itemStack);
+		}
+	};
+	public static final ToolType sword = new ToolType("Swords") {
+		@Override
+		public boolean inHand(ItemStack itemStack) {
+			return ItemUtils.isSword(itemStack);
+		}
+	};
+	
+	static {
+		tools.add(axe);
+		tools.add(hoe);
+		tools.add(pickaxe);
+		tools.add(shovel);
+		tools.add(sword);
+	}
 
     private String lowerTool;
     private String raiseTool;
@@ -20,6 +58,10 @@ public enum ToolType {
     private ToolType(String lowerTool, String raiseTool) {
         this.lowerTool = lowerTool;
         this.raiseTool = raiseTool;
+    }
+    
+    private ToolType(String toolName) {
+    	this(LocaleLoader.getString(toolName + ".Ability.Lower"), LocaleLoader.getString(toolName + ".Ability.Ready"));
     }
 
     public String getLowerTool() {
@@ -30,6 +72,33 @@ public enum ToolType {
         return raiseTool;
     }
 
+    public static ToolType createToolType(String toolName, final Material material) {
+    	ToolType tool = new ToolType(toolName) {
+    		@Override
+    		public boolean inHand(ItemStack itemStack) {
+    			return itemStack.getType() == material;
+    		}
+    	};
+    	tools.add(tool);
+    	return tool;
+    }
+
+    public static ToolType createToolType(String toolName, final Material... materials) {
+    	ToolType tool = new ToolType(toolName) {
+    		@Override
+    		public boolean inHand(ItemStack itemStack) {
+    			for(Material material : materials) {
+    				if(itemStack.getType() == material) {
+    					return true;
+    				}
+    			}
+    			return false;
+    		}
+    	};
+    	tools.add(tool);
+    	return tool;
+    }
+    
     /**
      * Check to see if the item is of the appropriate type.
      *
@@ -37,27 +106,10 @@ public enum ToolType {
      * @return true if the item is the right type, false otherwise
      */
     public boolean inHand(ItemStack itemStack) {
-        switch (this) {
-            case AXE:
-                return ItemUtils.isAxe(itemStack);
-
-            case FISTS:
-                return itemStack.getType() == Material.AIR;
-
-            case HOE:
-                return ItemUtils.isHoe(itemStack);
-
-            case PICKAXE:
-                return ItemUtils.isPickaxe(itemStack);
-
-            case SHOVEL:
-                return ItemUtils.isShovel(itemStack);
-
-            case SWORD:
-                return ItemUtils.isSword(itemStack);
-
-            default:
-                return false;
-        }
+        return false;
     }
+
+	public static List<ToolType> getToolList() {
+		return tools;
+	}
 }

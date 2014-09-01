@@ -69,7 +69,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.HOE) && Permissions.greenTerra(getPlayer());
+        return mcMMOPlayer.getToolPreparationMode(ToolType.hoe) && Permissions.greenTerra(getPlayer());
     }
 
     public boolean canGreenTerraPlant() {
