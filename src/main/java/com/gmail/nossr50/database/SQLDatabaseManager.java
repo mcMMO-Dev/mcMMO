@@ -1488,6 +1488,15 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     statement.executeUpdate("ALTER TABLE `" + tablePrefix + "experience` ADD `" + skill + "` int(10) NOT NULL DEFAULT '0'");
                 }
             }
+            for (String ability : AbilityType.getLowerAbilitieNames()) {
+                try {
+                    statement.executeQuery("SELECT `" + ability + "` FROM `" + tablePrefix + "cooldowns` LIMIT 1");
+                }
+                catch (SQLException ex) {
+                    mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Fishing...");
+                    statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` ADD `" + ability + "` int(32) NOT NULL DEFAULT '0'");
+                }
+            }
         }
         catch (SQLException ex) {
             printErrors(ex);

@@ -79,6 +79,10 @@ public class StringUtils {
 
         return prettyString;
     }
+    
+    public static String createStringForPermission(String baseString) {
+    	return baseString.replace("_", "").toLowerCase();
+    }
 
     /**
      * Determine if a string represents an Integer

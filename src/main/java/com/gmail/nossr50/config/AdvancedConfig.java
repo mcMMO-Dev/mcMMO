@@ -688,8 +688,12 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     
     public void createNewSkill(SecondaryAbility skillAbility, String skillName, int maxBonusLevel, double maxChance) {
     	String skillAbilityString = "Skills." + StringUtils.getCapitalized(skillName) + "." + StringUtils.getPrettySecondaryAbilityString(skillAbility).replace(" ", "");
-    	config.set(skillAbilityString + ".MaxBonusLevel", maxBonusLevel);
-    	config.set(skillAbilityString + ".ChanceMax", maxChance);
+    	if(!config.contains(skillAbilityString + ".MaxBonusLevel")) {
+        	config.set(skillAbilityString + ".MaxBonusLevel", maxBonusLevel);
+    	}
+    	if(!config.contains(skillAbilityString + ".ChanceMax")) {
+    		config.set(skillAbilityString + ".ChanceMax", maxChance);
+    	}
     	try {
 			config.save(getFile());
 		} catch (IOException e) {

@@ -29,6 +29,7 @@ import com.gmail.nossr50.commands.skills.WoodcuttingCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.SkillAbilityManager;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
@@ -67,6 +68,8 @@ public class SkillType {
     private static List<SkillType> combatSkills = new ArrayList<SkillType>();
     private static List<SkillType> gatheringSkills = new ArrayList<SkillType>();
     private static List<SkillType> miscSkills = new ArrayList<SkillType>();
+    
+    private static List<SkillType> abilitySkills = new ArrayList<SkillType>();
     
 	
     public static final SkillType acrobatics 	= createSkill("ACROBATICS" , AcrobaticsManager.class	, AcrobaticsCommand.class	, false, Color.WHITE, SkillUseType.MISC, ImmutableList.of(SecondaryAbility.dodge, SecondaryAbility.gracefullRoll, SecondaryAbility.roll));                                                                                                                                                                                         
@@ -280,10 +283,14 @@ public class SkillType {
     public static void setUpSkillTypes()
     {
     	Collections.sort(skillNames);
-    	lowerSkillNames = new ArrayList<String>();
+    	lowerSkillNames.clear();
+    	abilitySkills.clear();
     	for(SkillType skill : nonChildSkills) {
     		if(skill != null) {
         		lowerSkillNames.add(skill.getName());
+    		}
+    		if(SkillAbilityManager.class.isAssignableFrom(skill.getManagerClass())) {
+    			abilitySkills.add(skill);
     		}
     	}
     }
@@ -318,5 +325,9 @@ public class SkillType {
 
 	public static List<SkillType> getMiscSkills() {
 		return miscSkills;
+	}
+
+	public static List<SkillType> getAbilitySkills() {
+		return abilitySkills;
 	}
 }

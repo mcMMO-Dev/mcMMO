@@ -163,11 +163,11 @@ public class AbilityType {
     	String capitalizedName = StringUtils.createPrettyStringWithSpacer(name, "");
     	String capitalizedSkill = StringUtils.getCapitalized(skillName);
     	this.name = name;
-    	this.abilityOn = capitalizedSkill + ".Skills." + capitalizedName + "On";
-    	this.abilityOff = capitalizedSkill + ".Skills." + capitalizedName + "Off";
-    	this.abilityPlayer = capitalizedSkill + ".Skills." + capitalizedName + "Other.On";
-    	this.abilityRefresh = capitalizedSkill + ".Skills." + capitalizedName + "Refresh";
-    	this.abilityPlayerOff = capitalizedSkill + ".Skills." + capitalizedName + "Other.Off";
+    	this.abilityOn = capitalizedSkill + ".Skills." + capitalizedName + ".On";
+    	this.abilityOff = capitalizedSkill + ".Skills." + capitalizedName + ".Off";
+    	this.abilityPlayer = capitalizedSkill + ".Skills." + capitalizedName + ".Other.On";
+    	this.abilityRefresh = capitalizedSkill + ".Skills." + capitalizedName + ".Refresh";
+    	this.abilityPlayerOff = capitalizedSkill + ".Skills." + capitalizedName + ".Other.Off";
     }
     
     public static AbilityType createAbility(String name, String skillName, final Material... materials) {
@@ -180,6 +180,14 @@ public class AbilityType {
                 return false;
         	}
         };
+    	abilityTypes.add(ability);
+    	abilityNames.add(ability.getUnprettyName());
+    	lowerAbilityNames.add(ability.getUnprettyName().toLowerCase());
+        return ability;
+    }
+    
+    public static AbilityType createAbility(String name, String skillName) {
+    	AbilityType ability = new AbilityType(name, skillName);
     	abilityTypes.add(ability);
     	abilityNames.add(ability.getUnprettyName());
     	lowerAbilityNames.add(ability.getUnprettyName().toLowerCase());
@@ -262,7 +270,7 @@ public class AbilityType {
      * @return true if the block is affected by this ability, false otherwise
      */
     public boolean blockCheck(BlockState blockState) {
-        return false;
+        return true;
     }
     
     public static List<AbilityType> getAbilities() {

@@ -29,6 +29,7 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
+import com.gmail.nossr50.skills.SkillAbilityManager;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
@@ -702,6 +703,7 @@ public class McMMOPlayer {
      * Check to see if an ability can be activated.
      *
      * @param skill The skill the ability is based on
+     * @return whether the ability was successfully activated
      */
     public void checkAbilityActivation(SkillType skill) {
         ToolType tool = skill.getTool();
@@ -749,7 +751,10 @@ public class McMMOPlayer {
         if (ability == AbilityType.superBreaker || ability == AbilityType.gigaDrillBreaker) {
             SkillUtils.handleAbilitySpeedIncrease(player);
         }
-
+        SkillManager manager = this.getSkillManager(skill);
+        if(manager instanceof SkillAbilityManager) {
+        	((SkillAbilityManager) manager).onAbilityActivated();
+        }
         new AbilityDisableTask(this, ability).runTaskLater(mcMMO.p, ticks * Misc.TICK_CONVERSION_FACTOR);
     }
 

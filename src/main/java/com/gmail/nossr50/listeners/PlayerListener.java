@@ -547,6 +547,10 @@ public class PlayerListener implements Listener {
                         mcMMOPlayer.processAbilityActivation(SkillType.swords);
                         mcMMOPlayer.processAbilityActivation(SkillType.unarmed);
                         mcMMOPlayer.processAbilityActivation(SkillType.woodcutting);
+                        
+                        for(SkillType skill : SkillType.getAbilitySkills()) {
+                        	mcMMOPlayer.processAbilityActivation(skill);
+                        }
                     }
 
                     ChimaeraWing.activationCheck(player);

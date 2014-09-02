@@ -1,14 +1,18 @@
 package com.gmail.nossr50.api;
 
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
+import com.gmail.nossr50.skills.SkillAbilityManager;
 import com.gmail.nossr50.util.player.UserManager;
 
 public final class AbilityAPI {
@@ -99,7 +103,23 @@ public final class AbilityAPI {
     }
     
     public static AbilityType createAbility(String name, String skillName, final Material... materials) {
-    	return AbilityType.createAbility(name, skillName, materials);
+    	return createAbility(name, skillName, 240, materials);
+    }
+    
+    public static AbilityType createAbility(String name, String skillName) {
+    	return createAbility(name, skillName, 240);
+    }
+    
+    public static AbilityType createAbility(String name, String skillName, int cooldown, final Material... materials) {
+    	AbilityType ability = AbilityType.createAbility(name, skillName, materials);
+    	Config.getInstance().createAbility(ability, cooldown);
+		return ability;
+    }
+    
+    public static AbilityType createAbility(String name, String skillName, int cooldown) {
+    	AbilityType ability = AbilityType.createAbility(name, skillName);
+    	Config.getInstance().createAbility(ability, cooldown);
+		return ability;
     }
     
     public static SecondaryAbility createSecondaryAbility(String name, String skillName) {
@@ -110,5 +130,19 @@ public final class AbilityAPI {
     	SecondaryAbility ability = new SecondaryAbility(name);
     	AdvancedConfig.getInstance().createNewSkill(ability, skillName, maxBonusLevel, maxChance);
     	return ability;
+    }
+    
+    public static void activateSkillAbility(SkillType skill, Player player, BlockState blockState) {
+    	SkillAbilityManager abilityManager = SkillAPI.getSkillAbilityManager(skill, player);
+		if(abilityManager != null) {
+    		abilityManager.doAbilityPreparationCheck(blockState);
+    	}
+    }
+    
+    public static void activateSkillAbility(SkillType skill, Player player) {
+    	SkillAbilityManager abilityManager = SkillAPI.getSkillAbilityManager(skill, player);
+		if(abilityManager != null) {
+    		abilityManager.doAbilityPreparationCheck(null);
+    	}
     }
 }
