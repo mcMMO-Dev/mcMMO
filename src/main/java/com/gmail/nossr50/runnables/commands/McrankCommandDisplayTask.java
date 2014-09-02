@@ -37,9 +37,7 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
         if (useChat) {
             displayChat();
         }
-        if(sender instanceof Player) {
-        	mcMMO.p.getServer().getPlayerExact(playerName).removeMetadata(mcMMO.databaseCommandKey, mcMMO.p);
-        }
+        ((Player) sender).removeMetadata(mcMMO.databaseCommandKey, mcMMO.p);
     }
 
     private void displayChat() {

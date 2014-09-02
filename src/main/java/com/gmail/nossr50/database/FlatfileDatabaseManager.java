@@ -408,15 +408,21 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     String[] character = line.split(":");
                     int uuidIndex = getUUIDIndexFromLine(character);
                     int nameIndex = getNameIndexFromLine(character);
+                    boolean shouldCheckName = false;
                     if (uuidIndex == -1 && nameIndex == -1) {
                     	continue;
                     }
-                    else if(uuidIndex != -1) {
-	                    if ((uuid != null && (!character[uuidIndex].split(",")[1].equalsIgnoreCase(uuid.toString()) && !character[uuidIndex].split(",")[1].equalsIgnoreCase("NULL")))) {
-	                        continue;
+                    else if(uuidIndex != -1 && uuid != null) {
+	                    if (((!character[uuidIndex].split(",")[1].equalsIgnoreCase(uuid.toString())))) {
+	                    	if(!character[uuidIndex].split(",")[1].equalsIgnoreCase("NULL")) {
+	                        	continue;
+	                        }
+	                        else {
+	                        	shouldCheckName = true;
+	                        }
 	                    }
                     }
-                    else if(nameIndex != -1) {
+                    if(shouldCheckName && nameIndex != -1) {
                     	if (uuid == null && !character[nameIndex].split(",")[1].equalsIgnoreCase(playerName)) {
                     		continue;
                     	}

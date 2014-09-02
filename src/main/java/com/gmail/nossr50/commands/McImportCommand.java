@@ -17,6 +17,7 @@ import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.skills.ModConfigType;
+import com.gmail.nossr50.util.Misc;
 
 public class McImportCommand implements CommandExecutor {
     int fileAmount;
@@ -49,6 +50,7 @@ public class McImportCommand implements CommandExecutor {
 
             String line;
             String materialName;
+            String modName;
 
             // While not at the end of the file
             while ((line = in.readLine()) != null) {
@@ -65,19 +67,16 @@ public class McImportCommand implements CommandExecutor {
                 }
 
                 materialName = split2[0];
-                String[] materialSplit = materialName.split("_");
 
-                if (materialSplit.length > 1) {
-                    // Categorise each material under a mod config type
-                    ModConfigType type = ModConfigType.getModConfigType(materialName);
+                // Categorise each material under a mod config type
+                ModConfigType type = ModConfigType.getModConfigType(materialName);
 
-                    if (!materialNames.containsKey(type)) {
-                        materialNames.put(type, new ArrayList<String>());
-                    }
-
-                    materialNames.get(type).add(materialName);
-                    continue;
+                if (!materialNames.containsKey(type)) {
+                    materialNames.put(type, new ArrayList<String>());
                 }
+
+                materialNames.get(type).add(materialName);
+                continue;
             }
         }
         catch (FileNotFoundException e) {
@@ -104,7 +103,7 @@ public class McImportCommand implements CommandExecutor {
             HashMap<String, ArrayList<String>> materialNamesType = new HashMap<String, ArrayList<String>>();
 
             for (String materialName : materialNames.get(modConfigType)) {
-                String modName = materialName.split("_")[0].toLowerCase();
+                String modName = Misc.getModName(materialName);
 
                 if (!materialNamesType.containsKey(modName)) {
                     materialNamesType.put(modName, new ArrayList<String>());

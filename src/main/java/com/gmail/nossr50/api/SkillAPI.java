@@ -16,7 +16,6 @@ import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.skills.SkillAbilityManager;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.child.ChildConfig;
-import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
 import com.gmail.nossr50.util.player.UserManager;

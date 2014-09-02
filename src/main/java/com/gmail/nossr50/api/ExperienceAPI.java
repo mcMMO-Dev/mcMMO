@@ -10,9 +10,11 @@ import com.gmail.nossr50.api.exceptions.InvalidFormulaTypeException;
 import com.gmail.nossr50.api.exceptions.InvalidPlayerException;
 import com.gmail.nossr50.api.exceptions.InvalidSkillException;
 import com.gmail.nossr50.api.exceptions.InvalidXPGainReasonException;
+import com.gmail.nossr50.api.exceptions.McMMOPlayerNotFoundException;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
@@ -86,7 +88,30 @@ public final class ExperienceAPI {
      * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
      */
     public static void addRawXP(Player player, String skillType, float XP, String xpGainReason) {
-        UserManager.getPlayer(player).applyXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason));
+        addRawXP(player, skillType, XP, xpGainReason, false);
+    }
+
+    /**
+     * Adds raw XP to the player.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to add XP to
+     * @param skillType The skill to add XP to
+     * @param XP The amount of XP to add
+     * @param xpGainReason The reason to gain XP
+     * @param isUnshared true if the XP cannot be shared with party members
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
+     */
+    public static void addRawXP(Player player, String skillType, float XP, String xpGainReason, boolean isUnshared) {
+        if (isUnshared) {
+            getPlayer(player).beginUnsharedXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason));
+            return;
+        }
+
+        getPlayer(player).applyXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason));
     }
 
     /**
@@ -168,7 +193,7 @@ public final class ExperienceAPI {
      * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
      */
     public static void addMultipliedXP(Player player, String skillType, int XP, String xpGainReason) {
-        UserManager.getPlayer(player).applyXpGain(getSkillType(skillType), (int) (XP * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason));
+        getPlayer(player).applyXpGain(getSkillType(skillType), (int) (XP * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason));
     }
 
     /**
@@ -218,9 +243,32 @@ public final class ExperienceAPI {
      * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
      */
     public static void addModifiedXP(Player player, String skillType, int XP, String xpGainReason) {
+        addModifiedXP(player, skillType, XP, xpGainReason, false);
+    }
+
+    /**
+     * Adds XP to the player, calculates for XP Rate and skill modifier.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to add XP to
+     * @param skillType The skill to add XP to
+     * @param XP The amount of XP to add
+     * @param xpGainReason The reason to gain XP
+     * @param isUnshared true if the XP cannot be shared with party members
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
+     */
+    public static void addModifiedXP(Player player, String skillType, int XP, String xpGainReason, boolean isUnshared) {
         SkillType skill = getSkillType(skillType);
 
-        UserManager.getPlayer(player).applyXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason));
+        if (isUnshared) {
+            getPlayer(player).beginUnsharedXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason));
+            return;
+        }
+
+        getPlayer(player).applyXpGain(skill, (int) (XP / skill.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier()), getXPGainReason(xpGainReason));
     }
 
     /**
@@ -274,7 +322,31 @@ public final class ExperienceAPI {
      * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
      */
     public static void addXP(Player player, String skillType, int XP, String xpGainReason) {
-        UserManager.getPlayer(player).beginXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason));
+        addXP(player, skillType, XP, xpGainReason, false);
+    }
+
+    /**
+     * Adds XP to the player, calculates for XP Rate, skill modifiers, perks, child skills,
+     * and party sharing.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to add XP to
+     * @param skillType The skill to add XP to
+     * @param XP The amount of XP to add
+     * @param xpGainReason The reason to gain XP
+     * @param isUnshared true if the XP cannot be shared with party members
+     *
+     * @throws InvalidSkillException if the given skill is not valid
+     * @throws InvalidXPGainReasonException if the given xpGainReason is not valid
+     */
+    public static void addXP(Player player, String skillType, int XP, String xpGainReason, boolean isUnshared) {
+        if (isUnshared) {
+            getPlayer(player).beginUnsharedXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason));
+            return;
+        }
+
+        getPlayer(player).beginXpGain(getSkillType(skillType), XP, getXPGainReason(xpGainReason));
     }
 
     /**
@@ -290,7 +362,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getXP(Player player, String skillType) {
-        return UserManager.getPlayer(player).getSkillXpLevel(getNonChildSkillType(skillType));
+        return getPlayer(player).getSkillXpLevel(getNonChildSkillType(skillType));
     }
 
     /**
@@ -341,7 +413,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static float getXPRaw(Player player, String skillType) {
-        return UserManager.getPlayer(player).getSkillXpLevelRaw(getNonChildSkillType(skillType));
+        return getPlayer(player).getSkillXpLevelRaw(getNonChildSkillType(skillType));
     }
 
     /**
@@ -392,7 +464,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static int getXPToNextLevel(Player player, String skillType) {
-        return UserManager.getPlayer(player).getXpToLevel(getNonChildSkillType(skillType));
+        return getPlayer(player).getXpToLevel(getNonChildSkillType(skillType));
     }
 
     /**
@@ -445,7 +517,7 @@ public final class ExperienceAPI {
     public static int getXPRemaining(Player player, String skillType) {
         SkillType skill = getNonChildSkillType(skillType);
 
-        PlayerProfile profile = UserManager.getPlayer(player).getProfile();
+        PlayerProfile profile = getPlayer(player).getProfile();
 
         return profile.getXpToLevel(skill) - profile.getSkillXpLevel(skill);
     }
@@ -503,7 +575,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      */
     public static void addLevel(Player player, String skillType, int levels) {
-        UserManager.getPlayer(player).addLevels(getSkillType(skillType), levels);
+        getPlayer(player).addLevels(getSkillType(skillType), levels);
     }
 
     /**
@@ -581,7 +653,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      */
     public static int getLevel(Player player, String skillType) {
-        return UserManager.getPlayer(player).getSkillLevel(getSkillType(skillType));
+        return getPlayer(player).getSkillLevel(getSkillType(skillType));
     }
 
     /**
@@ -626,7 +698,7 @@ public final class ExperienceAPI {
      * @return the power level of the player
      */
     public static int getPowerLevel(Player player) {
-        return UserManager.getPlayer(player).getPowerLevel();
+        return getPlayer(player).getPowerLevel();
     }
 
     /**
@@ -777,7 +849,7 @@ public final class ExperienceAPI {
      * @throws InvalidSkillException if the given skill is not valid
      */
     public static void setLevel(Player player, String skillType, int skillLevel) {
-        UserManager.getPlayer(player).modifySkill(getSkillType(skillType), skillLevel);
+        getPlayer(player).modifySkill(getSkillType(skillType), skillLevel);
     }
 
     /**
@@ -826,7 +898,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static void setXP(Player player, String skillType, int newValue) {
-        UserManager.getPlayer(player).setSkillXpLevel(getNonChildSkillType(skillType), newValue);
+        getPlayer(player).setSkillXpLevel(getNonChildSkillType(skillType), newValue);
     }
 
     /**
@@ -877,7 +949,7 @@ public final class ExperienceAPI {
      * @throws UnsupportedOperationException if the given skill is a child skill
      */
     public static void removeXP(Player player, String skillType, int xp) {
-        UserManager.getPlayer(player).removeXp(getNonChildSkillType(skillType), xp);
+        getPlayer(player).removeXp(getNonChildSkillType(skillType), xp);
     }
 
     /**
@@ -1018,5 +1090,13 @@ public final class ExperienceAPI {
         }
 
         return formulaType;
+    }
+
+    private static McMMOPlayer getPlayer(Player player) throws McMMOPlayerNotFoundException {
+        if (!UserManager.hasPlayerDataKey(player)) {
+            throw new McMMOPlayerNotFoundException(player);
+        }
+
+        return UserManager.getPlayer(player);
     }
 }
