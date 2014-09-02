@@ -38,20 +38,32 @@ public final class LocaleLoader {
         }
 
         for(ResourceBundle customBundle : bundles) {
-        	if(customBundle.containsKey(key)) {
-        		return getString(key, customBundle, messageArguments);
+        	try {
+	        	if(customBundle.containsKey(key)) {
+	        		return getString(key, customBundle, messageArguments);
+	        	}
         	}
+        	catch(Exception e) {}
         }
         if(bundle.containsKey(key)) {
-        	return getString(key, bundle, messageArguments);
+        	try {
+        		return getString(key, bundle, messageArguments);
+        	}
+        	catch(Exception e) {}
         }
         for(ResourceBundle defaultCustomBundle : defaultBundles) {
-        	if(defaultCustomBundle.containsKey(key)) {
-        		return getString(key, defaultCustomBundle, messageArguments);
-        	}
+        	try {
+	        	if(defaultCustomBundle.containsKey(key)) {
+	        		return getString(key, defaultCustomBundle, messageArguments);
+	        	}
+	    	}
+	    	catch(Exception e) {}
         }
         if(enBundle.containsKey(key)) {
-        	return getString(key, enBundle, messageArguments);
+        	try {
+        		return getString(key, enBundle, messageArguments);
+	    	}
+	    	catch(Exception e) {}
         }
         if (!key.contains("Guides")) {
             mcMMO.p.getLogger().warning("Could not find locale string: " + key);

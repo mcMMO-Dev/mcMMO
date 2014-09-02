@@ -10,9 +10,12 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.StringUtils;
 
 public class ChildConfig extends AutoUpdateConfigLoader {
+	private static ChildConfig INSTANCE = null;
+	
     public ChildConfig() {
         super("child.yml");
         loadKeys();
+        INSTANCE = this;
     }
 
     @Override
@@ -42,13 +45,16 @@ public class ChildConfig extends AutoUpdateConfigLoader {
 
             if (useDefaults) {
                 parentSkills.clear();
-                for (String name : config.getDefaults().getStringList(StringUtils.getCapitalized(skill.getName()))) {
-                    /* We do less checks in here because it's from inside our jar.
-                     * If they're dedicated enough to have modified it, they can have the errors it may produce.
-                     * Alternatively, this can be used to allow child skills to be parent skills, provided there are no circular dependencies this is an advanced sort of configuration.
-                     */
-                    parentSkills.add(SkillType.getSkill(name));
+                try {
+	                for (String name : config.getDefaults().getStringList(StringUtils.getCapitalized(skill.getName()))) {
+	                    /* We do less checks in here because it's from inside our jar.
+	                     * If they're dedicated enough to have modified it, they can have the errors it may produce.
+	                     * Alternatively, this can be used to allow child skills to be parent skills, provided there are no circular dependencies this is an advanced sort of configuration.
+	                     */
+	                    parentSkills.add(SkillType.getSkill(name));
+	                }
                 }
+                catch(Exception e) {}
             }
 
             // Register them
@@ -59,5 +65,20 @@ public class ChildConfig extends AutoUpdateConfigLoader {
         }
 
         FamilyTree.closeRegistration();
+    }
+    
+    public void addParents(SkillType childSkill, SkillType... parents) {
+    	if(!config.contains(StringUtils.getCapitalized(childSkill.getName()))) {
+    		String[] parentStrings = new String[parents.length];
+    		for(int i = 0; i < parents.length; i++) {
+    			parentStrings[i] = StringUtils.getCapitalized(parents[i].getName());
+    		}
+    		config.set(StringUtils.getCapitalized(childSkill.getName()), parentStrings);
+    		loadKeys();
+    	}
+    }
+    
+    public static ChildConfig getInstance() {
+    	return INSTANCE;
     }
 }
