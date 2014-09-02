@@ -33,7 +33,6 @@ import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
 import com.gmail.nossr50.runnables.PistonTrackerTask;
 import com.gmail.nossr50.runnables.StickyPistonTrackerTask;
-import com.gmail.nossr50.skills.SkillAbilityManager;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.Herbalism;

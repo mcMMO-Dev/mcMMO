@@ -16,6 +16,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
+import snaq.db.ConnectionPool;
+
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
@@ -27,8 +29,6 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
-
-import snaq.db.ConnectionPool;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();

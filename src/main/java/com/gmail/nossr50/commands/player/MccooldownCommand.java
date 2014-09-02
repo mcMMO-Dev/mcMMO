@@ -14,7 +14,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-
 import com.google.common.collect.ImmutableList;
 
 public class MccooldownCommand implements TabExecutor {

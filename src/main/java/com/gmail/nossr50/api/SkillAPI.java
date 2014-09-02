@@ -5,16 +5,14 @@ import java.util.List;
 
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.commands.skills.SkillCommand;
-import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.skills.SkillType.SkillUseType;
+import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.skills.SkillAbilityManager;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.StringUtils;

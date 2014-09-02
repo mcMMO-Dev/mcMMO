@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.shatteredlands.shatt.backup.ZipLibrary;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -63,8 +65,6 @@ import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
-
-import net.shatteredlands.shatt.backup.ZipLibrary;
 
 public class mcMMO extends JavaPlugin {
     /* Managers */

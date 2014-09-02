@@ -14,7 +14,6 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
-
 import com.google.common.collect.ImmutableList;
 
 public class XprateCommand implements TabExecutor {

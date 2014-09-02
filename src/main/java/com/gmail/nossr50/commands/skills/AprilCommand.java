@@ -14,7 +14,6 @@ import com.gmail.nossr50.util.HolidayManager.FakeSkillType;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
-
 import com.google.common.collect.ImmutableList;
 
 public class AprilCommand implements TabExecutor {

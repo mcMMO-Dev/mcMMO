@@ -10,7 +10,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-
 import com.google.common.collect.ImmutableList;
 
 public final class UserManager {

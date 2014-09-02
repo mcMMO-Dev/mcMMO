@@ -16,7 +16,6 @@ import com.gmail.nossr50.commands.experience.ConvertExperienceCommand;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
-
 import com.google.common.collect.ImmutableList;
 
 public class McconvertCommand implements TabExecutor {

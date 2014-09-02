@@ -21,7 +21,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;

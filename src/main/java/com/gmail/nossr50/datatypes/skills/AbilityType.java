@@ -1,7 +1,7 @@
 package com.gmail.nossr50.datatypes.skills;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;

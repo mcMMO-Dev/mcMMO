@@ -36,7 +36,6 @@ import com.gmail.nossr50.commands.skills.AprilCommand;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-
 import com.google.common.collect.ImmutableList;
 
 public final class HolidayManager {

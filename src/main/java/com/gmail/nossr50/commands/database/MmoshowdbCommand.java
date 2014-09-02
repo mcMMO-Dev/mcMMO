@@ -9,7 +9,6 @@ import org.bukkit.command.TabExecutor;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
 import com.gmail.nossr50.locale.LocaleLoader;
-
 import com.google.common.collect.ImmutableList;
 
 public class MmoshowdbCommand implements TabExecutor {

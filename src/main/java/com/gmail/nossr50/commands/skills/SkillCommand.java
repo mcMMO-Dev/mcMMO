@@ -24,7 +24,6 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
-
 import com.google.common.collect.ImmutableList;
 
 public abstract class SkillCommand implements TabExecutor {

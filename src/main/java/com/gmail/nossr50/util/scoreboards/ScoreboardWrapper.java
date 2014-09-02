@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.scoreboards;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -24,8 +25,6 @@ import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
-
-import org.apache.commons.lang.Validate;
 
 public class ScoreboardWrapper {
     // Initialization variables

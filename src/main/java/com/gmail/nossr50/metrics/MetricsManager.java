@@ -11,7 +11,6 @@ import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.locale.LocaleLoader;
-
 import com.turt2live.metrics.EMetrics;
 import com.turt2live.metrics.Metrics;
 import com.turt2live.metrics.Metrics.Graph;

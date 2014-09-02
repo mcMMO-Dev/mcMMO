@@ -16,7 +16,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableList;
 
 public abstract class ExperienceCommand implements TabExecutor {
