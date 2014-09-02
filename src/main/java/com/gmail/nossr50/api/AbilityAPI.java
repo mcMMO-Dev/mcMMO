@@ -13,7 +13,9 @@ import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.SkillAbilityManager;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.SkillUtils;
 
 public final class AbilityAPI {
     private AbilityAPI() {}
@@ -130,6 +132,14 @@ public final class AbilityAPI {
     	SecondaryAbility ability = new SecondaryAbility(name);
     	AdvancedConfig.getInstance().createNewSkill(ability, skillName, maxBonusLevel, maxChance);
     	return ability;
+    }
+    
+    public static boolean hasSecondaryAbilityPermissions(Player player, SecondaryAbility ability) {
+    	return Permissions.secondaryAbilityEnabled(player, ability);
+    }
+    
+    public static boolean wasSecondaryAbilityActivationSuccessful(SecondaryAbility skillAbility, Player player, SkillType skill) {
+    	return SkillUtils.activationSuccessful(skillAbility, player, skill);
     }
     
     public static void activateSkillAbility(SkillType skill, Player player, BlockState blockState) {
