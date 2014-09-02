@@ -258,8 +258,15 @@ public class AbilityType {
      * @return true if the player has permissions, false otherwise
      */
     public boolean getPermissions(Player player) {
+    	String skill;
+    	if(this==blastMining) {
+    		skill = "mining";
+    	}
+    	else {
+    		skill = SkillType.byAbility(this).getName().toLowerCase();
+    	}
     	return player.hasPermission("mcmmo.ability." 
-    			+ SkillType.byAbility(this).getName().toLowerCase() 
+    			+ skill 
     			+ "." + name.replace("_", "").toLowerCase());
     }
 
