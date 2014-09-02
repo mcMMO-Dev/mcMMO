@@ -1,5 +1,6 @@
 package com.gmail.nossr50.config;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -236,6 +237,19 @@ public class Config extends AutoUpdateConfigLoader {
     @Override
     protected void loadKeys() {}
 
+    public void createAbility(AbilityType ability, int cooldown) {
+    	String abilityString = "Abilities.Cooldowns." + ability.toString();
+    	if(config.contains(abilityString)) {
+    		return;
+    	}
+    	config.set(abilityString, cooldown);
+    	try {
+			config.save(getFile());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
     /*
      * GENERAL SETTINGS
      */

@@ -25,7 +25,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
-
 import com.google.common.collect.ImmutableList;
 
 public class PtpCommand implements TabExecutor {

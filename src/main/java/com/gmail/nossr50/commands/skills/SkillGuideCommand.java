@@ -18,7 +18,7 @@ public class SkillGuideCommand implements CommandExecutor {
     private String invalidPage = LocaleLoader.getString("Guides.Page.Invalid");
 
     public SkillGuideCommand(SkillType skill) {
-        header = LocaleLoader.getString("Guides.Header", skill.getName());
+        header = LocaleLoader.getString("Guides.Header", skill.getLocalizedName());
         guide = getGuide(skill);
     }
 

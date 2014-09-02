@@ -28,13 +28,13 @@ public class TamingCommand extends SkillCommand {
     private boolean canHolyHound;
 
     public TamingCommand() {
-        super(SkillType.TAMING);
+        super(SkillType.taming);
     }
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
         if (canGore) {
-            String[] goreStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.GORE, isLucky);
+            String[] goreStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.gore, isLucky);
             goreChance = goreStrings[0];
             goreChanceLucky = goreStrings[1];
         }
@@ -42,15 +42,15 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBeastLore = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.BEAST_LORE);
+        canBeastLore = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.beastLore);
         canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
-        canEnvironmentallyAware = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ENVIROMENTALLY_AWARE);
-        canFastFood = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FAST_FOOD);
-        canGore = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.GORE);
-        canSharpenedClaws = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHARPENED_CLAWS);
-        canShockProof = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHOCK_PROOF);
-        canThickFur = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.THICK_FUR);
-        canHolyHound = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.HOLY_HOUND);
+        canEnvironmentallyAware = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.enviromentallyAware);
+        canFastFood = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.fastFood);
+        canGore = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.gore);
+        canSharpenedClaws = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.sharpenedClaws);
+        canShockProof = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.shockProof);
+        canThickFur = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.thickFur);
+        canHolyHound = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.holyHound);
     }
 
     @Override

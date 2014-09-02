@@ -20,19 +20,19 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ArcheryManager extends SkillManager {
     public ArcheryManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.ARCHERY);
+        super(mcMMOPlayer, SkillType.archery);
     }
 
     public boolean canDaze(LivingEntity target) {
-        return target instanceof Player && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.DAZE);
+        return target instanceof Player && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.daze);
     }
 
     public boolean canSkillShot() {
-        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.SKILL_SHOT);
+        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.skillShot);
     }
 
     public boolean canRetrieveArrows() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.RETRIEVE);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.retrieve);
     }
 
     /**
@@ -58,7 +58,7 @@ public class ArcheryManager extends SkillManager {
      * @param target The {@link LivingEntity} damaged by the arrow
      */
     public void retrieveArrows(LivingEntity target) {
-        if (SkillUtils.activationSuccessful(SecondaryAbility.RETRIEVE, getPlayer(), getSkillLevel(), activationChance)) {
+        if (SkillUtils.activationSuccessful(SecondaryAbility.retrieve, getPlayer(), getSkillLevel(), activationChance)) {
             Archery.incrementTrackerValue(target);
         }
     }
@@ -69,7 +69,7 @@ public class ArcheryManager extends SkillManager {
      * @param defender The {@link Player} being affected by the ability
      */
     public double daze(Player defender) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.DAZE, getPlayer(), getSkillLevel(), activationChance)) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.daze, getPlayer(), getSkillLevel(), activationChance)) {
             return 0;
         }
 
@@ -96,7 +96,7 @@ public class ArcheryManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double skillShot(double damage) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.SKILL_SHOT, getPlayer())) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.skillShot, getPlayer())) {
             return damage;
         }
 

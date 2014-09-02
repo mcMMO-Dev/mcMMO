@@ -23,28 +23,28 @@ public class AcrobaticsCommand extends SkillCommand {
     private boolean canGracefulRoll;
 
     public AcrobaticsCommand() {
-        super(SkillType.ACROBATICS);
+        super(SkillType.acrobatics);
     }
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
         // DODGE
         if (canDodge) {
-            String[] dodgeStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.DODGE, isLucky);
+            String[] dodgeStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.dodge, isLucky);
             dodgeChance = dodgeStrings[0];
             dodgeChanceLucky = dodgeStrings[1];
         }
 
         // ROLL
         if (canRoll) {
-            String[] rollStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.ROLL, isLucky);
+            String[] rollStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.roll, isLucky);
             rollChance = rollStrings[0];
             rollChanceLucky = rollStrings[1];
         }
 
         // GRACEFUL ROLL
         if (canGracefulRoll) {
-            String[] gracefulRollStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.GRACEFUL_ROLL, isLucky);
+            String[] gracefulRollStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.gracefullRoll, isLucky);
             gracefulRollChance = gracefulRollStrings[0];
             gracefulRollChanceLucky = gracefulRollStrings[1];
         }
@@ -52,9 +52,9 @@ public class AcrobaticsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canDodge = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.DODGE);
-        canRoll = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ROLL);
-        canGracefulRoll = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.GRACEFUL_ROLL);
+        canDodge = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.dodge);
+        canRoll = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.roll);
+        canGracefulRoll = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.gracefullRoll);
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.gmail.nossr50.runnables;
 
+import net.gravitydevelopment.updater.mcmmo.Updater;
+
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
-
-import net.gravitydevelopment.updater.mcmmo.Updater;
 
 public class UpdaterResultAsyncTask extends BukkitRunnable {
     private mcMMO plugin;

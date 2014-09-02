@@ -44,7 +44,7 @@ public class FishingCommand extends SkillCommand {
     private boolean canIceFish;
 
     public FishingCommand() {
-        super(SkillType.FISHING);
+        super(SkillType.fishing);
     }
 
     @Override
@@ -111,12 +111,12 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canTreasureHunt = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FISHING_TREASURE_HUNTER);
-        canMagicHunt = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.MAGIC_HUNTER);
-        canShake = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHAKE);
-        canFishermansDiet = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FISHERMANS_DIET);
-        canMasterAngler = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.MASTER_ANGLER);
-        canIceFish = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ICE_FISHING);
+        canTreasureHunt = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.fishingTreasureHunter);
+        canMagicHunt = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.magicHunter);
+        canShake = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.shake);
+        canFishermansDiet = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.fishermansDiet);
+        canMasterAngler = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.masterAngler);
+        canIceFish = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.iceFishing);
     }
 
     @Override

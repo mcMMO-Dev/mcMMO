@@ -82,7 +82,7 @@ public class SkillUtils {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
-        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? SkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
+        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? SkillType.getSkillFromLocalized(skillName) != null : isLocalizedSkill(skillName);
     }
 
     public static void sendSkillMessage(Player player, String message) {
@@ -132,7 +132,7 @@ public class SkillUtils {
             }
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-            SkillType skill = mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER) ? SkillType.MINING : SkillType.EXCAVATION;
+            SkillType skill = mcMMOPlayer.getAbilityMode(AbilityType.superBreaker) ? SkillType.mining : SkillType.excavation;
             int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
@@ -223,13 +223,13 @@ public class SkillUtils {
     }
 
     public static boolean treasureDropSuccessful(Player player, double dropChance, int activationChance) {
-        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, SecondaryAbility.EXCAVATION_TREASURE_HUNTER, dropChance / activationChance);
+        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, SecondaryAbility.excavationTreasureHunter, dropChance / activationChance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
         return (event.getChance() * activationChance) > (Misc.getRandom().nextDouble() * activationChance) && !event.isCancelled();
     }
 
     private static boolean isLocalizedSkill(String skillName) {
-        for (SkillType skill : SkillType.values()) {
+        for (SkillType skill : SkillType.getSkillList()) {
             if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"))) {
                 return true;
             }

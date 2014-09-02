@@ -47,7 +47,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableMap;
 
 public final class CombatUtils {
@@ -60,7 +59,7 @@ public final class CombatUtils {
         Map<DamageModifier, Double> modifiers = getModifiers(event);
 
         if (swordsManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(SkillType.SWORDS);
+            mcMMOPlayer.checkAbilityActivation(SkillType.swords);
         }
 
         if (swordsManager.canUseBleed()) {
@@ -71,7 +70,7 @@ public final class CombatUtils {
             swordsManager.serratedStrikes(target, initialDamage, modifiers);
         }
 
-        startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
+        startGainXp(mcMMOPlayer, target, SkillType.swords);
     }
 
     private static void processAxeCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
@@ -83,7 +82,7 @@ public final class CombatUtils {
         AxesManager axesManager = mcMMOPlayer.getAxesManager();
 
         if (axesManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(SkillType.AXES);
+            mcMMOPlayer.checkAbilityActivation(SkillType.axes);
         }
 
         if (axesManager.canUseAxeMastery()) {
@@ -106,7 +105,7 @@ public final class CombatUtils {
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, SkillType.AXES);
+        startGainXp(mcMMOPlayer, target, SkillType.axes);
     }
 
     private static void processUnarmedCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
@@ -117,7 +116,7 @@ public final class CombatUtils {
         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
         if (unarmedManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(SkillType.UNARMED);
+            mcMMOPlayer.checkAbilityActivation(SkillType.unarmed);
         }
 
         if (unarmedManager.canUseIronArm()) {
@@ -133,7 +132,7 @@ public final class CombatUtils {
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
+        startGainXp(mcMMOPlayer, target, SkillType.unarmed);
     }
 
     private static void processTamingCombat(LivingEntity target, Player master, Wolf wolf, EntityDamageByEntityEvent event) {
@@ -156,7 +155,7 @@ public final class CombatUtils {
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, SkillType.TAMING);
+        startGainXp(mcMMOPlayer, target, SkillType.taming);
     }
 
     private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Arrow arrow) {
@@ -166,7 +165,7 @@ public final class CombatUtils {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
 
-        if (target instanceof Player && SkillType.UNARMED.getPVPEnabled()) {
+        if (target instanceof Player && SkillType.unarmed.getPVPEnabled()) {
             UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
 
             if (unarmedManager.canDeflect()) {
@@ -193,7 +192,7 @@ public final class CombatUtils {
         archeryManager.distanceXpBonus(target, arrow);
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, SkillType.ARCHERY, arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble());
+        startGainXp(mcMMOPlayer, target, SkillType.archery, arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble());
     }
 
     /**
@@ -231,29 +230,29 @@ public final class CombatUtils {
             }
 
             if (ItemUtils.isSword(heldItem)) {
-                if (!SkillType.SWORDS.shouldProcess(target)) {
+                if (!SkillType.swords.shouldProcess(target)) {
                     return;
                 }
 
-                if (SkillType.SWORDS.getPermissions(player)) {
+                if (SkillType.swords.getPermissions(player)) {
                     processSwordCombat(target, player, event);
                 }
             }
             else if (ItemUtils.isAxe(heldItem)) {
-                if (!SkillType.AXES.shouldProcess(target)) {
+                if (!SkillType.axes.shouldProcess(target)) {
                     return;
                 }
 
-                if (SkillType.AXES.getPermissions(player)) {
+                if (SkillType.axes.getPermissions(player)) {
                     processAxeCombat(target, player, event);
                 }
             }
             else if (heldItem.getType() == Material.AIR) {
-                if (!SkillType.UNARMED.shouldProcess(target)) {
+                if (!SkillType.unarmed.shouldProcess(target)) {
                     return;
                 }
 
-                if (SkillType.UNARMED.getPermissions(player)) {
+                if (SkillType.unarmed.getPermissions(player)) {
                     processUnarmedCombat(target, player, event);
                 }
             }
@@ -263,10 +262,10 @@ public final class CombatUtils {
             Wolf wolf = (Wolf) damager;
             AnimalTamer tamer = wolf.getOwner();
 
-            if (tamer != null && tamer instanceof Player && SkillType.TAMING.shouldProcess(target)) {
+            if (tamer != null && tamer instanceof Player && SkillType.taming.shouldProcess(target)) {
                 Player master = (Player) tamer;
 
-                if (!Misc.isNPCEntity(master) && SkillType.TAMING.getPermissions(master)) {
+                if (!Misc.isNPCEntity(master) && SkillType.taming.getPermissions(master)) {
                     processTamingCombat(target, master, wolf, event);
                 }
             }
@@ -275,10 +274,10 @@ public final class CombatUtils {
             Arrow arrow = (Arrow) damager;
             ProjectileSource projectileSource = arrow.getShooter();
 
-            if (projectileSource != null && projectileSource instanceof Player && SkillType.ARCHERY.shouldProcess(target)) {
+            if (projectileSource != null && projectileSource instanceof Player && SkillType.archery.shouldProcess(target)) {
                 Player player = (Player) projectileSource;
 
-                if (!Misc.isNPCEntity(player) && SkillType.ARCHERY.getPermissions(player)) {
+                if (!Misc.isNPCEntity(player) && SkillType.archery.getPermissions(player)) {
                     processArcheryCombat(target, player, event, arrow);
                 }
             }
@@ -301,7 +300,7 @@ public final class CombatUtils {
             }
 
             if (ItemUtils.isSword(player.getItemInHand())) {
-                if (!SkillType.SWORDS.shouldProcess(target)) {
+                if (!SkillType.swords.shouldProcess(target)) {
                     return;
                 }
 
@@ -393,24 +392,17 @@ public final class CombatUtils {
             LivingEntity livingEntity = (LivingEntity) entity;
             EventUtils.callFakeArmSwingEvent(attacker);
 
-            switch (type) {
-                case SWORDS:
-                    if (entity instanceof Player) {
-                        ((Player) entity).sendMessage(LocaleLoader.getString("Swords.Combat.SS.Struck"));
-                    }
+            if(type == SkillType.swords) {
+                if (entity instanceof Player) {
+                    ((Player) entity).sendMessage(LocaleLoader.getString("Swords.Combat.SS.Struck"));
+                }
 
-                    BleedTimerTask.add(livingEntity, Swords.serratedStrikesBleedTicks);
-                    break;
-
-                case AXES:
-                    if (entity instanceof Player) {
-                        ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.SS.Struck"));
-                    }
-
-                    break;
-
-                default:
-                    break;
+                BleedTimerTask.add(livingEntity, Swords.serratedStrikesBleedTicks);
+            }
+            else if(type == SkillType.axes) {
+                if (entity instanceof Player) {
+                    ((Player) entity).sendMessage(LocaleLoader.getString("Axes.Combat.SS.Struck"));
+                }
             }
 
             dealDamage(livingEntity, damageAmount, attacker);

@@ -47,17 +47,18 @@ public class McrankCommandDisplayTask extends BukkitRunnable {
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Heading"));
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Player", playerName));
 
-        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType skill : SkillType.getNonChildSkills()) {
             if (!skill.getPermissions(player)) {
                 continue;
             }
 
             rank = skills.get(skill);
-            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", skill.getName(), (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
+            sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Skill", skill.getLocalizedName(), (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
         }
 
         rank = skills.get(null);
         sender.sendMessage(LocaleLoader.getString("Commands.mcrank.Overall", (rank == null ? LocaleLoader.getString("Commands.mcrank.Unranked") : rank)));
+        player.removeMetadata(mcMMO.databaseCommandKey, mcMMO.p);
     }
 
     public void displayBoard() {

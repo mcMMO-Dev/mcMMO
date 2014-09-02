@@ -21,7 +21,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
@@ -76,15 +75,15 @@ public class ScoreboardManager {
             Collections.shuffle(colors, Misc.getRandom());
 
             int i = 0;
-            for (SkillType type : SkillType.values()) {
+            for (SkillType type : SkillType.getSkillList()) {
                 // Include child skills
-                skillLabelBuilder.put(type, getShortenedName(colors.get(i) + type.getName(), false));
+                skillLabelBuilder.put(type, getShortenedName(colors.get(i) + type.getLocalizedName(), false));
 
                 if (type.getAbility() != null) {
                     abilityLabelBuilder.put(type.getAbility(), getShortenedName(colors.get(i) + type.getAbility().getName()));
 
-                    if (type == SkillType.MINING) {
-                        abilityLabelBuilder.put(AbilityType.BLAST_MINING, getShortenedName(colors.get(i) + AbilityType.BLAST_MINING.getName()));
+                    if (type == SkillType.mining) {
+                        abilityLabelBuilder.put(AbilityType.blastMining, getShortenedName(colors.get(i) + AbilityType.blastMining.getName()));
                     }
                 }
 
@@ -94,22 +93,22 @@ public class ScoreboardManager {
             }
         }
         else {
-            for (SkillType type : SkillType.values()) {
+            for (SkillType type : SkillType.getSkillList()) {
                 // Include child skills
-                skillLabelBuilder.put(type, getShortenedName(ChatColor.GREEN + type.getName()));
+                skillLabelBuilder.put(type, getShortenedName(ChatColor.GREEN + type.getLocalizedName()));
 
                 if (type.getAbility() != null) {
                     abilityLabelBuilder.put(type.getAbility(), getShortenedName(ChatColor.AQUA + type.getAbility().getName()));
 
-                    if (type == SkillType.MINING) {
-                        abilityLabelBuilder.put(AbilityType.BLAST_MINING, getShortenedName(ChatColor.AQUA + AbilityType.BLAST_MINING.getName()));
+                    if (type == SkillType.mining) {
+                        abilityLabelBuilder.put(AbilityType.blastMining, getShortenedName(ChatColor.AQUA + AbilityType.blastMining.getName()));
                     }
                 }
             }
         }
 
-        for (AbilityType type : AbilityType.values()) {
-            abilityLabelSkillBuilder.put(type, getShortenedName((type == AbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA) + type.getName()));
+        for (AbilityType type : AbilityType.getAbilities()) {
+            abilityLabelSkillBuilder.put(type, getShortenedName((type == AbilityType.blastMining ? ChatColor.BLUE : ChatColor.AQUA) + type.getName()));
         }
 
         skillLabels = skillLabelBuilder.build();

@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.scoreboards;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -24,8 +25,6 @@ import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager.SidebarType;
-
-import org.apache.commons.lang.Validate;
 
 public class ScoreboardWrapper {
     // Initialization variables
@@ -426,12 +425,12 @@ public class ScoreboardWrapper {
                 if (targetSkill.getAbility() != null) {
                     boolean stopUpdating;
 
-                    if (targetSkill == SkillType.MINING) {
+                    if (targetSkill == SkillType.mining) {
                         // Special-Case: Mining has two abilities, both with cooldowns
-                        Score cooldownSB = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(AbilityType.SUPER_BREAKER));
-                        Score cooldownBM = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(AbilityType.BLAST_MINING));
-                        int secondsSB = Math.max(mcMMOPlayer.calculateTimeRemaining(AbilityType.SUPER_BREAKER), 0);
-                        int secondsBM = Math.max(mcMMOPlayer.calculateTimeRemaining(AbilityType.BLAST_MINING), 0);
+                        Score cooldownSB = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(AbilityType.superBreaker));
+                        Score cooldownBM = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(AbilityType.blastMining));
+                        int secondsSB = Math.max(mcMMOPlayer.calculateTimeRemaining(AbilityType.superBreaker), 0);
+                        int secondsBM = Math.max(mcMMOPlayer.calculateTimeRemaining(AbilityType.blastMining), 0);
 
                         cooldownSB.setScore(secondsSB);
                         cooldownBM.setScore(secondsBM);
@@ -460,7 +459,7 @@ public class ScoreboardWrapper {
             case COOLDOWNS_BOARD:
                 boolean anyCooldownsActive = false;
 
-                for (AbilityType ability : AbilityType.values()) {
+                for (AbilityType ability : AbilityType.getAbilities()) {
                     int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
                     if (seconds != 0) {
@@ -494,7 +493,7 @@ public class ScoreboardWrapper {
 
                 // Calculate power level here
                 int powerLevel = 0;
-                for (SkillType skill : SkillType.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
+                for (SkillType skill : SkillType.getNonChildSkills()) { // Don't include child skills, makes the list too long
                     int level = newProfile.getSkillLevel(skill);
 
                     powerLevel += level;
@@ -527,7 +526,7 @@ public class ScoreboardWrapper {
         Integer rank;
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
-        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType skill : SkillType.getNonChildSkills()) {
             if (!skill.getPermissions(player)) {
                 continue;
             }

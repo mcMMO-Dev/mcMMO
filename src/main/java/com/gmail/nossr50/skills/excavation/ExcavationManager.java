@@ -18,7 +18,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ExcavationManager extends SkillManager {
     public ExcavationManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.EXCAVATION);
+        super(mcMMOPlayer, SkillType.excavation);
     }
 
     /**
@@ -29,7 +29,7 @@ public class ExcavationManager extends SkillManager {
     public void excavationBlockCheck(BlockState blockState) {
         int xp = Excavation.getBlockXP(blockState);
 
-        if (Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.EXCAVATION_TREASURE_HUNTER)) {
+        if (Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.excavationTreasureHunter)) {
             List<ExcavationTreasure> treasures = Excavation.getTreasures(blockState);
 
             if (!treasures.isEmpty()) {

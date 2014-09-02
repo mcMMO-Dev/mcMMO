@@ -19,7 +19,6 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
-
 import com.google.common.collect.ImmutableList;
 
 public class InspectCommand implements TabExecutor {
@@ -53,17 +52,17 @@ public class InspectCommand implements TabExecutor {
                     sender.sendMessage(LocaleLoader.getString("Inspect.OfflineStats", playerName));
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Gathering"));
-                    for (SkillType skill : SkillType.GATHERING_SKILLS) {
+                    for (SkillType skill : SkillType.getGatheringSkills()) {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Combat"));
-                    for (SkillType skill : SkillType.COMBAT_SKILLS) {
+                    for (SkillType skill : SkillType.getCombatSkills()) {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 
                     sender.sendMessage(LocaleLoader.getString("Stats.Header.Misc"));
-                    for (SkillType skill : SkillType.MISC_SKILLS) {
+                    for (SkillType skill : SkillType.getMiscSkills()) {
                         sender.sendMessage(CommandUtils.displaySkill(profile, skill));
                     }
 

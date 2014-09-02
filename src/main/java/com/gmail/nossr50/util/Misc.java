@@ -16,7 +16,6 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableSet;
 
 public final class Misc {

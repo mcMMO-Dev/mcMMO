@@ -26,37 +26,37 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class UnarmedManager extends SkillManager {
     public UnarmedManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.UNARMED);
+        super(mcMMOPlayer, SkillType.unarmed);
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.FISTS) && Permissions.berserk(getPlayer());
+        return mcMMOPlayer.getToolPreparationMode(ToolType.fists) && Permissions.berserk(getPlayer());
     }
 
     public boolean canUseIronArm() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.IRON_ARM);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.ironArm);
     }
 
     public boolean canUseBerserk() {
-        return mcMMOPlayer.getAbilityMode(AbilityType.BERSERK) && Permissions.berserk(getPlayer());
+        return mcMMOPlayer.getAbilityMode(AbilityType.berserk) && Permissions.berserk(getPlayer());
     }
 
     public boolean canDisarm(LivingEntity target) {
-        return target instanceof Player && ((Player) target).getItemInHand().getType() != Material.AIR && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.DISARM);
+        return target instanceof Player && ((Player) target).getItemInHand().getType() != Material.AIR && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.disarm);
     }
 
     public boolean canDeflect() {
         Player player = getPlayer();
 
-        return player.getItemInHand().getType() == Material.AIR && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.DEFLECT);
+        return player.getItemInHand().getType() == Material.AIR && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.deflect);
     }
 
     public boolean canUseBlockCracker() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.BLOCK_CRACKER);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.blockCracker);
     }
 
     public boolean blockCrackerCheck(BlockState blockState) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.BLOCK_CRACKER, getPlayer())) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.blockCracker, getPlayer())) {
             return false;
         }
 
@@ -89,7 +89,7 @@ public class UnarmedManager extends SkillManager {
      * @param defender The defending player
      */
     public void disarmCheck(Player defender) {
-        if (SkillUtils.activationSuccessful(SecondaryAbility.DISARM, getPlayer(), getSkillLevel(), activationChance) && !hasIronGrip(defender)) {
+        if (SkillUtils.activationSuccessful(SecondaryAbility.disarm, getPlayer(), getSkillLevel(), activationChance) && !hasIronGrip(defender)) {
             if (EventUtils.callDisarmEvent(defender).isCancelled()) {
                 return;
             }
@@ -109,7 +109,7 @@ public class UnarmedManager extends SkillManager {
      * Check for arrow deflection.
      */
     public boolean deflectCheck() {
-        if (SkillUtils.activationSuccessful(SecondaryAbility.DEFLECT, getPlayer(), getSkillLevel(), activationChance)) {
+        if (SkillUtils.activationSuccessful(SecondaryAbility.deflect, getPlayer(), getSkillLevel(), activationChance)) {
             getPlayer().sendMessage(LocaleLoader.getString("Combat.ArrowDeflect"));
             return true;
         }
@@ -132,7 +132,7 @@ public class UnarmedManager extends SkillManager {
      * Handle the effects of the Iron Arm ability
      */
     public double ironArm() {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.IRON_ARM, getPlayer())) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.ironArm, getPlayer())) {
             return 0;
         }
 
@@ -146,7 +146,7 @@ public class UnarmedManager extends SkillManager {
      * @return true if the defender was not disarmed, false otherwise
      */
     private boolean hasIronGrip(Player defender) {
-        if (!Misc.isNPCEntity(defender) && Permissions.secondaryAbilityEnabled(defender, SecondaryAbility.IRON_GRIP) && SkillUtils.activationSuccessful(SecondaryAbility.IRON_GRIP, defender, skill)) {
+        if (!Misc.isNPCEntity(defender) && Permissions.secondaryAbilityEnabled(defender, SecondaryAbility.ironGrip) && SkillUtils.activationSuccessful(SecondaryAbility.ironGrip, defender, skill)) {
             defender.sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Defender"));
             getPlayer().sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Attacker"));
 

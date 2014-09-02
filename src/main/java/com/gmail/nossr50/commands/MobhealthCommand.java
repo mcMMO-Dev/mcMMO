@@ -14,7 +14,6 @@ import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableList;
 
 public class MobhealthCommand implements TabExecutor {

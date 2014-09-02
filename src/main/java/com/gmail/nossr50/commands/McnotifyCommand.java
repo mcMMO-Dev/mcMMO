@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableList;
 
 public class McnotifyCommand implements TabExecutor {

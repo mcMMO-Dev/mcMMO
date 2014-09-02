@@ -23,38 +23,38 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class AxesManager extends SkillManager {
     public AxesManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.AXES);
+        super(mcMMOPlayer, SkillType.axes);
     }
 
     public boolean canUseAxeMastery() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.AXE_MASTERY);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.axeMastery);
     }
 
     public boolean canCriticalHit(LivingEntity target) {
-        return target.isValid() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.CRITICAL_HIT);
+        return target.isValid() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.criticalHit);
     }
 
     public boolean canImpact(LivingEntity target) {
-        return target.isValid() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.ARMOR_IMPACT) && Axes.hasArmor(target);
+        return target.isValid() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.armorImpact) && Axes.hasArmor(target);
     }
 
     public boolean canGreaterImpact(LivingEntity target) {
-        return target.isValid() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.GREATER_IMPACT) && !Axes.hasArmor(target);
+        return target.isValid() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.greaterImpact) && !Axes.hasArmor(target);
     }
 
     public boolean canUseSkullSplitter(LivingEntity target) {
-        return target.isValid() && mcMMOPlayer.getAbilityMode(AbilityType.SKULL_SPLITTER) && Permissions.skullSplitter(getPlayer());
+        return target.isValid() && mcMMOPlayer.getAbilityMode(AbilityType.skullSplitter) && Permissions.skullSplitter(getPlayer());
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.AXE) && Permissions.skullSplitter(getPlayer());
+        return mcMMOPlayer.getToolPreparationMode(ToolType.axe) && Permissions.skullSplitter(getPlayer());
     }
 
     /**
      * Handle the effects of the Axe Mastery ability
      */
     public double axeMastery() {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.AXE_MASTERY, getPlayer())) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.axeMastery, getPlayer())) {
             return 0;
         }
 
@@ -68,7 +68,7 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double criticalHit(LivingEntity target, double damage) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.CRITICAL_HIT, getPlayer(), getSkillLevel(), activationChance)) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.criticalHit, getPlayer(), getSkillLevel(), activationChance)) {
             return 0;
         }
 
@@ -98,7 +98,7 @@ public class AxesManager extends SkillManager {
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
             if (ItemUtils.isArmor(armor)) {
-                if (SkillUtils.activationSuccessful(SecondaryAbility.ARMOR_IMPACT, getPlayer(), Axes.impactChance, activationChance)) {
+                if (SkillUtils.activationSuccessful(SecondaryAbility.armorImpact, getPlayer(), Axes.impactChance, activationChance)) {
                     SkillUtils.handleDurabilityChange(armor, durabilityDamage, Axes.impactMaxDurabilityModifier);
                 }
             }
@@ -111,7 +111,7 @@ public class AxesManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      */
     public double greaterImpact(LivingEntity target) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.GREATER_IMPACT, getPlayer(), Axes.greaterImpactChance, activationChance)) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.greaterImpact, getPlayer(), Axes.greaterImpactChance, activationChance)) {
             return 0;
         }
 

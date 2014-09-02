@@ -10,7 +10,7 @@ public class McMMOPlayerFishingEvent extends McMMOPlayerSkillEvent implements Ca
     private boolean cancelled;
 
     protected McMMOPlayerFishingEvent(Player player) {
-        super(player, SkillType.FISHING);
+        super(player, SkillType.fishing);
         cancelled = false;
     }
 

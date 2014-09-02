@@ -7,6 +7,9 @@ Key:
   ! Change
   - Removal
 
+Version 1.5.01-api
+ + Added skill api!
+
 Version 1.5.01-dev
  + Added new child skill; Salvage
  + Added UUID support!

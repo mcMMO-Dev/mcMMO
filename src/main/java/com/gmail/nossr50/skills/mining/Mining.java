@@ -19,7 +19,7 @@ public class Mining {
      */
     protected static int getBlockXp(BlockState blockState) {
         Material blockType = blockState.getType();
-        int xp = ExperienceConfig.getInstance().getXp(SkillType.MINING, blockType != Material.GLOWING_REDSTONE_ORE ? blockType : Material.REDSTONE_ORE);
+        int xp = ExperienceConfig.getInstance().getXp(SkillType.mining, blockType != Material.GLOWING_REDSTONE_ORE ? blockType : Material.REDSTONE_ORE);
 
         if (xp == 0 && mcMMO.getModManager().isCustomMiningBlock(blockState)) {
             xp = mcMMO.getModManager().getBlock(blockState).getXpGain();
@@ -50,7 +50,7 @@ public class Mining {
                 return;
 
             case GLOWING_REDSTONE_ORE:
-                if (Config.getInstance().getDoubleDropsEnabled(SkillType.MINING, Material.REDSTONE_ORE)) {
+                if (Config.getInstance().getDoubleDropsEnabled(SkillType.mining, Material.REDSTONE_ORE)) {
                     Misc.dropItem(blockState.getLocation(), new ItemStack(Material.REDSTONE_ORE));
                 }
                 return;
@@ -104,7 +104,7 @@ public class Mining {
                 return;
 
             case GLOWING_REDSTONE_ORE:
-                if (Config.getInstance().getDoubleDropsEnabled(SkillType.MINING, Material.REDSTONE_ORE)) {
+                if (Config.getInstance().getDoubleDropsEnabled(SkillType.mining, Material.REDSTONE_ORE)) {
                     Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
                 }
                 return;

@@ -10,6 +10,8 @@ import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.util.skills.PerksUtils;
 
 public abstract class SkillManager {
+	public boolean usesAPIAbilitySystem = false;
+	
     protected McMMOPlayer mcMMOPlayer;
     protected int activationChance;
     protected SkillType skill;

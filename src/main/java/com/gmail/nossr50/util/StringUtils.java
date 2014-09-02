@@ -1,5 +1,7 @@
 package com.gmail.nossr50.util;
 
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.entity.EntityType;
@@ -18,7 +20,7 @@ public class StringUtils {
     public static String getCapitalized(String target) {
         return target.substring(0, 1).toUpperCase() + target.substring(1).toLowerCase();
     }
-
+    
     public static String getPrettyItemString(Material material) {
         return createPrettyEnumString(material.toString());
     }
@@ -36,20 +38,20 @@ public class StringUtils {
     }
 
     public static String getPrettySecondaryAbilityString(SecondaryAbility secondaryAbility) {
-        switch (secondaryAbility) {
-            case HERBALISM_DOUBLE_DROPS:
-            case MINING_DOUBLE_DROPS:
-            case WOODCUTTING_DOUBLE_DROPS:
-                return "Double Drops";
-            case FISHING_TREASURE_HUNTER:
-            case EXCAVATION_TREASURE_HUNTER:
-                return "Treasure Hunter";
-            case GREEN_THUMB_BLOCK:
-            case GREEN_THUMB_PLANT:
-                return "Green Thumb";
-            default:
+//        switch (secondaryAbility) {
+//            case herbalismDoubleDrops:
+//            case miningDoubleDrops:
+//            case woodcuttingDoubleDrops:
+//                return "Double Drops";
+//            case fishingTreasureHunter:
+//            case excavationTreasureHunter:
+//                return "Treasure Hunter";
+//            case greenThumbBlock:
+//            case greenThumbPlant:
+//                return "Green Thumb";
+//            default:
                 return createPrettyEnumString(secondaryAbility.toString());
-        }
+//        }
     }
 
     public static String getPrettyPartyFeatureString(PartyFeature partyFeature) {
@@ -57,6 +59,10 @@ public class StringUtils {
     }
 
     private static String createPrettyEnumString(String baseString) {
+        return createPrettyStringWithSpacer(baseString, " ");
+    }
+    
+    public static String createPrettyStringWithSpacer(String baseString, String spacer) {
         String[] substrings = baseString.split("_");
         String prettyString = "";
         int size = 1;
@@ -65,13 +71,17 @@ public class StringUtils {
             prettyString = prettyString.concat(getCapitalized(string));
 
             if (size < substrings.length) {
-                prettyString = prettyString.concat(" ");
+                prettyString = prettyString.concat(spacer);
             }
 
             size++;
         }
 
         return prettyString;
+    }
+    
+    public static String createStringForPermission(String baseString) {
+    	return baseString.replace("_", "").toLowerCase();
     }
 
     /**
@@ -105,5 +115,28 @@ public class StringUtils {
             return false;
         }
     }
+
+	public static String createStringFromListWithNoPrefixBeforeFirst(List<String> list, String prefix, String suffix) {
+		String toRet = "";
+		toRet = org.apache.commons.lang.StringUtils.join(list.toArray(), suffix + prefix) + suffix;
+		/*Iterator<String> itr = list.iterator();
+		if(itr.hasNext()) {
+			toRet += itr.next() + suffix;
+		}
+		while(itr.hasNext()) {
+			toRet += prefix + itr.next() + suffix;
+		}*/
+		return toRet;
+	}
+
+	public static String createStringFromList(List<String> list, String prefix, String suffix) {
+		String toRet = "";
+		toRet = prefix + createStringFromListWithNoPrefixBeforeFirst(list, prefix, suffix);
+		/*Iterator<String> itr = list.iterator();
+		while(itr.hasNext()) {
+			toRet += prefix + itr.next() + suffix;
+		}*/
+		return toRet;
+	}
 
 }

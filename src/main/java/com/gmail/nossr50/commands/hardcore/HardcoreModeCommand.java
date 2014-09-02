@@ -13,7 +13,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
-
 import com.google.common.collect.ImmutableList;
 
 public abstract class HardcoreModeCommand implements TabExecutor {
@@ -76,7 +75,7 @@ public abstract class HardcoreModeCommand implements TabExecutor {
                     return true;
                 }
 
-                SkillType skill = SkillType.getSkill(args[0]);
+                SkillType skill = SkillType.getSkillFromLocalized(args[0]);
 
                 if (!CommandUtils.isChildSkill(sender, skill)) {
                     return true;

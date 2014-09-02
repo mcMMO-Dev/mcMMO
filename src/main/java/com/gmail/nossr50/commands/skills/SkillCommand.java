@@ -24,7 +24,6 @@ import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
-
 import com.google.common.collect.ImmutableList;
 
 public abstract class SkillCommand implements TabExecutor {
@@ -38,7 +37,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     public SkillCommand(SkillType skill) {
         this.skill = skill;
-        skillName = skill.getName();
+        skillName = skill.getLocalizedName();
         skillGuideCommand = new SkillGuideCommand(skill);
     }
 
@@ -82,7 +81,7 @@ public abstract class SkillCommand implements TabExecutor {
                     Set<SkillType> parents = FamilyTree.getParents(skill);
 
                     for (SkillType parent : parents) {
-                        player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
+                        player.sendMessage(parent.getLocalizedName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
                     }
                 }
 
@@ -143,8 +142,9 @@ public abstract class SkillCommand implements TabExecutor {
 
     protected String[] calculateAbilityDisplayValues(float skillValue, SecondaryAbility skillAbility, boolean isLucky) {
         int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(skillAbility);
-
-        return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(skillAbility) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
+        double maxChance = AdvancedConfig.getInstance().getMaxChance(skillAbility);
+		double chance = (maxBonusLevel == 0) ? maxChance : (maxChance / maxBonusLevel) * Math.min(skillValue, maxBonusLevel);
+		return calculateAbilityDisplayValues(chance, isLucky);
     }
 
     protected String[] calculateLengthDisplayValues(Player player, float skillValue) {

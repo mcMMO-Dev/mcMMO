@@ -12,10 +12,11 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
-import com.google.common.collect.ImmutableList;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import com.google.common.collect.ImmutableList;
 
 public class UUIDFetcher implements Callable<Map<String, UUID>> {
     private static final int PROFILES_PER_REQUEST = 100;

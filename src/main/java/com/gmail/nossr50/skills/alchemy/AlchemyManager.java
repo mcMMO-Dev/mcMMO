@@ -17,7 +17,7 @@ public class AlchemyManager extends SkillManager {
     private final double LUCKY_MODIFIER = 4.0 / 3.0;
 
     public AlchemyManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.ALCHEMY);
+        super(mcMMOPlayer, SkillType.alchemy);
     }
 
     public int getTier() {

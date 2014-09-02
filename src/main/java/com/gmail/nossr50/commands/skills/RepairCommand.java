@@ -42,7 +42,7 @@ public class RepairCommand extends SkillCommand {
     private int stoneLevel;
 
     public RepairCommand() {
-        super(SkillType.REPAIR);
+        super(SkillType.repair);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class RepairCommand extends SkillCommand {
 
         // SUPER REPAIR
         if (canSuperRepair) {
-            String[] superRepairStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.SUPER_REPAIR, isLucky);
+            String[] superRepairStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.superRepair, isLucky);
             superRepairChance = superRepairStrings[0];
             superRepairChanceLucky = superRepairStrings[1];
         }
@@ -74,9 +74,9 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSuperRepair = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SUPER_REPAIR);
-        canMasterRepair = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.REPAIR_MASTERY);
-        canArcaneForge = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ARCANE_FORGING);
+        canSuperRepair = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.superRepair);
+        canMasterRepair = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.repairMastery);
+        canArcaneForge = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.arcaneForging);
         canRepairDiamond = Permissions.repairMaterialType(player, MaterialType.DIAMOND);
         canRepairGold = Permissions.repairMaterialType(player, MaterialType.GOLD);
         canRepairIron = Permissions.repairMaterialType(player, MaterialType.IRON);

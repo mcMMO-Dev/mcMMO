@@ -39,6 +39,6 @@ public class AddxpCommand extends ExperienceCommand {
 
     @Override
     protected void handlePlayerMessageSkill(Player player, int value, SkillType skill) {
-        player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, skill.getName()));
+        player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, skill.getLocalizedName()));
     }
 }

@@ -10,9 +10,26 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.commands.skills.AcrobaticsCommand;
+import com.gmail.nossr50.commands.skills.AlchemyCommand;
+import com.gmail.nossr50.commands.skills.ArcheryCommand;
+import com.gmail.nossr50.commands.skills.AxesCommand;
+import com.gmail.nossr50.commands.skills.ExcavationCommand;
+import com.gmail.nossr50.commands.skills.FishingCommand;
+import com.gmail.nossr50.commands.skills.HerbalismCommand;
+import com.gmail.nossr50.commands.skills.MiningCommand;
+import com.gmail.nossr50.commands.skills.RepairCommand;
+import com.gmail.nossr50.commands.skills.SalvageCommand;
+import com.gmail.nossr50.commands.skills.SkillCommand;
+import com.gmail.nossr50.commands.skills.SmeltingCommand;
+import com.gmail.nossr50.commands.skills.SwordsCommand;
+import com.gmail.nossr50.commands.skills.TamingCommand;
+import com.gmail.nossr50.commands.skills.UnarmedCommand;
+import com.gmail.nossr50.commands.skills.WoodcuttingCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.SkillAbilityManager;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
@@ -32,71 +49,95 @@ import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-
 import com.google.common.collect.ImmutableList;
 
-public enum SkillType {
-    ACROBATICS(AcrobaticsManager.class, Color.WHITE, ImmutableList.of(SecondaryAbility.DODGE, SecondaryAbility.GRACEFUL_ROLL, SecondaryAbility.ROLL)),
-    ALCHEMY(AlchemyManager.class, Color.FUCHSIA, ImmutableList.of(SecondaryAbility.CATALYSIS, SecondaryAbility.CONCOCTIONS)),
-    ARCHERY(ArcheryManager.class, Color.MAROON, ImmutableList.of(SecondaryAbility.DAZE, SecondaryAbility.RETRIEVE, SecondaryAbility.SKILL_SHOT)),
-    AXES(AxesManager.class, Color.AQUA, AbilityType.SKULL_SPLITTER, ToolType.AXE, ImmutableList.of(SecondaryAbility.ARMOR_IMPACT, SecondaryAbility.AXE_MASTERY, SecondaryAbility.CRITICAL_HIT, SecondaryAbility.GREATER_IMPACT)),
-    EXCAVATION(ExcavationManager.class, Color.fromRGB(139, 69, 19), AbilityType.GIGA_DRILL_BREAKER, ToolType.SHOVEL, ImmutableList.of(SecondaryAbility.EXCAVATION_TREASURE_HUNTER)),
-    FISHING(FishingManager.class, Color.NAVY, ImmutableList.of(SecondaryAbility.FISHERMANS_DIET, SecondaryAbility.FISHING_TREASURE_HUNTER, SecondaryAbility.ICE_FISHING, SecondaryAbility.MAGIC_HUNTER, SecondaryAbility.MASTER_ANGLER, SecondaryAbility.SHAKE)),
-    HERBALISM(HerbalismManager.class, Color.GREEN, AbilityType.GREEN_TERRA, ToolType.HOE, ImmutableList.of(SecondaryAbility.FARMERS_DIET, SecondaryAbility.GREEN_THUMB_PLANT, SecondaryAbility.GREEN_THUMB_BLOCK, SecondaryAbility.HERBALISM_DOUBLE_DROPS, SecondaryAbility.HYLIAN_LUCK, SecondaryAbility.SHROOM_THUMB)),
-    MINING(MiningManager.class, Color.GRAY, AbilityType.SUPER_BREAKER, ToolType.PICKAXE, ImmutableList.of(SecondaryAbility.MINING_DOUBLE_DROPS)),
-    REPAIR(RepairManager.class, Color.SILVER, ImmutableList.of(SecondaryAbility.ARCANE_FORGING, SecondaryAbility.REPAIR_MASTERY, SecondaryAbility.SUPER_REPAIR)),
-    SALVAGE(SalvageManager.class, Color.ORANGE, ImmutableList.of(SecondaryAbility.ADVANCED_SALVAGE, SecondaryAbility.ARCANE_SALVAGE)),
-    SMELTING(SmeltingManager.class, Color.YELLOW, ImmutableList.of(SecondaryAbility.FLUX_MINING, SecondaryAbility.FUEL_EFFICIENCY, SecondaryAbility.SECOND_SMELT)),
-    SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), AbilityType.SERRATED_STRIKES, ToolType.SWORD, ImmutableList.of(SecondaryAbility.BLEED, SecondaryAbility.COUNTER)),
-    TAMING(TamingManager.class, Color.PURPLE, ImmutableList.of(SecondaryAbility.BEAST_LORE, SecondaryAbility.CALL_OF_THE_WILD, SecondaryAbility.ENVIROMENTALLY_AWARE, SecondaryAbility.FAST_FOOD, SecondaryAbility.GORE, SecondaryAbility.HOLY_HOUND, SecondaryAbility.SHARPENED_CLAWS, SecondaryAbility.SHOCK_PROOF, SecondaryAbility.THICK_FUR)),
-    UNARMED(UnarmedManager.class, Color.BLACK, AbilityType.BERSERK, ToolType.FISTS, ImmutableList.of(SecondaryAbility.BLOCK_CRACKER, SecondaryAbility.DEFLECT, SecondaryAbility.DISARM, SecondaryAbility.IRON_ARM, SecondaryAbility.IRON_GRIP)),
-    WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, AbilityType.TREE_FELLER, ToolType.AXE, ImmutableList.of(SecondaryAbility.LEAF_BLOWER, SecondaryAbility.WOODCUTTING_DOUBLE_DROPS));
+public class SkillType {
+	public enum SkillUseType {
+		COMBAT,
+		GATHERING,
+		MISC
+	}
 
+    private static List<String> skillNames = new ArrayList<String>();
+    private static List<String> lowerSkillNames = new ArrayList<String>();
+    private static List<SkillType> skillList = new ArrayList<SkillType>();
+
+    private static List<SkillType> childSkills = new ArrayList<SkillType>();
+    private static List<SkillType> nonChildSkills = new ArrayList<SkillType>();
+
+    private static List<SkillType> combatSkills = new ArrayList<SkillType>();
+    private static List<SkillType> gatheringSkills = new ArrayList<SkillType>();
+    private static List<SkillType> miscSkills = new ArrayList<SkillType>();
+    
+    private static List<SkillType> abilitySkills = new ArrayList<SkillType>();
+    
+	
+    public static final SkillType acrobatics 	= createSkill("ACROBATICS" , AcrobaticsManager.class	, AcrobaticsCommand.class	, false, Color.WHITE, SkillUseType.MISC, ImmutableList.of(SecondaryAbility.dodge, SecondaryAbility.gracefullRoll, SecondaryAbility.roll));                                                                                                                                                                                         
+    public static final SkillType alchemy	 	= createSkill("ALCHEMY"	 , AlchemyManager.class		, AlchemyCommand.class		, false, Color.FUCHSIA, SkillUseType.MISC, ImmutableList.of(SecondaryAbility.catalysis, SecondaryAbility.concoctions));                                                                                                                                                                                                                
+    public static final SkillType archery		= createSkill("ARCHERY"	 , ArcheryManager.class		, ArcheryCommand.class		, false, Color.MAROON, SkillUseType.COMBAT, ImmutableList.of(SecondaryAbility.daze, SecondaryAbility.retrieve, SecondaryAbility.skillShot));                                                                                                                                                                                           
+    public static final SkillType axes	 		= createSkill("AXES"		 , AxesManager.class		, AxesCommand.class			, false, Color.AQUA, SkillUseType.COMBAT, AbilityType.skullSplitter, ToolType.axe, ImmutableList.of(SecondaryAbility.armorImpact, SecondaryAbility.axeMastery, SecondaryAbility.criticalHit, SecondaryAbility.greaterImpact));                                                                                                     
+    public static final SkillType excavation 	= createSkill("EXCAVATION" , ExcavationManager.class	, ExcavationCommand.class	, false, Color.fromRGB(139, 69, 19), SkillUseType.GATHERING, AbilityType.gigaDrillBreaker, ToolType.shovel, ImmutableList.of(SecondaryAbility.excavationTreasureHunter));                                                                                                                                                          
+    public static final SkillType fishing	 	= createSkill("FISHING"	 , FishingManager.class		, FishingCommand.class		, false, Color.NAVY, SkillUseType.GATHERING, ImmutableList.of(SecondaryAbility.fishermansDiet, SecondaryAbility.fishingTreasureHunter, SecondaryAbility.iceFishing, SecondaryAbility.magicHunter, SecondaryAbility.masterAngler, SecondaryAbility.shake));                                                                             
+    public static final SkillType herbalism 	= createSkill("HERBALISM"  , HerbalismManager.class	, HerbalismCommand.class	, false, Color.GREEN, SkillUseType.GATHERING, AbilityType.greenTerra, ToolType.hoe, ImmutableList.of(SecondaryAbility.farmersDiet, SecondaryAbility.greenThumbPlant, SecondaryAbility.greenThumbBlock, SecondaryAbility.herbalismDoubleDrops, SecondaryAbility.hylianLuck, SecondaryAbility.shroomThumb));                             
+    public static final SkillType mining 		= createSkill("MINING"	 , MiningManager.class		, MiningCommand.class		, false, Color.GRAY, SkillUseType.GATHERING, AbilityType.superBreaker, ToolType.pickaxe, ImmutableList.of(SecondaryAbility.miningDoubleDrops));                                                                                                                                                                                        
+    public static final SkillType repair 		= createSkill("REPAIR"	 , RepairManager.class		, RepairCommand.class		, false, Color.SILVER, SkillUseType.MISC, ImmutableList.of(SecondaryAbility.arcaneForging, SecondaryAbility.repairMastery, SecondaryAbility.superRepair));                                                                                                                                                                             
+    public static final SkillType salvage	 	= createSkill("SALVAGE"	 , SalvageManager.class		, SalvageCommand.class		, true, Color.ORANGE, SkillUseType.MISC, ImmutableList.of(SecondaryAbility.advancedSalvage, SecondaryAbility.arcaneSalvage));                                                                                                                                                                                                          
+    public static final SkillType smelting		= createSkill("SMELTING"	 , SmeltingManager.class	, SmeltingCommand.class		, true, Color.YELLOW, SkillUseType.MISC, ImmutableList.of(SecondaryAbility.fluxMining, SecondaryAbility.fuelEfficiency, SecondaryAbility.secondSmelt));                                                                                                                                                                            
+    public static final SkillType swords 		= createSkill("SWORDS"	 , SwordsManager.class		, SwordsCommand.class		, false, Color.fromRGB(178, 34, 34), SkillUseType.COMBAT, AbilityType.serratedStrikes, ToolType.sword, ImmutableList.of(SecondaryAbility.bleed, SecondaryAbility.counter));                                                                                                                                                            
+    public static final SkillType taming 		= createSkill("TAMING"	 , TamingManager.class		, TamingCommand.class		, false, Color.PURPLE, SkillUseType.COMBAT, ImmutableList.of(SecondaryAbility.beastLore, SecondaryAbility.callOfTheWild, SecondaryAbility.enviromentallyAware, SecondaryAbility.fastFood, SecondaryAbility.gore, SecondaryAbility.holyHound, SecondaryAbility.sharpenedClaws, SecondaryAbility.shockProof, SecondaryAbility.thickFur));
+    public static final SkillType unarmed	 	= createSkill("UNARMED"	 , UnarmedManager.class		, UnarmedCommand.class		, false, Color.BLACK, SkillUseType.COMBAT, AbilityType.berserk, ToolType.fists, ImmutableList.of(SecondaryAbility.blockCracker, SecondaryAbility.deflect, SecondaryAbility.disarm, SecondaryAbility.ironArm, SecondaryAbility.ironGrip));                                                                                              
+    public static final SkillType woodcutting	= createSkill("WOODCUTTING", WoodcuttingManager.class	, WoodcuttingCommand.class	, false, Color.OLIVE, SkillUseType.GATHERING, AbilityType.treeFeller, ToolType.axe, ImmutableList.of(SecondaryAbility.leafBlower, SecondaryAbility.woodcuttingDoubleDrops));                                                                                                                                                       
+
+    
+    private String name;
     private Class<? extends SkillManager> managerClass;
+    private Class<? extends SkillCommand> commandClass;
+    private boolean isChild;
     private Color runescapeColor;
+    private SkillUseType skillUseType;
     private AbilityType ability;
     private ToolType tool;
     private List<SecondaryAbility> secondaryAbilities;
-
-    public static final List<String> SKILL_NAMES;
-
-    public static final List<SkillType> CHILD_SKILLS;
-    public static final List<SkillType> NON_CHILD_SKILLS;
-
-    public static final List<SkillType> COMBAT_SKILLS = ImmutableList.of(ARCHERY, AXES, SWORDS, TAMING, UNARMED);
-    public static final List<SkillType> GATHERING_SKILLS = ImmutableList.of(EXCAVATION, FISHING, HERBALISM, MINING, WOODCUTTING);
-    public static final List<SkillType> MISC_SKILLS = ImmutableList.of(ACROBATICS, ALCHEMY, REPAIR, SALVAGE, SMELTING);
-
-    static {
-        List<SkillType> childSkills = new ArrayList<SkillType>();
-        List<SkillType> nonChildSkills = new ArrayList<SkillType>();
-        ArrayList<String> names = new ArrayList<String>();
-
-        for (SkillType skill : values()) {
-            if (skill.isChildSkill()) {
-                childSkills.add(skill);
-            }
-            else {
-                nonChildSkills.add(skill);
-            }
-
-            names.add(skill.getName());
-        }
-
-        Collections.sort(names);
-        SKILL_NAMES = ImmutableList.copyOf(names);
-
-        CHILD_SKILLS = ImmutableList.copyOf(childSkills);
-        NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
+    
+    public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, List<SecondaryAbility> secondaryAbilities) {
+    	return createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, null, null, secondaryAbilities);
+    }
+    
+    public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, ToolType tool, List<SecondaryAbility> secondaryAbilities) {
+    	SkillType skill = new SkillType(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ability, tool, secondaryAbilities);
+    	getSkillList().add(skill);
+		if(skill.isChild) {
+			getChildSkills().add(skill);
+		}
+		else {
+			getNonChildSkills().add(skill);
+		}
+		switch(skill.skillUseType) {
+			case COMBAT:
+				getCombatSkills().add(skill);
+				break;
+			case GATHERING:
+				getGatheringSkills().add(skill);
+				break;
+			default:
+				getMiscSkills().add(skill);
+				break;
+		}
+		getSkillNames().add(skill.name);
+    	return skill;
+    }
+    
+    private SkillType(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, List<SecondaryAbility> secondaryAbilities) {
+        this(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, null, null, secondaryAbilities);
     }
 
-    private SkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, List<SecondaryAbility> secondaryAbilities) {
-        this(managerClass, runescapeColor, null, null, secondaryAbilities);
-    }
-
-    private SkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, AbilityType ability, ToolType tool, List<SecondaryAbility> secondaryAbilities) {
-        this.managerClass = managerClass;
+    private SkillType(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, ToolType tool, List<SecondaryAbility> secondaryAbilities) {
+    	this.name = name;
+    	this.managerClass = managerClass;
+    	this.commandClass = commandClass;
+    	this.isChild = isChild;
         this.runescapeColor = runescapeColor;
+        this.skillUseType = skillUseType;
         this.ability = ability;
         this.tool = tool;
         this.secondaryAbilities = secondaryAbilities;
@@ -104,6 +145,10 @@ public enum SkillType {
 
     public Class<? extends SkillManager> getManagerClass() {
         return managerClass;
+    }
+
+    public Class<? extends SkillCommand> getCommandClass() {
+        return commandClass;
     }
 
     public AbilityType getAbility() {
@@ -159,17 +204,21 @@ public enum SkillType {
         return ExperienceConfig.getInstance().getFormulaSkillModifier(this);
     }
 
-    public static SkillType getSkill(String skillName) {
+    public static SkillType getSkillFromLocalized(String skillName) {
         if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
-            for (SkillType type : values()) {
-                if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name()) + ".SkillName"))) {
+            for (SkillType type : getSkillList()) {
+                if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name) + ".SkillName"))) {
                     return type;
                 }
             }
         }
 
-        for (SkillType type : values()) {
-            if (type.name().equalsIgnoreCase(skillName)) {
+        return getSkill(skillName);
+    }
+    
+    public static SkillType getSkill(String skillName) {
+        for (SkillType type : getSkillList()) {
+            if (type.name.equalsIgnoreCase(skillName)) {
                 return type;
             }
         }
@@ -181,20 +230,12 @@ public enum SkillType {
         return null;
     }
 
-    // TODO: This is a little "hacky", we probably need to add something to distinguish child skills in the enum, or to use another enum for them
     public boolean isChildSkill() {
-        switch (this) {
-            case SALVAGE:
-            case SMELTING:
-                return true;
-
-            default:
-                return false;
-        }
+        return isChild;
     }
 
     public static SkillType bySecondaryAbility(SecondaryAbility skillAbility) {
-        for (SkillType type : values()) {
+        for (SkillType type : getSkillList()) {
             if (type.getSkillAbilities().contains(skillAbility)) {
                 return type;
             }
@@ -203,7 +244,7 @@ public enum SkillType {
     }
 
     public static SkillType byAbility(AbilityType ability) {
-        for (SkillType type : values()) {
+        for (SkillType type : getSkillList()) {
             if (type.getAbility() == ability) {
                 return type;
             }
@@ -212,7 +253,18 @@ public enum SkillType {
         return null;
     }
 
-    public String getName() {
+    public String getName()
+    {
+    	return this.name;
+    }
+    
+    @Override
+    public String toString()
+    {
+    	return getName();
+    }
+    
+    public String getLocalizedName() {
         return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? StringUtils.getCapitalized(this.toString()) : StringUtils.getCapitalized(LocaleLoader.getString(StringUtils.getCapitalized(this.toString()) + ".SkillName"));
     }
 
@@ -227,4 +279,55 @@ public enum SkillType {
     public boolean shouldProcess(Entity target) {
         return (target instanceof Player || (target instanceof Tameable && ((Tameable) target).isTamed())) ? getPVPEnabled() : getPVEEnabled();
     }
+    
+    public static void setUpSkillTypes()
+    {
+    	Collections.sort(skillNames);
+    	lowerSkillNames.clear();
+    	abilitySkills.clear();
+    	for(SkillType skill : nonChildSkills) {
+    		if(skill != null) {
+        		lowerSkillNames.add(skill.getName());
+    		}
+    		if(SkillAbilityManager.class.isAssignableFrom(skill.getManagerClass())) {
+    			abilitySkills.add(skill);
+    		}
+    	}
+    }
+
+	public static List<String> getSkillNames() {
+		return skillNames;
+	}
+	
+	public static List<String> getLowerSkillNames() {
+		return lowerSkillNames;
+	}
+
+	public static List<SkillType> getSkillList() {
+		return skillList;
+	}
+
+	public static List<SkillType> getChildSkills() {
+		return childSkills;
+	}
+
+	public static List<SkillType> getNonChildSkills() {
+		return nonChildSkills;
+	}
+
+	public static List<SkillType> getCombatSkills() {
+		return combatSkills;
+	}
+
+	public static List<SkillType> getGatheringSkills() {
+		return gatheringSkills;
+	}
+
+	public static List<SkillType> getMiscSkills() {
+		return miscSkills;
+	}
+
+	public static List<SkillType> getAbilitySkills() {
+		return abilitySkills;
+	}
 }

@@ -23,23 +23,23 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SwordsManager extends SkillManager {
     public SwordsManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.SWORDS);
+        super(mcMMOPlayer, SkillType.swords);
     }
 
     public boolean canActivateAbility() {
-        return mcMMOPlayer.getToolPreparationMode(ToolType.SWORD) && Permissions.serratedStrikes(getPlayer());
+        return mcMMOPlayer.getToolPreparationMode(ToolType.sword) && Permissions.serratedStrikes(getPlayer());
     }
 
     public boolean canUseBleed() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.BLEED);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.bleed);
     }
 
     public boolean canUseCounterAttack(Entity target) {
-        return target instanceof LivingEntity && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.COUNTER);
+        return target instanceof LivingEntity && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.counter);
     }
 
     public boolean canUseSerratedStrike() {
-        return mcMMOPlayer.getAbilityMode(AbilityType.SERRATED_STRIKES) && Permissions.serratedStrikes(getPlayer());
+        return mcMMOPlayer.getAbilityMode(AbilityType.serratedStrikes) && Permissions.serratedStrikes(getPlayer());
     }
 
     /**
@@ -48,9 +48,9 @@ public class SwordsManager extends SkillManager {
      * @param target The defending entity
      */
     public void bleedCheck(LivingEntity target) {
-        if (SkillUtils.activationSuccessful(SecondaryAbility.BLEED, getPlayer(), getSkillLevel(), activationChance)) {
+        if (SkillUtils.activationSuccessful(SecondaryAbility.bleed, getPlayer(), getSkillLevel(), activationChance)) {
 
-            if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SecondaryAbility.BLEED)) {
+            if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SecondaryAbility.bleed)) {
                 BleedTimerTask.add(target, Swords.bleedMaxTicks);
             }
             else {
@@ -82,7 +82,7 @@ public class SwordsManager extends SkillManager {
             return;
         }
 
-        if (SkillUtils.activationSuccessful(SecondaryAbility.COUNTER, getPlayer(), getSkillLevel(), activationChance)) {
+        if (SkillUtils.activationSuccessful(SecondaryAbility.counter, getPlayer(), getSkillLevel(), activationChance)) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier);
 
             getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));

@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.shatteredlands.shatt.backup.ZipLibrary;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -24,6 +26,7 @@ import com.gmail.nossr50.config.skills.salvage.SalvageConfigManager;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.listeners.BlockListener;
 import com.gmail.nossr50.listeners.EntityListener;
 import com.gmail.nossr50.listeners.InventoryListener;
@@ -62,8 +65,6 @@ import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
-
-import net.shatteredlands.shatt.backup.ZipLibrary;
 
 public class mcMMO extends JavaPlugin {
     /* Managers */
@@ -119,7 +120,7 @@ public class mcMMO extends JavaPlugin {
     public final static String databaseCommandKey  = "mcMMO: Processing Database Command";
 
     public static FixedMetadataValue metadataValue;
-
+    
     /**
      * Things to be run when the plugin is enabled.
      */
@@ -129,6 +130,8 @@ public class mcMMO extends JavaPlugin {
             p = this;
             getLogger().setFilter(new LogFilter(this));
             metadataValue = new FixedMetadataValue(this, true);
+            
+            SkillType.setUpSkillTypes();
 
             PluginManager pluginManager = getServer().getPluginManager();
             healthBarPluginEnabled = pluginManager.getPlugin("HealthBar") != null;
@@ -206,7 +209,8 @@ public class mcMMO extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        try {
+        try 
+        {
             Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
             UserManager.clearAll();

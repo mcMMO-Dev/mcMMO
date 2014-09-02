@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -29,6 +30,7 @@ import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
+import com.gmail.nossr50.skills.SkillAbilityManager;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
@@ -53,8 +55,6 @@ import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
-
-import org.apache.commons.lang.Validate;
 
 public class McMMOPlayer {
     private Player        player;
@@ -105,13 +105,8 @@ public class McMMOPlayer {
             profile.setUniqueId(uuid);
         }
 
-        /*
-         * I'm using this method because it makes code shorter and safer (we don't have to add all SkillTypes manually),
-         * but I actually have no idea about the performance impact, if there is any.
-         * If in the future someone wants to remove this, don't forget to also remove what is in the SkillType enum. - bm01
-         */
         try {
-            for (SkillType skillType : SkillType.values()) {
+            for (SkillType skillType : SkillType.getSkillList()) {
                 skillManagers.put(skillType, skillType.getManagerClass().getConstructor(McMMOPlayer.class).newInstance(this));
             }
         }
@@ -120,74 +115,78 @@ public class McMMOPlayer {
             mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
         }
 
-        for (AbilityType abilityType : AbilityType.values()) {
+        for (AbilityType abilityType : AbilityType.getAbilities()) {
             abilityMode.put(abilityType, false);
             abilityInformed.put(abilityType, true); // This is intended
         }
 
-        for (ToolType toolType : ToolType.values()) {
+        for (ToolType toolType : ToolType.getToolList()) {
             toolMode.put(toolType, false);
         }
     }
 
     public AcrobaticsManager getAcrobaticsManager() {
-        return (AcrobaticsManager) skillManagers.get(SkillType.ACROBATICS);
+        return (AcrobaticsManager) skillManagers.get(SkillType.acrobatics);
     }
 
     public AlchemyManager getAlchemyManager() {
-        return (AlchemyManager) skillManagers.get(SkillType.ALCHEMY);
+        return (AlchemyManager) skillManagers.get(SkillType.alchemy);
     }
 
     public ArcheryManager getArcheryManager() {
-        return (ArcheryManager) skillManagers.get(SkillType.ARCHERY);
+        return (ArcheryManager) skillManagers.get(SkillType.archery);
     }
 
     public AxesManager getAxesManager() {
-        return (AxesManager) skillManagers.get(SkillType.AXES);
+        return (AxesManager) skillManagers.get(SkillType.axes);
     }
 
     public ExcavationManager getExcavationManager() {
-        return (ExcavationManager) skillManagers.get(SkillType.EXCAVATION);
+        return (ExcavationManager) skillManagers.get(SkillType.excavation);
     }
 
     public FishingManager getFishingManager() {
-        return (FishingManager) skillManagers.get(SkillType.FISHING);
+        return (FishingManager) skillManagers.get(SkillType.fishing);
     }
 
     public HerbalismManager getHerbalismManager() {
-        return (HerbalismManager) skillManagers.get(SkillType.HERBALISM);
+        return (HerbalismManager) skillManagers.get(SkillType.herbalism);
     }
 
     public MiningManager getMiningManager() {
-        return (MiningManager) skillManagers.get(SkillType.MINING);
+        return (MiningManager) skillManagers.get(SkillType.mining);
     }
 
     public RepairManager getRepairManager() {
-        return (RepairManager) skillManagers.get(SkillType.REPAIR);
+        return (RepairManager) skillManagers.get(SkillType.repair);
     }
 
     public SalvageManager getSalvageManager() {
-        return (SalvageManager) skillManagers.get(SkillType.SALVAGE);
+        return (SalvageManager) skillManagers.get(SkillType.salvage);
     }
 
     public SmeltingManager getSmeltingManager() {
-        return (SmeltingManager) skillManagers.get(SkillType.SMELTING);
+        return (SmeltingManager) skillManagers.get(SkillType.smelting);
     }
 
     public SwordsManager getSwordsManager() {
-        return (SwordsManager) skillManagers.get(SkillType.SWORDS);
+        return (SwordsManager) skillManagers.get(SkillType.swords);
     }
 
     public TamingManager getTamingManager() {
-        return (TamingManager) skillManagers.get(SkillType.TAMING);
+        return (TamingManager) skillManagers.get(SkillType.taming);
     }
 
     public UnarmedManager getUnarmedManager() {
-        return (UnarmedManager) skillManagers.get(SkillType.UNARMED);
+        return (UnarmedManager) skillManagers.get(SkillType.unarmed);
     }
 
     public WoodcuttingManager getWoodcuttingManager() {
-        return (WoodcuttingManager) skillManagers.get(SkillType.WOODCUTTING);
+        return (WoodcuttingManager) skillManagers.get(SkillType.woodcutting);
+    }
+    
+    public SkillManager getSkillManager(SkillType skillType) {
+    	return skillManagers.get(skillType);
     }
 
     /*
@@ -198,7 +197,7 @@ public class McMMOPlayer {
      * Reset the mode of all abilities.
      */
     public void resetAbilityMode() {
-        for (AbilityType ability : AbilityType.values()) {
+        for (AbilityType ability : AbilityType.getAbilities()) {
             // Correctly disable and handle any special deactivate code
             new AbilityDisableTask(this, ability).run();
         }
@@ -270,7 +269,7 @@ public class McMMOPlayer {
      * Reset the prep modes of all tools.
      */
     public void resetToolPrepMode() {
-        for (ToolType tool : ToolType.values()) {
+        for (ToolType tool : ToolType.getToolList()) {
             setToolPreparationMode(tool, false);
         }
     }
@@ -385,7 +384,7 @@ public class McMMOPlayer {
     public int getPowerLevel() {
         int powerLevel = 0;
 
-        for (SkillType type : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType type : SkillType.getNonChildSkills()) {
             if (type.getPermissions(player)) {
                 powerLevel += getSkillLevel(type);
             }
@@ -471,7 +470,7 @@ public class McMMOPlayer {
             return;
         }
 
-        isUsingUnarmed = (skillType == SkillType.UNARMED);
+        isUsingUnarmed = (skillType == SkillType.unarmed);
         checkXp(skillType, xpGainReason);
     }
 
@@ -703,6 +702,7 @@ public class McMMOPlayer {
      * Check to see if an ability can be activated.
      *
      * @param skill The skill the ability is based on
+     * @return whether the ability was successfully activated
      */
     public void checkAbilityActivation(SkillType skill) {
         ToolType tool = skill.getTool();
@@ -721,7 +721,7 @@ public class McMMOPlayer {
              * Axes and Woodcutting are odd because they share the same tool.
              * We show them the too tired message when they take action.
              */
-            if (skill == SkillType.WOODCUTTING || skill == SkillType.AXES) {
+            if (skill == SkillType.woodcutting || skill == SkillType.axes) {
                 player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
             }
 
@@ -747,10 +747,13 @@ public class McMMOPlayer {
         profile.setAbilityDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
         setAbilityMode(ability, true);
 
-        if (ability == AbilityType.SUPER_BREAKER || ability == AbilityType.GIGA_DRILL_BREAKER) {
+        if (ability == AbilityType.superBreaker || ability == AbilityType.gigaDrillBreaker) {
             SkillUtils.handleAbilitySpeedIncrease(player);
         }
-
+        SkillManager manager = this.getSkillManager(skill);
+        if(manager instanceof SkillAbilityManager) {
+        	((SkillAbilityManager) manager).onAbilityActivated();
+        }
         new AbilityDisableTask(this, ability).runTaskLater(mcMMO.p, ticks * Misc.TICK_CONVERSION_FACTOR);
     }
 
@@ -769,7 +772,7 @@ public class McMMOPlayer {
             return;
         }
 
-        for (AbilityType abilityType : AbilityType.values()) {
+        for (AbilityType abilityType : AbilityType.getAbilities()) {
             if (getAbilityMode(abilityType)) {
                 return;
             }
@@ -783,7 +786,7 @@ public class McMMOPlayer {
          * Basically the tool always needs to ready and we check to see if the cooldown is over when the user takes action
          */
         if (ability.getPermissions(player) && tool.inHand(inHand) && !getToolPreparationMode(tool)) {
-            if (skill != SkillType.WOODCUTTING && skill != SkillType.AXES) {
+            if (skill != SkillType.woodcutting && skill != SkillType.axes) {
                 int timeRemaining = calculateTimeRemaining(ability);
 
                 if (!getAbilityMode(ability) && timeRemaining > 0) {

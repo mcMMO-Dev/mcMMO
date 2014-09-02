@@ -58,7 +58,7 @@ public class Excavation {
             xp = ExperienceConfig.getInstance().getDirtAndSandXp(blockState.getData());
         }
         else {
-            xp = ExperienceConfig.getInstance().getXp(SkillType.EXCAVATION, material);
+            xp = ExperienceConfig.getInstance().getXp(SkillType.excavation, material);
         }
 
         if (xp == 0 && mcMMO.getModManager().isCustomExcavationBlock(blockState)) {

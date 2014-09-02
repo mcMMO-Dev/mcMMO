@@ -23,7 +23,7 @@ public final class HardcoreManager {
         HashMap<String, Integer> levelChanged = new HashMap<String, Integer>();
         HashMap<String, Float> experienceChanged = new HashMap<String, Float>();
 
-        for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType skillType : SkillType.getNonChildSkills()) {
             if (!skillType.getHardcoreStatLossEnabled()) {
                 levelChanged.put(skillType.toString(), 0);
                 experienceChanged.put(skillType.toString(), 0F);
@@ -64,7 +64,7 @@ public final class HardcoreManager {
         HashMap<String, Integer> levelChanged = new HashMap<String, Integer>();
         HashMap<String, Float> experienceChanged = new HashMap<String, Float>();
 
-        for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType skillType : SkillType.getNonChildSkills()) {
             if (!skillType.getHardcoreVampirismEnabled()) {
                 levelChanged.put(skillType.toString(), 0);
                 experienceChanged.put(skillType.toString(), 0F);
@@ -111,7 +111,7 @@ public final class HardcoreManager {
     public static boolean isStatLossEnabled() {
         boolean enabled = false;
 
-        for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType skillType : SkillType.getNonChildSkills()) {
             if (skillType.getHardcoreStatLossEnabled()) {
                 enabled = true;
                 break;
@@ -129,7 +129,7 @@ public final class HardcoreManager {
     public static boolean isVampirismEnabled() {
         boolean enabled = false;
 
-        for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType skillType : SkillType.getNonChildSkills()) {
             if (skillType.getHardcoreVampirismEnabled()) {
                 enabled = true;
                 break;

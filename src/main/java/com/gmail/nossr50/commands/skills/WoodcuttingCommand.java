@@ -22,7 +22,7 @@ public class WoodcuttingCommand extends SkillCommand {
     private boolean canDoubleDrop;
 
     public WoodcuttingCommand() {
-        super(SkillType.WOODCUTTING);
+        super(SkillType.woodcutting);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class WoodcuttingCommand extends SkillCommand {
 
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.WOODCUTTING_DOUBLE_DROPS, isLucky);
+            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.woodcuttingDoubleDrops, isLucky);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
@@ -45,8 +45,8 @@ public class WoodcuttingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canTreeFell = Permissions.treeFeller(player);
-        canDoubleDrop = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.WOODCUTTING_DOUBLE_DROPS) && !skill.getDoubleDropsDisabled();
-        canLeafBlow = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.LEAF_BLOWER);
+        canDoubleDrop = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.woodcuttingDoubleDrops) && !skill.getDoubleDropsDisabled();
+        canLeafBlow = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.leafBlower);
     }
 
     @Override

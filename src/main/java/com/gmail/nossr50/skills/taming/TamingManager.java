@@ -28,39 +28,39 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class TamingManager extends SkillManager {
     public TamingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.TAMING);
+        super(mcMMOPlayer, SkillType.taming);
     }
 
     public boolean canUseThickFur() {
-        return getSkillLevel() >= Taming.thickFurUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.THICK_FUR);
+        return getSkillLevel() >= Taming.thickFurUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.thickFur);
     }
 
     public boolean canUseEnvironmentallyAware() {
-        return getSkillLevel() >= Taming.environmentallyAwareUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.ENVIROMENTALLY_AWARE);
+        return getSkillLevel() >= Taming.environmentallyAwareUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.enviromentallyAware);
     }
 
     public boolean canUseShockProof() {
-        return getSkillLevel() >= Taming.shockProofUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.SHOCK_PROOF);
+        return getSkillLevel() >= Taming.shockProofUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.shockProof);
     }
 
     public boolean canUseHolyHound() {
-        return getSkillLevel() >= Taming.holyHoundUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.HOLY_HOUND);
+        return getSkillLevel() >= Taming.holyHoundUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.holyHound);
     }
 
     public boolean canUseFastFoodService() {
-        return getSkillLevel() >= Taming.fastFoodServiceUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.FAST_FOOD);
+        return getSkillLevel() >= Taming.fastFoodServiceUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.fastFood);
     }
 
     public boolean canUseSharpenedClaws() {
-        return getSkillLevel() >= Taming.sharpenedClawsUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.SHARPENED_CLAWS);
+        return getSkillLevel() >= Taming.sharpenedClawsUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.sharpenedClaws);
     }
 
     public boolean canUseGore() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.GORE);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.gore);
     }
 
     public boolean canUseBeastLore() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.BEAST_LORE);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.beastLore);
     }
 
     /**
@@ -94,7 +94,7 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, double damage) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.FAST_FOOD, getPlayer(), Taming.fastFoodServiceActivationChance, activationChance)) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.fastFood, getPlayer(), Taming.fastFoodServiceActivationChance, activationChance)) {
             return;
         }
 
@@ -114,7 +114,7 @@ public class TamingManager extends SkillManager {
      * @param damage The initial damage
      */
     public double gore(LivingEntity target, double damage) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.GORE, getPlayer(), getSkillLevel(), activationChance)) {
+        if (!SkillUtils.activationSuccessful(SecondaryAbility.gore, getPlayer(), getSkillLevel(), activationChance)) {
             return 0;
         }
 

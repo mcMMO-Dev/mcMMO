@@ -27,7 +27,7 @@ public class SmeltingCommand extends SkillCommand {
     private boolean canVanillaXPBoost;
 
     public SmeltingCommand() {
-        super(SkillType.SMELTING);
+        super(SkillType.smelting);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class SmeltingCommand extends SkillCommand {
 
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.SECOND_SMELT, isLucky);
+            String[] secondSmeltStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.secondSmelt, isLucky);
             secondSmeltChance = secondSmeltStrings[0];
             secondSmeltChanceLucky = secondSmeltStrings[1];
         }
@@ -54,9 +54,9 @@ public class SmeltingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canFuelEfficiency = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FUEL_EFFICIENCY);
-        canSecondSmelt = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SECOND_SMELT);
-        canFluxMine = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FLUX_MINING);
+        canFuelEfficiency = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.fuelEfficiency);
+        canSecondSmelt = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.secondSmelt);
+        canFluxMine = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.fluxMining);
         canVanillaXPBoost = Permissions.vanillaXpBoost(player, skill);
     }
 

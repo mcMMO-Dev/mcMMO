@@ -30,19 +30,19 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class WoodcuttingManager extends SkillManager {
     public WoodcuttingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.WOODCUTTING);
+        super(mcMMOPlayer, SkillType.woodcutting);
     }
 
     public boolean canUseLeafBlower(ItemStack heldItem) {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.LEAF_BLOWER) && getSkillLevel() >= Woodcutting.leafBlowerUnlockLevel && ItemUtils.isAxe(heldItem);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.leafBlower) && getSkillLevel() >= Woodcutting.leafBlowerUnlockLevel && ItemUtils.isAxe(heldItem);
     }
 
     public boolean canUseTreeFeller(ItemStack heldItem) {
-        return mcMMOPlayer.getAbilityMode(AbilityType.TREE_FELLER) && Permissions.treeFeller(getPlayer()) && ItemUtils.isAxe(heldItem);
+        return mcMMOPlayer.getAbilityMode(AbilityType.treeFeller) && Permissions.treeFeller(getPlayer()) && ItemUtils.isAxe(heldItem);
     }
 
     protected boolean canGetDoubleDrops() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.WOODCUTTING_DOUBLE_DROPS) && SkillUtils.activationSuccessful(SecondaryAbility.WOODCUTTING_DOUBLE_DROPS, getPlayer(), getSkillLevel(), activationChance);
+        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.woodcuttingDoubleDrops) && SkillUtils.activationSuccessful(SecondaryAbility.woodcuttingDoubleDrops, getPlayer(), getSkillLevel(), activationChance);
     }
 
     /**

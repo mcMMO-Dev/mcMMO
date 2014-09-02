@@ -16,7 +16,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableList;
 
 public abstract class ExperienceCommand implements TabExecutor {
@@ -39,7 +38,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = SkillType.getSkill(args[0]);
+                skill = SkillType.getSkillFromLocalized(args[0]);
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
@@ -58,7 +57,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = SkillType.getSkill(args[1]);
+                skill = SkillType.getSkillFromLocalized(args[1]);
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
@@ -98,7 +97,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                 List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], SkillType.SKILL_NAMES, new ArrayList<String>(SkillType.SKILL_NAMES.size()));
+                return StringUtil.copyPartialMatches(args[1], SkillType.getSkillNames(), new ArrayList<String>(SkillType.getSkillNames().size()));
             default:
                 return ImmutableList.of();
         }
@@ -119,13 +118,13 @@ public abstract class ExperienceCommand implements TabExecutor {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getName(), playerName));
+            sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.2", skill.getLocalizedName(), playerName));
         }
     }
 
     protected void editValues(Player player, PlayerProfile profile, SkillType skill, int value) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
+            for (SkillType skillType : SkillType.getNonChildSkills()) {
                 handleCommand(player, profile, skillType, value);
             }
 

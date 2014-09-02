@@ -29,7 +29,7 @@ public class UnarmedCommand extends SkillCommand {
     private boolean canIronGrip;
 
     public UnarmedCommand() {
-        super(SkillType.UNARMED);
+        super(SkillType.unarmed);
     }
 
     @Override
@@ -43,14 +43,14 @@ public class UnarmedCommand extends SkillCommand {
 
         // DISARM
         if (canDisarm) {
-            String[] disarmStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.DISARM, isLucky);
+            String[] disarmStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.disarm, isLucky);
             disarmChance = disarmStrings[0];
             disarmChanceLucky = disarmStrings[1];
         }
 
         // DEFLECT
         if (canDeflect) {
-            String[] deflectStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.DEFLECT, isLucky);
+            String[] deflectStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.deflect, isLucky);
             deflectChance = deflectStrings[0];
             deflectChanceLucky = deflectStrings[1];
         }
@@ -62,7 +62,7 @@ public class UnarmedCommand extends SkillCommand {
 
         // IRON GRIP
         if (canIronGrip) {
-            String[] ironGripStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.IRON_GRIP, isLucky);
+            String[] ironGripStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.ironGrip, isLucky);
             ironGripChance = ironGripStrings[0];
             ironGripChanceLucky = ironGripStrings[1];
         }
@@ -71,10 +71,10 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canBerserk = Permissions.berserk(player);
-        canIronArm = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.IRON_ARM);
-        canDeflect = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.DEFLECT);
-        canDisarm = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.DISARM);
-        canIronGrip = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.IRON_GRIP);
+        canIronArm = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ironArm);
+        canDeflect = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.deflect);
+        canDisarm = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.disarm);
+        canIronGrip = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ironGrip);
         // TODO: Apparently we forgot about block cracker?
     }
 

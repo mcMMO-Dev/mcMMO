@@ -11,7 +11,7 @@ public class McMMOPlayerDisarmEvent extends McMMOPlayerSkillEvent implements Can
     private Player defender;
 
     public McMMOPlayerDisarmEvent(Player defender) {
-        super(defender, SkillType.UNARMED);
+        super(defender, SkillType.unarmed);
         this.defender = defender;
     }
 

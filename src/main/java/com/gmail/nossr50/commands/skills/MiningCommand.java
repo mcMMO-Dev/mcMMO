@@ -35,7 +35,7 @@ public class MiningCommand extends SkillCommand {
     private boolean canDemoExpert;
 
     public MiningCommand() {
-        super(SkillType.MINING);
+        super(SkillType.mining);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class MiningCommand extends SkillCommand {
 
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.MINING_DOUBLE_DROPS, isLucky);
+            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.miningDoubleDrops, isLucky);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
@@ -72,7 +72,7 @@ public class MiningCommand extends SkillCommand {
         canBiggerBombs = Permissions.biggerBombs(player);
         canBlast = Permissions.remoteDetonation(player);
         canDemoExpert = Permissions.demolitionsExpertise(player);
-        canDoubleDrop = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.MINING_DOUBLE_DROPS) && !skill.getDoubleDropsDisabled();
+        canDoubleDrop = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.miningDoubleDrops) && !skill.getDoubleDropsDisabled();
         canSuperBreaker = Permissions.superBreaker(player);
     }
 

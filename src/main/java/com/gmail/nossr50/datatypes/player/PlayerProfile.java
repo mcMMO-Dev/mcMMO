@@ -15,7 +15,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableMap;
 
 public class PlayerProfile {
@@ -43,11 +42,11 @@ public class PlayerProfile {
 
         mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
 
-        for (AbilityType abilityType : AbilityType.values()) {
+        for (AbilityType abilityType : AbilityType.getAbilities()) {
             abilityDATS.put(abilityType, 0);
         }
 
-        for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
+        for (SkillType skillType : SkillType.getNonChildSkills()) {
             skills.put(skillType, 0);
             skillsXp.put(skillType, 0F);
         }

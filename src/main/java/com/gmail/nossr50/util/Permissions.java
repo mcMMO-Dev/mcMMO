@@ -128,6 +128,7 @@ public final class Permissions {
      * SKILLS
      */
 
+    public static boolean skillAbility(Permissible permissible, SkillType skill) { return (skill.getAbility() == null) ? false : permissible.hasPermission("mcmmo.ability." + StringUtils.createStringForPermission(skill.getName()) + "." + StringUtils.createStringForPermission(skill.getAbility().getUnprettyName())); }
     public static boolean skillEnabled(Permissible permissible, SkillType skill) {return permissible.hasPermission("mcmmo.skills." + skill.toString().toLowerCase()); }
     public static boolean vanillaXpBoost(Permissible permissible, SkillType skill) { return permissible.hasPermission("mcmmo.ability." + skill.toString().toLowerCase() + ".vanillaxpboost"); }
     public static boolean secondaryAbilityEnabled(Permissible permissible, SecondaryAbility skillAbility) { return permissible.hasPermission("mcmmo.ability." + SkillType.bySecondaryAbility(skillAbility).toString().toLowerCase() + "." + StringUtils.getPrettySecondaryAbilityString(skillAbility).replace(" ", "").toLowerCase()); }
@@ -189,7 +190,7 @@ public final class Permissions {
 
     /* WOODCUTTING */
     public static boolean treeFeller(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.woodcutting.treefeller"); }
-
+    
     /*
      * PARTY
      */
