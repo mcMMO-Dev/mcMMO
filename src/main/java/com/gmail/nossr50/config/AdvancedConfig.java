@@ -420,8 +420,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Salvage.MaxPercentageLevel should be at least 1!");
         }
 
-        if (getAdvancedSalvageUnlockLevel() < 1) {
-            reason.add("Skills.Salvage.AdvancedSalvage.UnlockLevel should be at least 1!");
+        if (getAdvancedSalvageUnlockLevel() < 0) {
+            reason.add("Skills.Salvage.AdvancedSalvage.UnlockLevel should be at least 0!");
         }
 
         List<Salvage.Tier> salvageTierList = Arrays.asList(Salvage.Tier.values());
