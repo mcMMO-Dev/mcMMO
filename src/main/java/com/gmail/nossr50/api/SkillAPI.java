@@ -6,6 +6,7 @@ import java.util.List;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.gmail.nossr50.commands.skills.SkillCommand;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -117,9 +118,9 @@ public final class SkillAPI {
      * @param secondaryAbilities the list of secondary abilities the skill can use
      * @return the mcmmo skill created
      */
-    public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, List<SecondaryAbility> secondaryAbilities) {
+    public static SkillType createSkill(String name, JavaPlugin plugin, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, List<SecondaryAbility> secondaryAbilities) {
     	SkillType skill = SkillType.createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, secondaryAbilities);
-		CommandRegistrationManager.registerSkillCommandAndPassSkillToConstructor(skill);
+		CommandRegistrationManager.registerSkillCommandAndPassSkillToConstructor(skill, plugin);
     	return skill;
     }
 
@@ -136,9 +137,9 @@ public final class SkillAPI {
      * @param secondaryAbilities the list of secondary abilities the skill can use
      * @return the mcmmo skill created
      */
-    public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, Material[] materials, List<SecondaryAbility> secondaryAbilities) {
+    public static SkillType createSkill(String name, JavaPlugin plugin, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, Material[] materials, List<SecondaryAbility> secondaryAbilities) {
     	SkillType skill = SkillType.createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ability, ToolType.createToolType(StringUtils.getCapitalized(name), materials), secondaryAbilities);
-    	CommandRegistrationManager.registerSkillCommandAndPassSkillToConstructor(skill);
+    	CommandRegistrationManager.registerSkillCommandAndPassSkillToConstructor(skill, plugin);
     	return skill;
     }
 
@@ -154,9 +155,9 @@ public final class SkillAPI {
      * @param secondaryAbilities the list of secondary abilities the skill can use
      * @return the mcmmo skill created
      */
-    public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, List<SecondaryAbility> secondaryAbilities) {
+    public static SkillType createSkill(String name, JavaPlugin plugin, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, List<SecondaryAbility> secondaryAbilities) {
     	SkillType skill = SkillType.createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ability, ToolType.createToolType(StringUtils.getCapitalized(name)), secondaryAbilities);
-    	CommandRegistrationManager.registerSkillCommandAndPassSkillToConstructor(skill);
+    	CommandRegistrationManager.registerSkillCommandAndPassSkillToConstructor(skill, plugin);
     	return skill;
     }
 
@@ -171,8 +172,8 @@ public final class SkillAPI {
      * @param secondaryAbilities the list of secondary abilities the skill can use
      * @return the mcmmo skill created
      */
-    public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, SecondaryAbility... secondaryAbilities) {
-    	return createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ImmutableList.copyOf(secondaryAbilities));
+    public static SkillType createSkill(String name, JavaPlugin plugin, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, SecondaryAbility... secondaryAbilities) {
+    	return createSkill(name, plugin, managerClass, commandClass, isChild, runescapeColor, skillUseType, ImmutableList.copyOf(secondaryAbilities));
     }
 
     /**
@@ -188,8 +189,8 @@ public final class SkillAPI {
      * @param secondaryAbilities the list of secondary abilities the skill can use
      * @return the mcmmo skill created
      */
-    public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, Material[] materials, SecondaryAbility... secondaryAbilities) {
-    	return createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ability, materials, ImmutableList.copyOf(secondaryAbilities));
+    public static SkillType createSkill(String name, JavaPlugin plugin, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, Material[] materials, SecondaryAbility... secondaryAbilities) {
+    	return createSkill(name, plugin, managerClass, commandClass, isChild, runescapeColor, skillUseType, ability, materials, ImmutableList.copyOf(secondaryAbilities));
     }
 
     /**
@@ -204,8 +205,8 @@ public final class SkillAPI {
      * @param secondaryAbilities the list of secondary abilities the skill can use
      * @return the mcmmo skill created
      */
-    public static SkillType createSkill(String name, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, SecondaryAbility... secondaryAbilities) {
-    	return createSkill(name, managerClass, commandClass, isChild, runescapeColor, skillUseType, ability, ImmutableList.copyOf(secondaryAbilities));
+    public static SkillType createSkill(String name, JavaPlugin plugin, Class<? extends SkillManager> managerClass, Class<? extends SkillCommand> commandClass, boolean isChild, Color runescapeColor, SkillUseType skillUseType, AbilityType ability, SecondaryAbility... secondaryAbilities) {
+    	return createSkill(name, plugin, managerClass, commandClass, isChild, runescapeColor, skillUseType, ability, ImmutableList.copyOf(secondaryAbilities));
     }
     
     /**
