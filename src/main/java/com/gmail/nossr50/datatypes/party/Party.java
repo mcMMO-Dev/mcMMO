@@ -306,11 +306,11 @@ public class Party {
     }
 
     public boolean hasMember(String memberName) {
-        return this.getMembers().keySet().contains(memberName);
+        return this.getMembers().values().contains(memberName);
     }
 
     public boolean hasMember(UUID uuid) {
-        return this.getMembers().values().contains(uuid);
+        return this.getMembers().keySet().contains(uuid);
     }
 
     public String createMembersList(String playerName, List<Player> nearMembers) {
