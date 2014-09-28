@@ -148,7 +148,13 @@ public class AcrobaticsManager extends SkillManager {
         fallTries = sameLocation ? fallTries + 1 : Math.max(fallTries - 1, 0);
         lastFallLocation = fallLocation;
 
-        return fallTries > Config.getInstance().getAcrobaticsAFKMaxTries();
+        int maxTries = Config.getInstance().getAcrobaticsAFKMaxTries();
+
+        if (fallTries <= maxTries) {
+            return false;
+        }
+        fallTries = maxTries;
+        return true;
     }
 
     private boolean isFatal(double damage) {
