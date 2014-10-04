@@ -149,7 +149,7 @@ public class AcrobaticsManager extends SkillManager {
         fallTries = sameLocation ? Math.min(fallTries + 1, maxTries) : Math.max(fallTries - 1, 0);
         lastFallLocation = fallLocation;
 
-        return fallTries >= maxTries;
+        return fallTries + 1 > maxTries;
     }
 
     private boolean isFatal(double damage) {
