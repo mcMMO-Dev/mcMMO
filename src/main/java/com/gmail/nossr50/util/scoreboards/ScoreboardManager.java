@@ -99,17 +99,17 @@ public class ScoreboardManager {
                 skillLabelBuilder.put(type, getShortenedName(ChatColor.GREEN + type.getName()));
 
                 if (type.getAbility() != null) {
-                    abilityLabelBuilder.put(type.getAbility(), getShortenedName(ChatColor.AQUA + type.getAbility().getName()));
+                    abilityLabelBuilder.put(type.getAbility(), formatAbility(type.getAbility().getName()));
 
                     if (type == SkillType.MINING) {
-                        abilityLabelBuilder.put(AbilityType.BLAST_MINING, getShortenedName(ChatColor.AQUA + AbilityType.BLAST_MINING.getName()));
+                        abilityLabelBuilder.put(AbilityType.BLAST_MINING, formatAbility(AbilityType.BLAST_MINING.getName()));
                     }
                 }
             }
         }
 
         for (AbilityType type : AbilityType.values()) {
-            abilityLabelSkillBuilder.put(type, getShortenedName((type == AbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA) + type.getName()));
+            abilityLabelSkillBuilder.put(type, formatAbility((type == AbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA), type.getName()));
         }
 
         skillLabels = skillLabelBuilder.build();
@@ -126,6 +126,19 @@ public class ScoreboardManager {
         COOLDOWNS_BOARD,
         RANK_BOARD,
         TOP_BOARD;
+    }
+
+    private static String formatAbility(String abilityName) {
+        return formatAbility(ChatColor.AQUA, abilityName);
+    }
+
+    private static String formatAbility(ChatColor color, String abilityName) {
+        if (Config.getInstance().getShowAbilityNames()) {
+            return color + getShortenedName(abilityName);
+        }
+        else {
+            return color + LocaleLoader.getString("Scoreboard.Misc.Ability");
+        }
     }
 
     private static String getShortenedName(String name) {

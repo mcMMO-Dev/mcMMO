@@ -15,6 +15,7 @@ Version 1.5.01-dev
  + Added new feature to Herbalism. Instantly-regrown crops are protected from being broken for 1 second
  + Added option to config.yml to show the /mcstats scoreboard automatically after logging in
  + Added option to config.yml for Alchemy. Skills.Alchemy.Prevent_Hopper_Transfer_Bottles
+ + Added option to config.yml for Scoreboards, display "Ability" instead of ability names on the scoreboards
  + Added options to experience.yml for Dirt and Sand variations
  + Added support for `MATERIAL|data` format in treasures.yml
  + Added API to experience events to get XP gain reason

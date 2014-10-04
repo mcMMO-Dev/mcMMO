@@ -48,6 +48,9 @@ Scoreboard:
     # Add some more color on the board :-)
     Rainbows: false
 
+    # Display ability names?
+    Ability_Names: true
+
     # Settings for each type of scoreboard
     # Print: Should the command output be printed in chat?
     # Board: Should the command output be displayed in the scoreboard sidebar?

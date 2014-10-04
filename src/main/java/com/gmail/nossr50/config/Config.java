@@ -282,6 +282,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getAllowKeepBoard() { return config.getBoolean("Scoreboard.Allow_Keep", true); }
     public boolean getShowStatsAfterLogin() { return config.getBoolean("Scoreboard.Show_Stats_After_Login", false); }
     public boolean getScoreboardRainbows() { return config.getBoolean("Scoreboard.Rainbows", false); }
+    public boolean getShowAbilityNames() { return config.getBoolean("Scoreboard.Ability_Names", true); }
 
     public boolean getRankUseChat() { return config.getBoolean("Scoreboard.Types.Rank.Print", false); }
     public boolean getRankUseBoard() { return config.getBoolean("Scoreboard.Types.Rank.Board", true); }
