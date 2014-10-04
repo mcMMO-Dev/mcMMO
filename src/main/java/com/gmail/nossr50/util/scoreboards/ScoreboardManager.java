@@ -134,7 +134,7 @@ public class ScoreboardManager {
 
     private static String formatAbility(ChatColor color, String abilityName) {
         if (Config.getInstance().getShowAbilityNames()) {
-            return color + getShortenedName(abilityName);
+            return getShortenedName(color + abilityName);
         }
         else {
             return color + LocaleLoader.getString("Scoreboard.Misc.Ability");
