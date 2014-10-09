@@ -47,7 +47,7 @@ public class SelfListener implements Listener {
         SkillType skillType = event.getSkill();
         int threshold = ExperienceConfig.getInstance().getDiminishedReturnsThreshold(skillType);
 
-        if (threshold <= 0) {
+        if (threshold <= 0 || !ExperienceConfig.getInstance().getDiminishedReturnsEnabled()) {
             // Diminished returns is turned off
             return;
         }
