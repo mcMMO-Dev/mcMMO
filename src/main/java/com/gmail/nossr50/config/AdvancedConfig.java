@@ -802,8 +802,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getSmeltingVanillaXPBoostMultiplier(Smelting.Tier tier) { return config.getInt("Skills.Smelting.VanillaXPMultiplier.Rank_" + tier.toNumerical()); }
 
     /* SWORDS */
-    public double getBleedDamagePlayer() { return config.getDouble("Skills.Swords.Bleed.Damage_Player", 1.0); }
-    public double getBleedDamageMobs() { return config.getDouble("Skills.Swords.Bleed.Damage_Mobs", 2.0); }
+    public double getBleedDamagePlayer() { return config.getDouble("Skills.Swords.Bleed.DamagePlayer", 1.0); }
+    public double getBleedDamageMobs() { return config.getDouble("Skills.Swords.Bleed.DamageMobs", 2.0); }
 
     public int getBleedMaxTicks() { return config.getInt("Skills.Swords.Bleed.MaxTicks", 3); }
     public int getBleedBaseTicks() { return config.getInt("Skills.Swords.Bleed.BaseTicks", 2); }
