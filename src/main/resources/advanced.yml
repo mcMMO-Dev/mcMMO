@@ -447,6 +447,11 @@ Skills:
             ChanceMax: 75.0
             MaxBonusLevel: 750
 
+            # Damage_Player: Bleeding damage dealt to players
+            # Damage_Mobs: Bleeding damage dealt to mobs
+            Damage_Player: 1.0
+            Damage_Mobs: 2.0
+
             # These settings determine how long the Bleeding effect lasts
             MaxTicks: 3
             BaseTicks: 2
