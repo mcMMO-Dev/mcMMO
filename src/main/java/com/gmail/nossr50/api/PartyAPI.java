@@ -192,6 +192,14 @@ public final class PartyAPI {
         return PartyManager.getOnlineMembers(player);
     }
 
+    /**
+     * Check is a certain party has an ally
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param partyName The name of the party to check
+     * @return true if the party has an ally, false otherwise
+     */
     public static boolean hasAlly(String partyName) {
         return getAllyName(partyName) != null;
     }

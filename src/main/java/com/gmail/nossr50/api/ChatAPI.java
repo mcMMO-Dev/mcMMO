@@ -71,6 +71,8 @@ public final class ChatAPI {
 
     /**
      * Check if a player is currently talking in party chat.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The player to check
      * @return true if the player is using party chat, false otherwise
@@ -81,6 +83,8 @@ public final class ChatAPI {
 
     /**
      * Check if a player is currently talking in party chat.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param playerName The name of the player to check
      * @return true if the player is using party chat, false otherwise
@@ -91,6 +95,8 @@ public final class ChatAPI {
 
     /**
      * Check if a player is currently talking in admin chat.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The player to check
      * @return true if the player is using admin chat, false otherwise
@@ -101,6 +107,8 @@ public final class ChatAPI {
 
     /**
      * Check if a player is currently talking in admin chat.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param playerName The name of the player to check
      * @return true if the player is using admin chat, false otherwise
@@ -111,6 +119,8 @@ public final class ChatAPI {
 
     /**
      * Toggle the party chat mode of a player.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The player to toggle party chat on.
      */
@@ -120,6 +130,8 @@ public final class ChatAPI {
 
     /**
      * Toggle the party chat mode of a player.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param playerName The name of the player to toggle party chat on.
      */
@@ -129,6 +141,8 @@ public final class ChatAPI {
 
     /**
      * Toggle the admin chat mode of a player.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The player to toggle admin chat on.
      */
@@ -138,6 +152,8 @@ public final class ChatAPI {
 
     /**
      * Toggle the admin chat mode of a player.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param playerName The name of the player to toggle party chat on.
      */

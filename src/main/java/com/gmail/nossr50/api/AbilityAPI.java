@@ -13,6 +13,8 @@ public final class AbilityAPI {
 
     /**
      * Checks if the ability "Berserk" is active.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to check
      *
@@ -24,6 +26,8 @@ public final class AbilityAPI {
 
     /**
      * Checks if the ability "Giga Drill Breaker" is active.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to check
      *
@@ -35,6 +39,8 @@ public final class AbilityAPI {
 
     /**
      * Checks if the ability "Green Terra" is active.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to check
      *
@@ -46,6 +52,8 @@ public final class AbilityAPI {
 
     /**
      * Checks if the ability "Serrated Strikes" is active.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to check
      *
@@ -57,6 +65,8 @@ public final class AbilityAPI {
 
     /**
      * Checks if the ability "Skull Splitter" is active.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to check
      *
@@ -68,6 +78,8 @@ public final class AbilityAPI {
 
     /**
      * Checks if the ability "Super Breaker" is active.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to check
      *
@@ -79,6 +91,8 @@ public final class AbilityAPI {
 
     /**
      * Checks if the ability "Tree Feller" is active.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to check
      *
@@ -90,6 +104,8 @@ public final class AbilityAPI {
 
     /**
      * Checks if any ability is active.
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to check
      *
@@ -109,6 +125,8 @@ public final class AbilityAPI {
 
     /**
      * Reset the ability cooldowns for a player
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to reset the cooldowns for
      */
@@ -118,6 +136,8 @@ public final class AbilityAPI {
 
     /**
      * Set the cooldown for the "Berserk" ability
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to set the cooldown for
      * @param cooldown The cooldown length to set
@@ -128,6 +148,8 @@ public final class AbilityAPI {
 
     /**
      * Set the cooldown for the "Giga Drill Breaker" ability
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to set the cooldown for
      * @param cooldown The cooldown length to set
@@ -138,6 +160,8 @@ public final class AbilityAPI {
 
     /**
      * Set the cooldown for the "Green Terra" ability
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to set the cooldown for
      * @param cooldown The cooldown length to set
@@ -148,6 +172,8 @@ public final class AbilityAPI {
 
     /**
      * Set the cooldown for the "Serrated Strikes" ability
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to set the cooldown for
      * @param cooldown The cooldown length to set
@@ -158,6 +184,8 @@ public final class AbilityAPI {
 
     /**
      * Set the cooldown for the "Skull Splitter" ability
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to set the cooldown for
      * @param cooldown The cooldown length to set
@@ -168,6 +196,8 @@ public final class AbilityAPI {
 
     /**
      * Set the cooldown for the "Super Breaker" ability
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to set the cooldown for
      * @param cooldown The cooldown length to set
@@ -178,6 +208,8 @@ public final class AbilityAPI {
 
     /**
      * Set the cooldown for the "Tree Feller" ability
+     * </br>
+     * This function is designed for API usage.
      *
      * @param player The {@link Player} to set the cooldown for
      * @param cooldown The cooldown length to set
@@ -186,6 +218,15 @@ public final class AbilityAPI {
         UserManager.getPlayer(player).setAbilityDATS(AbilityType.TREE_FELLER, cooldown);
     }
 
+
+    /**
+     * Check if a LivingEntity is bleeding
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param entity The {@link LivingEntity} to check
+     * @return true if entity is bleeding, false otherwise
+     */
     public static boolean isBleeding(LivingEntity entity) {
         return BleedTimerTask.isBleeding(entity);
     }
