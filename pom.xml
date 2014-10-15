@@ -90,8 +90,8 @@
                             <shadedPattern>com.gmail.nossr50.commons.logging</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>net.snaq</pattern>
-                            <shadedPattern>com.gmail.nossr50.dbpool</shadedPattern>
+                            <pattern>org.apache.tomcat.jdbc</pattern>
+                            <shadedPattern>com.gmail.nossr50.org.apache.tomcat.jdbc</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
