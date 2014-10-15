@@ -15,6 +15,9 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.tomcat.jdbc.pool.ConnectionPool;
+import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
@@ -29,19 +32,15 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 
-import snaq.db.ConnectionPool;
-
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy";
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
-    private final int POOL_FETCH_TIMEOUT = 360000;
-
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<UUID, Integer>();
 
-    private ConnectionPool miscPool;
-    private ConnectionPool loadPool;
-    private ConnectionPool savePool;
+    private DataSource miscPool;
+    private DataSource loadPool;
+    private DataSource savePool;
 
     private ReentrantLock massUpdateLock = new ReentrantLock();
 
@@ -58,44 +57,57 @@ public final class SQLDatabaseManager implements DatabaseManager {
             //throw e; // aborts onEnable()  Riking if you want to do this, fully implement it.
         }
 
-        Properties connectionProperties = new Properties();
-        connectionProperties.put("user", Config.getInstance().getMySQLUserName());
-        connectionProperties.put("password", Config.getInstance().getMySQLUserPassword());
-        connectionProperties.put("autoReconnect", "true");
-        connectionProperties.put("cachePrepStmts", "true");
-        connectionProperties.put("prepStmtCacheSize", "64");
-        connectionProperties.put("prepStmtCacheSqlLimit", "2048");
-        connectionProperties.put("useServerPrepStmts", "true");
-        miscPool = new ConnectionPool("mcMMO-Misc-Pool",
-                0 /*No Minimum really needed*/,
-                Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.MISC) /*max pool size */,
-                Config.getInstance().getMySQLMaxConnections(PoolIdentifier.MISC) /*max num connections*/,
-                400 /* idle timeout of connections */,
-                connectionString,
-                connectionProperties);
-        loadPool = new ConnectionPool("mcMMO-Load-Pool",
-                1 /*Minimum of one*/,
-                Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.LOAD) /*max pool size */,
-                Config.getInstance().getMySQLMaxConnections(PoolIdentifier.LOAD) /*max num connections*/,
-                400 /* idle timeout of connections */,
-                connectionString,
-                connectionProperties);
-        savePool = new ConnectionPool("mcMMO-Save-Pool",
-                1 /*Minimum of one*/,
-                Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.SAVE) /*max pool size */,
-                Config.getInstance().getMySQLMaxConnections(PoolIdentifier.SAVE) /*max num connections*/,
-                400 /* idle timeout of connections */,
-                connectionString,
-                connectionProperties);
-        miscPool.init(); // Init first connection
-        miscPool.registerShutdownHook(); // Auto release on jvm exit  just in case
-        loadPool.init();
-        loadPool.registerShutdownHook();
-        savePool.init();
-        savePool.registerShutdownHook();
+
+        PoolProperties poolProperties = new PoolProperties();
+        poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
+        poolProperties.setUrl(connectionString);
+        poolProperties.setUsername(Config.getInstance().getMySQLUserName());
+        poolProperties.setPassword(Config.getInstance().getMySQLUserPassword());
+        poolProperties.setMaxIdle(Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.MISC));
+        poolProperties.setMaxActive(Config.getInstance().getMySQLMaxConnections(PoolIdentifier.MISC));
+        poolProperties.setInitialSize(0);
+        poolProperties.setMaxIdle(400);
+        poolProperties.setMaxWait(-1);
+        poolProperties.setRemoveAbandoned(true);
+        poolProperties.setRemoveAbandonedTimeout(60);
+        poolProperties.setTestOnBorrow(true);
+        poolProperties.setValidationQuery("SELECT 1");
+        poolProperties.setValidationInterval(30000);
+        miscPool = new DataSource(poolProperties);
+        poolProperties = new PoolProperties();
+        poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
+        poolProperties.setUrl(connectionString);
+        poolProperties.setUsername(Config.getInstance().getMySQLUserName());
+        poolProperties.setPassword(Config.getInstance().getMySQLUserPassword());
+        poolProperties.setInitialSize(0);
+        poolProperties.setMaxIdle(Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.SAVE));
+        poolProperties.setMaxActive(Config.getInstance().getMySQLMaxConnections(PoolIdentifier.SAVE));
+        poolProperties.setMaxIdle(400);
+        poolProperties.setMaxWait(-1);
+        poolProperties.setRemoveAbandoned(true);
+        poolProperties.setRemoveAbandonedTimeout(60);
+        poolProperties.setTestOnBorrow(true);
+        poolProperties.setValidationQuery("SELECT 1");
+        poolProperties.setValidationInterval(30000);
+        savePool = new DataSource(poolProperties);
+        poolProperties = new PoolProperties();
+        poolProperties.setDriverClassName("com.mysql.jdbc.Driver");
+        poolProperties.setUrl(connectionString);
+        poolProperties.setUsername(Config.getInstance().getMySQLUserName());
+        poolProperties.setPassword(Config.getInstance().getMySQLUserPassword());
+        poolProperties.setInitialSize(0);
+        poolProperties.setMaxIdle(Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.LOAD));
+        poolProperties.setMaxActive(Config.getInstance().getMySQLMaxConnections(PoolIdentifier.LOAD));
+        poolProperties.setMaxIdle(400);
+        poolProperties.setMaxWait(-1);
+        poolProperties.setRemoveAbandoned(true);
+        poolProperties.setRemoveAbandonedTimeout(60);
+        poolProperties.setTestOnBorrow(true);
+        poolProperties.setValidationQuery("SELECT 1");
+        poolProperties.setValidationInterval(30000);
+        loadPool = new DataSource(poolProperties);
 
         checkStructure();
-
     }
 
     public void purgePowerlessUsers() {
@@ -1094,13 +1106,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Connection connection = null;
         switch (identifier) {
             case LOAD:
-                connection = loadPool.getConnection(POOL_FETCH_TIMEOUT);
+                connection = loadPool.getConnection();
                 break;
             case MISC:
-                connection = miscPool.getConnection(POOL_FETCH_TIMEOUT);
+                connection = miscPool.getConnection();
                 break;
             case SAVE:
-                connection = savePool.getConnection(POOL_FETCH_TIMEOUT);
+                connection = savePool.getConnection();
                 break;
         }
         if (connection == null) {
@@ -1594,9 +1606,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
     @Override
     public void onDisable() {
         mcMMO.p.debug("Releasing connection pool resource...");
-        miscPool.release();
-        loadPool.release();
-        savePool.release();
+        miscPool.close();
+        loadPool.close();
+        savePool.close();
     }
 
     public enum PoolIdentifier {
