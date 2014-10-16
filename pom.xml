@@ -77,7 +77,8 @@
                         <includes>
                             <include>com.turt2live.metrics:MetricsExtension</include>
                             <include>commons-logging:commons-logging</include>
-                            <include>net.snaq:dbpool</include>
+                            <include>org.apache.tomcat:tomcat-jdbc</include>
+                            <include>org.apache.tomcat:tomcat-juli</include>
                         </includes>
                     </artifactSet>
                     <relocations>
@@ -90,8 +91,12 @@
                             <shadedPattern>com.gmail.nossr50.commons.logging</shadedPattern>
                         </relocation>
                         <relocation>
-                            <pattern>org.apache.tomcat.jdbc</pattern>
-                            <shadedPattern>com.gmail.nossr50.org.apache.tomcat.jdbc</shadedPattern>
+                            <pattern>org.apache.juli</pattern>
+                            <shadedPattern>com.gmail.nossr50.database.tomcat.juli</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>org.apache.tomcat</pattern>
+                            <shadedPattern>com.gmail.nossr50.database.tomcat</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -150,7 +155,7 @@
             <groupId>org.apache.tomcat</groupId>
             <artifactId>tomcat-jdbc</artifactId>
             <version>7.0.52</version>
-        <scope>compile</scope>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
     <distributionManagement>
