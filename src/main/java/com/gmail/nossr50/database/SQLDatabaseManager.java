@@ -64,7 +64,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         poolProperties.setMaxIdle(Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.MISC));
         poolProperties.setMaxActive(Config.getInstance().getMySQLMaxConnections(PoolIdentifier.MISC));
         poolProperties.setInitialSize(0);
-        poolProperties.setMaxIdle(400);
         poolProperties.setMaxWait(-1);
         poolProperties.setRemoveAbandoned(true);
         poolProperties.setRemoveAbandonedTimeout(60);
@@ -80,7 +79,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         poolProperties.setInitialSize(0);
         poolProperties.setMaxIdle(Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.SAVE));
         poolProperties.setMaxActive(Config.getInstance().getMySQLMaxConnections(PoolIdentifier.SAVE));
-        poolProperties.setMaxIdle(400);
         poolProperties.setMaxWait(-1);
         poolProperties.setRemoveAbandoned(true);
         poolProperties.setRemoveAbandonedTimeout(60);
@@ -96,7 +94,6 @@ public final class SQLDatabaseManager implements DatabaseManager {
         poolProperties.setInitialSize(0);
         poolProperties.setMaxIdle(Config.getInstance().getMySQLMaxPoolSize(PoolIdentifier.LOAD));
         poolProperties.setMaxActive(Config.getInstance().getMySQLMaxConnections(PoolIdentifier.LOAD));
-        poolProperties.setMaxIdle(400);
         poolProperties.setMaxWait(-1);
         poolProperties.setRemoveAbandoned(true);
         poolProperties.setRemoveAbandonedTimeout(60);
