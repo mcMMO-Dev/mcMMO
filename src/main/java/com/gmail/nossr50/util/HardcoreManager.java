@@ -34,6 +34,8 @@ public final class HardcoreManager {
             int playerSkillXpLevel = playerProfile.getSkillXpLevel(skillType);
 
             if (playerSkillLevel <= 0 || playerSkillLevel <= levelThreshold) {
+                levelChanged.put(skillType.toString(), 0);
+                experienceChanged.put(skillType.toString(), 0F);
                 continue;
             }
 
@@ -75,6 +77,8 @@ public final class HardcoreManager {
             int victimSkillLevel = victimProfile.getSkillLevel(skillType);
 
             if (victimSkillLevel <= 0 || victimSkillLevel < killerSkillLevel / 2 || victimSkillLevel <= levelThreshold) {
+                levelChanged.put(skillType.toString(), 0);
+                experienceChanged.put(skillType.toString(), 0F);
                 continue;
             }
 
