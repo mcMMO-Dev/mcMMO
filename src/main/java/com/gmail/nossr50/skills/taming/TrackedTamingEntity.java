@@ -52,6 +52,10 @@ public class TrackedTamingEntity extends BukkitRunnable {
             CombatUtils.dealDamage(livingEntity, livingEntity.getMaxHealth(), DamageCause.SUICIDE, livingEntity);
         }
 
+        if (!UserManager.hasPlayerDataKey(owner)) {
+            return;
+        }
+
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(owner);
         TamingManager tamingManager = mcMMOPlayer.getTamingManager();
 
