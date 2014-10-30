@@ -200,7 +200,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         if (getSkullSplitterModifier() < 1) {
-            reason.add("Skills.Axes.SkullSplitter.DamagerModifier should be at least 1!");
+            reason.add("Skills.Axes.SkullSplitter.DamageModifier should be at least 1!");
         }
 
         /* FISHING */
@@ -733,7 +733,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getImpactChance() { return config.getDouble("Skills.Axes.ArmorImpact.Chance", 25.0D); }
     public double getArmorImpactMaxDurabilityDamage() { return config.getDouble("Skills.Axes.ArmorImpact.MaxPercentageDurabilityDamage", 20.0D); }
 
-    public double getSkullSplitterModifier() { return config.getDouble("Skills.Axes.SkullSplitter.DamagerModifier", 2.0D); }
+    public double getSkullSplitterModifier() { return config.getDouble("Skills.Axes.SkullSplitter.DamageModifier", 2.0D); }
 
     /* EXCAVATION */
     //Nothing to configure, everything is already configurable in config.yml
