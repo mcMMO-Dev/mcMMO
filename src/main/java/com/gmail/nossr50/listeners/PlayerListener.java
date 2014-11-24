@@ -359,7 +359,7 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        mcMMOPlayer.logout();
+        mcMMOPlayer.logout(false);
     }
 
     /**

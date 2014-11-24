@@ -885,13 +885,19 @@ public class McMMOPlayer {
 
     /**
      * This method is called by PlayerQuitEvent to tear down the mcMMOPlayer.
+     *
+     * @param syncSave if true, data is saved synchronously
      */
-    public void logout() {
+    public void logout(boolean syncSave) {
         Player thisPlayer = getPlayer();
         resetAbilityMode();
         BleedTimerTask.bleedOut(thisPlayer);
 
-        getProfile().scheduleAsyncSave();
+        if (syncSave) {
+            getProfile().save();
+        } else {
+            getProfile().scheduleAsyncSave();
+        }
 
         UserManager.remove(thisPlayer);
         ScoreboardManager.teardownPlayer(thisPlayer);
