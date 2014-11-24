@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import com.gmail.nossr50.runnables.skills.BleedTimerTask;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -878,5 +881,23 @@ public class McMMOPlayer {
 
     public FixedMetadataValue getPlayerMetadata() {
         return playerMetadata;
+    }
+
+    /**
+     * This method is called by PlayerQuitEvent to tear down the mcMMOPlayer.
+     */
+    public void logout() {
+        Player thisPlayer = getPlayer();
+        resetAbilityMode();
+        BleedTimerTask.bleedOut(thisPlayer);
+
+        getProfile().scheduleAsyncSave();
+
+        UserManager.remove(thisPlayer);
+        ScoreboardManager.teardownPlayer(thisPlayer);
+
+        if (inParty()) {
+            party.removeOnlineMember(thisPlayer);
+        }
     }
 }

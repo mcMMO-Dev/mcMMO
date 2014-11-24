@@ -42,7 +42,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
-import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
 import com.gmail.nossr50.skills.mining.MiningManager;
@@ -62,7 +61,6 @@ import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class PlayerListener implements Listener {
@@ -361,16 +359,7 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-
-        mcMMOPlayer.resetAbilityMode();
-        BleedTimerTask.bleedOut(player);
-        mcMMOPlayer.getProfile().scheduleAsyncSave();
-        UserManager.remove(player);
-        ScoreboardManager.teardownPlayer(player);
-
-        if (mcMMOPlayer.inParty()) {
-            mcMMOPlayer.logoutParty();
-        }
+        mcMMOPlayer.logout();
     }
 
     /**
