@@ -588,10 +588,6 @@ public class McMMOPlayer {
         party.addOnlineMember(this.getPlayer());
     }
 
-    public void logoutParty() {
-        party.removeOnlineMember(this.getPlayer());
-    }
-
     public int getItemShareModifier() {
         if (itemShareModifier < 10) {
             setItemShareModifier(10);
