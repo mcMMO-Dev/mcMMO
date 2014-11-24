@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import com.gmail.nossr50.runnables.skills.BleedTimerTask;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -585,10 +588,6 @@ public class McMMOPlayer {
         party.addOnlineMember(this.getPlayer());
     }
 
-    public void logoutParty() {
-        party.removeOnlineMember(this.getPlayer());
-    }
-
     public int getItemShareModifier() {
         if (itemShareModifier < 10) {
             setItemShareModifier(10);
@@ -878,5 +877,29 @@ public class McMMOPlayer {
 
     public FixedMetadataValue getPlayerMetadata() {
         return playerMetadata;
+    }
+
+    /**
+     * This method is called by PlayerQuitEvent to tear down the mcMMOPlayer.
+     *
+     * @param syncSave if true, data is saved synchronously
+     */
+    public void logout(boolean syncSave) {
+        Player thisPlayer = getPlayer();
+        resetAbilityMode();
+        BleedTimerTask.bleedOut(thisPlayer);
+
+        if (syncSave) {
+            getProfile().save();
+        } else {
+            getProfile().scheduleAsyncSave();
+        }
+
+        UserManager.remove(thisPlayer);
+        ScoreboardManager.teardownPlayer(thisPlayer);
+
+        if (inParty()) {
+            party.removeOnlineMember(thisPlayer);
+        }
     }
 }
