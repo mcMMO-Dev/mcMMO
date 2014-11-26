@@ -20,7 +20,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
     private static final int MAX_LOOKUP = Math.max(HiddenConfig.getInstance().getUUIDConvertAmount(), 100);
     private static final int RATE_LIMIT = HiddenConfig.getInstance().getMojangRateLimit();
     private static final long LIMIT_PERIOD = HiddenConfig.getInstance().getMojangLimitPeriod();
-    private static final int BATCH_SIZE = 5000;
+    private static final int BATCH_SIZE = MAX_LOOKUP * 3;
 
     private List<String> userNames;
     private int size;
