@@ -68,6 +68,17 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
                 fetchedUUIDs.putAll(new UUIDFetcher(userNamesSection).call());
             }
             catch (Exception e) {
+                // Handle 429
+                if (e.getMessage().contains("429")) {
+                    try {
+                        Thread.sleep(LIMIT_PERIOD);
+                    } catch (InterruptedException ex) {
+                        e.printStackTrace();
+                        return;
+                    }
+                    continue;
+                }
+
                 plugin.getLogger().log(Level.SEVERE, "Unable to fetch UUIDs!", e);
                 return;
             }
@@ -77,7 +88,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
             size = userNames.size();
 
             Misc.printProgress(checkedUsers, DatabaseManager.progressInterval, startMillis);
-            if (fetchedUUIDs.size() > BATCH_SIZE) {
+            if (fetchedUUIDs.size() >= BATCH_SIZE) {
                 mcMMO.getDatabaseManager().saveUserUUIDs(fetchedUUIDs);
                 fetchedUUIDs = new HashMap<String, UUID>();
             }
