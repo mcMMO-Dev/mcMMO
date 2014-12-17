@@ -1,8 +1,8 @@
 # mcMMO
 ## The RPG lovers mod
 
-### Dev builds
-Our latest development builds are available ~~[here](http://ci.mcmmo.info)~~. Unfortunately, the mcMMO site is down; a temporary dev build location is hosted [here](http://ci.ecocitycraft.com/job/mcMMO/).
+### Builds
+Currently, you can obtain our builds via the Spigot resource page: http://www.spigotmc.org/resources/mcmmo.2445/
 
 ### Brief Description
 The goal of mcMMO is to take core Minecraft game mechanics and expand them into add an extensive and quality RPG experience. Everything in mcMMO has been carefully thought out and is constantly being improved upon. Currently, mcMMO adds fourteen unique skills to train and level in. Each of these skills is highly customizable through our configuration files, allowing server admins to tweak mcMMO to best suit the needs of his or her server. Know that the mcMMO team is dedicated to providing an ever-evolving experience, and that we carefully read all feedback and bug reports in order to evaluate and balance the mechanics of mcMMO in every update.
