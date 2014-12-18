@@ -3,7 +3,7 @@ package com.gmail.nossr50.runnables.skills;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
-import org.bukkit.entity.Creature;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -11,20 +11,20 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.util.Misc;
 
 public class KrakenAttackTask extends BukkitRunnable {
-    private Creature kraken;
+    private LivingEntity kraken;
     private Player player;
     private Location location;
     private final boolean GLOBAL_EFFECTS = AdvancedConfig.getInstance().getKrakenGlobalEffectsEnabled();
     private final String DEFEAT_MESSAGE = AdvancedConfig.getInstance().getPlayerDefeatMessage();
     private final String ESCAPE_MESSAGE = AdvancedConfig.getInstance().getPlayerEscapeMessage();
 
-    public KrakenAttackTask(Creature kraken, Player player) {
-        this.kraken = kraken;
+    public KrakenAttackTask(LivingEntity kraken2, Player player) {
+        this.kraken = kraken2;
         this.player = player;
     }
 
-    public KrakenAttackTask(Creature kraken, Player player, Location location) {
-        this.kraken = kraken;
+    public KrakenAttackTask(LivingEntity kraken2, Player player, Location location) {
+        this.kraken = kraken2;
         this.player = player;
         this.location = location;
     }

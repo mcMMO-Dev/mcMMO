@@ -15,7 +15,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Fish;
@@ -135,7 +134,7 @@ public class FishingManager extends SkillManager {
             player.setItemInHand(null);
         }
 
-        Creature kraken = (Creature) world.spawnEntity(player.getEyeLocation(), (Misc.getRandom().nextInt(100) == 0 ? EntityType.CHICKEN : EntityType.SQUID));
+        LivingEntity kraken = (LivingEntity) world.spawnEntity(player.getEyeLocation(), (Misc.getRandom().nextInt(100) == 0 ? EntityType.CHICKEN : EntityType.SQUID));
         kraken.setCustomName(AdvancedConfig.getInstance().getKrakenName());
 
         if (!kraken.isValid()) {
