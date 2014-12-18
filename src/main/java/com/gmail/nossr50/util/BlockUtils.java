@@ -174,6 +174,7 @@ public final class BlockUtils {
             case STAINED_CLAY:
             case STONE:
             case RED_SANDSTONE:
+            case PRISMARINE:
                 return true;
 
             default:
