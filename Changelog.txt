@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.5.02-dev
+ + Added option to config.yml for Chimaera Wings to stop using bed spawn points
 
 Version 1.5.01
  + Added new child skill; Salvage

@@ -117,7 +117,7 @@ public final class ChimaeraWing {
     public static void chimaeraExecuteTeleport() {
         Player player = mcMMOPlayer.getPlayer();
 
-        if (player.getBedSpawnLocation() != null) {
+        if (Config.getInstance().getChimaeraUseBedSpawn() && player.getBedSpawnLocation() != null) {
             player.teleport(player.getBedSpawnLocation());
         }
         else {

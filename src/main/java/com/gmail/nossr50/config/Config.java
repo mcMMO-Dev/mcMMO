@@ -372,6 +372,7 @@ public class Config extends AutoUpdateConfigLoader {
     public Material getChimaeraItem() { return Material.matchMaterial(config.getString("Items.Chimaera_Wing.Item_Name", "Feather")); }
     public boolean getChimaeraEnabled() { return config.getBoolean("Items.Chimaera_Wing.Enabled", true); }
     public boolean getChimaeraPreventUseUnderground() { return config.getBoolean("Items.Chimaera_Wing.Prevent_Use_Underground", true); }
+    public boolean getChimaeraUseBedSpawn() { return config.getBoolean("Items.Chimaera_Wing.Use_Bed_Spawn", true); }
     public int getChimaeraCooldown() { return config.getInt("Items.Chimaera_Wing.Cooldown", 240); }
     public int getChimaeraWarmup() { return config.getInt("Items.Chimaera_Wing.Warmup", 5); }
     public int getChimaeraRecentlyHurtCooldown() { return config.getInt("Items.Chimaera_Wing.RecentlyHurt_Cooldown", 60); }

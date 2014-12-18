@@ -207,6 +207,8 @@ Items:
         Warmup: 5
         RecentlyHurt_Cooldown: 60
         Prevent_Use_Underground: true
+        # Attempt to use the bed spawn, if one is available
+        Use_Bed_Spawn: true
         Use_Cost: 1
         Recipe_Cost: 5
         Item_Name: FEATHER
