@@ -48,4 +48,4 @@ Required Libraries:
 * EMetrics
 * Bukkit
 
-http://dev.bukkit.org/server-mods/mcmmo for more up to date information.
+http://www.spigotmc.org/resources/mcmmo.2445/ for more up to date information.
