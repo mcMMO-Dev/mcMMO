@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.gmail.nossr50.mcMMO</groupId>
     <artifactId>mcMMO</artifactId>
-    <version>1.5.01-SNAPSHOT</version>
+    <version>1.5.01</version>
     <name>mcMMO</name>
     <url>https://github.com/mcMMO-Dev/mcMMO</url>
     <issueManagement>
@@ -156,8 +156,8 @@
     </dependencies>
     <distributionManagement>
         <repository>
-            <id>md_5-releases</id>
-            <url>http://repo.md-5.net/content/repositories/releases/</url>
+            <id>drtshock-releases</id>
+            <url>https://ci.drtshock.net/plugin/repository/everything/com/gmail/nossr50/mcMMO/</url>
         </repository>
     </distributionManagement>
     <properties>

@@ -7,7 +7,7 @@ Key:
   ! Change
   - Removal
 
-Version 1.5.01-dev
+Version 1.5.01
  + Added new child skill; Salvage
  + Added UUID support!
  + Added SQL connection pooling and async loading!
@@ -56,6 +56,7 @@ Version 1.5.01-dev
  ! Changed Alchemy XP distribution. XP is granted based on the stage of the potion.
  ! Changed behavior of the Blast Mining ability "Demolition Expert"; now only decreases damage for the ability user
  ! Updated for new getOnlinePlayers() behavior
+ ! Updated for new blocks and entities
  ! Changed McMMOPlayerDeathPenaltyEvent to get fired after hardcore penalty calculations, use McMMOPlayerPreDeathPenaltyEvent for old behavior
  ! Moved Refresh_Chunks setting from hidden.yml to config.yml
  - Removed salvage ability from Repair, salvage has it's own (child) skill now
