@@ -83,7 +83,7 @@ public class SwordsManager extends SkillManager {
         }
 
         if (SkillUtils.activationSuccessful(SecondaryAbility.COUNTER, getPlayer(), getSkillLevel(), activationChance)) {
-            CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier);
+            CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier, getPlayer());
 
             getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));
 
