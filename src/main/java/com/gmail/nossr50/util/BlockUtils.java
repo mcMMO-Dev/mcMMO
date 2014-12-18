@@ -63,6 +63,18 @@ public final class BlockUtils {
             case DROPPER:
             case HOPPER:
             case TRAPPED_CHEST:
+            case IRON_TRAPDOOR:
+            case ACACIA_DOOR:
+            case SPRUCE_DOOR:
+            case BIRCH_DOOR:
+            case JUNGLE_DOOR:
+            case DARK_OAK_DOOR:
+            case IRON_DOOR:
+            case ACACIA_FENCE:
+            case DARK_OAK_FENCE:
+            case BIRCH_FENCE:
+            case JUNGLE_FENCE:
+            case ARMOR_STAND:
                 return false;
 
             default:
@@ -161,6 +173,7 @@ public final class BlockUtils {
             case SANDSTONE:
             case STAINED_CLAY:
             case STONE:
+            case RED_SANDSTONE:
                 return true;
 
             default:

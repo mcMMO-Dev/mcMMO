@@ -196,6 +196,8 @@ Experience:
         Sandstone: 30
         Stained_Clay: 50
         Stone: 30
+        Red_Sandstone: 100
+        Prismarine: 70
     Repair:
         Base: 1000.0
         Wood: 0.6
@@ -241,3 +243,6 @@ Experience:
             Witch: 0.0
             Iron_Golem: 2.0
             Wither_Skeleton: 4.0
+            Endermite: 2.0
+            Guardian: 3.0
+            Elder_Guardian: 4.0
