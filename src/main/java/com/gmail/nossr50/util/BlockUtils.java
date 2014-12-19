@@ -15,6 +15,7 @@ import org.bukkit.material.SmoothBrick;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
+import com.gmail.nossr50.util.temp.DualSupport;
 
 public final class BlockUtils {
     private BlockUtils() {}
@@ -63,22 +64,11 @@ public final class BlockUtils {
             case DROPPER:
             case HOPPER:
             case TRAPPED_CHEST:
-            case IRON_TRAPDOOR:
-            case ACACIA_DOOR:
-            case SPRUCE_DOOR:
-            case BIRCH_DOOR:
-            case JUNGLE_DOOR:
-            case DARK_OAK_DOOR:
             case IRON_DOOR:
-            case ACACIA_FENCE:
-            case DARK_OAK_FENCE:
-            case BIRCH_FENCE:
-            case JUNGLE_FENCE:
-            case ARMOR_STAND:
                 return false;
 
             default:
-                return !isMcMMOAnvil(blockState) && !mcMMO.getModManager().isCustomAbilityBlock(blockState);
+                return DualSupport.canActivateAbilities(blockState) && !isMcMMOAnvil(blockState) && !mcMMO.getModManager().isCustomAbilityBlock(blockState);
         }
     }
 
@@ -173,12 +163,10 @@ public final class BlockUtils {
             case SANDSTONE:
             case STAINED_CLAY:
             case STONE:
-            case RED_SANDSTONE:
-            case PRISMARINE:
                 return true;
 
             default:
-                return isOre(blockState) || mcMMO.getModManager().isCustomMiningBlock(blockState);
+                return DualSupport.affectedBySuperBreaker(blockState) || isOre(blockState) || mcMMO.getModManager().isCustomMiningBlock(blockState);
         }
     }
 

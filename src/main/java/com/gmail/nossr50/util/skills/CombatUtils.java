@@ -48,6 +48,7 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.temp.CompatableGuardianXP;
 import com.google.common.collect.ImmutableMap;
 
 public final class CombatUtils {
@@ -466,7 +467,6 @@ public final class CombatUtils {
                 switch (type) {
                     case BAT:
                     case SQUID:
-                    case RABBIT:
                         baseXP = ExperienceConfig.getInstance().getAnimalsXP();
                         break;
 
@@ -489,14 +489,6 @@ public final class CombatUtils {
                         baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                         break;
 
-                    case GUARDIAN:
-                        if (((Guardian) target).isElder()) {
-                            baseXP = ExperienceConfig.getInstance().getElderGuardianXP();
-                        } else {
-                            baseXP = ExperienceConfig.getInstance().getCombatXP(type);
-                        }
-                        break;
-
                     case SKELETON:
                         switch (((Skeleton) target).getSkeletonType()) {
                             case WITHER:
@@ -515,6 +507,18 @@ public final class CombatUtils {
                         break;
 
                     default:
+                        if (type.name().equals("RABBIT")) {
+                            baseXP = ExperienceConfig.getInstance().getAnimalsXP();
+                            break;
+                        }
+                        if (type.name().equals("ENDERMITE")) {
+                            baseXP = ExperienceConfig.getInstance().getCombatXP(type);
+                            break;
+                        }
+                        if (type.name().equals("GUARDIAN")) {
+                            baseXP = CompatableGuardianXP.get(target);
+                            break;
+                        }
                         baseXP = 1.0;
                         mcMMO.getModManager().addCustomEntity(target);
                         break;
