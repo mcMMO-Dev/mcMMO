@@ -110,6 +110,9 @@ public final class Fishing {
             case PIG_ZOMBIE:
                 return TreasureConfig.getInstance().shakeFromPigZombie;
 
+            case PLAYER:
+                return TreasureConfig.getInstance().shakeFromPlayer;
+
             case SHEEP:
                 return TreasureConfig.getInstance().shakeFromSheep;
 

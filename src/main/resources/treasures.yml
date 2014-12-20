@@ -793,6 +793,12 @@ Shake:
             XP: 0
             Drop_Chance: 50.0
             Drop_Level: 0
+    PLAYER:
+        SKULL_ITEM:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 0.0
+            Drop_Level: 0
     SHEEP:
         WOOL:
             Amount: 3

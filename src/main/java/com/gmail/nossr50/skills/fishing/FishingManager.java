@@ -28,6 +28,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.Wool;
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionType;
@@ -393,6 +394,23 @@ public class FishingManager extends SkillManager {
 
             // Extra processing depending on the mob and drop type
             switch (target.getType()) {
+                case PLAYER:
+                    Player targetPlayer = (Player) target;
+
+                    switch (drop.getType()) {
+                        case SKULL_ITEM:
+                            drop.setDurability((short) 3);
+                            SkullMeta skullMeta = (SkullMeta) drop.getItemMeta();
+                            skullMeta.setOwner(targetPlayer.getName());
+                            drop.setItemMeta(skullMeta);
+                            break;
+
+
+                        default:
+                            break;
+                    }
+                    break;
+
                 case SHEEP:
                     Sheep sheep = (Sheep) target;
 
