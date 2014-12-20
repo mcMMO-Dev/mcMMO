@@ -799,6 +799,10 @@ Shake:
             XP: 0
             Drop_Chance: 0.0
             Drop_Level: 0
+        INVENTORY:
+            Whole_Stacks: false
+            Drop_Chance: 0.0
+            Drop_Level: 0
     SHEEP:
         WOOL:
             Amount: 3

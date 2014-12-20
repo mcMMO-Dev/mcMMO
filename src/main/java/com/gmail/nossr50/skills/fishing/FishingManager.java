@@ -28,6 +28,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.Wool;
 import org.bukkit.potion.Potion;
@@ -405,6 +406,28 @@ public class FishingManager extends SkillManager {
                             drop.setItemMeta(skullMeta);
                             break;
 
+                        case BED_BLOCK:
+                            if (TreasureConfig.getInstance().getInventoryStealEnabled()) {
+                                PlayerInventory inventory = targetPlayer.getInventory();
+                                int length = inventory.getContents().length;
+                                int slot = Misc.getRandom().nextInt(length);
+                                drop = inventory.getItem(slot);
+
+                                if (drop == null) {
+                                    break;
+                                }
+
+                                if (TreasureConfig.getInstance().getInventoryStealStacks()) {
+                                    inventory.setItem(slot, null);
+                                }
+                                else {
+                                    inventory.setItem(slot, (drop.getAmount() > 1) ? new ItemStack(drop.getType(), drop.getAmount() - 1) : null);
+                                    drop.setAmount(1);
+                                }
+
+                                targetPlayer.updateInventory();
+                            }
+                            break;
 
                         default:
                             break;
