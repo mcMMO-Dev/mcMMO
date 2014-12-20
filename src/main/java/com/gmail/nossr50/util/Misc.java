@@ -144,6 +144,23 @@ public final class Misc {
         return "UnknownMods";
     }
 
+    /**
+     * Gets a random location near the specified location
+     */
+    public static Location getLocationOffset(Location location, double strength) {
+        double blockX = location.getBlockX();
+        double blockZ = location.getBlockZ();
+
+        double distance;
+        distance = strength * random.nextDouble();
+        blockX = (random.nextBoolean()) ? blockX + (distance) : blockX - (distance);
+
+        distance = strength * random.nextDouble();
+        blockZ = (random.nextBoolean()) ? blockZ + (distance) : blockZ - (distance);
+
+        return new Location(location.getWorld(), blockX, location.getY(), blockZ);
+    }
+
     public static Random getRandom() {
         return random;
     }

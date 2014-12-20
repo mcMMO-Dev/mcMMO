@@ -277,6 +277,7 @@ public class TamingManager extends SkillManager {
                 return;
             }
 
+            location = Misc.getLocationOffset(location, 1);
             LivingEntity entity = (LivingEntity) player.getWorld().spawnEntity(location, type);
 
             FakeEntityTameEvent event = new FakeEntityTameEvent(entity, player);
