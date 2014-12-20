@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -116,12 +117,12 @@ public class PotionConfig extends ConfigLoader {
         try {
             short dataValue = Short.parseShort(potion_section.getName());
 
-            String name = potion_section.getString("Name");
+            String name = ChatColor.translateAlternateColorCodes('&', potion_section.getString("Name"));
 
             List<String> lore = new ArrayList<String>();
             if (potion_section.contains("Lore")) {
                 for (String line : potion_section.getStringList("Lore")) {
-                    lore.add(line);
+                    lore.add(ChatColor.translateAlternateColorCodes('&', line));
                 }
             }
 

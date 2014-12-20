@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -236,6 +237,22 @@ public class TreasureConfig extends ConfigLoader {
 
                 try {
                     item = new Potion(PotionType.valueOf(potionType.toUpperCase().trim())).toItemStack(amount);
+
+                    if (config.contains(type + "." + treasureName + ".Custom_Name")) {
+                        ItemMeta itemMeta = item.getItemMeta();
+                        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(type + "." + treasureName + ".Custom_Name")));
+                        item.setItemMeta(itemMeta);
+                    }
+
+                    if (config.contains(type + "." + treasureName + ".Lore")) {
+                        ItemMeta itemMeta = item.getItemMeta();
+                        List<String> lore = new ArrayList<String>();
+                        for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
+                            lore.add(ChatColor.translateAlternateColorCodes('&', s));
+                        }
+                        itemMeta.setLore(lore);
+                        item.setItemMeta(itemMeta);
+                    }
                 }
                 catch (IllegalArgumentException ex) {
                     reason.add("Invalid Potion_Type: " + potionType);
@@ -249,6 +266,22 @@ public class TreasureConfig extends ConfigLoader {
                     dye.setColor(DyeColor.valueOf(color.toUpperCase().trim()));
 
                     item = dye.toItemStack(amount);
+
+                    if (config.contains(type + "." + treasureName + ".Custom_Name")) {
+                        ItemMeta itemMeta = item.getItemMeta();
+                        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(type + "." + treasureName + ".Custom_Name")));
+                        item.setItemMeta(itemMeta);
+                    }
+
+                    if (config.contains(type + "." + treasureName + ".Lore")) {
+                        ItemMeta itemMeta = item.getItemMeta();
+                        List<String> lore = new ArrayList<String>();
+                        for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
+                            lore.add(ChatColor.translateAlternateColorCodes('&', s));
+                        }
+                        itemMeta.setLore(lore);
+                        item.setItemMeta(itemMeta);
+                    }
                 }
                 catch (IllegalArgumentException ex) {
                     reason.add("Invalid Dye_Color: " + color);
@@ -259,13 +292,17 @@ public class TreasureConfig extends ConfigLoader {
 
                 if (config.contains(type + "." + treasureName + ".Custom_Name")) {
                     ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setDisplayName(config.getString(type + "." + treasureName + ".Custom_Name"));
+                    itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(type + "." + treasureName + ".Custom_Name")));
                     item.setItemMeta(itemMeta);
                 }
 
                 if (config.contains(type + "." + treasureName + ".Lore")) {
                     ItemMeta itemMeta = item.getItemMeta();
-                    itemMeta.setLore(config.getStringList(type + "." + treasureName + ".Lore"));
+                    List<String> lore = new ArrayList<String>();
+                    for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
+                        lore.add(ChatColor.translateAlternateColorCodes('&', s));
+                    }
+                    itemMeta.setLore(lore);
                     item.setItemMeta(itemMeta);
                 }
             }
