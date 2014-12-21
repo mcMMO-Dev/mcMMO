@@ -117,7 +117,10 @@ public class PotionConfig extends ConfigLoader {
         try {
             short dataValue = Short.parseShort(potion_section.getName());
 
-            String name = ChatColor.translateAlternateColorCodes('&', potion_section.getString("Name"));
+            String name = potion_section.getString("Name");
+            if (name != null) {
+                name = ChatColor.translateAlternateColorCodes('&', name);
+            }
 
             List<String> lore = new ArrayList<String>();
             if (potion_section.contains("Lore")) {
