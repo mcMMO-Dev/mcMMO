@@ -9,6 +9,7 @@ Key:
 
 Version 1.5.02-dev
  + Added option to config.yml for Chimaera Wings to stop using bed spawn points
+ = Fixed bug where no Mining XP was granted when Flux Mining was successful
  ! Changed Flux Mining mechanics. In order to use the ability, you need to infuse a pickaxe with furnace powers first.
 
 Version 1.5.01

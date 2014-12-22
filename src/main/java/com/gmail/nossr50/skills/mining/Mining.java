@@ -17,7 +17,7 @@ public class Mining {
      *
      * @param blockState The {@link BlockState} to check ability activation for
      */
-    protected static int getBlockXp(BlockState blockState) {
+    public static int getBlockXp(BlockState blockState) {
         Material blockType = blockState.getType();
         int xp = ExperienceConfig.getInstance().getXp(SkillType.MINING, blockType != Material.GLOWING_REDSTONE_ORE ? blockType : Material.REDSTONE_ORE);
 

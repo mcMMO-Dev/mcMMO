@@ -22,6 +22,7 @@ import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.smelting.Smelting.Tier;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
@@ -72,6 +73,9 @@ public class SmeltingManager extends SkillManager {
             if (item == null) {
                 return false;
             }
+
+            // We need to distribute Mining XP here, because the block break event gets cancelled
+            applyXpGain(Mining.getBlockXp(blockState), XPGainReason.PVE);
 
             SkillUtils.handleDurabilityChange(getPlayer().getItemInHand(), Config.getInstance().getAbilityToolDamage());
 
