@@ -260,7 +260,7 @@ public class BlockListener implements Listener {
                 }
             }
         }
-        else if (ItemUtils.isPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
+        else if (ItemUtils.isFluxPickaxe(heldItem) && !heldItem.containsEnchantment(Enchantment.SILK_TOUCH)) {
             SmeltingManager smeltingManager = UserManager.getPlayer(player).getSmeltingManager();
 
             if (smeltingManager.canUseFluxMining(blockState)) {

@@ -37,6 +37,14 @@ public final class ParticleEffectUtils {
         playSmokeEffect(player);
     }
 
+    public static void playFluxEffect(Location location) {
+        if (!Config.getInstance().getFluxEffectEnabled()) {
+            return;
+        }
+
+        location.getWorld().playEffect(location, Effect.MOBSPAWNER_FLAMES, 1);
+    }
+
     public static void playSmokeEffect(LivingEntity livingEntity) {
         Location location = livingEntity.getEyeLocation();
         World world = livingEntity.getWorld();

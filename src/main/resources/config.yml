@@ -213,6 +213,9 @@ Items:
         Recipe_Cost: 5
         Item_Name: FEATHER
         Sound_Enabled: true
+    Flux_Pickaxe:
+        Enabled: true
+        Sound_Enabled: true
 
 #
 #  Settings for Parties
@@ -481,8 +484,9 @@ Particles:
     LargeFireworks: true
 
     # Use particle effect when these abilities trigger
-    Dodge: true
     Bleed: true
+    Dodge: true
+    Flux: true
     Greater_Impact: true
     Call_of_the_Wild: true
 

@@ -1,12 +1,20 @@
 package com.gmail.nossr50.skills.smelting;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
+import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -18,6 +26,7 @@ import com.gmail.nossr50.skills.smelting.Smelting.Tier;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SmeltingManager extends SkillManager {
@@ -64,14 +73,41 @@ public class SmeltingManager extends SkillManager {
                 return false;
             }
 
+            SkillUtils.handleDurabilityChange(getPlayer().getItemInHand(), Config.getInstance().getAbilityToolDamage());
+
             Misc.dropItems(blockState.getLocation(), item, isSecondSmeltSuccessful() ? 2 : 1);
 
             blockState.setType(Material.AIR);
-            player.sendMessage(LocaleLoader.getString("Smelting.FluxMining.Success"));
+
+            if (Config.getInstance().getFluxPickaxeSoundEnabled()) {
+                player.playSound(blockState.getLocation(), Sound.FIZZ, Misc.FIZZ_VOLUME, Misc.getFizzPitch());
+            }
+
+            ParticleEffectUtils.playFluxEffect(blockState.getLocation());
             return true;
         }
 
         return false;
+    }
+
+    public static ItemStack getFluxPickaxe(Material material, int amount) {
+        ItemStack itemStack = new ItemStack(material, amount);
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(ChatColor.GOLD + LocaleLoader.getString("Item.FluxPickaxe.Name"));
+
+        List<String> itemLore = new ArrayList<String>();
+        itemLore.add("mcMMO Item");
+        itemLore.add(LocaleLoader.getString("Item.FluxPickaxe.Lore.1"));
+        itemLore.add(LocaleLoader.getString("Item.FluxPickaxe.Lore.2", Smelting.fluxMiningUnlockLevel));
+        itemMeta.setLore(itemLore);
+
+        itemStack.setItemMeta(itemMeta);
+        return itemStack;
+    }
+
+    public static FurnaceRecipe getFluxPickaxeRecipe(Material material) {
+        return new FurnaceRecipe(getFluxPickaxe(material, 1), material);
     }
 
     /**
