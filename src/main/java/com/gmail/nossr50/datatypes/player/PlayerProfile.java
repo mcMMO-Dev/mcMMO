@@ -127,6 +127,8 @@ public class PlayerProfile {
     }
 
     public void setMobHealthbarType(MobHealthbarType mobHealthbarType) {
+        changed = true;
+
         this.mobHealthbarType = mobHealthbarType;
     }
 
