@@ -858,7 +858,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         // Prevent the same player from being present multiple times
-                        if (character.length == 42 && (!character[41].isEmpty() && !players.add(character[41]))) {
+                        if (character.length >= 42 && (!character[41].isEmpty() && !players.add(character[41]))) {
                             continue;
                         }
 
@@ -890,7 +890,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         // If they're valid, rewrite them to the file.
-                        if (character.length == 42) {
+                        if (character.length == 43) {
                             writer.append(line).append("\r\n");
                             continue;
                         }
@@ -970,7 +970,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             if (newCharacter[i].isEmpty() && !(i == 2 || i == 3 || i == 23 || i == 33 || i == 41)) {
                                 corrupted = true;
 
-                                if (newCharacter.length != 42) {
+                                if (newCharacter.length != 43) {
                                     newCharacter = (String[]) ArrayUtils.remove(newCharacter, i);
                                 }
                                 else {
@@ -1141,8 +1141,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         catch (Exception e) {
             uuid = null;
         }
+
         try {
-            scoreboardTipsShown = Integer.valueOf(character[41]);
+            scoreboardTipsShown = Integer.valueOf(character[42]);
         }
         catch (Exception e) {
             scoreboardTipsShown = 0;
