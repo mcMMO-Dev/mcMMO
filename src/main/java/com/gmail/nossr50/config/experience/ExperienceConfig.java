@@ -88,6 +88,11 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
             }
         }
 
+        /* Archery */
+        if (getArcheryDistanceMultiplier() < 0) {
+            reason.add("Experience.Archery.Distance_Multiplier should be at least 0!");
+        }
+
         /* Combat XP Multipliers */
         if (getAnimalsXP() < 0) {
             reason.add("Experience.Combat.Multiplier.Animals should be at least 0!");
@@ -212,6 +217,9 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
 
     /* Alchemy */
     public double getPotionXP(PotionStage stage) { return config.getDouble("Experience.Alchemy.Potion_Stage_" + stage.toNumerical(), 10D); }
+
+    /* Archery */
+    public double getArcheryDistanceMultiplier() { return config.getDouble("Experience.Archery.Distance_Multiplier", 0.025); }
 
     /* Excavation */
     public int getDirtAndSandXp(MaterialData data) {

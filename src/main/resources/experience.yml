@@ -116,6 +116,8 @@ Experience:
         Potion_Stage_3: 60
         Potion_Stage_4: 120
         Potion_Stage_5: 0
+    Archery:
+        Distance_Multiplier: 0.025
     Fishing:
         Raw_Fish: 800
         Raw_Salmon: 800
