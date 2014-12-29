@@ -13,6 +13,7 @@ import org.bukkit.material.Dye;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.party.ItemWeightConfig;
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 
 public final class ItemUtils {
@@ -153,7 +154,10 @@ public final class ItemUtils {
      * @return true if the item counts as unarmed, false otherwise
      */
     public static boolean isUnarmed(ItemStack item) {
-        return !isMinecraftTool(item);
+        if(Config.getInstance().getUnarmedItemsAsUnarmed())
+            return !isMinecraftTool(item);
+
+        return item.getType() == Material.AIR;
     }
 
     /**
