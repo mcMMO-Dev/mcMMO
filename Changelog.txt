@@ -7,6 +7,8 @@ Key:
   ! Change
   - Removal
 
+ + Added option to config.yml to let non-tools in hand count as unarmed
+
 Version 1.5.02-dev
  + Added option to config.yml for Chimaera Wings to stop using bed spawn points
  = Fixed bug where no Mining XP was granted when Flux Mining was successful
