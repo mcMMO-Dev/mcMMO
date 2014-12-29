@@ -147,6 +147,16 @@ public final class ItemUtils {
     }
 
     /**
+     * Checks if the item counts as unarmed.
+     *
+     * @param item Item to check
+     * @return true if the item counts as unarmed, false otherwise
+     */
+    public static boolean isUnarmed(ItemStack item) {
+        return !isMinecraftTool(item);
+    }
+
+    /**
      * Checks if the item is a helmet.
      *
      * @param item Item to check
