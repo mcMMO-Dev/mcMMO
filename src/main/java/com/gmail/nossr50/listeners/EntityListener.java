@@ -416,17 +416,22 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
+        LivingEntity entity = event.getEntity();
+
         switch (event.getSpawnReason()) {
             case SPAWNER:
             case SPAWNER_EGG:
-                LivingEntity entity = event.getEntity();
-                Entity passenger = entity.getPassenger();
-
                 entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+
+                Entity passenger = entity.getPassenger();
 
                 if (passenger != null) {
                     passenger.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
                 }
+                return;
+
+            case BREEDING:
+                entity.setMetadata(mcMMO.bredMetadataKey, mcMMO.metadataValue);
                 return;
 
             default:

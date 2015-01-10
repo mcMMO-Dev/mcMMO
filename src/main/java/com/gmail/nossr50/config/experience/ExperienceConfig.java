@@ -72,6 +72,11 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
             reason.add("Experience_Formula.Mobspawners.Multiplier should be at least 0!");
         }
 
+        /* Bred Mob modifier */
+        if (getBredMobXpMultiplier() < 0) {
+            reason.add("Experience_Formula.Breeding.Multiplier should be at least 0!");
+        }
+
         /* Conversion */
         if (getExpModifier() <= 0) {
             reason.add("Conversion.Exp_Modifier should be greater than 0!");
@@ -177,6 +182,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
 
     /* Spawned Mob modifier */
     public double getSpawnedMobXpMultiplier() { return config.getDouble("Experience_Formula.Mobspawners.Multiplier", 0.0); }
+    public double getBredMobXpMultiplier() { return config.getDouble("Experience_Formula.Breeding.Multiplier", 1.0); }
 
     /* Skill modifiers */
     public double getFormulaSkillModifier(SkillType skill) { return config.getDouble("Experience_Formula.Modifier." + StringUtils.getCapitalized(skill.toString())); }

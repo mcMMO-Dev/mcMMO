@@ -10,7 +10,6 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Guardian;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -41,7 +40,6 @@ import com.gmail.nossr50.skills.axes.AxesManager;
 import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.skills.swords.SwordsManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
-import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.skills.unarmed.UnarmedManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
@@ -50,6 +48,7 @@ import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.temp.CompatableGuardianXP;
+
 import com.google.common.collect.ImmutableMap;
 
 public final class CombatUtils {
@@ -528,6 +527,10 @@ public final class CombatUtils {
 
             if (target.hasMetadata(mcMMO.entityMetadataKey)) {
                 baseXP *= ExperienceConfig.getInstance().getSpawnedMobXpMultiplier();
+            }
+
+            if (target.hasMetadata(mcMMO.bredMetadataKey)) {
+                baseXP *= ExperienceConfig.getInstance().getBredMobXpMultiplier();
             }
 
             xpGainReason = XPGainReason.PVE;
