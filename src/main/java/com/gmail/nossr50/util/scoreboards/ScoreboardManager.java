@@ -370,25 +370,34 @@ public class ScoreboardManager {
      */
     public static Objective getPowerLevelObjective() {
         if (!Config.getInstance().getPowerLevelTagsEnabled()) {
-            Objective objective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
-
-            if (objective != null) {
-                objective.unregister();
-                mcMMO.p.debug("Removed leftover scoreboard objects from Power Level Tags.");
-            }
-
+        	try {
+        		Objective objective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
+        	    if (objective != null) {
+        	     	objective.unregister();
+                	mcMMO.p.debug("Removed leftover scoreboard objects from Power Level Tags.");
+        	    }
+        	} catch (NullPointerException e) {
+        		//It's already null
+        	}
+            
             return null;
         }
-
-        Objective powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
-
-        if (powerObjective == null) {
-            powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().registerNewObjective(POWER_OBJECTIVE, "dummy");
-            powerObjective.setDisplayName(TAG_POWER_LEVEL);
-            powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        try {
+        	Objective powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
+        	if (powerObjective == null) {
+        		powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().registerNewObjective(POWER_OBJECTIVE, "dummy");
+        		powerObjective.setDisplayName(TAG_POWER_LEVEL);
+        		powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+        	}
+        	return powerObjective;
+        } catch (NullPointerException e) {
+        	Objective powerObjective;
+    		powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().registerNewObjective(POWER_OBJECTIVE, "dummy");
+    		powerObjective.setDisplayName(TAG_POWER_LEVEL);
+    		powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+    		return powerObjective;
         }
-
-        return powerObjective;
+        
     }
 
     private static void changeScoreboard(ScoreboardWrapper wrapper, int displayTime) {
