@@ -44,7 +44,7 @@ public class DatabaseManagerFactory {
      */
     public static void setCustomDatabaseManagerClass(Class<? extends DatabaseManager> clazz) {
         try {
-            clazz.getConstructor((Class<?>) null);
+            clazz.getConstructor();
             customManager = clazz;
         }
         catch (Throwable e) {
@@ -78,10 +78,10 @@ public class DatabaseManagerFactory {
     }
 
     public static DatabaseManager createDefaultCustomDatabaseManager() throws Throwable {
-        return customManager.getConstructor((Class<?>) null).newInstance((Object[]) null);
+        return customManager.getConstructor().newInstance();
     }
 
     public static DatabaseManager createCustomDatabaseManager(Class<? extends DatabaseManager> clazz) throws Throwable {
-        return clazz.getConstructor((Class<?>) null).newInstance((Object[]) null);
+        return clazz.getConstructor().newInstance();
     }
 }
