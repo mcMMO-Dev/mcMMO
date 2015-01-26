@@ -316,6 +316,11 @@ public class InventoryListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onInventoryOpenEvent(InventoryOpenEvent event) {
+        SkillUtils.removeAbilityBuff(event.getPlayer().getItemInHand());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCraftItem(CraftItemEvent event) {
         final HumanEntity whoClicked = event.getWhoClicked();
 
