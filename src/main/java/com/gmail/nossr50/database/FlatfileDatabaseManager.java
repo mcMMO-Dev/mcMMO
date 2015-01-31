@@ -638,9 +638,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 StringBuilder writer = new StringBuilder();
                 String line;
 
-                while (((line = in.readLine()) != null) && !fetchedUUIDs.isEmpty()) {
+                while (((line = in.readLine()) != null)) {
                     String[] character = line.split(":");
-                    if (fetchedUUIDs.containsKey(character[0])) {
+                    if (!fetchedUUIDs.isEmpty() && fetchedUUIDs.containsKey(character[0])) {
                         if (character.length < 42) {
                             mcMMO.p.getLogger().severe("Could not update UUID for " + character[0] + "!");
                             mcMMO.p.getLogger().severe("Database entry is invalid.");
