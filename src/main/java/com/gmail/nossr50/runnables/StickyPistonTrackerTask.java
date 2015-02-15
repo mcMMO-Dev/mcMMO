@@ -31,6 +31,6 @@ public class StickyPistonTrackerTask extends BukkitRunnable {
 
         // The sticky piston actually pulled the block so move the PlaceStore data
         mcMMO.getPlaceStore().setFalse(movedBlock);
-        mcMMO.getPlaceStore().setTrue(block.getRelative(direction));
+        mcMMO.getPlaceStore().setTrue(movedBlock.getRelative(direction));
     }
 }
