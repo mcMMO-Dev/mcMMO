@@ -71,7 +71,14 @@ public class Unarmed {
             }
 
             // Inventory is full - cancel the item pickup
-            return false;
+            if (dropStack.getAmount() == dropAmount) {
+                return false;
+            } else {
+                drop.remove();
+                dropStack.setAmount(dropAmount);
+                ((Item) drop.getWorld().dropItem(drop.getLocation(), dropStack)).setPickupDelay(0);
+                return true;
+            }
         }
         else if (firstEmpty != -1) {
             drop.remove();
