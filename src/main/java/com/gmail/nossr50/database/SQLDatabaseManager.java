@@ -674,6 +674,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     return profile;
                 }
                 catch (SQLException e) {
+                    printErrors(e);
                 }
             }
             resultSet.close();
