@@ -1,5 +1,7 @@
 package com.gmail.nossr50.listeners;
 
+import java.util.HashSet;
+
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -236,7 +238,7 @@ public class PlayerListener implements Listener {
                 return;
 
             case IN_GROUND:
-                Block block = player.getTargetBlock(null, 100);
+                Block block = player.getTargetBlock((HashSet<Byte>) null, 100);
 
                 if (fishingManager.canIceFish(block)) {
                     event.setCancelled(true);
