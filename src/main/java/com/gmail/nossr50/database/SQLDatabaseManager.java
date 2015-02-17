@@ -751,6 +751,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     resultSet.close();
                 }
                 catch (SQLException e) {
+                    printErrors(e);
                     // Ignore
                 }
                 convertedUsers++;
