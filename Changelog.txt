@@ -16,6 +16,7 @@ Version 1.5.02-dev
  ! Changed Flux Mining mechanics. In order to use the ability, you need to infuse a pickaxe with furnace powers first.
  ! Scoreboard tips are only shown a couple of times to the player, instead of once per login session
  ! Changed Archery distance multiplier to be configurable
+ ! Archery distance XP bonus cannot exceed indefinitely anymore
 
 Version 1.5.01
  + Added new child skill; Salvage
