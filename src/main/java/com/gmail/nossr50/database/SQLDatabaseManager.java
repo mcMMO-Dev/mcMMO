@@ -261,6 +261,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if (id == -1) {
                 id = newUser(connection, profile.getPlayerName(), profile.getUniqueId());
                 if (id == -1) {
+                    mcMMO.p.getLogger().severe("Failed to create new account for " + profile.getPlayerName());
                     return false;
                 }
             }
@@ -269,6 +270,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setInt(1, id);
             success &= (statement.executeUpdate() != 0);
             statement.close();
+            if (!success) {
+                mcMMO.p.getLogger().severe("Failed to update last login for " + profile.getPlayerName());
+                return false;
+            }
 
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "skills SET "
                     + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
@@ -291,6 +296,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setInt(14, id);
             success &= (statement.executeUpdate() != 0);
             statement.close();
+            if (!success) {
+                mcMMO.p.getLogger().severe("Failed to update skills for " + profile.getPlayerName());
+                return false;
+            }
 
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "experience SET "
                     + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
@@ -313,6 +322,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setInt(14, id);
             success &= (statement.executeUpdate() != 0);
             statement.close();
+            if (!success) {
+                mcMMO.p.getLogger().severe("Failed to update experience for " + profile.getPlayerName());
+                return false;
+            }
 
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "cooldowns SET "
                     + "  mining = ?, woodcutting = ?, unarmed = ?"
@@ -329,6 +342,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setInt(9, id);
             success = (statement.executeUpdate() != 0);
             statement.close();
+            if (!success) {
+                mcMMO.p.getLogger().severe("Failed to update cooldowns for " + profile.getPlayerName());
+                return false;
+            }
 
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ?, scoreboardtips = ? WHERE user_id = ?");
             statement.setString(1, profile.getMobHealthbarType() == null ? Config.getInstance().getMobHealthbarDefault().name() : profile.getMobHealthbarType().name());
@@ -336,6 +353,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setInt(3, id);
             success = (statement.executeUpdate() != 0);
             statement.close();
+            if (!success) {
+                mcMMO.p.getLogger().severe("Failed to update hud settings for " + profile.getPlayerName());
+                return false;
+            }
         }
         catch (SQLException ex) {
             printErrors(ex);
@@ -564,12 +585,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
         try {
             statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, uuid, lastlogin) VALUES (?, ?, UNIX_TIMESTAMP())", Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, playerName);
-            statement.setString(2, uuid.toString());
+            statement.setString(2, uuid != null ? uuid.toString() : null);
             statement.executeUpdate();
 
             resultSet = statement.getGeneratedKeys();
 
             if (!resultSet.next()) {
+                mcMMO.p.getLogger().severe("Unable to create new user account in DB");
                 return -1;
             }
 
