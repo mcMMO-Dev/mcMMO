@@ -293,7 +293,7 @@ public class EventUtils {
      */
     public static boolean shouldProcessEvent(Block block, boolean isExtendEvent) {
         String pistonAction = isExtendEvent ? "EXTEND" : "RETRACT";
-        String lastAction = block.hasMetadata(mcMMO.pistonDataKey) ? block.getMetadata(mcMMO.pistonDataKey).get(0).asString() : "";
+        String lastAction = block.hasMetadata(mcMMO.pistonDataKey) ? block.getMetadata(mcMMO.pistonDataKey).getSize()>0 ? block.getMetadata(mcMMO.pistonDataKey).get(0).asString() : "":"";
 
         if (!lastAction.equals(pistonAction)) {
             block.setMetadata(mcMMO.pistonDataKey, new FixedMetadataValue(mcMMO.p, pistonAction));
