@@ -7,7 +7,10 @@ Key:
   ! Change
   - Removal
 
-Version 1.5.02-dev
+Version 1.5.03-dev
+
+
+Version 1.5.02
  + Added option to config.yml for Chimaera Wings to stop using bed spawn points
  + Added option to config.yml to let non-tools in hand count as unarmed
  + Added option to experience.yml to control XP gained by killing bred animals
