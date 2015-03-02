@@ -11,7 +11,10 @@ Version 1.5.02-dev
  + Added option to config.yml for Chimaera Wings to stop using bed spawn points
  + Added option to config.yml to let non-tools in hand count as unarmed
  + Added option to experience.yml to control XP gained by killing bred animals
+ + Added support for 1.8 mobs and features
  = Fixed bug where no Mining XP was granted when Flux Mining was successful
+ = Fixed bug with UUID conversions in Flatfile
+ = Fixed a couple Dupe bugs that were introduced recently
  = Fixed bug where MobHealthbarTypes were not saved between server restarts
  ! Changed Flux Mining mechanics. In order to use the ability, you need to infuse a pickaxe with furnace powers first.
  ! Scoreboard tips are only shown a couple of times to the player, instead of once per login session
