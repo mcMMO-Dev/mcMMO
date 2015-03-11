@@ -2,6 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -94,18 +95,27 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
-        /*if (!EventUtils.shouldProcessEvent(event.getBlock(), false)) {
-            return;
-        }*/
-
-        if (!event.isSticky()) {
+        if (!EventUtils.shouldProcessEvent(event.getBlock(), false)) {
             return;
         }
 
-        Block movedBlock = event.getRetractLocation().getBlock();
+        // Don't even work, return ALLWAYS false xD
+        /*if (!event.isSticky()){
+        	return;
+        }*/      
+        
+        // Sticky piston return PISTON_MOVING_PIECE and normal piston PISTON_BASE, so mess stuff
+        if (event.getBlock().getType() != Material.PISTON_MOVING_PIECE) {
+            return;
+        }
+
+        // event.getRetractLocation() return wrong side and too far away
+        // Get opposite direction so we get correct block, so mess stuff
+        Block movedBlock = event.getBlock().getRelative(event.getDirection().getOppositeFace());
 
         // Needed only because under some circumstances Minecraft doesn't move the block
-        new StickyPistonTrackerTask(event.getDirection(), event.getBlock(), movedBlock).runTaskLater(plugin, 2);
+        // Opposite side here too
+        new StickyPistonTrackerTask(event.getDirection().getOppositeFace(), event.getBlock(), movedBlock).runTaskLater(plugin, 2);
     }
 
     /**
