@@ -94,9 +94,9 @@ public class BlockListener implements Listener {
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockPistonRetract(BlockPistonRetractEvent event) {
-        if (!EventUtils.shouldProcessEvent(event.getBlock(), false)) {
+        /*if (!EventUtils.shouldProcessEvent(event.getBlock(), false)) {
             return;
-        }
+        }*/
 
         if (!event.isSticky()) {
             return;
