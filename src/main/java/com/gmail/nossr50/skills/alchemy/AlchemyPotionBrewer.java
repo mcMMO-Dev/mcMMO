@@ -56,21 +56,27 @@ public final class AlchemyPotionBrewer {
         return item == null || item.getType() == Material.AIR || item.getAmount() == 0;
     }
 
-    private static boolean removeIngredient(BrewerInventory inventory, Player player) {
+    private static void removeIngredient(BrewerInventory inventory, Player player) {
         ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
 
         if (isEmpty(ingredient) || !isValidIngredient(player, ingredient)) {
-            return false;
+            return;
         }
         else if (ingredient.getAmount() <= 1) {
             inventory.setIngredient(null);
-            return true;
+            return;
         }
         else {
             ingredient.setAmount(ingredient.getAmount() - 1);
             inventory.setIngredient(ingredient);
-            return true;
+            return;
         }
+    }
+
+    private static boolean hasIngredient(BrewerInventory inventory, Player player) {
+        ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
+
+        return !isEmpty(ingredient) && isValidIngredient(player, ingredient);
     }
 
     public static boolean isValidIngredient(Player player, ItemStack item) {
@@ -99,7 +105,7 @@ public final class AlchemyPotionBrewer {
         BrewerInventory inventory = ((BrewingStand) brewingStand).getInventory();
         ItemStack ingredient = inventory.getIngredient() == null ? null : inventory.getIngredient().clone();
 
-        if (!removeIngredient(inventory, player)) {
+        if (!hasIngredient(inventory, player)) {
             return;
         }
 
@@ -128,6 +134,8 @@ public final class AlchemyPotionBrewer {
         if (event.isCancelled() || inputList.isEmpty()) {
             return;
         }
+
+        removeIngredient(inventory, player);
 
         for (AlchemyPotion input : inputList) {
             AlchemyPotion output = PotionConfig.getInstance().getPotion(input.getChildDataValue(ingredient));
