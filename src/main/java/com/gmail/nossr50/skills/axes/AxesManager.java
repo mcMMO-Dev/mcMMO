@@ -74,10 +74,16 @@ public class AxesManager extends SkillManager {
 
         Player player = getPlayer();
 
-        player.sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
+        if (mcMMOPlayer.useChatNotifications()) {
+            player.sendMessage(LocaleLoader.getString("Axes.Combat.CriticalHit"));
+        }
 
         if (target instanceof Player) {
-            ((Player) target).sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
+            Player defender = (Player) target;
+
+            if (UserManager.getPlayer(defender).useChatNotifications()) {
+                defender.sendMessage(LocaleLoader.getString("Axes.Combat.CritStruck"));
+            }
 
             damage = (damage * Axes.criticalHitPVPModifier) - damage;
         }
