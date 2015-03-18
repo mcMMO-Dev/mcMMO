@@ -186,7 +186,7 @@ public class TreasureConfig extends ConfigLoader {
             }
 
             int amount = config.getInt(type + "." + treasureName + ".Amount");
-            short data = (treasureInfo.length == 2) ? Byte.valueOf(treasureInfo[1]) : (short) config.getInt(type + "." + treasureName + ".Data");
+            short data = (treasureInfo.length == 2) ? Short.parseShort(treasureInfo[1]) : (short) config.getInt(type + "." + treasureName + ".Data");
 
             if (material == null) {
                 reason.add("Invalid material: " + materialName);
