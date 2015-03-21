@@ -1,10 +1,14 @@
 package com.gmail.nossr50.util;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.bukkit.CropState;
 import org.bukkit.Material;
 import org.bukkit.NetherWartsState;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.material.CocoaPlant;
 import org.bukkit.material.CocoaPlant.CocoaPlantSize;
@@ -314,6 +318,32 @@ public final class BlockUtils {
         Material type = blockState.getType();
 
         return type == Material.PISTON_MOVING_PIECE || type == Material.AIR;
+    }
+
+    /**
+     * Get the adjacent blocks of the base block if it is equal to a certain material
+     *
+     * @param base The base block to check
+     * @param material The Material to check for
+     * @return a list with the adjacent blocks
+     */
+    public static List<Block> getAdjacentBlocks(Block base, Material material) {
+        List<Block> blocks = new ArrayList<Block>();
+
+        if (base.getRelative(BlockFace.NORTH).getType() == material) {
+            blocks.add(base.getRelative(BlockFace.NORTH));
+        }
+        if (base.getRelative(BlockFace.EAST).getType() == material) {
+            blocks.add(base.getRelative(BlockFace.EAST));
+        }
+        if (base.getRelative(BlockFace.SOUTH).getType() == material) {
+            blocks.add(base.getRelative(BlockFace.SOUTH));
+        }
+        if (base.getRelative(BlockFace.WEST).getType() == material) {
+            blocks.add(base.getRelative(BlockFace.WEST));
+        }
+
+        return blocks;
     }
 
     /**

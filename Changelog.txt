@@ -8,7 +8,7 @@ Key:
   - Removal
 
 Version 1.5.03-dev
-
+ = Fixed bug where blocks would not get tracked correctly when using sticky pistons and slime blocks in certain situations
 
 Version 1.5.02
  + Added option to config.yml for Chimaera Wings to stop using bed spawn points

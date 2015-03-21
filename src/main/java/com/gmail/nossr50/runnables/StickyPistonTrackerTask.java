@@ -1,6 +1,5 @@
 package com.gmail.nossr50.runnables;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.scheduler.BukkitRunnable;
