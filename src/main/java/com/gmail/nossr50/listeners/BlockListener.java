@@ -106,15 +106,13 @@ public class BlockListener implements Listener {
 
         // If we're pulling a slime block, it might have something attached to it!
         if (movedBlock.getRelative(direction).getState().getType() == Material.SLIME_BLOCK) {
-            // Check if any other slime blocks are attached, because they can also pull blocks
-            List<Block> adjacentBlocks = BlockUtils.getAdjacentBlocks(movedBlock.getRelative(direction), Material.SLIME_BLOCK);
-            for (Block b : adjacentBlocks) {
-                new StickyPistonTrackerTask(direction, event.getBlock(), b).runTaskLater(plugin, 2);
+            for (Block block : event.getBlocks()) {
+//            // Treat the slime blocks as if it is the sticky piston itself, because pulling
+//            // a slime block with a sticky piston is effectively the same as moving a sticky piston.
+                new StickyPistonTrackerTask(direction, event.getBlock(), block).runTaskLater(plugin, 2);
             }
 
-            // Treat the slime block as if it is the sticky piston itself, because pulling
-            // a slime block with a sticky piston is effectively the same as moving a sticky piston.
-            movedBlock = movedBlock.getRelative(direction);
+            return;
         }
 
         // Needed only because under some circumstances Minecraft doesn't move the block
