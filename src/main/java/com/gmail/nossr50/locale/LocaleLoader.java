@@ -57,7 +57,7 @@ public final class LocaleLoader {
     public static String formatString(String string, Object... messageArguments) {
         if (messageArguments != null) {
             MessageFormat formatter = new MessageFormat("");
-            formatter.applyPattern(string);
+            formatter.applyPattern(string.replace("'", "''"));
             string = formatter.format(messageArguments);
         }
 
