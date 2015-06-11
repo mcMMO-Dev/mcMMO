@@ -11,8 +11,8 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 
 public interface DatabaseManager {
-    // One month in seconds
-    public final long PURGE_TIME = 2630000L * Config.getInstance().getOldUsersCutoff();
+    // One month in milliseconds
+    public final long PURGE_TIME = 2630000000L * Config.getInstance().getOldUsersCutoff();
     // During convertUsers, how often to output a status
     public final int progressInterval = 200;
 

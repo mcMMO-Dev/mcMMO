@@ -157,7 +157,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     public void purgeOldUsers() {
         massUpdateLock.lock();
-        mcMMO.p.getLogger().info("Purging inactive users older than " + (PURGE_TIME / 2630000L) + " months...");
+        mcMMO.p.getLogger().info("Purging inactive users older than " + (PURGE_TIME / 2630000000L) + " months...");
 
         Connection connection = null;
         Statement statement = null;
@@ -664,7 +664,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
                             + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
                             + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
-                            + "h.mobhealthbar, h.scoreboardtips, u.uuid "
+                            + "h.mobhealthbar, h.scoreboardtips, u.uuid, u.user "
                             + "FROM " + tablePrefix + "users u "
                             + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
                             + "JOIN " + tablePrefix + "experience e ON (u.id = e.user_id) "
@@ -678,10 +678,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if (resultSet.next()) {
                 try {
                     PlayerProfile profile = loadFromResult(playerName, resultSet);
+                    String name = resultSet.getString(42); // TODO: Magic Number, make sure it stays updated
                     resultSet.close();
                     statement.close();
 
-                    if (!playerName.isEmpty() && !profile.getPlayerName().isEmpty()) {
+                    if (!playerName.isEmpty() && !playerName.equals(name)) {
                         statement = connection.prepareStatement(
                                 "UPDATE `" + tablePrefix + "users` "
                                         + "SET user = ?, uuid = ? "
