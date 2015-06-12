@@ -67,7 +67,7 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (!Permissions.repairMaterialType(player, repairable.getRepairMaterialType())) {
+        if (!Permissions.repairItemType(player, repairable.getRepairItemType())) {
             player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
             return;
         }
