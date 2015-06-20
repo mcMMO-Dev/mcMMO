@@ -10,5 +10,6 @@ public enum UpgradeType {
     ADD_ALCHEMY,
     ADD_UUIDS,
     ADD_UUIDS_PARTY,
-    ADD_SCOREBOARD_TIPS;
+    ADD_SCOREBOARD_TIPS,
+    DROP_NAME_UNIQUENESS;
 }

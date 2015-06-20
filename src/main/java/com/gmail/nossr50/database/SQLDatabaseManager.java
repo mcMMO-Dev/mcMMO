@@ -393,7 +393,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = getConnection(PoolIdentifier.MISC);
-            statement = connection.prepareStatement("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 ORDER BY " + query + " DESC, user LIMIT ?, ?");
+            statement = connection.prepareStatement("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 AND NOT user = '\\_INVALID\\_OLD\\_USERNAME\\_' ORDER BY " + query + " DESC, user LIMIT ?, ?");
             statement.setInt(1, (pageNumber * statsPerPage) - statsPerPage);
             statement.setInt(2, statsPerPage);
             resultSet = statement.executeQuery();
@@ -583,6 +583,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
         PreparedStatement statement = null;
 
         try {
+            statement = connection.prepareStatement(
+                    "UPDATE `" + tablePrefix + "users` "
+                            + "SET user = ? "
+                            + "WHERE user = ?");
+            statement.setString(1, "_INVALID_OLD_USERNAME_");
+            statement.setString(2, playerName);
+            statement.executeUpdate();
+            statement.close();
             statement = connection.prepareStatement("INSERT INTO " + tablePrefix + "users (user, uuid, lastlogin) VALUES (?, ?, UNIX_TIMESTAMP())", Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, playerName);
             statement.setString(2, uuid != null ? uuid.toString() : null);
@@ -683,6 +691,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     statement.close();
 
                     if (!playerName.isEmpty() && !playerName.equals(name)) {
+                        statement = connection.prepareStatement(
+                                "UPDATE `" + tablePrefix + "users` "
+                                        + "SET user = ? "
+                                        + "WHERE user = ?");
+                        statement.setString(1, "_INVALID_OLD_USERNAME_");
+                        statement.setString(2, name);
+                        statement.executeUpdate();
+                        statement.close();
                         statement = connection.prepareStatement(
                                 "UPDATE `" + tablePrefix + "users` "
                                         + "SET user = ?, uuid = ? "
@@ -979,7 +995,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "`uuid` varchar(36) NULL DEFAULT NULL,"
                     + "`lastlogin` int(32) unsigned NOT NULL,"
                     + "PRIMARY KEY (`id`),"
-                    + "UNIQUE KEY `user` (`user`),"
+                    + "INDEX(`user`(20) ASC),"
                     + "UNIQUE KEY `uuid` (`uuid`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
                 createStatement.close();
             }
@@ -1197,6 +1213,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     checkUpgradeAddScoreboardTips(statement);
                     return;
 
+                case DROP_NAME_UNIQUENESS:
+                    checkNameUniqueness(statement);
+                    return;
+
                 default:
                     break;
 
@@ -1349,6 +1369,34 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
     public DatabaseType getDatabaseType() {
         return DatabaseType.SQL;
+    }
+
+    private void checkNameUniqueness(final Statement statement) throws SQLException {
+        ResultSet resultSet = null;
+        try {
+            resultSet = statement.executeQuery("SHOW INDEXES"
+                    + "FROM `" + tablePrefix + "users` "
+                    + "WHERE Column_name='user' "
+                    + " AND NOT Non_unique");
+            if (!resultSet.next()) {
+                return;
+            }
+            resultSet.close();
+            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables to drop name uniqueness...");
+            statement.execute("ALTER TABLE `" + tablePrefix + "users`" 
+                    + "DROP INDEX `user`,"
+                    + "ADD INDEX `user` (`user`(20) ASC)");
+        } catch (SQLException ex) {
+        } finally {
+            if (resultSet != null) {
+                try {
+                    resultSet.close();
+                }
+                catch (SQLException e) {
+                    // Ignore
+                }
+            }
+        }
     }
 
     private void checkUpgradeAddAlchemy(final Statement statement) throws SQLException {
