@@ -1374,7 +1374,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private void checkNameUniqueness(final Statement statement) throws SQLException {
         ResultSet resultSet = null;
         try {
-            resultSet = statement.executeQuery("SHOW INDEXES"
+            resultSet = statement.executeQuery("SHOW INDEXES "
                     + "FROM `" + tablePrefix + "users` "
                     + "WHERE Column_name='user' "
                     + " AND NOT Non_unique");
@@ -1383,7 +1383,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             }
             resultSet.close();
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables to drop name uniqueness...");
-            statement.execute("ALTER TABLE `" + tablePrefix + "users`" 
+            statement.execute("ALTER TABLE `" + tablePrefix + "users` " 
                     + "DROP INDEX `user`,"
                     + "ADD INDEX `user` (`user`(20) ASC)");
         } catch (SQLException ex) {
