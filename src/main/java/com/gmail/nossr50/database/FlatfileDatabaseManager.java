@@ -864,7 +864,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         // Prevent the same player from being present multiple times
-                        if (character.length >= 42 && (!character[41].isEmpty() && !players.add(character[41]))) {
+                        if (character.length >= 42 && (!character[41].isEmpty() && !character[41].equals("NULL") && !players.add(character[41]))) {
                             continue;
                         }
 
