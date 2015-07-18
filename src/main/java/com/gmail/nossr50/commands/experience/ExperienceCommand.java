@@ -2,7 +2,9 @@ package com.gmail.nossr50.commands.experience;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -16,7 +18,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableList;
 
 public abstract class ExperienceCommand implements TabExecutor {
@@ -71,7 +72,12 @@ public abstract class ExperienceCommand implements TabExecutor {
 
                 // If the mcMMOPlayer doesn't exist, create a temporary profile and check if it's present in the database. If it's not, abort the process.
                 if (mcMMOPlayer == null) {
-                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, false);
+                    UUID uuid = null;
+                    OfflinePlayer player = mcMMO.p.getServer().getOfflinePlayer(playerName);
+                    if (player != null) {
+                        uuid = player.getUniqueId();
+                    }
+                    PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(playerName, uuid, false);
 
                     if (CommandUtils.unloadedProfile(sender, profile)) {
                         return true;
