@@ -70,6 +70,7 @@ public class UUIDUpdateAsyncTask extends BukkitRunnable {
             catch (Exception e) {
                 // Handle 429
                 if (e.getMessage().contains("429")) {
+                    size += userNamesSection.size();
                     try {
                         Thread.sleep(LIMIT_PERIOD);
                     } catch (InterruptedException ex) {
