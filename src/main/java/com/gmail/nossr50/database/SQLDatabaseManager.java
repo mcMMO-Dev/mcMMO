@@ -133,22 +133,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(statement);
+            tryClose(connection);
             massUpdateLock.unlock();
         }
 
@@ -178,22 +164,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(statement);
+            tryClose(connection);
             massUpdateLock.unlock();
         }
 
@@ -223,22 +195,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(statement);
+            tryClose(connection);
         }
 
         if (success) {
@@ -362,22 +320,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(statement);
+            tryClose(connection);
         }
 
         return success;
@@ -412,30 +356,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
+            tryClose(statement);
+            tryClose(connection);
         }
 
         return stats;
@@ -527,30 +450,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
+            tryClose(statement);
+            tryClose(connection);
         }
 
         return skills;
@@ -567,14 +469,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(connection);
         }
     }
 
@@ -610,22 +505,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
+            tryClose(statement);
         }
         return -1;
     }
@@ -722,30 +603,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
+            tryClose(statement);
+            tryClose(connection);
         }
 
         // Problem, nothing was returned
@@ -801,30 +661,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(e);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
+            tryClose(statement);
+            tryClose(connection);
         }
 
     }
@@ -848,22 +687,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             return false;
         }
         finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(statement);
+            tryClose(connection);
         }
     }
 
@@ -902,22 +727,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             return false;
         }
         finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(statement);
+            tryClose(connection);
         }
     }
 
@@ -940,30 +751,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(e);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
+            tryClose(statement);
+            tryClose(connection);
         }
 
         return users;
@@ -1105,38 +895,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (createStatement != null) {
-                try {
-                    createStatement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
+            tryClose(statement);
+            tryClose(createStatement);
+            tryClose(connection);
         }
 
     }
@@ -1228,14 +990,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(statement);
         }
     }
 
@@ -1269,14 +1024,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(statement);
         }
     }
 
@@ -1388,14 +1136,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "ADD INDEX `user` (`user`(20) ASC)");
         } catch (SQLException ex) {
         } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
         }
     }
 
@@ -1477,14 +1218,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
         }
     }
 
@@ -1514,14 +1248,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
         }
 
         new GetUUIDUpdatesRequired().runTaskLaterAsynchronously(mcMMO.p, 100); // wait until after first purge
@@ -1546,27 +1273,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 } catch (SQLException ex) {
                     printErrors(ex);
                 } finally {
-                    if (resultSet != null) {
-                        try {
-                            resultSet.close();
-                        } catch (SQLException e) {
-                            // Ignore
-                        }
-                    }
-                    if (statement != null) {
-                        try {
-                            statement.close();
-                        } catch (SQLException e) {
-                            // Ignore
-                        }
-                    }
-                    if (connection != null) {
-                        try {
-                            connection.close();
-                        } catch (SQLException e) {
-                            // Ignore
-                        }
-                    }
+                    tryClose(resultSet);
+                    tryClose(statement);
+                    tryClose(connection);
                 }
 
                 if (!names.isEmpty()) {
@@ -1603,14 +1312,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
         }
     }
 
@@ -1639,19 +1341,12 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
         }
     }
 
     private int getUserID(final Connection connection, final String playerName, final UUID uuid) {
-        if (cachedUserIDs.containsKey(uuid)) {
+        if (uuid != null && cachedUserIDs.containsKey(uuid)) {
             return cachedUserIDs.get(uuid);
         }
 
@@ -1667,7 +1362,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
             if (resultSet.next()) {
                 int id = resultSet.getInt("id");
 
-                cachedUserIDs.put(uuid, id);
+                if (uuid != null) {
+                    cachedUserIDs.put(uuid, id);
+                }
 
                 return id;
             }
@@ -1676,25 +1373,22 @@ public final class SQLDatabaseManager implements DatabaseManager {
             printErrors(ex);
         }
         finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
-            if (statement != null) {
-                try {
-                    statement.close();
-                }
-                catch (SQLException e) {
-                    // Ignore
-                }
-            }
+            tryClose(resultSet);
+            tryClose(statement);
         }
 
         return -1;
+    }
+    
+    private void tryClose(AutoCloseable closeable) {
+        if (closeable != null) {
+            try {
+                closeable.close();
+            }
+            catch (Exception e) {
+                // Ignore
+            }
+        }
     }
 
     @Override
