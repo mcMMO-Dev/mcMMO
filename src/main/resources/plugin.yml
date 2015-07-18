@@ -12,8 +12,7 @@ description: >
 
 author: nossr50
 authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking]
-website: http://dev.bukkit.org/server-mods/mcmmo/
-
+website: www.spigotmc.org/resources/mcmmo.2445/
 main: com.gmail.nossr50.mcMMO
 softdepend: [CombatTag, HealthBar]
 load: STARTUP
