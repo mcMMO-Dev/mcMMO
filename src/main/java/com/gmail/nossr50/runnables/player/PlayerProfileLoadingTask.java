@@ -44,7 +44,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
         PlayerProfile profile = mcMMO.getDatabaseManager().loadPlayerProfile(player.getName(), player.getUniqueId(), true);
         // If successful, schedule the apply
         if (profile.isLoaded()) {
-            new ApplySuccessfulProfile(profile).runTask(mcMMO.p);
+            new ApplySuccessfulProfile(new McMMOPlayer(player, profile)).runTask(mcMMO.p);
             return;
         }
 
@@ -59,10 +59,10 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
     }
 
     private class ApplySuccessfulProfile extends BukkitRunnable {
-        private final PlayerProfile profile;
+        private final McMMOPlayer mcMMOPlayer;
 
-        private ApplySuccessfulProfile(PlayerProfile profile) {
-            this.profile = profile;
+        private ApplySuccessfulProfile(McMMOPlayer mcMMOPlayer) {
+            this.mcMMOPlayer = mcMMOPlayer;
         }
 
         // Synchronized task
@@ -74,7 +74,7 @@ public class PlayerProfileLoadingTask extends BukkitRunnable {
                 return;
             }
 
-            McMMOPlayer mcMMOPlayer = new McMMOPlayer(player, profile);
+            mcMMOPlayer.setupPartyData();
             UserManager.track(mcMMOPlayer);
             mcMMOPlayer.actualizeRespawnATS();
             ScoreboardManager.setupPlayer(player);

@@ -101,12 +101,6 @@ public class McMMOPlayer {
         this.player = player;
         playerMetadata = new FixedMetadataValue(mcMMO.p, playerName);
         this.profile = profile;
-        party = PartyManager.getPlayerParty(playerName, uuid);
-        ptpRecord = new PartyTeleportRecord();
-
-        if (inParty()) {
-            loginParty();
-        }
 
         if (profile.getUniqueId() == null) {
             profile.setUniqueId(uuid);
@@ -531,6 +525,15 @@ public class McMMOPlayer {
     /*
      * Party Stuff
      */
+
+    public void setupPartyData() {
+        party = PartyManager.getPlayerParty(player.getName(), player.getUniqueId());
+        ptpRecord = new PartyTeleportRecord();
+
+        if (inParty()) {
+            loginParty();
+        }
+    }
 
     public void setPartyInvite(Party invite) {
         this.invite = invite;
