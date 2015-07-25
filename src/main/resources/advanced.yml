@@ -90,7 +90,7 @@ Skills:
             # Modifier: Extra damage for arrows that cause a daze (2 damage = 1 heart)
             ChanceMax: 50.0
             MaxBonusLevel: 1000
-            Modifier: 4.0
+            BonusDamage: 4.0
 
         Retrieve:
             # ChanceMax: Maximum chance of retrieving arrows when on <MaxBonusLevel> or higher
