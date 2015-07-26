@@ -10,6 +10,7 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Guardian;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -48,7 +49,6 @@ import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.temp.CompatableGuardianXP;
-
 import com.google.common.collect.ImmutableMap;
 
 public final class CombatUtils {
@@ -467,6 +467,7 @@ public final class CombatUtils {
                 switch (type) {
                     case BAT:
                     case SQUID:
+                    case RABBIT:
                         baseXP = ExperienceConfig.getInstance().getAnimalsXP();
                         break;
 
@@ -506,19 +507,15 @@ public final class CombatUtils {
                         }
                         break;
 
-                    default:
-                        if (type.name().equals("RABBIT")) {
-                            baseXP = ExperienceConfig.getInstance().getAnimalsXP();
-                            break;
-                        }
-                        if (type.name().equals("ENDERMITE")) {
+                    case GUARDIAN:
+                        if (((Guardian) target).isElder()) {
+                            baseXP = ExperienceConfig.getInstance().getElderGuardianXP();
+                        } else {
                             baseXP = ExperienceConfig.getInstance().getCombatXP(type);
-                            break;
                         }
-                        if (type.name().equals("GUARDIAN")) {
-                            baseXP = CompatableGuardianXP.get(target);
-                            break;
-                        }
+                        break;
+
+                    default:
                         baseXP = 1.0;
                         mcMMO.getModManager().addCustomEntity(target);
                         break;
