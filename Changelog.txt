@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 1.5.04-SNAPSHOT
+ = Fixed bug where absorption hearts could be attacked by allied players
 
 Version 1.5.03
  = Fixed bug where blocks would not get tracked correctly when using sticky pistons and slime blocks in certain situations

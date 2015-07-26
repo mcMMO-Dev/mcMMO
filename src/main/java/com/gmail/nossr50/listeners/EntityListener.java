@@ -23,6 +23,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
@@ -104,13 +105,15 @@ public class EntityListener implements Listener {
     /**
      * Monitor EntityChangeBlock events.
      *
-     * @param event The event to watch
+     * @param event
+     *            The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityChangeBlock(EntityChangeBlockEvent event) {
         Block block = event.getBlock();
 
-        // When the event is fired for the falling block that changes back to a normal block
+        // When the event is fired for the falling block that changes back to a
+        // normal block
         // event.getBlock().getType() returns AIR
         if (!BlockUtils.shouldBeWatched(block.getState()) && block.getType() != Material.AIR) {
             return;
@@ -142,7 +145,8 @@ public class EntityListener implements Listener {
     /**
      * Handle EntityDamageByEntity events that involve modifying the event.
      *
-     * @param event The event to watch
+     * @param event
+     *            The event to watch
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -151,12 +155,24 @@ public class EntityListener implements Listener {
         }
 
         double damage = event.getFinalDamage();
+        Entity defender = event.getEntity();
+        Entity attacker = event.getDamager();
 
         if (damage <= 0) {
+            if (defender instanceof Player && attacker instanceof Player) {
+                Player defendingPlayer = (Player) defender;
+                Player attackingPlayer = (Player) attacker;
+                if (event.getDamage(DamageModifier.ABSORPTION) > 0) {
+                    if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+            }
             return;
         }
 
-        Entity defender = event.getEntity();
+
 
         if (defender.hasMetadata(mcMMO.customDamageKey)) {
             defender.removeMetadata(mcMMO.customDamageKey, plugin);
@@ -173,7 +189,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        Entity attacker = event.getDamager();
+
 
         if (Misc.isNPCEntity(attacker)) {
             return;
@@ -207,7 +223,8 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            // We want to make sure we're not gaining XP or applying abilities when we hit ourselves
+            // We want to make sure we're not gaining XP or applying abilities
+            // when we hit ourselves
             if (defendingPlayer.equals(attackingPlayer)) {
                 return;
             }
@@ -225,7 +242,8 @@ public class EntityListener implements Listener {
     /**
      * Handle EntityDamage events that involve modifying the event.
      *
-     * @param event The event to modify
+     * @param event
+     *            The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
@@ -371,7 +389,8 @@ public class EntityListener implements Listener {
     /**
      * Monitor EntityDeath events.
      *
-     * @param event The event to watch
+     * @param event
+     *            The event to watch
      */
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDeathLowest(EntityDeathEvent event) {
@@ -395,7 +414,8 @@ public class EntityListener implements Listener {
     /**
      * Monitor EntityDeath events.
      *
-     * @param event The event to watch
+     * @param event
+     *            The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntityDeath(EntityDeathEvent event) {
@@ -412,7 +432,8 @@ public class EntityListener implements Listener {
     /**
      * Monitor CreatureSpawn events.
      *
-     * @param event The event to watch
+     * @param event
+     *            The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onCreatureSpawn(CreatureSpawnEvent event) {
@@ -442,7 +463,8 @@ public class EntityListener implements Listener {
     /**
      * Handle ExplosionPrime events that involve modifying the event.
      *
-     * @param event The event to modify
+     * @param event
+     *            The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplosionPrime(ExplosionPrimeEvent event) {
@@ -452,7 +474,8 @@ public class EntityListener implements Listener {
             return;
         }
 
-        // We can make this assumption because we (should) be the only ones using this exact metadata
+        // We can make this assumption because we (should) be the only ones
+        // using this exact metadata
         Player player = plugin.getServer().getPlayerExact(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
         if (!UserManager.hasPlayerDataKey(player)) {
@@ -469,7 +492,8 @@ public class EntityListener implements Listener {
     /**
      * Handle EntityExplode events that involve modifying the event.
      *
-     * @param event The event to modify
+     * @param event
+     *            The event to modify
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEnitityExplode(EntityExplodeEvent event) {
@@ -479,7 +503,8 @@ public class EntityListener implements Listener {
             return;
         }
 
-        // We can make this assumption because we (should) be the only ones using this exact metadata
+        // We can make this assumption because we (should) be the only ones
+        // using this exact metadata
         Player player = plugin.getServer().getPlayerExact(entity.getMetadata(mcMMO.tntMetadataKey).get(0).asString());
 
         if (!UserManager.hasPlayerDataKey(player)) {
@@ -497,7 +522,8 @@ public class EntityListener implements Listener {
     /**
      * Handle EntityExplode events that involve modifying the event.
      *
-     * @param event The event to modify
+     * @param event
+     *            The event to modify
      */
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityExplodeMonitor(EntityExplodeEvent event) {
@@ -513,7 +539,8 @@ public class EntityListener implements Listener {
     /**
      * Handle FoodLevelChange events that involve modifying the event.
      *
-     * @param event The event to modify
+     * @param event
+     *            The event to modify
      */
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
@@ -538,39 +565,59 @@ public class EntityListener implements Listener {
         }
 
         /*
-         * Some foods have 3 ranks
-         * Some foods have 5 ranks
-         * The number of ranks is based on how 'common' the item is
-         * We can adjust this quite easily if we find something is giving too much of a bonus
+         * Some foods have 3 ranks Some foods have 5 ranks The number of ranks
+         * is based on how 'common' the item is We can adjust this quite easily
+         * if we find something is giving too much of a bonus
          */
         switch (player.getItemInHand().getType()) {
-            case BAKED_POTATO:  /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
-            case BREAD:         /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-            case CARROT_ITEM:   /* RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @ 1000 */
-            case GOLDEN_CARROT: /* RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @ 1000 */
-            case MUSHROOM_SOUP: /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
-            case PUMPKIN_PIE:   /* RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @ 1000 */
+            case BAKED_POTATO: /*
+                                * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
+                                * 1000
+                                */
+            case BREAD: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+            case CARROT_ITEM: /*
+                               * RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @
+                               * 1000
+                               */
+            case GOLDEN_CARROT: /*
+                                 * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
+                                 * 1000
+                                 */
+            case MUSHROOM_SOUP: /*
+                                 * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
+                                 * 1000
+                                 */
+            case PUMPKIN_PIE: /*
+                               * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
+                               * 1000
+                               */
                 if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FARMERS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
                 }
                 return;
 
-            case COOKIE:           /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-            case MELON:            /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-            case POISONOUS_POTATO: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-            case POTATO_ITEM:      /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+            case COOKIE: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+            case MELON: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+            case POISONOUS_POTATO: /*
+                                    * RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER
+                                    * @ 1000
+                                    */
+            case POTATO_ITEM: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                 if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FARMERS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
                 }
                 return;
 
-            case COOKED_FISH: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
+            case COOKED_FISH: /*
+                               * RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @
+                               * 1000
+                               */
                 if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FISHERMANS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
                 }
                 return;
 
-            case RAW_FISH:    /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+            case RAW_FISH: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                 if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FISHERMANS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
                 }
@@ -584,7 +631,8 @@ public class EntityListener implements Listener {
     /**
      * Monitor EntityTame events.
      *
-     * @param event The event to watch
+     * @param event
+     *            The event to watch
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onEntityTame(EntityTameEvent event) {
@@ -606,7 +654,8 @@ public class EntityListener implements Listener {
     /**
      * Handle EntityTarget events.
      *
-     * @param event The event to process
+     * @param event
+     *            The event to process
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityTarget(EntityTargetEvent event) {
@@ -624,7 +673,8 @@ public class EntityListener implements Listener {
             return;
         }
 
-        // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
+        // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player,
+        // and the owner is in the same party
         // So we can make some assumptions here, about our casting and our check
         if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire((Player) tameable.getOwner()))) {
             event.setCancelled(true);
@@ -632,9 +682,11 @@ public class EntityListener implements Listener {
     }
 
     /**
-     * Handle PotionSplash events in order to fix broken Splash Potion of Saturation.
+     * Handle PotionSplash events in order to fix broken Splash Potion of
+     * Saturation.
      *
-     * @param event The event to process
+     * @param event
+     *            The event to process
      */
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPotionSplash(PotionSplashEvent event) {
