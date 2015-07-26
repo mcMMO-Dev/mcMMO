@@ -64,7 +64,8 @@ public class Mining {
             case QUARTZ_ORE:
             case REDSTONE_ORE:
             case STONE:
-                Misc.dropItem(blockState.getLocation(), new ItemStack(blockType));
+            case PRISMARINE:
+                Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack(1));
                 return;
 
             default:
