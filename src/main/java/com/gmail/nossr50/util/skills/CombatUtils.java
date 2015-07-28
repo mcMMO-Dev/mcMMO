@@ -48,7 +48,6 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.MobHealthbarUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.temp.CompatableGuardianXP;
 import com.google.common.collect.ImmutableMap;
 
 public final class CombatUtils {

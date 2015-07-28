@@ -7,11 +7,9 @@ Key:
   ! Change
   - Removal
 
-Version 1.5.04-SNAPSHOT
+Version 1.5.03
  = Fixed bug where absorption hearts could be attacked by allied players
  = Fixed bug where new forms of stone would drop the wrong type when mined with Silk Touch
-
-Version 1.5.03
  = Fixed bug where blocks would not get tracked correctly when using sticky pistons and slime blocks in certain situations
  = Fixed bug where config value for Daze damage was ignored
  = Fixed UUID updater to not lose data on errors
