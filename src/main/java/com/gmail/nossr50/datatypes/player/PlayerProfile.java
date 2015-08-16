@@ -355,7 +355,7 @@ public class PlayerProfile {
         int sum = 0;
 
         for (SkillType parent : parents) {
-            sum += Math.min(getSkillLevel(parent), 1000);
+            sum += Math.min(getSkillLevel(parent), parent.getMaxLevel());
         }
 
         return sum / parents.size();
