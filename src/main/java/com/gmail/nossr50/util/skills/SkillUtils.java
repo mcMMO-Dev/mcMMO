@@ -177,7 +177,9 @@ public class SkillUtils {
     }
 
     public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier) {
-        handleDurabilityChange(itemStack, durabilityModifier, 1.0);
+        if (!itemStack.isUnbreakable()) {
+            handleDurabilityChange(itemStack, durabilityModifier, 1.0);
+        }
     }
 
     /**
