@@ -451,6 +451,8 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getDoubleDropsDisabled(SkillType skill) {
         String skillName = StringUtils.getCapitalized(skill.toString());
         ConfigurationSection section = config.getConfigurationSection("Double_Drops." + skillName);
+        if (section == null)
+            return false;
         Set<String> keys = section.getKeys(false);
         boolean disabled = true;
 
