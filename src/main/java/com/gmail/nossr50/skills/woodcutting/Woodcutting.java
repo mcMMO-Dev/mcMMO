@@ -62,13 +62,7 @@ public final class Woodcutting {
             species = ((Tree) blockState.getData()).getSpecies();
         }
 
-        int xp = ExperienceConfig.getInstance().getWoodcuttingTreeXP(species);
-
-        if (species == TreeSpecies.JUNGLE && experienceGainMethod == ExperienceGainMethod.TREE_FELLER) {
-            xp *= 0.5;
-        }
-
-        return xp;
+        return ExperienceConfig.getInstance().getWoodcuttingTreeXP(species);
     }
 
     /**
