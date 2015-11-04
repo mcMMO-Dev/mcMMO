@@ -80,6 +80,15 @@ public final class Woodcutting {
             if (blockState.getData() instanceof Tree) {
                 species = ((Tree) blockState.getData()).getSpecies();
             }
+            if (blockState.getType() == Material.LOG_2) {
+                byte data = blockState.getRawData();
+                if ((data & 1) != 0) {
+                    species = TreeSpecies.ACACIA;
+                }
+                if ((data & 2) != 0) {
+                    species = TreeSpecies.DARK_OAK;
+                }
+            }
 
             if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(species)) {
                 Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
