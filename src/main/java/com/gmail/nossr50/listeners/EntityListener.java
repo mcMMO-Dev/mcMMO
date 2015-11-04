@@ -440,6 +440,7 @@ public class EntityListener implements Listener {
         LivingEntity entity = event.getEntity();
 
         switch (event.getSpawnReason()) {
+            case NETHER_PORTAL:
             case SPAWNER:
             case SPAWNER_EGG:
                 entity.setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
