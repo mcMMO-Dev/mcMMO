@@ -45,7 +45,15 @@ public class SkillresetCommand implements TabExecutor {
                     return true;
                 }
 
-                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), SkillType.getSkill(args[0]));
+                SkillType skill;
+                if (args[0].equalsIgnoreCase("all")) {
+                    skill = null;
+                }
+                else {
+                    skill = SkillType.getSkill(args[1]);
+                }
+
+                editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill);
                 return true;
 
             case 2:
@@ -140,7 +148,7 @@ public class SkillresetCommand implements TabExecutor {
     }
 
     private boolean validateArguments(CommandSender sender, String skillName) {
-        return !(CommandUtils.isInvalidSkill(sender, skillName) && !skillName.equalsIgnoreCase("all"));
+        return skillName.equalsIgnoreCase("all") || !CommandUtils.isInvalidSkill(sender, skillName);
     }
 
     protected static void handleSenderMessage(CommandSender sender, String playerName, SkillType skill) {
