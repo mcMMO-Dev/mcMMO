@@ -30,6 +30,7 @@ import com.google.common.collect.ImmutableList;
 public class SkillresetCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        SkillType skill;
         switch (args.length) {
             case 1:
                 if (CommandUtils.noConsoleUsage(sender)) {
@@ -45,7 +46,6 @@ public class SkillresetCommand implements TabExecutor {
                     return true;
                 }
 
-                SkillType skill;
                 if (args[0].equalsIgnoreCase("all")) {
                     skill = null;
                 }
@@ -66,7 +66,6 @@ public class SkillresetCommand implements TabExecutor {
                     return true;
                 }
 
-                SkillType skill;
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
                 }
