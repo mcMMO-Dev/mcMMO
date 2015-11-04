@@ -25,6 +25,7 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.mining.Mining;
 import com.gmail.nossr50.skills.smelting.Smelting.Tier;
 import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
@@ -71,6 +72,10 @@ public class SmeltingManager extends SkillManager {
             }
 
             if (item == null) {
+                return false;
+            }
+            
+            if (!EventUtils.simulateBlockBreak(blockState.getBlock(), player, true)) {
                 return false;
             }
 
