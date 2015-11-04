@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.bukkit.CropState;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NetherWartsState;
 import org.bukkit.block.BlockState;
@@ -235,15 +236,24 @@ public class HerbalismManager extends SkillManager {
 
         Player player = getPlayer();
 
-        if (treasures.isEmpty() || !EventUtils.simulateBlockBreak(blockState.getBlock(), player, false)) {
+        if (treasures.isEmpty()) {
             return false;
         }
+        int skillLevel = getSkillLevel();
+        Location location = blockState.getLocation();
 
-        blockState.setType(Material.AIR);
-
-        Misc.dropItem(blockState.getLocation(), treasures.get(Misc.getRandom().nextInt(treasures.size())).getDrop());
-        player.sendMessage(LocaleLoader.getString("Herbalism.HylianLuck"));
-        return true;
+        for (HylianTreasure treasure : treasures) {
+            if (skillLevel >= treasure.getDropLevel() && SkillUtils.treasureDropSuccessful(getPlayer(), treasure.getDropChance(), activationChance)) {
+                if (!EventUtils.simulateBlockBreak(blockState.getBlock(), player, false)) {
+                    return false;
+                }
+                blockState.setType(Material.AIR);
+                Misc.dropItem(location, treasure.getDrop());
+                player.sendMessage(LocaleLoader.getString("Herbalism.HylianLuck"));
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
