@@ -11,6 +11,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -20,6 +21,7 @@ import org.bukkit.event.block.BlockDamageEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
@@ -49,6 +51,8 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.MetadataValue;
 
 public class BlockListener implements Listener {
     private final mcMMO plugin;
@@ -122,6 +126,34 @@ public class BlockListener implements Listener {
 
         // Needed only because under some circumstances Minecraft doesn't move the block
         //new StickyPistonTrackerTask(direction, event.getBlock(), movedBlock).runTaskLater(plugin, 2);
+    }
+
+    /**
+     * Monitor falling blocks.
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onFallingBlock(EntityChangeBlockEvent event) {
+
+        if (BlockUtils.shouldBeWatched(event.getBlock().getState()) && event.getEntityType().equals(EntityType.FALLING_BLOCK)) {
+            if (event.getTo().equals(Material.AIR) && mcMMO.getPlaceStore().isTrue(event.getBlock())) {
+                event.getEntity().setMetadata("mcMMOBlockFall", new FixedMetadataValue( plugin, event.getBlock().getLocation()));
+            } else {
+                List<MetadataValue> values = event.getEntity().getMetadata( "mcMMOBlockFall" );
+
+                if (!values.isEmpty()) {
+
+                    if (values.get(0).value() == null) return;
+                    Block spawn = ((org.bukkit.Location) values.get(0).value()).getBlock();
+
+
+                    mcMMO.getPlaceStore().setTrue( event.getBlock() );
+                    mcMMO.getPlaceStore().setFalse( spawn );
+
+                }
+            }
+        }
     }
 
     /**
