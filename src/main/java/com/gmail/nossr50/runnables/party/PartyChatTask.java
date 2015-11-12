@@ -1,16 +1,15 @@
 package com.gmail.nossr50.runnables.party;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.party.Party;
+import com.gmail.nossr50.locale.LocaleLoader;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.locale.LocaleLoader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PartyChatTask extends BukkitRunnable {
     private Plugin plugin;
@@ -46,6 +45,6 @@ public class PartyChatTask extends BukkitRunnable {
             }
         }
 
-        plugin.getServer().getConsoleSender().sendMessage("[mcMMO] [P]<" + party.getName() + ">" + message);
+        plugin.getServer().getConsoleSender().sendMessage(ChatColor.stripColor("[mcMMO] [P]<" + party.getName() + ">" + message));
     }
 }
