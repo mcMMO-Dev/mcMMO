@@ -105,7 +105,7 @@ public class SmeltingManager extends SkillManager {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.GOLD + LocaleLoader.getString("Item.FluxPickaxe.Name"));
 
-        List<String> itemLore = new ArrayList<String>();
+        List<String> itemLore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<String>();
         itemLore.add("mcMMO Item");
         itemLore.add(LocaleLoader.getString("Item.FluxPickaxe.Lore.1"));
         itemLore.add(LocaleLoader.getString("Item.FluxPickaxe.Lore.2", Smelting.fluxMiningUnlockLevel));
