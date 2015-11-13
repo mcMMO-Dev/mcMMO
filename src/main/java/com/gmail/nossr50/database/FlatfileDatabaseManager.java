@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumMap;
@@ -138,7 +139,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
-                    String name = character[0];
+                    String name = character[USERNAME];
                     long lastPlayed = 0;
                     boolean rewrite = false;
                     try {
@@ -213,7 +214,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     // Write out the same file but when we get to the player we want to remove, we skip his line.
-                    if (!worked && line.split(":")[0].equalsIgnoreCase(playerName)) {
+                    if (!worked && line.split(":")[USERNAME].equalsIgnoreCase(playerName)) {
                         mcMMO.p.getLogger().info("User found, removing...");
                         worked = true;
                         continue; // Skip the player
@@ -272,7 +273,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 while ((line = in.readLine()) != null) {
                     // Read the line in and copy it to the output if it's not the player we want to edit
                     String[] character = line.split(":");
-                    if (!(uuid != null && character[41].equalsIgnoreCase(uuid.toString())) && !character[0].equalsIgnoreCase(playerName)) {
+                    if (!(uuid != null && character[UUID_INDEX].equalsIgnoreCase(uuid.toString())) && !character[USERNAME].equalsIgnoreCase(playerName)) {
                         writer.append(line).append("\r\n");
                     }
                     else {
@@ -473,20 +474,20 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                     // Compare names because we don't have a valid uuid for that player even
                     // if input uuid is not null
-                    if (character[41].equalsIgnoreCase("NULL")) {
-                        if (!character[0].equalsIgnoreCase(playerName)) {
+                    if (character[UUID_INDEX].equalsIgnoreCase("NULL")) {
+                        if (!character[USERNAME].equalsIgnoreCase(playerName)) {
                             continue;
                         }
                     }
                     // If input uuid is not null then we should compare uuids
-                    else if ((uuid != null && !character[41].equalsIgnoreCase(uuid.toString())) || (uuid == null && !character[0].equalsIgnoreCase(playerName))) {
+                    else if ((uuid != null && !character[UUID_INDEX].equalsIgnoreCase(uuid.toString())) || (uuid == null && !character[USERNAME].equalsIgnoreCase(playerName))) {
                         continue;
                     }
 
                     // Update playerName in database after name change
-                    if (!character[0].equalsIgnoreCase(playerName)) {
-                        mcMMO.p.debug("Name change detected: " + character[0] + " => " + playerName);
-                        character[0] = playerName;
+                    if (!character[USERNAME].equalsIgnoreCase(playerName)) {
+                        mcMMO.p.debug("Name change detected: " + character[USERNAME] + " => " + playerName);
+                        character[USERNAME] = playerName;
                     }
 
                     return loadFromLine(character);
@@ -585,14 +586,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
-                    if (!worked && character[0].equalsIgnoreCase(userName)) {
+                    if (!worked && character[USERNAME].equalsIgnoreCase(userName)) {
                         if (character.length < 42) {
                             mcMMO.p.getLogger().severe("Could not update UUID for " + userName + "!");
                             mcMMO.p.getLogger().severe("Database entry is invalid.");
                             continue;
                         }
 
-                        line = line.replace(character[41], uuid.toString());
+                        line = line.replace(character[UUID_INDEX], uuid.toString());
                         worked = true;
                     }
 
@@ -644,14 +645,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 while (((line = in.readLine()) != null)) {
                     String[] character = line.split(":");
-                    if (!fetchedUUIDs.isEmpty() && fetchedUUIDs.containsKey(character[0])) {
+                    if (!fetchedUUIDs.isEmpty() && fetchedUUIDs.containsKey(character[USERNAME])) {
                         if (character.length < 42) {
-                            mcMMO.p.getLogger().severe("Could not update UUID for " + character[0] + "!");
+                            mcMMO.p.getLogger().severe("Could not update UUID for " + character[USERNAME] + "!");
                             mcMMO.p.getLogger().severe("Database entry is invalid.");
                             continue;
                         }
 
-                        character[41] = fetchedUUIDs.remove(character[0]).toString();
+                        character[UUID_INDEX] = fetchedUUIDs.remove(character[USERNAME]).toString();
                         line = new StringBuilder(org.apache.commons.lang.StringUtils.join(character, ":")).append(":").toString();
                     }
 
@@ -702,7 +703,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
-                    users.add(character[0]);
+                    users.add(character[USERNAME]);
                 }
             }
             catch (Exception e) {
@@ -760,7 +761,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     String[] data = line.split(":");
-                    playerName = data[0];
+                    playerName = data[USERNAME];
                     int powerLevel = 0;
 
                     Map<SkillType, Integer> skills = getSkillMapFromLine(data);
@@ -856,15 +857,20 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         if (line.charAt(line.length() - 1) != ':') {
                             line = line.concat(":");
                         }
+                        boolean updated = false;
                         String[] character = line.split(":");
 
                         // Prevent the same username from being present multiple times
-                        if (!usernames.add(character[0])) {
-                            continue;
+                        if (!usernames.add(character[USERNAME])) {
+                            character[USERNAME] = "_INVALID_OLD_USERNAME_'";
+                            updated = true;
+                            if (character.length < UUID_INDEX + 1 || character[UUID_INDEX].equals("NULL")) {
+                                continue;
+                            }
                         }
 
                         // Prevent the same player from being present multiple times
-                        if (character.length >= 42 && (!character[41].isEmpty() && !character[41].equals("NULL") && !players.add(character[41]))) {
+                        if (character.length >= 42 && (!character[UUID_INDEX].isEmpty() && !character[UUID_INDEX].equals("NULL") && !players.add(character[UUID_INDEX]))) {
                             continue;
                         }
 
@@ -876,39 +882,54 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                         String oldVersion = null;
 
-                        if (character.length <= 33) {
-                            // Introduction of HUDType
-                            // Version 1.1.06
-                            // commit 78f79213cdd7190cd11ae54526f3b4ea42078e8a
-                            line = line.concat(" :");
-                            character = line.split(":");
-                            oldVersion = "1.1.06";
-                        }
-
-                        if (!character[33].isEmpty()) {
+                        if (character.length > 33 && !character[33].isEmpty()) {
                             // Removal of Spout Support
                             // Version 1.4.07-dev2
                             // commit 7bac0e2ca5143bce84dc160617fed97f0b1cb968
-                            line = line.replace(character[33], "");
+                            character[33] = "";
                             if (oldVersion == null) {
                                 oldVersion = "1.4.07";
+                            }
+                            updated = true;
+                        }
+
+                        if (Config.getInstance().getTruncateSkills()) {
+                            for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
+                                int index = getSkillIndex(skill);
+                                if (index >= character.length) {
+                                    continue;
+                                }
+                                int cap = Config.getInstance().getLevelCap(skill);
+                                if (Integer.valueOf(character[index]) > cap) {
+                                    mcMMO.p.getLogger().warning("Truncating " + skill.getName() + " to configured max level for player " + character[USERNAME]);
+                                    character[index] = cap + "";
+                                    updated = true;
+                                }
                             }
                         }
 
                         // If they're valid, rewrite them to the file.
-                        if (character.length == 43) {
+                        if (!updated && character.length == 43) {
                             writer.append(line).append("\r\n");
                             continue;
                         }
 
-                        StringBuilder newLine = new StringBuilder(line);
+                        if (character.length <= 33) {
+                            // Introduction of HUDType
+                            // Version 1.1.06
+                            // commit 78f79213cdd7190cd11ae54526f3b4ea42078e8a
+                            character = Arrays.copyOf(character, character.length + 1);
+                            character[character.length - 1] = "";
+                            oldVersion = "1.1.06";
+                        }
 
                         if (character.length <= 35) {
                             // Introduction of Fishing
                             // Version 1.2.00
                             // commit a814b57311bc7734661109f0e77fc8bab3a0bd29
-                            newLine.append(0).append(":");
-                            newLine.append(0).append(":");
+                            character = Arrays.copyOf(character, character.length + 2);
+                            character[character.length - 1] = "0";
+                            character[character.length - 2] = "0";
                             if (oldVersion == null) {
                                 oldVersion = "1.2.00";
                             }
@@ -917,7 +938,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             // Introduction of Blast Mining cooldowns
                             // Version 1.3.00-dev
                             // commit fadbaf429d6b4764b8f1ad0efaa524a090e82ef5
-                            newLine.append(0).append(":");
+                            character = Arrays.copyOf(character, character.length + 1);
+                            character[character.length - 1] = "0";
                             if (oldVersion == null) {
                                 oldVersion = "1.3.00";
                             }
@@ -927,7 +949,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             // Version 1.4.00-dev
                             // commmit 3f6c07ba6aaf44e388cc3b882cac3d8f51d0ac28
                             // XXX Cannot create an OfflinePlayer at startup, use 0 and fix in purge
-                            newLine.append("0").append(":");
+                            character = Arrays.copyOf(character, character.length + 1);
+                            character[character.length - 1] = "0";
                             if (oldVersion == null) {
                                 oldVersion = "1.4.00";
                             }
@@ -936,7 +959,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             // Addition of mob healthbars
                             // Version 1.4.06
                             // commit da29185b7dc7e0d992754bba555576d48fa08aa6
-                            newLine.append(Config.getInstance().getMobHealthbarDefault().toString()).append(":");
+                            character = Arrays.copyOf(character, character.length + 1);
+                            character[character.length - 1] = Config.getInstance().getMobHealthbarDefault().toString();
                             if (oldVersion == null) {
                                 oldVersion = "1.4.06";
                             }
@@ -944,8 +968,9 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         if (character.length <= 39) {
                             // Addition of Alchemy
                             // Version 1.4.08
-                            newLine.append("0").append(":");
-                            newLine.append("0").append(":");
+                            character = Arrays.copyOf(character, character.length + 2);
+                            character[character.length - 1] = "0";
+                            character[character.length - 2] = "0";
                             if (oldVersion == null) {
                                 oldVersion = "1.4.08";
                             }
@@ -954,7 +979,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                             // Addition of UUIDs
                             // Version 1.5.01
                             // Add a value because otherwise it gets removed
-                            newLine.append("NULL:");
+                            character = Arrays.copyOf(character, character.length + 1);
+                            character[character.length - 1] = "NULL";
                             if (oldVersion == null) {
                                 oldVersion = "1.5.01";
                             }
@@ -962,61 +988,66 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         if (character.length <= 42) {
                             // Addition of scoreboard tips auto disable
                             // Version 1.5.02
-                            newLine.append("0").append(":");
+                            character = Arrays.copyOf(character, character.length + 1);
+                            character[character.length - 1] = "0";
                             if (oldVersion == null) {
                                 oldVersion = "1.5.02";
                             }
                         }
 
-                        // Remove any blanks that shouldn't be there, and validate the other fields
-                        String[] newCharacter = newLine.toString().split(":");
                         boolean corrupted = false;
 
-                        for (int i = 0; i < newCharacter.length; i++) {
-                            if (newCharacter[i].isEmpty() && !(i == 2 || i == 3 || i == 23 || i == 33 || i == 41)) {
+                        for (int i = 0; i < character.length; i++) {
+                            if (character[i].isEmpty() && !(i == 2 || i == 3 || i == 23 || i == 33 || i == 41)) {
                                 corrupted = true;
-
-                                if (newCharacter.length != 43) {
-                                    newCharacter = (String[]) ArrayUtils.remove(newCharacter, i);
+                                if (i == 37) {
+                                    character[i] = String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+                                }
+                                else if (i == 38) {
+                                    character[i] = Config.getInstance().getMobHealthbarDefault().toString();
                                 }
                                 else {
-                                    if (i == 37) {
-                                        newCharacter[i] = String.valueOf(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
-                                    }
-                                    else if (i == 38) {
-                                        newCharacter[i] = Config.getInstance().getMobHealthbarDefault().toString();
-                                    }
-                                    else {
-                                        newCharacter[i] = "0";
-                                    }
+                                    character[i] = "0";
                                 }
                             }
 
-                            if (StringUtils.isInt(newCharacter[i]) && i == 38) {
+                            if (StringUtils.isInt(character[i]) && i == 38) {
                                 corrupted = true;
-                                newCharacter[i] = Config.getInstance().getMobHealthbarDefault().toString();
+                                character[i] = Config.getInstance().getMobHealthbarDefault().toString();
                             }
 
-                            if (!StringUtils.isInt(newCharacter[i]) && !(i == 0 || i == 2 || i == 3 || i == 23 || i == 33 || i == 38 || i == 41)) {
+                            if (!StringUtils.isInt(character[i]) && !(i == 0 || i == 2 || i == 3 || i == 23 || i == 33 || i == 38 || i == 41)) {
                                 corrupted = true;
-                                newCharacter[i] = "0";
+                                character[i] = "0";
                             }
                         }
 
                         if (corrupted) {
-                            mcMMO.p.debug("Updating corrupted database line for player " + newCharacter[0]);
+                            mcMMO.p.debug("Updating corrupted database line for player " + character[USERNAME]);
                         }
 
                         if (oldVersion != null) {
-                            mcMMO.p.debug("Updating database line from before version " + oldVersion + " for player " + character[0]);
+                            mcMMO.p.debug("Updating database line from before version " + oldVersion + " for player " + character[USERNAME]);
                         }
 
-                        if (corrupted || oldVersion != null) {
-                            newLine = new StringBuilder(org.apache.commons.lang.StringUtils.join(newCharacter, ":"));
-                            newLine = newLine.append(":");
+                        updated |= corrupted;
+                        updated |= oldVersion != null;
+
+                        if (Config.getInstance().getTruncateSkills()) {
+                            Map<SkillType, Integer> skills = getSkillMapFromLine(character);
+                            for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
+                                int cap = Config.getInstance().getLevelCap(skill);
+                                if (skills.get(skill) > cap) {
+                                    updated = true;
+                                }
+                            }
                         }
 
-                        writer.append(newLine).append("\r\n");
+                        if (updated) {
+                            line = new StringBuilder(org.apache.commons.lang.StringUtils.join(character, ":")).append(":").toString();
+                        }
+
+                        writer.append(line).append("\r\n");
                     }
 
                     // Write the new file
@@ -1106,35 +1137,35 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
         // TODO on updates, put new values in a try{} ?
 
-        skillsXp.put(SkillType.TAMING, (float) Integer.valueOf(character[25]));
-        skillsXp.put(SkillType.MINING, (float) Integer.valueOf(character[4]));
-        skillsXp.put(SkillType.REPAIR, (float) Integer.valueOf(character[15]));
-        skillsXp.put(SkillType.WOODCUTTING, (float) Integer.valueOf(character[6]));
-        skillsXp.put(SkillType.UNARMED, (float) Integer.valueOf(character[16]));
-        skillsXp.put(SkillType.HERBALISM, (float) Integer.valueOf(character[17]));
-        skillsXp.put(SkillType.EXCAVATION, (float) Integer.valueOf(character[18]));
-        skillsXp.put(SkillType.ARCHERY, (float) Integer.valueOf(character[19]));
-        skillsXp.put(SkillType.SWORDS, (float) Integer.valueOf(character[20]));
-        skillsXp.put(SkillType.AXES, (float) Integer.valueOf(character[21]));
-        skillsXp.put(SkillType.ACROBATICS, (float) Integer.valueOf(character[22]));
-        skillsXp.put(SkillType.FISHING, (float) Integer.valueOf(character[35]));
-        skillsXp.put(SkillType.ALCHEMY, (float) Integer.valueOf(character[40]));
+        skillsXp.put(SkillType.TAMING, (float) Integer.valueOf(character[EXP_TAMING]));
+        skillsXp.put(SkillType.MINING, (float) Integer.valueOf(character[EXP_MINING]));
+        skillsXp.put(SkillType.REPAIR, (float) Integer.valueOf(character[EXP_REPAIR]));
+        skillsXp.put(SkillType.WOODCUTTING, (float) Integer.valueOf(character[EXP_WOODCUTTING]));
+        skillsXp.put(SkillType.UNARMED, (float) Integer.valueOf(character[EXP_UNARMED]));
+        skillsXp.put(SkillType.HERBALISM, (float) Integer.valueOf(character[EXP_HERBALISM]));
+        skillsXp.put(SkillType.EXCAVATION, (float) Integer.valueOf(character[EXP_EXCAVATION]));
+        skillsXp.put(SkillType.ARCHERY, (float) Integer.valueOf(character[EXP_ARCHERY]));
+        skillsXp.put(SkillType.SWORDS, (float) Integer.valueOf(character[EXP_SWORDS]));
+        skillsXp.put(SkillType.AXES, (float) Integer.valueOf(character[EXP_AXES]));
+        skillsXp.put(SkillType.ACROBATICS, (float) Integer.valueOf(character[EXP_ACROBATICS]));
+        skillsXp.put(SkillType.FISHING, (float) Integer.valueOf(character[EXP_FISHING]));
+        skillsXp.put(SkillType.ALCHEMY, (float) Integer.valueOf(character[EXP_ALCHEMY]));
 
         // Taming - Unused
-        skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(character[32]));
+        skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(character[COOLDOWN_SUPER_BREAKER]));
         // Repair - Unused
-        skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(character[28]));
-        skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(character[26]));
-        skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(character[29]));
-        skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(character[27]));
+        skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(character[COOLDOWN_TREE_FELLER]));
+        skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(character[COOLDOWN_BERSERK]));
+        skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(character[COOLDOWN_GREEN_TERRA]));
+        skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(character[COOLDOWN_GIGA_DRILL_BREAKER]));
         // Archery - Unused
-        skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(character[30]));
-        skillsDATS.put(AbilityType.SKULL_SPLITTER, Integer.valueOf(character[31]));
+        skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(character[COOLDOWN_SERRATED_STRIKES]));
+        skillsDATS.put(AbilityType.SKULL_SPLITTER, Integer.valueOf(character[COOLDOWN_SKULL_SPLITTER]));
         // Acrobatics - Unused
-        skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(character[36]));
+        skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(character[COOLDOWN_BLAST_MINING]));
 
         try {
-            mobHealthbarType = MobHealthbarType.valueOf(character[38]);
+            mobHealthbarType = MobHealthbarType.valueOf(character[HEALTHBAR]);
         }
         catch (Exception e) {
             mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
@@ -1142,38 +1173,38 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
         UUID uuid;
         try {
-            uuid = UUID.fromString(character[41]);
+            uuid = UUID.fromString(character[UUID_INDEX]);
         }
         catch (Exception e) {
             uuid = null;
         }
 
         try {
-            scoreboardTipsShown = Integer.valueOf(character[42]);
+            scoreboardTipsShown = Integer.valueOf(character[SCOREBOARD_TIPS]);
         }
         catch (Exception e) {
             scoreboardTipsShown = 0;
         }
 
-        return new PlayerProfile(character[0], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown);
+        return new PlayerProfile(character[USERNAME], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown);
     }
 
     private Map<SkillType, Integer> getSkillMapFromLine(String[] character) {
         Map<SkillType, Integer> skills = new EnumMap<SkillType, Integer>(SkillType.class);   // Skill & Level
 
-        skills.put(SkillType.TAMING, Integer.valueOf(character[24]));
-        skills.put(SkillType.MINING, Integer.valueOf(character[1]));
-        skills.put(SkillType.REPAIR, Integer.valueOf(character[7]));
-        skills.put(SkillType.WOODCUTTING, Integer.valueOf(character[5]));
-        skills.put(SkillType.UNARMED, Integer.valueOf(character[8]));
-        skills.put(SkillType.HERBALISM, Integer.valueOf(character[9]));
-        skills.put(SkillType.EXCAVATION, Integer.valueOf(character[10]));
-        skills.put(SkillType.ARCHERY, Integer.valueOf(character[11]));
-        skills.put(SkillType.SWORDS, Integer.valueOf(character[12]));
-        skills.put(SkillType.AXES, Integer.valueOf(character[13]));
-        skills.put(SkillType.ACROBATICS, Integer.valueOf(character[14]));
-        skills.put(SkillType.FISHING, Integer.valueOf(character[34]));
-        skills.put(SkillType.ALCHEMY, Integer.valueOf(character[39]));
+        skills.put(SkillType.TAMING, Integer.valueOf(character[SKILLS_TAMING]));
+        skills.put(SkillType.MINING, Integer.valueOf(character[SKILLS_MINING]));
+        skills.put(SkillType.REPAIR, Integer.valueOf(character[SKILLS_REPAIR]));
+        skills.put(SkillType.WOODCUTTING, Integer.valueOf(character[SKILLS_WOODCUTTING]));
+        skills.put(SkillType.UNARMED, Integer.valueOf(character[SKILLS_UNARMED]));
+        skills.put(SkillType.HERBALISM, Integer.valueOf(character[SKILLS_HERBALISM]));
+        skills.put(SkillType.EXCAVATION, Integer.valueOf(character[SKILLS_EXCAVATION]));
+        skills.put(SkillType.ARCHERY, Integer.valueOf(character[SKILLS_ARCHERY]));
+        skills.put(SkillType.SWORDS, Integer.valueOf(character[SKILLS_SWORDS]));
+        skills.put(SkillType.AXES, Integer.valueOf(character[SKILLS_AXES]));
+        skills.put(SkillType.ACROBATICS, Integer.valueOf(character[SKILLS_ACROBATICS]));
+        skills.put(SkillType.FISHING, Integer.valueOf(character[SKILLS_FISHING]));
+        skills.put(SkillType.ALCHEMY, Integer.valueOf(character[SKILLS_ALCHEMY]));
 
         return skills;
     }
@@ -1184,4 +1215,78 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
     @Override
     public void onDisable() { }
+
+    private int getSkillIndex(SkillType skill) {
+        switch (skill) {
+            case ACROBATICS:
+                return SKILLS_ACROBATICS;
+            case ALCHEMY:
+                return SKILLS_ALCHEMY;
+            case ARCHERY:
+                return SKILLS_ARCHERY;
+            case AXES:
+                return SKILLS_AXES;
+            case EXCAVATION:
+                return SKILLS_EXCAVATION;
+            case FISHING:
+                return SKILLS_FISHING;
+            case HERBALISM:
+                return SKILLS_HERBALISM;
+            case MINING:
+                return SKILLS_MINING;
+            case REPAIR:
+                return SKILLS_REPAIR;
+            case SWORDS:
+                return SKILLS_SWORDS;
+            case TAMING:
+                return SKILLS_TAMING;
+            case UNARMED:
+                return SKILLS_UNARMED;
+            case WOODCUTTING:
+                return SKILLS_WOODCUTTING;
+            default:
+                throw new RuntimeException("Primary Skills only");
+            
+        }
+    }
+    
+    public static int USERNAME = 0;
+    public static int SKILLS_MINING = 1;
+    public static int EXP_MINING = 4;
+    public static int SKILLS_WOODCUTTING = 5;
+    public static int EXP_WOODCUTTING = 6;
+    public static int SKILLS_REPAIR = 7;
+    public static int SKILLS_UNARMED = 8;
+    public static int SKILLS_HERBALISM = 9;
+    public static int SKILLS_EXCAVATION = 10;
+    public static int SKILLS_ARCHERY = 11;
+    public static int SKILLS_SWORDS = 12;
+    public static int SKILLS_AXES = 13;
+    public static int SKILLS_ACROBATICS = 14;
+    public static int EXP_REPAIR = 15;
+    public static int EXP_UNARMED = 16;
+    public static int EXP_HERBALISM = 17;
+    public static int EXP_EXCAVATION = 18;
+    public static int EXP_ARCHERY = 19;
+    public static int EXP_SWORDS = 20;
+    public static int EXP_AXES = 21;
+    public static int EXP_ACROBATICS = 22;
+    public static int SKILLS_TAMING = 24;
+    public static int EXP_TAMING = 25;
+    public static int COOLDOWN_BERSERK = 26;
+    public static int COOLDOWN_GIGA_DRILL_BREAKER = 27;
+    public static int COOLDOWN_TREE_FELLER = 28;
+    public static int COOLDOWN_GREEN_TERRA = 29;
+    public static int COOLDOWN_SERRATED_STRIKES = 30;
+    public static int COOLDOWN_SKULL_SPLITTER = 31;
+    public static int COOLDOWN_SUPER_BREAKER = 32;
+    public static int SKILLS_FISHING = 34;
+    public static int EXP_FISHING = 35;
+    public static int COOLDOWN_BLAST_MINING = 36;
+    public static int LAST_LOGIN = 37;
+    public static int HEALTHBAR = 38;
+    public static int SKILLS_ALCHEMY = 39;
+    public static int EXP_ALCHEMY = 40;
+    public static int UUID_INDEX = 41;
+    public static int SCOREBOARD_TIPS = 42;
 }

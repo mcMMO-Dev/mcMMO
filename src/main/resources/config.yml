@@ -20,6 +20,8 @@ General:
     Update_Check: true
     Prefer_Beta: false
     Power_Level_Cap: 0
+    # Should mcMMO truncate levels if you lower your max level cap for a skillname
+    TruncateSkills: false
     # Should mcMMO print out debug messages?
     Verbose_Logging: false
     # Should mcMMO over-write configs to update, or make new ones ending in .new?

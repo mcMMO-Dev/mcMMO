@@ -528,6 +528,8 @@ public class Config extends AutoUpdateConfigLoader {
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 
+    public boolean getTruncateSkills() { return config.getBoolean("General.TruncateSkills", false); }
+
     /* PVP & PVE Settings */
     public boolean getPVPEnabled(SkillType skill) { return config.getBoolean("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVP", true); }
     public boolean getPVEEnabled(SkillType skill) { return config.getBoolean("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVE", true); }

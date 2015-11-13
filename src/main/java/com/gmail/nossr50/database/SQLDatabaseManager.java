@@ -789,9 +789,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "PRIMARY KEY (`id`),"
                     + "INDEX(`user`(20) ASC),"
                     + "UNIQUE KEY `uuid` (`uuid`)) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
-                createStatement.close();
+                tryClose(createStatement);
             }
-            resultSet.close();
+            tryClose(resultSet);
             statement.setString(1, Config.getInstance().getMySQLDatabaseName());
             statement.setString(2, tablePrefix + "huds");
             resultSet = statement.executeQuery();
@@ -803,9 +803,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`scoreboardtips` int(10) NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
-                createStatement.close();
+                tryClose(createStatement);
             }
-            resultSet.close();
+            tryClose(resultSet);
             statement.setString(1, Config.getInstance().getMySQLDatabaseName());
             statement.setString(2, tablePrefix + "cooldowns");
             resultSet = statement.executeQuery();
@@ -827,9 +827,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
-                createStatement.close();
+                tryClose(createStatement);
             }
-            resultSet.close();
+            tryClose(resultSet);
             statement.setString(1, Config.getInstance().getMySQLDatabaseName());
             statement.setString(2, tablePrefix + "skills");
             resultSet = statement.executeQuery();
@@ -852,9 +852,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
-                createStatement.close();
+                tryClose(createStatement);
             }
-            resultSet.close();
+            tryClose(resultSet);
             statement.setString(1, Config.getInstance().getMySQLDatabaseName());
             statement.setString(2, tablePrefix + "experience");
             resultSet = statement.executeQuery();
@@ -877,13 +877,24 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
-                createStatement.close();
+                tryClose(createStatement);
             }
-            resultSet.close();
-            statement.close();
+            tryClose(resultSet);
+            tryClose(statement);
 
             for (UpgradeType updateType : UpgradeType.values()) {
                 checkDatabaseStructure(connection, updateType);
+            }
+
+            if (Config.getInstance().getTruncateSkills()) {
+                for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
+                    int cap = Config.getInstance().getLevelCap(skill);
+                    if (cap != Integer.MAX_VALUE) {
+                        statement = connection.prepareStatement("UPDATE `" + tablePrefix + "skills` SET `" + skill.name().toLowerCase() + "` = " + cap + " WHERE `" + skill.name().toLowerCase() + "` > " + cap);
+                        statement.executeUpdate();
+                        tryClose(statement);
+                    }
+                }
             }
 
             mcMMO.p.getLogger().info("Killing orphans");
