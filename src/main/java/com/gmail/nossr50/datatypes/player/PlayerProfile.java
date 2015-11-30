@@ -345,7 +345,7 @@ public class PlayerProfile {
      */
     public int getXpToLevel(SkillType skillType) {
         int level = (ExperienceConfig.getInstance().getCumulativeCurveEnabled()) ? UserManager.getPlayer(playerName).getPowerLevel() : skills.get(skillType);
-        FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
+        FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType(skillType);
 
         return mcMMO.getFormulaManager().getCachedXpToLevel(level, formulaType);
     }
