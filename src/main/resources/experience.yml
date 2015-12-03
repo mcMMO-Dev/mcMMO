@@ -16,17 +16,17 @@ Experience_Formula:
     # EXPONENTIAL: multiplier * level ^ exponent + base
     Curve:
         Swords: LINEAR
-        Taming: EXPONENTIAL
+        Taming: LINEAR
         Acrobatics: LINEAR
-        Excavation: EXPONENTIAL
+        Excavation: LINEAR
         Herbalism: LINEAR
-        Unarmed: EXPONENTIAL
+        Unarmed: LINEAR
         Woodcutting: LINEAR
-        Mining: EXPONENTIAL
+        Mining: LINEAR
         Archery: LINEAR
-        Axes: EXPONENTIAL
+        Axes: LINEAR
         Repair: LINEAR
-        Fishing: EXPONENTIAL
+        Fishing: LINEAR
         Alchemy: LINEAR
         DEFAULT: LINEAR
 
