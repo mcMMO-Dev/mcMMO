@@ -165,7 +165,8 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
      */
 
     /* Curve settings */
-    public FormulaType getFormulaType() { return FormulaType.getFormulaType(config.getString("Experience_Formula.Curve")); }
+    public FormulaType getFormulaType() { return FormulaType.getFormulaType(config.getString("Experience_Formula.Curve.DEFAULT")); }
+    public FormulaType getFormulaType(SkillType skill) { return FormulaType.getFormulaType(config.getString("Experience_Formula.Curve." + StringUtils.getCapitalized(skill.toString()))); }
     public boolean getCumulativeCurveEnabled() { return config.getBoolean("Experience_Formula.Cumulative_Curve", false); }
 
     /* Curve values */
