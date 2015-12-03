@@ -124,7 +124,7 @@ public class FormulaManager {
 
             case EXPONENTIAL:
                 if (!experienceNeededExponential.containsKey(level)) {
-                    experience = (int) Math.floor(multiplier * Math.pow(level, exponent) + base);
+                    experience = (int) Math.floor(multiplier * Math.pow(exponent, level) * base);
                     experienceNeededExponential.put(level, experience);
                 }
 

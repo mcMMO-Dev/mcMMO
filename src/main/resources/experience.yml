@@ -35,8 +35,8 @@ Experience_Formula:
         base: 1020
         multiplier: 20
     Exponential_Values:
-        multiplier: 0.1
-        exponent: 1.80
+        multiplier: 1
+        exponent: 1.05
         base: 2000
 
     # Cumulative experience curves will use a players power level instead of their skill level,
