@@ -14,21 +14,7 @@ Experience_Formula:
     # If an invalid value is entered, this will reset to the default setting, which is LINEAR
     # LINEAR:      base + (level * multiplier)
     # EXPONENTIAL: multiplier * level ^ exponent + base
-    Curve:
-        Swords: LINEAR
-        Taming: EXPONENTIAL
-        Acrobatics: LINEAR
-        Excavation: EXPONENTIAL
-        Herbalism: LINEAR
-        Unarmed: EXPONENTIAL
-        Woodcutting: LINEAR
-        Mining: EXPONENTIAL
-        Archery: LINEAR
-        Axes: EXPONENTIAL
-        Repair: LINEAR
-        Fishing: EXPONENTIAL
-        Alchemy: LINEAR
-        DEFAULT: LINEAR
+    Curve: LINEAR
 
     # If invalid values are entered mcMMO will not start and print an error in the console
     Linear_Values:
