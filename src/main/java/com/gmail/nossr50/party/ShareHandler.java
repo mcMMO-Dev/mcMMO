@@ -44,7 +44,7 @@ public final class ShareHandler {
         nearMembers.add(mcMMOPlayer.getPlayer());
 
         int partySize = nearMembers.size();
-        double shareBonus = Math.min(Config.getInstance().getPartyShareBonusBase() + (partySize * Config.getInstance().getPartyShareBonusIncrease()), Config.getInstance().getPartyShareBonusCap());
+        double shareBonus = Math.min(Config.getInstance().getPartyShareBonusBase() * Math.pow(Config.getInstance().getPartyShareBonusIncrease(), partySize), Config.getInstance().getPartyShareBonusCap());
         float splitXp = (float) (xp / partySize * shareBonus);
 
         for (Player member : nearMembers) {
