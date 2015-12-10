@@ -1,0 +1,15 @@
+We fixed mcMMO-Dev/mcMMO#2669 and mcMMO-Dev/mcMMO#2715 issues, and we also implemented the functionality of feature requested at mcMMO-Dev/mcMMO#2464.
+Please see the pull requests below for details:
+    https://github.com/mcMMO-Dev/mcMMO/pull/2713
+    https://github.com/mcMMO-Dev/mcMMO/pull/2716
+
+Implementation1: #2464 and #2715
+files: 
+    src/main/java/com/gmail/nossr50/config/experience/ExperienceConfig.java
+    src/main/java/com/gmail/nossr50/datatypes/player/PlayerProfile.java
+    src/main/java/com/gmail/nossr50/util/experience/FormulaManager.java
+    src/main/resources/experience.yml
+
+Implementation2: #2669
+files: 
+    src/main/java/com/gmail/nossr50/party/ShareHandler.java
