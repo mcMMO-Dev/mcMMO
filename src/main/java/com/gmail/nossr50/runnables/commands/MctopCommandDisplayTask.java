@@ -54,13 +54,13 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
             if(sender instanceof Player)
                 sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
             else
-                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.PowerLevel.Leaderboard")).replaceAll("\\033\\[m", ""));
+                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.PowerLevel.Leaderboard")));
         }
         else {
             if(sender instanceof Player)
                 sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName()));
             else
-                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName())).replaceAll("\\033\\[m", ""));
+                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName())));
         }
 
         int place = (page * 10) - 9;
@@ -70,7 +70,7 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
             // 01. Playername - skill value
             // 12. Playername - skill value
             sender.sendMessage(String.format("%2d. %s%s - %s%s", place, sender instanceof Player ? ChatColor.GREEN : "",
-                    stat.name, sender instanceof Player ? ChatColor.WHITE : "", stat.statVal).replaceAll("\\033\\[m", ""));
+                    stat.name, sender instanceof Player ? ChatColor.WHITE : "", stat.statVal));
             place++;
         }
     }
