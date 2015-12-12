@@ -45,6 +45,6 @@ public class PartyChatTask extends BukkitRunnable {
             }
         }
 
-        plugin.getServer().getConsoleSender().sendMessage(ChatColor.stripColor("[mcMMO] [P]<" + party.getName() + ">" + message));
+        plugin.getServer().getConsoleSender().sendMessage(ChatColor.stripColor("[mcMMO] [P]<" + party.getName() + ">" + message).replaceAll("\\033\\[m", ""));
     }
 }
