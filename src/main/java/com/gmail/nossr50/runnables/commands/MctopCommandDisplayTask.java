@@ -69,8 +69,11 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
             // Format:
             // 01. Playername - skill value
             // 12. Playername - skill value
-            sender.sendMessage(String.format("%2d. %s%s - %s%s", place, sender instanceof Player ? ChatColor.GREEN : "",
-                    stat.name, sender instanceof Player ? ChatColor.WHITE : "", stat.statVal));
+            if(sender instanceof Player)
+                sender.sendMessage(String.format("%2d. %s%s - %s%s", place, ChatColor.GREEN, stat.name, ChatColor.WHITE, stat.statVal));
+            else
+                sender.sendMessage(String.format("%2d. %s - %s", place, stat.name, stat.statVal));
+
             place++;
         }
     }
