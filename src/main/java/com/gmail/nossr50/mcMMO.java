@@ -32,7 +32,6 @@ import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.SelfListener;
 import com.gmail.nossr50.listeners.WorldListener;
-import com.gmail.nossr50.metrics.MetricsManager;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.CheckDateTask;
 import com.gmail.nossr50.runnables.SaveTimerTask;
@@ -180,8 +179,6 @@ public class mcMMO extends JavaPlugin {
 
             scheduleTasks();
             CommandRegistrationManager.registerCommands();
-
-            MetricsManager.setup();
 
             placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 

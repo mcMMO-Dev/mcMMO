@@ -83,17 +83,12 @@
                 <configuration>
                     <artifactSet>
                         <includes>
-                            <include>com.turt2live.metrics:MetricsExtension</include>
                             <include>commons-logging:commons-logging</include>
                             <include>org.apache.tomcat:tomcat-jdbc</include>
                             <include>org.apache.tomcat:tomcat-juli</include>
                         </includes>
                     </artifactSet>
                     <relocations>
-                        <relocation>
-                            <pattern>com.turt2live.metrics</pattern>
-                            <shadedPattern>com.gmail.nossr50.metrics.mcstats</shadedPattern>
-                        </relocation>
                         <relocation>
                             <pattern>org.apache.commons.logging</pattern>
                             <shadedPattern>com.gmail.nossr50.commons.logging</shadedPattern>
@@ -149,11 +144,6 @@
             <artifactId>junit-dep</artifactId>
             <version>4.10</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.turt2live.metrics</groupId>
-            <artifactId>MetricsExtension</artifactId>
-            <version>0.0.5-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>
