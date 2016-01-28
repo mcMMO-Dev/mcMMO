@@ -12,8 +12,6 @@ import java.util.Set;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.gmail.nossr50.metrics.MetricsManager;
-
 public abstract class AutoUpdateConfigLoader extends ConfigLoader {
     public AutoUpdateConfigLoader(String relativePath, String fileName) {
         super(relativePath, fileName);
@@ -114,14 +112,6 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
             }
             catch (Exception e) {
                 e.printStackTrace();
-            }
-        }
-        else {
-            for (String key : configKeys) {
-                if (!config.isConfigurationSection(key) && !config.get(key).equals(internalConfig.get(key))) {
-                    MetricsManager.customConfig();
-                    break;
-                }
             }
         }
     }
