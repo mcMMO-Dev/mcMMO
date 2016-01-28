@@ -45,7 +45,10 @@ public final class PerksUtils {
     }
 
     public static float handleXpPerks(Player player, float xp, SkillType skill) {
-        if (Permissions.quadrupleXp(player, skill)) {
+        if (Permissions.customXpBoost(player, skill)) {
+            xp *= ExperienceConfig.getInstance().getCustomXpPerkBoost();
+        }
+        else if (Permissions.quadrupleXp(player, skill)) {
             xp *= 4;
         }
         else if (Permissions.tripleXp(player, skill)) {
@@ -62,9 +65,6 @@ public final class PerksUtils {
         }
         else if (Permissions.oneAndOneTenthXp(player, skill)) {
             xp *= 1.1;
-        }
-        else if (Permissions.customXpBoost(player, skill)) {
-            xp *= ExperienceConfig.getInstance().getCustomXpPerkBoost();
         }
 
         return xp;
