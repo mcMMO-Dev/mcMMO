@@ -89,7 +89,7 @@ public class SmeltingManager extends SkillManager {
             blockState.setType(Material.AIR);
 
             if (Config.getInstance().getFluxPickaxeSoundEnabled()) {
-                player.playSound(blockState.getLocation(), Sound.FIZZ, Misc.FIZZ_VOLUME, Misc.getFizzPitch());
+                player.playSound(blockState.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, Misc.FIZZ_VOLUME, Misc.getFizzPitch());
             }
 
             ParticleEffectUtils.playFluxEffect(blockState.getLocation());

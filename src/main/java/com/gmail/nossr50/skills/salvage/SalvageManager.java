@@ -48,7 +48,7 @@ public class SalvageManager extends SkillManager {
         }
 
         if (Config.getInstance().getSalvageAnvilPlaceSoundsEnabled()) {
-            player.playSound(player.getLocation(), Sound.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
         }
 
         togglePlacedAnvil();
@@ -112,8 +112,8 @@ public class SalvageManager extends SkillManager {
 
         // BWONG BWONG BWONG - CLUNK!
         if (Config.getInstance().getSalvageAnvilUseSoundsEnabled()) {
-            player.playSound(player.getLocation(), Sound.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-            player.playSound(player.getLocation(), Sound.ITEM_BREAK, 1.0F, 1.0F);
+            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
         }
 
         player.sendMessage(LocaleLoader.getString("Salvage.Skills.Success"));

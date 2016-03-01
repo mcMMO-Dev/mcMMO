@@ -60,9 +60,9 @@ public final class Fishing {
     public static Set<Biome> masterAnglerBiomes = EnumSet.of(Biome.RIVER, Biome.OCEAN, Biome.DEEP_OCEAN);
     public static Set<Biome> iceFishingBiomes = EnumSet.of(
             Biome.FROZEN_OCEAN, Biome.FROZEN_RIVER,
-            Biome.TAIGA, Biome.TAIGA_HILLS, Biome.TAIGA_MOUNTAINS,
-            Biome.ICE_PLAINS, Biome.ICE_MOUNTAINS, Biome.ICE_PLAINS_SPIKES,
-            Biome.COLD_TAIGA, Biome.COLD_TAIGA_HILLS, Biome.COLD_TAIGA_MOUNTAINS);
+            Biome.TAIGA, Biome.TAIGA_HILLS, Biome.TAIGA_COLD_HILLS,
+            Biome.ICE_FLATS, Biome.ICE_MOUNTAINS, Biome.MUTATED_ICE_FLATS,
+            Biome.TAIGA_COLD, Biome.MUTATED_TAIGA_COLD);
 
     private Fishing() {}
 

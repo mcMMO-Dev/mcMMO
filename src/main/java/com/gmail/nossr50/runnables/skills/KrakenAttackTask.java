@@ -86,11 +86,11 @@ public class KrakenAttackTask extends BukkitRunnable {
         player.damage(AdvancedConfig.getInstance().getKrakenAttackDamage(), kraken);
 
         if (GLOBAL_EFFECTS) {
-            world.playSound(playerLocation, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            world.playSound(playerLocation, Sound.ENTITY_GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
             world.strikeLightningEffect(playerLocation);
         }
         else {
-            player.playSound(playerLocation, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            player.playSound(playerLocation, Sound.ENTITY_GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
             world.createExplosion(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), 0F, false, false);
         }
     }

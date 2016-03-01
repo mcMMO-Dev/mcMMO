@@ -122,7 +122,7 @@ public class FishingManager extends SkillManager {
             world.strikeLightningEffect(location);
             world.strikeLightningEffect(location);
 
-            world.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            world.playSound(location, Sound.ENTITY_GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
             mcMMO.p.getServer().broadcastMessage(ChatColor.RED + AdvancedConfig.getInstance().getServerUnleashMessage().replace("(PLAYER)", player.getDisplayName()));
         }
         else {
@@ -130,7 +130,7 @@ public class FishingManager extends SkillManager {
             world.createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
             world.createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
 
-            player.playSound(location, Sound.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            player.playSound(location, Sound.ENTITY_GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
         }
 
         if (player.getItemInHand().getType() == Material.FISHING_ROD) {
