@@ -333,7 +333,7 @@ public class TamingManager extends SkillManager {
         }
 
         player.sendMessage(LocaleLoader.getString("Taming.Summon.Complete") + lifeSpan);
-        player.playSound(location, Sound.FIREWORK_LARGE_BLAST2, 1F, 0.5F);
+        player.playSound(location, Sound.ENTITY_FIREWORK_BLAST_FAR, 1F, 0.5F);
     }
 
     private boolean rangeCheck(EntityType type) {

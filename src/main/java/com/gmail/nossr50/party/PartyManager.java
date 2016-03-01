@@ -729,7 +729,7 @@ public final class PartyManager {
             member.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, level));
 
             if (levelUpSoundsEnabled) {
-                member.playSound(member.getLocation(), Sound.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+                member.playSound(member.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
             }
         }
     }
