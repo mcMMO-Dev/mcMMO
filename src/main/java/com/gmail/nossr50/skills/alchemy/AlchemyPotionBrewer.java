@@ -36,7 +36,7 @@ public final class AlchemyPotionBrewer {
                 continue;
             }
 
-            if (getChildPotion(PotionConfig.getInstance().getPotion(contents[i].getDurability()), contents[Alchemy.INGREDIENT_SLOT]) != null) {
+            if (getChildPotion(PotionConfig.getInstance().getPotion(contents[i]), contents[Alchemy.INGREDIENT_SLOT]) != null) {
                 return true;
             }
         }
@@ -45,8 +45,8 @@ public final class AlchemyPotionBrewer {
     }
 
     private static AlchemyPotion getChildPotion(AlchemyPotion potion, ItemStack ingredient) {
-        if (potion != null && potion.getChildDataValue(ingredient) != -1) {
-            return PotionConfig.getInstance().getPotion(potion.getChildDataValue(ingredient));
+        if (potion != null) {
+            return potion.getChild(ingredient);
         }
 
         return null;
@@ -118,8 +118,8 @@ public final class AlchemyPotionBrewer {
                 continue;
             }
 
-            AlchemyPotion input = PotionConfig.getInstance().getPotion(item.getDurability());
-            AlchemyPotion output = PotionConfig.getInstance().getPotion(input.getChildDataValue(ingredient));
+            AlchemyPotion input = PotionConfig.getInstance().getPotion(item);
+            AlchemyPotion output = input.getChild(ingredient);
 
             inputList.add(input);
 
@@ -138,7 +138,7 @@ public final class AlchemyPotionBrewer {
         removeIngredient(inventory, player);
 
         for (AlchemyPotion input : inputList) {
-            AlchemyPotion output = PotionConfig.getInstance().getPotion(input.getChildDataValue(ingredient));
+            AlchemyPotion output = input.getChild(ingredient);
 
             if (output != null && player != null) {
                 PotionStage potionStage = PotionStage.getPotionStage(input, output);

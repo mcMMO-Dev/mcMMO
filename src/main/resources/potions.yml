@@ -63,9 +63,12 @@ Potions:
 
     ### NON-EFFECT POTIONS #####################################################
 
-    0: # Water Bottle
+    WATER: # Water Bottle
+        Name: Water Bottle
+        Material: POTION
+        Data: 0
         Children:
-            BLAZE_POWDER: 8192          # Mundane Potion
+            BLAZE_POWDER: MUNDANE_POTION
             FERMENTED_SPIDER_EYE: 8200  # Potion of Weakness
             GHAST_TEAR: 8192            # Mundane Potion
             GLOWSTONE_DUST: 32          # Thick Potion
@@ -77,6 +80,8 @@ Potions:
             SUGAR: 8192                 # Mundane Potion
 
     16: # Awkward Potion
+        Material: POTION
+        Data: 0
         Children:
             APPLE: 5376                 # Potion of Health Boost
             BLAZE_POWDER: 8201          # Potion of Strength
