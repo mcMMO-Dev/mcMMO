@@ -15,6 +15,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.adapter.BiomeAdapter;
 
 public final class Fishing {
     // The order of the values is extremely important, a few methods depend on it to work properly
@@ -57,12 +58,8 @@ public final class Fishing {
     public static int fishermansDietRankLevel2 = fishermansDietRankLevel1 * 2;
     public static int fishermansDietMaxLevel   = fishermansDietRankLevel1 * 5;
 
-    public static Set<Biome> masterAnglerBiomes = EnumSet.of(Biome.RIVER, Biome.OCEAN, Biome.DEEP_OCEAN);
-    public static Set<Biome> iceFishingBiomes = EnumSet.of(
-            Biome.FROZEN_OCEAN, Biome.FROZEN_RIVER,
-            Biome.TAIGA, Biome.TAIGA_HILLS, Biome.TAIGA_COLD_HILLS,
-            Biome.ICE_FLATS, Biome.ICE_MOUNTAINS, Biome.MUTATED_ICE_FLATS,
-            Biome.TAIGA_COLD, Biome.MUTATED_TAIGA_COLD);
+    public static Set<Biome> masterAnglerBiomes = BiomeAdapter.WATER_BIOMES;
+    public static Set<Biome> iceFishingBiomes = BiomeAdapter.ICE_BIOMES;
 
     private Fishing() {}
 
