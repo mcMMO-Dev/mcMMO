@@ -40,48 +40,40 @@ Concoctions:
 #
 # Settings for Potions
 #
-#   <data_value>:                       Data value used for identifying this potion
+#   <identifier>:                       Identifier to reference by, backwards compatible to use as data values
 #       Name: <name>                    Custom display name for this potion (optional)
+#       Material: <material>            Material for this potion, defaults to POTION
+#       Data:  <data_value>             Data value for this potion (if this is not present it will read from identifier)
 #       Lore: ["lore1","lore2"...]      Custom lore for this potion (section is optional)
 #       Children:                       The potential children of this potion (section is optional)
-#           <INGREDIENT>: <NEW_DV>      The ingredient used, and resultant potion's new data value
+#           <INGREDIENT>: <NEW_IDENTIFIER>      The ingredient used, and resultant potion's identifier
 #       Effects:                        List of strings for the potion's effects (section is optional)
 #           - "<POTION_EFFECT> [EFFECT_TIER] [DURATION_TICKS]"
 #
-#   DataValues - These potions follow the normal data value pattern except for bits 8-12:
-#       Bits 0-3: Liquid Color (http://minecraft.gamepedia.com/Data_values#Potions)
-#       Bit 4: (Unused)
-#       Bit 5: Power
-#       Bit 6: Extended
-#       Bit 7: (Unused)
-#       Bits 8-12: Custom Status Effect (http://minecraft.gamepedia.com/Data_values#Status_effects)
-#       Bit 13: Can become splash
-#       Bit 14: Splash
-#       Bit 15: (Unused)
+
 ###
 Potions:
 
     ### NON-EFFECT POTIONS #####################################################
 
-    WATER: # Water Bottle
-        Name: Water Bottle
+    WATER:
         Material: POTION
         Data: 0
         Children:
             BLAZE_POWDER: MUNDANE_POTION
-            FERMENTED_SPIDER_EYE: 8200  # Potion of Weakness
-            GHAST_TEAR: 8192            # Mundane Potion
-            GLOWSTONE_DUST: 32          # Thick Potion
-            MAGMA_CREAM: 8192           # Mundane Potion
-            NETHER_STALK: 16            # Awkward Potion
-            REDSTONE: 64                # Mundane Potion Extended
-            SPECKLED_MELON: 8192        # Mundane Potion
-            SPIDER_EYE: 8192            # Mundane Potion
-            SUGAR: 8192                 # Mundane Potion
+            FERMENTED_SPIDER_EYE: 8200
+            GHAST_TEAR: MUNDANE_POTION            
+            GLOWSTONE_DUST: THICK
+            MAGMA_CREAM: MUNDANE_POTION           
+            NETHER_STALK: AWKWARD
+            REDSTONE: MUNDANE_POTION_EXTENDED
+            SPECKLED_MELON: MUNDANE_POTION
+            SPIDER_EYE: MUNDANE_POTION
+            SUGAR: MUNDANE_POTION
 
-    16: # Awkward Potion
+    AWKWARD:
         Material: POTION
-        Data: 0
+        Data: 16
         Children:
             APPLE: 5376                 # Potion of Health Boost
             BLAZE_POWDER: 8201          # Potion of Strength
@@ -105,15 +97,21 @@ Potions:
             WATER_LILY: 8205            # Potion of Water Breathing (Minecraft 1.6)
             'RAW_FISH:3': 8205          # Potion of Water Breathing (Minecraft 1.7)
 
-    32: # Thick Potion
+    THICK:
+        Material: POTION
+        Data: 32
         Children:
             FERMENTED_SPIDER_EYE: 8200
 
-    64: # Mundane Potion Extended
+    MUNDANE_POTION_EXTENDED:
+        Material: POTION
+        Data: 64 
         Children:
             FERMENTED_SPIDER_EYE: 8264
 
-    8192: # Mundane Potion
+    MUNDANE_POTION:
+        Material: POTION
+        Data: 8912    
         Children:
             FERMENTED_SPIDER_EYE: 8200
             SULPHUR: 16384

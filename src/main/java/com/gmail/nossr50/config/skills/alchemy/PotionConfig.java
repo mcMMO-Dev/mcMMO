@@ -122,7 +122,7 @@ public class PotionConfig extends ConfigLoader {
                 name = ChatColor.translateAlternateColorCodes('&', name);
             }
             
-            short dataValue = Short.parseShort(potion_section.getString("Data"));
+            short dataValue = Short.parseShort(potion_section.getString("Data", potion_section.getName())); // Default to the section name for backwards compatability
             
             Material material = Material.POTION;
             String mat = potion_section.getString("Material", null);
