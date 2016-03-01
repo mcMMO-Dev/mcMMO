@@ -53,6 +53,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.adapter.SoundAdapter;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -504,7 +505,7 @@ public class McMMOPlayer {
         }
 
         if (Config.getInstance().getLevelUpSoundsEnabled()) {
-            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+            player.playSound(player.getLocation(), SoundAdapter.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
         }
 
         player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(skillType.toString()) + ".Skillup", levelsGained, getSkillLevel(skillType)));

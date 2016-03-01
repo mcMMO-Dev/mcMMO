@@ -5,7 +5,6 @@ import java.util.List;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -33,8 +32,6 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
 import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
-import com.gmail.nossr50.runnables.PistonTrackerTask;
-import com.gmail.nossr50.runnables.StickyPistonTrackerTask;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.excavation.ExcavationManager;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
@@ -49,6 +46,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.adapter.SoundAdapter;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -382,7 +380,7 @@ public class BlockListener implements Listener {
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
         if (mcMMOPlayer.getAbilityMode(AbilityType.TREE_FELLER) && BlockUtils.isLog(blockState) && Config.getInstance().getTreeFellerSoundsEnabled()) {
-            player.playSound(blockState.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, Misc.FIZZ_VOLUME, Misc.getFizzPitch());
+            player.playSound(blockState.getLocation(), SoundAdapter.FIZZ, Misc.FIZZ_VOLUME, Misc.getFizzPitch());
         }
     }
 
@@ -421,7 +419,7 @@ public class BlockListener implements Listener {
         else if (mcMMOPlayer.getAbilityMode(AbilityType.BERSERK) && heldItem.getType() == Material.AIR) {
             if (AbilityType.BERSERK.blockCheck(block.getState()) && EventUtils.simulateBlockBreak(block, player, true)) {
                 event.setInstaBreak(true);
-                player.playSound(block.getLocation(), Sound.ENTITY_ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
+                player.playSound(block.getLocation(), SoundAdapter.ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
             }
             else if (mcMMOPlayer.getUnarmedManager().canUseBlockCracker() && BlockUtils.affectedByBlockCracker(blockState) && EventUtils.simulateBlockBreak(block, player, true)) {
                 if (mcMMOPlayer.getUnarmedManager().blockCrackerCheck(blockState)) {
@@ -431,7 +429,7 @@ public class BlockListener implements Listener {
         }
         else if (mcMMOPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem) && BlockUtils.isLeaves(blockState) && EventUtils.simulateBlockBreak(block, player, true)) {
             event.setInstaBreak(true);
-            player.playSound(blockState.getLocation(), Sound.ENTITY_ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
+            player.playSound(blockState.getLocation(), SoundAdapter.ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
         }
     }
 }

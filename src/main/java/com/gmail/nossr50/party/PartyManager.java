@@ -27,6 +27,7 @@ import com.gmail.nossr50.events.party.McMMOPartyChangeEvent;
 import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.adapter.SoundAdapter;
 import com.gmail.nossr50.util.player.UserManager;
 
 public final class PartyManager {
@@ -729,7 +730,7 @@ public final class PartyManager {
             member.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, level));
 
             if (levelUpSoundsEnabled) {
-                member.playSound(member.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+                member.playSound(member.getLocation(), SoundAdapter.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
             }
         }
     }

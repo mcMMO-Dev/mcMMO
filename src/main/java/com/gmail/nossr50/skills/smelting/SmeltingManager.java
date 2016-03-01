@@ -28,6 +28,7 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.adapter.SoundAdapter;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
@@ -89,7 +90,7 @@ public class SmeltingManager extends SkillManager {
             blockState.setType(Material.AIR);
 
             if (Config.getInstance().getFluxPickaxeSoundEnabled()) {
-                player.playSound(blockState.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, Misc.FIZZ_VOLUME, Misc.getFizzPitch());
+                player.playSound(blockState.getLocation(), SoundAdapter.FIZZ, Misc.FIZZ_VOLUME, Misc.getFizzPitch());
             }
 
             ParticleEffectUtils.playFluxEffect(blockState.getLocation());

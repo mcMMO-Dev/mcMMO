@@ -9,6 +9,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.adapter.SoundAdapter;
 
 public class KrakenAttackTask extends BukkitRunnable {
     private LivingEntity kraken;
@@ -86,11 +87,11 @@ public class KrakenAttackTask extends BukkitRunnable {
         player.damage(AdvancedConfig.getInstance().getKrakenAttackDamage(), kraken);
 
         if (GLOBAL_EFFECTS) {
-            world.playSound(playerLocation, Sound.ENTITY_GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            world.playSound(playerLocation, SoundAdapter.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
             world.strikeLightningEffect(playerLocation);
         }
         else {
-            player.playSound(playerLocation, Sound.ENTITY_GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            player.playSound(playerLocation, SoundAdapter.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
             world.createExplosion(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), 0F, false, false);
         }
     }

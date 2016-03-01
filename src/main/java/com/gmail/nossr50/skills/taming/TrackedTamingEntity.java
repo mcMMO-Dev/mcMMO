@@ -11,6 +11,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.adapter.SoundAdapter;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 
@@ -35,7 +36,7 @@ public class TrackedTamingEntity extends BukkitRunnable {
     public void run() {
         if (livingEntity.isValid()) {
             Location location = livingEntity.getLocation();
-            location.getWorld().playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 0.8F, 0.8F);
+            location.getWorld().playSound(location, SoundAdapter.FIZZ, 0.8F, 0.8F);
             ParticleEffectUtils.playCallOfTheWildEffect(livingEntity);
             CombatUtils.dealDamage(livingEntity, livingEntity.getMaxHealth(), DamageCause.SUICIDE, livingEntity);
         }

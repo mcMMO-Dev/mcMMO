@@ -20,6 +20,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.adapter.SoundAdapter;
 
 public class Party {
     private final LinkedHashMap<UUID, String> members = new LinkedHashMap<UUID, String>();
@@ -227,7 +228,7 @@ public class Party {
                 leader.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
 
                 if (Config.getInstance().getLevelUpSoundsEnabled()) {
-                    leader.playSound(leader.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+                    leader.playSound(leader.getLocation(), SoundAdapter.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
                 }
             }
             return;
