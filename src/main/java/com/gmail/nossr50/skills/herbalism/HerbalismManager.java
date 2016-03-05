@@ -50,13 +50,21 @@ public class HerbalismManager extends SkillManager {
 
     public boolean canGreenThumbBlock(BlockState blockState) {
         Player player = getPlayer();
+        ItemStack item = player.getInventory().getItemInMainHand();
+        
+        if (item.getAmount() <= 0)
+            return false;
 
-        return player.getItemInHand().getType() == Material.SEEDS && BlockUtils.canMakeMossy(blockState) && Permissions.greenThumbBlock(player, blockState.getType());
+        return item.getType() == Material.SEEDS && BlockUtils.canMakeMossy(blockState) && Permissions.greenThumbBlock(player, blockState.getType());
     }
 
     public boolean canUseShroomThumb(BlockState blockState) {
         Player player = getPlayer();
-        Material itemType = player.getItemInHand().getType();
+        ItemStack item = player.getInventory().getItemInMainHand();
+        Material itemType = item.getType();
+        
+        if (item.getAmount() <= 0)
+            return false;
 
         return (itemType == Material.RED_MUSHROOM || itemType == Material.BROWN_MUSHROOM) && BlockUtils.canMakeShroomy(blockState) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHROOM_THUMB);
     }
