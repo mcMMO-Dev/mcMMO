@@ -47,6 +47,11 @@ public final class BlockUtils {
             case ENCHANTMENT_TABLE:
             case ENDER_CHEST:
             case FENCE_GATE:
+            case ACACIA_FENCE_GATE:
+            case DARK_OAK_FENCE_GATE:
+            case SPRUCE_FENCE_GATE:
+            case BIRCH_FENCE_GATE:
+            case JUNGLE_FENCE_GATE:
             case FURNACE:
             case IRON_DOOR_BLOCK:
             case JUKEBOX:
@@ -70,10 +75,12 @@ public final class BlockUtils {
             case BIRCH_DOOR:
             case JUNGLE_DOOR:
             case DARK_OAK_DOOR:
+            case FENCE:
             case ACACIA_FENCE:
             case DARK_OAK_FENCE:
             case BIRCH_FENCE:
             case JUNGLE_FENCE:
+            case SPRUCE_FENCE:
             case ARMOR_STAND:
                 return false;
 
