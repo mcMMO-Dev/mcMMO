@@ -88,8 +88,11 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
 
                 // Dump to the new one
                 for (String key : comments.keySet()) {
-                    if (output.contains(key)) {
-                        output = output.substring(0, output.indexOf(key)) + comments.get(key) + output.substring(output.indexOf(key));
+                    if (output.contains(" " + key)) {
+                        output = output.substring(0, output.indexOf(" " + key)) + comments.get(key) + output.substring(output.indexOf(" " + key));
+                    }
+                    if (output.contains("\n" + key)) {
+                        output = output.substring(0, output.indexOf("\n" + key)) + comments.get(key) + output.substring(output.indexOf("\n" + key));
                     }
                 }
             }
