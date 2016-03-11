@@ -52,21 +52,15 @@ public class HerbalismManager extends SkillManager {
         Player player = getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
         
-        if (item.getAmount() <= 0)
-            return false;
-
-        return item.getType() == Material.SEEDS && BlockUtils.canMakeMossy(blockState) && Permissions.greenThumbBlock(player, blockState.getType());
+        return item.getAmount() > 0 && item.getType() == Material.SEEDS && BlockUtils.canMakeMossy(blockState) && Permissions.greenThumbBlock(player, blockState.getType());
     }
 
     public boolean canUseShroomThumb(BlockState blockState) {
         Player player = getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
         Material itemType = item.getType();
-        
-        if (item.getAmount() <= 0)
-            return false;
 
-        return (itemType == Material.RED_MUSHROOM || itemType == Material.BROWN_MUSHROOM) && BlockUtils.canMakeShroomy(blockState) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHROOM_THUMB);
+        return item.getAmount() > 0 && (itemType == Material.RED_MUSHROOM || itemType == Material.BROWN_MUSHROOM) && BlockUtils.canMakeShroomy(blockState) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHROOM_THUMB);
     }
 
     public boolean canUseHylianLuck() {
@@ -129,12 +123,12 @@ public class HerbalismManager extends SkillManager {
     public void herbalismBlockCheck(BlockState blockState) {
         Player player = getPlayer();
         Material material = blockState.getType();
-        boolean oneBlockPlant = !(material == Material.CACTUS || material == Material.SUGAR_CANE_BLOCK);
+        boolean oneBlockPlant = !(material == Material.CACTUS || material == Material.CHORUS_PLANT || material == Material.SUGAR_CANE_BLOCK);
 
         if (oneBlockPlant && mcMMO.getPlaceStore().isTrue(blockState)) {
             return;
         }
-
+        
         if (!canBlockCheck()) {
             return;
         }
@@ -161,6 +155,10 @@ public class HerbalismManager extends SkillManager {
                 xp = ExperienceConfig.getInstance().getFlowerAndGrassXp(blockState.getData());
             }
             else {
+                if(material == Material.CHORUS_FLOWER && blockState.getRawData() != 5) {
+                    return;
+                }
+                
                 xp = ExperienceConfig.getInstance().getXp(skill, material);
             }
 
@@ -169,7 +167,7 @@ public class HerbalismManager extends SkillManager {
             }
 
             if (!oneBlockPlant) {
-                amount = Herbalism.calculateCatciAndSugarDrops(blockState);
+                amount = Herbalism.calculateMultiBlockPlantDrops(blockState);
                 xp *= amount;
             }
         }

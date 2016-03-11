@@ -132,6 +132,8 @@ public final class BlockUtils {
         switch (blockState.getType()) {
             case BROWN_MUSHROOM:
             case CACTUS:
+            case CHORUS_PLANT:
+            case CHORUS_FLOWER:
             case DOUBLE_PLANT:
             case MELON_BLOCK:
             case LONG_GRASS:
@@ -170,6 +172,7 @@ public final class BlockUtils {
      */
     public static Boolean affectedBySuperBreaker(BlockState blockState) {
         switch (blockState.getType()) {
+            case END_BRICKS:
             case ENDER_STONE:
             case GLOWSTONE:
             case HARD_CLAY:
@@ -177,11 +180,16 @@ public final class BlockUtils {
             case NETHERRACK:
             case OBSIDIAN:
             case PACKED_ICE:
+            case PURPUR_BLOCK:
+            case PURPUR_PILLAR:
+            case PURPUR_SLAB:
+            case PURPUR_STAIRS:
             case SANDSTONE:
             case STAINED_CLAY:
             case STONE:
             case PRISMARINE:
             case RED_SANDSTONE:
+                
                 return true;
 
             default:

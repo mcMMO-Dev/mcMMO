@@ -97,7 +97,7 @@ public class SkillUtils {
 
     public static void handleAbilitySpeedIncrease(Player player) {
         if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
-            ItemStack heldItem = player.getItemInHand();
+            ItemStack heldItem = player.getInventory().getItemInMainHand();
 
             if (heldItem == null || heldItem.getType() == Material.AIR) {
                 return;

@@ -570,7 +570,7 @@ public class EntityListener implements Listener {
          * is based on how 'common' the item is We can adjust this quite easily
          * if we find something is giving too much of a bonus
          */
-        switch (player.getItemInHand().getType()) {
+        switch (player.getInventory().getItemInMainHand().getType()) {
             case BAKED_POTATO: /*
                                 * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
                                 * 1000

@@ -43,13 +43,13 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canDisarm(LivingEntity target) {
-        return target instanceof Player && ((Player) target).getItemInHand().getType() != Material.AIR && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.DISARM);
+        return target instanceof Player && ((Player) target).getInventory().getItemInMainHand().getType() != Material.AIR && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.DISARM);
     }
 
     public boolean canDeflect() {
         Player player = getPlayer();
 
-        return ItemUtils.isUnarmed(player.getItemInHand()) && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.DEFLECT);
+        return ItemUtils.isUnarmed(player.getInventory().getItemInMainHand()) && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.DEFLECT);
     }
 
     public boolean canUseBlockCracker() {
@@ -95,13 +95,13 @@ public class UnarmedManager extends SkillManager {
                 return;
             }
 
-            Item item = Misc.dropItem(defender.getLocation(), defender.getItemInHand());
+            Item item = Misc.dropItem(defender.getLocation(), defender.getInventory().getItemInMainHand());
 
             if (item != null && AdvancedConfig.getInstance().getDisarmProtected()) {
                 item.setMetadata(mcMMO.disarmedItemKey, UserManager.getPlayer(defender).getPlayerMetadata());
             }
 
-            defender.setItemInHand(new ItemStack(Material.AIR));
+            defender.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
             defender.sendMessage(LocaleLoader.getString("Skills.Disarmed"));
         }
     }

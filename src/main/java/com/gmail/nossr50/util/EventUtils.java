@@ -97,7 +97,7 @@ public class EventUtils {
             callFakeArmSwingEvent(player);
         }
 
-        FakeBlockDamageEvent damageEvent = new FakeBlockDamageEvent(player, block, player.getItemInHand(), true);
+        FakeBlockDamageEvent damageEvent = new FakeBlockDamageEvent(player, block, player.getInventory().getItemInMainHand(), true);
         pluginManager.callEvent(damageEvent);
 
         FakeBlockBreakEvent breakEvent = new FakeBlockBreakEvent(block, player);

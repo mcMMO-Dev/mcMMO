@@ -214,7 +214,7 @@ public final class CombatUtils {
                 return;
             }
 
-            ItemStack heldItem = player.getItemInHand();
+            ItemStack heldItem = player.getInventory().getItemInMainHand();
 
             if (target instanceof Tameable) {
                 if (heldItem.getType() == Material.BONE) {
@@ -308,7 +308,7 @@ public final class CombatUtils {
                 event.setDamage(acrobaticsManager.dodgeCheck(event.getDamage()));
             }
 
-            if (ItemUtils.isSword(player.getItemInHand())) {
+            if (ItemUtils.isSword(player.getInventory().getItemInMainHand())) {
                 if (!SkillType.SWORDS.shouldProcess(target)) {
                     return;
                 }
@@ -386,7 +386,7 @@ public final class CombatUtils {
      * @param type The type of skill being used
      */
     public static void applyAbilityAoE(Player attacker, LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, SkillType type) {
-        int numberOfTargets = getTier(attacker.getItemInHand()); // The higher the weapon tier, the more targets you hit
+        int numberOfTargets = getTier(attacker.getInventory().getItemInMainHand()); // The higher the weapon tier, the more targets you hit
         double damageAmount = Math.max(damage, 1);
 
         for (Entity entity : target.getNearbyEntities(2.5, 2.5, 2.5)) {
@@ -475,18 +475,20 @@ public final class CombatUtils {
                     case CREEPER:
                     case ENDER_DRAGON:
                     case ENDERMAN:
+                    case ENDERMITE:
                     case GHAST:
                     case GIANT:
                     case MAGMA_CUBE:
                     case PIG_ZOMBIE:
+                    case SHULKER:
                     case SILVERFISH:
                     case SLIME:
                     case SPIDER:
                     case WITCH:
                     case WITHER:
                     case ZOMBIE:
-                    case ENDERMITE:
                         baseXP = ExperienceConfig.getInstance().getCombatXP(type);
+                        
                         break;
 
                     case SKELETON:
