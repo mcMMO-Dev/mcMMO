@@ -502,3 +502,10 @@ Particles:
     # this will happen by default for every 100 levels.
     LevelUp_Enabled: true
     LevelUp_Tier: 100
+#
+#  Settings for sounds
+###
+Sounds:
+    # This setting controls the master volume. 1.0 is Max,  0 would be off
+    MasterVolume: 1.0
+    
