@@ -214,13 +214,14 @@ public class PotionConfigGenerator {
             
         });
         for (WriteablePotion potion : sorted) {
+            System.out.println("    " + potion.name + ":");
             Map<Ingredient, WriteablePotion> children;
             if (vanillaPotions.containsKey(potion)) {
                 children = vanillaPotions.get(potion);
             } else {
+                System.out.println("        Name: " + prettify(potion.name));
                 children = mcMMOPotions.get(potion);
             }
-            System.out.println("    " + potion.name + ":");
             System.out.println("        Material: " + potion.mat.name());
             System.out.println("        PotionData:");
             System.out.println("            PotionType: " + potion.data.getType().name());
@@ -242,6 +243,32 @@ public class PotionConfigGenerator {
             }
         }
     }
+
+    private static String prettify(String name) {
+        String[] substrings = name.split("_");
+        String prettyString = "";
+        int size = 1;
+
+        for (String string : substrings) {
+            prettyString = prettyString.concat(getCapitalized(string));
+
+            if (size < substrings.length) {
+                prettyString = prettyString.concat(" ");
+            }
+
+            size++;
+        }
+
+        return prettyString;
+    }
+    
+    public static String getCapitalized(String target) {
+        if (target.equals("II")) { // hacks
+            return target;
+        }
+        return target.substring(0, 1).toUpperCase() + target.substring(1).toLowerCase();
+    }
+
 
     private static String getName(PotionEffectType type) {
         switch (type.getId()) {

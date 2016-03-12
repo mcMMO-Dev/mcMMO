@@ -356,6 +356,7 @@ Potions:
         Children:
             SULPHUR: SPLASH_POTION_OF_LUCK
     POTION_OF_ABSORPTION:
+        Name: Potion Of Absorption
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -365,6 +366,7 @@ Potions:
             GLOWSTONE_DUST: POTION_OF_ABSORPTION_II
             REDSTONE: POTION_OF_ABSORPTION_EXTENDED
     POTION_OF_BLINDNESS:
+        Name: Potion Of Blindness
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -374,6 +376,7 @@ Potions:
             GLOWSTONE_DUST: POTION_OF_BLINDNESS_II
             SULPHUR: SPLASH_POTION_OF_BLINDNESS
     POTION_OF_DECAY:
+        Name: Potion Of Decay
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -383,6 +386,7 @@ Potions:
             SULPHUR: SPLASH_POTION_OF_DECAY
             GLOWSTONE_DUST: POTION_OF_DECAY_II
     POTION_OF_DULLNESS:
+        Name: Potion Of Dullness
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -392,6 +396,7 @@ Potions:
             REDSTONE: POTION_OF_DULLNESS_EXTENDED
             SULPHUR: SPLASH_POTION_OF_DULLNESS
     POTION_OF_HASTE:
+        Name: Potion Of Haste
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -401,6 +406,7 @@ Potions:
             REDSTONE: POTION_OF_HASTE_EXTENDED
             GLOWSTONE_DUST: POTION_OF_HASTE_II
     POTION_OF_HUNGER:
+        Name: Potion Of Hunger
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -410,6 +416,7 @@ Potions:
             GLOWSTONE_DUST: POTION_OF_HUNGER_II
             SULPHUR: SPLASH_POTION_OF_HUNGER
     POTION_OF_NAUSEA:
+        Name: Potion Of Nausea
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -419,6 +426,7 @@ Potions:
             REDSTONE: POTION_OF_NAUSEA_EXTENDED
             SULPHUR: SPLASH_POTION_OF_NAUSEA
     POTION_OF_RESISTANCE:
+        Name: Potion Of Resistance
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -428,6 +436,7 @@ Potions:
             REDSTONE: POTION_OF_RESISTANCE_EXTENDED
             SULPHUR: SPLASH_POTION_OF_RESISTANCE
     POTION_OF_SATURATION:
+        Name: Potion Of Saturation
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -437,91 +446,109 @@ Potions:
             GLOWSTONE_DUST: POTION_OF_SATURATION_II
             REDSTONE: POTION_OF_SATURATION_EXTENDED
     POTION_OF_ABSORPTION_EXTENDED:
+        Name: Potion Of Absorption Extended
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["ABSORPTION 0 3600"]
     POTION_OF_BLINDNESS_EXTENDED:
+        Name: Potion Of Blindness Extended
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["BLINDNESS 0 450"]
     POTION_OF_DECAY_EXTENDED:
+        Name: Potion Of Decay Extended
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["WITHER 0 900"]
     POTION_OF_DULLNESS_EXTENDED:
+        Name: Potion Of Dullness Extended
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["SLOW_DIGGING 0 7200"]
     POTION_OF_HASTE_EXTENDED:
+        Name: Potion Of Haste Extended
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["FAST_DIGGING 0 7200"]
     POTION_OF_HUNGER_EXTENDED:
+        Name: Potion Of Hunger Extended
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["HUNGER 0 1800"]
     POTION_OF_NAUSEA_EXTENDED:
+        Name: Potion Of Nausea Extended
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["CONFUSION 0 900"]
     POTION_OF_RESISTANCE_EXTENDED:
+        Name: Potion Of Resistance Extended
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["DAMAGE_RESISTANCE 0 900"]
     POTION_OF_SATURATION_EXTENDED:
+        Name: Potion Of Saturation Extended
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["SATURATION 0 16"]
     POTION_OF_ABSORPTION_II:
+        Name: Potion Of Absorption II
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["ABSORPTION 1 900"]
     POTION_OF_BLINDNESS_II:
+        Name: Potion Of Blindness II
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["BLINDNESS 1 112"]
     POTION_OF_DECAY_II:
+        Name: Potion Of Decay II
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["WITHER 1 225"]
     POTION_OF_DULLNESS_II:
+        Name: Potion Of Dullness II
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["SLOW_DIGGING 1 1800"]
     POTION_OF_HASTE_II:
+        Name: Potion Of Haste II
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["FAST_DIGGING 1 1800"]
     POTION_OF_HUNGER_II:
+        Name: Potion Of Hunger II
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["HUNGER 1 450"]
     POTION_OF_NAUSEA_II:
+        Name: Potion Of Nausea II
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["CONFUSION 1 225"]
     POTION_OF_RESISTANCE_II:
+        Name: Potion Of Resistance II
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["DAMAGE_RESISTANCE 1 225"]
     POTION_OF_SATURATION_II:
+        Name: Potion Of Saturation II
         Material: POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -829,6 +856,7 @@ Potions:
         Children:
             DRAGONS_BREATH: LINGERING_POTION_OF_LUCK
     SPLASH_POTION_OF_ABSORPTION:
+        Name: Splash Potion Of Absorption
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -838,6 +866,7 @@ Potions:
             GLOWSTONE_DUST: SPLASH_POTION_OF_ABSORPTION_II
             DRAGONS_BREATH: LINGERING_POTION_OF_ABSORPTION
     SPLASH_POTION_OF_BLINDNESS:
+        Name: Splash Potion Of Blindness
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -847,6 +876,7 @@ Potions:
             REDSTONE: SPLASH_POTION_OF_BLINDNESS_EXTENDED
             GLOWSTONE_DUST: SPLASH_POTION_OF_BLINDNESS_II
     SPLASH_POTION_OF_DECAY:
+        Name: Splash Potion Of Decay
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -856,6 +886,7 @@ Potions:
             GLOWSTONE_DUST: SPLASH_POTION_OF_DECAY_II
             DRAGONS_BREATH: LINGERING_POTION_OF_DECAY
     SPLASH_POTION_OF_DULLNESS:
+        Name: Splash Potion Of Dullness
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -865,6 +896,7 @@ Potions:
             DRAGONS_BREATH: LINGERING_POTION_OF_DULLNESS
             REDSTONE: SPLASH_POTION_OF_DULLNESS_EXTENDED
     SPLASH_POTION_OF_HASTE:
+        Name: Splash Potion Of Haste
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -874,6 +906,7 @@ Potions:
             REDSTONE: SPLASH_POTION_OF_HASTE_EXTENDED
             GLOWSTONE_DUST: SPLASH_POTION_OF_HASTE_II
     SPLASH_POTION_OF_HUNGER:
+        Name: Splash Potion Of Hunger
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -883,6 +916,7 @@ Potions:
             REDSTONE: SPLASH_POTION_OF_HUNGER_EXTENDED
             DRAGONS_BREATH: LINGERING_POTION_OF_HUNGER
     SPLASH_POTION_OF_NAUSEA:
+        Name: Splash Potion Of Nausea
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -892,6 +926,7 @@ Potions:
             DRAGONS_BREATH: LINGERING_POTION_OF_NAUSEA
             REDSTONE: SPLASH_POTION_OF_NAUSEA_EXTENDED
     SPLASH_POTION_OF_RESISTANCE:
+        Name: Splash Potion Of Resistance
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -901,6 +936,7 @@ Potions:
             DRAGONS_BREATH: LINGERING_POTION_OF_RESISTANCE
             REDSTONE: SPLASH_POTION_OF_RESISTANCE_EXTENDED
     SPLASH_POTION_OF_SATURATION:
+        Name: Splash Potion Of Saturation
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -910,91 +946,109 @@ Potions:
             GLOWSTONE_DUST: SPLASH_POTION_OF_SATURATION_II
             REDSTONE: SPLASH_POTION_OF_SATURATION_EXTENDED
     SPLASH_POTION_OF_ABSORPTION_EXTENDED:
+        Name: Splash Potion Of Absorption Extended
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["ABSORPTION 0 2700"]
     SPLASH_POTION_OF_BLINDNESS_EXTENDED:
+        Name: Splash Potion Of Blindness Extended
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["BLINDNESS 0 336"]
     SPLASH_POTION_OF_DECAY_EXTENDED:
+        Name: Splash Potion Of Decay Extended
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["WITHER 0 674"]
     SPLASH_POTION_OF_DULLNESS_EXTENDED:
+        Name: Splash Potion Of Dullness Extended
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["SLOW_DIGGING 0 5400"]
     SPLASH_POTION_OF_HASTE_EXTENDED:
+        Name: Splash Potion Of Haste Extended
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["FAST_DIGGING 0 5400"]
     SPLASH_POTION_OF_HUNGER_EXTENDED:
+        Name: Splash Potion Of Hunger Extended
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["HUNGER 0 1350"]
     SPLASH_POTION_OF_NAUSEA_EXTENDED:
+        Name: Splash Potion Of Nausea Extended
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["CONFUSION 0 674"]
     SPLASH_POTION_OF_RESISTANCE_EXTENDED:
+        Name: Splash Potion Of Resistance Extended
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["DAMAGE_RESISTANCE 0 674"]
     SPLASH_POTION_OF_SATURATION_EXTENDED:
+        Name: Splash Potion Of Saturation Extended
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["SATURATION 0 12"]
     SPLASH_POTION_OF_ABSORPTION_II:
+        Name: Splash Potion Of Absorption II
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["ABSORPTION 1 675"]
     SPLASH_POTION_OF_BLINDNESS_II:
+        Name: Splash Potion Of Blindness II
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["BLINDNESS 1 84"]
     SPLASH_POTION_OF_DECAY_II:
+        Name: Splash Potion Of Decay II
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["WITHER 1 168"]
     SPLASH_POTION_OF_DULLNESS_II:
+        Name: Splash Potion Of Dullness II
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["SLOW_DIGGING 1 1350"]
     SPLASH_POTION_OF_HASTE_II:
+        Name: Splash Potion Of Haste II
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["FAST_DIGGING 1 1350"]
     SPLASH_POTION_OF_HUNGER_II:
+        Name: Splash Potion Of Hunger II
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["HUNGER 1 337"]
     SPLASH_POTION_OF_NAUSEA_II:
+        Name: Splash Potion Of Nausea II
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["CONFUSION 1 168"]
     SPLASH_POTION_OF_RESISTANCE_II:
+        Name: Splash Potion Of Resistance II
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["DAMAGE_RESISTANCE 1 168"]
     SPLASH_POTION_OF_SATURATION_II:
+        Name: Splash Potion Of Saturation II
         Material: SPLASH_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -1250,6 +1304,7 @@ Potions:
         PotionData:
             PotionType: LUCK
     LINGERING_POTION_OF_ABSORPTION:
+        Name: Lingering Potion Of Absorption
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -1258,6 +1313,7 @@ Potions:
             REDSTONE: LINGERING_POTION_OF_ABSORPTION_EXTENDED
             GLOWSTONE_DUST: LINGERING_POTION_OF_ABSORPTION_II
     LINGERING_POTION_OF_BLINDNESS:
+        Name: Lingering Potion Of Blindness
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -1266,6 +1322,7 @@ Potions:
             GLOWSTONE_DUST: LINGERING_POTION_OF_BLINDNESS_II
             REDSTONE: LINGERING_POTION_OF_BLINDNESS_EXTENDED
     LINGERING_POTION_OF_DECAY:
+        Name: Lingering Potion Of Decay
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -1274,6 +1331,7 @@ Potions:
             REDSTONE: LINGERING_POTION_OF_DECAY_EXTENDED
             GLOWSTONE_DUST: LINGERING_POTION_OF_DECAY_II
     LINGERING_POTION_OF_DULLNESS:
+        Name: Lingering Potion Of Dullness
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -1282,6 +1340,7 @@ Potions:
             GLOWSTONE_DUST: LINGERING_POTION_OF_DULLNESS_II
             REDSTONE: LINGERING_POTION_OF_DULLNESS_EXTENDED
     LINGERING_POTION_OF_HASTE:
+        Name: Lingering Potion Of Haste
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -1290,6 +1349,7 @@ Potions:
             GLOWSTONE_DUST: LINGERING_POTION_OF_HASTE_II
             REDSTONE: LINGERING_POTION_OF_HASTE_EXTENDED
     LINGERING_POTION_OF_HUNGER:
+        Name: Lingering Potion Of Hunger
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -1298,6 +1358,7 @@ Potions:
             REDSTONE: LINGERING_POTION_OF_HUNGER_EXTENDED
             GLOWSTONE_DUST: LINGERING_POTION_OF_HUNGER_II
     LINGERING_POTION_OF_NAUSEA:
+        Name: Lingering Potion Of Nausea
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -1306,6 +1367,7 @@ Potions:
             GLOWSTONE_DUST: LINGERING_POTION_OF_NAUSEA_II
             REDSTONE: LINGERING_POTION_OF_NAUSEA_EXTENDED
     LINGERING_POTION_OF_RESISTANCE:
+        Name: Lingering Potion Of Resistance
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -1314,6 +1376,7 @@ Potions:
             GLOWSTONE_DUST: LINGERING_POTION_OF_RESISTANCE_II
             REDSTONE: LINGERING_POTION_OF_RESISTANCE_EXTENDED
     LINGERING_POTION_OF_SATURATION:
+        Name: Lingering Potion Of Saturation
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
@@ -1322,91 +1385,109 @@ Potions:
             GLOWSTONE_DUST: LINGERING_POTION_OF_SATURATION_II
             REDSTONE: LINGERING_POTION_OF_SATURATION_EXTENDED
     LINGERING_POTION_OF_ABSORPTION_EXTENDED:
+        Name: Lingering Potion Of Absorption Extended
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["ABSORPTION 0 900"]
     LINGERING_POTION_OF_BLINDNESS_EXTENDED:
+        Name: Lingering Potion Of Blindness Extended
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["BLINDNESS 0 112"]
     LINGERING_POTION_OF_DECAY_EXTENDED:
+        Name: Lingering Potion Of Decay Extended
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["WITHER 0 224"]
     LINGERING_POTION_OF_DULLNESS_EXTENDED:
+        Name: Lingering Potion Of Dullness Extended
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["SLOW_DIGGING 0 1800"]
     LINGERING_POTION_OF_HASTE_EXTENDED:
+        Name: Lingering Potion Of Haste Extended
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["FAST_DIGGING 0 1800"]
     LINGERING_POTION_OF_HUNGER_EXTENDED:
+        Name: Lingering Potion Of Hunger Extended
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["HUNGER 0 450"]
     LINGERING_POTION_OF_NAUSEA_EXTENDED:
+        Name: Lingering Potion Of Nausea Extended
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["CONFUSION 0 224"]
     LINGERING_POTION_OF_RESISTANCE_EXTENDED:
+        Name: Lingering Potion Of Resistance Extended
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["DAMAGE_RESISTANCE 0 224"]
     LINGERING_POTION_OF_SATURATION_EXTENDED:
+        Name: Lingering Potion Of Saturation Extended
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["SATURATION 0 4"]
     LINGERING_POTION_OF_ABSORPTION_II:
+        Name: Lingering Potion Of Absorption II
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["ABSORPTION 1 225"]
     LINGERING_POTION_OF_BLINDNESS_II:
+        Name: Lingering Potion Of Blindness II
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["BLINDNESS 1 28"]
     LINGERING_POTION_OF_DECAY_II:
+        Name: Lingering Potion Of Decay II
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["WITHER 1 56"]
     LINGERING_POTION_OF_DULLNESS_II:
+        Name: Lingering Potion Of Dullness II
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["SLOW_DIGGING 1 450"]
     LINGERING_POTION_OF_HASTE_II:
+        Name: Lingering Potion Of Haste II
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["FAST_DIGGING 1 450"]
     LINGERING_POTION_OF_HUNGER_II:
+        Name: Lingering Potion Of Hunger II
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["HUNGER 1 112"]
     LINGERING_POTION_OF_NAUSEA_II:
+        Name: Lingering Potion Of Nausea II
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["CONFUSION 1 56"]
     LINGERING_POTION_OF_RESISTANCE_II:
+        Name: Lingering Potion Of Resistance II
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
         Effects: ["DAMAGE_RESISTANCE 1 56"]
     LINGERING_POTION_OF_SATURATION_II:
+        Name: Lingering Potion Of Saturation II
         Material: LINGERING_POTION
         PotionData:
             PotionType: UNCRAFTABLE
