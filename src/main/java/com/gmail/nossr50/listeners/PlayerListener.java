@@ -566,6 +566,7 @@ public class PlayerListener implements Listener {
 
                 /* SHROOM THUMB CHECK */
                 else if (herbalismManager.canUseShroomThumb(blockState)) {
+                    event.setCancelled(true);
                     if (herbalismManager.processShroomThumb(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
                         blockState.update(true);
                     }

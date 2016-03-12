@@ -57,10 +57,10 @@ public class HerbalismManager extends SkillManager {
 
     public boolean canUseShroomThumb(BlockState blockState) {
         Player player = getPlayer();
-        ItemStack item = player.getInventory().getItemInMainHand();
-        Material itemType = item.getType();
+        PlayerInventory inventory = player.getInventory();
+        Material itemType = inventory.getItemInMainHand().getType();
 
-        return item.getAmount() > 0 && (itemType == Material.RED_MUSHROOM || itemType == Material.BROWN_MUSHROOM) && BlockUtils.canMakeShroomy(blockState) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHROOM_THUMB);
+        return (itemType == Material.BROWN_MUSHROOM || itemType == Material.RED_MUSHROOM) && inventory.contains(Material.BROWN_MUSHROOM, 1) && inventory.contains(Material.RED_MUSHROOM, 1) && BlockUtils.canMakeShroomy(blockState) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHROOM_THUMB);
     }
 
     public boolean canUseHylianLuck() {
@@ -271,13 +271,13 @@ public class HerbalismManager extends SkillManager {
     public boolean processShroomThumb(BlockState blockState) {
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
-
-        if (!playerInventory.contains(Material.BROWN_MUSHROOM)) {
+        
+        if (!playerInventory.contains(Material.BROWN_MUSHROOM, 1)) {
             player.sendMessage(LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(Material.BROWN_MUSHROOM)));
             return false;
         }
 
-        if (!playerInventory.contains(Material.RED_MUSHROOM)) {
+        if (!playerInventory.contains(Material.RED_MUSHROOM, 1)) {
             player.sendMessage(LocaleLoader.getString("Skills.NeedMore", StringUtils.getPrettyItemString(Material.RED_MUSHROOM)));
             return false;
         }
@@ -326,7 +326,7 @@ public class HerbalismManager extends SkillManager {
                 break;
         }
 
-        if (!playerInventory.containsAtLeast(seed, 1)) {
+        if (!playerInventory.contains(seed, 1)) {
             return;
         }
 
