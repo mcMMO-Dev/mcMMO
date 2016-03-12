@@ -8,21 +8,22 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 
 import com.gmail.nossr50.config.skills.alchemy.PotionConfig;
 
 public class AlchemyPotion {
     private Material material;
-    private short dataValue;
+    private PotionData data;
     private String name;
     private List<String> lore;
     private List<PotionEffect> effects;
     private Map<ItemStack, String> children;
 
-    public AlchemyPotion(Material material, short dataValue, String name, List<String> lore, List<PotionEffect> effects, Map<ItemStack, String> children) {
+    public AlchemyPotion(Material material, PotionData data, String name, List<String> lore, List<PotionEffect> effects, Map<ItemStack, String> children) {
         this.material = material;
-        this.dataValue = dataValue;
+        this.data = data;
         this.lore = lore;
         this.name = name;
         this.effects = effects;
@@ -30,13 +31,14 @@ public class AlchemyPotion {
     }
 
     public String toString() {
-        return "AlchemyPotion{" + dataValue + ", " + name + ", Effects[" + effects.size() + "], Children[" + children.size() + "]}";
+        return "AlchemyPotion{" + data + ", " + name + ", Effects[" + effects.size() + "], Children[" + children.size() + "]}";
     }
 
     public ItemStack toItemStack(int amount) {
-        ItemStack potion = new ItemStack(material, amount, this.getDataValue());
+        ItemStack potion = new ItemStack(material, amount);
         PotionMeta meta = (PotionMeta) potion.getItemMeta();
 
+        meta.setBasePotionData(data);
         if (this.getName() != null) {
             meta.setDisplayName(this.getName());
         }
@@ -63,12 +65,12 @@ public class AlchemyPotion {
         return Potion.fromItemStack(this.toItemStack(amount));
     }
 
-    public short getDataValue() {
-        return dataValue;
+    public PotionData getData() {
+        return data;
     }
 
-    public void setDataValue(short data_value) {
-        this.dataValue = data_value;
+    public void setData(PotionData data) {
+        this.data = data;
     }
 
     public String getName() {
@@ -118,13 +120,20 @@ public class AlchemyPotion {
         if (item.getType() != material) {
             return false;
         }
-        if (item.getDurability() != dataValue) {
-            return false;
-        }
         if (!item.hasItemMeta()) {
             return false;
         }
         PotionMeta meta = (PotionMeta) item.getItemMeta();
+        PotionData that = meta.getBasePotionData();
+        if (data.getType() != that.getType()) {
+            return false;
+        }
+        if (data.isExtended() != that.isExtended()) {
+            return false;
+        }
+        if (data.isUpgraded() != that.isUpgraded()) {
+            return false;
+        }
         for (PotionEffect effect : effects) {
             if (!meta.hasCustomEffect(effect.getType())) {
                 return false;

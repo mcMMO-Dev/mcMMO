@@ -9,8 +9,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.potion.PotionType;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.ConfigLoader;
@@ -122,7 +125,15 @@ public class PotionConfig extends ConfigLoader {
                 name = ChatColor.translateAlternateColorCodes('&', name);
             }
             
-            short dataValue = Short.parseShort(potion_section.getString("Data", potion_section.getName())); // Default to the section name for backwards compatability
+            PotionData data;
+            if (!potion_section.contains("PotionData")) { // Backwards config compatability
+                short dataValue = Short.parseShort(potion_section.getName());
+                Potion potion = Potion.fromDamage(dataValue);
+                data = new PotionData(potion.getType(), potion.hasExtendedDuration(), potion.getLevel() == 2);
+            } else {
+                ConfigurationSection potionData = potion_section.getConfigurationSection("PotionData");
+                data = new PotionData(PotionType.valueOf(potionData.getString("PotionType", "WATER")), potionData.getBoolean("Extended", false), potionData.getBoolean("Upgraded", false));
+            }
             
             Material material = Material.POTION;
             String mat = potion_section.getString("Material", null);
@@ -168,7 +179,7 @@ public class PotionConfig extends ConfigLoader {
                 }
             }
 
-            return new AlchemyPotion(material, dataValue, name, lore, effects, children);
+            return new AlchemyPotion(material, data, name, lore, effects, children);
         }
         catch (Exception e) {
             mcMMO.p.getLogger().warning("Failed to load Alchemy potion: " + potion_section.getName());
