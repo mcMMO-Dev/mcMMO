@@ -89,7 +89,7 @@ public class WoodcuttingManager extends SkillManager {
         }
 
         // If the tool can't sustain the durability loss
-        if (!Woodcutting.handleDurabilityLoss(treeFellerBlocks, player.getItemInHand())) {
+        if (!Woodcutting.handleDurabilityLoss(treeFellerBlocks, player.getInventory().getItemInMainHand())) {
             player.sendMessage(LocaleLoader.getString("Woodcutting.Skills.TreeFeller.Splinter"));
 
             double health = player.getHealth();

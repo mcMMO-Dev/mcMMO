@@ -533,6 +533,6 @@ public class Config extends AutoUpdateConfigLoader {
     /* PVP & PVE Settings */
     public boolean getPVPEnabled(SkillType skill) { return config.getBoolean("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVP", true); }
     public boolean getPVEEnabled(SkillType skill) { return config.getBoolean("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVE", true); }
-
+    
     public float getMasterVolume() { return (float) config.getDouble("Sounds.MasterVolume", 1.0); }
 }

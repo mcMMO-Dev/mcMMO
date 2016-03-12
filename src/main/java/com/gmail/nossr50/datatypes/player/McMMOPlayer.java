@@ -690,7 +690,7 @@ public class McMMOPlayer {
         xp = (float) (xp / skillType.getXpModifier() * ExperienceConfig.getInstance().getExperienceGainsGlobalMultiplier());
 
         if (Config.getInstance().getToolModsEnabled()) {
-            CustomTool tool = mcMMO.getModManager().getTool(player.getItemInHand());
+            CustomTool tool = mcMMO.getModManager().getTool(player.getInventory().getItemInMainHand());
 
             if (tool != null) {
                 xp *= tool.getXpMultiplier();
@@ -774,7 +774,7 @@ public class McMMOPlayer {
             return;
         }
 
-        ItemStack inHand = player.getItemInHand();
+        ItemStack inHand = player.getInventory().getItemInMainHand();
 
         if (mcMMO.getModManager().isCustomTool(inHand) && !mcMMO.getModManager().getTool(inHand).isAbilityEnabled()) {
             return;
