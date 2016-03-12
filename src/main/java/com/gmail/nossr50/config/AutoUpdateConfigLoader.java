@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -64,15 +65,12 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
             while (output.replaceAll("[//s]", "").startsWith("#")) {
                 output = output.substring(output.indexOf('\n', output.indexOf('#')) + 1);
             }
-            
-            String[] keys = output.split("\n");
-            
 
             // Read the internal config to get comments, then put them in the new one
             try {
                 // Read internal
                 BufferedReader reader = new BufferedReader(new InputStreamReader(plugin.getResource(fileName)));
-                HashMap<String, String> comments = new HashMap<String, String>();
+                LinkedHashMap<String, String> comments = new LinkedHashMap<String, String>();
                 String temp = "";
 
                 String line;
@@ -83,21 +81,37 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
                     else if (line.contains(":")) {
                         line = line.substring(0, line.indexOf(":") + 1);
                         if (!temp.isEmpty()) {
+                            if(comments.containsKey(line)) {
+                                int index = 0;
+                                while(comments.containsKey(line + index)) {
+                                    index++;
+                                }
+                                
+                                line = line + index;
+                            }
+
                             comments.put(line, temp);
                             temp = "";
                         }
                     }
                 }
 
-                output = "";
                 // Dump to the new one
-                for (String key : keys) {
-                    String comment = comments.get(key.substring(0, key.indexOf(":") + 1));
-                    if (comment != null) {
-                        output += comment;
+                HashMap<String, Integer> indexed = new HashMap<String, Integer>();
+                for (String key : comments.keySet()) {
+                    String actualkey = key.substring(0, key.indexOf(":") + 1);
+
+                    int index = 0;
+                    if(indexed.containsKey(actualkey)) {
+                        index = indexed.get(actualkey);
                     }
-                    output += key;
-                    output += "\n";
+                    boolean isAtTop = !output.contains("\n" + actualkey);
+                    index = output.indexOf((isAtTop ? "" : "\n") + actualkey, index);
+
+                    if (index >= 0) {
+                        output = output.substring(0, index) + "\n" + comments.get(key) + output.substring(isAtTop ? index : index + 1);
+                        indexed.put(actualkey, index + comments.get(key).length() + actualkey.length() + 1);
+                    }
                 }
             }
             catch (Exception e) {
