@@ -64,6 +64,9 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
             while (output.replaceAll("[//s]", "").startsWith("#")) {
                 output = output.substring(output.indexOf('\n', output.indexOf('#')) + 1);
             }
+            
+            String[] keys = output.split("\n");
+            
 
             // Read the internal config to get comments, then put them in the new one
             try {
@@ -86,11 +89,15 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
                     }
                 }
 
+                output = "";
                 // Dump to the new one
-                for (String key : comments.keySet()) {
-                    if (output.contains(key)) {
-                        output = output.substring(0, output.indexOf(key)) + comments.get(key) + output.substring(output.indexOf(key));
+                for (String key : keys) {
+                    String comment = comments.get(key.substring(0, key.indexOf(":") + 1));
+                    if (comment != null) {
+                        output += comment;
                     }
+                    output += key;
+                    output += "\n";
                 }
             }
             catch (Exception e) {
