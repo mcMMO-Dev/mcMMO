@@ -38,6 +38,7 @@ public class Herbalism {
                 return true;
 
             case DIRT:
+            case GRASS_PATH:
                 blockState.setType(Material.GRASS);
                 return true;
 
@@ -148,6 +149,7 @@ public class Herbalism {
         switch (blockState.getType()) {
             case DIRT:
             case GRASS:
+            case GRASS_PATH:
                 blockState.setType(Material.MYCEL);
                 return true;
 

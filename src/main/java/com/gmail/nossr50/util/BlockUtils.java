@@ -109,6 +109,7 @@ public final class BlockUtils {
         switch (blockState.getType()) {
             case COBBLESTONE:
             case DIRT:
+            case GRASS_PATH:
                 return true;
 
             case SMOOTH_BRICK:
@@ -208,6 +209,7 @@ public final class BlockUtils {
             case CLAY:
             case DIRT:
             case GRASS:
+            case GRASS_PATH:
             case GRAVEL:
             case MYCEL:
             case SAND:
@@ -284,6 +286,7 @@ public final class BlockUtils {
         switch (blockState.getType()) {
             case DIRT:
             case GRASS:
+            case GRASS_PATH:
             case SOIL:
                 return false;
 
@@ -318,6 +321,7 @@ public final class BlockUtils {
         switch (blockState.getType()) {
             case DIRT:
             case GRASS:
+            case GRASS_PATH:
                 return true;
 
             default:

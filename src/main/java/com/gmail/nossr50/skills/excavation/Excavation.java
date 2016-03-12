@@ -25,6 +25,7 @@ public class Excavation {
                 return blockState.getRawData() == 0x2 ? TreasureConfig.getInstance().excavationFromPodzol : TreasureConfig.getInstance().excavationFromDirt;
 
             case GRASS:
+            case GRASS_PATH:
                 return TreasureConfig.getInstance().excavationFromGrass;
 
             case SAND:
