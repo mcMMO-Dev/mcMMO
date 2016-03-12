@@ -58,7 +58,8 @@ Potions:
 
     WATER:
         Material: POTION
-        Data: 0
+        PotionData:
+            PotionType: WATER
         Children:
             BLAZE_POWDER: MUNDANE_POTION
             FERMENTED_SPIDER_EYE: 8200
@@ -73,7 +74,8 @@ Potions:
 
     AWKWARD:
         Material: POTION
-        Data: 16
+        PotionData:
+            PotionType: AWKWARD
         Children:
             APPLE: 5376                 # Potion of Health Boost
             BLAZE_POWDER: 8201          # Potion of Strength
@@ -93,46 +95,50 @@ Potions:
             SLIME_BALL: 1024            # Potion of Dullness
             SPECKLED_MELON: 8197        # Potion of Healing
             SPIDER_EYE: 8196            # Potion of Poison
-            SUGAR: 8194                 # Potion of Swiftness
+            SUGAR: SWIFTNESS            # Potion of Swiftness
             WATER_LILY: 8205            # Potion of Water Breathing (Minecraft 1.6)
             'RAW_FISH:3': 8205          # Potion of Water Breathing (Minecraft 1.7)
 
     THICK:
         Material: POTION
-        Data: 32
+        PotionData:
+            PotionType: THICK
         Children:
             FERMENTED_SPIDER_EYE: 8200
 
-    MUNDANE_POTION_EXTENDED:
-        Material: POTION
-        Data: 64 
-        Children:
-            FERMENTED_SPIDER_EYE: 8264
-
     MUNDANE_POTION:
         Material: POTION
-        Data: 8912    
+        PotionData:
+            PotionType: MUNDANE 
         Children:
             FERMENTED_SPIDER_EYE: 8200
             SULPHUR: 16384
 
     ### DRINKABLE POTIONS ######################################################
 
-    8194: # Potion of Swiftness
+    SWIFTNESS:
+        PotionData:
+            PotionType: SPEED
         Children:
             FERMENTED_SPIDER_EYE: 8202
-            GLOWSTONE_DUST: 8226
-            REDSTONE: 8258
+            GLOWSTONE_DUST: SWIFTNESS_2
+            REDSTONE: SWIFTNESS_EXT
             SULPHUR: 16386
-    8226: # Potion of Swiftness II
+    SWIFTNESS_2:
+        PotionData:
+            PotionType: SPEED
+            Upgraded: true
         Children:
             FERMENTED_SPIDER_EYE: 8266
-            REDSTONE: 8258
+            REDSTONE: SWIFTNESS_EXT
             SULPHUR: 16418
-    8258: # Potion of Swiftness Extended
+    SWIFTNESS_EXT: # Potion of Swiftness Extended
+        PotionData:
+            PotionType: SPEED
+            Extended: true
         Children:
             FERMENTED_SPIDER_EYE: 8202
-            GLOWSTONE_DUST: 8226
+            GLOWSTONE_DUST: SWIFTNESS_2
             SULPHUR: 16450
 
     8202: # Potion of Slowness
