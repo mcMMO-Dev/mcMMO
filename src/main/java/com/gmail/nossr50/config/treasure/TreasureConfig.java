@@ -12,8 +12,10 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.material.Dye;
 import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
 import com.gmail.nossr50.config.ConfigLoader;
@@ -170,10 +172,7 @@ public class TreasureConfig extends ConfigLoader {
              */
             Material material;
 
-            if (materialName.contains("POTION")) {
-                material = Material.POTION;
-            }
-            else if (materialName.contains("INK_SACK")) {
+            if (materialName.contains("INK_SACK")) {
                 material = Material.INK_SACK;
             }
             else if (materialName.contains("INVENTORY")) {
@@ -239,29 +238,36 @@ public class TreasureConfig extends ConfigLoader {
             ItemStack item = null;
 
             if (materialName.contains("POTION")) {
-                String potionType = materialName.substring(7);
-
-                try {
-                    item = new Potion(PotionType.valueOf(potionType.toUpperCase().trim())).toItemStack(amount);
-
+                Material mat = Material.matchMaterial(materialName);
+                if (mat == null) {
+                    reason.add("Potion format for Treasures.yml has changed");
+                } else {
+                    item = new ItemStack(mat, amount, data);
+                    PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
+                    
+                    PotionType potionType = null;
+                    try {
+                        potionType = PotionType.valueOf(config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
+                    }
+                    catch (IllegalArgumentException ex) {
+                        reason.add("Invalid Potion_Type: " + config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
+                    }
+                    boolean extended = config.getBoolean(type + "." + treasureName + ".PotionData.Extended", false);
+                    boolean upgraded = config.getBoolean(type + "." + treasureName + ".PotionData.Upgraded", false);
+                    itemMeta.setBasePotionData(new PotionData(potionType, extended, upgraded));
+                    
                     if (config.contains(type + "." + treasureName + ".Custom_Name")) {
-                        ItemMeta itemMeta = item.getItemMeta();
                         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(type + "." + treasureName + ".Custom_Name")));
-                        item.setItemMeta(itemMeta);
                     }
 
                     if (config.contains(type + "." + treasureName + ".Lore")) {
-                        ItemMeta itemMeta = item.getItemMeta();
                         List<String> lore = new ArrayList<String>();
                         for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
                             lore.add(ChatColor.translateAlternateColorCodes('&', s));
                         }
                         itemMeta.setLore(lore);
-                        item.setItemMeta(itemMeta);
                     }
-                }
-                catch (IllegalArgumentException ex) {
-                    reason.add("Invalid Potion_Type: " + potionType);
+                    item.setItemMeta(itemMeta);
                 }
             }
             else if (materialName.contains("INK_SACK")) {
