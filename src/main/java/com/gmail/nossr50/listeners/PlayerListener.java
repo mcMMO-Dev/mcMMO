@@ -528,6 +528,10 @@ public class PlayerListener implements Listener {
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
+                if(player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
+                    break;
+                }
+                
                 Block block = event.getClickedBlock();
                 BlockState blockState = block.getState();
 
@@ -569,6 +573,10 @@ public class PlayerListener implements Listener {
                 break;
 
             case RIGHT_CLICK_AIR:
+                if(player.getInventory().getItemInOffHand().getType() != Material.AIR && !player.isInsideVehicle() && !player.isSneaking()) {
+                    break;
+                }
+                
                 /* ACTIVATION CHECKS */
                 if (Config.getInstance().getAbilitiesEnabled()) {
                     mcMMOPlayer.processAbilityActivation(SkillType.AXES);
