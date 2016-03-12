@@ -9,6 +9,9 @@ import org.bukkit.material.SmoothBrick;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 public class Herbalism {
     public static int farmersDietRankLevel1 = AdvancedConfig.getInstance().getFarmerDietRankChange();
@@ -46,31 +49,89 @@ public class Herbalism {
                 return false;
         }
     }
+    
+    public static List<Block> findChorusPlant(Block target) {
+        return findChorusPlant(target, true);
+    }
+    
+    private static List<Block> findChorusPlant(Block target, boolean origin) {
+        List<Block> blocks = new ArrayList<Block>();
+        
+        if(target.getType() != Material.CHORUS_PLANT) {
+            return blocks;
+        }
+        
+        blocks.add(target);
+        
+        Block relative = target.getRelative(BlockFace.UP, 1);
+        if(relative.getType() == Material.CHORUS_PLANT) {
+            blocks.addAll(findChorusPlant(relative, false));
+        }
+        
+        if(origin || target.getRelative(BlockFace.DOWN, 1).getType() == Material.CHORUS_PLANT) {
+            relative = target.getRelative(BlockFace.NORTH, 1);
+            if(relative.getType() == Material.CHORUS_PLANT) {
+                blocks.addAll(findChorusPlant(relative, false));
+            }
+            
+            relative = target.getRelative(BlockFace.SOUTH, 1);
+            if(relative.getType() == Material.CHORUS_PLANT) {
+                blocks.addAll(findChorusPlant(relative, false));
+            }
+
+            relative = target.getRelative(BlockFace.EAST, 1);
+            if(relative.getType() == Material.CHORUS_PLANT) {
+                blocks.addAll(findChorusPlant(relative, false));
+            }
+
+            relative = target.getRelative(BlockFace.WEST, 1);
+            if(relative.getType() == Material.CHORUS_PLANT) {
+                blocks.addAll(findChorusPlant(relative, false));
+            }
+        }
+        
+        return new ArrayList<Block>(new LinkedHashSet<Block>(blocks));
+    }
 
     /**
-     * Calculate the drop amounts for cacti & sugar cane based on the blocks above them.
+     * Calculate the drop amounts for multi block plants based on the blocks relative to them.
      *
      * @param blockState The {@link BlockState} of the bottom block of the plant
      * @return the number of bonus drops to award from the blocks in this plant
      */
-    protected static int calculateCatciAndSugarDrops(BlockState blockState) {
+    protected static int calculateMultiBlockPlantDrops(BlockState blockState) {
         Block block = blockState.getBlock();
         Material blockType = blockState.getType();
         int dropAmount = mcMMO.getPlaceStore().isTrue(block) ? 0 : 1;
 
-        // Handle the two blocks above it - cacti & sugar cane can only grow 3 high naturally
-        for (int y = 1; y < 3; y++) {
-            Block relativeBlock = block.getRelative(BlockFace.UP, y);
-
-            if (relativeBlock.getType() != blockType) {
-                break;
+        if(blockType == Material.CHORUS_PLANT) {
+            dropAmount = 1;
+            
+            if(block.getRelative(BlockFace.DOWN, 1).getType() == Material.ENDER_STONE) {
+                List<Block> blocks = findChorusPlant(block);
+                
+                dropAmount = blocks.size();
+				
+                /*for(Block b : blocks) {
+                    b.breakNaturally();
+                }*/
             }
+        }
+        else {
+            // Handle the two blocks above it - cacti & sugar cane can only grow 3 high naturally
+            for (int y = 1; y < 3; y++) {
+                Block relativeBlock = block.getRelative(BlockFace.UP, y);
 
-            if (mcMMO.getPlaceStore().isTrue(relativeBlock)) {
-                mcMMO.getPlaceStore().setFalse(relativeBlock);
-            }
-            else {
-                dropAmount++;
+                if (relativeBlock.getType() != blockType) {
+                    break;
+                }
+
+                if (mcMMO.getPlaceStore().isTrue(relativeBlock)) {
+                    mcMMO.getPlaceStore().setFalse(relativeBlock);
+                }
+                else {
+                    dropAmount++;
+                }
             }
         }
 

@@ -434,7 +434,7 @@ public class PlayerListener implements Listener {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         MiningManager miningManager = mcMMOPlayer.getMiningManager();
         Block block = event.getClickedBlock();
-        ItemStack heldItem = player.getItemInHand();
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
@@ -480,7 +480,7 @@ public class PlayerListener implements Listener {
             case LEFT_CLICK_BLOCK:
                 type = block.getType();
 
-                if ((Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() && player.isSneaking()) || !Config.getInstance().getAbilitiesOnlyActivateWhenSneaking()) {
+                if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
                     if (type == Repair.anvilMaterial && SkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
@@ -524,7 +524,7 @@ public class PlayerListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        ItemStack heldItem = player.getItemInHand();
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         switch (event.getAction()) {
             case RIGHT_CLICK_BLOCK:
@@ -553,7 +553,7 @@ public class PlayerListener implements Listener {
                 HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
                 if (herbalismManager.canGreenThumbBlock(blockState)) {
-                    player.setItemInHand(new ItemStack(Material.SEEDS, heldItem.getAmount() - 1));
+                    player.getInventory().setItemInMainHand(new ItemStack(Material.SEEDS, heldItem.getAmount() - 1));
 
                     if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
                         blockState.update(true);
@@ -569,7 +569,6 @@ public class PlayerListener implements Listener {
                 break;
 
             case RIGHT_CLICK_AIR:
-
                 /* ACTIVATION CHECKS */
                 if (Config.getInstance().getAbilitiesEnabled()) {
                     mcMMOPlayer.processAbilityActivation(SkillType.AXES);

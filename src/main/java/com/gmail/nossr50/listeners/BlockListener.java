@@ -170,7 +170,7 @@ public class BlockListener implements Listener {
         BlockState blockState = event.getBlock().getState();
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
-        if (BlockUtils.shouldBeWatched(blockState)) {
+        if (BlockUtils.shouldBeWatched(blockState) && blockState.getType() != Material.CHORUS_FLOWER) {
             mcMMO.getPlaceStore().setTrue(blockState);
         }
 
@@ -214,7 +214,7 @@ public class BlockListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        ItemStack heldItem = player.getItemInHand();
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         /* HERBALISM */
         if (BlockUtils.affectedByGreenTerra(blockState)) {
@@ -284,7 +284,7 @@ public class BlockListener implements Listener {
         }
 
         BlockState blockState = event.getBlock().getState();
-        ItemStack heldItem = player.getItemInHand();
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
 
         if (Herbalism.isRecentlyRegrown(blockState)) {
             event.setCancelled(true);
@@ -344,7 +344,7 @@ public class BlockListener implements Listener {
          * We check permissions here before processing activation.
          */
         if (BlockUtils.canActivateAbilities(blockState)) {
-            ItemStack heldItem = player.getItemInHand();
+            ItemStack heldItem = player.getInventory().getItemInMainHand();
 
             if (HiddenConfig.getInstance().useEnchantmentBuffs()) {
                 if ((ItemUtils.isPickaxe(heldItem) && !mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER)) || (ItemUtils.isShovel(heldItem) && !mcMMOPlayer.getAbilityMode(AbilityType.GIGA_DRILL_BREAKER))) {
@@ -402,7 +402,7 @@ public class BlockListener implements Listener {
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-        ItemStack heldItem = player.getItemInHand();
+        ItemStack heldItem = player.getInventory().getItemInMainHand();
         Block block = event.getBlock();
         BlockState blockState = block.getState();
 

@@ -134,8 +134,8 @@ public class FishingManager extends SkillManager {
             player.playSound(location, SoundAdapter.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
         }
 
-        if (player.getItemInHand().getType() == Material.FISHING_ROD) {
-            player.setItemInHand(null);
+        if (player.getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
+            player.getInventory().setItemInMainHand(null);
         }
 
         LivingEntity kraken = (LivingEntity) world.spawnEntity(player.getEyeLocation(), (Misc.getRandom().nextInt(100) == 0 ? EntityType.CHICKEN : EntityType.SQUID));
@@ -491,7 +491,7 @@ public class FishingManager extends SkillManager {
      */
     private FishingTreasure getFishingTreasure() {
         double diceRoll = Misc.getRandom().nextDouble() * 100;
-        diceRoll -= getPlayer().getItemInHand().getEnchantmentLevel(Enchantment.LUCK);
+        diceRoll -= getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LUCK);
 
         FishingTreasure treasure = null;
 

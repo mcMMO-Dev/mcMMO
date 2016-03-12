@@ -137,7 +137,7 @@ public class AcrobaticsManager extends SkillManager {
 
         Player player = getPlayer();
 
-        if (player.getItemInHand().getType() == Material.ENDER_PEARL || player.isInsideVehicle()) {
+        if (player.getInventory().getItemInMainHand().getType() == Material.ENDER_PEARL || player.isInsideVehicle()) {
             return true;
         }
 

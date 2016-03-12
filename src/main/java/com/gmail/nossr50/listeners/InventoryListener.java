@@ -321,7 +321,7 @@ public class InventoryListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onInventoryOpenEvent(InventoryOpenEvent event) {
-        SkillUtils.removeAbilityBuff(event.getPlayer().getItemInHand());
+        SkillUtils.removeAbilityBuff(event.getPlayer().getInventory().getItemInMainHand());
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
