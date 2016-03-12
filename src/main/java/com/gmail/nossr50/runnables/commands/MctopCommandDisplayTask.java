@@ -1,17 +1,16 @@
 package com.gmail.nossr50.runnables.commands;
 
-import java.util.List;
-
+import com.gmail.nossr50.datatypes.database.PlayerStat;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.database.PlayerStat;
-import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
+import java.util.List;
 
 /**
  * Display the results of {@link MctopCommandAsyncTask} to the sender.
@@ -45,15 +44,27 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
         if (sender instanceof Player) {
             ((Player) sender).removeMetadata(mcMMO.databaseCommandKey, mcMMO.p);
         }
-        sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
+        if(sender instanceof Player)
+            sender.sendMessage(LocaleLoader.getString("Commands.mctop.Tip"));
     }
 
     private void displayChat() {
+
         if (skill == null) {
-            sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
+            if(sender instanceof Player) {
+                sender.sendMessage(LocaleLoader.getString("Commands.PowerLevel.Leaderboard"));
+            }
+            else {
+                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.PowerLevel.Leaderboard")));
+            }
         }
         else {
-            sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName()));
+            if(sender instanceof Player) {
+                sender.sendMessage(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName()));
+            }
+            else {
+                sender.sendMessage(ChatColor.stripColor(LocaleLoader.getString("Commands.Skill.Leaderboard", skill.getName())));
+            }
         }
 
         int place = (page * 10) - 9;
@@ -62,7 +73,13 @@ public class MctopCommandDisplayTask extends BukkitRunnable {
             // Format:
             // 01. Playername - skill value
             // 12. Playername - skill value
-            sender.sendMessage(String.format("%2d. %s%s - %s%s", place, ChatColor.GREEN, stat.name, ChatColor.WHITE, stat.statVal));
+            if(sender instanceof Player) {
+                sender.sendMessage(String.format("%2d. %s%s - %s%s", place, ChatColor.GREEN, stat.name, ChatColor.WHITE, stat.statVal));
+            }
+            else {
+                sender.sendMessage(String.format("%2d. %s - %s", place, stat.name, stat.statVal));
+            }
+            
             place++;
         }
     }
