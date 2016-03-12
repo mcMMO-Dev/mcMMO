@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionType;
 
 public enum PotionStage {
     FIVE(5),
@@ -42,7 +43,7 @@ public enum PotionStage {
     }
 
     private static boolean isWaterBottle(AlchemyPotion input) {
-        return input.getDataValue() == 0;
+        return input.getData().getType() == PotionType.WATER;
     }
 
     public static PotionStage getPotionStage(AlchemyPotion alchemyPotion) {
