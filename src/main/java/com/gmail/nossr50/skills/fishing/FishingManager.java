@@ -79,6 +79,9 @@ public class FishingManager extends SkillManager {
     }
 
     public boolean canShake(Entity target) {
+          if ( target.hasMetadata(mcMMO.entityMetadataKey) ) // Don't allow Mob spawner mobs to be fished
+        	return false;
+        	
         return target instanceof LivingEntity && getSkillLevel() >= Tier.ONE.getLevel() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.SHAKE);
     }
 
