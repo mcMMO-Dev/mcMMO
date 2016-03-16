@@ -26,7 +26,7 @@ public class AlchemyBrewCheckTask extends BukkitRunnable {
     public void run() {
         Location location = brewingStand.getLocation();
         ItemStack[] newInventory = Arrays.copyOfRange(brewingStand.getInventory().getContents(), 0, 4);
-        boolean validBrew = AlchemyPotionBrewer.isValidBrew(player, newInventory);
+        boolean validBrew = brewingStand.getFuelLevel() > 0 && AlchemyPotionBrewer.isValidBrew(player, newInventory);
 
         if (Alchemy.brewingStandMap.containsKey(location)) {
             if (oldInventory[Alchemy.INGREDIENT_SLOT] == null || newInventory[Alchemy.INGREDIENT_SLOT] == null || !oldInventory[Alchemy.INGREDIENT_SLOT].isSimilar(newInventory[Alchemy.INGREDIENT_SLOT]) || !validBrew) {
