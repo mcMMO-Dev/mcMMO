@@ -236,7 +236,7 @@ public class PotionConfig extends ConfigLoader {
     }
 
     public boolean isValidPotion(ItemStack item) {
-        return potionMap.containsKey(item.getDurability());
+        return getPotion(item) != null;
     }
 
     public AlchemyPotion getPotion(String name) {

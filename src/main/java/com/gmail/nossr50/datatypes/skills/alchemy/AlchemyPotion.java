@@ -139,15 +139,15 @@ public class AlchemyPotion {
                 return false;
             }
         }
-        if (!meta.hasLore()) {
+        if (!meta.hasLore() && !lore.isEmpty()) {
             return false;
         }
-        if (!meta.getLore().equals(lore)) {
+        if (!(lore.isEmpty() && !meta.hasLore()) && !meta.getLore().equals(lore)) {
             return false;
         }
-        if (!meta.hasDisplayName()) {
+        if (!meta.hasDisplayName() && name != null) {
             return false;
         }
-        return meta.getDisplayName().equals(name);
+        return (name == null && !meta.hasDisplayName()) || meta.getDisplayName().equals(name);
     }
 }
