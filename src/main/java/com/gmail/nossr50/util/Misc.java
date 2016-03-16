@@ -18,6 +18,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.util.player.UserManager;
+
 import com.google.common.collect.ImmutableSet;
 
 public final class Misc {
@@ -72,8 +73,7 @@ public final class Misc {
         return (first.getWorld() == second.getWorld()) && (first.distanceSquared(second) < (maxDistance * maxDistance) || maxDistance == 0);
     }
 
-    public static Location getBlockCenter(BlockState blockstate)
-    {
+    public static Location getBlockCenter(BlockState blockstate) {
         return blockstate.getLocation().add(0.5, 0.5, 0.5);
     }
 
