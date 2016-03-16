@@ -73,7 +73,13 @@ public final class Misc {
         return (first.getWorld() == second.getWorld()) && (first.distanceSquared(second) < (maxDistance * maxDistance) || maxDistance == 0);
     }
 
-    public static Location getBlockCenter(BlockState blockstate) {
+    /**
+     * Get the center of the given block.
+     * 
+     * @param blockState The {@link BlockState} of the block
+     * @return A {@link Location} lying at the center of the block
+     */
+    public static Location getBlockCenter(BlockState blockState) {
         return blockstate.getLocation().add(0.5, 0.5, 0.5);
     }
 
