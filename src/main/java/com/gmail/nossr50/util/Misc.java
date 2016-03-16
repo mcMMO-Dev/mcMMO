@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.NPC;
@@ -17,7 +18,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.events.items.McMMOItemSpawnEvent;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.util.player.UserManager;
-
 import com.google.common.collect.ImmutableSet;
 
 public final class Misc {
@@ -70,6 +70,11 @@ public final class Misc {
      */
     public static boolean isNear(Location first, Location second, double maxDistance) {
         return (first.getWorld() == second.getWorld()) && (first.distanceSquared(second) < (maxDistance * maxDistance) || maxDistance == 0);
+    }
+
+    public static Location getBlockCenter(BlockState blockstate)
+    {
+        return blockstate.getLocation().add(0.5, 0.5, 0.5);
     }
 
     public static void dropItems(Location location, Collection<ItemStack> drops) {

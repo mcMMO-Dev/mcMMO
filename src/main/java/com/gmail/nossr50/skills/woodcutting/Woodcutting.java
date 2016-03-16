@@ -72,7 +72,7 @@ public final class Woodcutting {
      */
     protected static void checkForDoubleDrop(BlockState blockState) {
         if (mcMMO.getModManager().isCustomLog(blockState) && mcMMO.getModManager().getBlock(blockState).isDoubleDropEnabled()) {
-            Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
+            Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
         else {
             //TODO Remove this workaround when casting to Tree works again
@@ -91,7 +91,7 @@ public final class Woodcutting {
             }
 
             if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(species)) {
-                Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
+                Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
             }
         }
     }
