@@ -638,6 +638,17 @@ public class PotionConfigGenerator {
             children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() * 2, 0), data.baseName + "_EXTENDED"));
             mcMMOPotions.put(data, children);
             data = new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.HEALTH_BOOST, (int) (1800 * mod), 0), "HEALTH_BOOST");
+            children = new HashMap<Ingredient, WriteablePotion>();
+            if (material == Material.POTION) {
+                PotionEffect effect = new PotionEffect(data.effect.getType(), (int) (data.effect.getDuration() * 0.75), data.effect.getAmplifier());
+                children.put(new Ingredient(Material.SULPHUR), new WriteablePotion(Material.SPLASH_POTION, data.data, effect, data.baseName));
+            } else if (material == Material.SPLASH_POTION) {
+                PotionEffect effect = new PotionEffect(data.effect.getType(), (int) (data.effect.getDuration() * 0.33), data.effect.getAmplifier());
+                children.put(new Ingredient(Material.DRAGONS_BREATH), new WriteablePotion(Material.LINGERING_POTION, data.data, effect, data.baseName));
+            }
+            children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() / 2, 1), data.baseName + "_II"));
+            children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() * 2, 0), data.baseName + "_EXTENDED"));
+            mcMMOPotions.put(data, children);
         }
     }
 }

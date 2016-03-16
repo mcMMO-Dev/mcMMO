@@ -54,8 +54,8 @@ public enum PotionStage {
 
         int stage = 1;
 
-        // Check if potion has base effect
-        if (data.getType().getEffectType() != null) {
+        // Check if potion has an effect of any sort
+        if (data.getType().getEffectType() != null || !effects.isEmpty()) {
             stage++;
         }
 
@@ -63,8 +63,7 @@ public enum PotionStage {
         // Else check if the potion has a custom effect with an amplifier added by mcMMO 
         if (data.isUpgraded()) {
             stage++;
-        }
-        if(!effects.isEmpty()){
+        } else if(!effects.isEmpty()) {
             for (PotionEffect effect : effects){
                 if(effect.getAmplifier() > 0){
                     stage++;
