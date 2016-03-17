@@ -34,7 +34,7 @@ public class ExcavationManager extends SkillManager {
 
             if (!treasures.isEmpty()) {
                 int skillLevel = getSkillLevel();
-                Location location = blockState.getLocation();
+                Location location = Misc.getBlockCenter(blockState);
 
                 for (ExcavationTreasure treasure : treasures) {
                     if (skillLevel >= treasure.getDropLevel() && SkillUtils.treasureDropSuccessful(getPlayer(), treasure.getDropChance(), activationChance)) {

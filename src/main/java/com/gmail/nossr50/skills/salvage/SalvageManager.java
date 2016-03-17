@@ -95,7 +95,7 @@ public class SalvageManager extends SkillManager {
         salvageableAmount = Math.max((int) (salvageableAmount * getMaxSalvagePercentage()), 1); // Always get at least something back, if you're capable of salvaging it.
 
         player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-        location.add(0, 1, 0);
+        location.add(0.5, 1, 0.5);
 
         Map<Enchantment, Integer> enchants = item.getEnchantments();
 

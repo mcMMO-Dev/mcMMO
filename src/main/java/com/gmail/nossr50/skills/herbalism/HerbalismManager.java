@@ -181,7 +181,7 @@ public class HerbalismManager extends SkillManager {
         for (int i = greenTerra ? 2 : 1; i != 0; i--) {
             if (SkillUtils.activationSuccessful(SecondaryAbility.HERBALISM_DOUBLE_DROPS, getPlayer(), getSkillLevel(), activationChance)) {
                 for (ItemStack item : drops) {
-                    Misc.dropItems(blockState.getLocation(), item, amount);
+                    Misc.dropItems(Misc.getBlockCenter(blockState), item, amount);
                 }
             }
         }
@@ -246,7 +246,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
         int skillLevel = getSkillLevel();
-        Location location = blockState.getLocation();
+        Location location = Misc.getBlockCenter(blockState);
 
         for (HylianTreasure treasure : treasures) {
             if (skillLevel >= treasure.getDropLevel() && SkillUtils.treasureDropSuccessful(getPlayer(), treasure.getDropChance(), activationChance)) {

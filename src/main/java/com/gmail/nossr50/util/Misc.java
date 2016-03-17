@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.NPC;
@@ -70,6 +71,16 @@ public final class Misc {
      */
     public static boolean isNear(Location first, Location second, double maxDistance) {
         return (first.getWorld() == second.getWorld()) && (first.distanceSquared(second) < (maxDistance * maxDistance) || maxDistance == 0);
+    }
+
+    /**
+     * Get the center of the given block.
+     * 
+     * @param blockState The {@link BlockState} of the block
+     * @return A {@link Location} lying at the center of the block
+     */
+    public static Location getBlockCenter(BlockState blockState) {
+        return blockState.getLocation().add(0.5, 0.5, 0.5);
     }
 
     public static void dropItems(Location location, Collection<ItemStack> drops) {

@@ -148,7 +148,7 @@ public class MiningManager extends SkillManager {
                     xp += Mining.getBlockXp(blockState);
                 }
 
-                Misc.dropItem(blockState.getLocation(), blockState.getData().toItemStack(1)); // Initial block that would have been dropped
+                Misc.dropItem(Misc.getBlockCenter(blockState), blockState.getData().toItemStack(1)); // Initial block that would have been dropped
 
                 if (!mcMMO.getPlaceStore().isTrue(blockState)) {
                     for (int i = 1; i < dropMultiplier; i++) {
@@ -161,7 +161,7 @@ public class MiningManager extends SkillManager {
         if (debrisYield > 0) {
             for (BlockState blockState : debris) {
                 if (Misc.getRandom().nextFloat() < debrisYield) {
-                    Misc.dropItems(blockState.getLocation(), blockState.getBlock().getDrops());
+                    Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
                 }
             }
         }
