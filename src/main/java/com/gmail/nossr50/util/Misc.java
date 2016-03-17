@@ -80,7 +80,7 @@ public final class Misc {
      * @return A {@link Location} lying at the center of the block
      */
     public static Location getBlockCenter(BlockState blockState) {
-        return blockstate.getLocation().add(0.5, 0.5, 0.5);
+        return blockState.getLocation().add(0.5, 0.5, 0.5);
     }
 
     public static void dropItems(Location location, Collection<ItemStack> drops) {
