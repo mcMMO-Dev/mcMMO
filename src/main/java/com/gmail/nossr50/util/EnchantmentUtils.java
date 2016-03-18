@@ -31,9 +31,13 @@ public class EnchantmentUtils {
         enchants.put("FLAME", Enchantment.ARROW_FIRE);
         enchants.put("KNOCKBACK", Enchantment.KNOCKBACK);
         enchants.put("THORNS", Enchantment.THORNS);
-        enchants.put("MENDING", Enchantment.MENDING);
+        if (Enchantment.getByName("MENDING") != null) {
+            enchants.put("MENDING", Enchantment.MENDING);
+        }
         enchants.put("DEPTH_STRIDER", Enchantment.DEPTH_STRIDER);
-        enchants.put("FROST_WALKER", Enchantment.FROST_WALKER);
+        if (Enchantment.getByName("FROST_WALKER") != null) {
+            enchants.put("FROST_WALKER", Enchantment.FROST_WALKER);
+        }
     }
 
     /**
