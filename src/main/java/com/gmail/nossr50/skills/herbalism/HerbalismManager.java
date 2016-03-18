@@ -303,23 +303,23 @@ public class HerbalismManager extends SkillManager {
     private void processGreenThumbPlants(BlockState blockState, boolean greenTerra) {
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
-        ItemStack seed = null;
+        Material seed = null;
 
         switch (blockState.getType()) {
             case CARROT:
-                seed = new ItemStack(Material.CARROT_ITEM);
+                seed = Material.CARROT_ITEM;
                 break;
 
             case CROPS:
-                seed = new ItemStack(Material.SEEDS);
+                seed = Material.SEEDS;
                 break;
 
             case NETHER_WARTS:
-                seed = new ItemStack(Material.NETHER_STALK);
+                seed = Material.NETHER_STALK;
                 break;
 
             case POTATO:
-                seed = new ItemStack(Material.POTATO_ITEM);
+                seed = Material.POTATO_ITEM;
                 break;
 
             default:
@@ -338,7 +338,7 @@ public class HerbalismManager extends SkillManager {
             return;
         }
 
-        playerInventory.removeItem(seed);
+        playerInventory.removeItem(new ItemStack(seed));
         player.updateInventory(); // Needed until replacement available
         new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
     }
