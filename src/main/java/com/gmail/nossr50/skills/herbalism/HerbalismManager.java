@@ -323,7 +323,7 @@ public class HerbalismManager extends SkillManager {
                 break;
 
             default:
-                break;
+                return;
         }
 
         if (!playerInventory.contains(seed, 1)) {
