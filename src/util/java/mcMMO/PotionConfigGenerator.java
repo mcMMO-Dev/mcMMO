@@ -62,6 +62,9 @@ public class PotionConfigGenerator {
             this.mat = type;
             this.baseName = baseName;
             this.name = "POTION_OF_" + baseName;
+            if(mat == Material.NETHER_WARTS){
+                this.mat = Material.NETHER_STALK;
+            }
             if (mat == Material.SPLASH_POTION) {
                 this.name = "SPLASH_" + this.name;
             }
@@ -357,7 +360,7 @@ public class PotionConfigGenerator {
             case WATER :
                 assert(!current.data.isExtended());
                 assert(!current.data.isUpgraded());
-                children.put(new Ingredient(Material.NETHER_WARTS), new WriteablePotion(current.mat, PotionType.AWKWARD));
+                children.put(new Ingredient(Material.NETHER_STALK), new WriteablePotion(current.mat, PotionType.AWKWARD));
                 children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, PotionType.WEAKNESS));
                 children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, PotionType.MUNDANE));
                 children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, PotionType.THICK));
