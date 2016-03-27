@@ -90,9 +90,6 @@ public class mcMMO extends JavaPlugin {
     // Jar Stuff
     public static File mcmmo;
 
-    // Update Check
-    private boolean updateAvailable;
-
     /* Plugin Checks */
     private static boolean healthBarPluginEnabled;
 
@@ -262,14 +259,6 @@ public class mcMMO extends JavaPlugin {
 
     public static String getModDirectory() {
         return modDirectory;
-    }
-
-    public boolean isUpdateAvailable() {
-        return updateAvailable;
-    }
-
-    public void setUpdateAvailable(boolean available) {
-        this.updateAvailable = available;
     }
 
     public boolean isXPEventEnabled() {
