@@ -1289,4 +1289,57 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     public static int EXP_ALCHEMY = 40;
     public static int UUID_INDEX = 41;
     public static int SCOREBOARD_TIPS = 42;
+
+    public void resetMobHealthSettings() {
+        BufferedReader in = null;
+        FileWriter out = null;
+        String usersFilePath = mcMMO.getUsersFilePath();
+
+        synchronized (fileWritingLock) {
+            try {
+                in = new BufferedReader(new FileReader(usersFilePath));
+                StringBuilder writer = new StringBuilder();
+                String line;
+
+                while ((line = in.readLine()) != null) {
+                    // Remove empty lines from the file
+                    if (line.isEmpty()) {
+                        continue;
+                    }
+                    String[] character = line.split(":");
+                    
+                    character[HEALTHBAR] = Config.getInstance().getMobHealthbarDefault().toString();
+                    
+                    line = new StringBuilder(org.apache.commons.lang.StringUtils.join(character, ":")).append(":").toString();
+
+                    writer.append(line).append("\r\n");
+                }
+
+                // Write the new file
+                out = new FileWriter(usersFilePath);
+                out.write(writer.toString());
+            }
+            catch (IOException e) {
+                mcMMO.p.getLogger().severe("Exception while reading " + usersFilePath + " (Are you sure you formatted it correctly?)" + e.toString());
+            }
+            finally {
+                if (in != null) {
+                    try {
+                        in.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
+                if (out != null) {
+                    try {
+                        out.close();
+                    }
+                    catch (IOException e) {
+                        // Ignore
+                    }
+                }
+            }
+        }
+    }
 }
