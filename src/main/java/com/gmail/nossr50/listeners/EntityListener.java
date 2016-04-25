@@ -31,6 +31,7 @@ import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PigZapEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
@@ -701,5 +702,14 @@ public class EntityListener implements Listener {
                 entity.addPotionEffect(new PotionEffect(effect.getType(), duration, effect.getAmplifier(), effect.isAmbient()));
             }
         }
+    }
+    
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPigZapEvent(PigZapEvent event)
+    {
+    	if (event.getEntity().hasMetadata(mcMMO.entityMetadataKey))
+    	{
+    		event.getPigZombie().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+    	}
     }
 }
