@@ -706,8 +706,8 @@ public class EntityListener implements Listener {
     
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPigZapEvent(PigZapEvent event) {
-    	if (event.getEntity().hasMetadata(mcMMO.entityMetadataKey)) {
-    		event.getPigZombie().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
-    	}
+        if (event.getEntity().hasMetadata(mcMMO.entityMetadataKey)) {
+            event.getPigZombie().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
+        }
     }
 }
