@@ -1417,4 +1417,23 @@ public final class SQLDatabaseManager implements DatabaseManager {
         LOAD,
         SAVE;
     }
+
+    public void resetMobHealthSettings() {
+        PreparedStatement statement = null;
+        Connection connection = null;
+
+        try {
+            connection = getConnection(PoolIdentifier.MISC);
+            statement = connection.prepareStatement("UPDATE " + tablePrefix + "huds SET mobhealthbar = ?");
+            statement.setString(1, Config.getInstance().getMobHealthbarDefault().toString());
+            statement.executeUpdate();
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            tryClose(statement);
+            tryClose(connection);
+        }
+    }
 }

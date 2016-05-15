@@ -165,7 +165,7 @@ public class InventoryListener implements Listener {
         ItemStack clicked = event.getCurrentItem();
         ItemStack cursor = event.getCursor();
 
-        if ((clicked != null && clicked.getType() == Material.POTION) || (cursor != null && cursor.getType() == Material.POTION)) {
+        if ((clicked != null && (clicked.getType() == Material.POTION || clicked.getType() == Material.SPLASH_POTION || clicked.getType() == Material.LINGERING_POTION)) || (cursor != null && (cursor.getType() == Material.POTION || cursor.getType() == Material.SPLASH_POTION || cursor.getType() == Material.LINGERING_POTION))) {
             AlchemyPotionBrewer.scheduleCheck(player, stand);
             return;
         }
@@ -296,12 +296,12 @@ public class InventoryListener implements Listener {
 
         ItemStack item = event.getItem();
 
-        if (Config.getInstance().getPreventHopperTransferIngredients() && item.getType() != Material.POTION) {
+        if (Config.getInstance().getPreventHopperTransferIngredients() && item.getType() != Material.POTION && item.getType() != Material.SPLASH_POTION && item.getType() != Material.LINGERING_POTION) {
             event.setCancelled(true);
             return;
         }
 
-        if (Config.getInstance().getPreventHopperTransferBottles() && item.getType() == Material.POTION) {
+        if (Config.getInstance().getPreventHopperTransferBottles() && (item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION)) {
             event.setCancelled(true);
             return;
         }

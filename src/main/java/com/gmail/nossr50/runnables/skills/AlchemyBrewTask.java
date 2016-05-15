@@ -27,6 +27,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
     private double brewSpeed;
     private double brewTimer;
     private Player player;
+    private int fuel;
 
     public AlchemyBrewTask(BlockState brewingStand, Player player) {
         this.brewingStand = brewingStand;
@@ -50,6 +51,8 @@ public class AlchemyBrewTask extends BukkitRunnable {
         if (Alchemy.brewingStandMap.containsKey(location)) {
             Alchemy.brewingStandMap.get(location).cancel();
         }
+        
+        fuel = ((BrewingStand) brewingStand).getFuelLevel() - 1;
 
         Alchemy.brewingStandMap.put(location, this);
         this.runTaskTimer(mcMMO.p, 1, 1);
@@ -57,7 +60,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (player == null || !player.isValid() || brewingStand == null || brewingStand.getType() != Material.BREWING_STAND) {
+        if (player == null || !player.isValid() || brewingStand == null || brewingStand.getType() != Material.BREWING_STAND || !AlchemyPotionBrewer.isValidIngredient(player, ((BrewingStand) brewingStand).getInventory().getContents()[Alchemy.INGREDIENT_SLOT])) {
             if (Alchemy.brewingStandMap.containsKey(location)) {
                 Alchemy.brewingStandMap.remove(location);
             }
@@ -66,6 +69,8 @@ public class AlchemyBrewTask extends BukkitRunnable {
 
             return;
         }
+        
+        ((BrewingStand) brewingStand).setFuelLevel(fuel);
 
         brewTimer -= brewSpeed;
 

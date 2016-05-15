@@ -25,7 +25,7 @@ public class Axes {
 
     protected static boolean hasArmor(LivingEntity target) {
         for (ItemStack itemStack : target.getEquipment().getArmorContents()) {
-            if (ItemUtils.isArmor(itemStack)) {
+            if (itemStack != null && ItemUtils.isArmor(itemStack)) {
                 return true;
             }
         }

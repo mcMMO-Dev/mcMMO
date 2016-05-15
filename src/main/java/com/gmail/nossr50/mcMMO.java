@@ -35,7 +35,6 @@ import com.gmail.nossr50.listeners.WorldListener;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.CheckDateTask;
 import com.gmail.nossr50.runnables.SaveTimerTask;
-import com.gmail.nossr50.runnables.UpdaterResultAsyncTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
 import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
@@ -89,9 +88,6 @@ public class mcMMO extends JavaPlugin {
 
     // Jar Stuff
     public static File mcmmo;
-
-    // Update Check
-    private boolean updateAvailable;
 
     /* Plugin Checks */
     private static boolean healthBarPluginEnabled;
@@ -182,8 +178,6 @@ public class mcMMO extends JavaPlugin {
 
             placeStore = ChunkManagerFactory.getChunkManager(); // Get our ChunkletManager
 
-            checkForUpdates();
-
             if (Config.getInstance().getPTPCommandWorldPermissions()) {
                 Permissions.generateWorldTeleportPermissions();
             }
@@ -262,14 +256,6 @@ public class mcMMO extends JavaPlugin {
 
     public static String getModDirectory() {
         return modDirectory;
-    }
-
-    public boolean isUpdateAvailable() {
-        return updateAvailable;
-    }
-
-    public void setUpdateAvailable(boolean available) {
-        this.updateAvailable = available;
     }
 
     public boolean isXPEventEnabled() {
@@ -388,14 +374,6 @@ public class mcMMO extends JavaPlugin {
 
         File currentFlatfilePath = new File(flatFileDirectory);
         currentFlatfilePath.mkdirs();
-    }
-
-    private void checkForUpdates() {
-        if (!Config.getInstance().getUpdateCheckEnabled()) {
-            return;
-        }
-
-        new UpdaterResultAsyncTask(this).runTaskAsynchronously(mcMMO.p);
     }
 
     private void loadConfigFiles() {

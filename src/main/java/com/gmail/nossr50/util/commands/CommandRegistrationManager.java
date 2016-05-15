@@ -7,6 +7,7 @@ import org.bukkit.command.PluginCommand;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.KrakenCommand;
+import com.gmail.nossr50.commands.MHDCommand;
 import com.gmail.nossr50.commands.McImportCommand;
 import com.gmail.nossr50.commands.McabilityCommand;
 import com.gmail.nossr50.commands.McconvertCommand;
@@ -390,6 +391,15 @@ public final class CommandRegistrationManager {
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mobhealth", "<DISABLED | HEARTS | BAR>"));
         command.setExecutor(new MobhealthCommand());
     }
+    
+    private static void registerMHDCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mhd");
+        command.setDescription("Resets all mob health bar settings for all players to the default"); //TODO: Localize
+        command.setPermission("mcmmo.commands.mhd");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "mhd"));
+        command.setExecutor(new MHDCommand());
+    }
 
     private static void registerMcscoreboardCommand() {
         PluginCommand command = mcMMO.p.getCommand("mcscoreboard");
@@ -430,6 +440,7 @@ public final class CommandRegistrationManager {
         registerMcrefreshCommand();
         registerMcscoreboardCommand();
         registerMobhealthCommand();
+        registerMHDCommand();
         registerXprateCommand();
 
         // Chat Commands

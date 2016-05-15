@@ -103,7 +103,7 @@ public class AxesManager extends SkillManager {
         int durabilityDamage = 1 + (getSkillLevel() / Axes.impactIncreaseLevel);
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
-            if (ItemUtils.isArmor(armor)) {
+            if (armor != null && ItemUtils.isArmor(armor)) {
                 if (SkillUtils.activationSuccessful(SecondaryAbility.ARMOR_IMPACT, getPlayer(), Axes.impactChance, activationChance)) {
                     SkillUtils.handleDurabilityChange(armor, durabilityDamage, Axes.impactMaxDurabilityModifier);
                 }

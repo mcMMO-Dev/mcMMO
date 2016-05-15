@@ -111,6 +111,8 @@ commands:
     mobhealth:
         aliases: [mcmobhealth]
         description: Change the style of the mob healthbar
+    mhd:
+        description: Sets all players mob health settings to default
     mcscoreboard:
         aliases: [mcsb]
         description: Manage your mcMMO Scoreboard
@@ -947,6 +949,9 @@ permissions:
         description: Allows access to the mmoshowdb command
     mcmmo.commands.mobhealth:
          description: Allows access to the mobhealth command
+    mcmmo.commands.mhd:
+        default: false
+        description: Allows access to the mhd command
     mcmmo.commands.party.*:
         default: false
         description: Implies access to all mcmmo.commands.party permissions.

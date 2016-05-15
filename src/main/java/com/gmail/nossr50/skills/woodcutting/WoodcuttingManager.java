@@ -125,7 +125,7 @@ public class WoodcuttingManager extends SkillManager {
 
             if (material == Material.HUGE_MUSHROOM_1 || material == Material.HUGE_MUSHROOM_2) {
                 xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
-                Misc.dropItems(blockState.getLocation(), block.getDrops());
+                Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
             }
             else if (mcMMO.getModManager().isCustomLog(blockState)) {
                 if (canGetDoubleDrops()) {
@@ -135,10 +135,10 @@ public class WoodcuttingManager extends SkillManager {
                 CustomBlock customBlock = mcMMO.getModManager().getBlock(blockState);
                 xp = customBlock.getXpGain();
 
-                Misc.dropItems(blockState.getLocation(), block.getDrops());
+                Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
             }
             else if (mcMMO.getModManager().isCustomLeaf(blockState)) {
-                Misc.dropItems(blockState.getLocation(), block.getDrops());
+                Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
             }
             else {
                 //TODO Remove this workaround when casting to Tree works again
@@ -154,12 +154,12 @@ public class WoodcuttingManager extends SkillManager {
                             Woodcutting.checkForDoubleDrop(blockState);
                         }
                         xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
-                        Misc.dropItems(blockState.getLocation(), block.getDrops());
+                        Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
                         break;
 
                     case LEAVES:
                     case LEAVES_2:
-                        Misc.dropItems(blockState.getLocation(), block.getDrops());
+                        Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
                         break;
 
                     default:

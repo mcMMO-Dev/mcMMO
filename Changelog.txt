@@ -7,18 +7,26 @@ Key:
   ! Change
   - Removal
 
-Version 1.5.04-SNAPSHOT
+Version 1.5.05-SNAPSHOT
+
+Version 1.5.04
+ + Added option to config.yml to control mcMMO generated sound volume
  + Added option to config.yml to truncate existing player skill levels that exceed the skill level cap
  + Falling blocks persist mcMMO natural data
  = Woodcutting double drops correctly identify acacia and dark oak logs
  = Skill Reset command now correctly identifies arguments
  = Hylian Treasure config options are now actually used
  = Child skills now use parent skills configured skill caps properly
+ = Auto Update config now properly works
+ ! Item dropped from blocks now drop from the center
+ ! Potions Config updated for 1.9
  ! Flux mining now simulates a block break event for other plugins to act upon
  ! Zombie Pigmen spawned from nether portals are now considered spawner mobs
  ! Flux Pickaxe lore now appends to existing lore as opposed to replacing it
  ! Party chat no longer displays colors when logged in server console
  - Treefeller no longer lowers exp for big trees
+ - No longer supports 1.8 :(
+ - Removed plugin metrics
 
 Version 1.5.03
  = Fixed bug where absorption hearts could be attacked by allied players

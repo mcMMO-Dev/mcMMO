@@ -32,7 +32,7 @@ public final class AlchemyPotionBrewer {
         }
 
         for (int i = 0; i < 3; i++) {
-            if (contents[i] == null || contents[i].getType() != Material.POTION) {
+            if (contents[i] == null || contents[i].getType() != Material.POTION && contents[i].getType() != Material.SPLASH_POTION && contents[i].getType() != Material.LINGERING_POTION) {
                 continue;
             }
 

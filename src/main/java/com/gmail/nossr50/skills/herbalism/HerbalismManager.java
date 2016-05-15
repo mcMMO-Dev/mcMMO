@@ -181,7 +181,7 @@ public class HerbalismManager extends SkillManager {
         for (int i = greenTerra ? 2 : 1; i != 0; i--) {
             if (SkillUtils.activationSuccessful(SecondaryAbility.HERBALISM_DOUBLE_DROPS, getPlayer(), getSkillLevel(), activationChance)) {
                 for (ItemStack item : drops) {
-                    Misc.dropItems(blockState.getLocation(), item, amount);
+                    Misc.dropItems(Misc.getBlockCenter(blockState), item, amount);
                 }
             }
         }
@@ -246,7 +246,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
         int skillLevel = getSkillLevel();
-        Location location = blockState.getLocation();
+        Location location = Misc.getBlockCenter(blockState);
 
         for (HylianTreasure treasure : treasures) {
             if (skillLevel >= treasure.getDropLevel() && SkillUtils.treasureDropSuccessful(getPlayer(), treasure.getDropChance(), activationChance)) {
@@ -303,27 +303,27 @@ public class HerbalismManager extends SkillManager {
     private void processGreenThumbPlants(BlockState blockState, boolean greenTerra) {
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
-        ItemStack seed = null;
+        Material seed = null;
 
         switch (blockState.getType()) {
             case CARROT:
-                seed = new ItemStack(Material.CARROT_ITEM);
+                seed = Material.CARROT_ITEM;
                 break;
 
             case CROPS:
-                seed = new ItemStack(Material.SEEDS);
+                seed = Material.SEEDS;
                 break;
 
             case NETHER_WARTS:
-                seed = new ItemStack(Material.NETHER_STALK);
+                seed = Material.NETHER_STALK;
                 break;
 
             case POTATO:
-                seed = new ItemStack(Material.POTATO_ITEM);
+                seed = Material.POTATO_ITEM;
                 break;
 
             default:
-                break;
+                return;
         }
 
         if (!playerInventory.contains(seed, 1)) {
@@ -338,7 +338,7 @@ public class HerbalismManager extends SkillManager {
             return;
         }
 
-        playerInventory.removeItem(seed);
+        playerInventory.removeItem(new ItemStack(seed));
         player.updateInventory(); // Needed until replacement available
         new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
     }
