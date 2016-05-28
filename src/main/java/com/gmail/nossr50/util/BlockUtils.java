@@ -147,10 +147,9 @@ public final class BlockUtils {
             case YELLOW_FLOWER:
                 return true;
 
+            case BEETROOT_BLOCK:
             case CARROT:
             case POTATO:
-                return blockState.getRawData() == CropState.RIPE.getData();
-
             case CROPS:
                 return ((Crops) blockState.getData()).getState() == CropState.RIPE;
 
