@@ -1,0 +1,220 @@
+#
+#  Tools example configuration
+#  Last updated on ${project.version}-b${BUILD_NUMBER}
+#
+# Any file named tools.*.yml in the mod folder will be loaded as a tools config
+# For every tool type there is a separate section.
+# The names of each subitem should be the exact material name.
+# The bare minimum of a Tool is that it has a Repair_Material
+#
+#
+#
+# XP_Modifier: This is the xp modifier of the tool, xp is multiplied by this modifier.
+## Valid values are > 0
+## This defaults to 1.0.
+#
+# Tier: The tier of the tool
+## Used to determine the capabilities of AoE abilities with certain skills
+## Valid values range from 1 to 4
+## This defaults to 1
+#
+# Ability_Enabled: Whether or not abilities are enabled with this tool
+## This defaults to true
+#
+# Repairable: Whether or not the item is repairable
+## This defaults to true
+#
+# Repair_Material: This is the material name of the item used to repair this tool.
+## This is required to be set if you want to be able to repair the item.
+#
+# Repair_Material_Data_Value: This is the metadata of the item used to repair this tool.
+## A value of -1 means to ignore all metadata when repairing.
+## This defaults to -1
+#
+# Repair_Material_Quantity: This is the minimum number of items needed to repair this item ignoring all other repair bonuses.
+## This is typically the number of the repair material needed to create a new item, for example for a sword it is 2, for an axe it is 3
+## This defaults to 9
+#
+# Repair_Material_Pretty_Name: The pretty name of the repair material.
+## Used in the feedback message when not enough repair materials are found.
+## This defaults to the Repair_Material converted to string.
+#
+# Repair_MinimumLevel: This is the minimum repair level needed to repair this item.
+## Valid values are => 0
+## This defaults to 0
+#
+# Repair_XpMultiplier: This is the amount to multiply the xp bonus by.
+## This defaults to 1
+#
+# Durability: This is the maximum durability of the tool.
+## Valid values are >= 1
+#
+###
+#
+#  Settings for Axes
+###
+Axes:
+    Axe_1:
+        XP_Modifier: 1.0
+        Ability_Enabled: true
+        Tier: 1
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 9999
+    Axe_2:
+        XP_Modifier: 1.0
+        Ability_Enabled: true
+        Tier: 1
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 9999
+#
+#  Settings for Bows
+###
+Bows:
+    Bow_1:
+        XP_Modifier: 1.0
+        Ability_Enabled: true
+        Tier: 1
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 9999
+    Bow_2:
+        XP_Modifier: 1.0
+        Ability_Enabled: true
+        Tier: 1
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 9999
+#
+#  Settings for Hoes
+###
+Hoes:
+    Hoe_1:
+        XP_Modifier: 1.0
+        Ability_Enabled: true
+        Tier: 1
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 9999
+    Hoe_2:
+        XP_Modifier: 1.0
+        Ability_Enabled: true
+        Tier: 1
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 9999
+#
+#  Settings for Pickaxes
+###
+Pickaxes:
+    Pickaxe_1:
+        XP_Modifier: 1.0
+        Ability_Enabled: true
+        Tier: 1
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 9999
+    Pickaxe_2:
+        XP_Modifier: 1.0
+        Ability_Enabled: true
+        Tier: 1
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 9999
+#
+#  Settings for Shovels
+###
+Shovels:
+    Shovel_1:
+        XP_Modifier: 1.0
+        Ability_Enabled: true
+        Tier: 1
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 9999
+    Shovel_2:
+        XP_Modifier: 1.0
+        Ability_Enabled: true
+        Tier: 1
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 9999
+#
+#  Settings for Swords
+###
+Swords:
+    Sword_1:
+        XP_Modifier: 1.0
+        Ability_Enabled: true
+        Tier: 1
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 9999
+    Sword_2:
+        XP_Modifier: 1.0
+        Ability_Enabled: true
+        Tier: 1
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 9999

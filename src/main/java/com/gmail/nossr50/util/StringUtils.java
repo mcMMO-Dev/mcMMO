@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.entity.EntityType;
 
-import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 
@@ -52,9 +51,6 @@ public class StringUtils {
         }
     }
 
-    public static String getPrettyPartyFeatureString(PartyFeature partyFeature) {
-        return createPrettyEnumString(partyFeature.toString());
-    }
 
     private static String createPrettyEnumString(String baseString) {
         String[] substrings = baseString.split("_");

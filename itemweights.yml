@@ -1,0 +1,96 @@
+#
+#  Item Weights configuration
+#  
+#  This file is used to determine the value of an item. This will only 
+#  happen when users are sharing items in a party using the EQUAL item share mode.
+#
+#  Rare items should have a higher value than common items. If an item is not listed
+#  here, the value from "Default" will be used instead.
+#
+#####
+Item_Weights:
+    Default: 5
+    Quartz: 200
+    Quartz_Ore: 200
+    Emerald: 150
+    Emerald_Ore: 150
+    Diamond: 100
+    Diamond_Ore: 100
+    Gold_Ingot: 50
+    Gold_Ore: 50
+    Iron_Ingot: 40
+    Iron_Ore: 40
+    Lapis_Ore: 30
+    Redstone: 30
+    Redstone_Ore: 30
+    Glowstone_Dust: 20
+    Coal: 10
+    Coal_Ore: 10
+
+    # Item weights for armor and tools
+    Diamond_Sword: 150
+    Diamond_Spade: 150
+    Diamond_Pickaxe: 150
+    Diamond_Axe: 150
+    Diamond_Helmet: 150
+    Diamond_Chestplate: 150
+    Diamond_Leggings: 150
+    Diamond_Boots: 150
+    Gold_Sword: 75
+    Gold_Spade: 75
+    Gold_Pickaxe: 75
+    Gold_Axe: 75
+    Gold_Helmet: 75
+    Gold_Chestplate: 75
+    Gold_Leggings: 75
+    Gold_Boots: 75
+    Iron_Sword: 60
+    Iron_Spade: 60
+    Iron_Pickaxe: 60
+    Iron_Axe: 60
+    Iron_Helmet: 60
+    Iron_Chestplate: 60
+    Iron_Leggings: 60
+    Iron_Boots: 60
+
+# Items in this section will get added to the Misc share category.
+# Case insensitive, though the name must be exactly the same as set in the Bukkit Material enum.
+Party_Shareables:
+    Misc_Items:
+        - Diamond_Sword
+        - Diamond_Spade
+        - Diamond_Pickaxe
+        - Diamond_Axe
+        - Gold_Sword
+        - Gold_Spade
+        - Gold_Pickaxe
+        - Gold_Axe
+        - Iron_Sword
+        - Iron_Spade
+        - Iron_Pickaxe
+        - Iron_Axe
+        - Stone_Sword
+        - Stone_Spade
+        - Stone_Pickaxe
+        - Stone_Axe
+        - Wood_Sword
+        - Wood_Spade
+        - Wood_Pickaxe
+        - Wood_Axe
+        - Bow
+        - Diamond_Helmet
+        - Diamond_Chestplate
+        - Diamond_Leggings
+        - Diamond_Boots
+        - Gold_Helmet
+        - Gold_Chestplate
+        - Gold_Leggings
+        - Gold_Boots
+        - Iron_Helmet
+        - Iron_Chestplate
+        - Iron_Leggings
+        - Iron_Boots
+        - Leather_Helmet
+        - Leather_Chestplate
+        - Leather_Leggings
+        - Leather_Boots

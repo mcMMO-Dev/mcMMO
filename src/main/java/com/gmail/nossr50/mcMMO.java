@@ -32,12 +32,10 @@ import com.gmail.nossr50.listeners.InventoryListener;
 import com.gmail.nossr50.listeners.PlayerListener;
 import com.gmail.nossr50.listeners.SelfListener;
 import com.gmail.nossr50.listeners.WorldListener;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.CheckDateTask;
 import com.gmail.nossr50.runnables.SaveTimerTask;
 import com.gmail.nossr50.runnables.backups.CleanBackupsTask;
 import com.gmail.nossr50.runnables.database.UserPurgeTask;
-import com.gmail.nossr50.runnables.party.PartyAutoKickTask;
 import com.gmail.nossr50.runnables.player.ClearRegisteredXPGainTask;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.runnables.player.PowerLevelUpdatingTask;
@@ -162,7 +160,6 @@ public class mcMMO extends JavaPlugin {
             registerEvents();
             registerCustomRecipes();
 
-            PartyManager.loadParties();
 
             formulaManager = new FormulaManager();
             holidayManager = new HolidayManager();
@@ -182,6 +179,7 @@ public class mcMMO extends JavaPlugin {
                 Permissions.generateWorldTeleportPermissions();
             }
         }
+        
         catch (Throwable t) {
             getLogger().severe("There was an error while enabling mcMMO!");
 
@@ -205,7 +203,6 @@ public class mcMMO extends JavaPlugin {
             Alchemy.finishAllBrews();   // Finish all partially complete AlchemyBrewTasks to prevent vanilla brewing continuation on restart
             UserManager.saveAll();      // Make sure to save player information if the server shuts down
             UserManager.clearAll();
-            PartyManager.saveParties(); // Save our parties
             ScoreboardManager.teardownAll();
             formulaManager.saveFormula();
             holidayManager.saveAnniversaryFiles();
@@ -466,12 +463,7 @@ public class mcMMO extends JavaPlugin {
         // Automatically remove old members from parties
         long kickIntervalTicks = Config.getInstance().getAutoPartyKickInterval() * 60L * 60L * Misc.TICK_CONVERSION_FACTOR;
 
-        if (kickIntervalTicks == 0) {
-            new PartyAutoKickTask().runTaskLater(this, 2 * Misc.TICK_CONVERSION_FACTOR); // Start 2 seconds after startup.
-        }
-        else if (kickIntervalTicks > 0) {
-            new PartyAutoKickTask().runTaskTimer(this, kickIntervalTicks, kickIntervalTicks);
-        }
+ 
 
         // Update power level tag scoreboards
         new PowerLevelUpdatingTask().runTaskTimer(this, 2 * Misc.TICK_CONVERSION_FACTOR, 2 * Misc.TICK_CONVERSION_FACTOR);

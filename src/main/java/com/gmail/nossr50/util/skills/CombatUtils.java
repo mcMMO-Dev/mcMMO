@@ -32,7 +32,6 @@ import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.AwardCombatXpTask;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
@@ -558,9 +557,7 @@ public final class CombatUtils {
                 return false;
             }
 
-            if ((PartyManager.inSameParty(player, defender) || PartyManager.areAllies(player, defender)) && !(Permissions.friendlyFire(player) && Permissions.friendlyFire(defender))) {
-                return false;
-            }
+          
 
             // Vanished players should not be able to get hit by AoE effects
             if (!player.canSee(defender)) {
@@ -572,16 +569,7 @@ public final class CombatUtils {
                 return false;
             }
         }
-        else if (entity instanceof Tameable) {
-            if (isFriendlyPet(player, (Tameable) entity)) {
-                // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player, and the owner is in the same party
-                // So we can make some assumptions here, about our casting and our check
-                Player owner = (Player) ((Tameable) entity).getOwner();
-                if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire(owner))) {
-                    return false;
-                }
-            }
-        }
+     
 
         return true;
     }
@@ -609,15 +597,7 @@ public final class CombatUtils {
      * @return true if the entity is friendly, false otherwise
      */
     public static boolean isFriendlyPet(Player attacker, Tameable pet) {
-        if (pet.isTamed()) {
-            AnimalTamer tamer = pet.getOwner();
-
-            if (tamer instanceof Player) {
-                Player owner = (Player) tamer;
-
-                return (owner == attacker || PartyManager.inSameParty(attacker, owner) || PartyManager.areAllies(attacker, owner));
-            }
-        }
+     
 
         return false;
     }

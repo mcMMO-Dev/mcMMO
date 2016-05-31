@@ -49,7 +49,6 @@ import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
-import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
 import com.gmail.nossr50.skills.archery.Archery;
@@ -159,19 +158,7 @@ public class EntityListener implements Listener {
         Entity defender = event.getEntity();
         Entity attacker = event.getDamager();
 
-        if (damage <= 0) {
-            if (defender instanceof Player && attacker instanceof Player) {
-                Player defendingPlayer = (Player) defender;
-                Player attackingPlayer = (Player) attacker;
-                if (event.getDamage(DamageModifier.ABSORPTION) > 0) {
-                    if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
-                        event.setCancelled(true);
-                        return;
-                    }
-                }
-            }
-            return;
-        }
+
 
 
 
@@ -230,10 +217,6 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            if ((PartyManager.inSameParty(defendingPlayer, attackingPlayer) || PartyManager.areAllies(defendingPlayer, attackingPlayer)) && !(Permissions.friendlyFire(attackingPlayer) && Permissions.friendlyFire(defendingPlayer))) {
-                event.setCancelled(true);
-                return;
-            }
         }
 
         CombatUtils.processCombatAttack(event, attacker, target);
@@ -676,12 +659,7 @@ public class EntityListener implements Listener {
             return;
         }
 
-        // isFriendlyPet ensures that the Tameable is: Tamed, owned by a player,
-        // and the owner is in the same party
-        // So we can make some assumptions here, about our casting and our check
-        if (!(Permissions.friendlyFire(player) && Permissions.friendlyFire((Player) tameable.getOwner()))) {
-            event.setCancelled(true);
-        }
+   
     }
 
     /**

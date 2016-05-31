@@ -18,8 +18,6 @@ import com.gmail.nossr50.commands.McrefreshCommand;
 import com.gmail.nossr50.commands.McscoreboardCommand;
 import com.gmail.nossr50.commands.MobhealthCommand;
 import com.gmail.nossr50.commands.XprateCommand;
-import com.gmail.nossr50.commands.chat.AdminChatCommand;
-import com.gmail.nossr50.commands.chat.PartyChatCommand;
 import com.gmail.nossr50.commands.database.McpurgeCommand;
 import com.gmail.nossr50.commands.database.McremoveCommand;
 import com.gmail.nossr50.commands.database.MmoshowdbCommand;
@@ -29,8 +27,8 @@ import com.gmail.nossr50.commands.experience.MmoeditCommand;
 import com.gmail.nossr50.commands.experience.SkillresetCommand;
 import com.gmail.nossr50.commands.hardcore.HardcoreCommand;
 import com.gmail.nossr50.commands.hardcore.VampirismCommand;
-import com.gmail.nossr50.commands.party.PartyCommand;
-import com.gmail.nossr50.commands.party.teleport.PtpCommand;
+//Remove Party import com.gmail.nossr50.commands.party.PartyCommand;
+//Remove Party import com.gmail.nossr50.commands.party.teleport.PtpCommand;
 import com.gmail.nossr50.commands.player.InspectCommand;
 import com.gmail.nossr50.commands.player.MccooldownCommand;
 import com.gmail.nossr50.commands.player.McrankCommand;
@@ -311,49 +309,7 @@ public final class CommandRegistrationManager {
         command.setExecutor(new McconvertCommand());
     }
 
-    private static void registerAdminChatCommand() {
-        PluginCommand command = mcMMO.p.getCommand("adminchat");
-        command.setDescription(LocaleLoader.getString("Commands.Description.adminchat"));
-        command.setPermission("mcmmo.chat.adminchat");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "adminchat"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "adminchat", "<on|off>"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "adminchat", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">"));
-        command.setExecutor(new AdminChatCommand());
-    }
-
-    private static void registerPartyChatCommand() {
-        PluginCommand command = mcMMO.p.getCommand("partychat");
-        command.setDescription(LocaleLoader.getString("Commands.Description.partychat"));
-        command.setPermission("mcmmo.chat.partychat;mcmmo.commands.party");
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.0", "partychat"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "partychat", "<on|off>"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "partychat", "<" + LocaleLoader.getString("Commands.Usage.Message") + ">"));
-        command.setExecutor(new PartyChatCommand());
-    }
-
-    private static void registerPartyCommand() {
-        PluginCommand command = mcMMO.p.getCommand("party");
-        command.setDescription(LocaleLoader.getString("Commands.Description.party"));
-        command.setPermission("mcmmo.commands.party;mcmmo.commands.party.accept;mcmmo.commands.party.create;mcmmo.commands.party.disband;" +
-                              "mcmmo.commands.party.xpshare;mcmmo.commands.party.invite;mcmmo.commands.party.itemshare;mcmmo.commands.party.join;" +
-                              "mcmmo.commands.party.kick;mcmmo.commands.party.lock;mcmmo.commands.party.owner;mcmmo.commands.party.password;" +
-                              "mcmmo.commands.party.quit;mcmmo.commands.party.rename;mcmmo.commands.party.unlock");
-        command.setPermissionMessage(permissionsMessage);
-        command.setExecutor(new PartyCommand());
-    }
-
-    private static void registerPtpCommand() {
-        PluginCommand command = mcMMO.p.getCommand("ptp");
-        command.setDescription(LocaleLoader.getString("Commands.Description.ptp"));
-        command.setPermission("mcmmo.commands.ptp"); // Only need the main one, not the individual ones for toggle/accept/acceptall
-        command.setPermissionMessage(permissionsMessage);
-        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "ptp", "<" + LocaleLoader.getString("Commands.Usage.Player") + ">"));
-        command.setUsage(command.getUsage() + "\n" + LocaleLoader.getString("Commands.Usage.1", "ptp", "<toggle|accept|acceptall>"));
-        command.setExecutor(new PtpCommand());
-    }
-
+ 
     private static void registerHardcoreCommand() {
         PluginCommand command = mcMMO.p.getCommand("hardcore");
         command.setDescription(LocaleLoader.getString("Commands.Description.hardcore"));
@@ -443,9 +399,7 @@ public final class CommandRegistrationManager {
         registerMHDCommand();
         registerXprateCommand();
 
-        // Chat Commands
-        registerPartyChatCommand();
-        registerAdminChatCommand();
+
 
         // Database Commands
         registerMcpurgeCommand();
@@ -464,8 +418,8 @@ public final class CommandRegistrationManager {
         registerVampirismCommand();
 
         // Party Commands
-        registerPartyCommand();
-        registerPtpCommand();
+     // Remove Party registerPartyCommand();
+     // Remove Party registerPtpCommand();
 
         // Player Commands
         registerInspectCommand();

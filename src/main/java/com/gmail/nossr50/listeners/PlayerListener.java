@@ -31,18 +31,14 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.chat.ChatManager;
-import com.gmail.nossr50.chat.ChatManagerFactory;
-import com.gmail.nossr50.chat.PartyChatManager;
+
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
-import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.skills.fishing.FishingManager;
 import com.gmail.nossr50.skills.herbalism.HerbalismManager;
@@ -177,7 +173,6 @@ public class PlayerListener implements Listener {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
 
         mcMMOPlayer.checkGodMode();
-        mcMMOPlayer.checkParty();
     }
 
     /**
@@ -323,14 +318,7 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if (!drop.hasMetadata(mcMMO.droppedItemKey) && mcMMOPlayer.inParty() && ItemUtils.isSharable(dropStack)) {
-            event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
-
-            if (event.isCancelled()) {
-                player.playSound(player.getLocation(), SoundAdapter.ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
-                return;
-            }
-        }
+   
 
         if ((mcMMOPlayer.isUsingUnarmed() && ItemUtils.isSharable(dropStack)) || mcMMOPlayer.getAbilityMode(AbilityType.BERSERK)) {
             boolean pickupSuccess = Unarmed.handleItemPickup(player.getInventory(), drop);
@@ -624,50 +612,7 @@ public class PlayerListener implements Listener {
         }
     }
 
-    /**
-     * Handle PlayerChatEvents at high priority.
-     *
-     * @param event The event to watch
-     */
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
-        Player player = event.getPlayer();
-
-        if (Misc.isNPCEntity(player) || !UserManager.hasPlayerDataKey(player)) {
-            return;
-        }
-
-        McMMOPlayer mcMMOPlayer = UserManager.getOfflinePlayer(player);
-
-        if (mcMMOPlayer == null) {
-            mcMMO.p.debug(player.getName() + "is chatting, but is currently not logged in to the server.");
-            mcMMO.p.debug("Party & Admin chat will not work properly for this player.");
-            return;
-        }
-
-        ChatManager chatManager = null;
-
-        if (mcMMOPlayer.isChatEnabled(ChatMode.PARTY)) {
-            Party party = mcMMOPlayer.getParty();
-
-            if (party == null) {
-                mcMMOPlayer.disableChat(ChatMode.PARTY);
-                player.sendMessage(LocaleLoader.getString("Commands.Party.None"));
-                return;
-            }
-
-            chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.PARTY);
-            ((PartyChatManager) chatManager).setParty(party);
-        }
-        else if (mcMMOPlayer.isChatEnabled(ChatMode.ADMIN)) {
-            chatManager = ChatManagerFactory.getChatManager(plugin, ChatMode.ADMIN);
-        }
-
-        if (chatManager != null) {
-            chatManager.handleChat(player, event.getMessage(), event.isAsynchronous());
-            event.setCancelled(true);
-        }
-    }
+  
 
     /**
      * Handle "ugly" aliasing /skillname commands, since setAliases doesn't work.

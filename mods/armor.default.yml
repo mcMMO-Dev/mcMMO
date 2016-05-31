@@ -1,0 +1,131 @@
+#
+#  Armor example configuration
+#  Last updated on ${project.version}-b${BUILD_NUMBER}
+#
+# Any file named armor.*.yml in the mod folder will be loaded as a armor config
+# For every armor type there is a separate section.
+# The names of each subitem should be the exact material name.
+# The bare minimum of an Armor piece is that it has a Repair_Material
+#
+#
+# Repairable: Whether or not the item is repairable
+## This defaults to true
+#
+# Repair_Material: This is the material name of the item used to repair this armor.
+## This is required to be set if you want to be able to repair the item.
+#
+# Repair_Material_Data_Value: This is the metadata of the item used to repair this armor.
+## A value of -1 means to ignore all metadata when repairing.
+## This defaults to -1
+#
+# Repair_Material_Quantity: This is the minimum number of items needed to repair this item ignoring all other repair bonuses.
+## This is typically the number of the repair material needed to create a new item, for example for a sword it is 2, for an axe it is 3
+## This defaults to 9
+#
+# Repair_Material_Pretty_Name: The pretty name of the repair material.
+## Used in the feedback message when not enough repair materials are found.
+## This defaults to the Repair_Material converted to string.
+#
+# Repair_Material_Pretty_Name: The pretty name of the repair material.
+## Used in the feedback message when not enough repair materials are found.
+## This defaults to the Repair_Material converted to string.
+#
+# Repair_MinimumLevel: This is the minimum repair level needed to repair this item.
+## Valid values are => 0
+## This defaults to 0
+#
+# Repair_XpMultiplier: This is the amount to multiply the xp bonus by.
+## This defaults to 1
+#
+# Durability: This is the maximum durability of the armor.
+## Valid values are >= 1
+#
+###
+#
+#  Settings for Boots
+###
+Boots:
+    Boot_1:
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 999
+    Boot_2:
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 999
+#
+#  Settings for Chestplates
+###
+Chestplates:
+    Chestplate_1:
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 999
+    Chestplate_2:
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 999
+#
+#  Settings for Helmets
+###
+Helmets:
+    Helmet_1:
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 999
+    Helmet_2:
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 999
+#
+#  Settings for Leggings
+###
+Leggings:
+    Legging_1:
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 999
+    Legging_2:
+        Repairable: true
+        Repair_Material: REPAIR_MATERIAL_NAME
+        Repair_Material_Data_Value: 0
+        Repair_Material_Quantity: 9
+        Repair_Material_Pretty_Name: Repair Item Name
+        Repair_MinimumLevel: 0
+        Repair_XpMultiplier: 1.0
+        Durability: 999

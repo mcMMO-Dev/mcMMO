@@ -21,15 +21,11 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
-import com.gmail.nossr50.datatypes.party.Party;
-import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.skills.AbilityDisableTask;
 import com.gmail.nossr50.runnables.skills.ToolLowerTask;
 import com.gmail.nossr50.skills.SkillManager;
@@ -66,12 +62,10 @@ public class McMMOPlayer {
 
     private final Map<SkillType, SkillManager> skillManagers = new HashMap<SkillType, SkillManager>();
 
-    private Party   party;
-    private Party   invite;
-    private Party   allianceInvite;
+
     private int     itemShareModifier;
 
-    private PartyTeleportRecord ptpRecord;
+
 
     private boolean partyChatMode;
     private boolean adminChatMode;
@@ -422,10 +416,7 @@ public class McMMOPlayer {
             return;
         }
 
-        // Return if the experience has been shared
-        if (party != null && ShareHandler.handleXpShare(xp, this, skill, ShareHandler.getSharedXpGainReason(xpGainReason))) {
-            return;
-        }
+     
 
         beginUnsharedXpGain(skill, xp, xpGainReason);
     }
@@ -439,13 +430,7 @@ public class McMMOPlayer {
     public void beginUnsharedXpGain(SkillType skill, float xp, XPGainReason xpGainReason) {
         applyXpGain(skill, modifyXpGain(skill, xp), xpGainReason);
 
-        if (party == null) {
-            return;
-        }
-
-        if (!Config.getInstance().getPartyXpNearMembersNeeded() || !PartyManager.getNearMembers(this).isEmpty()) {
-            party.applyXpGain(modifyXpGain(skill, xp));
-        }
+       
     }
 
     /**
@@ -523,153 +508,6 @@ public class McMMOPlayer {
         return profile;
     }
 
-    /*
-     * Party Stuff
-     */
-
-    public void setupPartyData() {
-        party = PartyManager.getPlayerParty(player.getName(), player.getUniqueId());
-        ptpRecord = new PartyTeleportRecord();
-
-        if (inParty()) {
-            loginParty();
-        }
-    }
-
-    public void setPartyInvite(Party invite) {
-        this.invite = invite;
-    }
-
-    public Party getPartyInvite() {
-        return invite;
-    }
-
-    public boolean hasPartyInvite() {
-        return (invite != null);
-    }
-
-    public void setParty(Party party) {
-        this.party = party;
-    }
-
-    public Party getParty() {
-        return party;
-    }
-
-    public boolean inParty() {
-        return (party != null);
-    }
-
-    public void removeParty() {
-        party = null;
-    }
-
-    public void removePartyInvite() {
-        invite = null;
-    }
-
-    public PartyTeleportRecord getPartyTeleportRecord() {
-        return ptpRecord;
-    }
-
-    public void setPartyAllianceInvite(Party allianceInvite) {
-        this.allianceInvite = allianceInvite;
-    }
-
-    public Party getPartyAllianceInvite() {
-        return allianceInvite;
-    }
-
-    public boolean hasPartyAllianceInvite() {
-        return (allianceInvite != null);
-    }
-
-    public void removePartyAllianceInvite() {
-        allianceInvite = null;
-    }
-
-    public void loginParty() {
-        party.addOnlineMember(this.getPlayer());
-    }
-
-    public int getItemShareModifier() {
-        if (itemShareModifier < 10) {
-            setItemShareModifier(10);
-        }
-
-        return itemShareModifier;
-    }
-
-    public void setItemShareModifier(int modifier) {
-        itemShareModifier = Math.max(10, modifier);
-    }
-
-    /*
-     * Chat modes
-     */
-
-    public boolean isChatEnabled(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                return adminChatMode;
-
-            case PARTY:
-                return partyChatMode;
-
-            default:
-                return false;
-        }
-    }
-
-    public void disableChat(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                adminChatMode = false;
-                return;
-
-            case PARTY:
-                partyChatMode = false;
-                return;
-
-            default:
-                return;
-        }
-    }
-
-    public void enableChat(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                adminChatMode = true;
-                partyChatMode = false;
-                return;
-
-            case PARTY:
-                partyChatMode = true;
-                adminChatMode = false;
-                return;
-
-            default:
-                return;
-        }
-
-    }
-
-    public void toggleChat(ChatMode mode) {
-        switch (mode) {
-            case ADMIN:
-                adminChatMode = !adminChatMode;
-                partyChatMode = !adminChatMode && partyChatMode;
-                return;
-
-            case PARTY:
-                partyChatMode = !partyChatMode;
-                adminChatMode = !partyChatMode && adminChatMode;
-                return;
-
-            default:
-                return;
-        }
-    }
 
     public boolean isUsingUnarmed() {
         return isUsingUnarmed;
@@ -707,12 +545,7 @@ public class McMMOPlayer {
         }
     }
 
-    public void checkParty() {
-        if (inParty() && !Permissions.party(player)) {
-            removeParty();
-            player.sendMessage(LocaleLoader.getString("Party.Forbidden"));
-        }
-    }
+    
 
     /**
      * Check to see if an ability can be activated.
@@ -902,8 +735,5 @@ public class McMMOPlayer {
         UserManager.remove(thisPlayer);
         ScoreboardManager.teardownPlayer(thisPlayer);
 
-        if (inParty()) {
-            party.removeOnlineMember(thisPlayer);
-        }
     }
 }

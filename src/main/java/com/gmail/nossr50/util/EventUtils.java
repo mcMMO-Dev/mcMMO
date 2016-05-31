@@ -12,7 +12,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -30,9 +29,7 @@ import com.gmail.nossr50.events.fake.FakePlayerFishEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerPreDeathPenaltyEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerStatLossEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerVampirismEvent;
-import com.gmail.nossr50.events.party.McMMOPartyLevelUpEvent;
-import com.gmail.nossr50.events.party.McMMOPartyTeleportEvent;
-import com.gmail.nossr50.events.party.McMMOPartyXpGainEvent;
+
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityActivateEvent;
 import com.gmail.nossr50.events.skills.abilities.McMMOPlayerAbilityDeactivateEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
@@ -106,51 +103,7 @@ public class EventUtils {
         return !damageEvent.isCancelled() && !breakEvent.isCancelled();
     }
 
-    public static void handlePartyTeleportEvent(Player teleportingPlayer, Player targetPlayer) {
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(teleportingPlayer);
-
-        McMMOPartyTeleportEvent event = new McMMOPartyTeleportEvent(teleportingPlayer, targetPlayer, mcMMOPlayer.getParty().getName());
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        if (event.isCancelled()) {
-            return;
-        }
-
-        teleportingPlayer.teleport(targetPlayer);
-
-        teleportingPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Player", targetPlayer.getName()));
-        targetPlayer.sendMessage(LocaleLoader.getString("Party.Teleport.Target", teleportingPlayer.getName()));
-
-        mcMMOPlayer.getPartyTeleportRecord().actualizeLastUse();
-    }
-
-    public static boolean handlePartyXpGainEvent(Party party, float xpGained) {
-        McMMOPartyXpGainEvent event = new McMMOPartyXpGainEvent(party, xpGained);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        boolean isCancelled = event.isCancelled();
-
-        if (!isCancelled) {
-            party.addXp(event.getRawXpGained());
-        }
-
-        return !isCancelled;
-    }
-
-    public static boolean handlePartyLevelChangeEvent(Party party, int levelsChanged, float xpRemoved) {
-        McMMOPartyLevelUpEvent event = new McMMOPartyLevelUpEvent(party, levelsChanged);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-
-        boolean isCancelled = event.isCancelled();
-
-        if (isCancelled) {
-
-            party.setLevel(party.getLevel() + levelsChanged);
-            party.addXp(xpRemoved);
-        }
-
-        return !isCancelled;
-    }
+ 
 
     public static boolean handleXpGainEvent(Player player, SkillType skill, float xpGained, XPGainReason xpGainReason) {
         McMMOPlayerXpGainEvent event = new McMMOPlayerXpGainEvent(player, skill, xpGained, xpGainReason);

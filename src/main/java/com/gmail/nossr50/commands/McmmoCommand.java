@@ -6,7 +6,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.party.PartySubcommandType;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
@@ -47,7 +46,7 @@ public class McmmoCommand implements CommandExecutor {
                     sender.sendMessage(LocaleLoader.getString("Commands.mcc.Header"));
                     displayGeneralCommands(sender);
                     displayOtherCommands(sender);
-                    displayPartyCommands(sender);
+                    // Remove Party displayPartyCommands(sender);
                 }
                 return true;
 
@@ -89,7 +88,8 @@ public class McmmoCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.DARK_AQUA + " /mcgod " + LocaleLoader.getString("Commands.mcgod"));
         }
     }
-
+// Remove Party
+    /*
     private void displayPartyCommands(CommandSender sender) {
         if (Permissions.party(sender)) {
             sender.sendMessage(LocaleLoader.getString("Commands.Party.Commands"));
@@ -108,5 +108,5 @@ public class McmmoCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.DARK_AQUA + " /party teleport <" + LocaleLoader.getString("Commands.Usage.Player") + "> " + LocaleLoader.getString("Commands.Party.Teleport"));
             }
         }
-    }
+    } */
 }

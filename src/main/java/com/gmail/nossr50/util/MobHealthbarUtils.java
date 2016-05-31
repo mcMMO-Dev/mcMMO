@@ -129,7 +129,7 @@ public final class MobHealthbarUtils {
                     color = ChatColor.DARK_RED;
                 }
 
-                symbol = "■";
+                symbol = "â– ";
                 break;
 
             default:

@@ -1,0 +1,42 @@
+#
+#  Settings for Custom Mobs
+#
+#  Mob name should be the entity type of the mob - usually "ModName_EntityName"
+#  Be sure to use the "_" character in place of any "." characters in the mob name.
+###
+Mob_1:
+    Class: CLASS_NAME
+    XP_Multiplier: 1.0
+    Tameable: false
+    Taming_XP: 250
+    CanBeSummoned: false
+    COTW_Material: MATERIAL_NAME
+    COTW_Material_Data: 9
+    COTW_Material_Amount: 99
+Mob_2:
+    Class: CLASS_NAME
+    XP_Multiplier: 1.0
+    Tameable: false
+    Taming_XP: 250
+    CanBeSummoned: false
+    COTW_Material: MATERIAL_NAME
+    COTW_Material_Data: 9
+    COTW_Material_Amount: 99
+Mob_3:
+    Class: CLASS_NAME
+    XP_Multiplier: 1.0
+    Tameable: false
+    Taming_XP: 250
+    CanBeSummoned: false
+    COTW_Material: MATERIAL_NAME
+    COTW_Material_Data: 9
+    COTW_Material_Amount: 99
+Mob_4:
+    Class: CLASS_NAME
+    XP_Multiplier: 1.0
+    Tameable: false
+    Taming_XP: 250
+    CanBeSummoned: false
+    COTW_Material: MATERIAL_NAME
+    COTW_Material_Data: 9
+    COTW_Material_Amount: 99

@@ -11,7 +11,6 @@ import org.bukkit.entity.EntityType;
 
 import com.gmail.nossr50.database.SQLDatabaseManager.PoolIdentifier;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
-import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.StringUtils;
@@ -163,11 +162,6 @@ public class Config extends AutoUpdateConfigLoader {
             reason.add("Party.Leveling.Xp_Curve_Modifier should be at least 1!");
         }
 
-        for (PartyFeature partyFeature : PartyFeature.values()) {
-            if (getPartyFeatureUnlockLevel(partyFeature) < 0) {
-                reason.add("Party.Leveling." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + "_UnlockLevel should be at least 0!");
-            }
-        }
 
         /* Inspect command distance */
         if (getInspectDistance() <= 0) {
@@ -412,7 +406,6 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getPartyXpNearMembersNeeded() { return config.getBoolean("Party.Leveling.Near_Members_Needed", false); }
     public boolean getPartyInformAllMembers() { return config.getBoolean("Party.Leveling.Inform_All_Party_Members_On_LevelUp", false); }
 
-    public int getPartyFeatureUnlockLevel(PartyFeature partyFeature) { return config.getInt("Party.Leveling." + StringUtils.getPrettyPartyFeatureString(partyFeature).replace(" ", "") + "_UnlockLevel", 0); }
 
     /* Party Teleport Settings */
     public int getPTPCommandCooldown() { return config.getInt("Commands.ptp.Cooldown", 120); }

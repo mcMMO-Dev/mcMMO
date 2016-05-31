@@ -1,0 +1,57 @@
+#
+#  Settings for Custom Excavation Blocks
+###
+Excavation:
+    Block_1|0:
+        XP_Gain: 99
+        Double_Drops_Enabled: true
+    Block_2|0:
+        XP_Gain: 99
+        Double_Drops_Enabled: true
+
+#
+#  Settings for Custom Herbalism Blocks
+###
+Herbalism:
+    Block_1|0:
+        XP_Gain: 99
+        Double_Drops_Enabled: true
+    Block_2|0:
+        XP_Gain: 99
+        Double_Drops_Enabled: true
+
+#
+#  Settings for Custom Mining Blocks
+###
+Mining:
+    Block_1|0:
+        XP_Gain: 99
+        Double_Drops_Enabled: true
+        Is_Ore: true
+        Smelting_XP_Gain: 9
+    Block_2|0:
+        XP_Gain: 99
+        Double_Drops_Enabled: true
+        Is_Ore: true
+        Smelting_XP_Gain: 9
+
+#
+#  Settings for Custom Woodcutting Blocks
+###
+Woodcutting:
+    Block_1|0:
+        XP_Gain: 99
+        Double_Drops_Enabled: true
+        Is_Log: true
+    Block_2|0:
+        XP_Gain: 99
+        Double_Drops_Enabled: true
+        Is_Log: true
+
+#
+#  Settings for Custom Ability Blocks
+#  (These blocks don't trigger abilities)
+###
+Ability_Blocks:
+    Block_1|0:
+    Block_2|0:

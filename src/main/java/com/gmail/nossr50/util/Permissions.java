@@ -10,7 +10,6 @@ import org.bukkit.permissions.PermissionDefault;
 import org.bukkit.plugin.PluginManager;
 
 import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.party.PartySubcommandType;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
@@ -191,14 +190,7 @@ public final class Permissions {
     /* WOODCUTTING */
     public static boolean treeFeller(Permissible permissible) { return permissible.hasPermission("mcmmo.ability.woodcutting.treefeller"); }
 
-    /*
-     * PARTY
-     */
-
-    public static boolean party(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.party"); }
-    public static boolean partySubcommand(Permissible permissible, PartySubcommandType subcommand) { return permissible.hasPermission("mcmmo.commands.party." + subcommand.toString().toLowerCase()); }
-    public static boolean friendlyFire(Permissible permissible) { return permissible.hasPermission("mcmmo.party.friendlyfire"); }
-
+  
     /* TELEPORT */
     public static boolean partyTeleportSend(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.ptp.send"); }
     public static boolean partyTeleportAccept(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.ptp.accept"); }
