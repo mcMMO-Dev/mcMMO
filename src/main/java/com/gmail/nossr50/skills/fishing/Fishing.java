@@ -8,6 +8,7 @@ import java.util.Set;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Guardian;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
@@ -133,6 +134,14 @@ public final class Fishing {
 
             case ZOMBIE:
                 return TreasureConfig.getInstance().shakeFromZombie;
+                
+            case RABBIT:
+                return TreasureConfig.getInstance().shakeFromRabbit;
+                
+            case GUARDIAN:
+                if (((Guardian) target).isElder())
+                    return TreasureConfig.getInstance().shakeFromElderGuardian;
+                return TreasureConfig.getInstance().shakeFromGuardian;
 
             default:
                 return null;

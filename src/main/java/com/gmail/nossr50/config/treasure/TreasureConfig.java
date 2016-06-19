@@ -28,47 +28,51 @@ import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.util.EnchantmentUtils;
 
 public class TreasureConfig extends ConfigLoader {
+
     private static TreasureConfig instance;
 
-    public List<ExcavationTreasure> excavationFromDirt      = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromGrass     = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromSand      = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromGravel    = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromClay      = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromMycel     = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromSoulSand  = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromSnow      = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromRedSand   = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromPodzol    = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromDirt     = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromGrass    = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromSand     = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromGravel   = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromClay     = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromMycel    = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromSoulSand = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromSnow     = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromRedSand  = new ArrayList<ExcavationTreasure>();
+    public List<ExcavationTreasure> excavationFromPodzol   = new ArrayList<ExcavationTreasure>();
 
     public List<HylianTreasure> hylianFromBushes  = new ArrayList<HylianTreasure>();
     public List<HylianTreasure> hylianFromFlowers = new ArrayList<HylianTreasure>();
     public List<HylianTreasure> hylianFromPots    = new ArrayList<HylianTreasure>();
 
-    public List<ShakeTreasure> shakeFromBlaze       = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromCaveSpider  = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSpider      = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromChicken     = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromCow         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromCreeper     = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromEnderman    = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromGhast       = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromHorse       = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromIronGolem   = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromMagmaCube   = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromMushroomCow = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromPig         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromPigZombie   = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromPlayer      = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSheep       = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSkeleton    = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSlime       = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSnowman     = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSquid       = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromWitch       = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromZombie      = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromBlaze         = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromCaveSpider    = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromSpider        = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromChicken       = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromCow           = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromCreeper       = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromEnderman      = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromGhast         = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromHorse         = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromIronGolem     = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromMagmaCube     = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromMushroomCow   = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromPig           = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromPigZombie     = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromPlayer        = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromSheep         = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromSkeleton      = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromSlime         = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromSnowman       = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromSquid         = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromWitch         = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromZombie        = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromRabbit        = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromElderGuardian = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromGuardian      = new ArrayList<ShakeTreasure>();
 
-    public HashMap<Rarity, List<FishingTreasure>> fishingRewards = new HashMap<Rarity, List<FishingTreasure>>();
+    public HashMap<Rarity, List<FishingTreasure>>     fishingRewards      = new HashMap<Rarity, List<FishingTreasure>>();
     public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
 
     private TreasureConfig() {
@@ -174,13 +178,11 @@ public class TreasureConfig extends ConfigLoader {
 
             if (materialName.contains("INK_SACK")) {
                 material = Material.INK_SACK;
-            }
-            else if (materialName.contains("INVENTORY")) {
+            } else if (materialName.contains("INVENTORY")) {
                 // Use magic material BED_BLOCK to know that we're grabbing something from the inventory and not a normal treasure
                 shakeFromPlayer.add(new ShakeTreasure(new ItemStack(Material.BED_BLOCK, 1, (byte) 0), 1, getInventoryStealDropChance(), getInventoryStealDropLevel()));
                 continue;
-            }
-            else {
+            } else {
                 material = Material.matchMaterial(materialName);
             }
 
@@ -244,18 +246,17 @@ public class TreasureConfig extends ConfigLoader {
                 } else {
                     item = new ItemStack(mat, amount, data);
                     PotionMeta itemMeta = (PotionMeta) item.getItemMeta();
-                    
+
                     PotionType potionType = null;
                     try {
                         potionType = PotionType.valueOf(config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
-                    }
-                    catch (IllegalArgumentException ex) {
+                    } catch (IllegalArgumentException ex) {
                         reason.add("Invalid Potion_Type: " + config.getString(type + "." + treasureName + ".PotionData.PotionType", "WATER"));
                     }
                     boolean extended = config.getBoolean(type + "." + treasureName + ".PotionData.Extended", false);
                     boolean upgraded = config.getBoolean(type + "." + treasureName + ".PotionData.Upgraded", false);
                     itemMeta.setBasePotionData(new PotionData(potionType, extended, upgraded));
-                    
+
                     if (config.contains(type + "." + treasureName + ".Custom_Name")) {
                         itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(type + "." + treasureName + ".Custom_Name")));
                     }
@@ -269,8 +270,7 @@ public class TreasureConfig extends ConfigLoader {
                     }
                     item.setItemMeta(itemMeta);
                 }
-            }
-            else if (materialName.contains("INK_SACK")) {
+            } else if (materialName.contains("INK_SACK")) {
                 String color = materialName.substring(9);
 
                 try {
@@ -294,12 +294,10 @@ public class TreasureConfig extends ConfigLoader {
                         itemMeta.setLore(lore);
                         item.setItemMeta(itemMeta);
                     }
-                }
-                catch (IllegalArgumentException ex) {
+                } catch (IllegalArgumentException ex) {
                     reason.add("Invalid Dye_Color: " + color);
                 }
-            }
-            else if (material != null) {
+            } else if (material != null) {
                 item = new ItemStack(material, amount, data);
 
                 if (config.contains(type + "." + treasureName + ".Custom_Name")) {
@@ -322,78 +320,61 @@ public class TreasureConfig extends ConfigLoader {
             if (noErrorsInConfig(reason)) {
                 if (isFishing) {
                     fishingRewards.get(rarity).add(new FishingTreasure(item, xp));
-                }
-                else if (isShake) {
+                } else if (isShake) {
                     ShakeTreasure shakeTreasure = new ShakeTreasure(item, xp, dropChance, dropLevel);
 
                     if (type.equals("Shake.BLAZE")) {
                         shakeFromBlaze.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.CAVE_SPIDER")) {
+                    } else if (type.equals("Shake.CAVE_SPIDER")) {
                         shakeFromCaveSpider.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.CHICKEN")) {
+                    } else if (type.equals("Shake.CHICKEN")) {
                         shakeFromChicken.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.COW")) {
+                    } else if (type.equals("Shake.COW")) {
                         shakeFromCow.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.CREEPER")) {
+                    } else if (type.equals("Shake.CREEPER")) {
                         shakeFromCreeper.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.ENDERMAN")) {
+                    } else if (type.equals("Shake.ENDERMAN")) {
                         shakeFromEnderman.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.GHAST")) {
+                    } else if (type.equals("Shake.GHAST")) {
                         shakeFromGhast.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.HORSE")) {
+                    } else if (type.equals("Shake.HORSE")) {
                         shakeFromHorse.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.IRON_GOLEM")) {
+                    } else if (type.equals("Shake.IRON_GOLEM")) {
                         shakeFromIronGolem.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.MAGMA_CUBE")) {
+                    } else if (type.equals("Shake.MAGMA_CUBE")) {
                         shakeFromMagmaCube.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.MUSHROOM_COW")) {
+                    } else if (type.equals("Shake.MUSHROOM_COW")) {
                         shakeFromMushroomCow.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.PIG")) {
+                    } else if (type.equals("Shake.PIG")) {
                         shakeFromPig.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.PIG_ZOMBIE")) {
+                    } else if (type.equals("Shake.PIG_ZOMBIE")) {
                         shakeFromPigZombie.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.PLAYER")) {
+                    } else if (type.equals("Shake.PLAYER")) {
                         shakeFromPlayer.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.SHEEP")) {
+                    } else if (type.equals("Shake.SHEEP")) {
                         shakeFromSheep.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.SKELETON")) {
+                    } else if (type.equals("Shake.SKELETON")) {
                         shakeFromSkeleton.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.SLIME")) {
+                    } else if (type.equals("Shake.SLIME")) {
                         shakeFromSlime.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.SPIDER")) {
+                    } else if (type.equals("Shake.SPIDER")) {
                         shakeFromSpider.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.SNOWMAN")) {
+                    } else if (type.equals("Shake.SNOWMAN")) {
                         shakeFromSnowman.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.SQUID")) {
+                    } else if (type.equals("Shake.SQUID")) {
                         shakeFromSquid.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.WITCH")) {
+                    } else if (type.equals("Shake.WITCH")) {
                         shakeFromWitch.add(shakeTreasure);
-                    }
-                    else if (type.equals("Shake.ZOMBIE")) {
+                    } else if (type.equals("Shake.ZOMBIE")) {
                         shakeFromZombie.add(shakeTreasure);
+                    } else if (type.equals("Shake.RABBIT")) {
+                        shakeFromRabbit.add(shakeTreasure);
+                    } else if (type.equals("Shake.GUARDIAN")) {
+                        shakeFromGuardian.add(shakeTreasure);
+                    } else if (type.equals("Shake.ELDER_GUARDIAN")) {
+                        shakeFromElderGuardian.add(shakeTreasure);
                     }
-                }
-                else if (isExcavation) {
+                } else if (isExcavation) {
                     ExcavationTreasure excavationTreasure = new ExcavationTreasure(item, xp, dropChance, dropLevel);
                     List<String> dropList = config.getStringList(type + "." + treasureName + ".Drops_From");
 
@@ -436,8 +417,7 @@ public class TreasureConfig extends ConfigLoader {
                     if (dropList.contains("Podzol")) {
                         excavationFromPodzol.add(excavationTreasure);
                     }
-                }
-                else if (isHylian) {
+                } else if (isHylian) {
                     HylianTreasure hylianTreasure = new HylianTreasure(item, xp, dropChance, dropLevel);
                     List<String> dropList = config.getStringList(type + "." + treasureName + ".Drops_From");
 
@@ -455,6 +435,9 @@ public class TreasureConfig extends ConfigLoader {
                 }
             }
         }
+        // Fallthrough if not specified
+        if (shakeFromElderGuardian.isEmpty())
+            shakeFromElderGuardian = shakeFromGuardian;
     }
 
     private void loadEnchantments() {
@@ -487,11 +470,27 @@ public class TreasureConfig extends ConfigLoader {
         }
     }
 
-    public boolean getInventoryStealEnabled() { return config.contains("Shake.PLAYER.INVENTORY"); }
-    public boolean getInventoryStealStacks() { return config.getBoolean("Shake.PLAYER.INVENTORY.Whole_Stacks"); }
-    public double getInventoryStealDropChance() { return config.getDouble("Shake.PLAYER.INVENTORY.Drop_Chance"); }
-    public int getInventoryStealDropLevel() { return config.getInt("Shake.PLAYER.INVENTORY.Drop_Level"); }
+    public boolean getInventoryStealEnabled() {
+        return config.contains("Shake.PLAYER.INVENTORY");
+    }
 
-    public double getItemDropRate(int tier, Rarity rarity) { return config.getDouble("Item_Drop_Rates.Tier_" + tier + "." + rarity.toString()); }
-    public double getEnchantmentDropRate(int tier, Rarity rarity) { return config.getDouble("Enchantment_Drop_Rates.Tier_" + tier + "." + rarity.toString()); }
+    public boolean getInventoryStealStacks() {
+        return config.getBoolean("Shake.PLAYER.INVENTORY.Whole_Stacks");
+    }
+
+    public double getInventoryStealDropChance() {
+        return config.getDouble("Shake.PLAYER.INVENTORY.Drop_Chance");
+    }
+
+    public int getInventoryStealDropLevel() {
+        return config.getInt("Shake.PLAYER.INVENTORY.Drop_Level");
+    }
+
+    public double getItemDropRate(int tier, Rarity rarity) {
+        return config.getDouble("Item_Drop_Rates.Tier_" + tier + "." + rarity.toString());
+    }
+
+    public double getEnchantmentDropRate(int tier, Rarity rarity) {
+        return config.getDouble("Enchantment_Drop_Rates.Tier_" + tier + "." + rarity.toString());
+    }
 }
