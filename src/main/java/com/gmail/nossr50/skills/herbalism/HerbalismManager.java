@@ -321,6 +321,10 @@ public class HerbalismManager extends SkillManager {
             case POTATO:
                 seed = Material.POTATO_ITEM;
                 break;
+                
+            case BEETROOT_BLOCK:
+                seed = Material.BEETROOT_SEEDS;
+                break;
 
             default:
                 return;
@@ -374,6 +378,7 @@ public class HerbalismManager extends SkillManager {
 
                 return true;
 
+            case BEETROOT_BLOCK:
             case CARROT:
             case POTATO:
                 if (greenTerra) {
