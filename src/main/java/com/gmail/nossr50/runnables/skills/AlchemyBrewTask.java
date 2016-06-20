@@ -69,8 +69,10 @@ public class AlchemyBrewTask extends BukkitRunnable {
 
             return;
         }
-        
-        ((BrewingStand) brewingStand).setFuelLevel(fuel);
+
+        if (fuel != 0 || ((BrewingStand) brewingStand).getFuelLevel() != 20) {
+            ((BrewingStand) brewingStand).setFuelLevel(fuel);
+        }
 
         brewTimer -= brewSpeed;
 
