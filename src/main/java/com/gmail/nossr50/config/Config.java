@@ -407,14 +407,15 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getPartyInformAllMembers() { return config.getBoolean("Party.Leveling.Inform_All_Party_Members_On_LevelUp", false); }
 
 
-    /* Party Teleport Settings */
+    /* Party Teleport Settings 
     public int getPTPCommandCooldown() { return config.getInt("Commands.ptp.Cooldown", 120); }
     public int getPTPCommandWarmup() { return config.getInt("Commands.ptp.Warmup", 5); }
     public int getPTPCommandRecentlyHurtCooldown() { return config.getInt("Commands.ptp.RecentlyHurt_Cooldown", 60); }
     public int getPTPCommandTimeout() { return config.getInt("Commands.ptp.Request_Timeout", 300); }
     public boolean getPTPCommandConfirmRequired() { return config.getBoolean("Commands.ptp.Accept_Required", true); }
     public boolean getPTPCommandWorldPermissions() { return config.getBoolean("Commands.ptp.World_Based_Permissions", false); }
-
+*/
+    
     /* Inspect command distance */
     public double getInspectDistance() { return config.getDouble("Commands.inspect.Max_Distance", 30.0D); }
 
