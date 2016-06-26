@@ -28,6 +28,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
     private double brewTimer;
     private Player player;
     private int fuel;
+    private boolean firstRun = true;
 
     public AlchemyBrewTask(BlockState brewingStand, Player player) {
         this.brewingStand = brewingStand;
@@ -70,9 +71,10 @@ public class AlchemyBrewTask extends BukkitRunnable {
             return;
         }
         
-        ((BrewingStand) brewingStand).setFuelLevel(fuel);
-
-        brewTimer -= brewSpeed;
+        if (firstRun) {
+        	            firstRun = false;
+        	            ((BrewingStand) brewingStand).setFuelLevel(fuel);
+        	        }    brewTimer -= brewSpeed;
 
         // Vanilla potion brewing completes when BrewingTime == 1
         if (brewTimer < Math.max(brewSpeed, 2)) {

@@ -351,8 +351,8 @@ public class ScoreboardWrapper {
         targetPlayer = null;
         targetProfile = null;
 
-        int endPosition = page * 15;
-        int startPosition = endPosition - 14;
+        int endPosition = page * 10;
+        int startPosition = endPosition - 9;
         loadObjective(String.format("%s (%2d - %2d)", ScoreboardManager.POWER_LEVEL, startPosition, endPosition));
     }
 
@@ -364,8 +364,8 @@ public class ScoreboardWrapper {
         targetPlayer = null;
         targetProfile = null;
 
-        int endPosition = page * 15;
-        int startPosition = endPosition - 14;
+        int endPosition = page * 10;
+        int startPosition = endPosition - 9;
         loadObjective(String.format("%s (%2d - %2d)", ScoreboardManager.skillLabels.get(skill), startPosition, endPosition));
     }
 

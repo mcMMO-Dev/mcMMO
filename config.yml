@@ -409,6 +409,7 @@ Skills:
 Double_Drops:
     Herbalism:
         Brown_Mushroom: true
+        Beetroot_Block: true
         Cactus: true
         Carrot: true
         Cocoa: true
