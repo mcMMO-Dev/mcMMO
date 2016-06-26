@@ -340,6 +340,7 @@ permissions:
             mcmmo.ability.herbalism.greenthumb.plants.crops: true
             mcmmo.ability.herbalism.greenthumb.plants.netherwarts: true
             mcmmo.ability.herbalism.greenthumb.plants.potato: true
+            mcmmo.ability.herbalism.greenthumb.plants.beetroot: true
     mcmmo.ability.herbalism.greenthumb.plants.carrot:
         description: Allows access to the Green Thumb ability for carrots
     mcmmo.ability.herbalism.greenthumb.plants.cocoa:
@@ -350,6 +351,8 @@ permissions:
         description: Allows access to the Green Thumb ability for netherwart
     mcmmo.ability.herbalism.greenthumb.plants.potato:
         description: Allows access to the Green Thumb ability for potatoes
+    mcmmo.ability.herbalism.greenthumb.plants.beetroot:
+        description: Allows access to the Green Thumb ability for beetrootes
     mcmmo.ability.herbalism.hylianluck:
         description: Allows access to the Hylian Luck ability
     mcmmo.ability.herbalism.shroomthumb:

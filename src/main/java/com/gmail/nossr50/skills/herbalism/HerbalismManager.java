@@ -321,7 +321,7 @@ public class HerbalismManager extends SkillManager {
             case POTATO:
                 seed = Material.POTATO_ITEM;
                 break;
-                
+
             case BEETROOT_BLOCK:
                 seed = Material.BEETROOT_SEEDS;
                 break;
@@ -353,6 +353,10 @@ public class HerbalismManager extends SkillManager {
         blockState.setMetadata(mcMMO.greenThumbDataKey, new FixedMetadataValue(mcMMO.p, (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
 
         switch (blockState.getType()) {
+
+            case POTATO:
+            case CARROT:
+            case BEETROOT_BLOCK:
             case CROPS:
                 Crops crops = (Crops) blockState.getData();
 
@@ -374,18 +378,6 @@ public class HerbalismManager extends SkillManager {
                             crops.setState(CropState.SEEDED);
                             break;
                     }
-                }
-
-                return true;
-
-            case BEETROOT_BLOCK:
-            case CARROT:
-            case POTATO:
-                if (greenTerra) {
-                    blockState.setRawData(CropState.MEDIUM.getData());
-                }
-                else {
-                    blockState.setRawData(greenThumbStage);
                 }
 
                 return true;
