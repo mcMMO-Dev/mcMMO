@@ -332,7 +332,7 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if ((mcMMOPlayer.isUsingUnarmed() && ItemUtils.isSharable(dropStack)) || mcMMOPlayer.getAbilityMode(AbilityType.BERSERK)) {
+        if ((mcMMOPlayer.isUsingUnarmed() && ItemUtils.isSharable(dropStack) && !Config.getInstance().getUnarmedItemsAsUnarmed()) || mcMMOPlayer.getAbilityMode(AbilityType.BERSERK)) {
             boolean pickupSuccess = Unarmed.handleItemPickup(player.getInventory(), drop);
             boolean cancel = Config.getInstance().getUnarmedItemPickupDisabled() || pickupSuccess;
             event.setCancelled(cancel);
