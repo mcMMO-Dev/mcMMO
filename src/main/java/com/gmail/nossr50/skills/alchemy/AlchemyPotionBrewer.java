@@ -128,7 +128,7 @@ public final class AlchemyPotionBrewer {
             }
         }
 
-        FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory);
+        FakeBrewEvent event = new FakeBrewEvent(brewingStand.getBlock(), inventory, ((BrewingStand) brewingStand).getFuelLevel());
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled() || inputList.isEmpty()) {
