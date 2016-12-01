@@ -52,8 +52,11 @@ public class AlchemyBrewTask extends BukkitRunnable {
         if (Alchemy.brewingStandMap.containsKey(location)) {
             Alchemy.brewingStandMap.get(location).cancel();
         }
-        
-        fuel = ((BrewingStand) brewingStand).getFuelLevel() - 1;
+
+        fuel = ((BrewingStand) brewingStand).getFuelLevel();
+
+        if (((BrewingStand) brewingStand).getBrewingTime() == -1) // Only decrement on our end if it isn't a vanilla ingredient.
+            fuel--;
 
         Alchemy.brewingStandMap.put(location, this);
         this.runTaskTimer(mcMMO.p, 1, 1);
