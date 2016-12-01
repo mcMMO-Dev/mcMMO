@@ -70,8 +70,8 @@ public class AbilityDisableTask extends BukkitRunnable {
         int chunkX = chunk.getX();
         int chunkZ = chunk.getZ();
 
-        for (int x = chunkX - radius; x < chunkX + radius; x++) {
-            for (int z = chunkZ - radius; z < chunkZ + radius; z++) {
+        for (int x = chunkX - radius; x <= chunkX + radius; x++) {
+            for (int z = chunkZ - radius; z <= chunkZ + radius; z++) {
                 world.refreshChunk(x, z);
             }
         }

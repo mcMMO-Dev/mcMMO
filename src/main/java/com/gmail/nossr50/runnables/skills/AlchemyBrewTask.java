@@ -28,6 +28,7 @@ public class AlchemyBrewTask extends BukkitRunnable {
     private double brewTimer;
     private Player player;
     private int fuel;
+    private boolean firstRun = true;
 
     public AlchemyBrewTask(BlockState brewingStand, Player player) {
         this.brewingStand = brewingStand;
@@ -51,8 +52,11 @@ public class AlchemyBrewTask extends BukkitRunnable {
         if (Alchemy.brewingStandMap.containsKey(location)) {
             Alchemy.brewingStandMap.get(location).cancel();
         }
-        
-        fuel = ((BrewingStand) brewingStand).getFuelLevel() - 1;
+
+        fuel = ((BrewingStand) brewingStand).getFuelLevel();
+
+        if (((BrewingStand) brewingStand).getBrewingTime() == -1) // Only decrement on our end if it isn't a vanilla ingredient.
+            fuel--;
 
         Alchemy.brewingStandMap.put(location, this);
         this.runTaskTimer(mcMMO.p, 1, 1);
@@ -69,8 +73,11 @@ public class AlchemyBrewTask extends BukkitRunnable {
 
             return;
         }
-        
-        ((BrewingStand) brewingStand).setFuelLevel(fuel);
+
+        if (firstRun) {
+            firstRun = false;
+            ((BrewingStand) brewingStand).setFuelLevel(fuel);
+        }
 
         brewTimer -= brewSpeed;
 

@@ -4,17 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.TNTPrimed;
-import org.bukkit.entity.Tameable;
-import org.bukkit.entity.Wolf;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -31,6 +21,7 @@ import org.bukkit.event.entity.EntityTameEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.PigZapEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
@@ -151,6 +142,10 @@ public class EntityListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         if (event instanceof FakeEntityDamageByEntityEvent) {
+            return;
+        }
+
+        if (event.getEntity() instanceof ArmorStand) {
             return;
         }
 
@@ -575,6 +570,7 @@ public class EntityListener implements Listener {
                                 * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
                                 * 1000
                                 */
+            case BEETROOT:
             case BREAD: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
             case CARROT_ITEM: /*
                                * RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @
@@ -700,6 +696,13 @@ public class EntityListener implements Listener {
                 int duration = (int) (effect.getDuration() * event.getIntensity(entity));
                 entity.addPotionEffect(new PotionEffect(effect.getType(), duration, effect.getAmplifier(), effect.isAmbient()));
             }
+        }
+    }
+    
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onPigZapEvent(PigZapEvent event) {
+        if (event.getEntity().hasMetadata(mcMMO.entityMetadataKey)) {
+            event.getPigZombie().setMetadata(mcMMO.entityMetadataKey, mcMMO.metadataValue);
         }
     }
 }

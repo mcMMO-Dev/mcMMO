@@ -375,7 +375,7 @@ Enchantments_Rarity:
         BLAST_PROTECTION: 4
         PROJECTILE_PROTECTION: 4
         RESPIRATION: 3
-        AQUA_AFFINITY: 2
+        AQUA_AFFINITY: 1
         THORNS: 3
         SHARPNESS: 5
         SMITE: 5
