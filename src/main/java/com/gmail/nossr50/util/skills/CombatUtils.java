@@ -459,7 +459,7 @@ public final class CombatUtils {
                 baseXP = mcMMO.getModManager().getEntity(target).getXpMultiplier();
             }
             else if (target instanceof Animals) {
-                ntityType type = target.getType();
+                EntityType type = target.getType();
                 baseXP = ExperienceConfig.getInstance().getAnimalsXP(type);
             }
             else if (target instanceof Monster)

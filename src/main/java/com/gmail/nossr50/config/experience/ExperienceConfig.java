@@ -103,10 +103,6 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
             reason.add("Experience.Combat.Multiplier.Animals should be at least 0!");
         }
 
-        if (getWitherSkeletonXP() < 0) {
-            reason.add("Experience.Combat.Multiplier.Wither_Skeleton should be at least 0!");
-        }
-
         if (getDodgeXPModifier() < 0) {
             reason.add("Skills.Acrobatics.Dodge_XP_Modifier should be at least 0!");
         }
