@@ -13,6 +13,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Guardian;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Tameable;
@@ -458,7 +459,13 @@ public final class CombatUtils {
                 baseXP = mcMMO.getModManager().getEntity(target).getXpMultiplier();
             }
             else if (target instanceof Animals) {
-                baseXP = ExperienceConfig.getInstance().getAnimalsXP();
+                ntityType type = target.getType();
+                baseXP = ExperienceConfig.getInstance().getAnimalsXP(type);
+            }
+            else if (target instanceof Monster)
+            {
+                EntityType type = target.getType();
+                baseXP = ExperienceConfig.getInstance().getCombatXP(type);
             }
             else {
                 EntityType type = target.getType();
@@ -467,7 +474,7 @@ public final class CombatUtils {
                     case BAT:
                     case SQUID:
                     case RABBIT:
-                        baseXP = ExperienceConfig.getInstance().getAnimalsXP();
+                        baseXP = ExperienceConfig.getInstance().getAnimalsXP(type);
                         break;
 
                     case BLAZE:
@@ -486,32 +493,19 @@ public final class CombatUtils {
                     case SPIDER:
                     case WITCH:
                     case WITHER:
+                    case ZOMBIE_VILLAGER:
                     case ZOMBIE:
+                    case GUARDIAN:
+                    case ELDER_GUARDIAN:
+                    case HUSK:
+                    case STRAY:
+                    case WITHER_SKELETON:
                         baseXP = ExperienceConfig.getInstance().getCombatXP(type);
-                        
-                        break;
 
-                    case SKELETON:
-                        switch (((Skeleton) target).getSkeletonType()) {
-                            case WITHER:
-                                baseXP = ExperienceConfig.getInstance().getWitherSkeletonXP();
-                                break;
-                            default:
-                                baseXP = ExperienceConfig.getInstance().getCombatXP(type);
-                                break;
-                        }
                         break;
 
                     case IRON_GOLEM:
                         if (!((IronGolem) target).isPlayerCreated()) {
-                            baseXP = ExperienceConfig.getInstance().getCombatXP(type);
-                        }
-                        break;
-
-                    case GUARDIAN:
-                        if (((Guardian) target).isElder()) {
-                            baseXP = ExperienceConfig.getInstance().getElderGuardianXP();
-                        } else {
                             baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                         }
                         break;
