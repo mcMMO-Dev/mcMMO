@@ -1,5 +1,5 @@
 name: mcMMO
-version: ${project.version}-b${BUILD_NUMBER}
+version: ${project.version}
 description: >
   The goal of mcMMO is to take core Minecraft game mechanics and expand them into
   add an extensive and quality RPG experience. Everything in mcMMO has been carefully
