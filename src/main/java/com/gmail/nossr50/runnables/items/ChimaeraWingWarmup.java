@@ -31,6 +31,7 @@ public class ChimaeraWingWarmup extends BukkitRunnable {
 
         if (player.getLocation().distanceSquared(previousLocation) > 1.0 || !player.getInventory().containsAtLeast(ChimaeraWing.getChimaeraWing(0), 1)) {
             player.sendMessage(LocaleLoader.getString("Teleport.Cancelled"));
+            mcMMOPlayer.setTeleportCommenceLocation(null);
             return;
         }
 
