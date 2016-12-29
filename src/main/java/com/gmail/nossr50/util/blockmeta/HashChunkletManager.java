@@ -187,6 +187,17 @@ public class HashChunkletManager implements ChunkletManager {
         int cx = x / 16;
         int cz = z / 16;
         int cy = y / 64;
+        
+        if(x < 0){
+            --cx;
+        }
+        if(z < 0){
+            --cz;
+        }
+        if(y < 0){
+            --cy;
+        }
+        
         String key = world.getName() + "," + cx + "," + cz + "," + cy;
 
         if (!store.containsKey(key)) {
@@ -215,7 +226,17 @@ public class HashChunkletManager implements ChunkletManager {
         int cx = x / 16;
         int cz = z / 16;
         int cy = y / 64;
-
+        
+        if(x < 0){
+            --cx;
+        }
+        if(z < 0){
+            --cz;
+        }
+        if(y < 0){
+            --cy;
+        }
+        
         int ix = Math.abs(x) % 16;
         int iz = Math.abs(z) % 16;
         int iy = Math.abs(y) % 64;
@@ -248,6 +269,16 @@ public class HashChunkletManager implements ChunkletManager {
         int cz = z / 16;
         int cy = y / 64;
 
+        if(x < 0){
+            --cx;
+        }
+        if(z < 0){
+            --cz;
+        }
+        if(y < 0){
+            --cy;
+        }
+        
         int ix = Math.abs(x) % 16;
         int iz = Math.abs(z) % 16;
         int iy = Math.abs(y) % 64;
