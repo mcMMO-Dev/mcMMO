@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.material.Dye;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
@@ -46,31 +45,32 @@ public class TreasureConfig extends ConfigLoader {
     public List<HylianTreasure> hylianFromFlowers = new ArrayList<HylianTreasure>();
     public List<HylianTreasure> hylianFromPots    = new ArrayList<HylianTreasure>();
 
-    public List<ShakeTreasure> shakeFromBlaze         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromCaveSpider    = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSpider        = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromChicken       = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromCow           = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromCreeper       = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromEnderman      = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromGhast         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromHorse         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromIronGolem     = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromMagmaCube     = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromMushroomCow   = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromPig           = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromPigZombie     = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromPlayer        = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSheep         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSkeleton      = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSlime         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSnowman       = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSquid         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromWitch         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromZombie        = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromRabbit        = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromElderGuardian = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromGuardian      = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromBlaze          = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromCaveSpider     = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromSpider         = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromChicken        = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromCow            = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromCreeper        = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromEnderman       = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromGhast          = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromHorse          = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromIronGolem      = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromMagmaCube      = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromMushroomCow    = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromPig            = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromPigZombie      = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromPlayer         = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromSheep          = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromSkeleton       = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromSlime          = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromSnowman        = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromSquid          = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromWitch          = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromWitherSkeleton = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromZombie         = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromRabbit         = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromElderGuardian  = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromGuardian       = new ArrayList<ShakeTreasure>();
 
     public HashMap<Rarity, List<FishingTreasure>>     fishingRewards      = new HashMap<Rarity, List<FishingTreasure>>();
     public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
@@ -133,19 +133,19 @@ public class TreasureConfig extends ConfigLoader {
             return;
         }
 
-        loadTreaures("Fishing");
-        loadTreaures("Excavation");
-        loadTreaures("Hylian_Luck");
+        loadTreasures("Fishing");
+        loadTreasures("Excavation");
+        loadTreasures("Hylian_Luck");
         loadEnchantments();
 
         for (EntityType entity : EntityType.values()) {
             if (entity.isAlive()) {
-                loadTreaures("Shake." + entity.toString());
+                loadTreasures("Shake." + entity.toString());
             }
         }
     }
 
-    private void loadTreaures(String type) {
+    private void loadTreasures(String type) {
         boolean isFishing = type.equals("Fishing");
         boolean isShake = type.contains("Shake");
         boolean isExcavation = type.equals("Excavation");
@@ -178,7 +178,9 @@ public class TreasureConfig extends ConfigLoader {
 
             if (materialName.contains("INK_SACK")) {
                 material = Material.INK_SACK;
-            } else if (materialName.contains("INVENTORY")) {
+            } else if(materialName.contains("COAL")){
+            	material = Material.COAL;
+        	} else if (materialName.contains("INVENTORY")) {
                 // Use magic material BED_BLOCK to know that we're grabbing something from the inventory and not a normal treasure
                 shakeFromPlayer.add(new ShakeTreasure(new ItemStack(Material.BED_BLOCK, 1, (byte) 0), 1, getInventoryStealDropChance(), getInventoryStealDropLevel()));
                 continue;
@@ -365,6 +367,8 @@ public class TreasureConfig extends ConfigLoader {
                         shakeFromSquid.add(shakeTreasure);
                     } else if (type.equals("Shake.WITCH")) {
                         shakeFromWitch.add(shakeTreasure);
+                    } else if (type.equals("Shake.WITHER_SKELETON")) {
+                        shakeFromWitherSkeleton.add(shakeTreasure);
                     } else if (type.equals("Shake.ZOMBIE")) {
                         shakeFromZombie.add(shakeTreasure);
                     } else if (type.equals("Shake.RABBIT")) {
