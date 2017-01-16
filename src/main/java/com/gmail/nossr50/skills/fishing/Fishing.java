@@ -1,6 +1,5 @@
 package com.gmail.nossr50.skills.fishing;
 
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -131,13 +130,15 @@ public final class Fishing {
 
             case WITCH:
                 return TreasureConfig.getInstance().shakeFromWitch;
+            case WITHER_SKELETON:
+            	return TreasureConfig.getInstance().shakeFromWitherSkeleton;
 
             case ZOMBIE:
                 return TreasureConfig.getInstance().shakeFromZombie;
-                
+
             case RABBIT:
                 return TreasureConfig.getInstance().shakeFromRabbit;
-                
+
             case GUARDIAN:
                 if (((Guardian) target).isElder())
                     return TreasureConfig.getInstance().shakeFromElderGuardian;
