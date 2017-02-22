@@ -148,6 +148,12 @@ public class EntityListener implements Listener {
         if (event.getEntity() instanceof ArmorStand) {
             return;
         }
+        
+        if (event.getDamager().hasMetadata(mcMMO.funfettiMetadataKey))
+        {
+            event.setCancelled(true);
+            return;
+        }
 
         double damage = event.getFinalDamage();
         Entity defender = event.getEntity();
