@@ -7,7 +7,6 @@ import java.util.UUID;
 
 import org.bukkit.World;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 
 public class PrimitiveChunkStore implements ChunkStore {
@@ -20,14 +19,12 @@ public class PrimitiveChunkStore implements ChunkStore {
     private int cx;
     private int cz;
     private UUID worldUid;
-    transient private int worldHeight;
 
     public PrimitiveChunkStore(World world, int cx, int cz) {
         this.cx = cx;
         this.cz = cz;
         this.worldUid = world.getUID();
-        this.worldHeight = world.getMaxHeight();
-        this.store = new boolean[16][16][this.worldHeight];
+        this.store = new boolean[16][16][world.getMaxHeight()];
     }
 
     @Override
@@ -71,7 +68,7 @@ public class PrimitiveChunkStore implements ChunkStore {
     public boolean isEmpty() {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                for (int y = 0; y < this.worldHeight; y++) {
+                for (int y = 0; y < store.length; y++) {
                     if (store[x][z][y]) {
                         return false;
                     }
@@ -85,7 +82,7 @@ public class PrimitiveChunkStore implements ChunkStore {
     public void copyFrom(ChunkletStore otherStore) {
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                for (int y = 0; y < this.worldHeight; y++) {
+                for (int y = 0; y < store.length; y++) {
                     store[x][z][y] = otherStore.isTrue(x, y, z);
                 }
             }
@@ -121,11 +118,6 @@ public class PrimitiveChunkStore implements ChunkStore {
         cx = in.readInt();
         cz = in.readInt();
 
-        // Constructor is not invoked, need to set these fields
-        World world = mcMMO.p.getServer().getWorld(this.worldUid);
-
-        this.worldHeight = world.getMaxHeight();
-
         store = (boolean[][][]) in.readObject();
 
         if (fileVersionNumber < 5) {
@@ -136,10 +128,10 @@ public class PrimitiveChunkStore implements ChunkStore {
 
     private void fixArray() {
         boolean[][][] temp = this.store;
-        this.store = new boolean[16][16][this.worldHeight];
+        this.store = new boolean[16][16][temp.length];
         for (int x = 0; x < 16; x++) {
             for (int z = 0; z < 16; z++) {
-                for (int y = 0; y < this.worldHeight; y++) {
+                for (int y = 0; y < temp.length; y++) {
                     try {
                         store[x][z][y] = temp[x][y][z];
                     }
