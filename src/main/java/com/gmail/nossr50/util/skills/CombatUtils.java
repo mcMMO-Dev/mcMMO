@@ -55,6 +55,10 @@ public final class CombatUtils {
     private CombatUtils() {}
 
     private static void processSwordCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
+        if (event.getCause() == DamageCause.THORNS) {
+            return;
+        }
+        
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         SwordsManager swordsManager = mcMMOPlayer.getSwordsManager();
         double initialDamage = event.getDamage();
@@ -76,6 +80,10 @@ public final class CombatUtils {
     }
 
     private static void processAxeCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
+        if (event.getCause() == DamageCause.THORNS) {
+            return;
+        }
+        
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
         Map<DamageModifier, Double> modifiers = getModifiers(event);
@@ -111,6 +119,10 @@ public final class CombatUtils {
     }
 
     private static void processUnarmedCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
+        if (event.getCause() == DamageCause.THORNS) {
+            return;
+        }
+        
         double initialDamage = event.getDamage();
         double finalDamage = initialDamage;
 
