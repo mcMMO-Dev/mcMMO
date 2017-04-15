@@ -234,6 +234,10 @@ Experience:
             Wolf: 250
             Ocelot: 500
             Horse: 1000
+            Donkey: 1000
+            Mule: 1000
+            Skeleton_Horse: 1000
+            Zombie_Horse: 1000
     Combat:
         Multiplier:
             Animals: 1.0
@@ -259,3 +263,27 @@ Experience:
             Guardian: 3.0
             Elder_Guardian: 4.0
             Shulker: 2.0
+            Donkey: 1.0
+            Mule: 1.0
+            Horse: 1.0
+            Zombie_Villager: 2.0
+            Skeleton_Horse: 1.0
+            Zombie_Horse: 1.0
+            Husk: 3.0
+            Evoker: 3.0
+            Polar_Bear: 1.0
+            Llama: 1.0
+            Vindicator: 3.0
+            Stray: 2.0
+            Rabbit: 1.0
+            Chicken: 1.0
+            Bat: 1.0
+            Shulker: 2.0
+            Mushroom_Cow: 1.0
+            Cow: 1.0
+            Sheep: 1.0
+            Pig: 1.0
+            Squid: 1.0
+            Ocelot: 1.0
+            Villager: 1.0
+            Snowman: 0.0
