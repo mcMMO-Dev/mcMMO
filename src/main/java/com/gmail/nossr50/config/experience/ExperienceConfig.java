@@ -128,11 +128,11 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         }
 
         /* Taming */
-        if (getTamingXPWolf() <= 0) {
+        if (getTamingXP(EntityType.WOLF) <= 0) {
             reason.add("Experience.Taming.Animal_Taming.Wolf should be greater than 0!");
         }
 
-        if (getTamingXPOcelot() <= 0) {
+        if (getTamingXP(EntityType.OCELOT) <= 0) {
             reason.add("Experience.Taming.Animal_Taming.Ocelot should be greater than 0!");
         }
 
@@ -370,9 +370,10 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public double getRepairXP(MaterialType repairMaterialType) { return config.getDouble("Experience.Repair." + StringUtils.getCapitalized(repairMaterialType.toString())); }
 
     /* Taming */
-    public int getTamingXPHorse() { return config.getInt("Experience.Taming.Animal_Taming.Horse", 1000); }
-    public int getTamingXPWolf() { return config.getInt("Experience.Taming.Animal_Taming.Wolf", 250); }
-    public int getTamingXPOcelot() { return config.getInt("Experience.Taming.Animal_Taming.Ocelot", 500); }
+    public int getTamingXP(EntityType type)
+    {
+        return config.getInt("Experience.Taming.Animal_Taming." + StringUtils.getPrettyEntityTypeString(type));
+    }
 
     /* Woodcutting */
     public int getWoodcuttingTreeXP(TreeSpecies species) { return config.getInt("Experience.Woodcutting." + StringUtils.getPrettyTreeSpeciesString(species).replace(" ", "_")); }

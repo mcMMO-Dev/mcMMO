@@ -477,56 +477,22 @@ public final class CombatUtils {
             else if (target instanceof Monster)
             {
                 EntityType type = target.getType();
-                baseXP = ExperienceConfig.getInstance().getCombatXP(type);
+                
+                if (type == EntityType.IRON_GOLEM)
+                {
+                    if (!((IronGolem) target).isPlayerCreated()) {
+                        baseXP = ExperienceConfig.getInstance().getCombatXP(type);
+                    }
+                }
+                else
+                {
+                    baseXP = ExperienceConfig.getInstance().getCombatXP(type);
+                }
+                
             }
             else {
-                EntityType type = target.getType();
-
-                switch (type) {
-                    case BAT:
-                    case SQUID:
-                    case RABBIT:
-                        baseXP = ExperienceConfig.getInstance().getAnimalsXP(type);
-                        break;
-
-                    case BLAZE:
-                    case CAVE_SPIDER:
-                    case CREEPER:
-                    case ENDER_DRAGON:
-                    case ENDERMAN:
-                    case ENDERMITE:
-                    case GHAST:
-                    case GIANT:
-                    case MAGMA_CUBE:
-                    case PIG_ZOMBIE:
-                    case SHULKER:
-                    case SILVERFISH:
-                    case SLIME:
-                    case SPIDER:
-                    case WITCH:
-                    case WITHER:
-                    case ZOMBIE_VILLAGER:
-                    case ZOMBIE:
-                    case GUARDIAN:
-                    case ELDER_GUARDIAN:
-                    case HUSK:
-                    case STRAY:
-                    case WITHER_SKELETON:
-                        baseXP = ExperienceConfig.getInstance().getCombatXP(type);
-
-                        break;
-
-                    case IRON_GOLEM:
-                        if (!((IronGolem) target).isPlayerCreated()) {
-                            baseXP = ExperienceConfig.getInstance().getCombatXP(type);
-                        }
-                        break;
-
-                    default:
-                        baseXP = 1.0;
-                        mcMMO.getModManager().addCustomEntity(target);
-                        break;
-                }
+                baseXP = 1.0;
+                mcMMO.getModManager().addCustomEntity(target);
             }
 
             if (target.hasMetadata(mcMMO.entityMetadataKey)) {
