@@ -51,6 +51,9 @@ public class WoodcuttingManager extends SkillManager {
      * @param blockState Block being broken
      */
     public void woodcuttingBlockCheck(BlockState blockState) {
+    	if (blockState.getMetadata("unnatural").size() != 0)
+    		return;
+    	
         int xp = Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.DEFAULT);
 
         switch (blockState.getType()) {
