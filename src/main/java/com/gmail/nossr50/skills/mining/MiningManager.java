@@ -10,6 +10,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.metadata.MetadataValue;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -57,6 +58,12 @@ public class MiningManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public void miningBlockCheck(BlockState blockState) {
+    	for (MetadataValue value : blockState.getMetadata("mmo_bin"))
+    	{
+    		if (value.getOwningPlugin().equals(mcMMO.p) && value.asBoolean()==true)
+	    		return;
+    	}
+    	
         Player player = getPlayer();
 
         applyXpGain(Mining.getBlockXp(blockState), XPGainReason.PVE);
