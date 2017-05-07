@@ -560,6 +560,9 @@ Skills:
             BonusMin: 3.0
             BonusMax: 8.0
             IncreaseLevel: 50
+        Berserk:
+            # BreakGlass: Toggles whether berserk breaks glass in addition to "soft" blocks
+            BreakGlass: true
     #
     #  Settings for Woodcutting
     ###

@@ -1,9 +1,5 @@
 package com.gmail.nossr50.config;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
@@ -13,6 +9,10 @@ import com.gmail.nossr50.skills.repair.ArcaneForging;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.smelting.Smelting;
 import com.gmail.nossr50.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class AdvancedConfig extends AutoUpdateConfigLoader {
     private static AdvancedConfig instance;
@@ -842,6 +842,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getIronArmMaxBonus() { return config.getDouble("Skills.Unarmed.IronArm.BonusMax", 8.0D); }
     public int getIronArmIncreaseLevel() { return config.getInt("Skills.Unarmed.IronArm.IncreaseLevel", 50); }
     public boolean getDisarmProtected() { return config.getBoolean("Skills.Unarmed.Disarm.AntiTheft", false); }
+    public boolean getBerserkBreakGlass() { return config.getBoolean("Skills.Unarmed.Berserk.BreakGlass", false); }
 
     /* WOODCUTTING */
     public int getLeafBlowUnlockLevel() { return config.getInt("Skills.Woodcutting.LeafBlower.UnlockLevel", 100); }
