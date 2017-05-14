@@ -2,6 +2,8 @@ package com.gmail.nossr50;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,6 +66,7 @@ import com.gmail.nossr50.util.experience.FormulaManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
+import com.google.common.base.Charsets;
 
 import net.shatteredlands.shatt.backup.ZipLibrary;
 
@@ -507,5 +510,10 @@ public class mcMMO extends JavaPlugin {
             getLogger().warning("Cauldron implementation found, but the custom entity config for mcMMO is disabled!");
             getLogger().info("To enable, set Mods.Entity_Mods_Enabled to TRUE in config.yml.");
         }
+    }
+
+    public InputStreamReader getResourceAsReader(String fileName) {
+        InputStream in = getResource(fileName);
+        return in == null ? null : new InputStreamReader(in, Charsets.UTF_8);
     }
 }
