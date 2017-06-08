@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
@@ -184,7 +185,11 @@ public enum AbilityType {
     public boolean blockCheck(BlockState blockState) {
         switch (this) {
             case BERSERK:
-                return (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW);
+                return (BlockUtils.affectedByGigaDrillBreaker(blockState) || blockState.getType() == Material.SNOW
+                  || (AdvancedConfig.getInstance().getBerserkBreakGlass() && ( blockState.getType() == Material.GLASS
+                        || blockState.getType() == Material.THIN_GLASS
+                        || blockState.getType() == Material.STAINED_GLASS
+                        || blockState.getType() == Material.STAINED_GLASS_PANE)));
 
             case GIGA_DRILL_BREAKER:
                 return BlockUtils.affectedByGigaDrillBreaker(blockState);
