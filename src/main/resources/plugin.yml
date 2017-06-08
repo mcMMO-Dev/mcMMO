@@ -1900,7 +1900,7 @@ permissions:
         description: Allow reset of skill levels
         children:
             mcmmo.commands.skillreset.all: true
-            mcmmo.commands.skillreset.others.all: false
+            mcmmo.commands.skillreset.others.all: true
     mcmmo.skills.*:
         default: false
         description: Implies all mcmmo.skills permissions.
