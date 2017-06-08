@@ -153,7 +153,21 @@ public class AcrobaticsManager extends SkillManager {
     }
 
     private boolean isFatal(double damage) {
-        return getPlayer().getHealth() - damage <= 0;
+        int discount=1;
+        // If the player has resistance active, carry resistance checking
+        if(getPlayer().hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)){
+           Iterator potions=getPlayer().getActivePotionEffects().iterator();
+				while(potions.hasNext()){
+				    PotionEffect potion=(PotionEffect)potions.next();
+				    if(potion.getType()==PotionEffectType.DAMAGE_RESISANCE)
+					{//Having resistance allows you to recieve less damage
+					    int coupon=potion.getAmplifier();
+					    discount=Math.min(0,1-(coupon*0.2));
+					    continue;
+					}
+				}
+        }//...Which is accounted here
+        return getPlayer().getHealth() - damage*discount <= 0;
     }
 
     private float calculateRollXP(double damage, boolean isRoll) {
