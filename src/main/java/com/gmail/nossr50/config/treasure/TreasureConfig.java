@@ -61,6 +61,7 @@ public class TreasureConfig extends ConfigLoader {
     public List<ShakeTreasure> shakeFromPigZombie      = new ArrayList<ShakeTreasure>();
     public List<ShakeTreasure> shakeFromPlayer         = new ArrayList<ShakeTreasure>();
     public List<ShakeTreasure> shakeFromSheep          = new ArrayList<ShakeTreasure>();
+    public List<ShakeTreasure> shakeFromShulker        = new ArrayList<ShakeTreasure>();
     public List<ShakeTreasure> shakeFromSkeleton       = new ArrayList<ShakeTreasure>();
     public List<ShakeTreasure> shakeFromSlime          = new ArrayList<ShakeTreasure>();
     public List<ShakeTreasure> shakeFromSnowman        = new ArrayList<ShakeTreasure>();
@@ -355,6 +356,8 @@ public class TreasureConfig extends ConfigLoader {
                         shakeFromPlayer.add(shakeTreasure);
                     } else if (type.equals("Shake.SHEEP")) {
                         shakeFromSheep.add(shakeTreasure);
+                    } else if (type.equals("Shake.SHULKER")) {
+                        shakeFromShulker.add(shakeTreasure);
                     } else if (type.equals("Shake.SKELETON")) {
                         shakeFromSkeleton.add(shakeTreasure);
                     } else if (type.equals("Shake.SLIME")) {
