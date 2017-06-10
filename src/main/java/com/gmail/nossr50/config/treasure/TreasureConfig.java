@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.TreeSpecies;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -314,7 +315,10 @@ public class TreasureConfig extends ConfigLoader {
                         if (dropper.equals("Bushes")) {
                             AddHylianTreasure("Small_Fern", hylianTreasure);
                             AddHylianTreasure("Small_Grass", hylianTreasure);
-                            AddHylianTreasure(StringUtils.getPrettyItemString(Material.SAPLING), hylianTreasure);
+                            for (TreeSpecies species : TreeSpecies.values()) {
+                                AddHylianTreasure(StringUtils.getPrettyTreeSpeciesString(species) + "_Sapling", hylianTreasure);
+                            }
+
                             AddHylianTreasure(StringUtils.getPrettyItemString(Material.DEAD_BUSH), hylianTreasure);
                             continue;
                         }

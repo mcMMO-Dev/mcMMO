@@ -11,6 +11,7 @@ import org.bukkit.material.Crops;
 import org.bukkit.material.LongGrass;
 import org.bukkit.material.MaterialData;
 import org.bukkit.material.NetherWarts;
+import org.bukkit.material.Sapling;
 import org.bukkit.material.Tree;
 import org.bukkit.material.CocoaPlant.CocoaPlantSize;
 
@@ -292,19 +293,28 @@ public class StringUtils {
                 if (((Crops) data).getState() == CropState.RIPE) {
                     return getPrettyItemString(data.getItemType()).replace(" ", "_");
                 }
-                return getPrettyItemString(data.getItemType()).replace(" ", "_") + "_UNGROWN";
+                return getPrettyItemString(data.getItemType()).replace(" ", "_") + "_Ungrown";
             }
             case NETHER_WARTS : {
                 if (((NetherWarts) data).getState() == NetherWartsState.RIPE) {
                     return getPrettyItemString(data.getItemType()).replace(" ", "_");
                 }
-                return getPrettyItemString(data.getItemType()).replace(" ", "_") + "_UNGROWN";
+                return getPrettyItemString(data.getItemType()).replace(" ", "_") + "_Ungrown";
             }
             case COCOA : {
                 if (((CocoaPlant) data).getSize() == CocoaPlantSize.LARGE) {
                     return getPrettyItemString(data.getItemType()).replace(" ", "_");
                 }
-                return getPrettyItemString(data.getItemType()).replace(" ", "_") + "_UNGROWN";
+                return getPrettyItemString(data.getItemType()).replace(" ", "_") + "_Ungrown";
+            }
+            case SAPLING:
+            {
+                TreeSpecies species = TreeSpecies.GENERIC;
+                if (data instanceof Sapling) {
+                    Sapling sapling = (Sapling) data;
+                    species = sapling.getSpecies();
+                }
+                return createPrettyEnumString(species.name()).replace(" ", "_") + "_Sapling";
             }
             case SMOOTH_BRICK :
             case WOOL :
