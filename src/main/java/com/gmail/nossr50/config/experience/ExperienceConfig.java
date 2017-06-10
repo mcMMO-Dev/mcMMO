@@ -197,7 +197,6 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
         String explicitString = baseString + StringUtils.getFriendlyConfigMaterialDataString(data);
         String noDataString = baseString + StringUtils.getPrettyItemString(data.getItemType());
-        mcMMO.p.debug(explicitString);
         if (config.contains(explicitString))
             return config.getInt(explicitString);
         return config.getInt(noDataString, 0);
@@ -208,7 +207,6 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
         String explicitString = baseString + StringUtils.getFriendlyConfigMaterialDataString(data);
         String noDataString = baseString + StringUtils.getPrettyItemString(data.getItemType());
-        mcMMO.p.debug(explicitString);
         if (config.contains(explicitString))
             return true;
         return config.contains(noDataString);
