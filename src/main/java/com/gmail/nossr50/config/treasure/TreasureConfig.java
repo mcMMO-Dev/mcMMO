@@ -30,16 +30,7 @@ public class TreasureConfig extends ConfigLoader {
 
     private static TreasureConfig instance;
 
-    public List<ExcavationTreasure> excavationFromDirt     = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromGrass    = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromSand     = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromGravel   = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromClay     = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromMycel    = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromSoulSand = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromSnow     = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromRedSand  = new ArrayList<ExcavationTreasure>();
-    public List<ExcavationTreasure> excavationFromPodzol   = new ArrayList<ExcavationTreasure>();
+    public HashMap<Material, List<ExcavationTreasure>> excavationMap = new HashMap<Material, List<ExcavationTreasure>>();
 
     public List<HylianTreasure> hylianFromBushes  = new ArrayList<HylianTreasure>();
     public List<HylianTreasure> hylianFromFlowers = new ArrayList<HylianTreasure>();
@@ -385,44 +376,12 @@ public class TreasureConfig extends ConfigLoader {
                     ExcavationTreasure excavationTreasure = new ExcavationTreasure(item, xp, dropChance, dropLevel);
                     List<String> dropList = config.getStringList(type + "." + treasureName + ".Drops_From");
 
-                    if (dropList.contains("Dirt")) {
-                        excavationFromDirt.add(excavationTreasure);
-                    }
-
-                    if (dropList.contains("Grass")) {
-                        excavationFromGrass.add(excavationTreasure);
-                    }
-
-                    if (dropList.contains("Sand")) {
-                        excavationFromSand.add(excavationTreasure);
-                    }
-
-                    if (dropList.contains("Gravel")) {
-                        excavationFromGravel.add(excavationTreasure);
-                    }
-
-                    if (dropList.contains("Clay")) {
-                        excavationFromClay.add(excavationTreasure);
-                    }
-
-                    if (dropList.contains("Mycelium")) {
-                        excavationFromMycel.add(excavationTreasure);
-                    }
-
-                    if (dropList.contains("Soul_Sand")) {
-                        excavationFromSoulSand.add(excavationTreasure);
-                    }
-
-                    if (dropList.contains("Snow")) {
-                        excavationFromSnow.add(excavationTreasure);
-                    }
-
-                    if (dropList.contains("Red_Sand")) {
-                        excavationFromRedSand.add(excavationTreasure);
-                    }
-
-                    if (dropList.contains("Podzol")) {
-                        excavationFromPodzol.add(excavationTreasure);
+                    for (String blockType : dropList)
+                    {
+                        Material mat = Material.matchMaterial(blockType);
+                        if (!excavationMap.containsKey(mat))
+                            excavationMap.put(mat, new ArrayList<ExcavationTreasure>());
+                        excavationMap.get(mat).add(excavationTreasure);
                     }
                 } else if (isHylian) {
                     HylianTreasure hylianTreasure = new HylianTreasure(item, xp, dropChance, dropLevel);

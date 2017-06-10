@@ -146,8 +146,8 @@ Experience:
         Generic: 70
         Jungle: 100
         Redwood: 80
-        Huge_Mushroom_Red: 70
-        Huge_Mushroom_Brown: 70
+        Huge_Mushroom_1: 70
+        Huge_Mushroom_2: 70
     Herbalism:
         Allium: 300
         Azure_Bluet: 150
@@ -287,3 +287,5 @@ Experience:
             Ocelot: 1.0
             Villager: 1.0
             Snowman: 0.0
+            Parrot: 1.0
+            Illusioner: 3.0

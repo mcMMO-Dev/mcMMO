@@ -18,8 +18,7 @@ public class Mining {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public static int getBlockXp(BlockState blockState) {
-        Material blockType = blockState.getType();
-        int xp = ExperienceConfig.getInstance().getXp(SkillType.MINING, blockType != Material.GLOWING_REDSTONE_ORE ? blockType : Material.REDSTONE_ORE);
+        int xp = ExperienceConfig.getInstance().getXp(SkillType.MINING, blockState.getData());
 
         if (xp == 0 && mcMMO.getModManager().isCustomMiningBlock(blockState)) {
             xp = mcMMO.getModManager().getBlock(blockState).getXpGain();

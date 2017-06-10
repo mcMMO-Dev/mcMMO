@@ -15,6 +15,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillUtils;
@@ -40,29 +41,11 @@ public final class Woodcutting {
      * @return Amount of experience
      */
     protected static int getExperienceFromLog(BlockState blockState, ExperienceGainMethod experienceGainMethod) {
-        // Mushrooms aren't trees so we could never get species data from them
-        switch (blockState.getType()) {
-            case HUGE_MUSHROOM_1:
-                return ExperienceConfig.getInstance().getWoodcuttingXPHugeBrownMushroom();
-
-            case HUGE_MUSHROOM_2:
-                return ExperienceConfig.getInstance().getWoodcuttingXPHugeRedMushroom();
-
-            default:
-                break;
-        }
-
         if (mcMMO.getModManager().isCustomLog(blockState)) {
             return mcMMO.getModManager().getBlock(blockState).getXpGain();
         }
 
-        //TODO Remove this workaround when casting to Tree works again
-        TreeSpecies species = TreeSpecies.GENERIC;
-        if (blockState.getData() instanceof Tree) {
-            species = ((Tree) blockState.getData()).getSpecies();
-        }
-
-        return ExperienceConfig.getInstance().getWoodcuttingTreeXP(species);
+        return ExperienceConfig.getInstance().getXp(SkillType.WOODCUTTING, blockState.getData());
     }
 
     /**
