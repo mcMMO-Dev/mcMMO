@@ -36,33 +36,7 @@ public class TreasureConfig extends ConfigLoader {
     public List<HylianTreasure> hylianFromFlowers = new ArrayList<HylianTreasure>();
     public List<HylianTreasure> hylianFromPots    = new ArrayList<HylianTreasure>();
 
-    public List<ShakeTreasure> shakeFromBlaze          = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromCaveSpider     = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSpider         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromChicken        = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromCow            = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromCreeper        = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromEnderman       = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromGhast          = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromHorse          = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromIronGolem      = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromMagmaCube      = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromMushroomCow    = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromPig            = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromPigZombie      = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromPlayer         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSheep          = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromShulker        = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSkeleton       = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSlime          = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSnowman        = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromSquid          = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromWitch          = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromWitherSkeleton = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromZombie         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromRabbit         = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromElderGuardian  = new ArrayList<ShakeTreasure>();
-    public List<ShakeTreasure> shakeFromGuardian       = new ArrayList<ShakeTreasure>();
+    public HashMap<EntityType, List<ShakeTreasure>> shakeMap = new HashMap<EntityType, List<ShakeTreasure>>();
 
     public HashMap<Rarity, List<FishingTreasure>>     fishingRewards      = new HashMap<Rarity, List<FishingTreasure>>();
     public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
@@ -174,7 +148,9 @@ public class TreasureConfig extends ConfigLoader {
             	material = Material.COAL;
         	} else if (materialName.contains("INVENTORY")) {
                 // Use magic material BED_BLOCK to know that we're grabbing something from the inventory and not a normal treasure
-                shakeFromPlayer.add(new ShakeTreasure(new ItemStack(Material.BED_BLOCK, 1, (byte) 0), 1, getInventoryStealDropChance(), getInventoryStealDropLevel()));
+                if (!shakeMap.containsKey(EntityType.PLAYER))
+                    shakeMap.put(EntityType.PLAYER, new ArrayList<ShakeTreasure>());
+                shakeMap.get(EntityType.PLAYER).add(new ShakeTreasure(new ItemStack(Material.BED_BLOCK, 1, (byte) 0), 1, getInventoryStealDropChance(), getInventoryStealDropLevel()));
                 continue;
             } else {
                 material = Material.matchMaterial(materialName);
@@ -316,62 +292,11 @@ public class TreasureConfig extends ConfigLoader {
                     fishingRewards.get(rarity).add(new FishingTreasure(item, xp));
                 } else if (isShake) {
                     ShakeTreasure shakeTreasure = new ShakeTreasure(item, xp, dropChance, dropLevel);
-
-                    if (type.equals("Shake.BLAZE")) {
-                        shakeFromBlaze.add(shakeTreasure);
-                    } else if (type.equals("Shake.CAVE_SPIDER")) {
-                        shakeFromCaveSpider.add(shakeTreasure);
-                    } else if (type.equals("Shake.CHICKEN")) {
-                        shakeFromChicken.add(shakeTreasure);
-                    } else if (type.equals("Shake.COW")) {
-                        shakeFromCow.add(shakeTreasure);
-                    } else if (type.equals("Shake.CREEPER")) {
-                        shakeFromCreeper.add(shakeTreasure);
-                    } else if (type.equals("Shake.ENDERMAN")) {
-                        shakeFromEnderman.add(shakeTreasure);
-                    } else if (type.equals("Shake.GHAST")) {
-                        shakeFromGhast.add(shakeTreasure);
-                    } else if (type.equals("Shake.HORSE")) {
-                        shakeFromHorse.add(shakeTreasure);
-                    } else if (type.equals("Shake.IRON_GOLEM")) {
-                        shakeFromIronGolem.add(shakeTreasure);
-                    } else if (type.equals("Shake.MAGMA_CUBE")) {
-                        shakeFromMagmaCube.add(shakeTreasure);
-                    } else if (type.equals("Shake.MUSHROOM_COW")) {
-                        shakeFromMushroomCow.add(shakeTreasure);
-                    } else if (type.equals("Shake.PIG")) {
-                        shakeFromPig.add(shakeTreasure);
-                    } else if (type.equals("Shake.PIG_ZOMBIE")) {
-                        shakeFromPigZombie.add(shakeTreasure);
-                    } else if (type.equals("Shake.PLAYER")) {
-                        shakeFromPlayer.add(shakeTreasure);
-                    } else if (type.equals("Shake.SHEEP")) {
-                        shakeFromSheep.add(shakeTreasure);
-                    } else if (type.equals("Shake.SHULKER")) {
-                        shakeFromShulker.add(shakeTreasure);
-                    } else if (type.equals("Shake.SKELETON")) {
-                        shakeFromSkeleton.add(shakeTreasure);
-                    } else if (type.equals("Shake.SLIME")) {
-                        shakeFromSlime.add(shakeTreasure);
-                    } else if (type.equals("Shake.SPIDER")) {
-                        shakeFromSpider.add(shakeTreasure);
-                    } else if (type.equals("Shake.SNOWMAN")) {
-                        shakeFromSnowman.add(shakeTreasure);
-                    } else if (type.equals("Shake.SQUID")) {
-                        shakeFromSquid.add(shakeTreasure);
-                    } else if (type.equals("Shake.WITCH")) {
-                        shakeFromWitch.add(shakeTreasure);
-                    } else if (type.equals("Shake.WITHER_SKELETON")) {
-                        shakeFromWitherSkeleton.add(shakeTreasure);
-                    } else if (type.equals("Shake.ZOMBIE")) {
-                        shakeFromZombie.add(shakeTreasure);
-                    } else if (type.equals("Shake.RABBIT")) {
-                        shakeFromRabbit.add(shakeTreasure);
-                    } else if (type.equals("Shake.GUARDIAN")) {
-                        shakeFromGuardian.add(shakeTreasure);
-                    } else if (type.equals("Shake.ELDER_GUARDIAN")) {
-                        shakeFromElderGuardian.add(shakeTreasure);
-                    }
+                    
+                    EntityType entityType = EntityType.valueOf(type.substring(6));
+                    if (!shakeMap.containsKey(entityType))
+                        shakeMap.put(entityType, new ArrayList<ShakeTreasure>());
+                    shakeMap.get(entityType).add(shakeTreasure);
                 } else if (isExcavation) {
                     ExcavationTreasure excavationTreasure = new ExcavationTreasure(item, xp, dropChance, dropLevel);
                     List<String> dropList = config.getStringList(type + "." + treasureName + ".Drops_From");
@@ -401,9 +326,6 @@ public class TreasureConfig extends ConfigLoader {
                 }
             }
         }
-        // Fallthrough if not specified
-        if (shakeFromElderGuardian.isEmpty())
-            shakeFromElderGuardian = shakeFromGuardian;
     }
 
     private void loadEnchantments() {
