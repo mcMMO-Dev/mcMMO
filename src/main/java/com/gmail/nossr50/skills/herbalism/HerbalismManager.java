@@ -207,32 +207,10 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        List<HylianTreasure> treasures;
-
-        switch (blockState.getType()) {
-            case DEAD_BUSH:
-            case LONG_GRASS:
-            case SAPLING:
-                treasures = TreasureConfig.getInstance().hylianFromBushes;
-                break;
-
-            case RED_ROSE:
-            case YELLOW_FLOWER:
-                if (mcMMO.getPlaceStore().isTrue(blockState)) {
-                    mcMMO.getPlaceStore().setFalse(blockState);
-                    return false;
-                }
-
-                treasures = TreasureConfig.getInstance().hylianFromFlowers;
-                break;
-
-            case FLOWER_POT:
-                treasures = TreasureConfig.getInstance().hylianFromPots;
-                break;
-
-            default:
-                return false;
-        }
+        String friendly = StringUtils.getFriendlyConfigMaterialDataString(blockState.getData());
+        if (!TreasureConfig.getInstance().hylianMap.containsKey(friendly))
+            return false;
+        List<HylianTreasure> treasures = TreasureConfig.getInstance().hylianMap.get(friendly);
 
         Player player = getPlayer();
 

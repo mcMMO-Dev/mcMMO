@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.material.Dye;
+import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
@@ -25,6 +26,7 @@ import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
 import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.util.EnchantmentUtils;
+import com.gmail.nossr50.util.StringUtils;
 
 public class TreasureConfig extends ConfigLoader {
 
@@ -32,11 +34,8 @@ public class TreasureConfig extends ConfigLoader {
 
     public HashMap<Material, List<ExcavationTreasure>> excavationMap = new HashMap<Material, List<ExcavationTreasure>>();
 
-    public List<HylianTreasure> hylianFromBushes  = new ArrayList<HylianTreasure>();
-    public List<HylianTreasure> hylianFromFlowers = new ArrayList<HylianTreasure>();
-    public List<HylianTreasure> hylianFromPots    = new ArrayList<HylianTreasure>();
-
-    public HashMap<EntityType, List<ShakeTreasure>> shakeMap = new HashMap<EntityType, List<ShakeTreasure>>();
+    public HashMap<EntityType, List<ShakeTreasure>> shakeMap  = new HashMap<EntityType, List<ShakeTreasure>>();
+    public HashMap<String, List<HylianTreasure>>    hylianMap = new HashMap<String, List<HylianTreasure>>();
 
     public HashMap<Rarity, List<FishingTreasure>>     fishingRewards      = new HashMap<Rarity, List<FishingTreasure>>();
     public HashMap<Rarity, List<EnchantmentTreasure>> fishingEnchantments = new HashMap<Rarity, List<EnchantmentTreasure>>();
@@ -144,9 +143,9 @@ public class TreasureConfig extends ConfigLoader {
 
             if (materialName.contains("INK_SACK")) {
                 material = Material.INK_SACK;
-            } else if(materialName.contains("COAL")){
-            	material = Material.COAL;
-        	} else if (materialName.contains("INVENTORY")) {
+            } else if (materialName.contains("COAL")) {
+                material = Material.COAL;
+            } else if (materialName.contains("INVENTORY")) {
                 // Use magic material BED_BLOCK to know that we're grabbing something from the inventory and not a normal treasure
                 if (!shakeMap.containsKey(EntityType.PLAYER))
                     shakeMap.put(EntityType.PLAYER, new ArrayList<ShakeTreasure>());
@@ -292,7 +291,7 @@ public class TreasureConfig extends ConfigLoader {
                     fishingRewards.get(rarity).add(new FishingTreasure(item, xp));
                 } else if (isShake) {
                     ShakeTreasure shakeTreasure = new ShakeTreasure(item, xp, dropChance, dropLevel);
-                    
+
                     EntityType entityType = EntityType.valueOf(type.substring(6));
                     if (!shakeMap.containsKey(entityType))
                         shakeMap.put(entityType, new ArrayList<ShakeTreasure>());
@@ -301,8 +300,7 @@ public class TreasureConfig extends ConfigLoader {
                     ExcavationTreasure excavationTreasure = new ExcavationTreasure(item, xp, dropChance, dropLevel);
                     List<String> dropList = config.getStringList(type + "." + treasureName + ".Drops_From");
 
-                    for (String blockType : dropList)
-                    {
+                    for (String blockType : dropList) {
                         Material mat = Material.matchMaterial(blockType);
                         if (!excavationMap.containsKey(mat))
                             excavationMap.put(mat, new ArrayList<ExcavationTreasure>());
@@ -312,20 +310,38 @@ public class TreasureConfig extends ConfigLoader {
                     HylianTreasure hylianTreasure = new HylianTreasure(item, xp, dropChance, dropLevel);
                     List<String> dropList = config.getStringList(type + "." + treasureName + ".Drops_From");
 
-                    if (dropList.contains("Bushes")) {
-                        hylianFromBushes.add(hylianTreasure);
-                    }
-
-                    if (dropList.contains("Flowers")) {
-                        hylianFromFlowers.add(hylianTreasure);
-                    }
-
-                    if (dropList.contains("Pots")) {
-                        hylianFromPots.add(hylianTreasure);
+                    for (String dropper : dropList) {
+                        if (dropper.equals("Bushes")) {
+                            AddHylianTreasure("Small_Fern", hylianTreasure);
+                            AddHylianTreasure("Small_Grass", hylianTreasure);
+                            AddHylianTreasure(StringUtils.getPrettyItemString(Material.SAPLING), hylianTreasure);
+                            AddHylianTreasure(StringUtils.getPrettyItemString(Material.DEAD_BUSH), hylianTreasure);
+                            continue;
+                        }
+                        if (dropper.equals("Flowers")) {
+                            for (int i = 0; i < 9; i++) {
+                                AddHylianTreasure(StringUtils.getFriendlyConfigMaterialDataString(new MaterialData(Material.RED_ROSE, (byte) i)), hylianTreasure);
+                            }
+                            AddHylianTreasure(StringUtils.getPrettyItemString(Material.YELLOW_FLOWER), hylianTreasure);
+                            continue;
+                        }
+                        if (dropper.equals("Pots")) {
+                            for (int i = 0; i < 14; i++) {
+                                AddHylianTreasure(StringUtils.getFriendlyConfigMaterialDataString(new MaterialData(Material.FLOWER_POT, (byte) i)), hylianTreasure);
+                            }
+                            continue;
+                        }
+                        AddHylianTreasure(dropper, hylianTreasure);
                     }
                 }
             }
         }
+    }
+
+    private void AddHylianTreasure(String dropper, HylianTreasure treasure) {
+        if (!hylianMap.containsKey(dropper))
+            hylianMap.put(dropper, new ArrayList<HylianTreasure>());
+        hylianMap.get(dropper).add(treasure);
     }
 
     private void loadEnchantments() {
