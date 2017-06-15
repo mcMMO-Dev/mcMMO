@@ -33,7 +33,7 @@ public class TreasureConfig extends ConfigLoader {
 
     private static TreasureConfig instance;
 
-    public HashMap<Material, List<ExcavationTreasure>> excavationMap = new HashMap<Material, List<ExcavationTreasure>>();
+    public HashMap<String, List<ExcavationTreasure>> excavationMap = new HashMap<String, List<ExcavationTreasure>>();
 
     public HashMap<EntityType, List<ShakeTreasure>> shakeMap  = new HashMap<EntityType, List<ShakeTreasure>>();
     public HashMap<String, List<HylianTreasure>>    hylianMap = new HashMap<String, List<HylianTreasure>>();
@@ -302,10 +302,9 @@ public class TreasureConfig extends ConfigLoader {
                     List<String> dropList = config.getStringList(type + "." + treasureName + ".Drops_From");
 
                     for (String blockType : dropList) {
-                        Material mat = Material.matchMaterial(blockType);
-                        if (!excavationMap.containsKey(mat))
-                            excavationMap.put(mat, new ArrayList<ExcavationTreasure>());
-                        excavationMap.get(mat).add(excavationTreasure);
+                        if (!excavationMap.containsKey(blockType))
+                            excavationMap.put(blockType, new ArrayList<ExcavationTreasure>());
+                        excavationMap.get(blockType).add(excavationTreasure);
                     }
                 } else if (isHylian) {
                     HylianTreasure hylianTreasure = new HylianTreasure(item, xp, dropChance, dropLevel);
