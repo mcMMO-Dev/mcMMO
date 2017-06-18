@@ -1,6 +1,7 @@
 package com.gmail.nossr50.events.experience;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
@@ -45,5 +46,16 @@ public class McMMOPlayerLevelUpEvent extends McMMOPlayerLevelChangeEvent {
      */
     public int getLevelsGained() {
         return levelsGained;
+    }
+
+    private static final HandlerList handlers = new HandlerList();
+
+    @Override
+    public HandlerList getHandlers() {
+        return handlers;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 }
