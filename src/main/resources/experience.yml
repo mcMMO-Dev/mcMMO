@@ -184,6 +184,12 @@ Experience:
         Water_Lily: 100
         White_Tulip: 150
         Yellow_Flower: 100
+        Beetroot_Block_Ungrown: 0
+        Carrot_Ungrown: 0
+        Potato_Ungrown: 0
+        Crops_Ungrown: 0
+        Nether_Warts_Ungrown: 0
+        Cocoa_Ungrown: 0
     Mining:
         Coal_Ore: 100
         Diamond_Ore: 750
