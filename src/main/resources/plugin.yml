@@ -1,5 +1,5 @@
 name: mcMMO
-version: ${project.version}-b${BUILD_NUMBER}
+version: ${project.version}
 description: >
   The goal of mcMMO is to take core Minecraft game mechanics and expand them into
   add an extensive and quality RPG experience. Everything in mcMMO has been carefully
@@ -1900,7 +1900,7 @@ permissions:
         description: Allow reset of skill levels
         children:
             mcmmo.commands.skillreset.all: true
-            mcmmo.commands.skillreset.others.all: false
+            mcmmo.commands.skillreset.others.all: true
     mcmmo.skills.*:
         default: false
         description: Implies all mcmmo.skills permissions.

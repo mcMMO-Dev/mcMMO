@@ -811,6 +811,17 @@ Shake:
             XP: 0
             Drop_Chance: 100.0
             Drop_Level: 0
+    SHULKER:
+        SHULKER_SHELL:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 25.0
+            Drop_Level: 0
+        PURPUR_BLOCK:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 75.0
+            Drop_Level: 0
     SKELETON:
         SKULL_ITEM:
             Data: 0
@@ -918,6 +929,23 @@ Shake:
             Amount: 1
             XP: 0
             Drop_Chance: 15.0
+            Drop_Level: 0
+    WITHER_SKELETON:
+        SKULL_ITEM:
+            Data: 0
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.0
+            Drop_Level: 0
+        BONE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+            Drop_Level: 0
+        COAL:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 49.0
             Drop_Level: 0
     ZOMBIE:
         SKULL_ITEM:

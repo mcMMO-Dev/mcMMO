@@ -30,10 +30,6 @@ public class Taming {
     public static int    thickFurUnlockLevel = AdvancedConfig.getInstance().getThickFurUnlock();
     public static double thickFurModifier    = AdvancedConfig.getInstance().getThickFurModifier();
 
-    public static int wolfXp   = ExperienceConfig.getInstance().getTamingXPWolf();
-    public static int ocelotXp = ExperienceConfig.getInstance().getTamingXPOcelot();
-    public static int horseXp  = ExperienceConfig.getInstance().getTamingXPHorse();
-
     public static boolean canPreventDamage(Tameable pet, AnimalTamer owner) {
         return pet.isTamed() && owner instanceof Player && pet instanceof Wolf;
     }

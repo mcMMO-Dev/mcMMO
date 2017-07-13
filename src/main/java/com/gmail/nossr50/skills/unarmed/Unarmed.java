@@ -26,7 +26,8 @@ public class Unarmed {
         if (inventory.containsAtLeast(dropStack, 1)) {
             int nextSlot = 0;
 
-            for (ItemStack itemstack : inventory) {
+            ItemStack[] items = inventory.getStorageContents();
+            for (ItemStack itemstack : items) {
                 if (dropStack.isSimilar(itemstack)) {
                     int itemAmount = itemstack.getAmount();
                     int itemMax = itemstack.getMaxStackSize();
@@ -36,13 +37,15 @@ public class Unarmed {
                     if (dropAmount + itemAmount <= itemMax) {
                         drop.remove();
                         addStack.setAmount(dropAmount + itemAmount);
-                        inventory.setItem(nextSlot, addStack);
+                        items[nextSlot] = addStack;
+                        inventory.setStorageContents(items);
                         return true;
                     }
 
                     addStack.setAmount(itemMax);
                     dropAmount = dropAmount + itemAmount - itemMax;
-                    inventory.setItem(nextSlot, addStack);
+                    items[nextSlot] = addStack;
+                    inventory.setStorageContents(items);
                 }
 
                 if (dropAmount == 0) {
@@ -57,13 +60,15 @@ public class Unarmed {
         if (firstEmpty == inventory.getHeldItemSlot()) {
             int nextSlot = firstEmpty + 1;
 
-            for (Iterator<ItemStack> iterator = inventory.iterator(nextSlot); iterator.hasNext(); ) {
-                ItemStack itemstack = iterator.next();
+            ItemStack[] items = inventory.getStorageContents();
+            for (; nextSlot < items.length; nextSlot++) {
+                ItemStack itemstack = items[nextSlot];
 
                 if (itemstack == null) {
                     drop.remove();
                     dropStack.setAmount(dropAmount);
-                    inventory.setItem(nextSlot, dropStack);
+                    items[nextSlot] = dropStack;
+                    inventory.setStorageContents(items);
                     return true;
                 }
 

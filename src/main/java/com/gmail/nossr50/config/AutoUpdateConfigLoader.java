@@ -25,7 +25,7 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
     @Override
     protected void loadFile() {
         super.loadFile();
-        FileConfiguration internalConfig = YamlConfiguration.loadConfiguration(plugin.getResource(fileName));
+        FileConfiguration internalConfig = YamlConfiguration.loadConfiguration(plugin.getResourceAsReader(fileName));
 
         Set<String> configKeys = config.getKeys(true);
         Set<String> internalConfigKeys = internalConfig.getKeys(true);
@@ -45,8 +45,8 @@ public abstract class AutoUpdateConfigLoader extends ConfigLoader {
         }
 
         for (String key : oldKeys) {
-            plugin.debug("Removing unused key: " + key);
-            config.set(key, null);
+            plugin.debug("Detected potentially unused key: " + key);
+            //config.set(key, null);
         }
 
         for (String key : newKeys) {

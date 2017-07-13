@@ -19,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
@@ -81,22 +82,7 @@ public class TamingManager extends SkillManager {
      * @param entity The LivingEntity to award XP for
      */
     public void awardTamingXP(LivingEntity entity) {
-        switch (entity.getType()) {
-            case HORSE:
-                applyXpGain(Taming.horseXp, XPGainReason.PVE);
-                return;
-
-            case WOLF:
-                applyXpGain(Taming.wolfXp, XPGainReason.PVE);
-                return;
-
-            case OCELOT:
-                applyXpGain(Taming.ocelotXp, XPGainReason.PVE);
-                return;
-
-            default:
-                return;
-        }
+        applyXpGain(ExperienceConfig.getInstance().getTamingXP(entity.getType()), XPGainReason.PVE);
     }
 
     /**

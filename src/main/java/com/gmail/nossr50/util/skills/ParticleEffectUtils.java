@@ -14,7 +14,9 @@ import org.bukkit.entity.Firework;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 
 public final class ParticleEffectUtils {
@@ -105,6 +107,7 @@ public final class ParticleEffectUtils {
         location.setPitch(-90);
 
         Firework firework = (Firework) player.getWorld().spawnEntity(location, EntityType.FIREWORK);
+        firework.setMetadata(mcMMO.funfettiMetadataKey, new FixedMetadataValue(mcMMO.p, null));
         FireworkMeta fireworkMeta = firework.getFireworkMeta();
         FireworkEffect effect = FireworkEffect.builder().flicker(false).withColor(color).with((Config.getInstance().getLargeFireworks() ? Type.BALL_LARGE : Type.BALL)).trail(true).build();
         fireworkMeta.addEffect(effect);

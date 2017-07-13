@@ -16,7 +16,7 @@ public class ChildConfig extends AutoUpdateConfigLoader {
 
     @Override
     protected void loadKeys() {
-        config.setDefaults(YamlConfiguration.loadConfiguration(plugin.getResource("child.yml")));
+        config.setDefaults(YamlConfiguration.loadConfiguration(plugin.getResourceAsReader("child.yml")));
 
         FamilyTree.clearRegistrations(); // when reloading, need to clear statics
 

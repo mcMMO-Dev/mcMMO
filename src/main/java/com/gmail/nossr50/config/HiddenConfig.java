@@ -1,5 +1,7 @@
 package com.gmail.nossr50.config;
 
+import java.io.InputStreamReader;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.gmail.nossr50.mcMMO;
@@ -29,8 +31,9 @@ public class HiddenConfig {
     }
 
     public void load() {
-        if (mcMMO.p.getResource(fileName) != null) {
-            config = YamlConfiguration.loadConfiguration(mcMMO.p.getResource(fileName));
+        InputStreamReader reader = mcMMO.p.getResourceAsReader(fileName);
+        if (reader != null) {
+            config = YamlConfiguration.loadConfiguration(reader);
             chunkletsEnabled = config.getBoolean("Options.Chunklets", true);
             conversionRate = config.getInt("Options.ConversionRate", 1);
             useEnchantmentBuffs = config.getBoolean("Options.EnchantmentBuffs", true);

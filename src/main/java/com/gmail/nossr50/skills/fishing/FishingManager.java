@@ -10,7 +10,6 @@ import java.util.Map;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.WeatherType;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -23,8 +22,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Sheep;
-import org.bukkit.entity.Skeleton;
-import org.bukkit.entity.Skeleton.SkeletonType;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
@@ -303,7 +300,7 @@ public class FishingManager extends SkillManager {
      */
     public void handleFishing(Item fishingCatch) {
         this.fishingCatch = fishingCatch;
-        int fishXp = ExperienceConfig.getInstance().getFishXp(fishingCatch.getItemStack().getData());
+        int fishXp = ExperienceConfig.getInstance().getXp(SkillType.FISHING, fishingCatch.getItemStack().getData());
         int treasureXp = 0;
         Player player = getPlayer();
         FishingTreasure treasure = null;
@@ -448,26 +445,13 @@ public class FishingManager extends SkillManager {
                         sheep.setSheared(true);
                     }
                     break;
-
-                case SKELETON:
-                    if (((Skeleton) target).getSkeletonType() == SkeletonType.WITHER) {
-                        switch (drop.getType()) {
-                            case SKULL_ITEM:
-                                drop.setDurability((short) 1);
-                                break;
-
-                            case ARROW:
-                                drop.setType(Material.COAL);
-                                break;
-
-                            default:
-                                break;
-                        }
+                case WITHER_SKELETON:
+                    if(drop.getType() == Material.SKULL_ITEM){
+                    	drop.setDurability((short) 1);
                     }
                     break;
-
                 default:
-                    break;
+                	break;
             }
 
             McMMOPlayerShakeEvent shakeEvent = new McMMOPlayerShakeEvent(getPlayer(), drop);
