@@ -629,6 +629,8 @@ Hylian_Luck:
 #	Settings for Shake
 ###
 Shake:
+    BAT:
+
     BLAZE:
         BLAZE_ROD:
             Amount: 1
@@ -746,6 +748,12 @@ Shake:
             XP: 0
             Drop_Chance: 85.0
             Drop_Level: 0
+    LLAMA:
+        LEATHER:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
     MAGMA_CUBE:
         MAGMA_CREAM:
             Amount: 1
@@ -805,6 +813,19 @@ Shake:
             Whole_Stacks: false
             Drop_Chance: 0.0
             Drop_Level: 0
+    RABBIT:
+        RABBIT_HIDE:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+        RAW_RABBIT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 49.0
+        RABBIT_FOOT:
+            Amount: 1
+            XP: 0
+            Drop_Chance: 2.0
     SHEEP:
         WOOL:
             Amount: 3
