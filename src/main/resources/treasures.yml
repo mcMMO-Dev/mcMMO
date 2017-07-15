@@ -786,6 +786,12 @@ Shake:
             XP: 0
             Drop_Chance: 30.0
             Drop_Level: 0
+    PARROT:
+        FEATHER:
+            Amount: 2
+            XP: 0
+            Drop_Chance: 100.0
+            Drop_Level: 0
     PIG:
         PORK:
             Amount: 1
