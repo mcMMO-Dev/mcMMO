@@ -47,6 +47,10 @@ public class StringUtils {
     public static String getPrettyTreeSpeciesString(TreeSpecies species) {
         return createPrettyEnumString(species.toString());
     }
+    
+    public static String getWildcardConfigMaterialDataString(MaterialData data) {
+        return StringUtils.getPrettyItemString(data.getItemType()).replace(" ", "_") + "|*";
+    }
 
     public static String getFriendlyConfigMaterialDataString(MaterialData data) {
         switch (data.getItemType()) {

@@ -195,21 +195,31 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public int getXp(SkillType skill, MaterialData data)
     {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getFriendlyConfigMaterialDataString(data);
-        String noDataString = baseString + StringUtils.getPrettyItemString(data.getItemType());
+        String explicitString = baseString + StringUtils.getExplicitConfigMaterialDataString(data);
         if (config.contains(explicitString))
             return config.getInt(explicitString);
-        return config.getInt(noDataString, 0);
+        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialDataString(data);
+        if (config.contains(friendlyString))
+            return config.getInt(friendlyString);
+        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialDataString(data);
+        if (config.contains(wildcardString))
+            return config.getInt(wildcardString);
+        return 0;
     }
     
     public boolean isSkillBlock(SkillType skill, MaterialData data)
     {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getFriendlyConfigMaterialDataString(data);
-        String noDataString = baseString + StringUtils.getPrettyItemString(data.getItemType());
+        String explicitString = baseString + StringUtils.getExplicitConfigMaterialDataString(data);
         if (config.contains(explicitString))
             return true;
-        return config.contains(noDataString);
+        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialDataString(data);
+        if (config.contains(friendlyString))
+            return true;
+        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialDataString(data);
+        if (config.contains(wildcardString))
+            return true;
+        return false;
     }
 
     /* Acrobatics */

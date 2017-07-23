@@ -184,12 +184,6 @@ Experience:
         Water_Lily: 100
         White_Tulip: 150
         Yellow_Flower: 100
-        Beetroot_Block_Ungrown: 0
-        Carrot_Ungrown: 0
-        Potato_Ungrown: 0
-        Crops_Ungrown: 0
-        Nether_Warts_Ungrown: 0
-        Cocoa_Ungrown: 0
     Mining:
         Coal_Ore: 100
         Diamond_Ore: 750
@@ -208,8 +202,8 @@ Experience:
         Quartz_Ore: 100
         Redstone_Ore: 150
         Sandstone: 30
-        Stained_Clay: 50
-        Stone: 30
+        Stained_Clay|*: 50
+        Stone|*: 30
         Red_Sandstone: 100
         Prismarine: 70
         Purpur_Block: 200
