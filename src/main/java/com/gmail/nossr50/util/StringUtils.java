@@ -295,19 +295,19 @@ public class StringUtils {
             case POTATO :
             case CROPS : {
                 if (((Crops) data).getState() == CropState.RIPE) {
-                    return getPrettyItemString(data.getItemType()).replace(" ", "_");
+                    return getPrettyItemString(data.getItemType()).replace(" ", "_") + "_Ripe";
                 }
                 return getPrettyItemString(data.getItemType()).replace(" ", "_") + "_Ungrown";
             }
             case NETHER_WARTS : {
                 if (((NetherWarts) data).getState() == NetherWartsState.RIPE) {
-                    return getPrettyItemString(data.getItemType()).replace(" ", "_");
+                    return getPrettyItemString(data.getItemType()).replace(" ", "_") + "_Ripe";
                 }
                 return getPrettyItemString(data.getItemType()).replace(" ", "_") + "_Ungrown";
             }
             case COCOA : {
                 if (((CocoaPlant) data).getSize() == CocoaPlantSize.LARGE) {
-                    return getPrettyItemString(data.getItemType()).replace(" ", "_");
+                    return getPrettyItemString(data.getItemType()).replace(" ", "_") + "_Ripe";
                 }
                 return getPrettyItemString(data.getItemType()).replace(" ", "_") + "_Ungrown";
             }

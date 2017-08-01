@@ -125,6 +125,7 @@ public class HerbalismManager extends SkillManager {
         Material material = blockState.getType();
         boolean oneBlockPlant = !(material == Material.CACTUS || material == Material.CHORUS_PLANT || material == Material.SUGAR_CANE_BLOCK);
 
+        // Prevents placing and immediately breaking blocks for exp
         if (oneBlockPlant && mcMMO.getPlaceStore().isTrue(blockState)) {
             return;
         }

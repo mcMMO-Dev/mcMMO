@@ -151,25 +151,25 @@ Experience:
     Herbalism:
         Allium: 300
         Azure_Bluet: 150
-        Beetroot_Block: 50
+        Beetroot_Block_Ripe: 50
         Blue_Orchid: 150
         Brown_Mushroom: 150
         Cactus: 30
-        Carrot: 50
+        Carrot_Ripe: 50
         Chorus_Flower: 25
         Chorus_Plant: 1
-        Cocoa: 30
-        Crops: 50
+        Cocoa_Ripe: 30
+        Crops_Ripe: 50
         Dead_Bush: 30
         Lilac: 50
         Melon_Block: 20
-        Nether_Warts: 50
+        Nether_Warts_Ripe: 50
         Orange_Tulip: 150
         Oxeye_Daisy: 150
         Peony: 50
         Pink_Tulip: 150
         Poppy: 100
-        Potato: 50
+        Potato_Ripe: 50
         Pumpkin: 20
         Red_Mushroom: 150
         Red_Tulip: 150
