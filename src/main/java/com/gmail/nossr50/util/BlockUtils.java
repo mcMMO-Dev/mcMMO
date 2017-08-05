@@ -310,7 +310,7 @@ public final class BlockUtils {
 
         for (Material material : Material.values()) {
             if (material.isTransparent()) {
-            	transparentBlocks.add(material);
+                transparentBlocks.add(material);
             }
         }
 
