@@ -649,6 +649,6 @@ public class FishingManager extends SkillManager {
             }
         }
 
-        return 0;
+        return 1;
     }
 }
