@@ -305,12 +305,12 @@ public final class BlockUtils {
      *
      * @return HashSet with the IDs of every transparent block
      */
-    public static HashSet<Byte> getTransparentBlocks() {
-        HashSet<Byte> transparentBlocks = new HashSet<Byte>();
+    public static HashSet<Material> getTransparentBlocks() {
+        HashSet<Material> transparentBlocks = new HashSet<Material>();
 
         for (Material material : Material.values()) {
             if (material.isTransparent()) {
-                transparentBlocks.add((byte) material.getId());
+                transparentBlocks.add(material);
             }
         }
 

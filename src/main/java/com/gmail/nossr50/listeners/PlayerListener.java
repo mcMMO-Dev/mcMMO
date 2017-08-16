@@ -240,7 +240,7 @@ public class PlayerListener implements Listener {
                 return;
 
             case IN_GROUND:
-                Block block = player.getTargetBlock((HashSet<Byte>) null, 100);
+                Block block = player.getTargetBlock((HashSet<Material>) null, 100);
 
                 if (fishingManager.canIceFish(block)) {
                     event.setCancelled(true);
