@@ -52,7 +52,14 @@ public final class UserManager {
         mcMMO.p.debug("Saving mcMMOPlayers... (" + onlinePlayers.size() + ")");
 
         for (Player player : onlinePlayers) {
-            getPlayer(player).getProfile().save();
+            try
+            {
+                getPlayer(player).getProfile().save();
+            }
+            catch (Exception e)
+            {
+                mcMMO.p.getLogger().warning("Could not save mcMMO player data for player: " + player.getName());
+            }
         }
     }
 
