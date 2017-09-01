@@ -12,6 +12,7 @@ import com.gmail.nossr50.util.blockmeta.ChunkletStore;
 public class PrimitiveChunkStore implements ChunkStore {
     private static final long serialVersionUID = -1L;
     transient private boolean dirty = false;
+    transient private int maxZ;
     /** X, Z, Y */
     public boolean[][][] store;
     private static final int CURRENT_VERSION = 7;
@@ -24,6 +25,7 @@ public class PrimitiveChunkStore implements ChunkStore {
         this.cx = cx;
         this.cz = cz;
         this.worldUid = world.getUID();
+        this.maxZ = world.getMaxHeight() - 1;
         this.store = new boolean[16][16][world.getMaxHeight()];
     }
 
@@ -54,12 +56,16 @@ public class PrimitiveChunkStore implements ChunkStore {
 
     @Override
     public void setTrue(int x, int y, int z) {
+        if (z > maxZ)
+            return;
         store[x][z][y] = true;
         dirty = true;
     }
 
     @Override
     public void setFalse(int x, int y, int z) {
+        if (z > maxZ)
+            return;
         store[x][z][y] = false;
         dirty = true;
     }
