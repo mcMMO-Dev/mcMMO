@@ -124,10 +124,8 @@ public class InventoryListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFurnaceExtractEvent(FurnaceExtractEvent event) {
         Block furnaceBlock = event.getBlock();
-        BlockState furnaceState = furnaceBlock.getState();
-        ItemStack result = furnaceState instanceof Furnace ? ((Furnace) furnaceState).getInventory().getResult() : null;
 
-        if (!ItemUtils.isSmelted(result)) {
+        if (!ItemUtils.isSmelted(new ItemStack(event.getItemType(), event.getItemAmount()))) {
             return;
         }
 
@@ -137,7 +135,8 @@ public class InventoryListener implements Listener {
             return;
         }
 
-        event.setExpToDrop(UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(event.getExpToDrop()));
+        int exp = UserManager.getPlayer(player).getSmeltingManager().vanillaXPBoost(event.getExpToDrop());
+        event.setExpToDrop(exp);
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

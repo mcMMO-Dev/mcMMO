@@ -524,8 +524,8 @@ public final class ItemUtils {
         }
 
         for (Recipe recipe : mcMMO.p.getServer().getRecipesFor(item)) {
-            if (recipe instanceof FurnaceRecipe) {
-                return MaterialUtils.isOre(((FurnaceRecipe) recipe).getInput().getData());
+            if (recipe instanceof FurnaceRecipe && MaterialUtils.isOre(((FurnaceRecipe) recipe).getInput().getData())) {
+                return true;
             }
         }
 
