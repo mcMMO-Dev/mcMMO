@@ -303,7 +303,9 @@ public class HerbalismManager extends SkillManager {
                 return;
         }
 
-        if (!playerInventory.contains(seed, 1)) {
+        ItemStack seedStack = new ItemStack(seed);
+
+        if (!playerInventory.containsAtLeast(seedStack, 1)) {
             return;
         }
 
@@ -315,7 +317,7 @@ public class HerbalismManager extends SkillManager {
             return;
         }
 
-        playerInventory.removeItem(new ItemStack(seed));
+        playerInventory.removeItem(seedStack);
         player.updateInventory(); // Needed until replacement available
         new HerbalismBlockUpdaterTask(blockState).runTaskLater(mcMMO.p, 0);
     }
