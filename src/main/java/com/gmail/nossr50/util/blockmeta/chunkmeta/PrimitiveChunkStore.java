@@ -54,7 +54,7 @@ public class PrimitiveChunkStore implements ChunkStore {
 
     @Override
     public void setTrue(int x, int y, int z) {
-        if (y >= store.length || y < 0)
+        if (y >= store[0][0].length || y < 0)
             return;
         store[x][z][y] = true;
         dirty = true;
@@ -62,7 +62,7 @@ public class PrimitiveChunkStore implements ChunkStore {
 
     @Override
     public void setFalse(int x, int y, int z) {
-        if (y >= store.length || y < 0)
+        if (y >= store[0][0].length || y < 0)
             return;
         store[x][z][y] = false;
         dirty = true;
