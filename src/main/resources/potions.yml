@@ -45,6 +45,7 @@ Concoctions:
 #       Name: <name>                    Custom display name for this potion (optional)
 #       Material: <material>            Material for this potion, defaults to POTION
 #       Data:  <data_value>             Data value for this potion (if this is not present it will read from identifier)
+#       Color: <color>                  Custom color for the potion in RGB integer (e.g. 0xFF000, optional)
 #       Lore: ["lore1","lore2"...]      Custom lore for this potion (section is optional)
 #       Children:                       The potential children of this potion (section is optional)
 #           <INGREDIENT>: <NEW_IDENTIFIER>      The ingredient used, and resultant potion's identifier
