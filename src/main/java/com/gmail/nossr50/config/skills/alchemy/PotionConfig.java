@@ -284,13 +284,11 @@ public class PotionConfig extends ConfigLoader {
         int green = 0;
         int blue = 0;
         for (Color color : colors) {
-            System.out.println("Input color: " + color);
             red += color.getRed();
             green += color.getGreen();
             blue += color.getBlue();
         }
         Color color = Color.fromRGB(red/colors.size(), green/colors.size(), blue/colors.size());
-        System.out.println("Output color: " + color);
         return color;
     }
     
