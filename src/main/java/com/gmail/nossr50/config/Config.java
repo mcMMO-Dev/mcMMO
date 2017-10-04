@@ -265,6 +265,8 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getLevelUpSoundsEnabled() { return config.getBoolean("General.LevelUp_Sounds", true); }
     public boolean getRefreshChunksEnabled() { return config.getBoolean("General.Refresh_Chunks", false); }
 
+    public boolean getMobHealthbarEnabled() { return config.getBoolean("Mob_Healthbar.Enabled", true); }
+
     /* Mob Healthbar */
     public MobHealthbarType getMobHealthbarDefault() {
         try {

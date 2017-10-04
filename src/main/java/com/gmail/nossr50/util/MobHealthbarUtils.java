@@ -16,7 +16,7 @@ import com.gmail.nossr50.runnables.MobHealthDisplayUpdaterTask;
 import com.gmail.nossr50.util.player.UserManager;
 
 public final class MobHealthbarUtils {
-    private MobHealthbarUtils() {};
+    private MobHealthbarUtils() {}
 
     /**
      * Fix issues with death messages caused by the mob healthbars.
@@ -40,7 +40,7 @@ public final class MobHealthbarUtils {
      * @param damage damage done by the attack triggering this
      */
     public static void handleMobHealthbars(Player player, LivingEntity target, double damage) {
-        if (mcMMO.isHealthBarPluginEnabled() || !Permissions.mobHealthDisplay(player)) {
+        if (mcMMO.isHealthBarPluginEnabled() || !Permissions.mobHealthDisplay(player) || !Config.getInstance().getMobHealthbarEnabled()) {
             return;
         }
 
