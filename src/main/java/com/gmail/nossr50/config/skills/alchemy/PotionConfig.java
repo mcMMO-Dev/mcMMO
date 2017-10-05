@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -165,6 +166,14 @@ public class PotionConfig extends ConfigLoader {
                     }
                 }
             }
+            
+            Color color = null;
+            if (potion_section.contains("Color")) {
+                color = Color.fromRGB(potion_section.getInt("Color"));
+            }
+            else {
+                color = this.generateColor(effects);
+            }
 
             Map<ItemStack, String> children = new HashMap<ItemStack, String>();
             if (potion_section.contains("Children")) {
@@ -179,7 +188,7 @@ public class PotionConfig extends ConfigLoader {
                 }
             }
 
-            return new AlchemyPotion(material, data, name, lore, effects, children);
+            return new AlchemyPotion(material, data, name, lore, effects, color, children);
         }
         catch (Exception e) {
             mcMMO.p.getLogger().warning("Failed to load Alchemy potion: " + potion_section.getName());
@@ -251,4 +260,36 @@ public class PotionConfig extends ConfigLoader {
         }
         return null;
     }
+    
+    public Color generateColor(List<PotionEffect> effects) {
+        if (effects != null && !effects.isEmpty()) {
+            List<Color> colors = new ArrayList<Color>();
+            for (PotionEffect effect : effects) {
+                if (effect.getType().getColor() != null) {
+                    colors.add(effect.getType().getColor());
+                }
+            }
+            if (!colors.isEmpty()) {
+                if (colors.size() > 1) {
+                    return calculateAverageColor(colors);
+                }
+                return colors.get(0);
+            }
+        }
+        return null;
+    }
+    
+    public Color calculateAverageColor(List<Color> colors) {
+        int red = 0;
+        int green = 0;
+        int blue = 0;
+        for (Color color : colors) {
+            red += color.getRed();
+            green += color.getGreen();
+            blue += color.getBlue();
+        }
+        Color color = Color.fromRGB(red/colors.size(), green/colors.size(), blue/colors.size());
+        return color;
+    }
+    
 }

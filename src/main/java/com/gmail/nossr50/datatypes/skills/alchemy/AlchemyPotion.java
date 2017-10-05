@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -19,15 +20,17 @@ public class AlchemyPotion {
     private String name;
     private List<String> lore;
     private List<PotionEffect> effects;
+    private Color color;
     private Map<ItemStack, String> children;
 
-    public AlchemyPotion(Material material, PotionData data, String name, List<String> lore, List<PotionEffect> effects, Map<ItemStack, String> children) {
+    public AlchemyPotion(Material material, PotionData data, String name, List<String> lore, List<PotionEffect> effects, Color color, Map<ItemStack, String> children) {
         this.material = material;
         this.data = data;
         this.lore = lore;
         this.name = name;
         this.effects = effects;
         this.children = children;
+        this.color = color;
     }
 
     public String toString() {
@@ -51,6 +54,10 @@ public class AlchemyPotion {
             for (PotionEffect effect : this.getEffects()) {
                 meta.addCustomEffect(effect, true);
             }
+        }
+        
+        if (this.getColor() != null) {
+            meta.setColor(this.getColor());
         }
 
         potion.setItemMeta(meta);
@@ -97,6 +104,14 @@ public class AlchemyPotion {
         this.effects = effects;
     }
 
+    public Color getColor() {
+        return color;
+    }
+    
+    public void setColor(Color color) {
+        this.color = color;
+    }
+    
     public Map<ItemStack, String> getChildren() {
         return children;
     }
