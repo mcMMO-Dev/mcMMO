@@ -503,6 +503,7 @@ public final class ItemUtils {
      */
     public static boolean isEnchantable(ItemStack item) {
         switch (item.getType()) {
+            case ENCHANTED_BOOK:
             case SHEARS:
             case FISHING_ROD:
             case CARROT_STICK:
