@@ -574,7 +574,7 @@ public class FishingManager extends SkillManager {
             if (diceRoll <= dropRate) {
                 // Make sure enchanted books always get some kind of enchantment.  --hoorigan
                 if (treasureDrop.getType() == Material.ENCHANTED_BOOK) {
-                    diceRoll = dropRate;
+                    diceRoll = dropRate + 1;
                     continue;
                 }
                 fishingEnchantments = TreasureConfig.getInstance().fishingEnchantments.get(rarity);
