@@ -3,10 +3,7 @@ package com.gmail.nossr50.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapelessRecipe;
@@ -161,7 +158,7 @@ public final class ChimaeraWing {
         Material ingredient = Config.getInstance().getChimaeraItem();
         int amount = Config.getInstance().getChimaeraRecipeCost();
 
-        ShapelessRecipe chimeraWing = new ShapelessRecipe(getChimaeraWing(1));
+        ShapelessRecipe chimeraWing = new ShapelessRecipe(new NamespacedKey(mcMMO.p, "Chimera"), getChimaeraWing(1));
         chimeraWing.addIngredient(amount, ingredient);
         return chimeraWing;
     }
