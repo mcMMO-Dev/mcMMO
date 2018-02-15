@@ -178,6 +178,10 @@ public class Config extends AutoUpdateConfigLoader {
             reason.add("Abilities.Limits.Tree_Feller_Threshold should be greater than 0!");
         }
 
+        if (getFishingLureModifier() < 0) {
+            reason.add("Abilities.Fishing.Lure_Modifier should be at least 0!");
+        }
+
         if (getDetonatorItem() == null) {
             reason.add("Skills.Mining.Detonator_Item is invalid!");
         }
@@ -481,6 +485,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getFishingDropsEnabled() { return config.getBoolean("Skills.Fishing.Drops_Enabled", true); }
     public boolean getFishingOverrideTreasures() { return config.getBoolean("Skills.Fishing.Override_Vanilla_Treasures", true); }
     public boolean getFishingExtraFish() { return config.getBoolean("Skills.Fishing.Extra_Fish", true); }
+    public double getFishingLureModifier() { return config.getDouble("Skills.Fishing.Lure_Modifier", 4.0D); }
 
     /* Mining */
     public Material getDetonatorItem() { return Material.matchMaterial(config.getString("Skills.Mining.Detonator_Name", "FLINT_AND_STEEL")); }
