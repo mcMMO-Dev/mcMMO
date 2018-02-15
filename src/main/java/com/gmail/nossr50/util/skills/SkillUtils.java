@@ -188,7 +188,7 @@ public class SkillUtils {
      * @param maxDamageModifier the amount to adjust the max damage by
      */
     public static void handleDurabilityChange(ItemStack itemStack, int durabilityModifier, double maxDamageModifier) {
-        if(itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
+        if (itemStack.hasItemMeta() && itemStack.getItemMeta().isUnbreakable()) {
             return;
         }
 

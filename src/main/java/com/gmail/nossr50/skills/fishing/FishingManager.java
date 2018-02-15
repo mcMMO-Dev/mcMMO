@@ -134,6 +134,9 @@ public class FishingManager extends SkillManager {
         if (player.getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
             player.getInventory().setItemInMainHand(null);
         }
+        else if (player.getInventory().getItemInOffHand().getType() == Material.FISHING_ROD) {
+            player.getInventory().setItemInOffHand(null);
+        }
 
         LivingEntity kraken = (LivingEntity) world.spawnEntity(player.getEyeLocation(), (Misc.getRandom().nextInt(100) == 0 ? EntityType.CHICKEN : EntityType.SQUID));
         kraken.setCustomName(AdvancedConfig.getInstance().getKrakenName());
