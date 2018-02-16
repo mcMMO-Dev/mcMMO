@@ -330,6 +330,7 @@ Skills:
         Override_Vanilla_Treasures: true
         # Always catch fish, even when treasure is found
         Extra_Fish: false
+        Lure_Modifier: 4.0
     Herbalism:
         Level_Cap: 0
         Prevent_AFK_Leveling: true

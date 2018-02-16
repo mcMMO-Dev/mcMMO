@@ -134,6 +134,9 @@ public class FishingManager extends SkillManager {
         if (player.getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
             player.getInventory().setItemInMainHand(null);
         }
+        else if (player.getInventory().getItemInOffHand().getType() == Material.FISHING_ROD) {
+            player.getInventory().setItemInOffHand(null);
+        }
 
         LivingEntity kraken = (LivingEntity) world.spawnEntity(player.getEyeLocation(), (Misc.getRandom().nextInt(100) == 0 ? EntityType.CHICKEN : EntityType.SQUID));
         kraken.setCustomName(AdvancedConfig.getInstance().getKrakenName());
@@ -475,7 +478,18 @@ public class FishingManager extends SkillManager {
      */
     private FishingTreasure getFishingTreasure() {
         double diceRoll = Misc.getRandom().nextDouble() * 100;
-        diceRoll -= getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LUCK);
+        int luck;
+
+        if (getPlayer().getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
+            luck = getPlayer().getInventory().getItemInMainHand().getEnchantmentLevel(Enchantment.LUCK);
+        }
+        else {
+            // We know something was caught, so if the rod wasn't in the main hand it must be in the offhand
+        	luck = getPlayer().getInventory().getItemInOffHand().getEnchantmentLevel(Enchantment.LUCK);
+        }
+
+        // Rather than subtracting luck (and causing a minimum 3% chance for every drop), scale by luck.
+        diceRoll *= (1.0 - luck * Config.getInstance().getFishingLureModifier() / 100);
 
         FishingTreasure treasure = null;
 
