@@ -20,6 +20,7 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.salvage.Salvage.Tier;
 import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
+import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
@@ -99,17 +100,25 @@ public class SalvageManager extends SkillManager {
 
         Map<Enchantment, Integer> enchants = item.getEnchantments();
 
+        ItemStack enchantBook = null;
         if (!enchants.isEmpty()) {
-            ItemStack enchantBook = arcaneSalvageCheck(enchants);
-
-            if (enchantBook != null) {
-                Misc.dropItem(location, enchantBook);
-            }
+            enchantBook = arcaneSalvageCheck(enchants);
         }
 
         byte salvageMaterialMetadata = (salvageable.getSalvageMaterialMetadata() != (byte) -1) ? salvageable.getSalvageMaterialMetadata() : 0;
 
-        Misc.dropItems(location, new MaterialData(salvageable.getSalvageMaterial(), salvageMaterialMetadata).toItemStack(salvageableAmount), 1);
+        ItemStack salvageResults = new MaterialData(salvageable.getSalvageMaterial(), salvageMaterialMetadata).toItemStack(salvageableAmount);
+
+        //Call event
+        if (EventUtils.callSalvageCheckEvent(player, item, salvageResults, enchantBook).isCancelled()) {
+            return;
+        }
+
+        if (enchantBook != null) {
+            Misc.dropItem(location, enchantBook);
+        }
+
+        Misc.dropItems(location, salvageResults, 1);
 
         // BWONG BWONG BWONG - CLUNK!
         if (Config.getInstance().getSalvageAnvilUseSoundsEnabled()) {
