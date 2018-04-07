@@ -88,6 +88,7 @@ public final class BlockUtils {
             case JUNGLE_FENCE :
             case SPRUCE_FENCE :
             case ARMOR_STAND :
+            case SHULKER_SHELL:
                 return false;
 
             default :
