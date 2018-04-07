@@ -15,11 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.block.BlockPistonExtendEvent;
-import org.bukkit.event.block.BlockPistonRetractEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -152,6 +148,18 @@ public class BlockListener implements Listener {
         else if (blockState.getType() == Salvage.anvilMaterial && SkillType.SALVAGE.getPermissions(player)) {
             mcMMOPlayer.getSalvageManager().placedAnvilCheck();
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onBlockGrow(BlockGrowEvent event)
+    {
+        BlockState blockState = event.getBlock().getState();
+
+        if (!BlockUtils.shouldBeWatched(blockState)) {
+            return;
+        }
+
+        mcMMO.getPlaceStore().setFalse(blockState);
     }
 
     /**
