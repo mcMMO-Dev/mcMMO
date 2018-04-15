@@ -295,6 +295,14 @@ public class HashChunkManager implements ChunkManager {
 
         int cx = x / 16;
         int cz = z / 16;
+        
+        if(x < 0){
+            --cx;
+        }
+        if(z < 0){
+            --cz;
+        }
+        
         String key = world.getName() + "," + cx + "," + cz;
 
         if (!store.containsKey(key)) {
@@ -339,6 +347,13 @@ public class HashChunkManager implements ChunkManager {
         int cx = x / 16;
         int cz = z / 16;
 
+        if(x < 0){
+            --cx;
+        }
+        if(z < 0){
+            --cz;
+        }
+        
         int ix = Math.abs(x) % 16;
         int iz = Math.abs(z) % 16;
 
@@ -384,6 +399,13 @@ public class HashChunkManager implements ChunkManager {
 
         int cx = x / 16;
         int cz = z / 16;
+        
+        if(x < 0){
+            --cx;
+        }
+        if(z < 0){
+            --cz;
+        }
 
         int ix = Math.abs(x) % 16;
         int iz = Math.abs(z) % 16;
