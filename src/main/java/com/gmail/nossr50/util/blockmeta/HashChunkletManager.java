@@ -184,9 +184,10 @@ public class HashChunkletManager implements ChunkletManager {
 
     @Override
     public boolean isTrue(int x, int y, int z, World world) {
-        int cx = x / 16;
-        int cz = z / 16;
-        int cy = y / 64;
+        int cx = x >> 4;
+        int cz = z >> 4;
+        int cy = y >> 6;
+
         String key = world.getName() + "," + cx + "," + cz + "," + cy;
 
         if (!store.containsKey(key)) {
@@ -212,9 +213,9 @@ public class HashChunkletManager implements ChunkletManager {
 
     @Override
     public void setTrue(int x, int y, int z, World world) {
-        int cx = x / 16;
-        int cz = z / 16;
-        int cy = y / 64;
+        int cx = x >> 4;
+        int cz = z >> 4;
+        int cy = y >> 6;
 
         int ix = Math.abs(x) % 16;
         int iz = Math.abs(z) % 16;
@@ -244,9 +245,9 @@ public class HashChunkletManager implements ChunkletManager {
 
     @Override
     public void setFalse(int x, int y, int z, World world) {
-        int cx = x / 16;
-        int cz = z / 16;
-        int cy = y / 64;
+        int cx = x >> 4;
+        int cz = z >> 4;
+        int cy = y >> 6;
 
         int ix = Math.abs(x) % 16;
         int iz = Math.abs(z) % 16;
