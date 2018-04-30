@@ -298,7 +298,7 @@ public final class CommandUtils {
             String playerName = offlinePlayer.getName();
             
             if (playerName == null) { //Do null checking here to detect corrupted data before sending it throuogh .equals
-            	System.err.println("[McMMO] Bad player data file with UIID " + offlinePlayer.getUniqueId() );
+            	System.err.println("[McMMO] Player data file with UIID " + offlinePlayer.getUniqueId() + " is missing a player name. This may be a legacy file from before bukkit.lastKnownName. This should be okay to ignore.");
             	continue; //Don't let an error here interrupt the loop
             }
 
