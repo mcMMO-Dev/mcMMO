@@ -46,6 +46,12 @@ public abstract class ExperienceCommand implements TabExecutor {
                     skill = null;
                 }
 
+                if (skill != null && skill.isChildSkill())
+                {
+                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
+                    return true;
+                }
+
                 editValues((Player) sender, UserManager.getPlayer(sender.getName()).getProfile(), skill, Integer.parseInt(args[1]));
                 return true;
 
@@ -63,6 +69,12 @@ public abstract class ExperienceCommand implements TabExecutor {
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
+                }
+
+                if (skill != null && skill.isChildSkill())
+                {
+                    sender.sendMessage(LocaleLoader.getString("Commands.Skill.ChildSkill"));
+                    return true;
                 }
 
                 int value = Integer.parseInt(args[2]);
