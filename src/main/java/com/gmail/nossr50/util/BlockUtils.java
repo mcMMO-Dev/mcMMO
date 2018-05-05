@@ -104,6 +104,7 @@ public final class BlockUtils {
             case SILVER_SHULKER_BOX :
             case WHITE_SHULKER_BOX :
             case YELLOW_SHULKER_BOX :
+            case SKULL :
                 return false;
 
             default :
