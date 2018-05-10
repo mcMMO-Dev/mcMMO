@@ -62,6 +62,11 @@ public class RepairManager extends SkillManager {
         Player player = getPlayer();
         Repairable repairable = mcMMO.getRepairableManager().getRepairable(item.getType());
 
+        if (item.getItemMeta().isUnbreakable()) {
+            player.sendMessage(LocaleLoader.getString("Anvil.Unbreakable"));
+            return;
+        }
+        
         // Permissions checks on material and item types
         if (!Permissions.repairMaterialType(player, repairable.getRepairMaterialType())) {
             player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));

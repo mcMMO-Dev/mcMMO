@@ -60,6 +60,11 @@ public class SalvageManager extends SkillManager {
 
         Salvageable salvageable = mcMMO.getSalvageableManager().getSalvageable(item.getType());
 
+        if (item.getItemMeta().isUnbreakable()) {
+            player.sendMessage(LocaleLoader.getString("Anvil.Unbreakable"));
+            return;
+        }
+        
         // Permissions checks on material and item types
         if (!Permissions.salvageItemType(player, salvageable.getSalvageItemType())) {
             player.sendMessage(LocaleLoader.getString("mcMMO.NoPermission"));
