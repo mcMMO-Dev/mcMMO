@@ -148,10 +148,6 @@ public class HerbalismManager extends SkillManager {
             }
         }
         else {
-            if (Permissions.greenThumbPlant(player, material)) {
-                processGreenThumbPlants(blockState, greenTerra);
-            }
-
             if(material == Material.CHORUS_FLOWER && blockState.getRawData() != 5) {
                 return;
             }
@@ -164,6 +160,10 @@ public class HerbalismManager extends SkillManager {
             if (!oneBlockPlant) {
                 amount = Herbalism.calculateMultiBlockPlantDrops(blockState);
                 xp *= amount;
+            }
+            
+            if (Permissions.greenThumbPlant(player, material)) {
+                processGreenThumbPlants(blockState, greenTerra);
             }
         }
 
