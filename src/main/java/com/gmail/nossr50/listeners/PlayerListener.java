@@ -422,12 +422,17 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerInteractLowest(PlayerInteractEvent event) {
         Player player = event.getPlayer();
+        
 
         if (event.getHand() != EquipmentSlot.HAND || !UserManager.hasPlayerDataKey(player) || player.getGameMode() == GameMode.CREATIVE) {
             return;
         }
 
-        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+        McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player); //Must make sure that UserManager has player data first!
+        if (!mcMMOPlayer.getAbilityUse()) { //If the player has their ability use toggled off...
+        	return; //Don't use an ability.
+        }
+        
         MiningManager miningManager = mcMMOPlayer.getMiningManager();
         Block block = event.getClickedBlock();
         ItemStack heldItem = player.getInventory().getItemInMainHand();
