@@ -2,6 +2,7 @@ package com.gmail.nossr50.listeners;
 
 import java.util.HashSet;
 
+import org.bukkit.DyeColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -29,6 +30,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Dye;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
@@ -551,6 +553,20 @@ public class PlayerListener implements Listener {
 
                 /* GREEN THUMB CHECK */
                 HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
+
+                if (heldItem.getType() == Material.INK_SACK) {
+                        if (DyeColor.WHITE == ((Dye) heldItem.getData()).getColor()) {
+                                switch (blockState.getType()) {
+                                        case BEETROOT_BLOCK:
+                                        case CARROT:
+                                        case COCOA:
+                                        case CROPS:
+                                        case NETHER_WARTS:
+                                        case POTATO:
+                                                mcMMO.getPlaceStore().setFalse(blockState);
+                                }
+                        }
+                }
 
                 if (herbalismManager.canGreenThumbBlock(blockState)) {
                     player.getInventory().setItemInMainHand(new ItemStack(Material.SEEDS, heldItem.getAmount() - 1));
