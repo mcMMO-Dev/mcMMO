@@ -477,22 +477,28 @@ public final class CombatUtils {
             else if (target instanceof Monster)
             {
                 EntityType type = target.getType();
-                
-                if (type == EntityType.IRON_GOLEM)
-                {
-                    if (!((IronGolem) target).isPlayerCreated()) {
+                baseXP = ExperienceConfig.getInstance().getCombatXP(type);
+            }
+            else {
+                EntityType type = target.getType();
+
+                if (ExperienceConfig.getInstance().hasCombatXP(type)) {
+                    if (type == EntityType.IRON_GOLEM)
+                    {
+                        if (!((IronGolem) target).isPlayerCreated()) {
+                            baseXP = ExperienceConfig.getInstance().getCombatXP(type);
+                        }
+                    }
+                    else
+                    {
                         baseXP = ExperienceConfig.getInstance().getCombatXP(type);
                     }
                 }
                 else
                 {
-                    baseXP = ExperienceConfig.getInstance().getCombatXP(type);
+                    baseXP = 1.0;
+                    mcMMO.getModManager().addCustomEntity(target);
                 }
-                
-            }
-            else {
-                baseXP = 1.0;
-                mcMMO.getModManager().addCustomEntity(target);
             }
 
             if (target.hasMetadata(mcMMO.entityMetadataKey)) {
