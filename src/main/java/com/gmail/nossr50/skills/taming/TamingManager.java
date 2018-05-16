@@ -312,7 +312,9 @@ public class TamingManager extends SkillManager {
             ParticleEffectUtils.playCallOfTheWildEffect(entity);
         }
 
-        player.getInventory().setItemInMainHand(heldItemAmount == summonAmount ? null : new ItemStack(heldItem.getType(), heldItemAmount - summonAmount));
+        ItemStack leftovers = new ItemStack(heldItem);
+        leftovers.setAmount(heldItemAmount - summonAmount);
+        player.getInventory().setItemInMainHand(heldItemAmount == summonAmount ? null : leftovers);
 
         String lifeSpan = "";
         if (tamingCOTWLength > 0) {
