@@ -14,15 +14,29 @@ Experience_Formula:
     # If an invalid value is entered, this will reset to the default setting, which is LINEAR
     # LINEAR:      base + (level * multiplier)
     # EXPONENTIAL: multiplier * level ^ exponent + base
-    Curve: LINEAR
+    Curve:
+        Swords: LINEAR
+        Taming: LINEAR
+        Acrobatics: LINEAR
+        Excavation: LINEAR
+        Herbalism: LINEAR
+        Unarmed: LINEAR
+        Woodcutting: LINEAR
+        Mining: LINEAR
+        Archery: LINEAR
+        Axes: LINEAR
+        Repair: LINEAR
+        Fishing: LINEAR
+        Alchemy: LINEAR
+        DEFAULT: LINEAR
 
     # If invalid values are entered mcMMO will not start and print an error in the console
     Linear_Values:
         base: 1020
         multiplier: 20
     Exponential_Values:
-        multiplier: 0.1
-        exponent: 1.80
+        multiplier: 1
+        exponent: 1.05
         base: 2000
 
     # Cumulative experience curves will use a players power level instead of their skill level,
