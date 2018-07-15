@@ -1,8 +1,16 @@
 package com.gmail.nossr50.commands.player;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.commands.CommandUtils;
+import com.gmail.nossr50.util.player.UserManager;
+import com.google.common.collect.ImmutableList;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -10,17 +18,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.StringUtil;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.runnables.commands.MctopCommandAsyncTask;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.commands.CommandUtils;
-import com.gmail.nossr50.util.player.UserManager;
-import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MctopCommand implements TabExecutor {
     @Override
@@ -91,7 +90,12 @@ public class MctopCommand implements TabExecutor {
             long cooldownMillis = Math.max(Config.getInstance().getDatabasePlayerCooldown(), 1750);
 
             if (mcMMOPlayer.getDatabaseATS() + cooldownMillis > System.currentTimeMillis()) {
-                sender.sendMessage(LocaleLoader.getString("Commands.Database.Cooldown"));
+                double seconds = ((mcMMOPlayer.getDatabaseATS() + cooldownMillis) - System.currentTimeMillis()) / 1000;
+                if (seconds < 1) {
+                    seconds = 1;
+                }
+
+                sender.sendMessage(LocaleLoader.formatString("Commands.Database.Cooldown", seconds));
                 return;
             }
 
