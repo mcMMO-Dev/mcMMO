@@ -16,6 +16,7 @@ website: www.spigotmc.org/resources/mcmmo.2445/
 main: com.gmail.nossr50.mcMMO
 softdepend: [CombatTag, HealthBar]
 load: STARTUP
+api-version: 1.13
 
 commands:
     xprate:
