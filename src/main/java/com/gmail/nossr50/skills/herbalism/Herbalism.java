@@ -1,18 +1,14 @@
 package com.gmail.nossr50.skills.herbalism;
 
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.material.SmoothBrick;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.util.skills.SkillUtils;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.List;
 
 public class Herbalism {
 
@@ -32,12 +28,12 @@ public class Herbalism {
      */
     protected static boolean convertGreenTerraBlocks(BlockState blockState) {
         switch (blockState.getType()) {
-            case COBBLE_WALL :
-                blockState.setRawData((byte) 0x1);
+            case COBBLESTONE_WALL:
+                blockState.setType(Material.MOSSY_COBBLESTONE_WALL);
                 return true;
 
-            case SMOOTH_BRICK :
-                ((SmoothBrick) blockState.getData()).setMaterial(Material.MOSSY_COBBLESTONE);
+            case STONE_BRICKS:
+                blockState.setType(Material.MOSSY_STONE_BRICKS);
                 return true;
 
             case DIRT :
@@ -124,7 +120,7 @@ public class Herbalism {
         if (blockType == Material.CHORUS_PLANT) {
             dropAmount = 1;
 
-            if (block.getRelative(BlockFace.DOWN, 1).getType() == Material.ENDER_STONE) {
+            if (block.getRelative(BlockFace.DOWN, 1).getType() == Material.END_STONE) {
                 HashSet<Block> blocks = findChorusPlant(block);
 
                 dropAmount = blocks.size();
@@ -167,7 +163,7 @@ public class Herbalism {
             case DIRT :
             case GRASS :
             case GRASS_PATH :
-                blockState.setType(Material.MYCEL);
+                blockState.setType(Material.MYCELIUM);
                 return true;
 
             default :

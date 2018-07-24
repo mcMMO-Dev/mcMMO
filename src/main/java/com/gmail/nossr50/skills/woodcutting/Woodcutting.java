@@ -1,9 +1,13 @@
 package com.gmail.nossr50.skills.woodcutting;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
+import com.gmail.nossr50.config.AdvancedConfig;
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.BlockUtils;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.BlockFace;
@@ -11,14 +15,9 @@ import org.bukkit.block.BlockState;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Tree;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.skills.SkillUtils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public final class Woodcutting {
     public static int leafBlowerUnlockLevel = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
@@ -29,7 +28,7 @@ public final class Woodcutting {
     protected enum ExperienceGainMethod {
         DEFAULT,
         TREE_FELLER,
-    };
+    }
 
     private Woodcutting() {}
 
@@ -58,20 +57,7 @@ public final class Woodcutting {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
         else {
-            //TODO Remove this workaround when casting to Tree works again
-            TreeSpecies species = TreeSpecies.GENERIC;
-            if (blockState.getData() instanceof Tree) {
-                species = ((Tree) blockState.getData()).getSpecies();
-            }
-            if (blockState.getType() == Material.LOG_2) {
-                byte data = blockState.getRawData();
-                if ((data & 1) != 0) {
-                    species = TreeSpecies.ACACIA;
-                }
-                if ((data & 2) != 0) {
-                    species = TreeSpecies.DARK_OAK;
-                }
-            }
+            TreeSpecies species = new Tree(blockState.getType()).getSpecies();
 
             if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(species)) {
                 Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());

@@ -1,38 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import java.util.HashSet;
-
-import org.bukkit.DyeColor;
-import org.bukkit.GameMode;
-import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.event.player.PlayerStatisticIncrementEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Dye;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.chat.ChatManager;
 import com.gmail.nossr50.chat.ChatManagerFactory;
 import com.gmail.nossr50.chat.PartyChatManager;
@@ -44,6 +11,7 @@ import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
 import com.gmail.nossr50.runnables.player.PlayerProfileLoadingTask;
 import com.gmail.nossr50.skills.fishing.FishingManager;
@@ -55,19 +23,22 @@ import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
 import com.gmail.nossr50.skills.taming.TamingManager;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
-import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.ChimaeraWing;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.HardcoreManager;
-import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.MobHealthbarUtils;
-import com.gmail.nossr50.util.Motd;
-import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.adapter.SoundAdapter;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.GameMode;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.entity.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
 public class PlayerListener implements Listener {
     private final mcMMO plugin;
@@ -232,8 +203,8 @@ public class PlayerListener implements Listener {
                 //TODO Update to new API once available! Waiting for case CAUGHT_TREASURE:
                 Item fishingCatch = (Item) event.getCaught();
 
-                if (Config.getInstance().getFishingOverrideTreasures() && fishingCatch.getItemStack().getType() != Material.RAW_FISH) {
-                    fishingCatch.setItemStack(new ItemStack(Material.RAW_FISH, 1));
+                if (Config.getInstance().getFishingOverrideTreasures() && fishingCatch.getItemStack().getType() != Material.SALMON) {
+                    fishingCatch.setItemStack(new ItemStack(Material.SALMON, 1));
                 }
 
                 if (Permissions.vanillaXpBoost(player, SkillType.FISHING)) {
@@ -242,7 +213,7 @@ public class PlayerListener implements Listener {
                 return;
 
             case IN_GROUND:
-                Block block = player.getTargetBlock((HashSet<Material>) null, 100);
+                Block block = player.getTargetBlock(null, 100);
 
                 if (fishingManager.canIceFish(block)) {
                     event.setCancelled(true);
@@ -554,22 +525,20 @@ public class PlayerListener implements Listener {
                 /* GREEN THUMB CHECK */
                 HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
-                if (heldItem.getType() == Material.INK_SACK) {
-                        if (DyeColor.WHITE == ((Dye) heldItem.getData()).getColor()) {
-                                switch (blockState.getType()) {
-                                        case BEETROOT_BLOCK:
-                                        case CARROT:
-                                        case COCOA:
-                                        case CROPS:
-                                        case NETHER_WARTS:
-                                        case POTATO:
-                                                mcMMO.getPlaceStore().setFalse(blockState);
-                                }
-                        }
+                if (heldItem.getType() == Material.BONE_MEAL) {
+                    switch (blockState.getType()) {
+                        case BEETROOTS:
+                        case CARROT:
+                        case COCOA:
+                        case WHEAT:
+                        case NETHER_WART_BLOCK:
+                        case POTATO:
+                            mcMMO.getPlaceStore().setFalse(blockState);
+                    }
                 }
 
                 if (herbalismManager.canGreenThumbBlock(blockState)) {
-                    player.getInventory().setItemInMainHand(new ItemStack(Material.SEEDS, heldItem.getAmount() - 1));
+                    player.getInventory().setItemInMainHand(new ItemStack(Material.WHEAT_SEEDS, heldItem.getAmount() - 1));
 
                     if (herbalismManager.processGreenThumbBlocks(blockState) && EventUtils.simulateBlockBreak(block, player, false)) {
                         blockState.update(true);

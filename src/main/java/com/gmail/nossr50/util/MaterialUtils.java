@@ -1,8 +1,7 @@
 package com.gmail.nossr50.util;
 
-import org.bukkit.material.MaterialData;
-
 import com.gmail.nossr50.mcMMO;
+import org.bukkit.material.MaterialData;
 
 public final class MaterialUtils {
     private MaterialUtils() {}
@@ -11,11 +10,10 @@ public final class MaterialUtils {
         switch (data.getItemType()) {
             case COAL_ORE:
             case DIAMOND_ORE:
-            case GLOWING_REDSTONE_ORE:
+            case NETHER_QUARTZ_ORE:
             case GOLD_ORE:
             case IRON_ORE:
             case LAPIS_ORE:
-            case QUARTZ_ORE:
             case REDSTONE_ORE:
             case EMERALD_ORE:
                 return true;

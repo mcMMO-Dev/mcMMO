@@ -1,15 +1,5 @@
 package com.gmail.nossr50.skills.unarmed;
 
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
-import org.bukkit.material.SmoothBrick;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -17,6 +7,7 @@ import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.ItemUtils;
@@ -24,6 +15,13 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.Material;
+import org.bukkit.block.BlockState;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 
 public class UnarmedManager extends SkillManager {
     public UnarmedManager(McMMOPlayer mcMMOPlayer) {
@@ -64,19 +62,12 @@ public class UnarmedManager extends SkillManager {
         MaterialData data = blockState.getData();
 
         switch (blockState.getType()) {
-            case SMOOTH_BRICK:
+            case STONE_BRICKS:
                 if (!Unarmed.blockCrackerSmoothBrick) {
                     return false;
                 }
 
-                // Yes, this is awkward, but it's the *right* way to do it.
-                SmoothBrick smoothBrick = (SmoothBrick) data;
-
-                if (smoothBrick.getMaterial() != Material.STONE) {
-                    return false;
-                }
-
-                smoothBrick.setMaterial(Material.COBBLESTONE);
+                blockState.setType(Material.CRACKED_STONE_BRICKS);
                 return true;
 
             default:

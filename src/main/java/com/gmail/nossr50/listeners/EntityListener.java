@@ -1,37 +1,5 @@
 package com.gmail.nossr50.listeners;
 
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.*;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityChangeBlockEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntityShootBowEvent;
-import org.bukkit.event.entity.EntityTameEvent;
-import org.bukkit.event.entity.EntityTargetEvent;
-import org.bukkit.event.entity.ExplosionPrimeEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PigZapEvent;
-import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.projectiles.ProjectileSource;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
@@ -39,6 +7,7 @@ import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.acrobatics.AcrobaticsManager;
@@ -55,6 +24,23 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.projectiles.ProjectileSource;
 
 public class EntityListener implements Listener {
     private final mcMMO plugin;
@@ -122,8 +108,7 @@ public class EntityListener implements Listener {
             else if (isTracked) {
                 mcMMO.getPlaceStore().setTrue(block);
             }
-        }
-        else if ((block.getType() == Material.REDSTONE_ORE || block.getType() == Material.GLOWING_REDSTONE_ORE) && (event.getTo() == Material.REDSTONE_ORE || event.getTo() == Material.GLOWING_REDSTONE_ORE)) {
+        } else if ((block.getType() == Material.REDSTONE_ORE)) {
             return;
         }
         else {
@@ -578,7 +563,7 @@ public class EntityListener implements Listener {
                                 */
             case BEETROOT:
             case BREAD: /* RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @ 1000 */
-            case CARROT_ITEM: /*
+            case CARROT: /*
                                * RESTORES 2 HUNGER - RESTORES 4 1/2 HUNGER @
                                * 1000
                                */
@@ -586,7 +571,7 @@ public class EntityListener implements Listener {
                                  * RESTORES 3 HUNGER - RESTORES 5 1/2 HUNGER @
                                  * 1000
                                  */
-            case MUSHROOM_SOUP: /*
+            case MUSHROOM_STEW: /*
                                  * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
                                  * 1000
                                  */
@@ -605,13 +590,13 @@ public class EntityListener implements Listener {
                                     * RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER
                                     * @ 1000
                                     */
-            case POTATO_ITEM: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
+            case POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
                 if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FARMERS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
                 }
                 return;
 
-            case COOKED_FISH: /*
+            case COOKED_SALMON: /*
                                * RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @
                                * 1000
                                */
@@ -620,7 +605,7 @@ public class EntityListener implements Listener {
                 }
                 return;
 
-            case RAW_FISH: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+            case SALMON: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
                 if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FISHERMANS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
                 }

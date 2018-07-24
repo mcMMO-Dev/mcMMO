@@ -1,17 +1,5 @@
 package com.gmail.nossr50.util;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.bukkit.block.Block;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Fish;
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerFishEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.PluginManager;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
@@ -41,7 +29,18 @@ import com.gmail.nossr50.events.skills.repair.McMMOPlayerRepairCheckEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityEvent;
 import com.gmail.nossr50.events.skills.unarmed.McMMOPlayerDisarmEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
+import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.FishHook;
+import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerFishEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EventUtils {
     public static McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, SkillType skill) {
@@ -252,7 +251,7 @@ public class EventUtils {
         return event;
     }
 
-    public static FakePlayerFishEvent callFakeFishEvent(Player player, Fish hook) {
+    public static FakePlayerFishEvent callFakeFishEvent(Player player, FishHook hook) {
         FakePlayerFishEvent event = new FakePlayerFishEvent(player, null, hook, PlayerFishEvent.State.FISHING);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 

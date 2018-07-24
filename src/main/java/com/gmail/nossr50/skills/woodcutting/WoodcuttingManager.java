@@ -1,17 +1,5 @@
 package com.gmail.nossr50.skills.woodcutting;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Tree;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -19,14 +7,20 @@ import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.woodcutting.Woodcutting.ExperienceGainMethod;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class WoodcuttingManager extends SkillManager {
     public WoodcuttingManager(McMMOPlayer mcMMOPlayer) {
@@ -54,8 +48,8 @@ public class WoodcuttingManager extends SkillManager {
         int xp = Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.DEFAULT);
 
         switch (blockState.getType()) {
-            case HUGE_MUSHROOM_1:
-            case HUGE_MUSHROOM_2:
+            case BROWN_MUSHROOM_BLOCK:
+            case RED_MUSHROOM_BLOCK:
                 break;
 
             default:
@@ -123,7 +117,7 @@ public class WoodcuttingManager extends SkillManager {
 
             Material material = blockState.getType();
 
-            if (material == Material.HUGE_MUSHROOM_1 || material == Material.HUGE_MUSHROOM_2) {
+            if (material == Material.BROWN_MUSHROOM_BLOCK || material == Material.RED_MUSHROOM_BLOCK) {
                 xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
                 Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
             }
@@ -141,29 +135,16 @@ public class WoodcuttingManager extends SkillManager {
                 Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
             }
             else {
-                //TODO Remove this workaround when casting to Tree works again
-                if (blockState.getData() instanceof Tree) {
-                    Tree tree = (Tree) blockState.getData();
-                    tree.setDirection(BlockFace.UP);
+
+                if (BlockUtils.isLog(blockState)) {
+                    if (canGetDoubleDrops()) {
+                        Woodcutting.checkForDoubleDrop(blockState);
+                    }
+                    xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
+                    Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
                 }
-
-                switch (material) {
-                    case LOG:
-                    case LOG_2:
-                        if (canGetDoubleDrops()) {
-                            Woodcutting.checkForDoubleDrop(blockState);
-                        }
-                        xp += Woodcutting.getExperienceFromLog(blockState, ExperienceGainMethod.TREE_FELLER);
-                        Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
-                        break;
-
-                    case LEAVES:
-                    case LEAVES_2:
-                        Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
-                        break;
-
-                    default:
-                        break;
+                if (BlockUtils.isLeaves(blockState)) {
+                    Misc.dropItems(Misc.getBlockCenter(blockState), block.getDrops());
                 }
             }
 

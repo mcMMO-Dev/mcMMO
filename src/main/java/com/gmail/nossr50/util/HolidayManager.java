@@ -1,27 +1,14 @@
 package com.gmail.nossr50.util;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Set;
-import java.util.regex.Pattern;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.FireworkEffect;
+import com.gmail.nossr50.commands.skills.AprilCommand;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.adapter.SoundAdapter;
+import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+import com.google.common.collect.ImmutableList;
+import org.bukkit.*;
 import org.bukkit.FireworkEffect.Type;
-import org.bukkit.Statistic;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.EntityType;
@@ -30,14 +17,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerStatisticIncrementEvent;
 import org.bukkit.inventory.meta.FireworkMeta;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.commands.skills.AprilCommand;
-import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.util.adapter.SoundAdapter;
-import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-
-import com.google.common.collect.ImmutableList;
+import java.io.*;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public final class HolidayManager {
     private ArrayList<String> hasCelebrated;
@@ -95,7 +77,7 @@ public final class HolidayManager {
                     return FakeSkillType.CLIMBING;
                 case FLY_ONE_CM:
                     return FakeSkillType.FLYING;
-                case DIVE_ONE_CM:
+                case WALK_UNDER_WATER_ONE_CM:
                     return FakeSkillType.DIVING;
                 case PIG_ONE_CM:
                     return FakeSkillType.PIGGY;
@@ -107,7 +89,7 @@ public final class HolidayManager {
 
     public final Set<Statistic> movementStatistics = EnumSet.of(
             Statistic.WALK_ONE_CM, Statistic.SWIM_ONE_CM, Statistic.FALL_ONE_CM,
-            Statistic.CLIMB_ONE_CM, Statistic.FLY_ONE_CM, Statistic.DIVE_ONE_CM,
+            Statistic.CLIMB_ONE_CM, Statistic.FLY_ONE_CM, Statistic.WALK_UNDER_WATER_ONE_CM,
             Statistic.PIG_ONE_CM);
 
     static {

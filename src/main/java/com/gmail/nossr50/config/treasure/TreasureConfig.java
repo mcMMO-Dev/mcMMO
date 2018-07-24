@@ -1,9 +1,9 @@
 package com.gmail.nossr50.config.treasure;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
+import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.datatypes.treasure.*;
+import com.gmail.nossr50.util.EnchantmentUtils;
+import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -19,15 +19,9 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionType;
 
-import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.datatypes.treasure.EnchantmentTreasure;
-import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
-import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
-import com.gmail.nossr50.datatypes.treasure.HylianTreasure;
-import com.gmail.nossr50.datatypes.treasure.Rarity;
-import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
-import com.gmail.nossr50.util.EnchantmentUtils;
-import com.gmail.nossr50.util.StringUtils;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class TreasureConfig extends ConfigLoader {
 
@@ -143,14 +137,14 @@ public class TreasureConfig extends ConfigLoader {
             Material material;
 
             if (materialName.contains("INK_SACK")) {
-                material = Material.INK_SACK;
+                material = Material.INK_SAC;
             } else if (materialName.contains("COAL")) {
                 material = Material.COAL;
             } else if (materialName.contains("INVENTORY")) {
-                // Use magic material BED_BLOCK to know that we're grabbing something from the inventory and not a normal treasure
+                // Use magic material BEDROCK to know that we're grabbing something from the inventory and not a normal treasure
                 if (!shakeMap.containsKey(EntityType.PLAYER))
                     shakeMap.put(EntityType.PLAYER, new ArrayList<ShakeTreasure>());
-                shakeMap.get(EntityType.PLAYER).add(new ShakeTreasure(new ItemStack(Material.BED_BLOCK, 1, (byte) 0), 1, getInventoryStealDropChance(), getInventoryStealDropLevel()));
+                shakeMap.get(EntityType.PLAYER).add(new ShakeTreasure(new ItemStack(Material.BEDROCK, 1, (byte) 0), 1, getInventoryStealDropChance(), getInventoryStealDropLevel()));
                 continue;
             } else {
                 material = Material.matchMaterial(materialName);
@@ -323,9 +317,9 @@ public class TreasureConfig extends ConfigLoader {
                         }
                         if (dropper.equals("Flowers")) {
                             for (int i = 0; i < 9; i++) {
-                                AddHylianTreasure(StringUtils.getFriendlyConfigMaterialDataString(new MaterialData(Material.RED_ROSE, (byte) i)), hylianTreasure);
+                                AddHylianTreasure(StringUtils.getFriendlyConfigMaterialDataString(new MaterialData(Material.ROSE_RED, (byte) i)), hylianTreasure);
                             }
-                            AddHylianTreasure(StringUtils.getPrettyItemString(Material.YELLOW_FLOWER), hylianTreasure);
+                            AddHylianTreasure(StringUtils.getPrettyItemString(Material.DANDELION), hylianTreasure);
                             continue;
                         }
                         if (dropper.equals("Pots")) {

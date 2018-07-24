@@ -1,39 +1,5 @@
 package com.gmail.nossr50.skills.fishing;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.WeatherType;
-import org.bukkit.World;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Fish;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Sheep;
-import org.bukkit.entity.TNTPrimed;
-import org.bukkit.entity.ThrownPotion;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.material.Wool;
-import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionType;
-import org.bukkit.util.Vector;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -50,17 +16,28 @@ import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.KrakenAttackTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
-import com.gmail.nossr50.util.BlockUtils;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.ItemUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.adapter.SoundAdapter;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.*;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.Potion;
+import org.bukkit.potion.PotionType;
+import org.bukkit.util.Vector;
+
+import java.util.*;
 
 public class FishingManager extends SkillManager {
     private final long FISHING_COOLDOWN_SECONDS = 1000L;
@@ -104,7 +81,7 @@ public class FishingManager extends SkillManager {
             vehicle.remove();
         }
 
-        player.teleport(player.getTargetBlock((HashSet<Material>) null, 100).getLocation(), TeleportCause.PLUGIN);
+        player.teleport(player.getTargetBlock(null, 100).getLocation(), TeleportCause.PLUGIN);
 
         String unleashMessage = AdvancedConfig.getInstance().getPlayerUnleashMessage();
 
@@ -170,7 +147,7 @@ public class FishingManager extends SkillManager {
             return false;
         }
 
-        Block targetBlock = getPlayer().getTargetBlock((HashSet<Material>) BlockUtils.getTransparentBlocks(), 100);
+        Block targetBlock = getPlayer().getTargetBlock(BlockUtils.getTransparentBlocks(), 100);
 
         if (!targetBlock.isLiquid()) {
             return false;
@@ -201,7 +178,7 @@ public class FishingManager extends SkillManager {
         }
 
         // Make sure this is a body of water, not just a block of ice.
-        if (!Fishing.iceFishingBiomes.contains(block.getBiome()) && (block.getRelative(BlockFace.DOWN, 3).getType() != Material.STATIONARY_WATER)) {
+        if (!Fishing.iceFishingBiomes.contains(block.getBiome()) && (block.getRelative(BlockFace.DOWN, 3).getType() != Material.WATER)) {
             return false;
         }
 
@@ -260,16 +237,16 @@ public class FishingManager extends SkillManager {
         return SkillUtils.handleFoodSkills(getPlayer(), skill, eventFoodLevel, Fishing.fishermansDietRankLevel1, Fishing.fishermansDietMaxLevel, rankChange);
     }
 
-    public void iceFishing(Fish hook, Block block) {
+    public void iceFishing(FishHook hook, Block block) {
         // Make a hole
-        block.setType(Material.STATIONARY_WATER);
+        block.setType(Material.WATER);
 
         for (int x = -1; x <= 1; x++) {
             for (int z = -1; z <= 1; z++) {
                 Block relative = block.getRelative(x, 0, z);
 
                 if (relative.getType() == Material.ICE) {
-                    relative.setType(Material.STATIONARY_WATER);
+                    relative.setType(Material.WATER);
                 }
             }
         }
@@ -278,7 +255,7 @@ public class FishingManager extends SkillManager {
         EventUtils.callFakeFishEvent(getPlayer(), hook);
     }
 
-    public void masterAngler(Fish hook) {
+    public void masterAngler(FishHook hook) {
         Player player = getPlayer();
         Location location = hook.getLocation();
         double biteChance = hook.getBiteChance();
@@ -401,14 +378,14 @@ public class FishingManager extends SkillManager {
                     Player targetPlayer = (Player) target;
 
                     switch (drop.getType()) {
-                        case SKULL_ITEM:
+                        case PLAYER_HEAD:
                             drop.setDurability((short) 3);
                             SkullMeta skullMeta = (SkullMeta) drop.getItemMeta();
-                            skullMeta.setOwner(targetPlayer.getName());
+                            skullMeta.setOwningPlayer(targetPlayer);
                             drop.setItemMeta(skullMeta);
                             break;
 
-                        case BED_BLOCK:
+                        case BEDROCK:
                             if (TreasureConfig.getInstance().getInventoryStealEnabled()) {
                                 PlayerInventory inventory = targetPlayer.getInventory();
                                 int length = inventory.getContents().length;
@@ -439,18 +416,11 @@ public class FishingManager extends SkillManager {
                 case SHEEP:
                     Sheep sheep = (Sheep) target;
 
-                    if (drop.getType() == Material.WOOL) {
+                    if (drop.getType().name().endsWith("WOOL")) {
                         if (sheep.isSheared()) {
                             return;
                         }
-
-                        drop = new Wool(sheep.getColor()).toItemStack(drop.getAmount());
                         sheep.setSheared(true);
-                    }
-                    break;
-                case WITHER_SKELETON:
-                    if(drop.getType() == Material.SKULL_ITEM){
-                    	drop.setDurability((short) 1);
                     }
                     break;
                 default:

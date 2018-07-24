@@ -1,22 +1,5 @@
 package com.gmail.nossr50.database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.EnumMap;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.locks.ReentrantLock;
-
-import org.bukkit.scheduler.BukkitRunnable;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.database.DatabaseType;
@@ -25,11 +8,16 @@ import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
-
 import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.sql.*;
+import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 
 public final class SQLDatabaseManager implements DatabaseManager {
     private static final String ALL_QUERY_VERSION = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy";
@@ -337,7 +325,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
 
         try {
             connection = getConnection(PoolIdentifier.MISC);
-            statement = connection.prepareStatement("SELECT " + query + ", user, NOW() FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 AND NOT user = '\\_INVALID\\_OLD\\_USERNAME\\_' ORDER BY " + query + " DESC, user LIMIT ?, ?");
+            statement = connection.prepareStatement("SELECT " + query + ", user FROM " + tablePrefix + "users JOIN " + tablePrefix + "skills ON (user_id = id) WHERE " + query + " > 0 AND NOT user = '\\_INVALID\\_OLD\\_USERNAME\\_' ORDER BY " + query + " DESC, user LIMIT ?, ?");
             statement.setInt(1, (pageNumber * statsPerPage) - statsPerPage);
             statement.setInt(2, statsPerPage);
             resultSet = statement.executeQuery();
@@ -1132,7 +1120,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         return DatabaseType.SQL;
     }
 
-    private void checkNameUniqueness(final Statement statement) throws SQLException {
+    private void checkNameUniqueness(final Statement statement) {
         ResultSet resultSet = null;
         try {
             resultSet = statement.executeQuery("SHOW INDEXES "
@@ -1205,7 +1193,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
     }
 
-    private void checkUpgradeAddSQLIndexes(final Statement statement) throws SQLException {
+    private void checkUpgradeAddSQLIndexes(final Statement statement) {
         ResultSet resultSet = null;
 
         try {
@@ -1292,7 +1280,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 }
 
                 if (!names.isEmpty()) {
-                    new UUIDUpdateAsyncTask(mcMMO.p, names).run();;
+                    new UUIDUpdateAsyncTask(mcMMO.p, names).run();
                 }
             } finally {
                 massUpdateLock.unlock();
@@ -1415,7 +1403,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     public enum PoolIdentifier {
         MISC,
         LOAD,
-        SAVE;
+        SAVE
     }
 
     public void resetMobHealthSettings() {

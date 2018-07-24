@@ -1,19 +1,5 @@
 package com.gmail.nossr50;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.HandlerList;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
@@ -28,12 +14,7 @@ import com.gmail.nossr50.config.skills.salvage.SalvageConfigManager;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
-import com.gmail.nossr50.listeners.BlockListener;
-import com.gmail.nossr50.listeners.EntityListener;
-import com.gmail.nossr50.listeners.InventoryListener;
-import com.gmail.nossr50.listeners.PlayerListener;
-import com.gmail.nossr50.listeners.SelfListener;
-import com.gmail.nossr50.listeners.WorldListener;
+import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.CheckDateTask;
 import com.gmail.nossr50.runnables.SaveTimerTask;
@@ -53,12 +34,7 @@ import com.gmail.nossr50.skills.salvage.salvageables.Salvageable;
 import com.gmail.nossr50.skills.salvage.salvageables.SalvageableManager;
 import com.gmail.nossr50.skills.salvage.salvageables.SimpleSalvageableManager;
 import com.gmail.nossr50.skills.smelting.SmeltingManager;
-import com.gmail.nossr50.util.ChimaeraWing;
-import com.gmail.nossr50.util.HolidayManager;
-import com.gmail.nossr50.util.LogFilter;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.ModManager;
-import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManager;
 import com.gmail.nossr50.util.blockmeta.chunkmeta.ChunkManagerFactory;
 import com.gmail.nossr50.util.commands.CommandRegistrationManager;
@@ -67,8 +43,20 @@ import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.upgrade.UpgradeManager;
 import com.google.common.base.Charsets;
-
 import net.shatteredlands.shatt.backup.ZipLibrary;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class mcMMO extends JavaPlugin {
     /* Managers */
@@ -439,10 +427,10 @@ public class mcMMO extends JavaPlugin {
 
         if (Config.getInstance().getFluxPickaxeEnabled()) {
             getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.DIAMOND_PICKAXE));
-            getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.GOLD_PICKAXE));
+            getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.GOLDEN_PICKAXE));
             getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.IRON_PICKAXE));
             getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.STONE_PICKAXE));
-            getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.WOOD_PICKAXE));
+            getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.WOODEN_PICKAXE));
         }
     }
 
