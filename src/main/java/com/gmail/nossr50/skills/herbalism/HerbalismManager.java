@@ -120,7 +120,7 @@ public class HerbalismManager extends SkillManager {
         if (oneBlockPlant && mcMMO.getPlaceStore().isTrue(blockState)) {
             return;
         }
-
+        
         if (!canBlockCheck()) {
             return;
         }
