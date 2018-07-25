@@ -255,7 +255,7 @@ public class SkillUtils {
             return Material.COBBLESTONE;
         }
         else if (ItemUtils.isWoodTool(inHand)) {
-            return Material.OAK_WOOD;
+            return Material.OAK_PLANKS;
         }
         else if (ItemUtils.isLeatherArmor(inHand)) {
             return Material.LEATHER;

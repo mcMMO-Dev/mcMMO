@@ -681,6 +681,18 @@ public final class ItemUtils {
             case JUNGLE_LOG:
             case OAK_LOG:
             case SPRUCE_LOG:
+            case OAK_WOOD:
+            case ACACIA_WOOD:
+            case BIRCH_WOOD:
+            case DARK_OAK_WOOD:
+            case STRIPPED_ACACIA_WOOD:
+            case JUNGLE_WOOD:
+            case SPRUCE_WOOD:
+            case STRIPPED_BIRCH_WOOD:
+            case STRIPPED_DARK_OAK_WOOD:
+            case STRIPPED_JUNGLE_WOOD:
+            case STRIPPED_OAK_WOOD:
+            case STRIPPED_SPRUCE_WOOD:
             case STRIPPED_ACACIA_LOG:
             case STRIPPED_BIRCH_LOG:
             case STRIPPED_DARK_OAK_LOG:
