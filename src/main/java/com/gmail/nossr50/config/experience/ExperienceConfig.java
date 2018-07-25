@@ -195,7 +195,6 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     /* Materials  */
     public int getXp(SkillType skill, BlockData data)
     {
-        System.out.print(">>YUP>"+skill.toString());
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
         String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);
         if (config.contains(explicitString))
