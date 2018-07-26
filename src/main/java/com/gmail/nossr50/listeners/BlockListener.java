@@ -203,7 +203,6 @@ public class BlockListener implements Listener {
              * Instead, we check it inside the drops handler.
              */
             if (SkillType.HERBALISM.getPermissions(player)) {
-                System.out.print(">>getPermissions");
                 herbalismManager.herbalismBlockCheck(blockState);
             }
         }
