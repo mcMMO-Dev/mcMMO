@@ -20,7 +20,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.material.MaterialData;
+import org.bukkit.block.data.BlockData;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -108,9 +108,7 @@ public class SalvageManager extends SkillManager {
             enchantBook = arcaneSalvageCheck(enchants);
         }
 
-        byte salvageMaterialMetadata = (salvageable.getSalvageMaterialMetadata() != (byte) -1) ? salvageable.getSalvageMaterialMetadata() : 0;
-
-        ItemStack salvageResults = new MaterialData(salvageable.getSalvageMaterial(), salvageMaterialMetadata).toItemStack(salvageableAmount);
+        ItemStack salvageResults = new ItemStack(salvageable.getSalvageMaterial(), salvageableAmount);
 
         //Call event
         if (EventUtils.callSalvageCheckEvent(player, item, salvageResults, enchantBook).isCancelled()) {

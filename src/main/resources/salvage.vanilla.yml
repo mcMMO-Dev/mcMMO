@@ -46,19 +46,19 @@ Salvageables:
     # Wooden salvageables
     ###
     # Tools
-    WOOD_SWORD:
+    WOODEN_SWORD:
         MinimumLevel: 0
         XpMultiplier: .25
-    WOOD_SHOVEL:
+    WOODEN_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .16
-    WOOD_PICKAXE:
+    WOODEN_PICKAXE:
         MinimumLevel: 0
         XpMultiplier: .5
-    WOOD_AXE:
+    WOODEN_AXE:
         MinimumLevel: 0
         XpMultiplier: .5
-    WOOD_HOE:
+    WOODEN_HOE:
         MinimumLevel: 0
         XpMultiplier: .25
     #

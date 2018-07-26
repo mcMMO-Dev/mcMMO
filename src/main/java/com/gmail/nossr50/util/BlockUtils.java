@@ -134,7 +134,7 @@ public final class BlockUtils {
      * @return true if the block is an ore, false otherwise
      */
     public static boolean isOre(BlockState blockState) {
-        return MaterialUtils.isOre(blockState.getData());
+        return MaterialUtils.isOre(blockState.getBlockData());
     }
 
     /**
@@ -170,8 +170,9 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(BlockState blockState) {
-        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.HERBALISM, blockState.getData()))
+        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.HERBALISM, blockState.getBlockData())) {
             return true;
+        }
 
         return mcMMO.getModManager().isCustomHerbalismBlock(blockState);
     }
@@ -185,7 +186,7 @@ public final class BlockUtils {
      *         otherwise
      */
     public static Boolean affectedBySuperBreaker(BlockState blockState) {
-        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.MINING, blockState.getData()))
+        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.MINING, blockState.getBlockData()))
             return true;
 
         return isOre(blockState) || mcMMO.getModManager().isCustomMiningBlock(blockState);
@@ -200,7 +201,7 @@ public final class BlockUtils {
      *         otherwise
      */
     public static boolean affectedByGigaDrillBreaker(BlockState blockState) {
-        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.EXCAVATION, blockState.getData()))
+        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.EXCAVATION, blockState.getBlockData()))
             return true;
         return mcMMO.getModManager().isCustomExcavationBlock(blockState);
     }
@@ -213,7 +214,7 @@ public final class BlockUtils {
      * @return true if the block is a log, false otherwise
      */
     public static boolean isLog(BlockState blockState) {
-        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.WOODCUTTING, blockState.getData()))
+        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.WOODCUTTING, blockState.getBlockData()))
             return true;
         return mcMMO.getModManager().isCustomLog(blockState);
     }

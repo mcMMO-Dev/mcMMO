@@ -10,7 +10,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
+import org.bukkit.block.data.BlockData;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
@@ -33,14 +33,14 @@ public class ModManager {
     private List<Material> customLeggings    = new ArrayList<Material>();
 
     // Block Mods
-    private List<MaterialData> customExcavationBlocks  = new ArrayList<MaterialData>();
-    private List<MaterialData> customHerbalismBlocks   = new ArrayList<MaterialData>();
-    private List<MaterialData> customMiningBlocks      = new ArrayList<MaterialData>();
-    private List<MaterialData> customOres              = new ArrayList<MaterialData>();
-    private List<MaterialData> customLogs              = new ArrayList<MaterialData>();
-    private List<MaterialData> customLeaves            = new ArrayList<MaterialData>();
-    private List<MaterialData> customAbilityBlocks     = new ArrayList<MaterialData>();
-    private HashMap<MaterialData, CustomBlock> customBlockMap = new HashMap<MaterialData, CustomBlock>();
+    private List<BlockData> customExcavationBlocks  = new ArrayList<BlockData>();
+    private List<BlockData> customHerbalismBlocks   = new ArrayList<BlockData>();
+    private List<BlockData> customMiningBlocks      = new ArrayList<BlockData>();
+    private List<BlockData> customOres              = new ArrayList<BlockData>();
+    private List<BlockData> customLogs              = new ArrayList<BlockData>();
+    private List<BlockData> customLeaves            = new ArrayList<BlockData>();
+    private List<BlockData> customAbilityBlocks     = new ArrayList<BlockData>();
+    private HashMap<BlockData, CustomBlock> customBlockMap = new HashMap<BlockData, CustomBlock>();
 
     // Entity Mods
     private HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();
@@ -130,7 +130,7 @@ public class ModManager {
         return Config.getInstance().getToolModsEnabled() && customSwords.contains(material);
     }
 
-    public boolean isCustomOre(MaterialData data) {
+    public boolean isCustomOre(BlockData data) {
         return Config.getInstance().getBlockModsEnabled() && customOres.contains(data);
     }
 
@@ -162,7 +162,7 @@ public class ModManager {
         return customBlockMap.get(state.getData());
     }
 
-    public CustomBlock getBlock(MaterialData data) {
+    public CustomBlock getBlock(BlockData data) {
         return customBlockMap.get(data);
     }
 

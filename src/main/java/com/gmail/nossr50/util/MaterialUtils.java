@@ -1,13 +1,13 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.mcMMO;
-import org.bukkit.material.MaterialData;
+import org.bukkit.block.data.BlockData;
 
 public final class MaterialUtils {
     private MaterialUtils() {}
 
-    protected static boolean isOre(MaterialData data) {
-        switch (data.getItemType()) {
+    protected static boolean isOre(BlockData data) {
+        switch (data.getMaterial()) {
             case COAL_ORE:
             case DIAMOND_ORE:
             case NETHER_QUARTZ_ORE:
