@@ -136,7 +136,7 @@ public class TreasureConfig extends ConfigLoader {
              */
             Material material;
 
-            if (materialName.contains("INK_SACK")) {
+            if (materialName.contains("INK_SAC")) {
                 material = Material.INK_SAC;
             } else if (materialName.contains("COAL")) {
                 material = Material.COAL;
@@ -234,7 +234,7 @@ public class TreasureConfig extends ConfigLoader {
                     }
                     item.setItemMeta(itemMeta);
                 }
-            } else if (materialName.contains("INK_SACK")) {
+            } else if (materialName.contains("INK_SAC")) {
                 String color = materialName.substring(9);
 
                 try {
