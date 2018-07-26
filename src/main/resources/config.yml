@@ -426,7 +426,7 @@ Double_Drops:
         Sugar_Cane_Block: true
         Vine: true
         Water_Lily: true
-        Yellow_Flower: true
+        Dandelion: true
     Mining:
         Coal_Ore: true
         Diamond_Ore: true

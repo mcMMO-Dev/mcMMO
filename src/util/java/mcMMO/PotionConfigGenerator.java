@@ -347,10 +347,10 @@ public class PotionConfigGenerator {
         }
         for (Entry<WriteablePotion, Map<Ingredient, WriteablePotion>> entry : vanillaPotions.entrySet()) {
             if (entry.getKey().mat == Material.POTION) {
-                entry.getValue().put(new Ingredient(Material.SULPHUR), new WriteablePotion(Material.SPLASH_POTION, entry.getKey().data));
+                entry.getValue().put(new Ingredient(Material.GUNPOWDER), new WriteablePotion(Material.SPLASH_POTION, entry.getKey().data));
             }
             if (entry.getKey().mat == Material.SPLASH_POTION) {
-                entry.getValue().put(new Ingredient(Material.DRAGONS_BREATH), new WriteablePotion(Material.LINGERING_POTION, entry.getKey().data));
+                entry.getValue().put(new Ingredient(Material.DRAGON_BREATH), new WriteablePotion(Material.LINGERING_POTION, entry.getKey().data));
             }
         }
     }
@@ -393,10 +393,10 @@ public class PotionConfigGenerator {
                     mod = 0.25;
                 }
                 children.put(new Ingredient(Material.BROWN_MUSHROOM), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.CONFUSION, (int) (450 * mod), 0), "NAUSEA"));
-                children.put(new Ingredient(Material.CARROT_ITEM), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.FAST_DIGGING, (int) (3600 * mod), 0), "HASTE"));
+                children.put(new Ingredient(Material.CARROT), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.FAST_DIGGING, (int) (3600 * mod), 0), "HASTE"));
                 children.put(new Ingredient(Material.SLIME_BALL), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.SLOW_DIGGING, (int) (3600 * mod), 0), "DULLNESS"));
                 children.put(new Ingredient(Material.GOLDEN_APPLE), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, (int) (450 * mod), 0), "RESISTANCE"));
-                children.put(new Ingredient(Material.INK_SACK), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.BLINDNESS, (int) (225 * mod), 0), "BLINDNESS"));
+                children.put(new Ingredient(Material.INK_SAC), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.BLINDNESS, (int) (225 * mod), 0), "BLINDNESS"));
                 children.put(new Ingredient(Material.ROTTEN_FLESH), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.HUNGER, (int) (900 * mod), 0), "HUNGER"));
                 children.put(new Ingredient(Material.POISONOUS_POTATO), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.WITHER, (int) (450 * mod), 0), "DECAY"));
                 children.put(new Ingredient(Material.QUARTZ), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.ABSORPTION, (int) (1800 * mod), 0), "ABSORPTION"));
@@ -608,10 +608,10 @@ public class PotionConfigGenerator {
         for (Entry<WriteablePotion, Map<Ingredient, WriteablePotion>> entry : mcMMOPotions.entrySet()) {
             if (entry.getKey().mat == Material.POTION) {
                 PotionEffect effect = new PotionEffect(entry.getKey().effect.getType(), (int) (entry.getKey().effect.getDuration() * 0.75), entry.getKey().effect.getAmplifier());
-                entry.getValue().put(new Ingredient(Material.SULPHUR), new WriteablePotion(Material.SPLASH_POTION, entry.getKey().data, effect, entry.getKey().baseName));
+                entry.getValue().put(new Ingredient(Material.GUNPOWDER), new WriteablePotion(Material.SPLASH_POTION, entry.getKey().data, effect, entry.getKey().baseName));
             } else if (entry.getKey().mat == Material.SPLASH_POTION) {
                 PotionEffect effect = new PotionEffect(entry.getKey().effect.getType(), (int) (entry.getKey().effect.getDuration() * 0.33), entry.getKey().effect.getAmplifier());
-                entry.getValue().put(new Ingredient(Material.DRAGONS_BREATH), new WriteablePotion(Material.LINGERING_POTION, entry.getKey().data, effect, entry.getKey().baseName));
+                entry.getValue().put(new Ingredient(Material.DRAGON_BREATH), new WriteablePotion(Material.LINGERING_POTION, entry.getKey().data, effect, entry.getKey().baseName));
             }
         }
     }

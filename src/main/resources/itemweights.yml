@@ -29,23 +29,23 @@ Item_Weights:
 
     # Item weights for armor and tools
     Diamond_Sword: 150
-    Diamond_Spade: 150
+    Diamond_Shovel: 150
     Diamond_Pickaxe: 150
     Diamond_Axe: 150
     Diamond_Helmet: 150
     Diamond_Chestplate: 150
     Diamond_Leggings: 150
     Diamond_Boots: 150
-    Gold_Sword: 75
-    Gold_Spade: 75
-    Gold_Pickaxe: 75
-    Gold_Axe: 75
-    Gold_Helmet: 75
-    Gold_Chestplate: 75
-    Gold_Leggings: 75
-    Gold_Boots: 75
+    Golden_Sword: 75
+    Golden_Shovel: 75
+    Golden_Pickaxe: 75
+    Golden_Axe: 75
+    Golden_Helmet: 75
+    Golden_Chestplate: 75
+    Golden_Leggings: 75
+    Golden_Boots: 75
     Iron_Sword: 60
-    Iron_Spade: 60
+    Iron_Shovel: 60
     Iron_Pickaxe: 60
     Iron_Axe: 60
     Iron_Helmet: 60
@@ -58,23 +58,23 @@ Item_Weights:
 Party_Shareables:
     Misc_Items:
         - Diamond_Sword
-        - Diamond_Spade
+        - Diamond_Shovel
         - Diamond_Pickaxe
         - Diamond_Axe
-        - Gold_Sword
-        - Gold_Spade
-        - Gold_Pickaxe
-        - Gold_Axe
+        - Golden_Sword
+        - Golden_Shovel
+        - Golden_Pickaxe
+        - Golden_Axe
         - Iron_Sword
-        - Iron_Spade
+        - Iron_Shovel
         - Iron_Pickaxe
         - Iron_Axe
         - Stone_Sword
-        - Stone_Spade
+        - Stone_Shovel
         - Stone_Pickaxe
         - Stone_Axe
         - Wood_Sword
-        - Wood_Spade
+        - Wood_Shovel
         - Wood_Pickaxe
         - Wood_Axe
         - Bow
@@ -82,10 +82,10 @@ Party_Shareables:
         - Diamond_Chestplate
         - Diamond_Leggings
         - Diamond_Boots
-        - Gold_Helmet
-        - Gold_Chestplate
-        - Gold_Leggings
-        - Gold_Boots
+        - Golden_Helmet
+        - Golden_Chestplate
+        - Golden_Leggings
+        - Golden_Boots
         - Iron_Helmet
         - Iron_Chestplate
         - Iron_Leggings

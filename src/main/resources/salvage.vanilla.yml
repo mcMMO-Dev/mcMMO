@@ -49,7 +49,7 @@ Salvageables:
     WOOD_SWORD:
         MinimumLevel: 0
         XpMultiplier: .25
-    WOOD_SPADE:
+    WOOD_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .16
     WOOD_PICKAXE:
@@ -68,7 +68,7 @@ Salvageables:
     STONE_SWORD:
         MinimumLevel: 0
         XpMultiplier: .25
-    STONE_SPADE:
+    STONE_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .16
     STONE_PICKAXE:
@@ -87,7 +87,7 @@ Salvageables:
     IRON_SWORD:
         MinimumLevel: 0
         XpMultiplier: .5
-    IRON_SPADE:
+    IRON_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: .3
     IRON_PICKAXE:
@@ -122,32 +122,32 @@ Salvageables:
     # Gold salvageables
     ###
     # Tools
-    GOLD_SWORD:
+    GOLDEN_SWORD:
         MinimumLevel: 0
         XpMultiplier: 4
-    GOLD_SPADE:
+    GOLDEN_SHOVEL:
         MinimumLevel: 0
         XpMultiplier: 2.6
-    GOLD_PICKAXE:
+    GOLDEN_PICKAXE:
         MinimumLevel: 0
         XpMultiplier: 8
-    GOLD_AXE:
+    GOLDEN_AXE:
         MinimumLevel: 0
         XpMultiplier: 8
-    GOLD_HOE:
+    GOLDEN_HOE:
         MinimumLevel: 0
         XpMultiplier: 4
     # Armor
-    GOLD_HELMET:
+    GOLDEN_HELMET:
         MinimumLevel: 0
         XpMultiplier: 4
-    GOLD_CHESTPLATE:
+    GOLDEN_CHESTPLATE:
         MinimumLevel: 0
         XpMultiplier: 4
-    GOLD_LEGGINGS:
+    GOLDEN_LEGGINGS:
         MinimumLevel: 0
         XpMultiplier: 4
-    GOLD_BOOTS:
+    GOLDEN_BOOTS:
         MinimumLevel: 0
         XpMultiplier: 4
     #
@@ -157,7 +157,7 @@ Salvageables:
     DIAMOND_SWORD:
         MinimumLevel: 50
         XpMultiplier: .5
-    DIAMOND_SPADE:
+    DIAMOND_SHOVEL:
         MinimumLevel: 50
         XpMultiplier: .3
     DIAMOND_PICKAXE:
@@ -208,6 +208,6 @@ Salvageables:
     BOW:
         MinimumLevel: 0
         XpMultiplier: .5
-    CARROT_STICK:
+    CARROT_ON_A_STICK:
         MinimumLevel: 0
         XpMultiplier: .5
