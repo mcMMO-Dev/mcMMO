@@ -43,7 +43,6 @@ public class StringUtils {
     }
 
     public static String getFriendlyConfigBlockDataString(BlockData data) {
-        Ageable isCrop = (Ageable) data;
         switch(data.getMaterial()){
             case COCOA:
             case WHEAT:
@@ -51,8 +50,11 @@ public class StringUtils {
             case CARROTS:
             case POTATOES:
             case NETHER_WART_BLOCK: {
-                if (isCrop.getAge() == isCrop.getMaximumAge()) {
-                    return getPrettyItemString(data.getMaterial()).replace(" ", "_") + "_Ripe";
+                if (data instanceof Ageable) {
+                    Ageable ageData = (Ageable) data;
+                    if (ageData.getAge() == ageData.getMaximumAge()) {
+                        return getPrettyItemString(data.getMaterial()).replace(" ", "_") + "_Ripe";
+                    }
                 }
                 return getPrettyItemString(data.getMaterial()).replace(" ", "_") + "_Ungrown";
             }
