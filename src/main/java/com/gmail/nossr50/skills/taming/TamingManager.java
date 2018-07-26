@@ -1,22 +1,5 @@
 package com.gmail.nossr50.skills.taming;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.bukkit.Location;
-import org.bukkit.Sound;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Horse;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
-import org.bukkit.entity.Wolf;
-import org.bukkit.inventory.ItemStack;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -27,15 +10,23 @@ import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.adapter.SoundAdapter;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.entity.*;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class TamingManager extends SkillManager {
     public TamingManager(McMMOPlayer mcMMOPlayer) {
@@ -119,7 +110,7 @@ public class TamingManager extends SkillManager {
         BleedTimerTask.add(target, Taming.goreBleedTicks);
 
         if (target instanceof Player) {
-            ((Player) target).sendMessage(LocaleLoader.getString("Combat.StruckByGore"));
+            target.sendMessage(LocaleLoader.getString("Combat.StruckByGore"));
         }
 
         getPlayer().sendMessage(LocaleLoader.getString("Combat.Gore"));
@@ -322,7 +313,7 @@ public class TamingManager extends SkillManager {
         }
 
         player.sendMessage(LocaleLoader.getString("Taming.Summon.Complete") + lifeSpan);
-        player.playSound(location, SoundAdapter.FIREWORK_BLAST_FAR, 1F, 0.5F);
+        player.playSound(location, Sound.ENTITY_FIREWORK_ROCKET_BLAST_FAR, 1F, 0.5F);
     }
 
     private boolean rangeCheck(EntityType type) {

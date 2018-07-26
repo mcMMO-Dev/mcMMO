@@ -1,8 +1,21 @@
 package com.gmail.nossr50.skills.repair;
 
-import java.util.Map;
-import java.util.Map.Entry;
-
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
+import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.XPGainReason;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.skills.SkillManager;
+import com.gmail.nossr50.skills.repair.ArcaneForging.Tier;
+import com.gmail.nossr50.skills.repair.repairables.Repairable;
+import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.StringUtils;
+import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
@@ -11,23 +24,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.material.MaterialData;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.datatypes.skills.XPGainReason;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.SkillManager;
-import com.gmail.nossr50.skills.repair.ArcaneForging.Tier;
-import com.gmail.nossr50.skills.repair.repairables.Repairable;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.adapter.SoundAdapter;
-import com.gmail.nossr50.util.skills.SkillUtils;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class RepairManager extends SkillManager {
     private boolean placedAnvil;
@@ -52,7 +50,7 @@ public class RepairManager extends SkillManager {
         }
 
         if (Config.getInstance().getRepairAnvilPlaceSoundsEnabled()) {
-            player.playSound(player.getLocation(), SoundAdapter.ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
         }
 
         togglePlacedAnvil();
@@ -151,7 +149,7 @@ public class RepairManager extends SkillManager {
 
         // BWONG BWONG BWONG
         if (Config.getInstance().getRepairAnvilUseSoundsEnabled()) {
-            player.playSound(player.getLocation(), SoundAdapter.ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
         }
 
         // Repair the item!

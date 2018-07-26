@@ -1,26 +1,24 @@
 package com.gmail.nossr50.datatypes.party;
 
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.experience.FormulaType;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.party.PartyManager;
+import com.gmail.nossr50.util.EventUtils;
+import com.gmail.nossr50.util.Misc;
+import org.bukkit.ChatColor;
+import org.bukkit.Sound;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Sound;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.experience.ExperienceConfig;
-import com.gmail.nossr50.datatypes.experience.FormulaType;
-import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.party.PartyManager;
-import com.gmail.nossr50.util.EventUtils;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.adapter.SoundAdapter;
 
 public class Party {
     private final LinkedHashMap<UUID, String> members = new LinkedHashMap<UUID, String>();
@@ -228,7 +226,7 @@ public class Party {
                 leader.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, getLevel()));
 
                 if (Config.getInstance().getLevelUpSoundsEnabled()) {
-                    leader.playSound(leader.getLocation(), SoundAdapter.LEVEL_UP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+                    leader.playSound(leader.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
                 }
             }
             return;
@@ -338,7 +336,7 @@ public class Party {
             }
 
             if (!nearMembers.contains(member) && !playerName.equalsIgnoreCase(memberName)) {
-                memberList.append(ChatColor.ITALIC).append("");
+                memberList.append(ChatColor.ITALIC);
             }
 
             memberList.append(memberName).append(ChatColor.RESET).append(" ");

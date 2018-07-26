@@ -21,7 +21,6 @@ import com.gmail.nossr50.runnables.skills.KrakenAttackTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.fishing.Fishing.Tier;
 import com.gmail.nossr50.util.*;
-import com.gmail.nossr50.util.adapter.SoundAdapter;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.*;
@@ -97,7 +96,7 @@ public class FishingManager extends SkillManager {
             world.strikeLightningEffect(location);
             world.strikeLightningEffect(location);
 
-            world.playSound(location, SoundAdapter.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            world.playSound(location, Sound.ENTITY_GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
             mcMMO.p.getServer().broadcastMessage(ChatColor.RED + AdvancedConfig.getInstance().getServerUnleashMessage().replace("(PLAYER)", player.getDisplayName()));
         }
         else {
@@ -105,7 +104,7 @@ public class FishingManager extends SkillManager {
             world.createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
             world.createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
 
-            player.playSound(location, SoundAdapter.GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            player.playSound(location, Sound.ENTITY_GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
         }
 
         if (player.getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {
