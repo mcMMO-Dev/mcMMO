@@ -191,12 +191,10 @@ public class BlockListener implements Listener {
 
         /* HERBALISM */
         if (BlockUtils.affectedByGreenTerra(blockState)) {
-            System.out.println(">>This Shit");
             HerbalismManager herbalismManager = mcMMOPlayer.getHerbalismManager();
 
             /* Green Terra */
             if (herbalismManager.canActivateAbility()) {
-                System.out.println(">>Sucks big ol");
                 mcMMOPlayer.checkAbilityActivation(SkillType.HERBALISM);
             }
 
@@ -205,7 +203,7 @@ public class BlockListener implements Listener {
              * Instead, we check it inside the drops handler.
              */
             if (SkillType.HERBALISM.getPermissions(player)) {
-                System.out.println(">>Pee pee");
+                System.out.print(">>getPermissions");
                 herbalismManager.herbalismBlockCheck(blockState);
             }
         }
