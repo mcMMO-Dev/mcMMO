@@ -61,6 +61,14 @@ Repairables:
     WOODEN_HOE:
         MinimumLevel: 0
         XpMultiplier: .25
+    #Repair Shield with Wood
+    SHIELD:
+        MinimumLevel: 25
+        MaterialType: WOOD
+        RepairMaterial: WOOD
+        MinimumQuantity: 6
+        MaximumDurability: 336
+        XpMultiplier: 0.5
     #
     # Stone repairables
     ###
