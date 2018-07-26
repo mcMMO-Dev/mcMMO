@@ -95,7 +95,7 @@ public class MctopCommand implements TabExecutor {
                     seconds = 1;
                 }
 
-                sender.sendMessage(LocaleLoader.formatString("Commands.Database.Cooldown", seconds));
+                sender.sendMessage(LocaleLoader.formatString(LocaleLoader.getString("Commands.Database.Cooldown"), seconds));
                 return;
             }
 
