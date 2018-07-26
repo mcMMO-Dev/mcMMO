@@ -25,7 +25,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -278,7 +278,7 @@ public class SkillUtils {
         item.setDurability((short) 0);
 
         int quantity = 0;
-        MaterialData repairData = repairMaterial != null ? new MaterialData(repairMaterial, repairMetadata) : null;
+        BlockData repairData = repairMaterial != null ? repairMaterial.createBlockData() : null;
         List<Recipe> recipes = mcMMO.p.getServer().getRecipesFor(item);
 
         if (recipes.isEmpty()) {
@@ -289,14 +289,14 @@ public class SkillUtils {
 
         if (recipe instanceof ShapelessRecipe) {
             for (ItemStack ingredient : ((ShapelessRecipe) recipe).getIngredientList()) {
-                if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getData().equals(repairData))) {
+                if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getType().equals(repairData))) {
                     quantity += ingredient.getAmount();
                 }
             }
         }
         else if (recipe instanceof ShapedRecipe) {
             for (ItemStack ingredient : ((ShapedRecipe) recipe).getIngredientMap().values()) {
-                if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getData().equals(repairData))) {
+                if (ingredient != null && (repairMaterial == null || ingredient.getType() == repairMaterial) && (repairMetadata == -1 || ingredient.getType().equals(repairData))) {
                     quantity += ingredient.getAmount();
                 }
             }

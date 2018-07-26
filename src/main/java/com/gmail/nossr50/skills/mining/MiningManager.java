@@ -16,6 +16,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -146,7 +147,7 @@ public class MiningManager extends SkillManager {
                     xp += Mining.getBlockXp(blockState);
                 }
 
-                Misc.dropItem(Misc.getBlockCenter(blockState), blockState.getData().toItemStack(1)); // Initial block that would have been dropped
+                Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType())); // Initial block that would have been dropped
 
                 if (!mcMMO.getPlaceStore().isTrue(blockState)) {
                     for (int i = 1; i < dropMultiplier; i++) {

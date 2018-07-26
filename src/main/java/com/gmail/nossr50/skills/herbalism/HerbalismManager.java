@@ -142,7 +142,7 @@ public class HerbalismManager extends SkillManager {
             if(material == Material.CHORUS_FLOWER && blockState.getRawData() != 5) {
                 return;
             }
-            xp = ExperienceConfig.getInstance().getXp(skill, blockState.getData());
+            xp = ExperienceConfig.getInstance().getXp(skill, blockState.getBlockData());
 
             if (Config.getInstance().getDoubleDropsEnabled(skill, material) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.HERBALISM_DOUBLE_DROPS)) {
                 drops = blockState.getBlock().getDrops();
@@ -199,7 +199,7 @@ public class HerbalismManager extends SkillManager {
             return false;
         }
 
-        String friendly = StringUtils.getFriendlyConfigMaterialDataString(blockState.getData());
+        String friendly = StringUtils.getFriendlyConfigBlockDataString(blockState.getBlockData());
         if (!TreasureConfig.getInstance().hylianMap.containsKey(friendly))
             return false;
         List<HylianTreasure> treasures = TreasureConfig.getInstance().hylianMap.get(friendly);
@@ -324,7 +324,7 @@ public class HerbalismManager extends SkillManager {
             case CARROT:
             case BEETROOTS:
             case WHEAT:
-                Crops crops = (Crops) blockState.getData();
+                Crops crops = (Crops) blockState.getBlockData();
 
                 if (greenTerra) {
                     crops.setState(CropState.MEDIUM);
@@ -349,7 +349,7 @@ public class HerbalismManager extends SkillManager {
                 return true;
 
             case NETHER_WART_BLOCK:
-                NetherWarts warts = (NetherWarts) blockState.getData();
+                NetherWarts warts = (NetherWarts) blockState.getBlockData();
 
                 if (greenTerra || greenThumbStage > 2) {
                     warts.setState(NetherWartsState.STAGE_TWO);
@@ -364,7 +364,7 @@ public class HerbalismManager extends SkillManager {
                 return true;
 
             case COCOA:
-                CocoaPlant plant = (CocoaPlant) blockState.getData();
+                CocoaPlant plant = (CocoaPlant) blockState.getBlockData();
 
                 if (greenTerra || getGreenThumbStage() > 1) {
                     plant.setSize(CocoaPlantSize.MEDIUM);

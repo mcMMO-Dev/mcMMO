@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.entity.EntityType;
 import org.bukkit.material.LongGrass;
-import org.bukkit.material.MaterialData;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.material.Tree;
 
 import com.gmail.nossr50.mcMMO;
@@ -193,31 +193,32 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public boolean hasCombatXP(EntityType entity) {return config.contains("Experience.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_")); }
 
     /* Materials  */
-    public int getXp(SkillType skill, MaterialData data)
+    public int getXp(SkillType skill, BlockData data)
     {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigMaterialDataString(data);
+        String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);
         if (config.contains(explicitString))
             return config.getInt(explicitString);
-        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialDataString(data);
+        String friendlyString = baseString + StringUtils.getFriendlyConfigBlockDataString(data);
         if (config.contains(friendlyString))
             return config.getInt(friendlyString);
-        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialDataString(data);
+        String wildcardString = baseString + StringUtils.getWildcardConfigBlockDataString(data);
         if (config.contains(wildcardString))
             return config.getInt(wildcardString);
         return 0;
     }
     
-    public boolean isSkillBlock(SkillType skill, MaterialData data)
+    public boolean isSkillBlock(SkillType skill, BlockData data)
     {
+        System.out.print(">>\n\n"+config.toString()+"\n\n<<");
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
-        String explicitString = baseString + StringUtils.getExplicitConfigMaterialDataString(data);
+        String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);
         if (config.contains(explicitString))
             return true;
-        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialDataString(data);
+        String friendlyString = baseString + StringUtils.getFriendlyConfigBlockDataString(data);
         if (config.contains(friendlyString))
             return true;
-        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialDataString(data);
+        String wildcardString = baseString + StringUtils.getWildcardConfigBlockDataString(data);
         if (config.contains(wildcardString))
             return true;
         return false;

@@ -39,7 +39,6 @@ Fishing:
         Amount: 1
         XP: 200
         Rarity: COMMON
-      //!!
     LAPIS_LAZULI:
         Amount: 20
         XP: 200
@@ -773,7 +772,7 @@ Shake:
             XP: 0
             Drop_Chance: 30.0
             Drop_Level: 0
-        RAW_BEEF:
+        BEEF:
             Amount: 1
             XP: 0
             Drop_Chance: 30.0
@@ -867,7 +866,7 @@ Shake:
             XP: 0
             Drop_Chance: 3.0
             Drop_Level: 0
-        SNOW_BALL:
+        SNOWBALL:
             Amount: 2
             XP: 0
             Drop_Chance: 97.0

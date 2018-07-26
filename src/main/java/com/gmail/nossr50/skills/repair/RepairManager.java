@@ -22,7 +22,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.material.MaterialData;
+import org.bukkit.block.data.BlockData;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -89,7 +89,7 @@ public class RepairManager extends SkillManager {
 
         Material repairMaterial = repairable.getRepairMaterial();
         byte repairMaterialMetadata = repairable.getRepairMaterialMetadata();
-        ItemStack toRemove = new MaterialData(repairMaterial, repairMaterialMetadata).toItemStack(1);
+        ItemStack toRemove = new ItemStack(repairMaterial);
 
         short startDurability = item.getDurability();
 

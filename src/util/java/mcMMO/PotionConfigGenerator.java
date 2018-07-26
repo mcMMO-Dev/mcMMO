@@ -379,7 +379,7 @@ public class PotionConfigGenerator {
                 children.put(new Ingredient(Material.RABBIT_FOOT), new WriteablePotion(current.mat, PotionType.JUMP));
                 children.put(new Ingredient(Material.MAGMA_CREAM), new WriteablePotion(current.mat, PotionType.FIRE_RESISTANCE));
                 children.put(new Ingredient(Material.SUGAR), new WriteablePotion(current.mat, PotionType.SPEED));
-                children.put(new Ingredient(Material.RAW_FISH, 3), new WriteablePotion(current.mat, PotionType.WATER_BREATHING));
+                children.put(new Ingredient(Material.COD, 3), new WriteablePotion(current.mat, PotionType.WATER_BREATHING));
                 children.put(new Ingredient(Material.SPECKLED_MELON), new WriteablePotion(current.mat, PotionType.INSTANT_HEAL));
                 children.put(new Ingredient(Material.SPIDER_EYE), new WriteablePotion(current.mat, PotionType.POISON));
                 children.put(new Ingredient(Material.GHAST_TEAR), new WriteablePotion(current.mat, PotionType.REGEN));

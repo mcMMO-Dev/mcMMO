@@ -2,7 +2,7 @@ package com.gmail.nossr50.skills.smelting;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
+import org.bukkit.block.data.BlockData;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -47,7 +47,7 @@ public class Smelting {
     public static double fluxMiningChance      = AdvancedConfig.getInstance().getFluxMiningChance();
 
     protected static int getResourceXp(ItemStack smelting) {
-        MaterialData data = smelting.getData();
+        BlockData data = smelting.getType().createBlockData();
         
         return mcMMO.getModManager().isCustomOre(data) ? mcMMO.getModManager().getBlock(data).getSmeltingXpGain() : ExperienceConfig.getInstance().getXp(SkillType.SMELTING, data);
     }
