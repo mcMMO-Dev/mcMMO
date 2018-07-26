@@ -5,8 +5,9 @@ import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.EntityType;
-import org.bukkit.material.MaterialData;
+import org.bukkit.block.data.BlockData;
 
 public class StringUtils {
 
@@ -37,16 +38,30 @@ public class StringUtils {
         return createPrettyEnumString(species.toString());
     }
     
-    public static String getWildcardConfigMaterialDataString(MaterialData data) {
-        return StringUtils.getPrettyItemString(data.getItemType()).replace(" ", "_") + "|*";
+    public static String getWildcardConfigBlockDataString(BlockData data) {
+        return StringUtils.getPrettyItemString(data.getMaterial()).replace(" ", "_") + "|*";
     }
 
-    public static String getFriendlyConfigMaterialDataString(MaterialData data) {
-        return getPrettyItemString(data.getItemType()).replace(" ", "_");
+    public static String getFriendlyConfigBlockDataString(BlockData data) {
+        Ageable isCrop = (Ageable) data;
+        switch(data.getMaterial()){
+            case COCOA:
+            case WHEAT:
+            case BEETROOTS:
+            case CARROTS:
+            case POTATOES:
+            case NETHER_WART_BLOCK: {
+                if (isCrop.getAge() == isCrop.getMaximumAge()) {
+                    return getPrettyItemString(data.getMaterial()).replace(" ", "_") + "_Ripe";
+                }
+                return getPrettyItemString(data.getMaterial()).replace(" ", "_") + "_Ungrown";
+            }
+        }
+        return getPrettyItemString(data.getMaterial()).replace(" ", "_");
     }
 
-    public static String getExplicitConfigMaterialDataString(MaterialData data) {
-        return StringUtils.getPrettyItemString(data.getItemType()).replace(" ", "_") + "|" + data.getData();
+    public static String getExplicitConfigBlockDataString(BlockData data) {
+        return StringUtils.getPrettyItemString(data.getMaterial()).replace(" ", "_");
     }
 
     public static String getPrettySecondaryAbilityString(SecondaryAbility secondaryAbility) {

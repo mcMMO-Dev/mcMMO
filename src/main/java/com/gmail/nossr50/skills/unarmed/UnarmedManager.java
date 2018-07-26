@@ -21,7 +21,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.MaterialData;
+import org.bukkit.block.data.BlockData;
 
 public class UnarmedManager extends SkillManager {
     public UnarmedManager(McMMOPlayer mcMMOPlayer) {
@@ -59,7 +59,7 @@ public class UnarmedManager extends SkillManager {
             return false;
         }
 
-        MaterialData data = blockState.getData();
+        BlockData data = blockState.getBlockData();
 
         switch (blockState.getType()) {
             case STONE_BRICKS:

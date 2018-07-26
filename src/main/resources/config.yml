@@ -376,7 +376,7 @@ Skills:
                 Summon_Length: 240
                 Summon_Max_Amount: 10
             Ocelot:
-                Item_Material: RAW_FISH
+                Item_Material: COD
                 Item_Amount: 10
                 Summon_Amount: 1
                 Summon_Length: 240

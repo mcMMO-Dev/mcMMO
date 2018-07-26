@@ -3,7 +3,7 @@ package com.gmail.nossr50.config.mods;
 import java.util.HashMap;
 
 import org.bukkit.Material;
-import org.bukkit.material.MaterialData;
+import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.ConfigLoader;
 import com.gmail.nossr50.datatypes.mods.CustomEntity;
@@ -54,7 +54,7 @@ public class CustomEntityConfig extends ConfigLoader {
                 canBeSummoned = false;
             }
 
-            CustomEntity entity = new CustomEntity(xpMultiplier, canBeTamed, tamingXp, canBeSummoned, (canBeSummoned ? new MaterialData(callOfTheWildMaterial, callOfTheWildData).toItemStack(1) : null), callOfTheWildAmount);
+            CustomEntity entity = new CustomEntity(xpMultiplier, canBeTamed, tamingXp, canBeSummoned, (canBeSummoned ? new ItemStack(callOfTheWildMaterial) : null), callOfTheWildAmount);
 
             customEntityTypeMap.put(entityTypeName, entity);
             customEntityClassMap.put(clazz == null ? null : clazz.getName(), entity);

@@ -6,6 +6,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
+import org.bukkit.inventory.ItemStack;
 
 public class Mining {
 
@@ -15,7 +16,7 @@ public class Mining {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public static int getBlockXp(BlockState blockState) {
-        int xp = ExperienceConfig.getInstance().getXp(SkillType.MINING, blockState.getData());
+        int xp = ExperienceConfig.getInstance().getXp(SkillType.MINING, blockState.getBlockData());
 
         if (xp == 0 && mcMMO.getModManager().isCustomMiningBlock(blockState)) {
             xp = mcMMO.getModManager().getBlock(blockState).getXpGain();
@@ -86,12 +87,12 @@ public class Mining {
             case REDSTONE_ORE:
             case STONE:
             case PRISMARINE:
-                Misc.dropItem(Misc.getBlockCenter(blockState), blockState.getData().toItemStack(1));
+                Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()));
                 return;
 
             default:
                 if (mcMMO.getModManager().isCustomMiningBlock(blockState)) {
-                    Misc.dropItem(Misc.getBlockCenter(blockState), blockState.getData().toItemStack(1));
+                    Misc.dropItem(Misc.getBlockCenter(blockState), new ItemStack(blockState.getType()));
                 }
                 return;
         }

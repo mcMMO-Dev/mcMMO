@@ -203,6 +203,7 @@ public class BlockListener implements Listener {
              * Instead, we check it inside the drops handler.
              */
             if (SkillType.HERBALISM.getPermissions(player)) {
+                System.out.print(">>getPermissions");
                 herbalismManager.herbalismBlockCheck(blockState);
             }
         }
@@ -216,7 +217,6 @@ public class BlockListener implements Listener {
         /* WOOD CUTTING */
         else if (BlockUtils.isLog(blockState) && ItemUtils.isAxe(heldItem) && SkillType.WOODCUTTING.getPermissions(player) && !mcMMO.getPlaceStore().isTrue(blockState)) {
             WoodcuttingManager woodcuttingManager = mcMMOPlayer.getWoodcuttingManager();
-
             if (woodcuttingManager.canUseTreeFeller(heldItem)) {
                 woodcuttingManager.processTreeFeller(blockState);
             }
