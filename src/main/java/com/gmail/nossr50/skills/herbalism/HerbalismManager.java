@@ -112,18 +112,22 @@ public class HerbalismManager extends SkillManager {
      * @param blockState The {@link BlockState} to check ability activation for
      */
     public void herbalismBlockCheck(BlockState blockState) {
+        System.out.print(">>1");
         Player player = getPlayer();
         Material material = blockState.getType();
         boolean oneBlockPlant = !(material == Material.CACTUS || material == Material.CHORUS_PLANT || material == Material.SUGAR_CANE);
 
         // Prevents placing and immediately breaking blocks for exp
         if (oneBlockPlant && mcMMO.getPlaceStore().isTrue(blockState)) {
+            System.out.print(">>1.5");
             return;
         }
+        System.out.print(">>2");
         
         if (!canBlockCheck()) {
             return;
         }
+        System.out.print(">>3");
 
         Collection<ItemStack> drops = null;
         int amount = 1;
@@ -131,6 +135,7 @@ public class HerbalismManager extends SkillManager {
         boolean greenTerra = mcMMOPlayer.getAbilityMode(skill.getAbility());
 
         if (mcMMO.getModManager().isCustomHerbalismBlock(blockState)) {
+            System.out.print(">>4");
             CustomBlock customBlock = mcMMO.getModManager().getBlock(blockState);
             xp = customBlock.getXpGain();
 
@@ -139,6 +144,7 @@ public class HerbalismManager extends SkillManager {
             }
         }
         else {
+            System.out.print(">>5");
             if(material == Material.CHORUS_FLOWER && blockState.getRawData() != 5) {
                 return;
             }
@@ -146,21 +152,26 @@ public class HerbalismManager extends SkillManager {
 
             if (Config.getInstance().getDoubleDropsEnabled(skill, material) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.HERBALISM_DOUBLE_DROPS)) {
                 drops = blockState.getBlock().getDrops();
+                System.out.print(">>6");
             }
 
             if (!oneBlockPlant) {
+                System.out.print(">>7");
                 amount = Herbalism.calculateMultiBlockPlantDrops(blockState);
                 xp *= amount;
             }
             
             if (Permissions.greenThumbPlant(player, material)) {
+                System.out.print(">>8");
                 processGreenThumbPlants(blockState, greenTerra);
             }
         }
+        System.out.print(">>9");
 
         applyXpGain(xp, XPGainReason.PVE);
 
         if (drops == null) {
+            System.out.print(">>10");
             return;
         }
 
