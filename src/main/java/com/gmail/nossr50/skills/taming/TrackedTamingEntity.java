@@ -1,19 +1,17 @@
 package com.gmail.nossr50.skills.taming;
 
-import java.util.UUID;
-
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.skills.CombatUtils;
+import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.gmail.nossr50.mcMMO;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.util.Misc;
-import com.gmail.nossr50.util.adapter.SoundAdapter;
-import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+import java.util.UUID;
 
 public class TrackedTamingEntity extends BukkitRunnable {
     private LivingEntity livingEntity;
@@ -36,7 +34,7 @@ public class TrackedTamingEntity extends BukkitRunnable {
     public void run() {
         if (livingEntity.isValid()) {
             Location location = livingEntity.getLocation();
-            location.getWorld().playSound(location, SoundAdapter.FIZZ, 0.8F, 0.8F);
+            location.getWorld().playSound(location, Sound.BLOCK_FIRE_EXTINGUISH, 0.8F, 0.8F);
             ParticleEffectUtils.playCallOfTheWildEffect(livingEntity);
             CombatUtils.dealDamage(livingEntity, livingEntity.getMaxHealth(), DamageCause.SUICIDE, livingEntity);
         }
