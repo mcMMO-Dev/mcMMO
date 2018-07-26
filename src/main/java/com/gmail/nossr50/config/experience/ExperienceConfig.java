@@ -210,6 +210,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     
     public boolean isSkillBlock(SkillType skill, BlockData data)
     {
+        System.out.print(">>\n\n"+config.toString()+"\n\n<<");
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
         String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);
         if (config.contains(explicitString))
