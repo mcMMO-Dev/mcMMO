@@ -20,7 +20,6 @@ public class Excavation {
      * @return the list of treasures that could be found
      */
     protected static List<ExcavationTreasure> getTreasures(BlockState blockState) {
-        System.out.print(">>4");
         String friendly = StringUtils.getFriendlyConfigBlockDataString(blockState.getBlockData());
         if (TreasureConfig.getInstance().excavationMap.containsKey(friendly))
             return TreasureConfig.getInstance().excavationMap.get(friendly);
@@ -28,7 +27,6 @@ public class Excavation {
     }
 
     protected static int getBlockXP(BlockState blockState) {
-        System.out.print(">>5");
         int xp = ExperienceConfig.getInstance().getXp(SkillType.EXCAVATION, blockState.getBlockData());
 
         if (xp == 0 && mcMMO.getModManager().isCustomExcavationBlock(blockState)) {
