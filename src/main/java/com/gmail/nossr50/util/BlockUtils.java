@@ -170,9 +170,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(BlockState blockState) {
-        System.out.print(">>Fuckin hell dude");
         if (ExperienceConfig.getInstance().isSkillBlock(SkillType.HERBALISM, blockState.getBlockData())) {
-            System.out.print(">>Does it work?");
             return true;
         }
 
