@@ -121,9 +121,9 @@ Experience:
     Archery:
         Distance_Multiplier: 0.025
     Fishing:
-        Raw_Fish: 800
-        Raw_Salmon: 800
-        Clownfish: 800
+        Cod: 800
+        Salmon: 800
+        Tropical_Fish: 800
         Pufferfish: 800
         Shake: 50
     Excavation:
