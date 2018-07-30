@@ -57,9 +57,7 @@ public final class Woodcutting {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
         else {
-            TreeSpecies species = new Tree(blockState.getType()).getSpecies();
-
-            if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(species)) {
+            if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getType())) {
                 Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
             }
         }
