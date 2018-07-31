@@ -9,11 +9,9 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
-import org.bukkit.TreeSpecies;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Tree;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +55,7 @@ public final class Woodcutting {
             Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
         }
         else {
-            TreeSpecies species = new Tree(blockState.getType()).getSpecies();
-
-            if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(species)) {
+            if (Config.getInstance().getWoodcuttingDoubleDropsEnabled(blockState.getBlockData())) {
                 Misc.dropItems(Misc.getBlockCenter(blockState), blockState.getBlock().getDrops());
             }
         }

@@ -1,20 +1,19 @@
 package com.gmail.nossr50.config;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import org.bukkit.Material;
-import org.bukkit.TreeSpecies;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.EntityType;
-
 import com.gmail.nossr50.database.SQLDatabaseManager.PoolIdentifier;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.util.StringUtils;
+import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.EntityType;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class Config extends AutoUpdateConfigLoader {
     private static Config instance;
@@ -518,7 +517,7 @@ public class Config extends AutoUpdateConfigLoader {
     public double getTamingCOTWRange() { return config.getDouble("Skills.Taming.Call_Of_The_Wild.Range", 40.0D); }
 
     /* Woodcutting */
-    public boolean getWoodcuttingDoubleDropsEnabled(TreeSpecies species) { return config.getBoolean("Double_Drops.Woodcutting." + StringUtils.getPrettyTreeSpeciesString(species).replace(" ", "_")); }
+    public boolean getWoodcuttingDoubleDropsEnabled(BlockData material) { return config.getBoolean("Double_Drops.Woodcutting." + StringUtils.getFriendlyConfigBlockDataString(material)); }
     public boolean getTreeFellerSoundsEnabled() { return config.getBoolean("Skills.Woodcutting.Tree_Feller_Sounds", true); }
 
     /* AFK Leveling */
