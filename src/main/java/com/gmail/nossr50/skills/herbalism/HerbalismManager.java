@@ -18,12 +18,12 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NetherWartsState;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.material.CocoaPlant;
 import org.bukkit.material.CocoaPlant.CocoaPlantSize;
-import org.bukkit.material.Crops;
 import org.bukkit.material.NetherWarts;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -324,53 +324,40 @@ public class HerbalismManager extends SkillManager {
             case CARROTS:
             case BEETROOTS:
             case WHEAT:
-                Crops crops = (Crops) blockState.getBlockData();
+                Ageable crops = (Ageable) blockState.getBlockData();
 
                 if (greenTerra) {
-                    crops.setState(CropState.MEDIUM);
+                    crops.setAge(3);
                 }
                 else {
-                    switch (greenThumbStage) {
-                        case 4:
-                            crops.setState(CropState.SMALL);
-                            break;
-                        case 3:
-                            crops.setState(CropState.VERY_SMALL);
-                            break;
-                        case 2:
-                            crops.setState(CropState.GERMINATED);
-                            break;
-                        default:
-                            crops.setState(CropState.SEEDED);
-                            break;
-                    }
+                    crops.setAge(greenThumbStage);
                 }
 
                 return true;
 
             case NETHER_WART_BLOCK:
-                NetherWarts warts = (NetherWarts) blockState.getBlockData();
+                Ageable warts = (Ageable) blockState.getBlockData();
 
                 if (greenTerra || greenThumbStage > 2) {
-                    warts.setState(NetherWartsState.STAGE_TWO);
+                    warts.setAge(2);
                 }
                 else if (greenThumbStage == 2) {
-                    warts.setState(NetherWartsState.STAGE_ONE);
+                    warts.setAge(1);
                 }
                 else {
-                    warts.setState(NetherWartsState.SEEDED);
+                    warts.setAge(0);
                 }
 
                 return true;
 
             case COCOA:
-                CocoaPlant plant = (CocoaPlant) blockState.getBlockData();
+                Ageable plant = (Ageable) blockState.getBlockData();
 
                 if (greenTerra || getGreenThumbStage() > 1) {
-                    plant.setSize(CocoaPlantSize.MEDIUM);
+                    plant.setAge(1);
                 }
                 else {
-                    plant.setSize(CocoaPlantSize.SMALL);
+                    plant.setAge(0);
                 }
 
                 return true;
