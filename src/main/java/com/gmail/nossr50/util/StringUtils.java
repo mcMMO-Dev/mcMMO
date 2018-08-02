@@ -39,7 +39,11 @@ public class StringUtils {
     }
     
     public static String getWildcardConfigBlockDataString(BlockData data) {
-        return StringUtils.getPrettyItemString(data.getMaterial()).replace(" ", "_") + "|*";
+        return getWildcardConfigMaterialString(data.getMaterial());
+    }
+
+    public static String getWildcardConfigMaterialString(Material data) {
+        return StringUtils.getPrettyItemString(data).replace(" ", "_") + "|*";
     }
 
     public static String getFriendlyConfigBlockDataString(BlockData data) {
@@ -62,8 +66,16 @@ public class StringUtils {
         return getPrettyItemString(data.getMaterial()).replace(" ", "_");
     }
 
+    public static String getFriendlyConfigMaterialString(Material data) {
+        return getPrettyItemString(data).replace(" ", "_");
+    }
+
     public static String getExplicitConfigBlockDataString(BlockData data) {
-        return StringUtils.getPrettyItemString(data.getMaterial()).replace(" ", "_");
+        return getExplicitConfigMaterialString(data.getMaterial());
+    }
+
+    public static String getExplicitConfigMaterialString(Material data) {
+        return StringUtils.getPrettyItemString(data).replace(" ", "_");
     }
 
     public static String getPrettySecondaryAbilityString(SecondaryAbility secondaryAbility) {
