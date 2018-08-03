@@ -3,15 +3,10 @@ package com.gmail.nossr50.config.experience;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.GrassSpecies;
 import org.bukkit.Material;
-import org.bukkit.TreeSpecies;
 import org.bukkit.entity.EntityType;
-import org.bukkit.material.LongGrass;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.material.Tree;
 
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AutoUpdateConfigLoader;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
@@ -191,6 +186,22 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public double getAnimalsXP(EntityType entity) { return config.getDouble("Experience.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_"), getAnimalsXP()); }
     public double getAnimalsXP() { return config.getDouble("Experience.Combat.Multiplier.Animals", 1.0); }
     public boolean hasCombatXP(EntityType entity) {return config.contains("Experience.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_")); }
+
+    /* Materials  */
+    public int getXp(SkillType skill, Material data)
+    {
+        String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
+        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
+        if (config.contains(explicitString))
+            return config.getInt(explicitString);
+        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(data);
+        if (config.contains(friendlyString))
+            return config.getInt(friendlyString);
+        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(data);
+        if (config.contains(wildcardString))
+            return config.getInt(wildcardString);
+        return 0;
+    }
 
     /* Materials  */
     public int getXp(SkillType skill, BlockData data)
