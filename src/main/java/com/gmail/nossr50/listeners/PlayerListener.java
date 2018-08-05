@@ -198,12 +198,15 @@ public class PlayerListener implements Listener {
                     event.setCancelled(fishingManager.exploitPrevention());
                 }
                 return;
-
             case CAUGHT_FISH:
                 //TODO Update to new API once available! Waiting for case CAUGHT_TREASURE:
                 Item fishingCatch = (Item) event.getCaught();
 
-                if (Config.getInstance().getFishingOverrideTreasures() && fishingCatch.getItemStack().getType() != Material.SALMON) {
+                if (Config.getInstance().getFishingOverrideTreasures() &&
+                        fishingCatch.getItemStack().getType() != Material.SALMON &&
+                        fishingCatch.getItemStack().getType() != Material.COD &&
+                        fishingCatch.getItemStack().getType() != Material.TROPICAL_FISH &&
+                        fishingCatch.getItemStack().getType() != Material.PUFFERFISH) {
                     fishingCatch.setItemStack(new ItemStack(Material.SALMON, 1));
                 }
 
