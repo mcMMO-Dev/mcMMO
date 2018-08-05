@@ -585,7 +585,7 @@ public class EntityListener implements Listener {
                 return;
 
             case COOKIE: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-            case MELON: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
+            case MELON_SLICE: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
             case POISONOUS_POTATO: /*
                                     * RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER
                                     * @ 1000

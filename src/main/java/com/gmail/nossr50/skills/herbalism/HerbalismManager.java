@@ -13,10 +13,7 @@ import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.CropState;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NetherWartsState;
+import org.bukkit.*;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
@@ -278,7 +275,7 @@ public class HerbalismManager extends SkillManager {
                 seed = Material.WHEAT_SEEDS;
                 break;
 
-            case NETHER_WART_BLOCK:
+            case NETHER_WART:
                 seed = Material.NETHER_WART;
                 break;
 
@@ -317,14 +314,14 @@ public class HerbalismManager extends SkillManager {
         byte greenThumbStage = getGreenThumbStage();
 
         blockState.setMetadata(mcMMO.greenThumbDataKey, new FixedMetadataValue(mcMMO.p, (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR)));
+        Ageable crops = (Ageable) blockState.getBlockData();
 
         switch (blockState.getType()) {
 
             case POTATOES:
             case CARROTS:
-            case BEETROOTS:
             case WHEAT:
-                Ageable crops = (Ageable) blockState.getBlockData();
+                crops = (Ageable) blockState.getBlockData();
 
                 if (greenTerra) {
                     crops.setAge(3);
@@ -332,39 +329,39 @@ public class HerbalismManager extends SkillManager {
                 else {
                     crops.setAge(greenThumbStage);
                 }
+                break;
 
-                return true;
-
-            case NETHER_WART_BLOCK:
-                Ageable warts = (Ageable) blockState.getBlockData();
+            case BEETROOTS:
+            case NETHER_WART:
+                crops = (Ageable) blockState.getBlockData();
 
                 if (greenTerra || greenThumbStage > 2) {
-                    warts.setAge(2);
+                    crops.setAge(2);
                 }
                 else if (greenThumbStage == 2) {
-                    warts.setAge(1);
+                    crops.setAge(1);
                 }
                 else {
-                    warts.setAge(0);
+                    crops.setAge(0);
                 }
-
-                return true;
+               break;
 
             case COCOA:
-                Ageable plant = (Ageable) blockState.getBlockData();
+                crops = (Ageable) blockState.getBlockData();
 
                 if (greenTerra || getGreenThumbStage() > 1) {
-                    plant.setAge(1);
+                    crops.setAge(1);
                 }
                 else {
-                    plant.setAge(0);
+                    crops.setAge(0);
                 }
-
-                return true;
+                break;
 
             default:
                 return false;
         }
+        blockState.setBlockData(crops);
+        return true;
     }
 
     private byte getGreenThumbStage() {

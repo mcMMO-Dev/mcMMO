@@ -21,7 +21,7 @@ public enum MaterialType {
                 return Material.LEATHER;
 
             case WOOD:
-                return Material.OAK_WOOD;
+                return Material.OAK_PLANKS;
 
             case STONE:
                 return Material.COBBLESTONE;

@@ -38,7 +38,7 @@ public class Herbalism {
 
             case DIRT :
             case GRASS_PATH :
-                blockState.setType(Material.GRASS);
+                blockState.setType(Material.GRASS_BLOCK);
                 return true;
 
             case COBBLESTONE :
@@ -161,7 +161,7 @@ public class Herbalism {
     protected static boolean convertShroomThumb(BlockState blockState) {
         switch (blockState.getType()) {
             case DIRT :
-            case GRASS :
+            case GRASS_BLOCK:
             case GRASS_PATH :
                 blockState.setType(Material.MYCELIUM);
                 return true;

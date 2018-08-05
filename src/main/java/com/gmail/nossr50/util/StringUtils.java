@@ -53,7 +53,7 @@ public class StringUtils {
             case BEETROOTS:
             case CARROTS:
             case POTATOES:
-            case NETHER_WART_BLOCK: {
+            case NETHER_WART: {
                 if (data instanceof Ageable) {
                     Ageable ageData = (Ageable) data;
                     if (ageData.getAge() == ageData.getMaximumAge()) {
