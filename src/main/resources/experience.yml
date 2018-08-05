@@ -168,7 +168,7 @@ Experience:
         Wheat_Ripe: 50
         Dead_Bush: 30
         Lilac: 50
-        Melon_Block: 20
+        Melon: 20
         Nether_Wart_Ripe: 50
         Orange_Tulip: 150
         Oxeye_Daisy: 150
@@ -182,7 +182,7 @@ Experience:
         Rose_Bush: 50
         Fern: 10
         Grass: 10
-        Sugar_Cane_Block: 30
+        Sugar_Cane: 30
         Sunflower: 50
         Tall_Grass: 50
         Large_Fern: 50
