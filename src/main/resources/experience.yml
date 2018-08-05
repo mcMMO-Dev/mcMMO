@@ -210,7 +210,10 @@ Experience:
         Redstone_Ore: 150
         Sandstone: 30
         Stained_Clay|*: 50
-        Stone|*: 30
+        Stone: 30
+        Granite: 30
+        Andesite: 30
+        Diorite: 30
         Red_Sandstone: 100
         Prismarine: 70
         Purpur_Block: 200
