@@ -211,3 +211,10 @@ Salvageables:
     CARROT_ON_A_STICK:
         MinimumLevel: 0
         XpMultiplier: .5
+    SHIELD:
+        MinimumLevel: 25
+        MaterialType: WOOD
+        SalvageMaterial: WOOD
+        MinimumQuantity: 6
+        MaximumDurability: 336
+        XpMultiplier: 0.5

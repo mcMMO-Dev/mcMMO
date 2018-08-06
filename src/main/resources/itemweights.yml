@@ -73,10 +73,10 @@ Party_Shareables:
         - Stone_Shovel
         - Stone_Pickaxe
         - Stone_Axe
-        - Wood_Sword
-        - Wood_Shovel
-        - Wood_Pickaxe
-        - Wood_Axe
+        - Wooden_Sword
+        - Wooden_Shovel
+        - Wooden_Pickaxe
+        - Wooden_Axe
         - Bow
         - Diamond_Helmet
         - Diamond_Chestplate
