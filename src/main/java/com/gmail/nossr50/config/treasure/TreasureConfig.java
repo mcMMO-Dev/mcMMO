@@ -6,6 +6,7 @@ import com.gmail.nossr50.util.EnchantmentUtils;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.TreeSpecies;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -226,33 +227,6 @@ public class TreasureConfig extends ConfigLoader {
                     }
                     item.setItemMeta(itemMeta);
                 }
-//            } else if (materialName.contains("INK_SAC")) {
-//                String color = materialName.substring(9);
-//
-//                try {
-//                    Dye dye = new Dye();
-//                    dye.setColor(DyeColor.valueOf(color.toUpperCase().trim()));
-//
-//                    item = dye.toItemStack(amount);
-//
-//                    if (config.contains(type + "." + treasureName + ".Custom_Name")) {
-//                        ItemMeta itemMeta = item.getItemMeta();
-//                        itemMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', config.getString(type + "." + treasureName + ".Custom_Name")));
-//                        item.setItemMeta(itemMeta);
-//                    }
-//
-//                    if (config.contains(type + "." + treasureName + ".Lore")) {
-//                        ItemMeta itemMeta = item.getItemMeta();
-//                        List<String> lore = new ArrayList<String>();
-//                        for (String s : config.getStringList(type + "." + treasureName + ".Lore")) {
-//                            lore.add(ChatColor.translateAlternateColorCodes('&', s));
-//                        }
-//                        itemMeta.setLore(lore);
-//                        item.setItemMeta(itemMeta);
-//                    }
-//                } catch (IllegalArgumentException ex) {
-//                    reason.add("Invalid Dye_Color: " + color);
-//                }
             } else if (material != null) {
                 item = new ItemStack(material, amount, data);
 
@@ -298,11 +272,10 @@ public class TreasureConfig extends ConfigLoader {
 
                     for (String dropper : dropList) {
                         if (dropper.equals("Bushes")) {
-                            AddHylianTreasure("Small_Fern", hylianTreasure);
-                            AddHylianTreasure("Small_Grass", hylianTreasure);
-                            for (TreeSpecies species : TreeSpecies.values()) {
-                                AddHylianTreasure(StringUtils.getPrettyTreeSpeciesString(species) + "_Sapling", hylianTreasure);
-                            }
+                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.FERN), hylianTreasure);
+                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.TALL_GRASS), hylianTreasure);
+                            for (Material species : Tag.SAPLINGS.getValues())
+                                AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(species), hylianTreasure);
 
                             AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.DEAD_BUSH), hylianTreasure);
                             continue;
@@ -320,28 +293,8 @@ public class TreasureConfig extends ConfigLoader {
                             continue;
                         }
                         if (dropper.equals("Pots")) {
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.FLOWER_POT), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_DANDELION), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_POPPY), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_BLUE_ORCHID), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_ALLIUM), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_AZURE_BLUET), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_RED_TULIP), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_ORANGE_TULIP), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_WHITE_TULIP), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_PINK_TULIP), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_OXEYE_DAISY), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_OAK_SAPLING), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_SPRUCE_SAPLING), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_BIRCH_SAPLING), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_JUNGLE_SAPLING), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_OXEYE_DAISY), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_OXEYE_DAISY), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_FERN), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_DEAD_BUSH), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_RED_MUSHROOM), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_BROWN_MUSHROOM), hylianTreasure);
-                            AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(Material.POTTED_CACTUS), hylianTreasure);
+                            for (Material species : Tag.FLOWER_POTS.getValues())
+                                AddHylianTreasure(StringUtils.getFriendlyConfigMaterialString(species), hylianTreasure);
                             continue;
                         }
                         AddHylianTreasure(dropper, hylianTreasure);
