@@ -47,6 +47,7 @@ import net.shatteredlands.shatt.backup.ZipLibrary;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -421,17 +422,19 @@ public class mcMMO extends JavaPlugin {
     }
 
     private void registerCustomRecipes() {
-        if (Config.getInstance().getChimaeraEnabled()) {
-            getServer().addRecipe(ChimaeraWing.getChimaeraWingRecipe());
-        }
+        getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
+            if (Config.getInstance().getChimaeraEnabled()) {
+                getServer().addRecipe(ChimaeraWing.getChimaeraWingRecipe());
+            }
 
-        if (Config.getInstance().getFluxPickaxeEnabled()) {
-            getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.DIAMOND_PICKAXE));
-            getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.GOLDEN_PICKAXE));
-            getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.IRON_PICKAXE));
-            getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.STONE_PICKAXE));
-            getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.WOODEN_PICKAXE));
-        }
+            if (Config.getInstance().getFluxPickaxeEnabled()) {
+                getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.DIAMOND_PICKAXE));
+                getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.GOLDEN_PICKAXE));
+                getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.IRON_PICKAXE));
+                getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.STONE_PICKAXE));
+                getServer().addRecipe(SmeltingManager.getFluxPickaxeRecipe(Material.WOODEN_PICKAXE));
+            }
+        }, 40);
     }
 
     private void scheduleTasks() {
