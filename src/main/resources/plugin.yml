@@ -317,16 +317,19 @@ permissions:
         description: Allows access to all Green Thumb abilities for blocks
         children:
             mcmmo.ability.herbalism.greenthumb.blocks.cobblestone: true
-            mcmmo.ability.herbalism.greenthumb.blocks.cobblewall: true
+            mcmmo.ability.herbalism.greenthumb.blocks.cobblestone_wall: true
             mcmmo.ability.herbalism.greenthumb.blocks.dirt: true
-            mcmmo.ability.herbalism.greenthumb.blocks.smoothbrick: true
+            mcmmo.ability.herbalism.greenthumb.blocks.grasspath: true
+            mcmmo.ability.herbalism.greenthumb.blocks.stonebricks: true
     mcmmo.ability.herbalism.greenthumb.blocks.cobblestone:
         description: Allows access to the Green Thumb ability for cobblestone
-    mcmmo.ability.herbalism.greenthumb.blocks.cobblewall:
+    mcmmo.ability.herbalism.greenthumb.blocks.cobblestone_wall:
         description: Allows access to the Green Thumb ability for cobblestone walls
     mcmmo.ability.herbalism.greenthumb.blocks.dirt:
         description: Allows access to the Green Thumb ability for dirt
-    mcmmo.ability.herbalism.greenthumb.blocks.smoothbrick:
+    mcmmo.ability.herbalism.greenthumb.blocks.grasspath:
+        description: Allows access to the Green Thumb ability for grass path
+    mcmmo.ability.herbalism.greenthumb.blocks.stonebricks:
         description: Allows access to the Green Thumb ability for smooth brick
     mcmmo.ability.herbalism.greenthumb.plants.*:
         default: false
@@ -336,24 +339,24 @@ permissions:
     mcmmo.ability.herbalism.greenthumb.plants.all:
         description: Allows access to all Green Thumb abilities for plants
         children:
-            mcmmo.ability.herbalism.greenthumb.plants.carrot: true
+            mcmmo.ability.herbalism.greenthumb.plants.carrots: true
             mcmmo.ability.herbalism.greenthumb.plants.cocoa: true
-            mcmmo.ability.herbalism.greenthumb.plants.crops: true
-            mcmmo.ability.herbalism.greenthumb.plants.netherwarts: true
-            mcmmo.ability.herbalism.greenthumb.plants.potato: true
-            mcmmo.ability.herbalism.greenthumb.plants.beetrootblock: true
-    mcmmo.ability.herbalism.greenthumb.plants.carrot:
+            mcmmo.ability.herbalism.greenthumb.plants.wheat: true
+            mcmmo.ability.herbalism.greenthumb.plants.netherwart: true
+            mcmmo.ability.herbalism.greenthumb.plants.potatoes: true
+            mcmmo.ability.herbalism.greenthumb.plants.beetroots: true
+    mcmmo.ability.herbalism.greenthumb.plants.carrots:
         description: Allows access to the Green Thumb ability for carrots
     mcmmo.ability.herbalism.greenthumb.plants.cocoa:
         description: Allows access to the Green Thumb ability for cocoa
-    mcmmo.ability.herbalism.greenthumb.plants.crops:
+    mcmmo.ability.herbalism.greenthumb.plants.wheat:
         description: Allows access to the Green Thumb ability for wheat
-    mcmmo.ability.herbalism.greenthumb.plants.netherwarts:
+    mcmmo.ability.herbalism.greenthumb.plants.netherwart:
         description: Allows access to the Green Thumb ability for netherwart
-    mcmmo.ability.herbalism.greenthumb.plants.potato:
+    mcmmo.ability.herbalism.greenthumb.plants.potatoes:
         description: Allows access to the Green Thumb ability for potatoes
-    mcmmo.ability.herbalism.greenthumb.plants.beetrootblock:
-        description: Allows access to the Green Thumb ability for beetrootes
+    mcmmo.ability.herbalism.greenthumb.plants.beetroots:
+        description: Allows access to the Green Thumb ability for beetroots
     mcmmo.ability.herbalism.hylianluck:
         description: Allows access to the Hylian Luck ability
     mcmmo.ability.herbalism.shroomthumb:
