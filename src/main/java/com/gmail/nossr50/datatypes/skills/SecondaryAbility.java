@@ -64,7 +64,7 @@ public enum SecondaryAbility {
     /* Taming */
     BEAST_LORE,
     CALL_OF_THE_WILD,
-    ENVIROMENTALLY_AWARE,
+    ENVIRONMENTALLY_AWARE,
     FAST_FOOD,
     GORE,
     HOLY_HOUND,

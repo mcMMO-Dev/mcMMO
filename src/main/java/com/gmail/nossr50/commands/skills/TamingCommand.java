@@ -45,7 +45,7 @@ public class TamingCommand extends SkillCommand {
     protected void permissionsCheck(Player player) {
         canBeastLore = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.BEAST_LORE);
         canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
-        canEnvironmentallyAware = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ENVIROMENTALLY_AWARE);
+        canEnvironmentallyAware = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ENVIRONMENTALLY_AWARE);
         canFastFood = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FAST_FOOD);
         canGore = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.GORE);
         canSharpenedClaws = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHARPENED_CLAWS);

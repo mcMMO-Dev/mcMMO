@@ -40,7 +40,7 @@ public class TamingManager extends SkillManager {
     }
 
     public boolean canUseEnvironmentallyAware() {
-        return getSkillLevel() >= Taming.environmentallyAwareUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.ENVIROMENTALLY_AWARE);
+        return getSkillLevel() >= Taming.environmentallyAwareUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.ENVIRONMENTALLY_AWARE);
     }
 
     public boolean canUseShockProof() {

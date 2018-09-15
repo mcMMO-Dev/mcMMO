@@ -1251,8 +1251,6 @@ permissions:
         description: Allows use of Chimaera Wing item
     mcmmo.mobhealthdisplay:
          description: Allows viewing of mob health display during combat
-    mcmmo.motd:
-        description: Allows access to the motd
     mcmmo.party.*:
         default: false
         description: Implies access to all mcmmo party permissions
