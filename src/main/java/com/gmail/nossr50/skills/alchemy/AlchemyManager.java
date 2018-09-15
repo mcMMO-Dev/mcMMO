@@ -38,16 +38,7 @@ public class AlchemyManager extends SkillManager {
         StringBuilder list = new StringBuilder();
 
         for (ItemStack ingredient : getIngredients()) {
-            short durability = ingredient.getDurability();
-
-            String string = StringUtils.getPrettyItemString(ingredient.getType()) + (durability != 0 ? ":" + durability : "");
-
-            if (string.equals("Long Grass:2")) {
-                string = "Fern";
-            }
-            else if (string.equals("Raw Fish:3")) {
-                string = "Pufferfish";
-            }
+            String string = StringUtils.getPrettyItemString(ingredient.getType());
 
             list.append(", ").append(string);
         }

@@ -210,13 +210,10 @@ public class PotionConfig extends ConfigLoader {
             return null;
         }
 
-        String[] parts = ingredient.split(":");
-
-        Material material = parts.length > 0 ? Material.getMaterial(parts[0]) : null;
-        short data = parts.length > 1 ? Short.parseShort(parts[1]) : 0;
+        Material material = Material.getMaterial(ingredient);
 
         if (material != null) {
-            return new ItemStack(material, 1, data);
+            return new ItemStack(material, 1);
         }
 
         return null;

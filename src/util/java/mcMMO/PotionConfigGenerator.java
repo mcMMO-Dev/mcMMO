@@ -1,9 +1,6 @@
 package com.gmail.nossr50;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,11 +27,6 @@ public class PotionConfigGenerator {
             name = mat.name();
         }
 
-        public Ingredient(Material mat, int data) {
-            this.mat = mat;
-            this.data = data;
-            name = "'" + mat.name() + ":" + data + "'";
-        }
     }
     public static class WriteablePotion {
 
@@ -62,9 +54,6 @@ public class PotionConfigGenerator {
             this.mat = type;
             this.baseName = baseName;
             this.name = "POTION_OF_" + baseName;
-            if(mat == Material.NETHER_WARTS){
-                this.mat = Material.NETHER_STALK;
-            }
             if (mat == Material.SPLASH_POTION) {
                 this.name = "SPLASH_" + this.name;
             }
@@ -114,6 +103,8 @@ public class PotionConfigGenerator {
                 case WATER :
                 case WATER_BREATHING :
                 case WEAKNESS :
+                case TURTLE_MASTER:
+                case SLOW_FALLING:
                     return type.name();
                 default :
                     return "";
@@ -132,80 +123,75 @@ public class PotionConfigGenerator {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-        Map<WriteablePotion, Map<Ingredient, WriteablePotion>> vanillaPotions = new HashMap<WriteablePotion, Map<Ingredient, WriteablePotion>>();
+    public static void main(String[] args) {
+        Map<WriteablePotion, Map<Ingredient, WriteablePotion>> vanillaPotions = new HashMap<>();
         populateVanillaPotions(vanillaPotions);
-        Map<WriteablePotion, Map<Ingredient, WriteablePotion>> mcMMOPotions = new HashMap<WriteablePotion, Map<Ingredient, WriteablePotion>>();
+        Map<WriteablePotion, Map<Ingredient, WriteablePotion>> mcMMOPotions = new HashMap<>();
         populateCustomPotions(mcMMOPotions);
-        List<WriteablePotion> sorted = new ArrayList<WriteablePotion>();
+        List<WriteablePotion> sorted = new ArrayList<>();
         sorted.addAll(vanillaPotions.keySet());
         sorted.addAll(mcMMOPotions.keySet());
-        sorted.sort(new Comparator<WriteablePotion>() {
-
-            @Override
-            public int compare(WriteablePotion a, WriteablePotion b) {
-                // All normal potions first
-                if (a.mat == Material.POTION && b.mat != Material.POTION) {
-                    return -1;
-                }
-                if (b.mat == Material.POTION && a.mat != Material.POTION) {
-                    return 1;
-                }
-                // All splash potions second
-                if (a.mat == Material.SPLASH_POTION && b.mat != Material.SPLASH_POTION) {
-                    return -1;
-                }
-                if (b.mat == Material.SPLASH_POTION && a.mat != Material.SPLASH_POTION) {
-                    return 1;
-                }
-                // Vanilla Potions first
-                if (a.effect == null && b.effect != null) {
-                    return -1;
-                }
-                if (b.effect == null && a.effect != null) {
-                    return 1;
-                }
-                // Vanilla potions
-                if (a.effect == null && b.effect == null) {
-                    // Order by PotionType
-                    if (a.data.getType() != b.data.getType()) {
-                        return Integer.compare(a.data.getType().ordinal(), b.data.getType().ordinal());
-                    }
-                    // Plain before extended or upgraded
-                    if (!a.data.isExtended() && !a.data.isUpgraded() && (b.data.isExtended() || b.data.isUpgraded())) {
-                        return -1;
-                    }
-                    if (!b.data.isExtended() && !b.data.isUpgraded() && (a.data.isExtended() || a.data.isUpgraded())) {
-                        return 1;
-                    }
-                    // Extended before Upgraded
-                    if (a.data.isExtended() && b.data.isUpgraded()) {
-                        return -1;
-                    }
-                    if (b.data.isExtended() && a.data.isUpgraded()) {
-                        return -1;
-                    }
-                    // Same potion somehow?
-                    return 0;
-                }
-                // mcMMO Potions
-                else {
-                    if ((a.baseName.contains("II") || a.baseName.contains("EXTENDED")) && !(b.baseName.contains("II") || b.baseName.contains("EXTENDED"))) {
-                        return 1;
-                    }
-                    if ((b.baseName.contains("II") || b.baseName.contains("EXTENDED")) && !(a.baseName.contains("II") || a.baseName.contains("EXTENDED"))) {
-                        return -1;
-                    }
-                    if (!a.baseName.contains("II") && b.baseName.contains("II")) {
-                        return -1;
-                    }
-                    if (!b.baseName.contains("II") && a.baseName.contains("II")) {
-                        return 1;
-                    }
-                    return a.baseName.split("_")[0].compareTo(b.baseName.split("_")[0]);
-                }
+        sorted.sort((a, b) -> {
+            // All normal potions first
+            if (a.mat == Material.POTION && b.mat != Material.POTION) {
+                return -1;
             }
-
+            if (b.mat == Material.POTION && a.mat != Material.POTION) {
+                return 1;
+            }
+            // All splash potions second
+            if (a.mat == Material.SPLASH_POTION && b.mat != Material.SPLASH_POTION) {
+                return -1;
+            }
+            if (b.mat == Material.SPLASH_POTION && a.mat != Material.SPLASH_POTION) {
+                return 1;
+            }
+            // Vanilla Potions first
+            if (a.effect == null && b.effect != null) {
+                return -1;
+            }
+            if (b.effect == null && a.effect != null) {
+                return 1;
+            }
+            // Vanilla potions
+            if (a.effect == null && b.effect == null) {
+                // Order by PotionType
+                if (a.data.getType() != b.data.getType()) {
+                    return Integer.compare(a.data.getType().ordinal(), b.data.getType().ordinal());
+                }
+                // Plain before extended or upgraded
+                if (!a.data.isExtended() && !a.data.isUpgraded() && (b.data.isExtended() || b.data.isUpgraded())) {
+                    return -1;
+                }
+                if (!b.data.isExtended() && !b.data.isUpgraded() && (a.data.isExtended() || a.data.isUpgraded())) {
+                    return 1;
+                }
+                // Extended before Upgraded
+                if (a.data.isExtended() && b.data.isUpgraded()) {
+                    return -1;
+                }
+                if (b.data.isExtended() && a.data.isUpgraded()) {
+                    return -1;
+                }
+                // Same potion somehow?
+                return 0;
+            }
+            // mcMMO Potions
+            else {
+                if ((a.baseName.contains("II") || a.baseName.contains("EXTENDED")) && !(b.baseName.contains("II") || b.baseName.contains("EXTENDED"))) {
+                    return 1;
+                }
+                if ((b.baseName.contains("II") || b.baseName.contains("EXTENDED")) && !(a.baseName.contains("II") || a.baseName.contains("EXTENDED"))) {
+                    return -1;
+                }
+                if (!a.baseName.contains("II") && b.baseName.contains("II")) {
+                    return -1;
+                }
+                if (!b.baseName.contains("II") && a.baseName.contains("II")) {
+                    return 1;
+                }
+                return a.baseName.split("_")[0].compareTo(b.baseName.split("_")[0]);
+            }
         });
         for (WriteablePotion potion : sorted) {
             System.out.println("    " + potion.name + ":");
@@ -319,6 +305,12 @@ public class PotionConfigGenerator {
                 return "LUCK";
             case 27 :
                 return "UNLUCK";
+            case 28:
+                return "SLOW_FALLING";
+            case 29:
+                return "CONDUIT_POWER";
+            case 30:
+                return "DOLPHINS_GRACE";
             default :
                 return "UNKNOWN_EFFECT_TYPE_" + type.getId();
         }
@@ -328,18 +320,18 @@ public class PotionConfigGenerator {
         for (PotionType type : PotionType.values()) {
             for (Material material : new Material[]{Material.POTION, Material.SPLASH_POTION, Material.LINGERING_POTION}) {
                 WriteablePotion data = new WriteablePotion(material, type);
-                HashMap<Ingredient, WriteablePotion> children = new HashMap<Ingredient, WriteablePotion>();
+                HashMap<Ingredient, WriteablePotion> children = new HashMap<>();
                 getChildren(data, children);
                 vanillaPotions.put(data, children);
                 if (type.isExtendable()) {
                     data = new WriteablePotion(material, new PotionData(type, true, false));
-                    children = new HashMap<Ingredient, WriteablePotion>();
+                    children = new HashMap<>();
                     getChildren(data, children);
                     vanillaPotions.put(data, children);
                 }
                 if (type.isUpgradeable()) {
                     data = new WriteablePotion(material, new PotionData(type, false, true));
-                    children = new HashMap<Ingredient, WriteablePotion>();
+                    children = new HashMap<>();
                     getChildren(data, children);
                     vanillaPotions.put(data, children);
                 }
@@ -360,7 +352,7 @@ public class PotionConfigGenerator {
             case WATER :
                 assert(!current.data.isExtended());
                 assert(!current.data.isUpgraded());
-                children.put(new Ingredient(Material.NETHER_STALK), new WriteablePotion(current.mat, PotionType.AWKWARD));
+                children.put(new Ingredient(Material.NETHER_WART), new WriteablePotion(current.mat, PotionType.AWKWARD));
                 children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, PotionType.WEAKNESS));
                 children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, PotionType.MUNDANE));
                 children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, PotionType.THICK));
@@ -369,7 +361,7 @@ public class PotionConfigGenerator {
                 children.put(new Ingredient(Material.RABBIT_FOOT), new WriteablePotion(current.mat, PotionType.MUNDANE));
                 children.put(new Ingredient(Material.SPIDER_EYE), new WriteablePotion(current.mat, PotionType.MUNDANE));
                 children.put(new Ingredient(Material.MAGMA_CREAM), new WriteablePotion(current.mat, PotionType.MUNDANE));
-                children.put(new Ingredient(Material.SPECKLED_MELON), new WriteablePotion(current.mat, PotionType.MUNDANE));
+                children.put(new Ingredient(Material.GLISTERING_MELON_SLICE), new WriteablePotion(current.mat, PotionType.MUNDANE));
                 children.put(new Ingredient(Material.GHAST_TEAR), new WriteablePotion(current.mat, PotionType.MUNDANE));
                 return;
             case AWKWARD :
@@ -379,11 +371,13 @@ public class PotionConfigGenerator {
                 children.put(new Ingredient(Material.RABBIT_FOOT), new WriteablePotion(current.mat, PotionType.JUMP));
                 children.put(new Ingredient(Material.MAGMA_CREAM), new WriteablePotion(current.mat, PotionType.FIRE_RESISTANCE));
                 children.put(new Ingredient(Material.SUGAR), new WriteablePotion(current.mat, PotionType.SPEED));
-                children.put(new Ingredient(Material.COD, 3), new WriteablePotion(current.mat, PotionType.WATER_BREATHING));
-                children.put(new Ingredient(Material.SPECKLED_MELON), new WriteablePotion(current.mat, PotionType.INSTANT_HEAL));
+                children.put(new Ingredient(Material.PUFFERFISH), new WriteablePotion(current.mat, PotionType.WATER_BREATHING));
+                children.put(new Ingredient(Material.GLISTERING_MELON_SLICE), new WriteablePotion(current.mat, PotionType.INSTANT_HEAL));
                 children.put(new Ingredient(Material.SPIDER_EYE), new WriteablePotion(current.mat, PotionType.POISON));
                 children.put(new Ingredient(Material.GHAST_TEAR), new WriteablePotion(current.mat, PotionType.REGEN));
                 children.put(new Ingredient(Material.BLAZE_POWDER), new WriteablePotion(current.mat, PotionType.STRENGTH));
+                children.put(new Ingredient(Material.TURTLE_HELMET), new WriteablePotion(current.mat, PotionType.TURTLE_MASTER));
+                children.put(new Ingredient(Material.PHANTOM_MEMBRANE), new WriteablePotion(current.mat, PotionType.SLOW_FALLING));
                 // mcMMO custom potions
                 double mod = 1;
                 if (current.mat == Material.SPLASH_POTION) {
@@ -400,7 +394,7 @@ public class PotionConfigGenerator {
                 children.put(new Ingredient(Material.ROTTEN_FLESH), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.HUNGER, (int) (900 * mod), 0), "HUNGER"));
                 children.put(new Ingredient(Material.POISONOUS_POTATO), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.WITHER, (int) (450 * mod), 0), "DECAY"));
                 children.put(new Ingredient(Material.QUARTZ), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.ABSORPTION, (int) (1800 * mod), 0), "ABSORPTION"));
-                children.put(new Ingredient(Material.LONG_GRASS, 2), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.SATURATION, (int) (8 * mod), 0), "SATURATION"));
+                children.put(new Ingredient(Material.FERN), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.SATURATION, (int) (8 * mod), 0), "SATURATION"));
                 children.put(new Ingredient(Material.APPLE), new WriteablePotion(current.mat, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.HEALTH_BOOST, (int) (1800 * mod), 0), "HEALTH_BOOST"));
                 return;
             case FIRE_RESISTANCE :
@@ -470,6 +464,12 @@ public class PotionConfigGenerator {
                     children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
                 }
                 return;
+            case SLOW_FALLING :
+                assert(!current.data.isUpgraded());
+                if (!current.data.isExtended()) {
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                }
+                return;
             case SPEED :
                 if (!current.data.isUpgraded() && !current.data.isExtended()) {
                     children.put(new Ingredient(Material.FERMENTED_SPIDER_EYE), new WriteablePotion(current.mat, PotionType.SLOWNESS));
@@ -480,6 +480,12 @@ public class PotionConfigGenerator {
                 }
                 return;
             case STRENGTH :
+                if (!current.data.isUpgraded() && !current.data.isExtended()) {
+                    children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, new PotionData(current.data.getType(), false, true)));
+                    children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
+                }
+                return;
+            case TURTLE_MASTER:
                 if (!current.data.isUpgraded() && !current.data.isExtended()) {
                     children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(current.mat, new PotionData(current.data.getType(), false, true)));
                     children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(current.mat, new PotionData(current.data.getType(), true, false)));
@@ -513,7 +519,7 @@ public class PotionConfigGenerator {
 
     private static void populateCustomPotions(Map<WriteablePotion, Map<Ingredient, WriteablePotion>> mcMMOPotions) {
         for (Material material : new Material[]{Material.POTION, Material.SPLASH_POTION, Material.LINGERING_POTION}) {
-            WriteablePotion data = new WriteablePotion(material, PotionType.AWKWARD);
+            WriteablePotion data;
             double mod = 1;
             if (material == Material.SPLASH_POTION) {
                 mod = 0.75;
@@ -521,85 +527,85 @@ public class PotionConfigGenerator {
             if (material == Material.LINGERING_POTION) {
                 mod = 0.25;
             }
-            HashMap<Ingredient, WriteablePotion> children = new HashMap<Ingredient, WriteablePotion>();
+            HashMap<Ingredient, WriteablePotion> children;
             data = new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.CONFUSION, (int) (450 * mod), 0), "NAUSEA");
-            children = new HashMap<Ingredient, WriteablePotion>();
+            children = new HashMap<>();
             children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() / 2, 1), data.baseName + "_II"));
             children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() * 2, 0), data.baseName + "_EXTENDED"));
             for (WriteablePotion child : children.values()) {
-                mcMMOPotions.put(child, new HashMap<Ingredient, WriteablePotion>());
+                mcMMOPotions.put(child, new HashMap<>());
             }
             mcMMOPotions.put(data, children);
             data = new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.FAST_DIGGING, (int) (3600 * mod), 0), "HASTE");
-            children = new HashMap<Ingredient, WriteablePotion>();
+            children = new HashMap<>();
             children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() / 2, 1), data.baseName + "_II"));
             children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() * 2, 0), data.baseName + "_EXTENDED"));
             for (WriteablePotion child : children.values()) {
-                mcMMOPotions.put(child, new HashMap<Ingredient, WriteablePotion>());
+                mcMMOPotions.put(child, new HashMap<>());
             }
             mcMMOPotions.put(data, children);
             data = new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.SLOW_DIGGING, (int) (3600 * mod), 0), "DULLNESS");
-            children = new HashMap<Ingredient, WriteablePotion>();
+            children = new HashMap<>();
             children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() / 2, 1), data.baseName + "_II"));
             children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() * 2, 0), data.baseName + "_EXTENDED"));
             for (WriteablePotion child : children.values()) {
-                mcMMOPotions.put(child, new HashMap<Ingredient, WriteablePotion>());
+                mcMMOPotions.put(child, new HashMap<>());
             }
             mcMMOPotions.put(data, children);
             data = new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, (int) (450 * mod), 0), "RESISTANCE");
-            children = new HashMap<Ingredient, WriteablePotion>();
+            children = new HashMap<>();
             children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() / 2, 1), data.baseName + "_II"));
             children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() * 2, 0), data.baseName + "_EXTENDED"));
             for (WriteablePotion child : children.values()) {
-                mcMMOPotions.put(child, new HashMap<Ingredient, WriteablePotion>());
+                mcMMOPotions.put(child, new HashMap<>());
             }
             mcMMOPotions.put(data, children);
             data = new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.BLINDNESS, (int) (225 * mod), 0), "BLINDNESS");
-            children = new HashMap<Ingredient, WriteablePotion>();
+            children = new HashMap<>();
             children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() / 2, 1), data.baseName + "_II"));
             children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() * 2, 0), data.baseName + "_EXTENDED"));
             for (WriteablePotion child : children.values()) {
-                mcMMOPotions.put(child, new HashMap<Ingredient, WriteablePotion>());
+                mcMMOPotions.put(child, new HashMap<>());
             }
             mcMMOPotions.put(data, children);
             data = new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.HUNGER, (int) (900 * mod), 0), "HUNGER");
-            children = new HashMap<Ingredient, WriteablePotion>();
+            children = new HashMap<>();
             children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() / 2, 1), data.baseName + "_II"));
             children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() * 2, 0), data.baseName + "_EXTENDED"));
             for (WriteablePotion child : children.values()) {
-                mcMMOPotions.put(child, new HashMap<Ingredient, WriteablePotion>());
+                mcMMOPotions.put(child, new HashMap<>());
             }
             mcMMOPotions.put(data, children);
             data = new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.WITHER, (int) (450 * mod), 0), "DECAY");
-            children = new HashMap<Ingredient, WriteablePotion>();
+            children = new HashMap<>();
             children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() / 2, 1), data.baseName + "_II"));
             children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() * 2, 0), data.baseName + "_EXTENDED"));
             for (WriteablePotion child : children.values()) {
-                mcMMOPotions.put(child, new HashMap<Ingredient, WriteablePotion>());
+                mcMMOPotions.put(child, new HashMap<>());
             }
             mcMMOPotions.put(data, children);
             data = new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.ABSORPTION, (int) (1800 * mod), 0), "ABSORPTION");
-            children = new HashMap<Ingredient, WriteablePotion>();
+            children = new HashMap<>();
             children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() / 2, 1), data.baseName + "_II"));
             children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() * 2, 0), data.baseName + "_EXTENDED"));
             for (WriteablePotion child : children.values()) {
-                mcMMOPotions.put(child, new HashMap<Ingredient, WriteablePotion>());
+                mcMMOPotions.put(child, new HashMap<>());
             }
             mcMMOPotions.put(data, children);
             data = new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.SATURATION, (int) (8 * mod), 0), "SATURATION");
-            children = new HashMap<Ingredient, WriteablePotion>();
+            children = new HashMap<>();
             children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() / 2, 1), data.baseName + "_II"));
             children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() * 2, 0), data.baseName + "_EXTENDED"));
             for (WriteablePotion child : children.values()) {
-                mcMMOPotions.put(child, new HashMap<Ingredient, WriteablePotion>());
+                mcMMOPotions.put(child, new HashMap<>());
             }
             mcMMOPotions.put(data, children);
             data = new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(PotionEffectType.HEALTH_BOOST, (int) (1800 * mod), 0), "HEALTH_BOOST");
-            children = new HashMap<Ingredient, WriteablePotion>();
+            children = new HashMap<>();
             children.put(new Ingredient(Material.GLOWSTONE_DUST), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() / 2, 1), data.baseName + "_II"));
             children.put(new Ingredient(Material.REDSTONE), new WriteablePotion(material, PotionType.UNCRAFTABLE, new PotionEffect(data.effect.getType(), data.effect.getDuration() * 2, 0), data.baseName + "_EXTENDED"));
             for (WriteablePotion child : children.values()) {
-                mcMMOPotions.put(child, new HashMap<Ingredient, WriteablePotion>());
+                mcMMOPotions.put(child, new HashMap<>());
             }
             mcMMOPotions.put(data, children);
         }
