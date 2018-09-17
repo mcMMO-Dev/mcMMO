@@ -206,7 +206,7 @@ Experience:
         Netherrack: 30
         Obsidian: 150
         Packed_Ice: 50
-        Quartz_Ore: 100
+        Nether_Quartz_Ore: 100
         Redstone_Ore: 150
         Sandstone: 30
         Stained_Clay|*: 50
@@ -237,7 +237,7 @@ Experience:
         Gold_Ore: 35
         Iron_Ore: 25
         Lapis_Ore: 40
-        Quartz_Ore: 25
+        Nether_Quartz_Ore: 25
         Redstone_Ore: 15
     Taming:
         Animal_Taming:
