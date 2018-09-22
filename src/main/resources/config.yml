@@ -411,27 +411,27 @@ Skills:
 ###
 Double_Drops:
     Herbalism:
-        Beetroot_Block: true
+        Beetroots_Ripe: true
         Brown_Mushroom: true
         Cactus: true
-        Carrot: true
-        Cocoa: true
-        Crops: true
-        Melon_Block: true
-        Nether_Warts: true
-        Potato: true
+        Carrots_Ripe: true
+        Cocoa_Ripe: true
+        Wheat_Ripe: true
+        Melon: true
+        Nether_Wart_Ripe: true
+        Potatoes_Ripe: true
         Pumpkin: true
         Red_Mushroom: true
-        Red_Rose: true
-        Sugar_Cane_Block: true
+        Red_Tulip: true
+        Sugar_Cane: true
         Vine: true
-        Water_Lily: true
+        Lily_Pad: true
         Dandelion: true
     Mining:
         Coal_Ore: true
         Diamond_Ore: true
         Emerald_Ore: true
-        Ender_Stone: true
+        End_Bricks: true
         Glowstone: true
         Gold_Ore: true
         Iron_Ore: true
@@ -439,7 +439,7 @@ Double_Drops:
         Mossy_Cobblestone: true
         Netherrack: true
         Obsidian: true
-        Quartz_Ore: true
+        Nether_Quartz_Ore: true
         Redstone_Ore: true
         Sandstone: true
         Stone: true
