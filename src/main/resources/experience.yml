@@ -199,7 +199,7 @@ Experience:
         End_Stone: 150
         Glowstone: 30
         Gold_Ore: 350
-        Hard_Clay: 30
+        Terracotta: 30
         Iron_Ore: 250
         Lapis_Ore: 400
         Mossy_Cobblestone: 30
@@ -209,7 +209,22 @@ Experience:
         Nether_Quartz_Ore: 100
         Redstone_Ore: 150
         Sandstone: 30
-        Stained_Clay|*: 50
+        Black_Terracotta: 50
+        Blue_Terracotta: 50
+        Brown_Terracotta: 50
+        Cyan_Terracotta: 50
+        Gray_Terracotta: 50
+        Green_Terracotta: 50
+        Light_Blue_Terracotta: 50
+        Light_Gray_Terracotta: 50
+        Lime_Terracotta: 50
+        Magenta_Terracotta: 50
+        Orange_Terracotta: 50
+        Pink_Terracotta: 50
+        Purple_Terracotta: 50
+        Red_Terracotta: 50
+        White_Terracotta: 50
+        Yellow_Terracotta: 50
         Stone: 30
         Granite: 30
         Andesite: 30
