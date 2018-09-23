@@ -444,12 +444,12 @@ Double_Drops:
         Sandstone: true
         Stone: true
     Woodcutting:
-        Acacia_Wood: true
-        Birch_Wood: true
-        Dark_Oak_Wood: true
-        Oak_Wood: true
-        Jungle_Wood: true
-        Spruce_Wood: true
+        Acacia_Log: true
+        Birch_Log: true
+        Dark_Oak_Log: true
+        Oak_Log: true
+        Jungle_Log: true
+        Spruce_Log: true
 
 #
 #  Settings for commands
