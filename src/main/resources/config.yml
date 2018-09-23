@@ -431,7 +431,7 @@ Double_Drops:
         Coal_Ore: true
         Diamond_Ore: true
         Emerald_Ore: true
-        End_Bricks: true
+        End_Stone: true
         Glowstone: true
         Gold_Ore: true
         Iron_Ore: true
