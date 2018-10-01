@@ -544,6 +544,11 @@ public final class CombatUtils {
             if (!player.canSee(defender)) {
                 return false;
             }
+            
+            // Spectators should not be affected 
+            if (defender.getGameMode() == GameMode.SPECTATOR) {
+                return false;
+            }
 
             // It may seem a bit redundant but we need a check here to prevent bleed from being applied in applyAbilityAoE()
             if (callFakeDamageEvent(player, entity, 1.0) == 0) {
