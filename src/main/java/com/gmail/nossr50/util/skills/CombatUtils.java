@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Animals;
@@ -542,6 +543,11 @@ public final class CombatUtils {
 
             // Vanished players should not be able to get hit by AoE effects
             if (!player.canSee(defender)) {
+                return false;
+            }
+            
+            // Spectators should not be affected 
+            if (defender.getGameMode() == GameMode.SPECTATOR) {
                 return false;
             }
 
