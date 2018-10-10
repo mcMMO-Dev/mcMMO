@@ -42,7 +42,7 @@ public final class Woodcutting {
             return mcMMO.getModManager().getBlock(blockState).getXpGain();
         }
 
-        return ExperienceConfig.getInstance().getXp(SkillType.WOODCUTTING, blockState.getBlockData());
+        return ExperienceConfig.getInstance().getXp(SkillType.WOODCUTTING, blockState.getType());
     }
 
     /**

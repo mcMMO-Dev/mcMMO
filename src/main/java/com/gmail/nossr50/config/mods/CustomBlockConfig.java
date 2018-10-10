@@ -1,29 +1,27 @@
 package com.gmail.nossr50.config.mods;
 
+import com.gmail.nossr50.config.ConfigLoader;
+import com.gmail.nossr50.datatypes.mods.CustomBlock;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.block.data.BlockData;
-
-import com.gmail.nossr50.config.ConfigLoader;
-import com.gmail.nossr50.datatypes.mods.CustomBlock;
-
 public class CustomBlockConfig extends ConfigLoader {
     private boolean needsUpdate = false;
 
-    public List<BlockData> customExcavationBlocks  = new ArrayList<BlockData>();
-    public List<BlockData> customHerbalismBlocks   = new ArrayList<BlockData>();
-    public List<BlockData> customMiningBlocks      = new ArrayList<BlockData>();
-    public List<BlockData> customOres              = new ArrayList<BlockData>();
-    public List<BlockData> customLogs              = new ArrayList<BlockData>();
-    public List<BlockData> customLeaves            = new ArrayList<BlockData>();
-    public List<BlockData> customAbilityBlocks     = new ArrayList<BlockData>();
+    public List<Material> customExcavationBlocks  = new ArrayList<>();
+    public List<Material> customHerbalismBlocks   = new ArrayList<>();
+    public List<Material> customMiningBlocks      = new ArrayList<>();
+    public List<Material> customOres              = new ArrayList<>();
+    public List<Material> customLogs              = new ArrayList<>();
+    public List<Material> customLeaves            = new ArrayList<>();
+    public List<Material> customAbilityBlocks     = new ArrayList<>();
 
-    public HashMap<BlockData, CustomBlock> customBlockMap = new HashMap<BlockData, CustomBlock>();
+    public HashMap<Material, CustomBlock> customBlockMap = new HashMap<>();
 
     protected CustomBlockConfig(String fileName) {
         super("mods", fileName);
@@ -44,7 +42,7 @@ public class CustomBlockConfig extends ConfigLoader {
         }
     }
 
-    private void loadBlocks(String skillType, List<BlockData> blockList) {
+    private void loadBlocks(String skillType, List<Material> blockList) {
         if (needsUpdate) {
             return;
         }
@@ -72,11 +70,8 @@ public class CustomBlockConfig extends ConfigLoader {
                 continue;
             }
 
-            byte blockData = (blockInfo.length == 2) ? Byte.valueOf(blockInfo[1]) : 0;
-            BlockData blockBlockData = blockMaterial.createBlockData();
-
             if (blockList != null) {
-                blockList.add(blockBlockData);
+                blockList.add(blockMaterial);
             }
 
             if (skillType.equals("Ability_Blocks")) {
@@ -87,20 +82,20 @@ public class CustomBlockConfig extends ConfigLoader {
             int smeltingXp = 0;
 
             if (skillType.equals("Mining") && config.getBoolean(skillType + "." + blockName + ".Is_Ore")) {
-                customOres.add(blockBlockData);
+                customOres.add(blockMaterial);
                 smeltingXp = config.getInt(skillType + "." + blockName + ".Smelting_XP_Gain", xp / 10);
             }
             else if (skillType.equals("Woodcutting")) {
                 if (config.getBoolean(skillType + "." + blockName + ".Is_Log")) {
-                    customLogs.add(blockBlockData);
+                    customLogs.add(blockMaterial);
                 }
                 else {
-                    customLeaves.add(blockBlockData);
+                    customLeaves.add(blockMaterial);
                     xp = 0; // Leaves don't grant XP
                 }
             }
 
-            customBlockMap.put(blockBlockData, new CustomBlock(xp, config.getBoolean(skillType + "." + blockName + ".Double_Drops_Enabled"), smeltingXp));
+            customBlockMap.put(blockMaterial, new CustomBlock(xp, config.getBoolean(skillType + "." + blockName + ".Double_Drops_Enabled"), smeltingXp));
         }
     }
 }

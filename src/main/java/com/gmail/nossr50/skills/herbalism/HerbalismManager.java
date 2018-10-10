@@ -13,15 +13,13 @@ import com.gmail.nossr50.runnables.skills.HerbalismBlockUpdaterTask;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.skills.SkillUtils;
-import org.bukkit.*;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.material.CocoaPlant;
-import org.bukkit.material.CocoaPlant.CocoaPlantSize;
-import org.bukkit.material.NetherWarts;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Collection;
@@ -136,10 +134,10 @@ public class HerbalismManager extends SkillManager {
             }
         }
         else {
-            if(material == Material.CHORUS_FLOWER && blockState.getRawData() != 5) {
+            if (!BlockUtils.isHarvestable(blockState))
                 return;
-            }
-            xp = ExperienceConfig.getInstance().getXp(skill, blockState.getBlockData());
+
+            xp = ExperienceConfig.getInstance().getXp(skill, blockState.getType());
 
             if (Config.getInstance().getDoubleDropsEnabled(skill, material) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.HERBALISM_DOUBLE_DROPS)) {
                 drops = blockState.getBlock().getDrops();

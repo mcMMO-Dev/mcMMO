@@ -7,6 +7,8 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.Ageable;
+import org.bukkit.block.data.BlockData;
 
 import java.util.HashSet;
 
@@ -134,7 +136,7 @@ public final class BlockUtils {
      * @return true if the block is an ore, false otherwise
      */
     public static boolean isOre(BlockState blockState) {
-        return MaterialUtils.isOre(blockState.getBlockData());
+        return MaterialUtils.isOre(blockState.getType());
     }
 
     /**
@@ -170,7 +172,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(BlockState blockState) {
-        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.HERBALISM, blockState.getBlockData())) {
+        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.HERBALISM, blockState.getType())) {
             return true;
         }
 
@@ -351,5 +353,17 @@ public final class BlockUtils {
         }
 
         return transparentBlocks;
+    }
+
+    public static boolean isHarvestable(BlockState blockState) {
+        BlockData data = blockState.getBlockData();
+        if (data.getMaterial() == Material.CACTUS || data.getMaterial() == Material.SUGAR_CANE)
+            return true;
+        if (data instanceof Ageable)
+        {
+            Ageable ageable = (Ageable) data;
+            return ageable.getAge() == ageable.getMaximumAge();
+        }
+        return true;
     }
 }

@@ -1,13 +1,10 @@
 package com.gmail.nossr50.skills.smelting;
 
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.block.data.BlockData;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.mcMMO;
+import org.bukkit.inventory.ItemStack;
 
 public class Smelting {
     // The order of the values is extremely important, a few methods depend on it to work properly
@@ -23,7 +20,7 @@ public class Smelting {
 
         int numerical;
 
-        private Tier(int numerical) {
+        Tier(int numerical) {
             this.numerical = numerical;
         }
 
@@ -47,8 +44,6 @@ public class Smelting {
     public static double fluxMiningChance      = AdvancedConfig.getInstance().getFluxMiningChance();
 
     protected static int getResourceXp(ItemStack smelting) {
-        BlockData data = smelting.getType().createBlockData();
-        
-        return mcMMO.getModManager().isCustomOre(data) ? mcMMO.getModManager().getBlock(data).getSmeltingXpGain() : ExperienceConfig.getInstance().getXp(SkillType.SMELTING, data);
+        return mcMMO.getModManager().isCustomOre(smelting.getType()) ? mcMMO.getModManager().getBlock(smelting.getType()).getSmeltingXpGain() : ExperienceConfig.getInstance().getXp(SkillType.SMELTING, smelting.getType());
     }
 }

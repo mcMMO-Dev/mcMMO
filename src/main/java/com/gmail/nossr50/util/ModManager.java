@@ -1,18 +1,5 @@
 package com.gmail.nossr50.util;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.block.BlockState;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Entity;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.block.data.BlockData;
-
-import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.mods.CustomArmorConfig;
 import com.gmail.nossr50.config.mods.CustomBlockConfig;
@@ -21,7 +8,18 @@ import com.gmail.nossr50.config.mods.CustomToolConfig;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.mods.CustomEntity;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
+import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
+import org.bukkit.Material;
+import org.bukkit.block.BlockState;
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ModManager {
     private List<Repairable> repairables = new ArrayList<Repairable>();
@@ -33,14 +31,14 @@ public class ModManager {
     private List<Material> customLeggings    = new ArrayList<Material>();
 
     // Block Mods
-    private List<BlockData> customExcavationBlocks  = new ArrayList<BlockData>();
-    private List<BlockData> customHerbalismBlocks   = new ArrayList<BlockData>();
-    private List<BlockData> customMiningBlocks      = new ArrayList<BlockData>();
-    private List<BlockData> customOres              = new ArrayList<BlockData>();
-    private List<BlockData> customLogs              = new ArrayList<BlockData>();
-    private List<BlockData> customLeaves            = new ArrayList<BlockData>();
-    private List<BlockData> customAbilityBlocks     = new ArrayList<BlockData>();
-    private HashMap<BlockData, CustomBlock> customBlockMap = new HashMap<BlockData, CustomBlock>();
+    private List<Material> customExcavationBlocks  = new ArrayList<Material>();
+    private List<Material> customHerbalismBlocks   = new ArrayList<Material>();
+    private List<Material> customMiningBlocks      = new ArrayList<Material>();
+    private List<Material> customOres              = new ArrayList<Material>();
+    private List<Material> customLogs              = new ArrayList<Material>();
+    private List<Material> customLeaves            = new ArrayList<Material>();
+    private List<Material> customAbilityBlocks     = new ArrayList<Material>();
+    private HashMap<Material, CustomBlock> customBlockMap = new HashMap<>();
 
     // Entity Mods
     private HashMap<String, CustomEntity> customEntityClassMap = new HashMap<String, CustomEntity>();
@@ -130,39 +128,39 @@ public class ModManager {
         return Config.getInstance().getToolModsEnabled() && customSwords.contains(material);
     }
 
-    public boolean isCustomOre(BlockData data) {
+    public boolean isCustomOre(Material data) {
         return Config.getInstance().getBlockModsEnabled() && customOres.contains(data);
     }
 
     public boolean isCustomLog(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customLogs.contains(state.getData());
+        return Config.getInstance().getBlockModsEnabled() && customLogs.contains(state.getType());
     }
 
     public boolean isCustomLeaf(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customLeaves.contains(state.getData());
+        return Config.getInstance().getBlockModsEnabled() && customLeaves.contains(state.getType());
     }
 
     public boolean isCustomAbilityBlock(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customAbilityBlocks.contains(state.getData());
+        return Config.getInstance().getBlockModsEnabled() && customAbilityBlocks.contains(state.getType());
     }
 
     public boolean isCustomExcavationBlock(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customExcavationBlocks.contains(state.getData());
+        return Config.getInstance().getBlockModsEnabled() && customExcavationBlocks.contains(state.getType());
     }
 
     public boolean isCustomHerbalismBlock(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customHerbalismBlocks.contains(state.getData());
+        return Config.getInstance().getBlockModsEnabled() && customHerbalismBlocks.contains(state.getType());
     }
 
     public boolean isCustomMiningBlock(BlockState state) {
-        return Config.getInstance().getBlockModsEnabled() && customMiningBlocks.contains(state.getData());
+        return Config.getInstance().getBlockModsEnabled() && customMiningBlocks.contains(state.getType());
     }
 
     public CustomBlock getBlock(BlockState state) {
-        return customBlockMap.get(state.getData());
+        return customBlockMap.get(state.getType());
     }
 
-    public CustomBlock getBlock(BlockData data) {
+    public CustomBlock getBlock(Material data) {
         return customBlockMap.get(data);
     }
 

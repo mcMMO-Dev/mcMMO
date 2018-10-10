@@ -1,18 +1,17 @@
 package com.gmail.nossr50.config.experience;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.entity.EntityType;
-import org.bukkit.block.data.BlockData;
-
 import com.gmail.nossr50.config.AutoUpdateConfigLoader;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
 import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.util.StringUtils;
+import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.EntityType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExperienceConfig extends AutoUpdateConfigLoader {
     private static ExperienceConfig instance;
@@ -218,7 +217,20 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
             return config.getInt(wildcardString);
         return 0;
     }
-    
+
+    public boolean isSkillBlock(SkillType skill, Material data)
+    {
+        String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
+        String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
+        if (config.contains(explicitString))
+            return true;
+        String friendlyString = baseString + StringUtils.getFriendlyConfigMaterialString(data);
+        if (config.contains(friendlyString))
+            return true;
+        String wildcardString = baseString + StringUtils.getWildcardConfigMaterialString(data);
+        return config.contains(wildcardString);
+    }
+
     public boolean isSkillBlock(SkillType skill, BlockData data)
     {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
@@ -229,9 +241,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         if (config.contains(friendlyString))
             return true;
         String wildcardString = baseString + StringUtils.getWildcardConfigBlockDataString(data);
-        if (config.contains(wildcardString))
-            return true;
-        return false;
+        return config.contains(wildcardString);
     }
 
     /* Acrobatics */
