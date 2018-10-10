@@ -511,7 +511,7 @@ public final class ItemUtils {
     }
 
     public static boolean isSmeltable(ItemStack item) {
-        return item != null && item.getType().isBlock() && MaterialUtils.isOre(item.getType().createBlockData());
+        return item != null && item.getType().isBlock() && MaterialUtils.isOre(item.getType());
     }
 
     public static boolean isSmelted(ItemStack item) {
@@ -520,7 +520,7 @@ public final class ItemUtils {
         }
 
         for (Recipe recipe : mcMMO.p.getServer().getRecipesFor(item)) {
-            if (recipe instanceof FurnaceRecipe && ((FurnaceRecipe) recipe).getInput().getType().isBlock() && MaterialUtils.isOre(((FurnaceRecipe) recipe).getInput().getType().createBlockData())) {
+            if (recipe instanceof FurnaceRecipe && ((FurnaceRecipe) recipe).getInput().getType().isBlock() && MaterialUtils.isOre(((FurnaceRecipe) recipe).getInput().getType())) {
                 return true;
             }
         }
