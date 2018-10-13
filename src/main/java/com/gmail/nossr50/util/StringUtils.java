@@ -6,8 +6,8 @@ import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.data.Ageable;
-import org.bukkit.entity.EntityType;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.EntityType;
 
 public class StringUtils {
 
@@ -48,6 +48,7 @@ public class StringUtils {
 
     public static String getFriendlyConfigBlockDataString(BlockData data) {
         switch(data.getMaterial()){
+            case CHORUS_FLOWER:
             case COCOA:
             case WHEAT:
             case BEETROOTS:

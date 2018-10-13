@@ -172,7 +172,7 @@ public final class BlockUtils {
      * @return true if the block should affected by Green Terra, false otherwise
      */
     public static boolean affectedByGreenTerra(BlockState blockState) {
-        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.HERBALISM, blockState.getType())) {
+        if (ExperienceConfig.getInstance().isSkillBlock(SkillType.HERBALISM, blockState.getBlockData())) {
             return true;
         }
 
@@ -362,6 +362,8 @@ public final class BlockUtils {
         if (data instanceof Ageable)
         {
             Ageable ageable = (Ageable) data;
+            mcMMO.p.debug(ageable.getAge() + "/" + ageable.getMaximumAge());
+            System.out.println(ageable.getAge() + "/" + ageable.getMaximumAge());
             return ageable.getAge() == ageable.getMaximumAge();
         }
         return true;
