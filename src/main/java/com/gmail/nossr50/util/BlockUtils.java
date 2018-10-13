@@ -355,15 +355,13 @@ public final class BlockUtils {
         return transparentBlocks;
     }
 
-    public static boolean isHarvestable(BlockState blockState) {
+    public static boolean isFullyGrown(BlockState blockState) {
         BlockData data = blockState.getBlockData();
         if (data.getMaterial() == Material.CACTUS || data.getMaterial() == Material.SUGAR_CANE)
             return true;
         if (data instanceof Ageable)
         {
             Ageable ageable = (Ageable) data;
-            mcMMO.p.debug(ageable.getAge() + "/" + ageable.getMaximumAge());
-            System.out.println(ageable.getAge() + "/" + ageable.getMaximumAge());
             return ageable.getAge() == ageable.getMaximumAge();
         }
         return true;

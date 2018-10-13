@@ -134,9 +134,6 @@ public class HerbalismManager extends SkillManager {
             }
         }
         else {
-            if (!BlockUtils.isHarvestable(blockState))
-                return;
-
             xp = ExperienceConfig.getInstance().getXp(skill, blockState.getType());
 
             if (Config.getInstance().getDoubleDropsEnabled(skill, material) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.HERBALISM_DOUBLE_DROPS)) {
@@ -260,6 +257,9 @@ public class HerbalismManager extends SkillManager {
      * @param greenTerra boolean to determine if greenTerra is active or not
      */
     private void processGreenThumbPlants(BlockState blockState, boolean greenTerra) {
+        if (!BlockUtils.isFullyGrown(blockState))
+            return;
+
         Player player = getPlayer();
         PlayerInventory playerInventory = player.getInventory();
         Material seed = null;
