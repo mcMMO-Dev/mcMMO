@@ -134,7 +134,7 @@ public class HerbalismManager extends SkillManager {
             }
         }
         else {
-            xp = ExperienceConfig.getInstance().getXp(skill, blockState.getType());
+            xp = ExperienceConfig.getInstance().getXp(skill, blockState.getBlockData());
 
             if (Config.getInstance().getDoubleDropsEnabled(skill, material) && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.HERBALISM_DOUBLE_DROPS)) {
                 drops = blockState.getBlock().getDrops();
