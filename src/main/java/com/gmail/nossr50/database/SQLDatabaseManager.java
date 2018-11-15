@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 
 public final class SQLDatabaseManager implements DatabaseManager {
-    private static final String ALL_QUERY_VERSION = "taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy";
+    private static final String ALL_QUERY_VERSION = "total";
     private String tablePrefix = Config.getInstance().getMySQLTablePrefix();
 
     private final Map<UUID, Integer> cachedUserIDs = new HashMap<UUID, Integer>();
@@ -225,7 +225,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + " taming = ?, mining = ?, repair = ?, woodcutting = ?"
                     + ", unarmed = ?, herbalism = ?, excavation = ?"
                     + ", archery = ?, swords = ?, axes = ?, acrobatics = ?"
-                    + ", fishing = ?, alchemy = ? WHERE user_id = ?");
+                    + ", fishing = ?, alchemy = ?, total = ? WHERE user_id = ?");
             statement.setInt(1, profile.getSkillLevel(SkillType.TAMING));
             statement.setInt(2, profile.getSkillLevel(SkillType.MINING));
             statement.setInt(3, profile.getSkillLevel(SkillType.REPAIR));
@@ -239,7 +239,11 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setInt(11, profile.getSkillLevel(SkillType.ACROBATICS));
             statement.setInt(12, profile.getSkillLevel(SkillType.FISHING));
             statement.setInt(13, profile.getSkillLevel(SkillType.ALCHEMY));
-            statement.setInt(14, id);
+            int total = 0;
+            for (SkillType skillType : SkillType.NON_CHILD_SKILLS)
+                total += profile.getSkillLevel(skillType);
+            statement.setInt(14, total);
+            statement.setInt(15, id);
             success &= (statement.executeUpdate() != 0);
             statement.close();
             if (!success) {
@@ -838,6 +842,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`acrobatics` int(10) unsigned NOT NULL DEFAULT '0',"
                         + "`fishing` int(10) unsigned NOT NULL DEFAULT '0',"
                         + "`alchemy` int(10) unsigned NOT NULL DEFAULT '0',"
+                        + "`total` int(10) unsigned NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
                 tryClose(createStatement);
@@ -979,6 +984,10 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 case DROP_NAME_UNIQUENESS:
                     checkNameUniqueness(statement);
                     return;
+
+                case ADD_SKILL_TOTAL:
+                    checkUpgradeSkillTotal(connection);
+                    break;
 
                 default:
                     break;
@@ -1314,6 +1323,43 @@ public final class SQLDatabaseManager implements DatabaseManager {
         }
         finally {
             tryClose(resultSet);
+        }
+    }
+
+    private void checkUpgradeSkillTotal(final Connection connection) throws SQLException {
+        ResultSet resultSet = null;
+        Statement statement = null;
+
+        try {
+            connection.setAutoCommit(false);
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM `" + tablePrefix + "skills` LIMIT 1");
+
+            ResultSetMetaData rsmeta = resultSet.getMetaData();
+            boolean column_exists = false;
+
+            for (int i = 1; i <= rsmeta.getColumnCount(); i++) {
+                if (rsmeta.getColumnName(i).equalsIgnoreCase("total")) {
+                    column_exists = true;
+                    break;
+                }
+            }
+
+            if (!column_exists) {
+                mcMMO.p.getLogger().info("Adding skill total column to skills table...");
+                statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD COLUMN `total` int NOT NULL DEFAULT '0'");
+                statement.executeUpdate("UPDATE `" + tablePrefix + "skills` SET `total` = (taming+mining+woodcutting+repair+unarmed+herbalism+excavation+archery+swords+axes+acrobatics+fishing+alchemy)");
+                statement.executeUpdate("ALTER TABLE `" + tablePrefix + "skills` ADD INDEX `idx_total` (`total`) USING BTREE");
+                connection.commit();
+            }
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            connection.setAutoCommit(true);
+            tryClose(resultSet);
+            tryClose(statement);
         }
     }
 
