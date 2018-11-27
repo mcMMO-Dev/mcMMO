@@ -2,6 +2,9 @@ package com.gmail.nossr50.listeners;
 
 import java.util.List;
 
+import com.gmail.nossr50.events.fake.FakeBrewEvent;
+import com.gmail.nossr50.skills.alchemy.AlchemyManager;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -12,18 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
-import org.bukkit.event.inventory.CraftItemEvent;
-import org.bukkit.event.inventory.FurnaceBurnEvent;
-import org.bukkit.event.inventory.FurnaceExtractEvent;
-import org.bukkit.event.inventory.FurnaceSmeltEvent;
-import org.bukkit.event.inventory.InventoryAction;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.inventory.*;
 import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.FurnaceInventory;
 import org.bukkit.inventory.Inventory;
@@ -276,6 +268,19 @@ public class InventoryListener implements Listener {
 
             event.setCancelled(true);
             AlchemyPotionBrewer.scheduleUpdate(inventory);
+        }
+    }
+
+    // Apparently sometimes vanilla brewing beats our task listener to the actual brew. We handle this by cancelling the vanilla event and finishing our brew ourselves.
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onBrew(BrewEvent event)
+    {
+        if (event instanceof FakeBrewEvent)
+            return;
+        Location location = event.getBlock().getLocation();
+        if (Alchemy.brewingStandMap.containsKey(location)) {
+            Alchemy.brewingStandMap.get(location).finishImmediately();
+            event.setCancelled(true);
         }
     }
 
