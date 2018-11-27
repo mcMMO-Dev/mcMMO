@@ -503,6 +503,7 @@ public final class ItemUtils {
             case FISHING_ROD:
             case CARROT_ON_A_STICK:
             case FLINT_AND_STEEL:
+            case TRIDENT:
                 return true;
 
             default:
