@@ -395,6 +395,10 @@ public class EntityListener implements Listener {
             entity.setCustomNameVisible(entity.getMetadata(mcMMO.customVisibleKey).get(0).asBoolean());
             entity.removeMetadata(mcMMO.customVisibleKey, plugin);
         }
+
+        if (entity.hasMetadata(mcMMO.entityMetadataKey)) {
+            entity.removeMetadata(mcMMO.entityMetadataKey, plugin);
+        }
     }
 
     /**
