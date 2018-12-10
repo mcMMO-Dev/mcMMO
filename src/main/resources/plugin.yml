@@ -25,13 +25,13 @@ commands:
         permission: mcmmo.commands.xprate
     mcmmo:
         description: Shows a brief mod description
-        permission mcmmo.commands.mcmmo
+        permission: mcmmo.commands.mcmmo
     mctop:
         description: Show mcMMO leader boards
-        permission mcmmo.commands.mctop
+        permission: mcmmo.commands.mctop
     mcrank:
         description: Show mcMMO ranking for a player
-        permission mcmmo.commands.mcrank
+        permission: mcmmo.commands.mcrank
     addxp:
         description: Add mcMMO XP to a user
         permission: mcmmo.commands.addxp
@@ -57,7 +57,7 @@ commands:
     mcstats:
         aliases: [stats]
         description: Shows your mcMMO stats and xp
-        permission mcmmo.commands.mcstats
+        permission: mcmmo.commands.mcstats
     mcremove:
         description: Remove a user from the database
         permission: mcmmo.commands.mcremove
