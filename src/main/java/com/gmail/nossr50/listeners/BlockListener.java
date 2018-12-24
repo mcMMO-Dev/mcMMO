@@ -132,7 +132,9 @@ public class BlockListener implements Listener {
 
         /* Check if the blocks placed should be monitored so they do not give out XP in the future */
         if (BlockUtils.shouldBeWatched(blockState) && blockState.getType() != Material.CHORUS_FLOWER) {
-            mcMMO.getPlaceStore().setTrue(blockState);
+            //Monitor only blocks that replaced air
+            if(event.getBlockReplacedState().getType() == Material.AIR)
+                mcMMO.getPlaceStore().setTrue(blockState);
         }
 
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
