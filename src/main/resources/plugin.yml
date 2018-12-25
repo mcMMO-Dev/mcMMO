@@ -12,7 +12,7 @@ description: >
 
 author: nossr50
 authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking]
-website: www.spigotmc.org/resources/mcmmo.2445/
+website: https://github.com/mcMMO-Dev/mcMMO
 main: com.gmail.nossr50.mcMMO
 softdepend: [CombatTag, HealthBar]
 load: STARTUP

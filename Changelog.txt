@@ -9,6 +9,9 @@ Key:
 
 Version 2.0.00
     = Fixed an interaction between Tree Feller and Stripped Wood
+    ! Fireworks no longer fire by default for ability activation/deactivation
+    ! Website has been changed and the MOTD string relating to it reflects this
+    ! Discord link added to mcMMO command
     ! Updated misc strings relating to mcMMO
 
 

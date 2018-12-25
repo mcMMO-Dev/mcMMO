@@ -489,8 +489,8 @@ Commands:
 ###
 Particles:
     # These settings determine if fireworks should get launched when a player activates/deactivates an ability
-    Ability_Activation: true
-    Ability_Deactivation: true
+    Ability_Activation: false
+    Ability_Deactivation: false
 
     # Determines if the fireworks should be a large ball or a small one
     LargeFireworks: true
