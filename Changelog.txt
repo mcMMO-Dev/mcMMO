@@ -7,6 +7,11 @@ Key:
   ! Change
   - Removal
 
+Version 2.0.00
+    = Fixed an interaction between Tree Feller and Stripped Wood
+    ! Updated misc strings relating to mcMMO
+
+
 Version 1.5.05-SNAPSHOT
 
 Version 1.5.04
