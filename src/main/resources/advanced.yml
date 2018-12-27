@@ -29,7 +29,7 @@ Skills:
             # MaxBonusLevel: On this level or higher, the dodge chance will not go higher than <ChanceMax>
             # DamageModifier: Dodge damage will be divided by this modifier
             ChanceMax: 20.0
-            MaxBonusLevel: 800
+            MaxBonusLevel: 80
             DamageModifier: 2.0
 
         Roll:
@@ -37,7 +37,7 @@ Skills:
             # MaxBonusLevel: On this level or higher, the roll chance will not go higher than <ChanceMax>
             # DamageThreshold: The max damage a player can negate with a roll
             ChanceMax: 100.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
             DamageThreshold: 7.0
 
         GracefulRoll:
@@ -45,7 +45,7 @@ Skills:
             # MaxBonusLevel: On this level or higher, the graceful roll chance will not go higher than <ChanceMax>
             # DamageThreshold: The max damage a player can negate with a graceful roll
             ChanceMax: 100.0
-            MaxBonusLevel: 500
+            MaxBonusLevel: 50
             DamageThreshold: 14.0
     #
     #  Settings for Alchemy
@@ -57,7 +57,7 @@ Skills:
             # MinSpeed: Minimum brewing speed allowed when at <UnlockLevel> or lower
             # MaxSpeed: Maximum brewing speed allowed when at <MaxBonusLevel> or higher
             UnlockLevel: 100
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
             MinSpeed: 1.0
             MaxSpeed: 4.0
             
@@ -89,14 +89,14 @@ Skills:
             # MaxBonusLevel: Maximum bonus level of Daze, when a player reaches this level his chance of causing a daze will be <ChanceMax>
             # Modifier: Extra damage for arrows that cause a daze (2 damage = 1 heart)
             ChanceMax: 50.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
             BonusDamage: 4.0
 
         Retrieve:
             # ChanceMax: Maximum chance of retrieving arrows when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Maximum bonus level for Arrow retrieval, at this level the chance of retrieving arrows from mobs is <ChanceMax>
             ChanceMax: 100.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
 
         # ForceMultiplier: Multiply the force of the bow by this for an XP boost.
         ForceMultiplier: 2.0
@@ -108,7 +108,7 @@ Skills:
             # MaxBonus: Maximum bonus damage when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Level where <MaxBonus> is reached
             MaxBonus: 4.0
-            MaxBonusLevel: 200
+            MaxBonusLevel: 20
 
         CriticalHit:
             # ChanceMax: Maximum chance of causing a critical hit when on <MaxBonusLevel> or higher
@@ -203,25 +203,25 @@ Skills:
             # MaxBonusLevel: On this level, GreenThumb chance will be <ChanceMax>
             StageChange: 200
             ChanceMax: 100.0
-            MaxBonusLevel: 1500
+            MaxBonusLevel: 150
 
         DoubleDrops:
             # ChanceMax: Maximum chance of receiving double drops when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Level when <ChanceMax> of receiving double drops is reached
             ChanceMax: 100.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
 
         HylianLuck:
             # ChanceMax: Maximum chance of Hylian Luck when on <MaxBonusLevel> or higher
             # MaxBonusLevel: On this level, Hylian Luck chance will be <ChanceMax>
             ChanceMax: 10.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
 
         ShroomThumb:
             # ChanceMax: Maximum chance of ShroomThumb when on <MaxBonusLevel> or higher
             # MaxBonusLevel: On this level, ShroomThumb chance will be <ChanceMax>
             ChanceMax: 50.0
-            MaxBonusLevel: 1500
+            MaxBonusLevel: 100
     #
     #  Settings for Mining
     ###
@@ -230,7 +230,7 @@ Skills:
             # ChanceMax: Maximum chance of receiving double drops when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Level when <ChanceMax> of receiving double drops is reached
             ChanceMax: 100.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
 
         # BlastMining_Rank: BlastMining rank unlocks
         BlastMining:
@@ -306,13 +306,13 @@ Skills:
             # MaxBonusPercentage: Maximum bonus percentage for Repair Mastery
             # MaxBonusLevel: On this level, the maximum bonus is reached
             MaxBonusPercentage: 200.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
 
         SuperRepair:
             # ChanceMax: Maximum chance of Super Repair when on <MaxBonusLevel> or higher
             # MaxBonusLevel: On this level, Super Repair chance will be <ChanceMax>
             ChanceMax: 100.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
 
         ArcaneForging:
             May_Lose_Enchants: true
@@ -351,7 +351,7 @@ Skills:
         # MaxPercentage: Maximum percentage of materials to be returned when Salvaging
         # MaxPercentageLevel: On this level, the Salvage percentage will be <MaxPercentage>
         MaxPercentage: 100.0
-        MaxPercentageLevel: 1000
+        MaxPercentageLevel: 100
 
         # AdvancedSalvage_UnlockLevel: The level at which Advance Salvage become available
         AdvancedSalvage:
@@ -401,13 +401,13 @@ Skills:
             # Multiplier: The furnace burn time will be multiplied by this value.
             # MaxBonusLevel: On this level, the efficiency multiplier will stop increasing
             Multiplier: 3.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
 
         SecondSmelt:
             # ChanceMax: Maximum chance of triggering Second Smelt
             # MaxBonusLevel: On this level, the chance to cause Second Smelt will be <ChanceMax>
             ChanceMax: 100.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
 
         FluxMining:
             # UnlockLevel: Level when Flux Mining becomes available
@@ -445,7 +445,7 @@ Skills:
             # ChanceMax: Maximum chance of triggering bleeding
             # MaxBonusLevel: On this level, the chance to cause Bleeding will be <ChanceMax>
             ChanceMax: 75.0
-            MaxBonusLevel: 750
+            MaxBonusLevel: 75
 
             # DamagePlayer: Bleeding damage dealt to players
             # DamageMobs: Bleeding damage dealt to mobs
@@ -463,7 +463,7 @@ Skills:
             # ChanceMax: Maximum chance of triggering a counter attack
             # MaxBonusLevel: On this level, the chance to Counter will be <ChanceMax>
             ChanceMax: 30.0
-            MaxBonusLevel: 600
+            MaxBonusLevel: 60
 
             # DamageModifier: Damaged caused by the damager will get divided by this modifier and dealt back to the damager
             DamageModifier: 2.0
@@ -481,7 +481,7 @@ Skills:
             # ChanceMax: Maximum chance of triggering gore
             # MaxBonusLevel: On this level, the chance to cause Gore will be <ChanceMax>
             ChanceMax: 100.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
 
             # BleedTicks: Determines the length of the bleeding effect
             # Modifier: Damage will get multiplied by this modifier
@@ -538,20 +538,20 @@ Skills:
             # MaxBonusLevel: Level when the maximum chance to disarm is reached
             # AntiTheft: Determines if only the disarmed player can retrieve disarmed items
             ChanceMax: 33.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
             AntiTheft: false
 
         Deflect:
             # ChanceMax: Maximum chance of deflecting arrows
             # MaxBonusLevel: Level when the maximum chance to deflect is reached
             ChanceMax: 50.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
 
         IronGrip:
             # ChanceMax: Maximum chance of preventing being disarmed
             # MaxBonusLevel: Level when the maximum chance to prevent being disarmed is reached
             ChanceMax: 100.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
 
         IronArm:
             # BonusMin: Minimum bonus damage for unarmed
@@ -572,7 +572,7 @@ Skills:
             # ChanceMax: Maximum chance of receiving double drops
             # MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
             ChanceMax: 100.0
-            MaxBonusLevel: 1000
+            MaxBonusLevel: 100
 #
 #  Customize the kraken!
 ###

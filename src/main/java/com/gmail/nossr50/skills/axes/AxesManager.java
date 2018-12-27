@@ -2,6 +2,7 @@ package com.gmail.nossr50.skills.axes;
 
 import java.util.Map;
 
+import com.gmail.nossr50.util.skills.SecondarySkillActivationType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
@@ -54,7 +55,7 @@ public class AxesManager extends SkillManager {
      * Handle the effects of the Axe Mastery ability
      */
     public double axeMastery() {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.AXE_MASTERY, getPlayer())) {
+        if (!SkillUtils.isActivationSuccessful(SecondarySkillActivationType.ALWAYS_FIRES, SecondaryAbility.AXE_MASTERY, getPlayer(), null, 0, 0)) {
             return 0;
         }
 
@@ -68,7 +69,7 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double criticalHit(LivingEntity target, double damage) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.CRITICAL_HIT, getPlayer(), getSkillLevel(), activationChance)) {
+        if (!SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.CRITICAL_HIT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return 0;
         }
 
@@ -104,7 +105,7 @@ public class AxesManager extends SkillManager {
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
             if (armor != null && ItemUtils.isArmor(armor)) {
-                if (SkillUtils.activationSuccessful(SecondaryAbility.ARMOR_IMPACT, getPlayer(), Axes.impactChance, activationChance)) {
+                if (SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_STATIC_CHANCE, SecondaryAbility.ARMOR_IMPACT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
                     SkillUtils.handleDurabilityChange(armor, durabilityDamage, Axes.impactMaxDurabilityModifier);
                 }
             }
@@ -117,7 +118,8 @@ public class AxesManager extends SkillManager {
      * @param target The {@link LivingEntity} being affected by the ability
      */
     public double greaterImpact(LivingEntity target) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.GREATER_IMPACT, getPlayer(), Axes.greaterImpactChance, activationChance)) {
+        //static chance (3rd param)
+        if (!SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_STATIC_CHANCE, SecondaryAbility.GREATER_IMPACT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return 0;
         }
 

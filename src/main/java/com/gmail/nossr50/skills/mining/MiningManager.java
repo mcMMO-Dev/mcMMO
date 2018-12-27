@@ -15,6 +15,7 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.skills.SecondarySkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
@@ -76,8 +77,9 @@ public class MiningManager extends SkillManager {
 
         boolean silkTouch = player.getInventory().getItemInMainHand().containsEnchantment(Enchantment.SILK_TOUCH);
 
+        //TODO: Make this readable
         for (int i = mcMMOPlayer.getAbilityMode(skill.getAbility()) ? 2 : 1; i != 0; i--) {
-            if (SkillUtils.activationSuccessful(SecondaryAbility.MINING_DOUBLE_DROPS, getPlayer(), getSkillLevel(), activationChance)) {
+            if (SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.MINING_DOUBLE_DROPS, player, this.skill, getSkillLevel(), activationChance)) {
                 if (silkTouch) {
                     Mining.handleSilkTouchDrops(blockState);
                 }

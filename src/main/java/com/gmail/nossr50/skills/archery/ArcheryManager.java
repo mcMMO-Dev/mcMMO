@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.archery;
 
+import com.gmail.nossr50.util.skills.SecondarySkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -58,7 +59,7 @@ public class ArcheryManager extends SkillManager {
      * @param target The {@link LivingEntity} damaged by the arrow
      */
     public void retrieveArrows(LivingEntity target) {
-        if (SkillUtils.activationSuccessful(SecondaryAbility.RETRIEVE, getPlayer(), getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.RETRIEVE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             Archery.incrementTrackerValue(target);
         }
     }
@@ -69,7 +70,7 @@ public class ArcheryManager extends SkillManager {
      * @param defender The {@link Player} being affected by the ability
      */
     public double daze(Player defender) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.DAZE, getPlayer(), getSkillLevel(), activationChance)) {
+        if (!SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.DAZE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return 0;
         }
 
@@ -96,7 +97,7 @@ public class ArcheryManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double skillShot(double damage) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.SKILL_SHOT, getPlayer())) {
+        if (!SkillUtils.isActivationSuccessful(SecondarySkillActivationType.ALWAYS_FIRES, SecondaryAbility.SKILL_SHOT, getPlayer(), null, 0, 0)) {
             return damage;
         }
 

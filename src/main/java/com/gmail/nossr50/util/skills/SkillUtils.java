@@ -25,7 +25,6 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -198,41 +197,99 @@ public class SkillUtils {
         itemStack.setDurability((short) Math.min(itemStack.getDurability() + durabilityModifier, maxDurability));
     }
 
-    public static boolean activationSuccessful(SecondaryAbility skillAbility, Player player, SkillType skill) {
-        return activationSuccessful(skillAbility, player, UserManager.getPlayer(player).getSkillLevel(skill), PerksUtils.handleLuckyPerks(player, skill));
-    }
-
-    public static boolean activationSuccessful(SecondaryAbility skillAbility, Player player, int skillLevel, int activationChance) {
-        return activationSuccessful(skillAbility, player, skillLevel, activationChance, AdvancedConfig.getInstance().getMaxChance(skillAbility), AdvancedConfig.getInstance().getMaxBonusLevel(skillAbility));
-    }
-
-    public static boolean activationSuccessful(SecondaryAbility skillAbility, Player player, int skillLevel, int activationChance, double maxChance, int maxLevel) {
+    /**
+     * Checks whether or not the given skill succeeds
+     * @param skillAbility The ability corresponding to this check
+     * @param player The player whose skill levels we are checking against
+     * @param skillLevel The skill level of the corresponding skill
+     * @param activationChance used to determine activation chance
+     * @param maxChance maximum chance
+     * @param maxLevel maximum skill level bonus
+     * @return true if random chance succeeds and the event isn't cancelled
+     */
+    private static boolean performRandomSkillCheck(SecondaryAbility skillAbility, Player player, int skillLevel, int activationChance, double maxChance, int maxLevel) {
         double chance = (maxChance / maxLevel) * Math.min(skillLevel, maxLevel) / activationChance;
-        return propagateSecondaryAbilityEvent(skillAbility, player, activationChance, chance);
+        return performRandomSkillCheckStatic(skillAbility, player, activationChance, chance);
     }
 
     /**
-     * Sends an event out regarding activation of RNG based sub-skills
-     * @param skillAbility The random-chance ability
-     * @param player The player that the skill belong to
-     * @param activationChance parameter used in activation calculations
-     * @param chance parameter used in activation calculations
-     * @return returns true if successful
+     * This method is the final step in determining if a Sub-Skill / Secondary Skill in mcMMO successfully activates either from chance or otherwise
+     *
+     * There are 4 types of Sub-Skill / Secondary Skill activations in mcMMO
+     * 1) Random Chance with a linear increase to 100% (At 100 Skill Level)
+     * 2) Random Chance with a linear increase to 100% at 100 Skill Level but caps out earlier in the curve (At x/100 Skill Level)
+     * 3) Random Chance with a pre-determined activation roll and threshold roll
+     * 4) Skills that are not chance based
+     *
+     * Random skills check for success based on numbers and then fire a cancellable event, if that event is not cancelled they succeed
+     * All other skills just fire the cancellable event and succeed if it is not cancelled
+     *
+     * @param skillAbility The identifier for this specific sub-skill
+     * @param player The owner of this sub-skill
+     * @param skill The identifier for the parent of our sub-skill
+     * @param activationChance This is the value that we roll against, 100 is normal, and 75 is for lucky perk
+     * @param secondarySkillActivationType this value represents what kind of activation procedures this sub-skill uses
+     * @return returns true if all conditions are met and they event is not cancelled
      */
-    private static boolean propagateSecondaryAbilityEvent(SecondaryAbility skillAbility, Player player, int activationChance, double chance) {
+    public static boolean isActivationSuccessful(SecondarySkillActivationType secondarySkillActivationType, SecondaryAbility skillAbility, Player player,
+                                                    SkillType skill, int skillLevel, int activationChance)
+    {
+        //Maximum chance to succeed
+        double maxChance = AdvancedConfig.getInstance().getMaxChance(skillAbility);
+        //Maximum roll we can make
+        int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(skillAbility);
+
+        switch(secondarySkillActivationType)
+        {
+            //100 Skill = Guaranteed
+            case RANDOM_LINEAR_100_SCALE_NO_CAP:
+                return performRandomSkillCheck(skillAbility, player, skillLevel, PerksUtils.handleLuckyPerks(player, skill), 100.0D, 100);
+            case RANDOM_LINEAR_100_SCALE_WITH_CAP:
+                return performRandomSkillCheck(skillAbility, player, skillLevel, PerksUtils.handleLuckyPerks(player, skill), AdvancedConfig.getInstance().getMaxChance(skillAbility), AdvancedConfig.getInstance().getMaxBonusLevel(skillAbility));
+            case RANDOM_STATIC_CHANCE:
+                //Grab the static activation chance of this skill
+                double staticRoll = getSecondaryAbilityStaticChance(skillAbility) / activationChance;
+                return performRandomSkillCheckStatic(skillAbility, player, activationChance, staticRoll);
+            case ALWAYS_FIRES:
+                SecondaryAbilityEvent event = EventUtils.callSecondaryAbilityEvent(player, skillAbility);
+                return !event.isCancelled();
+                default:
+                    return false;
+        }
+    }
+
+    /**
+     * Grabs static activation rolls for Secondary Abilities
+     * @param secondaryAbility The secondary ability to grab properties of
+     * @return The static activation roll involved in the RNG calculation
+     */
+    public static double getSecondaryAbilityStaticChance(SecondaryAbility secondaryAbility)
+    {
+        switch(secondaryAbility)
+        {
+            case ARMOR_IMPACT:
+                return AdvancedConfig.getInstance().getImpactChance();
+            case GREATER_IMPACT:
+                return AdvancedConfig.getInstance().getGreaterImpactChance();
+            case FAST_FOOD:
+                return AdvancedConfig.getInstance().getFastFoodChance();
+                default:
+                    return 100.0D;
+        }
+    }
+
+    /**
+     * Used to determine whether or not a sub-skill activates from random chance (using static values)
+     * @param skillAbility The identifier for this specific sub-skill
+     * @param player The owner of this sub-skill
+     * @param activationChance This is the value that we roll against, 100 is normal, and 75 is for lucky perk
+     * @param chance This is the static modifier for our random calculations
+     * @return true if random chance was successful and the event wasn't cancelled
+     */
+    private static boolean performRandomSkillCheckStatic(SecondaryAbility skillAbility, Player player, int activationChance, double chance) {
         SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, skillAbility, chance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
         return (event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance) && !event.isCancelled();
-    }
-
-    public static boolean activationSuccessful(SecondaryAbility skillAbility, Player player, double staticChance, int activationChance) {
-        double chance = staticChance / activationChance;
-        return propagateSecondaryAbilityEvent(skillAbility, player, activationChance, chance);
-    }
-
-    public static boolean activationSuccessful(SecondaryAbility skillAbility, Player player) {
-        SecondaryAbilityEvent event = EventUtils.callSecondaryAbilityEvent(player, skillAbility);
-        return !event.isCancelled();
     }
 
     public static boolean treasureDropSuccessful(Player player, double dropChance, int activationChance) {

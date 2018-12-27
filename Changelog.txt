@@ -9,6 +9,7 @@ Key:
 
 Version 2.0.1
  ! mcMMO skills will now be on a scale from 1-100 instead of 0-1000 (I'll be explaining this in a write-up)
+ ! Refactored some unreadable code relating to SecondaryAbility activation in SkillUtils
 
 
 Version 2.0.0

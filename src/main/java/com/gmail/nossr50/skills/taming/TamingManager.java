@@ -18,6 +18,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.util.skills.SecondarySkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -83,7 +84,8 @@ public class TamingManager extends SkillManager {
      * @param damage The damage being absorbed by the wolf
      */
     public void fastFoodService(Wolf wolf, double damage) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.FAST_FOOD, getPlayer(), Taming.fastFoodServiceActivationChance, activationChance)) {
+        //static chance (3rd param)
+        if (!SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_STATIC_CHANCE, SecondaryAbility.FAST_FOOD, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return;
         }
 
@@ -103,7 +105,7 @@ public class TamingManager extends SkillManager {
      * @param damage The initial damage
      */
     public double gore(LivingEntity target, double damage) {
-        if (!SkillUtils.activationSuccessful(SecondaryAbility.GORE, getPlayer(), getSkillLevel(), activationChance)) {
+        if (!SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.GORE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return 0;
         }
 
