@@ -18,7 +18,7 @@ Skills:
         Ability:
             # IncreaseLevel: This setting will determine when the length of every ability gets longer with 1 second
             # EnchantBuff: This setting determines how many enchant levels to use when buffing Super Breaker & Giga Drill Breaker
-            IncreaseLevel: 50
+            IncreaseLevel: 5
             EnchantBuff: 5
     #
     #  Settings for Acrobatics
@@ -56,7 +56,7 @@ Skills:
             # MaxBonusLevel: Maximum bonus level of Catalysis, when a player reaches this level his brewing speed will be <MaxSpeed>
             # MinSpeed: Minimum brewing speed allowed when at <UnlockLevel> or lower
             # MaxSpeed: Maximum brewing speed allowed when at <MaxBonusLevel> or higher
-            UnlockLevel: 100
+            UnlockLevel: 10
             MaxBonusLevel: 100
             MinSpeed: 1.0
             MaxSpeed: 4.0
@@ -64,13 +64,13 @@ Skills:
         # Rank_Levels: Alchemy level where rank gets unlocked
         Rank_Levels:
             Rank_1: 0
-            Rank_2: 125
-            Rank_3: 250
-            Rank_4: 375
-            Rank_5: 500
-            Rank_6: 625
-            Rank_7: 750
-            Rank_8: 875
+            Rank_2: 12
+            Rank_3: 25
+            Rank_4: 37
+            Rank_5: 50
+            Rank_6: 62
+            Rank_7: 75
+            Rank_8: 87
     #
     #  Settings for Archery
     ###
@@ -79,7 +79,7 @@ Skills:
             # IncreaseLevel: Every <IncreaseLevel> the skillshot bonus will go up by <IncreasePercentage>
             # IncreasePercentage: This is a percentage value, 0.1 = 10%
             # MaxBonus: When the <MaxBonus> has been reached, the bonus percentage will not go up anymore. 2.0 = 200%
-            IncreaseLevel: 50
+            IncreaseLevel: 5
             IncreasePercentage: 0.1
             MaxBonus: 2.0
             MaxDamage: 9.0
@@ -114,7 +114,7 @@ Skills:
             # ChanceMax: Maximum chance of causing a critical hit when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Level where <ChanceMax> of causing critical hits is reached
             ChanceMax: 37.50
-            MaxBonusLevel: 750
+            MaxBonusLevel: 75
             # Damage modifier of critical hits for PVP / PVE, when causing a critical hit the damage gets multiplied by the modifier
             PVP_Modifier: 1.5
             PVE_Modifier: 2.0
@@ -131,7 +131,7 @@ Skills:
             # IncreaseLevel: Every <IncreaseLevel> the durability damage goes up with 1
             # Chance: Chance of hitting with ArmorImpact
             # MaxPercentageDurabilityDamage: Durability damage cap for ArmorImpact, 20% means that you can never destroy a piece of armor in less than 5 hits
-            IncreaseLevel: 50
+            IncreaseLevel: 5
             Chance: 25.0
             MaxPercentageDurabilityDamage: 20.0
 
@@ -145,13 +145,13 @@ Skills:
         # Rank_Levels: Fishing level where rank gets unlocked
         Rank_Levels:
             Rank_1: 0
-            Rank_2: 125
-            Rank_3: 250
-            Rank_4: 375
-            Rank_5: 500
-            Rank_6: 625
-            Rank_7: 700
-            Rank_8: 875
+            Rank_2: 12
+            Rank_3: 25
+            Rank_4: 37
+            Rank_5: 50
+            Rank_6: 62
+            Rank_7: 70
+            Rank_8: 87
 
         ShakeChance:
             Rank_1: 15.0
@@ -176,17 +176,17 @@ Skills:
 
         FishermansDiet:
             # This determines when Fisherman's Diet adds extra hunger recovery to food
-            RankChange: 200
+            RankChange: 20
 
         IceFishing:
             # UnlockLevel: Fishing level when the Ice Fishing ability unlocks
-            UnlockLevel: 50
+            UnlockLevel: 5
 
         MasterAngler:
             # UnlockLevel: Fishing level when the Master Angler ability unlocks
             # BoatMultiplier: Catch rate is multiplied by this modifier
             # BiomeModifier: Catch rate is multiplied by this modifier
-            UnlockLevel: 125
+            UnlockLevel: 12
             BoatModifier: 2.0
             BiomeModifier: 2.0
     #
@@ -195,15 +195,15 @@ Skills:
     Herbalism:
         FarmersDiet:
             # This determines when Farmers Diet adds extra hunger recovery to food
-            RankChange: 200
+            RankChange: 20
 
         GreenThumb:
             # StageChange: Level value when the GreenThumb stage rank goes up
             # ChanceMax: Maximum chance of GreenThumb when on <MaxBonusLevel> or higher
             # MaxBonusLevel: On this level, GreenThumb chance will be <ChanceMax>
-            StageChange: 200
+            StageChange: 20
             ChanceMax: 100.0
-            MaxBonusLevel: 150
+            MaxBonusLevel: 100
 
         DoubleDrops:
             # ChanceMax: Maximum chance of receiving double drops when on <MaxBonusLevel> or higher
@@ -235,14 +235,14 @@ Skills:
         # BlastMining_Rank: BlastMining rank unlocks
         BlastMining:
             Rank_Levels:
-                Rank_1: 125
-                Rank_2: 250
-                Rank_3: 375
-                Rank_4: 500
-                Rank_5: 625
-                Rank_6: 750
-                Rank_7: 875
-                Rank_8: 1000
+                Rank_1: 12
+                Rank_2: 25
+                Rank_3: 37
+                Rank_4: 50
+                Rank_5: 62
+                Rank_6: 75
+                Rank_7: 87
+                Rank_8: 100
 
             # BlastDamageDecrease Ranks: % of damage reduced from TNT explosions
             BlastDamageDecrease:
@@ -317,14 +317,14 @@ Skills:
         ArcaneForging:
             May_Lose_Enchants: true
             Rank_Levels:
-                Rank_1: 125
-                Rank_2: 250
-                Rank_3: 375
-                Rank_4: 500
-                Rank_5: 625
-                Rank_6: 750
-                Rank_7: 875
-                Rank_8: 1000
+                Rank_1: 12
+                Rank_2: 25
+                Rank_3: 37
+                Rank_4: 50
+                Rank_5: 62
+                Rank_6: 75
+                Rank_7: 87
+                Rank_8: 100
             Keep_Enchants_Chance:
                 Rank_1: 10.0
                 Rank_2: 20.0
@@ -355,7 +355,7 @@ Skills:
 
         # AdvancedSalvage_UnlockLevel: The level at which Advance Salvage become available
         AdvancedSalvage:
-            UnlockLevel: 350
+            UnlockLevel: 35
 
         ArcaneSalvage:
             # EnchantLossEnabled: When salvaging enchanted items, the enchants may be lost
@@ -363,14 +363,14 @@ Skills:
             EnchantLossEnabled: true
             EnchantDowngradeEnabled: true
             Rank_Levels:
-                Rank_1: 125
-                Rank_2: 250
-                Rank_3: 375
-                Rank_4: 500
-                Rank_5: 625
-                Rank_6: 750
-                Rank_7: 875
-                Rank_8: 1000
+                Rank_1: 12
+                Rank_2: 25
+                Rank_3: 37
+                Rank_4: 50
+                Rank_5: 62
+                Rank_6: 75
+                Rank_7: 87
+                Rank_8: 100
 
             # ExtractFullEnchant: Chance to extract the full enchant at each ArcaneSalvage rank
             ExtractFullEnchant:
@@ -412,19 +412,19 @@ Skills:
         FluxMining:
             # UnlockLevel: Level when Flux Mining becomes available
             # Chance: Chance for Flux Mining to activate
-            UnlockLevel: 250
+            UnlockLevel: 25
             Chance: 33.0
 
         # Rank_Levels: Smelting level where rank gets unlocked
         Rank_Levels:
-            Rank_1: 125
-            Rank_2: 250
-            Rank_3: 375
-            Rank_4: 500
-            Rank_5: 625
-            Rank_6: 750
-            Rank_7: 875
-            Rank_8: 1000
+            Rank_1: 12
+            Rank_2: 25
+            Rank_3: 37
+            Rank_4: 50
+            Rank_5: 62
+            Rank_6: 75
+            Rank_7: 87
+            Rank_8: 100
 
         # VanillaXPMultiplier: Vanilla XP gained from smelting ores is multiplied by these values.
         VanillaXPMultiplier:
@@ -491,33 +491,33 @@ Skills:
         FastFood:
             # UnlockLevel: Level when FastFood unlocks
             # Chance: The chance for wolves to heal hp when inflicting damage
-            UnlockLevel: 50
+            UnlockLevel: 5
             Chance: 50.0
 
         EnvironmentallyAware:
             # UnlockLevel: Level when EnvironmentallyAware unlocks
-            UnlockLevel: 100
+            UnlockLevel: 10
 
         ThickFur:
             # UnlockLevel: Level when ThickFur unlocks
             # Modifier: Damage will get divided by this modifier
-            UnlockLevel: 250
+            UnlockLevel: 25
             Modifier: 2.0
 
         HolyHound:
             # UnlockLevel: Level when HolyHound unlocks
-            UnlockLevel: 375
+            UnlockLevel: 37
 
         ShockProof:
             # UnlockLevel: Level when ShockProof unlocks
             # Modifier: Damage will get divided by this modifier
-            UnlockLevel: 500
+            UnlockLevel: 50
             Modifier: 6.0
 
         SharpenedClaws:
             # UnlockLevel: Level when SharpenedClaws unlocks
             # Bonus: This bonus will get added to the damage caused
-            UnlockLevel: 750
+            UnlockLevel: 75
             Bonus: 2.0
 
         CallOfTheWild:
@@ -559,7 +559,7 @@ Skills:
             # IncreaseLevel: Bonus damage increases every increase level
             BonusMin: 3.0
             BonusMax: 8.0
-            IncreaseLevel: 50
+            IncreaseLevel: 5
     #
     #  Settings for Woodcutting
     ###
