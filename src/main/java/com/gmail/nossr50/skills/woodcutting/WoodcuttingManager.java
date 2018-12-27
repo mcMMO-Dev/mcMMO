@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills.woodcutting;
 
+import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.AbilityType;
@@ -23,6 +24,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class WoodcuttingManager extends SkillManager {
+
     public WoodcuttingManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, SkillType.WOODCUTTING);
     }

@@ -21,6 +21,7 @@ public final class Woodcutting {
     public static int leafBlowerUnlockLevel = AdvancedConfig.getInstance().getLeafBlowUnlockLevel();
     public static int treeFellerThreshold = Config.getInstance().getTreeFellerThreshold();
 
+
     protected static boolean treeFellerReachedThreshold = false;
 
     protected enum ExperienceGainMethod {

@@ -438,6 +438,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getAbilityMessagesEnabled() { return config.getBoolean("Abilities.Messages", true); }
     public boolean getAbilitiesEnabled() { return config.getBoolean("Abilities.Enabled", true); }
     public boolean getAbilitiesOnlyActivateWhenSneaking() { return config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false); }
+    public boolean getAbilitiesGateEnabled() { return config.getBoolean("Abilities.Activation.Level_Gate_Abilities"); }
 
     public int getCooldown(AbilityType ability) { return config.getInt("Abilities.Cooldowns." + ability.toString()); }
     public int getMaxLength(AbilityType ability) { return config.getInt("Abilities.Max_Seconds." + ability.toString()); }
@@ -471,6 +472,9 @@ public class Config extends AutoUpdateConfigLoader {
         return disabled;
     }
 
+    /* Axes */
+    public int getAxesGate() { return config.getInt("Skills.Axes.Ability_Activation_Level_Gate", 10); }
+
     /* Acrobatics */
     public boolean getDodgeLightningDisabled() { return config.getBoolean("Skills.Acrobatics.Prevent_Dodge_Lightning", false); }
     public int getXPAfterTeleportCooldown() { return config.getInt("Skills.Acrobatics.XP_After_Teleport_Cooldown", 5); }
@@ -488,6 +492,10 @@ public class Config extends AutoUpdateConfigLoader {
 
     /* Mining */
     public Material getDetonatorItem() { return Material.matchMaterial(config.getString("Skills.Mining.Detonator_Name", "FLINT_AND_STEEL")); }
+    public int getMiningGate() { return config.getInt("Skills.Mining.Ability_Activation_Level_Gate", 10); }
+
+    /* Excavation */
+    public int getExcavationGate() { return config.getInt("Skills.Excavation.Ability_Activation_Level_Gate", 10); }
 
     /* Repair */
     public boolean getRepairAnvilMessagesEnabled() { return config.getBoolean("Skills.Repair.Anvil_Messages", true); }
@@ -507,6 +515,10 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getUnarmedBlockCrackerSmoothbrickToCracked() { return config.getBoolean("Skills.Unarmed.Block_Cracker.SmoothBrick_To_CrackedBrick", true); }
     public boolean getUnarmedItemPickupDisabled() { return config.getBoolean("Skills.Unarmed.Item_Pickup_Disabled_Full_Inventory", true); }
     public boolean getUnarmedItemsAsUnarmed() { return config.getBoolean("Skills.Unarmed.Items_As_Unarmed", false); }
+    public int getUnarmedGate() { return config.getInt("Skills.Unarmed.Ability_Activation_Level_Gate", 10); }
+
+    /* Swords */
+    public int getSwordsGate() { return config.getInt("Skills.Swords.Ability_Activation_Level_Gate", 10); }
 
     /* Taming */
     public Material getTamingCOTWMaterial(EntityType type) { return Material.matchMaterial(config.getString("Skills.Taming.Call_Of_The_Wild." + StringUtils.getPrettyEntityTypeString(type) + ".Item_Material")); }
@@ -519,6 +531,7 @@ public class Config extends AutoUpdateConfigLoader {
     /* Woodcutting */
     public boolean getWoodcuttingDoubleDropsEnabled(BlockData material) { return config.getBoolean("Double_Drops.Woodcutting." + StringUtils.getFriendlyConfigBlockDataString(material)); }
     public boolean getTreeFellerSoundsEnabled() { return config.getBoolean("Skills.Woodcutting.Tree_Feller_Sounds", true); }
+    public int getWoodcuttingGate() { return config.getInt("Skills.Woodcutting.Ability_Activation_Level_Gate", 10); }
 
     /* AFK Leveling */
     public boolean getAcrobaticsPreventAFK() { return config.getBoolean("Skills.Acrobatics.Prevent_AFK_Leveling", true); }
@@ -534,6 +547,10 @@ public class Config extends AutoUpdateConfigLoader {
     public int getLevelCap(SkillType skill) {
         int cap = config.getInt("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Level_Cap");
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
+    }
+
+    public int getSkillAbilityGate(SkillType skill) {
+        return config.getInt("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Ability_Activation_Level_Gate");
     }
 
     public boolean getTruncateSkills() { return config.getBoolean("General.TruncateSkills", false); }

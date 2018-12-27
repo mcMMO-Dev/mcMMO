@@ -208,6 +208,18 @@ public class SkillUtils {
 
     public static boolean activationSuccessful(SecondaryAbility skillAbility, Player player, int skillLevel, int activationChance, double maxChance, int maxLevel) {
         double chance = (maxChance / maxLevel) * Math.min(skillLevel, maxLevel) / activationChance;
+        return propagateSecondaryAbilityEvent(skillAbility, player, activationChance, chance);
+    }
+
+    /**
+     * Sends an event out regarding activation of RNG based sub-skills
+     * @param skillAbility The random-chance ability
+     * @param player The player that the skill belong to
+     * @param activationChance parameter used in activation calculations
+     * @param chance parameter used in activation calculations
+     * @return returns true if successful
+     */
+    private static boolean propagateSecondaryAbilityEvent(SecondaryAbility skillAbility, Player player, int activationChance, double chance) {
         SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, skillAbility, chance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
         return (event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance) && !event.isCancelled();
@@ -215,9 +227,7 @@ public class SkillUtils {
 
     public static boolean activationSuccessful(SecondaryAbility skillAbility, Player player, double staticChance, int activationChance) {
         double chance = staticChance / activationChance;
-        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, skillAbility, chance);
-        mcMMO.p.getServer().getPluginManager().callEvent(event);
-        return (event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance) && !event.isCancelled();
+        return propagateSecondaryAbilityEvent(skillAbility, player, activationChance, chance);
     }
 
     public static boolean activationSuccessful(SecondaryAbility skillAbility, Player player) {

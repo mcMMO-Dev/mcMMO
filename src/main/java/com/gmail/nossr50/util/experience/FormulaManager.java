@@ -116,7 +116,7 @@ public class FormulaManager {
         switch (formulaType) {
             case LINEAR:
                 if (!experienceNeededLinear.containsKey(level)) {
-                    experience = (int) Math.floor(base + level * multiplier);
+                    experience = (int) Math.floor( 10 * (base + level * multiplier));
                     experienceNeededLinear.put(level, experience);
                 }
 
@@ -124,7 +124,7 @@ public class FormulaManager {
 
             case EXPONENTIAL:
                 if (!experienceNeededExponential.containsKey(level)) {
-                    experience = (int) Math.floor(multiplier * Math.pow(level, exponent) + base);
+                    experience = (int) Math.floor( 10 * multiplier * Math.pow(level, exponent) + base);
                     experienceNeededExponential.put(level, experience);
                 }
 

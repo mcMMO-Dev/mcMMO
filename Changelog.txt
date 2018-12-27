@@ -7,7 +7,11 @@ Key:
   ! Change
   - Removal
 
-Version 2.0.00
+Version 2.0.1
+    ! mcMMO skills will now be on a scale from 1-100 instead of 0-1000 (I'll be explaining this in a write-up)
+
+
+Version 2.0.0
     = Fixed an interaction between Tree Feller and Stripped Wood
     ! Fireworks no longer fire by default for ability activation/deactivation
     ! Website has been changed and the MOTD string relating to it reflects this

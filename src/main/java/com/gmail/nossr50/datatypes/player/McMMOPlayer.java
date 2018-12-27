@@ -726,6 +726,19 @@ public class McMMOPlayer {
             return;
         }
 
+        /*
+         * Check if the player has passed the gate requirement
+         */
+        if(Config.getInstance().getAbilitiesGateEnabled())
+        {
+            if(getSkillLevel(skill) < skill.getSkillAbilityGate())
+            {
+                //Inform the player they are not yet skilled enough
+                player.sendMessage(LocaleLoader.getString("Skills.AbilityGateRequirementFail"));
+                return;
+            }
+        }
+
         int timeRemaining = calculateTimeRemaining(ability);
 
         if (timeRemaining > 0) {

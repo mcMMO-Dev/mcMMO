@@ -1,5 +1,6 @@
 package com.gmail.nossr50.skills;
 
+import com.gmail.nossr50.config.Config;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;

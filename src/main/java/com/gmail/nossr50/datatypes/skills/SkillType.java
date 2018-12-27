@@ -119,6 +119,8 @@ public enum SkillType {
         return Config.getInstance().getLevelCap(this);
     }
 
+    public int getSkillAbilityGate() { return Config.getInstance().getSkillAbilityGate(this); }
+
     public boolean getPVPEnabled() {
         return Config.getInstance().getPVPEnabled(this);
     }
