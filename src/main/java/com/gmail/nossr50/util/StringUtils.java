@@ -83,7 +83,7 @@ public class StringUtils {
         switch (secondaryAbility) {
             case HERBALISM_DOUBLE_DROPS :
             case MINING_DOUBLE_DROPS :
-            case WOODCUTTING_DOUBLE_DROPS :
+            case WOODCUTTING_HARVEST:
                 return "Double Drops";
             case FISHING_TREASURE_HUNTER :
             case EXCAVATION_TREASURE_HUNTER :

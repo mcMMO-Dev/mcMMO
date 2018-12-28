@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.scoreboards;
 import java.util.List;
 import java.util.Map;
 
+import jdk.internal.jline.internal.Nullable;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -40,9 +41,13 @@ public class ScoreboardWrapper {
     private Objective powerObjective;
 
     // Parameter variables (May be null / invalid)
+    @Nullable
     private Scoreboard oldBoard = null;
+    @Nullable
     public String targetPlayer = null;
+    @Nullable
     public SkillType targetSkill = null;
+    @Nullable
     private PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
 

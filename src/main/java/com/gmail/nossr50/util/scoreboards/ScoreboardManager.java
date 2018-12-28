@@ -26,6 +26,9 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 
+/**
+ * Manages the Scoreboards used to display a variety of mcMMO related information to the player
+ */
 public class ScoreboardManager {
     static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<String, ScoreboardWrapper>();
 
@@ -51,11 +54,22 @@ public class ScoreboardManager {
     static final Map<AbilityType, String> abilityLabelsColored;
     static final Map<AbilityType, String> abilityLabelsSkill;
 
+    /*
+     * Initializes the static properties of this class
+     */
     static {
+        /*
+         * We need immutable objects for our Scoreboard's labels
+         */
         ImmutableMap.Builder<SkillType, String> skillLabelBuilder = ImmutableMap.builder();
         ImmutableMap.Builder<AbilityType, String> abilityLabelBuilder = ImmutableMap.builder();
         ImmutableMap.Builder<AbilityType, String> abilityLabelSkillBuilder = ImmutableMap.builder();
 
+        /*
+         * Builds the labels for our ScoreBoards
+         * Stylizes the scoreboard in a Rainbow Pattern
+         * This is off by default
+         */
         if (Config.getInstance().getScoreboardRainbows()) {
             // Everything but black, gray, gold
             List<ChatColor> colors = Lists.newArrayList(
@@ -93,6 +107,10 @@ public class ScoreboardManager {
                 }
             }
         }
+        /*
+         * Builds the labels for our ScoreBoards
+         * Stylizes the scoreboard using our normal color scheme
+         */
         else {
             for (SkillType type : SkillType.values()) {
                 // Include child skills

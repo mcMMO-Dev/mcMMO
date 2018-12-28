@@ -654,11 +654,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Woodcutting.LeafBlower.UnlockLevel should be at least 0!");
         }
 
-        if (getMaxChance(SecondaryAbility.WOODCUTTING_DOUBLE_DROPS) < 1) {
+        if (getMaxChance(SecondaryAbility.WOODCUTTING_HARVEST) < 1) {
             reason.add("Skills.Woodcutting.DoubleDrops.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SecondaryAbility.WOODCUTTING_DOUBLE_DROPS) < 1) {
+        if (getMaxBonusLevel(SecondaryAbility.WOODCUTTING_HARVEST) < 1) {
             reason.add("Skills.Woodcutting.DoubleDrops.MaxBonusLevel should be at least 1!");
         }
 
