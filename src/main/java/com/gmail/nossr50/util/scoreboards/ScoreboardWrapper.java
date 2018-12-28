@@ -3,7 +3,6 @@ package com.gmail.nossr50.util.scoreboards;
 import java.util.List;
 import java.util.Map;
 
-import jdk.internal.jline.internal.Nullable;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
