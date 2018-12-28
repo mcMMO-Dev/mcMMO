@@ -307,7 +307,7 @@ Skills:
         Prevent_Dodge_Lightning: false
         # Prevent earning Acrobatics XP a few seconds after teleporting
         XP_After_Teleport_Cooldown: 5
-        Level_Cap: 100
+        Level_Cap: 0
     Alchemy:
         # Allow Hoppers to transfer ingredients and brew Rank 1 Alchemy potions
         Enabled_for_Hoppers: true
@@ -315,35 +315,35 @@ Skills:
         Prevent_Hopper_Transfer_Ingredients: false
         # Prevent Hoppers from transferring bottles into Brewing Stands
         Prevent_Hopper_Transfer_Bottles: false
-        Level_Cap: 100
+        Level_Cap: 0
     Archery:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
-        Level_Cap: 100
+        Level_Cap: 0
     Axes:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
-        Level_Cap: 100
+        Level_Cap: 0
         Ability_Activation_Level_Gate: 10
     Excavation:
-        Level_Cap: 100
+        Level_Cap: 0
         Ability_Activation_Level_Gate: 10
     Fishing:
-        Level_Cap: 100
+        Level_Cap: 0
         Drops_Enabled: true
         Override_Vanilla_Treasures: true
         # Always catch fish, even when treasure is found
         Extra_Fish: false
         Lure_Modifier: 4.0
     Herbalism:
-        Level_Cap: 100
+        Level_Cap: 0
         Prevent_AFK_Leveling: true
     Mining:
-        Level_Cap: 100
+        Level_Cap: 0
         Detonator_Name: FLINT_AND_STEEL
         Ability_Activation_Level_Gate: 10
     Repair:
-        Level_Cap: 100
+        Level_Cap: 0
         Anvil_Messages: true
         Anvil_Placed_Sounds: true
         Anvil_Use_Sounds: true
@@ -351,7 +351,7 @@ Skills:
         # Ask for a confirmation when a player tries to repair an enchanted item
         Confirm_Required: true
     Salvage:
-        Level_Cap: 100
+        Level_Cap: 0
         Anvil_Messages: true
         Anvil_Placed_Sounds: true
         Anvil_Use_Sounds: true
@@ -359,16 +359,16 @@ Skills:
         # Ask for a confirmation when a player tries to salvage an enchanted item
         Confirm_Required: true
     Smelting:
-        Level_Cap: 100
+        Level_Cap: 0
     Swords:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
-        Level_Cap: 100
+        Level_Cap: 0
         Ability_Activation_Level_Gate: 10
     Taming:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
-        Level_Cap: 100
+        Level_Cap: 0
         Call_Of_The_Wild:
             # Item_Material: Material of the item needed to summon the pet
             # Item_Amount: Amount of items required to summon the pet
@@ -400,7 +400,7 @@ Skills:
     Unarmed:
         Enabled_For_PVP: true
         Enabled_For_PVE: true
-        Level_Cap: 100
+        Level_Cap: 0
         Ability_Activation_Level_Gate: 10
         Block_Cracker:
             SmoothBrick_To_CrackedBrick: true
@@ -411,7 +411,7 @@ Skills:
         Items_As_Unarmed: false
     Woodcutting:
         Tree_Feller_Sounds: true
-        Level_Cap: 100
+        Level_Cap: 0
         Ability_Activation_Level_Gate: 10
 
 #
