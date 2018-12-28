@@ -41,13 +41,9 @@ public class ScoreboardWrapper {
     private Objective powerObjective;
 
     // Parameter variables (May be null / invalid)
-    @Nullable
     private Scoreboard oldBoard = null;
-    @Nullable
     public String targetPlayer = null;
-    @Nullable
     public SkillType targetSkill = null;
-    @Nullable
     private PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
 
