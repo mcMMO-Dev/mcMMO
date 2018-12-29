@@ -52,7 +52,7 @@ import com.gmail.nossr50.commands.skills.TamingCommand;
 import com.gmail.nossr50.commands.skills.UnarmedCommand;
 import com.gmail.nossr50.commands.skills.WoodcuttingCommand;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 
@@ -62,7 +62,7 @@ public final class CommandRegistrationManager {
     private static String permissionsMessage = LocaleLoader.getString("mcMMO.NoPermission");
 
     private static void registerSkillCommands() {
-        for (SkillType skill : SkillType.values()) {
+        for (PrimarySkill skill : PrimarySkill.values()) {
             String commandName = skill.toString().toLowerCase();
             String localizedName = skill.getName().toLowerCase();
 

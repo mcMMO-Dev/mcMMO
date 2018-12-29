@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.acrobatics;
 
-import com.gmail.nossr50.util.skills.SecondarySkillActivationType;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.util.skills.SubSkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -11,8 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
@@ -26,15 +26,15 @@ public class AcrobaticsManager extends SkillManager {
     Location lastFallLocation;
 
     public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.ACROBATICS);
+        super(mcMMOPlayer, PrimarySkill.ACROBATICS);
     }
 
     public boolean canRoll() {
-        return !exploitPrevention() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.ROLL);
+        return !exploitPrevention() && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.ACROBATICS_ROLL);
     }
 
     public boolean canDodge(Entity damager) {
-        if (Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.DODGE)) {
+        if (Permissions.isSubSkillEnabled(getPlayer(), SubSkill.ACROBATICS_DODGE)) {
             if (damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) {
                 return false;
             }
@@ -55,7 +55,7 @@ public class AcrobaticsManager extends SkillManager {
         double modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
         Player player = getPlayer();
 
-        if (!isFatal(modifiedDamage) && SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.DODGE, player, this.skill, getSkillLevel(), activationChance)) {
+        if (!isFatal(modifiedDamage) && SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.ACROBATICS_DODGE, player, this.skill, getSkillLevel(), activationChance)) {
             ParticleEffectUtils.playDodgeEffect(player);
 
             if (mcMMOPlayer.useChatNotifications()) {
@@ -82,13 +82,13 @@ public class AcrobaticsManager extends SkillManager {
     public double rollCheck(double damage) {
         Player player = getPlayer();
 
-        if (player.isSneaking() && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.GRACEFUL_ROLL)) {
+        if (player.isSneaking() && Permissions.isSubSkillEnabled(player, SubSkill.ACROBATICS_GRACEFUL_ROLL)) {
             return gracefulRollCheck(damage);
         }
 
         double modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.rollThreshold);
 
-        if (!isFatal(modifiedDamage) && SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.ROLL, player, this.skill, getSkillLevel(), activationChance)) {
+        if (!isFatal(modifiedDamage) && SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.ACROBATICS_ROLL, player, this.skill, getSkillLevel(), activationChance)) {
             player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
             applyXpGain(calculateRollXP(damage, true), XPGainReason.PVE);
 
@@ -112,7 +112,7 @@ public class AcrobaticsManager extends SkillManager {
     private double gracefulRollCheck(double damage) {
         double modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
 
-        if (!isFatal(modifiedDamage) && SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.GRACEFUL_ROLL, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (!isFatal(modifiedDamage) && SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.ACROBATICS_GRACEFUL_ROLL, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             getPlayer().sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
             applyXpGain(calculateRollXP(damage, true), XPGainReason.PVE);
 

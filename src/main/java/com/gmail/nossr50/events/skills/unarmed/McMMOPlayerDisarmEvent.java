@@ -3,7 +3,7 @@ package com.gmail.nossr50.events.skills.unarmed;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 
 public class McMMOPlayerDisarmEvent extends McMMOPlayerSkillEvent implements Cancellable {
@@ -11,7 +11,7 @@ public class McMMOPlayerDisarmEvent extends McMMOPlayerSkillEvent implements Can
     private Player defender;
 
     public McMMOPlayerDisarmEvent(Player defender) {
-        super(defender, SkillType.UNARMED);
+        super(defender, PrimarySkill.UNARMED);
         this.defender = defender;
     }
 

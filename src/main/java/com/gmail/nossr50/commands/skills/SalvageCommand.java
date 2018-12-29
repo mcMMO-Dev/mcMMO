@@ -3,10 +3,10 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.salvage.SalvageManager;
@@ -18,7 +18,7 @@ public class SalvageCommand extends SkillCommand {
     private boolean canArcaneSalvage;
 
     public SalvageCommand() {
-        super(SkillType.SALVAGE);
+        super(PrimarySkill.SALVAGE);
     }
 
     @Override
@@ -29,8 +29,8 @@ public class SalvageCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canAdvancedSalvage = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ADVANCED_SALVAGE);
-        canArcaneSalvage = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ARCANE_SALVAGE);
+        canAdvancedSalvage = Permissions.isSubSkillEnabled(player, SubSkill.SALVAGE_ADVANCED_SALVAGE);
+        canArcaneSalvage = Permissions.isSubSkillEnabled(player, SubSkill.SALVAGE_ARCANE_SALVAGE);
     }
 
     @Override

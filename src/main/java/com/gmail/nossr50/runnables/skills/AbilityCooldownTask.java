@@ -1,15 +1,15 @@
 package com.gmail.nossr50.runnables.skills;
 
+import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
 
 public class AbilityCooldownTask extends BukkitRunnable {
     private McMMOPlayer mcMMOPlayer;
-    private AbilityType ability;
+    private SuperAbility ability;
 
-    public AbilityCooldownTask(McMMOPlayer mcMMOPlayer, AbilityType ability) {
+    public AbilityCooldownTask(McMMOPlayer mcMMOPlayer, SuperAbility ability) {
         this.mcMMOPlayer = mcMMOPlayer;
         this.ability = ability;
     }

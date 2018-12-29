@@ -3,10 +3,10 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.util.Permissions;
@@ -29,7 +29,7 @@ public class UnarmedCommand extends SkillCommand {
     private boolean canIronGrip;
 
     public UnarmedCommand() {
-        super(SkillType.UNARMED);
+        super(PrimarySkill.UNARMED);
     }
 
     @Override
@@ -41,16 +41,16 @@ public class UnarmedCommand extends SkillCommand {
             berserkLengthEndurance = berserkStrings[1];
         }
 
-        // DISARM
+        // UNARMED_DISARM
         if (canDisarm) {
-            String[] disarmStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.DISARM, isLucky);
+            String[] disarmStrings = calculateAbilityDisplayValues(skillValue, SubSkill.UNARMED_DISARM, isLucky);
             disarmChance = disarmStrings[0];
             disarmChanceLucky = disarmStrings[1];
         }
 
-        // DEFLECT
+        // UNARMED_DEFLECT
         if (canDeflect) {
-            String[] deflectStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.DEFLECT, isLucky);
+            String[] deflectStrings = calculateAbilityDisplayValues(skillValue, SubSkill.UNARMED_DEFLECT, isLucky);
             deflectChance = deflectStrings[0];
             deflectChanceLucky = deflectStrings[1];
         }
@@ -62,7 +62,7 @@ public class UnarmedCommand extends SkillCommand {
 
         // IRON GRIP
         if (canIronGrip) {
-            String[] ironGripStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.IRON_GRIP, isLucky);
+            String[] ironGripStrings = calculateAbilityDisplayValues(skillValue, SubSkill.UNARMED_IRON_GRIP, isLucky);
             ironGripChance = ironGripStrings[0];
             ironGripChanceLucky = ironGripStrings[1];
         }
@@ -71,10 +71,10 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canBerserk = Permissions.berserk(player);
-        canIronArm = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.IRON_ARM);
-        canDeflect = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.DEFLECT);
-        canDisarm = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.DISARM);
-        canIronGrip = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.IRON_GRIP);
+        canIronArm = Permissions.isSubSkillEnabled(player, SubSkill.UNARMED_IRON_ARM);
+        canDeflect = Permissions.isSubSkillEnabled(player, SubSkill.UNARMED_DEFLECT);
+        canDisarm = Permissions.isSubSkillEnabled(player, SubSkill.UNARMED_DISARM);
+        canIronGrip = Permissions.isSubSkillEnabled(player, SubSkill.UNARMED_IRON_GRIP);
         // TODO: Apparently we forgot about block cracker?
     }
 

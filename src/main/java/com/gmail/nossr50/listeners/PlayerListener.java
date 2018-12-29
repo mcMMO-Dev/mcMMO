@@ -8,8 +8,8 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.ShareHandler;
@@ -186,7 +186,7 @@ public class PlayerListener implements Listener {
     public void onPlayerFishHighest(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player) || !SkillType.FISHING.getPermissions(player)) {
+        if (!UserManager.hasPlayerDataKey(player) || !PrimarySkill.FISHING.getPermissions(player)) {
             return;
         }
 
@@ -210,7 +210,7 @@ public class PlayerListener implements Listener {
                     fishingCatch.setItemStack(new ItemStack(Material.SALMON, 1));
                 }
 
-                if (Permissions.vanillaXpBoost(player, SkillType.FISHING)) {
+                if (Permissions.vanillaXpBoost(player, PrimarySkill.FISHING)) {
                     event.setExpToDrop(fishingManager.handleVanillaXpBoost(event.getExpToDrop()));
                 }
                 return;
@@ -241,7 +241,7 @@ public class PlayerListener implements Listener {
     public void onPlayerFishMonitor(PlayerFishEvent event) {
         Player player = event.getPlayer();
 
-        if (!UserManager.hasPlayerDataKey(player) || !SkillType.FISHING.getPermissions(player)) {
+        if (!UserManager.hasPlayerDataKey(player) || !PrimarySkill.FISHING.getPermissions(player)) {
             return;
         }
 
@@ -308,7 +308,7 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if ((mcMMOPlayer.isUsingUnarmed() && ItemUtils.isSharable(dropStack) && !Config.getInstance().getUnarmedItemsAsUnarmed()) || mcMMOPlayer.getAbilityMode(AbilityType.BERSERK)) {
+        if ((mcMMOPlayer.isUsingUnarmed() && ItemUtils.isSharable(dropStack) && !Config.getInstance().getUnarmedItemsAsUnarmed()) || mcMMOPlayer.getAbilityMode(SuperAbility.BERSERK)) {
             boolean pickupSuccess = Unarmed.handleItemPickup(player.getInventory(), drop);
             boolean cancel = Config.getInstance().getUnarmedItemPickupDisabled() || pickupSuccess;
             event.setCancelled(cancel);
@@ -414,7 +414,7 @@ public class PlayerListener implements Listener {
 
                 if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
-                    if (type == Repair.anvilMaterial && SkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
+                    if (type == Repair.anvilMaterial && PrimarySkill.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
                         event.setCancelled(true);
 
@@ -425,7 +425,7 @@ public class PlayerListener implements Listener {
                         }
                     }
                     /* SALVAGE CHECKS */
-                    else if (type == Salvage.anvilMaterial && SkillType.SALVAGE.getPermissions(player) && mcMMO.getSalvageableManager().isSalvageable(heldItem)) {
+                    else if (type == Salvage.anvilMaterial && PrimarySkill.SALVAGE.getPermissions(player) && mcMMO.getSalvageableManager().isSalvageable(heldItem)) {
                         SalvageManager salvageManager = UserManager.getPlayer(player).getSalvageManager();
                         event.setCancelled(true);
 
@@ -454,7 +454,7 @@ public class PlayerListener implements Listener {
 
                 if (!Config.getInstance().getAbilitiesOnlyActivateWhenSneaking() || player.isSneaking()) {
                     /* REPAIR CHECKS */
-                    if (type == Repair.anvilMaterial && SkillType.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
+                    if (type == Repair.anvilMaterial && PrimarySkill.REPAIR.getPermissions(player) && mcMMO.getRepairableManager().isRepairable(heldItem)) {
                         RepairManager repairManager = mcMMOPlayer.getRepairManager();
 
                         // Cancel repairing an enchanted item
@@ -464,7 +464,7 @@ public class PlayerListener implements Listener {
                         }
                     }
                     /* SALVAGE CHECKS */
-                    else if (type == Salvage.anvilMaterial && SkillType.SALVAGE.getPermissions(player) && mcMMO.getSalvageableManager().isSalvageable(heldItem)) {
+                    else if (type == Salvage.anvilMaterial && PrimarySkill.SALVAGE.getPermissions(player) && mcMMO.getSalvageableManager().isSalvageable(heldItem)) {
                         SalvageManager salvageManager = mcMMOPlayer.getSalvageManager();
 
                         // Cancel salvaging an enchanted item
@@ -511,15 +511,15 @@ public class PlayerListener implements Listener {
                 if (BlockUtils.canActivateAbilities(blockState)) {
                     if (Config.getInstance().getAbilitiesEnabled()) {
                         if (BlockUtils.canActivateHerbalism(blockState)) {
-                            mcMMOPlayer.processAbilityActivation(SkillType.HERBALISM);
+                            mcMMOPlayer.processAbilityActivation(PrimarySkill.HERBALISM);
                         }
 
-                        mcMMOPlayer.processAbilityActivation(SkillType.AXES);
-                        mcMMOPlayer.processAbilityActivation(SkillType.EXCAVATION);
-                        mcMMOPlayer.processAbilityActivation(SkillType.MINING);
-                        mcMMOPlayer.processAbilityActivation(SkillType.SWORDS);
-                        mcMMOPlayer.processAbilityActivation(SkillType.UNARMED);
-                        mcMMOPlayer.processAbilityActivation(SkillType.WOODCUTTING);
+                        mcMMOPlayer.processAbilityActivation(PrimarySkill.AXES);
+                        mcMMOPlayer.processAbilityActivation(PrimarySkill.EXCAVATION);
+                        mcMMOPlayer.processAbilityActivation(PrimarySkill.MINING);
+                        mcMMOPlayer.processAbilityActivation(PrimarySkill.SWORDS);
+                        mcMMOPlayer.processAbilityActivation(PrimarySkill.UNARMED);
+                        mcMMOPlayer.processAbilityActivation(PrimarySkill.WOODCUTTING);
                     }
 
                     ChimaeraWing.activationCheck(player);
@@ -564,13 +564,13 @@ public class PlayerListener implements Listener {
                 
                 /* ACTIVATION CHECKS */
                 if (Config.getInstance().getAbilitiesEnabled()) {
-                    mcMMOPlayer.processAbilityActivation(SkillType.AXES);
-                    mcMMOPlayer.processAbilityActivation(SkillType.EXCAVATION);
-                    mcMMOPlayer.processAbilityActivation(SkillType.HERBALISM);
-                    mcMMOPlayer.processAbilityActivation(SkillType.MINING);
-                    mcMMOPlayer.processAbilityActivation(SkillType.SWORDS);
-                    mcMMOPlayer.processAbilityActivation(SkillType.UNARMED);
-                    mcMMOPlayer.processAbilityActivation(SkillType.WOODCUTTING);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkill.AXES);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkill.EXCAVATION);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkill.HERBALISM);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkill.MINING);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkill.SWORDS);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkill.UNARMED);
+                    mcMMOPlayer.processAbilityActivation(PrimarySkill.WOODCUTTING);
                 }
 
                 /* ITEM CHECKS */
@@ -670,7 +670,7 @@ public class PlayerListener implements Listener {
             String lowerCaseCommand = command.toLowerCase();
 
             // Do these ACTUALLY have to be lower case to work properly?
-            for (SkillType skill : SkillType.values()) {
+            for (PrimarySkill skill : PrimarySkill.values()) {
                 String skillName = skill.toString().toLowerCase();
                 String localizedName = skill.getName().toLowerCase();
 

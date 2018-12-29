@@ -3,8 +3,8 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.database.SQLDatabaseManager.PoolIdentifier;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
@@ -244,6 +244,8 @@ public class Config extends AutoUpdateConfigLoader {
      */
 
     /* General Settings */
+    //Classic mode will default the value to true if the config file doesn't contain the entry (server is from a previous mcMMO install)
+    public boolean getClassicMode() { return config.getBoolean("General.Classic_Mode", true); }
     public String getLocale() { return config.getString("General.Locale", "en_us"); }
     public boolean getMOTDEnabled() { return config.getBoolean("General.MOTD_Enabled", true); }
     public boolean getShowProfileLoadedMessage() { return config.getBoolean("General.Show_Profile_Loaded", true); }
@@ -350,16 +352,16 @@ public class Config extends AutoUpdateConfigLoader {
     }
 
     /* Hardcore Mode */
-    public boolean getHardcoreStatLossEnabled(SkillType skillType) { return config.getBoolean("Hardcore.Death_Stat_Loss.Enabled." + StringUtils.getCapitalized(skillType.toString()), false); }
-    public void setHardcoreStatLossEnabled(SkillType skillType, boolean enabled) { config.set("Hardcore.Death_Stat_Loss.Enabled." + StringUtils.getCapitalized(skillType.toString()), enabled); }
+    public boolean getHardcoreStatLossEnabled(PrimarySkill primarySkill) { return config.getBoolean("Hardcore.Death_Stat_Loss.Enabled." + StringUtils.getCapitalized(primarySkill.toString()), false); }
+    public void setHardcoreStatLossEnabled(PrimarySkill primarySkill, boolean enabled) { config.set("Hardcore.Death_Stat_Loss.Enabled." + StringUtils.getCapitalized(primarySkill.toString()), enabled); }
 
     public double getHardcoreDeathStatPenaltyPercentage() { return config.getDouble("Hardcore.Death_Stat_Loss.Penalty_Percentage", 75.0D); }
     public void setHardcoreDeathStatPenaltyPercentage(double value) { config.set("Hardcore.Death_Stat_Loss.Penalty_Percentage", value); }
 
     public int getHardcoreDeathStatPenaltyLevelThreshold() { return config.getInt("Hardcore.Death_Stat_Loss.Level_Threshold", 0); }
 
-    public boolean getHardcoreVampirismEnabled(SkillType skillType) { return config.getBoolean("Hardcore.Vampirism.Enabled." + StringUtils.getCapitalized(skillType.toString()), false); }
-    public void setHardcoreVampirismEnabled(SkillType skillType, boolean enabled) { config.set("Hardcore.Vampirism.Enabled." + StringUtils.getCapitalized(skillType.toString()), enabled); }
+    public boolean getHardcoreVampirismEnabled(PrimarySkill primarySkill) { return config.getBoolean("Hardcore.Vampirism.Enabled." + StringUtils.getCapitalized(primarySkill.toString()), false); }
+    public void setHardcoreVampirismEnabled(PrimarySkill primarySkill, boolean enabled) { config.set("Hardcore.Vampirism.Enabled." + StringUtils.getCapitalized(primarySkill.toString()), enabled); }
 
     public double getHardcoreVampirismStatLeechPercentage() { return config.getDouble("Hardcore.Vampirism.Leech_Percentage", 5.0D); }
     public void setHardcoreVampirismStatLeechPercentage(double value) { config.set("Hardcore.Vampirism.Leech_Percentage", value); }
@@ -440,8 +442,8 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getAbilitiesOnlyActivateWhenSneaking() { return config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false); }
     public boolean getAbilitiesGateEnabled() { return config.getBoolean("Abilities.Activation.Level_Gate_Abilities"); }
 
-    public int getCooldown(AbilityType ability) { return config.getInt("Abilities.Cooldowns." + ability.toString()); }
-    public int getMaxLength(AbilityType ability) { return config.getInt("Abilities.Max_Seconds." + ability.toString()); }
+    public int getCooldown(SuperAbility ability) { return config.getInt("Abilities.Cooldowns." + ability.toString()); }
+    public int getMaxLength(SuperAbility ability) { return config.getInt("Abilities.Max_Seconds." + ability.toString()); }
 
     /* Durability Settings */
     public int getAbilityToolDamage() { return config.getInt("Abilities.Tools.Durability_Loss", 1); }
@@ -452,9 +454,9 @@ public class Config extends AutoUpdateConfigLoader {
     /*
      * SKILL SETTINGS
      */
-    public boolean getDoubleDropsEnabled(SkillType skill, Material material) { return config.getBoolean("Double_Drops." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_")); }
+    public boolean getDoubleDropsEnabled(PrimarySkill skill, Material material) { return config.getBoolean("Double_Drops." + StringUtils.getCapitalized(skill.toString()) + "." + StringUtils.getPrettyItemString(material).replace(" ", "_")); }
 
-    public boolean getDoubleDropsDisabled(SkillType skill) {
+    public boolean getDoubleDropsDisabled(PrimarySkill skill) {
         String skillName = StringUtils.getCapitalized(skill.toString());
         ConfigurationSection section = config.getConfigurationSection("Double_Drops." + skillName);
         if (section == null)
@@ -544,20 +546,20 @@ public class Config extends AutoUpdateConfigLoader {
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 
-    public int getLevelCap(SkillType skill) {
+    public int getLevelCap(PrimarySkill skill) {
         int cap = config.getInt("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Level_Cap");
         return (cap <= 0) ? Integer.MAX_VALUE : cap;
     }
 
-    public int getSkillAbilityGate(SkillType skill) {
+    public int getSkillAbilityGate(PrimarySkill skill) {
         return config.getInt("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Ability_Activation_Level_Gate");
     }
 
     public boolean getTruncateSkills() { return config.getBoolean("General.TruncateSkills", false); }
 
     /* PVP & PVE Settings */
-    public boolean getPVPEnabled(SkillType skill) { return config.getBoolean("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVP", true); }
-    public boolean getPVEEnabled(SkillType skill) { return config.getBoolean("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVE", true); }
+    public boolean getPVPEnabled(PrimarySkill skill) { return config.getBoolean("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVP", true); }
+    public boolean getPVEEnabled(PrimarySkill skill) { return config.getBoolean("Skills." + StringUtils.getCapitalized(skill.toString()) + ".Enabled_For_PVE", true); }
     
     public float getMasterVolume() { return (float) config.getDouble("Sounds.MasterVolume", 1.0); }
 }

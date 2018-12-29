@@ -5,8 +5,8 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.datatypes.treasure.EnchantmentTreasure;
 import com.gmail.nossr50.datatypes.treasure.FishingTreasure;
@@ -14,7 +14,7 @@ import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.datatypes.treasure.ShakeTreasure;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerFishingTreasureEvent;
 import com.gmail.nossr50.events.skills.fishing.McMMOPlayerShakeEvent;
-import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityWeightedActivationCheckEvent;
+import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.KrakenAttackTask;
@@ -48,15 +48,15 @@ public class FishingManager extends SkillManager {
     private Location hookLocation;
 
     public FishingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.FISHING);
+        super(mcMMOPlayer, PrimarySkill.FISHING);
     }
 
     public boolean canShake(Entity target) {
-        return target instanceof LivingEntity && getSkillLevel() >= Tier.ONE.getLevel() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.SHAKE);
+        return target instanceof LivingEntity && getSkillLevel() >= Tier.ONE.getLevel() && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.FISHING_SHAKE);
     }
 
     public boolean canMasterAngler() {
-        return getSkillLevel() >= AdvancedConfig.getInstance().getMasterAnglerUnlockLevel() && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.MASTER_ANGLER);
+        return getSkillLevel() >= AdvancedConfig.getInstance().getMasterAnglerUnlockLevel() && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.FISHING_MASTER_ANGLER);
     }
 
     public boolean unleashTheKraken() {
@@ -183,7 +183,7 @@ public class FishingManager extends SkillManager {
 
         Player player = getPlayer();
 
-        if (!Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.ICE_FISHING)) {
+        if (!Permissions.isSubSkillEnabled(getPlayer(), SubSkill.FISHING_ICE_FISHING)) {
             return false;
         }
 
@@ -279,12 +279,12 @@ public class FishingManager extends SkillManager {
      */
     public void handleFishing(Item fishingCatch) {
         this.fishingCatch = fishingCatch;
-        int fishXp = ExperienceConfig.getInstance().getXp(SkillType.FISHING, fishingCatch.getItemStack().getType());
+        int fishXp = ExperienceConfig.getInstance().getXp(PrimarySkill.FISHING, fishingCatch.getItemStack().getType());
         int treasureXp = 0;
         Player player = getPlayer();
         FishingTreasure treasure = null;
 
-        if (Config.getInstance().getFishingDropsEnabled() && Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FISHING_TREASURE_HUNTER)) {
+        if (Config.getInstance().getFishingDropsEnabled() && Permissions.isSubSkillEnabled(player, SubSkill.FISHING_TREASURE_HUNTER)) {
             treasure = getFishingTreasure();
             this.fishingCatch = null;
         }
@@ -293,7 +293,7 @@ public class FishingManager extends SkillManager {
             ItemStack treasureDrop = treasure.getDrop().clone(); // Not cloning is bad, m'kay?
             Map<Enchantment, Integer> enchants = new HashMap<Enchantment, Integer>();
 
-            if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.MAGIC_HUNTER) && ItemUtils.isEnchantable(treasureDrop)) {
+            if (Permissions.isSubSkillEnabled(player, SubSkill.FISHING_MAGIC_HUNTER) && ItemUtils.isEnchantable(treasureDrop)) {
                 enchants = handleMagicHunter(treasureDrop);
             }
 
@@ -355,7 +355,7 @@ public class FishingManager extends SkillManager {
     public void shakeCheck(LivingEntity target) {
         fishingTries--; // Because autoclicking to shake is OK.
 
-        SecondaryAbilityWeightedActivationCheckEvent activationEvent = new SecondaryAbilityWeightedActivationCheckEvent(getPlayer(), SecondaryAbility.SHAKE, getShakeProbability() / activationChance);
+        SubSkillWeightedActivationCheckEvent activationEvent = new SubSkillWeightedActivationCheckEvent(getPlayer(), SubSkill.FISHING_SHAKE, getShakeProbability() / activationChance);
         mcMMO.p.getServer().getPluginManager().callEvent(activationEvent);
         if ((activationEvent.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance)) {
             List<ShakeTreasure> possibleDrops = Fishing.findPossibleDrops(target);

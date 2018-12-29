@@ -1,8 +1,8 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.MaterialType;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.repair.ArcaneForging;
@@ -41,7 +41,7 @@ public class RepairCommand extends SkillCommand {
     private int stoneLevel;
 
     public RepairCommand() {
-        super(SkillType.REPAIR);
+        super(PrimarySkill.REPAIR);
     }
 
     @Override
@@ -65,7 +65,7 @@ public class RepairCommand extends SkillCommand {
 
         // SUPER REPAIR
         if (canSuperRepair) {
-            String[] superRepairStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.SUPER_REPAIR, isLucky);
+            String[] superRepairStrings = calculateAbilityDisplayValues(skillValue, SubSkill.REPAIR_SUPER_REPAIR, isLucky);
             superRepairChance = superRepairStrings[0];
             superRepairChanceLucky = superRepairStrings[1];
         }
@@ -73,9 +73,9 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSuperRepair = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SUPER_REPAIR);
-        canMasterRepair = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.REPAIR_MASTERY);
-        canArcaneForge = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ARCANE_FORGING);
+        canSuperRepair = Permissions.isSubSkillEnabled(player, SubSkill.REPAIR_SUPER_REPAIR);
+        canMasterRepair = Permissions.isSubSkillEnabled(player, SubSkill.REPAIR_REPAIR_MASTERY);
+        canArcaneForge = Permissions.isSubSkillEnabled(player, SubSkill.REPAIR_ARCANE_FORGING);
         canRepairDiamond = Permissions.repairMaterialType(player, MaterialType.DIAMOND);
         canRepairGold = Permissions.repairMaterialType(player, MaterialType.GOLD);
         canRepairIron = Permissions.repairMaterialType(player, MaterialType.IRON);

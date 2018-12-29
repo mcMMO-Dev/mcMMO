@@ -1,9 +1,9 @@
 package com.gmail.nossr50.events.experience;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 
 /**
@@ -13,23 +13,23 @@ public class McMMOPlayerLevelDownEvent extends McMMOPlayerLevelChangeEvent {
     private int levelsLost;
 
     @Deprecated
-    public McMMOPlayerLevelDownEvent(Player player, SkillType skill) {
+    public McMMOPlayerLevelDownEvent(Player player, PrimarySkill skill) {
         super(player, skill, XPGainReason.UNKNOWN);
         this.levelsLost = 1;
     }
 
     @Deprecated
-    public McMMOPlayerLevelDownEvent(Player player, SkillType skill, int levelsLost) {
+    public McMMOPlayerLevelDownEvent(Player player, PrimarySkill skill, int levelsLost) {
         super(player, skill, XPGainReason.UNKNOWN);
         this.levelsLost = levelsLost;
     }
 
-    public McMMOPlayerLevelDownEvent(Player player, SkillType skill, XPGainReason xpGainReason) {
+    public McMMOPlayerLevelDownEvent(Player player, PrimarySkill skill, XPGainReason xpGainReason) {
         super(player, skill, xpGainReason);
         this.levelsLost = 1;
     }
 
-    public McMMOPlayerLevelDownEvent(Player player, SkillType skill, int levelsLost, XPGainReason xpGainReason) {
+    public McMMOPlayerLevelDownEvent(Player player, PrimarySkill skill, int levelsLost, XPGainReason xpGainReason) {
         super(player, skill, xpGainReason);
         this.levelsLost = levelsLost;
     }

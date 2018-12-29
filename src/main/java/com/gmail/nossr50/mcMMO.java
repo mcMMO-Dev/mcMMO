@@ -90,6 +90,8 @@ public class mcMMO extends JavaPlugin {
     // XP Event Check
     private boolean xpEventEnabled;
 
+    private boolean classicModeEnabled;
+
     /* Metadata Values */
     public final static String entityMetadataKey   = "mcMMO: Spawned Entity";
     public final static String blockMetadataKey    = "mcMMO: Piston Tracking";
@@ -187,6 +189,9 @@ public class mcMMO extends JavaPlugin {
 
             getServer().getPluginManager().disablePlugin(this);
         }
+
+        //Grab the setting for classic mode
+        classicModeEnabled = Config.getInstance().getClassicMode();
     }
 
     /**

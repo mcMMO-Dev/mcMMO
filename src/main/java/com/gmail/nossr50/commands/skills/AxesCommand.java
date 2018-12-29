@@ -3,10 +3,10 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.axes.Axes;
 import com.gmail.nossr50.util.Permissions;
@@ -26,7 +26,7 @@ public class AxesCommand extends SkillCommand {
     private boolean canGreaterImpact;
 
     public AxesCommand() {
-        super(SkillType.AXES);
+        super(PrimarySkill.AXES);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class AxesCommand extends SkillCommand {
 
         // CRITICAL HIT
         if (canCritical) {
-            String[] criticalHitStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.CRITICAL_HIT, isLucky);
+            String[] criticalHitStrings = calculateAbilityDisplayValues(skillValue, SubSkill.AXES_CRITICAL_HIT, isLucky);
             critChance = criticalHitStrings[0];
             critChanceLucky = criticalHitStrings[1];
         }
@@ -59,10 +59,10 @@ public class AxesCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canSkullSplitter = Permissions.skullSplitter(player);
-        canCritical = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.CRITICAL_HIT);
-        canAxeMastery = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.AXE_MASTERY);
-        canImpact = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ARMOR_IMPACT);
-        canGreaterImpact = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.GREATER_IMPACT);
+        canCritical = Permissions.isSubSkillEnabled(player, SubSkill.AXES_CRITICAL_HIT);
+        canAxeMastery = Permissions.isSubSkillEnabled(player, SubSkill.AXES_AXE_MASTERY);
+        canImpact = Permissions.isSubSkillEnabled(player, SubSkill.AXES_ARMOR_IMPACT);
+        canGreaterImpact = Permissions.isSubSkillEnabled(player, SubSkill.AXES_GREATER_IMPACT);
     }
 
     @Override

@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.hardcore;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.command.CommandSender;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 
@@ -20,10 +20,10 @@ public class HardcoreCommand extends HardcoreModeCommand {
     }
 
     @Override
-    protected boolean checkEnabled(SkillType skill) {
+    protected boolean checkEnabled(PrimarySkill skill) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.values()) {
-                if (!skillType.getHardcoreStatLossEnabled()) {
+            for (PrimarySkill primarySkill : PrimarySkill.values()) {
+                if (!primarySkill.getHardcoreStatLossEnabled()) {
                     return false;
                 }
             }
@@ -35,12 +35,12 @@ public class HardcoreCommand extends HardcoreModeCommand {
     }
 
     @Override
-    protected void enable(SkillType skill) {
+    protected void enable(PrimarySkill skill) {
         toggle(true, skill);
     }
 
     @Override
-    protected void disable(SkillType skill) {
+    protected void disable(PrimarySkill skill) {
         toggle(false, skill);
     }
 
@@ -50,10 +50,10 @@ public class HardcoreCommand extends HardcoreModeCommand {
         sender.sendMessage(LocaleLoader.getString("Hardcore.DeathStatLoss.PercentageChanged", percent.format(newPercentage / 100.0D)));
     }
 
-    private void toggle(boolean enable, SkillType skill) {
+    private void toggle(boolean enable, PrimarySkill skill) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
-                skillType.setHardcoreStatLossEnabled(enable);
+            for (PrimarySkill primarySkill : PrimarySkill.NON_CHILD_SKILLS) {
+                primarySkill.setHardcoreStatLossEnabled(enable);
             }
         }
         else {

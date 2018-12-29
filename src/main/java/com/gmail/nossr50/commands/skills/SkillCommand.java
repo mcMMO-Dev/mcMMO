@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Set;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,8 +14,7 @@ import org.bukkit.entity.Player;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Motd;
@@ -28,7 +28,7 @@ import com.gmail.nossr50.util.skills.PerksUtils;
 import com.google.common.collect.ImmutableList;
 
 public abstract class SkillCommand implements TabExecutor {
-    protected SkillType skill;
+    protected PrimarySkill skill;
     private String skillName;
 
     protected DecimalFormat percent = new DecimalFormat("##0.00%");
@@ -36,7 +36,7 @@ public abstract class SkillCommand implements TabExecutor {
 
     private CommandExecutor skillGuideCommand;
 
-    public SkillCommand(SkillType skill) {
+    public SkillCommand(PrimarySkill skill) {
         this.skill = skill;
         skillName = skill.getName();
         skillGuideCommand = new SkillGuideCommand(skill);
@@ -79,9 +79,9 @@ public abstract class SkillCommand implements TabExecutor {
                     player.sendMessage(LocaleLoader.getString("Effects.Child", (int) skillValue));
 
                     player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Skills.Parents")));
-                    Set<SkillType> parents = FamilyTree.getParents(skill);
+                    Set<PrimarySkill> parents = FamilyTree.getParents(skill);
 
-                    for (SkillType parent : parents) {
+                    for (PrimarySkill parent : parents) {
                         player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
                     }
                 }
@@ -141,10 +141,10 @@ public abstract class SkillCommand implements TabExecutor {
         return displayValues;
     }
 
-    protected String[] calculateAbilityDisplayValues(float skillValue, SecondaryAbility skillAbility, boolean isLucky) {
-        int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(skillAbility);
+    protected String[] calculateAbilityDisplayValues(float skillValue, SubSkill subSkill, boolean isLucky) {
+        int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(subSkill);
 
-        return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(skillAbility) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
+        return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(subSkill) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);
     }
 
     protected String[] calculateLengthDisplayValues(Player player, float skillValue) {

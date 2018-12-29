@@ -2,7 +2,7 @@ package com.gmail.nossr50.skills.salvage;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.SkillManager;
@@ -20,7 +20,6 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.block.data.BlockData;
 
 import java.util.Map;
 import java.util.Map.Entry;
@@ -30,7 +29,7 @@ public class SalvageManager extends SkillManager {
     private int     lastClick;
 
     public SalvageManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.SALVAGE);
+        super(mcMMOPlayer, PrimarySkill.SALVAGE);
     }
 
     /**

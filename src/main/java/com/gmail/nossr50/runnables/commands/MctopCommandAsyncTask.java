@@ -8,17 +8,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 
 import org.apache.commons.lang.Validate;
 
 public class MctopCommandAsyncTask extends BukkitRunnable {
     private final CommandSender sender;
-    private final SkillType skill;
+    private final PrimarySkill skill;
     private final int page;
     private final boolean useBoard, useChat;
 
-    public MctopCommandAsyncTask(int page, SkillType skill, CommandSender sender, boolean useBoard, boolean useChat) {
+    public MctopCommandAsyncTask(int page, PrimarySkill skill, CommandSender sender, boolean useBoard, boolean useChat) {
         Validate.isTrue(useBoard || useChat, "Attempted to start a rank retrieval with both board and chat off");
         Validate.notNull(sender, "Attempted to start a rank retrieval with no recipient");
 

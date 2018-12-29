@@ -6,14 +6,14 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.DelayQueue;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.experience.SkillXpGain;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.player.PlayerProfileSaveTask;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.player.UserManager;
@@ -31,13 +31,13 @@ public class PlayerProfile {
     private int scoreboardTipsShown;
 
     /* Skill Data */
-    private final Map<SkillType, Integer>   skills     = new HashMap<SkillType, Integer>();   // Skill & Level
-    private final Map<SkillType, Float>     skillsXp   = new HashMap<SkillType, Float>();     // Skill & XP
-    private final Map<AbilityType, Integer> abilityDATS = new HashMap<AbilityType, Integer>(); // Ability & Cooldown
+    private final Map<PrimarySkill, Integer>   skills     = new HashMap<PrimarySkill, Integer>();   // Skill & Level
+    private final Map<PrimarySkill, Float>     skillsXp   = new HashMap<PrimarySkill, Float>();     // Skill & XP
+    private final Map<SuperAbility, Integer> abilityDATS = new HashMap<SuperAbility, Integer>(); // Ability & Cooldown
 
     // Store previous XP gains for deminished returns
     private DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<SkillXpGain>();
-    private HashMap<SkillType, Float> rollingSkillsXp = new HashMap<SkillType, Float>();
+    private HashMap<PrimarySkill, Float> rollingSkillsXp = new HashMap<PrimarySkill, Float>();
 
     @Deprecated
     public PlayerProfile(String playerName) {
@@ -51,13 +51,13 @@ public class PlayerProfile {
         mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
         scoreboardTipsShown = 0;
 
-        for (AbilityType abilityType : AbilityType.values()) {
-            abilityDATS.put(abilityType, 0);
+        for (SuperAbility superAbility : SuperAbility.values()) {
+            abilityDATS.put(superAbility, 0);
         }
 
-        for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
-            skills.put(skillType, 0);
-            skillsXp.put(skillType, 0F);
+        for (PrimarySkill primarySkill : PrimarySkill.NON_CHILD_SKILLS) {
+            skills.put(primarySkill, 0);
+            skillsXp.put(primarySkill, 0F);
         }
     }
 
@@ -72,7 +72,7 @@ public class PlayerProfile {
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(String playerName, UUID uuid, Map<SkillType, Integer> levelData, Map<SkillType, Float> xpData, Map<AbilityType, Integer> cooldownData, MobHealthbarType mobHealthbarType, int scoreboardTipsShown) {
+    public PlayerProfile(String playerName, UUID uuid, Map<PrimarySkill, Integer> levelData, Map<PrimarySkill, Float> xpData, Map<SuperAbility, Integer> cooldownData, MobHealthbarType mobHealthbarType, int scoreboardTipsShown) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.mobHealthbarType = mobHealthbarType;
@@ -156,20 +156,20 @@ public class PlayerProfile {
     /**
      * Get the current deactivation timestamp of an ability.
      *
-     * @param ability The {@link AbilityType} to get the DATS for
+     * @param ability The {@link SuperAbility} to get the DATS for
      * @return the deactivation timestamp for the ability
      */
-    public long getAbilityDATS(AbilityType ability) {
+    public long getAbilityDATS(SuperAbility ability) {
         return abilityDATS.get(ability);
     }
 
     /**
      * Set the current deactivation timestamp of an ability.
      *
-     * @param ability The {@link AbilityType} to set the DATS for
+     * @param ability The {@link SuperAbility} to set the DATS for
      * @param DATS the DATS of the ability
      */
-    protected void setAbilityDATS(AbilityType ability, long DATS) {
+    protected void setAbilityDATS(SuperAbility ability, long DATS) {
         changed = true;
 
         abilityDATS.put(ability, (int) (DATS * .001D));
@@ -181,7 +181,7 @@ public class PlayerProfile {
     protected void resetCooldowns() {
         changed = true;
 
-        for (AbilityType ability : abilityDATS.keySet()) {
+        for (SuperAbility ability : abilityDATS.keySet()) {
             abilityDATS.put(ability, 0);
         }
     }
@@ -190,19 +190,19 @@ public class PlayerProfile {
      * Xp Functions
      */
 
-    public int getSkillLevel(SkillType skill) {
+    public int getSkillLevel(PrimarySkill skill) {
         return skill.isChildSkill() ? getChildSkillLevel(skill) : skills.get(skill);
     }
 
-    public float getSkillXpLevelRaw(SkillType skill) {
+    public float getSkillXpLevelRaw(PrimarySkill skill) {
         return skillsXp.get(skill);
     }
 
-    public int getSkillXpLevel(SkillType skill) {
+    public int getSkillXpLevel(PrimarySkill skill) {
         return (int) Math.floor(getSkillXpLevelRaw(skill));
     }
 
-    public void setSkillXpLevel(SkillType skill, float xpLevel) {
+    public void setSkillXpLevel(PrimarySkill skill, float xpLevel) {
         if (skill.isChildSkill()) {
             return;
         }
@@ -212,7 +212,7 @@ public class PlayerProfile {
         skillsXp.put(skill, xpLevel);
     }
 
-    protected float levelUp(SkillType skill) {
+    protected float levelUp(PrimarySkill skill) {
         float xpRemoved = getXpToLevel(skill);
 
         changed = true;
@@ -229,7 +229,7 @@ public class PlayerProfile {
      * @param skill Type of skill to modify
      * @param xp Amount of xp to remove
      */
-    public void removeXp(SkillType skill, int xp) {
+    public void removeXp(PrimarySkill skill, int xp) {
         if (skill.isChildSkill()) {
             return;
         }
@@ -239,7 +239,7 @@ public class PlayerProfile {
         skillsXp.put(skill, skillsXp.get(skill) - xp);
     }
 
-    public void removeXp(SkillType skill, float xp) {
+    public void removeXp(PrimarySkill skill, float xp) {
         if (skill.isChildSkill()) {
             return;
         }
@@ -255,7 +255,7 @@ public class PlayerProfile {
      * @param skill Type of skill to modify
      * @param level New level value for the skill
      */
-    public void modifySkill(SkillType skill, int level) {
+    public void modifySkill(PrimarySkill skill, int level) {
         if (skill.isChildSkill()) {
             return;
         }
@@ -272,7 +272,7 @@ public class PlayerProfile {
      * @param skill Type of skill to add levels to
      * @param levels Number of levels to add
      */
-    public void addLevels(SkillType skill, int levels) {
+    public void addLevels(PrimarySkill skill, int levels) {
         modifySkill(skill, skills.get(skill) + levels);
     }
 
@@ -282,14 +282,14 @@ public class PlayerProfile {
      * @param skill Type of skill to add experience to
      * @param xp Number of experience to add
      */
-    public void addXp(SkillType skill, float xp) {
+    public void addXp(PrimarySkill skill, float xp) {
         changed = true;
 
         if (skill.isChildSkill()) {
-            Set<SkillType> parentSkills = FamilyTree.getParents(skill);
+            Set<PrimarySkill> parentSkills = FamilyTree.getParents(skill);
             float dividedXP = (xp / parentSkills.size());
 
-            for (SkillType parentSkill : parentSkills) {
+            for (PrimarySkill parentSkill : parentSkills) {
                 skillsXp.put(parentSkill, skillsXp.get(parentSkill) + dividedXP);
             }
         }
@@ -304,11 +304,11 @@ public class PlayerProfile {
      *
      * @return xp Experience amount registered
      */
-    public float getRegisteredXpGain(SkillType skillType) {
+    public float getRegisteredXpGain(PrimarySkill primarySkill) {
         float xp = 0F;
 
-        if (rollingSkillsXp.get(skillType) != null) {
-            xp = rollingSkillsXp.get(skillType);
+        if (rollingSkillsXp.get(primarySkill) != null) {
+            xp = rollingSkillsXp.get(primarySkill);
         }
 
         return xp;
@@ -318,12 +318,12 @@ public class PlayerProfile {
      * Register an experience gain
      * This is used for diminished XP returns
      *
-     * @param skillType Skill being used
+     * @param primarySkill Skill being used
      * @param xp Experience amount to add
      */
-    public void registerXpGain(SkillType skillType, float xp) {
-        gainedSkillsXp.add(new SkillXpGain(skillType, xp));
-        rollingSkillsXp.put(skillType, getRegisteredXpGain(skillType) + xp);
+    public void registerXpGain(PrimarySkill primarySkill, float xp) {
+        gainedSkillsXp.add(new SkillXpGain(primarySkill, xp));
+        rollingSkillsXp.put(primarySkill, getRegisteredXpGain(primarySkill) + xp);
     }
 
     /**
@@ -340,21 +340,21 @@ public class PlayerProfile {
     /**
      * Get the amount of Xp remaining before the next level.
      *
-     * @param skillType Type of skill to check
+     * @param primarySkill Type of skill to check
      * @return the total amount of Xp until next level
      */
-    public int getXpToLevel(SkillType skillType) {
-        int level = (ExperienceConfig.getInstance().getCumulativeCurveEnabled()) ? UserManager.getPlayer(playerName).getPowerLevel() : skills.get(skillType);
+    public int getXpToLevel(PrimarySkill primarySkill) {
+        int level = (ExperienceConfig.getInstance().getCumulativeCurveEnabled()) ? UserManager.getPlayer(playerName).getPowerLevel() : skills.get(primarySkill);
         FormulaType formulaType = ExperienceConfig.getInstance().getFormulaType();
 
         return mcMMO.getFormulaManager().getCachedXpToLevel(level, formulaType);
     }
 
-    private int getChildSkillLevel(SkillType skillType) {
-        Set<SkillType> parents = FamilyTree.getParents(skillType);
+    private int getChildSkillLevel(PrimarySkill primarySkill) {
+        Set<PrimarySkill> parents = FamilyTree.getParents(primarySkill);
         int sum = 0;
 
-        for (SkillType parent : parents) {
+        for (PrimarySkill parent : parents) {
             sum += Math.min(getSkillLevel(parent), parent.getMaxLevel());
         }
 

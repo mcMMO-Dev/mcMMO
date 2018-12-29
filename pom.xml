@@ -9,8 +9,9 @@
         <url>https://github.com/mcMMO-Dev/mcMMO/issues</url>
         <system>GitHub</system>
     </issueManagement>
+    <packaging>jar</packaging>
     <build>
-        <finalName>mcMMO</finalName>
+        <finalName>${project.artifactId}</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>

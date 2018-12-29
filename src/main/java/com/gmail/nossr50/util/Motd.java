@@ -2,12 +2,12 @@ package com.gmail.nossr50.util;
 
 import java.text.DecimalFormat;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.skills.PerksUtils;
 
@@ -85,7 +85,7 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayXpPerks(Player player) {
-        for (SkillType skill : SkillType.values()) {
+        for (PrimarySkill skill : PrimarySkill.values()) {
             if (PerksUtils.handleXpPerks(player, 1, skill) > 1) {
                 player.sendMessage(PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.XP.Name"), LocaleLoader.getString("Perks.XP.Desc")));
                 return;
@@ -126,7 +126,7 @@ public final class Motd {
      * @param player Target player
      */
     public static void displayLuckyPerks(Player player) {
-        for (SkillType skill : SkillType.values()) {
+        for (PrimarySkill skill : PrimarySkill.values()) {
             if (Permissions.lucky(player, skill)) {
                 player.sendMessage(PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Lucky.Name"), LocaleLoader.getString("Perks.Lucky.Desc.Login")));
                 return;

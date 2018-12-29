@@ -2,7 +2,10 @@ package com.gmail.nossr50.skills.swords;
 
 import java.util.Map;
 
-import com.gmail.nossr50.util.skills.SecondarySkillActivationType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.util.skills.SubSkillActivationType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -10,9 +13,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
@@ -24,7 +24,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class SwordsManager extends SkillManager {
     public SwordsManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.SWORDS);
+        super(mcMMOPlayer, PrimarySkill.SWORDS);
     }
 
     public boolean canActivateAbility() {
@@ -32,15 +32,15 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseBleed() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.BLEED);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.SWORDS_BLEED);
     }
 
     public boolean canUseCounterAttack(Entity target) {
-        return target instanceof LivingEntity && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.COUNTER);
+        return target instanceof LivingEntity && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.SWORDS_COUNTER);
     }
 
     public boolean canUseSerratedStrike() {
-        return mcMMOPlayer.getAbilityMode(AbilityType.SERRATED_STRIKES) && Permissions.serratedStrikes(getPlayer());
+        return mcMMOPlayer.getAbilityMode(SuperAbility.SERRATED_STRIKES) && Permissions.serratedStrikes(getPlayer());
     }
 
     /**
@@ -49,9 +49,9 @@ public class SwordsManager extends SkillManager {
      * @param target The defending entity
      */
     public void bleedCheck(LivingEntity target) {
-        if (SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.BLEED, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.SWORDS_BLEED, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
 
-            if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SecondaryAbility.BLEED)) {
+            if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SubSkill.SWORDS_BLEED)) {
                 BleedTimerTask.add(target, Swords.bleedMaxTicks);
             }
             else {
@@ -83,7 +83,7 @@ public class SwordsManager extends SkillManager {
             return;
         }
 
-        if (SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.COUNTER, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.SWORDS_COUNTER, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier, getPlayer());
 
             getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));

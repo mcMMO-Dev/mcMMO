@@ -3,7 +3,7 @@ package com.gmail.nossr50.events.skills.alchemy;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.events.skills.McMMOPlayerSkillEvent;
 
 public class McMMOPlayerCatalysisEvent extends McMMOPlayerSkillEvent implements Cancellable {
@@ -12,7 +12,7 @@ public class McMMOPlayerCatalysisEvent extends McMMOPlayerSkillEvent implements 
     private boolean cancelled;
 
     public McMMOPlayerCatalysisEvent(Player player, double speed) {
-        super(player, SkillType.ALCHEMY);
+        super(player, PrimarySkill.ALCHEMY);
         this.speed = speed;
         cancelled = false;
     }

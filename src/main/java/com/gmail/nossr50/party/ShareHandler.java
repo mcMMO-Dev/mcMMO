@@ -2,6 +2,7 @@ package com.gmail.nossr50.party;
 
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,7 +13,6 @@ import com.gmail.nossr50.datatypes.party.ItemShareType;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.ShareMode;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.player.UserManager;
@@ -25,10 +25,10 @@ public final class ShareHandler {
      *
      * @param xp Xp without party sharing
      * @param mcMMOPlayer Player initiating the Xp gain
-     * @param skillType Skill being used
+     * @param primarySkill Skill being used
      * @return True is the xp has been shared
      */
-    public static boolean handleXpShare(float xp, McMMOPlayer mcMMOPlayer, SkillType skillType, XPGainReason xpGainReason) {
+    public static boolean handleXpShare(float xp, McMMOPlayer mcMMOPlayer, PrimarySkill primarySkill, XPGainReason xpGainReason) {
         Party party = mcMMOPlayer.getParty();
 
         if (party.getXpShareMode() != ShareMode.EQUAL) {
@@ -48,7 +48,7 @@ public final class ShareHandler {
         float splitXp = (float) (xp / partySize * shareBonus);
 
         for (Player member : nearMembers) {
-            UserManager.getPlayer(member).beginUnsharedXpGain(skillType, splitXp, xpGainReason);
+            UserManager.getPlayer(member).beginUnsharedXpGain(primarySkill, splitXp, xpGainReason);
         }
 
         return true;

@@ -3,10 +3,10 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.archery.Archery;
 import com.gmail.nossr50.util.Permissions;
@@ -23,7 +23,7 @@ public class ArcheryCommand extends SkillCommand {
     private boolean canRetrieve;
 
     public ArcheryCommand() {
-        super(SkillType.ARCHERY);
+        super(PrimarySkill.ARCHERY);
     }
 
     @Override
@@ -34,16 +34,16 @@ public class ArcheryCommand extends SkillCommand {
             skillShotBonus = percent.format(Math.min(bonus, Archery.skillShotMaxBonusPercentage));
         }
 
-        // DAZE
+        // ARCHERY_DAZE
         if (canDaze) {
-            String[] dazeStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.DAZE, isLucky);
+            String[] dazeStrings = calculateAbilityDisplayValues(skillValue, SubSkill.ARCHERY_DAZE, isLucky);
             dazeChance = dazeStrings[0];
             dazeChanceLucky = dazeStrings[1];
         }
 
-        // RETRIEVE
+        // ARCHERY_RETRIEVE
         if (canRetrieve) {
-            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.RETRIEVE, isLucky);
+            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SubSkill.ARCHERY_RETRIEVE, isLucky);
             retrieveChance = retrieveStrings[0];
             retrieveChanceLucky = retrieveStrings[1];
         }
@@ -51,9 +51,9 @@ public class ArcheryCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSkillShot = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SKILL_SHOT);
-        canDaze = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.DAZE);
-        canRetrieve = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.RETRIEVE);
+        canSkillShot = Permissions.isSubSkillEnabled(player, SubSkill.ARCHERY_SKILL_SHOT);
+        canDaze = Permissions.isSubSkillEnabled(player, SubSkill.ARCHERY_DAZE);
+        canRetrieve = Permissions.isSubSkillEnabled(player, SubSkill.ARCHERY_RETRIEVE);
     }
 
     @Override

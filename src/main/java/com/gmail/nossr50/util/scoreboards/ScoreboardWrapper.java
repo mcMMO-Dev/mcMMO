@@ -17,8 +17,8 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Misc;
@@ -42,7 +42,7 @@ public class ScoreboardWrapper {
     // Parameter variables (May be null / invalid)
     private Scoreboard oldBoard = null;
     public String targetPlayer = null;
-    public SkillType targetSkill = null;
+    public PrimarySkill targetSkill = null;
     private PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
 
@@ -277,7 +277,7 @@ public class ScoreboardWrapper {
         loadObjective("");
     }
 
-    public void setTypeSkill(SkillType skill) {
+    public void setTypeSkill(PrimarySkill skill) {
         this.sidebarType = SidebarType.SKILL_BOARD;
         targetSkill = skill;
 
@@ -356,7 +356,7 @@ public class ScoreboardWrapper {
         loadObjective(String.format("%s (%2d - %2d)", ScoreboardManager.POWER_LEVEL, startPosition, endPosition));
     }
 
-    public void setTypeTop(SkillType skill, int page) {
+    public void setTypeTop(PrimarySkill skill, int page) {
         this.sidebarType = SidebarType.TOP_BOARD;
         leaderboardPage = page;
         targetSkill = skill;
@@ -424,7 +424,7 @@ public class ScoreboardWrapper {
                     sidebarObjective.getScore(ScoreboardManager.LABEL_REMAINING_XP).setScore(mcMMOPlayer.getXpToLevel(targetSkill) - currentXP);
                 }
                 else {
-                    for (SkillType parentSkill : FamilyTree.getParents(targetSkill)) {
+                    for (PrimarySkill parentSkill : FamilyTree.getParents(targetSkill)) {
                         sidebarObjective.getScore(ScoreboardManager.skillLabels.get(parentSkill)).setScore(mcMMOPlayer.getSkillLevel(parentSkill));
                     }
                 }
@@ -434,12 +434,12 @@ public class ScoreboardWrapper {
                 if (targetSkill.getAbility() != null) {
                     boolean stopUpdating;
 
-                    if (targetSkill == SkillType.MINING) {
+                    if (targetSkill == PrimarySkill.MINING) {
                         // Special-Case: Mining has two abilities, both with cooldowns
-                        Score cooldownSB = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(AbilityType.SUPER_BREAKER));
-                        Score cooldownBM = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(AbilityType.BLAST_MINING));
-                        int secondsSB = Math.max(mcMMOPlayer.calculateTimeRemaining(AbilityType.SUPER_BREAKER), 0);
-                        int secondsBM = Math.max(mcMMOPlayer.calculateTimeRemaining(AbilityType.BLAST_MINING), 0);
+                        Score cooldownSB = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(SuperAbility.SUPER_BREAKER));
+                        Score cooldownBM = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(SuperAbility.BLAST_MINING));
+                        int secondsSB = Math.max(mcMMOPlayer.calculateTimeRemaining(SuperAbility.SUPER_BREAKER), 0);
+                        int secondsBM = Math.max(mcMMOPlayer.calculateTimeRemaining(SuperAbility.BLAST_MINING), 0);
 
                         cooldownSB.setScore(secondsSB);
                         cooldownBM.setScore(secondsBM);
@@ -447,7 +447,7 @@ public class ScoreboardWrapper {
                         stopUpdating = (secondsSB == 0 && secondsBM == 0);
                     }
                     else {
-                        AbilityType ability = targetSkill.getAbility();
+                        SuperAbility ability = targetSkill.getAbility();
                         Score cooldown = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(ability));
                         int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
@@ -468,7 +468,7 @@ public class ScoreboardWrapper {
             case COOLDOWNS_BOARD:
                 boolean anyCooldownsActive = false;
 
-                for (AbilityType ability : AbilityType.values()) {
+                for (SuperAbility ability : SuperAbility.values()) {
                     int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
                     if (seconds != 0) {
@@ -502,7 +502,7 @@ public class ScoreboardWrapper {
 
                 // Calculate power level here
                 int powerLevel = 0;
-                for (SkillType skill : SkillType.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
+                for (PrimarySkill skill : PrimarySkill.NON_CHILD_SKILLS) { // Don't include child skills, makes the list too long
                     int level = newProfile.getSkillLevel(skill);
 
                     powerLevel += level;
@@ -521,7 +521,7 @@ public class ScoreboardWrapper {
             case RANK_BOARD:
             case TOP_BOARD:
             /*
-             * @see #acceptRankData(Map<SkillType, Integer> rank)
+             * @see #acceptRankData(Map<PrimarySkill, Integer> rank)
              * @see #acceptLeaderboardData(List<PlayerStat> stats)
              */
                 break;
@@ -531,11 +531,11 @@ public class ScoreboardWrapper {
         }
     }
 
-    public void acceptRankData(Map<SkillType, Integer> rankData) {
+    public void acceptRankData(Map<PrimarySkill, Integer> rankData) {
         Integer rank;
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
-        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkill skill : PrimarySkill.NON_CHILD_SKILLS) {
             if (!skill.getPermissions(player)) {
                 continue;
             }

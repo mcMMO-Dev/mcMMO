@@ -3,7 +3,7 @@ package com.gmail.nossr50.config.experience;
 import com.gmail.nossr50.config.AutoUpdateConfigLoader;
 import com.gmail.nossr50.datatypes.experience.FormulaType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.alchemy.PotionStage;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
@@ -160,14 +160,14 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public double getBredMobXpMultiplier() { return config.getDouble("Experience_Formula.Breeding.Multiplier", 1.0); }
 
     /* Skill modifiers */
-    public double getFormulaSkillModifier(SkillType skill) { return config.getDouble("Experience_Formula.Modifier." + StringUtils.getCapitalized(skill.toString())); }
+    public double getFormulaSkillModifier(PrimarySkill skill) { return config.getDouble("Experience_Formula.Modifier." + StringUtils.getCapitalized(skill.toString())); }
 
     /* Custom XP perk */
     public double getCustomXpPerkBoost() { return config.getDouble("Experience_Formula.Custom_XP_Perk.Boost", 1.25); }
 
     /* Diminished Returns */
     public boolean getDiminishedReturnsEnabled() { return config.getBoolean("Diminished_Returns.Enabled", false); }
-    public int getDiminishedReturnsThreshold(SkillType skill) { return config.getInt("Diminished_Returns.Threshold." + StringUtils.getCapitalized(skill.toString()), 20000); }
+    public int getDiminishedReturnsThreshold(PrimarySkill skill) { return config.getInt("Diminished_Returns.Threshold." + StringUtils.getCapitalized(skill.toString()), 20000); }
     public int getDiminishedReturnsTimeInterval() { return config.getInt("Diminished_Returns.Time_Interval", 10); }
 
     /* Conversion */
@@ -187,7 +187,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     public boolean hasCombatXP(EntityType entity) {return config.contains("Experience.Combat.Multiplier." + StringUtils.getPrettyEntityTypeString(entity).replace(" ", "_")); }
 
     /* Materials  */
-    public int getXp(SkillType skill, Material data)
+    public int getXp(PrimarySkill skill, Material data)
     {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
         String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
@@ -203,7 +203,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
     }
 
     /* Materials  */
-    public int getXp(SkillType skill, BlockData data)
+    public int getXp(PrimarySkill skill, BlockData data)
     {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
         String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);
@@ -218,7 +218,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         return 0;
     }
 
-    public boolean isSkillBlock(SkillType skill, Material data)
+    public boolean isSkillBlock(PrimarySkill skill, Material data)
     {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
         String explicitString = baseString + StringUtils.getExplicitConfigMaterialString(data);
@@ -231,7 +231,7 @@ public class ExperienceConfig extends AutoUpdateConfigLoader {
         return config.contains(wildcardString);
     }
 
-    public boolean isSkillBlock(SkillType skill, BlockData data)
+    public boolean isSkillBlock(PrimarySkill skill, BlockData data)
     {
         String baseString = "Experience." + StringUtils.getCapitalized(skill.toString()) + ".";
         String explicitString = baseString + StringUtils.getExplicitConfigBlockDataString(data);

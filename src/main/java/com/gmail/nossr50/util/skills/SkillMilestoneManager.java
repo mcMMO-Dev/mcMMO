@@ -1,7 +1,7 @@
 package com.gmail.nossr50.util.skills;
 
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 
 import java.util.HashMap;
 
@@ -19,13 +19,13 @@ import java.util.HashMap;
 //TODO: Propagate events when milestones are achieved
 //TODO: Update existing parts of the codebase to use this where appropriate
 public class SkillMilestoneManager {
-    public static final HashMap<SkillType, SecondaryAbility> subskillMilestones;
+    public static final HashMap<PrimarySkill, SubSkill> subskillMilestones;
 
     static {
         //Init our maps
         subskillMilestones = new HashMap<>();
 
-        for(SkillType skillType : SkillType.values())
+        for(PrimarySkill primarySkill : PrimarySkill.values())
         {
             //TODO: Setup these values
         }

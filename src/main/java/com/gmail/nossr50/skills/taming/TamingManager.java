@@ -4,11 +4,11 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
-import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityWeightedActivationCheckEvent;
+import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
@@ -18,7 +18,7 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-import com.gmail.nossr50.util.skills.SecondarySkillActivationType;
+import com.gmail.nossr50.util.skills.SubSkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -31,41 +31,41 @@ import java.util.List;
 
 public class TamingManager extends SkillManager {
     public TamingManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.TAMING);
+        super(mcMMOPlayer, PrimarySkill.TAMING);
     }
 
     private static HashMap<EntityType, List<TrackedTamingEntity>> summonedEntities = new HashMap<EntityType, List<TrackedTamingEntity>>();
 
     public boolean canUseThickFur() {
-        return getSkillLevel() >= Taming.thickFurUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.THICK_FUR);
+        return getSkillLevel() >= Taming.thickFurUnlockLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.TAMING_THICK_FUR);
     }
 
     public boolean canUseEnvironmentallyAware() {
-        return getSkillLevel() >= Taming.environmentallyAwareUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.ENVIRONMENTALLY_AWARE);
+        return getSkillLevel() >= Taming.environmentallyAwareUnlockLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.TAMING_ENVIRONMENTALLY_AWARE);
     }
 
     public boolean canUseShockProof() {
-        return getSkillLevel() >= Taming.shockProofUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.SHOCK_PROOF);
+        return getSkillLevel() >= Taming.shockProofUnlockLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.TAMING_SHOCK_PROOF);
     }
 
     public boolean canUseHolyHound() {
-        return getSkillLevel() >= Taming.holyHoundUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.HOLY_HOUND);
+        return getSkillLevel() >= Taming.holyHoundUnlockLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.TAMING_HOLY_HOUND);
     }
 
     public boolean canUseFastFoodService() {
-        return getSkillLevel() >= Taming.fastFoodServiceUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.FAST_FOOD);
+        return getSkillLevel() >= Taming.fastFoodServiceUnlockLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.TAMING_FAST_FOOD);
     }
 
     public boolean canUseSharpenedClaws() {
-        return getSkillLevel() >= Taming.sharpenedClawsUnlockLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.SHARPENED_CLAWS);
+        return getSkillLevel() >= Taming.sharpenedClawsUnlockLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.TAMING_SHARPENED_CLAWS);
     }
 
     public boolean canUseGore() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.GORE);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.TAMING_GORE);
     }
 
     public boolean canUseBeastLore() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.BEAST_LORE);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.TAMING_BEAST_LORE);
     }
 
     /**
@@ -85,7 +85,7 @@ public class TamingManager extends SkillManager {
      */
     public void fastFoodService(Wolf wolf, double damage) {
         //static chance (3rd param)
-        if (!SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_STATIC_CHANCE, SecondaryAbility.FAST_FOOD, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_STATIC_CHANCE, SubSkill.TAMING_FAST_FOOD, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return;
         }
 
@@ -105,7 +105,7 @@ public class TamingManager extends SkillManager {
      * @param damage The initial damage
      */
     public double gore(LivingEntity target, double damage) {
-        if (!SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.GORE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.TAMING_GORE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return 0;
         }
 
@@ -190,7 +190,7 @@ public class TamingManager extends SkillManager {
 
     public void pummel(LivingEntity target, Wolf wolf) {
         double chance = 10 / activationChance;
-        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(getPlayer(), SecondaryAbility.PUMMEL, chance);
+        SubSkillWeightedActivationCheckEvent event = new SubSkillWeightedActivationCheckEvent(getPlayer(), SubSkill.TAMING_PUMMEL, chance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
         if ((event.getChance() * activationChance) <= Misc.getRandom().nextInt(activationChance)) {
             return;

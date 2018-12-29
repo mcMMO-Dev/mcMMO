@@ -1,8 +1,8 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.data.Ageable;
@@ -23,19 +23,19 @@ public class StringUtils {
     }
 
     public static String getPrettyItemString(Material material) {
-        return createPrettyEnumString(material.toString());
+        return createPrettyString(material.toString());
     }
 
     public static String getPrettyEntityTypeString(EntityType entity) {
-        return createPrettyEnumString(entity.toString());
+        return createPrettyString(entity.toString());
     }
 
-    public static String getPrettyAbilityString(AbilityType ability) {
-        return createPrettyEnumString(ability.toString());
+    public static String getPrettyAbilityString(SuperAbility ability) {
+        return createPrettyString(ability.toString());
     }
 
     public static String getPrettyTreeSpeciesString(TreeSpecies species) {
-        return createPrettyEnumString(species.toString());
+        return createPrettyString(species.toString());
     }
     
     public static String getWildcardConfigBlockDataString(BlockData data) {
@@ -79,28 +79,11 @@ public class StringUtils {
         return StringUtils.getPrettyItemString(data).replace(" ", "_");
     }
 
-    public static String getPrettySecondaryAbilityString(SecondaryAbility secondaryAbility) {
-        switch (secondaryAbility) {
-            case HERBALISM_DOUBLE_DROPS :
-            case MINING_DOUBLE_DROPS :
-            case WOODCUTTING_HARVEST:
-                return "Double Drops";
-            case FISHING_TREASURE_HUNTER :
-            case EXCAVATION_TREASURE_HUNTER :
-                return "Treasure Hunter";
-            case GREEN_THUMB_BLOCK :
-            case GREEN_THUMB_PLANT :
-                return "Green Thumb";
-            default :
-                return createPrettyEnumString(secondaryAbility.toString());
-        }
-    }
-
     public static String getPrettyPartyFeatureString(PartyFeature partyFeature) {
-        return createPrettyEnumString(partyFeature.toString());
+        return createPrettyString(partyFeature.toString());
     }
 
-    private static String createPrettyEnumString(String baseString) {
+    private static String createPrettyString(String baseString) {
         String[] substrings = baseString.split("_");
         String prettyString = "";
         int size = 1;

@@ -3,11 +3,11 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.alchemy.Alchemy.Tier;
 import com.gmail.nossr50.skills.alchemy.AlchemyManager;
@@ -26,7 +26,7 @@ public class AlchemyCommand extends SkillCommand {
     private boolean canConcoctions;
 
     public AlchemyCommand() {
-        super(SkillType.ALCHEMY);
+        super(PrimarySkill.ALCHEMY);
     }
 
     protected String[] calculateAbilityDisplayValues(Player player, boolean isLucky) {
@@ -41,14 +41,14 @@ public class AlchemyCommand extends SkillCommand {
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
-        // CATALYSIS
+        // ALCHEMY_CATALYSIS
         if (canCatalysis) {
             String[] catalysisStrings = calculateAbilityDisplayValues(player, isLucky);
             brewSpeed = catalysisStrings[0];
             brewSpeedLucky = catalysisStrings[1];
         }
 
-        // CONCOCTIONS
+        // ALCHEMY_CONCOCTIONS
         if (canConcoctions) {
             AlchemyManager alchemyManager = UserManager.getPlayer(player).getAlchemyManager();
             tier = alchemyManager.getTier();
@@ -59,8 +59,8 @@ public class AlchemyCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canCatalysis = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.CATALYSIS);
-        canConcoctions = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.CONCOCTIONS);
+        canCatalysis = Permissions.isSubSkillEnabled(player, SubSkill.ALCHEMY_CATALYSIS);
+        canConcoctions = Permissions.isSubSkillEnabled(player, SubSkill.ALCHEMY_CONCOCTIONS);
     }
 
     @Override

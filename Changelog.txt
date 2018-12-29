@@ -8,7 +8,13 @@ Key:
   - Removal
 
 Version 2.0.1
+ + Added config setting to enable or disable classic mcMMO mode
+ ! (API) SkillType is now PrimarySkill
+ ! (API) SecondarySkill is now SubSkill
+ ! (API) AbilityType is now SuperAbility
+ ! (API) SecondaryAbilityEvent is now SubSkillEvent
  ! (API) SecondarySkill ENUM is being updated to have the parent skill as a prefix and a getter method for grabbing the parent skill
+ ! (API) GREEN_THUMB_PLANT & GREEN_THUMB_BLOCK are replaced by GREEN_THUMB
  ! Skill Super Powers (Tree Feller, etc...) will now require level 10+ to use
  ! mcMMO skills will now be on a scale from 1-100 instead of 0-1000 (I'll be explaining this in a write-up)
  ! Refactored some unreadable code relating to SecondaryAbility activation in SkillUtils

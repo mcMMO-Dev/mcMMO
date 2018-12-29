@@ -3,11 +3,11 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.swords.Swords;
 import com.gmail.nossr50.util.Permissions;
@@ -26,7 +26,7 @@ public class SwordsCommand extends SkillCommand {
     private boolean canBleed;
 
     public SwordsCommand() {
-        super(SkillType.SWORDS);
+        super(PrimarySkill.SWORDS);
     }
 
     @Override
@@ -38,18 +38,18 @@ public class SwordsCommand extends SkillCommand {
             serratedStrikesLengthEndurance = serratedStrikesStrings[1];
         }
 
-        // BLEED
+        // SWORDS_BLEED
         if (canBleed) {
-            bleedLength = (skillValue >= AdvancedConfig.getInstance().getMaxBonusLevel(SecondaryAbility.BLEED)) ? Swords.bleedMaxTicks : Swords.bleedBaseTicks;
+            bleedLength = (skillValue >= AdvancedConfig.getInstance().getMaxBonusLevel(SubSkill.SWORDS_BLEED)) ? Swords.bleedMaxTicks : Swords.bleedBaseTicks;
 
-            String[] bleedStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.BLEED, isLucky);
+            String[] bleedStrings = calculateAbilityDisplayValues(skillValue, SubSkill.SWORDS_BLEED, isLucky);
             bleedChance = bleedStrings[0];
             bleedChanceLucky = bleedStrings[1];
         }
 
-        // COUNTER
+        // SWORDS_COUNTER
         if (canCounter) {
-            String[] counterStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.COUNTER, isLucky);
+            String[] counterStrings = calculateAbilityDisplayValues(skillValue, SubSkill.SWORDS_COUNTER, isLucky);
             counterChance = counterStrings[0];
             counterChanceLucky = counterStrings[1];
         }
@@ -57,8 +57,8 @@ public class SwordsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBleed = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.BLEED);
-        canCounter = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.COUNTER);
+        canBleed = Permissions.isSubSkillEnabled(player, SubSkill.SWORDS_BLEED);
+        canCounter = Permissions.isSubSkillEnabled(player, SubSkill.SWORDS_COUNTER);
         canSerratedStrike = Permissions.serratedStrikes(player);
     }
 

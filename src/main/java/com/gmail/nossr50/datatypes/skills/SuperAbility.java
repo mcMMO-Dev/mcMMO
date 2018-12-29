@@ -10,7 +10,7 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 
-public enum AbilityType {
+public enum SuperAbility {
     BERSERK(
             "Unarmed.Skills.Berserk.On",
             "Unarmed.Skills.Berserk.Off",
@@ -77,7 +77,7 @@ public enum AbilityType {
     private String abilityRefresh;
     private String abilityPlayerOff;
 
-    private AbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
+    private SuperAbility(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
         this.abilityOn = abilityOn;
         this.abilityOff = abilityOff;
         this.abilityPlayer = abilityPlayer;

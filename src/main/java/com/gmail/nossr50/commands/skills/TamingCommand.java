@@ -3,12 +3,12 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.taming.Taming;
 import com.gmail.nossr50.util.Permissions;
@@ -29,13 +29,13 @@ public class TamingCommand extends SkillCommand {
     private boolean canHolyHound;
 
     public TamingCommand() {
-        super(SkillType.TAMING);
+        super(PrimarySkill.TAMING);
     }
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
         if (canGore) {
-            String[] goreStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.GORE, isLucky);
+            String[] goreStrings = calculateAbilityDisplayValues(skillValue, SubSkill.TAMING_GORE, isLucky);
             goreChance = goreStrings[0];
             goreChanceLucky = goreStrings[1];
         }
@@ -43,15 +43,15 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBeastLore = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.BEAST_LORE);
+        canBeastLore = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_BEAST_LORE);
         canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
-        canEnvironmentallyAware = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ENVIRONMENTALLY_AWARE);
-        canFastFood = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FAST_FOOD);
-        canGore = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.GORE);
-        canSharpenedClaws = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHARPENED_CLAWS);
-        canShockProof = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHOCK_PROOF);
-        canThickFur = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.THICK_FUR);
-        canHolyHound = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.HOLY_HOUND);
+        canEnvironmentallyAware = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_ENVIRONMENTALLY_AWARE);
+        canFastFood = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_FAST_FOOD);
+        canGore = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_GORE);
+        canSharpenedClaws = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_SHARPENED_CLAWS);
+        canShockProof = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_SHOCK_PROOF);
+        canThickFur = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_THICK_FUR);
+        canHolyHound = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_HOLY_HOUND);
     }
 
     @Override

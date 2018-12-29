@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.AnimalTamer;
@@ -11,12 +12,10 @@ import org.bukkit.entity.Animals;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Guardian;
 import org.bukkit.entity.IronGolem;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Skeleton;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Wolf;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -29,7 +28,6 @@ import org.bukkit.projectiles.ProjectileSource;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
@@ -66,7 +64,7 @@ public final class CombatUtils {
         Map<DamageModifier, Double> modifiers = getModifiers(event);
 
         if (swordsManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(SkillType.SWORDS);
+            mcMMOPlayer.checkAbilityActivation(PrimarySkill.SWORDS);
         }
 
         if (swordsManager.canUseBleed()) {
@@ -77,7 +75,7 @@ public final class CombatUtils {
             swordsManager.serratedStrikes(target, initialDamage, modifiers);
         }
 
-        startGainXp(mcMMOPlayer, target, SkillType.SWORDS);
+        startGainXp(mcMMOPlayer, target, PrimarySkill.SWORDS);
     }
 
     private static void processAxeCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
@@ -93,7 +91,7 @@ public final class CombatUtils {
         AxesManager axesManager = mcMMOPlayer.getAxesManager();
 
         if (axesManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(SkillType.AXES);
+            mcMMOPlayer.checkAbilityActivation(PrimarySkill.AXES);
         }
 
         if (axesManager.canUseAxeMastery()) {
@@ -116,7 +114,7 @@ public final class CombatUtils {
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, SkillType.AXES);
+        startGainXp(mcMMOPlayer, target, PrimarySkill.AXES);
     }
 
     private static void processUnarmedCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event) {
@@ -131,7 +129,7 @@ public final class CombatUtils {
         UnarmedManager unarmedManager = mcMMOPlayer.getUnarmedManager();
 
         if (unarmedManager.canActivateAbility()) {
-            mcMMOPlayer.checkAbilityActivation(SkillType.UNARMED);
+            mcMMOPlayer.checkAbilityActivation(PrimarySkill.UNARMED);
         }
 
         if (unarmedManager.canUseIronArm()) {
@@ -147,7 +145,7 @@ public final class CombatUtils {
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, SkillType.UNARMED);
+        startGainXp(mcMMOPlayer, target, PrimarySkill.UNARMED);
     }
 
     private static void processTamingCombat(LivingEntity target, Player master, Wolf wolf, EntityDamageByEntityEvent event) {
@@ -172,7 +170,7 @@ public final class CombatUtils {
         }
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, SkillType.TAMING);
+        startGainXp(mcMMOPlayer, target, PrimarySkill.TAMING);
     }
 
     private static void processArcheryCombat(LivingEntity target, Player player, EntityDamageByEntityEvent event, Arrow arrow) {
@@ -182,7 +180,7 @@ public final class CombatUtils {
         McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
         ArcheryManager archeryManager = mcMMOPlayer.getArcheryManager();
 
-        if (target instanceof Player && SkillType.UNARMED.getPVPEnabled()) {
+        if (target instanceof Player && PrimarySkill.UNARMED.getPVPEnabled()) {
             UnarmedManager unarmedManager = UserManager.getPlayer((Player) target).getUnarmedManager();
 
             if (unarmedManager.canDeflect()) {
@@ -209,7 +207,7 @@ public final class CombatUtils {
         archeryManager.distanceXpBonus(target, arrow);
 
         applyScaledModifiers(initialDamage, finalDamage, event);
-        startGainXp(mcMMOPlayer, target, SkillType.ARCHERY, arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble());
+        startGainXp(mcMMOPlayer, target, PrimarySkill.ARCHERY, arrow.getMetadata(mcMMO.bowForceKey).get(0).asDouble());
     }
 
     /**
@@ -247,29 +245,29 @@ public final class CombatUtils {
             }
 
             if (ItemUtils.isSword(heldItem)) {
-                if (!SkillType.SWORDS.shouldProcess(target)) {
+                if (!PrimarySkill.SWORDS.shouldProcess(target)) {
                     return;
                 }
 
-                if (SkillType.SWORDS.getPermissions(player)) {
+                if (PrimarySkill.SWORDS.getPermissions(player)) {
                     processSwordCombat(target, player, event);
                 }
             }
             else if (ItemUtils.isAxe(heldItem)) {
-                if (!SkillType.AXES.shouldProcess(target)) {
+                if (!PrimarySkill.AXES.shouldProcess(target)) {
                     return;
                 }
 
-                if (SkillType.AXES.getPermissions(player)) {
+                if (PrimarySkill.AXES.getPermissions(player)) {
                     processAxeCombat(target, player, event);
                 }
             }
             else if (ItemUtils.isUnarmed(heldItem)) {
-                if (!SkillType.UNARMED.shouldProcess(target)) {
+                if (!PrimarySkill.UNARMED.shouldProcess(target)) {
                     return;
                 }
 
-                if (SkillType.UNARMED.getPermissions(player)) {
+                if (PrimarySkill.UNARMED.getPermissions(player)) {
                     processUnarmedCombat(target, player, event);
                 }
             }
@@ -279,10 +277,10 @@ public final class CombatUtils {
             Wolf wolf = (Wolf) damager;
             AnimalTamer tamer = wolf.getOwner();
 
-            if (tamer != null && tamer instanceof Player && SkillType.TAMING.shouldProcess(target)) {
+            if (tamer != null && tamer instanceof Player && PrimarySkill.TAMING.shouldProcess(target)) {
                 Player master = (Player) tamer;
 
-                if (!Misc.isNPCEntity(master) && SkillType.TAMING.getPermissions(master)) {
+                if (!Misc.isNPCEntity(master) && PrimarySkill.TAMING.getPermissions(master)) {
                     processTamingCombat(target, master, wolf, event);
                 }
             }
@@ -291,14 +289,14 @@ public final class CombatUtils {
             Arrow arrow = (Arrow) damager;
             ProjectileSource projectileSource = arrow.getShooter();
 
-            if (projectileSource != null && projectileSource instanceof Player && SkillType.ARCHERY.shouldProcess(target)) {
+            if (projectileSource != null && projectileSource instanceof Player && PrimarySkill.ARCHERY.shouldProcess(target)) {
                 Player player = (Player) projectileSource;
 
-                if (!Misc.isNPCEntity(player) && SkillType.ARCHERY.getPermissions(player)) {
+                if (!Misc.isNPCEntity(player) && PrimarySkill.ARCHERY.getPermissions(player)) {
                     processArcheryCombat(target, player, event, arrow);
                 }
 
-                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntity(player) && SkillType.TAMING.getPermissions(player)) {
+                if (target.getType() != EntityType.CREEPER && !Misc.isNPCEntity(player) && PrimarySkill.TAMING.getPermissions(player)) {
                     McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
                     TamingManager tamingManager = mcMMOPlayer.getTamingManager();
                     tamingManager.attackTarget(target);
@@ -323,7 +321,7 @@ public final class CombatUtils {
             }
 
             if (ItemUtils.isSword(player.getInventory().getItemInMainHand())) {
-                if (!SkillType.SWORDS.shouldProcess(target)) {
+                if (!PrimarySkill.SWORDS.shouldProcess(target)) {
                     return;
                 }
 
@@ -399,7 +397,7 @@ public final class CombatUtils {
      * @param damage The initial damage amount
      * @param type The type of skill being used
      */
-    public static void applyAbilityAoE(Player attacker, LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, SkillType type) {
+    public static void applyAbilityAoE(Player attacker, LivingEntity target, double damage, Map<DamageModifier, Double> modifiers, PrimarySkill type) {
         int numberOfTargets = getTier(attacker.getInventory().getItemInMainHand()); // The higher the weapon tier, the more targets you hit
         double damageAmount = Math.max(damage, 1);
 
@@ -440,8 +438,8 @@ public final class CombatUtils {
         }
     }
 
-    public static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, SkillType skillType) {
-        startGainXp(mcMMOPlayer, target, skillType, 1.0);
+    public static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkill primarySkill) {
+        startGainXp(mcMMOPlayer, target, primarySkill, 1.0);
     }
 
     /**
@@ -449,9 +447,9 @@ public final class CombatUtils {
      *
      * @param mcMMOPlayer The attacking player
      * @param target The defending entity
-     * @param skillType The skill being used
+     * @param primarySkill The skill being used
      */
-    private static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, SkillType skillType, double multiplier) {
+    private static void startGainXp(McMMOPlayer mcMMOPlayer, LivingEntity target, PrimarySkill primarySkill, double multiplier) {
         double baseXP = 0;
         XPGainReason xpGainReason;
 
@@ -518,7 +516,7 @@ public final class CombatUtils {
         baseXP *= multiplier;
 
         if (baseXP != 0) {
-            new AwardCombatXpTask(mcMMOPlayer, skillType, baseXP, target, xpGainReason).runTaskLater(mcMMO.p, 0);
+            new AwardCombatXpTask(mcMMOPlayer, primarySkill, baseXP, target, xpGainReason).runTaskLater(mcMMO.p, 0);
         }
     }
 

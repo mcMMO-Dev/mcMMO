@@ -4,11 +4,11 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
-import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityEvent;
-import com.gmail.nossr50.events.skills.secondaryabilities.SecondaryAbilityWeightedActivationCheckEvent;
+import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillEvent;
+import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillWeightedActivationCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.EventUtils;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SkillUtils {
-    public static int handleFoodSkills(Player player, SkillType skill, int eventFoodLevel, int baseLevel, int maxLevel, int rankChange) {
+    public static int handleFoodSkills(Player player, PrimarySkill skill, int eventFoodLevel, int baseLevel, int maxLevel, int rankChange) {
         int skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
 
         int currentFoodLevel = player.getFoodLevel();
@@ -80,7 +80,7 @@ public class SkillUtils {
      * @return true if this is a valid skill, false otherwise
      */
     public static boolean isSkill(String skillName) {
-        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? SkillType.getSkill(skillName) != null : isLocalizedSkill(skillName);
+        return Config.getInstance().getLocale().equalsIgnoreCase("en_US") ? PrimarySkill.getSkill(skillName) != null : isLocalizedSkill(skillName);
     }
 
     public static void sendSkillMessage(Player player, String message) {
@@ -130,7 +130,7 @@ public class SkillUtils {
             }
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
-            SkillType skill = mcMMOPlayer.getAbilityMode(AbilityType.SUPER_BREAKER) ? SkillType.MINING : SkillType.EXCAVATION;
+            PrimarySkill skill = mcMMOPlayer.getAbilityMode(SuperAbility.SUPER_BREAKER) ? PrimarySkill.MINING : PrimarySkill.EXCAVATION;
             int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
@@ -199,7 +199,7 @@ public class SkillUtils {
 
     /**
      * Checks whether or not the given skill succeeds
-     * @param skillAbility The ability corresponding to this check
+     * @param subSkill The ability corresponding to this check
      * @param player The player whose skill levels we are checking against
      * @param skillLevel The skill level of the corresponding skill
      * @param activationChance used to determine activation chance
@@ -207,9 +207,9 @@ public class SkillUtils {
      * @param maxLevel maximum skill level bonus
      * @return true if random chance succeeds and the event isn't cancelled
      */
-    private static boolean performRandomSkillCheck(SecondaryAbility skillAbility, Player player, int skillLevel, int activationChance, double maxChance, int maxLevel) {
+    private static boolean performRandomSkillCheck(SubSkill subSkill, Player player, int skillLevel, int activationChance, double maxChance, int maxLevel) {
         double chance = (maxChance / maxLevel) * Math.min(skillLevel, maxLevel) / activationChance;
-        return performRandomSkillCheckStatic(skillAbility, player, activationChance, chance);
+        return performRandomSkillCheckStatic(subSkill, player, activationChance, chance);
     }
 
     /**
@@ -224,34 +224,34 @@ public class SkillUtils {
      * Random skills check for success based on numbers and then fire a cancellable event, if that event is not cancelled they succeed
      * All other skills just fire the cancellable event and succeed if it is not cancelled
      *
-     * @param skillAbility The identifier for this specific sub-skill
+     * @param subSkill The identifier for this specific sub-skill
      * @param player The owner of this sub-skill
      * @param skill The identifier for the parent of our sub-skill
      * @param activationChance This is the value that we roll against, 100 is normal, and 75 is for lucky perk
-     * @param secondarySkillActivationType this value represents what kind of activation procedures this sub-skill uses
+     * @param subskillActivationType this value represents what kind of activation procedures this sub-skill uses
      * @return returns true if all conditions are met and they event is not cancelled
      */
-    public static boolean isActivationSuccessful(SecondarySkillActivationType secondarySkillActivationType, SecondaryAbility skillAbility, Player player,
-                                                    SkillType skill, int skillLevel, int activationChance)
+    public static boolean isActivationSuccessful(SubSkillActivationType subskillActivationType, SubSkill subSkill, Player player,
+                                                 PrimarySkill skill, int skillLevel, int activationChance)
     {
         //Maximum chance to succeed
-        double maxChance = AdvancedConfig.getInstance().getMaxChance(skillAbility);
+        double maxChance = AdvancedConfig.getInstance().getMaxChance(subSkill);
         //Maximum roll we can make
-        int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(skillAbility);
+        int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(subSkill);
 
-        switch(secondarySkillActivationType)
+        switch(subskillActivationType)
         {
             //100 Skill = Guaranteed
             case RANDOM_LINEAR_100_SCALE_NO_CAP:
-                return performRandomSkillCheck(skillAbility, player, skillLevel, PerksUtils.handleLuckyPerks(player, skill), 100.0D, 100);
+                return performRandomSkillCheck(subSkill, player, skillLevel, PerksUtils.handleLuckyPerks(player, skill), 100.0D, 100);
             case RANDOM_LINEAR_100_SCALE_WITH_CAP:
-                return performRandomSkillCheck(skillAbility, player, skillLevel, PerksUtils.handleLuckyPerks(player, skill), AdvancedConfig.getInstance().getMaxChance(skillAbility), AdvancedConfig.getInstance().getMaxBonusLevel(skillAbility));
+                return performRandomSkillCheck(subSkill, player, skillLevel, PerksUtils.handleLuckyPerks(player, skill), AdvancedConfig.getInstance().getMaxChance(subSkill), AdvancedConfig.getInstance().getMaxBonusLevel(subSkill));
             case RANDOM_STATIC_CHANCE:
                 //Grab the static activation chance of this skill
-                double staticRoll = getSecondaryAbilityStaticChance(skillAbility) / activationChance;
-                return performRandomSkillCheckStatic(skillAbility, player, activationChance, staticRoll);
+                double staticRoll = getSecondaryAbilityStaticChance(subSkill) / activationChance;
+                return performRandomSkillCheckStatic(subSkill, player, activationChance, staticRoll);
             case ALWAYS_FIRES:
-                SecondaryAbilityEvent event = EventUtils.callSecondaryAbilityEvent(player, skillAbility);
+                SubSkillEvent event = EventUtils.callSubSkillEvent(player, subSkill);
                 return !event.isCancelled();
                 default:
                     return false;
@@ -260,18 +260,18 @@ public class SkillUtils {
 
     /**
      * Grabs static activation rolls for Secondary Abilities
-     * @param secondaryAbility The secondary ability to grab properties of
+     * @param subSkill The secondary ability to grab properties of
      * @return The static activation roll involved in the RNG calculation
      */
-    public static double getSecondaryAbilityStaticChance(SecondaryAbility secondaryAbility)
+    public static double getSecondaryAbilityStaticChance(SubSkill subSkill)
     {
-        switch(secondaryAbility)
+        switch(subSkill)
         {
-            case ARMOR_IMPACT:
+            case AXES_ARMOR_IMPACT:
                 return AdvancedConfig.getInstance().getImpactChance();
-            case GREATER_IMPACT:
+            case AXES_GREATER_IMPACT:
                 return AdvancedConfig.getInstance().getGreaterImpactChance();
-            case FAST_FOOD:
+            case TAMING_FAST_FOOD:
                 return AdvancedConfig.getInstance().getFastFoodChance();
                 default:
                     return 100.0D;
@@ -280,26 +280,26 @@ public class SkillUtils {
 
     /**
      * Used to determine whether or not a sub-skill activates from random chance (using static values)
-     * @param skillAbility The identifier for this specific sub-skill
+     * @param subSkill The identifier for this specific sub-skill
      * @param player The owner of this sub-skill
      * @param activationChance This is the value that we roll against, 100 is normal, and 75 is for lucky perk
      * @param chance This is the static modifier for our random calculations
      * @return true if random chance was successful and the event wasn't cancelled
      */
-    private static boolean performRandomSkillCheckStatic(SecondaryAbility skillAbility, Player player, int activationChance, double chance) {
-        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, skillAbility, chance);
+    private static boolean performRandomSkillCheckStatic(SubSkill subSkill, Player player, int activationChance, double chance) {
+        SubSkillWeightedActivationCheckEvent event = new SubSkillWeightedActivationCheckEvent(player, subSkill, chance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
         return (event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance) && !event.isCancelled();
     }
 
     public static boolean treasureDropSuccessful(Player player, double dropChance, int activationChance) {
-        SecondaryAbilityWeightedActivationCheckEvent event = new SecondaryAbilityWeightedActivationCheckEvent(player, SecondaryAbility.EXCAVATION_TREASURE_HUNTER, dropChance / activationChance);
+        SubSkillWeightedActivationCheckEvent event = new SubSkillWeightedActivationCheckEvent(player, SubSkill.EXCAVATION_TREASURE_HUNTER, dropChance / activationChance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
         return (event.getChance() * activationChance) > (Misc.getRandom().nextDouble() * activationChance) && !event.isCancelled();
     }
 
     private static boolean isLocalizedSkill(String skillName) {
-        for (SkillType skill : SkillType.values()) {
+        for (PrimarySkill skill : PrimarySkill.values()) {
             if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(skill.toString()) + ".SkillName"))) {
                 return true;
             }

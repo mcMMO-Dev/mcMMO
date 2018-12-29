@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 
@@ -18,7 +18,7 @@ public class ExcavationCommand extends SkillCommand {
     private boolean canTreasureHunt;
 
     public ExcavationCommand() {
-        super(SkillType.EXCAVATION);
+        super(PrimarySkill.EXCAVATION);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ExcavationCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canGigaDrill = Permissions.gigaDrillBreaker(player);
-        canTreasureHunt = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.EXCAVATION_TREASURE_HUNTER);
+        canTreasureHunt = Permissions.isSubSkillEnabled(player, SubSkill.EXCAVATION_TREASURE_HUNTER);
     }
 
     @Override

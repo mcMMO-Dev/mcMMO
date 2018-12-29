@@ -1,11 +1,11 @@
 package com.gmail.nossr50.events.experience;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.util.player.UserManager;
 
@@ -14,19 +14,19 @@ import com.gmail.nossr50.util.player.UserManager;
  */
 public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements Cancellable {
     private boolean cancelled;
-    protected SkillType skill;
+    protected PrimarySkill skill;
     protected int skillLevel;
     protected XPGainReason xpGainReason;
 
     @Deprecated
-    protected McMMOPlayerExperienceEvent(Player player, SkillType skill) {
+    protected McMMOPlayerExperienceEvent(Player player, PrimarySkill skill) {
         super(player);
         this.skill = skill;
         this.skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
         this.xpGainReason = XPGainReason.UNKNOWN;
     }
 
-    protected McMMOPlayerExperienceEvent(Player player, SkillType skill, XPGainReason xpGainReason) {
+    protected McMMOPlayerExperienceEvent(Player player, PrimarySkill skill, XPGainReason xpGainReason) {
         super(player);
         this.skill = skill;
         this.skillLevel = UserManager.getPlayer(player).getSkillLevel(skill);
@@ -36,7 +36,7 @@ public abstract class McMMOPlayerExperienceEvent extends PlayerEvent implements 
     /**
      * @return The skill involved in this event
      */
-    public SkillType getSkill() {
+    public PrimarySkill getSkill() {
         return skill;
     }
 

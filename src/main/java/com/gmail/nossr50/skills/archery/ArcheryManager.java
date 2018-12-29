@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.archery;
 
-import com.gmail.nossr50.util.skills.SecondarySkillActivationType;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.util.skills.SubSkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -10,8 +11,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.Misc;
@@ -21,19 +21,19 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ArcheryManager extends SkillManager {
     public ArcheryManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.ARCHERY);
+        super(mcMMOPlayer, PrimarySkill.ARCHERY);
     }
 
     public boolean canDaze(LivingEntity target) {
-        return target instanceof Player && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.DAZE);
+        return target instanceof Player && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.ARCHERY_DAZE);
     }
 
     public boolean canSkillShot() {
-        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.SKILL_SHOT);
+        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.ARCHERY_SKILL_SHOT);
     }
 
     public boolean canRetrieveArrows() {
-        return Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.RETRIEVE);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.ARCHERY_RETRIEVE);
     }
 
     /**
@@ -59,7 +59,7 @@ public class ArcheryManager extends SkillManager {
      * @param target The {@link LivingEntity} damaged by the arrow
      */
     public void retrieveArrows(LivingEntity target) {
-        if (SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.RETRIEVE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.ARCHERY_RETRIEVE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             Archery.incrementTrackerValue(target);
         }
     }
@@ -70,7 +70,7 @@ public class ArcheryManager extends SkillManager {
      * @param defender The {@link Player} being affected by the ability
      */
     public double daze(Player defender) {
-        if (!SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.DAZE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.ARCHERY_DAZE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return 0;
         }
 
@@ -97,7 +97,7 @@ public class ArcheryManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double skillShot(double damage) {
-        if (!SkillUtils.isActivationSuccessful(SecondarySkillActivationType.ALWAYS_FIRES, SecondaryAbility.SKILL_SHOT, getPlayer(), null, 0, 0)) {
+        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.ALWAYS_FIRES, SubSkill.ARCHERY_SKILL_SHOT, getPlayer(), null, 0, 0)) {
             return damage;
         }
 

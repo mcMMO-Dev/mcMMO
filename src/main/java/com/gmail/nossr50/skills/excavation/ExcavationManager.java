@@ -2,13 +2,13 @@ package com.gmail.nossr50.skills.excavation;
 
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.Location;
 import org.bukkit.block.BlockState;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.skills.SkillManager;
@@ -18,7 +18,7 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class ExcavationManager extends SkillManager {
     public ExcavationManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.EXCAVATION);
+        super(mcMMOPlayer, PrimarySkill.EXCAVATION);
     }
 
     /**
@@ -29,7 +29,7 @@ public class ExcavationManager extends SkillManager {
     public void excavationBlockCheck(BlockState blockState) {
         int xp = Excavation.getBlockXP(blockState);
 
-        if (Permissions.secondaryAbilityEnabled(getPlayer(), SecondaryAbility.EXCAVATION_TREASURE_HUNTER)) {
+        if (Permissions.isSubSkillEnabled(getPlayer(), SubSkill.EXCAVATION_TREASURE_HUNTER)) {
             List<ExcavationTreasure> treasures = Excavation.getTreasures(blockState);
 
             if (!treasures.isEmpty()) {

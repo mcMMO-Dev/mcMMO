@@ -35,44 +35,44 @@ import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 
 import com.google.common.collect.ImmutableList;
 
-public enum SkillType {
-    ACROBATICS(AcrobaticsManager.class, Color.WHITE, ImmutableList.of(SecondaryAbility.DODGE, SecondaryAbility.GRACEFUL_ROLL, SecondaryAbility.ROLL)),
-    ALCHEMY(AlchemyManager.class, Color.FUCHSIA, ImmutableList.of(SecondaryAbility.CATALYSIS, SecondaryAbility.CONCOCTIONS)),
-    ARCHERY(ArcheryManager.class, Color.MAROON, ImmutableList.of(SecondaryAbility.DAZE, SecondaryAbility.RETRIEVE, SecondaryAbility.SKILL_SHOT)),
-    AXES(AxesManager.class, Color.AQUA, AbilityType.SKULL_SPLITTER, ToolType.AXE, ImmutableList.of(SecondaryAbility.ARMOR_IMPACT, SecondaryAbility.AXE_MASTERY, SecondaryAbility.CRITICAL_HIT, SecondaryAbility.GREATER_IMPACT)),
-    EXCAVATION(ExcavationManager.class, Color.fromRGB(139, 69, 19), AbilityType.GIGA_DRILL_BREAKER, ToolType.SHOVEL, ImmutableList.of(SecondaryAbility.EXCAVATION_TREASURE_HUNTER)),
-    FISHING(FishingManager.class, Color.NAVY, ImmutableList.of(SecondaryAbility.FISHERMANS_DIET, SecondaryAbility.FISHING_TREASURE_HUNTER, SecondaryAbility.ICE_FISHING, SecondaryAbility.MAGIC_HUNTER, SecondaryAbility.MASTER_ANGLER, SecondaryAbility.SHAKE)),
-    HERBALISM(HerbalismManager.class, Color.GREEN, AbilityType.GREEN_TERRA, ToolType.HOE, ImmutableList.of(SecondaryAbility.FARMERS_DIET, SecondaryAbility.GREEN_THUMB_PLANT, SecondaryAbility.GREEN_THUMB_BLOCK, SecondaryAbility.HERBALISM_DOUBLE_DROPS, SecondaryAbility.HYLIAN_LUCK, SecondaryAbility.SHROOM_THUMB)),
-    MINING(MiningManager.class, Color.GRAY, AbilityType.SUPER_BREAKER, ToolType.PICKAXE, ImmutableList.of(SecondaryAbility.MINING_DOUBLE_DROPS)),
-    REPAIR(RepairManager.class, Color.SILVER, ImmutableList.of(SecondaryAbility.ARCANE_FORGING, SecondaryAbility.REPAIR_MASTERY, SecondaryAbility.SUPER_REPAIR)),
-    SALVAGE(SalvageManager.class, Color.ORANGE, ImmutableList.of(SecondaryAbility.ADVANCED_SALVAGE, SecondaryAbility.ARCANE_SALVAGE)),
-    SMELTING(SmeltingManager.class, Color.YELLOW, ImmutableList.of(SecondaryAbility.FLUX_MINING, SecondaryAbility.FUEL_EFFICIENCY, SecondaryAbility.SECOND_SMELT)),
-    SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), AbilityType.SERRATED_STRIKES, ToolType.SWORD, ImmutableList.of(SecondaryAbility.BLEED, SecondaryAbility.COUNTER)),
-    TAMING(TamingManager.class, Color.PURPLE, ImmutableList.of(SecondaryAbility.BEAST_LORE, SecondaryAbility.CALL_OF_THE_WILD, SecondaryAbility.ENVIRONMENTALLY_AWARE, SecondaryAbility.FAST_FOOD, SecondaryAbility.GORE, SecondaryAbility.HOLY_HOUND, SecondaryAbility.SHARPENED_CLAWS, SecondaryAbility.SHOCK_PROOF, SecondaryAbility.THICK_FUR, SecondaryAbility.PUMMEL)),
-    UNARMED(UnarmedManager.class, Color.BLACK, AbilityType.BERSERK, ToolType.FISTS, ImmutableList.of(SecondaryAbility.BLOCK_CRACKER, SecondaryAbility.DEFLECT, SecondaryAbility.DISARM, SecondaryAbility.IRON_ARM, SecondaryAbility.IRON_GRIP)),
-    WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, AbilityType.TREE_FELLER, ToolType.AXE, ImmutableList.of(SecondaryAbility.WOODCUTTING_LEAF_BLOWER, SecondaryAbility.WOODCUTTING_HARVEST));
+public enum PrimarySkill {
+    ACROBATICS(AcrobaticsManager.class, Color.WHITE, ImmutableList.of(SubSkill.ACROBATICS_DODGE, SubSkill.ACROBATICS_GRACEFUL_ROLL, SubSkill.ACROBATICS_ROLL)),
+    ALCHEMY(AlchemyManager.class, Color.FUCHSIA, ImmutableList.of(SubSkill.ALCHEMY_CATALYSIS, SubSkill.ALCHEMY_CONCOCTIONS)),
+    ARCHERY(ArcheryManager.class, Color.MAROON, ImmutableList.of(SubSkill.ARCHERY_DAZE, SubSkill.ARCHERY_RETRIEVE, SubSkill.ARCHERY_SKILL_SHOT)),
+    AXES(AxesManager.class, Color.AQUA, SuperAbility.SKULL_SPLITTER, ToolType.AXE, ImmutableList.of(SubSkill.AXES_ARMOR_IMPACT, SubSkill.AXES_AXE_MASTERY, SubSkill.AXES_CRITICAL_HIT, SubSkill.AXES_GREATER_IMPACT)),
+    EXCAVATION(ExcavationManager.class, Color.fromRGB(139, 69, 19), SuperAbility.GIGA_DRILL_BREAKER, ToolType.SHOVEL, ImmutableList.of(SubSkill.EXCAVATION_TREASURE_HUNTER)),
+    FISHING(FishingManager.class, Color.NAVY, ImmutableList.of(SubSkill.FISHING_FISHERMANS_DIET, SubSkill.FISHING_TREASURE_HUNTER, SubSkill.FISHING_ICE_FISHING, SubSkill.FISHING_MAGIC_HUNTER, SubSkill.FISHING_MASTER_ANGLER, SubSkill.FISHING_SHAKE)),
+    HERBALISM(HerbalismManager.class, Color.GREEN, SuperAbility.GREEN_TERRA, ToolType.HOE, ImmutableList.of(SubSkill.HERBALISM_FARMERS_DIET, SubSkill.HERBALISM_GREEN_THUMB, SubSkill.HERBALISM_DOUBLE_DROPS, SubSkill.HERBALISM_HYLIAN_LUCK, SubSkill.HERBALISM_SHROOM_THUMB)),
+    MINING(MiningManager.class, Color.GRAY, SuperAbility.SUPER_BREAKER, ToolType.PICKAXE, ImmutableList.of(SubSkill.MINING_DOUBLE_DROPS)),
+    REPAIR(RepairManager.class, Color.SILVER, ImmutableList.of(SubSkill.REPAIR_ARCANE_FORGING, SubSkill.REPAIR_REPAIR_MASTERY, SubSkill.REPAIR_SUPER_REPAIR)),
+    SALVAGE(SalvageManager.class, Color.ORANGE, ImmutableList.of(SubSkill.SALVAGE_ADVANCED_SALVAGE, SubSkill.SALVAGE_ARCANE_SALVAGE)),
+    SMELTING(SmeltingManager.class, Color.YELLOW, ImmutableList.of(SubSkill.SMELTING_FLUX_MINING, SubSkill.SMELTING_FUEL_EFFICIENCY, SubSkill.SMELTING_SECOND_SMELT)),
+    SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), SuperAbility.SERRATED_STRIKES, ToolType.SWORD, ImmutableList.of(SubSkill.SWORDS_BLEED, SubSkill.SWORDS_COUNTER)),
+    TAMING(TamingManager.class, Color.PURPLE, ImmutableList.of(SubSkill.TAMING_BEAST_LORE, SubSkill.TAMING_CALL_OF_THE_WILD, SubSkill.TAMING_ENVIRONMENTALLY_AWARE, SubSkill.TAMING_FAST_FOOD, SubSkill.TAMING_GORE, SubSkill.TAMING_HOLY_HOUND, SubSkill.TAMING_SHARPENED_CLAWS, SubSkill.TAMING_SHOCK_PROOF, SubSkill.TAMING_THICK_FUR, SubSkill.TAMING_PUMMEL)),
+    UNARMED(UnarmedManager.class, Color.BLACK, SuperAbility.BERSERK, ToolType.FISTS, ImmutableList.of(SubSkill.UNARMED_BLOCK_CRACKER, SubSkill.UNARMED_DEFLECT, SubSkill.UNARMED_DISARM, SubSkill.UNARMED_IRON_ARM, SubSkill.UNARMED_IRON_GRIP)),
+    WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, SuperAbility.TREE_FELLER, ToolType.AXE, ImmutableList.of(SubSkill.WOODCUTTING_LEAF_BLOWER, SubSkill.WOODCUTTING_DOUBLE_DROPS));
 
     private Class<? extends SkillManager> managerClass;
     private Color runescapeColor;
-    private AbilityType ability;
+    private SuperAbility ability;
     private ToolType tool;
-    private List<SecondaryAbility> secondaryAbilities;
+    private List<SubSkill> subSkills;
 
     public static final List<String> SKILL_NAMES;
 
-    public static final List<SkillType> CHILD_SKILLS;
-    public static final List<SkillType> NON_CHILD_SKILLS;
+    public static final List<PrimarySkill> CHILD_SKILLS;
+    public static final List<PrimarySkill> NON_CHILD_SKILLS;
 
-    public static final List<SkillType> COMBAT_SKILLS = ImmutableList.of(ARCHERY, AXES, SWORDS, TAMING, UNARMED);
-    public static final List<SkillType> GATHERING_SKILLS = ImmutableList.of(EXCAVATION, FISHING, HERBALISM, MINING, WOODCUTTING);
-    public static final List<SkillType> MISC_SKILLS = ImmutableList.of(ACROBATICS, ALCHEMY, REPAIR, SALVAGE, SMELTING);
+    public static final List<PrimarySkill> COMBAT_SKILLS = ImmutableList.of(ARCHERY, AXES, SWORDS, TAMING, UNARMED);
+    public static final List<PrimarySkill> GATHERING_SKILLS = ImmutableList.of(EXCAVATION, FISHING, HERBALISM, MINING, WOODCUTTING);
+    public static final List<PrimarySkill> MISC_SKILLS = ImmutableList.of(ACROBATICS, ALCHEMY, REPAIR, SALVAGE, SMELTING);
 
     static {
-        List<SkillType> childSkills = new ArrayList<SkillType>();
-        List<SkillType> nonChildSkills = new ArrayList<SkillType>();
+        List<PrimarySkill> childSkills = new ArrayList<PrimarySkill>();
+        List<PrimarySkill> nonChildSkills = new ArrayList<PrimarySkill>();
         ArrayList<String> names = new ArrayList<String>();
 
-        for (SkillType skill : values()) {
+        for (PrimarySkill skill : values()) {
             if (skill.isChildSkill()) {
                 childSkills.add(skill);
             }
@@ -90,23 +90,23 @@ public enum SkillType {
         NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
     }
 
-    private SkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, List<SecondaryAbility> secondaryAbilities) {
-        this(managerClass, runescapeColor, null, null, secondaryAbilities);
+    private PrimarySkill(Class<? extends SkillManager> managerClass, Color runescapeColor, List<SubSkill> subSkills) {
+        this(managerClass, runescapeColor, null, null, subSkills);
     }
 
-    private SkillType(Class<? extends SkillManager> managerClass, Color runescapeColor, AbilityType ability, ToolType tool, List<SecondaryAbility> secondaryAbilities) {
+    private PrimarySkill(Class<? extends SkillManager> managerClass, Color runescapeColor, SuperAbility ability, ToolType tool, List<SubSkill> subSkills) {
         this.managerClass = managerClass;
         this.runescapeColor = runescapeColor;
         this.ability = ability;
         this.tool = tool;
-        this.secondaryAbilities = secondaryAbilities;
+        this.subSkills = subSkills;
     }
 
     public Class<? extends SkillManager> getManagerClass() {
         return managerClass;
     }
 
-    public AbilityType getAbility() {
+    public SuperAbility getAbility() {
         return ability;
     }
 
@@ -153,24 +153,24 @@ public enum SkillType {
         return tool;
     }
 
-    public List<SecondaryAbility> getSkillAbilities() {
-        return secondaryAbilities;
+    public List<SubSkill> getSkillAbilities() {
+        return subSkills;
     }
 
     public double getXpModifier() {
         return ExperienceConfig.getInstance().getFormulaSkillModifier(this);
     }
 
-    public static SkillType getSkill(String skillName) {
+    public static PrimarySkill getSkill(String skillName) {
         if (!Config.getInstance().getLocale().equalsIgnoreCase("en_US")) {
-            for (SkillType type : values()) {
+            for (PrimarySkill type : values()) {
                 if (skillName.equalsIgnoreCase(LocaleLoader.getString(StringUtils.getCapitalized(type.name()) + ".SkillName"))) {
                     return type;
                 }
             }
         }
 
-        for (SkillType type : values()) {
+        for (PrimarySkill type : values()) {
             if (type.name().equalsIgnoreCase(skillName)) {
                 return type;
             }
@@ -195,17 +195,17 @@ public enum SkillType {
         }
     }
 
-    public static SkillType bySecondaryAbility(SecondaryAbility skillAbility) {
-        for (SkillType type : values()) {
-            if (type.getSkillAbilities().contains(skillAbility)) {
+    public static PrimarySkill bySecondaryAbility(SubSkill subSkill) {
+        for (PrimarySkill type : values()) {
+            if (type.getSkillAbilities().contains(subSkill)) {
                 return type;
             }
         }
         return null;
     }
 
-    public static SkillType byAbility(AbilityType ability) {
-        for (SkillType type : values()) {
+    public static PrimarySkill byAbility(SuperAbility ability) {
+        for (PrimarySkill type : values()) {
             if (type.getAbility() == ability) {
                 return type;
             }

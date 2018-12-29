@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.experience;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.EventUtils;
@@ -22,7 +22,7 @@ public class AddlevelsCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handleCommand(Player player, PlayerProfile profile, SkillType skill, int value) {
+    protected void handleCommand(Player player, PlayerProfile profile, PrimarySkill skill, int value) {
         float xpRemoved = profile.getSkillXpLevelRaw(skill);
         profile.addLevels(skill, value);
 
@@ -40,7 +40,7 @@ public class AddlevelsCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handlePlayerMessageSkill(Player player, int value, SkillType skill) {
+    protected void handlePlayerMessageSkill(Player player, int value, PrimarySkill skill) {
         player.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardSkill.1", value, skill.getName()));
     }
 }

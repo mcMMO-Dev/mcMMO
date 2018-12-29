@@ -1,10 +1,10 @@
 package com.gmail.nossr50.commands.experience;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
@@ -22,7 +22,7 @@ public class AddxpCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handleCommand(Player player, PlayerProfile profile, SkillType skill, int value) {
+    protected void handleCommand(Player player, PlayerProfile profile, PrimarySkill skill, int value) {
         if (player != null) {
             UserManager.getPlayer(player).applyXpGain(skill, value, XPGainReason.COMMAND);
         }
@@ -38,7 +38,7 @@ public class AddxpCommand extends ExperienceCommand {
     }
 
     @Override
-    protected void handlePlayerMessageSkill(Player player, int value, SkillType skill) {
+    protected void handlePlayerMessageSkill(Player player, int value, PrimarySkill skill) {
         player.sendMessage(LocaleLoader.getString("Commands.addxp.AwardSkill", value, skill.getName()));
     }
 }

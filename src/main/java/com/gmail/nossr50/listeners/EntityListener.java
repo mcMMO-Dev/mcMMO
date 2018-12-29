@@ -3,7 +3,7 @@ package com.gmail.nossr50.listeners;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
@@ -583,7 +583,7 @@ public class EntityListener implements Listener {
                                * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
                                * 1000
                                */
-                if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FARMERS_DIET)) {
+                if (Permissions.isSubSkillEnabled(player, SubSkill.HERBALISM_FARMERS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
                 }
                 return;
@@ -595,7 +595,7 @@ public class EntityListener implements Listener {
                                     * @ 1000
                                     */
             case POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FARMERS_DIET)) {
+                if (Permissions.isSubSkillEnabled(player, SubSkill.HERBALISM_FARMERS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
                 }
                 return;
@@ -604,13 +604,13 @@ public class EntityListener implements Listener {
                                * RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @
                                * 1000
                                */
-                if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FISHERMANS_DIET)) {
+                if (Permissions.isSubSkillEnabled(player, SubSkill.FISHING_FISHERMANS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
                 }
                 return;
 
             case SALMON: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                if (Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FISHERMANS_DIET)) {
+                if (Permissions.isSubSkillEnabled(player, SubSkill.FISHING_FISHERMANS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
                 }
                 return;

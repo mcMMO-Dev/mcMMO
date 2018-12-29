@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import org.bukkit.OfflinePlayer;
 
 import com.gmail.nossr50.mcMMO;
@@ -26,16 +28,12 @@ import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.StringUtils;
 
-import org.apache.commons.lang.ArrayUtils;
-
 public final class FlatfileDatabaseManager implements DatabaseManager {
-    private final HashMap<SkillType, List<PlayerStat>> playerStatHash = new HashMap<SkillType, List<PlayerStat>>();
+    private final HashMap<PrimarySkill, List<PlayerStat>> playerStatHash = new HashMap<PrimarySkill, List<PlayerStat>>();
     private final List<PlayerStat> powerLevels = new ArrayList<PlayerStat>();
     private long lastUpdate = 0;
 
@@ -71,7 +69,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
 
                 while ((line = in.readLine()) != null) {
                     String[] character = line.split(":");
-                    Map<SkillType, Integer> skills = getSkillMapFromLine(character);
+                    Map<PrimarySkill, Integer> skills = getSkillMapFromLine(character);
 
                     boolean powerless = true;
                     for (int skill : skills.values()) {
@@ -279,47 +277,47 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     else {
                         // Otherwise write the new player information
                         writer.append(playerName).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.MINING)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.MINING)).append(":");
                         writer.append(":");
                         writer.append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.MINING)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.WOODCUTTING)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.WOODCUTTING)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.REPAIR)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.UNARMED)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.HERBALISM)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.EXCAVATION)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.ARCHERY)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.SWORDS)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.AXES)).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.ACROBATICS)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.REPAIR)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.UNARMED)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.HERBALISM)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.EXCAVATION)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.ARCHERY)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.SWORDS)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.AXES)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.ACROBATICS)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.MINING)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.WOODCUTTING)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.WOODCUTTING)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.REPAIR)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.UNARMED)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.HERBALISM)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.EXCAVATION)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.ARCHERY)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.SWORDS)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.AXES)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.ACROBATICS)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.REPAIR)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.UNARMED)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.HERBALISM)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.EXCAVATION)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.ARCHERY)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.SWORDS)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.AXES)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.ACROBATICS)).append(":");
                         writer.append(":");
-                        writer.append(profile.getSkillLevel(SkillType.TAMING)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.TAMING)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.BERSERK)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.GIGA_DRILL_BREAKER)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.TREE_FELLER)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.GREEN_TERRA)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.SERRATED_STRIKES)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.SKULL_SPLITTER)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.SUPER_BREAKER)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.TAMING)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.TAMING)).append(":");
+                        writer.append((int) profile.getAbilityDATS(SuperAbility.BERSERK)).append(":");
+                        writer.append((int) profile.getAbilityDATS(SuperAbility.GIGA_DRILL_BREAKER)).append(":");
+                        writer.append((int) profile.getAbilityDATS(SuperAbility.TREE_FELLER)).append(":");
+                        writer.append((int) profile.getAbilityDATS(SuperAbility.GREEN_TERRA)).append(":");
+                        writer.append((int) profile.getAbilityDATS(SuperAbility.SERRATED_STRIKES)).append(":");
+                        writer.append((int) profile.getAbilityDATS(SuperAbility.SKULL_SPLITTER)).append(":");
+                        writer.append((int) profile.getAbilityDATS(SuperAbility.SUPER_BREAKER)).append(":");
                         writer.append(":");
-                        writer.append(profile.getSkillLevel(SkillType.FISHING)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.FISHING)).append(":");
-                        writer.append((int) profile.getAbilityDATS(AbilityType.BLAST_MINING)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.FISHING)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.FISHING)).append(":");
+                        writer.append((int) profile.getAbilityDATS(SuperAbility.BLAST_MINING)).append(":");
                         writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
                         MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
                         writer.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
-                        writer.append(profile.getSkillLevel(SkillType.ALCHEMY)).append(":");
-                        writer.append(profile.getSkillXpLevel(SkillType.ALCHEMY)).append(":");
+                        writer.append(profile.getSkillLevel(PrimarySkill.ALCHEMY)).append(":");
+                        writer.append(profile.getSkillXpLevel(PrimarySkill.ALCHEMY)).append(":");
                         writer.append(uuid != null ? uuid.toString() : "NULL").append(":");
                         writer.append(profile.getScoreboardTipsShown()).append(":");
                         writer.append("\r\n");
@@ -356,7 +354,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         }
     }
 
-    public List<PlayerStat> readLeaderboard(SkillType skill, int pageNumber, int statsPerPage) {
+    public List<PlayerStat> readLeaderboard(PrimarySkill skill, int pageNumber, int statsPerPage) {
         updateLeaderboards();
         List<PlayerStat> statsList = skill == null ? powerLevels : playerStatHash.get(skill);
         int fromIndex = (Math.max(pageNumber, 1) - 1) * statsPerPage;
@@ -364,12 +362,12 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return statsList.subList(Math.min(fromIndex, statsList.size()), Math.min(fromIndex + statsPerPage, statsList.size()));
     }
 
-    public Map<SkillType, Integer> readRank(String playerName) {
+    public Map<PrimarySkill, Integer> readRank(String playerName) {
         updateLeaderboards();
 
-        Map<SkillType, Integer> skills = new HashMap<SkillType, Integer>();
+        Map<PrimarySkill, Integer> skills = new HashMap<PrimarySkill, Integer>();
 
-        for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
+        for (PrimarySkill skill : PrimarySkill.NON_CHILD_SKILLS) {
             skills.put(skill, getPlayerRank(playerName, playerStatHash.get(skill)));
         }
 
@@ -764,21 +762,21 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     playerName = data[USERNAME];
                     int powerLevel = 0;
 
-                    Map<SkillType, Integer> skills = getSkillMapFromLine(data);
+                    Map<PrimarySkill, Integer> skills = getSkillMapFromLine(data);
 
-                    powerLevel += putStat(acrobatics, playerName, skills.get(SkillType.ACROBATICS));
-                    powerLevel += putStat(alchemy, playerName, skills.get(SkillType.ALCHEMY));
-                    powerLevel += putStat(archery, playerName, skills.get(SkillType.ARCHERY));
-                    powerLevel += putStat(axes, playerName, skills.get(SkillType.AXES));
-                    powerLevel += putStat(excavation, playerName, skills.get(SkillType.EXCAVATION));
-                    powerLevel += putStat(fishing, playerName, skills.get(SkillType.FISHING));
-                    powerLevel += putStat(herbalism, playerName, skills.get(SkillType.HERBALISM));
-                    powerLevel += putStat(mining, playerName, skills.get(SkillType.MINING));
-                    powerLevel += putStat(repair, playerName, skills.get(SkillType.REPAIR));
-                    powerLevel += putStat(swords, playerName, skills.get(SkillType.SWORDS));
-                    powerLevel += putStat(taming, playerName, skills.get(SkillType.TAMING));
-                    powerLevel += putStat(unarmed, playerName, skills.get(SkillType.UNARMED));
-                    powerLevel += putStat(woodcutting, playerName, skills.get(SkillType.WOODCUTTING));
+                    powerLevel += putStat(acrobatics, playerName, skills.get(PrimarySkill.ACROBATICS));
+                    powerLevel += putStat(alchemy, playerName, skills.get(PrimarySkill.ALCHEMY));
+                    powerLevel += putStat(archery, playerName, skills.get(PrimarySkill.ARCHERY));
+                    powerLevel += putStat(axes, playerName, skills.get(PrimarySkill.AXES));
+                    powerLevel += putStat(excavation, playerName, skills.get(PrimarySkill.EXCAVATION));
+                    powerLevel += putStat(fishing, playerName, skills.get(PrimarySkill.FISHING));
+                    powerLevel += putStat(herbalism, playerName, skills.get(PrimarySkill.HERBALISM));
+                    powerLevel += putStat(mining, playerName, skills.get(PrimarySkill.MINING));
+                    powerLevel += putStat(repair, playerName, skills.get(PrimarySkill.REPAIR));
+                    powerLevel += putStat(swords, playerName, skills.get(PrimarySkill.SWORDS));
+                    powerLevel += putStat(taming, playerName, skills.get(PrimarySkill.TAMING));
+                    powerLevel += putStat(unarmed, playerName, skills.get(PrimarySkill.UNARMED));
+                    powerLevel += putStat(woodcutting, playerName, skills.get(PrimarySkill.WOODCUTTING));
 
                     putStat(powerLevels, playerName, powerLevel);
                 }
@@ -815,19 +813,19 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         Collections.sort(alchemy, c);
         Collections.sort(powerLevels, c);
 
-        playerStatHash.put(SkillType.MINING, mining);
-        playerStatHash.put(SkillType.WOODCUTTING, woodcutting);
-        playerStatHash.put(SkillType.REPAIR, repair);
-        playerStatHash.put(SkillType.UNARMED, unarmed);
-        playerStatHash.put(SkillType.HERBALISM, herbalism);
-        playerStatHash.put(SkillType.EXCAVATION, excavation);
-        playerStatHash.put(SkillType.ARCHERY, archery);
-        playerStatHash.put(SkillType.SWORDS, swords);
-        playerStatHash.put(SkillType.AXES, axes);
-        playerStatHash.put(SkillType.ACROBATICS, acrobatics);
-        playerStatHash.put(SkillType.TAMING, taming);
-        playerStatHash.put(SkillType.FISHING, fishing);
-        playerStatHash.put(SkillType.ALCHEMY, alchemy);
+        playerStatHash.put(PrimarySkill.MINING, mining);
+        playerStatHash.put(PrimarySkill.WOODCUTTING, woodcutting);
+        playerStatHash.put(PrimarySkill.REPAIR, repair);
+        playerStatHash.put(PrimarySkill.UNARMED, unarmed);
+        playerStatHash.put(PrimarySkill.HERBALISM, herbalism);
+        playerStatHash.put(PrimarySkill.EXCAVATION, excavation);
+        playerStatHash.put(PrimarySkill.ARCHERY, archery);
+        playerStatHash.put(PrimarySkill.SWORDS, swords);
+        playerStatHash.put(PrimarySkill.AXES, axes);
+        playerStatHash.put(PrimarySkill.ACROBATICS, acrobatics);
+        playerStatHash.put(PrimarySkill.TAMING, taming);
+        playerStatHash.put(PrimarySkill.FISHING, fishing);
+        playerStatHash.put(PrimarySkill.ALCHEMY, alchemy);
     }
 
     /**
@@ -894,7 +892,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         }
 
                         if (Config.getInstance().getTruncateSkills()) {
-                            for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
+                            for (PrimarySkill skill : PrimarySkill.NON_CHILD_SKILLS) {
                                 int index = getSkillIndex(skill);
                                 if (index >= character.length) {
                                     continue;
@@ -1034,8 +1032,8 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         updated |= oldVersion != null;
 
                         if (Config.getInstance().getTruncateSkills()) {
-                            Map<SkillType, Integer> skills = getSkillMapFromLine(character);
-                            for (SkillType skill : SkillType.NON_CHILD_SKILLS) {
+                            Map<PrimarySkill, Integer> skills = getSkillMapFromLine(character);
+                            for (PrimarySkill skill : PrimarySkill.NON_CHILD_SKILLS) {
                                 int cap = Config.getInstance().getLevelCap(skill);
                                 if (skills.get(skill) > cap) {
                                     updated = true;
@@ -1129,40 +1127,40 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     }
 
     private PlayerProfile loadFromLine(String[] character) {
-        Map<SkillType, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
-        Map<SkillType, Float>     skillsXp   = new EnumMap<SkillType, Float>(SkillType.class);     // Skill & XP
-        Map<AbilityType, Integer> skillsDATS = new EnumMap<AbilityType, Integer>(AbilityType.class); // Ability & Cooldown
+        Map<PrimarySkill, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
+        Map<PrimarySkill, Float>     skillsXp   = new EnumMap<PrimarySkill, Float>(PrimarySkill.class);     // Skill & XP
+        Map<SuperAbility, Integer> skillsDATS = new EnumMap<SuperAbility, Integer>(SuperAbility.class); // Ability & Cooldown
         MobHealthbarType mobHealthbarType;
         int scoreboardTipsShown;
 
         // TODO on updates, put new values in a try{} ?
 
-        skillsXp.put(SkillType.TAMING, (float) Integer.valueOf(character[EXP_TAMING]));
-        skillsXp.put(SkillType.MINING, (float) Integer.valueOf(character[EXP_MINING]));
-        skillsXp.put(SkillType.REPAIR, (float) Integer.valueOf(character[EXP_REPAIR]));
-        skillsXp.put(SkillType.WOODCUTTING, (float) Integer.valueOf(character[EXP_WOODCUTTING]));
-        skillsXp.put(SkillType.UNARMED, (float) Integer.valueOf(character[EXP_UNARMED]));
-        skillsXp.put(SkillType.HERBALISM, (float) Integer.valueOf(character[EXP_HERBALISM]));
-        skillsXp.put(SkillType.EXCAVATION, (float) Integer.valueOf(character[EXP_EXCAVATION]));
-        skillsXp.put(SkillType.ARCHERY, (float) Integer.valueOf(character[EXP_ARCHERY]));
-        skillsXp.put(SkillType.SWORDS, (float) Integer.valueOf(character[EXP_SWORDS]));
-        skillsXp.put(SkillType.AXES, (float) Integer.valueOf(character[EXP_AXES]));
-        skillsXp.put(SkillType.ACROBATICS, (float) Integer.valueOf(character[EXP_ACROBATICS]));
-        skillsXp.put(SkillType.FISHING, (float) Integer.valueOf(character[EXP_FISHING]));
-        skillsXp.put(SkillType.ALCHEMY, (float) Integer.valueOf(character[EXP_ALCHEMY]));
+        skillsXp.put(PrimarySkill.TAMING, (float) Integer.valueOf(character[EXP_TAMING]));
+        skillsXp.put(PrimarySkill.MINING, (float) Integer.valueOf(character[EXP_MINING]));
+        skillsXp.put(PrimarySkill.REPAIR, (float) Integer.valueOf(character[EXP_REPAIR]));
+        skillsXp.put(PrimarySkill.WOODCUTTING, (float) Integer.valueOf(character[EXP_WOODCUTTING]));
+        skillsXp.put(PrimarySkill.UNARMED, (float) Integer.valueOf(character[EXP_UNARMED]));
+        skillsXp.put(PrimarySkill.HERBALISM, (float) Integer.valueOf(character[EXP_HERBALISM]));
+        skillsXp.put(PrimarySkill.EXCAVATION, (float) Integer.valueOf(character[EXP_EXCAVATION]));
+        skillsXp.put(PrimarySkill.ARCHERY, (float) Integer.valueOf(character[EXP_ARCHERY]));
+        skillsXp.put(PrimarySkill.SWORDS, (float) Integer.valueOf(character[EXP_SWORDS]));
+        skillsXp.put(PrimarySkill.AXES, (float) Integer.valueOf(character[EXP_AXES]));
+        skillsXp.put(PrimarySkill.ACROBATICS, (float) Integer.valueOf(character[EXP_ACROBATICS]));
+        skillsXp.put(PrimarySkill.FISHING, (float) Integer.valueOf(character[EXP_FISHING]));
+        skillsXp.put(PrimarySkill.ALCHEMY, (float) Integer.valueOf(character[EXP_ALCHEMY]));
 
         // Taming - Unused
-        skillsDATS.put(AbilityType.SUPER_BREAKER, Integer.valueOf(character[COOLDOWN_SUPER_BREAKER]));
+        skillsDATS.put(SuperAbility.SUPER_BREAKER, Integer.valueOf(character[COOLDOWN_SUPER_BREAKER]));
         // Repair - Unused
-        skillsDATS.put(AbilityType.TREE_FELLER, Integer.valueOf(character[COOLDOWN_TREE_FELLER]));
-        skillsDATS.put(AbilityType.BERSERK, Integer.valueOf(character[COOLDOWN_BERSERK]));
-        skillsDATS.put(AbilityType.GREEN_TERRA, Integer.valueOf(character[COOLDOWN_GREEN_TERRA]));
-        skillsDATS.put(AbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(character[COOLDOWN_GIGA_DRILL_BREAKER]));
+        skillsDATS.put(SuperAbility.TREE_FELLER, Integer.valueOf(character[COOLDOWN_TREE_FELLER]));
+        skillsDATS.put(SuperAbility.BERSERK, Integer.valueOf(character[COOLDOWN_BERSERK]));
+        skillsDATS.put(SuperAbility.GREEN_TERRA, Integer.valueOf(character[COOLDOWN_GREEN_TERRA]));
+        skillsDATS.put(SuperAbility.GIGA_DRILL_BREAKER, Integer.valueOf(character[COOLDOWN_GIGA_DRILL_BREAKER]));
         // Archery - Unused
-        skillsDATS.put(AbilityType.SERRATED_STRIKES, Integer.valueOf(character[COOLDOWN_SERRATED_STRIKES]));
-        skillsDATS.put(AbilityType.SKULL_SPLITTER, Integer.valueOf(character[COOLDOWN_SKULL_SPLITTER]));
+        skillsDATS.put(SuperAbility.SERRATED_STRIKES, Integer.valueOf(character[COOLDOWN_SERRATED_STRIKES]));
+        skillsDATS.put(SuperAbility.SKULL_SPLITTER, Integer.valueOf(character[COOLDOWN_SKULL_SPLITTER]));
         // Acrobatics - Unused
-        skillsDATS.put(AbilityType.BLAST_MINING, Integer.valueOf(character[COOLDOWN_BLAST_MINING]));
+        skillsDATS.put(SuperAbility.BLAST_MINING, Integer.valueOf(character[COOLDOWN_BLAST_MINING]));
 
         try {
             mobHealthbarType = MobHealthbarType.valueOf(character[HEALTHBAR]);
@@ -1189,22 +1187,22 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         return new PlayerProfile(character[USERNAME], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown);
     }
 
-    private Map<SkillType, Integer> getSkillMapFromLine(String[] character) {
-        Map<SkillType, Integer> skills = new EnumMap<SkillType, Integer>(SkillType.class);   // Skill & Level
+    private Map<PrimarySkill, Integer> getSkillMapFromLine(String[] character) {
+        Map<PrimarySkill, Integer> skills = new EnumMap<PrimarySkill, Integer>(PrimarySkill.class);   // Skill & Level
 
-        skills.put(SkillType.TAMING, Integer.valueOf(character[SKILLS_TAMING]));
-        skills.put(SkillType.MINING, Integer.valueOf(character[SKILLS_MINING]));
-        skills.put(SkillType.REPAIR, Integer.valueOf(character[SKILLS_REPAIR]));
-        skills.put(SkillType.WOODCUTTING, Integer.valueOf(character[SKILLS_WOODCUTTING]));
-        skills.put(SkillType.UNARMED, Integer.valueOf(character[SKILLS_UNARMED]));
-        skills.put(SkillType.HERBALISM, Integer.valueOf(character[SKILLS_HERBALISM]));
-        skills.put(SkillType.EXCAVATION, Integer.valueOf(character[SKILLS_EXCAVATION]));
-        skills.put(SkillType.ARCHERY, Integer.valueOf(character[SKILLS_ARCHERY]));
-        skills.put(SkillType.SWORDS, Integer.valueOf(character[SKILLS_SWORDS]));
-        skills.put(SkillType.AXES, Integer.valueOf(character[SKILLS_AXES]));
-        skills.put(SkillType.ACROBATICS, Integer.valueOf(character[SKILLS_ACROBATICS]));
-        skills.put(SkillType.FISHING, Integer.valueOf(character[SKILLS_FISHING]));
-        skills.put(SkillType.ALCHEMY, Integer.valueOf(character[SKILLS_ALCHEMY]));
+        skills.put(PrimarySkill.TAMING, Integer.valueOf(character[SKILLS_TAMING]));
+        skills.put(PrimarySkill.MINING, Integer.valueOf(character[SKILLS_MINING]));
+        skills.put(PrimarySkill.REPAIR, Integer.valueOf(character[SKILLS_REPAIR]));
+        skills.put(PrimarySkill.WOODCUTTING, Integer.valueOf(character[SKILLS_WOODCUTTING]));
+        skills.put(PrimarySkill.UNARMED, Integer.valueOf(character[SKILLS_UNARMED]));
+        skills.put(PrimarySkill.HERBALISM, Integer.valueOf(character[SKILLS_HERBALISM]));
+        skills.put(PrimarySkill.EXCAVATION, Integer.valueOf(character[SKILLS_EXCAVATION]));
+        skills.put(PrimarySkill.ARCHERY, Integer.valueOf(character[SKILLS_ARCHERY]));
+        skills.put(PrimarySkill.SWORDS, Integer.valueOf(character[SKILLS_SWORDS]));
+        skills.put(PrimarySkill.AXES, Integer.valueOf(character[SKILLS_AXES]));
+        skills.put(PrimarySkill.ACROBATICS, Integer.valueOf(character[SKILLS_ACROBATICS]));
+        skills.put(PrimarySkill.FISHING, Integer.valueOf(character[SKILLS_FISHING]));
+        skills.put(PrimarySkill.ALCHEMY, Integer.valueOf(character[SKILLS_ALCHEMY]));
 
         return skills;
     }
@@ -1216,7 +1214,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     @Override
     public void onDisable() { }
 
-    private int getSkillIndex(SkillType skill) {
+    private int getSkillIndex(PrimarySkill skill) {
         switch (skill) {
             case ACROBATICS:
                 return SKILLS_ACROBATICS;

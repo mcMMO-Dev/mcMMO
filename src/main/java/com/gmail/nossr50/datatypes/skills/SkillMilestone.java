@@ -7,10 +7,10 @@ package com.gmail.nossr50.datatypes.skills;
  */
 public class SkillMilestone {
     private int unlockLevel; //Level that grants access to this skill
-    private SecondaryAbility subskill; //Subskill that this milestone belongs to
+    private SubSkill subskill; //Subskill that this milestone belongs to
     private SkillMilestone childMilestone; //Next rank in the milestone
 
-    public SkillMilestone(SecondaryAbility subskill, int unlockLevel, SkillMilestone childMilestone)
+    public SkillMilestone(SubSkill subskill, int unlockLevel, SkillMilestone childMilestone)
     {
         this.subskill = subskill;
         this.unlockLevel = unlockLevel;
@@ -20,7 +20,7 @@ public class SkillMilestone {
             this.childMilestone = childMilestone;
     }
 
-    public SkillMilestone(SecondaryAbility subskill, int unlockLevel)
+    public SkillMilestone(SubSkill subskill, int unlockLevel)
     {
         this(subskill, unlockLevel, null);
     }
@@ -29,7 +29,7 @@ public class SkillMilestone {
         return unlockLevel;
     }
 
-    public SecondaryAbility getSubskill() {
+    public SubSkill getSubskill() {
         return subskill;
     }
 

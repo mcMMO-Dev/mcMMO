@@ -3,10 +3,10 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
 
@@ -23,28 +23,28 @@ public class AcrobaticsCommand extends SkillCommand {
     private boolean canGracefulRoll;
 
     public AcrobaticsCommand() {
-        super(SkillType.ACROBATICS);
+        super(PrimarySkill.ACROBATICS);
     }
 
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
-        // DODGE
+        // ACROBATICS_DODGE
         if (canDodge) {
-            String[] dodgeStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.DODGE, isLucky);
+            String[] dodgeStrings = calculateAbilityDisplayValues(skillValue, SubSkill.ACROBATICS_DODGE, isLucky);
             dodgeChance = dodgeStrings[0];
             dodgeChanceLucky = dodgeStrings[1];
         }
 
-        // ROLL
+        // ACROBATICS_ROLL
         if (canRoll) {
-            String[] rollStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.ROLL, isLucky);
+            String[] rollStrings = calculateAbilityDisplayValues(skillValue, SubSkill.ACROBATICS_ROLL, isLucky);
             rollChance = rollStrings[0];
             rollChanceLucky = rollStrings[1];
         }
 
-        // GRACEFUL ROLL
+        // GRACEFUL ACROBATICS_ROLL
         if (canGracefulRoll) {
-            String[] gracefulRollStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.GRACEFUL_ROLL, isLucky);
+            String[] gracefulRollStrings = calculateAbilityDisplayValues(skillValue, SubSkill.ACROBATICS_GRACEFUL_ROLL, isLucky);
             gracefulRollChance = gracefulRollStrings[0];
             gracefulRollChanceLucky = gracefulRollStrings[1];
         }
@@ -52,9 +52,9 @@ public class AcrobaticsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canDodge = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.DODGE);
-        canRoll = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ROLL);
-        canGracefulRoll = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.GRACEFUL_ROLL);
+        canDodge = Permissions.isSubSkillEnabled(player, SubSkill.ACROBATICS_DODGE);
+        canRoll = Permissions.isSubSkillEnabled(player, SubSkill.ACROBATICS_ROLL);
+        canGracefulRoll = Permissions.isSubSkillEnabled(player, SubSkill.ACROBATICS_GRACEFUL_ROLL);
     }
 
     @Override

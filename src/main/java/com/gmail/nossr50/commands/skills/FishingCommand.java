@@ -3,14 +3,14 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.treasure.Rarity;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.fishing.Fishing;
@@ -44,7 +44,7 @@ public class FishingCommand extends SkillCommand {
     private boolean canIceFish;
 
     public FishingCommand() {
-        super(SkillType.FISHING);
+        super(PrimarySkill.FISHING);
     }
 
     @Override
@@ -76,7 +76,7 @@ public class FishingCommand extends SkillCommand {
             magicChance = percent.format(totalEnchantChance / 100.0);
         }
 
-        // SHAKE
+        // FISHING_SHAKE
         if (canShake) {
             String[] shakeStrings = calculateAbilityDisplayValues(UserManager.getPlayer(player).getFishingManager().getShakeProbability(), isLucky);
             shakeChance = shakeStrings[0];
@@ -111,12 +111,12 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canTreasureHunt = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FISHING_TREASURE_HUNTER);
-        canMagicHunt = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.MAGIC_HUNTER);
-        canShake = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SHAKE);
-        canFishermansDiet = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FISHERMANS_DIET);
-        canMasterAngler = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.MASTER_ANGLER);
-        canIceFish = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.ICE_FISHING);
+        canTreasureHunt = Permissions.isSubSkillEnabled(player, SubSkill.FISHING_TREASURE_HUNTER);
+        canMagicHunt = Permissions.isSubSkillEnabled(player, SubSkill.FISHING_MAGIC_HUNTER);
+        canShake = Permissions.isSubSkillEnabled(player, SubSkill.FISHING_SHAKE);
+        canFishermansDiet = Permissions.isSubSkillEnabled(player, SubSkill.FISHING_FISHERMANS_DIET);
+        canMasterAngler = Permissions.isSubSkillEnabled(player, SubSkill.FISHING_MASTER_ANGLER);
+        canIceFish = Permissions.isSubSkillEnabled(player, SubSkill.FISHING_ICE_FISHING);
     }
 
     @Override

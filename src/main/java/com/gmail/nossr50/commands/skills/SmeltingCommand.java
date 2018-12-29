@@ -3,11 +3,11 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.smelting.Smelting;
 import com.gmail.nossr50.skills.smelting.Smelting.Tier;
@@ -27,7 +27,7 @@ public class SmeltingCommand extends SkillCommand {
     private boolean canVanillaXPBoost;
 
     public SmeltingCommand() {
-        super(SkillType.SMELTING);
+        super(PrimarySkill.SMELTING);
     }
 
     @Override
@@ -39,7 +39,7 @@ public class SmeltingCommand extends SkillCommand {
 
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = calculateAbilityDisplayValues(skillValue, SecondaryAbility.SECOND_SMELT, isLucky);
+            String[] secondSmeltStrings = calculateAbilityDisplayValues(skillValue, SubSkill.SMELTING_SECOND_SMELT, isLucky);
             secondSmeltChance = secondSmeltStrings[0];
             secondSmeltChanceLucky = secondSmeltStrings[1];
         }
@@ -54,9 +54,9 @@ public class SmeltingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canFuelEfficiency = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FUEL_EFFICIENCY);
-        canSecondSmelt = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.SECOND_SMELT);
-        canFluxMine = Permissions.secondaryAbilityEnabled(player, SecondaryAbility.FLUX_MINING);
+        canFuelEfficiency = Permissions.isSubSkillEnabled(player, SubSkill.SMELTING_FUEL_EFFICIENCY);
+        canSecondSmelt = Permissions.isSubSkillEnabled(player, SubSkill.SMELTING_SECOND_SMELT);
+        canFluxMine = Permissions.isSubSkillEnabled(player, SubSkill.SMELTING_FLUX_MINING);
         canVanillaXPBoost = Permissions.vanillaXpBoost(player, skill);
     }
 

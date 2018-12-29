@@ -2,9 +2,9 @@ package com.gmail.nossr50.skills.mining;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
-import com.gmail.nossr50.datatypes.skills.SecondaryAbility;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -15,7 +15,7 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.SecondarySkillActivationType;
+import com.gmail.nossr50.util.skills.SubSkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
@@ -30,7 +30,7 @@ import java.util.List;
 
 public class MiningManager extends SkillManager {
     public MiningManager(McMMOPlayer mcMMOPlayer) {
-        super(mcMMOPlayer, SkillType.MINING);
+        super(mcMMOPlayer, PrimarySkill.MINING);
     }
 
     public boolean canUseDemolitionsExpertise() {
@@ -61,7 +61,7 @@ public class MiningManager extends SkillManager {
 
         applyXpGain(Mining.getBlockXp(blockState), XPGainReason.PVE);
 
-        if (!Permissions.secondaryAbilityEnabled(player, SecondaryAbility.MINING_DOUBLE_DROPS)) {
+        if (!Permissions.isSubSkillEnabled(player, SubSkill.MINING_DOUBLE_DROPS)) {
             return;
         }
 
@@ -79,7 +79,7 @@ public class MiningManager extends SkillManager {
 
         //TODO: Make this readable
         for (int i = mcMMOPlayer.getAbilityMode(skill.getAbility()) ? 2 : 1; i != 0; i--) {
-            if (SkillUtils.isActivationSuccessful(SecondarySkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SecondaryAbility.MINING_DOUBLE_DROPS, player, this.skill, getSkillLevel(), activationChance)) {
+            if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.MINING_DOUBLE_DROPS, player, this.skill, getSkillLevel(), activationChance)) {
                 if (silkTouch) {
                     Mining.handleSilkTouchDrops(blockState);
                 }
@@ -103,16 +103,16 @@ public class MiningManager extends SkillManager {
 
         TNTPrimed tnt = player.getWorld().spawn(targetBlock.getLocation(), TNTPrimed.class);
 
-        SkillUtils.sendSkillMessage(player, AbilityType.BLAST_MINING.getAbilityPlayer(player));
+        SkillUtils.sendSkillMessage(player, SuperAbility.BLAST_MINING.getAbilityPlayer(player));
         player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
         tnt.setMetadata(mcMMO.tntMetadataKey, mcMMOPlayer.getPlayerMetadata());
         tnt.setFuseTicks(0);
         targetBlock.setType(Material.AIR);
 
-        mcMMOPlayer.setAbilityDATS(AbilityType.BLAST_MINING, System.currentTimeMillis());
-        mcMMOPlayer.setAbilityInformed(AbilityType.BLAST_MINING, false);
-        new AbilityCooldownTask(mcMMOPlayer, AbilityType.BLAST_MINING).runTaskLaterAsynchronously(mcMMO.p, AbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
+        mcMMOPlayer.setAbilityDATS(SuperAbility.BLAST_MINING, System.currentTimeMillis());
+        mcMMOPlayer.setAbilityInformed(SuperAbility.BLAST_MINING, false);
+        new AbilityCooldownTask(mcMMOPlayer, SuperAbility.BLAST_MINING).runTaskLaterAsynchronously(mcMMO.p, SuperAbility.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
     }
 
     /**
@@ -287,7 +287,7 @@ public class MiningManager extends SkillManager {
     }
 
     private boolean blastMiningCooldownOver() {
-        int timeRemaining = mcMMOPlayer.calculateTimeRemaining(AbilityType.BLAST_MINING);
+        int timeRemaining = mcMMOPlayer.calculateTimeRemaining(SuperAbility.BLAST_MINING);
 
         if (timeRemaining > 0) {
             getPlayer().sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));

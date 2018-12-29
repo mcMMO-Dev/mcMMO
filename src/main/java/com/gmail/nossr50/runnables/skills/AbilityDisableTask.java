@@ -1,5 +1,6 @@
 package com.gmail.nossr50.runnables.skills;
 
+import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -8,7 +9,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.AbilityType;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
@@ -17,9 +17,9 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class AbilityDisableTask extends BukkitRunnable {
     private McMMOPlayer mcMMOPlayer;
-    private AbilityType ability;
+    private SuperAbility ability;
 
-    public AbilityDisableTask(McMMOPlayer mcMMOPlayer, AbilityType ability) {
+    public AbilityDisableTask(McMMOPlayer mcMMOPlayer, SuperAbility ability) {
         this.mcMMOPlayer = mcMMOPlayer;
         this.ability = ability;
     }

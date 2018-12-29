@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,7 +15,6 @@ import org.bukkit.util.StringUtil;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -23,7 +23,7 @@ import com.google.common.collect.ImmutableList;
 public abstract class ExperienceCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        SkillType skill;
+        PrimarySkill skill;
 
         switch (args.length) {
             case 2:
@@ -40,7 +40,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = SkillType.getSkill(args[0]);
+                skill = PrimarySkill.getSkill(args[0]);
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
@@ -65,7 +65,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                     return true;
                 }
 
-                skill = SkillType.getSkill(args[1]);
+                skill = PrimarySkill.getSkill(args[1]);
 
                 if (args[1].equalsIgnoreCase("all")) {
                     skill = null;
@@ -116,7 +116,7 @@ public abstract class ExperienceCommand implements TabExecutor {
                 List<String> playerNames = CommandUtils.getOnlinePlayerNames(sender);
                 return StringUtil.copyPartialMatches(args[0], playerNames, new ArrayList<String>(playerNames.size()));
             case 2:
-                return StringUtil.copyPartialMatches(args[1], SkillType.SKILL_NAMES, new ArrayList<String>(SkillType.SKILL_NAMES.size()));
+                return StringUtil.copyPartialMatches(args[1], PrimarySkill.SKILL_NAMES, new ArrayList<String>(PrimarySkill.SKILL_NAMES.size()));
             default:
                 return ImmutableList.of();
         }
@@ -124,15 +124,15 @@ public abstract class ExperienceCommand implements TabExecutor {
 
     protected abstract boolean permissionsCheckSelf(CommandSender sender);
     protected abstract boolean permissionsCheckOthers(CommandSender sender);
-    protected abstract void handleCommand(Player player, PlayerProfile profile, SkillType skill, int value);
+    protected abstract void handleCommand(Player player, PlayerProfile profile, PrimarySkill skill, int value);
     protected abstract void handlePlayerMessageAll(Player player, int value);
-    protected abstract void handlePlayerMessageSkill(Player player, int value, SkillType skill);
+    protected abstract void handlePlayerMessageSkill(Player player, int value, PrimarySkill skill);
 
     private boolean validateArguments(CommandSender sender, String skillName, String value) {
         return !(CommandUtils.isInvalidInteger(sender, value) || (!skillName.equalsIgnoreCase("all") && CommandUtils.isInvalidSkill(sender, skillName)));
     }
 
-    protected static void handleSenderMessage(CommandSender sender, String playerName, SkillType skill) {
+    protected static void handleSenderMessage(CommandSender sender, String playerName, PrimarySkill skill) {
         if (skill == null) {
             sender.sendMessage(LocaleLoader.getString("Commands.addlevels.AwardAll.2", playerName));
         }
@@ -141,10 +141,10 @@ public abstract class ExperienceCommand implements TabExecutor {
         }
     }
 
-    protected void editValues(Player player, PlayerProfile profile, SkillType skill, int value) {
+    protected void editValues(Player player, PlayerProfile profile, PrimarySkill skill, int value) {
         if (skill == null) {
-            for (SkillType skillType : SkillType.NON_CHILD_SKILLS) {
-                handleCommand(player, profile, skillType, value);
+            for (PrimarySkill primarySkill : PrimarySkill.NON_CHILD_SKILLS) {
+                handleCommand(player, profile, primarySkill, value);
             }
 
             if (player != null) {

@@ -1,8 +1,8 @@
 package com.gmail.nossr50.events.experience;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 
 /**
@@ -10,11 +10,11 @@ import com.gmail.nossr50.datatypes.skills.XPGainReason;
  */
 public abstract class McMMOPlayerLevelChangeEvent extends McMMOPlayerExperienceEvent {
     @Deprecated
-    public McMMOPlayerLevelChangeEvent(Player player, SkillType skill) {
+    public McMMOPlayerLevelChangeEvent(Player player, PrimarySkill skill) {
         super(player, skill, XPGainReason.UNKNOWN);
     }
 
-    public McMMOPlayerLevelChangeEvent(Player player, SkillType skill, XPGainReason xpGainReason) {
+    public McMMOPlayerLevelChangeEvent(Player player, PrimarySkill skill, XPGainReason xpGainReason) {
         super(player, skill, xpGainReason);
     }
 }
