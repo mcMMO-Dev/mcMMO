@@ -2,7 +2,6 @@ package com.gmail.nossr50.datatypes.skills;
 
 import com.gmail.nossr50.util.StringUtils;
 
-import com.gmail.nossr50.datatypes.skills.PrimarySkill.*;
 public enum SubSkill {
     /* !! Warning -- Do not let subskills share a name with any existing PrimarySkill as it will clash with the static import !! */
 
@@ -85,12 +84,38 @@ public enum SubSkill {
     UNARMED_IRON_GRIP,
 
     /* Woodcutting */
-    WOODCUTTING_TREE_FELLER,
-    WOODCUTTING_LEAF_BLOWER,
-    WOODCUTTING_SURGEON,
-    WOODCUTTING_NATURES_BOUNTY,
-    WOODCUTTING_SPLINTER,
-    WOODCUTTING_DOUBLE_DROPS;
+    WOODCUTTING_TREE_FELLER(5),
+    WOODCUTTING_LEAF_BLOWER(3),
+    WOODCUTTING_BARK_SURGEON(3),
+    WOODCUTTING_NATURES_BOUNTY(3),
+    WOODCUTTING_SPLINTER(3),
+    WOODCUTTING_HARVEST_LUMBER(3);
+
+    private final int numRanks;
+
+    /**
+     * If our SubSkill has more than 1 rank define it
+     * @param numRanks The number of ranks our SubSkill has
+     */
+    SubSkill(int numRanks)
+    {
+        this.numRanks = numRanks;
+    }
+
+    /**
+     * SubSkills will default to having only 1 rank if not defined
+     */
+    SubSkill()
+    {
+        this.numRanks = 1;
+    }
+
+
+
+    public int getNumRanks()
+    {
+        return numRanks;
+    }
 
     /**
      * !!! This relies on the immutable lists in PrimarySkill being populated !!!
@@ -136,7 +161,7 @@ public enum SubSkill {
          * Find where to begin our substring (after the prefix)
          */
         String endResult = "";
-        char[] enumNameCharArray = subSkillName.toString().toCharArray();
+        char[] enumNameCharArray = subSkillName.toCharArray();
         int subStringIndex = 0;
 
         //Find where to start our substring for this constants name
@@ -152,12 +177,17 @@ public enum SubSkill {
         /*
          * Split the string up so we can capitalize each part
          */
-        String subskillNameWithoutPrefix = subSkillName.toString().substring(subStringIndex);
-        String splitStrings[] = subskillNameWithoutPrefix.split("_");
-
-        for(String string : splitStrings)
+        String subskillNameWithoutPrefix = subSkillName.substring(subStringIndex);
+        if(subskillNameWithoutPrefix.contains("_"))
         {
-            endResult += StringUtils.getCapitalized(string);
+            String splitStrings[] = subskillNameWithoutPrefix.split("_");
+
+            for(String string : splitStrings)
+            {
+                endResult += StringUtils.getCapitalized(string);
+            }
+        } else {
+            endResult += StringUtils.getCapitalized(subskillNameWithoutPrefix);
         }
 
         return endResult;

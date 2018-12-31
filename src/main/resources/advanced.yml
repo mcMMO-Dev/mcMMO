@@ -564,15 +564,80 @@ Skills:
     #  Settings for Woodcutting
     ###
     Woodcutting:
-        LeafBlower:
-            # UnlockLevel: At this level, the passive ability LeafBlower unlocks
-            UnlockLevel: 100
-
-        DoubleDrops:
-            # ChanceMax: Maximum chance of receiving double drops
+        Splinter:
+            Rank_Levels:
+                Rank_1:
+                    LevelReq: 5
+                Rank_2:
+                    LevelReq: 30
+                Rank_3:
+                    LevelReq: 55
+        TreeFeller:
+            # If set to true then tree feller will not use the new system and will use its old behaviour
+            Classic: false
+            # This is the time in seconds to build a new charge of Tree Feller
+            ChargeRate: 600
+            Rank_Levels:
+                Rank_1:
+                    LevelReq: 10
+                    TreeSizeMax: 100
+                    Charges: 1
+                Rank_2:
+                    LevelReq: 25
+                    TreeSizeMax: 200
+                    Charges: 1
+                Rank_3:
+                    LevelReq: 50
+                    TreeSizeMax: 200
+                    Charges: 2
+                Rank_4:
+                    LevelReq: 75
+                    TreeSizeMax: 200
+                    Charges: 3
+                Rank_5:
+                    LevelReq: 100
+                    TreeSizeMax: 500
+                    Charges: 3
+        BarkSurgeon:
+            Rank_Levels:
+                Rank_1:
+                    LevelReq: 70
+                Rank_2:
+                    LevelReq: 80
+                Rank_3:
+                    LevelReq: 95
+        NaturesBounty:
+            Rank_Levels:
+                Rank_1:
+                    LevelReq: 40
+                Rank_2:
+                    LevelReq: 60
+                Rank_3:
+                    LevelReq: 90
+        # Double Drops
+        HarvestLumber:
+            Classic: false
+            # ChanceMax & MaxBonusLevel are only used for Classic, I'll make that more clear in the future.
+            # ChanceMax: Maximum chance of receiving double drops (100 = 100%)
             # MaxBonusLevel: Level when the maximum chance of receiving double drops is reached
             ChanceMax: 100.0
             MaxBonusLevel: 100
+            Rank_Levels:
+                Rank_1:
+                    LevelReq: 20
+                Rank_2:
+                    LevelReq: 45
+                Rank_3:
+                    LevelReq: 85
+        LeafBlower:
+            Rank_Levels:
+                Rank_1:
+                    LevelReq: 15
+                Rank_2:
+                    LevelReq: 35
+                Rank_3:
+                    LevelReq: 65
+
 #
 #  Customize the kraken!
 ###

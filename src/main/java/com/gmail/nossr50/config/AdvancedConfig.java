@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.fishing.Fishing;
@@ -32,6 +33,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     protected boolean validateKeys() {
         // Validate all the settings!
         List<String> reason = new ArrayList<String>();
+
+        /*
+         * In the future this method will check keys for all skills, but for now it only checks overhauled skills
+         */
+        checkKeys(reason);
 
         /* GENERAL */
         if (getAbilityLength() < 1) {
@@ -648,16 +654,17 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         /* WOODCUTTING */
+
         if (getLeafBlowUnlockLevel() < 0) {
             reason.add("Skills.Woodcutting.LeafBlower.UnlockLevel should be at least 0!");
         }
 
-        if (getMaxChance(SubSkill.WOODCUTTING_DOUBLE_DROPS) < 1) {
-            reason.add("Skills.Woodcutting.DoubleDrops.ChanceMax should be at least 1!");
+        if (getMaxChance(SubSkill.WOODCUTTING_HARVEST_LUMBER) < 1) {
+            reason.add("Skills.Woodcutting.HarvestLumber.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.WOODCUTTING_DOUBLE_DROPS) < 1) {
-            reason.add("Skills.Woodcutting.DoubleDrops.MaxBonusLevel should be at least 1!");
+        if (getMaxBonusLevel(SubSkill.WOODCUTTING_HARVEST_LUMBER) < 1) {
+            reason.add("Skills.Woodcutting.HarvestLumber.MaxBonusLevel should be at least 1!");
         }
 
         /* KRAKEN */
@@ -689,6 +696,30 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     public int getMaxBonusLevel(SubSkill subSkill) { return config.getInt(subSkill.getAdvConfigAddress() + ".MaxBonusLevel"); }
     public double getMaxChance(SubSkill subSkill) { return config.getDouble(subSkill.getAdvConfigAddress() + ".ChanceMax", 100.0D);}
+
+
+    /**
+     * Gets the level required to unlock a subskill at a given rank
+     * @param subSkill The subskill
+     * @param rank The rank of the skill
+     * @return The level required to use this rank of the subskill
+     * @deprecated Right now mcMMO is an overhaul process, this will only work for skills I have overhauled. I will be removing the deprecated tag when that is true.
+     */
+    @Deprecated
+    public int getSubSkillUnlockLevel(SubSkill subSkill, int rank)
+    {
+        return config.getInt(subSkill.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank+".LevelReq");
+    }
+
+    /**
+     * Some SubSkills have the ability to retain classic functionality
+     * @param subSkill SubSkill with classic functionality
+     * @return true if the subskill is in classic mode
+     */
+    public boolean isSubSkillClassic(SubSkill subSkill)
+    {
+        return config.getBoolean(subSkill.getAdvConfigAddress()+".Classic");
+    }
 
     /* ACROBATICS */
     public double getDodgeDamageModifier() { return config.getDouble("Skills.Acrobatics.Dodge.DamageModifier", 2.0D); }
@@ -857,4 +888,39 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public String getPlayerUnleashMessage() { return config.getString("Kraken.Unleashed_Message.Player", ""); }
     public String getPlayerDefeatMessage() { return config.getString("Kraken.Defeated_Message.Killed", ""); }
     public String getPlayerEscapeMessage() { return config.getString("Kraken.Defeated_Message.Escape", ""); }
+
+    /**
+     * Checks for valid keys in the advanced.yml file for subskill ranks
+     */
+    private void checkKeys(List<String> reasons)
+    {
+        //For now we will only check ranks of stuff I've overhauled
+        for(SubSkill subSkill : SubSkill.values())
+        {
+            if(subSkill.getParentSkill() == PrimarySkill.WOODCUTTING)
+            {
+                //Keeping track of the rank requirements and making sure there are no logical errors
+                int curRank = 0;
+                int prevRank = 0;
+
+                for(int x = 0; x < subSkill.getNumRanks(); x++)
+                {
+                    if(curRank > 0)
+                        prevRank = curRank;
+
+                    curRank = getSubSkillUnlockLevel(subSkill, x);
+
+                    //Do we really care if its below 0? Probably not
+                    if(curRank < 0)
+                        reasons.add(subSkill.getAdvConfigAddress() + ".Rank_Levels.Rank_"+curRank+".LevelReq should be above or equal to 0!");
+
+                    if(prevRank > curRank)
+                    {
+                        //We're going to allow this but we're going to warn them
+                        plugin.getLogger().info("You have the ranks for the subskill "+subSkill.toString()+" set up poorly, sequential ranks should have ascending requirements");
+                    }
+                }
+            }
+        }
+    }
 }

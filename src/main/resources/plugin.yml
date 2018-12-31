@@ -12,7 +12,7 @@ description: >
 
 author: nossr50
 authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking]
-website: https://github.com/mcMMO-Dev/mcMMO
+website: https://mcmmo.org
 main: com.gmail.nossr50.mcMMO
 softdepend: [CombatTag, HealthBar]
 load: STARTUP
@@ -668,10 +668,19 @@ permissions:
     mcmmo.ability.woodcutting.all:
         description: Allows access to all Woodcutting abilities
         children:
-            mcmmo.ability.woodcutting.doubledrops: true
+            mcmmo.ability.woodcutting.harvestlumber: true
+            mcmmo.ability.woodcutting.splinter: true
+            mcmmo.ability.woodcutting.barksurgeon: true
+            mcmmo.ability.woodcutting.naturesbounty: true
             mcmmo.ability.woodcutting.leafblower: true
             mcmmo.ability.woodcutting.treefeller: true
-    mcmmo.ability.woodcutting.doubledrops:
+    mcmmo.ability.woodcutting.splinter:
+        description: Allows access to Splinter
+    mcmmo.ability.woodcutting.barksurgeon:
+        description: Allows access to Bark Surgeon
+    mcmmo.ability.woodcutting.naturesbounty:
+        description: Allows access to Natures Bounty
+    mcmmo.ability.woodcutting.harvestlumber:
         description: Allows double drop chance when woodcutting
     mcmmo.ability.woodcutting.leafblower:
         description: Allows access to Leaf Blower ability

@@ -50,7 +50,7 @@ public enum PrimarySkill {
     SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), SuperAbility.SERRATED_STRIKES, ToolType.SWORD, ImmutableList.of(SubSkill.SWORDS_BLEED, SubSkill.SWORDS_COUNTER)),
     TAMING(TamingManager.class, Color.PURPLE, ImmutableList.of(SubSkill.TAMING_BEAST_LORE, SubSkill.TAMING_CALL_OF_THE_WILD, SubSkill.TAMING_ENVIRONMENTALLY_AWARE, SubSkill.TAMING_FAST_FOOD, SubSkill.TAMING_GORE, SubSkill.TAMING_HOLY_HOUND, SubSkill.TAMING_SHARPENED_CLAWS, SubSkill.TAMING_SHOCK_PROOF, SubSkill.TAMING_THICK_FUR, SubSkill.TAMING_PUMMEL)),
     UNARMED(UnarmedManager.class, Color.BLACK, SuperAbility.BERSERK, ToolType.FISTS, ImmutableList.of(SubSkill.UNARMED_BLOCK_CRACKER, SubSkill.UNARMED_DEFLECT, SubSkill.UNARMED_DISARM, SubSkill.UNARMED_IRON_ARM, SubSkill.UNARMED_IRON_GRIP)),
-    WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, SuperAbility.TREE_FELLER, ToolType.AXE, ImmutableList.of(SubSkill.WOODCUTTING_LEAF_BLOWER, SubSkill.WOODCUTTING_DOUBLE_DROPS));
+    WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, SuperAbility.TREE_FELLER, ToolType.AXE, ImmutableList.of(SubSkill.WOODCUTTING_LEAF_BLOWER, SubSkill.WOODCUTTING_BARK_SURGEON, SubSkill.WOODCUTTING_SPLINTER, SubSkill.WOODCUTTING_NATURES_BOUNTY, SubSkill.WOODCUTTING_TREE_FELLER, SubSkill.WOODCUTTING_HARVEST_LUMBER));
 
     private Class<? extends SkillManager> managerClass;
     private Color runescapeColor;

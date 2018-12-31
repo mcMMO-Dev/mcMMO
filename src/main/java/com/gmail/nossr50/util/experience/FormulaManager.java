@@ -21,7 +21,14 @@ public class FormulaManager {
 
     private FormulaType previousFormula;
 
+    //Used for XP formula scaling
+    private boolean classicModeEnabled;
+    private int classicModeXPFormulaFactor;
+
     public FormulaManager() {
+        /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
+        classicModeEnabled = Config.getInstance().getClassicMode();
+        classicModeXPFormulaFactor = Config.getInstance().getClassicModeXPFormulaFactor();
         loadFormula();
     }
 
@@ -105,6 +112,9 @@ public class FormulaManager {
     public int getCachedXpToLevel(int level, FormulaType formulaType) {
         int experience;
 
+        //If we're in classic we use the XP factor from config settings
+        int skillSystemMultiplier = classicModeEnabled ? classicModeXPFormulaFactor : 10;
+
         if (formulaType == FormulaType.UNKNOWN) {
             formulaType = FormulaType.LINEAR;
         }
@@ -116,7 +126,7 @@ public class FormulaManager {
         switch (formulaType) {
             case LINEAR:
                 if (!experienceNeededLinear.containsKey(level)) {
-                    experience = (int) Math.floor( 10 * (base + level * multiplier));
+                    experience = (int) Math.floor( skillSystemMultiplier * (base + level * multiplier));
                     experienceNeededLinear.put(level, experience);
                 }
 
@@ -124,7 +134,7 @@ public class FormulaManager {
 
             case EXPONENTIAL:
                 if (!experienceNeededExponential.containsKey(level)) {
-                    experience = (int) Math.floor( 10 * multiplier * Math.pow(level, exponent) + base);
+                    experience = (int) Math.floor( skillSystemMultiplier * (multiplier * Math.pow(level, exponent) + base));
                     experienceNeededExponential.put(level, experience);
                 }
 

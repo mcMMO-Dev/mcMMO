@@ -8,7 +8,14 @@
 #  Settings for mcMMO in general
 ###
 General:
-    Classic_Mode: false
+    Skill_Scaling:
+        # Turning this on will scale mcMMO around 1-1000 with default scaling factor
+        Classic_Mode: false
+        Skill_Scaling:
+            # This is the value that is skill level requirements are multiplied by in Classic Mode (Default is 10)
+            Classic_LevelReq_Factor: 10
+            # This is the value that the xp required to level is multiplied by when in classic mode
+            Classic_XP_Formula_Factor: 1
     Locale: en_US
     MOTD_Enabled: true
     # Send a message to the player when his profile was successfully loaded
