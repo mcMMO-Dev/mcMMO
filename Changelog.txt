@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.1.0
+ + Added JSON support to Woodcutting command
  + Added config setting to enable or disable classic mcMMO mode
  + (Config) Added rank settings for the new Woodcutting skill
  + (Config) Added configurable parameters for the new Tree Feller
@@ -15,6 +16,8 @@ Version 2.1.0
  + (Permissions) Added permission nodes for Harvest Lumber, Splinter, Nature's Bounty, and Bark Surgeon
  ! Woodcutting's Double Drop subskill is now named Harvest Lumber
  ! Replaced the old Double Drop permission node for woodcutting with a new Harvest Lumber permission node
+ ! (Locale) Super Abilities no longer have (ABILITY) in their Skill.Effect strings
+ ! (API) mcMMO is now built against Spigot-API instead of Bukkit
  ! (API) SkillType is now PrimarySkill
  ! (API) SecondarySkill is now SubSkill
  ! (API) AbilityType is now SuperAbility

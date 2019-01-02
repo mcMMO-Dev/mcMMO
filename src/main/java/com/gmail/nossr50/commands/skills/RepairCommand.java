@@ -12,6 +12,7 @@ import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -154,5 +155,11 @@ public class RepairCommand extends SkillCommand {
         }
 
         return messages;
+    }
+
+    @Override
+    protected List<TextComponent> getTextComponents(Player player) {
+        List<TextComponent> textComponents = new ArrayList<>();
+        return textComponents;
     }
 }

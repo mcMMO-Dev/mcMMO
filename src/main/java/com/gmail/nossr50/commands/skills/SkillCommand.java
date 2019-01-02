@@ -5,11 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabExecutor;
-import org.bukkit.entity.Player;
+import com.gmail.nossr50.util.SkillTextComponentFactory;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
@@ -26,6 +22,13 @@ import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
 
 import com.google.common.collect.ImmutableList;
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 
 public abstract class SkillCommand implements TabExecutor {
     protected PrimarySkill skill;
@@ -68,54 +71,88 @@ public abstract class SkillCommand implements TabExecutor {
                     ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
                 }
 
-                if (!skill.isChildSkill()) {
-                    player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
-                    player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
-                    player.sendMessage(LocaleLoader.getString("Effects.Level", (int) skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
-                }
-                else {
-                    player.sendMessage(LocaleLoader.getString("Skills.Header", skillName + " " + LocaleLoader.getString("Skills.Child")));
-                    player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain.Child")));
-                    player.sendMessage(LocaleLoader.getString("Effects.Child", (int) skillValue));
+                if(skill == PrimarySkill.WOODCUTTING)
+                {
+                    sendSkillCommandHeader(player, mcMMOPlayer, (int) skillValue);
 
-                    player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Skills.Parents")));
-                    Set<PrimarySkill> parents = FamilyTree.getParents(skill);
+                    //Make JSON text components
+                    List<TextComponent> subskillTextComponents = getTextComponents(player);
 
-                    for (PrimarySkill parent : parents) {
-                        player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
-                    }
-                }
 
-                List<String> effectMessages = effectsDisplay();
+                    //Subskills Header
+                    player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.SubSkills")));
 
-                if (!effectMessages.isEmpty()) {
-                    player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.Effects")));
-
-                    if (isLucky) {
-                        player.sendMessage(Motd.PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Lucky.Name"), LocaleLoader.getString("Perks.Lucky.Desc", skillName)));
+                    //Send JSON text components
+                    for(TextComponent tc : subskillTextComponents)
+                    {
+                        player.spigot().sendMessage(new TextComponent[]{tc, new TextComponent(": TESTING")});
                     }
 
-                    for (String message : effectMessages) {
-                        player.sendMessage(message);
-                    }
+                    //Stats
+                    getStatMessages(player, isLucky, hasEndurance, skillValue);
+                } else {
+                    displayOldSkillCommand(player, mcMMOPlayer, isLucky, hasEndurance, skillValue);
                 }
 
-                List<String> statsMessages = statsDisplay(player, skillValue, hasEndurance, isLucky);
-
-                if (!statsMessages.isEmpty()) {
-                    player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Commands.Stats.Self")));
-
-                    for (String message : statsMessages) {
-                        player.sendMessage(message);
-                    }
-                }
-
-                player.sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase()));
                 return true;
 
             default:
                 return skillGuideCommand.onCommand(sender, command, label, args);
         }
+    }
+
+    private void getStatMessages(Player player, boolean isLucky, boolean hasEndurance, float skillValue) {
+        List<String> statsMessages = statsDisplay(player, skillValue, hasEndurance, isLucky);
+
+        if (!statsMessages.isEmpty()) {
+            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Commands.Stats.Self")));
+
+            for (String message : statsMessages) {
+                player.sendMessage(message);
+            }
+        }
+
+        player.sendMessage(LocaleLoader.getString("Guides.Available", skillName, skillName.toLowerCase()));
+    }
+
+    private void sendSkillCommandHeader(Player player, McMMOPlayer mcMMOPlayer, int skillValue) {
+        if (!skill.isChildSkill()) {
+            player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
+            player.sendMessage(LocaleLoader.getString("Effects.Level", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
+        } else {
+            player.sendMessage(LocaleLoader.getString("Skills.Header", skillName + " " + LocaleLoader.getString("Skills.Child")));
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain.Child")));
+            player.sendMessage(LocaleLoader.getString("Effects.Child", skillValue));
+
+            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Skills.Parents")));
+            Set<PrimarySkill> parents = FamilyTree.getParents(skill);
+
+            for (PrimarySkill parent : parents) {
+                player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
+            }
+        }
+    }
+
+    private void displayOldSkillCommand(Player player, McMMOPlayer mcMMOPlayer, boolean isLucky, boolean hasEndurance, float skillValue) {
+        //Send headers
+        sendSkillCommandHeader(player, mcMMOPlayer, (int) skillValue);
+
+        List<String> effectMessages = effectsDisplay();
+
+        if (!effectMessages.isEmpty()) {
+            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.Effects")));
+
+            if (isLucky) {
+                player.sendMessage(Motd.PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Lucky.Name"), LocaleLoader.getString("Perks.Lucky.Desc", skillName)));
+            }
+
+            for (String message : effectMessages) {
+                player.sendMessage(message);
+            }
+        }
+
+        getStatMessages(player, isLucky, hasEndurance, skillValue);
     }
 
     @Override
@@ -166,4 +203,6 @@ public abstract class SkillCommand implements TabExecutor {
     protected abstract List<String> effectsDisplay();
 
     protected abstract List<String> statsDisplay(Player player, float skillValue, boolean hasEndurance, boolean isLucky);
+
+    protected abstract List<TextComponent> getTextComponents(Player player);
 }

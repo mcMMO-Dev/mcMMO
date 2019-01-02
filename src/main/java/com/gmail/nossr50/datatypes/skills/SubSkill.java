@@ -1,5 +1,6 @@
 package com.gmail.nossr50.datatypes.skills;
 
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
 
 public enum SubSkill {
@@ -103,11 +104,11 @@ public enum SubSkill {
     }
 
     /**
-     * SubSkills will default to having only 1 rank if not defined
+     * SubSkills will default to having 0 ranks if not defined
      */
     SubSkill()
     {
-        this.numRanks = 1;
+        this.numRanks = 0;
     }
 
 
@@ -161,18 +162,7 @@ public enum SubSkill {
          * Find where to begin our substring (after the prefix)
          */
         String endResult = "";
-        char[] enumNameCharArray = subSkillName.toCharArray();
-        int subStringIndex = 0;
-
-        //Find where to start our substring for this constants name
-        for (int i = 0; i < enumNameCharArray.length; i++) {
-            if(enumNameCharArray[i] == '_')
-            {
-                subStringIndex = i+1; //Start the substring after this char
-
-                break;
-            }
-        }
+        int subStringIndex = getSubStringIndex(subSkillName);
 
         /*
          * Split the string up so we can capitalize each part
@@ -191,5 +181,39 @@ public enum SubSkill {
         }
 
         return endResult;
+    }
+
+    /**
+     * Returns the name of the parent skill from the Locale file
+     * @return The parent skill as defined in the locale
+     */
+    public String getParentNiceNameLocale()
+    {
+        return LocaleLoader.getString(StringUtils.getCapitalized(getParentSkill().toString())+".SkillName");
+    }
+
+    /**
+     * This finds the substring index for our SubSkill's name after its parent name prefix
+     * @param subSkillName The name to process
+     * @return The value of the substring index after our parent's prefix
+     */
+    private int getSubStringIndex(String subSkillName) {
+        char[] enumNameCharArray = subSkillName.toCharArray();
+        int subStringIndex = 0;
+
+        //Find where to start our substring for this constants name
+        for (int i = 0; i < enumNameCharArray.length; i++) {
+            if (enumNameCharArray[i] == '_') {
+                subStringIndex = i + 1; //Start the substring after this char
+
+                break;
+            }
+        }
+        return subStringIndex;
+    }
+
+    public String getLocalKeyRoot()
+    {
+        return StringUtils.getCapitalized(getParentSkill().toString()) + ".Effect.";
     }
 }

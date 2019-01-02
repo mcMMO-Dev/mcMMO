@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkill;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.AdvancedConfig;
@@ -101,5 +102,11 @@ public class SwordsCommand extends SkillCommand {
         }
 
         return messages;
+    }
+
+    @Override
+    protected List<TextComponent> getTextComponents(Player player) {
+        List<TextComponent> textComponents = new ArrayList<>();
+        return textComponents;
     }
 }

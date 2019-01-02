@@ -3,6 +3,7 @@ package com.gmail.nossr50.util;
 import java.text.DecimalFormat;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
@@ -36,6 +37,8 @@ public final class Motd {
     public static void displayVersion(Player player, String version) {
         if (Permissions.showversion(player)) {
             player.sendMessage(LocaleLoader.getString("MOTD.Version", version));
+            //TODO: Remove this at release
+            player.sendMessage(ChatColor.YELLOW + "You're playing an "+ ChatColor.RED +"UNSTABLE" +ChatColor.YELLOW+" version of mcMMO! 2.1.0 is making many changes and if you are playing dev-snapshot you know the risks!");
         }
     }
 
