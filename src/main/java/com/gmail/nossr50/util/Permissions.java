@@ -36,6 +36,7 @@ public final class Permissions {
     public static boolean trapsBypass(Permissible permissible) { return permissible.hasPermission("mcmmo.bypass.fishingtraps"); }
 
     /* CHAT */
+    public static boolean adminChatSpy(Permissible permissible) { return permissible.hasPermission("mcmmo.admin.chatspy");}
     public static boolean partyChat(Permissible permissible) { return permissible.hasPermission("mcmmo.chat.partychat"); }
     public static boolean adminChat(Permissible permissible) { return permissible.hasPermission("mcmmo.chat.adminchat"); }
 

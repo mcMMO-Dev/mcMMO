@@ -13,6 +13,8 @@ Version 2.1.0
  + (Config) Added rank settings for the new Woodcutting skill
  + (Config) Added configurable parameters for the new Tree Feller
  + (Config) Added classic toggle for Tree Feller
+ + (Chat) Added ability for admins to spy on party chat
+ + (Permissions) Added permission node mcmmo.admin.chatspy
  + (Permissions) Added permission nodes for Harvest Lumber, Splinter, Nature's Bounty, and Bark Surgeon
  ! Woodcutting's Double Drop subskill is now named Harvest Lumber
  ! Replaced the old Double Drop permission node for woodcutting with a new Harvest Lumber permission node

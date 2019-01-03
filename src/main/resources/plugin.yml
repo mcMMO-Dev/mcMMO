@@ -690,8 +690,12 @@ permissions:
         default: false
         description: Implies access to everything in mcMMO
         children:
+            mcmmo.admin.chatspy: false
             mcmmo.commands.mcconvert.all: true
             mcmmo.commands.xprate.all: true
+    mcmmo.admin.chatspy:
+         default: false
+         description: Allows admins to monitor party chat
     mcmmo.bypass.*:
         default: false
         description: Implies all bypass permissions.
