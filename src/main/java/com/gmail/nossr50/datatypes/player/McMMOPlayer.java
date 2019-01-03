@@ -76,6 +76,7 @@ public class McMMOPlayer {
 
     private boolean abilityUse = true;
     private boolean godMode;
+    private boolean chatSpy = true;
 
     private final Map<SuperAbility, Boolean> abilityMode     = new HashMap<SuperAbility, Boolean>();
     private final Map<SuperAbility, Boolean> abilityInformed = new HashMap<SuperAbility, Boolean>();
@@ -363,6 +364,14 @@ public class McMMOPlayer {
     public void toggleGodMode() {
         godMode = !godMode;
     }
+
+    /*
+     * Party Chat Spy
+     */
+
+    public boolean isPartyChatSpying() { return chatSpy; }
+
+    public void togglePartyChatSpying() { chatSpy = !chatSpy;}
 
     /*
      * Skill notifications

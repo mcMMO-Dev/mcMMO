@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.commands.chat.McChatSpy;
 import org.bukkit.command.PluginCommand;
 
 import com.gmail.nossr50.mcMMO;
@@ -167,6 +168,15 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcgod", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
         command.setExecutor(new McgodCommand());
+    }
+
+    private static void registerMcChatSpyCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mcchatspy");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mcchatspy"));
+        command.setPermission("mcmmo.commands.mcchatspy;mcmmo.commands.mcchatspy.others");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcchatspy", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
+        command.setExecutor(new McChatSpy());
     }
 
     private static void registerMcrefreshCommand() {
@@ -435,6 +445,7 @@ public final class CommandRegistrationManager {
         registerKrakenCommand();
         registerMcabilityCommand();
         registerMcgodCommand();
+        registerMcChatSpyCommand();
         registerMcmmoCommand();
         registerMcnotifyCommand();
         registerMcrefreshCommand();

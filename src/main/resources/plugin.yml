@@ -48,6 +48,9 @@ commands:
         description: Show the cooldowns on all your mcMMO abilities
         aliases: [mccooldowns]
         permission: mcmmo.commands.mccooldown
+    mcchatspy:
+        description: Toggle mcMMO Party Chat spying on/off
+        permission: mcmmo.commands.mcchatspy
     mcgod:
         description: Toggle mcMMO god-mode on/off
         permission: mcmmo.commands.mcgod
@@ -690,12 +693,8 @@ permissions:
         default: false
         description: Implies access to everything in mcMMO
         children:
-            mcmmo.admin.chatspy: false
             mcmmo.commands.mcconvert.all: true
             mcmmo.commands.xprate.all: true
-    mcmmo.admin.chatspy:
-         default: false
-         description: Allows admins to monitor party chat
     mcmmo.bypass.*:
         default: false
         description: Implies all bypass permissions.
@@ -797,6 +796,8 @@ permissions:
             mcmmo.commands.kraken.others: true
             mcmmo.commands.mcability.others: true
             mcmmo.commands.mcconvert.all: true
+            mcmmo.commands.mcchatspy: true
+            mcmmo.commands.mcchatspy.others: true
             mcmmo.commands.mcgod: true
             mcmmo.commands.mcgod.others: true
             mcmmo.commands.mcimport: true
@@ -900,6 +901,10 @@ permissions:
         description: Allows access to the mcgod command
     mcmmo.commands.mcgod.others:
         description: Allows access to the mcgod command for other players
+    mcmmo.commands.mcchatspy:
+        description: Allows access to the mcchatspy command
+    mcmmo.commands.mcchatspy.others:
+        description: Allows access to the mcchatspy command for other players
     mcmmo.commands.mcmmo.*:
         default: false
         description: Implies access to all mcmmo.commands.mcmmo permissions

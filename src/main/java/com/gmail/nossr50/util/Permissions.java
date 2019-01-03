@@ -36,7 +36,6 @@ public final class Permissions {
     public static boolean trapsBypass(Permissible permissible) { return permissible.hasPermission("mcmmo.bypass.fishingtraps"); }
 
     /* CHAT */
-    public static boolean adminChatSpy(Permissible permissible) { return permissible.hasPermission("mcmmo.admin.chatspy");}
     public static boolean partyChat(Permissible permissible) { return permissible.hasPermission("mcmmo.chat.partychat"); }
     public static boolean adminChat(Permissible permissible) { return permissible.hasPermission("mcmmo.chat.adminchat"); }
 
@@ -63,6 +62,9 @@ public final class Permissions {
 
     public static boolean mcability(Permissible permissible) { return (permissible.hasPermission("mcmmo.commands.mcability")); }
     public static boolean mcabilityOthers(Permissible permissible) { return (permissible.hasPermission("mcmmo.commands.mcability.others")); }
+
+    public static boolean adminChatSpy(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mcchatspy");}
+    public static boolean adminChatSpyOthers(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mcchatspy.others");}
 
     public static boolean mcgod(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mcgod"); }
     public static boolean mcgodOthers(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mcgod.others"); }

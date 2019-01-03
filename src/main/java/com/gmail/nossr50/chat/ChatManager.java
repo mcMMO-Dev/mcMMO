@@ -2,11 +2,9 @@ package com.gmail.nossr50.chat;
 
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.events.chat.McMMOPartyChatEvent;
-import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.Permissible;
 import org.bukkit.plugin.Plugin;
 
 import com.gmail.nossr50.events.chat.McMMOChatEvent;
@@ -38,19 +36,26 @@ public abstract class ChatManager {
         displayName = useDisplayNames ? event.getDisplayName() : senderName;
         message = LocaleLoader.formatString(chatPrefix, displayName) + " " + event.getMessage();
 
-
         sendMessage();
 
+        /*
+         * Party Chat Spying
+         * Party messages will be copied to people with the mcmmo.admin.chatspy permission node
+         */
         if(event instanceof McMMOPartyChatEvent)
         {
+            //We need to grab the party chat name
             McMMOPartyChatEvent partyChatEvent = (McMMOPartyChatEvent) event;
 
+            //Find the people with permissions
             for(Player player : event.getPlugin().getServer().getOnlinePlayers())
             {
-                //TODO: Online check necessary?
-                if(player.isOnline() && Permissions.adminChatSpy(player))
+                //Check for toggled players
+                if(UserManager.getPlayer(player).isPartyChatSpying())
                 {
                     Party adminParty = UserManager.getPlayer(player).getParty();
+
+                    //Only message admins not part of this party
                     if(adminParty != null && !adminParty.getName().equalsIgnoreCase(partyChatEvent.getParty()))
                     {
                         //TODO: Incorporate JSON
