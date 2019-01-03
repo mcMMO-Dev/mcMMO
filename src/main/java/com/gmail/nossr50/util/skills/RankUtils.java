@@ -22,6 +22,9 @@ public class RankUtils {
         {
             //This adds the highest ranks first
             addRank(subSkill, numRanks-i);
+
+            //TODO: Remove debug code
+            /*System.out.println("DEBUG: Adding rank "+(numRanks-i)+" to "+subSkill.toString());*/
         }
     }
 
@@ -52,10 +55,12 @@ public class RankUtils {
         {
             //Compare against the highest to lowest rank in that order
             int rank = subSkill.getNumRanks()-i;
-            //System.out.println("Checking rank "+rank+" of "+subSkill.getNumRanks());
             int unlockLevel = getUnlockLevel(subSkill, rank);
-            //System.out.println("Rank "+rank+" -- Unlock level: "+unlockLevel);
-            //System.out.println("Rank" +rank+" -- Player Skill Level: "+currentSkillLevel);
+
+            //TODO: Remove this debug code
+            /*System.out.println("[DEBUG RANKCHECK] Checking rank "+rank+" of "+subSkill.getNumRanks());
+            System.out.println("[DEBUG RANKCHECK] Rank "+rank+" -- Unlock level: "+unlockLevel);
+            System.out.println("[DEBUG RANKCHECK] Rank" +rank+" -- Player Skill Level: "+currentSkillLevel);*/
 
             //If we check all ranks and still cannot unlock the skill, we return rank 0
             if(rank == 0)
@@ -84,6 +89,7 @@ public class RankUtils {
 
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(subSkill);
 
+        System.out.println("[DEBUG]: Rank "+rank+" for "+subSkill.toString()+" requires skill level "+getUnlockLevel(subSkill, rank));
         rankMap.put(rank, getUnlockLevel(subSkill, rank));
     }
 

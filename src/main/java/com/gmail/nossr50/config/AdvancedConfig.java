@@ -698,7 +698,18 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     @Deprecated
     public int getSubSkillUnlockLevel(SubSkill subSkill, int rank)
     {
-        return config.getInt(subSkill.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank+".LevelReq");
+        /*
+         * This is a bit messy but
+         *
+         * Some skills have per-rank settings as child nodes for Rank_x nodes
+         * If they do, we have to grab the child node named LevelReq from Rank_x for that skill
+         *
+         * Other skills which do not have complex per-rank settings will instead find their Level Requirement returned at Rank_x
+         */
+        if(config.get(subSkill.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank+".LevelReq") != null)
+            return config.getInt(subSkill.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank+".LevelReq");
+        else
+            return config.getInt(subSkill.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank);
     }
 
     /**
