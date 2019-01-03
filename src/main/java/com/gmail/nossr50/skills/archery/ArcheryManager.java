@@ -1,6 +1,7 @@
 package com.gmail.nossr50.skills.archery;
 
 import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SubSkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -101,8 +102,14 @@ public class ArcheryManager extends SkillManager {
             return damage;
         }
 
-        double damageBonusPercent = Math.min(((getSkillLevel() / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage);
-
+        /*
+         * Archery
+         * Skill Shot
+         *
+         * Every rank we increase Skill Shot's bonus damage % by the IncreaseDamage percentage value from advanced.yml
+         * Divide end result by 100.0D to get proper scale
+         */
+        double damageBonusPercent = (Math.min(((RankUtils.getRank(getPlayer(), SubSkill.ARCHERY_SKILL_SHOT)) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage) / 100.0D);
         return Math.min(damage * damageBonusPercent, Archery.skillShotMaxBonusDamage);
     }
 }

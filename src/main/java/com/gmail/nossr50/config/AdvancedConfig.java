@@ -118,16 +118,13 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         /* ARCHERY */
-        if (getSkillShotIncreaseLevel() < 1) {
-            reason.add("Skills.Archery.SkillShot.IncreaseLevel should be at least 1!");
-        }
 
         if (getSkillShotIncreasePercentage() <= 0) {
-            reason.add("Skills.Archery.SkillShot.IncreasePercentage should be greater than 0!");
+            reason.add("Skills.Archery.SkillShot.IncreaseDamage should be greater than 0!");
         }
 
         if (getSkillShotBonusMax() < 0) {
-            reason.add("Skills.Archery.SkillShot.MaxBonus should be at least 0!");
+            reason.add("Skills.Archery.SkillShot.IncreaseDamageMaxBonus should be at least 0!");
         }
 
         if (getMaxChance(SubSkill.ARCHERY_DAZE) < 1) {
@@ -739,8 +736,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* ARCHERY */
     public int getSkillShotIncreaseLevel() { return config.getInt("Skills.Archery.SkillShot.IncreaseLevel", 50); }
-    public double getSkillShotIncreasePercentage() { return config.getDouble("Skills.Archery.SkillShot.IncreasePercentage", 0.1D); }
-    public double getSkillShotBonusMax() { return config.getDouble("Skills.Archery.SkillShot.MaxBonus", 2.0D); }
+    public double getSkillShotIncreasePercentage() { return config.getDouble("Skills.Archery.SkillShot.IncreaseDamage", 10.0D); }
+    public double getSkillShotBonusMax() { return config.getDouble("Skills.Archery.SkillShot.IncreaseDamageMaxBonus", 200.0D); }
     public double getSkillShotDamageMax() { return config.getDouble("Skills.Archery.SkillShot.MaxDamage", 9.0D); }
 
     public double getDazeBonusDamage() { return config.getDouble("Skills.Archery.Daze.BonusDamage", 4.0D); }

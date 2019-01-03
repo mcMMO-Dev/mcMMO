@@ -2,23 +2,27 @@ package com.gmail.nossr50.datatypes.skills;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
+import static com.gmail.nossr50.datatypes.skills.SubSkillFlags.ACTIVE;
+import static com.gmail.nossr50.datatypes.skills.SubSkillFlags.SUPERABILITY;
+import static com.gmail.nossr50.datatypes.skills.SubSkillFlags.RNG;
+
 
 public enum SubSkill {
     /* !! Warning -- Do not let subskills share a name with any existing PrimarySkill as it will clash with the static import !! */
 
     /* ACROBATICS */
-    ACROBATICS_DODGE,
-    ACROBATICS_GRACEFUL_ROLL,
-    ACROBATICS_ROLL,
+    ACROBATICS_DODGE(0, RNG),
+    ACROBATICS_GRACEFUL_ROLL(0, ACTIVE | RNG),
+    ACROBATICS_ROLL(0, RNG),
 
     /* ALCHEMY */
     ALCHEMY_CATALYSIS,
-    ALCHEMY_CONCOCTIONS,
+    ALCHEMY_CONCOCTIONS(8),
 
     /* ARCHERY */
     ARCHERY_DAZE,
     ARCHERY_RETRIEVE,
-    ARCHERY_SKILL_SHOT,
+    ARCHERY_SKILL_SHOT(20),
 
     /* Axes */
     AXES_ARMOR_IMPACT,
@@ -85,33 +89,43 @@ public enum SubSkill {
     UNARMED_IRON_GRIP,
 
     /* Woodcutting */
-    WOODCUTTING_TREE_FELLER(5),
+    WOODCUTTING_TREE_FELLER(5, ACTIVE | SUPERABILITY),
     WOODCUTTING_LEAF_BLOWER(3),
-    WOODCUTTING_BARK_SURGEON(3),
+    WOODCUTTING_BARK_SURGEON(3, ACTIVE),
     WOODCUTTING_NATURES_BOUNTY(3),
     WOODCUTTING_SPLINTER(3),
-    WOODCUTTING_HARVEST_LUMBER(3);
+    WOODCUTTING_HARVEST_LUMBER(3, RNG);
 
     private final int numRanks;
+    private final int flags;
 
     /**
      * If our SubSkill has more than 1 rank define it
      * @param numRanks The number of ranks our SubSkill has
      */
+    SubSkill(int numRanks, int flags)
+    {
+        this.numRanks = numRanks;
+        this.flags = flags;
+    }
+
     SubSkill(int numRanks)
     {
         this.numRanks = numRanks;
+        this.flags = 0x00;
     }
 
-    /**
-     * SubSkills will default to having 0 ranks if not defined
-     */
     SubSkill()
     {
         this.numRanks = 0;
+        this.flags = 0x00;
     }
 
-
+    /**
+     * Get the bit flags for this subskill
+     * @return The bit flags for this subskill
+     */
+    public final int getFlags() { return flags; }
 
     public int getNumRanks()
     {

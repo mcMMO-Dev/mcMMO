@@ -76,12 +76,36 @@ Skills:
     ###
     Archery:
         SkillShot:
-            # IncreaseLevel: Every <IncreaseLevel> the skillshot bonus will go up by <IncreasePercentage>
-            # IncreasePercentage: This is a percentage value, 0.1 = 10%
+            Rank_Levels:
+                Rank_1: 5
+                Rank_2: 10
+                Rank_3: 15
+                Rank_4: 20
+                Rank_5: 25
+                Rank_6: 30
+                Rank_7: 35
+                Rank_8: 40
+                Rank_9: 45
+                Rank_10: 50
+                Rank_11: 55
+                Rank_12: 60
+                Rank_13: 65
+                Rank_14: 70
+                Rank_15: 75
+                Rank_16: 80
+                Rank_17: 85
+                Rank_18: 90
+                Rank_19: 95
+                Rank_20: 100
+            # IncreaseDamage: Every rank of the skill will add this much additional damage in percentage form, rank 1 = 10% bonus, rank 20 = 200% bonus (with default settings)
+            # IncreaseDamage is a percentage
+            IncreaseDamage: 10.0
+            # IncreaseDamageMax: When the <IncreaseDamageMax> has been reached, the bonus percentage will not go up anymore. 200.0 = 200%
+            IncreaseDamageMaxBonus: 200.0
+            # --OLD SYSTEM -- IncreaseLevel: 5
+            # --OLD SYSTEM -- IncreasePercentage: 0.1
             # MaxBonus: When the <MaxBonus> has been reached, the bonus percentage will not go up anymore. 2.0 = 200%
-            IncreaseLevel: 5
-            IncreasePercentage: 0.1
-            MaxBonus: 2.0
+            # --OLD SYSTEM -- MaxBonus: 2.0
             MaxDamage: 9.0
 
         Daze:
