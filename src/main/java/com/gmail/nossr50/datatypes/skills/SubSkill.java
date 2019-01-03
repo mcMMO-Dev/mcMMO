@@ -26,9 +26,10 @@ public enum SubSkill {
 
     /* Axes */
     AXES_ARMOR_IMPACT,
-    AXES_AXE_MASTERY,
+    AXES_AXE_MASTERY(4),
     AXES_CRITICAL_HIT,
     AXES_GREATER_IMPACT,
+    AXES_SKULL_SPLITTER(0, ACTIVE | SUPERABILITY),
 
     /* Excavation */
     EXCAVATION_TREASURE_HUNTER,
@@ -97,6 +98,7 @@ public enum SubSkill {
     WOODCUTTING_HARVEST_LUMBER(3, RNG);
 
     private final int numRanks;
+    //TODO: SuperAbility should also contain flags for active by default? Not sure if it should work that way.
     private final int flags;
 
     /**

@@ -3,7 +3,7 @@ package com.gmail.nossr50.skills.axes;
 import java.util.Map;
 
 import com.gmail.nossr50.datatypes.skills.SubSkill;
-import com.gmail.nossr50.util.skills.SubSkillActivationType;
+import com.gmail.nossr50.util.skills.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
@@ -18,9 +18,6 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class AxesManager extends SkillManager {
     public AxesManager(McMMOPlayer mcMMOPlayer) {
@@ -59,7 +56,7 @@ public class AxesManager extends SkillManager {
             return 0;
         }
 
-        return Math.min(getSkillLevel() / (Axes.axeMasteryMaxBonusLevel / Axes.axeMasteryMaxBonus), Axes.axeMasteryMaxBonus);
+        return Axes.getAxeMasteryBonusDamage(getPlayer());
     }
 
     /**

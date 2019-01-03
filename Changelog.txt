@@ -17,11 +17,13 @@ Version 2.1.0
  + (Commands) Added toggle command /mcchatspy
  + (Permissions) Added permission node mcmmo.commands.mcchatspy & mcmmo.commands.mcchatspy.others
  + (Permissions) Added permission nodes for Harvest Lumber, Splinter, Nature's Bounty, and Bark Surgeon
- - (Config) Removed Skills.Archery.SkillShot.IncreaseLevel & Skills.Archery.SkillShot.IncreasePercentage
+ - (Config) Removed SkillShot's IncreaseLevel & IncreasePercentage (replaced by RankDamageMultiplier)
+ - (Config) Removed AxeMastery's MaxBonus & MaxBonusLevel (replaced by RankDamageMultiplier)
  ! (Skills) Woodcutting's Double Drop subskill is now named Harvest Lumber
  ! (Skills) Archery's Skill Shot now uses a rank system
- ! (Config) Archery's Skill Shot now uses IncreaseDamage for its damage bonus
- ! (Config) Archery's Skill shot now uses IncreaseDamageMaxBonus instead of MaxDamage
+ ! (Skills) Axe's Axe Mastery now uses a rank system
+ ! (Config) Archery's Skill Shot now uses RankDamageMultiplier for its damage bonus calculations
+ ! (Config) Axe's Axe mastery now uses RankDamageMultiplier for its damage bonus calculations
  ! (Permissions) Replaced the old Double Drop permission node for woodcutting with a new Harvest Lumber permission node
  ! (Locale) Super Abilities no longer have (ABILITY) in their Skill.Effect strings
  ! (API) mcMMO is now built against Spigot-API instead of Bukkit

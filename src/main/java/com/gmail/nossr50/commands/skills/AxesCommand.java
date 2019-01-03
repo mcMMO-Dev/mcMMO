@@ -3,8 +3,10 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.util.skills.RankUtils;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -53,7 +55,7 @@ public class AxesCommand extends SkillCommand {
 
         // AXE MASTERY
         if (canAxeMastery) {
-            axeMasteryDamage = Math.min(skillValue / (Axes.axeMasteryMaxBonusLevel / Axes.axeMasteryMaxBonus), Axes.axeMasteryMaxBonus);
+            axeMasteryDamage = Axes.getAxeMasteryBonusDamage(player);
         }
     }
 

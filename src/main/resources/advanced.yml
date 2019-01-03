@@ -97,17 +97,12 @@ Skills:
                 Rank_18: 90
                 Rank_19: 95
                 Rank_20: 100
-            # IncreaseDamage: Every rank of the skill will add this much additional damage in percentage form, rank 1 = 10% bonus, rank 20 = 200% bonus (with default settings)
-            # IncreaseDamage is a percentage
-            IncreaseDamage: 10.0
-            # IncreaseDamageMax: When the <IncreaseDamageMax> has been reached, the bonus percentage will not go up anymore. 200.0 = 200%
-            IncreaseDamageMaxBonus: 200.0
-            # --OLD SYSTEM -- IncreaseLevel: 5
-            # --OLD SYSTEM -- IncreasePercentage: 0.1
-            # MaxBonus: When the <MaxBonus> has been reached, the bonus percentage will not go up anymore. 2.0 = 200%
-            # --OLD SYSTEM -- MaxBonus: 2.0
+            # RankDamageMultiplier: The current rank of this subskill is multiplied by this value to determine the bonus damage, rank 20 would result in 200% damage increase with a value of 10.0 for RankDamageMultiplier
+            # RankDamageMultiplier is a percentage
+            RankDamageMultiplier: 10.0
+            # MaxDamage: After adding bonus damage, the total damage dealt by the player will not exceed this number
+            # You should be careful to not set this too low
             MaxDamage: 9.0
-
         Daze:
             # ChanceMax: Maximum chance of causing daze to opponents when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Maximum bonus level of Daze, when a player reaches this level his chance of causing a daze will be <ChanceMax>
@@ -129,11 +124,14 @@ Skills:
     ###
     Axes:
         AxeMastery:
-            # MaxBonus: Maximum bonus damage when on <MaxBonusLevel> or higher
-            # MaxBonusLevel: Level where <MaxBonus> is reached
-            MaxBonus: 4.0
-            MaxBonusLevel: 20
-
+            # This number is multiplied by the current rank the player has in this subskill to find the amount of additional damage to apply
+            # With the default config value of 1.0, at rank 4 a player will deal 4.0 extra damage with Axes (1.0 * 4)
+            RankDamageMultiplier: 1.0
+            Rank_Levels:
+                Rank_1: 5
+                Rank_2: 10
+                Rank_3: 15
+                Rank_4: 20
         CriticalHit:
             # ChanceMax: Maximum chance of causing a critical hit when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Level where <ChanceMax> of causing critical hits is reached

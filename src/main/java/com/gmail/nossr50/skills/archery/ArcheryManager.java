@@ -93,23 +93,15 @@ public class ArcheryManager extends SkillManager {
     }
 
     /**
-     * Handle the effects of the Skill Shot ability
+     * Calculates the damage to deal after Skill Shot has been applied
      *
-     * @param damage The amount of damage initially dealt by the event
+     * @param oldDamage The raw damage value of this arrow before we modify it
      */
-    public double skillShot(double damage) {
+    public double skillShot(double oldDamage) {
         if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.ALWAYS_FIRES, SubSkill.ARCHERY_SKILL_SHOT, getPlayer(), null, 0, 0)) {
-            return damage;
+            return oldDamage;
         }
 
-        /*
-         * Archery
-         * Skill Shot
-         *
-         * Every rank we increase Skill Shot's bonus damage % by the IncreaseDamage percentage value from advanced.yml
-         * Divide end result by 100.0D to get proper scale
-         */
-        double damageBonusPercent = (Math.min(((RankUtils.getRank(getPlayer(), SubSkill.ARCHERY_SKILL_SHOT)) * Archery.skillShotIncreasePercentage), Archery.skillShotMaxBonusPercentage) / 100.0D);
-        return Math.min(damage * damageBonusPercent, Archery.skillShotMaxBonusDamage);
+        return Archery.getSkillShotBonusDamage(getPlayer(), oldDamage);
     }
 }

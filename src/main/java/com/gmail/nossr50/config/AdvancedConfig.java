@@ -119,12 +119,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
         /* ARCHERY */
 
-        if (getSkillShotIncreasePercentage() <= 0) {
-            reason.add("Skills.Archery.SkillShot.IncreaseDamage should be greater than 0!");
-        }
-
-        if (getSkillShotBonusMax() < 0) {
-            reason.add("Skills.Archery.SkillShot.IncreaseDamageMaxBonus should be at least 0!");
+        if (getSkillShotRankDamageMultiplier() <= 0) {
+            reason.add("Skills.Archery.SkillShot.RankDamageMultiplier should be greater than 0!");
         }
 
         if (getMaxChance(SubSkill.ARCHERY_DAZE) < 1) {
@@ -152,12 +148,9 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         /* AXES */
-        if (getAxeMasteryBonusMax() < 1) {
-            reason.add("Skills.Axes.AxeMastery.MaxBonus should be at least 1!");
-        }
-
-        if (getAxeMasteryMaxBonusLevel() < 1) {
-            reason.add("Skills.Axes.AxeMastery.MaxBonusLevel should be at least 1!");
+        if(getAxeMasteryRankDamageMultiplier() < 0)
+        {
+            reason.add("Skills.Axes.AxeMastery.RankDamageMultiplier should be at least 0!");
         }
 
         if (getMaxChance(SubSkill.AXES_CRITICAL_HIT) < 1) {
@@ -736,8 +729,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     /* ARCHERY */
     public int getSkillShotIncreaseLevel() { return config.getInt("Skills.Archery.SkillShot.IncreaseLevel", 50); }
-    public double getSkillShotIncreasePercentage() { return config.getDouble("Skills.Archery.SkillShot.IncreaseDamage", 10.0D); }
-    public double getSkillShotBonusMax() { return config.getDouble("Skills.Archery.SkillShot.IncreaseDamageMaxBonus", 200.0D); }
+    public double getSkillShotRankDamageMultiplier() { return config.getDouble("Skills.Archery.SkillShot.RankDamageMultiplier", 10.0D); }
     public double getSkillShotDamageMax() { return config.getDouble("Skills.Archery.SkillShot.MaxDamage", 9.0D); }
 
     public double getDazeBonusDamage() { return config.getDouble("Skills.Archery.Daze.BonusDamage", 4.0D); }
@@ -745,8 +737,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getForceMultiplier() { return config.getDouble("Skills.Archery.ForceMultiplier", 2.0D); }
 
     /* AXES */
-    public double getAxeMasteryBonusMax() { return config.getDouble("Skills.Axes.AxeMastery.MaxBonus", 4.0D); }
-    public int getAxeMasteryMaxBonusLevel() { return config.getInt("Skills.Axes.AxeMastery.MaxBonusLevel", 200); }
+    public double getAxeMasteryRankDamageMultiplier() { return config.getDouble("Skills.Axes.AxeMastery.RankDamageMultiplier", 1.0D); }
 
     public double getCriticalHitPVPModifier() { return config.getDouble("Skills.Axes.CriticalHit.PVP_Modifier", 1.5D); }
     public double getCriticalHitPVEModifier() { return config.getDouble("Skills.Axes.CriticalHit.PVE_Modifier", 2.0D); }

@@ -32,7 +32,7 @@ public class ArcheryCommand extends SkillCommand {
         // SKILL SHOT
         if (canSkillShot) {
             double bonus = (skillValue / Archery.skillShotIncreaseLevel) * Archery.skillShotIncreasePercentage;
-            skillShotBonus = percent.format(Math.min(bonus, Archery.skillShotMaxBonusPercentage));
+            skillShotBonus = percent.format(Archery.getSkillShotBonusDamage(player, 0));
         }
 
         // ARCHERY_DAZE
