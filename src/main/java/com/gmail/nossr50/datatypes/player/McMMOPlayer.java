@@ -76,7 +76,7 @@ public class McMMOPlayer {
 
     private boolean abilityUse = true;
     private boolean godMode;
-    private boolean chatSpy = true;
+    private boolean chatSpy = false; //Off by default
 
     private final Map<SuperAbility, Boolean> abilityMode     = new HashMap<SuperAbility, Boolean>();
     private final Map<SuperAbility, Boolean> abilityInformed = new HashMap<SuperAbility, Boolean>();

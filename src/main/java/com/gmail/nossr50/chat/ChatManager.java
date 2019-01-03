@@ -56,9 +56,12 @@ public abstract class ChatManager {
                     Party adminParty = UserManager.getPlayer(player).getParty();
 
                     //Only message admins not part of this party
-                    if(adminParty != null && !adminParty.getName().equalsIgnoreCase(partyChatEvent.getParty()))
+                    if(adminParty != null)
                     {
                         //TODO: Incorporate JSON
+                        if(!adminParty.getName().equalsIgnoreCase(partyChatEvent.getParty()))
+                            player.sendMessage(ChatColor.GOLD+"[SPY: "+ChatColor.GREEN+partyChatEvent.getParty()+ChatColor.GOLD+"] "+message);
+                    } else {
                         player.sendMessage(ChatColor.GOLD+"[SPY: "+ChatColor.GREEN+partyChatEvent.getParty()+ChatColor.GOLD+"] "+message);
                     }
                 }
