@@ -89,7 +89,8 @@ public class RankUtils {
 
         HashMap<Integer, Integer> rankMap = subSkillRanks.get(subSkill);
 
-        System.out.println("[DEBUG]: Rank "+rank+" for "+subSkill.toString()+" requires skill level "+getUnlockLevel(subSkill, rank));
+        //TODO: Remove this debug code
+        //System.out.println("[DEBUG]: Rank "+rank+" for "+subSkill.toString()+" requires skill level "+getUnlockLevel(subSkill, rank));
         rankMap.put(rank, getUnlockLevel(subSkill, rank));
     }
 

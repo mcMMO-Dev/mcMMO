@@ -17,6 +17,9 @@ Version 2.1.0
  + (Commands) Added toggle command /mcchatspy
  + (Permissions) Added permission node mcmmo.commands.mcchatspy & mcmmo.commands.mcchatspy.others
  + (Permissions) Added permission nodes for Harvest Lumber, Splinter, Nature's Bounty, and Bark Surgeon
+ + (Locale) Added locale strings for new Woodcutting abilities
+ + (Locale) Added locale strings for mcchatspy command
+ + (Locale) Added locale strings for JSON integration
  - (Config) Removed SkillShot's IncreaseLevel & IncreasePercentage (replaced by RankDamageMultiplier)
  - (Config) Removed AxeMastery's MaxBonus & MaxBonusLevel (replaced by RankDamageMultiplier)
  ! (Skills) Woodcutting's Double Drop subskill is now named Harvest Lumber
