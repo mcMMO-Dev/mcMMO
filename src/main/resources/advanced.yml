@@ -111,7 +111,7 @@ Skills:
             MaxBonusLevel: 100
             BonusDamage: 4.0
 
-        Retrieve:
+        ArrowRetrieval:
             # ChanceMax: Maximum chance of retrieving arrows when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Maximum bonus level for Arrow retrieval, at this level the chance of retrieving arrows from mobs is <ChanceMax>
             ChanceMax: 100.0
@@ -132,7 +132,7 @@ Skills:
                 Rank_2: 10
                 Rank_3: 15
                 Rank_4: 20
-        CriticalHit:
+        CriticalStrikes:
             # ChanceMax: Maximum chance of causing a critical hit when on <MaxBonusLevel> or higher
             # MaxBonusLevel: Level where <ChanceMax> of causing critical hits is reached
             ChanceMax: 37.50
@@ -478,7 +478,7 @@ Skills:
             MaxTicks: 3
             BaseTicks: 2
 
-        Counter:
+        CounterAttack:
             # RequiresBlock: Determines if blocking is required to trigger counter attack
             RequiresBlock: true
 
@@ -563,7 +563,7 @@ Skills:
             MaxBonusLevel: 100
             AntiTheft: false
 
-        Deflect:
+        ArrowDeflect:
             # ChanceMax: Maximum chance of deflecting arrows
             # MaxBonusLevel: Level when the maximum chance to deflect is reached
             ChanceMax: 50.0
@@ -575,7 +575,7 @@ Skills:
             ChanceMax: 100.0
             MaxBonusLevel: 100
 
-        IronArm:
+        IronArmStyle:
             # BonusMin: Minimum bonus damage for unarmed
             # BonusMax: Maximum bonus damage for unarmed
             # IncreaseLevel: Bonus damage increases every increase level

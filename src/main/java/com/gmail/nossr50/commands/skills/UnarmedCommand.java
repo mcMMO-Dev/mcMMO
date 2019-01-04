@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.util.SkillTextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -49,9 +50,9 @@ public class UnarmedCommand extends SkillCommand {
             disarmChanceLucky = disarmStrings[1];
         }
 
-        // UNARMED_DEFLECT
+        // UNARMED_ARROW_DEFLECT
         if (canDeflect) {
-            String[] deflectStrings = calculateAbilityDisplayValues(skillValue, SubSkill.UNARMED_DEFLECT, isLucky);
+            String[] deflectStrings = calculateAbilityDisplayValues(skillValue, SubSkill.UNARMED_ARROW_DEFLECT, isLucky);
             deflectChance = deflectStrings[0];
             deflectChanceLucky = deflectStrings[1];
         }
@@ -72,8 +73,8 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canBerserk = Permissions.berserk(player);
-        canIronArm = Permissions.isSubSkillEnabled(player, SubSkill.UNARMED_IRON_ARM);
-        canDeflect = Permissions.isSubSkillEnabled(player, SubSkill.UNARMED_DEFLECT);
+        canIronArm = Permissions.isSubSkillEnabled(player, SubSkill.UNARMED_IRON_ARM_STYLE);
+        canDeflect = Permissions.isSubSkillEnabled(player, SubSkill.UNARMED_ARROW_DEFLECT);
         canDisarm = Permissions.isSubSkillEnabled(player, SubSkill.UNARMED_DISARM);
         canIronGrip = Permissions.isSubSkillEnabled(player, SubSkill.UNARMED_IRON_GRIP);
         // TODO: Apparently we forgot about block cracker?
@@ -137,6 +138,9 @@ public class UnarmedCommand extends SkillCommand {
     @Override
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
+
+        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.UNARMED);
+
         return textComponents;
     }
 }

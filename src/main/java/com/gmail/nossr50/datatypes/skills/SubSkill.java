@@ -5,6 +5,7 @@ import com.gmail.nossr50.util.StringUtils;
 import static com.gmail.nossr50.datatypes.skills.SubSkillFlags.ACTIVE;
 import static com.gmail.nossr50.datatypes.skills.SubSkillFlags.SUPERABILITY;
 import static com.gmail.nossr50.datatypes.skills.SubSkillFlags.RNG;
+import static com.gmail.nossr50.datatypes.skills.SubSkillFlags.PVP;
 
 
 public enum SubSkill {
@@ -20,19 +21,20 @@ public enum SubSkill {
     ALCHEMY_CONCOCTIONS(8),
 
     /* ARCHERY */
-    ARCHERY_DAZE,
-    ARCHERY_RETRIEVE,
+    ARCHERY_DAZE(0, PVP),
+    ARCHERY_ARROW_RETRIEVAL,
     ARCHERY_SKILL_SHOT(20),
 
     /* Axes */
     AXES_ARMOR_IMPACT,
     AXES_AXE_MASTERY(4),
-    AXES_CRITICAL_HIT,
+    AXES_CRITICAL_STRIKES,
     AXES_GREATER_IMPACT,
     AXES_SKULL_SPLITTER(0, ACTIVE | SUPERABILITY),
 
     /* Excavation */
     EXCAVATION_TREASURE_HUNTER,
+    EXCAVATION_GIGA_DRILL_BREAKER(0, SUPERABILITY | ACTIVE),
 
     /* Fishing */
     FISHING_FISHERMANS_DIET,
@@ -51,6 +53,10 @@ public enum SubSkill {
 
     /* Mining */
     MINING_DOUBLE_DROPS,
+    MINING_SUPER_BREAKER(0, SUPERABILITY | ACTIVE),
+    MINING_BLAST_MINING,
+    MINING_BIGGER_BOMBS,
+    MINING_DEMOLITIONS_EXPERTISE,
 
     /* Repair */
     REPAIR_ARCANE_FORGING,
@@ -68,13 +74,14 @@ public enum SubSkill {
 
     /* Swords */
     SWORDS_BLEED,
-    SWORDS_COUNTER,
+    SWORDS_COUNTER_ATTACK,
+    SWORDS_SERRATED_STRIKES,
 
     /* Taming */
     TAMING_BEAST_LORE,
     TAMING_CALL_OF_THE_WILD,
     TAMING_ENVIRONMENTALLY_AWARE,
-    TAMING_FAST_FOOD,
+    TAMING_FAST_FOOD_SERVICE,
     TAMING_GORE,
     TAMING_HOLY_HOUND,
     TAMING_SHARPENED_CLAWS,
@@ -84,10 +91,11 @@ public enum SubSkill {
 
     /* Unarmed */
     UNARMED_BLOCK_CRACKER,
-    UNARMED_DEFLECT,
+    UNARMED_ARROW_DEFLECT,
     UNARMED_DISARM,
-    UNARMED_IRON_ARM,
+    UNARMED_IRON_ARM_STYLE,
     UNARMED_IRON_GRIP,
+    UNARMED_BERSERK(0, ACTIVE | SUPERABILITY),
 
     /* Woodcutting */
     WOODCUTTING_TREE_FELLER(5, ACTIVE | SUPERABILITY),
@@ -228,8 +236,18 @@ public enum SubSkill {
         return subStringIndex;
     }
 
-    public String getLocalKeyRoot()
+    public String getLocaleKeyRoot()
     {
-        return StringUtils.getCapitalized(getParentSkill().toString()) + ".Effect.";
+        return StringUtils.getCapitalized(getParentSkill().toString())+".SubSkill."+getConfigName(toString());
+    }
+
+    public String getLocaleName()
+    {
+        return LocaleLoader.getString(getLocaleKeyRoot()+".Name");
+    }
+
+    public String getLocaleDescription()
+    {
+        return LocaleLoader.getString(getLocaleKeyRoot()+".Description");
     }
 }

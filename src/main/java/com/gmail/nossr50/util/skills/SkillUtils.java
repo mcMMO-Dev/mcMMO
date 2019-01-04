@@ -271,7 +271,7 @@ public class SkillUtils {
                 return AdvancedConfig.getInstance().getImpactChance();
             case AXES_GREATER_IMPACT:
                 return AdvancedConfig.getInstance().getGreaterImpactChance();
-            case TAMING_FAST_FOOD:
+            case TAMING_FAST_FOOD_SERVICE:
                 return AdvancedConfig.getInstance().getFastFoodChance();
                 default:
                     return 100.0D;

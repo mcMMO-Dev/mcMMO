@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.util.SkillTextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -47,7 +48,7 @@ public class TamingCommand extends SkillCommand {
         canBeastLore = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_BEAST_LORE);
         canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
         canEnvironmentallyAware = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_ENVIRONMENTALLY_AWARE);
-        canFastFood = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_FAST_FOOD);
+        canFastFood = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_FAST_FOOD_SERVICE);
         canGore = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_GORE);
         canSharpenedClaws = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_SHARPENED_CLAWS);
         canShockProof = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_SHOCK_PROOF);
@@ -173,6 +174,9 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
+
+        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.TAMING);
+
         return textComponents;
     }
 }

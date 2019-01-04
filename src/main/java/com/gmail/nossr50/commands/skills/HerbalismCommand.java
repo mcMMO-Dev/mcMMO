@@ -5,6 +5,7 @@ import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.herbalism.Herbalism;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.SkillTextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -167,6 +168,9 @@ public class HerbalismCommand extends SkillCommand {
     @Override
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
+
+        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.HERBALISM);
+
         return textComponents;
     }
 }

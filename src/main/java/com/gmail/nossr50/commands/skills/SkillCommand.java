@@ -71,28 +71,23 @@ public abstract class SkillCommand implements TabExecutor {
                     ScoreboardManager.enablePlayerSkillScoreboard(player, skill);
                 }
 
-                if(skill == PrimarySkill.WOODCUTTING)
+                sendSkillCommandHeader(player, mcMMOPlayer, (int) skillValue);
+
+                //Make JSON text components
+                List<TextComponent> subskillTextComponents = getTextComponents(player);
+
+
+                //Subskills Header
+                player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.SubSkills")));
+
+                //Send JSON text components
+                for(TextComponent tc : subskillTextComponents)
                 {
-                    sendSkillCommandHeader(player, mcMMOPlayer, (int) skillValue);
-
-                    //Make JSON text components
-                    List<TextComponent> subskillTextComponents = getTextComponents(player);
-
-
-                    //Subskills Header
-                    player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.SubSkills")));
-
-                    //Send JSON text components
-                    for(TextComponent tc : subskillTextComponents)
-                    {
-                        player.spigot().sendMessage(new TextComponent[]{tc, new TextComponent(": TESTING")});
-                    }
-
-                    //Stats
-                    getStatMessages(player, isLucky, hasEndurance, skillValue);
-                } else {
-                    displayOldSkillCommand(player, mcMMOPlayer, isLucky, hasEndurance, skillValue);
+                    player.spigot().sendMessage(new TextComponent[]{tc, new TextComponent(": TESTING")});
                 }
+
+                //Stats
+                getStatMessages(player, isLucky, hasEndurance, skillValue);
 
                 return true;
 

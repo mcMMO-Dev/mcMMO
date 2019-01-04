@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.util.SkillTextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -42,9 +43,9 @@ public class ArcheryCommand extends SkillCommand {
             dazeChanceLucky = dazeStrings[1];
         }
 
-        // ARCHERY_RETRIEVE
+        // ARCHERY_ARROW_RETRIEVAL
         if (canRetrieve) {
-            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SubSkill.ARCHERY_RETRIEVE, isLucky);
+            String[] retrieveStrings = calculateAbilityDisplayValues(skillValue, SubSkill.ARCHERY_ARROW_RETRIEVAL, isLucky);
             retrieveChance = retrieveStrings[0];
             retrieveChanceLucky = retrieveStrings[1];
         }
@@ -54,7 +55,7 @@ public class ArcheryCommand extends SkillCommand {
     protected void permissionsCheck(Player player) {
         canSkillShot = Permissions.isSubSkillEnabled(player, SubSkill.ARCHERY_SKILL_SHOT);
         canDaze = Permissions.isSubSkillEnabled(player, SubSkill.ARCHERY_DAZE);
-        canRetrieve = Permissions.isSubSkillEnabled(player, SubSkill.ARCHERY_RETRIEVE);
+        canRetrieve = Permissions.isSubSkillEnabled(player, SubSkill.ARCHERY_ARROW_RETRIEVAL);
     }
 
     @Override
@@ -98,6 +99,9 @@ public class ArcheryCommand extends SkillCommand {
     @Override
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
+
+        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.ARCHERY);
+
         return textComponents;
     }
 }

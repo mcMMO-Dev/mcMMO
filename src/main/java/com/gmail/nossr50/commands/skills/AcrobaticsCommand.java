@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.util.SkillTextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -99,6 +100,9 @@ public class AcrobaticsCommand extends SkillCommand {
     @Override
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
+
+        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.ACROBATICS);
+
         return textComponents;
     }
 }

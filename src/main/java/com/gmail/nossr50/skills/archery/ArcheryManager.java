@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.archery;
 
 import com.gmail.nossr50.datatypes.skills.SubSkill;
-import com.gmail.nossr50.util.skills.RankUtils;
 import com.gmail.nossr50.util.skills.SubSkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -34,7 +33,7 @@ public class ArcheryManager extends SkillManager {
     }
 
     public boolean canRetrieveArrows() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.ARCHERY_RETRIEVE);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.ARCHERY_ARROW_RETRIEVAL);
     }
 
     /**
@@ -60,7 +59,7 @@ public class ArcheryManager extends SkillManager {
      * @param target The {@link LivingEntity} damaged by the arrow
      */
     public void retrieveArrows(LivingEntity target) {
-        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.ARCHERY_RETRIEVE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.ARCHERY_ARROW_RETRIEVAL, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             Archery.incrementTrackerValue(target);
         }
     }

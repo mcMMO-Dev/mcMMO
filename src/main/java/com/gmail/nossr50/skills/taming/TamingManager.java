@@ -53,7 +53,7 @@ public class TamingManager extends SkillManager {
     }
 
     public boolean canUseFastFoodService() {
-        return getSkillLevel() >= Taming.fastFoodServiceUnlockLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.TAMING_FAST_FOOD);
+        return getSkillLevel() >= Taming.fastFoodServiceUnlockLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.TAMING_FAST_FOOD_SERVICE);
     }
 
     public boolean canUseSharpenedClaws() {
@@ -85,7 +85,7 @@ public class TamingManager extends SkillManager {
      */
     public void fastFoodService(Wolf wolf, double damage) {
         //static chance (3rd param)
-        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_STATIC_CHANCE, SubSkill.TAMING_FAST_FOOD, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_STATIC_CHANCE, SubSkill.TAMING_FAST_FOOD_SERVICE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return;
         }
 
@@ -203,7 +203,7 @@ public class TamingManager extends SkillManager {
             Player defender = (Player) target;
 
             if (UserManager.getPlayer(defender).useChatNotifications()) {
-                defender.sendMessage("Wolf pummeled at you");
+                defender.sendMessage(LocaleLoader.getString("Taming.SubSkill.Pummel.TargetMessage"));
             }
         }
     }

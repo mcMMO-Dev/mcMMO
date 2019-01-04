@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.util.SkillTextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -48,9 +49,9 @@ public class SwordsCommand extends SkillCommand {
             bleedChanceLucky = bleedStrings[1];
         }
 
-        // SWORDS_COUNTER
+        // SWORDS_COUNTER_ATTACK
         if (canCounter) {
-            String[] counterStrings = calculateAbilityDisplayValues(skillValue, SubSkill.SWORDS_COUNTER, isLucky);
+            String[] counterStrings = calculateAbilityDisplayValues(skillValue, SubSkill.SWORDS_COUNTER_ATTACK, isLucky);
             counterChance = counterStrings[0];
             counterChanceLucky = counterStrings[1];
         }
@@ -59,7 +60,7 @@ public class SwordsCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canBleed = Permissions.isSubSkillEnabled(player, SubSkill.SWORDS_BLEED);
-        canCounter = Permissions.isSubSkillEnabled(player, SubSkill.SWORDS_COUNTER);
+        canCounter = Permissions.isSubSkillEnabled(player, SubSkill.SWORDS_COUNTER_ATTACK);
         canSerratedStrike = Permissions.serratedStrikes(player);
     }
 
@@ -107,6 +108,9 @@ public class SwordsCommand extends SkillCommand {
     @Override
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
+
+        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.SWORDS);
+
         return textComponents;
     }
 }

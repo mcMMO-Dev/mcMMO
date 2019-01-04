@@ -29,7 +29,7 @@ public class AxesManager extends SkillManager {
     }
 
     public boolean canCriticalHit(LivingEntity target) {
-        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.AXES_CRITICAL_HIT);
+        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.AXES_CRITICAL_STRIKES);
     }
 
     public boolean canImpact(LivingEntity target) {
@@ -66,7 +66,7 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double criticalHit(LivingEntity target, double damage) {
-        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.AXES_CRITICAL_HIT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.AXES_CRITICAL_STRIKES, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return 0;
         }
 

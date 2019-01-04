@@ -11,6 +11,7 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.SkillTextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
@@ -160,6 +161,9 @@ public class RepairCommand extends SkillCommand {
     @Override
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
+
+        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.REPAIR);
+
         return textComponents;
     }
 }

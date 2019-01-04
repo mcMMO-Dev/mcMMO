@@ -34,7 +34,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseIronArm() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.UNARMED_IRON_ARM);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.UNARMED_IRON_ARM_STYLE);
     }
 
     public boolean canUseBerserk() {
@@ -48,7 +48,7 @@ public class UnarmedManager extends SkillManager {
     public boolean canDeflect() {
         Player player = getPlayer();
 
-        return ItemUtils.isUnarmed(player.getInventory().getItemInMainHand()) && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.UNARMED_DEFLECT);
+        return ItemUtils.isUnarmed(player.getInventory().getItemInMainHand()) && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.UNARMED_ARROW_DEFLECT);
     }
 
     public boolean canUseBlockCracker() {
@@ -102,7 +102,7 @@ public class UnarmedManager extends SkillManager {
      * Check for arrow deflection.
      */
     public boolean deflectCheck() {
-        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.UNARMED_DEFLECT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.UNARMED_ARROW_DEFLECT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             getPlayer().sendMessage(LocaleLoader.getString("Combat.ArrowDeflect"));
             return true;
         }
@@ -125,7 +125,7 @@ public class UnarmedManager extends SkillManager {
      * Handle the effects of the Iron Arm ability
      */
     public double ironArm() {
-        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.ALWAYS_FIRES, SubSkill.UNARMED_IRON_ARM, getPlayer(), null, 0, 0)) {
+        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.ALWAYS_FIRES, SubSkill.UNARMED_IRON_ARM_STYLE, getPlayer(), null, 0, 0)) {
             return 0;
         }
 

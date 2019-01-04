@@ -129,30 +129,10 @@ public class WoodcuttingCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        if (canTreeFell) {
-            textComponents.add(SkillTextComponentFactory.getSubSkillTextComponent(player, SubSkill.WOODCUTTING_TREE_FELLER, 0, 1));
-        }
-
-        if (canLeafBlow) {
-            textComponents.add(SkillTextComponentFactory.getSubSkillTextComponent(player, SubSkill.WOODCUTTING_LEAF_BLOWER, 2, 3));
-        }
-
-        if (canDoubleDrop) {
-            textComponents.add(SkillTextComponentFactory.getSubSkillTextComponent(player, SubSkill.WOODCUTTING_HARVEST_LUMBER, 4, 5));
-        }
-
-        if (canSplinter) {
-            textComponents.add(SkillTextComponentFactory.getSubSkillTextComponent(player, SubSkill.WOODCUTTING_SPLINTER, 6, 7));
-        }
-
-        if(canBarkSurgeon) {
-            textComponents.add(SkillTextComponentFactory.getSubSkillTextComponent(player, SubSkill.WOODCUTTING_BARK_SURGEON, 8, 9));
-        }
-
-        if(canNaturesBounty) {
-            textComponents.add(SkillTextComponentFactory.getSubSkillTextComponent(player, SubSkill.WOODCUTTING_NATURES_BOUNTY, 10, 11));
-        }
+        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.WOODCUTTING);
 
         return textComponents;
     }
+
+
 }

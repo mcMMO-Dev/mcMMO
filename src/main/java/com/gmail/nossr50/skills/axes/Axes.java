@@ -13,8 +13,8 @@ import com.gmail.nossr50.util.ItemUtils;
 public class Axes {
     public static double axeMasteryRankDamageMultiplier = AdvancedConfig.getInstance().getAxeMasteryRankDamageMultiplier();
 
-    public static double criticalHitPVPModifier   = AdvancedConfig.getInstance().getCriticalHitPVPModifier();
-    public static double criticalHitPVEModifier   = AdvancedConfig.getInstance().getCriticalHitPVEModifier();
+    public static double criticalHitPVPModifier   = AdvancedConfig.getInstance().getCriticalStrikesPVPModifier();
+    public static double criticalHitPVEModifier   = AdvancedConfig.getInstance().getCriticalStrikesPVEModifier();
 
     public static int    impactIncreaseLevel         = AdvancedConfig.getInstance().getArmorImpactIncreaseLevel();
     public static double impactChance                = AdvancedConfig.getInstance().getImpactChance();

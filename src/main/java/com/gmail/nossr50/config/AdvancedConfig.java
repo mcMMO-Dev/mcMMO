@@ -124,27 +124,27 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         if (getMaxChance(SubSkill.ARCHERY_DAZE) < 1) {
-            reason.add("Skills.Acrobatics.Daze.ChanceMax should be at least 1!");
+            reason.add("Skills.Archery.Daze.ChanceMax should be at least 1!");
         }
 
         if (getMaxBonusLevel(SubSkill.ARCHERY_DAZE) < 1) {
-            reason.add("Skills.Acrobatics.Daze.MaxBonusLevel should be at least 1!");
+            reason.add("Skills.Archery.Daze.MaxBonusLevel should be at least 1!");
         }
 
         if (getDazeBonusDamage() < 0) {
-            reason.add("Skills.Acrobatics.Daze.BonusDamage should be at least 0!");
+            reason.add("Skills.Archery.Daze.BonusDamage should be at least 0!");
         }
 
-        if (getMaxChance(SubSkill.ARCHERY_RETRIEVE) < 1) {
-            reason.add("Skills.Acrobatics.Retrieve.ChanceMax should be at least 1!");
+        if (getMaxChance(SubSkill.ARCHERY_ARROW_RETRIEVAL) < 1) {
+            reason.add("Skills.Archery.Retrieve.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.ARCHERY_RETRIEVE) < 1) {
-            reason.add("Skills.Acrobatics.Retrieve.MaxBonusLevel should be at least 1!");
+        if (getMaxBonusLevel(SubSkill.ARCHERY_ARROW_RETRIEVAL) < 1) {
+            reason.add("Skills.Archery.Retrieve.MaxBonusLevel should be at least 1!");
         }
 
         if (getForceMultiplier() < 0) {
-            reason.add("Skills.Acrobatics.ForceMultiplier should be at least 0!");
+            reason.add("Skills.Archery.ForceMultiplier should be at least 0!");
         }
 
         /* AXES */
@@ -153,20 +153,20 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Axes.AxeMastery.RankDamageMultiplier should be at least 0!");
         }
 
-        if (getMaxChance(SubSkill.AXES_CRITICAL_HIT) < 1) {
+        if (getMaxChance(SubSkill.AXES_CRITICAL_STRIKES) < 1) {
             reason.add("Skills.Axes.CriticalHit.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.AXES_CRITICAL_HIT) < 1) {
+        if (getMaxBonusLevel(SubSkill.AXES_CRITICAL_STRIKES) < 1) {
             reason.add("Skills.Axes.CriticalHit.MaxBonusLevel should be at least 1!");
         }
 
-        if (getCriticalHitPVPModifier() < 1) {
-            reason.add("Skills.Axes.CriticalHit.PVP_Modifier should be at least 1!");
+        if (getCriticalStrikesPVPModifier() < 1) {
+            reason.add("Skills.Axes.CriticalStrikes.PVP_Modifier should be at least 1!");
         }
 
-        if (getCriticalHitPVEModifier() < 1) {
-            reason.add("Skills.Axes.CriticalHit.PVE_Modifier should be at least 1!");
+        if (getCriticalStrikesPVPModifier() < 1) {
+            reason.add("Skills.Axes.CriticalStrikes.PVE_Modifier should be at least 1!");
         }
 
         if (getGreaterImpactChance() < 1) {
@@ -520,16 +520,16 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Swords.Bleed.BaseTicks should be at least 1!");
         }
 
-        if (getMaxChance(SubSkill.SWORDS_COUNTER) < 1) {
-            reason.add("Skills.Swords.Counter.ChanceMax should be at least 1!");
+        if (getMaxChance(SubSkill.SWORDS_COUNTER_ATTACK) < 1) {
+            reason.add("Skills.Swords.CounterAttack.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.SWORDS_COUNTER) < 1) {
-            reason.add("Skills.Swords.Counter.MaxBonusLevel should be at least 1!");
+        if (getMaxBonusLevel(SubSkill.SWORDS_COUNTER_ATTACK) < 1) {
+            reason.add("Skills.Swords.CounterAttack.MaxBonusLevel should be at least 1!");
         }
 
         if (getCounterModifier() < 1) {
-            reason.add("Skills.Swords.Counter.DamageModifier should be at least 1!");
+            reason.add("Skills.Swords.CounterAttack.DamageModifier should be at least 1!");
         }
 
         if (getSerratedStrikesModifier() < 1) {
@@ -611,12 +611,12 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Unarmed.Disarm.MaxBonusLevel should be at least 1!");
         }
 
-        if (getMaxChance(SubSkill.UNARMED_DEFLECT) < 1) {
-            reason.add("Skills.Unarmed.Deflect.ChanceMax should be at least 1!");
+        if (getMaxChance(SubSkill.UNARMED_ARROW_DEFLECT) < 1) {
+            reason.add("Skills.Unarmed.ArrowDeflect.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.UNARMED_DEFLECT) < 1) {
-            reason.add("Skills.Unarmed.Deflect.MaxBonusLevel should be at least 1!");
+        if (getMaxBonusLevel(SubSkill.UNARMED_ARROW_DEFLECT) < 1) {
+            reason.add("Skills.Unarmed.ArrowDeflect.MaxBonusLevel should be at least 1!");
         }
 
         if (getMaxChance(SubSkill.UNARMED_IRON_GRIP) < 1) {
@@ -628,19 +628,19 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         if (getIronArmMinBonus() < 0) {
-            reason.add("Skills.Unarmed.IronArm.BonusMin should be at least 0!");
+            reason.add("Skills.Unarmed.IronArmStyle.BonusMin should be at least 0!");
         }
 
         if (getIronArmMaxBonus() < 0) {
-            reason.add("Skills.Unarmed.IronArm.BonusMax should be at least 0!");
+            reason.add("Skills.Unarmed.IronArmStyle.BonusMax should be at least 0!");
         }
 
         if (getIronArmMaxBonus() < getIronArmMinBonus()) {
-            reason.add("Skills.Unarmed.IronArm.BonusMax should be greater than or equal to Skills.Unarmed.IronArm.BonusMin!");
+            reason.add("Skills.Unarmed.IronArmStyle.BonusMax should be greater than or equal to Skills.Unarmed.IronArm.BonusMin!");
         }
 
         if (getIronArmIncreaseLevel() < 1) {
-            reason.add("Skills.Unarmed.IronArm.IncreaseLevel should be at least 1!");
+            reason.add("Skills.Unarmed.IronArmStyle.IncreaseLevel should be at least 1!");
         }
 
         /* WOODCUTTING */
@@ -750,8 +750,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /* AXES */
     public double getAxeMasteryRankDamageMultiplier() { return config.getDouble("Skills.Axes.AxeMastery.RankDamageMultiplier", 1.0D); }
 
-    public double getCriticalHitPVPModifier() { return config.getDouble("Skills.Axes.CriticalHit.PVP_Modifier", 1.5D); }
-    public double getCriticalHitPVEModifier() { return config.getDouble("Skills.Axes.CriticalHit.PVE_Modifier", 2.0D); }
+    public double getCriticalStrikesPVPModifier() { return config.getDouble("Skills.Axes.CriticalStrikes.PVP_Modifier", 1.5D); }
+    public double getCriticalStrikesPVEModifier() { return config.getDouble("Skills.Axes.CriticalStrikes.PVE_Modifier", 2.0D); }
 
     public double getGreaterImpactChance() { return config.getDouble("Skills.Axes.GreaterImpact.Chance", 25.0D); }
     public double getGreaterImpactModifier() { return config.getDouble("Skills.Axes.GreaterImpact.KnockbackModifier", 1.5D); }
@@ -836,8 +836,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getBleedMaxTicks() { return config.getInt("Skills.Swords.Bleed.MaxTicks", 3); }
     public int getBleedBaseTicks() { return config.getInt("Skills.Swords.Bleed.BaseTicks", 2); }
 
-    public boolean getCounterRequiresBlock() { return config.getBoolean("Skills.Swords.Counter.RequiresBlock"); }
-    public double getCounterModifier() { return config.getDouble("Skills.Swords.Counter.DamageModifier", 2.0D); }
+    public boolean getCounterRequiresBlock() { return config.getBoolean("Skills.Swords.CounterAttack.RequiresBlock"); }
+    public double getCounterModifier() { return config.getDouble("Skills.Swords.CounterAttack.DamageModifier", 2.0D); }
 
     public double getSerratedStrikesModifier() { return config.getDouble("Skills.Swords.SerratedStrikes.DamageModifier", 4.0D); }
     public int getSerratedStrikesTicks() { return config.getInt("Skills.Swords.SerratedStrikes.BleedTicks", 5); }
@@ -866,9 +866,9 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public double getMaxHorseJumpStrength() { return config.getDouble("Skills.Taming.CallOfTheWild.MaxHorseJumpStrength", 2.0D); }
 
     /* UNARMED */
-    public double getIronArmMinBonus() { return config.getDouble("Skills.Unarmed.IronArm.BonusMin", 3.0D); }
-    public double getIronArmMaxBonus() { return config.getDouble("Skills.Unarmed.IronArm.BonusMax", 8.0D); }
-    public int getIronArmIncreaseLevel() { return config.getInt("Skills.Unarmed.IronArm.IncreaseLevel", 50); }
+    public double getIronArmMinBonus() { return config.getDouble("Skills.Unarmed.IronArmStyle.BonusMin", 3.0D); }
+    public double getIronArmMaxBonus() { return config.getDouble("Skills.Unarmed.IronArmStyle.BonusMax", 8.0D); }
+    public int getIronArmIncreaseLevel() { return config.getInt("Skills.Unarmed.IronArmStyle.IncreaseLevel", 50); }
     public boolean getDisarmProtected() { return config.getBoolean("Skills.Unarmed.Disarm.AntiTheft", false); }
 
     /* WOODCUTTING */

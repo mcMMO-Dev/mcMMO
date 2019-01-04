@@ -2,6 +2,7 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.datatypes.skills.SubSkillFlags;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -15,6 +16,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class SkillTextComponentFactory {
     public static HashMap<SubSkill, TextComponent> subSkillTextComponents;
@@ -25,7 +27,7 @@ public class SkillTextComponentFactory {
     //This is a nested map because each JSON component for a different rank is going to be a bit different.
     public static HashMap<Integer, HashMap<SubSkill, BaseComponent[]>> hoverComponentOuterMap;
 
-    public static TextComponent getSubSkillTextComponent(Player player, SubSkill subSkill, int localeKeyName, int localeKeyDescription)
+    public static TextComponent getSubSkillTextComponent(Player player, SubSkill subSkill)
     {
         //Init our maps
         if (subSkillTextComponents == null)
@@ -39,7 +41,7 @@ public class SkillTextComponentFactory {
         PlayerProfile playerProfile = UserManager.getPlayer(player).getProfile();
 
         //Get skill name & description from our locale file
-        String skillName = LocaleLoader.getString(subSkill.getLocalKeyRoot()+localeKeyName);
+        String skillName = subSkill.getLocaleName();
 
         if(subSkillTextComponents.get(subSkill) == null)
         {
@@ -48,7 +50,7 @@ public class SkillTextComponentFactory {
             textComponent.setColor(ChatColor.DARK_AQUA);
 
             //Hover Event
-            textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, getBaseComponent(player, subSkill, localeKeyName, localeKeyDescription)));
+            textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, getBaseComponent(player, subSkill)));
 
             //Insertion
             textComponent.setInsertion(skillName);
@@ -60,7 +62,7 @@ public class SkillTextComponentFactory {
         }
     }
 
-    private static BaseComponent[] getBaseComponent(Player player, SubSkill subSkill, int localeKeyName, int localeKeyDescription)
+    private static BaseComponent[] getBaseComponent(Player player, SubSkill subSkill)
     {
         //If the player hasn't unlocked this skill yet we use a different JSON template
         if(subSkill.getNumRanks() > 0 && RankUtils.getRank(player, subSkill) == 0)
@@ -69,7 +71,7 @@ public class SkillTextComponentFactory {
             if(lockedComponentMap.get(subSkill) != null)
                 return lockedComponentMap.get(subSkill);
 
-            BaseComponent[] newComponents = getSubSkillHoverEventJSON(subSkill, player, localeKeyName, localeKeyDescription);
+            BaseComponent[] newComponents = getSubSkillHoverEventJSON(subSkill, player);
             lockedComponentMap.put(subSkill, newComponents);
             return lockedComponentMap.get(subSkill);
         }
@@ -84,7 +86,7 @@ public class SkillTextComponentFactory {
         HashMap<SubSkill, BaseComponent[]> innerMap = hoverComponentOuterMap.get(curRank);
 
         if(innerMap.get(subSkill) == null)
-            innerMap.put(subSkill, getSubSkillHoverEventJSON(subSkill, player, localeKeyName, localeKeyDescription));
+            innerMap.put(subSkill, getSubSkillHoverEventJSON(subSkill, player));
 
         return innerMap.get(subSkill);
     }
@@ -100,10 +102,10 @@ public class SkillTextComponentFactory {
         return (flag1 & subSkill.getFlags()) == flag1;
     }
 
-    private static BaseComponent[] getSubSkillHoverEventJSON(SubSkill subSkill, Player player, int localeKeyName, int localeKeyDescription)
+    private static BaseComponent[] getSubSkillHoverEventJSON(SubSkill subSkill, Player player)
     {
-        String skillName = LocaleLoader.getString(subSkill.getLocalKeyRoot()+localeKeyName);
-        String skillDescription = LocaleLoader.getString(subSkill.getLocalKeyRoot()+localeKeyDescription);
+        String skillName = subSkill.getLocaleName();
+        String skillDescription = subSkill.getLocaleDescription();
 
         /*
          * Hover Event BaseComponent color table
@@ -179,6 +181,19 @@ public class SkillTextComponentFactory {
         }
 
         componentBuilder.append("\n");
+    }
+
+    public static void getSubSkillTextComponents(Player player, List<TextComponent> textComponents, PrimarySkill parentSkill) {
+        for(SubSkill subSkill : SubSkill.values())
+        {
+            if(subSkill.getParentSkill() == parentSkill)
+            {
+                if(Permissions.isSubSkillEnabled(player, subSkill))
+                {
+                    textComponents.add(SkillTextComponentFactory.getSubSkillTextComponent(player, subSkill));
+                }
+            }
+        }
     }
 }
 

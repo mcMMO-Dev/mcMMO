@@ -568,11 +568,11 @@ permissions:
         description: Allows access to all Swords abilities
         children:
             mcmmo.ability.swords.bleed: true
-            mcmmo.ability.swords.counter: true
+            mcmmo.ability.swords.counterattack: true
             mcmmo.ability.swords.serratedstrikes: true
     mcmmo.ability.swords.bleed:
         description: Allows access to the Bleed ability
-    mcmmo.ability.swords.counter:
+    mcmmo.ability.swords.counterattack:
         description: Allows access to the Counter Attack ability
     mcmmo.ability.swords.serratedstrikes:
         description: Allows access to the Serrated Strikes ability
@@ -587,7 +587,7 @@ permissions:
             mcmmo.ability.taming.beastlore: true
             mcmmo.ability.taming.callofthewild.all: true
             mcmmo.ability.taming.environmentallyaware: true
-            mcmmo.ability.taming.fastfood: true
+            mcmmo.ability.taming.fastfoodservice: true
             mcmmo.ability.taming.gore: true
             mcmmo.ability.taming.holyhound: true
             mcmmo.ability.taming.sharpenedclaws: true
@@ -623,7 +623,7 @@ permissions:
         description: Allows players to summon Wolves with Call of the Wild
     mcmmo.ability.taming.environmentallyaware:
         description: Allows access to the Environmentally Aware ability
-    mcmmo.ability.taming.fastfood:
+    mcmmo.ability.taming.fastfoodservice:
         description: Allows access to the Fast Food Service ability
     mcmmo.ability.taming.gore:
         description: Allows access to the Gore ability
@@ -647,18 +647,18 @@ permissions:
         children:
             mcmmo.ability.unarmed.berserk: true
             mcmmo.ability.unarmed.blockcracker: true
-            mcmmo.ability.unarmed.ironarm: true
-            mcmmo.ability.unarmed.deflect: true
+            mcmmo.ability.unarmed.ironarmstyle: true
+            mcmmo.ability.unarmed.arrowdeflect: true
             mcmmo.ability.unarmed.disarm: true
             mcmmo.ability.unarmed.irongrip: true
     mcmmo.ability.unarmed.berserk:
         description: Allows access to the Berserker ability
     mcmmo.ability.unarmed.blockcracker:
         description: Allows access to the Block Cracker ability
-    mcmmo.ability.unarmed.ironarm:
+    mcmmo.ability.unarmed.ironarmstyle:
         description: Allows bonus damage from the Iron Arm ability
-    mcmmo.ability.unarmed.deflect:
-        description: Allows access to the Deflect ability
+    mcmmo.ability.unarmed.arrowdeflect:
+        description: Allows access to the Arrow Deflect ability
     mcmmo.ability.unarmed.disarm:
         description: Allows access to the Disarm ability
     mcmmo.ability.unarmed.irongrip:

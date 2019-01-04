@@ -36,7 +36,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseCounterAttack(Entity target) {
-        return target instanceof LivingEntity && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.SWORDS_COUNTER);
+        return target instanceof LivingEntity && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.SWORDS_COUNTER_ATTACK);
     }
 
     public boolean canUseSerratedStrike() {
@@ -83,7 +83,7 @@ public class SwordsManager extends SkillManager {
             return;
         }
 
-        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.SWORDS_COUNTER, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.SWORDS_COUNTER_ATTACK, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier, getPlayer());
 
             getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));
