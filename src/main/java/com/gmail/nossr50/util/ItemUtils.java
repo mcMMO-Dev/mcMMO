@@ -366,7 +366,7 @@ public final class ItemUtils {
      * @return true if the item is a tool, false otherwise
      */
     public static boolean isMinecraftTool(ItemStack item) {
-        return isStoneTool(item) || isWoodTool(item) || isGoldTool(item) || isIronTool(item) || isDiamondTool(item) || isStringTool(item);
+        return isStoneTool(item) || isWoodTool(item) || isGoldTool(item) || isIronTool(item) || isDiamondTool(item) || isStringTool(item) || item.getType() == Material.TRIDENT;
     }
 
     /**
