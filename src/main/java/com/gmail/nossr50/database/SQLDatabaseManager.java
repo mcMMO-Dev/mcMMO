@@ -1393,25 +1393,51 @@ public final class SQLDatabaseManager implements DatabaseManager {
     }
 
     private int getUserID(final Connection connection, final String playerName, final UUID uuid) {
-        if (uuid != null && cachedUserIDs.containsKey(uuid)) {
+        if (uuid == null)
+            return getUserIDByName(connection, playerName);
+
+        if (cachedUserIDs.containsKey(uuid))
             return cachedUserIDs.get(uuid);
-        }
 
         ResultSet resultSet = null;
         PreparedStatement statement = null;
 
         try {
             statement = connection.prepareStatement("SELECT id, user FROM " + tablePrefix + "users WHERE uuid = ? OR (uuid IS NULL AND user = ?)");
-            statement.setString(1, uuid == null ? null : uuid.toString());
+            statement.setString(1, uuid.toString());
             statement.setString(2, playerName);
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
                 int id = resultSet.getInt("id");
 
-                if (uuid != null) {
-                    cachedUserIDs.put(uuid, id);
-                }
+                cachedUserIDs.put(uuid, id);
+
+                return id;
+            }
+        }
+        catch (SQLException ex) {
+            printErrors(ex);
+        }
+        finally {
+            tryClose(resultSet);
+            tryClose(statement);
+        }
+
+        return -1;
+    }
+
+    private int getUserIDByName(final Connection connection, final String playerName) {
+        ResultSet resultSet = null;
+        PreparedStatement statement = null;
+
+        try {
+            statement = connection.prepareStatement("SELECT id, user FROM " + tablePrefix + "users WHERE user = ?");
+            statement.setString(1, playerName);
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int id = resultSet.getInt("id");
 
                 return id;
             }
