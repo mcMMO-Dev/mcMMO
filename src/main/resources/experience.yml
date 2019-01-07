@@ -152,8 +152,9 @@ Experience:
         Stripped_Jungle_Log: 100
         Stripped_Acacia_Log: 90
         Stripped_Dark_Oak_Log: 90
-        Huge_Mushroom_1: 70
-        Huge_Mushroom_2: 70
+        Mycelium: 70
+        Red_Mushroom_Block: 70
+        Brown_Mushroom_Block: 70
     Herbalism:
         Allium: 300
         Azure_Bluet: 150
