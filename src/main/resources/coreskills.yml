@@ -1,0 +1,9 @@
+#
+# This file includes a few settings for each skill in mcMMO
+
+#Acrobatics
+Acrobatics:
+  # turn this to false to disable all subskills for this skill
+  Enabled: true
+  Roll:
+    Enabled: true

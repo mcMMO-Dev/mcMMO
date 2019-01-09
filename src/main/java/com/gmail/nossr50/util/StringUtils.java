@@ -2,7 +2,6 @@ package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.party.PartyFeature;
 import com.gmail.nossr50.datatypes.skills.SuperAbility;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
 import org.bukkit.Material;
 import org.bukkit.TreeSpecies;
 import org.bukkit.block.data.Ageable;

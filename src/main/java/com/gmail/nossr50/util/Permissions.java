@@ -1,6 +1,7 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import org.bukkit.Material;
 import org.bukkit.Server;
 import org.bukkit.World;
@@ -14,7 +15,7 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.commands.party.PartySubcommandType;
 import com.gmail.nossr50.datatypes.skills.ItemType;
 import com.gmail.nossr50.datatypes.skills.MaterialType;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 
 public final class Permissions {
     private Permissions() {}
@@ -22,7 +23,6 @@ public final class Permissions {
     /*
      * GENERAL
      */
-
     public static boolean motd(Permissible permissible) { return permissible.hasPermission("mcmmo.motd"); }
     public static boolean mobHealthDisplay(Permissible permissible) { return permissible.hasPermission("mcmmo.mobhealthdisplay"); }
     public static boolean updateNotifications(Permissible permissible) {return permissible.hasPermission("mcmmo.tools.updatecheck"); }
@@ -133,7 +133,8 @@ public final class Permissions {
 
     public static boolean skillEnabled(Permissible permissible, PrimarySkill skill) {return permissible.hasPermission("mcmmo.skills." + skill.toString().toLowerCase()); }
     public static boolean vanillaXpBoost(Permissible permissible, PrimarySkill skill) { return permissible.hasPermission("mcmmo.ability." + skill.toString().toLowerCase() + ".vanillaxpboost"); }
-    public static boolean isSubSkillEnabled(Permissible permissible, SubSkill subSkill) { return permissible.hasPermission(subSkill.getPermissionNodeAddress()); }
+    public static boolean isSubSkillEnabled(Permissible permissible, SubSkillType subSkillType) { return permissible.hasPermission(subSkillType.getPermissionNodeAddress()); }
+    public static boolean isSubSkillEnabled(Permissible permissible, AbstractSubSkill abstractSubSkill) { return permissible.hasPermission(abstractSubSkill.getPermissionNode()); }
     public static boolean bonusDamage(Permissible permissible, PrimarySkill skill) { return permissible.hasPermission("mcmmo.ability." + skill.toString().toLowerCase() + ".bonusdamage"); }
 
     /* ACROBATICS */

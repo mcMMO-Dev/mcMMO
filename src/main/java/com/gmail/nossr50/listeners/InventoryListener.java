@@ -3,7 +3,7 @@ package com.gmail.nossr50.listeners;
 import java.util.List;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.events.fake.FakeBrewEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -87,7 +87,7 @@ public class InventoryListener implements Listener {
 
         Player player = getPlayerFromFurnace(furnaceBlock);
 
-        if (!UserManager.hasPlayerDataKey(player) || !Permissions.isSubSkillEnabled(player, SubSkill.SMELTING_FUEL_EFFICIENCY)) {
+        if (!UserManager.hasPlayerDataKey(player) || !Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY)) {
             return;
         }
 
@@ -146,7 +146,7 @@ public class InventoryListener implements Listener {
 
         HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkill.ALCHEMY_CONCOCTIONS)) {
+        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
         }
 
@@ -245,7 +245,7 @@ public class InventoryListener implements Listener {
 
         HumanEntity whoClicked = event.getWhoClicked();
 
-        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkill.ALCHEMY_CONCOCTIONS)) {
+        if (!UserManager.hasPlayerDataKey(event.getWhoClicked()) || !Permissions.isSubSkillEnabled(whoClicked, SubSkillType.ALCHEMY_CONCOCTIONS)) {
             return;
         }
 

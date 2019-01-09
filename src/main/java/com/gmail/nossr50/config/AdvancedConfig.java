@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
+import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.alchemy.Alchemy;
 import com.gmail.nossr50.skills.fishing.Fishing;
 import com.gmail.nossr50.skills.mining.BlastMining;
 import com.gmail.nossr50.skills.repair.ArcaneForging;
 import com.gmail.nossr50.skills.salvage.Salvage;
 import com.gmail.nossr50.skills.smelting.Smelting;
+import net.md_5.bungee.api.ChatColor;
 
 public class AdvancedConfig extends AutoUpdateConfigLoader {
     private static AdvancedConfig instance;
@@ -49,11 +53,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         /* ACROBATICS */
-        if (getMaxChance(SubSkill.ACROBATICS_DODGE) < 1) {
+        if (getMaxChance(SubSkillType.ACROBATICS_DODGE) < 1) {
             reason.add("Skills.Acrobatics.Dodge.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.ACROBATICS_DODGE) < 1) {
+        if (getMaxBonusLevel(SubSkillType.ACROBATICS_DODGE) < 1) {
             reason.add("Skills.Acrobatics.Dodge.MaxBonusLevel should be at least 1!");
         }
 
@@ -61,24 +65,16 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Acrobatics.Dodge.DamageModifier should be greater than 1!");
         }
 
-        if (getMaxChance(SubSkill.ACROBATICS_ROLL) < 1) {
+        if (getMaxChance(SubSkillType.ACROBATICS_ROLL) < 1) {
             reason.add("Skills.Acrobatics.Roll.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.ACROBATICS_ROLL) < 1) {
+        if (getMaxBonusLevel(SubSkillType.ACROBATICS_ROLL) < 1) {
             reason.add("Skills.Acrobatics.Roll.MaxBonusLevel should be at least 1!");
         }
 
         if (getRollDamageThreshold() < 0) {
             reason.add("Skills.Acrobatics.Roll.DamageThreshold should be at least 0!");
-        }
-
-        if (getMaxChance(SubSkill.ACROBATICS_GRACEFUL_ROLL) < 1) {
-            reason.add("Skills.Acrobatics.GracefulRoll.ChanceMax should be at least 1!");
-        }
-
-        if (getMaxBonusLevel(SubSkill.ACROBATICS_GRACEFUL_ROLL) < 1) {
-            reason.add("Skills.Acrobatics.GracefulRoll.MaxBonusLevel should be at least 1!");
         }
 
         if (getGracefulRollDamageThreshold() < 0) {
@@ -123,11 +119,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Archery.SkillShot.RankDamageMultiplier should be greater than 0!");
         }
 
-        if (getMaxChance(SubSkill.ARCHERY_DAZE) < 1) {
+        if (getMaxChance(SubSkillType.ARCHERY_DAZE) < 1) {
             reason.add("Skills.Archery.Daze.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.ARCHERY_DAZE) < 1) {
+        if (getMaxBonusLevel(SubSkillType.ARCHERY_DAZE) < 1) {
             reason.add("Skills.Archery.Daze.MaxBonusLevel should be at least 1!");
         }
 
@@ -135,11 +131,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Archery.Daze.BonusDamage should be at least 0!");
         }
 
-        if (getMaxChance(SubSkill.ARCHERY_ARROW_RETRIEVAL) < 1) {
+        if (getMaxChance(SubSkillType.ARCHERY_ARROW_RETRIEVAL) < 1) {
             reason.add("Skills.Archery.Retrieve.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.ARCHERY_ARROW_RETRIEVAL) < 1) {
+        if (getMaxBonusLevel(SubSkillType.ARCHERY_ARROW_RETRIEVAL) < 1) {
             reason.add("Skills.Archery.Retrieve.MaxBonusLevel should be at least 1!");
         }
 
@@ -153,11 +149,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Axes.AxeMastery.RankDamageMultiplier should be at least 0!");
         }
 
-        if (getMaxChance(SubSkill.AXES_CRITICAL_STRIKES) < 1) {
+        if (getMaxChance(SubSkillType.AXES_CRITICAL_STRIKES) < 1) {
             reason.add("Skills.Axes.CriticalHit.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.AXES_CRITICAL_STRIKES) < 1) {
+        if (getMaxBonusLevel(SubSkillType.AXES_CRITICAL_STRIKES) < 1) {
             reason.add("Skills.Axes.CriticalHit.MaxBonusLevel should be at least 1!");
         }
 
@@ -259,44 +255,44 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Herbalism.GreenThumb.StageChange should be at least 1!");
         }
 
-        if (getMaxChance(SubSkill.HERBALISM_GREEN_THUMB) < 1) {
+        if (getMaxChance(SubSkillType.HERBALISM_GREEN_THUMB) < 1) {
             reason.add("Skills.Herbalism.GreenThumb.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.HERBALISM_GREEN_THUMB) < 1) {
+        if (getMaxBonusLevel(SubSkillType.HERBALISM_GREEN_THUMB) < 1) {
             reason.add("Skills.Herbalism.GreenThumb.MaxBonusLevel should be at least 1!");
         }
 
-        if (getMaxChance(SubSkill.HERBALISM_DOUBLE_DROPS) < 1) {
+        if (getMaxChance(SubSkillType.HERBALISM_DOUBLE_DROPS) < 1) {
             reason.add("Skills.Herbalism.DoubleDrops.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.HERBALISM_DOUBLE_DROPS) < 1) {
+        if (getMaxBonusLevel(SubSkillType.HERBALISM_DOUBLE_DROPS) < 1) {
             reason.add("Skills.Herbalism.DoubleDrops.MaxBonusLevel should be at least 1!");
         }
 
-        if (getMaxChance(SubSkill.HERBALISM_HYLIAN_LUCK) < 1) {
+        if (getMaxChance(SubSkillType.HERBALISM_HYLIAN_LUCK) < 1) {
             reason.add("Skills.Herbalism.HylianLuck.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.HERBALISM_HYLIAN_LUCK) < 1) {
+        if (getMaxBonusLevel(SubSkillType.HERBALISM_HYLIAN_LUCK) < 1) {
             reason.add("Skills.Herbalism.HylianLuck.MaxBonusLevel should be at least 1!");
         }
 
-        if (getMaxChance(SubSkill.HERBALISM_SHROOM_THUMB) < 1) {
+        if (getMaxChance(SubSkillType.HERBALISM_SHROOM_THUMB) < 1) {
             reason.add("Skills.Herbalism.ShroomThumb.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.HERBALISM_SHROOM_THUMB) < 1) {
+        if (getMaxBonusLevel(SubSkillType.HERBALISM_SHROOM_THUMB) < 1) {
             reason.add("Skills.Herbalism.ShroomThumb.MaxBonusLevel should be at least 1!");
         }
 
         /* MINING */
-        if (getMaxChance(SubSkill.MINING_DOUBLE_DROPS) < 1) {
+        if (getMaxChance(SubSkillType.MINING_DOUBLE_DROPS) < 1) {
             reason.add("Skills.Mining.DoubleDrops.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.MINING_DOUBLE_DROPS) < 1) {
+        if (getMaxBonusLevel(SubSkillType.MINING_DOUBLE_DROPS) < 1) {
             reason.add("Skills.Mining.DoubleDrops.MaxBonusLevel should be at least 1!");
         }
 
@@ -365,11 +361,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Repair.RepairMastery.MaxBonusLevel should be at least 1!");
         }
 
-        if (getMaxChance(SubSkill.REPAIR_SUPER_REPAIR) < 1) {
+        if (getMaxChance(SubSkillType.REPAIR_SUPER_REPAIR) < 1) {
             reason.add("Skills.Repair.SuperRepair.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.REPAIR_SUPER_REPAIR) < 1) {
+        if (getMaxBonusLevel(SubSkillType.REPAIR_SUPER_REPAIR) < 1) {
             reason.add("Skills.Repair.SuperRepair.MaxBonusLevel should be at least 1!");
         }
 
@@ -459,11 +455,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Smelting.FuelEfficiency.Multiplier should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.SMELTING_SECOND_SMELT) < 1) {
+        if (getMaxBonusLevel(SubSkillType.SMELTING_SECOND_SMELT) < 1) {
             reason.add("Skills.Smelting.SecondSmelt.MaxBonusLevel should be at least 1!");
         }
 
-        if (getMaxChance(SubSkill.SMELTING_SECOND_SMELT) < 1) {
+        if (getMaxChance(SubSkillType.SMELTING_SECOND_SMELT) < 1) {
             reason.add("Skills.Smelting.SecondSmelt.ChanceMax should be at least 1!");
         }
 
@@ -500,11 +496,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         /* SWORDS */
-        if (getMaxChance(SubSkill.SWORDS_BLEED) < 1) {
+        if (getMaxChance(SubSkillType.SWORDS_BLEED) < 1) {
             reason.add("Skills.Swords.Bleed.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.SWORDS_BLEED) < 1) {
+        if (getMaxBonusLevel(SubSkillType.SWORDS_BLEED) < 1) {
             reason.add("Skills.Swords.Bleed.MaxBonusLevel should be at least 1!");
         }
 
@@ -520,11 +516,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Swords.Bleed.BaseTicks should be at least 1!");
         }
 
-        if (getMaxChance(SubSkill.SWORDS_COUNTER_ATTACK) < 1) {
+        if (getMaxChance(SubSkillType.SWORDS_COUNTER_ATTACK) < 1) {
             reason.add("Skills.Swords.CounterAttack.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.SWORDS_COUNTER_ATTACK) < 1) {
+        if (getMaxBonusLevel(SubSkillType.SWORDS_COUNTER_ATTACK) < 1) {
             reason.add("Skills.Swords.CounterAttack.MaxBonusLevel should be at least 1!");
         }
 
@@ -542,11 +538,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
         /* TAMING */
 
-        if (getMaxChance(SubSkill.TAMING_GORE) < 1) {
+        if (getMaxChance(SubSkillType.TAMING_GORE) < 1) {
             reason.add("Skills.Taming.Gore.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.TAMING_GORE) < 1) {
+        if (getMaxBonusLevel(SubSkillType.TAMING_GORE) < 1) {
             reason.add("Skills.Taming.Gore.MaxBonusLevel should be at least 1!");
         }
 
@@ -603,27 +599,27 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         }
 
         /* UNARMED */
-        if (getMaxChance(SubSkill.UNARMED_DISARM) < 1) {
+        if (getMaxChance(SubSkillType.UNARMED_DISARM) < 1) {
             reason.add("Skills.Unarmed.Disarm.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.UNARMED_DISARM) < 1) {
+        if (getMaxBonusLevel(SubSkillType.UNARMED_DISARM) < 1) {
             reason.add("Skills.Unarmed.Disarm.MaxBonusLevel should be at least 1!");
         }
 
-        if (getMaxChance(SubSkill.UNARMED_ARROW_DEFLECT) < 1) {
+        if (getMaxChance(SubSkillType.UNARMED_ARROW_DEFLECT) < 1) {
             reason.add("Skills.Unarmed.ArrowDeflect.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.UNARMED_ARROW_DEFLECT) < 1) {
+        if (getMaxBonusLevel(SubSkillType.UNARMED_ARROW_DEFLECT) < 1) {
             reason.add("Skills.Unarmed.ArrowDeflect.MaxBonusLevel should be at least 1!");
         }
 
-        if (getMaxChance(SubSkill.UNARMED_IRON_GRIP) < 1) {
+        if (getMaxChance(SubSkillType.UNARMED_IRON_GRIP) < 1) {
             reason.add("Skills.Unarmed.IronGrip.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.UNARMED_IRON_GRIP) < 1) {
+        if (getMaxBonusLevel(SubSkillType.UNARMED_IRON_GRIP) < 1) {
             reason.add("Skills.Unarmed.IronGrip.MaxBonusLevel should be at least 1!");
         }
 
@@ -649,11 +645,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             reason.add("Skills.Woodcutting.LeafBlower.UnlockLevel should be at least 0!");
         }
 
-        if (getMaxChance(SubSkill.WOODCUTTING_HARVEST_LUMBER) < 1) {
+        if (getMaxChance(SubSkillType.WOODCUTTING_HARVEST_LUMBER) < 1) {
             reason.add("Skills.Woodcutting.HarvestLumber.ChanceMax should be at least 1!");
         }
 
-        if (getMaxBonusLevel(SubSkill.WOODCUTTING_HARVEST_LUMBER) < 1) {
+        if (getMaxBonusLevel(SubSkillType.WOODCUTTING_HARVEST_LUMBER) < 1) {
             reason.add("Skills.Woodcutting.HarvestLumber.MaxBonusLevel should be at least 1!");
         }
 
@@ -684,19 +680,151 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     public int getAbilityLength() { return config.getInt("Skills.General.Ability.IncreaseLevel", 50); }
     public int getEnchantBuff() { return config.getInt("Skills.General.Ability.EnchantBuff", 5); }
 
-    public int getMaxBonusLevel(SubSkill subSkill) { return config.getInt(subSkill.getAdvConfigAddress() + ".MaxBonusLevel"); }
-    public double getMaxChance(SubSkill subSkill) { return config.getDouble(subSkill.getAdvConfigAddress() + ".ChanceMax", 100.0D);}
+    public int getMaxBonusLevel(SubSkillType subSkillType) { return config.getInt(subSkillType.getAdvConfigAddress() + ".MaxBonusLevel"); }
+    public double getMaxChance(SubSkillType subSkillType) { return config.getDouble(subSkillType.getAdvConfigAddress() + ".ChanceMax", 100.0D);}
+
+    public int getMaxBonusLevel(AbstractSubSkill abstractSubSkill) {
+        return config.getInt("Skills."+abstractSubSkill.getPrimaryKeyName()+"."+abstractSubSkill.getConfigKeyName()+".MaxBonusLevel");
+    }
+
+    public double getMaxChance(AbstractSubSkill abstractSubSkill)
+    {
+        return config.getDouble("Skills."+abstractSubSkill.getPrimaryKeyName()+"."+abstractSubSkill.getConfigKeyName()+".ChanceMax", 100.0D);
+    }
+
+    /* Interaction Settings */
+    public boolean doesNotificationUseActionBar(NotificationType notificationType)
+    {
+        String key = "";
+
+        switch(notificationType)
+        {
+            case XP_GAIN:
+                key = "ExperienceGain";
+                break;
+            case LEVEL_UP_MESSAGE:
+                key = "LevelUp";
+                break;
+            case SUBSKILL_MESSAGE:
+                key = "SubSkillInteraction";
+                break;
+            case SUBSKILL_UNLOCKED:
+                key = "SubSkillUnlocked";
+                break;
+            case TOOL_READY:
+                key = "ToolReady";
+                break;
+            case SUPER_ABILITY:
+                key = "SuperAbilityInteraction";
+                break;
+        }
+
+        return config.getBoolean("Skills.FeedBack.ActionBarNotifications."+key, true);
+    }
+
+    /*
+     * JSON Style Settings
+     */
+
+
+    /*public ChatColor getJSONStatHoverElementColor(StatType statType, boolean isPrefix)
+    {
+        String keyAddress = isPrefix ? "Prefix" : "Value";
+        String keyLocation = "Style.JSON.Hover.Details." + StringUtils.getCapitalized(statType.toString()) +"."+keyAddress+".Color";
+
+        return getChatColorFromKey(keyLocation);
+    }*/
+
+    /**
+     * Used to color our details header in our JSON Hover Object tooltips
+     * @return the ChatColor for this element
+     */
+    public ChatColor getJSONStatHoverDetailsColor()
+    {
+        String keyLocation = "Style.JSON.Hover.Details.Header.Color";
+        return getChatColorFromKey(keyLocation);
+    }
+
+    public boolean isJSONDetailsHeaderBold()
+    {
+        return config.getBoolean("Style.JSON.Hover.Details.Header.Bold");
+    }
+
+    public boolean isJSONDetailsHeaderItalic()
+    {
+        return config.getBoolean("Style.JSON.Hover.Details.Header.Italics");
+    }
+
+    public boolean isJSONDetailsHeaderUnderlined()
+    {
+        return config.getBoolean("Style.JSON.Hover.Details.Header.Underlined");
+    }
+
+    public ChatColor getJSONStatHoverDescriptionColor()
+    {
+        String keyLocation = "Style.JSON.Hover.Details.Description.Color";
+        return getChatColorFromKey(keyLocation);
+    }
+
+    public boolean isJSONDetailsDescriptionBold()
+    {
+        return config.getBoolean("Style.JSON.Hover.Details.Description.Bold");
+    }
+
+    public boolean isJSONDetailsDescriptionItalic()
+    {
+        return config.getBoolean("Style.JSON.Hover.Details.Description.Italics");
+    }
+
+    public boolean isJSONDetailsDescriptionUnderlined()
+    {
+        return config.getBoolean("Style.JSON.Hover.Details.Description.Underlined");
+    }
+
+    private ChatColor getChatColorFromKey(String keyLocation) {
+        String colorName = LocaleLoader.getString(keyLocation);
+
+        for (ChatColor chatColor : ChatColor.values()) {
+            if (colorName.equalsIgnoreCase(chatColor.toString()))
+                return chatColor;
+        }
+
+        //Invalid Color
+        System.out.println("[mcMMO] " + colorName + " is an invalid color value for key " + keyLocation);
+        return ChatColor.WHITE;
+    }
+
+    /*public boolean isJSONStatHoverElementBold(StatType statType, boolean isPrefix)
+    {
+        String keyAddress = isPrefix ? "Prefix" : "Value";
+        String keyLocation = "Style.JSON.Hover.Details." + StringUtils.getCapitalized(statType.toString()) +"."+keyAddress+".Bold";
+        return config.getBoolean(keyLocation);
+    }
+
+    public boolean isJSONStatHoverElementItalic(StatType statType, boolean isPrefix)
+    {
+        String keyAddress = isPrefix ? "Prefix" : "Value";
+        String keyLocation = "Style.JSON.Hover.Details." + StringUtils.getCapitalized(statType.toString()) +"."+keyAddress+".Italics";
+        return config.getBoolean(keyLocation);
+    }
+
+    public boolean isJSONStatHoverElementUnderlined(StatType statType, boolean isPrefix)
+    {
+        String keyAddress = isPrefix ? "Prefix" : "Value";
+        String keyLocation = "Style.JSON.Hover.Details." + StringUtils.getCapitalized(statType.toString()) +"."+keyAddress+".Underline";
+        return config.getBoolean(keyLocation);
+    }*/
 
 
     /**
      * Gets the level required to unlock a subskill at a given rank
-     * @param subSkill The subskill
+     * @param subSkillType The subskill
      * @param rank The rank of the skill
      * @return The level required to use this rank of the subskill
      * @deprecated Right now mcMMO is an overhaul process, this will only work for skills I have overhauled. I will be removing the deprecated tag when that is true.
      */
     @Deprecated
-    public int getSubSkillUnlockLevel(SubSkill subSkill, int rank)
+    public int getSubSkillUnlockLevel(SubSkillType subSkillType, int rank)
     {
         /*
          * This is a bit messy but
@@ -706,20 +834,40 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
          *
          * Other skills which do not have complex per-rank settings will instead find their Level Requirement returned at Rank_x
          */
-        if(config.get(subSkill.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank+".LevelReq") != null)
-            return config.getInt(subSkill.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank+".LevelReq");
+        if(config.get(subSkillType.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank+".LevelReq") != null)
+            return config.getInt(subSkillType.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank+".LevelReq");
         else
-            return config.getInt(subSkill.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank);
+            return config.getInt(subSkillType.getAdvConfigAddress() + ".Rank_Levels.Rank_"+rank);
+    }
+
+    @Deprecated /* NEW VERSION */
+    public int getSubSkillUnlockLevel(AbstractSubSkill abstractSubSkill, int rank)
+    {
+        /*
+         * This is a bit messy but
+         *
+         * Some skills have per-rank settings as child nodes for Rank_x nodes
+         * If they do, we have to grab the child node named LevelReq from Rank_x for that skill
+         *
+         * Other skills which do not have complex per-rank settings will instead find their Level Requirement returned at Rank_x
+         */
+
+        String key = "Skills."+abstractSubSkill.getPrimaryKeyName()+"."+abstractSubSkill.getConfigKeyName();
+
+        if(config.get(key + ".Rank_Levels.Rank_"+rank+".LevelReq") != null)
+            return config.getInt(key + ".Rank_Levels.Rank_"+rank+".LevelReq");
+        else
+            return config.getInt(key + ".Rank_Levels.Rank_"+rank);
     }
 
     /**
      * Some SubSkills have the ability to retain classic functionality
-     * @param subSkill SubSkill with classic functionality
+     * @param subSkillType SubSkillType with classic functionality
      * @return true if the subskill is in classic mode
      */
-    public boolean isSubSkillClassic(SubSkill subSkill)
+    public boolean isSubSkillClassic(SubSkillType subSkillType)
     {
-        return config.getBoolean(subSkill.getAdvConfigAddress()+".Classic");
+        return config.getBoolean(subSkillType.getAdvConfigAddress()+".Classic");
     }
 
     /* ACROBATICS */
@@ -894,29 +1042,29 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     private void checkKeys(List<String> reasons)
     {
         //For now we will only check ranks of stuff I've overhauled
-        for(SubSkill subSkill : SubSkill.values())
+        for(SubSkillType subSkillType : SubSkillType.values())
         {
-            if(subSkill.getParentSkill() == PrimarySkill.WOODCUTTING)
+            if(subSkillType.getParentSkill() == PrimarySkill.WOODCUTTING)
             {
                 //Keeping track of the rank requirements and making sure there are no logical errors
                 int curRank = 0;
                 int prevRank = 0;
 
-                for(int x = 0; x < subSkill.getNumRanks(); x++)
+                for(int x = 0; x < subSkillType.getNumRanks(); x++)
                 {
                     if(curRank > 0)
                         prevRank = curRank;
 
-                    curRank = getSubSkillUnlockLevel(subSkill, x);
+                    curRank = getSubSkillUnlockLevel(subSkillType, x);
 
                     //Do we really care if its below 0? Probably not
                     if(curRank < 0)
-                        reasons.add(subSkill.getAdvConfigAddress() + ".Rank_Levels.Rank_"+curRank+".LevelReq should be above or equal to 0!");
+                        reasons.add(subSkillType.getAdvConfigAddress() + ".Rank_Levels.Rank_"+curRank+".LevelReq should be above or equal to 0!");
 
                     if(prevRank > curRank)
                     {
                         //We're going to allow this but we're going to warn them
-                        plugin.getLogger().info("You have the ranks for the subskill "+subSkill.toString()+" set up poorly, sequential ranks should have ascending requirements");
+                        plugin.getLogger().info("You have the ranks for the subskill "+ subSkillType.toString()+" set up poorly, sequential ranks should have ascending requirements");
                     }
                 }
             }

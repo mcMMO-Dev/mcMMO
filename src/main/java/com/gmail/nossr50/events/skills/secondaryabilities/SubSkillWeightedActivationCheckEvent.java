@@ -1,13 +1,20 @@
 package com.gmail.nossr50.events.skills.secondaryabilities;
 
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import org.bukkit.entity.Player;
 
 public class SubSkillWeightedActivationCheckEvent extends SubSkillEvent {
     private double chance;
 
-    public SubSkillWeightedActivationCheckEvent(Player player, SubSkill ability, double chance) {
+    public SubSkillWeightedActivationCheckEvent(Player player, SubSkillType ability, double chance) {
         super(player, ability);
+        this.chance = chance;
+    }
+
+    public SubSkillWeightedActivationCheckEvent(Player player, AbstractSubSkill abstractSubSkill, double chance)
+    {
+        super(player, abstractSubSkill);
         this.chance = chance;
     }
 

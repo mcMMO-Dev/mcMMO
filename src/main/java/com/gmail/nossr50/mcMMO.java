@@ -2,6 +2,7 @@ package com.gmail.nossr50;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.config.CoreSkillsConfig;
 import com.gmail.nossr50.config.HiddenConfig;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.mods.ArmorConfigManager;
@@ -14,6 +15,8 @@ import com.gmail.nossr50.config.skills.salvage.SalvageConfigManager;
 import com.gmail.nossr50.config.treasure.TreasureConfig;
 import com.gmail.nossr50.database.DatabaseManager;
 import com.gmail.nossr50.database.DatabaseManagerFactory;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.subskills.acrobatics.Roll;
 import com.gmail.nossr50.listeners.*;
 import com.gmail.nossr50.party.PartyManager;
 import com.gmail.nossr50.runnables.CheckDateTask;
@@ -104,7 +107,7 @@ public class mcMMO extends JavaPlugin {
     public final static String infiniteArrowKey    = "mcMMO: Infinite Arrow";
     public final static String bowForceKey         = "mcMMO: Bow Force";
     public final static String arrowDistanceKey    = "mcMMO: Arrow Distance";
-    public final static String customDamageKey     = "mcMMO: Custom Damage";
+    //public final static String customDamageKey     = "mcMMO: Custom Damage";
     public final static String disarmedItemKey     = "mcMMO: Disarmed Item";
     public final static String playerDataKey       = "mcMMO: Player Data";
     public final static String greenThumbDataKey   = "mcMMO: Green Thumb";
@@ -154,6 +157,7 @@ public class mcMMO extends JavaPlugin {
             databaseManager = DatabaseManagerFactory.getDatabaseManager();
 
             registerEvents();
+            registerCoreSkills();
             registerCustomRecipes();
 
             PartyManager.loadParties();
@@ -376,6 +380,8 @@ public class mcMMO extends JavaPlugin {
         HiddenConfig.getInstance();
         AdvancedConfig.getInstance();
         PotionConfig.getInstance();
+        CoreSkillsConfig.getInstance();
+
         new ChildConfig();
 
         List<Repairable> repairables = new ArrayList<Repairable>();
@@ -420,6 +426,26 @@ public class mcMMO extends JavaPlugin {
         pluginManager.registerEvents(new InventoryListener(this), this);
         pluginManager.registerEvents(new SelfListener(), this);
         pluginManager.registerEvents(new WorldListener(this), this);
+    }
+
+    /**
+     * Registers core skills
+     * This enables the skills in the new skill system
+     */
+    private void registerCoreSkills() {
+        /*
+         * Acrobatics skills
+         */
+
+        if(CoreSkillsConfig.getInstance().isPrimarySkillEnabled(PrimarySkill.ACROBATICS))
+        {
+            System.out.println("[mcMMO]" + " enabling Acrobatics Skills");
+
+            //TODO: Should do this differently
+            Roll roll = new Roll();
+            CoreSkillsConfig.getInstance().isSkillEnabled(roll);
+            InteractionManager.registerSubSkill(new Roll());
+        }
     }
 
     private void registerCustomRecipes() {

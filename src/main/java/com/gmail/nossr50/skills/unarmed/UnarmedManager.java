@@ -2,9 +2,9 @@ package com.gmail.nossr50.skills.unarmed;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -14,7 +14,7 @@ import com.gmail.nossr50.util.ItemUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
-import com.gmail.nossr50.util.skills.SubSkillActivationType;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -34,7 +34,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseIronArm() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.UNARMED_IRON_ARM_STYLE);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_IRON_ARM_STYLE);
     }
 
     public boolean canUseBerserk() {
@@ -42,21 +42,21 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canDisarm(LivingEntity target) {
-        return target instanceof Player && ((Player) target).getInventory().getItemInMainHand().getType() != Material.AIR && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.UNARMED_DISARM);
+        return target instanceof Player && ((Player) target).getInventory().getItemInMainHand().getType() != Material.AIR && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_DISARM);
     }
 
     public boolean canDeflect() {
         Player player = getPlayer();
 
-        return ItemUtils.isUnarmed(player.getInventory().getItemInMainHand()) && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.UNARMED_ARROW_DEFLECT);
+        return ItemUtils.isUnarmed(player.getInventory().getItemInMainHand()) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_ARROW_DEFLECT);
     }
 
     public boolean canUseBlockCracker() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.UNARMED_BLOCK_CRACKER);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.UNARMED_BLOCK_CRACKER);
     }
 
     public boolean blockCrackerCheck(BlockState blockState) {
-        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.ALWAYS_FIRES, SubSkill.UNARMED_BLOCK_CRACKER, getPlayer(), null, 0, 0)) {
+        if (!SkillUtils.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.UNARMED_BLOCK_CRACKER, getPlayer(), null, 0, 0)) {
             return false;
         }
 
@@ -82,7 +82,7 @@ public class UnarmedManager extends SkillManager {
      * @param defender The defending player
      */
     public void disarmCheck(Player defender) {
-        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.UNARMED_DISARM, getPlayer(), this.skill, getSkillLevel(), activationChance) && !hasIronGrip(defender)) {
+        if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_DISARM, getPlayer(), this.skill, getSkillLevel(), activationChance) && !hasIronGrip(defender)) {
             if (EventUtils.callDisarmEvent(defender).isCancelled()) {
                 return;
             }
@@ -102,7 +102,7 @@ public class UnarmedManager extends SkillManager {
      * Check for arrow deflection.
      */
     public boolean deflectCheck() {
-        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.UNARMED_ARROW_DEFLECT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.UNARMED_ARROW_DEFLECT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             getPlayer().sendMessage(LocaleLoader.getString("Combat.ArrowDeflect"));
             return true;
         }
@@ -125,7 +125,7 @@ public class UnarmedManager extends SkillManager {
      * Handle the effects of the Iron Arm ability
      */
     public double ironArm() {
-        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.ALWAYS_FIRES, SubSkill.UNARMED_IRON_ARM_STYLE, getPlayer(), null, 0, 0)) {
+        if (!SkillUtils.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.UNARMED_IRON_ARM_STYLE, getPlayer(), null, 0, 0)) {
             return 0;
         }
 
@@ -140,7 +140,7 @@ public class UnarmedManager extends SkillManager {
      * @return true if the defender was not disarmed, false otherwise
      */
     private boolean hasIronGrip(Player defender) {
-        if (!Misc.isNPCEntity(defender) && Permissions.isSubSkillEnabled(defender, SubSkill.UNARMED_IRON_GRIP) && SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_NO_CAP, SubSkill.UNARMED_IRON_GRIP, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (!Misc.isNPCEntity(defender) && Permissions.isSubSkillEnabled(defender, SubSkillType.UNARMED_IRON_GRIP) && SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_NO_CAP, SubSkillType.UNARMED_IRON_GRIP, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             defender.sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Defender"));
             getPlayer().sendMessage(LocaleLoader.getString("Unarmed.Ability.IronGrip.Attacker"));
 

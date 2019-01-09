@@ -3,7 +3,8 @@ package com.gmail.nossr50.listeners;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.events.fake.FakeEntityDamageByEntityEvent;
 import com.gmail.nossr50.events.fake.FakeEntityDamageEvent;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
@@ -159,11 +160,14 @@ public class EntityListener implements Listener {
         }
 
 
+        /*
+        As far as I can tell at one point we registered meta-data about custom damage and we no longer do that.
 
         if (defender.hasMetadata(mcMMO.customDamageKey)) {
             defender.removeMetadata(mcMMO.customDamageKey, plugin);
             return;
         }
+        */
 
         if (Misc.isNPCEntity(defender) || !defender.isValid() || !(defender instanceof LivingEntity)) {
             return;
@@ -233,6 +237,16 @@ public class EntityListener implements Listener {
      */
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageEvent event) {
+        /*
+         * Process Registered Interactions
+         */
+
+        InteractionManager.processEvent(event, plugin, InteractType.ON_ENTITY_DAMAGE);
+
+        /*
+         * Old code
+         */
+
         if (event instanceof FakeEntityDamageEvent) {
             return;
         }
@@ -245,10 +259,13 @@ public class EntityListener implements Listener {
 
         Entity entity = event.getEntity();
 
+        /*
+        As far as I can tell at one point we registered meta-data about custom damage and we no longer do that.
         if (entity.hasMetadata(mcMMO.customDamageKey)) {
             entity.removeMetadata(mcMMO.customDamageKey, plugin);
             return;
         }
+        */
 
         if (Misc.isNPCEntity(entity) || !entity.isValid() || !(entity instanceof LivingEntity)) {
             return;
@@ -277,32 +294,11 @@ public class EntityListener implements Listener {
                 return;
             }
 
-            switch (cause) {
-                case FALL:
-                    if (!SkillUtils.cooldownExpired((long) mcMMOPlayer.getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
-                        return;
-                    }
-
-                    AcrobaticsManager acrobaticsManager = mcMMOPlayer.getAcrobaticsManager();
-
-                    if (acrobaticsManager.canRoll()) {
-                        event.setDamage(acrobaticsManager.rollCheck(event.getDamage()));
-
-                        if (event.getFinalDamage() == 0) {
-                            event.setCancelled(true);
-                            return;
-                        }
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-
             if (event.getFinalDamage() >= 1) {
                 mcMMOPlayer.actualizeRecentlyHurt();
             }
         }
+
         else if (livingEntity instanceof Tameable) {
             Tameable pet = (Tameable) livingEntity;
             AnimalTamer owner = pet.getOwner();
@@ -583,7 +579,7 @@ public class EntityListener implements Listener {
                                * RESTORES 4 HUNGER - RESTORES 6 1/2 HUNGER @
                                * 1000
                                */
-                if (Permissions.isSubSkillEnabled(player, SubSkill.HERBALISM_FARMERS_DIET)) {
+                if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel1, newFoodLevel));
                 }
                 return;
@@ -595,7 +591,7 @@ public class EntityListener implements Listener {
                                     * @ 1000
                                     */
             case POTATO: /* RESTORES 1/2 HUNGER - RESTORES 2 HUNGER @ 1000 */
-                if (Permissions.isSubSkillEnabled(player, SubSkill.HERBALISM_FARMERS_DIET)) {
+                if (Permissions.isSubSkillEnabled(player, SubSkillType.HERBALISM_FARMERS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getHerbalismManager().farmersDiet(Herbalism.farmersDietRankLevel2, newFoodLevel));
                 }
                 return;
@@ -604,13 +600,13 @@ public class EntityListener implements Listener {
                                * RESTORES 2 1/2 HUNGER - RESTORES 5 HUNGER @
                                * 1000
                                */
-                if (Permissions.isSubSkillEnabled(player, SubSkill.FISHING_FISHERMANS_DIET)) {
+                if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel1, newFoodLevel));
                 }
                 return;
 
             case SALMON: /* RESTORES 1 HUNGER - RESTORES 2 1/2 HUNGER @ 1000 */
-                if (Permissions.isSubSkillEnabled(player, SubSkill.FISHING_FISHERMANS_DIET)) {
+                if (Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET)) {
                     event.setFoodLevel(UserManager.getPlayer(player).getFishingManager().handleFishermanDiet(Fishing.fishermansDietRankLevel2, newFoodLevel));
                 }
                 return;

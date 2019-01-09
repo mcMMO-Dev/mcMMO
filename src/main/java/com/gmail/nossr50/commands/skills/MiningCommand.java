@@ -3,8 +3,8 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.SubSkill;
-import com.gmail.nossr50.util.SkillTextComponentFactory;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -51,7 +51,7 @@ public class MiningCommand extends SkillCommand {
 
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SubSkill.MINING_DOUBLE_DROPS, isLucky);
+            String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.MINING_DOUBLE_DROPS, isLucky);
             doubleDropChance = doubleDropStrings[0];
             doubleDropChanceLucky = doubleDropStrings[1];
         }
@@ -74,7 +74,7 @@ public class MiningCommand extends SkillCommand {
         canBiggerBombs = Permissions.biggerBombs(player);
         canBlast = Permissions.remoteDetonation(player);
         canDemoExpert = Permissions.demolitionsExpertise(player);
-        canDoubleDrop = Permissions.isSubSkillEnabled(player, SubSkill.MINING_DOUBLE_DROPS) && !skill.getDoubleDropsDisabled();
+        canDoubleDrop = Permissions.isSubSkillEnabled(player, SubSkillType.MINING_DOUBLE_DROPS) && !skill.getDoubleDropsDisabled();
         canSuperBreaker = Permissions.superBreaker(player);
     }
 
@@ -157,7 +157,7 @@ public class MiningCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.MINING);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.MINING);
 
         return textComponents;
     }

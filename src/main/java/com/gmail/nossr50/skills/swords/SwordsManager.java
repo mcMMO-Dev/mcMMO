@@ -3,9 +3,9 @@ package com.gmail.nossr50.skills.swords;
 import java.util.Map;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbility;
-import com.gmail.nossr50.util.skills.SubSkillActivationType;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -32,11 +32,11 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseBleed() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.SWORDS_BLEED);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_BLEED);
     }
 
     public boolean canUseCounterAttack(Entity target) {
-        return target instanceof LivingEntity && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.SWORDS_COUNTER_ATTACK);
+        return target instanceof LivingEntity && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SWORDS_COUNTER_ATTACK);
     }
 
     public boolean canUseSerratedStrike() {
@@ -49,9 +49,9 @@ public class SwordsManager extends SkillManager {
      * @param target The defending entity
      */
     public void bleedCheck(LivingEntity target) {
-        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.SWORDS_BLEED, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_BLEED, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
 
-            if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SubSkill.SWORDS_BLEED)) {
+            if (getSkillLevel() >= AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.SWORDS_BLEED)) {
                 BleedTimerTask.add(target, Swords.bleedMaxTicks);
             }
             else {
@@ -83,7 +83,7 @@ public class SwordsManager extends SkillManager {
             return;
         }
 
-        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.SWORDS_COUNTER_ATTACK, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SWORDS_COUNTER_ATTACK, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             CombatUtils.dealDamage(attacker, damage / Swords.counterAttackModifier, getPlayer());
 
             getPlayer().sendMessage(LocaleLoader.getString("Swords.Combat.Countered"));

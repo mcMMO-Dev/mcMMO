@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
-import com.gmail.nossr50.util.SkillTextComponentFactory;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -41,7 +41,7 @@ public class WoodcuttingCommand extends SkillCommand {
 
         // DOUBLE DROPS
         if (canDoubleDrop) {
-            if(AdvancedConfig.getInstance().isSubSkillClassic(SubSkill.WOODCUTTING_HARVEST_LUMBER))
+            if(AdvancedConfig.getInstance().isSubSkillClassic(SubSkillType.WOODCUTTING_HARVEST_LUMBER))
                 setDoubleDropClassicChanceStrings(skillValue, isLucky);
             else
             {
@@ -51,7 +51,7 @@ public class WoodcuttingCommand extends SkillCommand {
     }
 
     private void setDoubleDropClassicChanceStrings(float skillValue, boolean isLucky) {
-        String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SubSkill.WOODCUTTING_HARVEST_LUMBER, isLucky);
+        String[] doubleDropStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.WOODCUTTING_HARVEST_LUMBER, isLucky);
         doubleDropChance = doubleDropStrings[0];
         doubleDropChanceLucky = doubleDropStrings[1];
     }
@@ -59,11 +59,11 @@ public class WoodcuttingCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canTreeFell = Permissions.treeFeller(player);
-        canDoubleDrop = Permissions.isSubSkillEnabled(player, SubSkill.WOODCUTTING_HARVEST_LUMBER) && !skill.getDoubleDropsDisabled();
-        canLeafBlow = Permissions.isSubSkillEnabled(player, SubSkill.WOODCUTTING_LEAF_BLOWER);
-        canSplinter = Permissions.isSubSkillEnabled(player, SubSkill.WOODCUTTING_SPLINTER);
-        canBarkSurgeon = Permissions.isSubSkillEnabled(player, SubSkill.WOODCUTTING_BARK_SURGEON);
-        canNaturesBounty = Permissions.isSubSkillEnabled(player, SubSkill.WOODCUTTING_NATURES_BOUNTY);
+        canDoubleDrop = Permissions.isSubSkillEnabled(player, SubSkillType.WOODCUTTING_HARVEST_LUMBER) && !skill.getDoubleDropsDisabled();
+        canLeafBlow = Permissions.isSubSkillEnabled(player, SubSkillType.WOODCUTTING_LEAF_BLOWER);
+        canSplinter = Permissions.isSubSkillEnabled(player, SubSkillType.WOODCUTTING_SPLINTER);
+        canBarkSurgeon = Permissions.isSubSkillEnabled(player, SubSkillType.WOODCUTTING_BARK_SURGEON);
+        canNaturesBounty = Permissions.isSubSkillEnabled(player, SubSkillType.WOODCUTTING_NATURES_BOUNTY);
     }
 
     @Override
@@ -129,7 +129,7 @@ public class WoodcuttingCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.WOODCUTTING);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.WOODCUTTING);
 
         return textComponents;
     }

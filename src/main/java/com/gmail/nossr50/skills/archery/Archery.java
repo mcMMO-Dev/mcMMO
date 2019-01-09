@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -76,7 +76,7 @@ public class Archery {
      */
     public static double getSkillShotBonusDamage(Player player, double oldDamage)
     {
-        double damageBonusPercent = ((RankUtils.getRank(player, SubSkill.ARCHERY_SKILL_SHOT)) * Archery.skillShotIncreasePercentage) / 100.0D;
+        double damageBonusPercent = ((RankUtils.getRank(player, SubSkillType.ARCHERY_SKILL_SHOT)) * Archery.skillShotIncreasePercentage) / 100.0D;
         return Math.min(oldDamage * damageBonusPercent, Archery.skillShotMaxBonusDamage);
     }
 }

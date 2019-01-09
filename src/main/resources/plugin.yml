@@ -222,12 +222,9 @@ permissions:
         description: Allows access to all Acrobatics abilities
         children:
             mcmmo.ability.acrobatics.dodge: true
-            mcmmo.ability.acrobatics.gracefulroll: true
             mcmmo.ability.acrobatics.roll: true
     mcmmo.ability.acrobatics.dodge:
         description: Allows access to the Dodge ability
-    mcmmo.ability.acrobatics.gracefulroll:
-        description: Allows access to the Graceful Roll ability
     mcmmo.ability.acrobatics.roll:
         description: Allows access to the Roll ability
     mcmmo.ability.alchemy.*:

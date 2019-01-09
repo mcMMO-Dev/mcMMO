@@ -1,7 +1,6 @@
 package com.gmail.nossr50.skills.axes;
 
-import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.skills.RankUtils;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -43,6 +42,6 @@ public class Axes {
      */
     public static double getAxeMasteryBonusDamage(Player player)
     {
-        return RankUtils.getRank(player, SubSkill.AXES_AXE_MASTERY) * Axes.axeMasteryRankDamageMultiplier;
+        return RankUtils.getRank(player, SubSkillType.AXES_AXE_MASTERY) * Axes.axeMasteryRankDamageMultiplier;
     }
 }

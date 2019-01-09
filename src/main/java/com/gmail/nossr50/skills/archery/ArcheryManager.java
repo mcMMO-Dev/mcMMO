@@ -1,7 +1,7 @@
 package com.gmail.nossr50.skills.archery;
 
-import com.gmail.nossr50.datatypes.skills.SubSkill;
-import com.gmail.nossr50.util.skills.SubSkillActivationType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -25,15 +25,15 @@ public class ArcheryManager extends SkillManager {
     }
 
     public boolean canDaze(LivingEntity target) {
-        return target instanceof Player && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.ARCHERY_DAZE);
+        return target instanceof Player && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_DAZE);
     }
 
     public boolean canSkillShot() {
-        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.ARCHERY_SKILL_SHOT);
+        return getSkillLevel() >= Archery.skillShotIncreaseLevel && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_SKILL_SHOT);
     }
 
     public boolean canRetrieveArrows() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.ARCHERY_ARROW_RETRIEVAL);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ARCHERY_ARROW_RETRIEVAL);
     }
 
     /**
@@ -59,7 +59,7 @@ public class ArcheryManager extends SkillManager {
      * @param target The {@link LivingEntity} damaged by the arrow
      */
     public void retrieveArrows(LivingEntity target) {
-        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.ARCHERY_ARROW_RETRIEVAL, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_ARROW_RETRIEVAL, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             Archery.incrementTrackerValue(target);
         }
     }
@@ -70,7 +70,7 @@ public class ArcheryManager extends SkillManager {
      * @param defender The {@link Player} being affected by the ability
      */
     public double daze(Player defender) {
-        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.ARCHERY_DAZE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (!SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ARCHERY_DAZE, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return 0;
         }
 
@@ -97,7 +97,7 @@ public class ArcheryManager extends SkillManager {
      * @param oldDamage The raw damage value of this arrow before we modify it
      */
     public double skillShot(double oldDamage) {
-        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.ALWAYS_FIRES, SubSkill.ARCHERY_SKILL_SHOT, getPlayer(), null, 0, 0)) {
+        if (!SkillUtils.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.ARCHERY_SKILL_SHOT, getPlayer(), null, 0, 0)) {
             return oldDamage;
         }
 

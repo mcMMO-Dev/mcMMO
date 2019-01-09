@@ -3,18 +3,16 @@ package com.gmail.nossr50.util;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
+import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelChangeEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelDownEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerLevelUpEvent;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
-import com.gmail.nossr50.events.fake.FakeBlockBreakEvent;
-import com.gmail.nossr50.events.fake.FakeBlockDamageEvent;
-import com.gmail.nossr50.events.fake.FakePlayerAnimationEvent;
-import com.gmail.nossr50.events.fake.FakePlayerFishEvent;
+import com.gmail.nossr50.events.fake.*;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerPreDeathPenaltyEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerStatLossEvent;
 import com.gmail.nossr50.events.hardcore.McMMOPlayerVampirismEvent;
@@ -32,10 +30,15 @@ import com.gmail.nossr50.events.skills.salvage.McMMOPlayerSalvageCheckEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.skills.CombatUtils;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.FishHook;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
@@ -43,7 +46,100 @@ import org.bukkit.plugin.PluginManager;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class is meant to help make event related code less boilerplate
+ */
 public class EventUtils {
+    /*
+     * Quality of Life methods
+     */
+    /**
+     * Checks to see if damage is from natural sources
+     * This cannot be used to determine if damage is from vanilla MC, it just checks to see if the damage is from a complex behaviour in mcMMO such as bleed.
+     *
+     * @param event this event
+     * @return true if damage is NOT from an unnatural mcMMO skill (such as bleed DOTs)
+     */
+    public static boolean isDamageFromMcMMOComplexBehaviour(Event event) {
+        if (event instanceof FakeEntityDamageEvent) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * This little method is just to make the code more readable
+     * @param entity target entity
+     * @return the associated McMMOPlayer for this entity
+     */
+    public static McMMOPlayer getMcMMOPlayer(Entity entity)
+    {
+        return UserManager.getPlayer((Player)entity);
+    }
+
+    /**
+     * Checks to see if a Player was damaged in this EntityDamageEvent
+     *
+     * This method checks for the following things and if they are all true it returns true
+     *
+     * 1) The player is real and not an NPC
+     * 2) The player is not in god mode
+     * 3) The damage dealt is above 0
+     * 4) The player is loaded into our mcMMO user profiles
+     *
+     * @param entityDamageEvent
+     * @return
+     */
+    public static boolean isRealPlayerDamaged(EntityDamageEvent entityDamageEvent)
+    {
+        //Make sure the damage is above 0
+        double damage = entityDamageEvent.getFinalDamage();
+
+        if (damage <= 0) {
+            return false;
+        }
+
+        Entity entity = entityDamageEvent.getEntity();
+
+        //Check to make sure the entity is not an NPC
+        if(Misc.isNPCEntity(entity))
+            return false;
+
+        if (!entity.isValid() || !(entity instanceof LivingEntity)) {
+            return false;
+        }
+
+        LivingEntity livingEntity = (LivingEntity) entity;
+
+        if (CombatUtils.isInvincible(livingEntity, damage)) {
+            return false;
+        }
+
+        if (livingEntity instanceof Player) {
+            Player player = (Player) entity;
+
+            if (!UserManager.hasPlayerDataKey(player)) {
+                return false;
+            }
+
+            McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
+
+            /* Check for invincibility */
+            if (mcMMOPlayer.getGodMode()) {
+                entityDamageEvent.setCancelled(true);
+                return false;
+            }
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /*
+     * Others
+     */
+
     public static McMMOPlayerAbilityActivateEvent callPlayerAbilityActivateEvent(Player player, PrimarySkill skill) {
         McMMOPlayerAbilityActivateEvent event = new McMMOPlayerAbilityActivateEvent(player, skill);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
@@ -51,8 +147,28 @@ public class EventUtils {
         return event;
     }
 
-    public static SubSkillEvent callSubSkillEvent(Player player, SubSkill subSkill) {
-        SubSkillEvent event = new SubSkillEvent(player, subSkill);
+    /**
+     * Calls a new SubSkillEvent for this SubSkill and then returns it
+     * @param player target player
+     * @param subSkillType target subskill
+     * @return the event after it has been fired
+     */
+    @Deprecated
+    public static SubSkillEvent callSubSkillEvent(Player player, SubSkillType subSkillType) {
+        SubSkillEvent event = new SubSkillEvent(player, subSkillType);
+        mcMMO.p.getServer().getPluginManager().callEvent(event);
+
+        return event;
+    }
+
+    /**
+     * Calls a new SubSkillEvent for this SubSkill and then returns it
+     * @param player target player
+     * @param abstractSubSkill target subskill
+     * @return the event after it has been fired
+     */
+    public static SubSkillEvent callSubSkillEvent(Player player, AbstractSubSkill abstractSubSkill) {
+        SubSkillEvent event = new SubSkillEvent(player, abstractSubSkill);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 
         return event;
@@ -286,4 +402,6 @@ public class EventUtils {
 
         return event;
     }
+
+
 }

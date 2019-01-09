@@ -8,7 +8,7 @@ import org.bukkit.block.BlockState;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.datatypes.treasure.ExcavationTreasure;
 import com.gmail.nossr50.skills.SkillManager;
@@ -29,7 +29,7 @@ public class ExcavationManager extends SkillManager {
     public void excavationBlockCheck(BlockState blockState) {
         int xp = Excavation.getBlockXP(blockState);
 
-        if (Permissions.isSubSkillEnabled(getPlayer(), SubSkill.EXCAVATION_TREASURE_HUNTER)) {
+        if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.EXCAVATION_TREASURE_HUNTER)) {
             List<ExcavationTreasure> treasures = Excavation.getTreasures(blockState);
 
             if (!treasures.isEmpty()) {

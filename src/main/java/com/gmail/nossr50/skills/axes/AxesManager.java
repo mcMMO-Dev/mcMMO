@@ -2,7 +2,7 @@ package com.gmail.nossr50.skills.axes;
 
 import java.util.Map;
 
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.util.skills.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -25,19 +25,19 @@ public class AxesManager extends SkillManager {
     }
 
     public boolean canUseAxeMastery() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.AXES_AXE_MASTERY);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_AXE_MASTERY);
     }
 
     public boolean canCriticalHit(LivingEntity target) {
-        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.AXES_CRITICAL_STRIKES);
+        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_CRITICAL_STRIKES);
     }
 
     public boolean canImpact(LivingEntity target) {
-        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.AXES_ARMOR_IMPACT) && Axes.hasArmor(target);
+        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_ARMOR_IMPACT) && Axes.hasArmor(target);
     }
 
     public boolean canGreaterImpact(LivingEntity target) {
-        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.AXES_GREATER_IMPACT) && !Axes.hasArmor(target);
+        return target.isValid() && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.AXES_GREATER_IMPACT) && !Axes.hasArmor(target);
     }
 
     public boolean canUseSkullSplitter(LivingEntity target) {
@@ -52,7 +52,7 @@ public class AxesManager extends SkillManager {
      * Handle the effects of the Axe Mastery ability
      */
     public double axeMastery() {
-        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.ALWAYS_FIRES, SubSkill.AXES_AXE_MASTERY, getPlayer(), null, 0, 0)) {
+        if (!SkillUtils.isActivationSuccessful(SkillActivationType.ALWAYS_FIRES, SubSkillType.AXES_AXE_MASTERY, getPlayer(), null, 0, 0)) {
             return 0;
         }
 
@@ -66,7 +66,7 @@ public class AxesManager extends SkillManager {
      * @param damage The amount of damage initially dealt by the event
      */
     public double criticalHit(LivingEntity target, double damage) {
-        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.AXES_CRITICAL_STRIKES, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (!SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.AXES_CRITICAL_STRIKES, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return 0;
         }
 
@@ -102,7 +102,7 @@ public class AxesManager extends SkillManager {
 
         for (ItemStack armor : target.getEquipment().getArmorContents()) {
             if (armor != null && ItemUtils.isArmor(armor)) {
-                if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_STATIC_CHANCE, SubSkill.AXES_ARMOR_IMPACT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+                if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.AXES_ARMOR_IMPACT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
                     SkillUtils.handleDurabilityChange(armor, durabilityDamage, Axes.impactMaxDurabilityModifier);
                 }
             }
@@ -116,7 +116,7 @@ public class AxesManager extends SkillManager {
      */
     public double greaterImpact(LivingEntity target) {
         //static chance (3rd param)
-        if (!SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_STATIC_CHANCE, SubSkill.AXES_GREATER_IMPACT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (!SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_STATIC_CHANCE, SubSkillType.AXES_GREATER_IMPACT, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             return 0;
         }
 

@@ -1,7 +1,7 @@
 package com.gmail.nossr50.commands.skills;
 
 import com.gmail.nossr50.datatypes.skills.MaterialType;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -11,7 +11,7 @@ import com.gmail.nossr50.skills.repair.Repair;
 import com.gmail.nossr50.skills.repair.RepairManager;
 import com.gmail.nossr50.skills.repair.repairables.Repairable;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.SkillTextComponentFactory;
+import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.player.UserManager;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Material;
@@ -67,7 +67,7 @@ public class RepairCommand extends SkillCommand {
 
         // SUPER REPAIR
         if (canSuperRepair) {
-            String[] superRepairStrings = calculateAbilityDisplayValues(skillValue, SubSkill.REPAIR_SUPER_REPAIR, isLucky);
+            String[] superRepairStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.REPAIR_SUPER_REPAIR, isLucky);
             superRepairChance = superRepairStrings[0];
             superRepairChanceLucky = superRepairStrings[1];
         }
@@ -75,9 +75,9 @@ public class RepairCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canSuperRepair = Permissions.isSubSkillEnabled(player, SubSkill.REPAIR_SUPER_REPAIR);
-        canMasterRepair = Permissions.isSubSkillEnabled(player, SubSkill.REPAIR_REPAIR_MASTERY);
-        canArcaneForge = Permissions.isSubSkillEnabled(player, SubSkill.REPAIR_ARCANE_FORGING);
+        canSuperRepair = Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_SUPER_REPAIR);
+        canMasterRepair = Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_REPAIR_MASTERY);
+        canArcaneForge = Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_ARCANE_FORGING);
         canRepairDiamond = Permissions.repairMaterialType(player, MaterialType.DIAMOND);
         canRepairGold = Permissions.repairMaterialType(player, MaterialType.GOLD);
         canRepairIron = Permissions.repairMaterialType(player, MaterialType.IRON);
@@ -162,7 +162,7 @@ public class RepairCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.REPAIR);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.REPAIR);
 
         return textComponents;
     }

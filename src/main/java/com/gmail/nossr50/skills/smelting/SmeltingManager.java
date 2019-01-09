@@ -2,7 +2,7 @@ package com.gmail.nossr50.skills.smelting;
 
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillWeightedActivationCheckEvent;
@@ -16,7 +16,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
-import com.gmail.nossr50.util.skills.SubSkillActivationType;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -37,11 +37,11 @@ public class SmeltingManager extends SkillManager {
     }
 
     public boolean canUseFluxMining(BlockState blockState) {
-        return getSkillLevel() >= Smelting.fluxMiningUnlockLevel && BlockUtils.affectedByFluxMining(blockState) && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.SMELTING_FLUX_MINING) && !mcMMO.getPlaceStore().isTrue(blockState);
+        return getSkillLevel() >= Smelting.fluxMiningUnlockLevel && BlockUtils.affectedByFluxMining(blockState) && Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_FLUX_MINING) && !mcMMO.getPlaceStore().isTrue(blockState);
     }
 
     public boolean isSecondSmeltSuccessful() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.SMELTING_SECOND_SMELT) && SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.SMELTING_SECOND_SMELT, getPlayer(), this.skill, getSkillLevel(), activationChance);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.SMELTING_SECOND_SMELT) && SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.SMELTING_SECOND_SMELT, getPlayer(), this.skill, getSkillLevel(), activationChance);
     }
 
     /**
@@ -53,7 +53,7 @@ public class SmeltingManager extends SkillManager {
     public boolean processFluxMining(BlockState blockState) {
         Player player = getPlayer();
 
-        SubSkillWeightedActivationCheckEvent event = new SubSkillWeightedActivationCheckEvent(getPlayer(), SubSkill.SMELTING_FLUX_MINING, Smelting.fluxMiningChance / activationChance);
+        SubSkillWeightedActivationCheckEvent event = new SubSkillWeightedActivationCheckEvent(getPlayer(), SubSkillType.SMELTING_FLUX_MINING, Smelting.fluxMiningChance / activationChance);
         mcMMO.p.getServer().getPluginManager().callEvent(event);
         if ((event.getChance() * activationChance) > Misc.getRandom().nextInt(activationChance)) {
             ItemStack item = null;

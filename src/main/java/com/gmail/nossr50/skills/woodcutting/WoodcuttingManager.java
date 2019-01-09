@@ -2,9 +2,9 @@ package com.gmail.nossr50.skills.woodcutting;
 
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -12,7 +12,7 @@ import com.gmail.nossr50.skills.SkillManager;
 import com.gmail.nossr50.skills.woodcutting.Woodcutting.ExperienceGainMethod;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.skills.CombatUtils;
-import com.gmail.nossr50.util.skills.SubSkillActivationType;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -30,7 +30,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public boolean canUseLeafBlower(ItemStack heldItem) {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.WOODCUTTING_LEAF_BLOWER) && getSkillLevel() >= Woodcutting.leafBlowerUnlockLevel && ItemUtils.isAxe(heldItem);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_LEAF_BLOWER) && getSkillLevel() >= Woodcutting.leafBlowerUnlockLevel && ItemUtils.isAxe(heldItem);
     }
 
     public boolean canUseTreeFeller(ItemStack heldItem) {
@@ -38,7 +38,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     protected boolean canGetDoubleDrops() {
-        return Permissions.isSubSkillEnabled(getPlayer(), SubSkill.WOODCUTTING_HARVEST_LUMBER) && SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.WOODCUTTING_HARVEST_LUMBER, getPlayer(), this.skill, getSkillLevel(), activationChance);
+        return Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.WOODCUTTING_HARVEST_LUMBER) && SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.WOODCUTTING_HARVEST_LUMBER, getPlayer(), this.skill, getSkillLevel(), activationChance);
     }
 
     /**

@@ -36,27 +36,27 @@ import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.google.common.collect.ImmutableList;
 
 public enum PrimarySkill {
-    ACROBATICS(AcrobaticsManager.class, Color.WHITE, ImmutableList.of(SubSkill.ACROBATICS_DODGE, SubSkill.ACROBATICS_GRACEFUL_ROLL, SubSkill.ACROBATICS_ROLL)),
-    ALCHEMY(AlchemyManager.class, Color.FUCHSIA, ImmutableList.of(SubSkill.ALCHEMY_CATALYSIS, SubSkill.ALCHEMY_CONCOCTIONS)),
-    ARCHERY(ArcheryManager.class, Color.MAROON, ImmutableList.of(SubSkill.ARCHERY_DAZE, SubSkill.ARCHERY_ARROW_RETRIEVAL, SubSkill.ARCHERY_SKILL_SHOT)),
-    AXES(AxesManager.class, Color.AQUA, SuperAbility.SKULL_SPLITTER, ToolType.AXE, ImmutableList.of(SubSkill.AXES_SKULL_SPLITTER, SubSkill.AXES_ARMOR_IMPACT, SubSkill.AXES_AXE_MASTERY, SubSkill.AXES_CRITICAL_STRIKES, SubSkill.AXES_GREATER_IMPACT)),
-    EXCAVATION(ExcavationManager.class, Color.fromRGB(139, 69, 19), SuperAbility.GIGA_DRILL_BREAKER, ToolType.SHOVEL, ImmutableList.of(SubSkill.EXCAVATION_GIGA_DRILL_BREAKER, SubSkill.EXCAVATION_TREASURE_HUNTER)),
-    FISHING(FishingManager.class, Color.NAVY, ImmutableList.of(SubSkill.FISHING_FISHERMANS_DIET, SubSkill.FISHING_TREASURE_HUNTER, SubSkill.FISHING_ICE_FISHING, SubSkill.FISHING_MAGIC_HUNTER, SubSkill.FISHING_MASTER_ANGLER, SubSkill.FISHING_SHAKE)),
-    HERBALISM(HerbalismManager.class, Color.GREEN, SuperAbility.GREEN_TERRA, ToolType.HOE, ImmutableList.of(SubSkill.HERBALISM_FARMERS_DIET, SubSkill.HERBALISM_GREEN_THUMB, SubSkill.HERBALISM_DOUBLE_DROPS, SubSkill.HERBALISM_HYLIAN_LUCK, SubSkill.HERBALISM_SHROOM_THUMB)),
-    MINING(MiningManager.class, Color.GRAY, SuperAbility.SUPER_BREAKER, ToolType.PICKAXE, ImmutableList.of(SubSkill.MINING_SUPER_BREAKER, SubSkill.MINING_DEMOLITIONS_EXPERTISE, SubSkill.MINING_BIGGER_BOMBS, SubSkill.MINING_BLAST_MINING, SubSkill.MINING_DOUBLE_DROPS)),
-    REPAIR(RepairManager.class, Color.SILVER, ImmutableList.of(SubSkill.REPAIR_ARCANE_FORGING, SubSkill.REPAIR_REPAIR_MASTERY, SubSkill.REPAIR_SUPER_REPAIR)),
-    SALVAGE(SalvageManager.class, Color.ORANGE, ImmutableList.of(SubSkill.SALVAGE_ADVANCED_SALVAGE, SubSkill.SALVAGE_ARCANE_SALVAGE)),
-    SMELTING(SmeltingManager.class, Color.YELLOW, ImmutableList.of(SubSkill.SMELTING_FLUX_MINING, SubSkill.SMELTING_FUEL_EFFICIENCY, SubSkill.SMELTING_SECOND_SMELT)),
-    SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), SuperAbility.SERRATED_STRIKES, ToolType.SWORD, ImmutableList.of(SubSkill.SWORDS_SERRATED_STRIKES, SubSkill.SWORDS_BLEED, SubSkill.SWORDS_COUNTER_ATTACK)),
-    TAMING(TamingManager.class, Color.PURPLE, ImmutableList.of(SubSkill.TAMING_BEAST_LORE, SubSkill.TAMING_CALL_OF_THE_WILD, SubSkill.TAMING_ENVIRONMENTALLY_AWARE, SubSkill.TAMING_FAST_FOOD_SERVICE, SubSkill.TAMING_GORE, SubSkill.TAMING_HOLY_HOUND, SubSkill.TAMING_SHARPENED_CLAWS, SubSkill.TAMING_SHOCK_PROOF, SubSkill.TAMING_THICK_FUR, SubSkill.TAMING_PUMMEL)),
-    UNARMED(UnarmedManager.class, Color.BLACK, SuperAbility.BERSERK, ToolType.FISTS, ImmutableList.of(SubSkill.UNARMED_BERSERK, SubSkill.UNARMED_BLOCK_CRACKER, SubSkill.UNARMED_ARROW_DEFLECT, SubSkill.UNARMED_DISARM, SubSkill.UNARMED_IRON_ARM_STYLE, SubSkill.UNARMED_IRON_GRIP)),
-    WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, SuperAbility.TREE_FELLER, ToolType.AXE, ImmutableList.of(SubSkill.WOODCUTTING_LEAF_BLOWER, SubSkill.WOODCUTTING_BARK_SURGEON, SubSkill.WOODCUTTING_SPLINTER, SubSkill.WOODCUTTING_NATURES_BOUNTY, SubSkill.WOODCUTTING_TREE_FELLER, SubSkill.WOODCUTTING_HARVEST_LUMBER));
+    ACROBATICS(AcrobaticsManager.class, Color.WHITE, ImmutableList.of(SubSkillType.ACROBATICS_DODGE, SubSkillType.ACROBATICS_ROLL)),
+    ALCHEMY(AlchemyManager.class, Color.FUCHSIA, ImmutableList.of(SubSkillType.ALCHEMY_CATALYSIS, SubSkillType.ALCHEMY_CONCOCTIONS)),
+    ARCHERY(ArcheryManager.class, Color.MAROON, ImmutableList.of(SubSkillType.ARCHERY_DAZE, SubSkillType.ARCHERY_ARROW_RETRIEVAL, SubSkillType.ARCHERY_SKILL_SHOT)),
+    AXES(AxesManager.class, Color.AQUA, SuperAbility.SKULL_SPLITTER, ToolType.AXE, ImmutableList.of(SubSkillType.AXES_SKULL_SPLITTER, SubSkillType.AXES_ARMOR_IMPACT, SubSkillType.AXES_AXE_MASTERY, SubSkillType.AXES_CRITICAL_STRIKES, SubSkillType.AXES_GREATER_IMPACT)),
+    EXCAVATION(ExcavationManager.class, Color.fromRGB(139, 69, 19), SuperAbility.GIGA_DRILL_BREAKER, ToolType.SHOVEL, ImmutableList.of(SubSkillType.EXCAVATION_GIGA_DRILL_BREAKER, SubSkillType.EXCAVATION_TREASURE_HUNTER)),
+    FISHING(FishingManager.class, Color.NAVY, ImmutableList.of(SubSkillType.FISHING_FISHERMANS_DIET, SubSkillType.FISHING_TREASURE_HUNTER, SubSkillType.FISHING_ICE_FISHING, SubSkillType.FISHING_MAGIC_HUNTER, SubSkillType.FISHING_MASTER_ANGLER, SubSkillType.FISHING_SHAKE)),
+    HERBALISM(HerbalismManager.class, Color.GREEN, SuperAbility.GREEN_TERRA, ToolType.HOE, ImmutableList.of(SubSkillType.HERBALISM_FARMERS_DIET, SubSkillType.HERBALISM_GREEN_THUMB, SubSkillType.HERBALISM_DOUBLE_DROPS, SubSkillType.HERBALISM_HYLIAN_LUCK, SubSkillType.HERBALISM_SHROOM_THUMB)),
+    MINING(MiningManager.class, Color.GRAY, SuperAbility.SUPER_BREAKER, ToolType.PICKAXE, ImmutableList.of(SubSkillType.MINING_SUPER_BREAKER, SubSkillType.MINING_DEMOLITIONS_EXPERTISE, SubSkillType.MINING_BIGGER_BOMBS, SubSkillType.MINING_BLAST_MINING, SubSkillType.MINING_DOUBLE_DROPS)),
+    REPAIR(RepairManager.class, Color.SILVER, ImmutableList.of(SubSkillType.REPAIR_ARCANE_FORGING, SubSkillType.REPAIR_REPAIR_MASTERY, SubSkillType.REPAIR_SUPER_REPAIR)),
+    SALVAGE(SalvageManager.class, Color.ORANGE, ImmutableList.of(SubSkillType.SALVAGE_ADVANCED_SALVAGE, SubSkillType.SALVAGE_ARCANE_SALVAGE)),
+    SMELTING(SmeltingManager.class, Color.YELLOW, ImmutableList.of(SubSkillType.SMELTING_FLUX_MINING, SubSkillType.SMELTING_FUEL_EFFICIENCY, SubSkillType.SMELTING_SECOND_SMELT)),
+    SWORDS(SwordsManager.class, Color.fromRGB(178, 34, 34), SuperAbility.SERRATED_STRIKES, ToolType.SWORD, ImmutableList.of(SubSkillType.SWORDS_SERRATED_STRIKES, SubSkillType.SWORDS_BLEED, SubSkillType.SWORDS_COUNTER_ATTACK)),
+    TAMING(TamingManager.class, Color.PURPLE, ImmutableList.of(SubSkillType.TAMING_BEAST_LORE, SubSkillType.TAMING_CALL_OF_THE_WILD, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE, SubSkillType.TAMING_FAST_FOOD_SERVICE, SubSkillType.TAMING_GORE, SubSkillType.TAMING_HOLY_HOUND, SubSkillType.TAMING_SHARPENED_CLAWS, SubSkillType.TAMING_SHOCK_PROOF, SubSkillType.TAMING_THICK_FUR, SubSkillType.TAMING_PUMMEL)),
+    UNARMED(UnarmedManager.class, Color.BLACK, SuperAbility.BERSERK, ToolType.FISTS, ImmutableList.of(SubSkillType.UNARMED_BERSERK, SubSkillType.UNARMED_BLOCK_CRACKER, SubSkillType.UNARMED_ARROW_DEFLECT, SubSkillType.UNARMED_DISARM, SubSkillType.UNARMED_IRON_ARM_STYLE, SubSkillType.UNARMED_IRON_GRIP)),
+    WOODCUTTING(WoodcuttingManager.class, Color.OLIVE, SuperAbility.TREE_FELLER, ToolType.AXE, ImmutableList.of(SubSkillType.WOODCUTTING_LEAF_BLOWER, SubSkillType.WOODCUTTING_BARK_SURGEON, SubSkillType.WOODCUTTING_SPLINTER, SubSkillType.WOODCUTTING_NATURES_BOUNTY, SubSkillType.WOODCUTTING_TREE_FELLER, SubSkillType.WOODCUTTING_HARVEST_LUMBER));
 
     private Class<? extends SkillManager> managerClass;
     private Color runescapeColor;
     private SuperAbility ability;
     private ToolType tool;
-    private List<SubSkill> subSkills;
+    private List<SubSkillType> subSkillTypes;
 
     public static final List<String> SKILL_NAMES;
 
@@ -90,16 +90,16 @@ public enum PrimarySkill {
         NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);
     }
 
-    private PrimarySkill(Class<? extends SkillManager> managerClass, Color runescapeColor, List<SubSkill> subSkills) {
-        this(managerClass, runescapeColor, null, null, subSkills);
+    private PrimarySkill(Class<? extends SkillManager> managerClass, Color runescapeColor, List<SubSkillType> subSkillTypes) {
+        this(managerClass, runescapeColor, null, null, subSkillTypes);
     }
 
-    private PrimarySkill(Class<? extends SkillManager> managerClass, Color runescapeColor, SuperAbility ability, ToolType tool, List<SubSkill> subSkills) {
+    private PrimarySkill(Class<? extends SkillManager> managerClass, Color runescapeColor, SuperAbility ability, ToolType tool, List<SubSkillType> subSkillTypes) {
         this.managerClass = managerClass;
         this.runescapeColor = runescapeColor;
         this.ability = ability;
         this.tool = tool;
-        this.subSkills = subSkills;
+        this.subSkillTypes = subSkillTypes;
     }
 
     public Class<? extends SkillManager> getManagerClass() {
@@ -153,8 +153,8 @@ public enum PrimarySkill {
         return tool;
     }
 
-    public List<SubSkill> getSkillAbilities() {
-        return subSkills;
+    public List<SubSkillType> getSkillAbilities() {
+        return subSkillTypes;
     }
 
     public double getXpModifier() {
@@ -195,9 +195,9 @@ public enum PrimarySkill {
         }
     }
 
-    public static PrimarySkill bySecondaryAbility(SubSkill subSkill) {
+    public static PrimarySkill bySecondaryAbility(SubSkillType subSkillType) {
         for (PrimarySkill type : values()) {
-            if (type.getSkillAbilities().contains(subSkill)) {
+            if (type.getSkillAbilities().contains(subSkillType)) {
                 return type;
             }
         }

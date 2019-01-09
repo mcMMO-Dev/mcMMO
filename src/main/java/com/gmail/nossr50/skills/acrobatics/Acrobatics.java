@@ -17,13 +17,9 @@ public final class Acrobatics {
 
     public static boolean dodgeLightningDisabled = Config.getInstance().getDodgeLightningDisabled();
 
-    private Acrobatics() {};
+    private Acrobatics() {}
 
     protected static double calculateModifiedDodgeDamage(double damage, double damageModifier) {
         return Math.max(damage / damageModifier, 1.0);
-    }
-
-    protected static double calculateModifiedRollDamage(double damage, double damageThreshold) {
-        return Math.max(damage - damageThreshold, 0.0);
     }
 }

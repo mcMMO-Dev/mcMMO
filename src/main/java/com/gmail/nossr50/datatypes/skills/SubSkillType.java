@@ -2,26 +2,20 @@ package com.gmail.nossr50.datatypes.skills;
 
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.StringUtils;
-import static com.gmail.nossr50.datatypes.skills.SubSkillFlags.ACTIVE;
-import static com.gmail.nossr50.datatypes.skills.SubSkillFlags.SUPERABILITY;
-import static com.gmail.nossr50.datatypes.skills.SubSkillFlags.RNG;
-import static com.gmail.nossr50.datatypes.skills.SubSkillFlags.PVP;
 
-
-public enum SubSkill {
+public enum SubSkillType {
     /* !! Warning -- Do not let subskills share a name with any existing PrimarySkill as it will clash with the static import !! */
 
     /* ACROBATICS */
-    ACROBATICS_DODGE(0, RNG),
-    ACROBATICS_GRACEFUL_ROLL(0, ACTIVE | RNG),
-    ACROBATICS_ROLL(0, RNG),
+    ACROBATICS_DODGE,
+    ACROBATICS_ROLL,
 
     /* ALCHEMY */
     ALCHEMY_CATALYSIS,
     ALCHEMY_CONCOCTIONS(8),
 
     /* ARCHERY */
-    ARCHERY_DAZE(0, PVP),
+    ARCHERY_DAZE(),
     ARCHERY_ARROW_RETRIEVAL,
     ARCHERY_SKILL_SHOT(20),
 
@@ -30,11 +24,11 @@ public enum SubSkill {
     AXES_AXE_MASTERY(4),
     AXES_CRITICAL_STRIKES,
     AXES_GREATER_IMPACT,
-    AXES_SKULL_SPLITTER(0, ACTIVE | SUPERABILITY),
+    AXES_SKULL_SPLITTER(0),
 
     /* Excavation */
     EXCAVATION_TREASURE_HUNTER,
-    EXCAVATION_GIGA_DRILL_BREAKER(0, SUPERABILITY | ACTIVE),
+    EXCAVATION_GIGA_DRILL_BREAKER(0),
 
     /* Fishing */
     FISHING_FISHERMANS_DIET,
@@ -53,7 +47,7 @@ public enum SubSkill {
 
     /* Mining */
     MINING_DOUBLE_DROPS,
-    MINING_SUPER_BREAKER(0, SUPERABILITY | ACTIVE),
+    MINING_SUPER_BREAKER(0),
     MINING_BLAST_MINING,
     MINING_BIGGER_BOMBS,
     MINING_DEMOLITIONS_EXPERTISE,
@@ -95,47 +89,32 @@ public enum SubSkill {
     UNARMED_DISARM,
     UNARMED_IRON_ARM_STYLE,
     UNARMED_IRON_GRIP,
-    UNARMED_BERSERK(0, ACTIVE | SUPERABILITY),
+    UNARMED_BERSERK(0),
 
     /* Woodcutting */
-    WOODCUTTING_TREE_FELLER(5, ACTIVE | SUPERABILITY),
+    WOODCUTTING_TREE_FELLER(5),
     WOODCUTTING_LEAF_BLOWER(3),
-    WOODCUTTING_BARK_SURGEON(3, ACTIVE),
+    WOODCUTTING_BARK_SURGEON(3),
     WOODCUTTING_NATURES_BOUNTY(3),
     WOODCUTTING_SPLINTER(3),
-    WOODCUTTING_HARVEST_LUMBER(3, RNG);
+    WOODCUTTING_HARVEST_LUMBER(3);
 
     private final int numRanks;
     //TODO: SuperAbility should also contain flags for active by default? Not sure if it should work that way.
-    private final int flags;
 
     /**
-     * If our SubSkill has more than 1 rank define it
-     * @param numRanks The number of ranks our SubSkill has
+     * If our SubSkillType has more than 1 rank define it
+     * @param numRanks The number of ranks our SubSkillType has
      */
-    SubSkill(int numRanks, int flags)
+    SubSkillType(int numRanks)
     {
         this.numRanks = numRanks;
-        this.flags = flags;
     }
 
-    SubSkill(int numRanks)
-    {
-        this.numRanks = numRanks;
-        this.flags = 0x00;
-    }
-
-    SubSkill()
+    SubSkillType()
     {
         this.numRanks = 0;
-        this.flags = 0x00;
     }
-
-    /**
-     * Get the bit flags for this subskill
-     * @return The bit flags for this subskill
-     */
-    public final int getFlags() { return flags; }
 
     public int getNumRanks()
     {
@@ -217,7 +196,7 @@ public enum SubSkill {
     }
 
     /**
-     * This finds the substring index for our SubSkill's name after its parent name prefix
+     * This finds the substring index for our SubSkillType's name after its parent name prefix
      * @param subSkillName The name to process
      * @return The value of the substring index after our parent's prefix
      */

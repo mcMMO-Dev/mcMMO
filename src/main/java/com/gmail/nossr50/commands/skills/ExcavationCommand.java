@@ -3,11 +3,11 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.nossr50.util.SkillTextComponentFactory;
+import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.Permissions;
@@ -36,7 +36,7 @@ public class ExcavationCommand extends SkillCommand {
     @Override
     protected void permissionsCheck(Player player) {
         canGigaDrill = Permissions.gigaDrillBreaker(player);
-        canTreasureHunt = Permissions.isSubSkillEnabled(player, SubSkill.EXCAVATION_TREASURE_HUNTER);
+        canTreasureHunt = Permissions.isSubSkillEnabled(player, SubSkillType.EXCAVATION_TREASURE_HUNTER);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class ExcavationCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.EXCAVATION);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.EXCAVATION);
 
         return textComponents;
     }

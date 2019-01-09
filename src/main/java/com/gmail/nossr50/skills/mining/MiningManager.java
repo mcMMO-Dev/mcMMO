@@ -4,7 +4,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -15,7 +15,7 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.skills.SubSkillActivationType;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.Material;
@@ -61,7 +61,7 @@ public class MiningManager extends SkillManager {
 
         applyXpGain(Mining.getBlockXp(blockState), XPGainReason.PVE);
 
-        if (!Permissions.isSubSkillEnabled(player, SubSkill.MINING_DOUBLE_DROPS)) {
+        if (!Permissions.isSubSkillEnabled(player, SubSkillType.MINING_DOUBLE_DROPS)) {
             return;
         }
 
@@ -79,7 +79,7 @@ public class MiningManager extends SkillManager {
 
         //TODO: Make this readable
         for (int i = mcMMOPlayer.getAbilityMode(skill.getAbility()) ? 2 : 1; i != 0; i--) {
-            if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.MINING_DOUBLE_DROPS, player, this.skill, getSkillLevel(), activationChance)) {
+            if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.MINING_DOUBLE_DROPS, player, this.skill, getSkillLevel(), activationChance)) {
                 if (silkTouch) {
                     Mining.handleSilkTouchDrops(blockState);
                 }

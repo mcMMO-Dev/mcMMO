@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
-import com.gmail.nossr50.util.SkillTextComponentFactory;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -61,8 +61,8 @@ public class AlchemyCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canCatalysis = Permissions.isSubSkillEnabled(player, SubSkill.ALCHEMY_CATALYSIS);
-        canConcoctions = Permissions.isSubSkillEnabled(player, SubSkill.ALCHEMY_CONCOCTIONS);
+        canCatalysis = Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CATALYSIS);
+        canConcoctions = Permissions.isSubSkillEnabled(player, SubSkillType.ALCHEMY_CONCOCTIONS);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class AlchemyCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.ALCHEMY);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.ALCHEMY);
 
         return textComponents;
     }

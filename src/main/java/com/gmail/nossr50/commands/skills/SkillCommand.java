@@ -2,19 +2,16 @@ package com.gmail.nossr50.commands.skills;
 
 import java.text.DecimalFormat;
 import java.util.List;
-import java.util.Set;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.util.SkillTextComponentFactory;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
-import com.gmail.nossr50.skills.child.FamilyTree;
-import com.gmail.nossr50.util.Motd;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.commands.CommandUtils;
 import com.gmail.nossr50.util.player.UserManager;
@@ -76,18 +73,29 @@ public abstract class SkillCommand implements TabExecutor {
                 //Make JSON text components
                 List<TextComponent> subskillTextComponents = getTextComponents(player);
 
-
                 //Subskills Header
-                player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.SubSkills")));
+                player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", LocaleLoader.getString("Effects.SubSkills.Overhaul")));
 
                 //Send JSON text components
-                for(TextComponent tc : subskillTextComponents)
+
+                TextComponentFactory.sendPlayerSubSkillList(player, subskillTextComponents);
+
+                /*for(TextComponent tc : subskillTextComponents)
                 {
                     player.spigot().sendMessage(new TextComponent[]{tc, new TextComponent(": TESTING")});
-                }
+                }*/
 
                 //Stats
                 getStatMessages(player, isLucky, hasEndurance, skillValue);
+
+                ChatColor hd1 = ChatColor.DARK_AQUA;
+                ChatColor c1 = ChatColor.GOLD;
+                ChatColor c2 = ChatColor.RED;
+
+                //Header
+                player.sendMessage(hd1+"[]=====[]"+c1+" mcMMO "+c2+"Overhaul"+c1+" Era "+hd1+"[]=====[]");
+                //Link Header
+                TextComponentFactory.sendPlayerUrlHeader(player);
 
                 return true;
 
@@ -100,7 +108,7 @@ public abstract class SkillCommand implements TabExecutor {
         List<String> statsMessages = statsDisplay(player, skillValue, hasEndurance, isLucky);
 
         if (!statsMessages.isEmpty()) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Commands.Stats.Self")));
+            player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", LocaleLoader.getString("Commands.Stats.Self.Overhaul")));
 
             for (String message : statsMessages) {
                 player.sendMessage(message);
@@ -111,6 +119,40 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     private void sendSkillCommandHeader(Player player, McMMOPlayer mcMMOPlayer, int skillValue) {
+
+        if(!skill.isChildSkill())
+        {
+            ChatColor hd1 = ChatColor.DARK_AQUA;
+            ChatColor c1 = ChatColor.GOLD;
+            ChatColor c2 = ChatColor.RED;
+
+            player.sendMessage(hd1+"[]=====[]"+c1+" "+skillName+" "+hd1+"[]=====[]");
+
+            //XP GAIN METHOD
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
+
+            //LEVEL
+            player.sendMessage(LocaleLoader.getString("Effects.Level.Overhaul", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
+
+        } else {
+            ChatColor hd1 = ChatColor.DARK_AQUA;
+            ChatColor c1 = ChatColor.GOLD;
+            ChatColor c2 = ChatColor.DARK_PURPLE;
+            //Header
+            player.sendMessage(hd1+"[]=====[]"+c1+" mcMMO "+c2+"Overhaul"+c1+" Era "+hd1+"[]=====[]");
+            //Link Header
+            TextComponentFactory.sendPlayerUrlHeader(player);
+            player.sendMessage(hd1+"[]=====[]"+c1+" "+skillName+" "+hd1+"[]=====[]");
+
+            //XP GAIN METHOD
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
+
+            //LEVEL
+            player.sendMessage(LocaleLoader.getString("Effects.Level", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
+
+        }
+
+        /*
         if (!skill.isChildSkill()) {
             player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
             player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
@@ -127,27 +169,7 @@ public abstract class SkillCommand implements TabExecutor {
                 player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
             }
         }
-    }
-
-    private void displayOldSkillCommand(Player player, McMMOPlayer mcMMOPlayer, boolean isLucky, boolean hasEndurance, float skillValue) {
-        //Send headers
-        sendSkillCommandHeader(player, mcMMOPlayer, (int) skillValue);
-
-        List<String> effectMessages = effectsDisplay();
-
-        if (!effectMessages.isEmpty()) {
-            player.sendMessage(LocaleLoader.getString("Skills.Header", LocaleLoader.getString("Effects.Effects")));
-
-            if (isLucky) {
-                player.sendMessage(Motd.PERK_PREFIX + LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Perks.Lucky.Name"), LocaleLoader.getString("Perks.Lucky.Desc", skillName)));
-            }
-
-            for (String message : effectMessages) {
-                player.sendMessage(message);
-            }
-        }
-
-        getStatMessages(player, isLucky, hasEndurance, skillValue);
+        */
     }
 
     @Override
@@ -173,7 +195,7 @@ public abstract class SkillCommand implements TabExecutor {
         return displayValues;
     }
 
-    protected String[] calculateAbilityDisplayValues(float skillValue, SubSkill subSkill, boolean isLucky) {
+    protected String[] calculateAbilityDisplayValues(float skillValue, SubSkillType subSkill, boolean isLucky) {
         int maxBonusLevel = AdvancedConfig.getInstance().getMaxBonusLevel(subSkill);
 
         return calculateAbilityDisplayValues((AdvancedConfig.getInstance().getMaxChance(subSkill) / maxBonusLevel) * Math.min(skillValue, maxBonusLevel), isLucky);

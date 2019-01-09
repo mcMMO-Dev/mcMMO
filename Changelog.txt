@@ -10,6 +10,8 @@ Key:
 Version 2.1.0
  + Added JSON integration to all Skill Commands
  + Added config setting to enable or disable classic mcMMO skill scaling
+ + You can now disable specific skills in coreskills.yml without the need for permissions
+ + (Config) New config file added coreskills.yml
  + (Config) Added rank settings for the new Woodcutting skill
  + (Config) Added configurable parameters for the new Tree Feller
  + (Config) Added classic toggle for Tree Feller
@@ -26,6 +28,8 @@ Version 2.1.0
  - (Locale) Removed localizations with the following codes for being almost empty: id, HR_hr, et_EE, lv, lt, no, pl_PL, pt_PT, tr_TR
  - (Config) Removed SkillShot's IncreaseLevel & IncreasePercentage (replaced by RankDamageMultiplier)
  - (Config) Removed AxeMastery's MaxBonus & MaxBonusLevel (replaced by RankDamageMultiplier)
+ ! (Skills) Acrobatics' Roll exploit detection was tweaked to still allow for Roll to trigger even if it rewards no XP
+ ! (Skills) Acrobatics' Roll & Gracefull Roll are now considered the same skill (both mechanics are still there)
  ! (Skills) Woodcutting's Double Drop subskill is now named Harvest Lumber
  ! (Skills) Archery's Skill Shot now uses a rank system
  ! (Skills) Axe's Axe Mastery now uses a rank system
@@ -45,6 +49,7 @@ Version 2.1.0
  ! (Locale) SubSkill locale keys are now located at {ParentSkill}.SubSkill.SubSkillName
  ! (Locale) Super Abilities no longer have (ABILITY) in their Skill.Effect strings
  ! (API) mcMMO is now built against Spigot-API instead of Bukkit
+ ! (API) Moved a lot of methods from SkillCommand to SkillUtils
  ! (API) SkillType is now PrimarySkill
  ! (API) SecondarySkill is now SubSkill
  ! (API) AbilityType is now SuperAbility

@@ -3,7 +3,7 @@ package com.gmail.nossr50.skills.repair;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -15,7 +15,7 @@ import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
-import com.gmail.nossr50.util.skills.SubSkillActivationType;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -244,12 +244,12 @@ public class RepairManager extends SkillManager {
     private short repairCalculate(short durability, int repairAmount) {
         Player player = getPlayer();
 
-        if (Permissions.isSubSkillEnabled(player, SubSkill.REPAIR_REPAIR_MASTERY)) {
+        if (Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_REPAIR_MASTERY)) {
             double bonus = repairAmount * Math.min((((Repair.repairMasteryMaxBonus / Repair.repairMasteryMaxBonusLevel) * getSkillLevel()) / 100.0D), Repair.repairMasteryMaxBonus / 100.0D);
             repairAmount += bonus;
         }
 
-        if (Permissions.isSubSkillEnabled(player, SubSkill.REPAIR_SUPER_REPAIR) && checkPlayerProcRepair()) {
+        if (Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_SUPER_REPAIR) && checkPlayerProcRepair()) {
             repairAmount *= 2.0D;
         }
 
@@ -266,7 +266,7 @@ public class RepairManager extends SkillManager {
      * @return true if bonus granted, false otherwise
      */
     private boolean checkPlayerProcRepair() {
-        if (SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.REPAIR_SUPER_REPAIR, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
+        if (SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.REPAIR_SUPER_REPAIR, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
             getPlayer().sendMessage(LocaleLoader.getString("Repair.Skills.FeltEasy"));
             return true;
         }
@@ -293,7 +293,7 @@ public class RepairManager extends SkillManager {
             return;
         }
 
-        if (getArcaneForgingRank() == 0 || !Permissions.isSubSkillEnabled(player, SubSkill.REPAIR_ARCANE_FORGING)) {
+        if (getArcaneForgingRank() == 0 || !Permissions.isSubSkillEnabled(player, SubSkillType.REPAIR_ARCANE_FORGING)) {
             for (Enchantment enchant : enchants.keySet()) {
                 item.removeEnchantment(enchant);
             }

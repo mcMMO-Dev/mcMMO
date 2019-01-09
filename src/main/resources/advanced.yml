@@ -14,6 +14,15 @@
 #  Settings for the Skills
 ###
 Skills:
+    Feedback:
+        # Turning these to false will have them printed in chat instead
+        ActionBarNotifications:
+            LevelUps: true
+            ToolReady: true
+            SubSkillInteraction: true
+            SubSkillUnlocked: true
+            SuperAbilityInteraction: true
+            ExperienceGain: true
     General:
         Ability:
             # IncreaseLevel: This setting will determine when the length of every ability gets longer with 1 second
@@ -659,6 +668,93 @@ Skills:
                     LevelReq: 35
                 Rank_3:
                     LevelReq: 65
+Style:
+    JSON:
+        Notification:
+                LevelUps:
+                    Bold: true
+                    Italics: false
+                    Underline: false
+                ToolReady:
+                    Bold: false
+                    Italics: true
+                    Underline: false
+                SubSkillInteraction:
+                    Bold: false
+                    Italics: true
+                    Underline: false
+                SubSkillUnlocked:
+                    Bold: true
+                    Italics: false
+                    Underline: false
+                SuperAbilityInteraction:
+                    Bold: true
+                    Italics: false
+                    Underline: false
+                ExperienceGain:
+                    Bold: true
+                    Italics: false
+                    Underline: false
+        Hover:
+            Details:
+                Header:
+                    Bold: true
+                    Italics: false
+                    Underline: false
+                    Color: DARK_GRAY
+                Description:
+                    Bold: true
+                    Italics: false
+                    Underline: false
+                    Color: YELLOW
+                Target:
+                    Enable: true
+                    Prefix:
+                        Bold: false
+                        Italics: false
+                        Underline: false
+                        Color: YELLOW
+                    Value:
+                        Bold: false
+                        Italics: false
+                        Underline: false
+                        Color: YELLOW
+                Duration:
+                    Prefix:
+                        Bold: false
+                        Italics: false
+                        Underline: false
+                        Color: GOLD
+                    Value:
+                        Bold: false
+                        Italics: false
+                        Underline: false
+                        Color: GREEN
+                Reward:
+                    Prefix:
+                        Bold: false
+                        Italics: false
+                        Underline: false
+                        Color: GOLD
+                    Value:
+                        Bold: false
+                        Italics: false
+                        Underline: false
+                        Color: GREEN
+                Limit:
+                    Prefix:
+                        Bold: false
+                        Italics: false
+                        Underline: false
+                        Color: GOLD
+                    Value:
+                        Bold: false
+                        Italics: false
+                        Underline: false
+                        Color: GREEN
+
+
+
 
 #
 #  Customize the kraken!

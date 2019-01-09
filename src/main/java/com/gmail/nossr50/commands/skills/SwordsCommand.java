@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
-import com.gmail.nossr50.util.SkillTextComponentFactory;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -42,16 +42,16 @@ public class SwordsCommand extends SkillCommand {
 
         // SWORDS_BLEED
         if (canBleed) {
-            bleedLength = (skillValue >= AdvancedConfig.getInstance().getMaxBonusLevel(SubSkill.SWORDS_BLEED)) ? Swords.bleedMaxTicks : Swords.bleedBaseTicks;
+            bleedLength = (skillValue >= AdvancedConfig.getInstance().getMaxBonusLevel(SubSkillType.SWORDS_BLEED)) ? Swords.bleedMaxTicks : Swords.bleedBaseTicks;
 
-            String[] bleedStrings = calculateAbilityDisplayValues(skillValue, SubSkill.SWORDS_BLEED, isLucky);
+            String[] bleedStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.SWORDS_BLEED, isLucky);
             bleedChance = bleedStrings[0];
             bleedChanceLucky = bleedStrings[1];
         }
 
         // SWORDS_COUNTER_ATTACK
         if (canCounter) {
-            String[] counterStrings = calculateAbilityDisplayValues(skillValue, SubSkill.SWORDS_COUNTER_ATTACK, isLucky);
+            String[] counterStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.SWORDS_COUNTER_ATTACK, isLucky);
             counterChance = counterStrings[0];
             counterChanceLucky = counterStrings[1];
         }
@@ -59,8 +59,8 @@ public class SwordsCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBleed = Permissions.isSubSkillEnabled(player, SubSkill.SWORDS_BLEED);
-        canCounter = Permissions.isSubSkillEnabled(player, SubSkill.SWORDS_COUNTER_ATTACK);
+        canBleed = Permissions.isSubSkillEnabled(player, SubSkillType.SWORDS_BLEED);
+        canCounter = Permissions.isSubSkillEnabled(player, SubSkillType.SWORDS_COUNTER_ATTACK);
         canSerratedStrike = Permissions.serratedStrikes(player);
     }
 
@@ -109,7 +109,7 @@ public class SwordsCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.SWORDS);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.SWORDS);
 
         return textComponents;
     }

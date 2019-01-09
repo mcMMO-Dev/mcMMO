@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SubSkill;
-import com.gmail.nossr50.util.SkillTextComponentFactory;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -37,7 +37,7 @@ public class TamingCommand extends SkillCommand {
     @Override
     protected void dataCalculations(Player player, float skillValue, boolean isLucky) {
         if (canGore) {
-            String[] goreStrings = calculateAbilityDisplayValues(skillValue, SubSkill.TAMING_GORE, isLucky);
+            String[] goreStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.TAMING_GORE, isLucky);
             goreChance = goreStrings[0];
             goreChanceLucky = goreStrings[1];
         }
@@ -45,15 +45,15 @@ public class TamingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canBeastLore = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_BEAST_LORE);
+        canBeastLore = Permissions.isSubSkillEnabled(player, SubSkillType.TAMING_BEAST_LORE);
         canCallWild = Permissions.callOfTheWild(player, EntityType.HORSE) || Permissions.callOfTheWild(player, EntityType.WOLF) || Permissions.callOfTheWild(player, EntityType.OCELOT);
-        canEnvironmentallyAware = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_ENVIRONMENTALLY_AWARE);
-        canFastFood = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_FAST_FOOD_SERVICE);
-        canGore = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_GORE);
-        canSharpenedClaws = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_SHARPENED_CLAWS);
-        canShockProof = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_SHOCK_PROOF);
-        canThickFur = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_THICK_FUR);
-        canHolyHound = Permissions.isSubSkillEnabled(player, SubSkill.TAMING_HOLY_HOUND);
+        canEnvironmentallyAware = Permissions.isSubSkillEnabled(player, SubSkillType.TAMING_ENVIRONMENTALLY_AWARE);
+        canFastFood = Permissions.isSubSkillEnabled(player, SubSkillType.TAMING_FAST_FOOD_SERVICE);
+        canGore = Permissions.isSubSkillEnabled(player, SubSkillType.TAMING_GORE);
+        canSharpenedClaws = Permissions.isSubSkillEnabled(player, SubSkillType.TAMING_SHARPENED_CLAWS);
+        canShockProof = Permissions.isSubSkillEnabled(player, SubSkillType.TAMING_SHOCK_PROOF);
+        canThickFur = Permissions.isSubSkillEnabled(player, SubSkillType.TAMING_THICK_FUR);
+        canHolyHound = Permissions.isSubSkillEnabled(player, SubSkillType.TAMING_HOLY_HOUND);
     }
 
     @Override
@@ -175,7 +175,7 @@ public class TamingCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.TAMING);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.TAMING);
 
         return textComponents;
     }

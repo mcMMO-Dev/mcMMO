@@ -3,8 +3,8 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.SubSkill;
-import com.gmail.nossr50.util.SkillTextComponentFactory;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
@@ -41,7 +41,7 @@ public class SmeltingCommand extends SkillCommand {
 
         // SECOND SMELT
         if (canSecondSmelt) {
-            String[] secondSmeltStrings = calculateAbilityDisplayValues(skillValue, SubSkill.SMELTING_SECOND_SMELT, isLucky);
+            String[] secondSmeltStrings = calculateAbilityDisplayValues(skillValue, SubSkillType.SMELTING_SECOND_SMELT, isLucky);
             secondSmeltChance = secondSmeltStrings[0];
             secondSmeltChanceLucky = secondSmeltStrings[1];
         }
@@ -56,9 +56,9 @@ public class SmeltingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canFuelEfficiency = Permissions.isSubSkillEnabled(player, SubSkill.SMELTING_FUEL_EFFICIENCY);
-        canSecondSmelt = Permissions.isSubSkillEnabled(player, SubSkill.SMELTING_SECOND_SMELT);
-        canFluxMine = Permissions.isSubSkillEnabled(player, SubSkill.SMELTING_FLUX_MINING);
+        canFuelEfficiency = Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FUEL_EFFICIENCY);
+        canSecondSmelt = Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_SECOND_SMELT);
+        canFluxMine = Permissions.isSubSkillEnabled(player, SubSkillType.SMELTING_FLUX_MINING);
         canVanillaXPBoost = Permissions.vanillaXpBoost(player, skill);
     }
 
@@ -124,7 +124,7 @@ public class SmeltingCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.SWORDS);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.SWORDS);
 
         return textComponents;
     }

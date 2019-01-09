@@ -1,7 +1,9 @@
 package com.gmail.nossr50.skills.acrobatics;
 
-import com.gmail.nossr50.datatypes.skills.SubSkill;
-import com.gmail.nossr50.util.skills.SubSkillActivationType;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.listeners.InteractionManager;
+import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -22,19 +24,13 @@ import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class AcrobaticsManager extends SkillManager {
-    private int fallTries = 0;
-    Location lastFallLocation;
 
     public AcrobaticsManager(McMMOPlayer mcMMOPlayer) {
         super(mcMMOPlayer, PrimarySkill.ACROBATICS);
     }
 
-    public boolean canRoll() {
-        return !exploitPrevention() && Permissions.isSubSkillEnabled(getPlayer(), SubSkill.ACROBATICS_ROLL);
-    }
-
     public boolean canDodge(Entity damager) {
-        if (Permissions.isSubSkillEnabled(getPlayer(), SubSkill.ACROBATICS_DODGE)) {
+        if (Permissions.isSubSkillEnabled(getPlayer(), SubSkillType.ACROBATICS_DODGE)) {
             if (damager instanceof LightningStrike && Acrobatics.dodgeLightningDisabled) {
                 return false;
             }
@@ -55,7 +51,7 @@ public class AcrobaticsManager extends SkillManager {
         double modifiedDamage = Acrobatics.calculateModifiedDodgeDamage(damage, Acrobatics.dodgeDamageModifier);
         Player player = getPlayer();
 
-        if (!isFatal(modifiedDamage) && SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.ACROBATICS_DODGE, player, this.skill, getSkillLevel(), activationChance)) {
+        if (!isFatal(modifiedDamage) && SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_DODGE, player, this.skill, getSkillLevel(), activationChance)) {
             ParticleEffectUtils.playDodgeEffect(player);
 
             if (mcMMOPlayer.useChatNotifications()) {
@@ -73,98 +69,7 @@ public class AcrobaticsManager extends SkillManager {
         return damage;
     }
 
-    /**
-     * Handle the damage reduction and XP gain from the Roll ability
-     *
-     * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage if the ability was successful, the original event damage otherwise
-     */
-    public double rollCheck(double damage) {
-        Player player = getPlayer();
-
-        if (player.isSneaking() && Permissions.isSubSkillEnabled(player, SubSkill.ACROBATICS_GRACEFUL_ROLL)) {
-            return gracefulRollCheck(damage);
-        }
-
-        double modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.rollThreshold);
-
-        if (!isFatal(modifiedDamage) && SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.ACROBATICS_ROLL, player, this.skill, getSkillLevel(), activationChance)) {
-            player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
-            applyXpGain(calculateRollXP(damage, true), XPGainReason.PVE);
-
-            return modifiedDamage;
-        }
-        else if (!isFatal(damage)) {
-            applyXpGain(calculateRollXP(damage, false), XPGainReason.PVE);
-        }
-
-        lastFallLocation = player.getLocation();
-
-        return damage;
-    }
-
-    /**
-     * Handle the damage reduction and XP gain from the Graceful Roll ability
-     *
-     * @param damage The amount of damage initially dealt by the event
-     * @return the modified event damage if the ability was successful, the original event damage otherwise
-     */
-    private double gracefulRollCheck(double damage) {
-        double modifiedDamage = Acrobatics.calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
-
-        if (!isFatal(modifiedDamage) && SkillUtils.isActivationSuccessful(SubSkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkill.ACROBATICS_GRACEFUL_ROLL, getPlayer(), this.skill, getSkillLevel(), activationChance)) {
-            getPlayer().sendMessage(LocaleLoader.getString("Acrobatics.Ability.Proc"));
-            applyXpGain(calculateRollXP(damage, true), XPGainReason.PVE);
-
-            return modifiedDamage;
-        }
-        else if (!isFatal(damage)) {
-            applyXpGain(calculateRollXP(damage, false), XPGainReason.PVE);
-        }
-
-        return damage;
-    }
-
-    /**
-     * Check if the player is "farming" Acrobatics XP using
-     * exploits in the game.
-     *
-     * @return true if exploits are detected, false otherwise
-     */
-    public boolean exploitPrevention() {
-        if (!Config.getInstance().getAcrobaticsPreventAFK()) {
-            return false;
-        }
-
-        Player player = getPlayer();
-
-        if (player.getInventory().getItemInMainHand().getType() == Material.ENDER_PEARL || player.isInsideVehicle()) {
-            return true;
-        }
-
-        Location fallLocation = player.getLocation();
-        int maxTries = Config.getInstance().getAcrobaticsAFKMaxTries();
-
-        boolean sameLocation = (lastFallLocation != null && Misc.isNear(lastFallLocation, fallLocation, 2));
-
-        fallTries = sameLocation ? Math.min(fallTries + 1, maxTries) : Math.max(fallTries - 1, 0);
-        lastFallLocation = fallLocation;
-
-        return fallTries + 1 > maxTries;
-    }
-
     private boolean isFatal(double damage) {
         return getPlayer().getHealth() - damage <= 0;
-    }
-
-    private float calculateRollXP(double damage, boolean isRoll) {
-        ItemStack boots = getPlayer().getInventory().getBoots();
-        float xp = (float) (damage * (isRoll ? Acrobatics.rollXpModifier : Acrobatics.fallXpModifier));
-
-        if (boots != null && boots.containsEnchantment(Enchantment.PROTECTION_FALL)) {
-            xp *= Acrobatics.featherFallXPModifier;
-        }
-
-        return xp;
     }
 }

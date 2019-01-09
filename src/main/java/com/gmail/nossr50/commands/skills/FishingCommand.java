@@ -3,8 +3,8 @@ package com.gmail.nossr50.commands.skills;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.SubSkill;
-import com.gmail.nossr50.util.SkillTextComponentFactory;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
@@ -113,12 +113,12 @@ public class FishingCommand extends SkillCommand {
 
     @Override
     protected void permissionsCheck(Player player) {
-        canTreasureHunt = Permissions.isSubSkillEnabled(player, SubSkill.FISHING_TREASURE_HUNTER);
-        canMagicHunt = Permissions.isSubSkillEnabled(player, SubSkill.FISHING_MAGIC_HUNTER);
-        canShake = Permissions.isSubSkillEnabled(player, SubSkill.FISHING_SHAKE);
-        canFishermansDiet = Permissions.isSubSkillEnabled(player, SubSkill.FISHING_FISHERMANS_DIET);
-        canMasterAngler = Permissions.isSubSkillEnabled(player, SubSkill.FISHING_MASTER_ANGLER);
-        canIceFish = Permissions.isSubSkillEnabled(player, SubSkill.FISHING_ICE_FISHING);
+        canTreasureHunt = Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_TREASURE_HUNTER);
+        canMagicHunt = Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_MAGIC_HUNTER);
+        canShake = Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_SHAKE);
+        canFishermansDiet = Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_FISHERMANS_DIET);
+        canMasterAngler = Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_MASTER_ANGLER);
+        canIceFish = Permissions.isSubSkillEnabled(player, SubSkillType.FISHING_ICE_FISHING);
     }
 
     @Override
@@ -209,7 +209,7 @@ public class FishingCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        SkillTextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.FISHING);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.FISHING);
 
         return textComponents;
     }
