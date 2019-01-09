@@ -11,13 +11,16 @@ Version 2.1.0
  + Added JSON integration to all Skill Commands
  + Added config setting to enable or disable classic mcMMO skill scaling
  + You can now disable specific skills in coreskills.yml without the need for permissions
+ + Added links to mcMMO related websites to various commands
+ + Certain elements of mcMMO's UI have been restyled
+ + added the subtext "Overhaul Era" to various locations until 3.0.0 comes out
  + (Config) New config file added coreskills.yml
  + (Config) Added rank settings for the new Woodcutting skill
  + (Config) Added configurable parameters for the new Tree Feller
  + (Config) Added classic toggle for Tree Feller
  + (Chat) Added ability for admins to spy on party chat (off unless toggled on)
  + (Commands) Added toggle command /mcchatspy
- + (API) Added many missing SubSkills to SubSkill class
+ + (API) Added many missing SubSkills to SubSkillType class
  + (Permissions) Added permission node mcmmo.commands.mcchatspy & mcmmo.commands.mcchatspy.others
  + (Permissions) Added permission nodes for Harvest Lumber, Splinter, Nature's Bounty, and Bark Surgeon
  + (Locale) Added locale strings for new Woodcutting abilities
@@ -28,6 +31,11 @@ Version 2.1.0
  - (Locale) Removed localizations with the following codes for being almost empty: id, HR_hr, et_EE, lv, lt, no, pl_PL, pt_PT, tr_TR
  - (Config) Removed SkillShot's IncreaseLevel & IncreasePercentage (replaced by RankDamageMultiplier)
  - (Config) Removed AxeMastery's MaxBonus & MaxBonusLevel (replaced by RankDamageMultiplier)
+ = (Skills) Added missing mushroom blocks to experience.yml defaults
+ = (Skills) Tridents will no longer be considered unarmed
+ = (MySQL) You can now inspect offline players
+ ! (Skills) mcMMO skills will now be on a scale from 1-100 instead of 0-1000 (for existing mcMMO installs this is opt-in and off by default)
+ ! (Skills) Skill Super Powers (Tree Feller, etc...) will now require level 10+ to use
  ! (Skills) Acrobatics' Roll exploit detection was tweaked to still allow for Roll to trigger even if it rewards no XP
  ! (Skills) Acrobatics' Roll & Gracefull Roll are now considered the same skill (both mechanics are still there)
  ! (Skills) Woodcutting's Double Drop subskill is now named Harvest Lumber
@@ -51,15 +59,12 @@ Version 2.1.0
  ! (API) mcMMO is now built against Spigot-API instead of Bukkit
  ! (API) Moved a lot of methods from SkillCommand to SkillUtils
  ! (API) SkillType is now PrimarySkill
- ! (API) SecondarySkill is now SubSkill
+ ! (API) SecondarySkill is now SubSkillType
  ! (API) AbilityType is now SuperAbility
  ! (API) SecondaryAbilityEvent is now SubSkillEvent
- ! (API) SecondarySkill ENUM is being updated to have the parent skill as a prefix and a getter method for grabbing the parent skill
+ ! (API) SubSkillType has had many helpful methods added to it
  ! (API) GREEN_THUMB_PLANT & GREEN_THUMB_BLOCK are replaced by GREEN_THUMB
- ! Skill Super Powers (Tree Feller, etc...) will now require level 10+ to use
- ! (Skills) mcMMO skills will now be on a scale from 1-100 instead of 0-1000 (for existing mcMMO installs this is opt-in and off by default)
  ! (Code) Refactored some unreadable code relating to SecondaryAbility activation in SkillUtils
-
 
 Version 2.0.0
  = Fixed an interaction between Tree Feller and Stripped Wood
