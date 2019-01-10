@@ -59,6 +59,7 @@ public enum PrimarySkill {
     private List<SubSkillType> subSkillTypes;
 
     public static final List<String> SKILL_NAMES;
+    public static final List<String> SUBSKILL_NAMES;
 
     public static final List<PrimarySkill> CHILD_SKILLS;
     public static final List<PrimarySkill> NON_CHILD_SKILLS;
@@ -71,6 +72,7 @@ public enum PrimarySkill {
         List<PrimarySkill> childSkills = new ArrayList<PrimarySkill>();
         List<PrimarySkill> nonChildSkills = new ArrayList<PrimarySkill>();
         ArrayList<String> names = new ArrayList<String>();
+        ArrayList<String> subSkillNames = new ArrayList<>();
 
         for (PrimarySkill skill : values()) {
             if (skill.isChildSkill()) {
@@ -80,11 +82,16 @@ public enum PrimarySkill {
                 nonChildSkills.add(skill);
             }
 
+            for(SubSkillType subSkillType : skill.subSkillTypes)
+            {
+                subSkillNames.add(subSkillType.getNiceNameNoSpaces(subSkillType));
+            }
             names.add(skill.getName());
         }
 
         Collections.sort(names);
         SKILL_NAMES = ImmutableList.copyOf(names);
+        SUBSKILL_NAMES = ImmutableList.copyOf(subSkillNames);
 
         CHILD_SKILLS = ImmutableList.copyOf(childSkills);
         NON_CHILD_SKILLS = ImmutableList.copyOf(nonChildSkills);

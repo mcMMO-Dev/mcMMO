@@ -12,13 +12,17 @@ description: >
 
 author: nossr50
 authors: [GJ, NuclearW, bm01, Glitchfinder, TfT_02, t00thpick1, Riking]
-website: https://mcmmo.org
+website: https://www.mcmmo.org
 main: com.gmail.nossr50.mcMMO
 softdepend: [CombatTag, HealthBar]
 load: STARTUP
 api-version: 1.13
 
 commands:
+    mmoinfo:
+        aliases: [mcinfo]
+        description: Info pages for mcMMO
+        permission: mcmmo.commands.mmoinfo
     xprate:
         aliases: [mcxprate]
         description: Modify the xp rate or start an event
@@ -750,6 +754,7 @@ permissions:
     mcmmo.commands.defaults:
         description: Implies all default mcmmo.commands permissions.
         children:
+            mcmmo.commands.mmoinfo: true
             mcmmo.commands.acrobatics: true
             mcmmo.commands.alchemy: true
             mcmmo.commands.archery: true

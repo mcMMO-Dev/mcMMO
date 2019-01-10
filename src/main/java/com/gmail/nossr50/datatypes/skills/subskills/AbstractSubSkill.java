@@ -6,6 +6,8 @@ import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Rank;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.SubSkillProperties;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.TextComponentFactory;
+import org.bukkit.entity.Player;
 
 public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, SubSkillProperties {
     /*
@@ -39,5 +41,21 @@ public abstract class AbstractSubSkill implements SubSkill, Interaction, Rank, S
     public boolean isEnabled() {
         //TODO: This might be troublesome...
         return CoreSkillsConfig.getInstance().isSkillEnabled(this);
+    }
+
+    /**
+     * Prints detailed info about this subskill to the player
+     *
+     * @param player the target player
+     */
+    @Override
+    public void printInfo(Player player) {
+        /* DEFAULT SETTINGS PRINT THE BARE MINIMUM */
+
+        //TextComponentFactory.sendPlayerUrlHeader(player);
+        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Header"));
+        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.SubSkillHeader", getConfigKeyName()));
+        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.DetailsHeader"));
+
     }
 }

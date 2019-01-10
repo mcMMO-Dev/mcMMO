@@ -196,6 +196,16 @@ public enum SubSkillType {
     }
 
     /**
+     * Gets the "nice" name of the subskill without spaces
+     * @param subSkillType target subskill
+     * @return the "nice" name without spaces
+     */
+    public String getNiceNameNoSpaces(SubSkillType subSkillType)
+    {
+        return getConfigName(subSkillType.toString());
+    }
+
+    /**
      * This finds the substring index for our SubSkillType's name after its parent name prefix
      * @param subSkillName The name to process
      * @return The value of the substring index after our parent's prefix

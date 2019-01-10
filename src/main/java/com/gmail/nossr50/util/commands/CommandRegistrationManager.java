@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.gmail.nossr50.commands.chat.McChatSpy;
+import com.gmail.nossr50.commands.skills.*;
 import org.bukkit.command.PluginCommand;
 
 import com.gmail.nossr50.mcMMO;
@@ -37,21 +38,6 @@ import com.gmail.nossr50.commands.player.MccooldownCommand;
 import com.gmail.nossr50.commands.player.McrankCommand;
 import com.gmail.nossr50.commands.player.McstatsCommand;
 import com.gmail.nossr50.commands.player.MctopCommand;
-import com.gmail.nossr50.commands.skills.AcrobaticsCommand;
-import com.gmail.nossr50.commands.skills.AlchemyCommand;
-import com.gmail.nossr50.commands.skills.ArcheryCommand;
-import com.gmail.nossr50.commands.skills.AxesCommand;
-import com.gmail.nossr50.commands.skills.ExcavationCommand;
-import com.gmail.nossr50.commands.skills.FishingCommand;
-import com.gmail.nossr50.commands.skills.HerbalismCommand;
-import com.gmail.nossr50.commands.skills.MiningCommand;
-import com.gmail.nossr50.commands.skills.RepairCommand;
-import com.gmail.nossr50.commands.skills.SalvageCommand;
-import com.gmail.nossr50.commands.skills.SmeltingCommand;
-import com.gmail.nossr50.commands.skills.SwordsCommand;
-import com.gmail.nossr50.commands.skills.TamingCommand;
-import com.gmail.nossr50.commands.skills.UnarmedCommand;
-import com.gmail.nossr50.commands.skills.WoodcuttingCommand;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -168,6 +154,15 @@ public final class CommandRegistrationManager {
         command.setPermissionMessage(permissionsMessage);
         command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mcgod", "[" + LocaleLoader.getString("Commands.Usage.Player") + "]"));
         command.setExecutor(new McgodCommand());
+    }
+
+    private static void registerMmoInfoCommand() {
+        PluginCommand command = mcMMO.p.getCommand("mmoinfo");
+        command.setDescription(LocaleLoader.getString("Commands.Description.mmoinfo"));
+        command.setPermission("mcmmo.commands.mmoinfo");
+        command.setPermissionMessage(permissionsMessage);
+        command.setUsage(LocaleLoader.getString("Commands.Usage.1", "mmoinfo", "[" + LocaleLoader.getString("Commands.Usage.SubSkill") + "]"));
+        command.setExecutor(new MmoInfo());
     }
 
     private static void registerMcChatSpyCommand() {
@@ -441,6 +436,7 @@ public final class CommandRegistrationManager {
 
     public static void registerCommands() {
         // Generic Commands
+        registerMmoInfoCommand();
         registerMcImportCommand();
         registerKrakenCommand();
         registerMcabilityCommand();

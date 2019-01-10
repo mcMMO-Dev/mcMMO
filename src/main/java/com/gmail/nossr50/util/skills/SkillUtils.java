@@ -311,6 +311,19 @@ public class SkillUtils {
         }
     }
 
+    public static double getChanceOfSuccess(int skillLevel, double maxLevelBonus, double curve)
+    {
+        return getChanceOfSuccess((double) skillLevel, maxLevelBonus, curve);
+    }
+
+    public static double getChanceOfSuccess(double skillLevel, double maxLevelBonus, double curve)
+    {
+        if(skillLevel > maxLevelBonus)
+            return maxLevelBonus / curve;
+
+       return skillLevel / curve;
+    }
+
     /* NEW VERSION */
     public static boolean isActivationSuccessful(SkillActivationType skillActivationType, AbstractSubSkill abstractSubSkill, Player player, double maxChance, int maxBonusLevel)
     {

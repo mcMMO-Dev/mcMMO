@@ -252,6 +252,7 @@ public class TextComponentFactory {
 
             //Insertion
             textComponent.setInsertion(skillName);
+            textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mmoinfo "+subSkillType.getNiceNameNoSpaces(subSkillType)));
 
             subSkillTextComponents.put(key, textComponent);
             return subSkillTextComponents.get(key);
@@ -285,6 +286,7 @@ public class TextComponentFactory {
 
             //Insertion
             textComponent.setInsertion(skillName);
+            textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mmoinfo "+abstractSubSkill.getConfigKeyName()));
 
             subSkillTextComponents.put(key, textComponent);
             return subSkillTextComponents.get(key);
@@ -295,7 +297,6 @@ public class TextComponentFactory {
 
     private static BaseComponent[] getBaseComponent(Player player, AbstractSubSkill abstractSubSkill)
     {
-
         int curRank = RankUtils.getRank(player, abstractSubSkill);
         String key = abstractSubSkill.getConfigKeyName();
 

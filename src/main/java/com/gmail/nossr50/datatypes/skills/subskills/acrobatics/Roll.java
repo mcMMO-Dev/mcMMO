@@ -29,7 +29,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.inventory.ItemStack;
 
-
 public class Roll extends AcrobaticsSubSkill implements RandomChance {
     private int fallTries = 0;
     protected Location lastFallLocation;
@@ -136,7 +135,6 @@ public class Roll extends AcrobaticsSubSkill implements RandomChance {
         /*
          *   Append the messages
          */
-
 
         /*componentBuilder.append(LocaleLoader.getString("Effects.Template", LocaleLoader.getString("Acrobatics.Effect.2"), LocaleLoader.getString("Acrobatics.Effect.3")));
         componentBuilder.append("\n");*/
@@ -318,5 +316,84 @@ public class Roll extends AcrobaticsSubSkill implements RandomChance {
     @Override
     public int getNumRanks() {
         return 0;
+    }
+
+    /**
+     * Prints detailed info about this subskill to the player
+     *
+     * @param player the target player
+     */
+    @Override
+    public void printInfo(Player player) {
+        //Header
+        super.printInfo(player);
+
+        //Start the description string.
+        //player.sendMessage(getDescription());
+        //Player stats
+        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Stats",
+                            LocaleLoader.getString("Acrobatics.SubSkill.Roll.Stats", getStats(player)[0], getStats(player)[1])));
+
+        //Mechanics
+        player.sendMessage(LocaleLoader.getString("Commands.MmoInfo.Mechanics"));
+        player.sendMessage(getMechanics());
+    }
+
+    /**
+     * Returns a collection of strings about how a skill works
+     *
+     * @return
+     */
+    @Override
+    public String getMechanics() {
+        //Vars passed to locale
+        //0 = chance to roll at half max level
+        //1 = chance to roll with grace at half max level
+        //2 = level where maximum bonus is reached
+        //3 = additive chance to succeed per level
+        /*
+        Roll:
+            # ChanceMax: Maximum chance of rolling when on <MaxBonusLevel> or higher
+            # MaxBonusLevel: On this level or higher, the roll chance will not go higher than <ChanceMax>
+            # DamageThreshold: The max damage a player can negate with a roll
+            ChanceMax: 100.0
+            MaxBonusLevel: 100
+            DamageThreshold: 7.0
+         */
+        double rollChanceHalfMax, graceChanceHalfMax, maxBonusLevel, curve, damageThreshold, chancePerLevel;
+
+        curve = AdvancedConfig.getInstance().getMaxChance(this);
+        maxBonusLevel = (double) AdvancedConfig.getInstance().getMaxBonusLevel(this);
+
+        //Chance
+        rollChanceHalfMax   = 100 * SkillUtils.getChanceOfSuccess(maxBonusLevel / 2, maxBonusLevel, curve);
+        graceChanceHalfMax  = 100 * SkillUtils.getChanceOfSuccess(maxBonusLevel / 2, maxBonusLevel, curve / 2);
+        damageThreshold     = AdvancedConfig.getInstance().getRollDamageThreshold();
+
+        chancePerLevel = (1/curve) * maxBonusLevel;
+
+
+        return LocaleLoader.getString("Acrobatics.SubSkill.Roll.Mechanics", rollChanceHalfMax, graceChanceHalfMax, maxBonusLevel, chancePerLevel, damageThreshold);
+    }
+
+    /**
+     * Get an array of various stats for a player
+     *
+     * @param player target player
+     * @return stat array for target player for this skill
+     */
+    @Override
+    public Double[] getStats(Player player)
+    {
+        double curve, maxBonusLevel, playerChanceRoll, playerChanceGrace;
+
+        curve = AdvancedConfig.getInstance().getMaxChance(this);
+        maxBonusLevel = (double) AdvancedConfig.getInstance().getMaxBonusLevel(this);
+
+        playerChanceRoll        = 100 * SkillUtils.getChanceOfSuccess(UserManager.getPlayer(player).getSkillLevel(getPrimarySkill()), maxBonusLevel, curve);
+        playerChanceGrace       = 100 * SkillUtils.getChanceOfSuccess(UserManager.getPlayer(player).getSkillLevel(getPrimarySkill()), maxBonusLevel, curve / 2);
+
+        Double[] stats = { playerChanceRoll, playerChanceGrace};
+        return stats;
     }
 }

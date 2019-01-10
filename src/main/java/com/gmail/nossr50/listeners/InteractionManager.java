@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 public class InteractionManager {
     private static HashMap<InteractType, ArrayList<Interaction>> interactRegister;
+    private static HashMap<String, AbstractSubSkill> subSkillNameMap; //Used for mmoinfo optimization
     private static ArrayList<AbstractSubSkill> subSkillList;
 
     /**
@@ -27,12 +28,15 @@ public class InteractionManager {
      */
     public static void registerSubSkill(AbstractSubSkill abstractSubSkill)
     {
-        //Init map
+        /* INIT MAPS */
         if(interactRegister == null)
             interactRegister = new HashMap<>();
 
         if(subSkillList == null)
             subSkillList = new ArrayList<>();
+
+        if(subSkillNameMap == null)
+            subSkillNameMap = new HashMap<>();
 
         //Store a unique copy of each subskill
         if(!subSkillList.contains(abstractSubSkill))
@@ -47,10 +51,25 @@ public class InteractionManager {
 
         //Register skill
         arrayRef.add(abstractSubSkill);
-        //TEST
-        //interactRegister.put(abstractSubSkill.getInteractType(), arrayRef);
+
+        String lowerCaseName = abstractSubSkill.getConfigKeyName().toLowerCase();
+
+        //Register in name map
+        if(subSkillNameMap.get(lowerCaseName) == null)
+            subSkillNameMap.put(lowerCaseName, abstractSubSkill);
 
         System.out.println("[mcMMO] registered subskill: "+ abstractSubSkill.getConfigKeyName());
+    }
+
+    /**
+     * Grabs the registered abstract skill by its name
+     * Is not case sensitive
+     * @param name name of subskill, not case sensitive
+     * @return null if the subskill is not registered
+     */
+    public static AbstractSubSkill getAbstractByName(String name)
+    {
+        return subSkillNameMap.get(name.toLowerCase());
     }
 
     /**

@@ -43,6 +43,7 @@ public final class Permissions {
      * COMMANDS
      */
 
+    public static boolean mmoinfo(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.mmoinfo"); }
     public static boolean addlevels(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.addlevels"); }
     public static boolean addlevelsOthers(Permissible permissible) { return permissible.hasPermission("mcmmo.commands.addlevels.others"); }
 

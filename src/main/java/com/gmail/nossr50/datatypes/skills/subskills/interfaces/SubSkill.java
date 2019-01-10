@@ -4,12 +4,27 @@ import com.gmail.nossr50.datatypes.skills.interfaces.Skill;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+
 public interface SubSkill extends Skill {
     /**
      * Grabs the permission node for this skill
      * @return permission node address
      */
     String getPermissionNode();
+
+    /**
+     * Returns a collection of strings about how a skill works
+     * @return
+     */
+    String getMechanics();
+
+    /**
+     * Get an array of various stats for a player
+     * @param player target player
+     * @return stat array for target player for this skill
+     */
+    Double[] getStats(Player player);
 
     /**
      * Checks if a player has permission to use this skill
@@ -55,4 +70,10 @@ public interface SubSkill extends Skill {
      * @return true if enabled
      */
     boolean isEnabled();
+
+    /**
+     * Prints detailed info about this subskill to the player
+     * @param player the target player
+     */
+    void printInfo(Player player);
 }

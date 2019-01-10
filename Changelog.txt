@@ -13,12 +13,13 @@ Version 2.1.0
  + You can now disable specific skills in coreskills.yml without the need for permissions
  + Added links to mcMMO related websites to various commands
  + Certain elements of mcMMO's UI have been restyled
- + added the subtext "Overhaul Era" to various locations until 3.0.0 comes out
+ + Added the tagline "Overhaul Era" to various locations until 3.0.0 comes out
  + (Config) New config file added coreskills.yml
  + (Config) Added rank settings for the new Woodcutting skill
  + (Config) Added configurable parameters for the new Tree Feller
  + (Config) Added classic toggle for Tree Feller
  + (Chat) Added ability for admins to spy on party chat (off unless toggled on)
+ + (Commands) Added new info command /mmoinfo or /mcinfo
  + (Commands) Added toggle command /mcchatspy
  + (API) Added many missing SubSkills to SubSkillType class
  + (Permissions) Added permission node mcmmo.commands.mcchatspy & mcmmo.commands.mcchatspy.others
@@ -48,11 +49,13 @@ Version 2.1.0
  ! (Config) Axes.CriticalHit in advanced.yml is now Axes.CriticalStrikes
  ! (Config) Archery's Skill Shot now uses RankDamageMultiplier for its damage bonus calculations
  ! (Config) Axe's Axe mastery now uses RankDamageMultiplier for its damage bonus calculations
+ + (Permissions) Added mcmmo.commands.mmoinfo for the new mmoinfo/mcinfo command
  ! (Permissions) Replaced the old Double Drop permission node for woodcutting with a new Harvest Lumber permission node
  ! (Permissions) Fast Food Service permission node renamed to mcmmo.ability.taming.fastfoodservice
  ! (Permissions) Counter Attack permission node renamed to mcmmo.ability.swords.counterattack
  ! (Permissions) Arrow Deflect permission node renamed to mcmmo.ability.unarmed.arrowdeflect
  ! (Permissions) Iron Arm Style permission node renamed to mcmmo.ability.unarmed.ironarmstyle
+ ! (Locale) The descriptions of a few skills have changed
  ! (Locale) Removed redundant information from some skill names and descriptions en_US (other locales will need to be updated)
  ! (Locale) SubSkill locale keys are now located at {ParentSkill}.SubSkill.SubSkillName
  ! (Locale) Super Abilities no longer have (ABILITY) in their Skill.Effect strings
