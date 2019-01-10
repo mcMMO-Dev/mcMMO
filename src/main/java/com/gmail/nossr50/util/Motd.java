@@ -36,9 +36,7 @@ public final class Motd {
      */
     public static void displayVersion(Player player, String version) {
         if (Permissions.showversion(player)) {
-            player.sendMessage(LocaleLoader.getString("MOTD.Version", version));
-            //TODO: Remove this at release
-            player.sendMessage(ChatColor.YELLOW + "You're playing an "+ ChatColor.RED +"UNSTABLE" +ChatColor.YELLOW+" version of mcMMO! 2.1.0 is making many changes and if you are playing dev-snapshot you know the risks!");
+            player.sendMessage(LocaleLoader.getString("MOTD.Version.Overhaul", version));
         }
     }
 
