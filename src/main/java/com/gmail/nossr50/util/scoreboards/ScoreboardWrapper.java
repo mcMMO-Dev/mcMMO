@@ -64,7 +64,7 @@ public class ScoreboardWrapper {
     }
 
     public static ScoreboardWrapper create(Player player) {
-        return new ScoreboardWrapper(player.getName(), mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
+        return new ScoreboardWrapper(player.getName(), mcMMO.p.getServer().getScoreboardManager().getMainScoreboard());
     }
 
     public BukkitTask updateTask = null;
