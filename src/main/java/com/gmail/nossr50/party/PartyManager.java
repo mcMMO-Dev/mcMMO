@@ -128,6 +128,25 @@ public final class PartyManager {
         return nearMembers;
     }
 
+    public static List<Player> getNearVisibleMembers(McMMOPlayer mcMMOPlayer) {
+        List<Player> nearMembers = new ArrayList<Player>();
+        Party party = mcMMOPlayer.getParty();
+
+        if (party != null) {
+            Player player = mcMMOPlayer.getPlayer();
+            double range = Config.getInstance().getPartyShareRange();
+
+            for (Player member : party.getVisibleMembers(player)) {
+                if (!player.equals(member) && member.isValid() && Misc.isNear(player.getLocation(), member.getLocation(), range)) {
+                    nearMembers.add(member);
+                }
+            }
+        }
+
+        return nearMembers;
+    }
+
+
     /**
      * Get a list of all players in this player's party.
      *

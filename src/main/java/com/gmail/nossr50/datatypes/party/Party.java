@@ -76,6 +76,19 @@ public class Party {
         return onlineMembers;
     }
 
+    public List<Player> getVisibleMembers(Player commandSender)
+    {
+        ArrayList<Player> visibleMembers = new ArrayList<>();
+
+        for(Player p : onlineMembers)
+        {
+            if(commandSender.canSee(p))
+                visibleMembers.add(p);
+        }
+
+        return visibleMembers;
+    }
+
     public List<String> getOnlinePlayerNames(CommandSender sender) {
         Player player = sender instanceof Player ? (Player) sender : null;
         List<String> onlinePlayerNames = new ArrayList<String>();
