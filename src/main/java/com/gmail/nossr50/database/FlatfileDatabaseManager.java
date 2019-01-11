@@ -268,6 +268,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 StringBuilder writer = new StringBuilder();
                 String line;
 
+                boolean wroteUser = false;
                 // While not at the end of the file
                 while ((line = in.readLine()) != null) {
                     // Read the line in and copy it to the output if it's not the player we want to edit
@@ -277,53 +278,17 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                     }
                     else {
                         // Otherwise write the new player information
-                        writer.append(playerName).append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.MINING)).append(":");
-                        writer.append(":");
-                        writer.append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.MINING)).append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.WOODCUTTING)).append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.WOODCUTTING)).append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.REPAIR)).append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.UNARMED)).append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.HERBALISM)).append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.EXCAVATION)).append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.ARCHERY)).append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.SWORDS)).append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.AXES)).append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.ACROBATICS)).append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.REPAIR)).append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.UNARMED)).append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.HERBALISM)).append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.EXCAVATION)).append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.ARCHERY)).append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.SWORDS)).append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.AXES)).append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.ACROBATICS)).append(":");
-                        writer.append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.TAMING)).append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.TAMING)).append(":");
-                        writer.append((int) profile.getAbilityDATS(SuperAbility.BERSERK)).append(":");
-                        writer.append((int) profile.getAbilityDATS(SuperAbility.GIGA_DRILL_BREAKER)).append(":");
-                        writer.append((int) profile.getAbilityDATS(SuperAbility.TREE_FELLER)).append(":");
-                        writer.append((int) profile.getAbilityDATS(SuperAbility.GREEN_TERRA)).append(":");
-                        writer.append((int) profile.getAbilityDATS(SuperAbility.SERRATED_STRIKES)).append(":");
-                        writer.append((int) profile.getAbilityDATS(SuperAbility.SKULL_SPLITTER)).append(":");
-                        writer.append((int) profile.getAbilityDATS(SuperAbility.SUPER_BREAKER)).append(":");
-                        writer.append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.FISHING)).append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.FISHING)).append(":");
-                        writer.append((int) profile.getAbilityDATS(SuperAbility.BLAST_MINING)).append(":");
-                        writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
-                        MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
-                        writer.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
-                        writer.append(profile.getSkillLevel(PrimarySkill.ALCHEMY)).append(":");
-                        writer.append(profile.getSkillXpLevel(PrimarySkill.ALCHEMY)).append(":");
-                        writer.append(uuid != null ? uuid.toString() : "NULL").append(":");
-                        writer.append(profile.getScoreboardTipsShown()).append(":");
-                        writer.append(profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS)).append(":");
-                        writer.append("\r\n");
+                        writeUserToLine(profile, playerName, uuid, writer);
+                        wroteUser = true;
                     }
+                }
+
+                /*
+                 * If we couldn't find the user in the DB we need to add him
+                 */
+                if(!wroteUser)
+                {
+                    writeUserToLine(profile, playerName, uuid, writer);
                 }
 
                 // Write the new file
@@ -354,6 +319,55 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                 }
             }
         }
+    }
+
+    private void writeUserToLine(PlayerProfile profile, String playerName, UUID uuid, StringBuilder writer) {
+        writer.append(playerName).append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.MINING)).append(":");
+        writer.append(":");
+        writer.append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.MINING)).append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.WOODCUTTING)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.WOODCUTTING)).append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.REPAIR)).append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.UNARMED)).append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.HERBALISM)).append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.EXCAVATION)).append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.ARCHERY)).append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.SWORDS)).append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.AXES)).append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.ACROBATICS)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.REPAIR)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.UNARMED)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.HERBALISM)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.EXCAVATION)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.ARCHERY)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.SWORDS)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.AXES)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.ACROBATICS)).append(":");
+        writer.append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.TAMING)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.TAMING)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbility.BERSERK)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbility.GIGA_DRILL_BREAKER)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbility.TREE_FELLER)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbility.GREEN_TERRA)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbility.SERRATED_STRIKES)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbility.SKULL_SPLITTER)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbility.SUPER_BREAKER)).append(":");
+        writer.append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.FISHING)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.FISHING)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbility.BLAST_MINING)).append(":");
+        writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
+        MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
+        writer.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
+        writer.append(profile.getSkillLevel(PrimarySkill.ALCHEMY)).append(":");
+        writer.append(profile.getSkillXpLevel(PrimarySkill.ALCHEMY)).append(":");
+        writer.append(uuid != null ? uuid.toString() : "NULL").append(":");
+        writer.append(profile.getScoreboardTipsShown()).append(":");
+        writer.append(profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS)).append(":");
+        writer.append("\r\n");
     }
 
     public List<PlayerStat> readLeaderboard(PrimarySkill skill, int pageNumber, int statsPerPage) {

@@ -40,6 +40,7 @@ Version 2.1.0
  = (Skills) Added missing mushroom blocks to experience.yml defaults
  = (Skills) Tridents will no longer be considered unarmed
  = (MySQL) You can now inspect offline players
+ = (MySQL) When converting from MySQL to flatfile mcMMO will now properly include all users in the conversion process
  ! (Party) Party member list will only include members of the party that you can see (aren't vanished)
  ! (Skills) mcMMO skills will now be on a scale from 1-100 instead of 0-1000 (for existing mcMMO installs this is opt-in and off by default)
  ! (Skills) Skill Super Powers (Tree Feller, etc...) will now require level 10+ to use
