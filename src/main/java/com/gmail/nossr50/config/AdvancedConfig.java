@@ -695,31 +695,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     /* Interaction Settings */
     public boolean doesNotificationUseActionBar(NotificationType notificationType)
     {
-        String key = "";
-
-        switch(notificationType)
-        {
-            case XP_GAIN:
-                key = "ExperienceGain";
-                break;
-            case LEVEL_UP_MESSAGE:
-                key = "LevelUp";
-                break;
-            case SUBSKILL_MESSAGE:
-                key = "SubSkillInteraction";
-                break;
-            case SUBSKILL_UNLOCKED:
-                key = "SubSkillUnlocked";
-                break;
-            case TOOL:
-                key = "ToolReady";
-                break;
-            case SUPER_ABILITY:
-                key = "SuperAbilityInteraction";
-                break;
-        }
-
-        return config.getBoolean("Skills.FeedBack.ActionBarNotifications."+key, true);
+        return config.getBoolean("Skills.FeedBack.ActionBarNotifications."+notificationType.toString(), true);
     }
 
     /*

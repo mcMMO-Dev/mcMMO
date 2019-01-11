@@ -17,11 +17,15 @@ Skills:
     Feedback:
         # Turning these to false will have them printed in chat instead
         ActionBarNotifications:
+            AbilityOff: true
+            LevelRequirementNotMet: true
+            AbilityCoolDown: true
             LevelUps: true
             ToolReady: true
             SubSkillInteraction: true
             SubSkillUnlocked: true
             SuperAbilityInteraction: true
+            SuperAbilityAlertOthers: true
             ExperienceGain: true
     General:
         Ability:

@@ -580,8 +580,8 @@ public class TextComponentFactory {
             {
                 if(Permissions.isSubSkillEnabled(player, subSkillType))
                 {
-                    if(InteractionManager.getInteractRegister().get(subSkillType.getNiceNameNoSpaces(subSkillType)) == null)
-                    textComponents.add(TextComponentFactory.getSubSkillTextComponent(player, subSkillType));
+                    if(!InteractionManager.hasSubSkill(subSkillType))
+                        textComponents.add(TextComponentFactory.getSubSkillTextComponent(player, subSkillType));
                 }
             }
         }

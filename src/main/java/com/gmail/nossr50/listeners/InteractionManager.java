@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
+import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Interaction;
@@ -170,6 +171,16 @@ public class InteractionManager {
     public static ArrayList<AbstractSubSkill> getSubSkillList()
     {
         return subSkillList;
+    }
+
+    public static boolean hasSubSkill(String name)
+    {
+        return getAbstractByName(name) != null;
+    }
+
+    public static boolean hasSubSkill(SubSkillType subSkillType)
+    {
+        return hasSubSkill(subSkillType.getNiceNameNoSpaces(subSkillType));
     }
 
     /**
