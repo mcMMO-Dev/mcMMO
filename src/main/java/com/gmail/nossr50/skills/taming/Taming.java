@@ -59,13 +59,13 @@ public class Taming {
     protected static String getCallOfTheWildFailureMessage(EntityType type) {
         switch (type) {
             case OCELOT:
-                return LocaleLoader.getString("Taming.Summon.Fail.Ocelot");
+                return "Taming.Summon.Fail.Ocelot";
 
             case WOLF:
-                return LocaleLoader.getString("Taming.Summon.Fail.Wolf");
+                return "Taming.Summon.Fail.Wolf";
 
             case HORSE:
-                return LocaleLoader.getString("Taming.Summon.Fail.Horse");
+                return "Taming.Summon.Fail.Horse";
 
             default:
                 return "";

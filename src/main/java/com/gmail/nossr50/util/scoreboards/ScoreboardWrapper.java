@@ -33,6 +33,7 @@ public class ScoreboardWrapper {
     public final String playerName;
     public final UUID playerUUID;
     private final Scoreboard scoreboard;
+    private final Player player;
     private boolean tippedKeep = false;
     private boolean tippedClear = false;
 
@@ -49,23 +50,24 @@ public class ScoreboardWrapper {
     public int leaderboardPage = -1;
 
     private ScoreboardWrapper(Player player, Scoreboard scoreboard) {
+        this.player     = player;
         this.playerName = player.getName();
         this.scoreboard = scoreboard;
         this.playerUUID = player.getUniqueId();
         sidebarType = SidebarType.NONE;
 
-        if(this.scoreboard.getObjective(getObjective(ObjectiveType.SIDEBAR)) == null)
-            sidebarObjective = this.scoreboard.registerNewObjective(getObjective(ObjectiveType.SIDEBAR), "dummy");
+        if(this.scoreboard.getObjective(getObjectiveIdentifier(ObjectiveType.SIDEBAR)) == null)
+            sidebarObjective = this.scoreboard.registerNewObjective(getObjectiveIdentifier(ObjectiveType.SIDEBAR), "dummy");
         else
         {
-            this.scoreboard.getObjective(getObjective(ObjectiveType.SIDEBAR)).unregister();
-            sidebarObjective = this.scoreboard.registerNewObjective(getObjective(ObjectiveType.SIDEBAR), "dummy");
+            this.scoreboard.getObjective(getObjectiveIdentifier(ObjectiveType.SIDEBAR)).unregister();
+            sidebarObjective = this.scoreboard.registerNewObjective(getObjectiveIdentifier(ObjectiveType.SIDEBAR), "dummy");
         }
 
-        if(this.scoreboard.getObjective(getObjective(ObjectiveType.POWER)) == null)
-            powerObjective = this.scoreboard.registerNewObjective(getObjective(ObjectiveType.POWER), "dummy");
+        if(this.scoreboard.getObjective(getObjectiveIdentifier(ObjectiveType.POWER)) == null)
+            powerObjective = this.scoreboard.registerNewObjective(getObjectiveIdentifier(ObjectiveType.POWER), "dummy");
         else
-            powerObjective = this.scoreboard.getObjective(getObjective(ObjectiveType.POWER));
+            powerObjective = this.scoreboard.getObjective(getObjectiveIdentifier(ObjectiveType.POWER));
 
         if (Config.getInstance().getPowerLevelTagsEnabled()) {
             powerObjective.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
@@ -77,7 +79,7 @@ public class ScoreboardWrapper {
         }
     }
 
-    public String getObjective(ObjectiveType objectiveType)
+    public String getObjectiveIdentifier(ObjectiveType objectiveType)
     {
         switch(objectiveType)
         {
@@ -92,7 +94,7 @@ public class ScoreboardWrapper {
     }
 
     public static ScoreboardWrapper create(Player player) {
-        return new ScoreboardWrapper(player, mcMMO.p.getServer().getScoreboardManager().getMainScoreboard());
+        return new ScoreboardWrapper(player, getMainScoreboard());
     }
 
     public BukkitTask updateTask = null;
@@ -173,7 +175,7 @@ public class ScoreboardWrapper {
     /**
      * Set the old scoreboard, for use in reverting.
      */
-    public void setOldScoreboard() {
+    /*public void setOldScoreboard() {
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
 
         if (player == null) {
@@ -192,7 +194,7 @@ public class ScoreboardWrapper {
         else {
             this.oldBoard = oldBoard;
         }
-    }
+    }*/
 
     public void showBoardWithNoRevert() {
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
@@ -253,7 +255,7 @@ public class ScoreboardWrapper {
             return;
         }
 
-        if (oldBoard != null) {
+        if (oldBoard != null && oldBoard != player.getScoreboard()) {
             if (player.getScoreboard() == scoreboard) {
                 player.setScoreboard(oldBoard);
                 oldBoard = null;
@@ -264,6 +266,13 @@ public class ScoreboardWrapper {
         }
 
         cancelRevert();
+
+        //Unregister the boards
+        if (getMainScoreboard().getObjective(getObjectiveIdentifier(ObjectiveType.SIDEBAR)) != null)
+        {
+            getMainScoreboard().getObjective(getObjectiveIdentifier(ObjectiveType.SIDEBAR)).unregister();
+        } else
+            unregisterPlayerSideboard(getObjectiveIdentifier(ObjectiveType.POWER));
 
         sidebarType = SidebarType.NONE;
         targetPlayer = null;
@@ -399,8 +408,18 @@ public class ScoreboardWrapper {
 
     // Setup for after a board type change
     protected void loadObjective(String displayName) {
-        sidebarObjective.unregister();
-        sidebarObjective = scoreboard.registerNewObjective(getObjective(ObjectiveType.SIDEBAR), "dummy");
+        //Unregister the old sidebarobjective if it exists
+        try {
+            if (getMainScoreboard().getObjective(getObjectiveIdentifier(ObjectiveType.SIDEBAR)) != null)
+                getMainScoreboard().getObjective(getObjectiveIdentifier(ObjectiveType.SIDEBAR)).unregister();
+        } catch (IllegalStateException exception)
+        {
+            exception.printStackTrace();
+        }
+        //Unregister our player-named sideboard if it exists
+        unregisterPlayerSideboard(player.getName());
+
+        sidebarObjective = scoreboard.registerNewObjective(getObjectiveIdentifier(ObjectiveType.SIDEBAR), "dummy");
 
         if (displayName.length() > 32) {
             displayName = displayName.substring(0, 32);
@@ -411,6 +430,15 @@ public class ScoreboardWrapper {
         updateSidebar();
         // Do last! Minimize packets!
         sidebarObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+    }
+
+    private void unregisterPlayerSideboard(String s) {
+        if (getMainScoreboard().getObjective(s) != null)
+            getMainScoreboard().getObjective(s).unregister();
+    }
+
+    private static Scoreboard getMainScoreboard() {
+        return mcMMO.p.getServer().getScoreboardManager().getMainScoreboard();
     }
 
     /**

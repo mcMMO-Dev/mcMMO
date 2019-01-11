@@ -9,7 +9,6 @@ import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Interaction;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.TextComponentFactory;

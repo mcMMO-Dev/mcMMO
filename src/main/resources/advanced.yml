@@ -23,16 +23,21 @@ Skills:
             LevelUps: true
             ToolReady: true
             SubSkillInteraction: true
+            SubSkillFailure: true
             SubSkillUnlocked: true
             SuperAbilityInteraction: true
             SuperAbilityAlertOthers: true
             ExperienceGain: true
     General:
         Ability:
+            EnchantBuff: 5
             # IncreaseLevel: This setting will determine when the length of every ability gets longer with 1 second
             # EnchantBuff: This setting determines how many enchant levels to use when buffing Super Breaker & Giga Drill Breaker
-            IncreaseLevel: 5
-            EnchantBuff: 5
+            ClassicScaling:
+                IncreaseLevel: 50
+            StandardScaling:
+                IncreaseLevel: 5
+
     #
     #  Settings for Acrobatics
     ###
@@ -675,6 +680,8 @@ Skills:
 Style:
     JSON:
         Notification:
+            SubSkillFailure:
+                Color: RED
             AbilityOff:
                 Color: GRAY
             LevelRequirementNotMet:

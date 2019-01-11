@@ -19,7 +19,7 @@ public class McMMOPlayerNotificationEvent extends PlayerEvent implements Cancell
     protected TextComponent notificationTextComponent;
     protected final NotificationType notificationType;
 
-    public McMMOPlayerNotificationEvent(Player who, NotificationType notificationType, net.md_5.bungee.api.chat.TextComponent notificationTextComponent, ChatMessageType chatMessageType) {
+    public McMMOPlayerNotificationEvent(Player who, NotificationType notificationType, TextComponent notificationTextComponent, ChatMessageType chatMessageType) {
         super(who);
         this.notificationType = notificationType;
         this.notificationTextComponent = notificationTextComponent;

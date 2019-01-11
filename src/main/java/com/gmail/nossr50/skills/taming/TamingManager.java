@@ -3,12 +3,14 @@ package com.gmail.nossr50.skills.taming;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.events.fake.FakeEntityTameEvent;
 import com.gmail.nossr50.events.skills.secondaryabilities.SubSkillWeightedActivationCheckEvent;
+import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.BleedTimerTask;
@@ -328,7 +330,7 @@ public class TamingManager extends SkillManager {
 
         for (Entity entity : player.getNearbyEntities(range, range, range)) {
             if (entity.getType() == type) {
-                player.sendMessage(Taming.getCallOfTheWildFailureMessage(type));
+                InteractionManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE_FAILURE, Taming.getCallOfTheWildFailureMessage(type));
                 return false;
             }
         }

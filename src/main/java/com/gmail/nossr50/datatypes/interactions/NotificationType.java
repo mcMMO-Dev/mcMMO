@@ -8,6 +8,7 @@ public enum NotificationType {
     SUBSKILL_UNLOCKED("SubSkillUnlocked"),
     LEVEL_UP_MESSAGE("LevelUps"),
     SUBSKILL_MESSAGE("SubSkillInteraction"),
+    SUBSKILL_MESSAGE_FAILURE("SubSkillFailure"),
     TOOL("ToolReady"),
     UNSKILLED("LevelRequirementNotMet"),
     ABILITY_OFF("AbilityOff"),
