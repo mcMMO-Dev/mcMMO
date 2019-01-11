@@ -32,8 +32,9 @@ import com.google.common.collect.Lists;
 public class ScoreboardManager {
     static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<String, ScoreboardWrapper>();
 
+
     // do not localize; these are internal identifiers
-    static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar";
+    //static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar";
     static final String POWER_OBJECTIVE = "mcmmo_pwrlvl";
 
     static final String HEADER_STATS = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
@@ -401,7 +402,7 @@ public class ScoreboardManager {
         Objective powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
 
         if (powerObjective == null) {
-            powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().registerNewObjective(POWER_OBJECTIVE, "dummy");
+        powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().registerNewObjective(POWER_OBJECTIVE, "dummy");
             powerObjective.setDisplayName(TAG_POWER_LEVEL);
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         }

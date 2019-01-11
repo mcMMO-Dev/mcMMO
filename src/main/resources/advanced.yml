@@ -671,30 +671,22 @@ Skills:
 Style:
     JSON:
         Notification:
-                LevelUps:
-                    Bold: true
-                    Italics: false
-                    Underline: false
-                ToolReady:
-                    Bold: false
-                    Italics: true
-                    Underline: false
-                SubSkillInteraction:
-                    Bold: false
-                    Italics: true
-                    Underline: false
-                SubSkillUnlocked:
-                    Bold: true
-                    Italics: false
-                    Underline: false
-                SuperAbilityInteraction:
-                    Bold: true
-                    Italics: false
-                    Underline: false
-                ExperienceGain:
-                    Bold: true
-                    Italics: false
-                    Underline: false
+            LevelRequirementNotMet:
+                Color: RED
+            AbilityCoolDown:
+                Color: RED
+            LevelUps:
+                Color: GOLD
+            ToolReady:
+                Color: GREEN
+            SubSkillInteraction:
+                Color: YELLOW
+            SubSkillUnlocked:
+                Color: PURPLE
+            SuperAbilityInteraction:
+                Color: DARK_AQUA
+            ExperienceGain:
+                Color: WHITE
         Hover:
             Details:
                 Header:

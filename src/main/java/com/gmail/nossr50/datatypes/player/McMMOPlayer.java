@@ -4,6 +4,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
@@ -11,6 +12,7 @@ import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
+import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
@@ -38,7 +40,6 @@ import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
-import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
@@ -514,7 +515,8 @@ public class McMMOPlayer {
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
         }
 
-        player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(primarySkill.toString()) + ".Skillup", levelsGained, getSkillLevel(primarySkill)));
+        InteractionManager.sendPlayerLevelUpNotification(UserManager.getPlayer(player), primarySkill, profile.getSkillLevel(primarySkill));
+        //player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(primarySkill.toString()) + ".Skillup", levelsGained, getSkillLevel(primarySkill)));
     }
 
     /*
@@ -729,8 +731,6 @@ public class McMMOPlayer {
         ToolType tool = skill.getTool();
         SuperAbility ability = skill.getAbility();
 
-        setToolPreparationMode(tool, false);
-
         if (getAbilityMode(ability)) {
             return;
         }
@@ -785,6 +785,7 @@ public class McMMOPlayer {
             SkillUtils.handleAbilitySpeedIncrease(player);
         }
 
+        setToolPreparationMode(tool, false);
         new AbilityDisableTask(this, ability).runTaskLater(mcMMO.p, ticks * Misc.TICK_CONVERSION_FACTOR);
     }
 
@@ -811,6 +812,7 @@ public class McMMOPlayer {
 
         SuperAbility ability = skill.getAbility();
         ToolType tool = skill.getTool();
+        setToolPreparationMode(tool, true);
 
         /*
          * Woodcutting & Axes need to be treated differently.
@@ -821,16 +823,15 @@ public class McMMOPlayer {
                 int timeRemaining = calculateTimeRemaining(ability);
 
                 if (!getAbilityMode(ability) && timeRemaining > 0) {
-                    player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
+                    InteractionManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
                     return;
                 }
             }
 
             if (Config.getInstance().getAbilityMessagesEnabled()) {
-                player.sendMessage(tool.getRaiseTool());
+                InteractionManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
             }
 
-            setToolPreparationMode(tool, true);
             new ToolLowerTask(this, tool).runTaskLaterAsynchronously(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
         }
     }

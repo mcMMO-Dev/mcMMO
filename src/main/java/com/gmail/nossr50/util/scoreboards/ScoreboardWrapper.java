@@ -2,6 +2,7 @@ package com.gmail.nossr50.util.scoreboards;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -30,6 +31,7 @@ import org.apache.commons.lang.Validate;
 public class ScoreboardWrapper {
     // Initialization variables
     public final String playerName;
+    public final UUID playerUUID;
     private final Scoreboard scoreboard;
     private boolean tippedKeep = false;
     private boolean tippedClear = false;
@@ -46,12 +48,24 @@ public class ScoreboardWrapper {
     private PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
 
-    private ScoreboardWrapper(String playerName, Scoreboard scoreboard) {
-        this.playerName = playerName;
+    private ScoreboardWrapper(Player player, Scoreboard scoreboard) {
+        this.playerName = player.getName();
         this.scoreboard = scoreboard;
+        this.playerUUID = player.getUniqueId();
         sidebarType = SidebarType.NONE;
-        sidebarObjective = this.scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
-        powerObjective = this.scoreboard.registerNewObjective(ScoreboardManager.POWER_OBJECTIVE, "dummy");
+
+        if(this.scoreboard.getObjective(getObjective(ObjectiveType.SIDEBAR)) == null)
+            sidebarObjective = this.scoreboard.registerNewObjective(getObjective(ObjectiveType.SIDEBAR), "dummy");
+        else
+        {
+            this.scoreboard.getObjective(getObjective(ObjectiveType.SIDEBAR)).unregister();
+            sidebarObjective = this.scoreboard.registerNewObjective(getObjective(ObjectiveType.SIDEBAR), "dummy");
+        }
+
+        if(this.scoreboard.getObjective(getObjective(ObjectiveType.POWER)) == null)
+            powerObjective = this.scoreboard.registerNewObjective(getObjective(ObjectiveType.POWER), "dummy");
+        else
+            powerObjective = this.scoreboard.getObjective(getObjective(ObjectiveType.POWER));
 
         if (Config.getInstance().getPowerLevelTagsEnabled()) {
             powerObjective.setDisplayName(ScoreboardManager.TAG_POWER_LEVEL);
@@ -63,8 +77,22 @@ public class ScoreboardWrapper {
         }
     }
 
+    public String getObjective(ObjectiveType objectiveType)
+    {
+        switch(objectiveType)
+        {
+            case POWER:
+                return ScoreboardManager.POWER_OBJECTIVE;
+            case SIDEBAR:
+                return playerName;
+            default:
+                return playerName;
+
+        }
+    }
+
     public static ScoreboardWrapper create(Player player) {
-        return new ScoreboardWrapper(player.getName(), mcMMO.p.getServer().getScoreboardManager().getMainScoreboard());
+        return new ScoreboardWrapper(player, mcMMO.p.getServer().getScoreboardManager().getMainScoreboard());
     }
 
     public BukkitTask updateTask = null;
@@ -372,7 +400,7 @@ public class ScoreboardWrapper {
     // Setup for after a board type change
     protected void loadObjective(String displayName) {
         sidebarObjective.unregister();
-        sidebarObjective = scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
+        sidebarObjective = scoreboard.registerNewObjective(getObjective(ObjectiveType.SIDEBAR), "dummy");
 
         if (displayName.length() > 32) {
             displayName = displayName.substring(0, 32);

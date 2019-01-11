@@ -711,7 +711,7 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
             case SUBSKILL_UNLOCKED:
                 key = "SubSkillUnlocked";
                 break;
-            case TOOL_READY:
+            case TOOL:
                 key = "ToolReady";
                 break;
             case SUPER_ABILITY:
@@ -781,16 +781,25 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         return config.getBoolean("Style.JSON.Hover.Details.Description.Underlined");
     }
 
+    public ChatColor getJSONActionBarColor(NotificationType notificationType)
+    {
+        return getChatColor(LocaleLoader.getString("Style.JSON.Notification."+notificationType.toString()+".Color"));
+    }
+
     private ChatColor getChatColorFromKey(String keyLocation) {
         String colorName = LocaleLoader.getString(keyLocation);
 
+        return getChatColor(colorName);
+    }
+
+    private ChatColor getChatColor(String configColor) {
         for (ChatColor chatColor : ChatColor.values()) {
-            if (colorName.equalsIgnoreCase(chatColor.toString()))
+            if (configColor.equalsIgnoreCase(chatColor.getName()))
                 return chatColor;
         }
 
         //Invalid Color
-        System.out.println("[mcMMO] " + colorName + " is an invalid color value for key " + keyLocation);
+        System.out.println("[mcMMO] " + configColor + " is an invalid color value");
         return ChatColor.WHITE;
     }
 

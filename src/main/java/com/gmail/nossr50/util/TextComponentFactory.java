@@ -5,6 +5,7 @@ import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.json.McMMOUrl;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
@@ -26,10 +27,66 @@ public class TextComponentFactory {
 
     public static BaseComponent[] webComponents;
 
-    public static TextComponent getNotificationTextComponent(String localeKey, NotificationType notificationType)
+    /**
+     * This one is a bit simple
+     * @param localeKey
+     * @param notificationType
+     * @param values
+     * @return
+     */
+    public static TextComponent getNotificationTextComponentFromLocale(String localeKey, NotificationType notificationType, String... values)
     {
-        TextComponent textComponent = new TextComponent(LocaleLoader.getString(localeKey));
+        //TODO: Make this colored
+        return new TextComponent(LocaleLoader.getString(localeKey, values));
+    }
+
+    public static TextComponent getNotificationTextComponentFromLocale(String localeKey, NotificationType notificationType)
+    {
+        return getNotificationTextComponent(LocaleLoader.getString(localeKey), notificationType);
+    }
+
+    public static TextComponent getNotificationLevelUpTextComponent(McMMOPlayer player, PrimarySkill skill, int currentLevel)
+    {
+        //player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(primarySkill.toString()) + ".Skillup", levelsGained, getSkillLevel(primarySkill)));
+        TextComponent textComponent = new TextComponent(LocaleLoader.getString("JSON."+StringUtils.getCapitalized(skill.toString()))
+                +" "+LocaleLoader.getString("JSON.LevelUp"));
+        textComponent.setColor(AdvancedConfig.getInstance().getJSONActionBarColor(NotificationType.LEVEL_UP_MESSAGE));
+        TextComponent childComponent = new TextComponent(" "+currentLevel);
+        //TODO: Config
+        childComponent.setColor(ChatColor.GREEN);
+        childComponent.setBold(true);
+        textComponent.addExtra(childComponent);
         return textComponent;
+    }
+
+    public static TextComponent getNotificationTextComponent(String text, NotificationType notificationType)
+    {
+        System.out.println("Test");
+        TextComponent textComponent = new TextComponent(text);
+        textComponent.setColor(getNotificationColor(notificationType));
+        return textComponent;
+    }
+
+    public static ChatColor getNotificationColor(NotificationType notificationType)
+    {
+        ChatColor color = ChatColor.WHITE;
+        switch(notificationType)
+        {
+            case SUPER_ABILITY:
+                break;
+            case TOOL:
+                break;
+            case SUBSKILL_UNLOCKED:
+                break;
+            case SUBSKILL_MESSAGE:
+                break;
+            case LEVEL_UP_MESSAGE:
+                break;
+            case XP_GAIN:
+                break;
+        }
+
+        return color;
     }
 
     public static void sendPlayerUrlHeader(Player player) {

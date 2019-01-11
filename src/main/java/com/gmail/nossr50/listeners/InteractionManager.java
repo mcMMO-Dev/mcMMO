@@ -2,6 +2,8 @@ package com.gmail.nossr50.listeners;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
+import com.gmail.nossr50.datatypes.player.McMMOPlayer;
+import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.InteractType;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Interaction;
@@ -10,10 +12,12 @@ import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -91,25 +95,61 @@ public class InteractionManager {
      * This does this by sending out an event so other plugins can cancel it
      * @param player target player
      * @param notificationType notifications defined type
-     * @param localeKey the locale key for the notifications defined message
+     * @param key the locale key for the notifications defined message
      */
-    public static void sendPlayerInformation(Player player, NotificationType notificationType, String localeKey)
+    public static void sendPlayerInformation(Player player, NotificationType notificationType, String key)
     {
+
+        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
+
+        TextComponent message = TextComponentFactory.getNotificationTextComponentFromLocale(key, notificationType);
+        McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
+
+        sendNotification(player, customEvent);
+    }
+
+    public static void sendPlayerInformation(Player player, NotificationType notificationType, String key, String... values)
+    {
+
+        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
+
+        TextComponent message = TextComponentFactory.getNotificationTextComponentFromLocale(key, notificationType, values);
+        McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
+
+        sendNotification(player, customEvent);
+    }
+
+    private static void sendNotification(Player player, McMMOPlayerNotificationEvent customEvent) {
+        if (customEvent.isCancelled())
+            return;
+
+        player.spigot().sendMessage(customEvent.getChatMessageType(), customEvent.getNotificationTextComponent());
+    }
+
+    private static McMMOPlayerNotificationEvent checkNotificationEvent(Player player, NotificationType notificationType, ChatMessageType destination, TextComponent message) {
         //Init event
-        McMMOPlayerNotificationEvent customEvent = new McMMOPlayerNotificationEvent(player, notificationType, LocaleLoader.getString(localeKey));
+        McMMOPlayerNotificationEvent customEvent = new McMMOPlayerNotificationEvent(player,
+                notificationType, message, destination);
+
         //Call event
         Bukkit.getServer().getPluginManager().callEvent(customEvent);
+        return customEvent;
+    }
 
-        //Check to see if our custom event is cancelled
-        if(!customEvent.isCancelled())
-        {
-            if(AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType))
-            {
-                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponentFactory.getNotificationTextComponent(customEvent.getNotificationMessage(), notificationType));
-            } else {
-                player.spigot().sendMessage(ChatMessageType.SYSTEM, TextComponentFactory.getNotificationTextComponent(customEvent.getNotificationMessage(), notificationType));
-            }
-        }
+    /**
+     * Handles sending level up notifications to a mcMMOPlayer
+     * @param mcMMOPlayer target mcMMOPlayer
+     * @param skillName skill that leveled up
+     * @param newLevel new level of that skill
+     */
+    public static void sendPlayerLevelUpNotification(McMMOPlayer mcMMOPlayer, PrimarySkill skillName, int newLevel)
+    {
+        ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(NotificationType.LEVEL_UP_MESSAGE) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
+
+        TextComponent levelUpTextComponent = TextComponentFactory.getNotificationLevelUpTextComponent(mcMMOPlayer, skillName, newLevel);
+        McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(mcMMOPlayer.getPlayer(), NotificationType.LEVEL_UP_MESSAGE, destination, levelUpTextComponent);
+
+        sendNotification(mcMMOPlayer.getPlayer(), customEvent);
     }
 
     /**
