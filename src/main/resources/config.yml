@@ -46,6 +46,8 @@ General:
 #  Settings for the mcMMO scoreboards
 ###
 Scoreboard:
+    # Set this to true to enable scoreboards
+    Enable: true
     # Display player's power levels below their names?
     Power_Level_Tags: false
 
@@ -161,6 +163,7 @@ MySQL:
             Load: 20
             Save: 20
     Server:
+        SSL: false
         Port: 3306
         Address: localhost
 

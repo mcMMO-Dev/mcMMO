@@ -293,6 +293,7 @@ public class Config extends AutoUpdateConfigLoader {
     public int getMobHealthbarTime() { return config.getInt("Mob_Healthbar.Display_Time", 3); }
 
     /* Scoreboards */
+    public boolean getScoreboardsEnabled() { return config.getBoolean("Scoreboard.Enabled", true); }
     public boolean getPowerLevelTagsEnabled() { return config.getBoolean("Scoreboard.Power_Level_Tags", false); }
     public boolean getAllowKeepBoard() { return config.getBoolean("Scoreboard.Allow_Keep", true); }
     public int getTipsAmount() { return config.getInt("Scoreboard.Tips_Amount", 5); }
@@ -301,28 +302,28 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getShowAbilityNames() { return config.getBoolean("Scoreboard.Ability_Names", true); }
 
     public boolean getRankUseChat() { return config.getBoolean("Scoreboard.Types.Rank.Print", false); }
-    public boolean getRankUseBoard() { return config.getBoolean("Scoreboard.Types.Rank.Board", true); }
+    public boolean getRankUseBoard() { return getScoreboardsEnabled() && config.getBoolean("Scoreboard.Types.Rank.Board", true); }
     public int getRankScoreboardTime() { return config.getInt("Scoreboard.Types.Rank.Display_Time", 10); }
 
     public boolean getTopUseChat() { return config.getBoolean("Scoreboard.Types.Top.Print", true); }
-    public boolean getTopUseBoard() { return config.getBoolean("Scoreboard.Types.Top.Board", true); }
+    public boolean getTopUseBoard() { return getScoreboardsEnabled() && config.getBoolean("Scoreboard.Types.Top.Board", true); }
     public int getTopScoreboardTime() { return config.getInt("Scoreboard.Types.Top.Display_Time", 15); }
 
     public boolean getStatsUseChat() { return config.getBoolean("Scoreboard.Types.Stats.Print", true); }
-    public boolean getStatsUseBoard() { return config.getBoolean("Scoreboard.Types.Stats.Board", true); }
+    public boolean getStatsUseBoard() { return getScoreboardsEnabled() && config.getBoolean("Scoreboard.Types.Stats.Board", true); }
     public int getStatsScoreboardTime() { return config.getInt("Scoreboard.Types.Stats.Display_Time", 10); }
 
     public boolean getInspectUseChat() { return config.getBoolean("Scoreboard.Types.Inspect.Print", true); }
-    public boolean getInspectUseBoard() { return config.getBoolean("Scoreboard.Types.Inspect.Board", true); }
+    public boolean getInspectUseBoard() { return getScoreboardsEnabled() && config.getBoolean("Scoreboard.Types.Inspect.Board", true); }
     public int getInspectScoreboardTime() { return config.getInt("Scoreboard.Types.Inspect.Display_Time", 25); }
 
     public boolean getCooldownUseChat() { return config.getBoolean("Scoreboard.Types.Cooldown.Print", false); }
-    public boolean getCooldownUseBoard() { return config.getBoolean("Scoreboard.Types.Cooldown.Board", true); }
+    public boolean getCooldownUseBoard() { return getScoreboardsEnabled() && config.getBoolean("Scoreboard.Types.Cooldown.Board", true); }
     public int getCooldownScoreboardTime() { return config.getInt("Scoreboard.Types.Cooldown.Display_Time", 41); }
 
     public boolean getSkillUseBoard() { return config.getBoolean("Scoreboard.Types.Skill.Board", true); }
     public int getSkillScoreboardTime() { return config.getInt("Scoreboard.Types.Skill.Display_Time", 30); }
-    public boolean getSkillLevelUpBoard() { return config.getBoolean("Scoreboard.Types.Skill.LevelUp_Board", true); }
+    public boolean getSkillLevelUpBoard() { return getScoreboardsEnabled() && config.getBoolean("Scoreboard.Types.Skill.LevelUp_Board", true); }
     public int getSkillLevelUpTime() { return config.getInt("Scoreboard.Types.Skill.LevelUp_Time", 5); }
 
     /* Database Purging */

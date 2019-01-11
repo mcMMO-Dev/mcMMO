@@ -33,7 +33,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private ReentrantLock massUpdateLock = new ReentrantLock();
 
     protected SQLDatabaseManager() {
-        String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName() + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
+        String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName()
+                + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
 
         try {
             // Force driver to load if not yet loaded
