@@ -92,7 +92,7 @@ public class mcMMO extends JavaPlugin {
     // XP Event Check
     private boolean xpEventEnabled;
 
-    private boolean classicModeEnabled;
+    private boolean UseOldLevelScalingEnabled;
 
     /* Metadata Values */
     public final static String entityMetadataKey   = "mcMMO: Spawned Entity";

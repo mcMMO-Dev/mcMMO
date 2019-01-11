@@ -10,7 +10,7 @@ Key:
 Version 2.1.0
  + Prevented exploits involving blocks made from entities (snowmen, etc..)
  + Added JSON integration to all Skill Commands
- + Added config setting to enable or disable classic mcMMO skill scaling
+ + Added config setting to enable or disable old mcMMO skill scaling (General.UseOldLevelScaling) this is on by default for existing installs
  + You can now disable specific skills in coreskills.yml without the need for permissions
  + Added links to mcMMO related websites to various commands
  + Certain elements of mcMMO's UI have been restyled

@@ -10,7 +10,9 @@
 General:
     Skill_Scaling:
         # Turning this on will scale mcMMO around 1-1000 with default scaling factor
-        Classic_Mode: false
+        # Everything in your config related to skill level requirements, skill level bonuses, etc will be multiplied by 10 when this mode is on
+        # This change is purely cosmetic, it retains the old feel of mcMMO where you could level up thousands of times
+        UseOldLevelScaling: true
         Skill_Scaling:
             # This is the value that is skill level requirements are multiplied by in Classic Mode (Default is 10)
             Classic_LevelReq_Factor: 10
