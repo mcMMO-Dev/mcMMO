@@ -812,7 +812,6 @@ public class McMMOPlayer {
 
         SuperAbility ability = skill.getAbility();
         ToolType tool = skill.getTool();
-        setToolPreparationMode(tool, true);
 
         /*
          * Woodcutting & Axes need to be treated differently.
@@ -832,6 +831,7 @@ public class McMMOPlayer {
                 InteractionManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
             }
 
+            setToolPreparationMode(tool, true);
             new ToolLowerTask(this, tool).runTaskLaterAsynchronously(mcMMO.p, 4 * Misc.TICK_CONVERSION_FACTOR);
         }
     }
