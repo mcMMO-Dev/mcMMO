@@ -705,6 +705,7 @@ permissions:
         default: false
         description: Implies all bypass permissions.
         children:
+            mcmmo.bypass.partylimit: true
             mcmmo.bypass.arcanebypass: true
             mcmmo.bypass.hardcoremode: true
             mcmmo.bypass.kraken: true
@@ -712,6 +713,9 @@ permissions:
             mcmmo.commands.inspect.far: true
             mcmmo.commands.inspect.hidden: true
             mcmmo.commands.inspect.offline: true
+    mcmmo.bypass.partylimit:
+        default: false
+        description: Allows user to bypass party size limitations if present on the server
     mcmmo.bypass.arcanebypass:
         default: false
         description: Allows user to bypass Arcane Repair so he will never lose enchantments

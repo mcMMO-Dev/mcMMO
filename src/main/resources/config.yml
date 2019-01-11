@@ -242,6 +242,8 @@ Items:
 #  Settings for Parties
 ###
 Party:
+    # Maximum size for a party, -1 for infinite
+    MaxSize: -1
     # Amount of time (in hours) to wait between automatically kicking old party members
     # To only run at server start, set to 0
     # To never kick old users, set to -1

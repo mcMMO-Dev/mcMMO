@@ -15,6 +15,7 @@ import com.gmail.nossr50.events.party.McMMOPartyChangeEvent.EventReason;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
@@ -49,6 +50,17 @@ public final class PartyManager {
 
         player.sendMessage(LocaleLoader.getString("Commands.Party.AlreadyExists", partyName));
         return true;
+    }
+
+    /**
+     * Checks if the player can join a party, parties can have a size limit, although there is a permission to bypass this
+     * @param player player who is attempting to join the party
+     * @param targetParty the target party
+     * @return true if party is full and cannot be joined
+     */
+    public static boolean isPartyFull(Player player, Party targetParty)
+    {
+        return !Permissions.partySizeBypass(player) && Config.getInstance().getPartyMaxSize() >= 1 && targetParty.getOnlineMembers().size() >= Config.getInstance().getPartyMaxSize();
     }
 
     /**

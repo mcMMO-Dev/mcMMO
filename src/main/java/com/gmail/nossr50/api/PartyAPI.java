@@ -6,6 +6,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
 
+import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.util.Permissions;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -77,8 +80,45 @@ public final class PartyAPI {
      *
      * @param player The player to add to the party
      * @param partyName The party to add the player to
+     * @deprecated parties can have limits, use the other method
      */
+    @Deprecated
     public static void addToParty(Player player, String partyName) {
+        Party party = PartyManager.getParty(partyName);
+
+        if (party == null) {
+            party = new Party(new PartyLeader(player.getUniqueId(), player.getName()), partyName);
+        } else {
+            if(PartyManager.isPartyFull(player, party))
+            {
+                player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull", party.toString()));
+                return;
+            }
+        }
+
+        PartyManager.addToParty(UserManager.getPlayer(player), party);
+    }
+
+    /**
+     * The max party size of the server
+     * 0 or less for no size limit
+     * @return the max party size on this server
+     */
+    public static int getMaxPartySize()
+    {
+        return Config.getInstance().getPartyMaxSize();
+    }
+
+    /**
+     * Add a player to a party.
+     * </br>
+     * This function is designed for API usage.
+     *
+     * @param player The player to add to the party
+     * @param partyName The party to add the player to
+     * @param bypassLimit if true bypasses party size limits
+     */
+    public static void addToParty(Player player, String partyName, boolean bypassLimit) {
         Party party = PartyManager.getParty(partyName);
 
         if (party == null) {

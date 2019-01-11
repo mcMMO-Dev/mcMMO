@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
+import com.gmail.nossr50.config.Config;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -45,6 +46,13 @@ public class PartyInviteCommand implements CommandExecutor {
                 }
 
                 Party playerParty = mcMMOPlayer.getParty();
+
+                if(PartyManager.isPartyFull(target, playerParty))
+                {
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull.Invite", target.getName(), playerParty.toString(), Config.getInstance().getPartyMaxSize()));
+                    return true;
+                }
+
                 mcMMOTarget.setPartyInvite(playerParty);
 
                 sender.sendMessage(LocaleLoader.getString("Commands.Invite.Success"));

@@ -411,6 +411,7 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getLargeFireworks() { return config.getBoolean("Particles.LargeFireworks", true); }
 
     /* PARTY SETTINGS */
+    public int getPartyMaxSize() {return config.getInt("Party.MaxSize", -1); }
     public int getAutoPartyKickInterval() { return config.getInt("Party.AutoKick_Interval", 12); }
     public int getAutoPartyKickTime() { return config.getInt("Party.Old_Party_Member_Cutoff", 7); }
 

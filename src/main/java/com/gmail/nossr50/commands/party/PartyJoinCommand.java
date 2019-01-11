@@ -1,5 +1,6 @@
 package com.gmail.nossr50.commands.party;
 
+import com.gmail.nossr50.config.Config;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -52,6 +53,12 @@ public class PartyJoinCommand implements CommandExecutor {
 
                 // Changing parties
                 if (!PartyManager.changeOrJoinParty(mcMMOPlayer, partyName)) {
+                    return true;
+                }
+
+                if(PartyManager.isPartyFull(player, targetParty))
+                {
+                    player.sendMessage(LocaleLoader.getString("Commands.Party.PartyFull", targetParty.toString()));
                     return true;
                 }
 
