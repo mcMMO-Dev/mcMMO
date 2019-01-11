@@ -476,6 +476,9 @@ Double_Drops:
 #  Settings for commands
 ###
 Commands:
+    Skills:
+        # Turn this off to prevent mcMMO URL links from being sent
+        URL_Links: true
     Generic:
         # If true, when using partial names in commands mcMMO will try to look for a match from
         # the offline players. Enabling this might slow the server down if there are a lot of offline players.

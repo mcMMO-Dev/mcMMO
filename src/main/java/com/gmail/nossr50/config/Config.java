@@ -446,6 +446,7 @@ public class Config extends AutoUpdateConfigLoader {
      */
 
     /* General Settings */
+    public boolean getUrlLinksEnabled() { return config.getBoolean("Commands.Skills.URL_Links"); }
     public boolean getAbilityMessagesEnabled() { return config.getBoolean("Abilities.Messages", true); }
     public boolean getAbilitiesEnabled() { return config.getBoolean("Abilities.Enabled", true); }
     public boolean getAbilitiesOnlyActivateWhenSneaking() { return config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false); }
