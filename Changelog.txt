@@ -8,6 +8,7 @@ Key:
   - Removal
 
 Version 2.1.0
+ + Prevented exploits involving blocks made from entities (snowmen, etc..)
  + Added JSON integration to all Skill Commands
  + Added config setting to enable or disable classic mcMMO skill scaling
  + You can now disable specific skills in coreskills.yml without the need for permissions

@@ -85,6 +85,20 @@ public class BlockListener implements Listener {
     }
 
     /**
+     * Monitor blocks formed by entities (snowmen)
+     *
+     * @param event The event to watch
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onEntityBlockFormEvent(EntityBlockFormEvent event)
+    {
+        if(BlockUtils.shouldBeWatched(event.getBlock().getState()))
+        {
+            mcMMO.getPlaceStore().setTrue(event.getBlock());
+        }
+    }
+
+    /**
      * Monitor falling blocks.
      *
      * @param event The event to watch
