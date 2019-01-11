@@ -87,7 +87,7 @@ public class McMMOPlayer {
     private int respawnATS;
     private int teleportATS;
     private long databaseATS;
-    private int chimeraWingLastUse;
+    //private int chimeraWingLastUse;
     private Location teleportCommence;
 
     private boolean isUsingUnarmed;
@@ -306,11 +306,11 @@ public class McMMOPlayer {
      */
 
     public int getChimeraWingLastUse() {
-        return chimeraWingLastUse;
+        return profile.getChimaerWingDATS();
     }
 
     public void actualizeChimeraWingLastUse() {
-        chimeraWingLastUse = (int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR);
+        profile.setChimaeraWingDATS((int) (System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR));
     }
 
     public Location getTeleportCommenceLocation() {

@@ -25,6 +25,7 @@ Version 2.1.0
  + (API) Added many missing SubSkills to SubSkillType class
  + (Permissions) Added permission node mcmmo.commands.mcchatspy & mcmmo.commands.mcchatspy.others
  + (Permissions) Added permission nodes for Harvest Lumber, Splinter, Nature's Bounty, and Bark Surgeon
+ + (Permissions) Added mcmmo.commands.mmoinfo for the new mmoinfo/mcinfo command
  + (Locale) Added locale strings for new Woodcutting abilities
  + (Locale) Added locale strings for mcchatspy command
  + (Locale) Added locale strings for JSON integration
@@ -33,6 +34,7 @@ Version 2.1.0
  - (Locale) Removed localizations with the following codes for being almost empty: id, HR_hr, et_EE, lv, lt, no, pl_PL, pt_PT, tr_TR
  - (Config) Removed SkillShot's IncreaseLevel & IncreasePercentage (replaced by RankDamageMultiplier)
  - (Config) Removed AxeMastery's MaxBonus & MaxBonusLevel (replaced by RankDamageMultiplier)
+ = (Items) Chimaera Wing now tracks cooldowns between sessions for players (no more disconnect abuse)
  = (Skills) Added missing mushroom blocks to experience.yml defaults
  = (Skills) Tridents will no longer be considered unarmed
  = (MySQL) You can now inspect offline players
@@ -51,7 +53,6 @@ Version 2.1.0
  ! (Config) Axes.CriticalHit in advanced.yml is now Axes.CriticalStrikes
  ! (Config) Archery's Skill Shot now uses RankDamageMultiplier for its damage bonus calculations
  ! (Config) Axe's Axe mastery now uses RankDamageMultiplier for its damage bonus calculations
- + (Permissions) Added mcmmo.commands.mmoinfo for the new mmoinfo/mcinfo command
  ! (Permissions) Replaced the old Double Drop permission node for woodcutting with a new Harvest Lumber permission node
  ! (Permissions) Fast Food Service permission node renamed to mcmmo.ability.taming.fastfoodservice
  ! (Permissions) Counter Attack permission node renamed to mcmmo.ability.swords.counterattack

@@ -6,6 +6,7 @@ import com.gmail.nossr50.datatypes.database.DatabaseType;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
+import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.mcMMO;
@@ -280,7 +281,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement = connection.prepareStatement("UPDATE " + tablePrefix + "cooldowns SET "
                     + "  mining = ?, woodcutting = ?, unarmed = ?"
                     + ", herbalism = ?, excavation = ?, swords = ?"
-                    + ", axes = ?, blast_mining = ? WHERE user_id = ?");
+                    + ", axes = ?, blast_mining = ?, chimaera_wing = ? WHERE user_id = ?");
             statement.setLong(1, profile.getAbilityDATS(SuperAbility.SUPER_BREAKER));
             statement.setLong(2, profile.getAbilityDATS(SuperAbility.TREE_FELLER));
             statement.setLong(3, profile.getAbilityDATS(SuperAbility.BERSERK));
@@ -289,7 +290,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
             statement.setLong(6, profile.getAbilityDATS(SuperAbility.SERRATED_STRIKES));
             statement.setLong(7, profile.getAbilityDATS(SuperAbility.SKULL_SPLITTER));
             statement.setLong(8, profile.getAbilityDATS(SuperAbility.BLAST_MINING));
-            statement.setInt(9, id);
+            statement.setLong(9, profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS));
+            statement.setInt(10, id);
             success = (statement.executeUpdate() != 0);
             statement.close();
             if (!success) {
@@ -546,7 +548,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     "SELECT "
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
                             + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
-                            + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
+                            + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, c.chimaera_wing, "
                             + "h.mobhealthbar, h.scoreboardtips, u.uuid, u.user "
                             + "FROM " + tablePrefix + "users u "
                             + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
@@ -624,7 +626,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     "SELECT "
                             + "s.taming, s.mining, s.repair, s.woodcutting, s.unarmed, s.herbalism, s.excavation, s.archery, s.swords, s.axes, s.acrobatics, s.fishing, s.alchemy, "
                             + "e.taming, e.mining, e.repair, e.woodcutting, e.unarmed, e.herbalism, e.excavation, e.archery, e.swords, e.axes, e.acrobatics, e.fishing, e.alchemy, "
-                            + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, "
+                            + "c.taming, c.mining, c.repair, c.woodcutting, c.unarmed, c.herbalism, c.excavation, c.archery, c.swords, c.axes, c.acrobatics, c.blast_mining, c.chimaera_wing, "
                             + "h.mobhealthbar, h.scoreboardtips, u.uuid "
                             + "FROM " + tablePrefix + "users u "
                             + "JOIN " + tablePrefix + "skills s ON (u.id = s.user_id) "
@@ -817,6 +819,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                         + "`axes` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "`acrobatics` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "`blast_mining` int(32) unsigned NOT NULL DEFAULT '0',"
+                        + "`chimaera_wing` int(32) unsigned NOT NULL DEFAULT '0',"
                         + "PRIMARY KEY (`user_id`)) "
                         + "DEFAULT CHARSET=latin1;");
                 tryClose(createStatement);
@@ -988,6 +991,9 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 case ADD_SKILL_TOTAL:
                     checkUpgradeSkillTotal(connection);
                     break;
+                case ADD_UNIQUE_PLAYER_DATA:
+                    checkUpgradeAddUniqueChimaeraWing(statement);
+                    break;
 
                 default:
                     break;
@@ -1042,6 +1048,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         Map<PrimarySkill, Integer> skills = new EnumMap<PrimarySkill, Integer>(PrimarySkill.class); // Skill & Level
         Map<PrimarySkill, Float> skillsXp = new EnumMap<PrimarySkill, Float>(PrimarySkill.class); // Skill & XP
         Map<SuperAbility, Integer> skillsDATS = new EnumMap<SuperAbility, Integer>(SuperAbility.class); // Ability & Cooldown
+        Map<UniqueDataType, Integer> uniqueData = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class); //Chimaera wing cooldown and other misc info
         MobHealthbarType mobHealthbarType;
         UUID uuid;
         int scoreboardTipsShown;
@@ -1050,7 +1057,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
         // changes (a new skill is added)
         final int OFFSET_XP = 13;
         final int OFFSET_DATS = 26;
-        final int OFFSET_OTHER = 38;
+        final int OFFSET_OTHER = 39;
 
         skills.put(PrimarySkill.TAMING, result.getInt(OFFSET_SKILLS + 1));
         skills.put(PrimarySkill.MINING, result.getInt(OFFSET_SKILLS + 2));
@@ -1092,6 +1099,8 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skillsDATS.put(SuperAbility.SKULL_SPLITTER, result.getInt(OFFSET_DATS + 10));
         // Acrobatics - Unused - result.getInt(OFFSET_DATS + 11)
         skillsDATS.put(SuperAbility.BLAST_MINING, result.getInt(OFFSET_DATS + 12));
+        uniqueData.put(UniqueDataType.CHIMAERA_WING_DATS, result.getInt(OFFSET_DATS + 13));
+
 
         try {
             mobHealthbarType = MobHealthbarType.valueOf(result.getString(OFFSET_OTHER + 1));
@@ -1114,7 +1123,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
             uuid = null;
         }
 
-        return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown);
+        return new PlayerProfile(playerName, uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniqueData);
     }
 
     private void printErrors(SQLException ex) {
@@ -1168,6 +1177,16 @@ public final class SQLDatabaseManager implements DatabaseManager {
         catch (SQLException ex) {
             mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Blast Mining...");
             statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` ADD `blast_mining` int(32) NOT NULL DEFAULT '0'");
+        }
+    }
+
+    private void checkUpgradeAddUniqueChimaeraWing(final Statement statement) throws SQLException {
+        try {
+            statement.executeQuery("SELECT `chimaera_wing` FROM `" + tablePrefix + "cooldowns` LIMIT 1");
+        }
+        catch (SQLException ex) {
+            mcMMO.p.getLogger().info("Updating mcMMO MySQL tables for Chimaera Wing...");
+            statement.executeUpdate("ALTER TABLE `" + tablePrefix + "cooldowns` ADD `chimaera_wing` int(32) NOT NULL DEFAULT '0'");
         }
     }
 

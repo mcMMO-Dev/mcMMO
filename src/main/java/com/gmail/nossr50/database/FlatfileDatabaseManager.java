@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import org.bukkit.OfflinePlayer;
@@ -320,6 +321,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
                         writer.append(profile.getSkillXpLevel(PrimarySkill.ALCHEMY)).append(":");
                         writer.append(uuid != null ? uuid.toString() : "NULL").append(":");
                         writer.append(profile.getScoreboardTipsShown()).append(":");
+                        writer.append(profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS)).append(":");
                         writer.append("\r\n");
                     }
                 }
@@ -1130,6 +1132,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         Map<PrimarySkill, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
         Map<PrimarySkill, Float>     skillsXp   = new EnumMap<PrimarySkill, Float>(PrimarySkill.class);     // Skill & XP
         Map<SuperAbility, Integer> skillsDATS = new EnumMap<SuperAbility, Integer>(SuperAbility.class); // Ability & Cooldown
+        Map<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class);
         MobHealthbarType mobHealthbarType;
         int scoreboardTipsShown;
 
@@ -1184,7 +1187,14 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
             scoreboardTipsShown = 0;
         }
 
-        return new PlayerProfile(character[USERNAME], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown);
+        try {
+            uniquePlayerDataMap.put(UniqueDataType.CHIMAERA_WING_DATS, Integer.valueOf(character[COOLDOWN_CHIMAERA_WING]));
+        }
+        catch (Exception e) {
+            uniquePlayerDataMap.put(UniqueDataType.CHIMAERA_WING_DATS, 0);
+        }
+
+        return new PlayerProfile(character[USERNAME], uuid, skills, skillsXp, skillsDATS, mobHealthbarType, scoreboardTipsShown, uniquePlayerDataMap);
     }
 
     private Map<PrimarySkill, Integer> getSkillMapFromLine(String[] character) {
@@ -1287,6 +1297,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     public static int EXP_ALCHEMY = 40;
     public static int UUID_INDEX = 41;
     public static int SCOREBOARD_TIPS = 42;
+    public static int COOLDOWN_CHIMAERA_WING = 43;
 
     public void resetMobHealthSettings() {
         BufferedReader in = null;

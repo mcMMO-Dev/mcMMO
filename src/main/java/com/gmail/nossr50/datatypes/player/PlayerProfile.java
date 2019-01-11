@@ -34,6 +34,7 @@ public class PlayerProfile {
     private final Map<PrimarySkill, Integer>   skills     = new HashMap<PrimarySkill, Integer>();   // Skill & Level
     private final Map<PrimarySkill, Float>     skillsXp   = new HashMap<PrimarySkill, Float>();     // Skill & XP
     private final Map<SuperAbility, Integer> abilityDATS = new HashMap<SuperAbility, Integer>(); // Ability & Cooldown
+    private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
 
     // Store previous XP gains for deminished returns
     private DelayQueue<SkillXpGain> gainedSkillsXp = new DelayQueue<SkillXpGain>();
@@ -59,6 +60,9 @@ public class PlayerProfile {
             skills.put(primarySkill, 0);
             skillsXp.put(primarySkill, 0F);
         }
+
+        //Misc Cooldowns
+        uniquePlayerData.put(UniqueDataType.CHIMAERA_WING_DATS, 0); //Chimaera wing
     }
 
     @Deprecated
@@ -72,7 +76,7 @@ public class PlayerProfile {
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(String playerName, UUID uuid, Map<PrimarySkill, Integer> levelData, Map<PrimarySkill, Float> xpData, Map<SuperAbility, Integer> cooldownData, MobHealthbarType mobHealthbarType, int scoreboardTipsShown) {
+    public PlayerProfile(String playerName, UUID uuid, Map<PrimarySkill, Integer> levelData, Map<PrimarySkill, Float> xpData, Map<SuperAbility, Integer> cooldownData, MobHealthbarType mobHealthbarType, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.mobHealthbarType = mobHealthbarType;
@@ -81,6 +85,7 @@ public class PlayerProfile {
         skills.putAll(levelData);
         skillsXp.putAll(xpData);
         abilityDATS.putAll(cooldownData);
+        uniquePlayerData.putAll(uniqueProfileData);
 
         loaded = true;
     }
@@ -95,7 +100,7 @@ public class PlayerProfile {
         }
 
         // TODO should this part be synchronized?
-        PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType, scoreboardTipsShown);
+        PlayerProfile profileCopy = new PlayerProfile(playerName, uuid, ImmutableMap.copyOf(skills), ImmutableMap.copyOf(skillsXp), ImmutableMap.copyOf(abilityDATS), mobHealthbarType, scoreboardTipsShown, ImmutableMap.copyOf(uniquePlayerData));
         changed = !mcMMO.getDatabaseManager().saveUser(profileCopy);
 
         if (changed) {
@@ -152,6 +157,20 @@ public class PlayerProfile {
     /*
      * Cooldowns
      */
+
+    public int getChimaerWingDATS() { return uniquePlayerData.get(UniqueDataType.CHIMAERA_WING_DATS);}
+
+    protected void setChimaeraWingDATS(int DATS) {
+        changed = true;
+        uniquePlayerData.put(UniqueDataType.CHIMAERA_WING_DATS, DATS);
+    }
+
+    public void setUniqueData(UniqueDataType uniqueDataType, int newData) {
+        changed = true;
+        uniquePlayerData.put(uniqueDataType, newData);
+    }
+
+    public long getUniqueData(UniqueDataType uniqueDataType) { return uniquePlayerData.get(uniqueDataType); }
 
     /**
      * Get the current deactivation timestamp of an ability.

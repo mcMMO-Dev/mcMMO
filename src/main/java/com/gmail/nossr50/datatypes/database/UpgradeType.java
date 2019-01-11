@@ -13,4 +13,5 @@ public enum UpgradeType {
     ADD_SCOREBOARD_TIPS,
     DROP_NAME_UNIQUENESS,
     ADD_SKILL_TOTAL,
+    ADD_UNIQUE_PLAYER_DATA,
 }
