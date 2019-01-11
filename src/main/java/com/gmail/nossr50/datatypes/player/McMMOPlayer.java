@@ -772,10 +772,11 @@ public class McMMOPlayer {
         ParticleEffectUtils.playAbilityEnabledEffect(player);
 
         if (useChatNotifications()) {
-            player.sendMessage(ability.getAbilityOn());
+            InteractionManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, ability.getAbilityOn());
+            //player.sendMessage(ability.getAbilityOn());
         }
 
-        SkillUtils.sendSkillMessage(player, ability.getAbilityPlayer(player));
+        SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayer());
 
         // Enable the ability
         profile.setAbilityDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));

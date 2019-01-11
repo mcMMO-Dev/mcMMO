@@ -34,10 +34,17 @@ public class TextComponentFactory {
      * @param values
      * @return
      */
-    public static TextComponent getNotificationTextComponentFromLocale(String localeKey, NotificationType notificationType, String... values)
+    public static TextComponent getNotificationMultipleValues(String localeKey, NotificationType notificationType, String... values)
     {
         //TODO: Make this colored
-        return new TextComponent(LocaleLoader.getString(localeKey, values));
+        String preColoredString = LocaleLoader.getString(localeKey, values);
+
+        /*for(int x = 0; x < values.length; x++)
+        {
+
+        }*/
+
+        return new TextComponent(preColoredString);
     }
 
     public static TextComponent getNotificationTextComponentFromLocale(String localeKey, NotificationType notificationType)
@@ -573,6 +580,7 @@ public class TextComponentFactory {
             {
                 if(Permissions.isSubSkillEnabled(player, subSkillType))
                 {
+                    if(InteractionManager.getInteractRegister().get(subSkillType.getNiceNameNoSpaces(subSkillType)) == null)
                     textComponents.add(TextComponentFactory.getSubSkillTextComponent(player, subSkillType));
                 }
             }

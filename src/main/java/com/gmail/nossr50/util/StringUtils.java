@@ -32,10 +32,6 @@ public class StringUtils {
     public static String getPrettyAbilityString(SuperAbility ability) {
         return createPrettyString(ability.toString());
     }
-
-    public static String getPrettyTreeSpeciesString(TreeSpecies species) {
-        return createPrettyString(species.toString());
-    }
     
     public static String getWildcardConfigBlockDataString(BlockData data) {
         return getWildcardConfigMaterialString(data.getMaterial());

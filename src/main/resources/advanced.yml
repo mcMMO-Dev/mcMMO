@@ -671,6 +671,8 @@ Skills:
 Style:
     JSON:
         Notification:
+            AbilityOff:
+                Color: GRAY
             LevelRequirementNotMet:
                 Color: RED
             AbilityCoolDown:
@@ -685,6 +687,10 @@ Style:
                 Color: PURPLE
             SuperAbilityInteraction:
                 Color: DARK_AQUA
+            SuperAbilityAlertOthers:
+                Color:
+                    Party: GREEN
+                    Others: DARK_RED
             ExperienceGain:
                 Color: WHITE
         Hover:

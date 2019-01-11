@@ -10,8 +10,11 @@ public enum NotificationType {
     SUBSKILL_MESSAGE("SubSkillInteraction"),
     TOOL("ToolReady"),
     UNSKILLED("LevelRequirementNotMet"),
+    ABILITY_OFF("AbilityOff"),
     ABILITY_COOLDOWN("AbilityCoolDown"),
-    SUPER_ABILITY("SuperAbilityInteraction");
+    ABILITY_REFRESHED("AbilityRefreshed"),
+    SUPER_ABILITY("SuperAbilityInteraction"),
+    SUPER_ABILITY_ALERT_OTHERS("SuperAbilityAlertOthers");
 
     final String niceName;
 

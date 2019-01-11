@@ -1,6 +1,8 @@
 package com.gmail.nossr50.runnables.skills;
 
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.listeners.InteractionManager;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -56,10 +58,12 @@ public class AbilityDisableTask extends BukkitRunnable {
         ParticleEffectUtils.playAbilityDisabledEffect(player);
 
         if (mcMMOPlayer.useChatNotifications()) {
-            player.sendMessage(ability.getAbilityOff());
+            //player.sendMessage(ability.getAbilityOff());
+            InteractionManager.sendPlayerInformation(player, NotificationType.ABILITY_OFF, ability.getAbilityOff());
         }
 
-        SkillUtils.sendSkillMessage(player, ability.getAbilityPlayerOff(player));
+
+        SkillUtils.sendSkillMessage(player, NotificationType.SUPER_ABILITY_ALERT_OTHERS, ability.getAbilityPlayerOff());
         new AbilityCooldownTask(mcMMOPlayer, ability).runTaskLaterAsynchronously(mcMMO.p, PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TICK_CONVERSION_FACTOR);
     }
 

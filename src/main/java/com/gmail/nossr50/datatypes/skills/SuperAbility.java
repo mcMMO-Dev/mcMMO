@@ -94,23 +94,23 @@ public enum SuperAbility {
     }
 
     public String getAbilityOn() {
-        return LocaleLoader.getString(this.abilityOn);
+        return abilityOn;
     }
 
     public String getAbilityOff() {
-        return LocaleLoader.getString(this.abilityOff);
+        return abilityOff;
     }
 
-    public String getAbilityPlayer(Player player) {
-        return LocaleLoader.getString(this.abilityPlayer, player.getName());
+    public String getAbilityPlayer() {
+        return abilityPlayer;
     }
 
-    public String getAbilityPlayerOff(Player player) {
-        return LocaleLoader.getString(this.abilityPlayerOff, player.getName());
+    public String getAbilityPlayerOff() {
+        return abilityPlayerOff;
     }
 
     public String getAbilityRefresh() {
-        return LocaleLoader.getString(this.abilityRefresh);
+        return abilityRefresh;
     }
 
     public String getName() {

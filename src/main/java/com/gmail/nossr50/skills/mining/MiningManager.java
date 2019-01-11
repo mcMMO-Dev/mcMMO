@@ -1,11 +1,13 @@
 package com.gmail.nossr50.skills.mining;
 
 import com.gmail.nossr50.config.Config;
+import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
+import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
@@ -97,14 +99,16 @@ public class MiningManager extends SkillManager {
         Player player = getPlayer();
         Block targetBlock = player.getTargetBlock(BlockUtils.getTransparentBlocks(), BlastMining.MAXIMUM_REMOTE_DETONATION_DISTANCE);
 
-        if (targetBlock.getType() != Material.TNT || !EventUtils.simulateBlockBreak(targetBlock, player, true) || !blastMiningCooldownOver()) {
+        //Blast mining cooldown check needs to be first so the player can be messaged
+        if (!blastMiningCooldownOver() || targetBlock.getType() != Material.TNT || !EventUtils.simulateBlockBreak(targetBlock, player, true)) {
             return;
         }
 
         TNTPrimed tnt = player.getWorld().spawn(targetBlock.getLocation(), TNTPrimed.class);
 
-        SkillUtils.sendSkillMessage(player, SuperAbility.BLAST_MINING.getAbilityPlayer(player));
-        player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
+        //SkillUtils.sendSkillMessage(player, SuperAbility.BLAST_MINING.getAbilityPlayer(player));
+        InteractionManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, "Mining.Blast.Boom");
+        //player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
         tnt.setMetadata(mcMMO.tntMetadataKey, mcMMOPlayer.getPlayerMetadata());
         tnt.setFuseTicks(0);
@@ -290,7 +294,8 @@ public class MiningManager extends SkillManager {
         int timeRemaining = mcMMOPlayer.calculateTimeRemaining(SuperAbility.BLAST_MINING);
 
         if (timeRemaining > 0) {
-            getPlayer().sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
+            //getPlayer().sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
+            InteractionManager.sendPlayerInformation(getPlayer(), NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf("timeRemaining"));
             return false;
         }
 

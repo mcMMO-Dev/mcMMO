@@ -10,14 +10,15 @@ import com.gmail.nossr50.datatypes.skills.subskills.interfaces.Interaction;
 import com.gmail.nossr50.events.skills.McMMOPlayerNotificationEvent;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
+import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.TextComponentFactory;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -108,12 +109,21 @@ public class InteractionManager {
         sendNotification(player, customEvent);
     }
 
+    public static void sendOtherPlayersSkillInfo(Player source, NotificationType notificationType, String key, String... values)
+    {
+        Location location = source.getLocation();
+        for (Player otherPlayer : source.getWorld().getPlayers()) {
+            if (otherPlayer != source && Misc.isNear(location, otherPlayer.getLocation(), Misc.SKILL_MESSAGE_MAX_SENDING_DISTANCE)) {
+                sendPlayerInformation(otherPlayer, notificationType, key, values);
+            }
+        }
+    }
+
     public static void sendPlayerInformation(Player player, NotificationType notificationType, String key, String... values)
     {
-
         ChatMessageType destination = AdvancedConfig.getInstance().doesNotificationUseActionBar(notificationType) ? ChatMessageType.ACTION_BAR : ChatMessageType.SYSTEM;
 
-        TextComponent message = TextComponentFactory.getNotificationTextComponentFromLocale(key, notificationType, values);
+        TextComponent message = TextComponentFactory.getNotificationMultipleValues(key, notificationType, values);
         McMMOPlayerNotificationEvent customEvent = checkNotificationEvent(player, notificationType, destination, message);
 
         sendNotification(player, customEvent);

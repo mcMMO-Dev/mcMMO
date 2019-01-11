@@ -47,6 +47,7 @@ Version 2.1.0
  = (MySQL) When converting from MySQL to flatfile mcMMO will now properly include all users in the conversion process
  + (Party) Parties can now have size limits (configurable in config.yml), party size is unlimited by default
  ! (Party) Party member list will only include members of the party that you can see (aren't vanished)
+ ! (Skills) Fixed an edge case bug where Blast Mining wouldn't inform the player that it was on cooldown
  ! (Skills) mcMMO skills will now be on a scale from 1-100 instead of 0-1000 (for existing mcMMO installs this is opt-in and off by default)
  ! (Skills) Skill Super Powers (Tree Feller, etc...) will now require level 10+ to use
  ! (Skills) Acrobatics' Roll exploit detection was tweaked to still allow for Roll to trigger even if it rewards no XP
