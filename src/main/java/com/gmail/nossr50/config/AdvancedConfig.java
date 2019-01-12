@@ -761,11 +761,11 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
 
     public ChatColor getJSONActionBarColor(NotificationType notificationType)
     {
-        return getChatColor(LocaleLoader.getString("Style.JSON.Notification."+notificationType.toString()+".Color"));
+        return getChatColor(config.getString("Style.JSON.Notification."+notificationType.toString()+".Color"));
     }
 
     private ChatColor getChatColorFromKey(String keyLocation) {
-        String colorName = LocaleLoader.getString(keyLocation);
+        String colorName = config.getString(keyLocation);
 
         return getChatColor(colorName);
     }

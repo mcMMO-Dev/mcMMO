@@ -68,7 +68,6 @@ public class TextComponentFactory {
 
     public static TextComponent getNotificationTextComponent(String text, NotificationType notificationType)
     {
-        System.out.println("Test");
         TextComponent textComponent = new TextComponent(text);
         textComponent.setColor(getNotificationColor(notificationType));
         return textComponent;
