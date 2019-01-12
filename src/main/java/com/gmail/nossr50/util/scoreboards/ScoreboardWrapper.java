@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.scoreboards;
 import java.util.List;
 import java.util.Map;
 
+import com.gmail.nossr50.events.scoreboard.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -30,6 +31,7 @@ import org.apache.commons.lang.Validate;
 public class ScoreboardWrapper {
     // Initialization variables
     public final String playerName;
+    public final Player player;
     private final Scoreboard scoreboard;
     private boolean tippedKeep = false;
     private boolean tippedClear = false;
@@ -46,8 +48,9 @@ public class ScoreboardWrapper {
     private PlayerProfile targetProfile = null;
     public int leaderboardPage = -1;
 
-    private ScoreboardWrapper(String playerName, Scoreboard scoreboard) {
-        this.playerName = playerName;
+    private ScoreboardWrapper(Player player, Scoreboard scoreboard) {
+        this.player = player;
+        this.playerName = player.getName();
         this.scoreboard = scoreboard;
         sidebarType = SidebarType.NONE;
         sidebarObjective = this.scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
@@ -64,7 +67,11 @@ public class ScoreboardWrapper {
     }
 
     public static ScoreboardWrapper create(Player player) {
-        return new ScoreboardWrapper(player.getName(), mcMMO.p.getServer().getScoreboardManager().getNewScoreboard());
+        //Call our custom event
+        McMMOScoreboardMakeboardEvent event = new McMMOScoreboardMakeboardEvent(mcMMO.p.getServer().getScoreboardManager().getNewScoreboard(), player.getScoreboard(), player, ScoreboardEventReason.CREATING_NEW_SCOREBOARD);
+        player.getServer().getPluginManager().callEvent(event);
+        //Use the values from the event
+        return new ScoreboardWrapper(event.getTargetPlayer(), event.getTargetBoard());
     }
 
     public BukkitTask updateTask = null;
@@ -143,7 +150,7 @@ public class ScoreboardWrapper {
     }
 
     /**
-     * Set the old scoreboard, for use in reverting.
+     * Set the old targetBoard, for use in reverting.
      */
     public void setOldScoreboard() {
         Player player = mcMMO.p.getServer().getPlayerExact(playerName);
@@ -227,11 +234,17 @@ public class ScoreboardWrapper {
 
         if (oldBoard != null) {
             if (player.getScoreboard() == scoreboard) {
-                player.setScoreboard(oldBoard);
+                /**
+                 * Call the revert scoreboard custom event
+                 */
+                McMMOScoreboardRevertEvent event = new McMMOScoreboardRevertEvent(oldBoard, player.getScoreboard(), player, ScoreboardEventReason.REVERTING_BOARD);
+                player.getServer().getPluginManager().callEvent(event);
+                //Modify the player based on the event
+                event.getTargetPlayer().setScoreboard(event.getTargetBoard());
                 oldBoard = null;
             }
             else {
-                mcMMO.p.debug("Not reverting scoreboard for " + playerName + " - scoreboard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
+                mcMMO.p.debug("Not reverting targetBoard for " + playerName + " - targetBoard was changed by another plugin (Consider disabling the mcMMO scoreboards if you don't want them!)");
             }
         }
 
@@ -371,8 +384,16 @@ public class ScoreboardWrapper {
 
     // Setup for after a board type change
     protected void loadObjective(String displayName) {
-        sidebarObjective.unregister();
-        sidebarObjective = scoreboard.registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
+        //Unregister objective
+        McMMOScoreboardObjectiveEvent unregisterEvent = callObjectiveEvent(ScoreboardObjectiveEventReason.UNREGISTER_THIS_OBJECTIVE);
+        if(!unregisterEvent.isCancelled()) {
+            sidebarObjective.unregister();
+        }
+
+        //Register objective
+        McMMOScoreboardObjectiveEvent registerEvent = callObjectiveEvent(ScoreboardObjectiveEventReason.REGISTER_NEW_OBJECTIVE);
+        if(!registerEvent.isCancelled())
+            sidebarObjective = registerEvent.getTargetBoard().registerNewObjective(ScoreboardManager.SIDEBAR_OBJECTIVE, "dummy");
 
         if (displayName.length() > 32) {
             displayName = displayName.substring(0, 32);
@@ -383,6 +404,12 @@ public class ScoreboardWrapper {
         updateSidebar();
         // Do last! Minimize packets!
         sidebarObjective.setDisplaySlot(DisplaySlot.SIDEBAR);
+    }
+
+    private McMMOScoreboardObjectiveEvent callObjectiveEvent(ScoreboardObjectiveEventReason reason) {
+        McMMOScoreboardObjectiveEvent event = new McMMOScoreboardObjectiveEvent(sidebarObjective, reason, scoreboard, scoreboard, player, ScoreboardEventReason.OBJECTIVE);
+        player.getServer().getPluginManager().callEvent(event);
+        return event;
     }
 
     /**

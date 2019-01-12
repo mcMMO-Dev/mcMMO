@@ -67,7 +67,7 @@ public class ScoreboardManager {
 
         /*
          * Builds the labels for our ScoreBoards
-         * Stylizes the scoreboard in a Rainbow Pattern
+         * Stylizes the targetBoard in a Rainbow Pattern
          * This is off by default
          */
         if (Config.getInstance().getScoreboardRainbows()) {
@@ -109,7 +109,7 @@ public class ScoreboardManager {
         }
         /*
          * Builds the labels for our ScoreBoards
-         * Stylizes the scoreboard using our normal color scheme
+         * Stylizes the targetBoard using our normal color scheme
          */
         else {
             for (PrimarySkill type : PrimarySkill.values()) {
@@ -379,12 +379,12 @@ public class ScoreboardManager {
     }
 
     /**
-     * Gets or creates the power level objective on the main scoreboard.
+     * Gets or creates the power level objective on the main targetBoard.
      * <p/>
      * If power levels are disabled, the objective is deleted and null is
      * returned.
      *
-     * @return the main scoreboard objective, or null if disabled
+     * @return the main targetBoard objective, or null if disabled
      */
     public static Objective getPowerLevelObjective() {
         if (!Config.getInstance().getPowerLevelTagsEnabled()) {
@@ -392,7 +392,7 @@ public class ScoreboardManager {
 
             if (objective != null) {
                 objective.unregister();
-                mcMMO.p.debug("Removed leftover scoreboard objects from Power Level Tags.");
+                mcMMO.p.debug("Removed leftover targetBoard objects from Power Level Tags.");
             }
 
             return null;

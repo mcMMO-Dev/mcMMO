@@ -39,7 +39,7 @@ Version 2.1.0
  - (Locale) Removed localizations with the following codes for being almost empty: id, HR_hr, et_EE, lv, lt, no, pl_PL, pt_PT, tr_TR
  - (Config) Removed SkillShot's IncreaseLevel & IncreasePercentage (replaced by RankDamageMultiplier)
  - (Config) Removed AxeMastery's MaxBonus & MaxBonusLevel (replaced by RankDamageMultiplier)
- = (Plugin Compatibility) mcMMO now uses the main scoreboard instead of creating a new one, this improves plugin compatibility with other plugins (Citizens2, etc...)
+ = (Plugin Compatibility) mcMMO now fires new custom events relating to changes it makes to player scoreboards, plugin authors can listen to these events to improve compatibility
  = (Items) Chimaera Wing now tracks cooldowns between sessions for players (no more disconnect abuse)
  = (Skills) Added missing mushroom blocks to experience.yml defaults
  = (Skills) Tridents will no longer be considered unarmed
@@ -146,7 +146,7 @@ Version 1.5.01
  + Added SQL connection pooling and async loading!
  + Added the long awaited Diminished Returns feature
  + Added new feature to Herbalism. Instantly-regrown crops are protected from being broken for 1 second
- + Added option to config.yml to show the /mcstats scoreboard automatically after logging in
+ + Added option to config.yml to show the /mcstats targetBoard automatically after logging in
  + Added option to config.yml for Alchemy. Skills.Alchemy.Prevent_Hopper_Transfer_Bottles
  + Added option to config.yml for Scoreboards, display "Ability" instead of ability names on the scoreboards
  + Added options to experience.yml for Dirt and Sand variations
@@ -286,15 +286,15 @@ Version 1.4.07
  + Added Quartz and Name Tags to the default Excavation treasures
  + Added a warning message if the server is running NoCheatPlus without CompatNoCheatPlus
  + Added cooldown to commands with heavy database access to prevent denial of service
- + Added /mcscoreboard keep, to keep the scoreboard up forever
+ + Added /mcscoreboard keep, to keep the targetBoard up forever
  + Added Rainbow Mode to scoreboards
  + Added new /mccooldowns command to show all ability cooldowns
- + Commands may now both print text and display a scoreboard
+ + Commands may now both print text and display a targetBoard
  + Killing a custom entity will automatically add it to the custom entity config file with default values.
  = Fixed bug which allowed players to bypass fishing's exploit prevention
  = Fixed bug where FakeEntityDamageByEntityEvent wasn't being fired
  = Fixed bug with "Skull Splitter" not finding the locale string
- = Fixed issue where locale strings could cause the scoreboard header to be longer than 16 characters.
+ = Fixed issue where locale strings could cause the targetBoard header to be longer than 16 characters.
  = Fixed a bug with "Beast Lore" when the entity had no owner but was tamed.
  = Fixed a bug where AbilityDeactivateEvent would throw an error if the player logged out before his ability ran out.
  = Fixed a bug where LevelUpEvent would be called for an offline player.
@@ -331,8 +331,8 @@ Version 1.4.07
  ! Party item share category states are now saved when the server shuts down.
  ! When using "Super Breaker" or "Giga Driller" abilities extra tool durability is used (again)
  ! Mob healthbars are automatically disabled when the plugin "HealthBar" is found
- ! Massively improved scoreboard handling
- ! Reworked scoreboard configuration (config.yml) - **you will need to update**
+ ! Massively improved targetBoard handling
+ ! Reworked targetBoard configuration (config.yml) - **you will need to update**
  - The /mmoupdate command has been removed. It is replaced by /mcconvert database
  - Removed Abilities.Tools.Durability_Loss_Enabled, set Abilities.Tools.Durability_Loss to 0 to disable instead.
  - Removed Skills.Fishing.Shake_UnlockLevel from advanced.yml, now using Skills.Fishing.Rank_Levels.Rank_1 instead.
@@ -341,7 +341,7 @@ Version 1.4.07
 Version 1.4.06
  + Added "Ice Fishing" ability to Fishing
  + Added global scoreboards to track skill rankings (display using /mctop)
- + Added per-player scoreboard displays for the /inspect, /mcrank, /mcstats, and /<skillname> commands
+ + Added per-player targetBoard displays for the /inspect, /mcrank, /mcstats, and /<skillname> commands
  + Added tab-complete support for all commands
  + Added ability to configure drops from Shake in treasures.yml
  + Added "Master Angler" ability to Fishing.
