@@ -32,9 +32,8 @@ import com.google.common.collect.Lists;
 public class ScoreboardManager {
     static final Map<String, ScoreboardWrapper> PLAYER_SCOREBOARDS = new HashMap<String, ScoreboardWrapper>();
 
-
     // do not localize; these are internal identifiers
-    //static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar";
+    static final String SIDEBAR_OBJECTIVE = "mcmmo_sidebar";
     static final String POWER_OBJECTIVE = "mcmmo_pwrlvl";
 
     static final String HEADER_STATS = LocaleLoader.getString("Scoreboard.Header.PlayerStats");
@@ -259,7 +258,7 @@ public class ScoreboardManager {
     public static void enablePlayerSkillScoreboard(Player player, PrimarySkill skill) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
-        //wrapper.setOldScoreboard();
+        wrapper.setOldScoreboard();
         wrapper.setTypeSkill(skill);
 
         changeScoreboard(wrapper, Config.getInstance().getSkillScoreboardTime());
@@ -273,7 +272,7 @@ public class ScoreboardManager {
             return;
         }
 
-        //wrapper.setOldScoreboard();
+        wrapper.setOldScoreboard();
         wrapper.setTypeSkill(skill);
 
         changeScoreboard(wrapper, Config.getInstance().getSkillLevelUpTime());
@@ -282,7 +281,7 @@ public class ScoreboardManager {
     public static void enablePlayerStatsScoreboard(Player player) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
-        //wrapper.setOldScoreboard();
+        wrapper.setOldScoreboard();
         wrapper.setTypeSelfStats();
 
         changeScoreboard(wrapper, Config.getInstance().getStatsScoreboardTime());
@@ -291,7 +290,7 @@ public class ScoreboardManager {
     public static void enablePlayerInspectScoreboard(Player player, PlayerProfile targetProfile) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
-        //wrapper.setOldScoreboard();
+        wrapper.setOldScoreboard();
         wrapper.setTypeInspectStats(targetProfile);
 
         changeScoreboard(wrapper, Config.getInstance().getInspectScoreboardTime());
@@ -300,7 +299,7 @@ public class ScoreboardManager {
     public static void enablePlayerCooldownScoreboard(Player player) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
-        //wrapper.setOldScoreboard();
+        wrapper.setOldScoreboard();
         wrapper.setTypeCooldowns();
 
         changeScoreboard(wrapper, Config.getInstance().getCooldownScoreboardTime());
@@ -309,7 +308,7 @@ public class ScoreboardManager {
     public static void showPlayerRankScoreboard(Player player, Map<PrimarySkill, Integer> rank) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
-        //wrapper.setOldScoreboard();
+        wrapper.setOldScoreboard();
         wrapper.setTypeSelfRank();
         wrapper.acceptRankData(rank);
 
@@ -319,7 +318,7 @@ public class ScoreboardManager {
     public static void showPlayerRankScoreboardOthers(Player player, String targetName, Map<PrimarySkill, Integer> rank) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
-        //wrapper.setOldScoreboard();
+        wrapper.setOldScoreboard();
         wrapper.setTypeInspectRank(targetName);
         wrapper.acceptRankData(rank);
 
@@ -329,7 +328,7 @@ public class ScoreboardManager {
     public static void showTopScoreboard(Player player, PrimarySkill skill, int pageNumber, List<PlayerStat> stats) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
-        //wrapper.setOldScoreboard();
+        wrapper.setOldScoreboard();
         wrapper.setTypeTop(skill, pageNumber);
         wrapper.acceptLeaderboardData(stats);
 
@@ -339,7 +338,7 @@ public class ScoreboardManager {
     public static void showTopPowerScoreboard(Player player, int pageNumber, List<PlayerStat> stats) {
         ScoreboardWrapper wrapper = PLAYER_SCOREBOARDS.get(player.getName());
 
-        //wrapper.setOldScoreboard();
+        wrapper.setOldScoreboard();
         wrapper.setTypeTopPower(pageNumber);
         wrapper.acceptLeaderboardData(stats);
 
@@ -402,7 +401,7 @@ public class ScoreboardManager {
         Objective powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().getObjective(POWER_OBJECTIVE);
 
         if (powerObjective == null) {
-        powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().registerNewObjective(POWER_OBJECTIVE, "dummy");
+            powerObjective = mcMMO.p.getServer().getScoreboardManager().getMainScoreboard().registerNewObjective(POWER_OBJECTIVE, "dummy");
             powerObjective.setDisplayName(TAG_POWER_LEVEL);
             powerObjective.setDisplaySlot(DisplaySlot.BELOW_NAME);
         }
