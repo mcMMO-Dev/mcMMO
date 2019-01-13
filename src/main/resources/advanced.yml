@@ -28,6 +28,7 @@ Skills:
             SuperAbilityInteraction: true
             SuperAbilityAlertOthers: true
             ExperienceGain: true
+            PartyMessage: true
     General:
         Ability:
             Length:

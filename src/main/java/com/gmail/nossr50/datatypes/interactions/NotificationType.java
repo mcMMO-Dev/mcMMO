@@ -15,7 +15,8 @@ public enum NotificationType {
     ABILITY_COOLDOWN("AbilityCoolDown"),
     ABILITY_REFRESHED("AbilityRefreshed"),
     SUPER_ABILITY("SuperAbilityInteraction"),
-    SUPER_ABILITY_ALERT_OTHERS("SuperAbilityAlertOthers");
+    SUPER_ABILITY_ALERT_OTHERS("SuperAbilityAlertOthers"),
+    PARTY_MESSAGE("PartyMessage");
 
     final String niceName;
 
