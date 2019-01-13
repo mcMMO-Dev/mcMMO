@@ -124,7 +124,7 @@ public class SmeltingCommand extends SkillCommand {
     protected List<TextComponent> getTextComponents(Player player) {
         List<TextComponent> textComponents = new ArrayList<>();
 
-        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.SWORDS);
+        TextComponentFactory.getSubSkillTextComponents(player, textComponents, PrimarySkill.SMELTING);
 
         return textComponents;
     }

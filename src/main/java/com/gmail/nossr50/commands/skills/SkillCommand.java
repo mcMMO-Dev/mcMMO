@@ -2,6 +2,7 @@ package com.gmail.nossr50.commands.skills;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Set;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 
@@ -10,6 +11,7 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.locale.LocaleLoader;
+import com.gmail.nossr50.skills.child.FamilyTree;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.TextComponentFactory;
 import com.gmail.nossr50.util.StringUtils;
@@ -119,15 +121,15 @@ public abstract class SkillCommand implements TabExecutor {
     }
 
     private void sendSkillCommandHeader(Player player, McMMOPlayer mcMMOPlayer, int skillValue) {
+        ChatColor hd1 = ChatColor.DARK_AQUA;
+        ChatColor c1 = ChatColor.GOLD;
+        ChatColor c2 = ChatColor.RED;
+
+
+        player.sendMessage(LocaleLoader.getString("Skills.Overhaul.Header", skillName));
 
         if(!skill.isChildSkill())
         {
-            ChatColor hd1 = ChatColor.DARK_AQUA;
-            ChatColor c1 = ChatColor.GOLD;
-            ChatColor c2 = ChatColor.RED;
-
-            player.sendMessage(hd1+"[]=====[]"+c1+" "+skillName+" "+hd1+"[]=====[]");
-
             //XP GAIN METHOD
             player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
 
@@ -135,23 +137,19 @@ public abstract class SkillCommand implements TabExecutor {
             player.sendMessage(LocaleLoader.getString("Effects.Level.Overhaul", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
 
         } else {
-            ChatColor hd1 = ChatColor.DARK_AQUA;
-            ChatColor c1 = ChatColor.GOLD;
-            ChatColor c2 = ChatColor.DARK_PURPLE;
-            //Header
-            player.sendMessage(hd1+"[]=====[]"+c1+" mcMMO "+c2+"Overhaul"+c1+" Era "+hd1+"[]=====[]");
-            //Link Header
-            TextComponentFactory.sendPlayerUrlHeader(player);
-            player.sendMessage(hd1+"[]=====[]"+c1+" "+skillName+" "+hd1+"[]=====[]");
-
             //XP GAIN METHOD
-            player.sendMessage(LocaleLoader.getString("Commands.XPGain", LocaleLoader.getString("Commands.XPGain." + StringUtils.getCapitalized(skill.toString()))));
+            player.sendMessage(LocaleLoader.getString("Commands.XPGain.Overhaul", LocaleLoader.getString("Commands.XPGain.Child")));
 
             //LEVEL
-            player.sendMessage(LocaleLoader.getString("Effects.Level", skillValue, mcMMOPlayer.getSkillXpLevel(skill), mcMMOPlayer.getXpToLevel(skill)));
+            player.sendMessage(LocaleLoader.getString("Effects.Child.Overhaul", skillValue, skillValue));
 
+            Set<PrimarySkill> parents = FamilyTree.getParents(skill);
+
+            //TODO: Add JSON here
+            for (PrimarySkill parent : parents) {
+                player.sendMessage(parent.getName() + " - " + LocaleLoader.getString("Effects.Level.Overhaul", mcMMOPlayer.getSkillLevel(parent), mcMMOPlayer.getSkillXpLevel(parent), mcMMOPlayer.getXpToLevel(parent)));
+            }
         }
-
         /*
         if (!skill.isChildSkill()) {
             player.sendMessage(LocaleLoader.getString("Skills.Header", skillName));
