@@ -3,7 +3,7 @@ package com.gmail.nossr50.skills.unarmed;
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -38,7 +38,7 @@ public class UnarmedManager extends SkillManager {
     }
 
     public boolean canUseBerserk() {
-        return mcMMOPlayer.getAbilityMode(SuperAbility.BERSERK) && Permissions.berserk(getPlayer());
+        return mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK) && Permissions.berserk(getPlayer());
     }
 
     public boolean canDisarm(LivingEntity target) {

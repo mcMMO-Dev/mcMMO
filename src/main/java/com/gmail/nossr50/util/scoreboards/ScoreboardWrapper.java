@@ -3,6 +3,7 @@ package com.gmail.nossr50.util.scoreboards;
 import java.util.List;
 import java.util.Map;
 
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.events.scoreboard.*;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -18,7 +19,6 @@ import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.skills.child.FamilyTree;
@@ -463,10 +463,10 @@ public class ScoreboardWrapper {
 
                     if (targetSkill == PrimarySkill.MINING) {
                         // Special-Case: Mining has two abilities, both with cooldowns
-                        Score cooldownSB = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(SuperAbility.SUPER_BREAKER));
-                        Score cooldownBM = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(SuperAbility.BLAST_MINING));
-                        int secondsSB = Math.max(mcMMOPlayer.calculateTimeRemaining(SuperAbility.SUPER_BREAKER), 0);
-                        int secondsBM = Math.max(mcMMOPlayer.calculateTimeRemaining(SuperAbility.BLAST_MINING), 0);
+                        Score cooldownSB = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(SuperAbilityType.SUPER_BREAKER));
+                        Score cooldownBM = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(SuperAbilityType.BLAST_MINING));
+                        int secondsSB = Math.max(mcMMOPlayer.calculateTimeRemaining(SuperAbilityType.SUPER_BREAKER), 0);
+                        int secondsBM = Math.max(mcMMOPlayer.calculateTimeRemaining(SuperAbilityType.BLAST_MINING), 0);
 
                         cooldownSB.setScore(secondsSB);
                         cooldownBM.setScore(secondsBM);
@@ -474,7 +474,7 @@ public class ScoreboardWrapper {
                         stopUpdating = (secondsSB == 0 && secondsBM == 0);
                     }
                     else {
-                        SuperAbility ability = targetSkill.getAbility();
+                        SuperAbilityType ability = targetSkill.getAbility();
                         Score cooldown = sidebarObjective.getScore(ScoreboardManager.abilityLabelsSkill.get(ability));
                         int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
@@ -495,7 +495,7 @@ public class ScoreboardWrapper {
             case COOLDOWNS_BOARD:
                 boolean anyCooldownsActive = false;
 
-                for (SuperAbility ability : SuperAbility.values()) {
+                for (SuperAbilityType ability : SuperAbilityType.values()) {
                     int seconds = Math.max(mcMMOPlayer.calculateTimeRemaining(ability), 0);
 
                     if (seconds != 0) {

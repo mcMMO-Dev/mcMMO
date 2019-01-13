@@ -5,12 +5,11 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 
-public enum SuperAbility {
+public enum SuperAbilityType {
     BERSERK(
             "Unarmed.Skills.Berserk.On",
             "Unarmed.Skills.Berserk.Off",
@@ -77,7 +76,7 @@ public enum SuperAbility {
     private String abilityRefresh;
     private String abilityPlayerOff;
 
-    private SuperAbility(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
+    private SuperAbilityType(String abilityOn, String abilityOff, String abilityPlayer, String abilityRefresh, String abilityPlayerOff) {
         this.abilityOn = abilityOn;
         this.abilityOff = abilityOff;
         this.abilityPlayer = abilityPlayer;

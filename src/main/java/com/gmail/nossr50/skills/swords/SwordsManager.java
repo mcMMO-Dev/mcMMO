@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -40,7 +40,7 @@ public class SwordsManager extends SkillManager {
     }
 
     public boolean canUseSerratedStrike() {
-        return mcMMOPlayer.getAbilityMode(SuperAbility.SERRATED_STRIKES) && Permissions.serratedStrikes(getPlayer());
+        return mcMMOPlayer.getAbilityMode(SuperAbilityType.SERRATED_STRIKES) && Permissions.serratedStrikes(getPlayer());
     }
 
     /**

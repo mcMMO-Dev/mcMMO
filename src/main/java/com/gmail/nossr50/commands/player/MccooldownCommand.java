@@ -2,7 +2,7 @@ package com.gmail.nossr50.commands.player;
 
 import java.util.List;
 
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -45,7 +45,7 @@ public class MccooldownCommand implements TabExecutor {
                 player.sendMessage(LocaleLoader.getString("Commands.Cooldowns.Header"));
                 player.sendMessage(LocaleLoader.getString("mcMMO.NoSkillNote"));
 
-                for (SuperAbility ability : SuperAbility.values()) {
+                for (SuperAbilityType ability : SuperAbilityType.values()) {
                     if (!ability.getPermissions(player)) {
                         continue;
                     }

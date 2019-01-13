@@ -1,8 +1,8 @@
 package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
-import com.gmail.nossr50.listeners.InteractionManager;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
+import com.gmail.nossr50.util.player.NotificationManager;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -19,9 +19,9 @@ import com.gmail.nossr50.util.skills.SkillUtils;
 
 public class AbilityDisableTask extends BukkitRunnable {
     private McMMOPlayer mcMMOPlayer;
-    private SuperAbility ability;
+    private SuperAbilityType ability;
 
-    public AbilityDisableTask(McMMOPlayer mcMMOPlayer, SuperAbility ability) {
+    public AbilityDisableTask(McMMOPlayer mcMMOPlayer, SuperAbilityType ability) {
         this.mcMMOPlayer = mcMMOPlayer;
         this.ability = ability;
     }
@@ -59,7 +59,7 @@ public class AbilityDisableTask extends BukkitRunnable {
 
         if (mcMMOPlayer.useChatNotifications()) {
             //player.sendMessage(ability.getAbilityOff());
-            InteractionManager.sendPlayerInformation(player, NotificationType.ABILITY_OFF, ability.getAbilityOff());
+            NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_OFF, ability.getAbilityOff());
         }
 
 

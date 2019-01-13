@@ -8,11 +8,10 @@ import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.mods.CustomTool;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.party.PartyTeleportRecord;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
-import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.party.PartyManager;
@@ -40,6 +39,7 @@ import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
@@ -50,7 +50,6 @@ import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -81,8 +80,8 @@ public class McMMOPlayer {
     private boolean godMode;
     private boolean chatSpy = false; //Off by default
 
-    private final Map<SuperAbility, Boolean> abilityMode     = new HashMap<SuperAbility, Boolean>();
-    private final Map<SuperAbility, Boolean> abilityInformed = new HashMap<SuperAbility, Boolean>();
+    private final Map<SuperAbilityType, Boolean> abilityMode     = new HashMap<SuperAbilityType, Boolean>();
+    private final Map<SuperAbilityType, Boolean> abilityInformed = new HashMap<SuperAbilityType, Boolean>();
 
     private final Map<ToolType, Boolean> toolMode = new HashMap<ToolType, Boolean>();
 
@@ -123,9 +122,9 @@ public class McMMOPlayer {
             mcMMO.p.getPluginLoader().disablePlugin(mcMMO.p);
         }
 
-        for (SuperAbility superAbility : SuperAbility.values()) {
-            abilityMode.put(superAbility, false);
-            abilityInformed.put(superAbility, true); // This is intended
+        for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
+            abilityMode.put(superAbilityType, false);
+            abilityInformed.put(superAbilityType, true); // This is intended
         }
 
         for (ToolType toolType : ToolType.values()) {
@@ -201,7 +200,7 @@ public class McMMOPlayer {
      * Reset the mode of all abilities.
      */
     public void resetAbilityMode() {
-        for (SuperAbility ability : SuperAbility.values()) {
+        for (SuperAbilityType ability : SuperAbilityType.values()) {
             // Correctly disable and handle any special deactivate code
             new AbilityDisableTask(this, ability).run();
         }
@@ -213,7 +212,7 @@ public class McMMOPlayer {
      * @param ability The ability to check
      * @return true if the ability is enabled, false otherwise
      */
-    public boolean getAbilityMode(SuperAbility ability) {
+    public boolean getAbilityMode(SuperAbilityType ability) {
         return abilityMode.get(ability);
     }
 
@@ -223,7 +222,7 @@ public class McMMOPlayer {
      * @param ability The ability to check
      * @param isActive True if the ability is active, false otherwise
      */
-    public void setAbilityMode(SuperAbility ability, boolean isActive) {
+    public void setAbilityMode(SuperAbilityType ability, boolean isActive) {
         abilityMode.put(ability, isActive);
     }
 
@@ -233,7 +232,7 @@ public class McMMOPlayer {
      * @param ability The ability to check
      * @return true if the ability is informed, false otherwise
      */
-    public boolean getAbilityInformed(SuperAbility ability) {
+    public boolean getAbilityInformed(SuperAbilityType ability) {
         return abilityInformed.get(ability);
     }
 
@@ -243,7 +242,7 @@ public class McMMOPlayer {
      * @param ability The ability to check
      * @param isInformed True if the ability is informed, false otherwise
      */
-    public void setAbilityInformed(SuperAbility ability, boolean isInformed) {
+    public void setAbilityInformed(SuperAbilityType ability, boolean isInformed) {
         abilityInformed.put(ability, isInformed);
     }
 
@@ -517,8 +516,7 @@ public class McMMOPlayer {
             SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
         }
 
-        InteractionManager.sendPlayerLevelUpNotification(UserManager.getPlayer(player), primarySkill, profile.getSkillLevel(primarySkill));
-        //player.sendMessage(LocaleLoader.getString(StringUtils.getCapitalized(primarySkill.toString()) + ".Skillup", levelsGained, getSkillLevel(primarySkill)));
+        NotificationManager.sendPlayerLevelUpNotification(UserManager.getPlayer(player), primarySkill, profile.getSkillLevel(primarySkill));
     }
 
     /*
@@ -731,7 +729,7 @@ public class McMMOPlayer {
      */
     public void checkAbilityActivation(PrimarySkill skill) {
         ToolType tool = skill.getTool();
-        SuperAbility ability = skill.getAbility();
+        SuperAbilityType ability = skill.getAbility();
 
         if (getAbilityMode(ability)) {
             return;
@@ -744,8 +742,10 @@ public class McMMOPlayer {
         {
             if(getSkillLevel(skill) < skill.getSkillAbilityGate())
             {
+                int diff = skill.getSkillAbilityGate() - getSkillLevel(skill);
+
                 //Inform the player they are not yet skilled enough
-                player.sendMessage(LocaleLoader.getString("Skills.AbilityGateRequirementFail"));
+                NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.AbilityGateRequirementFail", String.valueOf(diff), skill.getName());
                 return;
             }
         }
@@ -758,7 +758,7 @@ public class McMMOPlayer {
              * We show them the too tired message when they take action.
              */
             if (skill == PrimarySkill.WOODCUTTING || skill == PrimarySkill.AXES) {
-                player.sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
+                NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
             }
 
             return;
@@ -774,7 +774,7 @@ public class McMMOPlayer {
         ParticleEffectUtils.playAbilityEnabledEffect(player);
 
         if (useChatNotifications()) {
-            InteractionManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, ability.getAbilityOn());
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, ability.getAbilityOn());
             //player.sendMessage(ability.getAbilityOn());
         }
 
@@ -784,7 +784,7 @@ public class McMMOPlayer {
         profile.setAbilityDATS(ability, System.currentTimeMillis() + (ticks * Misc.TIME_CONVERSION_FACTOR));
         setAbilityMode(ability, true);
 
-        if (ability == SuperAbility.SUPER_BREAKER || ability == SuperAbility.GIGA_DRILL_BREAKER) {
+        if (ability == SuperAbilityType.SUPER_BREAKER || ability == SuperAbilityType.GIGA_DRILL_BREAKER) {
             SkillUtils.handleAbilitySpeedIncrease(player);
         }
 
@@ -807,13 +807,13 @@ public class McMMOPlayer {
             return;
         }
 
-        for (SuperAbility superAbility : SuperAbility.values()) {
-            if (getAbilityMode(superAbility)) {
+        for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
+            if (getAbilityMode(superAbilityType)) {
                 return;
             }
         }
 
-        SuperAbility ability = skill.getAbility();
+        SuperAbilityType ability = skill.getAbility();
         ToolType tool = skill.getTool();
 
         /*
@@ -825,13 +825,13 @@ public class McMMOPlayer {
                 int timeRemaining = calculateTimeRemaining(ability);
 
                 if (!getAbilityMode(ability) && timeRemaining > 0) {
-                    InteractionManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
+                    NotificationManager.sendPlayerInformation(player, NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf(timeRemaining));
                     return;
                 }
             }
 
             if (Config.getInstance().getAbilityMessagesEnabled()) {
-                InteractionManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
+                NotificationManager.sendPlayerInformation(player, NotificationType.TOOL, tool.getRaiseTool());
             }
 
             setToolPreparationMode(tool, true);
@@ -842,11 +842,11 @@ public class McMMOPlayer {
     /**
      * Calculate the time remaining until the ability's cooldown expires.
      *
-     * @param ability SuperAbility whose cooldown to check
+     * @param ability SuperAbilityType whose cooldown to check
      *
      * @return the number of seconds remaining before the cooldown expires
      */
-    public int calculateTimeRemaining(SuperAbility ability) {
+    public int calculateTimeRemaining(SuperAbilityType ability) {
         long deactivatedTimestamp = profile.getAbilityDATS(ability) * Misc.TIME_CONVERSION_FACTOR;
         return (int) (((deactivatedTimestamp + (PerksUtils.handleCooldownPerks(player, ability.getCooldown()) * Misc.TIME_CONVERSION_FACTOR)) - System.currentTimeMillis()) / Misc.TIME_CONVERSION_FACTOR);
     }
@@ -894,7 +894,7 @@ public class McMMOPlayer {
         profile.addXp(skill, xp);
     }
 
-    public void setAbilityDATS(SuperAbility ability, long DATS) {
+    public void setAbilityDATS(SuperAbilityType ability, long DATS) {
         profile.setAbilityDATS(ability, DATS);
     }
 

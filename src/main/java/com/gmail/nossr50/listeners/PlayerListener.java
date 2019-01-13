@@ -8,7 +8,7 @@ import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.datatypes.chat.ChatMode;
 import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
@@ -30,7 +30,6 @@ import com.gmail.nossr50.util.sounds.SoundManager;
 import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.*;
@@ -310,7 +309,7 @@ public class PlayerListener implements Listener {
             }
         }
 
-        if ((mcMMOPlayer.isUsingUnarmed() && ItemUtils.isSharable(dropStack) && !Config.getInstance().getUnarmedItemsAsUnarmed()) || mcMMOPlayer.getAbilityMode(SuperAbility.BERSERK)) {
+        if ((mcMMOPlayer.isUsingUnarmed() && ItemUtils.isSharable(dropStack) && !Config.getInstance().getUnarmedItemsAsUnarmed()) || mcMMOPlayer.getAbilityMode(SuperAbilityType.BERSERK)) {
             boolean pickupSuccess = Unarmed.handleItemPickup(player.getInventory(), drop);
             boolean cancel = Config.getInstance().getUnarmedItemPickupDisabled() || pickupSuccess;
             event.setCancelled(cancel);

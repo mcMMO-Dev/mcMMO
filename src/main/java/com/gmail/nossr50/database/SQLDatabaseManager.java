@@ -7,7 +7,7 @@ import com.gmail.nossr50.datatypes.database.PlayerStat;
 import com.gmail.nossr50.datatypes.database.UpgradeType;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.database.UUIDUpdateAsyncTask;
@@ -289,14 +289,14 @@ public final class SQLDatabaseManager implements DatabaseManager {
                     + "  mining = ?, woodcutting = ?, unarmed = ?"
                     + ", herbalism = ?, excavation = ?, swords = ?"
                     + ", axes = ?, blast_mining = ?, chimaera_wing = ? WHERE user_id = ?");
-            statement.setLong(1, profile.getAbilityDATS(SuperAbility.SUPER_BREAKER));
-            statement.setLong(2, profile.getAbilityDATS(SuperAbility.TREE_FELLER));
-            statement.setLong(3, profile.getAbilityDATS(SuperAbility.BERSERK));
-            statement.setLong(4, profile.getAbilityDATS(SuperAbility.GREEN_TERRA));
-            statement.setLong(5, profile.getAbilityDATS(SuperAbility.GIGA_DRILL_BREAKER));
-            statement.setLong(6, profile.getAbilityDATS(SuperAbility.SERRATED_STRIKES));
-            statement.setLong(7, profile.getAbilityDATS(SuperAbility.SKULL_SPLITTER));
-            statement.setLong(8, profile.getAbilityDATS(SuperAbility.BLAST_MINING));
+            statement.setLong(1, profile.getAbilityDATS(SuperAbilityType.SUPER_BREAKER));
+            statement.setLong(2, profile.getAbilityDATS(SuperAbilityType.TREE_FELLER));
+            statement.setLong(3, profile.getAbilityDATS(SuperAbilityType.BERSERK));
+            statement.setLong(4, profile.getAbilityDATS(SuperAbilityType.GREEN_TERRA));
+            statement.setLong(5, profile.getAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER));
+            statement.setLong(6, profile.getAbilityDATS(SuperAbilityType.SERRATED_STRIKES));
+            statement.setLong(7, profile.getAbilityDATS(SuperAbilityType.SKULL_SPLITTER));
+            statement.setLong(8, profile.getAbilityDATS(SuperAbilityType.BLAST_MINING));
             statement.setLong(9, profile.getUniqueData(UniqueDataType.CHIMAERA_WING_DATS));
             statement.setInt(10, id);
             success = (statement.executeUpdate() != 0);
@@ -1054,7 +1054,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
     private PlayerProfile loadFromResult(String playerName, ResultSet result) throws SQLException {
         Map<PrimarySkill, Integer> skills = new EnumMap<PrimarySkill, Integer>(PrimarySkill.class); // Skill & Level
         Map<PrimarySkill, Float> skillsXp = new EnumMap<PrimarySkill, Float>(PrimarySkill.class); // Skill & XP
-        Map<SuperAbility, Integer> skillsDATS = new EnumMap<SuperAbility, Integer>(SuperAbility.class); // Ability & Cooldown
+        Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<SuperAbilityType, Integer>(SuperAbilityType.class); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniqueData = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class); //Chimaera wing cooldown and other misc info
         MobHealthbarType mobHealthbarType;
         UUID uuid;
@@ -1095,17 +1095,17 @@ public final class SQLDatabaseManager implements DatabaseManager {
         skillsXp.put(PrimarySkill.ALCHEMY, result.getFloat(OFFSET_XP + 13));
 
         // Taming - Unused - result.getInt(OFFSET_DATS + 1)
-        skillsDATS.put(SuperAbility.SUPER_BREAKER, result.getInt(OFFSET_DATS + 2));
+        skillsDATS.put(SuperAbilityType.SUPER_BREAKER, result.getInt(OFFSET_DATS + 2));
         // Repair - Unused - result.getInt(OFFSET_DATS + 3)
-        skillsDATS.put(SuperAbility.TREE_FELLER, result.getInt(OFFSET_DATS + 4));
-        skillsDATS.put(SuperAbility.BERSERK, result.getInt(OFFSET_DATS + 5));
-        skillsDATS.put(SuperAbility.GREEN_TERRA, result.getInt(OFFSET_DATS + 6));
-        skillsDATS.put(SuperAbility.GIGA_DRILL_BREAKER, result.getInt(OFFSET_DATS + 7));
+        skillsDATS.put(SuperAbilityType.TREE_FELLER, result.getInt(OFFSET_DATS + 4));
+        skillsDATS.put(SuperAbilityType.BERSERK, result.getInt(OFFSET_DATS + 5));
+        skillsDATS.put(SuperAbilityType.GREEN_TERRA, result.getInt(OFFSET_DATS + 6));
+        skillsDATS.put(SuperAbilityType.GIGA_DRILL_BREAKER, result.getInt(OFFSET_DATS + 7));
         // Archery - Unused - result.getInt(OFFSET_DATS + 8)
-        skillsDATS.put(SuperAbility.SERRATED_STRIKES, result.getInt(OFFSET_DATS + 9));
-        skillsDATS.put(SuperAbility.SKULL_SPLITTER, result.getInt(OFFSET_DATS + 10));
+        skillsDATS.put(SuperAbilityType.SERRATED_STRIKES, result.getInt(OFFSET_DATS + 9));
+        skillsDATS.put(SuperAbilityType.SKULL_SPLITTER, result.getInt(OFFSET_DATS + 10));
         // Acrobatics - Unused - result.getInt(OFFSET_DATS + 11)
-        skillsDATS.put(SuperAbility.BLAST_MINING, result.getInt(OFFSET_DATS + 12));
+        skillsDATS.put(SuperAbilityType.BLAST_MINING, result.getInt(OFFSET_DATS + 12));
         uniqueData.put(UniqueDataType.CHIMAERA_WING_DATS, result.getInt(OFFSET_DATS + 13));
 
 

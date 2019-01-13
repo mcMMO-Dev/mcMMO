@@ -3,12 +3,10 @@ package com.gmail.nossr50.skills.mining;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.datatypes.interactions.NotificationType;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
-import com.gmail.nossr50.listeners.InteractionManager;
-import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.runnables.skills.AbilityCooldownTask;
 import com.gmail.nossr50.skills.SkillManager;
@@ -17,6 +15,7 @@ import com.gmail.nossr50.util.BlockUtils;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
 import org.bukkit.inventory.ItemStack;
@@ -106,17 +105,17 @@ public class MiningManager extends SkillManager {
 
         TNTPrimed tnt = player.getWorld().spawn(targetBlock.getLocation(), TNTPrimed.class);
 
-        //SkillUtils.sendSkillMessage(player, SuperAbility.BLAST_MINING.getAbilityPlayer(player));
-        InteractionManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, "Mining.Blast.Boom");
+        //SkillUtils.sendSkillMessage(player, SuperAbilityType.BLAST_MINING.getAbilityPlayer(player));
+        NotificationManager.sendPlayerInformation(player, NotificationType.SUPER_ABILITY, "Mining.Blast.Boom");
         //player.sendMessage(LocaleLoader.getString("Mining.Blast.Boom"));
 
         tnt.setMetadata(mcMMO.tntMetadataKey, mcMMOPlayer.getPlayerMetadata());
         tnt.setFuseTicks(0);
         targetBlock.setType(Material.AIR);
 
-        mcMMOPlayer.setAbilityDATS(SuperAbility.BLAST_MINING, System.currentTimeMillis());
-        mcMMOPlayer.setAbilityInformed(SuperAbility.BLAST_MINING, false);
-        new AbilityCooldownTask(mcMMOPlayer, SuperAbility.BLAST_MINING).runTaskLaterAsynchronously(mcMMO.p, SuperAbility.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
+        mcMMOPlayer.setAbilityDATS(SuperAbilityType.BLAST_MINING, System.currentTimeMillis());
+        mcMMOPlayer.setAbilityInformed(SuperAbilityType.BLAST_MINING, false);
+        new AbilityCooldownTask(mcMMOPlayer, SuperAbilityType.BLAST_MINING).runTaskLaterAsynchronously(mcMMO.p, SuperAbilityType.BLAST_MINING.getCooldown() * Misc.TICK_CONVERSION_FACTOR);
     }
 
     /**
@@ -291,11 +290,11 @@ public class MiningManager extends SkillManager {
     }
 
     private boolean blastMiningCooldownOver() {
-        int timeRemaining = mcMMOPlayer.calculateTimeRemaining(SuperAbility.BLAST_MINING);
+        int timeRemaining = mcMMOPlayer.calculateTimeRemaining(SuperAbilityType.BLAST_MINING);
 
         if (timeRemaining > 0) {
             //getPlayer().sendMessage(LocaleLoader.getString("Skills.TooTired", timeRemaining));
-            InteractionManager.sendPlayerInformation(getPlayer(), NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf("timeRemaining"));
+            NotificationManager.sendPlayerInformation(getPlayer(), NotificationType.ABILITY_COOLDOWN, "Skills.TooTired", String.valueOf("timeRemaining"));
             return false;
         }
 

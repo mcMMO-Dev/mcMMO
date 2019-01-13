@@ -19,7 +19,7 @@ import java.util.UUID;
 
 import com.gmail.nossr50.datatypes.player.UniqueDataType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import org.bukkit.OfflinePlayer;
 
 import com.gmail.nossr50.mcMMO;
@@ -348,17 +348,17 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         writer.append(":");
         writer.append(profile.getSkillLevel(PrimarySkill.TAMING)).append(":");
         writer.append(profile.getSkillXpLevel(PrimarySkill.TAMING)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbility.BERSERK)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbility.GIGA_DRILL_BREAKER)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbility.TREE_FELLER)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbility.GREEN_TERRA)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbility.SERRATED_STRIKES)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbility.SKULL_SPLITTER)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbility.SUPER_BREAKER)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbilityType.BERSERK)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbilityType.GIGA_DRILL_BREAKER)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbilityType.TREE_FELLER)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbilityType.GREEN_TERRA)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbilityType.SERRATED_STRIKES)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbilityType.SKULL_SPLITTER)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbilityType.SUPER_BREAKER)).append(":");
         writer.append(":");
         writer.append(profile.getSkillLevel(PrimarySkill.FISHING)).append(":");
         writer.append(profile.getSkillXpLevel(PrimarySkill.FISHING)).append(":");
-        writer.append((int) profile.getAbilityDATS(SuperAbility.BLAST_MINING)).append(":");
+        writer.append((int) profile.getAbilityDATS(SuperAbilityType.BLAST_MINING)).append(":");
         writer.append(System.currentTimeMillis() / Misc.TIME_CONVERSION_FACTOR).append(":");
         MobHealthbarType mobHealthbarType = profile.getMobHealthbarType();
         writer.append(mobHealthbarType == null ? Config.getInstance().getMobHealthbarDefault().toString() : mobHealthbarType.toString()).append(":");
@@ -1145,7 +1145,7 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
     private PlayerProfile loadFromLine(String[] character) {
         Map<PrimarySkill, Integer>   skills     = getSkillMapFromLine(character);      // Skill levels
         Map<PrimarySkill, Float>     skillsXp   = new EnumMap<PrimarySkill, Float>(PrimarySkill.class);     // Skill & XP
-        Map<SuperAbility, Integer> skillsDATS = new EnumMap<SuperAbility, Integer>(SuperAbility.class); // Ability & Cooldown
+        Map<SuperAbilityType, Integer> skillsDATS = new EnumMap<SuperAbilityType, Integer>(SuperAbilityType.class); // Ability & Cooldown
         Map<UniqueDataType, Integer> uniquePlayerDataMap = new EnumMap<UniqueDataType, Integer>(UniqueDataType.class);
         MobHealthbarType mobHealthbarType;
         int scoreboardTipsShown;
@@ -1167,17 +1167,17 @@ public final class FlatfileDatabaseManager implements DatabaseManager {
         skillsXp.put(PrimarySkill.ALCHEMY, (float) Integer.valueOf(character[EXP_ALCHEMY]));
 
         // Taming - Unused
-        skillsDATS.put(SuperAbility.SUPER_BREAKER, Integer.valueOf(character[COOLDOWN_SUPER_BREAKER]));
+        skillsDATS.put(SuperAbilityType.SUPER_BREAKER, Integer.valueOf(character[COOLDOWN_SUPER_BREAKER]));
         // Repair - Unused
-        skillsDATS.put(SuperAbility.TREE_FELLER, Integer.valueOf(character[COOLDOWN_TREE_FELLER]));
-        skillsDATS.put(SuperAbility.BERSERK, Integer.valueOf(character[COOLDOWN_BERSERK]));
-        skillsDATS.put(SuperAbility.GREEN_TERRA, Integer.valueOf(character[COOLDOWN_GREEN_TERRA]));
-        skillsDATS.put(SuperAbility.GIGA_DRILL_BREAKER, Integer.valueOf(character[COOLDOWN_GIGA_DRILL_BREAKER]));
+        skillsDATS.put(SuperAbilityType.TREE_FELLER, Integer.valueOf(character[COOLDOWN_TREE_FELLER]));
+        skillsDATS.put(SuperAbilityType.BERSERK, Integer.valueOf(character[COOLDOWN_BERSERK]));
+        skillsDATS.put(SuperAbilityType.GREEN_TERRA, Integer.valueOf(character[COOLDOWN_GREEN_TERRA]));
+        skillsDATS.put(SuperAbilityType.GIGA_DRILL_BREAKER, Integer.valueOf(character[COOLDOWN_GIGA_DRILL_BREAKER]));
         // Archery - Unused
-        skillsDATS.put(SuperAbility.SERRATED_STRIKES, Integer.valueOf(character[COOLDOWN_SERRATED_STRIKES]));
-        skillsDATS.put(SuperAbility.SKULL_SPLITTER, Integer.valueOf(character[COOLDOWN_SKULL_SPLITTER]));
+        skillsDATS.put(SuperAbilityType.SERRATED_STRIKES, Integer.valueOf(character[COOLDOWN_SERRATED_STRIKES]));
+        skillsDATS.put(SuperAbilityType.SKULL_SPLITTER, Integer.valueOf(character[COOLDOWN_SKULL_SPLITTER]));
         // Acrobatics - Unused
-        skillsDATS.put(SuperAbility.BLAST_MINING, Integer.valueOf(character[COOLDOWN_BLAST_MINING]));
+        skillsDATS.put(SuperAbilityType.BLAST_MINING, Integer.valueOf(character[COOLDOWN_BLAST_MINING]));
 
         try {
             mobHealthbarType = MobHealthbarType.valueOf(character[HEALTHBAR]);

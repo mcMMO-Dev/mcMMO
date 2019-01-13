@@ -4,7 +4,7 @@ import com.gmail.nossr50.datatypes.party.Party;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.datatypes.skills.subskills.AbstractSubSkill;
@@ -354,7 +354,7 @@ public class EventUtils {
         return !isCancelled;
     }
 
-    public static McMMOPlayerAbilityDeactivateEvent callAbilityDeactivateEvent(Player player, SuperAbility ability) {
+    public static McMMOPlayerAbilityDeactivateEvent callAbilityDeactivateEvent(Player player, SuperAbilityType ability) {
         McMMOPlayerAbilityDeactivateEvent event = new McMMOPlayerAbilityDeactivateEvent(player, PrimarySkill.byAbility(ability));
         mcMMO.p.getServer().getPluginManager().callEvent(event);
 

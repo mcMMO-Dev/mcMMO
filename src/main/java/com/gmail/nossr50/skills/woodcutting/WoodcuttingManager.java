@@ -3,7 +3,7 @@ package com.gmail.nossr50.skills.woodcutting;
 import com.gmail.nossr50.datatypes.mods.CustomBlock;
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -34,7 +34,7 @@ public class WoodcuttingManager extends SkillManager {
     }
 
     public boolean canUseTreeFeller(ItemStack heldItem) {
-        return mcMMOPlayer.getAbilityMode(SuperAbility.TREE_FELLER) && Permissions.treeFeller(getPlayer()) && ItemUtils.isAxe(heldItem);
+        return mcMMOPlayer.getAbilityMode(SuperAbilityType.TREE_FELLER) && Permissions.treeFeller(getPlayer()) && ItemUtils.isAxe(heldItem);
     }
 
     protected boolean canGetDoubleDrops() {

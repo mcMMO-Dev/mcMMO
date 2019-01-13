@@ -8,13 +8,13 @@ import com.gmail.nossr50.datatypes.player.PlayerProfile;
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
 import com.gmail.nossr50.datatypes.skills.XPGainReason;
 import com.gmail.nossr50.datatypes.skills.subskills.interfaces.RandomChance;
-import com.gmail.nossr50.listeners.InteractionManager;
 import com.gmail.nossr50.locale.LocaleLoader;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.skills.acrobatics.Acrobatics;
 import com.gmail.nossr50.util.EventUtils;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
+import com.gmail.nossr50.util.player.NotificationManager;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
@@ -217,7 +217,7 @@ public class Roll extends AcrobaticsSubSkill implements RandomChance {
         double modifiedDamage = calculateModifiedRollDamage(damage, Acrobatics.rollThreshold);
 
         if (!isFatal(player, modifiedDamage) && SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_ROLL, player, getPrimarySkill(), skillLevel, getActivationChance(mcMMOPlayer))) {
-            InteractionManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Roll.Text");
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Roll.Text");
             //player.sendMessage(LocaleLoader.getString("Acrobatics.Roll.Text"));
 
             if (!SkillUtils.cooldownExpired((long) mcMMOPlayer.getTeleportATS(), Config.getInstance().getXPAfterTeleportCooldown())) {
@@ -251,7 +251,7 @@ public class Roll extends AcrobaticsSubSkill implements RandomChance {
         double modifiedDamage = calculateModifiedRollDamage(damage, Acrobatics.gracefulRollThreshold);
 
         if (!isFatal(player, modifiedDamage) && SkillUtils.isActivationSuccessful(SkillActivationType.RANDOM_LINEAR_100_SCALE_WITH_CAP, SubSkillType.ACROBATICS_ROLL, player, getPrimarySkill(), skillLevel, getActivationChance(mcMMOPlayer))) {
-            InteractionManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
+            NotificationManager.sendPlayerInformation(player, NotificationType.SUBSKILL_MESSAGE, "Acrobatics.Ability.Proc");
             SkillUtils.applyXpGain(mcMMOPlayer, getPrimarySkill(), calculateRollXP(player, damage, true), XPGainReason.PVE);
 
             return modifiedDamage;

@@ -1,9 +1,8 @@
 package com.gmail.nossr50.util;
 
 import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import org.bukkit.Material;
-import org.bukkit.TreeSpecies;
 import org.bukkit.block.data.Ageable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
@@ -29,7 +28,7 @@ public class StringUtils {
         return createPrettyString(entity.toString());
     }
 
-    public static String getPrettyAbilityString(SuperAbility ability) {
+    public static String getPrettyAbilityString(SuperAbilityType ability) {
         return createPrettyString(ability.toString());
     }
     

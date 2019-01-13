@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -51,8 +51,8 @@ public class ScoreboardManager {
     static final String LABEL_OVERALL = LocaleLoader.getString("Scoreboard.Misc.Overall");
 
     static final Map<PrimarySkill, String>   skillLabels;
-    static final Map<SuperAbility, String> abilityLabelsColored;
-    static final Map<SuperAbility, String> abilityLabelsSkill;
+    static final Map<SuperAbilityType, String> abilityLabelsColored;
+    static final Map<SuperAbilityType, String> abilityLabelsSkill;
 
     /*
      * Initializes the static properties of this class
@@ -62,8 +62,8 @@ public class ScoreboardManager {
          * We need immutable objects for our Scoreboard's labels
          */
         ImmutableMap.Builder<PrimarySkill, String> skillLabelBuilder = ImmutableMap.builder();
-        ImmutableMap.Builder<SuperAbility, String> abilityLabelBuilder = ImmutableMap.builder();
-        ImmutableMap.Builder<SuperAbility, String> abilityLabelSkillBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<SuperAbilityType, String> abilityLabelBuilder = ImmutableMap.builder();
+        ImmutableMap.Builder<SuperAbilityType, String> abilityLabelSkillBuilder = ImmutableMap.builder();
 
         /*
          * Builds the labels for our ScoreBoards
@@ -98,7 +98,7 @@ public class ScoreboardManager {
                     abilityLabelBuilder.put(type.getAbility(), getShortenedName(colors.get(i) + type.getAbility().getName()));
 
                     if (type == PrimarySkill.MINING) {
-                        abilityLabelBuilder.put(SuperAbility.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbility.BLAST_MINING.getName()));
+                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, getShortenedName(colors.get(i) + SuperAbilityType.BLAST_MINING.getName()));
                     }
                 }
 
@@ -120,14 +120,14 @@ public class ScoreboardManager {
                     abilityLabelBuilder.put(type.getAbility(), formatAbility(type.getAbility().getName()));
 
                     if (type == PrimarySkill.MINING) {
-                        abilityLabelBuilder.put(SuperAbility.BLAST_MINING, formatAbility(SuperAbility.BLAST_MINING.getName()));
+                        abilityLabelBuilder.put(SuperAbilityType.BLAST_MINING, formatAbility(SuperAbilityType.BLAST_MINING.getName()));
                     }
                 }
             }
         }
 
-        for (SuperAbility type : SuperAbility.values()) {
-            abilityLabelSkillBuilder.put(type, formatAbility((type == SuperAbility.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA), type.getName()));
+        for (SuperAbilityType type : SuperAbilityType.values()) {
+            abilityLabelSkillBuilder.put(type, formatAbility((type == SuperAbilityType.BLAST_MINING ? ChatColor.BLUE : ChatColor.AQUA), type.getName()));
         }
 
         skillLabels = skillLabelBuilder.build();

@@ -3,7 +3,7 @@ package com.gmail.nossr50.config;
 import com.gmail.nossr50.database.SQLDatabaseManager.PoolIdentifier;
 import com.gmail.nossr50.datatypes.MobHealthbarType;
 import com.gmail.nossr50.datatypes.party.PartyFeature;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.util.StringUtils;
 import org.bukkit.Material;
@@ -454,8 +454,8 @@ public class Config extends AutoUpdateConfigLoader {
     public boolean getAbilitiesOnlyActivateWhenSneaking() { return config.getBoolean("Abilities.Activation.Only_Activate_When_Sneaking", false); }
     public boolean getAbilitiesGateEnabled() { return config.getBoolean("Abilities.Activation.Level_Gate_Abilities"); }
 
-    public int getCooldown(SuperAbility ability) { return config.getInt("Abilities.Cooldowns." + ability.toString()); }
-    public int getMaxLength(SuperAbility ability) { return config.getInt("Abilities.Max_Seconds." + ability.toString()); }
+    public int getCooldown(SuperAbilityType ability) { return config.getInt("Abilities.Cooldowns." + ability.toString()); }
+    public int getMaxLength(SuperAbilityType ability) { return config.getInt("Abilities.Max_Seconds." + ability.toString()); }
 
     /* Durability Settings */
     public int getAbilityToolDamage() { return config.getInt("Abilities.Tools.Durability_Loss", 1); }

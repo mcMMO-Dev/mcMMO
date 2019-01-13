@@ -3,6 +3,7 @@ package com.gmail.nossr50.skills.axes;
 import java.util.Map;
 
 import com.gmail.nossr50.datatypes.skills.SubSkillType;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.util.skills.*;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
@@ -10,7 +11,6 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageModifier;
 import org.bukkit.inventory.ItemStack;
 
 import com.gmail.nossr50.datatypes.player.McMMOPlayer;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.datatypes.skills.ToolType;
 import com.gmail.nossr50.locale.LocaleLoader;
@@ -41,7 +41,7 @@ public class AxesManager extends SkillManager {
     }
 
     public boolean canUseSkullSplitter(LivingEntity target) {
-        return target.isValid() && mcMMOPlayer.getAbilityMode(SuperAbility.SKULL_SPLITTER) && Permissions.skullSplitter(getPlayer());
+        return target.isValid() && mcMMOPlayer.getAbilityMode(SuperAbilityType.SKULL_SPLITTER) && Permissions.skullSplitter(getPlayer());
     }
 
     public boolean canActivateAbility() {

@@ -55,7 +55,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenTerraBlock(BlockState blockState) {
-        return mcMMOPlayer.getAbilityMode(SuperAbility.GREEN_TERRA) && BlockUtils.canMakeMossy(blockState);
+        return mcMMOPlayer.getAbilityMode(SuperAbilityType.GREEN_TERRA) && BlockUtils.canMakeMossy(blockState);
     }
 
     public boolean canActivateAbility() {
@@ -63,7 +63,7 @@ public class HerbalismManager extends SkillManager {
     }
 
     public boolean canGreenTerraPlant() {
-        return mcMMOPlayer.getAbilityMode(SuperAbility.GREEN_TERRA);
+        return mcMMOPlayer.getAbilityMode(SuperAbilityType.GREEN_TERRA);
     }
 
     /**

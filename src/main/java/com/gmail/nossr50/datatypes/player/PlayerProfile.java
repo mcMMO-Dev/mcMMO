@@ -7,7 +7,7 @@ import java.util.UUID;
 import java.util.concurrent.DelayQueue;
 
 import com.gmail.nossr50.datatypes.skills.PrimarySkill;
-import com.gmail.nossr50.datatypes.skills.SuperAbility;
+import com.gmail.nossr50.datatypes.skills.SuperAbilityType;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.config.Config;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
@@ -33,7 +33,7 @@ public class PlayerProfile {
     /* Skill Data */
     private final Map<PrimarySkill, Integer>   skills     = new HashMap<PrimarySkill, Integer>();   // Skill & Level
     private final Map<PrimarySkill, Float>     skillsXp   = new HashMap<PrimarySkill, Float>();     // Skill & XP
-    private final Map<SuperAbility, Integer> abilityDATS = new HashMap<SuperAbility, Integer>(); // Ability & Cooldown
+    private final Map<SuperAbilityType, Integer> abilityDATS = new HashMap<SuperAbilityType, Integer>(); // Ability & Cooldown
     private final Map<UniqueDataType, Integer> uniquePlayerData = new HashMap<>(); //Misc data that doesn't fit into other categories (chimaera wing, etc..)
 
     // Store previous XP gains for deminished returns
@@ -52,8 +52,8 @@ public class PlayerProfile {
         mobHealthbarType = Config.getInstance().getMobHealthbarDefault();
         scoreboardTipsShown = 0;
 
-        for (SuperAbility superAbility : SuperAbility.values()) {
-            abilityDATS.put(superAbility, 0);
+        for (SuperAbilityType superAbilityType : SuperAbilityType.values()) {
+            abilityDATS.put(superAbilityType, 0);
         }
 
         for (PrimarySkill primarySkill : PrimarySkill.NON_CHILD_SKILLS) {
@@ -76,7 +76,7 @@ public class PlayerProfile {
         this.loaded = isLoaded;
     }
 
-    public PlayerProfile(String playerName, UUID uuid, Map<PrimarySkill, Integer> levelData, Map<PrimarySkill, Float> xpData, Map<SuperAbility, Integer> cooldownData, MobHealthbarType mobHealthbarType, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData) {
+    public PlayerProfile(String playerName, UUID uuid, Map<PrimarySkill, Integer> levelData, Map<PrimarySkill, Float> xpData, Map<SuperAbilityType, Integer> cooldownData, MobHealthbarType mobHealthbarType, int scoreboardTipsShown, Map<UniqueDataType, Integer> uniqueProfileData) {
         this.playerName = playerName;
         this.uuid = uuid;
         this.mobHealthbarType = mobHealthbarType;
@@ -175,20 +175,20 @@ public class PlayerProfile {
     /**
      * Get the current deactivation timestamp of an ability.
      *
-     * @param ability The {@link SuperAbility} to get the DATS for
+     * @param ability The {@link SuperAbilityType} to get the DATS for
      * @return the deactivation timestamp for the ability
      */
-    public long getAbilityDATS(SuperAbility ability) {
+    public long getAbilityDATS(SuperAbilityType ability) {
         return abilityDATS.get(ability);
     }
 
     /**
      * Set the current deactivation timestamp of an ability.
      *
-     * @param ability The {@link SuperAbility} to set the DATS for
+     * @param ability The {@link SuperAbilityType} to set the DATS for
      * @param DATS the DATS of the ability
      */
-    protected void setAbilityDATS(SuperAbility ability, long DATS) {
+    protected void setAbilityDATS(SuperAbilityType ability, long DATS) {
         changed = true;
 
         abilityDATS.put(ability, (int) (DATS * .001D));
@@ -200,7 +200,7 @@ public class PlayerProfile {
     protected void resetCooldowns() {
         changed = true;
 
-        for (SuperAbility ability : abilityDATS.keySet()) {
+        for (SuperAbilityType ability : abilityDATS.keySet()) {
             abilityDATS.put(ability, 0);
         }
     }

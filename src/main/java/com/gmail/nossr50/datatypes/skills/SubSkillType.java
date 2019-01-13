@@ -100,7 +100,7 @@ public enum SubSkillType {
     WOODCUTTING_HARVEST_LUMBER(3);
 
     private final int numRanks;
-    //TODO: SuperAbility should also contain flags for active by default? Not sure if it should work that way.
+    //TODO: SuperAbilityType should also contain flags for active by default? Not sure if it should work that way.
 
     /**
      * If our SubSkillType has more than 1 rank define it
