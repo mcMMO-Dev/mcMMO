@@ -15,7 +15,7 @@ Version 2.1.0
  + Added links to mcMMO related websites to various commands
  + Certain elements of mcMMO's UI have been restyled
  + Added the tagline "Overhaul Era" to various locations until 3.0.0 comes out
- + (MySQL) Added support for SSL for MySQL/MariaDB (Off by default)
+ + (MySQL) Added support for SSL for MySQL/MariaDB (On by default)
  + (Skills) Tool alerts now are sent to the Action Bar
  + (Skills) Super Ability activation alerts are now sent to the Action Bar
  + (Skills) Certain Skill messages are now sent to the Action Bar
