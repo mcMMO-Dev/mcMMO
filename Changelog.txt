@@ -15,9 +15,11 @@ Version 2.1.0
  + Added links to mcMMO related websites to various commands
  + Certain elements of mcMMO's UI have been restyled
  + Added the tagline "Overhaul Era" to various locations until 3.0.0 comes out
+ + (MySQL) Added support for SSL for MySQL/MariaDB (Off by default)
  + (Skills) Tool alerts now are sent to the Action Bar
  + (Skills) Super Ability activation alerts are now sent to the Action Bar
  + (Skills) Certain Skill messages are now sent to the Action Bar
+ + (Config) Added option to use SSL for MySQL in config.yml
  + (Config) Added option to disable the new URL links to config.yml
  + (Config) New config file added coreskills.yml
  + (Config) Added rank settings for the new Woodcutting skill

@@ -346,6 +346,7 @@ public class Config extends AutoUpdateConfigLoader {
     public String getMySQLUserPassword() { return getStringIncludingInts("MySQL.Database.User_Password"); }
     public int getMySQLMaxConnections(PoolIdentifier identifier) { return config.getInt("MySQL.Database.MaxConnections." + StringUtils.getCapitalized(identifier.toString()), 30); }
     public int getMySQLMaxPoolSize(PoolIdentifier identifier) { return config.getInt("MySQL.Database.MaxPoolSize." + StringUtils.getCapitalized(identifier.toString()), 10); }
+    public boolean getMySQLSSL() { return config.getBoolean("MySQL.Server.SSL", true); }
 
     private String getStringIncludingInts(String key) {
         String str = config.getString(key);

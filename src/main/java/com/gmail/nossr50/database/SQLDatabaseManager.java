@@ -36,6 +36,13 @@ public final class SQLDatabaseManager implements DatabaseManager {
         String connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName()
                 + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
 
+        if(Config.getInstance().getMySQLSSL())
+            connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName()
+                    + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName() +
+                    "?verifyServerCertificate=false"+
+                    "&useSSL=true"+
+                    "&requireSSL=true";
+
         try {
             // Force driver to load if not yet loaded
             Class.forName("com.mysql.jdbc.Driver");
