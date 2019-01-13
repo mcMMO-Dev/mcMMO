@@ -17,6 +17,8 @@ import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.player.UserManager;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -757,7 +759,7 @@ public final class PartyManager {
             member.sendMessage(LocaleLoader.getString("Party.LevelUp", levelsGained, level));
 
             if (levelUpSoundsEnabled) {
-                member.playSound(member.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+                SoundManager.sendSound(member, member.getLocation(), SoundType.LEVEL_UP);
             }
         }
     }

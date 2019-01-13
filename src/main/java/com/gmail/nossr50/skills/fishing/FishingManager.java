@@ -23,6 +23,8 @@ import com.gmail.nossr50.skills.fishing.Fishing.Tier;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -96,7 +98,7 @@ public class FishingManager extends SkillManager {
             world.strikeLightningEffect(location);
             world.strikeLightningEffect(location);
 
-            world.playSound(location, Sound.ENTITY_GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            SoundManager.worldSendSound(world, location, SoundType.KRAKEN);
             mcMMO.p.getServer().broadcastMessage(ChatColor.RED + AdvancedConfig.getInstance().getServerUnleashMessage().replace("(PLAYER)", player.getDisplayName()));
         }
         else {
@@ -104,7 +106,7 @@ public class FishingManager extends SkillManager {
             world.createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
             world.createExplosion(location.getX(), location.getY(), location.getZ(), 0F, false, false);
 
-            player.playSound(location, Sound.ENTITY_GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            SoundManager.sendSound(player, location, SoundType.KRAKEN);
         }
 
         if (player.getInventory().getItemInMainHand().getType() == Material.FISHING_ROD) {

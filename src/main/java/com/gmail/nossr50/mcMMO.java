@@ -1,9 +1,6 @@
 package com.gmail.nossr50;
 
-import com.gmail.nossr50.config.AdvancedConfig;
-import com.gmail.nossr50.config.Config;
-import com.gmail.nossr50.config.CoreSkillsConfig;
-import com.gmail.nossr50.config.HiddenConfig;
+import com.gmail.nossr50.config.*;
 import com.gmail.nossr50.config.experience.ExperienceConfig;
 import com.gmail.nossr50.config.mods.ArmorConfigManager;
 import com.gmail.nossr50.config.mods.BlockConfigManager;
@@ -381,6 +378,7 @@ public class mcMMO extends JavaPlugin {
         AdvancedConfig.getInstance();
         PotionConfig.getInstance();
         CoreSkillsConfig.getInstance();
+        SoundConfig.getInstance();
 
         new ChildConfig();
 

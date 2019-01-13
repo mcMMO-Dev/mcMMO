@@ -37,8 +37,7 @@ public final class SQLDatabaseManager implements DatabaseManager {
                 + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName();
 
         if(Config.getInstance().getMySQLSSL())
-            connectionString = "jdbc:mysql://" + Config.getInstance().getMySQLServerName()
-                    + ":" + Config.getInstance().getMySQLServerPort() + "/" + Config.getInstance().getMySQLDatabaseName() +
+            connectionString +=
                     "?verifyServerCertificate=false"+
                     "&useSSL=true"+
                     "&requireSSL=true";

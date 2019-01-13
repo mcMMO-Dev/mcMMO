@@ -13,6 +13,8 @@ import com.gmail.nossr50.util.Misc;
 import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.StringUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -47,7 +49,7 @@ public class SalvageManager extends SkillManager {
         }
 
         if (Config.getInstance().getSalvageAnvilPlaceSoundsEnabled()) {
-            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
+            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
         }
 
         togglePlacedAnvil();
@@ -122,8 +124,10 @@ public class SalvageManager extends SkillManager {
 
         // BWONG BWONG BWONG - CLUNK!
         if (Config.getInstance().getSalvageAnvilUseSoundsEnabled()) {
-            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, Misc.ANVIL_USE_VOLUME, Misc.ANVIL_USE_PITCH);
-            player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
+            SoundManager.sendSound(player, player.getLocation(), SoundType.ANVIL);
+            SoundManager.sendSound(player, player.getLocation(), SoundType.ITEM_BREAK);
+
+            //player.playSound(player.getLocation(), Sound.ENTITY_ITEM_BREAK, 1.0F, 1.0F);
         }
 
         player.sendMessage(LocaleLoader.getString("Salvage.Skills.Success"));

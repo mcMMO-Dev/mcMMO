@@ -8,6 +8,8 @@ import com.gmail.nossr50.runnables.items.ChimaeraWingWarmup;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.CombatUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -131,7 +133,7 @@ public final class ChimaeraWing {
         mcMMOPlayer.setTeleportCommenceLocation(null);
 
         if (Config.getInstance().getChimaeraSoundEnabled()) {
-            player.playSound(location, Sound.ENTITY_BAT_TAKEOFF, Misc.BAT_VOLUME, Misc.BAT_PITCH);
+            SoundManager.sendSound(player, location, SoundType.CHIMAERA_WING);
         }
 
         player.sendMessage(LocaleLoader.getString("Item.ChimaeraWing.Pass"));

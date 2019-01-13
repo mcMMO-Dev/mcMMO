@@ -676,8 +676,6 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     @Override
     protected void loadKeys() {}
 
-
-
     /* GENERAL */
     public int getAbilityLength() { return config.getInt("Skills.General.Ability.IncreaseLevel", 50); }
     public int getEnchantBuff() { return config.getInt("Skills.General.Ability.EnchantBuff", 5); }

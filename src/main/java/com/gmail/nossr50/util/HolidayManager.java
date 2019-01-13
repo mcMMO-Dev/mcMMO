@@ -5,6 +5,8 @@ import com.gmail.nossr50.datatypes.skills.PrimarySkill;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import com.google.common.collect.ImmutableList;
 import org.bukkit.*;
 import org.bukkit.FireworkEffect.Type;
@@ -357,7 +359,7 @@ public final class HolidayManager {
 
     public void levelUpApril(Player player, FakeSkillType fakeSkillType) {
         int levelTotal = Misc.getRandom().nextInt(1 + UserManager.getPlayer(player).getSkillLevel(PrimarySkill.MINING)) + 1;
-        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+        SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
         player.sendMessage(ChatColor.YELLOW + StringUtils.getCapitalized(fakeSkillType.toString()) + " skill increased by 1. Total (" + levelTotal + ")");
         ParticleEffectUtils.fireworkParticleShower(player, ALL_COLORS.get(Misc.getRandom().nextInt(ALL_COLORS.size())));
     }

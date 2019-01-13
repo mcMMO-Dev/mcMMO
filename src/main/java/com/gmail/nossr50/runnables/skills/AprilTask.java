@@ -3,6 +3,8 @@ package com.gmail.nossr50.runnables.skills;
 import com.gmail.nossr50.mcMMO;
 import com.gmail.nossr50.util.HolidayManager;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.Statistic;
@@ -22,7 +24,7 @@ public class AprilTask extends BukkitRunnable {
             int random = Misc.getRandom().nextInt(40) + 11;
             int betterRandom = Misc.getRandom().nextInt(2000);
             if (betterRandom == 0) {
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+                SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
                 player.sendMessage(unknown("superskill") + " skill increased by 1. Total (" + unknown("12") + ")");
                 fireworksShow(player);
             }

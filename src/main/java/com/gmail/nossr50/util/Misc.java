@@ -31,7 +31,7 @@ public final class Misc {
     public static final double SKILL_MESSAGE_MAX_SENDING_DISTANCE = 10.0;
 
     // Sound Pitches & Volumes from CB
-    public static final float ANVIL_USE_PITCH  = 0.3F;  // Not in CB directly, I went off the place sound values
+/*    public static final float ANVIL_USE_PITCH  = 0.3F;  // Not in CB directly, I went off the place sound values
     public static final float ANVIL_USE_VOLUME = 1.0F * Config.getInstance().getMasterVolume();  // Not in CB directly, I went off the place sound values
     public static final float FIZZ_VOLUME      = 0.5F * Config.getInstance().getMasterVolume();
     public static final float POP_VOLUME       = 0.2F * Config.getInstance().getMasterVolume();
@@ -39,23 +39,11 @@ public final class Misc {
     public static final float BAT_PITCH        = 0.6F;
     public static final float GHAST_VOLUME     = 1.0F * Config.getInstance().getMasterVolume();
     public static final float LEVELUP_PITCH    = 0.5F;  // Reduced to differentiate between vanilla level-up
-    public static final float LEVELUP_VOLUME   = 0.75F * Config.getInstance().getMasterVolume(); // Use max volume always
+    public static final float LEVELUP_VOLUME   = 0.75F * Config.getInstance().getMasterVolume(); // Use max volume always*/
 
     public static final Set<String> modNames = ImmutableSet.of("LOTR", "BUILDCRAFT", "ENDERIO", "ENHANCEDBIOMES", "IC2", "METALLURGY", "FORESTRY", "GALACTICRAFT", "RAILCRAFT", "TWILIGHTFOREST", "THAUMCRAFT", "GRAVESTONEMOD", "GROWTHCRAFT", "ARCTICMOBS", "DEMONMOBS", "INFERNOMOBS", "SWAMPMOBS", "MARICULTURE", "MINESTRAPPOLATION");
 
     private Misc() {};
-
-    public static float getFizzPitch() {
-        return 2.6F + (getRandom().nextFloat() - getRandom().nextFloat()) * 0.8F;
-    }
-
-    public static float getPopPitch() {
-        return ((getRandom().nextFloat() - getRandom().nextFloat()) * 0.7F + 1.0F) * 2.0F;
-    }
-
-    public static float getGhastPitch() {
-        return (getRandom().nextFloat() - getRandom().nextFloat()) * 0.2F + 1.0F;
-    }
 
     public static boolean isNPCEntity(Entity entity) {
         return (entity == null || entity.hasMetadata("NPC") || entity instanceof NPC || entity.getClass().getName().equalsIgnoreCase("cofh.entity.PlayerFake"));

@@ -2,6 +2,8 @@ package com.gmail.nossr50.runnables.skills;
 
 import com.gmail.nossr50.config.AdvancedConfig;
 import com.gmail.nossr50.util.Misc;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -85,11 +87,11 @@ public class KrakenAttackTask extends BukkitRunnable {
         player.damage(AdvancedConfig.getInstance().getKrakenAttackDamage(), kraken);
 
         if (GLOBAL_EFFECTS) {
-            world.playSound(playerLocation, Sound.ENTITY_GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            SoundManager.worldSendSound(world, location, SoundType.KRAKEN);
             world.strikeLightningEffect(playerLocation);
         }
         else {
-            player.playSound(playerLocation, Sound.ENTITY_GHAST_SCREAM, Misc.GHAST_VOLUME, Misc.getGhastPitch());
+            SoundManager.sendSound(player, playerLocation, SoundType.KRAKEN);
             world.createExplosion(playerLocation.getX(), playerLocation.getY(), playerLocation.getZ(), 0F, false, false);
         }
     }

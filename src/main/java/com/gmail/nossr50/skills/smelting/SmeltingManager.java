@@ -18,9 +18,10 @@ import com.gmail.nossr50.util.Permissions;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.SkillActivationType;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
@@ -89,7 +90,7 @@ public class SmeltingManager extends SkillManager {
             blockState.setType(Material.AIR);
 
             if (Config.getInstance().getFluxPickaxeSoundEnabled()) {
-                player.playSound(blockState.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, Misc.FIZZ_VOLUME, Misc.getFizzPitch());
+                SoundManager.sendSound(player, blockState.getLocation(), SoundType.FIZZ);
             }
 
             ParticleEffectUtils.playFluxEffect(blockState.getLocation());

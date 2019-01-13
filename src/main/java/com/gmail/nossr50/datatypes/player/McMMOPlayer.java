@@ -45,6 +45,8 @@ import com.gmail.nossr50.util.scoreboards.ScoreboardManager;
 import com.gmail.nossr50.util.skills.ParticleEffectUtils;
 import com.gmail.nossr50.util.skills.PerksUtils;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.apache.commons.lang.Validate;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -512,7 +514,7 @@ public class McMMOPlayer {
         }
 
         if (Config.getInstance().getLevelUpSoundsEnabled()) {
-            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, Misc.LEVELUP_VOLUME, Misc.LEVELUP_PITCH);
+            SoundManager.sendSound(player, player.getLocation(), SoundType.LEVEL_UP);
         }
 
         InteractionManager.sendPlayerLevelUpNotification(UserManager.getPlayer(player), primarySkill, profile.getSkillLevel(primarySkill));

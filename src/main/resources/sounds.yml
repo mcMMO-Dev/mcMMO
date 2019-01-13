@@ -1,0 +1,27 @@
+# A volume of 1.0 is pretty loud
+# Keep this in mind
+Sounds:
+    # 1.0 = Max volume
+    # 0.0 = No Volume
+    MasterVolume: 1.0
+    ANVIL:
+      Volume: 1.0
+      Pitch: 0.3
+    #Fizz, Pop, and Kraken make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
+    FIZZ:
+      Volume: 0.5
+    LEVEL_UP:
+      Volume: 0.75
+      Pitch: 0.5
+    ITEM_BREAK:
+      Volume: 1.0
+      Pitch: 1.0
+    #Fizz, Pop, and Kraken make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
+    POP:
+      Volume: 0.2
+    #Fizz, Pop, and Kraken make use of a adding and multiplying random numbers together to make a unique pitch everytime they are heard
+    KRAKEN:
+      Volume: 1.0
+    CHIMAERA_WING:
+      Volume: 1.0
+      Pitch: 0.6

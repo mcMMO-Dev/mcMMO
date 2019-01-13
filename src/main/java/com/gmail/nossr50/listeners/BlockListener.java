@@ -21,6 +21,8 @@ import com.gmail.nossr50.skills.woodcutting.WoodcuttingManager;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -365,7 +367,7 @@ public class BlockListener implements Listener {
          * We don't need to check permissions here because they've already been checked for the ability to even activate.
          */
         if (mcMMOPlayer.getAbilityMode(SuperAbility.TREE_FELLER) && BlockUtils.isLog(blockState) && Config.getInstance().getTreeFellerSoundsEnabled()) {
-            player.playSound(blockState.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, Misc.FIZZ_VOLUME, Misc.getFizzPitch());
+            SoundManager.sendSound(player, blockState.getLocation(), SoundType.FIZZ);
         }
     }
 
@@ -404,7 +406,7 @@ public class BlockListener implements Listener {
         else if (mcMMOPlayer.getAbilityMode(SuperAbility.BERSERK) && heldItem.getType() == Material.AIR) {
             if (SuperAbility.BERSERK.blockCheck(block.getState()) && EventUtils.simulateBlockBreak(block, player, true)) {
                 event.setInstaBreak(true);
-                player.playSound(block.getLocation(), Sound.ENTITY_ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
+                SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
             }
             else if (mcMMOPlayer.getUnarmedManager().canUseBlockCracker() && BlockUtils.affectedByBlockCracker(blockState) && EventUtils.simulateBlockBreak(block, player, true)) {
                 if (mcMMOPlayer.getUnarmedManager().blockCrackerCheck(blockState)) {
@@ -414,7 +416,7 @@ public class BlockListener implements Listener {
         }
         else if (mcMMOPlayer.getWoodcuttingManager().canUseLeafBlower(heldItem) && BlockUtils.isLeaves(blockState) && EventUtils.simulateBlockBreak(block, player, true)) {
             event.setInstaBreak(true);
-            player.playSound(blockState.getLocation(), Sound.ENTITY_ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
+            SoundManager.sendSound(player, block.getLocation(), SoundType.POP);
         }
     }
 }

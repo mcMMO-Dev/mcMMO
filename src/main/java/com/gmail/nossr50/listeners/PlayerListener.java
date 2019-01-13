@@ -26,6 +26,8 @@ import com.gmail.nossr50.skills.unarmed.Unarmed;
 import com.gmail.nossr50.util.*;
 import com.gmail.nossr50.util.player.UserManager;
 import com.gmail.nossr50.util.skills.SkillUtils;
+import com.gmail.nossr50.util.sounds.SoundManager;
+import com.gmail.nossr50.util.sounds.SoundType;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -303,7 +305,7 @@ public class PlayerListener implements Listener {
             event.setCancelled(ShareHandler.handleItemShare(drop, mcMMOPlayer));
 
             if (event.isCancelled()) {
-                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
+                SoundManager.sendSound(player, player.getLocation(), SoundType.POP);
                 return;
             }
         }
@@ -314,7 +316,7 @@ public class PlayerListener implements Listener {
             event.setCancelled(cancel);
 
             if (pickupSuccess) {
-                player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, Misc.POP_VOLUME, Misc.getPopPitch());
+                SoundManager.sendSound(player, player.getLocation(), SoundType.POP);
                 player.updateInventory();
                 return;
             }
