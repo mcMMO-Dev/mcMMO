@@ -27,7 +27,7 @@ public class FormulaManager {
 
     public FormulaManager() {
         /* Setting for Classic Mode (Scales a lot of stuff up by * 10) */
-        classicModeEnabled = Config.getInstance().getUseOldLevelScaling();
+        classicModeEnabled = Config.getInstance().getIsRetroMode();
         classicModeXPFormulaFactor = Config.getInstance().getClassicModeXPFormulaFactor();
         loadFormula();
     }

@@ -30,13 +30,15 @@ Skills:
             ExperienceGain: true
     General:
         Ability:
+            Length:
+                Standard:
+                    IncreaseLevel: 5
+                RetroMode:
+                    IncreaseLevel: 50
             EnchantBuff: 5
             # IncreaseLevel: This setting will determine when the length of every ability gets longer with 1 second
             # EnchantBuff: This setting determines how many enchant levels to use when buffing Super Breaker & Giga Drill Breaker
-            Standard:
-                IncreaseLevel: 50
-            RetroMode:
-                IncreaseLevel: 5
+
 
     #
     #  Settings for Acrobatics

@@ -67,7 +67,8 @@ public class SkillUtils {
 
     public static String[] calculateLengthDisplayValues(Player player, float skillValue, PrimarySkillType skill) {
         int maxLength = skill.getAbility().getMaxLength();
-        int length = 2 + (int) (skillValue / AdvancedConfig.getInstance().getAbilityLength());
+        int abilityLengthVar = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getAbilityLengthRetro() : AdvancedConfig.getInstance().getAbilityLengthStandard();
+        int length = 2 + (int) (skillValue / abilityLengthVar);
         int enduranceLength = PerksUtils.handleActivationPerks(player, length, maxLength);
 
         if (maxLength != 0) {
@@ -180,7 +181,8 @@ public class SkillUtils {
 
             McMMOPlayer mcMMOPlayer = UserManager.getPlayer(player);
             PrimarySkillType skill = mcMMOPlayer.getAbilityMode(SuperAbilityType.SUPER_BREAKER) ? PrimarySkillType.MINING : PrimarySkillType.EXCAVATION;
-            int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getSkillLevel(skill) / AdvancedConfig.getInstance().getAbilityLength()), skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
+            int abilityLengthVar = Config.getInstance().getIsRetroMode() ? AdvancedConfig.getInstance().getAbilityLengthRetro() : AdvancedConfig.getInstance().getAbilityLengthStandard();
+            int ticks = PerksUtils.handleActivationPerks(player, 2 + (mcMMOPlayer.getSkillLevel(skill) / abilityLengthVar), skill.getAbility().getMaxLength()) * Misc.TICK_CONVERSION_FACTOR;
 
             PotionEffect abilityBuff = new PotionEffect(PotionEffectType.FAST_DIGGING, duration + ticks, amplifier + 10);
             player.addPotionEffect(abilityBuff, true);

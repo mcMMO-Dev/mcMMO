@@ -43,8 +43,12 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
         checkKeys(reason);
 
         /* GENERAL */
-        if (getAbilityLength() < 1) {
-            reason.add("Skills.General.Ability.IncreaseLevel should be at least 1!");
+        if (getAbilityLengthRetro() < 1) {
+            reason.add("Skills.General.Ability.Length.RetroMode.IncreaseLevel should be at least 1!");
+        }
+
+        if (getAbilityLengthStandard() < 1) {
+            reason.add("Skills.General.Ability.Length.Standard.IncreaseLevel should be at least 1!");
         }
 
         if (getEnchantBuff() < 1) {
@@ -676,7 +680,8 @@ public class AdvancedConfig extends AutoUpdateConfigLoader {
     protected void loadKeys() {}
 
     /* GENERAL */
-    public int getAbilityLength() { return config.getInt("Skills.General.Ability.IncreaseLevel", 50); }
+    public int getAbilityLengthStandard() { return config.getInt("Skills.General.Ability.Length.Standard.IncreaseLevel", 5); }
+    public int getAbilityLengthRetro() { return config.getInt("Skills.General.Ability.Length.RetroMode.IncreaseLevel", 50); }
     public int getEnchantBuff() { return config.getInt("Skills.General.Ability.EnchantBuff", 5); }
 
     public int getMaxBonusLevel(SubSkillType subSkillType) { return config.getInt(subSkillType.getAdvConfigAddress() + ".MaxBonusLevel"); }

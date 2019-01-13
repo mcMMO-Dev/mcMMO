@@ -246,7 +246,7 @@ public class Config extends AutoUpdateConfigLoader {
     /* General Settings */
 
     //Classic mode will default the value to true if the config file doesn't contain the entry (server is from a previous mcMMO install)
-    public boolean getUseOldLevelScaling() { return config.getBoolean("General.RetroMode", true); }
+    public boolean getIsRetroMode() { return config.getBoolean("General.RetroMode", true); }
 
     //XP needed to level is multiplied by this when using classic mode
     public int getClassicModeXPFormulaFactor() { return config.getInt("General.Skill_Scaling.RetroMode_XP_Formula_Factor", 1); }
