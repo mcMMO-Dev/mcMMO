@@ -19,19 +19,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * This class handles many of the JSON components that mcMMO makes and uses
+ */
 public class TextComponentFactory {
-    public static HashMap<String, TextComponent> subSkillTextComponents;
+    //public static HashMap<String, TextComponent> subSkillTextComponents;
 
     //Yeah there's probably a better way to do this
-    public static HashMap<String, BaseComponent[]> lockedComponentMap;
+    //public static HashMap<String, BaseComponent[]> lockedComponentMap;
 
-    public static BaseComponent[] webComponents;
+    //public static BaseComponent[] webComponents;
 
     /**
-     * This one is a bit simple
-     * @param localeKey
-     * @param notificationType
-     * @param values
+     * Makes a text component using strings from a locale and supports passing an undefined number of variables to the LocaleLoader
+     * @param localeKey target locale string address
+     * @param notificationType type of notification
+     * @param values vars to be passed to the locale loader
      * @return
      */
     public static TextComponent getNotificationMultipleValues(String localeKey, NotificationType notificationType, String... values)
@@ -69,11 +72,11 @@ public class TextComponentFactory {
     public static TextComponent getNotificationTextComponent(String text, NotificationType notificationType)
     {
         TextComponent textComponent = new TextComponent(text);
-        textComponent.setColor(getNotificationColor(notificationType));
+        //textComponent.setColor(getNotificationColor(notificationType));
         return textComponent;
     }
 
-    public static ChatColor getNotificationColor(NotificationType notificationType)
+    /*public static ChatColor getNotificationColor(NotificationType notificationType)
     {
         ChatColor color = ChatColor.WHITE;
         switch(notificationType)
@@ -93,7 +96,7 @@ public class TextComponentFactory {
         }
 
         return color;
-    }
+    }*/
 
     public static void sendPlayerUrlHeader(Player player) {
         if(!Config.getInstance().getUrlLinksEnabled())
@@ -101,11 +104,11 @@ public class TextComponentFactory {
 
         Player.Spigot spigotPlayer = player.spigot();
 
-        if(webComponents != null)
+        /*if(webComponents != null)
         {
             player.spigot().sendMessage(webComponents);
             return;
-        }
+        }*/
 
         TextComponent prefix = new TextComponent("[| ");
         prefix.setColor(ChatColor.DARK_AQUA);
@@ -128,9 +131,7 @@ public class TextComponentFactory {
                 getWebLinkTextComponent(McMMOWebLinks.HELP_TRANSLATE),
                 new TextComponent(suffix)};
 
-        //Cache into memory since the links wont change
-        webComponents = baseComponents;
-        spigotPlayer.sendMessage(webComponents);
+        spigotPlayer.sendMessage(baseComponents);
     }
 
     public static void sendPlayerSubSkillList(Player player, List<TextComponent> textComponents)
@@ -296,70 +297,42 @@ public class TextComponentFactory {
 
     public static TextComponent getSubSkillTextComponent(Player player, SubSkillType subSkillType)
     {
-        //Init our maps
-        if (subSkillTextComponents == null)
-        {
-            subSkillTextComponents = new HashMap<>();
-            lockedComponentMap = new HashMap<>();
-            //hoverComponentOuterMap = new HashMap<>();
-        }
 
         //Get skill name & description from our locale file
-        String key = subSkillType.toString();
+        //String key = subSkillType.toString();
         String skillName = subSkillType.getLocaleName();
 
-        if(subSkillTextComponents.get(key) == null)
-        {
-            //Setup Text Component
-            TextComponent textComponent = new TextComponent(skillName);
-            //textComponent.setColor(ChatColor.DARK_AQUA);
+        //Setup Text Component
+        TextComponent textComponent = new TextComponent(skillName);
+        //textComponent.setColor(ChatColor.DARK_AQUA);
 
-            //Hover Event
-            textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, getBaseComponent(player, subSkillType)));
+        //Hover Event
+        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, getBaseComponent(player, subSkillType)));
 
-            //Insertion
-            textComponent.setInsertion(skillName);
-            textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mmoinfo "+subSkillType.getNiceNameNoSpaces(subSkillType)));
+        //Insertion
+        textComponent.setInsertion(skillName);
+        textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mmoinfo "+subSkillType.getNiceNameNoSpaces(subSkillType)));
 
-            subSkillTextComponents.put(key, textComponent);
-            return subSkillTextComponents.get(key);
-        } else {
-            return subSkillTextComponents.get(key);
-        }
+        return textComponent;
     }
 
     public static TextComponent getSubSkillTextComponent(Player player, AbstractSubSkill abstractSubSkill)
     {
-        //Init our maps
-        if (subSkillTextComponents == null)
-        {
-            subSkillTextComponents = new HashMap<>();
-            lockedComponentMap = new HashMap<>();
-            //hoverComponentOuterMap = new HashMap<>();
-        }
-
-        //Get skill name & description from our locale file
-        String key = abstractSubSkill.getConfigKeyName();
+        //String key = abstractSubSkill.getConfigKeyName();
         String skillName = abstractSubSkill.getNiceName();
 
-        if(subSkillTextComponents.get(key) == null)
-        {
-            //Setup Text Component
-            TextComponent textComponent = new TextComponent(skillName);
-            textComponent.setColor(ChatColor.DARK_AQUA);
+        //Setup Text Component
+        TextComponent textComponent = new TextComponent(skillName);
+        textComponent.setColor(ChatColor.DARK_AQUA);
 
-            //Hover Event
-            textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, getBaseComponent(player, abstractSubSkill)));
+        //Hover Event
+        textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, getBaseComponent(player, abstractSubSkill)));
 
-            //Insertion
-            textComponent.setInsertion(skillName);
-            textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mmoinfo "+abstractSubSkill.getConfigKeyName()));
+        //Insertion
+        textComponent.setInsertion(skillName);
+        textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/mmoinfo "+abstractSubSkill.getConfigKeyName()));
 
-            subSkillTextComponents.put(key, textComponent);
-            return subSkillTextComponents.get(key);
-        } else {
-            return subSkillTextComponents.get(key);
-        }
+        return textComponent;
     }
 
     private static BaseComponent[] getBaseComponent(Player player, AbstractSubSkill abstractSubSkill)
@@ -370,24 +343,9 @@ public class TextComponentFactory {
         //If the player hasn't unlocked this skill yet we use a different JSON template
         if(abstractSubSkill.getNumRanks() > 0 && curRank == 0)
         {
-            //If the JSON component already exists
-            if(lockedComponentMap.get(key) != null)
-                return lockedComponentMap.get(key);
-
             BaseComponent[] newComponents = getSubSkillHoverEventJSON(abstractSubSkill, player, curRank);
-            lockedComponentMap.put(key, newComponents);
-            return lockedComponentMap.get(key);
+            return newComponents;
         }
-
-        //If the inner hashmap for this rank isn't made yet
-        /*if(hoverComponentOuterMap.get(curRank) == null)
-            hoverComponentOuterMap.put(curRank, new HashMap<>());*/
-
-        //Inner Hashmap for current rank
-        //HashMap<String, BaseComponent[]> innerMap = hoverComponentOuterMap.get(curRank);
-
-        /*if(innerMap.get(key) == null)
-            innerMap.put(key, getSubSkillHoverEventJSON(abstractSubSkill, player, curRank));*/
 
         return getSubSkillHoverEventJSON(abstractSubSkill, player, curRank);
     }
@@ -400,26 +358,9 @@ public class TextComponentFactory {
         //If the player hasn't unlocked this skill yet we use a different JSON template
         if(subSkillType.getNumRanks() > 0 && curRank == 0)
         {
-            //If the JSON component already exists
-            if(lockedComponentMap.get(key) != null)
-                return lockedComponentMap.get(key);
-
             BaseComponent[] newComponents = getSubSkillHoverEventJSON(subSkillType, player, curRank);
-            lockedComponentMap.put(key, newComponents);
-            return lockedComponentMap.get(key);
+            return newComponents;
         }
-
-        //If the inner hashmap for this rank isn't made yet
-        /*if(hoverComponentOuterMap.get(curRank) == null)
-            hoverComponentOuterMap.put(curRank, new HashMap<>());
-
-        //Inner Hashmap for current rank
-        HashMap<String, BaseComponent[]> innerMap = hoverComponentOuterMap.get(curRank);*/
-
-        /*if(innerMap.get(key) == null)
-            innerMap.put(key, getSubSkillHoverEventJSON(subSkillType, player, curRank));
-
-        return innerMap.get(key);*/
 
         return getSubSkillHoverEventJSON(subSkillType, player, curRank);
     }
